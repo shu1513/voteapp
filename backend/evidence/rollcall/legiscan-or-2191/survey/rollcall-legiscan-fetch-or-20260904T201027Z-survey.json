@@ -1,0 +1,2435 @@
+{
+  "runId": "rollcall-legiscan-fetch-or-20260904T201027Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "OR",
+  "startedAt": "2026-09-04T20:10:27.565Z",
+  "finishedAt": "2026-09-04T20:10:28.914Z",
+  "datasetDir": "~/legiscan-data/or-2191",
+  "bills": 3466,
+  "votes": 3565,
+  "people": 115,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "House Third Reading",
+      "count": 672,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2386",
+        "HB2341",
+        "HB2464"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Third Reading",
+      "count": 670,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB859",
+        "SB858",
+        "SB69"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments. (Printed A-Eng.)",
+      "count": 221,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3021",
+        "HB2933",
+        "HB2514"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments. (Printed A-Eng.)",
+      "count": 181,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB69",
+        "SB166",
+        "SB168"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do Pass",
+      "count": 173,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2464",
+        "HB2341",
+        "HB2386"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass",
+      "count": 171,
+      "withoutMemberList": 0,
+      "minTotal": 4,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB859",
+        "SB851",
+        "SB852"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Ways and Means by prior reference. (Printed A-Eng.)",
+      "count": 136,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3173",
+        "HB2842",
+        "HB2069"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass the A-Eng bill",
+      "count": 123,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2010",
+        "HB2347",
+        "HB3115"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do Pass the A-Eng bill",
+      "count": 94,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2010",
+        "HB2978",
+        "SB849"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments and requesting referral to Ways and Means. (Printed A-Engrossed.)",
+      "count": 73,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB505",
+        "SB164",
+        "SB504"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Ways and Means. (Printed A-Eng.)",
+      "count": 72,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3198",
+        "HB2139",
+        "HB2558"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass and be referred to Ways and Means by prior reference",
+      "count": 66,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2164",
+        "HB2168",
+        "HB2811"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments to the A-Eng bill. (Printed B-Eng.)",
+      "count": 64,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2127",
+        "HB3178",
+        "HB3814"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Final Reading",
+      "count": 62,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 30,
+      "billTypes": [
+        "CR",
+        "JM",
+        "R"
+      ],
+      "sampleBills": [
+        "HCR14",
+        "HCR15",
+        "SCR15"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments to the A-Eng bill. (Printed B-Eng.)",
+      "count": 59,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2007",
+        "HB2491",
+        "HB3532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Third Reading in Concurrence",
+      "count": 52,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 60,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR23",
+        "HB2127",
+        "HB2567"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do adopt",
+      "count": 51,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 6,
+      "billTypes": [
+        "CR",
+        "JM",
+        "R"
+      ],
+      "sampleBills": [
+        "SCR15",
+        "SCR5",
+        "SCR6"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Be Adopted",
+      "count": 49,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 8,
+      "billTypes": [
+        "CR",
+        "JM",
+        "R"
+      ],
+      "sampleBills": [
+        "HCR2",
+        "HCR10",
+        "HCR1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments. Refer to Ways and Means by prior reference. (Printed A-Eng)",
+      "count": 48,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB520",
+        "SB223",
+        "SB793"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass and refer to Ways and Means by prior reference",
+      "count": 36,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB452",
+        "SB828",
+        "SB807"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Third Reading in Concurrence",
+      "count": 36,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB797",
+        "SCR10",
+        "SB805"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Special Order",
+      "count": 35,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 60,
+      "billTypes": [
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "HCR1",
+        "HCR9",
+        "HCR10"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Read and Adopted",
+      "count": 25,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 60,
+      "billTypes": [
+        "CR",
+        "JM",
+        "R"
+      ],
+      "sampleBills": [
+        "HCR14",
+        "HCR2",
+        "HCR16"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and rescind subsequent referral to Ways and Means. (Printed A-Eng.)",
+      "count": 23,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2567",
+        "HB2978",
+        "HB3025"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage and be referred to Rules",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2777",
+        "HB3179",
+        "HB3501"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass. Refer to Ways and Means",
+      "count": 17,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2166",
+        "HB2140",
+        "HB2805"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments and requesting subsequent referral to Ways and Means be rescinded. (Printed A-Eng.)",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB858",
+        "SB867",
+        "SB91"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass and requesting referral to Ways and Means",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB87",
+        "SB466",
+        "SB894"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Withdraw from Committee",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3753",
+        "HB2033",
+        "HB3914"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage and request referral to Rules",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB983",
+        "SB537",
+        "SB989"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage and be returned to President's desk for referral to another committee",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB249",
+        "SB379",
+        "SB436"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage and be referred to Addiction and Community Safety Response",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2929",
+        "HB3375",
+        "HB3046"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass and be referred to Revenue by prior reference",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2448",
+        "HB2953",
+        "HB3150"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Be adopted with amendments. (Printed A-Eng.)",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "HCR16",
+        "HCR28",
+        "HCR31"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass and rescind subsequent referral to Ways and Means",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2935",
+        "HB2596",
+        "HB3027"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass. Refer to Tax Expenditures",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2091",
+        "HB2098",
+        "HB3329"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Motion to substitute Minority Report",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB916",
+        "SB1098",
+        "SB951"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Revenue by prior reference. (Printed A-Eng.)",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2010",
+        "HB3236",
+        "HB2171"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage and be referred to Judiciary",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3051",
+        "HB3080",
+        "HB2311"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, be referred to Addiction and Community Safety Response, and then to Ways and Means by prior reference",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2954",
+        "HB3321",
+        "HB2028"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Motion to substitute Minority Report",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2944",
+        "HB2013",
+        "SB426"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do adopt the A-Eng measure",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR16",
+        "HCR28",
+        "HCR31"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Repassed",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB916",
+        "HB3694",
+        "HB3127"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Be adopted with amendments. (Printed A-Eng.)",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "CR",
+        "JM"
+      ],
+      "sampleBills": [
+        "SCR7",
+        "HCR23",
+        "SJM10"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass the B-Eng bill",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3532",
+        "HB2351",
+        "HB2528"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments and requesting referral to Finance and Revenue. (Printed A-Engrossed.)",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB225",
+        "SB347",
+        "SB1095"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments and requesting referral to Tax Expenditures. (Printed A-Engrossed.)",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB587",
+        "SB927",
+        "SB123"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments to the B-Eng bill. (Printed C-Eng.)",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3865",
+        "HB3942",
+        "SB684"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage and request referral to Housing and Development",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB923",
+        "SB940",
+        "HB3521"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Motion to Reconsider",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3025",
+        "HB2016",
+        "HB3026"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments to resolve conflicts. (Printed C-Eng.)",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB163",
+        "SB476",
+        "SB844"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments. (Printed B-Eng.)",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2351",
+        "HB3940",
+        "SB111"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage and be referred to Revenue",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2515",
+        "HB3518",
+        "HB2725"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, be referred to Rules, and then to Ways and Means by prior reference",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3102",
+        "HB2548",
+        "HB3363"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, with amendments, and be referred to Rules. (Printed A-Eng.)",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3835",
+        "HB3525",
+        "HB2491"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Motion to Reconsider",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2931",
+        "SB726",
+        "SB5541"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Motion to Refer",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3789",
+        "HB3054",
+        "SB426"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Repassed",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3694",
+        "SB916",
+        "HB2614"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass and refer to Tax Expenditures by prior reference",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB121",
+        "SB122",
+        "SB112"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass and requesting subsequent referral to Ways and Means be rescinded",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB64",
+        "SB827",
+        "SB861"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments to the B-Eng bill, including amendments to resolve conflicts. (Printed C-Eng.)",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3069",
+        "HB2138",
+        "HB3544"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage, but with amendments and requesting referral to Rules. (Printed A-Eng.)",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1154",
+        "SB1060",
+        "SB1003"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Motion to Table",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB736",
+        "SB976",
+        "SB1047"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do adopt the A-Eng measure",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "SCR7",
+        "SCR28"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass the A-Eng bill. Refer to Rules",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB75",
+        "SB83"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass the A-Eng bill. Refer to Tax Expenditures",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3236",
+        "SB225"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do Pass the bill",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB167",
+        "HB3712"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Revenue, then to Ways and Means. (Printed A-Eng.)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3506",
+        "HB2145"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Ways and Means by prior reference. (Printed B-Eng.)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3506",
+        "HB2316"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and rescind subsequent referral to Ways and Means. (Printed A-Eng)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2200",
+        "HB2081"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments to resolve conflicts. (Printed B-Eng.)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB236",
+        "SB230"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments to the A-Eng bill, and be referred to Ways and Means. (Printed B-Eng)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB926",
+        "HB3835"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments to the B-Eng bill. (Printed C-Eng.)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3506",
+        "HB2316"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments. Refer to Revenue, then to Ways and Means by prior reference. (Printed A-Eng.)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2316",
+        "HB3360"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass. Refer to Revenue",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3049",
+        "HB2403"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Senate recede from Senate amendments dated 05/27 and repass",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3127"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, be referred to Higher Education and Workforce Development, and then to Ways and Means by prior reference",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2747",
+        "HB3534"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, refer to Revenue by prior reference",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2977",
+        "HB3823"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, refer to Ways and Means by prior reference",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2809",
+        "HB2145"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, with amendments, and be referred to Ways and Means. (Printed A-Eng.)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2956",
+        "HB2150"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Motion to Rerefer",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3789",
+        "SB426"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Motion to Table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2670",
+        "SB875"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Refuse to Concur",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3127",
+        "HB2614"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass and refer to Finance and Revenue by prior reference",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB387",
+        "SB694"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass and requesting referral to Rules",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB284",
+        "SB1024"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass the A-Eng bill. Requesting referral to Ways and Means",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2343",
+        "HB2425"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass the bill",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2942",
+        "HB3912"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments to the A-Eng bill, including amendments to resolve conflicts. (Printed B-Eng.)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2342",
+        "HB2803"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments to the B-Eng bill to resolve conflicts. (Printed C-Eng.)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3040",
+        "HB2005"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments. Refer to Finance and Revenue then to Ways and Means by prior reference. (Printed A-Eng.)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB58",
+        "SB684"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage and request referral to Judiciary",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB838",
+        "SB832"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage and request referral to Tax Expenditures",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB120",
+        "SB106"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Motion to Rerefer",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB138",
+        "SB686"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Adopted Conference Comittee Report",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB916"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2682"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass the A-Eng bill and be referred to Ways and Means by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3589"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do Pass the B-Eng bill",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1154"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass the bill and be referred to Ways and Means by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3504"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do Pass the C-Eng bill",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 24,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB243"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Revenue. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2351"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Rules. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3532"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Tax Expenditures. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2958"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Tax Expenditures. (Printed B-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2735"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and rescind subsequent referral to Revenue. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2591"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and rescind subsequent referral to Transportation, and be referred to Ways and Means by prior reference. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2845"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and rescind subsequent referral to Ways and Means. (Printed B-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2528"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments to the B-Eng bill, and be referred to Ways and Means. (Printed C-Eng)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB243"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments to the bill, and be referred to Ways and Means by prior reference. (Printed A-Eng)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3129"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments, rescind subsequent referral to Revenue, and be referred to Ways and Means. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2803"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments, rescind subsequent referral to Ways and Means, and be referred to Revenue. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2735"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments. Refer to Revenue by prior reference, then to Ways and Means",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3589"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass. Refer to Revenue by prior reference, then to Ways and Means",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2809"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Recommending the House concur in Senate amendments dated 01/01 and bill be further amended and repassed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3694"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Recommending the House concur in Senate amendments dated 05/28 and bill be further amended and repassed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2614"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage and be referred to Emergency Management, General Government, and Veterans",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3328"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage and be referred to Housing and Homelessness",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2647"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage and be referred to Transportation",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB417"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage and be referred to Ways and Means",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3553"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, be referred to Addiction and Community Safety Response, and then to Revenue by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3197"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, be referred to Early Childhood and Human Services, and then to Ways and Means by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3201"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, be referred to Education, and then to Ways and Means by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3059"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, be referred to Housing and Homelessness, and then to Ways and Means by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3188"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, be referred to Judiciary, and then to Ways and Means by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3140"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, be referred to Revenue by prior reference, and then to Ways and Means",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3856"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, refer to Higher Education and Workforce Development by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3066"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, refer to Rules by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3294"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, with amendments, and be referred to Revenue by prior reference. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3940"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, with amendments, and be referred to Transportation, then to Ways and Means. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3597"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, with amendments, and be referred to Ways and Means by prior reference. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3592"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, with amendments. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2641"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, with amendments. Refer to Revenue, then to Ways and Means by prior reference. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2528"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Motion to Change Calendar",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 59,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1098"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Resolution Adopted",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 59,
+      "maxTotal": 59,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR15"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB530"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass and requesting subsequent referral to Tax Expenditures be rescinded",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB99"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass the bill and refer to Ways and Means by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB718"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments and requesting referral to Conduct. (Printed A-Engrossed.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB911"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments and requesting subsequent referral to Health Care be rescinded. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB605"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments and requesting subsequent referral to Tax Expenditures be rescinded. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB111"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments to the A-Eng bill to resolve conflicts. (Printed B-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3137"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments to the A-Eng bill. Refer to Ways and Means. (Printed B-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1003"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments to the A-Eng bill. Refer to Ways and Means. (Printed B-Eng)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3174"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments. (Printed B-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2567"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments. Refer to Tax Expenditures by prior reference. (Printed A-Eng)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB108"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments. Refer to Ways and Means by prior reference. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB602"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments. Refer to Ways and Means by prior reference. (Printed B-Eng)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB684"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments. Requesting referral to Ways and Means. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1153"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Senate concur in House Amendments dated 05/29, further amend and repass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB916"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to adoption and request referral to Rules",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "JM"
+      ],
+      "sampleBills": [
+        "SJM1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage and be referred to Judiciary by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB680"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage and referral to Early Childhood and Behavioral Health and then to Ways and Means by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB779"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage and referral to Rules and then to Ways and Means by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB836"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage and request referral to Health Care",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB945"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage and request referral to Labor and Business",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3167"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage and request referral to Ways and Means",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB668"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage, but with amendments and referred to Rules and Ways and Means by prior reference. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB772"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage, but with amendments and requesting referral to Veterans, Emergency Management, Federal and World Affairs. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB159"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage, request rescission of subsequent referral to Judiciary and request referral to Rules",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB88"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Motion to Change Calendar",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB174"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Refuse to Concur",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB916"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 3304,
+    "CR": 76,
+    "JM": 24,
+    "JR": 56,
+    "R": 6
+  },
+  "sessionIds": {
+    "2191": 3466
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

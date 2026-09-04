@@ -1,0 +1,1250 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-09-04T20:17:33.163Z",
+  "finishedAt": "2026-09-04T20:17:34.576Z",
+  "jurisdiction": "OR",
+  "sessionId": 2191,
+  "evidenceDir": "~/legiscan-data/or-2191-work",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "~/legiscan-data/or-2191",
+  "peopleMembers": 91,
+  "candidatePool": 137,
+  "crosswalkFile": null,
+  "crosswalkEntries": null,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 6204,
+      "rosterName": "Sara Gelser Blouin",
+      "rosterSeat": "senate SD-008",
+      "candidateId": "2bd4279d-02ab-40f2-8f81-35c478da7580",
+      "candidateName": "Sara Gelser Blouin",
+      "candidacy": "state_upper: State Senate District 8 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 6241,
+      "rosterName": "Gregory Smith",
+      "rosterSeat": "house HD-057",
+      "candidateId": "296d22c9-c898-46fb-b624-62fe0958e5d2",
+      "candidateName": "Greg Smith",
+      "candidacy": "state_lower: State House District 57 (2024); Oregon",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 6267,
+      "rosterName": "Nancy Nathanson",
+      "rosterSeat": "house HD-013",
+      "candidateId": "6b479c50-64cf-43ee-be67-4ae63b164255",
+      "candidateName": "Nancy Nathanson",
+      "candidacy": "state_lower: State House District 13 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 6283,
+      "rosterName": "Floyd Prozanski",
+      "rosterSeat": "senate SD-004",
+      "candidateId": "6e622214-28f8-4629-b90e-a1e302edebb8",
+      "candidateName": "Floyd Prozanski",
+      "candidacy": "state_upper: State Senate District 4 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14772,
+      "rosterName": "David Gomberg",
+      "rosterSeat": "house HD-010",
+      "candidateId": "fbed3337-b824-4a18-9171-2a5fcded3237",
+      "candidateName": "David Gomberg",
+      "candidacy": "state_lower: State House District 10 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16808,
+      "rosterName": "Paul Evans",
+      "rosterSeat": "house HD-020",
+      "candidateId": "c04b0788-71ae-44fb-9ecd-37b895ef62a2",
+      "candidateName": "Paul Evans",
+      "candidacy": "state_lower: State House District 20 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16810,
+      "rosterName": "Susan McLain",
+      "rosterSeat": "house HD-029",
+      "candidateId": "ae95b651-6d8a-48b1-aae4-80464f873975",
+      "candidateName": "Susan McLain",
+      "candidacy": "state_lower: State House District 29 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16811,
+      "rosterName": "Robert Nosse",
+      "rosterSeat": "house HD-042",
+      "candidateId": "81fd1d1d-088a-4b42-9309-08aae5b29329",
+      "candidateName": "Rob Nosse",
+      "candidacy": "state_lower: State House District 42 (2024); Oregon",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18585,
+      "rosterName": "Pam Marsh",
+      "rosterSeat": "house HD-005",
+      "candidateId": "0dfa0eac-facd-4c9c-8fe3-25f8322d396d",
+      "candidateName": "Pam Marsh",
+      "candidacy": "state_lower: State House District 5 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18586,
+      "rosterName": "Mark Meek",
+      "rosterSeat": "house SD-020",
+      "candidateId": "b36886fd-92b4-412d-ac9d-dc456ad98a84",
+      "candidateName": "Mark Meek",
+      "candidacy": "state_upper: State Senate District 20 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18588,
+      "rosterName": "Tawna Sanchez",
+      "rosterSeat": "house HD-043",
+      "candidateId": "910aee51-2157-4771-9784-767feb20671b",
+      "candidateName": "Tawna Sanchez",
+      "candidacy": "state_lower: State House District 43 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18597,
+      "rosterName": "James Manning",
+      "rosterSeat": "senate SD-007",
+      "candidateId": "a720e687-b47c-4ed8-b718-224924cab251",
+      "candidateName": "James Manning",
+      "candidacy": "state_upper: State Senate District 7 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19542,
+      "rosterName": "Jeff Helfrich",
+      "rosterSeat": "house HD-052",
+      "candidateId": "673c1c11-d517-46eb-bb79-f0cad1466e72",
+      "candidateName": "Jeffrey Helfrich",
+      "candidacy": "state_upper: State Senate District 26 (2024); Oregon",
+      "confidence": "first_prefix",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 19566,
+      "rosterName": "Rob Wagner",
+      "rosterSeat": "senate SD-019",
+      "candidateId": "b4daf5fd-538b-4b97-b7f1-7bb974e79240",
+      "candidateName": "Rob Wagner",
+      "candidacy": "state_upper: State Senate District 19 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20616,
+      "rosterName": "Kimberly Wallan",
+      "rosterSeat": "house HD-006",
+      "candidateId": "974b34d8-fb19-45dc-a9aa-31405cb8dc36",
+      "candidateName": "Kim Wallan",
+      "candidacy": "state_lower: State House District 6 (2024); Oregon",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20618,
+      "rosterName": "Shelly Boshart Davis",
+      "rosterSeat": "house HD-015",
+      "candidateId": "947ea398-25cb-4cbf-8c18-0d20e44f670a",
+      "candidateName": "Shelly Boshart Davis",
+      "candidacy": "state_lower: State House District 15 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21434,
+      "rosterName": "Vikki Breese-Iverson",
+      "rosterSeat": "house HD-059",
+      "candidateId": "8a72a888-de5e-44a7-9379-98b8760e38fb",
+      "candidateName": "Vikki Breese-Iverson",
+      "candidacy": "state_lower: State House District 59 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21542,
+      "rosterName": "Mark Owens",
+      "rosterSeat": "house HD-060",
+      "candidateId": "63581e53-b259-4682-a143-3d95cdef5629",
+      "candidateName": "Mark Owens",
+      "candidacy": "state_lower: State House District 60 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22307,
+      "rosterName": "Kayse Jama",
+      "rosterSeat": "senate SD-024",
+      "candidateId": "9c284d4a-eeba-4ac7-a06a-71272e385c2e",
+      "candidateName": "Kayse Jama",
+      "candidacy": "state_upper: State Senate District 24 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22309,
+      "rosterName": "Deb Patterson",
+      "rosterSeat": "senate SD-010",
+      "candidateId": "c182987f-74bc-4a8e-8a28-d9415624f24f",
+      "candidateName": "Deb Patterson",
+      "candidacy": "state_upper: State Senate District 10 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22313,
+      "rosterName": "Dacia Grayber",
+      "rosterSeat": "house HD-028",
+      "candidateId": "924a0172-9a75-4bf4-8a19-880c933dd1cd",
+      "candidateName": "Dacia Grayber",
+      "candidacy": "state_lower: State House District 28 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22314,
+      "rosterName": "Zach Hudson",
+      "rosterSeat": "house HD-049",
+      "candidateId": "022c7d72-d5db-484d-a5e0-11fc2dea690b",
+      "candidateName": "Zach Hudson",
+      "candidacy": "state_lower: State House District 49 (2024); Oregon",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22315,
+      "rosterName": "Jason Kropf",
+      "rosterSeat": "house HD-054",
+      "candidateId": "57d9b927-77ea-41f8-ae56-02a058f4265f",
+      "candidateName": "Jason Kropf",
+      "candidacy": "state_lower: State House District 54 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22319,
+      "rosterName": "Lisa Reynolds",
+      "rosterSeat": "house SD-017",
+      "candidateId": "14a6918c-f34a-4eb7-88be-cbe65cd5ec2a",
+      "candidateName": "Lisa Reynolds",
+      "candidacy": "state_upper: State Senate District 17 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22909,
+      "rosterName": "Andrea Valderrama",
+      "rosterSeat": "house HD-047",
+      "candidateId": "22ebf982-f927-4d41-8676-b27ab13641ac",
+      "candidateName": "Andrea Valderrama",
+      "candidacy": "state_lower: State House District 47 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22950,
+      "rosterName": "Anna Scharf",
+      "rosterSeat": "house HD-023",
+      "candidateId": "f843c648-3413-455e-8518-ea637d2b70a9",
+      "candidateName": "Anna Scharf",
+      "candidacy": "state_lower: State House District 23 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23063,
+      "rosterName": "Travis Nelson",
+      "rosterSeat": "house HD-044",
+      "candidateId": "6c7a568c-ab3c-4471-82ca-4ed162748e64",
+      "candidateName": "Travis Nelson",
+      "candidacy": "state_lower: State House District 44 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23064,
+      "rosterName": "Nathan Sosa",
+      "rosterSeat": "house HD-030",
+      "candidateId": "09e54780-8bd7-48d0-8afb-d5288d321da5",
+      "candidateName": "Nathan Sosa",
+      "candidacy": "state_lower: State House District 30 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23847,
+      "rosterName": "Ben Bowman",
+      "rosterSeat": "house HD-025",
+      "candidateId": "5ce55cea-4a34-488f-ad1e-afbd53fd9a3f",
+      "candidateName": "Ben Bowman",
+      "candidacy": "state_lower: State House District 25 (2024); Oregon",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23849,
+      "rosterName": "Mark Gamba",
+      "rosterSeat": "house HD-041",
+      "candidateId": "cc55ee8c-817c-4909-909d-a680ae7e92f9",
+      "candidateName": "Mark Gamba",
+      "candidacy": "state_lower: State House District 41 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23851,
+      "rosterName": "Cyrus Javadi",
+      "rosterSeat": "house HD-032",
+      "candidateId": "f3e604b0-2e56-41e4-8e85-449bc573a157",
+      "candidateName": "Cyrus Javadi",
+      "candidacy": "state_lower: State House District 32 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23852,
+      "rosterName": "Emerson Levy",
+      "rosterSeat": "house HD-053",
+      "candidateId": "9c3bfb4c-1698-48cf-8246-7b023c770cb4",
+      "candidateName": "Emerson Levy",
+      "candidacy": "state_lower: State House District 53 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23853,
+      "rosterName": "Kevin Mannix",
+      "rosterSeat": "house HD-021",
+      "candidateId": "2b9538a6-534d-4099-bb84-2494e26db46a",
+      "candidateName": "Kevin Mannix",
+      "candidacy": "state_lower: State House District 21 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23854,
+      "rosterName": "Virgle Osborne",
+      "rosterSeat": "house HD-002",
+      "candidateId": "0965089a-b4c1-4357-be9b-290b23f053bb",
+      "candidateName": "Virgle Osborne",
+      "candidacy": "state_lower: State House District 2 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23855,
+      "rosterName": "Hai Pham",
+      "rosterSeat": "house HD-036",
+      "candidateId": "b68ad01f-d6e6-4ba6-93a8-cade3ff90e28",
+      "candidateName": "Hai Pham",
+      "candidacy": "state_lower: State House District 36 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23867,
+      "rosterName": "Emily McIntire",
+      "rosterSeat": "house HD-056",
+      "candidateId": "9c312be6-2a9a-4406-add1-c26c55b00b0b",
+      "candidateName": "Emily McIntire",
+      "candidacy": "state_lower: State House District 56 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23910,
+      "rosterName": "Lucetta Elmer",
+      "rosterSeat": "house HD-024",
+      "candidateId": "10c48a5c-92a8-422d-91df-12177e514f87",
+      "candidateName": "Lucetta Elmer",
+      "candidacy": "state_lower: State House District 24 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23912,
+      "rosterName": "Thuy Tran",
+      "rosterSeat": "house HD-045",
+      "candidateId": "890d7617-d45b-4bd8-805e-1e63464ac8ee",
+      "candidateName": "Thuy Tran",
+      "candidacy": "state_lower: State House District 45 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23914,
+      "rosterName": "Farrah Chaichi",
+      "rosterSeat": "house HD-035",
+      "candidateId": "06cb4955-6734-4dc5-ab56-44e2321422b4",
+      "candidateName": "Farrah Chaichi",
+      "candidacy": "state_lower: State House District 35 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24263,
+      "rosterName": "Daniel Nguyen",
+      "rosterSeat": "house HD-038",
+      "candidateId": "6a9761f1-5971-498f-9310-6f3c876c05d7",
+      "candidateName": "Daniel Loc Nguyen",
+      "candidacy": "state_lower: State House District 38 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24887,
+      "rosterName": "Court Boice",
+      "rosterSeat": "house HD-001",
+      "candidateId": "3b22b5e0-98f7-435b-b842-4d0648bf1d99",
+      "candidateName": "Court Boice",
+      "candidacy": "state_lower: State House District 1 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25131,
+      "rosterName": "Dwayne Yunker",
+      "rosterSeat": "house HD-003",
+      "candidateId": "b7e1a447-a2f2-41d3-821d-346bbf04de2b",
+      "candidateName": "Dwayne Yunker",
+      "candidacy": "state_lower: State House District 3 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26274,
+      "rosterName": "Willy Chotzen",
+      "rosterSeat": "house HD-046",
+      "candidateId": "dc9f335e-b80f-4314-8b31-b1c07bb344ac",
+      "candidateName": "Willy Chotzen",
+      "candidacy": "state_lower: State House District 46 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26275,
+      "rosterName": "Darcey Edwards",
+      "rosterSeat": "house HD-031",
+      "candidateId": "83a02730-b14d-4769-8fc6-d56e2eeb95b5",
+      "candidateName": "Darcey Edwards",
+      "candidacy": "state_lower: State House District 31 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26276,
+      "rosterName": "Lisa Fragala",
+      "rosterSeat": "house HD-008",
+      "candidateId": "35d218da-a3ae-4651-bf00-64dc4daeb5de",
+      "candidateName": "Lisa Fragala",
+      "candidacy": "state_lower: State House District 8 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26277,
+      "rosterName": "Darin Harbick",
+      "rosterSeat": "house HD-012",
+      "candidateId": "bb143c7a-9e6a-4ed7-b816-fbe054369633",
+      "candidateName": "Darin Harbick",
+      "candidacy": "state_lower: State House District 12 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26278,
+      "rosterName": "Sarah Finger McDonald",
+      "rosterSeat": "house HD-016",
+      "candidateId": "9d0b0af7-34b3-446e-8854-509e2a2fd0a6",
+      "candidateName": "Sarah Finger McDonald",
+      "candidacy": "state_lower: State House District 16 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26279,
+      "rosterName": "Lesly Munoz",
+      "rosterSeat": "house HD-022",
+      "candidateId": "1de02114-fd04-4c83-a44c-5979aa81afae",
+      "candidateName": "Lesly Muñoz",
+      "candidacy": "state_lower: State House District 22 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26282,
+      "rosterName": "April Dobson",
+      "rosterSeat": "house HD-039",
+      "candidateId": "80c8362b-b433-4058-9183-3711148a3204",
+      "candidateName": "April Dobson",
+      "candidacy": "state_lower: State House District 39 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26283,
+      "rosterName": "Alek Skarlatos",
+      "rosterSeat": "house HD-004",
+      "candidateId": "ac269763-cb10-4501-8dae-841a4b2904e5",
+      "candidateName": "Alek Skarlatos",
+      "candidacy": "state_lower: State House District 4 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26384,
+      "rosterName": "Mari Watanabe",
+      "rosterSeat": "house HD-034",
+      "candidateId": "763462b2-70d8-40cf-a558-5a2f1edeb133",
+      "candidateName": "Mari Watanabe",
+      "candidacy": "state_lower: State House District 34 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26475,
+      "rosterName": "Sue Rieke Smith",
+      "rosterSeat": "house HD-026",
+      "candidateId": "de5f1316-5903-46f0-8117-597226f0401c",
+      "candidateName": "Sue Rieke Smith",
+      "candidacy": "state_lower: State House District 26 (2024); Oregon",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 10752,
+      "name": "Mike McLane",
+      "seat": "house SD-030"
+    },
+    {
+      "peopleId": 15768,
+      "name": "Chris Gorsek",
+      "seat": "house SD-025"
+    },
+    {
+      "peopleId": 15769,
+      "name": "John Lively",
+      "seat": "house HD-007"
+    },
+    {
+      "peopleId": 16809,
+      "name": "Ken Helm",
+      "seat": "house HD-027"
+    },
+    {
+      "peopleId": 16814,
+      "name": "Kathleen Taylor",
+      "seat": "house SD-021"
+    },
+    {
+      "peopleId": 16818,
+      "name": "Cedric Hayden",
+      "seat": "senate SD-006"
+    },
+    {
+      "peopleId": 18581,
+      "name": "David Smith",
+      "seat": "house SD-001"
+    },
+    {
+      "peopleId": 18583,
+      "name": "Julianne Fahey",
+      "seat": "house HD-014"
+    },
+    {
+      "peopleId": 18600,
+      "name": "Werner Reschke",
+      "seat": "house HD-055"
+    },
+    {
+      "peopleId": 18601,
+      "name": "Janeen Sollman",
+      "seat": "house SD-015"
+    },
+    {
+      "peopleId": 19312,
+      "name": "Rick Lewis",
+      "seat": "house HD-018"
+    },
+    {
+      "peopleId": 19543,
+      "name": "Daniel Bonham",
+      "seat": "house SD-026"
+    },
+    {
+      "peopleId": 20424,
+      "name": "Christine Drazan",
+      "seat": "house HD-051"
+    },
+    {
+      "peopleId": 20426,
+      "name": "Courtney Neron Misslin",
+      "seat": "senate SD-013"
+    },
+    {
+      "peopleId": 20429,
+      "name": "Jeffrey Golden",
+      "seat": "senate SD-003"
+    },
+    {
+      "peopleId": 22306,
+      "name": "Richard Anderson",
+      "seat": "senate SD-005"
+    },
+    {
+      "peopleId": 22308,
+      "name": "Katherine Lieber",
+      "seat": "senate SD-014"
+    },
+    {
+      "peopleId": 22311,
+      "name": "Wlnsvey Campos",
+      "seat": "house SD-018"
+    },
+    {
+      "peopleId": 22312,
+      "name": "Jami Cate",
+      "seat": "house HD-011"
+    },
+    {
+      "peopleId": 22316,
+      "name": "Bobby Levy",
+      "seat": "house HD-058"
+    },
+    {
+      "peopleId": 22318,
+      "name": "Khanh Pham",
+      "seat": "senate SD-023"
+    },
+    {
+      "peopleId": 22320,
+      "name": "Ricki Ruiz",
+      "seat": "house HD-050"
+    },
+    {
+      "peopleId": 22321,
+      "name": "Suzanne Weber",
+      "seat": "house SD-016"
+    },
+    {
+      "peopleId": 22322,
+      "name": "Boomer Wright",
+      "seat": "house HD-009"
+    },
+    {
+      "peopleId": 23848,
+      "name": "Ed  Diehl",
+      "seat": "house HD-017"
+    },
+    {
+      "peopleId": 23850,
+      "name": "Annessa Hartman",
+      "seat": "house HD-040"
+    },
+    {
+      "peopleId": 23856,
+      "name": "Jules Walters",
+      "seat": "house HD-037"
+    },
+    {
+      "peopleId": 23857,
+      "name": "Aaron Woods",
+      "seat": "senate SD-013"
+    },
+    {
+      "peopleId": 23913,
+      "name": "Hoa Nguyen",
+      "seat": "house HD-048"
+    },
+    {
+      "peopleId": 24261,
+      "name": "Tom Andersen",
+      "seat": "house HD-019"
+    },
+    {
+      "peopleId": 25435,
+      "name": "Shannon Isadore",
+      "seat": "house HD-033"
+    },
+    {
+      "peopleId": 26280,
+      "name": "Anthony Broadman",
+      "seat": "senate SD-027"
+    },
+    {
+      "peopleId": 26281,
+      "name": "Todd Nash",
+      "seat": "senate SD-029"
+    },
+    {
+      "peopleId": 26284,
+      "name": "Diane Linthicum",
+      "seat": "senate SD-028"
+    },
+    {
+      "peopleId": 26285,
+      "name": "Noah Robinson",
+      "seat": "senate SD-002"
+    },
+    {
+      "peopleId": 6221,
+      "name": "Kim Thatcher",
+      "seat": "senate SD-011"
+    },
+    {
+      "peopleId": 6229,
+      "name": "Lew Frederick",
+      "seat": "house SD-022"
+    },
+    {
+      "peopleId": 6275,
+      "name": "Fred Girod",
+      "seat": "senate SD-009"
+    },
+    {
+      "peopleId": 6284,
+      "name": "Bruce Starr",
+      "seat": "senate SD-012"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "d2b276e7-3e86-4574-beaa-532f26f31392",
+      "name": "Adam Baker",
+      "scope": "state_lower",
+      "districtName": "State House District 40 (2024); Oregon"
+    },
+    {
+      "candidateId": "a96476d7-6e97-4d38-91a6-641b4abd1360",
+      "name": "Adam Wilson",
+      "scope": "state_lower",
+      "districtName": "State House District 7 (2024); Oregon"
+    },
+    {
+      "candidateId": "353b0fc7-bfe6-426c-a1c4-ee28fde017a5",
+      "name": "Alexander Krigsvold",
+      "scope": "state_lower",
+      "districtName": "State House District 5 (2024); Oregon"
+    },
+    {
+      "candidateId": "ccab1cc4-1930-4942-b6d9-bb3ae50a2179",
+      "name": "Amanda Staehely",
+      "scope": "state_lower",
+      "districtName": "State House District 18 (2024); Oregon"
+    },
+    {
+      "candidateId": "55456696-da37-4bcb-894a-ea1faf8d68ce",
+      "name": "Amber Smith",
+      "scope": "state_lower",
+      "districtName": "State House District 12 (2024); Oregon"
+    },
+    {
+      "candidateId": "9f54cd17-ae45-435b-a082-4a761a8c23b7",
+      "name": "Andrew Brunello",
+      "scope": "state_lower",
+      "districtName": "State House District 24 (2024); Oregon"
+    },
+    {
+      "candidateId": "477d7572-9d74-481a-bbdd-dbe4f3f24e8a",
+      "name": "Andrew Fudge",
+      "scope": "state_lower",
+      "districtName": "State House District 20 (2024); Oregon"
+    },
+    {
+      "candidateId": "d63c30a6-7c32-4a05-9836-c5c243533221",
+      "name": "Andrew Morrison",
+      "scope": "state_lower",
+      "districtName": "State House District 48 (2024); Oregon"
+    },
+    {
+      "candidateId": "03cb99ca-3f96-4c12-8405-db2f5c1d68c9",
+      "name": "Angela Plowhead",
+      "scope": "state_upper",
+      "districtName": "State Senate District 10 (2024); Oregon"
+    },
+    {
+      "candidateId": "e55fd9c4-22f0-4caf-a7b3-b8e5a1a8f3a3",
+      "name": "Ann Walker",
+      "scope": "state_lower",
+      "districtName": "State House District 49 (2024); Oregon"
+    },
+    {
+      "candidateId": "fad729c1-a502-4a62-948c-7d864e5805e0",
+      "name": "Anna Munson",
+      "scope": "state_lower",
+      "districtName": "State House District 19 (2024); Oregon"
+    },
+    {
+      "candidateId": "f3e990fb-d705-4911-9b39-805d40d104b6",
+      "name": "Beth Spell",
+      "scope": "state_lower",
+      "districtName": "State House District 60 (2024); Oregon"
+    },
+    {
+      "candidateId": "a348f444-0873-4342-8007-f5db16a7241b",
+      "name": "Bill Vivian",
+      "scope": "state_lower",
+      "districtName": "State House District 8 (2024); Oregon"
+    },
+    {
+      "candidateId": "8abc8ce0-7ca4-4600-910a-59379505af9f",
+      "name": "Bob Niemeyer",
+      "scope": "state_lower",
+      "districtName": "State House District 25 (2024); Oregon"
+    },
+    {
+      "candidateId": "9a53b614-9684-46c2-981a-6f25c49dd3d9",
+      "name": "Bobby Levy",
+      "scope": "state_lower",
+      "districtName": "State House District 58 (2024); Oregon"
+    },
+    {
+      "candidateId": "d47cd8df-25a3-42d5-8d0d-6057bb86f9ba",
+      "name": "Brad Hicks",
+      "scope": "state_upper",
+      "districtName": "State Senate District 3 (2024); Oregon"
+    },
+    {
+      "candidateId": "7da5e1e2-e2b2-465e-8951-b68952c4a56f",
+      "name": "Bret Cecil",
+      "scope": "state_lower",
+      "districtName": "State House District 1 (2024); Oregon"
+    },
+    {
+      "candidateId": "d9bad397-8fc5-4e72-bb0a-9022767a5039",
+      "name": "Brian Campbell",
+      "scope": "state_lower",
+      "districtName": "State House District 58 (2024); Oregon"
+    },
+    {
+      "candidateId": "5670bb08-018f-4fb4-88c1-6b277d334ae3",
+      "name": "Brian Gray",
+      "scope": "state_lower",
+      "districtName": "State House District 50 (2024); Oregon"
+    },
+    {
+      "candidateId": "a79401bd-2c62-4de1-a944-3670d213c42a",
+      "name": "Brian Schimmel",
+      "scope": "state_lower",
+      "districtName": "State House District 29 (2024); Oregon"
+    },
+    {
+      "candidateId": "7925e4ca-5c99-424c-8a1c-10daca848fb1",
+      "name": "Chad Parker",
+      "scope": "state_lower",
+      "districtName": "State House District 37 (2024); Oregon"
+    },
+    {
+      "candidateId": "5253df45-238f-4a0d-bc8d-f218093d3e6b",
+      "name": "Charles Ross",
+      "scope": "state_lower",
+      "districtName": "State House District 30 (2024); Oregon"
+    },
+    {
+      "candidateId": "71bb1e97-b97e-426f-b72c-d6f1b102203a",
+      "name": "Charlie Conrad",
+      "scope": "state_lower",
+      "districtName": "State House District 12 (2024); Oregon"
+    },
+    {
+      "candidateId": "8e8b11be-af62-4a9b-92f3-6dedb427b207",
+      "name": "Claire Lynn",
+      "scope": "state_lower",
+      "districtName": "State House District 9 (2024); Oregon"
+    },
+    {
+      "candidateId": "7575fea7-c5cf-4a4c-aa6e-5a828364f246",
+      "name": "Cobey Giesler",
+      "scope": "state_lower",
+      "districtName": "State House District 3 (2024); Oregon"
+    },
+    {
+      "candidateId": "7dc55cb9-3f4b-4b47-99d4-fb88e4d6ef73",
+      "name": "Colby Simmons",
+      "scope": "state_lower",
+      "districtName": "State House District 55 (2024); Oregon"
+    },
+    {
+      "candidateId": "a72a2171-2017-4398-a51a-963694218813",
+      "name": "Courtney Bangs",
+      "scope": "state_upper",
+      "districtName": "State Senate District 16 (2024); Oregon"
+    },
+    {
+      "candidateId": "6267a908-b0b8-4aad-954a-094296f7dc3f",
+      "name": "Courtney Neron",
+      "scope": "state_upper",
+      "districtName": "State Senate District 13 (2024); Oregon"
+    },
+    {
+      "candidateId": "7a767f80-c127-415b-b5bd-8119e4433620",
+      "name": "Dan Farrington",
+      "scope": "state_lower",
+      "districtName": "State House District 17 (2024); Oregon"
+    },
+    {
+      "candidateId": "33d5077c-630d-4466-8288-a4849cd9c540",
+      "name": "Dan Martin",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); Oregon"
+    },
+    {
+      "candidateId": "4c632691-156b-4d14-bcec-fa585b93bbc8",
+      "name": "Darla Mead",
+      "scope": "state_lower",
+      "districtName": "State House District 51 (2024); Oregon"
+    },
+    {
+      "candidateId": "7c04aecc-bb86-4a24-a81c-d7f10b407a18",
+      "name": "David Nelson",
+      "scope": "state_lower",
+      "districtName": "State House District 17 (2024); Oregon"
+    },
+    {
+      "candidateId": "9d5df95c-1174-49ff-b418-3408fc211d72",
+      "name": "Denise Krause",
+      "scope": "state_upper",
+      "districtName": "State Senate District 3 (2024); Oregon"
+    },
+    {
+      "candidateId": "85fe465a-6118-4f13-a231-7a571a8b8a6b",
+      "name": "E. Werner Reschke",
+      "scope": "state_lower",
+      "districtName": "State House District 55 (2024); Oregon"
+    },
+    {
+      "candidateId": "2dff75b1-7306-4157-945c-106856f37610",
+      "name": "Elvis Clark",
+      "scope": "state_lower",
+      "districtName": "State House District 41 (2024); Oregon"
+    },
+    {
+      "candidateId": "374fc3fc-78c4-4a74-aefb-3e7615277bca",
+      "name": "G. Mark Norman",
+      "scope": "state_lower",
+      "districtName": "State House District 27 (2024); Oregon"
+    },
+    {
+      "candidateId": "f77d1179-fd47-41e5-b7af-d9db979ee3b1",
+      "name": "Glenn Lancaster",
+      "scope": "state_upper",
+      "districtName": "State Senate District 13 (2024); Oregon"
+    },
+    {
+      "candidateId": "87927fd8-76a8-406d-a892-7092021a685a",
+      "name": "Hank Sanders",
+      "scope": "state_lower",
+      "districtName": "State House District 52 (2024); Oregon"
+    },
+    {
+      "candidateId": "6d1bff35-aa70-46a2-abc0-375f398a2507",
+      "name": "Harold Hutchison",
+      "scope": "state_upper",
+      "districtName": "State Senate District 15 (2024); Oregon"
+    },
+    {
+      "candidateId": "854a5c08-c513-448e-a131-4f32aabf48fc",
+      "name": "Ivan Maluski",
+      "scope": "state_lower",
+      "districtName": "State House District 11 (2024); Oregon"
+    },
+    {
+      "candidateId": "dae2b2a8-7ca8-4f7b-914c-592013131f31",
+      "name": "Jack Huff",
+      "scope": "state_upper",
+      "districtName": "State Senate District 7 (2024); Oregon"
+    },
+    {
+      "candidateId": "6f82579b-78c1-4dba-841a-a36d39a75fdc",
+      "name": "Jack Tibbetts",
+      "scope": "state_upper",
+      "districtName": "State Senate District 6 (2024); Oregon"
+    },
+    {
+      "candidateId": "f5cd4d96-874a-457d-9f76-3e58e4434212",
+      "name": "Jason Boyce",
+      "scope": "state_lower",
+      "districtName": "State House District 45 (2024); Oregon"
+    },
+    {
+      "candidateId": "85721ffe-d070-4eef-bbcd-55626cf004ee",
+      "name": "Joanna Robinson",
+      "scope": "state_lower",
+      "districtName": "State House District 15 (2024); Oregon"
+    },
+    {
+      "candidateId": "98c0aa10-0236-4072-9fcf-b6ff78999fc2",
+      "name": "John A. N. Chee",
+      "scope": "state_upper",
+      "districtName": "State Senate District 17 (2024); Oregon"
+    },
+    {
+      "candidateId": "ed1addd5-07bf-43db-be5f-fa8c8dc34980",
+      "name": "John Holm",
+      "scope": "state_lower",
+      "districtName": "State House District 6 (2024); Oregon"
+    },
+    {
+      "candidateId": "2a103458-d460-4dfe-963f-c6ab50f29a15",
+      "name": "John Scheirman",
+      "scope": "state_lower",
+      "districtName": "State House District 9 (2024); Oregon"
+    },
+    {
+      "candidateId": "10d8f8a2-7ee3-4928-8ab7-acff750cea61",
+      "name": "Jonathan Abrahamsen",
+      "scope": "state_lower",
+      "districtName": "State House District 13 (2024); Oregon"
+    },
+    {
+      "candidateId": "4af35f0e-767b-439a-8c68-56427bca2497",
+      "name": "Jules Walters",
+      "scope": "state_lower",
+      "districtName": "State House District 37 (2024); Oregon"
+    },
+    {
+      "candidateId": "9167e221-c44d-45cc-be83-21b5d5f3deb0",
+      "name": "Julie Fahey",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); Oregon"
+    },
+    {
+      "candidateId": "b7c4dc2f-c5d3-4f8d-becf-3cc1c0262e7f",
+      "name": "Ken Jackola",
+      "scope": "state_lower",
+      "districtName": "State House District 11 (2024); Oregon"
+    },
+    {
+      "candidateId": "33053561-98cb-4061-8cbc-12976b1a0ae1",
+      "name": "Kevin Burton",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); Oregon"
+    },
+    {
+      "candidateId": "6b73a0a7-467b-4621-8abd-0d5432918e27",
+      "name": "Kori Rodley",
+      "scope": "state_lower",
+      "districtName": "State House District 7 (2024); Oregon"
+    },
+    {
+      "candidateId": "a2fe558a-c96a-4a67-ae4a-f96a1316084d",
+      "name": "Kriss Wright",
+      "scope": "state_lower",
+      "districtName": "State House District 23 (2024); Oregon"
+    },
+    {
+      "candidateId": "44bb5356-34a4-4059-a88c-8a35265ada37",
+      "name": "Lamar Wise",
+      "scope": "state_lower",
+      "districtName": "State House District 48 (2024); Oregon"
+    },
+    {
+      "candidateId": "528fec0f-0292-4d64-b9f1-d01ea44b4d46",
+      "name": "Lawrence Jones",
+      "scope": "state_lower",
+      "districtName": "State House District 59 (2024); Oregon"
+    },
+    {
+      "candidateId": "a745dea0-8e14-4a30-8bfa-1cef17cb508f",
+      "name": "Leo Morley",
+      "scope": "state_lower",
+      "districtName": "State House District 46 (2024); Oregon"
+    },
+    {
+      "candidateId": "a0adc9ba-f5c3-4300-ba89-90d3be8e8efb",
+      "name": "Margo Logan",
+      "scope": "state_lower",
+      "districtName": "State House District 44 (2024); Oregon"
+    },
+    {
+      "candidateId": "12ab7553-999c-4734-9ad0-5a9ae6144fcd",
+      "name": "Mary Dirksen",
+      "scope": "state_upper",
+      "districtName": "State Senate District 19 (2024); Oregon"
+    },
+    {
+      "candidateId": "5bca7ccb-53a8-4226-9946-802650ab80f8",
+      "name": "Matt Bunch",
+      "scope": "state_lower",
+      "districtName": "State House District 51 (2024); Oregon"
+    },
+    {
+      "candidateId": "2113ae27-73cb-4e91-9fd5-3156f12a307c",
+      "name": "Max Sherman",
+      "scope": "state_lower",
+      "districtName": "State House District 32 (2024); Oregon"
+    },
+    {
+      "candidateId": "41d01583-dccb-4843-b406-b041df4e5f05",
+      "name": "Michael Orth",
+      "scope": "state_lower",
+      "districtName": "State House District 36 (2024); Oregon"
+    },
+    {
+      "candidateId": "4e7350f3-e76f-46da-84fc-3113c43b2836",
+      "name": "Michael Sugar",
+      "scope": "state_lower",
+      "districtName": "State House District 40 (2024); Oregon"
+    },
+    {
+      "candidateId": "235dc518-1896-4752-b150-57cc1288b9a8",
+      "name": "Michael Summers",
+      "scope": "state_lower",
+      "districtName": "State House District 53 (2024); Oregon"
+    },
+    {
+      "candidateId": "6eae1000-2daf-4ded-bbd8-be7647080a81",
+      "name": "Michael Welsh",
+      "scope": "state_lower",
+      "districtName": "State House District 21 (2024); Oregon"
+    },
+    {
+      "candidateId": "328763d6-9820-4f7a-b3fc-f3726c2c7228",
+      "name": "Michele Stroh",
+      "scope": "state_upper",
+      "districtName": "State Senate District 20 (2024); Oregon"
+    },
+    {
+      "candidateId": "ed51eac9-dd24-45a4-b763-1e731f13a58a",
+      "name": "Myrna Munoz",
+      "scope": "state_upper",
+      "districtName": "State Senate District 15 (2024); Oregon"
+    },
+    {
+      "candidateId": "984ec7a0-1199-4f51-99a9-8a53f14888ac",
+      "name": "Nicole Bassett",
+      "scope": "state_upper",
+      "districtName": "State Senate District 26 (2024); Oregon"
+    },
+    {
+      "candidateId": "b1f2d5d5-f425-4d6b-8d73-ad494a7842a0",
+      "name": "Noemi Legaspi",
+      "scope": "state_lower",
+      "districtName": "State House District 22 (2024); Oregon"
+    },
+    {
+      "candidateId": "1183cda7-2b09-4c26-80fe-524e28467dc4",
+      "name": "Rachel Armitage",
+      "scope": "state_upper",
+      "districtName": "State Senate District 16 (2024); Oregon"
+    },
+    {
+      "candidateId": "ef9367fc-de34-44f9-8d12-320631007304",
+      "name": "Randall Fryer",
+      "scope": "state_lower",
+      "districtName": "State House District 28 (2024); Oregon"
+    },
+    {
+      "candidateId": "910318fe-d439-4e06-a0a7-3b6a14789355",
+      "name": "Ricki Ruiz",
+      "scope": "state_lower",
+      "districtName": "State House District 50 (2024); Oregon"
+    },
+    {
+      "candidateId": "549c8d38-1668-4d38-b555-7a617bf5a0af",
+      "name": "Roy Kaufmann",
+      "scope": "state_lower",
+      "districtName": "State House District 18 (2024); Oregon"
+    },
+    {
+      "candidateId": "058b710d-0821-4414-8015-7d17323cd86b",
+      "name": "Scott Hege",
+      "scope": "state_lower",
+      "districtName": "State House District 52 (2024); Oregon"
+    },
+    {
+      "candidateId": "37cf8be1-fdc3-4774-a64c-db16dd5b8f2c",
+      "name": "Shaunie Cousins",
+      "scope": "state_lower",
+      "districtName": "State House District 34 (2024); Oregon"
+    },
+    {
+      "candidateId": "28bc91d2-71aa-4a39-b42d-4fefc21d4132",
+      "name": "Sierrah Williams",
+      "scope": "state_upper",
+      "districtName": "State Senate District 6 (2024); Oregon"
+    },
+    {
+      "candidateId": "8a1114fd-cf8e-4318-bdd6-576352bde4ff",
+      "name": "Stephanie Carkin",
+      "scope": "state_lower",
+      "districtName": "State House District 26 (2024); Oregon"
+    },
+    {
+      "candidateId": "e4569d08-b87b-4409-b98f-d6bd2cde26d3",
+      "name": "Susan Fischer-Maki",
+      "scope": "state_lower",
+      "districtName": "State House District 3 (2024); Oregon"
+    },
+    {
+      "candidateId": "87b7dad3-45a4-4b98-8696-c5376293fa38",
+      "name": "Tammy Carpenter",
+      "scope": "state_lower",
+      "districtName": "State House District 27 (2024); Oregon"
+    },
+    {
+      "candidateId": "4e308138-3895-47ca-9f5a-1d30eb5f41b1",
+      "name": "Tim LeMaster",
+      "scope": "state_lower",
+      "districtName": "State House District 43 (2024); Oregon"
+    },
+    {
+      "candidateId": "db520a8a-f4c3-45b9-a55c-d60a5eed35cf",
+      "name": "Tom Andersen",
+      "scope": "state_lower",
+      "districtName": "State House District 19 (2024); Oregon"
+    },
+    {
+      "candidateId": "e45a5230-8d0b-484b-8a53-53df9aada2da",
+      "name": "Tom Forest",
+      "scope": "state_lower",
+      "districtName": "State House District 31 (2024); Oregon"
+    },
+    {
+      "candidateId": "f4064032-32e3-49d5-a631-4293d2682e55",
+      "name": "Tracy Cramer",
+      "scope": "state_upper",
+      "districtName": "State Senate District 11 (2024); Oregon"
+    },
+    {
+      "candidateId": "80695b83-c18c-4056-a252-a8210943c66a",
+      "name": "Valerie Draper Woldeit",
+      "scope": "state_upper",
+      "districtName": "State Senate District 8 (2024); Oregon"
+    },
+    {
+      "candidateId": "2ac35529-bfc3-4b91-8a28-2ec1e9eac9fa",
+      "name": "Virginia Stapleton",
+      "scope": "state_upper",
+      "districtName": "State Senate District 11 (2024); Oregon"
+    }
+  ],
+  "files": 0,
+  "fileErrors": 0,
+  "counts": {},
+  "rolls": []
+}
