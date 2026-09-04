@@ -143,8 +143,9 @@ export const IDAHO_CFS_FETCH_TIMEOUT_MS = 120_000;
 // browser token plus the public SPA Origin/Referer is accepted.
 const DEFAULT_USER_AGENT = "Mozilla/5.0";
 const DEFAULT_PAGE_SIZE = 500;
-// 5,000 (candidate grid) and 10,000 (IE list) verified live.
-const MAX_PAGE_SIZE = 10_000;
+// 5,000 (candidate grid), 10,000 (contribution search), and 50,000 (IE
+// list: 9,899 of 9,899 rows served in one page, 2026-09-03) verified live.
+const MAX_PAGE_SIZE = 50_000;
 const MAX_JSON_RESPONSE_BYTES = 64 * 1024 * 1024;
 const MAX_CSV_RESPONSE_BYTES = 128 * 1024 * 1024;
 

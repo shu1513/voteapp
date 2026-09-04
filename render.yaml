@@ -160,7 +160,7 @@ services:
       - key: ARIZONA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: ARKANSAS_CAMPAIGN_FINANCE_ENABLED
-        value: "false"
+        value: "true"
       - key: AUSTIN_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: CALIFORNIA_CAMPAIGN_FINANCE_ENABLED
@@ -258,7 +258,7 @@ services:
       - key: WASHINGTON_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: WEST_VIRGINIA_CAMPAIGN_FINANCE_ENABLED
-        value: "false"
+        value: "true"
       - key: WISCONSIN_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - fromGroup: voteapp-shared

@@ -475,7 +475,7 @@ function representationPart(input: {
 // First-match thresholds so boundary margins read unambiguously: a 2.04
 // margin is "not ≤2, so ≤5 → very competitive", never inside a "0–2" range.
 const MARGIN_GRADE_SCALE =
-  "margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, one-sided grades low";
+  "margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise not competitive; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, not competitive grades low";
 
 // The margin-to-grade pipeline with this contest's real numbers (see
 // classifyHistoricalContestMargin — this string must match its cutoffs).
@@ -534,9 +534,9 @@ export function formatRatingDate(asOf: string): string {
 
 function competitivenessLabelText(label: HistoricalContestCompetitivenessLabel): string {
   // "safe" is analyst jargon — voters read it as "safe seat for whom?"; the
-  // decisiveness prose already says "one-sided", so the label word matches.
+  // decisiveness prose already says "not competitive", so the label word matches.
   if (label === "safe") {
-    return "one-sided";
+    return "not competitive";
   }
   return label === "toss_up" ? "toss-up" : label.replace(/_/g, " ");
 }
@@ -544,7 +544,7 @@ function competitivenessLabelText(label: HistoricalContestCompetitivenessLabel):
 // Mirrors deriveConsensusLabel's ladder and bins (currentRaceRatingConsensus)
 // the way MARGIN_GRADE_SCALE mirrors classifyHistoricalContestMargin.
 const RATING_GRADE_SCALE =
-  "d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, one-sided grades low";
+  "d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise not competitive; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, not competitive grades low";
 
 // The rating-to-grade pipeline with the real per-outlet observations. When a
 // consensus guardrail (opposite favored sides, or safe requiring all-Solid)
@@ -588,7 +588,7 @@ function currentRatingPart(input: {
   const detailByLevel: Record<"low" | "medium" | "high", string> = {
     high: "Election analysts currently rate this race very close — a small number of votes could decide the winner.",
     medium: "Election analysts currently rate this race somewhat close.",
-    low: "Election analysts currently rate this race one-sided.",
+    low: "Election analysts currently rate this race not competitive.",
   };
   const sourceSuffix =
     input.currentRating.outlets.length > 0
@@ -645,7 +645,7 @@ function decisivenessPart(input: {
   const detailByLevel: Record<"low" | "medium" | "high", string> = {
     high: "Past results here were very close — a small number of votes could decide the winner.",
     medium: "Past results here were somewhat close.",
-    low: "Past results here were one-sided.",
+    low: "Past results here were not competitive.",
   };
   // Only these grades rest on historical results, so only they carry the
   // redistricting qualifier; staleness says nothing about representation,

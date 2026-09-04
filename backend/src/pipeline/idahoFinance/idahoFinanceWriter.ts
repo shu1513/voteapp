@@ -7,8 +7,9 @@
 // - direct breakdowns are size buckets or contributor source types
 //   (migration 268) — Idaho collects no occupation or employer;
 // - outside groups are IE filers keyed by filer_key (registration guid when
-//   the filer is registered in Idaho, otherwise a name-derived key that
-//   Phase 2b defines) with the filer display name in filer_name;
+//   the filer is registered in Idaho, otherwise "fec:<id>" or
+//   "name:<normalized name>" — idahoOutsideFilerKey) with the filer display
+//   name in filer_name;
 // - cash_on_hand is a signed balance (the grid reports negative
 //   balanceOfFunds for indebted campaigns).
 
