@@ -258,6 +258,51 @@ const ALABAMA_2024_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] 
   /\bsuspend rule\b/,
 ];
 
+// Arkansas's floor-question vocabulary. Defined here so the 2026 fiscal and
+// special sessions can share it once they are surveyed, rather than growing a
+// second copy that could drift.
+const ARKANSAS_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // The House concurring in a Senate amendment to its own bill, including
+  // the three rolls that fold the emergency clause into the same question.
+  // Listed first so the bare passage rule below cannot claim them.
+  { pattern: /^senate amendments? #\s*\d+ read and concurred in\b/, questionClass: "concurrence" },
+  // Passage in either chamber, and the Senate's second vote on its own bill
+  // after it concurs in a House amendment without a recorded vote.
+  { pattern: /^third reading$/, questionClass: "passage" },
+  // A Senate passage vote that failed.
+  { pattern: /^read third time and failed to pass\.$/, questionClass: "passage" },
+  // The House adopting a joint resolution — how Arkansas refers a proposed
+  // constitutional amendment to the ballot. The caption names the Senate
+  // even when the House is the second chamber to act.
+  { pattern: /^read and adopted and ordered transmitted to the senate\.$/, questionClass: "passage" },
+];
+const ARKANSAS_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // The emergency clause: a separate two-thirds question about when the act
+  // takes effect, not a vote on the act.
+  // The two chambers punctuate this differently — the Senate writes
+  // `Emergency Clause failed of adoption.` with a full stop, the House
+  // writes `Emergency Clause Failed of Adoption` without one — so the
+  // trailing period is optional.
+  /^emergency clause adopted$/,
+  /^emergency clause failed of adoption\.?$/,
+  /^upon motion, reconsideraton of the emergency clause passed$/,
+  // Reconsideration, and expunging a vote already taken.
+  /^upon motion, reconsideraton\b/,
+  /^the vote by which .+ was expunged\.$/,
+  // Arkansas's motion to force a recorded vote, under all four spellings.
+  /^roll call requested\./,
+  // Motions about where the bill goes, not about the bill.
+  /^motion to /,
+  /^re-referred to the committee\b/,
+  // A bill recalled from the Governor.
+  /^return from governor's office as requested$/,
+  // NOT excluded, although they read like clerk's lines: `Returned to the
+  // Senate as passed.` and `Placed on second reading for the purpose of
+  // amendment.` each caption exactly one roll, and in both cases the roll is
+  // a real vote that LegiScan filed under the wrong action (see the session
+  // note). They fall through to null and surface for a human.
+];
+
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
   // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
   // die 2026-04-03). Vocabulary measured from the full dataset survey
@@ -2513,6 +2558,92 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       { pattern: /^senate third reading$/, questionClass: "passage" },
     ],
     excludedQuestions: [],
+  },
+
+  // Arkansas General Assembly, 2025 Regular Session (95th General Assembly,
+  // sine die 2025-05-05; the dataset was cut 2025-12-07 and is complete).
+  // Vocabulary measured from the full dataset survey 2026-09-03: 1,928
+  // bills, 2,501 roll calls, 138 people (100 House + 35 Senate seats plus
+  // mid-session turnover).
+  //
+  // Arkansas has the smallest floor vocabulary of any state surveyed so far.
+  // 2,501 roll calls collapse to just 35 distinct descriptions, and 2,321 of
+  // them are the bare string `Third Reading`. Feed health is the cleanest
+  // tier: 0 repeated roll call ids, 0 identity-duplicate rolls, 0
+  // summary-only rolls (every roll carries a full member list), 0 tally
+  // mismatches, 0 parse errors and 0 committee votes — every tally in the
+  // file is a whole-chamber tally, exactly 100 in the House and 35 in the
+  // Senate, so the floor-versus-committee tally check never has to decide
+  // anything here.
+  //
+  // What the survey established about the questions:
+  // - `Third Reading` is the passage vote in BOTH chambers, and it is also
+  //   how a chamber's SECOND vote on its own bill prints (see the next
+  //   note), so it covers passage and the Senate's post-concurrence vote
+  //   alike.
+  // - THE TWO CHAMBERS HANDLE CONCURRENCE DIFFERENTLY, and this is the one
+  //   fact a batch has to get right. When the Senate amends a House bill,
+  //   the House takes a recorded vote worded `Senate amendment # 1 read and
+  //   concurred in.` and stops there. When the House amends a Senate bill,
+  //   the Senate concurs WITHOUT a recorded vote and then takes a second
+  //   `Third Reading` vote on the amended bill. Either way the chamber's
+  //   LAST kept floor vote is the one cast on the text that became law, so
+  //   selecting the last kept roll per chamber lands on the enacted text.
+  // - Three concurrence rolls fold the emergency clause into the same
+  //   question (`Senate Amendment #1 read and concurred in, and the
+  //   Emergency Clause`). They are still votes to concur, so they are kept;
+  //   none of the three is divided.
+  // - Arkansas proposes CONSTITUTIONAL AMENDMENTS as joint resolutions
+  //   (type JR, which the shared kept-types list already keeps), and the
+  //   two chambers word adoption differently again: the Senate votes them
+  //   at `Third Reading`, the House at `Read and adopted and ordered
+  //   transmitted to the Senate.` — a caption that stays stale even when
+  //   the House is the SECOND chamber acting on a Senate joint resolution
+  //   (it says "transmitted to the Senate" on SJR 11 and SJR 15). Three
+  //   amendments were referred to the November 2026 ballot this way.
+  // - THE EMERGENCY CLAUSE IS A SEPARATE QUESTION AND IS EXCLUDED. Arkansas
+  //   requires a two-thirds vote to attach an emergency clause, so those
+  //   rolls (`EMERGENCY CLAUSE ADOPTED`, `Emergency Clause failed of
+  //   adoption.`, and the reconsideration of one) are votes on when the act
+  //   takes effect, not on the act. Missouri excludes its emergency clause
+  //   for the same reason.
+  // - `Roll Call Requested. Five Hands were seen.` and its three variants
+  //   are Arkansas's procedural motion to force a recorded vote, not a vote
+  //   on the measure. Expunging votes, reconsiderations, motions to extract
+  //   a bill from committee or re-refer it, and a bill recalled from the
+  //   Governor are excluded on the same ground.
+  // - THREE ROLLS ARE DELIBERATELY LEFT UNMATCHED so they surface for a
+  //   human. `Upon sounding of the ballot, the HJR failded of adoption`
+  //   (HJR 1004, the Article V convention application, 50-31 on
+  //   2025-04-01, including Arkansas's own typo) is a real substantive vote,
+  //   but a one-off with no family behind it on a measure that failed. The
+  //   other two carry a clerk's action line where the question should be:
+  //   SB 450's only House roll is captioned `Returned to the Senate as
+  //   passed.` (81-13 on 2025-04-15) but is the House passage vote — the
+  //   bill history has no other House passage line and arkleg.state.ar.us
+  //   records the 81-13 as the passage roll — and HB 1049's roll captioned
+  //   `Placed on second reading for the purpose of amendment.` (91-0 on
+  //   2025-02-25) is the concurrence in Senate amendment #1, the only House
+  //   action that day. Each caption occurs once, so neither gets a kept
+  //   rule (no pattern from a single string) nor an exclusion rule (that
+  //   would reject a real vote). Surfacing them stores them for audit.
+  //   Neither is divided, so the pool below is unaffected.
+  //
+  // Pool under the campaign's standard divided gate (the losing side at
+  // least a quarter of the winning side): 2,449 kept floor votes on bills
+  // and joint resolutions, 204 of them divided, and 131 of those on
+  // measures that became law, across 95 measures. Two wider gates were
+  // measured before settling on the standard one, because Arkansas has a
+  // Republican supermajority the way Texas and Kentucky do: a fifth of the
+  // winning side gives 203 divided-and-enacted rolls on 136 measures, and
+  // 15 percent of the votes cast (Kentucky's gate) gives 230 on 153. The
+  // standard gate already yields a healthy pool here, so it stands.
+  AR: {
+    jurisdiction: "AR",
+    sessionId: 2162,
+    chamberSizes: { house: 100, senate: 35 },
+    keptQuestions: ARKANSAS_KEPT_QUESTIONS,
+    excludedQuestions: ARKANSAS_EXCLUDED_QUESTIONS,
   },
 };
 

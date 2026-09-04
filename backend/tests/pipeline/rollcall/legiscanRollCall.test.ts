@@ -1145,6 +1145,7 @@ describe("getLegiscanStateConfig", () => {
       "NM",
       "KS",
       "DE",
+      "AR",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -1173,6 +1174,7 @@ describe("getLegiscanStateConfig", () => {
       "NM",
       "KS",
       "DE",
+      "AR",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
@@ -1204,6 +1206,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("NM").sessionId).toBe(2187);
     expect(getLegiscanStateConfig("KS").sessionId).toBe(2178);
     expect(getLegiscanStateConfig("DE").sessionId).toBe(2163);
+    expect(getLegiscanStateConfig("AR").sessionId).toBe(2162);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("WY")).toThrow("no LegiScan state config for WY");
   });
@@ -1348,6 +1351,58 @@ describe("getLegiscanStateConfig", () => {
     }
     // A spelling this session never printed surfaces rather than being guessed.
     expect(ks("House Third Reading - Yea: 84 Nay: 39").isFloorVote).toBeNull();
+  });
+
+  it("classifies Arkansas's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.AR!;
+    const ar = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+    // The bare passage question, 2,321 of the session's 2,501 rolls.
+    expect(ar("Third Reading", 100)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(ar("Third Reading", 35, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    // The House concurring in a Senate amendment, including the spellings
+    // that fold in the emergency clause.
+    expect(ar("Senate amendment # 1 read and concurred in.", 100)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+    expect(ar("Senate Amendment #1 read and concurred in, and the Emergency Clause", 100)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+    // The House adopting a joint resolution: how a proposed constitutional
+    // amendment reaches the ballot. The caption names the Senate even when
+    // the House is the second chamber to act (SJR 11, SJR 15).
+    expect(ar("Read and adopted and ordered transmitted to the Senate.", 100, "house", "JR")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // A failed Senate passage vote is still a passage vote.
+    expect(ar("Read third time and failed to pass.", 35, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // The emergency clause is a separate two-thirds question about when the
+    // act takes effect, so it is excluded rather than kept.
+    expect(ar("EMERGENCY CLAUSE ADOPTED", 100).isFloorVote).toBe(false);
+    expect(ar("Emergency Clause failed of adoption.", 35, "senate").isFloorVote).toBe(false);
+    // The House writes the same question without the trailing period.
+    expect(ar("Emergency Clause Failed of Adoption", 100).isFloorVote).toBe(false);
+    // Procedural motions and clerical lines.
+    expect(ar("Roll Call Requested. Five Hands were Seen. Motion Carried.", 35, "senate").isFloorVote).toBe(false);
+    expect(ar("Upon Motion, Reconsideraton Passed - 3/4/2025 2:14:27 PM", 100).isFloorVote).toBe(false);
+    expect(ar("The vote by which HB1365 Passed was expunged.", 100).isFloorVote).toBe(false);
+    expect(ar("Motion to Rerefer back to Committee Failed of Adoption", 100).isFloorVote).toBe(false);
+    expect(ar("Return from Governor's office as requested", 100).isFloorVote).toBe(false);
+    // Deliberately unmatched so a human sees it: HJR 1004's failed adoption
+    // is a real vote but a one-off string, typo and all.
+    expect(ar("Upon sounding of the ballot, the HJR failded of adoption", 100, "house", "JR").isFloorVote).toBeNull();
+    // Also unmatched, not excluded: these read like clerk's lines but each
+    // captions exactly one roll, and that roll is a real vote filed under
+    // the wrong action (SB 450's House passage, HB 1049's concurrence in
+    // Senate amendment #1).
+    expect(ar("Returned to the Senate as passed.", 100).isFloorVote).toBeNull();
+    expect(ar("Placed on second reading for the purpose of amendment.", 100).isFloorVote).toBeNull();
   });
 
   it("classifies Missouri's real desc vocabulary as surveyed", () => {
