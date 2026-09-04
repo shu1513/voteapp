@@ -28,9 +28,17 @@ Campaign Finance System (Civix CFIS — same vendor family as New Mexico's syste
   non-Active registrations are reported, never written. The batch keeps the
   per-candidate sync's contract (it still re-resolves the filer live and reads
   the search API, not the bulk CSV cache) and shares the cycle list, registry,
-  and IE list across links through a memoizing client; a failed link is
-  recorded and the batch continues; a link whose filer no longer resolves
-  counts as failed; the CLI exits 1 when any link failed. Defaults: 25 links,
+  and IE list across links through a memoizing client. Before each sync the
+  batch picks the candidate spelling (display, structured, stored) that
+  resolves to the linked filing entity against that same registry, so a link
+  the auto-link made from the structured name still syncs and a spelling that
+  now resolves to another filer never writes that filer's money; no spelling
+  resolving, a sync that wrote nothing (both CFS sections failed), or a
+  resolution landing on another filer all count as failed. A failed link is
+  recorded and the batch continues; sync-due exits 1 when any link failed, the
+  auto-link pass threw, or any auto-link candidate errored; auto-link exits 1
+  when any candidate errored (unmatched/ambiguous are reporting outcomes, exit
+  0). Defaults: 25 links,
   stale after 7 days, lookback 22 + 7 + 1 = 30 days (last 2026 R&E report due
   11/25), lookahead 730.
   Dry runs 2026-09-03 (local, `--dry-run --force`): both exit 0 with 0

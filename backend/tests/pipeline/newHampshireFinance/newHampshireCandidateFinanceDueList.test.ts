@@ -16,6 +16,9 @@ function dbRow(overrides: Record<string, unknown> = {}) {
     candidate_id: "candidate-1",
     election_id: "election-1",
     candidate_name: "Sample Candidate",
+    display_name: "Sample Candidate",
+    structured_name: "Samuel Candidate",
+    candidate_name_normalized: "SAMPLE CANDIDATE",
     election_year: 2026,
     election_date: "2026-11-03T00:00:00.000Z",
     office_scope: "state_upper",
@@ -52,6 +55,7 @@ describe("listDueNewHampshireCandidateFinanceSyncRows", () => {
         candidateId: "candidate-1",
         electionId: "election-1",
         candidateName: "Sample Candidate",
+        candidateNames: ["Sample Candidate", "Samuel Candidate", "SAMPLE CANDIDATE"],
         electionYear: 2026,
         electionDate: "2026-11-03",
         officeScope: "state_upper",
@@ -63,6 +67,22 @@ describe("listDueNewHampshireCandidateFinanceSyncRows", () => {
         sourceUrl: "https://cfs.sos.nh.gov/",
         lastSyncedAt: null,
       },
+    ]);
+  });
+
+  it("deduplicates spellings and falls back to the stored link name when the candidate row has none", async () => {
+    const db = {
+      query: vi.fn().mockResolvedValue({
+        rows: [
+          dbRow({ display_name: "Sample Candidate", structured_name: "Sample Candidate", candidate_name_normalized: "SAMPLE CANDIDATE" }),
+          dbRow({ candidate_id: "candidate-2", display_name: null, structured_name: null, candidate_name_normalized: "SAMPLE CANDIDATE" }),
+        ],
+      }),
+    };
+    const result = await listDueNewHampshireCandidateFinanceSyncRows(db, INPUT);
+    expect(result.rows.map((row) => row.candidateNames)).toEqual([
+      ["Sample Candidate", "SAMPLE CANDIDATE"],
+      ["SAMPLE CANDIDATE"],
     ]);
   });
 

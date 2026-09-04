@@ -64,6 +64,12 @@ async function main(): Promise<void> {
       dryRun: options.dryRun,
     });
     const count = (status: string) => results.filter((result) => result.status === status).length;
+    // A candidate whose link attempt threw (CFS or database failure) is
+    // reported inside the JSON; the exit code must say so too, or a scheduled
+    // run with zero links created reads as green.
+    if (count("error") > 0) {
+      process.exitCode = 1;
+    }
     console.log(
       JSON.stringify(
         {

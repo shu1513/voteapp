@@ -28,6 +28,7 @@ import {
   listDueNewHampshireCandidateFinanceSyncRows,
   type NewHampshireCandidateFinanceDueRow,
 } from "./newHampshireCandidateFinanceDueList.js";
+import { resolveNewHampshireCandidateFiler } from "./newHampshireCandidateFilerResolver.js";
 import {
   syncNewHampshireCandidateFinance,
   type NewHampshireCandidateFinanceSyncResult,
@@ -86,6 +87,8 @@ export type NewHampshireCandidateFinanceBatchSyncInput = {
 export type NewHampshireCandidateFinanceBatchSyncResult = {
   dryRun: boolean;
   autoLinkResults: NewHampshireFinanceAutoLinkResult[];
+  /** Message of a thrown auto-link pass (the batch continued with existing links); null when the pass ran or was skipped. */
+  autoLinkError: string | null;
   totalDueRows: number;
   attempted: number;
   succeeded: number;
@@ -148,6 +151,42 @@ export function createSharedNewHampshireCfsBatchClient(
   };
 }
 
+/**
+ * Picks the candidate spelling the per-candidate sync must resolve with: the
+ * first of the due row's spellings that resolves (any registration status,
+ * exactly as the sync resolves) to the linked filing entity. Pure — it reads
+ * the registry rows it is given. Throws, with every attempt listed, when no
+ * spelling lands on the linked filer, so the batch records the link as failed
+ * without calling the sync (and without writing another filer's money).
+ */
+export function chooseSyncCandidateName(input: {
+  row: NewHampshireCandidateFinanceDueRow;
+  electionCycleId: number;
+  filingEntityRows: readonly NewHampshireFilingEntityRow[];
+}): string {
+  const attempts: string[] = [];
+  for (const candidateName of input.row.candidateNames) {
+    const resolution = resolveNewHampshireCandidateFiler({
+      candidateName,
+      officeScope: input.row.officeScope,
+      officeName: input.row.officeName,
+      district: input.row.district,
+      electionCycleId: input.electionCycleId,
+      filingEntityRows: input.filingEntityRows,
+      sourceUrl: input.row.sourceUrl,
+    });
+    if (resolution.status === "matched" && resolution.filingEntityId === input.row.filingEntityId) {
+      return candidateName;
+    }
+    attempts.push(
+      `${JSON.stringify(candidateName)} -> ${
+        resolution.status === "matched" ? `filer ${resolution.filingEntityId}` : `${resolution.status}: ${resolution.reason}`
+      }`
+    );
+  }
+  throw new Error(`no candidate spelling resolves to linked filer ${input.row.filingEntityId} (${attempts.join("; ")})`);
+}
+
 export async function syncDueNewHampshireCandidateFinance(
   input: NewHampshireCandidateFinanceBatchSyncInput
 ): Promise<NewHampshireCandidateFinanceBatchSyncResult> {
@@ -172,6 +211,7 @@ export async function syncDueNewHampshireCandidateFinance(
   const cfsClient = createSharedNewHampshireCfsBatchClient(input.cfsClient);
 
   let autoLinkResults: NewHampshireFinanceAutoLinkResult[] = [];
+  let autoLinkError: string | null = null;
   if (!dryRun && input.autoLinkMissingLinks !== false) {
     const autoLink = input.autoLinkFn ?? autoLinkMissingNewHampshireCandidateFinanceLinks;
     try {
@@ -185,7 +225,8 @@ export async function syncDueNewHampshireCandidateFinance(
         cfsClientOptions: input.cfsClientOptions,
       });
     } catch (error) {
-      log(`New Hampshire auto-link pass failed (continuing with existing links): ${errorMessage(error)}`);
+      autoLinkError = errorMessage(error);
+      log(`New Hampshire auto-link pass failed (continuing with existing links): ${autoLinkError}`);
     }
   }
 
@@ -202,6 +243,7 @@ export async function syncDueNewHampshireCandidateFinance(
     return {
       dryRun,
       autoLinkResults,
+      autoLinkError,
       totalDueRows: due.totalDueRows,
       attempted: 0,
       succeeded: 0,
@@ -222,11 +264,22 @@ export async function syncDueNewHampshireCandidateFinance(
         electionYear: row.electionYear,
       });
       electionCycleIds[String(row.electionYear)] = electionCycleId;
+      // The sync resolves one spelling against the live registry and writes
+      // whatever filer that spelling resolves to. Choose the spelling here,
+      // against the same memoized registry the sync is about to read, and
+      // require it to land on the linked filer — so a link the auto-link made
+      // from the structured name still syncs, and a spelling that now resolves
+      // to a different filer never writes that filer's money under this link.
+      const candidateName = chooseSyncCandidateName({
+        row,
+        electionCycleId,
+        filingEntityRows: await cfsClient.getFilingEntities({ electionCycleId }, input.cfsClientOptions),
+      });
       const result = await syncCandidate({
         db: input.db,
         candidateId: row.candidateId,
         electionId: row.electionId,
-        candidateName: row.candidateName,
+        candidateName,
         electionYear: row.electionYear,
         electionCycleId,
         officeScope: row.officeScope,
@@ -240,6 +293,17 @@ export async function syncDueNewHampshireCandidateFinance(
       });
       if (result.resolution.status !== "matched") {
         throw new Error(`filer resolution ${result.resolution.status}: ${result.resolution.reason}`);
+      }
+      if (result.resolution.filingEntityId !== row.filingEntityId) {
+        throw new Error(`filer resolution landed on ${result.resolution.filingEntityId}, link holds ${row.filingEntityId}`);
+      }
+      // The sync tolerates one failed section (the writer preserves the other),
+      // but when both fail it writes nothing and the link stays due; that must
+      // count as a failure or the run reads green.
+      if (result.directAggregation === null && result.outsideAggregation === null) {
+        throw new Error(
+          `nothing written: direct ${result.directSkippedReason ?? "unavailable"}; outside ${result.outsideSkippedReason ?? "unavailable"}`
+        );
       }
       succeeded += 1;
       if (result.directSkippedReason !== null) {
@@ -259,6 +323,7 @@ export async function syncDueNewHampshireCandidateFinance(
   return {
     dryRun,
     autoLinkResults,
+    autoLinkError,
     totalDueRows: due.totalDueRows,
     attempted: due.rows.length,
     succeeded,

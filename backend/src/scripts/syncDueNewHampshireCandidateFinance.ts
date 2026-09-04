@@ -47,6 +47,18 @@ function getDatabaseUrl(): string {
   return databaseUrl;
 }
 
+/**
+ * A run is green only when every due link synced AND the auto-link pass
+ * neither threw nor left a candidate in error: a CFS or database outage that
+ * created zero links must not read as success to a scheduled runner.
+ */
+export function syncDueNewHampshireCandidateFinanceExitCode(
+  result: NewHampshireCandidateFinanceBatchSyncResult
+): 0 | 1 {
+  const autoLinkErrors = result.autoLinkResults.filter((entry) => entry.status === "error").length;
+  return result.failed > 0 || result.autoLinkError !== null || autoLinkErrors > 0 ? 1 : 0;
+}
+
 export function toSyncDueNewHampshireCandidateFinanceScriptOutput(input: {
   startedAt: Date;
   options: SyncDueNewHampshireCandidateFinanceScriptOptions;
@@ -88,10 +100,11 @@ async function main(): Promise<void> {
     console.log(
       JSON.stringify(toSyncDueNewHampshireCandidateFinanceScriptOutput({ startedAt, options, result }), null, 2)
     );
-    // A link that failed is reported inside the JSON; the exit code must say
-    // so too, or a scheduled run reads as green (North Dakota convention).
-    if (result.failed > 0) {
-      process.exitCode = 1;
+    // Failures are reported inside the JSON; the exit code must say so too,
+    // or a scheduled run reads as green (North Dakota convention).
+    const exitCode = syncDueNewHampshireCandidateFinanceExitCode(result);
+    if (exitCode !== 0) {
+      process.exitCode = exitCode;
     }
   } finally {
     await pool.end();

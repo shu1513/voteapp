@@ -2,8 +2,45 @@ import { describe, expect, it } from "vitest";
 
 import {
   parseSyncDueNewHampshireCandidateFinanceScriptArgs,
+  syncDueNewHampshireCandidateFinanceExitCode,
   toSyncDueNewHampshireCandidateFinanceScriptOutput,
 } from "../../src/scripts/syncDueNewHampshireCandidateFinance.js";
+
+const EMPTY_RESULT = {
+  dryRun: false,
+  autoLinkResults: [],
+  autoLinkError: null,
+  totalDueRows: 0,
+  attempted: 0,
+  succeeded: 0,
+  failed: 0,
+  electionCycleIds: {},
+  candidates: [],
+};
+
+describe("syncDueNewHampshireCandidateFinanceExitCode", () => {
+  it("is green only when nothing failed and the auto-link pass was clean", () => {
+    expect(syncDueNewHampshireCandidateFinanceExitCode(EMPTY_RESULT)).toBe(0);
+    expect(syncDueNewHampshireCandidateFinanceExitCode({ ...EMPTY_RESULT, failed: 1 })).toBe(1);
+    expect(syncDueNewHampshireCandidateFinanceExitCode({ ...EMPTY_RESULT, autoLinkError: "db down" })).toBe(1);
+    expect(
+      syncDueNewHampshireCandidateFinanceExitCode({
+        ...EMPTY_RESULT,
+        autoLinkResults: [
+          { candidateId: "a", electionId: "b", status: "unmatched", reason: "no_candidate_filer_match" },
+          { candidateId: "c", electionId: "d", status: "error", reason: "auto_link_failed", error: "cfs down" },
+        ],
+      })
+    ).toBe(1);
+    // Unmatched or ambiguous candidates are a reporting outcome, not a failure.
+    expect(
+      syncDueNewHampshireCandidateFinanceExitCode({
+        ...EMPTY_RESULT,
+        autoLinkResults: [{ candidateId: "a", electionId: "b", status: "ambiguous", reason: "multiple_matching_filers" }],
+      })
+    ).toBe(0);
+  });
+});
 
 describe("parseSyncDueNewHampshireCandidateFinanceScriptArgs", () => {
   it("parses defaults and explicit flags", () => {

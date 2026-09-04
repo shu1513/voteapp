@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  chooseSyncCandidateName,
   createSharedNewHampshireCfsBatchClient,
   syncDueNewHampshireCandidateFinance,
   type NewHampshireCfsBatchClient,
@@ -9,13 +10,22 @@ import type { NewHampshireCandidateFinanceDueRow } from "../../../src/pipeline/n
 import { CYCLE_2026_ID, ELECTION_CYCLES, filingEntity } from "./newHampshireTestFixtures.js";
 
 const NOW = new Date("2026-09-03T00:00:00.000Z");
-const REGISTRY = [filingEntity()];
+const OTHER_ENTITY = filingEntity({
+  filingEntityId: 50_451,
+  filerName: "Friends of Other Person",
+  candidateName: "Other Person",
+  firstName: "Other",
+  lastName: "Person",
+  district: "2",
+});
+const REGISTRY = [filingEntity(), OTHER_ENTITY];
 
 function dueRow(overrides: Partial<NewHampshireCandidateFinanceDueRow> = {}): NewHampshireCandidateFinanceDueRow {
   return {
     candidateId: "candidate-1",
     electionId: "election-1",
     candidateName: "Sample Candidate",
+    candidateNames: ["Sample Candidate"],
     electionYear: 2026,
     electionDate: "2026-11-03",
     officeScope: "state_upper",
@@ -30,6 +40,16 @@ function dueRow(overrides: Partial<NewHampshireCandidateFinanceDueRow> = {}): Ne
   };
 }
 
+const otherRow = () =>
+  dueRow({
+    candidateId: "candidate-2",
+    candidateName: "Other Person",
+    candidateNames: ["Other Person"],
+    district: "2",
+    filingEntityId: 50_451,
+    filerName: "Friends of Other Person",
+  });
+
 function createClient(overrides: Partial<NewHampshireCfsBatchClient> = {}): NewHampshireCfsBatchClient {
   return {
     getElectionCycles: vi.fn().mockResolvedValue(ELECTION_CYCLES),
@@ -40,7 +60,17 @@ function createClient(overrides: Partial<NewHampshireCfsBatchClient> = {}): NewH
   };
 }
 
-const matched = { resolution: { status: "matched" }, directSkippedReason: null, outsideSkippedReason: null };
+/** What the real sync returns for a linked filer whose two sections both loaded. */
+function synced(filingEntityId = 50_450) {
+  return {
+    resolution: { status: "matched", filingEntityId },
+    directAggregation: { summary: {} },
+    outsideAggregation: { summary: {} },
+    directSkippedReason: null,
+    outsideSkippedReason: null,
+  };
+}
+
 const db = { query: vi.fn(), connect: vi.fn() } as never;
 
 describe("createSharedNewHampshireCfsBatchClient", () => {
@@ -70,15 +100,34 @@ describe("createSharedNewHampshireCfsBatchClient", () => {
   });
 });
 
+describe("chooseSyncCandidateName", () => {
+  const base = { electionCycleId: CYCLE_2026_ID, filingEntityRows: REGISTRY };
+
+  it("returns the first spelling that resolves to the linked filer", () => {
+    expect(chooseSyncCandidateName({ ...base, row: dueRow() })).toBe("Sample Candidate");
+    // Auto-link may have linked from the structured spelling; the display name misses.
+    expect(
+      chooseSyncCandidateName({ ...base, row: dueRow({ candidateNames: ["Sam \"Sammy\" Candidate-Smith", "Sample Candidate"] }) })
+    ).toBe("Sample Candidate");
+  });
+
+  it("refuses when no spelling resolves, or when the spelling now resolves to another filer", () => {
+    expect(() => chooseSyncCandidateName({ ...base, row: dueRow({ candidateNames: ["Nobody Here"] }) })).toThrow(
+      'no candidate spelling resolves to linked filer 50450 ("Nobody Here" -> unmatched: no_candidate_filer_match)'
+    );
+    // Link holds 50451 but "Sample Candidate" in district 1 resolves to 50450.
+    expect(() => chooseSyncCandidateName({ ...base, row: dueRow({ filingEntityId: 50_451 }) })).toThrow(
+      'no candidate spelling resolves to linked filer 50451 ("Sample Candidate" -> filer 50450)'
+    );
+  });
+});
+
 describe("syncDueNewHampshireCandidateFinance", () => {
   it("runs the auto-link pass, lists due rows with the defaults, resolves the cycle once, and syncs every link through the shared client", async () => {
     const client = createClient();
     const autoLink = vi.fn().mockResolvedValue([{ status: "linked" }]);
-    const listDueRows = vi.fn().mockResolvedValue({
-      rows: [dueRow(), dueRow({ candidateId: "candidate-2", filingEntityId: 50_451 })],
-      totalDueRows: 2,
-    });
-    const sync = vi.fn().mockResolvedValue(matched);
+    const listDueRows = vi.fn().mockResolvedValue({ rows: [dueRow(), otherRow()], totalDueRows: 2 });
+    const sync = vi.fn().mockResolvedValueOnce(synced(50_450)).mockResolvedValueOnce(synced(50_451));
     const result = await syncDueNewHampshireCandidateFinance({
       db,
       now: NOW,
@@ -100,7 +149,9 @@ describe("syncDueNewHampshireCandidateFinance", () => {
       electionLookbackDays: 30,
       electionLookaheadDays: 730,
     });
+    // The registry is read once for the pre-resolution of both links.
     expect(client.getElectionCycles).toHaveBeenCalledTimes(1);
+    expect(client.getFilingEntities).toHaveBeenCalledTimes(1);
     expect(sync).toHaveBeenCalledTimes(2);
     const firstCall = sync.mock.calls[0]![0];
     expect(firstCall).toMatchObject({
@@ -118,15 +169,16 @@ describe("syncDueNewHampshireCandidateFinance", () => {
       now: NOW,
       dryRun: false,
     });
+    expect(sync.mock.calls[1]![0]).toMatchObject({ candidateId: "candidate-2", candidateName: "Other Person" });
     // The auto-link and every sync receive the same memoizing client.
     expect(autoLink.mock.calls[0]![0].cfsClient).toBe(firstCall.cfsClient);
     expect(sync.mock.calls[1]![0].cfsClient).toBe(firstCall.cfsClient);
-    await firstCall.cfsClient.getFilingEntities({ electionCycleId: CYCLE_2026_ID });
     await firstCall.cfsClient.getFilingEntities({ electionCycleId: CYCLE_2026_ID });
     expect(client.getFilingEntities).toHaveBeenCalledTimes(1);
     expect(result).toMatchObject({
       dryRun: false,
       autoLinkResults: [{ status: "linked" }],
+      autoLinkError: null,
       totalDueRows: 2,
       attempted: 2,
       succeeded: 2,
@@ -135,12 +187,26 @@ describe("syncDueNewHampshireCandidateFinance", () => {
     });
   });
 
-  it("records per-link failures without stopping, treats an unresolved filer as a failure, and logs skipped sections", async () => {
-    const sync = vi
-      .fn()
-      .mockRejectedValueOnce(new Error("receipts down"))
-      .mockResolvedValueOnce({ resolution: { status: "unmatched", reason: "no_candidate_filer_match" } })
-      .mockResolvedValueOnce({ ...matched, directSkippedReason: "receipt search failed", outsideSkippedReason: "ie search failed" });
+  it("syncs with the structured spelling when the display name no longer resolves", async () => {
+    const sync = vi.fn().mockResolvedValue(synced());
+    const result = await syncDueNewHampshireCandidateFinance({
+      db,
+      now: NOW,
+      cfsClient: createClient(),
+      autoLinkMissingLinks: false,
+      listDueRowsFn: vi.fn().mockResolvedValue({
+        rows: [dueRow({ candidateName: "Sam \"Sammy\" Candidate-Smith", candidateNames: ["Sam \"Sammy\" Candidate-Smith", "Sample Candidate"] })],
+        totalDueRows: 1,
+      }),
+      syncCandidateFn: sync,
+      log: () => {},
+    });
+    expect(sync.mock.calls[0]![0]).toMatchObject({ candidateName: "Sample Candidate" });
+    expect(result).toMatchObject({ succeeded: 1, failed: 0 });
+  });
+
+  it("fails a link without calling the sync when no spelling resolves to the linked filer", async () => {
+    const sync = vi.fn();
     const logs: string[] = [];
     const result = await syncDueNewHampshireCandidateFinance({
       db,
@@ -148,20 +214,59 @@ describe("syncDueNewHampshireCandidateFinance", () => {
       cfsClient: createClient(),
       autoLinkMissingLinks: false,
       listDueRowsFn: vi.fn().mockResolvedValue({
-        rows: [dueRow(), dueRow({ candidateId: "candidate-2" }), dueRow({ candidateId: "candidate-3" })],
-        totalDueRows: 3,
+        rows: [dueRow({ candidateNames: ["Nobody Here"] }), dueRow({ filingEntityId: 50_451, filerName: "Friends of Other Person" })],
+        totalDueRows: 2,
       }),
       syncCandidateFn: sync,
       log: (message) => logs.push(message),
     });
-    expect(result).toMatchObject({ attempted: 3, succeeded: 1, failed: 2 });
-    expect(result.candidates[0]).toMatchObject({ ok: false, error: "receipts down" });
-    expect(result.candidates[1]).toMatchObject({ ok: false, error: "filer resolution unmatched: no_candidate_filer_match" });
-    expect(result.candidates[2]).toMatchObject({ ok: true });
+    expect(sync).not.toHaveBeenCalled();
+    expect(result).toMatchObject({ attempted: 2, succeeded: 0, failed: 2 });
+    expect(logs).toEqual([
+      'New Hampshire finance sync failed for Sample Candidate (50450): no candidate spelling resolves to linked filer 50450 ("Nobody Here" -> unmatched: no_candidate_filer_match)',
+      'New Hampshire finance sync failed for Sample Candidate (50451): no candidate spelling resolves to linked filer 50451 ("Sample Candidate" -> filer 50450)',
+    ]);
+  });
+
+  it("records per-link failures without stopping, fails a sync that wrote nothing, and logs skipped sections", async () => {
+    const sync = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("receipts down"))
+      .mockResolvedValueOnce({ ...synced(), resolution: { status: "unmatched", reason: "no_candidate_filer_match" } })
+      .mockResolvedValueOnce({ ...synced(), resolution: { status: "matched", filingEntityId: 50_451 } })
+      .mockResolvedValueOnce({
+        ...synced(),
+        directAggregation: null,
+        outsideAggregation: null,
+        directSkippedReason: "receipt search failed",
+        outsideSkippedReason: "ie search failed",
+      })
+      .mockResolvedValueOnce({ ...synced(), outsideAggregation: null, outsideSkippedReason: "ie search failed" });
+    const logs: string[] = [];
+    const rows = ["candidate-1", "candidate-2", "candidate-3", "candidate-4", "candidate-5"].map((candidateId) => dueRow({ candidateId }));
+    const result = await syncDueNewHampshireCandidateFinance({
+      db,
+      now: NOW,
+      cfsClient: createClient(),
+      autoLinkMissingLinks: false,
+      listDueRowsFn: vi.fn().mockResolvedValue({ rows, totalDueRows: rows.length }),
+      syncCandidateFn: sync,
+      log: (message) => logs.push(message),
+    });
+    expect(result).toMatchObject({ attempted: 5, succeeded: 1, failed: 4 });
+    expect(result.candidates.map((candidate) => candidate.ok)).toEqual([false, false, false, false, true]);
+    expect(result.candidates.map((candidate) => candidate.error)).toEqual([
+      "receipts down",
+      "filer resolution unmatched: no_candidate_filer_match",
+      "filer resolution landed on 50451, link holds 50450",
+      "nothing written: direct receipt search failed; outside ie search failed",
+      undefined,
+    ]);
     expect(logs).toEqual([
       "New Hampshire finance sync failed for Sample Candidate (50450): receipts down",
       "New Hampshire finance sync failed for Sample Candidate (50450): filer resolution unmatched: no_candidate_filer_match",
-      "New Hampshire direct money skipped for Sample Candidate (50450): receipt search failed",
+      "New Hampshire finance sync failed for Sample Candidate (50450): filer resolution landed on 50451, link holds 50450",
+      "New Hampshire finance sync failed for Sample Candidate (50450): nothing written: direct receipt search failed; outside ie search failed",
       "New Hampshire outside money skipped for Sample Candidate (50450): ie search failed",
     ]);
   });
@@ -174,7 +279,7 @@ describe("syncDueNewHampshireCandidateFinance", () => {
       now: NOW,
       cfsClient: client,
       autoLinkMissingLinks: false,
-      listDueRowsFn: vi.fn().mockResolvedValue({ rows: [dueRow(), dueRow({ candidateId: "candidate-2" })], totalDueRows: 2 }),
+      listDueRowsFn: vi.fn().mockResolvedValue({ rows: [dueRow(), otherRow()], totalDueRows: 2 }),
       syncCandidateFn: sync,
       log: () => {},
     });
@@ -184,7 +289,7 @@ describe("syncDueNewHampshireCandidateFinance", () => {
     expect(sync).not.toHaveBeenCalled();
   });
 
-  it("continues with existing links when the auto-link pass fails, and pulls nothing when nothing is due", async () => {
+  it("continues with existing links when the auto-link pass fails, exposes the error, and pulls nothing when nothing is due", async () => {
     const client = createClient();
     const logs: string[] = [];
     const result = await syncDueNewHampshireCandidateFinance({
@@ -199,6 +304,7 @@ describe("syncDueNewHampshireCandidateFinance", () => {
     expect(result).toEqual({
       dryRun: false,
       autoLinkResults: [],
+      autoLinkError: "db down",
       totalDueRows: 0,
       attempted: 0,
       succeeded: 0,
@@ -213,7 +319,7 @@ describe("syncDueNewHampshireCandidateFinance", () => {
 
   it("skips the auto-link pass in dry-run mode and passes dryRun to every sync", async () => {
     const autoLink = vi.fn();
-    const sync = vi.fn().mockResolvedValue(matched);
+    const sync = vi.fn().mockResolvedValue(synced());
     const result = await syncDueNewHampshireCandidateFinance({
       db,
       now: NOW,
@@ -226,7 +332,7 @@ describe("syncDueNewHampshireCandidateFinance", () => {
     });
     expect(autoLink).not.toHaveBeenCalled();
     expect(sync.mock.calls[0]![0]).toMatchObject({ dryRun: true });
-    expect(result).toMatchObject({ dryRun: true, attempted: 1, succeeded: 1 });
+    expect(result).toMatchObject({ dryRun: true, autoLinkError: null, attempted: 1, succeeded: 1 });
   });
 
   it("honours --no-auto-link and custom limits", async () => {

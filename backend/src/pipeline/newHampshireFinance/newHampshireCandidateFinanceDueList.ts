@@ -21,6 +21,13 @@ export type NewHampshireCandidateFinanceDueRow = {
   candidateId: string;
   electionId: string;
   candidateName: string;
+  /**
+   * Every spelling the sync may resolve with: display name, structured
+   * "First Last", then the name stored on the link — deduplicated, in that
+   * order. The auto-link tries the same spellings, so a link it created can
+   * always be re-resolved here.
+   */
+  candidateNames: string[];
   electionYear: number;
   electionDate: string;
   officeScope: string;
@@ -38,6 +45,9 @@ type DbRow = {
   candidate_id: string;
   election_id: string;
   candidate_name: string;
+  display_name: string | null;
+  structured_name: string | null;
+  candidate_name_normalized: string;
   election_year: number;
   election_date: string;
   office_scope: string;
@@ -67,6 +77,9 @@ export async function listDueNewHampshireCandidateFinanceSyncRows(
     `WITH due AS (
       SELECT link.candidate_id::text candidate_id, link.election_id::text election_id,
         COALESCE(NULLIF(trim(candidate.display_name), ''), NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), ''), link.candidate_name_normalized) candidate_name,
+        NULLIF(trim(candidate.display_name), '') display_name,
+        NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), '') structured_name,
+        link.candidate_name_normalized,
         link.election_year, election.election_date::text election_date, office.scope office_scope, link.office_name, link.district,
         link.filing_entity_id, link.filer_name, link.link_source, link.source_url, summary.last_synced_at::text last_synced_at,
         COUNT(*) OVER () total_due_rows
@@ -103,6 +116,13 @@ export async function listDueNewHampshireCandidateFinanceSyncRows(
       candidateId: row.candidate_id,
       electionId: row.election_id,
       candidateName: row.candidate_name,
+      candidateNames: [
+        ...new Set(
+          [row.display_name, row.structured_name, row.candidate_name_normalized]
+            .map((name) => name?.trim() ?? "")
+            .filter((name) => name.length > 0)
+        ),
+      ],
       electionYear: row.election_year,
       electionDate: row.election_date.slice(0, 10),
       officeScope: row.office_scope,
