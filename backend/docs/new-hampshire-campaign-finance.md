@@ -3,6 +3,42 @@
 Verdict: **buildable for Nov 2026**. All four data needs are covered by the NH SOS
 Campaign Finance System (Civix CFIS — same vendor family as New Mexico's system).
 
+## Build status (phases)
+
+- Phases 0–2 MERGED: `backend/src/pipeline/newHampshireFinance/` — CFS client,
+  CSV artifact cache + reader, raw-refresh CLI
+  (`new-hampshire-candidates:finance:raw:refresh`), filer resolver, direct and
+  outside-spending aggregators, snapshot writer over the `nh_candidate_finance_*`
+  tables (migration 249), per-candidate sync `syncNewHampshireCandidateFinance`,
+  eligible-office list, ballot-lookup loader.
+- Phase 3 BUILT 2026-09-03 (operator wiring, Idaho template): auto-link
+  (`newHampshireCandidateFinanceAutoLink.ts`), due list
+  (`newHampshireCandidateFinanceDueList.ts`), batch sync
+  (`newHampshireCandidateFinanceBatchSync.ts`), CLIs
+  `npm run new-hampshire-candidates:finance:auto-link` and
+  `npm run new-hampshire-candidates:finance:sync-due`
+  (`--dry-run --force --max-candidates --lookback-days --lookahead-days`; the
+  sync also takes `--no-auto-link --stale-after-days`). No schema change, no new
+  flags: both CLIs make live CFS calls, so they use the existing live-call gate
+  `NEW_HAMPSHIRE_CAMPAIGN_FINANCE_ENABLED` + `NEW_HAMPSHIRE_CFS_RAW_DATA_REFRESH_ENABLED`
+  (`--force` bypasses only the second, as the raw-refresh CLI does).
+  Rules: the auto-link pulls the cycle list and the cycle's filing-entity
+  registry once per run, links only an unambiguous match whose registration is
+  `Active` (`link_source = 'cfs_registration'`); ambiguous, unmatched, and
+  non-Active registrations are reported, never written. The batch keeps the
+  per-candidate sync's contract (it still re-resolves the filer live and reads
+  the search API, not the bulk CSV cache) and shares the cycle list, registry,
+  and IE list across links through a memoizing client; a failed link is
+  recorded and the batch continues; a link whose filer no longer resolves
+  counts as failed; the CLI exits 1 when any link failed. Defaults: 25 links,
+  stale after 7 days, lookback 22 + 7 + 1 = 30 days (last 2026 R&E report due
+  11/25), lookahead 730.
+  Dry runs 2026-09-03 (local, `--dry-run --force`): both exit 0 with 0
+  attempted — no Nov-2026 New Hampshire state rosters exist yet, so the roster
+  gap, not the pipeline, caps coverage.
+- Next: Nov-2026 NH rosters, then a real local run (auto-link, then sync-due),
+  then the manual-link CLI for the unmatched, then prod.
+
 ## System
 
 - Public SPA: https://cfs.sos.nh.gov (Angular). Akamai blocks non-browser clients
