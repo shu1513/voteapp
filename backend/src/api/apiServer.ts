@@ -2073,7 +2073,12 @@ async function dispatchApiRequest(
       sendInvalidPage();
       return;
     }
-    const formAction = `${EMAIL_UNSUBSCRIBE_PATH}?token=${encodeURIComponent(token)}`;
+    // The form action keeps the link's own scope: after an empty submit the
+    // retry page must pre-check the same opt-in the email advertised, not
+    // fall back to the legacy digest default.
+    const formAction =
+      `${EMAIL_UNSUBSCRIBE_PATH}?token=${encodeURIComponent(token)}` +
+      linkedPreferences.map((preference) => `&pref=${encodeURIComponent(preference)}`).join("");
     if (selectedPreferences.length === 0) {
       // Form submitted with nothing checked: change nothing, ask again. Still
       // verify the token first so a garbage link gets the invalid page.

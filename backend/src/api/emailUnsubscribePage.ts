@@ -141,9 +141,13 @@ function renderPage(title: string, body: string): string {
   );
 }
 
+// The page URL carries the long-lived unsubscribe token, and the settings
+// link is same-origin in production, so a default referrer policy would send
+// the full token-bearing URL as Referer. Scope no-referrer to this link only:
+// a page-wide policy would also null the form POST's Origin header.
 function renderSettingsFooter(settingsUrl: string | undefined, lead: string): string {
   return settingsUrl
-    ? `<p class="footer">${escapeHtml(lead)} <a href="${escapeHtml(settingsUrl)}">Manage all email settings</a>.</p>`
+    ? `<p class="footer">${escapeHtml(lead)} <a href="${escapeHtml(settingsUrl)}" referrerpolicy="no-referrer">Manage all email settings</a>.</p>`
     : `<p class="footer">${escapeHtml(lead)} You can manage every email setting in your account settings.</p>`;
 }
 

@@ -4469,12 +4469,22 @@ describe("email preferences and unsubscribe endpoints", () => {
     ]);
   });
 
-  it("confirmation form with nothing checked changes nothing and asks again", async () => {
+  it("confirmation form with nothing checked changes nothing and asks again with the same scope", async () => {
     const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("ok");
+    const app = createApiApp({ unsubscribeFromEmailNotifications });
 
-    const response = await invokeExpressApp(createApiApp({ unsubscribeFromEmailNotifications }), {
+    // Drive the real chain: the retry POST goes to whatever action the
+    // rendered form carries, not to a hand-built URL.
+    const confirm = await invokeExpressApp(app, {
+      method: "GET",
+      path: "/api/email/unsubscribe?token=v1.abc.def&pref=member_newsletter",
+    });
+    const action = String(confirm.rawBody).match(/<form method="post" action="([^"]+)"/)?.[1]?.replace(/&amp;/g, "&");
+    expect(action).toBe("/api/email/unsubscribe?token=v1.abc.def&pref=member_newsletter");
+
+    const response = await invokeExpressApp(app, {
       method: "POST",
-      path: "/api/email/unsubscribe?token=v1.abc.def&pref=election_reminders",
+      path: action ?? "",
       headers: { "content-type": "application/x-www-form-urlencoded" },
       body: "form=1",
     });
@@ -4483,9 +4493,12 @@ describe("email preferences and unsubscribe endpoints", () => {
     expect(String(response.rawBody)).toContain("Choose at least one kind of email");
     expect(String(response.rawBody)).toContain("<form method=\"post\"");
     expect(String(response.rawBody)).not.toContain("You have been unsubscribed");
-    // Only the token check ran; nothing was executed.
-    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledTimes(1);
-    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "confirm", ["election_reminders"]);
+    // The retry page pre-checks the link's own opt-in, not the digest default.
+    expect(String(response.rawBody)).toContain('value="member_newsletter" checked');
+    expect(String(response.rawBody)).not.toContain('value="digest" checked');
+    // Only token checks ran; nothing was executed.
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledTimes(2);
+    expect(unsubscribeFromEmailNotifications).toHaveBeenLastCalledWith("v1.abc.def", "confirm", ["member_newsletter"]);
   });
 
   it("confirmation form rejects an unrecognized checkbox value", async () => {
@@ -4524,7 +4537,11 @@ describe("email preferences and unsubscribe endpoints", () => {
       method: "GET",
       path: "/api/email/unsubscribe?token=v1.abc.def",
     });
-    expect(String(confirm.rawBody)).toContain('href="https://example.com/me/settings"');
+    // The page URL carries the token; the same-origin settings link must not
+    // forward it as Referer.
+    expect(String(confirm.rawBody)).toContain(
+      'href="https://example.com/me/settings" referrerpolicy="no-referrer"'
+    );
 
     const withoutOrigin = await invokeExpressApp(createApiApp({ unsubscribeFromEmailNotifications }), {
       method: "GET",

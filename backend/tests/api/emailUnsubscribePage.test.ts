@@ -91,7 +91,7 @@ describe("emailUnsubscribePage", () => {
     }
     expect(html).toContain('value="issue_updates" checked');
     expect((html.match(/ checked/g) ?? []).length).toBe(1);
-    expect(html).toContain('href="https://example.com/me/settings"');
+    expect(html).toContain('href="https://example.com/me/settings" referrerpolicy="no-referrer"');
   });
 
   it("renders the done page with the account-email reassurance", () => {
