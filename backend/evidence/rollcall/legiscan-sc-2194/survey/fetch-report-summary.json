@@ -1,0 +1,26 @@
+{
+ "runId": "rollcall-legiscan-fetch-sc-20260903T013805Z",
+ "importerVersion": "rollcall-legiscan-fetch-v1",
+ "jurisdiction": "SC",
+ "sessionId": 2194,
+ "dryRun": false,
+ "startedAt": "2026-09-03T01:38:05.255Z",
+ "finishedAt": "2026-09-03T01:38:09.747Z",
+ "datasetDir": "~/legiscan-data/sc-2194",
+ "evidenceDir": "~/legiscan-data/sc-2194-evidence",
+ "bills": 4032,
+ "datasetVotes": 2054,
+ "billFilter": null,
+ "billFilterMisses": 0,
+ "excludedMeasureVotes": 48,
+ "committeeVotes": 0,
+ "unrecordedVotes": 0,
+ "duplicateVotes": 0,
+ "floorVotes": 902,
+ "surfaced": 1,
+ "fileErrors": [],
+ "counts": {
+  "inserted": 2006
+ },
+ "rows": "omitted: 2006 rows, kept outside the repo at /Users/shu/legiscan-data/sc-2194-evidence/"
+}

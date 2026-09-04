@@ -1,0 +1,881 @@
+{
+ "source": "legiscan",
+ "jurisdiction": "SC",
+ "entries": [
+  {
+   "people_id": 2202,
+   "candidate_id": "6e49f04e-3729-4f6b-bf59-7164cadc6407",
+   "note": null
+  },
+  {
+   "people_id": 2203,
+   "candidate_id": null,
+   "note": "Karl Allen sits in SD-007; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2205,
+   "candidate_id": "f2024456-9d70-4028-8112-dbd75f729b81",
+   "note": null
+  },
+  {
+   "people_id": 2208,
+   "candidate_id": "1bfb17db-b36f-4d1a-8592-5bb8aaa1a2b8",
+   "note": null
+  },
+  {
+   "people_id": 2209,
+   "candidate_id": "1e0e9a24-60ea-47b4-becf-ff8dae9ed863",
+   "note": null
+  },
+  {
+   "people_id": 2225,
+   "candidate_id": "1780f466-39d1-4345-9278-07bcfdf84000",
+   "note": null
+  },
+  {
+   "people_id": 2226,
+   "candidate_id": "d669b721-43e5-406c-a975-44fafaeebccd",
+   "note": null
+  },
+  {
+   "people_id": 2232,
+   "candidate_id": "06cfb1a1-a8bb-4792-96bf-ec0fa54ddef9",
+   "note": null
+  },
+  {
+   "people_id": 2235,
+   "candidate_id": "a83ef150-53aa-4843-b28a-bebf5a64c62a",
+   "note": null
+  },
+  {
+   "people_id": 2239,
+   "candidate_id": null,
+   "note": "Michael Gambrell sits in SD-004; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2240,
+   "candidate_id": "54e4c8b1-f5ed-4dc0-9fa0-23d20b3c33fd",
+   "note": null
+  },
+  {
+   "people_id": 2241,
+   "candidate_id": "a2b8acb7-2c20-4bda-9e83-15cafbefcaa5",
+   "note": null
+  },
+  {
+   "people_id": 2248,
+   "candidate_id": "268c7bf1-4302-4162-8c7a-821ce2051b51",
+   "note": null
+  },
+  {
+   "people_id": 2250,
+   "candidate_id": "ad909855-d271-4945-ada0-a6815d6efb37",
+   "note": null
+  },
+  {
+   "people_id": 2252,
+   "candidate_id": "3cd6325b-24b9-44c5-bd75-6d48158f0716",
+   "note": "legal first name in LegiScan, works as Bill Herbkersman (HD-118)"
+  },
+  {
+   "people_id": 2253,
+   "candidate_id": null,
+   "note": "Davey Hiott (HD-004) has no November 2026 candidate row; the district's filed candidates are two other people"
+  },
+  {
+   "people_id": 2256,
+   "candidate_id": "90b2f3b8-ded2-4162-b209-f9cf94d8989d",
+   "note": null
+  },
+  {
+   "people_id": 2257,
+   "candidate_id": "8647f0d3-957d-45c5-b107-2b82ae62d864",
+   "note": null
+  },
+  {
+   "people_id": 2264,
+   "candidate_id": "a5902080-fe07-4243-ae63-50ee8daea187",
+   "note": null
+  },
+  {
+   "people_id": 2271,
+   "candidate_id": "1c4ed153-16b7-46b5-9ba2-3b9da913b430",
+   "note": null
+  },
+  {
+   "people_id": 2280,
+   "candidate_id": "c02a6bce-8a01-4641-925c-3e5e0e5c102f",
+   "note": null
+  },
+  {
+   "people_id": 2294,
+   "candidate_id": null,
+   "note": "Rex Rice sits in SD-002; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2295,
+   "candidate_id": "7c7eb6c2-7e93-4396-88e9-5ee09b74f8f1",
+   "note": "LegiScan first name is James; runs as J Todd Rutherford (HD-074)"
+  },
+  {
+   "people_id": 2302,
+   "candidate_id": "2440d127-27cc-4c22-901f-c3da75cb3a49",
+   "note": null
+  },
+  {
+   "people_id": 2308,
+   "candidate_id": "5a66aa10-bc2f-4000-8c41-b5e63babca63",
+   "note": null
+  },
+  {
+   "people_id": 2316,
+   "candidate_id": "e4363b1d-bbf0-436f-b9dd-3dc170cc182d",
+   "note": "LegiScan first name is \"J. David\"; runs as David Weeks (HD-051)"
+  },
+  {
+   "people_id": 2319,
+   "candidate_id": "ad77be17-e656-4451-83d8-dbacb4074e22",
+   "note": "legal first name in LegiScan, works as Bill Whitmire (HD-001)"
+  },
+  {
+   "people_id": 2320,
+   "candidate_id": "7c03a124-2afb-4c9c-88c3-603844e10d74",
+   "note": "exact name match the proposer missed; Robert Williams (HD-062)"
+  },
+  {
+   "people_id": 2321,
+   "candidate_id": "50bd358b-a7cb-492d-9104-bbfa5c92aa90",
+   "note": null
+  },
+  {
+   "people_id": 2324,
+   "candidate_id": null,
+   "note": "Thomas Young sits in SD-024; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2325,
+   "candidate_id": null,
+   "note": "Thomas Alexander sits in SD-001; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2327,
+   "candidate_id": null,
+   "note": "Lee Bright sits in SD-012; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2330,
+   "candidate_id": null,
+   "note": "George Campsen sits in SD-043; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2334,
+   "candidate_id": null,
+   "note": "Ronnie Cromer sits in SD-018; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2335,
+   "candidate_id": null,
+   "note": "Thomas Davis sits in SD-046; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2339,
+   "candidate_id": null,
+   "note": "Lawrence Grooms sits in SD-037; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2341,
+   "candidate_id": null,
+   "note": "Bradley Hutto sits in SD-040; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2342,
+   "candidate_id": null,
+   "note": "Darrell Jackson sits in SD-021; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2350,
+   "candidate_id": null,
+   "note": "Shane Martin sits in SD-013; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2351,
+   "candidate_id": null,
+   "note": "Shane Massey sits in SD-025; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2358,
+   "candidate_id": null,
+   "note": "Harvey Peeler sits in SD-014; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2360,
+   "candidate_id": null,
+   "note": "Luke Rankin sits in SD-033; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2369,
+   "candidate_id": null,
+   "note": "Danny Verdin sits in SD-009; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 2370,
+   "candidate_id": null,
+   "note": "Kent Williams sits in SD-030; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 10949,
+   "candidate_id": "761a6730-9194-408b-b4c5-faab7dafaefe",
+   "note": "legal first name in LegiScan, works as Bill Hixon (HD-083)"
+  },
+  {
+   "people_id": 10951,
+   "candidate_id": null,
+   "note": "Christopher Murphy (HD-098) has no November 2026 candidate row"
+  },
+  {
+   "people_id": 10954,
+   "candidate_id": null,
+   "note": "Bill Taylor (HD-086) has no November 2026 candidate row"
+  },
+  {
+   "people_id": 11118,
+   "candidate_id": null,
+   "note": "Thomas Corbin sits in SD-005; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 11216,
+   "candidate_id": "93d7b1f0-1755-4a15-bff4-149866d65dc4",
+   "note": "legal first name in LegiScan, works as Bill Chumley (HD-035)"
+  },
+  {
+   "people_id": 11219,
+   "candidate_id": "8a2d5994-ae29-4413-89bc-00130450d4da",
+   "note": "legal first name in LegiScan, works as Tommy Pope (HD-047)"
+  },
+  {
+   "people_id": 11221,
+   "candidate_id": null,
+   "note": "Ronnie Sabb sits in SD-032; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 14032,
+   "candidate_id": null,
+   "note": "Stephen Goldfinch sits in SD-034; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 14033,
+   "candidate_id": "dd65aead-fc06-450e-9846-01daf8c5fa29",
+   "note": null
+  },
+  {
+   "people_id": 14070,
+   "candidate_id": null,
+   "note": "Greg Hembree sits in SD-028; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 14186,
+   "candidate_id": null,
+   "note": "Sean Bennett sits in SD-038; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 14187,
+   "candidate_id": "87ba53b5-e78e-4c19-b065-dba86acc77fc",
+   "note": null
+  },
+  {
+   "people_id": 14298,
+   "candidate_id": "cac98fe0-336f-4afd-95da-9bd798caba26",
+   "note": null
+  },
+  {
+   "people_id": 14300,
+   "candidate_id": "aeba26c3-75a0-4c40-8156-2f1514b025c2",
+   "note": null
+  },
+  {
+   "people_id": 14301,
+   "candidate_id": "4d6be51a-869b-44cb-ba26-d27d79eb8cea",
+   "note": "LegiScan first name is \"Wm. Weston\"; runs as Weston Newton (HD-120)"
+  },
+  {
+   "people_id": 14450,
+   "candidate_id": null,
+   "note": "Ross Turner sits in SD-008; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 15975,
+   "candidate_id": "67bc6640-b96d-402b-8d90-d56d0eee0f53",
+   "note": "LegiScan first name is James; runs as Mike Burns (HD-017)"
+  },
+  {
+   "people_id": 16116,
+   "candidate_id": null,
+   "note": "Russell Ott sits in SD-026; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 16320,
+   "candidate_id": "fa0afc95-faf1-4f91-87ad-85b17309a3e4",
+   "note": null
+  },
+  {
+   "people_id": 16321,
+   "candidate_id": "84a958ed-39b3-44c7-99f1-ebc7fb0993d2",
+   "note": null
+  },
+  {
+   "people_id": 16323,
+   "candidate_id": "de1e48dc-72f5-4cc9-9ed7-e952c217ceb0",
+   "note": null
+  },
+  {
+   "people_id": 16328,
+   "candidate_id": "6d5d89d9-a32b-4746-9bf4-1e4ea4010cb3",
+   "note": null
+  },
+  {
+   "people_id": 16329,
+   "candidate_id": "0edd488c-b039-4ccc-bc43-9022c13e2b0d",
+   "note": null
+  },
+  {
+   "people_id": 16332,
+   "candidate_id": "deb64875-66c4-434d-ad30-bba2413049c8",
+   "note": null
+  },
+  {
+   "people_id": 17693,
+   "candidate_id": "6c0c47ef-aab2-43e9-a345-fd2f7fa21fe6",
+   "note": "LegiScan prints Wallace Jordan; runs as Jay Jordan (HD-063)"
+  },
+  {
+   "people_id": 17736,
+   "candidate_id": null,
+   "note": "Margie Matthews sits in SD-045; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 17959,
+   "candidate_id": "ab6009de-2013-4e9f-9a16-5ff8e13fc079",
+   "note": null
+  },
+  {
+   "people_id": 18031,
+   "candidate_id": null,
+   "note": "Wes Climer sits in SD-015; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 18085,
+   "candidate_id": "3c099953-a45a-48ce-bb0c-5a03addb24f0",
+   "note": "LegiScan prints Frank Atkinson; runs under his middle name, Lucas Atkinson (HD-057)"
+  },
+  {
+   "people_id": 18088,
+   "candidate_id": null,
+   "note": "Jason Elliott sits in SD-006; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 18089,
+   "candidate_id": "d1b076ba-77e9-46ef-88f7-c671a9778e9c",
+   "note": null
+  },
+  {
+   "people_id": 18090,
+   "candidate_id": "9d2c17fa-4a2b-4f48-b930-b0ed952a0860",
+   "note": "LegiScan first name is William; runs as Lee Hewitt (HD-108)"
+  },
+  {
+   "people_id": 18091,
+   "candidate_id": "3968ed42-5920-484a-9c9b-3001018b279a",
+   "note": "LegiScan first name is Roy; runs as Josiah Magnuson (HD-038)"
+  },
+  {
+   "people_id": 18092,
+   "candidate_id": "1b0fdead-340d-4bab-8596-d69bb03bc757",
+   "note": null
+  },
+  {
+   "people_id": 18093,
+   "candidate_id": null,
+   "note": "Michael Rivers Sr (HD-121) has no November 2026 candidate row"
+  },
+  {
+   "people_id": 18094,
+   "candidate_id": "21178318-8768-4090-a8ff-d32a9101fb38",
+   "note": null
+  },
+  {
+   "people_id": 18095,
+   "candidate_id": null,
+   "note": "William Wheeler III (HD-050) has no November 2026 candidate row"
+  },
+  {
+   "people_id": 18214,
+   "candidate_id": "9b5771c9-ab23-4b7f-ae98-00adf9b2f02c",
+   "note": null
+  },
+  {
+   "people_id": 18654,
+   "candidate_id": "60904775-b247-48d3-87ce-333f14a0c477",
+   "note": "LegiScan prints Micajah Caskey IV; runs as Micah Caskey (HD-089)"
+  },
+  {
+   "people_id": 19395,
+   "candidate_id": null,
+   "note": "Richard Cash sits in SD-003; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 19496,
+   "candidate_id": "f1716cc2-9bcc-479d-8d92-3b7b4a9b5431",
+   "note": null
+  },
+  {
+   "people_id": 19502,
+   "candidate_id": "f65c4030-87aa-4b1c-94d8-00e22d8c6f0e",
+   "note": null
+  },
+  {
+   "people_id": 19645,
+   "candidate_id": "e0c66bbb-e6b8-47e4-bfe8-053e9ffec708",
+   "note": null
+  },
+  {
+   "people_id": 19927,
+   "candidate_id": null,
+   "note": "Bobby Cox (HD-021) left the seat mid-term; LegiScan also carries his successor Dianne Mitchell, who is mapped"
+  },
+  {
+   "people_id": 19929,
+   "candidate_id": "bec35b1c-a79c-4109-af70-6f4a085b9f97",
+   "note": null
+  },
+  {
+   "people_id": 19930,
+   "candidate_id": "c4adca07-f981-4a7f-85ff-d6105cfb1a51",
+   "note": "LegiScan first name is Leon; runs as Doug Gilliam (HD-042)"
+  },
+  {
+   "people_id": 19932,
+   "candidate_id": "d5def7f7-03e4-4dc8-8096-a414fe5741f3",
+   "note": "LegiScan first name is Thomas; runs as Randy Ligon (HD-043)"
+  },
+  {
+   "people_id": 19933,
+   "candidate_id": "583e3511-187b-4a5c-b7cf-5ffbab151893",
+   "note": null
+  },
+  {
+   "people_id": 19934,
+   "candidate_id": "18c23442-a8d1-47c4-83b4-ea995978cd35",
+   "note": null
+  },
+  {
+   "people_id": 19936,
+   "candidate_id": "35511d52-264b-4558-a65e-1685a0da8a95",
+   "note": null
+  },
+  {
+   "people_id": 20147,
+   "candidate_id": "bb223cc0-8603-48cc-99af-0c659ad3998b",
+   "note": null
+  },
+  {
+   "people_id": 20399,
+   "candidate_id": "5c712603-bffd-492b-9a12-565d418d04eb",
+   "note": null
+  },
+  {
+   "people_id": 21398,
+   "candidate_id": "a239f164-6a53-45ed-b486-0f55a5220968",
+   "note": null
+  },
+  {
+   "people_id": 21436,
+   "candidate_id": "14f85912-adf5-4456-af9f-c4ebaa58edb4",
+   "note": null
+  },
+  {
+   "people_id": 21669,
+   "candidate_id": null,
+   "note": "Elizabeth \"Spencer\" Wetmore (HD-115) has no November 2026 candidate row"
+  },
+  {
+   "people_id": 21740,
+   "candidate_id": "98741094-82ac-4228-8353-5ec8acd65fd9",
+   "note": "LegiScan prints Thomas Brittain; runs under his middle name, Case Brittain (HD-107)"
+  },
+  {
+   "people_id": 21741,
+   "candidate_id": "0b3fab1f-dca6-4c26-80e9-2d1b7e82b0bc",
+   "note": "LegiScan first name is Joseph; runs as Joe Bustos (HD-112)"
+  },
+  {
+   "people_id": 21744,
+   "candidate_id": "4bae5e1b-633d-4c1f-986b-0b8d466d184b",
+   "note": null
+  },
+  {
+   "people_id": 21745,
+   "candidate_id": null,
+   "note": "Jermaine Johnson (HD-052) has no November 2026 candidate row"
+  },
+  {
+   "people_id": 21747,
+   "candidate_id": null,
+   "note": "Marvin \"Mark\" Smith (HD-099) has no November 2026 candidate row"
+  },
+  {
+   "people_id": 21748,
+   "candidate_id": null,
+   "note": "Robert \"R J\" May III (HD-088) has no November 2026 candidate row"
+  },
+  {
+   "people_id": 21749,
+   "candidate_id": null,
+   "note": "Donald \"Ryan\" McCabe (HD-096) has no November 2026 candidate row"
+  },
+  {
+   "people_id": 21752,
+   "candidate_id": null,
+   "note": "Roger Nutt sits in SD-012; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 21753,
+   "candidate_id": null,
+   "note": "Deon Tedder sits in SD-042; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 21754,
+   "candidate_id": null,
+   "note": "Billy Garrett sits in SD-010; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 21756,
+   "candidate_id": null,
+   "note": "Joshua Kimbrell sits in SD-011; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 21778,
+   "candidate_id": null,
+   "note": "Brian Adams sits in SD-044; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 21893,
+   "candidate_id": null,
+   "note": "Michael Johnson sits in SD-016; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 22359,
+   "candidate_id": "0a0c5167-19e4-4ad0-bb6f-1f6c63c86410",
+   "note": null
+  },
+  {
+   "people_id": 23126,
+   "candidate_id": null,
+   "note": "Mike Reichenbach sits in SD-031; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 23150,
+   "candidate_id": "d134ccba-c13f-4990-b98a-ea8f776ed683",
+   "note": null
+  },
+  {
+   "people_id": 23151,
+   "candidate_id": "6b6256c2-c7c5-4281-a7f0-682d0d541415",
+   "note": "LegiScan first name is Timothy; runs as Alan Morgan (HD-018)"
+  },
+  {
+   "people_id": 23297,
+   "candidate_id": "c916da11-b5d3-434f-adbf-3b4099f663ad",
+   "note": null
+  },
+  {
+   "people_id": 23298,
+   "candidate_id": "f8663f1d-2daa-4361-917a-8fece0d248dc",
+   "note": null
+  },
+  {
+   "people_id": 23299,
+   "candidate_id": "fb6507f0-6845-4a77-a881-27d057a69204",
+   "note": null
+  },
+  {
+   "people_id": 23300,
+   "candidate_id": "09f72416-21e9-4a08-b172-a6e958d2f660",
+   "note": null
+  },
+  {
+   "people_id": 23301,
+   "candidate_id": "01177bda-d412-471a-879b-c4efc272ecc8",
+   "note": "LegiScan first name is John; runs as Jay Kilmartin (HD-085)"
+  },
+  {
+   "people_id": 23302,
+   "candidate_id": "1b67a119-900d-4243-ad6c-8baf745ca2d1",
+   "note": null
+  },
+  {
+   "people_id": 23303,
+   "candidate_id": "ca132ba8-e161-404f-9589-cde3bf28bdd4",
+   "note": null
+  },
+  {
+   "people_id": 23304,
+   "candidate_id": "c7156d2c-4a03-4768-aeef-20063686ecf0",
+   "note": "LegiScan first name is James; runs as Mike Neese (HD-044)"
+  },
+  {
+   "people_id": 23306,
+   "candidate_id": "2232a6a1-5ef0-4e06-a50f-9e84a0dcf248",
+   "note": null
+  },
+  {
+   "people_id": 23307,
+   "candidate_id": "e3460130-164d-4427-96fc-8cc6863bf93c",
+   "note": null
+  },
+  {
+   "people_id": 23308,
+   "candidate_id": "0915fcc5-34bd-4837-b02f-48b2cab530f5",
+   "note": null
+  },
+  {
+   "people_id": 23309,
+   "candidate_id": "6639b261-fb5c-474d-86fe-d1c7107f635d",
+   "note": null
+  },
+  {
+   "people_id": 23373,
+   "candidate_id": "159f0e03-7f24-46cb-b416-cf1e8c6e5411",
+   "note": null
+  },
+  {
+   "people_id": 23374,
+   "candidate_id": "dfb2690e-92be-4e41-8a6b-9dd551df52a6",
+   "note": null
+  },
+  {
+   "people_id": 23375,
+   "candidate_id": null,
+   "note": "Matthew Leber sits in SD-041; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 23376,
+   "candidate_id": "467671b3-20f1-4316-93b4-06300d283269",
+   "note": null
+  },
+  {
+   "people_id": 23392,
+   "candidate_id": "9e74a66a-99f6-477d-a4f5-92cc0e6d408e",
+   "note": null
+  },
+  {
+   "people_id": 24123,
+   "candidate_id": "0fe8ea2e-b680-4f79-b54a-746df50af53f",
+   "note": null
+  },
+  {
+   "people_id": 24124,
+   "candidate_id": "21f57741-f354-4d29-9ea0-825926352c4f",
+   "note": "LegiScan first name is Thomas; runs as Tom Hartnett (HD-110)"
+  },
+  {
+   "people_id": 24188,
+   "candidate_id": "4f2da52b-9ce4-4366-a0e4-64ad5fa3e29b",
+   "note": null
+  },
+  {
+   "people_id": 24303,
+   "candidate_id": "baf63822-816a-487f-a9cb-e5d6333afd46",
+   "note": "LegiScan first name is \"Thomas Duval\"; runs as Val Guest (HD-106)"
+  },
+  {
+   "people_id": 24304,
+   "candidate_id": "ea7d5dff-59a7-4724-b3ba-194a9b5809b0",
+   "note": "legal first name in LegiScan, works as Bill Hager (HD-122)"
+  },
+  {
+   "people_id": 24305,
+   "candidate_id": "2ec857f6-4ecd-48c5-afbe-2cb81849de41",
+   "note": "LegiScan first name is Katherine; runs as Kathy Landing (HD-080)"
+  },
+  {
+   "people_id": 24306,
+   "candidate_id": "b10bad49-9595-4f97-8830-066c6475ab60",
+   "note": null
+  },
+  {
+   "people_id": 24751,
+   "candidate_id": "f42c2719-b831-4d21-8403-d18ff2a4289f",
+   "note": "LegiScan first name is Joseph; runs as Joe White (HD-040)"
+  },
+  {
+   "people_id": 25027,
+   "candidate_id": null,
+   "note": "Tameika Devine sits in SD-019; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 25192,
+   "candidate_id": "0e332e20-6f8b-46ab-b977-e7ea4beca4a9",
+   "note": null
+  },
+  {
+   "people_id": 26245,
+   "candidate_id": "11cecc3f-b765-4e0d-b961-0ab9f8eb01bd",
+   "note": null
+  },
+  {
+   "people_id": 26246,
+   "candidate_id": "00c4e4ac-75ab-43c8-886c-eaf26fe3d2d9",
+   "note": null
+  },
+  {
+   "people_id": 26247,
+   "candidate_id": "386682ce-0e39-49c6-bff1-bb21d0cf25b0",
+   "note": null
+  },
+  {
+   "people_id": 26248,
+   "candidate_id": "88b7c60c-6656-40c9-b15b-22f9198e8120",
+   "note": null
+  },
+  {
+   "people_id": 26249,
+   "candidate_id": "ed095014-35c3-44f3-90b3-77509f5d8c36",
+   "note": "LegiScan first name is \"Thomas Lee\"; runs as Lee Gilreath (HD-007)"
+  },
+  {
+   "people_id": 26250,
+   "candidate_id": "4fde0a24-bb36-4f7d-aa98-f2116cda95b7",
+   "note": null
+  },
+  {
+   "people_id": 26251,
+   "candidate_id": "eb39cf68-9ab3-4051-b806-5a2dbf45b609",
+   "note": null
+  },
+  {
+   "people_id": 26252,
+   "candidate_id": "0851c6bb-6f89-418e-8967-bcc3d5d717ee",
+   "note": null
+  },
+  {
+   "people_id": 26253,
+   "candidate_id": "832f66d6-126d-4d2d-9854-0c558f2eeae6",
+   "note": "LegiScan first name is William; runs as Chris Huff (HD-028)"
+  },
+  {
+   "people_id": 26254,
+   "candidate_id": "1335a33b-e46f-415f-b5d2-d26fb490e04f",
+   "note": null
+  },
+  {
+   "people_id": 26255,
+   "candidate_id": "0721cc99-71a9-45db-8013-3db62a0b489e",
+   "note": null
+  },
+  {
+   "people_id": 26256,
+   "candidate_id": "22e058b0-014b-48b0-a5b9-1f6996bf972a",
+   "note": null
+  },
+  {
+   "people_id": 26257,
+   "candidate_id": "adf3163c-edd5-4efd-88b0-875d69639a34",
+   "note": null
+  },
+  {
+   "people_id": 26258,
+   "candidate_id": "bdcdd0c8-9f1d-488f-8320-df361de26618",
+   "note": "LegiScan first name is Richard; runs as Blake Sanders (HD-009)"
+  },
+  {
+   "people_id": 26259,
+   "candidate_id": "3abd596d-6725-4d59-b7f6-89020debc941",
+   "note": null
+  },
+  {
+   "people_id": 26260,
+   "candidate_id": "efde013c-e8c0-4df9-bd44-99bb808790c2",
+   "note": null
+  },
+  {
+   "people_id": 26261,
+   "candidate_id": "cd26a2e4-e3b0-4b30-bbe0-1c721ab574fd",
+   "note": null
+  },
+  {
+   "people_id": 26262,
+   "candidate_id": null,
+   "note": "Allen Blackmon sits in SD-027; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 26263,
+   "candidate_id": null,
+   "note": "JD Chaplin sits in SD-029; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 26264,
+   "candidate_id": null,
+   "note": "Tom Fernandez sits in SD-039; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 26265,
+   "candidate_id": null,
+   "note": "Jeffrey Graham sits in SD-035; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 26266,
+   "candidate_id": null,
+   "note": "Carlisle Kennedy sits in SD-023; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 26267,
+   "candidate_id": null,
+   "note": "Everett Stubbs sits in SD-017; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 26268,
+   "candidate_id": null,
+   "note": "Ed Sutton sits in SD-020; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 26269,
+   "candidate_id": null,
+   "note": "Overture Walker sits in SD-022; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 26270,
+   "candidate_id": null,
+   "note": "Jeff Zell sits in SD-036; the South Carolina Senate is not on the November 2026 ballot (four-year terms last elected in 2024), so no candidate row can exist"
+  },
+  {
+   "people_id": 26272,
+   "candidate_id": null,
+   "note": "Luke Rankin (HD-014) has no November 2026 candidate row. A DIFFERENT Luke Rankin holds SD-033 in this same people file; matching on the name alone would write House votes onto the senator"
+  },
+  {
+   "people_id": 26459,
+   "candidate_id": "e2861160-43f8-4278-82e6-cc04fb0975b8",
+   "note": null
+  },
+  {
+   "people_id": 26480,
+   "candidate_id": "5da859d4-a722-4e89-a638-0f3a7f77e019",
+   "note": null
+  },
+  {
+   "people_id": 26558,
+   "candidate_id": "0d351c66-7250-44c0-9ec5-6844c73c0c4c",
+   "note": null
+  },
+  {
+   "people_id": 26559,
+   "candidate_id": "aa1cb81a-e018-41dc-b62c-0267894c31d5",
+   "note": null
+  },
+  {
+   "people_id": 26593,
+   "candidate_id": "4e26504b-43b4-4bad-a695-b3d7e083b5b6",
+   "note": null
+  }
+ ]
+}

@@ -1,0 +1,228 @@
+{
+  "runId": "rollcall-legiscan-fetch-al-2060-20260902T155204Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "AL-2060",
+  "startedAt": "2026-09-02T15:52:04.699Z",
+  "finishedAt": "2026-09-02T15:52:04.731Z",
+  "datasetDir": "~/legiscan-data/al-2060",
+  "bills": 39,
+  "votes": 26,
+  "people": 138,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "senate",
+      "desc": "Adopt",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5",
+        "HB5"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Read a Third Time and Pass",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2",
+        "HB5",
+        "SB4"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Read A Third Time And Passed As Amended",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5",
+        "SB3",
+        "HB5"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Concur In and Adopt",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5",
+        "SB3"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Passed by House of Origin",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR6",
+        "SR7"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt UIWAGG-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Read Again a Third Time and Pass as Amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Table N6L2JT-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB5"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt 4XDG33-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB5"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt IJ12Z6-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB3"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adopt JU45YY-1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Non Concur and Appoint Conference Committee",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Read a Third Time and Pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB4"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 14,
+    "JR": 7,
+    "R": 18
+  },
+  "sessionIds": {
+    "2060": 39
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

@@ -1,0 +1,244 @@
+// North Dakota outside spending (plan Phase 4, hard facts 4-5): support /
+// oppose groups per candidate from the IE transaction-search harvest.
+//
+// What an IE row is (findings doc, verified live 2026-08-26 / 2026-09-01):
+// one committee's filing allocated to one target candidate, with its own
+// transactionID, a filed Support/Oppose stance, the target named by the
+// registry's candidate label ("Wrigley, Drew H" — the same string the
+// registry row carries in `candidateName`), an election year, and
+// `transactionTotalYTD` = that committee's year-to-date total to the PAYEE
+// (never a report or committee total).
+//
+// Rules (hard fact 4): a committee's money is the sum over unique
+// transactionIDs; equal amounts on the same day are legitimate slate
+// allocations and are never collapsed; the per-(committee, payee, year)
+// YTD control must equal the sum of that pair's unique rows or the whole
+// component is quarantined. Stance is filed, never inferred.
+//
+// Target identity: the linked candidate committee's registry `candidateName`
+// (exact after normalization), never a roster-name guess. When another
+// candidate committee on the same election label carries the same name for
+// a different office or seat, the label denotes two races and the component
+// is suppressed for both (plan: ambiguous resolution is the one unrecoverable
+// error). Two committees of the same office + seat with the same name are
+// one person re-registered — not ambiguous.
+//
+// Fail-closed shapes (each throws; the sync turns a throw into "outside
+// component skipped, prior rows preserved"): a repeated transactionID, a
+// matched row without a Support/Oppose stance, without an election year,
+// with a non-positive amount, without a committee name, with a spender id
+// that is not ten digits, not typed "Independent Expenditures", or a payee
+// group without a YTD control — none was ever observed, so none gets a
+// silent interpretation.
+
+import {
+  NORTH_DAKOTA_CANDIDATE_COMMITTEE_ORG_TYPE,
+  type NorthDakotaCommitteeRow,
+  type NorthDakotaTransactionRow,
+} from "./northDakotaCfrsClient.js";
+import { NORTH_DAKOTA_INDEPENDENT_EXPENDITURE_TYPE } from "./northDakotaCfrsArtifactCache.js";
+import {
+  normalizeNorthDakotaCandidateNameForStorage,
+  northDakotaRegistryElectionLabel,
+  stripNorthDakotaHonorific,
+} from "./northDakotaCandidateCommitteeResolver.js";
+import { normalizeNorthDakotaEntityId } from "./northDakotaFinanceWriter.js";
+import { apiAmountToCents, checkNorthDakotaYtdSemantics } from "./northDakotaPhaseZero.js";
+
+export type NorthDakotaSupportOppose = "support" | "oppose";
+
+export type NorthDakotaOutsideSpendingGroup = {
+  /** The spender's registry entityId (10 digits) — the writer's committee_id. */
+  entityId: string;
+  committeeName: string;
+  supportOppose: NorthDakotaSupportOppose;
+  amount: number;
+};
+
+export type NorthDakotaOutsideSpendingAggregationResult = {
+  supportTotal: number;
+  opposeTotal: number;
+  groups: NorthDakotaOutsideSpendingGroup[];
+  /** Rows in the harvest, rows naming this candidate, rows naming this candidate for this election. */
+  sourceRowCount: number;
+  targetRowCount: number;
+  includedRowCount: number;
+  /** Spender committees whose YTD control was checked (every committee that
+   * appears in an included row, over all of its rows). */
+  ytdCheckedCommitteeCount: number;
+};
+
+/** IE target label / registry candidateName, in comparable form. */
+export function normalizeNorthDakotaIeTargetName(value: string): string {
+  return normalizeNorthDakotaCandidateNameForStorage(stripNorthDakotaHonorific(value));
+}
+
+export type NorthDakotaIeTargetResolution =
+  | { status: "resolved"; targetName: string; registryCandidateName: string }
+  | { status: "unresolved"; reason: "committee_not_in_registry" | "committee_has_no_candidate_name" | "ambiguous_name"; detail: string };
+
+/**
+ * The name IE filers use for the linked candidate: the registry's candidate
+ * label on the linked committee. Ambiguous when another candidate committee
+ * on the election label shares the label for a different office or seat.
+ */
+export function resolveNorthDakotaIeTargetName(input: {
+  entityId: string;
+  electionYear: number;
+  committees: readonly NorthDakotaCommitteeRow[];
+}): NorthDakotaIeTargetResolution {
+  const linked = input.committees.find((row) => row.entityId === input.entityId);
+  if (!linked) {
+    return { status: "unresolved", reason: "committee_not_in_registry", detail: `entityId ${input.entityId} is not in the cached registry` };
+  }
+  if (linked.candidateName === null || !linked.candidateName.trim()) {
+    return { status: "unresolved", reason: "committee_has_no_candidate_name", detail: `entityId ${input.entityId} has no registry candidate name` };
+  }
+  const targetName = normalizeNorthDakotaIeTargetName(linked.candidateName);
+  if (!targetName) {
+    return { status: "unresolved", reason: "committee_has_no_candidate_name", detail: `entityId ${input.entityId} has a blank registry candidate name` };
+  }
+  const election = northDakotaRegistryElectionLabel(input.electionYear);
+  const seat = `${linked.office ?? ""} | ${linked.district ?? ""}`;
+  const clashes = input.committees.filter(
+    (row) =>
+      row.entityId !== input.entityId &&
+      row.orgType === NORTH_DAKOTA_CANDIDATE_COMMITTEE_ORG_TYPE &&
+      row.election === election &&
+      row.candidateName !== null &&
+      normalizeNorthDakotaIeTargetName(row.candidateName) === targetName &&
+      `${row.office ?? ""} | ${row.district ?? ""}` !== seat
+  );
+  if (clashes.length > 0) {
+    return {
+      status: "unresolved",
+      reason: "ambiguous_name",
+      detail: `registry candidate name is shared by ${clashes.length} other ${election} committee(s) for a different office or seat (${clashes
+        .map((row) => row.entityId)
+        .sort()
+        .join(", ")})`,
+    };
+  }
+  return { status: "resolved", targetName, registryCandidateName: linked.candidateName };
+}
+
+function requireStance(row: NorthDakotaTransactionRow): NorthDakotaSupportOppose {
+  if (row.stanceDescription === "Support") return "support";
+  if (row.stanceDescription === "Oppose") return "oppose";
+  throw new Error(`IE transaction ${row.transactionID} has no Support/Oppose stance (${JSON.stringify(row.stanceDescription)})`);
+}
+
+export function aggregateNorthDakotaOutsideSpending(input: {
+  /** Normalized registry candidate label of the linked candidate (resolveNorthDakotaIeTargetName). */
+  targetName: string;
+  electionYear: number;
+  /** Every IE row of the window years, all committees and targets. */
+  rows: readonly NorthDakotaTransactionRow[];
+}): NorthDakotaOutsideSpendingAggregationResult {
+  if (!input.targetName) throw new Error("targetName is required");
+
+  const seenIds = new Set<number>();
+  for (const row of input.rows) {
+    if (seenIds.has(row.transactionID)) {
+      throw new Error(`IE harvest repeats transactionID ${row.transactionID}; amendment representation is unpinned`);
+    }
+    seenIds.add(row.transactionID);
+  }
+
+  const groups = new Map<string, { entityId: string; committeeName: string; supportOppose: NorthDakotaSupportOppose; amountCents: number }>();
+  const rowsBySpender = new Map<string, NorthDakotaTransactionRow[]>();
+  for (const row of input.rows) {
+    const bucket = rowsBySpender.get(row.entityID) ?? [];
+    bucket.push(row);
+    rowsBySpender.set(row.entityID, bucket);
+  }
+
+  let supportCents = 0;
+  let opposeCents = 0;
+  let targetRowCount = 0;
+  let includedRowCount = 0;
+  const includedSpenders = new Set<string>();
+  for (const row of input.rows) {
+    if (row.candidateNameAssocation === null || normalizeNorthDakotaIeTargetName(row.candidateNameAssocation) !== input.targetName) {
+      continue;
+    }
+    targetRowCount += 1;
+    if (row.electionYear === null) {
+      throw new Error(`IE transaction ${row.transactionID} names the candidate but carries no election year`);
+    }
+    if (row.electionYear !== input.electionYear) continue;
+    if (row.transactionTypeDesc !== NORTH_DAKOTA_INDEPENDENT_EXPENDITURE_TYPE) {
+      throw new Error(`IE transaction ${row.transactionID} is typed ${JSON.stringify(row.transactionTypeDesc)}`);
+    }
+    const supportOppose = requireStance(row);
+    const amountCents = apiAmountToCents(row.transactionAmount);
+    if (amountCents <= 0) {
+      throw new Error(`IE transaction ${row.transactionID} has a non-positive amount (${row.transactionAmount})`);
+    }
+    const committeeName = row.committeeName?.trim();
+    if (!committeeName) {
+      throw new Error(`IE transaction ${row.transactionID} has no committee name for entityId ${row.entityID}`);
+    }
+    // The writer's committee_id CHECK is ten digits; a malformed spender id
+    // must fail here (outside component only), not inside the snapshot
+    // transaction where it would roll the direct component back too.
+    let entityId: string;
+    try {
+      entityId = normalizeNorthDakotaEntityId(row.entityID);
+    } catch (error) {
+      throw new Error(`IE transaction ${row.transactionID}: ${error instanceof Error ? error.message : String(error)}`);
+    }
+
+    includedRowCount += 1;
+    includedSpenders.add(row.entityID);
+    if (supportOppose === "support") supportCents += amountCents;
+    else opposeCents += amountCents;
+    const key = `${entityId} ${supportOppose}`;
+    const group = groups.get(key) ?? { entityId, committeeName, supportOppose, amountCents: 0 };
+    group.amountCents += amountCents;
+    groups.set(key, group);
+  }
+
+  // Hard fact 4 control, over ALL of each included spender's rows: the YTD
+  // field is a per-payee aggregate across every target, so the check only
+  // holds on the committee's full row set, never on one candidate's slice.
+  // A payee group with no parseable control is unreconciled money (every
+  // live row carries one), so it quarantines the same as a mismatch.
+  for (const entityId of includedSpenders) {
+    const check = checkNorthDakotaYtdSemantics(rowsBySpender.get(entityId)!);
+    if (check.mismatches.length > 0) {
+      const first = check.mismatches[0]!;
+      throw new Error(
+        `IE committee ${entityId} fails the payee YTD control in ${check.mismatches.length} group(s) ` +
+          `(${first.year} ${first.counterpartyRef}: rows sum ${first.sumCents}c, max YTD ${first.maxYtdCents}c)`
+      );
+    }
+    if (check.missingControlGroupCount > 0) {
+      throw new Error(
+        `IE committee ${entityId} has ${check.missingControlGroupCount} payee group(s) without a transactionTotalYTD control`
+      );
+    }
+  }
+
+  return {
+    supportTotal: supportCents / 100,
+    opposeTotal: opposeCents / 100,
+    groups: [...groups.values()]
+      .sort(
+        (left, right) =>
+          right.amountCents - left.amountCents ||
+          left.supportOppose.localeCompare(right.supportOppose) ||
+          left.entityId.localeCompare(right.entityId)
+      )
+      .map((group) => ({
+        entityId: group.entityId,
+        committeeName: group.committeeName,
+        supportOppose: group.supportOppose,
+        amount: group.amountCents / 100,
+      })),
+    sourceRowCount: input.rows.length,
+    targetRowCount,
+    includedRowCount,
+    ytdCheckedCommitteeCount: includedSpenders.size,
+  };
+}

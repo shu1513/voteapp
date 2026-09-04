@@ -1,0 +1,204 @@
+{
+ "rolls": [
+  {
+   "measure": "AB 1770",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726450,
+   "date": "2026-08-27",
+   "yea": 59,
+   "nay": 16,
+   "title": "Arbitration: health care service plans: Lindalee\u2019s Law."
+  },
+  {
+   "measure": "AB 1770",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726270,
+   "date": "2026-08-26",
+   "yea": 30,
+   "nay": 10,
+   "title": "Arbitration: health care service plans: Lindalee\u2019s Law."
+  },
+  {
+   "measure": "AB 1801",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726033,
+   "date": "2026-08-25",
+   "yea": 59,
+   "nay": 19,
+   "title": "Public agencies: approval: detention facilities."
+  },
+  {
+   "measure": "AB 1801",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725469,
+   "date": "2026-08-19",
+   "yea": 28,
+   "nay": 10,
+   "title": "Public agencies: approval: detention facilities."
+  },
+  {
+   "measure": "AB 1806",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726323,
+   "date": "2026-08-26",
+   "yea": 60,
+   "nay": 19,
+   "title": "Department of Justice."
+  },
+  {
+   "measure": "AB 1806",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725977,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 10,
+   "title": "Department of Justice."
+  },
+  {
+   "measure": "AB 1807",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726148,
+   "date": "2026-08-26",
+   "yea": 60,
+   "nay": 15,
+   "title": "Immigration enforcement: use of state-owned property."
+  },
+  {
+   "measure": "AB 1807",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725665,
+   "date": "2026-08-24",
+   "yea": 30,
+   "nay": 10,
+   "title": "Immigration enforcement: use of state-owned property."
+  },
+  {
+   "measure": "AB 1854",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1702576,
+   "date": "2026-05-27",
+   "yea": 60,
+   "nay": 17,
+   "title": "Legally protected health care activities."
+  },
+  {
+   "measure": "AB 1854",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725697,
+   "date": "2026-08-24",
+   "yea": 30,
+   "nay": 10,
+   "title": "Legally protected health care activities."
+  },
+  {
+   "measure": "AB 1876",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1693257,
+   "date": "2026-05-04",
+   "yea": 56,
+   "nay": 17,
+   "title": "Health care coverage: nondiscrimination."
+  },
+  {
+   "measure": "AB 1876",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725946,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 9,
+   "title": "Health care coverage: nondiscrimination."
+  },
+  {
+   "measure": "AB 1886",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726469,
+   "date": "2026-08-27",
+   "yea": 43,
+   "nay": 20,
+   "title": "Wards: probation."
+  },
+  {
+   "measure": "AB 1886",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726284,
+   "date": "2026-08-26",
+   "yea": 25,
+   "nay": 11,
+   "title": "Wards: probation."
+  },
+  {
+   "measure": "AB 1905",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726125,
+   "date": "2026-08-25",
+   "yea": 51,
+   "nay": 15,
+   "title": "Juveniles: custodial interrogation."
+  },
+  {
+   "measure": "AB 1905",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726124,
+   "date": "2026-08-25",
+   "yea": 26,
+   "nay": 12,
+   "title": "Juveniles: custodial interrogation."
+  },
+  {
+   "measure": "AB 2128",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725924,
+   "date": "2026-08-25",
+   "yea": 58,
+   "nay": 17,
+   "title": "Housing authorities: term limits and work requirements."
+  },
+  {
+   "measure": "AB 2128",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725923,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 9,
+   "title": "Housing authorities: term limits and work requirements."
+  },
+  {
+   "measure": "AB 2186",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725530,
+   "date": "2026-08-20",
+   "yea": 58,
+   "nay": 16,
+   "title": "Personal Income Tax Law: exclusions: reparations programs."
+  },
+  {
+   "measure": "AB 2186",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725424,
+   "date": "2026-08-19",
+   "yea": 28,
+   "nay": 10,
+   "title": "Personal Income Tax Law: exclusions: reparations programs."
+  }
+ ]
+}

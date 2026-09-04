@@ -1,0 +1,26 @@
+[
+ {
+  "recordId": "4affb25b-66c0-46ac-a15b-6d1330aee4b3",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-02 run: this hand-written record describes the same vote as HB 209 roll 1318421 on 2023-05-04 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "3faf2c31-77fa-43e8-812f-cfe816a1c394",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-02 run: this hand-written record describes the same vote as HB 209 roll 1318421 on 2023-05-04 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "b8c23711-5083-4618-9739-99586c11ef10",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-02 run: this hand-written record describes the same vote as HB 209 roll 1318421 on 2023-05-04 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "a14ab33c-7cd2-4a6e-b6ec-eab6dbb1ca7e",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-02 run: this hand-written record describes the same vote as HB 392 roll 1326682 on 2023-05-17 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "fd80bf5a-ea99-47c6-9bf1-c789d27ab3f4",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-02 run: this hand-written record describes the same vote as HB 392 roll 1326682 on 2023-05-17 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "4bd81a49-00a1-40b0-8e2c-c3aa9100fd84",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-02 run: this hand-written record describes the same vote as HB 392 roll 1326682 on 2023-05-17 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-02/JUDGING.md."
+ }
+]

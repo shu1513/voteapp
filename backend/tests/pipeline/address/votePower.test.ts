@@ -378,7 +378,7 @@ describe("explainVotePower", () => {
         stat: "1.8-point margin in 2022",
         detail: "Past results here were very close — a small number of votes could decide the winner.",
         formula:
-          'margin = 1.8 points → "toss-up" → grade high (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, one-sided grades low)',
+          'margin = 1.8 points → "toss-up" → grade high (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise not competitive; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, not competitive grades low)',
       },
     ]);
     expect(explanation.result).toBe("High representation + high decisiveness → My vote power: Very high.");
@@ -414,7 +414,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[1]?.formula).toBe(
-      'margin = 0.625 × 9.2 (2024) + 0.375 × 14.8 (2022) = 11.3 points → "somewhat competitive" → grade normal (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, one-sided grades low)'
+      'margin = 0.625 × 9.2 (2024) + 0.375 × 14.8 (2022) = 11.3 points → "somewhat competitive" → grade normal (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise not competitive; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, not competitive grades low)'
     );
   });
 
@@ -668,7 +668,7 @@ describe("explainVotePower with a current race rating", () => {
   }
 
   const RATING_SCALE =
-    "(d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise one-sided; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, one-sided grades low)";
+    "(d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise not competitive; toss-up and very competitive grade high, competitive and somewhat competitive grade normal, not competitive grades low)";
 
   it("swaps the decisiveness part to analyst-rating copy with the real derivation", () => {
     const explanation = explain({
@@ -745,9 +745,9 @@ describe("explainVotePower with a current race rating", () => {
 
     expect(explanation.parts[1]).toMatchObject({
       grade: "Low",
-      stat: "rated one-sided as of July 30, 2026",
-      detail: "Election analysts currently rate this race one-sided. Rating from Inside Elections.",
-      formula: `IE "Solid Republican" (d=5) → mean 5 → "one-sided" → grade low ${RATING_SCALE}`,
+      stat: "rated not competitive as of July 30, 2026",
+      detail: "Election analysts currently rate this race not competitive. Rating from Inside Elections.",
+      formula: `IE "Solid Republican" (d=5) → mean 5 → "not competitive" → grade low ${RATING_SCALE}`,
     });
     expect(explanation.caveat).toBe(
       "The current race rating comes from a single analyst source, so it is less certain."

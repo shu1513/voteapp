@@ -1,0 +1,194 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725755,
+   "measure_id": "AB 2395",
+   "vote_date": "2026-08-24",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 2395, which would make it easier to settle unpaid child support owed to the state. When a family received CalWORKs cash aid, the parent who owes support owes that money back to the state, and a compromise program lets the state settle that debt for less. Staying current on a support order for a set period is now a hard precondition, and the bill would make it optional rather than required. The amount a local child support agency administrator may compromise would rise from $5,000 to $10,000. A decision that a compromise would not be in the state's best interest is now final and cannot be reviewed, and the bill would delete that bar. From July 1, 2027 the state department would have to consult stakeholders and write regulations creating uniform forms, standards, procedures and notices. The application could not require the applicant to propose a repayment amount, would have to tell them about the complaint and hearing process, and would have to produce a decision within 180 days. Every local agency would have to publish information about the program on its website. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 2395, which would make it easier to settle unpaid child support owed to the state. When a family received CalWORKs cash aid, the parent who owes support owes that money back to the state, and a compromise program lets the state settle that debt for less. Staying current on a support order for a set period is now a hard precondition, and the bill would make it optional rather than required. The amount a local child support agency administrator may compromise would rise from $5,000 to $10,000. A decision that a compromise would not be in the state's best interest is now final and cannot be reviewed, and the bill would delete that bar. From July 1, 2027 the state department would have to consult stakeholders and write regulations creating uniform forms, standards, procedures and notices. The application could not require the applicant to propose a repayment amount, would have to tell them about the complaint and hearing process, and would have to produce a decision within 180 days. Every local agency would have to publish information about the program on its website. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725854,
+   "measure_id": "AB 2495",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 2495, which would widen the ban on using someone's immigration status against them at work. Employers may not now engage in, or direct someone else to engage in, an unfair immigration-related practice to retaliate against a worker for exercising a right under state labor law or a local ordinance. The bill would extend that to any right under a local, state or federal law or regulation applying to employees. It would also bar preventing a person from exercising such a right in the first place, not only retaliating afterwards. It would add a catch-all barring other conduct related to a person's perceived immigration status that would reasonably tend to discourage them from doing something they have a legal right to do, or push them into something they have a right to refuse. That reaches conduct aimed at someone the employer believes is an immigrant, whether or not that is so. A civil penalty of up to $10,000 for each employee for each violation would be added, on top of the existing right to sue. The Senate passed it 30-8. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 2495, which would widen the ban on using someone's immigration status against them at work. Employers may not now engage in, or direct someone else to engage in, an unfair immigration-related practice to retaliate against a worker for exercising a right under state labor law or a local ordinance. The bill would extend that to any right under a local, state or federal law or regulation applying to employees. It would also bar preventing a person from exercising such a right in the first place, not only retaliating afterwards. It would add a catch-all barring other conduct related to a person's perceived immigration status that would reasonably tend to discourage them from doing something they have a legal right to do, or push them into something they have a right to refuse. That reaches conduct aimed at someone the employer believes is an immigrant, whether or not that is so. A civil penalty of up to $10,000 for each employee for each violation would be added, on top of the existing right to sue. The Senate passed it 30-8. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725987,
+   "measure_id": "AB 2510",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 2510, which would protect cash aid for parents working to get their children back from foster care. Under CalWORKs a parent counts as living with a needy child for a period after the child is removed, and stays eligible for aid and childcare if conditions are met. The bill would clarify that a parent is not disqualified because only some of their children were removed, or only some have returned home. A child who has been removed would be exempt from the requirement that every child in the household have age-appropriate immunizations. Where a family's grant was cut as a sanction for not cooperating with child support enforcement, that sanction would end when the child is placed into out-of-home care. The county could not stop aid to the parent's existing assistance unit where the children were placed with an adult who was previously a noncustodial parent. A parent receiving family reunification aid would be exempt from the welfare-to-work participation requirement. None of it takes effect before July 1, 2027, and not until the state's welfare computer system can handle it, and the usual automatic county funding would not apply. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 2510, which would protect cash aid for parents working to get their children back from foster care. Under CalWORKs a parent counts as living with a needy child for a period after the child is removed, and stays eligible for aid and childcare if conditions are met. The bill would clarify that a parent is not disqualified because only some of their children were removed, or only some have returned home. A child who has been removed would be exempt from the requirement that every child in the household have age-appropriate immunizations. Where a family's grant was cut as a sanction for not cooperating with child support enforcement, that sanction would end when the child is placed into out-of-home care. The county could not stop aid to the parent's existing assistance unit where the children were placed with an adult who was previously a noncustodial parent. A parent receiving family reunification aid would be exempt from the welfare-to-work participation requirement. None of it takes effect before July 1, 2027, and not until the state's welfare computer system can handle it, and the usual automatic county funding would not apply. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725849,
+   "measure_id": "AB 2599",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 2599, which would require large long-established companies to search their records for historical ties to slavery. A separate existing law already makes big retailers and manufacturers disclose efforts against forced labor in their present-day supply chains. This bill looks backwards instead. A business operating in California that existed, or whose predecessor existed, on or before December 31, 1964, and takes in more than $100 million worldwide, would have to file a sworn affidavit. The affidavit would verify that the company searched all records held by it and its related entities for evidence of five things. Those are buying or selling enslaved people, using them as collateral, lending money to buy them, insuring such transactions or the people themselves, and providing services that facilitated them. The Civil Rights Department would build a public online platform hosting the affidavits and records within a year of being funded. A covered business bidding on a state contract worth $100,000 or more would also have to certify under penalty of perjury that it filed the affidavit. None of it applies unless the Legislature appropriates money for it. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 2599, which would require large long-established companies to search their records for historical ties to slavery. A separate existing law already makes big retailers and manufacturers disclose efforts against forced labor in their present-day supply chains. This bill looks backwards instead. A business operating in California that existed, or whose predecessor existed, on or before December 31, 1964, and takes in more than $100 million worldwide, would have to file a sworn affidavit. The affidavit would verify that the company searched all records held by it and its related entities for evidence of five things. Those are buying or selling enslaved people, using them as collateral, lending money to buy them, insuring such transactions or the people themselves, and providing services that facilitated them. The Civil Rights Department would build a public online platform hosting the affidavits and records within a year of being funded. A covered business bidding on a state contract worth $100,000 or more would also have to certify under penalty of perjury that it filed the affidavit. None of it applies unless the Legislature appropriates money for it. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726174,
+   "measure_id": "AB 2619",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 2619, which would require data centers to disclose their water use when they seek a business license. Cities and counties license businesses, and nothing now requires a data center to say how much water it expects to use. Before applying for its first license or permit, the owner or operator would have to give its water supplier three figures under penalty of perjury. Those are a good faith estimate of expected water use, the anticipated source, and projected volume for the maximum day, the maximum month and an average year. The same three facts would go on the initial license application itself, again under penalty of perjury. On renewal the operator would report the previous calendar year's annual water use, including total and direct use. Urban water suppliers would have to include the unconstrained demand of data centers, irrigation and other large users when estimating current year demand in their water plans. The rules would be a matter of statewide concern, so they would reach charter cities. The bill requires disclosure only. It sets no limit on how much water a data center may use. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 2619, which would require data centers to disclose their water use when they seek a business license. Cities and counties license businesses, and nothing now requires a data center to say how much water it expects to use. Before applying for its first license or permit, the owner or operator would have to give its water supplier three figures under penalty of perjury. Those are a good faith estimate of expected water use, the anticipated source, and projected volume for the maximum day, the maximum month and an average year. The same three facts would go on the initial license application itself, again under penalty of perjury. On renewal the operator would report the previous calendar year's annual water use, including total and direct use. Urban water suppliers would have to include the unconstrained demand of data centers, irrigation and other large users when estimating current year demand in their water plans. The rules would be a matter of statewide concern, so they would reach charter cities. The bill requires disclosure only. It sets no limit on how much water a data center may use. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1601084,
+   "measure_id": "AB 321",
+   "vote_date": "2025-09-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 321, which widens the window for a judge to reduce a borderline felony to a misdemeanor. Some offenses, known as wobblers, may be punished as either a felony or a misdemeanor at the court's discretion. Such an offense becomes a misdemeanor when the magistrate so determines at or before the preliminary examination, or before a certain order is filed. The bill instead lets the court make that determination at any point before trial. It also provides that once such a motion has been denied, a further motion may be made only on a showing of changed circumstances. The bill does not reclassify any offense itself. It changes only when a judge may exercise a discretion the judge already holds, and it reaches only offenses that are already punishable either way. The Senate passed it 23-13 and it became law.",
+   "nay_description": "Voted against passing Assembly Bill 321, which widens the window for a judge to reduce a borderline felony to a misdemeanor. Some offenses, known as wobblers, may be punished as either a felony or a misdemeanor at the court's discretion. Such an offense becomes a misdemeanor when the magistrate so determines at or before the preliminary examination, or before a certain order is filed. The bill instead lets the court make that determination at any point before trial. It also provides that once such a motion has been denied, a further motion may be made only on a showing of changed circumstances. The bill does not reclassify any offense itself. It changes only when a judge may exercise a discretion the judge already holds, and it reaches only offenses that are already punishable either way. The Senate passed it 23-13 and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1600890,
+   "measure_id": "AB 373",
+   "vote_date": "2025-09-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 373, which makes a lawyer for an adult former foster youth follow that client's instructions. A person aged roughly 18 to 21 who stays in foster care as an adult is called a nonminor dependent, and the juvenile court appoints them a lawyer. State law now says a primary responsibility of that lawyer is to advocate for the protection, safety and physical and emotional wellbeing of the child or nonminor dependent. The bill removes nonminor dependents from that clause, so the duty applies only to children. The lawyer must now represent a nonminor dependent's wishes except where doing so conflicts with their protection or safety, and the bill deletes that exception. The lawyer is simply charged with representing the person's wishes. The existing backstop remains where a court finds a nonminor dependent is not competent to direct counsel. The Senate passed it 30-8 and it became law.",
+   "nay_description": "Voted against passing Assembly Bill 373, which makes a lawyer for an adult former foster youth follow that client's instructions. A person aged roughly 18 to 21 who stays in foster care as an adult is called a nonminor dependent, and the juvenile court appoints them a lawyer. State law now says a primary responsibility of that lawyer is to advocate for the protection, safety and physical and emotional wellbeing of the child or nonminor dependent. The bill removes nonminor dependents from that clause, so the duty applies only to children. The lawyer must now represent a nonminor dependent's wishes except where doing so conflicts with their protection or safety, and the bill deletes that exception. The lawyer is simply charged with representing the person's wishes. The existing backstop remains where a court finds a nonminor dependent is not competent to direct counsel. The Senate passed it 30-8 and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1601664,
+   "measure_id": "AB 39",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 39, which requires larger cities and counties to write a local plan for electrification and clean energy. Every city and county must adopt a general plan with required sections, and none of them covers electrification today. Between January 1, 2027 and January 1, 2030 a city or county with more than 75,000 residents must adopt an electrification, decarbonization or community energy plan, or fold one into its next general plan update. The plan must set local goals and workable measures on six subjects. The first three are expanding electric vehicle charging and removing barriers to it, charging in parking lots and structures and on public streets, and electrifying new and existing buildings including help for low-income households. The rest are rooftop and community solar with microgrids and storage, infrastructure for zero-emission truck fleets, and, with the local utilities, where grid upgrades are needed. It must also address the needs of disadvantaged communities, low-income households and small businesses. A place with a qualifying plan already may designate it instead. The duty is to write a plan. The bill requires no charger, panel or wire to be built, and it may not impose building code requirements. The Senate passed it 30-10 and it became law.",
+   "nay_description": "Voted against passing Assembly Bill 39, which requires larger cities and counties to write a local plan for electrification and clean energy. Every city and county must adopt a general plan with required sections, and none of them covers electrification today. Between January 1, 2027 and January 1, 2030 a city or county with more than 75,000 residents must adopt an electrification, decarbonization or community energy plan, or fold one into its next general plan update. The plan must set local goals and workable measures on six subjects. The first three are expanding electric vehicle charging and removing barriers to it, charging in parking lots and structures and on public streets, and electrifying new and existing buildings including help for low-income households. The rest are rooftop and community solar with microgrids and storage, infrastructure for zero-emission truck fleets, and, with the local utilities, where grid upgrades are needed. It must also address the needs of disadvantaged communities, low-income households and small businesses. A place with a qualifying plan already may designate it instead. The duty is to write a plan. The bill requires no charger, panel or wire to be built, and it may not impose building code requirements. The Senate passed it 30-10 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1601769,
+   "measure_id": "AB 419",
+   "vote_date": "2025-09-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 419, which requires schools to post the state's guide on immigration enforcement where families can find it. Schools may not collect information about the citizenship or immigration status of pupils or their families, except where the law requires it. School boards must already tell parents about the right to a free public education regardless of immigration status, including the Attorney General's Know Your Educational Rights guide. That information could be given through the annual parent notice or any other cost-effective means. The bill requires the guide to be posted in the administrative buildings and on the websites of the local education agency and each of its school sites. It must appear in every language the Attorney General provides, and be updated the school year after any update the Attorney General publishes. The Senate passed it 31-8 and it became law.",
+   "nay_description": "Voted against passing Assembly Bill 419, which requires schools to post the state's guide on immigration enforcement where families can find it. Schools may not collect information about the citizenship or immigration status of pupils or their families, except where the law requires it. School boards must already tell parents about the right to a free public education regardless of immigration status, including the Attorney General's Know Your Educational Rights guide. That information could be given through the annual parent notice or any other cost-effective means. The bill requires the guide to be posted in the administrative buildings and on the websites of the local education agency and each of its school sites. It must appear in every language the Attorney General provides, and be updated the school year after any update the Attorney General publishes. The Senate passed it 31-8 and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1600929,
+   "measure_id": "AB 43",
+   "vote_date": "2025-09-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 43, which keeps California's backstop for rivers that lose federal wild and scenic protection. If Congress removes a California river from the national wild and scenic rivers system, or the federal government exempts it from water project restrictions, the state Natural Resources Secretary must hold a public hearing. The Secretary then decides whether adding the river to the state system is in the state's best interest, and if so adds and classifies it as wild, scenic or recreational. That power, and any designation made under it, were both due to expire at the end of 2025. The bill removes both expiry dates, so the power continues and a designation stays in effect until a statute removes or changes it. State protection may not exceed the length or scope of the former federal designation, and the Legislature may still remove or reclassify one. The Senate passed it 30-10 and it became law.",
+   "nay_description": "Voted against passing Assembly Bill 43, which keeps California's backstop for rivers that lose federal wild and scenic protection. If Congress removes a California river from the national wild and scenic rivers system, or the federal government exempts it from water project restrictions, the state Natural Resources Secretary must hold a public hearing. The Secretary then decides whether adding the river to the state system is in the state's best interest, and if so adds and classifies it as wild, scenic or recreational. That power, and any designation made under it, were both due to expire at the end of 2025. The bill removes both expiry dates, so the power continues and a designation stays in effect until a statute removes or changes it. State protection may not exceed the length or scope of the former federal designation, and the Legislature may still remove or reclassify one. The Senate passed it 30-10 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+[
+ {
+  "recordId": "247713aa-cf78-41f1-b8d7-39e017124f9f",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2103 session batch-02 run: this hand-written record describes the same vote as HB 130 roll 1432866 on 2024-04-23 for Marilyn Lands, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2103/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "125b3c4e-9902-4b66-b102-dd1c5a94b3c6",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2103 session batch-02 run: this hand-written record describes the same vote as HB 36 roll 1436740 on 2024-04-30 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2103/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "87a93893-d82d-4175-9441-c2a912a0cc72",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2103 session batch-02 run: this hand-written record describes the same vote as HB 36 roll 1436740 on 2024-04-30 for Chris Pringle, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2103/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "c8f6508f-f50e-49e7-b170-2ee0d48d461d",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2103 session batch-02 run: this hand-written record describes the same vote as HB 36 roll 1436740 on 2024-04-30 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2103/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "0ddf8b23-e1df-4f8a-abac-82e76cadc553",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2103 session batch-02 run: this hand-written record describes the same vote as HB 36 roll 1436740 on 2024-04-30 for Mark Shirey, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2103/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "9cb986a2-1ae9-471d-a2c9-cb24923c5e28",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2103 session batch-02 run: this hand-written record describes the same vote as HB 36 roll 1436740 on 2024-04-30 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2103/batch-02/JUDGING.md."
+ }
+]

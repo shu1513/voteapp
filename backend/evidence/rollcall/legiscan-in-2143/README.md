@@ -98,14 +98,23 @@ be read without rendering pages as images. See `CODE-FINDINGS.md` section 4.
 for every printed version, so the version a roll actually voted on can be identified by date
 instead of by guessing a filename. See `CODE-FINDINGS.md` section 5.
 
-## State of the work
+## State of the work — the 2025 session is complete
 
-Batches 01 to 03 are imported on the local `voteapp` database only: **820 records across 102
-candidates with 666 area tags, over nine measures and sixteen rolls.** Batch-04 read twelve
-more measures and kept none of them. **Production holds no Indiana records.**
+**Every one of the 68 divided-and-enacted measures in this session has been read in full and
+dispositioned.** No roll is left unbatched.
 
-34 measures and 68 divided-and-enacted rolls remain, each dispositioned in
-`survey/divided-enacted-worklist.tsv`; two still carry the `needs member-list check` flag.
-Most of what is left is the session's omnibus work, where the keep rate should be expected to
-be low.
+Batches 01 to 03 and 05 to 09 are imported on the local `voteapp` database: **1,394 records
+across 102 candidates, over twenty-one measures and thirty-two rolls.** Batches 04 and 10 read
+fourteen more measures between them and kept none. **Production holds no Indiana records.**
+
+Across both Indiana sessions the total is **2,721 live roll-call records over 104 candidates
+with 2,159 area tags**.
+
+The tail was worth working, and the early prediction that it would not be was wrong. Batches 05
+to 10 read 32 measures and kept 10, and the keeps clustered in bills whose titles look like
+omnibus work and whose contents are not: HB 1003 and HB 1004 on health costs, HB 1680 on
+elections, SB 358 on reading. The measures that genuinely had no single direction were the ones
+that said so in their own text, not in their titles: the budget, SB 1, HB 1461 on road funding,
+HB 1427, HB 1515. **"Various ... matters" is a prompt to read, not a reason to drop.**
+
 The 2026 Regular Session (LegiScan session 2234) is complete and has never been surveyed.

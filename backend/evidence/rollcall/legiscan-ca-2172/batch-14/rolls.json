@@ -1,0 +1,104 @@
+{
+ "rolls": [
+  {
+   "measure": "SB 1037",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725821,
+   "date": "2026-08-24",
+   "yea": 59,
+   "nay": 15,
+   "title": "Health care coverage: rate review."
+  },
+  {
+   "measure": "SB 1037",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725860,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 10,
+   "title": "Health care coverage: rate review."
+  },
+  {
+   "measure": "SB 1093",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725624,
+   "date": "2026-08-20",
+   "yea": 48,
+   "nay": 17,
+   "title": "Mobilehome parks: disaster assistance."
+  },
+  {
+   "measure": "SB 1093",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725778,
+   "date": "2026-08-24",
+   "yea": 30,
+   "nay": 10,
+   "title": "Mobilehome parks: disaster assistance."
+  },
+  {
+   "measure": "SB 1164",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725986,
+   "date": "2026-08-25",
+   "yea": 59,
+   "nay": 18,
+   "title": "Elections."
+  },
+  {
+   "measure": "SB 1164",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726611,
+   "date": "2026-08-27",
+   "yea": 29,
+   "nay": 10,
+   "title": "Elections."
+  },
+  {
+   "measure": "SB 1173",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726161,
+   "date": "2026-08-26",
+   "yea": 44,
+   "nay": 19,
+   "title": "Jury instructions: lesser related offenses."
+  },
+  {
+   "measure": "SB 1173",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726574,
+   "date": "2026-08-27",
+   "yea": 28,
+   "nay": 10,
+   "title": "Jury instructions: lesser related offenses."
+  },
+  {
+   "measure": "SB 1237",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725982,
+   "date": "2026-08-25",
+   "yea": 59,
+   "nay": 19,
+   "title": "Civil Rights Department."
+  },
+  {
+   "measure": "SB 1237",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726381,
+   "date": "2026-08-26",
+   "yea": 30,
+   "nay": 10,
+   "title": "Civil Rights Department."
+  }
+ ]
+}

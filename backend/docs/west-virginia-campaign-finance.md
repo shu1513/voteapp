@@ -343,9 +343,118 @@ municipal with municipal recorders through 2026 — **CFRS is not a complete sou
 elections filed **after 2027-01-01** go to the SOS. Re-check CFRS + bulk files after that
 date; do not assume back-migration of older local filings.
 
-## VoteApp-side scope note
+## Phase 2 local live run (2026-09-03, local DB only)
 
-Local DB currently has almost no WV state races for 2026: 2 US House + 1 US Senate races
-(FEC-covered) and a handful of municipal rows. **Zero House of Delegates / State Senate /
-judicial elections are rostered.** A WV adapter has nothing to attach to until those
-rosters exist — WV rostering is the real prerequisite, not the finance client.
+Rosters arrived 2026-09-02 (119 House/Senate contests, 242 `candidate_elections` rows,
+all `declared`). Run, in order, from `backend/` with the two flags in `.env`:
+
+```text
+npm run west-virginia-candidates:finance:raw:refresh -- --election-year 2026 --force
+npm run west-virginia-candidates:finance:auto-link -- --max-candidates 300
+npm run west-virginia-candidates:finance:sync-due -- --dry-run --no-auto-link --max-candidates 300
+npm run west-virginia-candidates:finance:sync-due -- --no-auto-link --max-candidates 300
+```
+
+Results: refresh 9 artifacts (REPS 2025/26/27, CON/EXP/API-CON 2025+2026; EXP recovered
+310 + 428 bad-width rows, as in Phase 1). Auto-link **228 / 242** (217 on the Phase 1
+resolver, +11 after the changes below). **15 manual links** (list below) close the rest,
+so **all 242 roster rows are linked** through 243 links — Marta Beck holds two, see the
+same-candidate note. Sync succeeded on every link; each window year reconciled cent- and
+multiset-exact, 36 amended API rows absorbed. Across the 218 committees with in-window
+rows: **$5,368,402 received, of which $4,645,349 is the qualifying contributions the app
+publishes as "raised"** (receipts also carry self-funding, other income and transfers,
+which the coverage note excludes), and **$3,212,818 spent**. Top raised Takubo $266k,
+Barrett $229k, Oliverio $186k.
+
+**A candidate may hold more than one committee.** The links table is unique on
+(candidate, election, committee), and the shared ballot-lookup loader sums summaries
+across all of a candidate's active links, so a second link is the supported way to
+represent this — no summation policy of our own. When a candidate has two,
+`controlled_committee_id` publishes as null, since no single committee controls the
+money. Only pair committees this way after checking they are disjoint (see Beck below).
+
+### Code changes forced by the live evidence
+
+- **Resolver accepts registry office `Undeclared` for the same seat.** 21 "2026 Election"
+  committees were registered before the candidate declared and keep office `Undeclared`
+  (seat number filled) after certification — it is their only 2026 committee. Same seat
+  + full-name rules still apply; a declared + undeclared pair for one person stays
+  ambiguous. Known limit: an Undeclared row has no chamber, so the same seat number in
+  the other chamber reaches it too; only a same-named second person on that seat could
+  mislink, which the exact-office path cannot catch either. Unlocked 6 auto-links (Beach-Burge, Horst, Thorne, Young — 200 rows —,
+  Pushkin, Holden) plus Hillenbrand by hand.
+- **Double-quoted call names become parentheticals** on both sides before matching, so
+  the shared matcher reads them as first-name aliases: `Jeffries, Warren "Dean"` ↔
+  "Dean Jeffries", `Carl "Robbie" Martin` ↔ "Martin, Carl Robert" (was a ROBBIE/ROBERT
+  middle-name conflict).
+- **Nickname table** (`personFirstNameNicknames.ts`, shared): EDMUND/ED/EDDIE,
+  NATHAN/NATE, NATHANIEL/NATE, PHILIP/PHIL, PHILLIP/PHIL (+ spelling pair), WESLEY/WES.
+  Unlocked Wagoner, Stansberry, Mallow, Holden.
+- **Zero in-window rows ⇒ NULL totals, not $0.** 25 linked committees have no CON/EXP
+  row in 2025–2026 at all; 21 registered in 2026 (registry gives the year only), so few
+  or no filings were due yet. The sync writes the summary row (so the due list sees it synced)
+  with NULL totals and no breakdowns; the loader shows "unavailable". Re-sync after each
+  filing wave (General report due 2026-10-23) turns them into numbers.
+
+### Manual links (link_source `manual`; same seat and "2026 Election" unless noted)
+
+| Roster | entityId | Registry name / evidence |
+|---|---|---|
+| C. D. Caldwell (HD 21) | 1010003677 | Caldwell, Carl Dean II — initials |
+| Charles R. Sheedy Sr (HD 7) | 1010003517 | registry says "Jr."; committee is "Committee to Re-Elect Charles R. Sheedy Sr."; only Sheedy on the seat |
+| D.R. Buck Jennings (HD 84) | 1010003791 | Jennings, DR Buck — dotted initials |
+| David Green (HD 36) | 1010003526 | Green, Stephen David; "David Green for WV" |
+| Henry Corby Dillon (HD 29) | 1010003599 | Dillon, Henry Corbett; 2024 row spelled Corby |
+| Mandy Weirich (HD 67) | 1010003739 | Weirich, Mandana R; "Mandy for WV" |
+| Michael B. (Mickey) Browning (HD 33) | 1010003924 | Browning, Michael Mickey; "Mickey for House" |
+| Paige Reiring (HD 79) | 1010003958 | Reiring, Sydney Paige; "Paige Reiring for WV" |
+| Ray Canterbury (HD 47) | 1010003767 | Canterbury, Denny Ray Jr.; 2024 row "Canterbury, Ray" |
+| Rick Hillenbrand (HD 88) | 1010003520 | Hillenbrand, Frederick Rick III (Undeclared 88); 2022/2024 rows HD 88 |
+| S. Chris Anders (HD 97) | 1010003541 | Anders, Stephen Christian; "Anders for WV" |
+| Taylor Richmond (SD 13) | 1010003961 | re-registered pair; twin 1010003964 (Terminated) has zero cached rows |
+| Marta Beck (HD 98) | 1010003604 **and** 1010003840 | both committees, see below |
+| Christopher Marcus Ratliff (HD 45) | 1010003722 | registry files it under HD 50; the certified feed names this committee for his HD 45 write-in candidacy, see below |
+
+### The two cases the resolver could not decide (settled 2026-09-03)
+
+**Marta Beck, HD 98 — both committees linked.** She registered "Friends of Marta Beck"
+in 2025 (1010003604), terminated it, and registered a second committee under the same
+name in 2026 (1010003840). Both carry money inside the cycle window, which is why the
+resolver reported the pair ambiguous. Evidence gathered before pairing them: **zero
+identical (date, amount, contributor) rows across the two**, and **no transfer between
+them** — the closed committee's last act was a "Disbursement of Excess Funds" back to
+the candidate, not a hand-off — so the money is disjoint and summing cannot double-count.
+
+| Committee | In-window rows | Receipts | Qualifying contributions | Spent |
+|---|---|---|---|---|
+| 1010003604 (Terminated) | 8 contributions, 5 expenditures | $1,610.00 | $1,610.00 | $769.06 |
+| 1010003840 (Active) | 24 contributions, 23 expenditures | $3,195.67 | $2,257.29 | $579.09 |
+
+Linking only the Active committee would have understated her by $1,610, a third of her
+cycle money. With both linked the loader publishes $3,867.29 raised and $1,348.15 spent,
+and merges the occupation and size breakdowns. The 2025 committee's pre-window money
+($958.31, before 2025-07-01) stays out, the same rule everyone else gets.
+
+**Christopher Marcus Ratliff, HD 45 — linked despite the district mismatch.** The
+registry files entity 1010003722 under House of Delegates **50**, so the exact-seat
+auto-linker skipped him. The SOS certified candidate feed settles it: he is a **write-in**
+candidate in **HD 45** (filed 2026-08-07), and the feed's own `committeeName` for him is
+"COMMITTEE TO ELECT CHRISTOPHER RATLIFF" — the exact `orgName` of 1010003722. No other
+Ratliff runs for either seat. The roster is right and the committee registration's
+district is stale. He has one contribution and one expenditure in window: $53.00
+received, all Other Income, so **$0 raised** and $47.50 spent.
+
+Certified-feed recipe (it decided this case, and the host serves an incomplete TLS
+chain): `POST https://candidates.wvsos.gov/candidate-web-api/candidates` with
+`{"size":5000}` (add `"candidateType":"W"` for write-ins — Ratliff appears only there),
+a browser `User-Agent` plus `Origin`/`Referer`, and Node run with
+`NODE_EXTRA_CA_CERTS=<the Entrust intermediate in westVirginiaCfrsIntermediateCa.ts>`.
+Rows arrive under `data.candidates`; the seat is in `officeName`, not a district field.
+
+### Operator notes
+
+- Auto-link fetches the registry live (shares the sync flag); sync is cache-only.
+  Re-run refresh before every sync wave; `--force` bypasses only the refresh flag.
+- Prod (Phase 4): apply migration 267, set `WEST_VIRGINIA_CAMPAIGN_FINANCE_ENABLED`
+  (read) in Render — already `"true"` in `render.yaml` — keep the sync flag off, promote
+  the five `wv_candidate_finance_*` tables, deploy. Nothing is in prod yet.
