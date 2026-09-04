@@ -4,6 +4,7 @@ import {
   buildKansasCfrUrl,
   collectKansasCfrGridPages,
   createKansasCfrSession,
+  isKansasGridCountMismatch,
   type KansasCfrPage,
 } from "../../../src/pipeline/kansasFinance/kansasCfrViewerClient.js";
 import { parseKansasHiddenFields } from "../../../src/pipeline/kansasFinance/kansasCfrViewerParsers.js";
@@ -132,5 +133,39 @@ describe("collectKansasCfrGridPages", () => {
     const session = pagingSession({}, []);
 
     await expect(collectKansasCfrGridPages(session, page, GRID)).rejects.toThrow("no lblRecordCount");
+  });
+});
+
+describe("collectKansasCfrGridPages record-count drift", () => {
+  it("fails closed when a later page reports a different record count, even when the walked total still adds up", async () => {
+    // 40 records at the search; a filing lands before Page$2 is fetched.
+    // Page 2 says 41 and still renders 20 rows (shifted by one), so the
+    // walked total is 40 = page 1's count: without the per-page check this
+    // would pass with one row duplicated and one dropped.
+    const names = (offset: number) => Array.from({ length: 20 }, (_, i) => `ROW${offset + i}`);
+    const page1 = gridPageHtml(names(0), 40, "vs-1", { current: 1, pageCount: 2 });
+    const page2 = gridPageHtml(names(19), 41, "vs-2", { current: 2, pageCount: 3 });
+    const session = pagingSession({ Page$2: page2 }, []);
+
+    const failure = await collectKansasCfrGridPages(session, pageFromHtml(page1), GRID).catch((error: unknown) => error);
+    expect(String((failure as Error).message)).toContain("page 2 reports 41 records but page 1 reported 40");
+    expect(isKansasGridCountMismatch(failure)).toBe(true);
+  });
+
+  it("classifies the walked-total mismatch as the same drift, and other failures as not", async () => {
+    // 41 records, page 2 renders only 20 of the expected 21 (a filing withdrawn mid-walk).
+    const names = (offset: number) => Array.from({ length: 20 }, (_, i) => `ROW${offset + i}`);
+    const page1 = gridPageHtml(names(0), 41, "vs-1", { current: 1, pageCount: 3 });
+    const page2 = gridPageHtml(names(20), 41, "vs-2", { current: 2, pageCount: 3 });
+    const page3 = gridPageHtml([], 41, "vs-3", { current: 3, pageCount: 3 });
+    const session = pagingSession({ Page$2: page2, Page$3: page3 }, []);
+    const failure = await collectKansasCfrGridPages(session, pageFromHtml(page1), GRID).catch((error: unknown) => error);
+    expect(String((failure as Error).message)).toContain("rendered no rows");
+    expect(isKansasGridCountMismatch(failure)).toBe(false);
+
+    const stale = pagingSession({ Page$2: page1 }, []);
+    const staleFailure = await collectKansasCfrGridPages(stale, pageFromHtml(page1), GRID).catch((error: unknown) => error);
+    expect(String((staleFailure as Error).message)).toContain("pager shows page 1, expected 2");
+    expect(isKansasGridCountMismatch(staleFailure)).toBe(false);
   });
 });

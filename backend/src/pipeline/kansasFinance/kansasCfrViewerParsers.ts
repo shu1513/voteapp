@@ -13,6 +13,8 @@
 // - Schedule A itemized rows (Phase 2): one <tr> of seven <td>s per row;
 //   only the address/zip carry id-stamped spans (Repeater2_lblAddress_N,
 //   Repeater2_lblZip_N), everything else is free text inside the cells.
+// - Schedule B itemized rows (Phase 2): same anchors, one <tr> of five
+//   <td>s — date, name+address, occupation, description, value.
 // - contribution export: one <span id="lblField_N"> set per row.
 // - candidate-filings grids: e-filed rows carry lblDate_N and postback name
 //   links; paper rows carry lblOriginalDate_N, an <img id="..._paper_N"
@@ -299,6 +301,23 @@ export function parseKansasScheduleATotals(html: string): KansasScheduleATotals 
   };
 }
 
+export type KansasScheduleBTotals = {
+  /** "Total Itemized (over $100) In-Kind Contributions". */
+  totalItemizedCents: number | null;
+  /** "Total Unitemized ($100 or less) In-Kind Contributions". */
+  totalUnitemizedCents: number | null;
+  /** "TOTAL IN-KIND CONTRIBUTIONS THIS PERIOD" = cover line 6 (live: 5/5 Governor 2026 covers). */
+  totalInKindCents: number | null;
+};
+
+export function parseKansasScheduleBTotals(html: string): KansasScheduleBTotals {
+  return {
+    totalItemizedCents: parseKansasMoneyCents(spanValue(html, "lblTotalItemized")),
+    totalUnitemizedCents: parseKansasMoneyCents(spanValue(html, "lblTotalUnitemized")),
+    totalInKindCents: parseKansasMoneyCents(spanValue(html, "lblTotalInKind")),
+  };
+}
+
 export type KansasScheduleCTotals = {
   totalItemizedCents: number | null;
   totalUnitemizedCents: number | null;
@@ -374,37 +393,57 @@ function cellInnerHtmls(rowHtml: string): string[] {
   return [...rowHtml.matchAll(/<td(?:\s[^>]*)?>([\s\S]*?)<\/td>/gi)].map((match) => match[1]!);
 }
 
-export function parseKansasScheduleARows(html: string): KansasScheduleARows {
-  const rows: KansasScheduleARow[] = [];
+/**
+ * The itemized <tr>s of a schedule page (Schedules A and B share the
+ * Repeater2 address/zip anchors): each row's cells, or a malformed count
+ * for rows that carried the anchor but not `cellCount` cells.
+ */
+function collectKansasScheduleRows(html: string, cellCount: number): { rows: { index: number; cells: string[] }[]; malformedRowCount: number } {
+  const rows: { index: number; cells: string[] }[] = [];
   let malformedRowCount = 0;
   for (const rowMatch of html.matchAll(/<tr(?:\s[^>]*)?>([\s\S]*?)<\/tr>/gi)) {
     const rowHtml = rowMatch[1]!;
     const indexMatch = /id="Repeater2_lblAddress_(\d+)"/.exec(rowHtml);
     if (!indexMatch) continue;
     const cells = cellInnerHtmls(rowHtml);
-    if (cells.length !== SCHEDULE_A_CELL_COUNT) {
+    if (cells.length !== cellCount) {
       malformedRowCount += 1;
       continue;
     }
+    rows.push({ index: Number.parseInt(indexMatch[1]!, 10), cells });
+  }
+  return { rows, malformedRowCount };
+}
+
+/** Name (first rendered line), address lines, and the zip span of a contributor cell. */
+function parseKansasContributorCell(cellHtml: string): { contributorName: string; addressLines: string[]; zip: string } {
+  const lines = cellLines(cellHtml);
+  const zipMatch = /<span id="Repeater2_lblZip_\d+"[^>]*>([^<]*)<\/span>/.exec(cellHtml);
+  return {
+    contributorName: lines[0] ?? "",
+    addressLines: lines.slice(1),
+    zip: zipMatch ? decodeKansasHtmlText(zipMatch[1]!).trim() : "",
+  };
+}
+
+export function parseKansasScheduleARows(html: string): KansasScheduleARows {
+  const collected = collectKansasScheduleRows(html, SCHEDULE_A_CELL_COUNT);
+  const rows = collected.rows.map(({ index, cells }) => {
     const [dateCell, contributorCell, tenderCell, occupationCell, primaryCell, generalCell, amountCell] = cells as [
       string, string, string, string, string, string, string,
     ];
-    const contributorLines = cellLines(contributorCell);
-    const zipMatch = /<span id="Repeater2_lblZip_\d+"[^>]*>([^<]*)<\/span>/.exec(contributorCell);
-    rows.push({
-      index: Number.parseInt(indexMatch[1]!, 10),
+    return {
+      index,
       date: cellLines(dateCell).join(" "),
-      contributorName: contributorLines[0] ?? "",
-      addressLines: contributorLines.slice(1),
-      zip: zipMatch ? decodeKansasHtmlText(zipMatch[1]!).trim() : "",
+      ...parseKansasContributorCell(contributorCell),
       tenderType: cellLines(tenderCell).join(" "),
       occupation: cellLines(occupationCell).join(" "),
       primaryTotalCents: parseKansasMoneyCents(cellLines(primaryCell).join("")),
       generalTotalCents: parseKansasMoneyCents(cellLines(generalCell).join("")),
       amountCents: parseKansasMoneyCents(cellLines(amountCell).join("")),
-    });
-  }
-  return { rows, malformedRowCount };
+    };
+  });
+  return { rows, malformedRowCount: collected.malformedRowCount };
 }
 
 export type KansasScheduleACheck = {
@@ -433,6 +472,95 @@ export function checkKansasScheduleA(parsed: KansasScheduleARows, totals: Kansas
       totalReceiptsCents !== null &&
       totalItemizedCents + totalUnitemizedCents + politicalMaterialsCents + contributorUnknownCents === totalReceiptsCents,
   };
+}
+
+// ---------------------------------------------------------------------------
+// Schedule B itemized rows (Phase 2).
+//
+// Live shape (Governor 2026, five reports captured 2026-09-03): each
+// itemized in-kind contribution is one <tr> of five <td>s — date,
+// name+address (same Repeater2 spans as Schedule A, zip may carry +4),
+// occupation, description ("Food and Drink", "Donation of Signs"), value.
+// There is no tender column and no running phase totals. The sum of every
+// Value must equal lblTotalItemized cent-exact, itemized + unitemized must
+// equal lblTotalInKind, and lblTotalInKind equalled cover line 6 on every
+// captured report. A filer may itemize under the $100 line ($50 rows seen).
+
+export type KansasScheduleBRow = {
+  /** Repeater2 row index from the address/zip span ids. */
+  index: number;
+  /** As rendered ("01/30/26"). */
+  date: string;
+  contributorName: string;
+  addressLines: string[];
+  zip: string;
+  /** Free text; "" when the cell is blank (an entity, or at or under $150). */
+  occupation: string;
+  /** Free text ("Food and Drink"). */
+  description: string;
+  valueCents: number | null;
+};
+
+export type KansasScheduleBRows = {
+  rows: KansasScheduleBRow[];
+  /** <tr>s that carried a Repeater2 span but not the five expected cells (structural drift). */
+  malformedRowCount: number;
+};
+
+const SCHEDULE_B_CELL_COUNT = 5;
+
+export function parseKansasScheduleBRows(html: string): KansasScheduleBRows {
+  const collected = collectKansasScheduleRows(html, SCHEDULE_B_CELL_COUNT);
+  const rows = collected.rows.map(({ index, cells }) => {
+    const [dateCell, contributorCell, occupationCell, descriptionCell, valueCell] = cells as [string, string, string, string, string];
+    return {
+      index,
+      date: cellLines(dateCell).join(" "),
+      ...parseKansasContributorCell(contributorCell),
+      occupation: cellLines(occupationCell).join(" "),
+      description: cellLines(descriptionCell).join(" "),
+      valueCents: parseKansasMoneyCents(cellLines(valueCell).join("")),
+    };
+  });
+  return { rows, malformedRowCount: collected.malformedRowCount };
+}
+
+export type KansasScheduleBCheck = {
+  /** Every row had five cells and a parseable Value. */
+  rowsParsed: boolean;
+  /** Sum of row Values equals lblTotalItemized cent-exact. */
+  itemizedSumMatchesTotal: boolean;
+  /** Form identity: itemized + unitemized = total in-kind. */
+  totalsArithmeticOk: boolean;
+};
+
+/** Schedule B self-check; a schedule failing any line is quarantined, never aggregated. */
+export function checkKansasScheduleB(parsed: KansasScheduleBRows, totals: KansasScheduleBTotals): KansasScheduleBCheck {
+  const rowsParsed = parsed.malformedRowCount === 0 && parsed.rows.every((row) => row.valueCents !== null);
+  const rowSum = parsed.rows.reduce((sum, row) => sum + (row.valueCents ?? 0), 0);
+  const { totalItemizedCents, totalUnitemizedCents, totalInKindCents } = totals;
+  return {
+    rowsParsed,
+    itemizedSumMatchesTotal: rowsParsed && totalItemizedCents !== null && rowSum === totalItemizedCents,
+    totalsArithmeticOk:
+      totalItemizedCents !== null &&
+      totalUnitemizedCents !== null &&
+      totalInKindCents !== null &&
+      totalItemizedCents + totalUnitemizedCents === totalInKindCents,
+  };
+}
+
+/** One opened Schedule A page: its rows and its total lines. */
+export type KansasScheduleA = { rows: KansasScheduleARows; totals: KansasScheduleATotals };
+/** One opened Schedule B page: its rows and its total lines. */
+export type KansasScheduleB = { rows: KansasScheduleBRows; totals: KansasScheduleBTotals };
+
+export function parseKansasScheduleA(html: string): KansasScheduleA {
+  return { rows: parseKansasScheduleARows(html), totals: parseKansasScheduleATotals(html) };
+}
+
+export function parseKansasScheduleB(html: string): KansasScheduleB {
+  return { rows: parseKansasScheduleBRows(html), totals: parseKansasScheduleBTotals(html) };
 }
 
 // ---------------------------------------------------------------------------

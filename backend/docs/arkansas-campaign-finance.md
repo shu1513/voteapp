@@ -126,9 +126,30 @@ registration-scoped `GetTransactionDetails` (TCON) path:
   once, all at version 1 — so the 7526 overshoot is transactions an amendment
   removed surviving as their own rows, not duplicate versions. A max-version
   dedupe cannot repair overshoots; only report-lineage scoping could.
-- Wilson (11847, the Phase 0 loan-heavy gold filer) now carries no
-  `electionYear` on his State Senate registration, so he is outside the
-  cycle-pinned v1 scope.
+- Two filers in the Phase 4 cohort UNDERSHOOT: Brannan (7471) receipts sum
+  to $250 below `totalRaised` and Smith (8367) to $19.12 below, with no
+  in-kind or interest row explaining the gap (probe 2026-09-02). Amendment
+  leftovers therefore do not only add money; the exact-sum gate withholds
+  breakdowns in both directions.
+- Year-less registrations: 61 of the 480 live legislative candidate rows
+  carry no `electionYear` (all `filingYear` 2026/2028, 54 Active), including
+  active 2026 candidates (Holladay HD70 $80.6k, Teeter HD44, Rankin Baker
+  HD99, Heron HD14) and Wilson (11847, the Phase 0 loan-heavy gold filer).
+  Auto-link never matches them (no cycle evidence); the sync accepts an
+  entity's single year-less registration for the linked office and
+  district once a link pins the cycle.
+
+## Phase 4 live run (2026-09-02, local)
+
+163 eligible Nov-2026 candidates → 141 auto-linked + 18 manual links (see
+plan-arkansas-finance.md Phase 4 for the evidence list) + 3 with no
+registration (two Libertarians, one Democrat) + 1 withheld (Dean Hunter,
+legal name unconfirmed). 159/159 syncs succeeded: $17.45M raised, $11.16M
+spent, 7 negative balances, 143 reconciled to the cent, 16 quarantined
+(largest Deitchler +$70,128.10 and Puryear +$45,128.73; two undershoots
+above). 2,016 breakdown rows. All 159 read back through the ballot-lookup
+loader. Prod promotion is a user-run one-transaction TRUNCATE + data-only
+restore (recipe in the plan doc); scheduled sync stays off.
 
 ## Donor occupation (verified — shippable)
 

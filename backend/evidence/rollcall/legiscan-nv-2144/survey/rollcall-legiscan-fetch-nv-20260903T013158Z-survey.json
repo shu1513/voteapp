@@ -1,0 +1,247 @@
+{
+  "runId": "rollcall-legiscan-fetch-nv-20260903T013158Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "NV",
+  "startedAt": "2026-09-03T01:31:58.379Z",
+  "finishedAt": "2026-09-03T01:31:59.258Z",
+  "datasetDir": "~/legiscan-data/nv-2144/NV/2025-2025_83rd_Legislature",
+  "bills": 1164,
+  "votes": 1333,
+  "people": 95,
+  "fileErrors": [
+    {
+      "file": "bill/AB160A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB160A"
+    },
+    {
+      "file": "bill/AB172A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB172A"
+    },
+    {
+      "file": "bill/AB201A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB201A"
+    },
+    {
+      "file": "bill/AB218A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB218A"
+    },
+    {
+      "file": "bill/AB224A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB224A"
+    },
+    {
+      "file": "bill/AB242A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB242A"
+    },
+    {
+      "file": "bill/AB243A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB243A"
+    },
+    {
+      "file": "bill/AB246A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB246A"
+    },
+    {
+      "file": "bill/AB258A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB258A"
+    },
+    {
+      "file": "bill/AB281A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB281A"
+    },
+    {
+      "file": "bill/AB305A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB305A"
+    },
+    {
+      "file": "bill/AB319A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB319A"
+    },
+    {
+      "file": "bill/AB322A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB322A"
+    },
+    {
+      "file": "bill/AB334A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB334A"
+    },
+    {
+      "file": "bill/AB340A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB340A"
+    },
+    {
+      "file": "bill/AB371A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB371A"
+    },
+    {
+      "file": "bill/AB383A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB383A"
+    },
+    {
+      "file": "bill/AB437A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB437A"
+    },
+    {
+      "file": "bill/AB439A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB439A"
+    },
+    {
+      "file": "bill/AB498A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB498A"
+    },
+    {
+      "file": "bill/AB527A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB527A"
+    },
+    {
+      "file": "bill/AB74A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AB74A"
+    },
+    {
+      "file": "bill/AJR5A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AJR5A"
+    },
+    {
+      "file": "bill/AJR6A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: AJR6A"
+    },
+    {
+      "file": "bill/SB104A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB104A"
+    },
+    {
+      "file": "bill/SB246A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB246A"
+    },
+    {
+      "file": "bill/SB262A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB262A"
+    },
+    {
+      "file": "bill/SB272A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB272A"
+    },
+    {
+      "file": "bill/SB275A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB275A"
+    },
+    {
+      "file": "bill/SB301A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB301A"
+    },
+    {
+      "file": "bill/SB314A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB314A"
+    },
+    {
+      "file": "bill/SB319A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB319A"
+    },
+    {
+      "file": "bill/SB335A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB335A"
+    },
+    {
+      "file": "bill/SB371A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB371A"
+    },
+    {
+      "file": "bill/SB384A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB384A"
+    },
+    {
+      "file": "bill/SB395A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB395A"
+    },
+    {
+      "file": "bill/SB400A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB400A"
+    },
+    {
+      "file": "bill/SB419A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB419A"
+    },
+    {
+      "file": "bill/SB440A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB440A"
+    },
+    {
+      "file": "bill/SB443A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB443A"
+    },
+    {
+      "file": "bill/SB60A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB60A"
+    },
+    {
+      "file": "bill/SB76A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB76A"
+    },
+    {
+      "file": "bill/SB78A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB78A"
+    },
+    {
+      "file": "bill/SB81A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB81A"
+    },
+    {
+      "file": "bill/SB88A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SB88A"
+    },
+    {
+      "file": "bill/SJR7A.json",
+      "error": "LegiScan bill_number is not <letters><digits>: SJR7A"
+    }
+  ],
+  "rows": [
+    {
+      "chamber": "senate",
+      "desc": "Senate Final Passage",
+      "count": 670,
+      "withoutMemberList": 0,
+      "minTotal": 2,
+      "maxTotal": 21,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB1",
+        "AB171",
+        "SB96"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Final Passage",
+      "count": 663,
+      "withoutMemberList": 0,
+      "minTotal": 42,
+      "maxTotal": 42,
+      "billTypes": [
+        "B",
+        "JR"
+      ],
+      "sampleBills": [
+        "SB1",
+        "AB171",
+        "AB39"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 1109,
+    "CR": 12,
+    "JR": 25,
+    "R": 17,
+    "IP": 1
+  },
+  "sessionIds": {
+    "2144": 1164
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

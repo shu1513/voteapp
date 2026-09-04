@@ -1,0 +1,40 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2060",
+      "roll": 1350857,
+      "measure_id": "HB 5",
+      "vote_date": "2023-07-19",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 5, the House's own plan for redrawing Alabama's seven districts for the U.S. House. It was one of two competing maps in the special session called after the Supreme Court ruled in Allen versus Milligan that the 2021 map likely broke the Voting Rights Act. The Senate's plan became law instead and this bill died. The House passed it 74-27.",
+      "nay_description": "Voted against passing House Bill 5, the House's own plan for redrawing Alabama's seven districts for the U.S. House. It was one of two competing maps in the special session called after the Supreme Court ruled in Allen versus Milligan that the 2021 map likely broke the Voting Rights Act. The Senate's plan became law instead and this bill died. The House passed it 74-27 over these votes.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2060",
+      "roll": 1350910,
+      "measure_id": "HB 5",
+      "vote_date": "2023-07-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 5, the House's own plan for redrawing Alabama's seven districts for the U.S. House. It was one of two competing maps in the special session called after the Supreme Court ruled in Allen versus Milligan that the 2021 map likely broke the Voting Rights Act. The Senate's plan became law instead and this bill died. The Senate passed its own amended version 23-7.",
+      "nay_description": "Voted against passing House Bill 5, the House's own plan for redrawing Alabama's seven districts for the U.S. House. It was one of two competing maps in the special session called after the Supreme Court ruled in Allen versus Milligan that the 2021 map likely broke the Voting Rights Act. The Senate's plan became law instead and this bill died. The Senate passed its own amended version 23-7 over these votes.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

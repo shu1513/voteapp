@@ -1,0 +1,381 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "NV",
+  "entries": [
+    {
+      "people_id": 8496,
+      "candidate_id": "87ddb1c7-fb9d-43e9-97db-c0dad438b801",
+      "note": null
+    },
+    {
+      "people_id": 8500,
+      "candidate_id": "1a86c751-4d25-42c1-8819-6c50d9481de7",
+      "note": null
+    },
+    {
+      "people_id": 8518,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Pete Goicoechea (senate SD-019). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 12199,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for John Ellison (senate SD-019). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 12200,
+      "candidate_id": "502ee734-affc-490a-a6c0-509d41634029",
+      "note": null
+    },
+    {
+      "people_id": 12203,
+      "candidate_id": "a9e68d81-1c25-4826-856b-fe469251aa70",
+      "note": null
+    },
+    {
+      "people_id": 12213,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Dina Neal (senate SD-004). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 15869,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Lesley Cohen (house HD-029). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 15881,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Patricia Spearman (senate SD-001). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 17444,
+      "candidate_id": "3256ed2e-d7bb-4acb-80ac-a05178ff8e8a",
+      "note": null
+    },
+    {
+      "people_id": 17446,
+      "candidate_id": "bfbe2d8f-5312-4b83-88ae-85e069e8b4f3",
+      "note": null
+    },
+    {
+      "people_id": 17518,
+      "candidate_id": "022df62a-9226-4ad4-b90a-244f3bfc9abc",
+      "note": null
+    },
+    {
+      "people_id": 17522,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Philip O'Neill (house HD-040). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 19220,
+      "candidate_id": "a03952d3-3f2c-4c6a-9ab7-64ef80e8f395",
+      "note": "hand-added: Nicole Cannizzaro sits in Senate District 6 and is running statewide, outside the state-legislature pool. Party agrees (Democratic) and her current_office reads \"Majority Leader, Nevada State Senate\"."
+    },
+    {
+      "people_id": 19221,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Shannon Bilbray-Axelrod (house HD-034). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 19224,
+      "candidate_id": "a5dbd4d8-7072-4bdf-9a77-03e97a4d78be",
+      "note": "hand-added: Sandra Jauregui sits in Assembly District 41 and is running statewide, outside the state-legislature pool. Party agrees (Democratic) and her current_office reads \"Nevada State Assemblymember (District 41)\"."
+    },
+    {
+      "people_id": 19226,
+      "candidate_id": "5d272762-6668-4196-a3c9-2cdcae470255",
+      "note": null
+    },
+    {
+      "people_id": 19229,
+      "candidate_id": "e4fcd90f-cbce-4bdb-9e44-9dd4483d5765",
+      "note": null
+    },
+    {
+      "people_id": 19230,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Daniele Monroe-Moreno (house HD-001). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 19233,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Steve Yeager (house HD-009). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 21171,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Dallas Harris (senate SD-011). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 21172,
+      "candidate_id": "ffc9f961-0b09-4f13-951f-d4d2866d39c8",
+      "note": null
+    },
+    {
+      "people_id": 21174,
+      "candidate_id": "789cf65b-5256-4222-9b3a-9de312671dfa",
+      "note": null
+    },
+    {
+      "people_id": 21175,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Bea Duran (house HD-011). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 21176,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Michelle Gorelow (house HD-035). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 21177,
+      "candidate_id": "7b4e8759-3cf9-4e43-818e-3ad6a8c5211e",
+      "note": null
+    },
+    {
+      "people_id": 21178,
+      "candidate_id": "652d73f3-cacf-4f7e-9ada-4e3d81c3badc",
+      "note": null
+    },
+    {
+      "people_id": 21179,
+      "candidate_id": "ccb1509a-39d1-4831-91b2-2ccd7e098a9f",
+      "note": null
+    },
+    {
+      "people_id": 21183,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Sarah Peters (house HD-024). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 21185,
+      "candidate_id": "3360064d-7aa7-493c-be3d-25165b0f89aa",
+      "note": null
+    },
+    {
+      "people_id": 21186,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Howard Watts (house HD-015). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 21252,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Rochelle Nguyen (senate SD-003). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 22753,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Carrie Ann Buck (senate SD-005). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 22754,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Roberta Lange (senate SD-007). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 22756,
+      "candidate_id": "af566213-7e6c-4a10-8be6-c904ba596d8e",
+      "note": null
+    },
+    {
+      "people_id": 22757,
+      "candidate_id": "dbdc0ffd-9f9d-4e11-9e1a-a69a6785ecca",
+      "note": null
+    },
+    {
+      "people_id": 22758,
+      "candidate_id": "91cc504c-8c92-4b3e-8a90-a0909825da3c",
+      "note": null
+    },
+    {
+      "people_id": 22769,
+      "candidate_id": "851397a3-e647-4155-9a69-95a8374769e8",
+      "note": "hand-added: Heidi Kasama sits in Assembly District 2 and is running for a Clark County office, so she is outside the state-legislature candidate pool the proposer reads. Party agrees (Republican) and her current_office reads \"Nevada Assemblymember, District 2\"."
+    },
+    {
+      "people_id": 22798,
+      "candidate_id": "4944d4f6-2ec4-4296-aa0b-88847d826a12",
+      "note": null
+    },
+    {
+      "people_id": 22828,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Tracy Brown-May (house HD-042). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 22829,
+      "candidate_id": "e4ec737a-5042-42cb-af81-058ed36f8fa7",
+      "note": null
+    },
+    {
+      "people_id": 22830,
+      "candidate_id": "bf027167-2637-4f5b-aa5a-ccfdfcb89d3b",
+      "note": "Cameron Miller casts NO vote in this session \u2014 checked all 1,332 roll calls. LegiScan lists him at Assembly District 7 alongside Tanya Flanagan, who does vote, so he was not serving in 2025. The mapping is kept because the proposer matched him to the 2026 Assembly District 7 candidate row on name and seat, but it can never produce a record from this session."
+    },
+    {
+      "people_id": 22831,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Shondra Summers-Armstrong (house HD-006). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 22832,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Clara Thomas (house HD-017). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 22839,
+      "candidate_id": "d009c443-dd5c-4a4c-bb0b-e1fe1ef60967",
+      "note": null
+    },
+    {
+      "people_id": 24694,
+      "candidate_id": "f8866974-eabd-4d33-a6db-8f6beae190a5",
+      "note": null
+    },
+    {
+      "people_id": 24695,
+      "candidate_id": "80d413df-e226-458c-b7b9-77fb440f8c3b",
+      "note": null
+    },
+    {
+      "people_id": 24696,
+      "candidate_id": "55882868-2601-4155-92b0-9a4c4f0b3fda",
+      "note": "accepted seat move: Danielle Gallant sits in Assembly District 23 and is running for State Senate District 20. Her candidate row's current_office reads \"Nevada Assembly District 23 Assemblymember\", both are Republicans, and Jeff Stone holds Senate District 20 with no candidacy of his own."
+    },
+    {
+      "people_id": 24697,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Ken Gray (house HD-039). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 24698,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Bert Gurr (house HD-033). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 24699,
+      "candidate_id": "8599490d-f20f-49d7-99de-e2d7c75572a0",
+      "note": null
+    },
+    {
+      "people_id": 24700,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Gregory Koenig (house HD-038). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 24701,
+      "candidate_id": "4b96e6e1-b488-441f-a1b7-f04414df5598",
+      "note": null
+    },
+    {
+      "people_id": 24702,
+      "candidate_id": "578cc068-9084-44b2-8aee-dfe434f0a122",
+      "note": null
+    },
+    {
+      "people_id": 24703,
+      "candidate_id": "38dac989-aa2f-4f29-b578-1067afcab12d",
+      "note": null
+    },
+    {
+      "people_id": 24704,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Jeff Stone (senate SD-020). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 24705,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Thaddeus Yurek (house HD-019). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 24823,
+      "candidate_id": "b18d925d-7658-422b-97b3-ff45f62d2e66",
+      "note": null
+    },
+    {
+      "people_id": 24824,
+      "candidate_id": "934f0ac1-d0a8-44f4-922f-7b415c5cef44",
+      "note": null
+    },
+    {
+      "people_id": 24825,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for AngelaTaylor (senate SD-015). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 24874,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Sabra Newby (house HD-010). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 25733,
+      "candidate_id": "ebdda2f3-9692-4092-9981-d7b77bd64355",
+      "note": null
+    },
+    {
+      "people_id": 25734,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Joe Dalia (house HD-029). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 25735,
+      "candidate_id": "c19a1d15-c191-4634-b529-d4c75a451ddf",
+      "note": null
+    },
+    {
+      "people_id": 25736,
+      "candidate_id": "4ca7f51a-e825-4e8b-a1a1-6cdd66a2307a",
+      "note": "hand-added: Tanya Flanagan sits in Assembly District 7 and is running for a Clark County office, outside the state-legislature pool. Party agrees (Democratic) and her current_office reads \"Nevada Assemblymember, District 7\"."
+    },
+    {
+      "people_id": 25737,
+      "candidate_id": "84fca43c-2267-4c36-a873-8f562abdad39",
+      "note": null
+    },
+    {
+      "people_id": 25738,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Linda Hunt (house HD-017). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 25739,
+      "candidate_id": "fd354370-f178-4252-8107-23876e71bb38",
+      "note": null
+    },
+    {
+      "people_id": 25740,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Venise Karris (house HD-010). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 25741,
+      "candidate_id": "88d43a1d-8d6a-49fe-8018-3d80c54e5256",
+      "note": "hand-added name variant: LegiScan prints \"Cinthia Zermeno Moore\", the candidate row is \"Cinthia Moore\". The proposer cannot drop a second surname. Same seat (Assembly District 11), same party (Democratic), and the candidate's current_office reads \"Nevada Assemblymember, District 11\"."
+    },
+    {
+      "people_id": 25742,
+      "candidate_id": "daad7f47-c4a5-4ada-aea3-3b728de8db36",
+      "note": null
+    },
+    {
+      "people_id": 25743,
+      "candidate_id": "49d94471-3767-475e-a245-7305af1e36f0",
+      "note": null
+    },
+    {
+      "people_id": 25744,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Michelee Cruz-Crawford (senate SD-001). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 25745,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for Lori Rogich (senate SD-011). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    },
+    {
+      "people_id": 25746,
+      "candidate_id": null,
+      "note": "no November-2026 Nevada candidate row for John Steinbeck (senate SD-018). Checked the whole Nevada candidate pool, every office scope, by surname token: no row is this person. Nevada limits legislators to twelve years, and the Senate is staggered, so most of these seats are simply not this member's to run for again."
+    }
+  ]
+}
