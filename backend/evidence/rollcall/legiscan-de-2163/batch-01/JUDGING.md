@@ -88,6 +88,11 @@ after the rewrite and eleven claims were repaired before importing, among them:
 - HB 444 gained the actual language thresholds (more than 2% of voting-age citizens,
   but never fewer than 100, or more than 1,000).
 
+Local rows for HB 37, HB 427 and HB 444 were patched by a direct `UPDATE` on
+2026-09-04 after the review fixes: a re-run of `rollcall:legiscan:import` reports
+every row `unchanged` because the identity key did not move, so it does not rewrite
+descriptions of rows it already holds.
+
 ## Per measure
 
 **HB 37 — civil_rights / for.** Rewrites the definition of "place of public
