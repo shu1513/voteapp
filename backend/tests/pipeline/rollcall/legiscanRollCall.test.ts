@@ -1241,6 +1241,7 @@ describe("getLegiscanStateConfig", () => {
       "KS",
       "DE",
       "AR",
+      "AZ",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -1270,6 +1271,7 @@ describe("getLegiscanStateConfig", () => {
       "KS",
       "DE",
       "AR",
+      "AZ",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
@@ -1308,6 +1310,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("KS").sessionId).toBe(2178);
     expect(getLegiscanStateConfig("DE").sessionId).toBe(2163);
     expect(getLegiscanStateConfig("AR").sessionId).toBe(2162);
+    expect(getLegiscanStateConfig("AZ").sessionId).toBe(2155);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("WY")).toThrow("no LegiScan state config for WY");
   });
@@ -2009,6 +2012,47 @@ describe("getLegiscanStateConfig", () => {
     // survey never saw must surface for a human, not classify quietly.
     expect(nm("House Final Passage RC#12", 70).isFloorVote).toBeNull();
     expect(nm("House Concurrence", 70).isFloorVote).toBeNull();
+  });
+
+  it("classifies Arizona's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.AZ!;
+    const az = (desc: string, total = 60, chamber: "house" | "senate" = "house") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+    // Third reading is the only question Arizona prints on a passage vote,
+    // and the only one that ever carries a member list.
+    expect(az("House - Third Reading")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(az("Senate - Third Reading", 30, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(az("Senate - Reconsider Third Reading", 30, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // Concurrence stays a kept question even though Arizona currently
+    // publishes no members on one, so a future dataset that fills the voter
+    // list queues these instead of dropping them silently.
+    expect(az("House - Concurrence").questionClass).toBe("concurrence");
+    expect(az("Senate - Concurrence", 30, "senate").questionClass).toBe("concurrence");
+    // Committee of the Whole is where Arizona amends a bill, not where it
+    // passes one; every other floor family names the member who moved it.
+    for (const desc of [
+      "House - Committee of the Whole (DPA)",
+      "Senate - Committee of the Whole (DP)",
+      "House - Committee of the Whole (RET ON CAL)",
+      "House - Representative Chaplik to include the Chaplik #1  floor amendment",
+      "House - Representative Marquez  to show the bill failed to pass",
+      "House - Representative Marquez to exclude the Marshall flr amendment",
+      "House - Motion Representative Kolodin  to show the bill do not pass - failed by s/v 7-42",
+      "Senate - Senator Hoffman to include the Hoffman #3 floor amendment to SB 1735",
+      "Senate - Motion to Amend",
+      "Motion Should the ruling of the Chair be overturned that the Chaplik floor amendment is not germane",
+      "Motion HB 2688 substituted for SB 1222. Motion carried.",
+      "Motion Majority Leader Shamp moved that a group motion be made for the vote on the final passage",
+    ]) {
+      expect(az(desc).reason, desc).toBe("excluded_question");
+    }
+    // No committee is named anywhere: the tally cut alone separates them,
+    // in a 30-seat Senate as well as a 60-seat House.
+    expect(az("House Appropriations Committee Action (DPA/SE)", 18).reason).toBe("committee_tally:18/60");
+    expect(az("Senate Finance Committee Action (DP)", 10, "senate").reason).toBe("committee_tally:10/30");
   });
 
   it("refuses a state that has its own pipeline, whatever the spelling", () => {
