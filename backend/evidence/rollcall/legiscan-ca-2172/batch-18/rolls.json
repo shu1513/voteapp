@@ -1,0 +1,184 @@
+{
+ "rolls": [
+  {
+   "measure": "SB 7",
+   "status": "vetoed",
+   "chamber": "house",
+   "roll": 1602570,
+   "date": "2025-09-11",
+   "yea": 45,
+   "nay": 17,
+   "title": "Employment: automated decision systems."
+  },
+  {
+   "measure": "SB 7",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1602234,
+   "date": "2025-09-12",
+   "yea": 28,
+   "nay": 9,
+   "title": "Employment: automated decision systems."
+  },
+  {
+   "measure": "SB 633",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726083,
+   "date": "2026-08-25",
+   "yea": 59,
+   "nay": 16,
+   "title": "Plastic beverage containers: recycling."
+  },
+  {
+   "measure": "SB 633",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726162,
+   "date": "2026-08-26",
+   "yea": 28,
+   "nay": 10,
+   "title": "Plastic beverage containers: recycling."
+  },
+  {
+   "measure": "SB 642",
+   "status": "chaptered",
+   "chamber": "house",
+   "roll": 1601391,
+   "date": "2025-09-08",
+   "yea": 58,
+   "nay": 15,
+   "title": "Employment: payment of wages."
+  },
+  {
+   "measure": "SB 642",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601570,
+   "date": "2025-09-09",
+   "yea": 30,
+   "nay": 10,
+   "title": "Employment: payment of wages."
+  },
+  {
+   "measure": "SB 747",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726009,
+   "date": "2026-08-25",
+   "yea": 57,
+   "nay": 19,
+   "title": "Civil rights: deprivation of federal constitutional rights, privileges, and immunities."
+  },
+  {
+   "measure": "SB 747",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726579,
+   "date": "2026-08-27",
+   "yea": 30,
+   "nay": 10,
+   "title": "Civil rights: deprivation of federal constitutional rights, privileges, and immunities."
+  },
+  {
+   "measure": "SB 838",
+   "status": "chaptered",
+   "chamber": "house",
+   "roll": 1602540,
+   "date": "2025-09-11",
+   "yea": 58,
+   "nay": 17,
+   "title": "Housing Accountability Act: housing development projects."
+  },
+  {
+   "measure": "SB 838",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1602123,
+   "date": "2025-09-12",
+   "yea": 26,
+   "nay": 9,
+   "title": "Housing Accountability Act: housing development projects."
+  },
+  {
+   "measure": "SB 873",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726077,
+   "date": "2026-08-25",
+   "yea": 58,
+   "nay": 17,
+   "title": "Courthouses: privilege from civil arrest."
+  },
+  {
+   "measure": "SB 873",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726877,
+   "date": "2026-08-28",
+   "yea": 30,
+   "nay": 10,
+   "title": "Courthouses: privilege from civil arrest."
+  },
+  {
+   "measure": "SB 934",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725489,
+   "date": "2026-08-19",
+   "yea": 58,
+   "nay": 18,
+   "title": "Sexual orientation or gender identity change efforts."
+  },
+  {
+   "measure": "SB 934",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725570,
+   "date": "2026-08-20",
+   "yea": 27,
+   "nay": 9,
+   "title": "Sexual orientation or gender identity change efforts."
+  },
+  {
+   "measure": "SB 937",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725866,
+   "date": "2026-08-25",
+   "yea": 57,
+   "nay": 18,
+   "title": "Law enforcement: flash-bang grenades and explosive breaching charges."
+  },
+  {
+   "measure": "SB 937",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726364,
+   "date": "2026-08-26",
+   "yea": 29,
+   "nay": 11,
+   "title": "Law enforcement: flash-bang grenades and explosive breaching charges."
+  },
+  {
+   "measure": "SB 938",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726105,
+   "date": "2026-08-25",
+   "yea": 57,
+   "nay": 17,
+   "title": "Peace officers: training requirements."
+  },
+  {
+   "measure": "SB 938",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726854,
+   "date": "2026-08-28",
+   "yea": 30,
+   "nay": 10,
+   "title": "Peace officers: training requirements."
+  }
+ ]
+}

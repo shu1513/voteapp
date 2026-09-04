@@ -1,0 +1,89 @@
+measure	roll	vote_date	stage	kind	legiscan_tally	official_tally	official_motion	is_last_floor_roll	imported	members
+HB15	1481075	2025-01-27	(H) 3rd Reading Passed	vote flipped	78-20	77-21	Do Pass	yes	no	Randyn Gregg: legiscan Yea, official NO
+HB2	1538411	2025-04-07	(H) 3rd Reading Passed	vote flipped	61-38	58-41	Do Pass	no	no	Mary Caferro: legiscan Yea, official NO; Katie Zolnikov: legiscan Yea, official NO; Sherry Essmann: legiscan Yea, official NO
+HB284	1551835	2025-04-17	(H) 3rd Reading Passed as Amended by Senate	vote flipped	58-41	59-40	Do Concur	yes	no	Melody Cunningham: legiscan Nay, official YES
+HB352	1547352	2025-04-14	(H) 2nd Reading Senate Amendments Concurred	vote flipped	94-6	95-5	Do Concur	no	no	Tom Millett: legiscan Nay, official YES
+HB4	1559143	2025-04-28	(H) 2nd Reading Senate Amendments Concurred	vote flipped	86-14	87-13	Do Concur	no	no	Ed Byrne: legiscan Nay, official YES
+HB430	1496902	2025-02-21	(H) 2nd Reading Passed	vote flipped	80-20	81-19	Do Pass	no	no	Katie Sullivan: legiscan Nay, official YES
+HB492	1503251	2025-03-03	(H) 3rd Reading Passed	vote flipped	58-40	57-41	Do Pass	no	no	Brian Close: legiscan Yea, official NO
+HB636	1508554	2025-03-07	(H) 3rd Reading Passed	vote flipped	84-15	85-14	Do Pass	yes	no	Melody Cunningham: legiscan Nay, official YES
+HB667	1550002	2025-04-16	(H) 2nd Reading Senate Amendments Concurred	vote flipped	99-1	100-0	Do Concur	no	no	Sidney Fitzpatrick: legiscan Nay, official YES
+HB76	1558903	2025-04-28	(H) 3rd Reading Governor's Proposed Amendments Adopted	vote flipped	69-31	68-32	Do Concur	yes	no	Jodee Etchart: legiscan Yea, official NO
+HB888	1558107	2025-04-25	(H) 3rd Reading Passed as Amended by Senate	vote flipped	59-41	58-42	Do Concur	yes	no	Brian Close: legiscan Yea, official NO
+HB913	1536915	2025-04-03	(H) 2nd Reading Passed as Amended	vote flipped	98-2	97-3	Do Pass As Amended	no	no	Lukas Schubert: legiscan Yea, official NO
+SB154	1540327	2025-04-08	(H) 2nd Reading Concurred as Amended	vote flipped	57-41	58-40	Do Pass As Amended	no	no	Zack Wirth: legiscan Nay, official YES
+SB194	1482095	2025-02-03	(S) 2nd Reading Passed	vote flipped	45-5	46-4	Do Pass	no	no	Sue Vinton: legiscan Nay, official YES
+SB218	1542137	2025-04-09	(H) 2nd Reading Motion to Amend Carried	vote flipped; excused member shown as a vote	57-43	56-43	AMD-SB0218.002.001 Howell DO PASS	no	no	Braxton Mitchell: legiscan Yea, official NO; Nelly Nicol: legiscan Nay, official ABSENT
+SB218	1559215	2025-04-28	(H) 2nd Reading Governor's Proposed Amendments Not Adopted	vote flipped	46-54	47-53	Do Concur	no	no	Curtis Cochran: legiscan Nay, official YES
+SB243	1546282	2025-04-11	(H) 3rd Reading Concurred	vote flipped	77-22	76-23	Do Concur	yes	no	Scott Rosenzweig: legiscan Yea, official NO
+SB342	1546349	2025-04-11	(H) 3rd Reading Concurred	vote flipped	58-41	57-42	Do Concur	yes	no	SJ Howell: legiscan Yea, official NO
+SB428	1544219	2025-04-10	(H) 2nd Reading Concurred	vote flipped	79-21	78-22	Do Concur	no	no	Ed Byrne: legiscan Yea, official NO
+SB542	1556679	2025-04-24	(H) 3rd Reading Concurred	vote flipped	73-26	72-27	Do Concur	yes	no	Amy Regier: legiscan Yea, official NO
+HB171	1537653	2025-04-05	(S) 2nd Reading Concurred	excused member shown as a vote	32-16	32-15	Do Concur	no	no	Vince Ricci: legiscan Nay, official ABSENT
+HB231	1551940	2025-04-17	(S) 2nd Reading Indefinitely Postponed	excused member shown as a vote	26-24	26-21	Indefinitely Postpone -McGillvray	no	no	Dennis Lenz: legiscan Nay, official ABSENT; Denley Loge: legiscan Nay, official ABSENT; Jason Ellsworth: legiscan Nay, official ABSENT
+HB266	1490402	2025-02-14	(H) 2nd Reading Passed	excused member shown as a vote	77-23	77-22	Do Pass	no	no	Jade Sooktis: legiscan Nay, official ABSENT
+HB338	1490631	2025-02-14	(H) 2nd Reading Passed	excused member shown as a vote	99-1	99-0	Do Pass	no	no	Jade Sooktis: legiscan Nay, official ABSENT
+HB372	1552176	2025-04-17	(S) 2nd Reading Indefinitely Postponed	excused member shown as a vote	30-19	30-16	Indefinitely Postpone -McGillvray	no	no	John Esp: legiscan Nay, official ABSENT; Denley Loge: legiscan Nay, official ABSENT; Jason Ellsworth: legiscan Nay, official ABSENT
+HB476	1546520	2025-04-12	(S) 2nd Reading Concurred	excused member shown as a vote	33-16	34-16	Do Concur	no	no	Vince Ricci: legiscan Absent, official YES
+HB523	1546743	2025-04-12	(S) 2nd Reading Concurred	excused member shown as a vote	45-4	46-4	Do Concur	no	no	Barry Usher: legiscan Absent, official YES
+HB752	1506163	2025-03-05	(H) 2nd Reading Passed	excused member shown as a vote	51-47	51-46	Do Pass	no	no	Thedis Crowe: legiscan Nay, official ABSENT
+HB757	1552091	2025-04-18	(S) 2nd Reading Concurred	excused member shown as a vote	40-6	40-5	Do Concur	no	no	Jacinda Morigeau: legiscan Nay, official ABSENT
+HB759	1545175	2025-04-10	(S) 2nd Reading Indefinitely Postponed	excused member shown as a vote	40-9	40-8	Indefinitely Postpone -McGillvray	no	no	Greg Hertz: legiscan Nay, official ABSENT
+HB888	1551432	2025-04-17	(S) 2nd Reading Motion to Amend Carried	excused member shown as a vote	30-19	31-19	AMD-HB0888.002.001 Mandeville D/PASS	no	no	Bob Phalen: legiscan Absent, official YES
+HB888	1551433	2025-04-17	(S) 2nd Reading Concurred as Amended	excused member shown as a vote	27-22	28-22	Do Concur As Amended	no	no	Bob Phalen: legiscan Absent, official YES
+HB891	1551423	2025-04-17	(S) 2nd Reading Concurred	excused member shown as a vote	31-18	32-18	Do Concur	no	no	Bob Phalen: legiscan Absent, official YES
+HB931	1537272	2025-04-04	(H) Reconsidered Previous Action; Placed on 2nd Reading	excused member shown as a vote	50-49	50-48	ReconsAction - put back on the board	no	no	Steve Gist: legiscan Nay, official ABSENT
+SB132	1483617	2025-02-06	(S) 2nd Reading Passed	excused member shown as a vote	38-11	39-11	Do Pass	no	no	Wylie Galt: legiscan Absent, official YES
+SB218	1542138	2025-04-09	(H) 2nd Reading Concurred as Amended	excused member shown as a vote	57-43	57-42	Do Pass As Amended	no	no	Nelly Nicol: legiscan Nay, official ABSENT
+SB221	1542513	2025-04-09	(H) 2nd Reading Concurred	excused member shown as a vote	62-38	62-37	Do Concur	no	no	Nelly Nicol: legiscan Nay, official ABSENT
+SB348	1543015	2025-04-09	(H) 2nd Reading Concurred	excused member shown as a vote	57-43	57-42	Do Concur	no	no	Nelly Nicol: legiscan Nay, official ABSENT
+SB375	1544371	2025-04-10	(H) 2nd Reading Concurred	excused member shown as a vote	96-4	96-3	Do Concur	no	no	Nelly Nicol: legiscan Nay, official ABSENT
+SB390	1545783	2025-04-11	(H) 2nd Reading Concurred	excused member shown as a vote	59-40	59-39	Do Concur	no	no	Donavon Hawk: legiscan Nay, official ABSENT
+SB404	1542153	2025-04-09	(H) 2nd Reading Concurred	excused member shown as a vote	97-3	97-2	Do Concur	no	no	Nelly Nicol: legiscan Nay, official ABSENT
+SB61	1490515	2025-02-14	(H) 2nd Reading Concurred	excused member shown as a vote	92-8	92-7	Do Concur	no	no	Jade Sooktis: legiscan Nay, official ABSENT
+HB2	1537138	2025-04-02	(H) 2nd Reading Motion to Amend Carried	unpaired	98-1					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537139	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	28-72					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537140	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	30-69					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537141	2025-04-02	(H) 2nd Reading Motion to Amend Carried	unpaired	58-41					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537142	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	35-65					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537143	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	42-58					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537145	2025-04-02	(H) 2nd Reading Motion to Amend Carried	unpaired	60-40					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537146	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	44-56					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537147	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	40-60					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537148	2025-04-02	(H) 2nd Reading Motion to Amend Carried	unpaired	98-2					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537150	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	30-70					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537151	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	34-64					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537152	2025-04-02	(H) 2nd Reading Motion to Amend Carried	unpaired	60-40					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537153	2025-04-02	(H) 2nd Reading Motion to Amend Carried	unpaired	66-34					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537154	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	43-57					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537156	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	37-63					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537157	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	36-64					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537158	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	35-64					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537159	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	44-56					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537160	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	36-62					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537161	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	35-64					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537162	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	45-54					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537163	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	35-65					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537164	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	35-64					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537165	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	39-61					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537166	2025-04-02	(H) 2nd Reading Motion to Amend Failed	unpaired	28-71					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1537167	2025-04-02	(H) 2nd Reading Passed as Amended	unpaired	60-40					legiscan has 27 rolls on this date/chamber, montana has 30
+HB2	1550936	2025-04-17	(S) 2nd Reading Motion to Amend Failed	unpaired	21-27					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1550937	2025-04-17	(S) 2nd Reading Motion to Amend Failed	unpaired	21-29					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1550938	2025-04-17	(S) 2nd Reading Motion to Amend Failed	unpaired	23-27					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1550940	2025-04-17	(S) 2nd Reading Motion to Amend Failed	unpaired	24-26					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1550941	2025-04-17	(S) 2nd Reading Motion to Amend Carried	unpaired	27-22					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1550942	2025-04-17	(S) 2nd Reading Motion to Amend Failed	unpaired	21-28					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1550943	2025-04-17	(S) 2nd Reading Motion to Amend Failed	unpaired	22-28					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1550944	2025-04-17	(S) 2nd Reading Motion to Amend Failed	unpaired	24-26					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1550949	2025-04-17	(S) 2nd Reading Motion to Amend Failed	unpaired	23-26					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1550951	2025-04-17	(S) 2nd Reading Motion to Amend Failed	unpaired	23-26					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1551437	2025-04-17	(S) 2nd Reading Motion to Amend Failed	unpaired	27-23					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1551438	2025-04-17	(S) 2nd Reading Motion to Amend Failed	unpaired	21-29					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1551439	2025-04-17	(S) 2nd Reading Motion to Amend Carried	unpaired	26-24					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1551440	2025-04-17	(S) 2nd Reading Motion to Amend Failed	unpaired	24-26					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1551442	2025-04-17	(S) 2nd Reading Motion to Amend Carried	unpaired	27-23					legiscan has 16 rolls on this date/chamber, montana has 23
+HB2	1551443	2025-04-17	(S) 2nd Reading Concurred as Amended	unpaired	27-23					legiscan has 16 rolls on this date/chamber, montana has 23
+HB291	1487629	2025-02-12	(H) 2nd Reading Motion to Amend Carried	unpaired	99-1					legiscan has 3 rolls on this date/chamber, montana has 2
+HB291	1487630	2025-02-12	(H) 2nd Reading Passed	unpaired	60-40					legiscan has 3 rolls on this date/chamber, montana has 2
+HB291	1490769	2025-02-12	(H) 2nd Reading Passed as Amended	unpaired	60-40					legiscan has 3 rolls on this date/chamber, montana has 2

@@ -6,10 +6,10 @@ count.  Every roll used in a batch is checked name by name before it is judged.
 """
 import json, re, subprocess, os, sys, urllib.request, collections
 SP=os.path.dirname(os.path.abspath(__file__))
-VOTEDIR="/Users/shu/legiscan-data/in-2143/IN/2025-2025_Regular_Session/vote"
+sys.path.insert(0,SP)
+from session import VOTEDIR, PEOPLEDIR, YEAR, SESSION
 PEOPLE={p["people_id"]:p for p in
-        [json.loads(open(f"/Users/shu/legiscan-data/in-2143/IN/2025-2025_Regular_Session/people/{f}").read())["person"]
-         for f in os.listdir("/Users/shu/legiscan-data/in-2143/IN/2025-2025_Regular_Session/people")]}
+        [json.loads(open(f"{PEOPLEDIR}/{f}").read())["person"] for f in os.listdir(PEOPLEDIR)]}
 UA={"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36",
     "Accept":"application/pdf,*/*","Referer":"https://iga.in.gov/"}
 def fetch(url,dest):
@@ -53,8 +53,9 @@ def check(bill, roll_id, journal, origin, resolution=False):
     stem = bill.replace("SJR","SJ") if resolution else bill
     sub = "resolutions" if resolution else "bills"
     name=f"{stem}.{journal}_{ch}.pdf"
-    url=f"https://iga.in.gov/pdf-documents/124/2025/{origin}/{sub}/{stem}/rollcalls/{name}"
-    dest=f"{SP}/rc/{name}"
+    url=f"https://iga.in.gov/pdf-documents/124/{YEAR}/{origin}/{sub}/{stem}/rollcalls/{name}"
+    dest=f"{SP}/{SESSION}/rc/{name}"
+    os.makedirs(os.path.dirname(dest),exist_ok=True)
     if not fetch(url,dest): return f"{bill} {ch} roll{roll_id}: OFFICIAL PDF NOT FETCHED {url}"
     txt=subprocess.run(["pdftotext","-layout",dest,"-"],capture_output=True,text=True).stdout
     off=sections(txt)

@@ -1,0 +1,374 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1726450,
+   "measure_id": "AB 1770",
+   "vote_date": "2026-08-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1770, known as Lindalee's Law, which would put the Attorney General in charge of watching how health plans run forced arbitration. Many health plan contracts require a member to take a dispute to a private arbitrator instead of a court, and state law already sets disclosure rules for that. The bill would give the Attorney General oversight of whether plans follow those rules, the power to require reports from them, and a duty to tell the Department of Managed Health Care about any corrective action taken. It would also require an arbitration claim brought under a health plan to run under California's own arbitration law. It states that the Attorney General's other powers, including enforcing unfair competition law, and the department's existing authority are both left intact. The Assembly passed it 59-16. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1770, known as Lindalee's Law, which would put the Attorney General in charge of watching how health plans run forced arbitration. Many health plan contracts require a member to take a dispute to a private arbitrator instead of a court, and state law already sets disclosure rules for that. The bill would give the Attorney General oversight of whether plans follow those rules, the power to require reports from them, and a duty to tell the Department of Managed Health Care about any corrective action taken. It would also require an arbitration claim brought under a health plan to run under California's own arbitration law. It states that the Attorney General's other powers, including enforcing unfair competition law, and the department's existing authority are both left intact. The Assembly passed it 59-16. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726270,
+   "measure_id": "AB 1770",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1770, known as Lindalee's Law, which would put the Attorney General in charge of watching how health plans run forced arbitration. Many health plan contracts require a member to take a dispute to a private arbitrator instead of a court, and state law already sets disclosure rules for that. The bill would give the Attorney General oversight of whether plans follow those rules, the power to require reports from them, and a duty to tell the Department of Managed Health Care about any corrective action taken. It would also require an arbitration claim brought under a health plan to run under California's own arbitration law. It states that the Attorney General's other powers, including enforcing unfair competition law, and the department's existing authority are both left intact. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1770, known as Lindalee's Law, which would put the Attorney General in charge of watching how health plans run forced arbitration. Many health plan contracts require a member to take a dispute to a private arbitrator instead of a court, and state law already sets disclosure rules for that. The bill would give the Attorney General oversight of whether plans follow those rules, the power to require reports from them, and a duty to tell the Department of Managed Health Care about any corrective action taken. It would also require an arbitration claim brought under a health plan to run under California's own arbitration law. It states that the Attorney General's other powers, including enforcing unfair competition law, and the department's existing authority are both left intact. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1726033,
+   "measure_id": "AB 1801",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1801, which would make it harder for a local government to approve a private immigration detention facility. A city or county must already give 180 days of public notice and hold two public meetings before signing a land deed or issuing a permit for a private company to detain people for civil immigration proceedings. The bill would widen that to any document showing the government's approval to build or reuse a building, and would cover detaining anyone in civil immigration custody rather than only noncitizens. The government would have to provide the related documents promptly on request, on paper and electronically, subject to the usual public records exemptions. Notice would have to appear on the government's website and at its headquarters, in a local newspaper or three public places, and weekly on radio in the five most spoken local languages. The two meetings would have to be at least 30 business days apart and offer translation. The rules would apply to charter cities, and each public agency would have to meet them separately. The Assembly passed it 59-19. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1801, which would make it harder for a local government to approve a private immigration detention facility. A city or county must already give 180 days of public notice and hold two public meetings before signing a land deed or issuing a permit for a private company to detain people for civil immigration proceedings. The bill would widen that to any document showing the government's approval to build or reuse a building, and would cover detaining anyone in civil immigration custody rather than only noncitizens. The government would have to provide the related documents promptly on request, on paper and electronically, subject to the usual public records exemptions. Notice would have to appear on the government's website and at its headquarters, in a local newspaper or three public places, and weekly on radio in the five most spoken local languages. The two meetings would have to be at least 30 business days apart and offer translation. The rules would apply to charter cities, and each public agency would have to meet them separately. The Assembly passed it 59-19. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725469,
+   "measure_id": "AB 1801",
+   "vote_date": "2026-08-19",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1801, which would make it harder for a local government to approve a private immigration detention facility. A city or county must already give 180 days of public notice and hold two public meetings before signing a land deed or issuing a permit for a private company to detain people for civil immigration proceedings. The bill would widen that to any document showing the government's approval to build or reuse a building, and would cover detaining anyone in civil immigration custody rather than only noncitizens. The government would have to provide the related documents promptly on request, on paper and electronically, subject to the usual public records exemptions. Notice would have to appear on the government's website and at its headquarters, in a local newspaper or three public places, and weekly on radio in the five most spoken local languages. The two meetings would have to be at least 30 business days apart and offer translation. The rules would apply to charter cities, and each public agency would have to meet them separately. The Senate passed it 28-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1801, which would make it harder for a local government to approve a private immigration detention facility. A city or county must already give 180 days of public notice and hold two public meetings before signing a land deed or issuing a permit for a private company to detain people for civil immigration proceedings. The bill would widen that to any document showing the government's approval to build or reuse a building, and would cover detaining anyone in civil immigration custody rather than only noncitizens. The government would have to provide the related documents promptly on request, on paper and electronically, subject to the usual public records exemptions. Notice would have to appear on the government's website and at its headquarters, in a local newspaper or three public places, and weekly on radio in the five most spoken local languages. The two meetings would have to be at least 30 business days apart and offer translation. The rules would apply to charter cities, and each public agency would have to meet them separately. The Senate passed it 28-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1726323,
+   "measure_id": "AB 1806",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1806, which would extend the state's independent investigation of deadly shootings to immigration officers. The Attorney General must already investigate a shooting by a police officer that kills an unarmed civilian, and may bring criminal charges if the officer broke state law. The bill would create the same duty and the same charging power for a shooting by an immigration enforcement officer that kills an unarmed civilian. Each investigation would need a written report setting out the facts and giving an analysis and conclusion on every issue. Those reports would have to be posted and kept on a public website, with the redactions the law requires. Any refusal to give investigators access to witnesses, documents or evidence would have to be written down. The bill says it is not to be read as regulating the conduct of federal agents. The Assembly passed it 60-19. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1806, which would extend the state's independent investigation of deadly shootings to immigration officers. The Attorney General must already investigate a shooting by a police officer that kills an unarmed civilian, and may bring criminal charges if the officer broke state law. The bill would create the same duty and the same charging power for a shooting by an immigration enforcement officer that kills an unarmed civilian. Each investigation would need a written report setting out the facts and giving an analysis and conclusion on every issue. Those reports would have to be posted and kept on a public website, with the redactions the law requires. Any refusal to give investigators access to witnesses, documents or evidence would have to be written down. The bill says it is not to be read as regulating the conduct of federal agents. The Assembly passed it 60-19. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725977,
+   "measure_id": "AB 1806",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1806, which would extend the state's independent investigation of deadly shootings to immigration officers. The Attorney General must already investigate a shooting by a police officer that kills an unarmed civilian, and may bring criminal charges if the officer broke state law. The bill would create the same duty and the same charging power for a shooting by an immigration enforcement officer that kills an unarmed civilian. Each investigation would need a written report setting out the facts and giving an analysis and conclusion on every issue. Those reports would have to be posted and kept on a public website, with the redactions the law requires. Any refusal to give investigators access to witnesses, documents or evidence would have to be written down. The bill says it is not to be read as regulating the conduct of federal agents. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1806, which would extend the state's independent investigation of deadly shootings to immigration officers. The Attorney General must already investigate a shooting by a police officer that kills an unarmed civilian, and may bring criminal charges if the officer broke state law. The bill would create the same duty and the same charging power for a shooting by an immigration enforcement officer that kills an unarmed civilian. Each investigation would need a written report setting out the facts and giving an analysis and conclusion on every issue. Those reports would have to be posted and kept on a public website, with the redactions the law requires. Any refusal to give investigators access to witnesses, documents or evidence would have to be written down. The bill says it is not to be read as regulating the conduct of federal agents. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1726148,
+   "measure_id": "AB 1807",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1807, which would bar immigration enforcement from using California state property as a base. It would prohibit staging, assembling, mobilizing or deploying vehicles, equipment or personnel for immigration enforcement on state-owned land. It would also prohibit processing or detaining people there for immigration purposes. State-owned property would include garages, parking lots, parks and vacant land. State agencies would have to identify sites previously or likely to be used this way, post signs where feasible saying the property may not be used for immigration enforcement, and use existing barriers to limit access. By July 1, 2027 agencies would need procedures to record any attempted or actual use, with photo or video evidence, and report it to the Attorney General. The ban would not reach property under an existing lease, state corrections operations, or Caltrans land used for public transportation or sitting at a federal port of entry. It would not block a lawful judicial warrant. The Assembly passed it 60-15. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1807, which would bar immigration enforcement from using California state property as a base. It would prohibit staging, assembling, mobilizing or deploying vehicles, equipment or personnel for immigration enforcement on state-owned land. It would also prohibit processing or detaining people there for immigration purposes. State-owned property would include garages, parking lots, parks and vacant land. State agencies would have to identify sites previously or likely to be used this way, post signs where feasible saying the property may not be used for immigration enforcement, and use existing barriers to limit access. By July 1, 2027 agencies would need procedures to record any attempted or actual use, with photo or video evidence, and report it to the Attorney General. The ban would not reach property under an existing lease, state corrections operations, or Caltrans land used for public transportation or sitting at a federal port of entry. It would not block a lawful judicial warrant. The Assembly passed it 60-15. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725665,
+   "measure_id": "AB 1807",
+   "vote_date": "2026-08-24",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1807, which would bar immigration enforcement from using California state property as a base. It would prohibit staging, assembling, mobilizing or deploying vehicles, equipment or personnel for immigration enforcement on state-owned land. It would also prohibit processing or detaining people there for immigration purposes. State-owned property would include garages, parking lots, parks and vacant land. State agencies would have to identify sites previously or likely to be used this way, post signs where feasible saying the property may not be used for immigration enforcement, and use existing barriers to limit access. By July 1, 2027 agencies would need procedures to record any attempted or actual use, with photo or video evidence, and report it to the Attorney General. The ban would not reach property under an existing lease, state corrections operations, or Caltrans land used for public transportation or sitting at a federal port of entry. It would not block a lawful judicial warrant. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1807, which would bar immigration enforcement from using California state property as a base. It would prohibit staging, assembling, mobilizing or deploying vehicles, equipment or personnel for immigration enforcement on state-owned land. It would also prohibit processing or detaining people there for immigration purposes. State-owned property would include garages, parking lots, parks and vacant land. State agencies would have to identify sites previously or likely to be used this way, post signs where feasible saying the property may not be used for immigration enforcement, and use existing barriers to limit access. By July 1, 2027 agencies would need procedures to record any attempted or actual use, with photo or video evidence, and report it to the Attorney General. The ban would not reach property under an existing lease, state corrections operations, or Caltrans land used for public transportation or sitting at a federal port of entry. It would not block a lawful judicial warrant. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1702576,
+   "measure_id": "AB 1854",
+   "vote_date": "2026-05-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1854, which would widen California's shield for abortion and gender-affirming care against outside investigations. State law already bars officers from arresting someone over care that is lawful here, bars agencies from helping out-of-state or federal investigators, and bars courts from issuing subpoenas for those proceedings. The bill would apply all of that no matter where the patient was. It would bar a state or local agency from knowingly arresting, or helping to arrest, a person the Governor has declined to surrender to another state. It would extend the data shield beyond communication and computing companies to California corporations providing financial services, meaning firms that take deposits, extend credit, move funds or transport cash. Those companies could not answer an out-of-state request for customer data without a sworn declaration that the request is not about protected care. The Attorney General could sue, and a court could impose $10,000 for a first violation and $15,000 after that, with a further $15,000 for a false declaration. The Assembly passed it 60-17. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1854, which would widen California's shield for abortion and gender-affirming care against outside investigations. State law already bars officers from arresting someone over care that is lawful here, bars agencies from helping out-of-state or federal investigators, and bars courts from issuing subpoenas for those proceedings. The bill would apply all of that no matter where the patient was. It would bar a state or local agency from knowingly arresting, or helping to arrest, a person the Governor has declined to surrender to another state. It would extend the data shield beyond communication and computing companies to California corporations providing financial services, meaning firms that take deposits, extend credit, move funds or transport cash. Those companies could not answer an out-of-state request for customer data without a sworn declaration that the request is not about protected care. The Attorney General could sue, and a court could impose $10,000 for a first violation and $15,000 after that, with a further $15,000 for a false declaration. The Assembly passed it 60-17. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725697,
+   "measure_id": "AB 1854",
+   "vote_date": "2026-08-24",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1854, which would widen California's shield for abortion and gender-affirming care against outside investigations. State law already bars officers from arresting someone over care that is lawful here, bars agencies from helping out-of-state or federal investigators, and bars courts from issuing subpoenas for those proceedings. The bill would apply all of that no matter where the patient was. It would bar a state or local agency from knowingly arresting, or helping to arrest, a person the Governor has declined to surrender to another state. It would extend the data shield beyond communication and computing companies to California corporations providing financial services, meaning firms that take deposits, extend credit, move funds or transport cash. Those companies could not answer an out-of-state request for customer data without a sworn declaration that the request is not about protected care. The Attorney General could sue, and a court could impose $10,000 for a first violation and $15,000 after that, with a further $15,000 for a false declaration. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1854, which would widen California's shield for abortion and gender-affirming care against outside investigations. State law already bars officers from arresting someone over care that is lawful here, bars agencies from helping out-of-state or federal investigators, and bars courts from issuing subpoenas for those proceedings. The bill would apply all of that no matter where the patient was. It would bar a state or local agency from knowingly arresting, or helping to arrest, a person the Governor has declined to surrender to another state. It would extend the data shield beyond communication and computing companies to California corporations providing financial services, meaning firms that take deposits, extend credit, move funds or transport cash. Those companies could not answer an out-of-state request for customer data without a sworn declaration that the request is not about protected care. The Attorney General could sue, and a court could impose $10,000 for a first violation and $15,000 after that, with a further $15,000 for a false declaration. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1693257,
+   "measure_id": "AB 1876",
+   "vote_date": "2026-05-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1876, which would write a broad nondiscrimination rule for health plans and insurers into state law. A plan or insurer could not exclude someone from enrollment, deny them benefits, or discriminate against them because of race, color, national origin, age, disability or sex. Sex would include sex characteristics and intersex traits, pregnancy, sexual orientation, gender identity and sex stereotypes. A plan could not deny or limit a covered service, including one usually associated with one sex, because of the person's sex assigned at birth or their gender identity. It could not refuse coverage, deny a claim or add cost sharing on those grounds, and could not use discriminatory marketing or benefit design. It could not apply a blanket exclusion for gender transition or other gender-affirming care that it otherwise covers. A plan could still deny a service for a legitimate nondiscriminatory reason such as medical necessity, so long as that is not a cover for bias. Coverage documents would have to carry a nondiscrimination notice and explain how to file a grievance. The Assembly passed it 56-17. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1876, which would write a broad nondiscrimination rule for health plans and insurers into state law. A plan or insurer could not exclude someone from enrollment, deny them benefits, or discriminate against them because of race, color, national origin, age, disability or sex. Sex would include sex characteristics and intersex traits, pregnancy, sexual orientation, gender identity and sex stereotypes. A plan could not deny or limit a covered service, including one usually associated with one sex, because of the person's sex assigned at birth or their gender identity. It could not refuse coverage, deny a claim or add cost sharing on those grounds, and could not use discriminatory marketing or benefit design. It could not apply a blanket exclusion for gender transition or other gender-affirming care that it otherwise covers. A plan could still deny a service for a legitimate nondiscriminatory reason such as medical necessity, so long as that is not a cover for bias. Coverage documents would have to carry a nondiscrimination notice and explain how to file a grievance. The Assembly passed it 56-17. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725946,
+   "measure_id": "AB 1876",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1876, which would write a broad nondiscrimination rule for health plans and insurers into state law. A plan or insurer could not exclude someone from enrollment, deny them benefits, or discriminate against them because of race, color, national origin, age, disability or sex. Sex would include sex characteristics and intersex traits, pregnancy, sexual orientation, gender identity and sex stereotypes. A plan could not deny or limit a covered service, including one usually associated with one sex, because of the person's sex assigned at birth or their gender identity. It could not refuse coverage, deny a claim or add cost sharing on those grounds, and could not use discriminatory marketing or benefit design. It could not apply a blanket exclusion for gender transition or other gender-affirming care that it otherwise covers. A plan could still deny a service for a legitimate nondiscriminatory reason such as medical necessity, so long as that is not a cover for bias. Coverage documents would have to carry a nondiscrimination notice and explain how to file a grievance. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1876, which would write a broad nondiscrimination rule for health plans and insurers into state law. A plan or insurer could not exclude someone from enrollment, deny them benefits, or discriminate against them because of race, color, national origin, age, disability or sex. Sex would include sex characteristics and intersex traits, pregnancy, sexual orientation, gender identity and sex stereotypes. A plan could not deny or limit a covered service, including one usually associated with one sex, because of the person's sex assigned at birth or their gender identity. It could not refuse coverage, deny a claim or add cost sharing on those grounds, and could not use discriminatory marketing or benefit design. It could not apply a blanket exclusion for gender transition or other gender-affirming care that it otherwise covers. A plan could still deny a service for a legitimate nondiscriminatory reason such as medical necessity, so long as that is not a cover for bias. Coverage documents would have to carry a nondiscrimination notice and explain how to file a grievance. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1726469,
+   "measure_id": "AB 1886",
+   "vote_date": "2026-08-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1886, which would cap how long a young person placed outside the home stays on juvenile probation. Probation for a ward of the juvenile court is already limited to 12 months from the most recent disposition hearing, but that cap does not apply to wards in out-of-home placements. The bill would remove that exception so the 12-month limit covered them too. A court could extend probation only after a noticed hearing and a finding, on the weight of the evidence, that it serves both the young person's interest and the public's. The probation department would have to file a report giving the basis, the young person and the prosecutor could present evidence, and the court would have to state its reasons on the record. If probation were extended the court would have to hold a further hearing at least every six months. The court could keep jurisdiction past the end of probation only to finish the transition process, and could impose no conditions during that time. The cap would still not apply to wards serving custodial commitments or committed to secure youth treatment facilities. The Assembly passed it 43-20. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1886, which would cap how long a young person placed outside the home stays on juvenile probation. Probation for a ward of the juvenile court is already limited to 12 months from the most recent disposition hearing, but that cap does not apply to wards in out-of-home placements. The bill would remove that exception so the 12-month limit covered them too. A court could extend probation only after a noticed hearing and a finding, on the weight of the evidence, that it serves both the young person's interest and the public's. The probation department would have to file a report giving the basis, the young person and the prosecutor could present evidence, and the court would have to state its reasons on the record. If probation were extended the court would have to hold a further hearing at least every six months. The court could keep jurisdiction past the end of probation only to finish the transition process, and could impose no conditions during that time. The cap would still not apply to wards serving custodial commitments or committed to secure youth treatment facilities. The Assembly passed it 43-20. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726284,
+   "measure_id": "AB 1886",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1886, which would cap how long a young person placed outside the home stays on juvenile probation. Probation for a ward of the juvenile court is already limited to 12 months from the most recent disposition hearing, but that cap does not apply to wards in out-of-home placements. The bill would remove that exception so the 12-month limit covered them too. A court could extend probation only after a noticed hearing and a finding, on the weight of the evidence, that it serves both the young person's interest and the public's. The probation department would have to file a report giving the basis, the young person and the prosecutor could present evidence, and the court would have to state its reasons on the record. If probation were extended the court would have to hold a further hearing at least every six months. The court could keep jurisdiction past the end of probation only to finish the transition process, and could impose no conditions during that time. The cap would still not apply to wards serving custodial commitments or committed to secure youth treatment facilities. The Senate passed it 25-11. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1886, which would cap how long a young person placed outside the home stays on juvenile probation. Probation for a ward of the juvenile court is already limited to 12 months from the most recent disposition hearing, but that cap does not apply to wards in out-of-home placements. The bill would remove that exception so the 12-month limit covered them too. A court could extend probation only after a noticed hearing and a finding, on the weight of the evidence, that it serves both the young person's interest and the public's. The probation department would have to file a report giving the basis, the young person and the prosecutor could present evidence, and the court would have to state its reasons on the record. If probation were extended the court would have to hold a further hearing at least every six months. The court could keep jurisdiction past the end of probation only to finish the transition process, and could impose no conditions during that time. The cap would still not apply to wards serving custodial commitments or committed to secure youth treatment facilities. The Senate passed it 25-11. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1726125,
+   "measure_id": "AB 1905",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1905, which would restrict undercover questioning of young people held in custody. Police already may not use threats, physical harm, deception or psychological manipulation when questioning someone 17 or younger in custody. The bill would bar an officer from seeking statements through undercover officers, informants or others acting as agents of law enforcement. That would apply where the person was 17 or younger when the offense happened and is under 26 while in custody. In deciding whether such a statement may be used, a court would have to consider the failure to comply, and would weigh a willful violation when judging the officer's credibility. That rule would cover statements obtained on or after January 1, 2027. It would not apply where the officer reasonably believed the information was needed against an imminent threat to life and kept the questions to that threat. Questioning begun more than 24 hours after learning of the threat would be presumed unnecessary without good cause, and after 48 hours presumed unnecessary outright. Any such operation would have to stop once the threat is resolved. The Assembly passed it 51-15. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1905, which would restrict undercover questioning of young people held in custody. Police already may not use threats, physical harm, deception or psychological manipulation when questioning someone 17 or younger in custody. The bill would bar an officer from seeking statements through undercover officers, informants or others acting as agents of law enforcement. That would apply where the person was 17 or younger when the offense happened and is under 26 while in custody. In deciding whether such a statement may be used, a court would have to consider the failure to comply, and would weigh a willful violation when judging the officer's credibility. That rule would cover statements obtained on or after January 1, 2027. It would not apply where the officer reasonably believed the information was needed against an imminent threat to life and kept the questions to that threat. Questioning begun more than 24 hours after learning of the threat would be presumed unnecessary without good cause, and after 48 hours presumed unnecessary outright. Any such operation would have to stop once the threat is resolved. The Assembly passed it 51-15. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726124,
+   "measure_id": "AB 1905",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1905, which would restrict undercover questioning of young people held in custody. Police already may not use threats, physical harm, deception or psychological manipulation when questioning someone 17 or younger in custody. The bill would bar an officer from seeking statements through undercover officers, informants or others acting as agents of law enforcement. That would apply where the person was 17 or younger when the offense happened and is under 26 while in custody. In deciding whether such a statement may be used, a court would have to consider the failure to comply, and would weigh a willful violation when judging the officer's credibility. That rule would cover statements obtained on or after January 1, 2027. It would not apply where the officer reasonably believed the information was needed against an imminent threat to life and kept the questions to that threat. Questioning begun more than 24 hours after learning of the threat would be presumed unnecessary without good cause, and after 48 hours presumed unnecessary outright. Any such operation would have to stop once the threat is resolved. The Senate passed it 26-12. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1905, which would restrict undercover questioning of young people held in custody. Police already may not use threats, physical harm, deception or psychological manipulation when questioning someone 17 or younger in custody. The bill would bar an officer from seeking statements through undercover officers, informants or others acting as agents of law enforcement. That would apply where the person was 17 or younger when the offense happened and is under 26 while in custody. In deciding whether such a statement may be used, a court would have to consider the failure to comply, and would weigh a willful violation when judging the officer's credibility. That rule would cover statements obtained on or after January 1, 2027. It would not apply where the officer reasonably believed the information was needed against an imminent threat to life and kept the questions to that threat. Questioning begun more than 24 hours after learning of the threat would be presumed unnecessary without good cause, and after 48 hours presumed unnecessary outright. Any such operation would have to stop once the threat is resolved. The Senate passed it 26-12. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1725924,
+   "measure_id": "AB 2128",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 2128, which would bar public housing agencies from putting time limits or work requirements on tenants. Housing authorities run federally subsidized housing including public housing, Section 8 vouchers and project-based assistance. The bill would prohibit a covered housing provider from making a term limit, meaning a cap on how long someone may live there, a condition of eligibility. It would equally prohibit requiring a tenant to work, study, train, volunteer or do community service as a condition. Neither could be used to change the size of a tenant's rent subsidy. A provider could still run a voluntary job or training program, as long as taking part does not affect eligibility or subsidy and the program aims at raising income, savings, education or job skills. The ban would not apply where federal law requires the condition. It would not reach agencies in the federal Moving to Work program whose rules follow federal guidance, and it would leave the federal family self-sufficiency program and the federal public housing community service requirement in place. The Assembly passed it 58-17. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 2128, which would bar public housing agencies from putting time limits or work requirements on tenants. Housing authorities run federally subsidized housing including public housing, Section 8 vouchers and project-based assistance. The bill would prohibit a covered housing provider from making a term limit, meaning a cap on how long someone may live there, a condition of eligibility. It would equally prohibit requiring a tenant to work, study, train, volunteer or do community service as a condition. Neither could be used to change the size of a tenant's rent subsidy. A provider could still run a voluntary job or training program, as long as taking part does not affect eligibility or subsidy and the program aims at raising income, savings, education or job skills. The ban would not apply where federal law requires the condition. It would not reach agencies in the federal Moving to Work program whose rules follow federal guidance, and it would leave the federal family self-sufficiency program and the federal public housing community service requirement in place. The Assembly passed it 58-17. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725923,
+   "measure_id": "AB 2128",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 2128, which would bar public housing agencies from putting time limits or work requirements on tenants. Housing authorities run federally subsidized housing including public housing, Section 8 vouchers and project-based assistance. The bill would prohibit a covered housing provider from making a term limit, meaning a cap on how long someone may live there, a condition of eligibility. It would equally prohibit requiring a tenant to work, study, train, volunteer or do community service as a condition. Neither could be used to change the size of a tenant's rent subsidy. A provider could still run a voluntary job or training program, as long as taking part does not affect eligibility or subsidy and the program aims at raising income, savings, education or job skills. The ban would not apply where federal law requires the condition. It would not reach agencies in the federal Moving to Work program whose rules follow federal guidance, and it would leave the federal family self-sufficiency program and the federal public housing community service requirement in place. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 2128, which would bar public housing agencies from putting time limits or work requirements on tenants. Housing authorities run federally subsidized housing including public housing, Section 8 vouchers and project-based assistance. The bill would prohibit a covered housing provider from making a term limit, meaning a cap on how long someone may live there, a condition of eligibility. It would equally prohibit requiring a tenant to work, study, train, volunteer or do community service as a condition. Neither could be used to change the size of a tenant's rent subsidy. A provider could still run a voluntary job or training program, as long as taking part does not affect eligibility or subsidy and the program aims at raising income, savings, education or job skills. The ban would not apply where federal law requires the condition. It would not reach agencies in the federal Moving to Work program whose rules follow federal guidance, and it would leave the federal family self-sufficiency program and the federal public housing community service requirement in place. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1725530,
+   "measure_id": "AB 2186",
+   "vote_date": "2026-08-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 2186, which would exempt reparations payments from state income tax. California taxes income from any source unless the law specifically excludes it. For tax years from 2028 through 2032, the bill would exclude any reparations benefit or payment a taxpayer receives. That would cover money, grants, trust distributions, debt forgiveness or other compensation provided under a state law, a local ordinance or settlement, or a federal reparations program. A reparations program means a government program compensating people for historical harms, discrimination or unequal treatment. The exclusion would be repealed at the end of 2033. The bill also states the goals and reporting measures that state law requires whenever a new tax break is created. The Assembly passed it 58-16. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 2186, which would exempt reparations payments from state income tax. California taxes income from any source unless the law specifically excludes it. For tax years from 2028 through 2032, the bill would exclude any reparations benefit or payment a taxpayer receives. That would cover money, grants, trust distributions, debt forgiveness or other compensation provided under a state law, a local ordinance or settlement, or a federal reparations program. A reparations program means a government program compensating people for historical harms, discrimination or unequal treatment. The exclusion would be repealed at the end of 2033. The bill also states the goals and reporting measures that state law requires whenever a new tax break is created. The Assembly passed it 58-16. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725424,
+   "measure_id": "AB 2186",
+   "vote_date": "2026-08-19",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 2186, which would exempt reparations payments from state income tax. California taxes income from any source unless the law specifically excludes it. For tax years from 2028 through 2032, the bill would exclude any reparations benefit or payment a taxpayer receives. That would cover money, grants, trust distributions, debt forgiveness or other compensation provided under a state law, a local ordinance or settlement, or a federal reparations program. A reparations program means a government program compensating people for historical harms, discrimination or unequal treatment. The exclusion would be repealed at the end of 2033. The bill also states the goals and reporting measures that state law requires whenever a new tax break is created. The Senate passed it 28-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 2186, which would exempt reparations payments from state income tax. California taxes income from any source unless the law specifically excludes it. For tax years from 2028 through 2032, the bill would exclude any reparations benefit or payment a taxpayer receives. That would cover money, grants, trust distributions, debt forgiveness or other compensation provided under a state law, a local ordinance or settlement, or a federal reparations program. A reparations program means a government program compensating people for historical harms, discrimination or unequal treatment. The exclusion would be repealed at the end of 2033. The bill also states the goals and reporting measures that state law requires whenever a new tax break is created. The Senate passed it 28-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

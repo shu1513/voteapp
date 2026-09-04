@@ -20,6 +20,8 @@
 import {
   collectKansasCfrGridPages,
   createKansasCfrSession,
+  getKansasReportSchedule,
+  isKansasGridCountMismatch,
   KANSAS_CFR_VIEWER_PAGES,
   KansasCfrClientError,
   openKansasCfrCategory,
@@ -64,6 +66,12 @@ export type KansasSearchedFiling = {
    * postback link — neither has an HTML report.
    */
   openReport: () => Promise<KansasCfrPage>;
+  /**
+   * GET a schedule of the report this row's session opened LAST: the viewer
+   * keeps the open report in session state, so call it right after this
+   * row's openReport() and before any other row's. Throws for a paper row.
+   */
+  openSchedule: (schedule: "A" | "B" | "C" | "D") => Promise<KansasCfrPage>;
 };
 
 export type KansasFilingSearchInput = {
@@ -104,20 +112,21 @@ export const searchKansasFilings: KansasFilingSearch = async (input) => {
   }
   const { pages } = await collectKansasCfrGridPages(session, results, input.gridId);
   return pages.flatMap((page) =>
-    page.rows.map((row) => ({
-      row,
-      openReport: () => {
-        if (row.channel !== "efile" || row.postbackTarget === null) {
-          return Promise.reject(
-            new KansasCfrClientError(
-              "invalid_request",
-              `no HTML report for ${row.channel} filing "${row.name}" filed ${row.fileDate} (${input.filingType})`
-            )
-          );
-        }
-        return postbackAndFollow(session, page.page, row.postbackTarget);
-      },
-    }))
+    page.rows.map((row) => {
+      const noReport = () =>
+        Promise.reject(
+          new KansasCfrClientError(
+            "invalid_request",
+            `no HTML report for ${row.channel} filing "${row.name}" filed ${row.fileDate} (${input.filingType})`
+          )
+        );
+      const isEfile = row.channel === "efile" && row.postbackTarget !== null;
+      return {
+        row,
+        openReport: () => (isEfile ? postbackAndFollow(session, page.page, row.postbackTarget!) : noReport()),
+        openSchedule: (schedule: "A" | "B" | "C" | "D") => (isEfile ? getKansasReportSchedule(session, schedule) : noReport()),
+      };
+    })
   );
 };
 
@@ -141,6 +150,8 @@ export function createKansasFilingPoolLoader(input: {
   sessionOptions?: KansasCfrSessionOptions;
   search?: KansasFilingSearch;
   onSkippedRows?: (office: KansasCfrOffice, skipped: number) => void;
+  /** An enumeration is being rerun after a mid-walk record-count mismatch (isKansasGridCountMismatch). */
+  onEnumerationRetry?: (office: KansasCfrOffice, filingType: string) => void;
 }): KansasFilingPoolLoader {
   const search = input.search ?? searchKansasFilings;
   const pools = new Map<string, Promise<KansasPooledFiling[]>>();
@@ -154,14 +165,25 @@ export function createKansasFilingPoolLoader(input: {
         let skipped = 0;
         // Sequential on purpose: one request in flight per viewer session.
         for (const filerSearch of KANSAS_CFR_FILER_SEARCHES) {
-          const found = await search({
+          const request: KansasFilingSearchInput = {
             office,
             filingType: filerSearch.filingType,
             gridId: filerSearch.gridId,
             startDate: window.startDate,
             endDate: window.endDate,
             sessionOptions: input.sessionOptions,
-          });
+          };
+          let found: KansasSearchedFiling[];
+          try {
+            found = await search(request);
+          } catch (error) {
+            // A filing landing mid-walk fails the count once; the rerun is
+            // clean. Anything else stays a failure, and it stays cached so a
+            // viewer outage fails every candidate fast instead of re-walking.
+            if (!isKansasGridCountMismatch(error)) throw error;
+            input.onEnumerationRetry?.(office, filerSearch.filingType);
+            found = await search(request);
+          }
           for (const filing of found) {
             if (!kansasGridOfficeMatches(office, filing.row.officeSought)) {
               skipped += 1;
