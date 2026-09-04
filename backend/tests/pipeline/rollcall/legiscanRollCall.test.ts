@@ -1022,6 +1022,7 @@ describe("getLegiscanStateConfig", () => {
       "AL-2103",
       "NY",
       "NM",
+      "KS",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -1047,6 +1048,7 @@ describe("getLegiscanStateConfig", () => {
       "NV",
       "NY",
       "NM",
+      "KS",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
@@ -1075,6 +1077,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("AL-2103")).toMatchObject({ jurisdiction: "AL", sessionId: 2103 });
     expect(getLegiscanStateConfig("NY").sessionId).toBe(2188);
     expect(getLegiscanStateConfig("NM").sessionId).toBe(2187);
+    expect(getLegiscanStateConfig("KS").sessionId).toBe(2178);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("WY")).toThrow("no LegiScan state config for WY");
   });
@@ -1131,6 +1134,94 @@ describe("getLegiscanStateConfig", () => {
       isFloorVote: null,
       reason: "unknown_question",
     });
+  });
+
+  it("classifies Kansas's real desc vocabulary, tally suffix and all", () => {
+    const config = LEGISCAN_STATE_CONFIGS.KS!;
+    const ks = (desc: string, chamber: "house" | "senate" = "house", billType = "B") =>
+      classifyLegiscanRollCall({ desc, total: chamber === "house" ? 125 : 40, chamber, billType, config });
+    // Every Kansas description ends with its own tally, which makes almost
+    // all of them unique. No pattern may be anchored at the end.
+    expect(ks("House Final Action - Passed - Yea: 84 Nay: 39")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(ks("Senate Final Action - Passed as amended - Yea: 31 Nay: 9", "senate").questionClass).toBe("passage");
+    expect(ks("House Emergency Final Action - Passed as amended - Yea: 88 Nay: 35").questionClass).toBe("passage");
+    expect(ks("Senate Emergency Final Action - Substitute passed - Yea: 30 Nay: 10", "senate").questionClass).toBe(
+      "passage"
+    );
+    expect(ks("House Final Action - Adopted as amended by required 2/3 Majority - Yea: 90 Nay: 28").questionClass).toBe(
+      "passage"
+    );
+    expect(ks("Senate Consent Calendar Passed - Yea: 39 Nay: 0", "senate").questionClass).toBe("passage");
+    expect(ks("House Concurred with amendments - Yea: 71 Nay: 51").questionClass).toBe("concurrence");
+    expect(ks("Senate Concurred with amendments in conference - Yea: 27 Nay: 13", "senate").questionClass).toBe(
+      "concurrence"
+    );
+    expect(ks("House Conference Committee Report was adopted - Yea: 121 Nay: 0").questionClass).toBe(
+      "conference_report"
+    );
+    // Kansas overrode the governor 69 times this biennium; an override is
+    // divided by definition, so it is a first-class kept class. (Enactment
+    // is NOT by definition: SB 79's Senate override prevailed and the House
+    // never acted, so the veto stood.)
+    expect(ks("Senate Motion to override veto prevailed - Yea: 30 Nay: 9", "senate").questionClass).toBe(
+      "veto_override"
+    );
+    // Failed final questions stay kept under their class, as Montana keeps
+    // `3rd Reading Failed`, so the superseded-stage gate sees a chamber's
+    // later rejection (HB 2527: passed 109-13, conference report then
+    // rejected 46-75).
+    expect(ks("House Motion to override veto failed; Veto sustained - Yea: 81 Nay: 42").questionClass).toBe(
+      "veto_override"
+    );
+    expect(ks("House Conference Committee Report not adopted - Yea: 46 Nay: 75").questionClass).toBe(
+      "conference_report"
+    );
+    expect(ks("Senate Motion to not adopt Conference Committee Report passed - Yea: 25 Nay: 15", "senate").questionClass).toBe(
+      "conference_report"
+    );
+    expect(ks("Senate Final Action - Not passed - Yea: 18 Nay: 22", "senate").questionClass).toBe("passage");
+    expect(ks("House Emergency Final Action - Not adopted by required 2/3 majority - Yea: 81 Nay: 43").questionClass).toBe(
+      "passage"
+    );
+    expect(ks("House Motion to concur with amendments failed - Yea: 45 Nay: 78").questionClass).toBe("concurrence");
+    // A roll the survey proved wrong is held: stored and surfaced, never
+    // queued, so it cannot be approved until the entry is removed.
+    expect(
+      classifyLegiscanRollCall({
+        desc: "House Motion to override veto prevailed - Yea: 84 Nay: 35",
+        total: 125,
+        chamber: "house",
+        billType: "B",
+        config,
+        rollCallId: 1491886,
+      })
+    ).toMatchObject({ isFloorVote: null, questionClass: null, reason: expect.stringMatching(/^held:SB 63 /) });
+    expect(ks("House Motion to override veto prevailed - Yea: 84 Nay: 35").isFloorVote).toBe(true);
+    // A LINE-ITEM override is a vote on the vetoed items, not on the act,
+    // and must never be read as the whole-bill override beside it.
+    expect(
+      ks("House Motion to override line item veto prevailed; Line item veto 88(k), 88(m) overridden - Yea: 84 Nay: 39")
+    ).toMatchObject({ isFloorVote: false, questionClass: null });
+    // Committee of the Whole is the amend-and-debate stage, and the rest are
+    // procedural questions that sit beside a kept spelling.
+    for (const [desc, chamber] of [
+      ["Senate Committee of the Whole - Amendment by Senator Holscher was rejected - Yea: 9 Nay: 31", "senate"],
+      ["House Committee of the Whole - Ruling of the chair was sustained - Yea: 84 Nay: 38", "house"],
+      ["House Committee of the Whole - Be passed as amended - Yea: 70 Nay: 53", "house"],
+      ["House EFA Subject to Amendment and Debate - Amendment by Representative Carpenter, B. was adopted.", "house"],
+      ["Senate Citing Rule 11(b), motion to withdraw from committee failed. - Yea: 9 Nay: 30", "senate"],
+      ["House Motion to withdraw from Committee on Veterans and Military not adopted - Yea: 51 Nay: 71", "house"],
+      ["Senate Motion to strike the enacting clause. Motion failed. - Yea: 11 Nay: 28", "senate"],
+      ["House Motion for previous question adopted. - Yea: 84 Nay: 39", "house"],
+      ["Senate Senator Thompson raised a question of germaneness. The amendment was ruled not germane. - Yea: 24", "senate"],
+    ] as const) {
+      expect(ks(desc, chamber)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+    // A spelling this session never printed surfaces rather than being guessed.
+    expect(ks("House Third Reading - Yea: 84 Nay: 39").isFloorVote).toBeNull();
   });
 
   it("classifies Missouri's real desc vocabulary as surveyed", () => {
