@@ -2097,6 +2097,63 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     ],
     excludedQuestions: [],
   },
+
+  // New Mexico Legislature, 2025 Regular Session (60 days, January 21 to
+  // March 22 2025). Vocabulary measured from the full dataset survey
+  // 2026-09-02: 1,328 bills, 571 roll calls, 128 people (70 House seats and
+  // 42 Senate seats plus turnover).
+  //
+  // NEW MEXICO HAS THE SMALLEST VOCABULARY OF ANY STATE IN THIS REGISTRY:
+  // every roll call in the session carries one of exactly two descriptions,
+  // `House Final Passage` (310) and `Senate Final Passage` (254). There is
+  // nothing to exclude, so `excludedQuestions` is deliberately empty, and
+  // both patterns are anchored at both ends so any new spelling in a future
+  // session surfaces for review instead of being classified silently.
+  //
+  // What the survey established:
+  // - The feed carries FINAL PASSAGE ONLY. No bill has more than one roll
+  //   call in the same chamber anywhere in the session (checked over all
+  //   571), so there are no amendment votes, no concurrence votes and no
+  //   conference-report votes to classify or exclude. ⚠ That is a JUDGING
+  //   hazard, not a convenience: when the other chamber amends a bill, the
+  //   vote that accepts the change is simply absent, so a chamber's only
+  //   recorded vote can be on text that is not the text that became law.
+  //   Every selected roll needs its own version check against nmlegis.gov.
+  // - There are no committee votes at all. Every House tally totals 69 or
+  //   70 and every Senate tally totals exactly 42, so nothing lands in the
+  //   small-tally or committee buckets.
+  // - New Mexico proposes CONSTITUTIONAL AMENDMENTS as joint resolutions
+  //   (type JR, which the shared kept-types list already keeps), so the
+  //   Georgia resolution gap does not recur. A joint resolution goes to the
+  //   VOTERS and never to the governor, so a description of one must never
+  //   say it became law.
+  // - MEMORIALS (types M and JM, 88 and 14 bills) also take final-passage
+  //   votes and are dropped before this config by the kept-types list. They
+  //   express the legislature's opinion and change no law.
+  //
+  // Feed health is the cleanest tier: 0 repeated roll call ids, 0 identity
+  // duplicates, 0 summary-only rolls. Three defects are recorded in
+  // evidence/rollcall/legiscan-nm-2187/CODE-FINDINGS.md and none is fixable
+  // here: seven House rolls of 2025-02-27 drop the same member from their
+  // member lists while their header tallies stay right (they fail the parser
+  // and never reach the queue); one Senate roll is stamped 2024-02-10 inside
+  // a 2025 session; and roll 1496261 (House vote on SB 3) stores 42-23 where
+  // the official sheet reads 44-23, with the header and the 69-member list
+  // agreeing with each other, so no parser check can see it. ⚠ That last one
+  // means a clean parse proves nothing about the tally: every roll picked
+  // for a batch is checked against its nmlegis.gov official sheet (date,
+  // yeas, nays, present-not-voting, absent + excused) before judging, and a
+  // mismatch holds the roll — survey/tally-audit.json records the check.
+  NM: {
+    jurisdiction: "NM",
+    sessionId: 2187,
+    chamberSizes: { house: 70, senate: 42 },
+    keptQuestions: [
+      { pattern: /^house final passage$/, questionClass: "passage" },
+      { pattern: /^senate final passage$/, questionClass: "passage" },
+    ],
+    excludedQuestions: [],
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
