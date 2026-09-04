@@ -163,10 +163,12 @@ is always null). Verified 2026-08-26 against statute + FAQ + live API:
   of business. SOS FAQ and the legacy-archive upload spec (fields "Required if
   amount is equal to or greater than $5000") confirm. **Exemption (statute
   verbatim)**: the duty applies to filers "other than a candidate for judicial
-  office, county office, city office, or school district office" — judicial
-  candidates get NO occupation data by law (statutory-unavailable note, never
-  an empty chart). 48-hour supplemental statements (>$500, last 39 days)
-  legally omit occupation — it arrives in the next cumulative report.
+  office, county office, city office, or school district office". Judicial
+  filers nonetheless supply occupation in practice (gate 6 below: 2 of 2
+  donors ≥ $5k), so publication is decided by the display gate, not office
+  class; the coverage note states the exemption. 48-hour supplemental
+  statements (>$500, last 39 days) legally omit occupation — it arrives in
+  the next cumulative report.
 - **Live proof**: CON rows from `getAllPublicTransactionDataList` populate
   `employerOccupation` / `employerName` / `employerAddress` on $5k+ individual
   contributions (observed: $15,000 donor → "Healthcare/Medical" / Essentia
@@ -299,3 +301,94 @@ Not in Phase 0A (deliberately): filed-report PDF download (verified once via
 `Common-Service/AmazonCloudFront/getDownloadLinkWithoutCookies` with
 `{ s3FilePath }` → presigned URL), the 48-hour overlap (Phase 0B, after
 Sep 25–Oct 2), any schema or publication.
+
+## Phase 3 — occupation (built 2026-09-02, local)
+
+No schema change: migration 269 already admits `occupation` in the direct
+breakdowns. The aggregator takes the window years' API rows — the sync has
+already proved them row-for-row equal to the CSV (gate 5) — and sums the
+filed `employerOccupation` on positive Monetary / In-Kind rows from
+individuals. Label verbatim after whitespace normalization; blank and
+"Unknown" (a filed placeholder, 3 rows) dropped; nothing inferred. Donor
+identity is the portal's `contributorPayeeID`, else the name.
+
+Publication per committee is the plan's hard-fact-3 display gate: labeled
+individual dollars × 5 ≥ positive itemized individual dollars AND ≥ 3 labeled
+donors. Below the gate the totals and size buckets still publish and no
+occupation rows are written (component isolation) — the card has no
+occupation list rather than a misleading one. Top 50 labels. The loader now
+selects `occupation` + `contribution_size`; the direct coverage note states
+the $5,000 duty, the judicial exemption and the 20% gate. The compliance
+diagnostic (labeled dollars among $5k+ donors) stays in the Phase 0A probe
+output.
+
+Live run 2026-09-02 (`sync-due --stale-after-days=0` on the Phase 2 cache):
+49/49 synced, 14 occupation rows across the 4 committees that pass the gate —
+Wrigley (Attorney General) $33,500 labeled of $93,500 individual, 4 labeled of
+23 donors; Howe (Secretary of State) $45,000 of $114,241.07, 6 of 100; Judy
+Lee (State Senate) $8,320.50 of $9,070.50, 13 of 15; Sorvaag (State Senate)
+$4,250 of $6,700, 5 of 12. Every committee's gate metrics were recomputed
+independently from the raw API JSON with a separate script: 0 mismatches.
+Wrigley's stored rows (Government/Civil $20,000 / 1; Construction/Engineering
+$11,500 / 2; Business Owner $2,000 / 1) match that recomputation exactly. No
+judicial committee passes today.
+
+## Phase 4a — outside spending groups (built 2026-09-03, local)
+
+New cached artifacts (same refresh CLI, same content-addressed cache):
+`APIIE_<year>` = the IE transaction search for one year under the pinned
+selector (`IE` + `orgTypeCode 104`), refused before caching if any row is
+not typed "Independent Expenditures" (the server's silent fallback returns
+every transaction with a 200); `REGISTRY_<electionYear>` = the full
+committee registry, keyed by the election year it serves.
+
+Target identity, verified live 2026-09-03 (52 rows, 26 targets): IE rows
+name the candidate in `candidateNameAssocation` with the registry's own
+`candidateName` label ("Wrigley, Drew H", "Howe, Michael", "Lee, Judy"),
+never a committee id. The sync therefore takes the linked committee's
+registry label (honorific dropped, storage-normalized) and matches rows on
+exact equality — no roster-name matching. Ambiguity: another candidate
+committee on the same election label carrying the same label for a
+different office or seat suppresses the component for that candidate
+(same office + seat = a re-registration of one person). Rows of the link's
+`electionYear` only; a candidate-naming row with no election year fails
+closed. IE rows carry no `contributorPayeeID` (all 52 live), so the YTD
+control keys the payee by name.
+
+Money (hard fact 4): per spender × filed stance, sum of unique
+`transactionID`s — equal same-day allocations are kept. The
+per-(spender, payee, calendar year) control (max `transactionTotalYTD` ==
+sum of unique rows) runs over ALL of an included spender's rows, since the
+field aggregates across every target; a mismatch, or a payee group with no
+parseable control, quarantines the outside component. A repeated
+`transactionID`, a row without a Support/Oppose stance, a non-positive
+amount, a blank committee name or a spender id that is not ten digits also
+fail closed — none has been observed, so none gets an interpretation (the
+id check runs in the aggregator so a bad spender can never abort the
+writer's snapshot transaction and take the direct component with it).
+
+Component isolation: any outside failure leaves both outside totals NULL
+(the writer preserves the stored value) and the stored groups untouched,
+and the reason lands on the sync result and the batch log; the direct
+component still publishes. A clean harvest that names nobody writes $0/$0
+and clears stale groups — the harvest is authoritative for what has been
+filed. Writer identity: `committee_id` = the spender's 10-digit entityId
+(`1040001626` StrongND Fund). The loader already selected both outside
+tables; only its coverage note changed. Funders (donor + industry rows for
+the spenders) are Phase 4b.
+
+Live run 2026-09-03 (`raw:refresh --election-year=2026 --force`, then
+`sync-due --stale-after-days=0`): harvest 52 rows / 52 distinct ids /
+$208,647.42 / 26 targets (2025 IE harvest: 0 rows); registry 601 rows.
+49/49 candidates synced; 48 outside components synced, 1 suppressed — Jay
+Fisher, whose label sits on two 2026 committees ("Fisher, Jay" State
+Representative District 5, "Mr. Fisher, Jay" State Senator District 5),
+so an IE naming him could not be placed (none does today). 10 linked
+candidates carry IE money: 15 groups, $112,351.52 support / $0 oppose (six
+statewide committees at $16,857.14 each from StrongND, Judy Lee $2,932.89
+across three committees, Schaible $4,092.46, Axtman $2,183.33, Roers
+$2,000). The other 16 targets ($96,295.90, Kringstad $61,138.50 the
+largest) have no VoteApp link — mostly House seats with no roster rows
+yet. Every payee YTD control was present. An independent Python
+recompute from the raw APIIE + REGISTRY JSON matched all 15 stored groups
+and all 48 summary totals exactly.

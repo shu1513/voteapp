@@ -1,0 +1,38 @@
+[
+ {
+  "recordId": "8c63fcba-8e64-4a28-b399-5edcc90992ce",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-01 run: this hand-written record describes the same vote as SB 10 roll 1316694 on 2023-05-02 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "54c9167f-bc92-4505-bb80-9839d23bb7cb",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-01 run: this hand-written record describes the same vote as SB 10 roll 1316694 on 2023-05-02 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "a7ca481c-6788-49d3-a40c-16d8677a918d",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-01 run: this hand-written record describes the same vote as SB 10 roll 1316694 on 2023-05-02 for Mark Shirey, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "73627128-0682-472c-a99c-98bf173590ed",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-01 run: this hand-written record describes the same vote as SB 10 roll 1316694 on 2023-05-02 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "3b75a656-c64b-4bce-b45a-b61cf8b82ba9",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-01 run: this hand-written record describes the same vote as HB 379 roll 1321392 on 2023-05-09 for Mark Shirey, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "a266a8a6-a0e7-4f7b-ab52-d0da5cd24a21",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-01 run: this hand-written record describes the same vote as HB 363 roll 1323541 on 2023-05-11 for Mark Shirey, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "8c84a29f-d439-45e8-b0e6-fc7bff8a7424",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-01 run: this hand-written record describes the same vote as SB 206 roll 1336162 on 2023-05-31 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "fc689aae-62fa-485f-8130-741c7e88b6ec",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-01 run: this hand-written record describes the same vote as SB 206 roll 1336162 on 2023-05-31 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "22579434-6461-4502-b38a-aa199815bd43",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2014 session batch-01 run: this hand-written record describes the same vote as SB 206 roll 1336162 on 2023-05-31 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2014/batch-01/JUDGING.md."
+ }
+]

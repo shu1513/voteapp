@@ -1,0 +1,104 @@
+{
+ "rolls": [
+  {
+   "measure": "AB 39",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601664,
+   "date": "2025-09-09",
+   "yea": 30,
+   "nay": 10,
+   "title": "General plans: Local Electrification Planning Act."
+  },
+  {
+   "measure": "AB 43",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1600929,
+   "date": "2025-09-03",
+   "yea": 30,
+   "nay": 10,
+   "title": "Wild and scenic rivers."
+  },
+  {
+   "measure": "AB 321",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601084,
+   "date": "2025-09-04",
+   "yea": 23,
+   "nay": 13,
+   "title": "Misdemeanors."
+  },
+  {
+   "measure": "AB 373",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1600890,
+   "date": "2025-09-03",
+   "yea": 30,
+   "nay": 8,
+   "title": "Dependency proceedings: counsel."
+  },
+  {
+   "measure": "AB 419",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601769,
+   "date": "2025-09-10",
+   "yea": 31,
+   "nay": 8,
+   "title": "Educational equity: immigration enforcement."
+  },
+  {
+   "measure": "AB 2395",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725755,
+   "date": "2026-08-24",
+   "yea": 30,
+   "nay": 10,
+   "title": "Child support: compromise of arrears program."
+  },
+  {
+   "measure": "AB 2495",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725854,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 8,
+   "title": "Unlawful immigration-related practices."
+  },
+  {
+   "measure": "AB 2510",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725987,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 9,
+   "title": "CalWORKs."
+  },
+  {
+   "measure": "AB 2599",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725849,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 9,
+   "title": "Slavery: corporate disclosures."
+  },
+  {
+   "measure": "AB 2619",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726174,
+   "date": "2026-08-26",
+   "yea": 30,
+   "nay": 9,
+   "title": "Water resources: data centers."
+  }
+ ]
+}

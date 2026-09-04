@@ -1,0 +1,42 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2143",
+      "roll": 1535941,
+      "measure_id": "SB 365",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 365, which builds career and job data into Indiana's schools. The state must track how many students who finished a career and skills course are working in a matching job. It must track that at one, three, five and ten years after leaving school. Four state bodies must publish clear facts about school career courses on a public website. They are the education department, the higher education commission, the workforce department and the governor's workforce cabinet. The law also creates a career coaching chapter. Schools and other bodies may work with approved coaching partners under it. It repeals an older chapter that covered the same ground. The Indiana House passed the bill 66-24, and it became law.",
+      "nay_description": "Voted against Senate Bill 365, which builds career and job data into Indiana's schools. The state must track how many students who finished a career and skills course are working in a matching job. It must track that at one, three, five and ten years after leaving school. Four state bodies must publish clear facts about school career courses on a public website. They are the education department, the higher education commission, the workforce department and the governor's workforce cabinet. The law also creates a career coaching chapter. Schools and other bodies may work with approved coaching partners under it. It repeals an older chapter that covered the same ground. The Indiana House passed the bill 66-24, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Third reading, and the only divided roll on this act. Word-level comparison of the House-engrossed text against the enrolled act found no operative difference. Member list verified name by name against official roll-call PDF SB0365.358_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2143",
+      "roll": 1549561,
+      "measure_id": "HB 1079",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1079, which cuts the time a tenant has to collect belongings from a storage firm. Under the old rule a warehouse or storage business had to wait 90 days after telling the tenant before it could sell the goods. The new rule cuts that wait to 45 days. Nothing else in the section changes. The Indiana House agreed to the final version 64-21, and it became law.",
+      "nay_description": "Voted against House Bill 1079, which cuts the time a tenant has to collect belongings from a storage firm. Under the old rule a warehouse or storage business had to wait 90 days after telling the tenant before it could sell the goods. The new rule cuts that wait to 45 days. Nothing else in the section changes. The Indiana House agreed to the final version 64-21, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "The House's agreement to the Senate amendments, which is the enacted text and the only divided roll on this act. The act changes one number in one sentence, so there is nothing else to compare. Member list verified name by name against official roll-call PDF HB1079.462_H.pdf."
+    }
+  ]
+}

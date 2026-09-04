@@ -100,7 +100,7 @@ export function arkansasDistrictNumberFromDistrictName(name: string | null | und
   return match ? match[1]! : null;
 }
 
-function registrationDistrictNumber(value: string | null): string | null {
+export function arkansasRegistrationDistrictNumber(value: string | null): string | null {
   const match = /^\s*0*(\d+)\s*$/.exec(value ?? "");
   return match ? match[1]! : null;
 }
@@ -225,7 +225,7 @@ function toMatch(input: {
     filerName: row.committeeName?.trim() || input.officialName,
     officialName: input.officialName,
     officeName: row.office ?? "",
-    district: registrationDistrictNumber(row.officeDistrictName),
+    district: arkansasRegistrationDistrictNumber(row.officeDistrictName),
     politicalParty: row.politicalParty,
     electionYear: row.electionYear ?? 0,
     totalRaised: row.totalRaised,
@@ -264,7 +264,7 @@ export function resolveArkansasCandidateFiler(
   for (const row of input.registrationRows) {
     if (!isCandidateRegistration(row) || row.electionYear !== input.electionYear) continue;
     if (row.office !== cfisOffice || row.jurisdictionName !== ARKANSAS_STATE_JURISDICTION) continue;
-    if (registrationDistrictNumber(row.officeDistrictName) !== district) continue;
+    if (arkansasRegistrationDistrictNumber(row.officeDistrictName) !== district) continue;
     if (partiesConflict(input.candidateParty, row.politicalParty)) continue;
     const rowNames = arkansasRegistrationRowNames(row);
     if (!candidateNamesMatch(input.candidateName, rowNames)) continue;

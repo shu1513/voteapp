@@ -244,6 +244,33 @@ describe("syncWestVirginiaCandidateFinance", () => {
     expect(client.query).not.toHaveBeenCalled();
   });
 
+  it("publishes NULL totals, not $0, for a committee with no rows in the window", async () => {
+    const { db, client } = writingDb();
+    const base = baseInput(db);
+    const result = await syncWestVirginiaCandidateFinance({
+      ...base,
+      link: { ...base.link, entityId: "1010009998", committeeName: "Late Registrant for House" },
+      loadArtifacts: loader(),
+    });
+    expect(result).toMatchObject({
+      status: "synced",
+      reportedActivity: false,
+      totalReceipts: null,
+      directContributionTotal: null,
+      totalDisbursements: null,
+      breakdownCounts: { occupation: 0, industry: 0, contribution_size: 0 },
+      summaryWritten: true,
+      directBreakdownsWritten: 0,
+    });
+    const summaryInsert = client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.wv_candidate_finance_summaries")
+    );
+    expect(summaryInsert?.[1]).toEqual([LINK_ID, 2026, null, null, null, null, null, null, "https://cfrs.wvsos.gov/", "2026-09-01T00:00:00.000Z"]);
+    expect(
+      client.query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.wv_candidate_finance_direct_breakdowns"))
+    ).toBe(false);
+  });
+
   it("rejects ineligible offices, bad ids and pre-2026 years before reading anything", async () => {
     const { db } = writingDb();
     const artifacts = loader();

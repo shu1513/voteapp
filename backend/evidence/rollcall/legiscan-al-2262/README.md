@@ -3,7 +3,7 @@
 Alabama's May 2026 special session, called to redraw districts. Registered as `AL-2262`, sharing the
 one Alabama vocabulary definition with the two regular sessions.
 
-**Surveyed and fetched, but nothing is judged or imported yet.** See "What is left" below.
+**Complete.** 3 rolls on 2 measures, 150 records across 122 candidates, all imported. See `batch-01/`.
 
 ## The session
 
@@ -38,21 +38,14 @@ that chamber and day is the previous-question motion (Roll Call 3, 75-29). Misso
 same shape — exact tallies, incomplete coverage. Nothing here can recover the missing vote, so
 SB 1 can only ever be represented by its Senate vote.
 
-## What is left
+## Batch
 
-Judging and importing. The two measures were selected but **not judged**, because judging requires
-reading the enacted Act and `alison.legislature.state.al.us` was not serving documents when this
-work was done (repeated attempts timed out, including on URLs that had served fine earlier the same
-day). A title is not a basis for a judgment, so nothing was written.
+`batch-01/` holds all three floor votes, both measures, imported with no stance under `general`.
+Judging was blocked for a day because the Alabama site stopped serving documents; it came back on
+2026-09-02 and both enrolled Acts were read in full before anything was written. The label decision
+and the party-line breakdown are in `batch-01/JUDGING.md`; the selection filters are in
+`batch-01/PLAN.md`.
 
-To finish: fetch `https://alison.legislature.state.al.us/files/pdf/SearchableInstruments/2026SS1/{HB1,SB1}-enr.pdf`,
-read both Acts top to bottom, decide the label question below, then judge and import against this
-directory's crosswalk.
-
-**The label question to settle first.** These acts authorise special primary elections following
-redistricting. Missouri's HB 1 of its 2025 special session — also a redistricting measure — was
-imported under `general` with no stance on the ground that no research area describes redistricting.
-These are one step removed: they are election-administration machinery rather than the map itself,
-so `election_integrity` is at least arguable. Read the Acts before deciding, and note that both
-passed on near party-line margins in a session called for redistricting, which is exactly the
-context in which a wrong direction would be worst.
+Import stamp `2026-09-02T15:42:54.932Z`, 150 inserts, 0 errors, reconciled three ways, convergence
+clean. Four hand-written duplicates were retired first
+(`batch-01/duplicate-retirements.json`, to re-run at production promotion).
