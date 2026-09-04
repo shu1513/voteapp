@@ -150,3 +150,30 @@ there is no shortfall of the kind Texas and Georgia have.
 
 Production holds **zero** Kansas roll-call records. This run touched local `voteapp`
 only.
+
+## Rewrite pass, 2026-09-04
+
+A reader review flagged four descriptions. Each was checked against the enrolled act
+and found to be a real narrowing or widening of what the statute says — the same
+failure shape the "shortened legal lists" check above exists to catch:
+
+- **HB 2062** called the $2,320 figure an "income tax break". It is a personal
+  exemption (it lowers taxable income, not the tax bill by $2,320), and it applies to
+  the year of birth or the year a stillbirth certificate is filed — not to an ongoing
+  pregnancy.
+- **HB 2437** ran two removal procedures together, so it read as if every flagged
+  voter could only be dropped after being shown to be a noncitizen. The noncitizen
+  license list works that way; the out-of-state license list allows removal after a
+  45-day non-response, with reinstatement on proof of Kansas residence. Now two
+  sentences, one per list.
+- **SB 244** said a government body "is fined". The act first sends an attorney
+  general's notice, and the fine is avoided by curing within 15 days. Added.
+- **HB 2054** stated the $4,000 / $1,000 / $2,000 caps without saying they are per
+  contributor, so they could be read as limits on total fundraising. Now "the cap on
+  one contributor's gift", and the party-fund limits say "from one donor".
+
+`rollcall:judge` reported 4 `updated`, 8 `unchanged`. The import reported **295
+`rewrite`** (74 + 74 + 74 + 73) and **585 `unchanged`**, 0 inserts, 0 notified —
+`import-rewrite-report.json`. Verified in the database: the four new phrasings match
+74 / 74 / 74 / 73 rows, the four old phrasings match 0, and the Kansas total is still
+880. Local only; production still holds zero Kansas rows.
