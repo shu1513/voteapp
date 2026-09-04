@@ -10,6 +10,7 @@ import type { KansasCandidateLedgerResult, KansasCandidateReport } from "../../.
 import type { KansasReportCover, KansasScheduleARow, KansasScheduleBRow } from "../../../src/pipeline/kansasFinance/kansasCfrViewerParsers.js";
 import type { KansasDirectFinance } from "../../../src/pipeline/kansasFinance/kansasDirectContributionAggregator.js";
 import { kansasCfrOfficeForRace } from "../../../src/pipeline/kansasFinance/kansasFinanceEligibleOffices.js";
+import type { KansasPaperCoverOverride } from "../../../src/pipeline/kansasFinance/kansasPaperCoverOverrides.js";
 import {
   buildKansasReportLedger,
   kansasLastMinuteWindows,
@@ -119,10 +120,14 @@ function report(
   };
 }
 
-function resolved(reports: KansasCandidateReport[], extra: { affidavitDates?: string[]; complete?: boolean } = {}): KansasCandidateLedgerResult {
+function resolved(
+  reports: KansasCandidateReport[],
+  extra: { affidavitDates?: string[]; complete?: boolean; paperHeaders?: KansasFilingHeader[]; paperFileNames?: string[] } = {}
+): KansasCandidateLedgerResult {
+  const paperHeaders = extra.paperHeaders ?? [];
   const ledger = buildKansasReportLedger({
     periods,
-    filings: reports.map((entry) => entry.header),
+    filings: [...reports.map((entry) => entry.header), ...paperHeaders],
     appointmentsOfTreasurer: [],
     affidavitDates: extra.affidavitDates ?? [],
     lastMinuteWindows: kansasLastMinuteWindows(2026),
@@ -132,8 +137,21 @@ function resolved(reports: KansasCandidateReport[], extra: { affidavitDates?: st
     status: "resolved",
     match: { surname: "HOLLOWAY", firstName: "MARGARET", committeeName: "HOLLOWAY MARGARET", filedNames: ["HOLLOWAY MARGARET"], rowCount: reports.length, confidence: "name_exact" },
     reports,
-    paperReports: [],
-    paper: null,
+    // The KPDC inventory exists only for a candidate the viewer shows paper rows for (one per version here).
+    paperReports: paperHeaders.map(() => ({ channel: "paper" }) as never),
+    paper:
+      paperHeaders.length === 0
+        ? null
+        : {
+            status: "resolved",
+            filedNames: ["Holloway, Margaret"],
+            headers: paperHeaders,
+            fileNames: extra.paperFileNames ?? ["H085MH_AT.pdf", "H085MH_202607.pdf"],
+            explainedByEfile: 0,
+            lastMinute: 0,
+            skipped: 1,
+            unmapped: [],
+          },
     appointments: [],
     affidavitDates: extra.affidavitDates ?? [],
     ledger,
@@ -298,6 +316,95 @@ describe("syncKansasCandidateFinance", () => {
     expect(result).toMatchObject({ status: "synced", dryRun: true, totalReceipts: 1400, directContributionTotal: 430, summaryWritten: false, directBreakdownsWritten: 0 });
     expect(client.query).not.toHaveBeenCalled();
     expect(db.connect).not.toHaveBeenCalled();
+  });
+
+  // A paper filer: the 2025 annual e-filed, the pre-primary a KPDC scan (the ledger's date-less paper version).
+  const PAPER_PRE_PRIMARY: KansasFilingHeader = {
+    periodStart: "2026-01-01",
+    periodEnd: "2026-07-23",
+    fileDate: null,
+    amendmentDate: null,
+    amended: false,
+    amendmentOrdinal: null,
+    termination: false,
+    channel: "paper",
+  };
+  const annualEfiled = () =>
+    report(header({ ...ANNUAL }), { begin: 0, spent: 1_000, rowsA: [aRow({ amountCents: 20_000, occupation: "Retired" })], unitemizedA: 5_000 });
+  /** Transcribed pre-primary cover: begins at the annual's close ($240), $500 in, $50 out. */
+  const transcribed = (fileName: string): KansasPaperCoverOverride => ({
+    committeeId: "7:85:HOLLOWAY:MARGARET",
+    electionYear: 2026,
+    sourceFileName: fileName,
+    sourceUrl: `https://www.kansas.gov/ethics/CFAScanned/House/2026ElecCycle/${fileName}`,
+    cashBeginningCents: 24_000,
+    totalContributionsCents: 50_000,
+    cashAvailableCents: 74_000,
+    totalExpendituresCents: 5_000,
+    cashCloseCents: 69_000,
+    inKindCents: 0,
+    otherTransactionsCents: null,
+  });
+
+  it("stands a transcribed cover in for a canonical paper version: totals only, no direct total, no buckets", async () => {
+    const { db, client } = writingDb();
+    const { input } = baseInput(db, resolved([annualEfiled()], { paperHeaders: [PAPER_PRE_PRIMARY] }));
+    const loadPaperCovers = vi.fn(async () => [transcribed("H085MH_202607.pdf")]);
+
+    const result = await syncKansasCandidateFinance({ ...input, loadPaperCovers });
+
+    expect(loadPaperCovers).toHaveBeenCalledWith("7:85:HOLLOWAY:MARGARET", 2026);
+    expect(result).toMatchObject({
+      status: "synced",
+      periods: { "2025-annual": "report_filed", "2026-pre_primary": "report_filed" },
+      totalReceipts: 750,
+      directContributionTotal: null,
+      totalDisbursements: 60,
+      cashOnHand: 690,
+      coverage: null,
+      breakdownCounts: { occupation: 0, contribution_size: 0 },
+      diagnostics: [
+        "no breakdowns: schedules not opened for 2026-pre_primary",
+        "no breakdowns: direct contribution total not reported",
+        "transcribed paper covers: H085MH_202607.pdf",
+      ],
+      summaryWritten: true,
+      directBreakdownsWritten: 0,
+    });
+    const summaryInsert = client.query.mock.calls.find(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_summaries"));
+    expect(summaryInsert?.[1]).toEqual([LINK_ID, 2026, 750, null, 60, 690, null, null, KANSAS_CFR_LINK_SOURCE_URL, NOW.toISOString()]);
+    expect(client.query.mock.calls.some(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_direct_breakdowns"))).toBe(false);
+  });
+
+  it("fails closed when the canonical paper version has no transcribed cover, and consults the table only for paper rows", async () => {
+    const { db, client } = writingDb();
+    const paperFiler = resolved([annualEfiled()], { paperHeaders: [PAPER_PRE_PRIMARY] });
+    await expect(
+      syncKansasCandidateFinance({ ...baseInput(db, paperFiler).input, loadPaperCovers: vi.fn(async () => []) })
+    ).rejects.toThrow("unpublishable: 2026-pre_primary: no opened cover for the canonical paper version");
+
+    // The ledger counts the amendment; a transcribed ORIGINAL does not stand in for it.
+    const amended = resolved([annualEfiled()], { paperHeaders: [PAPER_PRE_PRIMARY, { ...PAPER_PRE_PRIMARY, amended: true, amendmentOrdinal: 1 }] });
+    expect(amended.status === "resolved" && amended.ledger.entries[1]!.status).toBe("amended");
+    await expect(
+      syncKansasCandidateFinance({ ...baseInput(db, amended).input, loadPaperCovers: vi.fn(async () => [transcribed("H085MH_202607.pdf")]) })
+    ).rejects.toThrow("unpublishable: 2026-pre_primary: no opened cover for the canonical paper version");
+
+    // An operator row that names no report of the cycle is an error, not a silent skip.
+    await expect(
+      syncKansasCandidateFinance({ ...baseInput(db, paperFiler).input, loadPaperCovers: vi.fn(async () => [transcribed("H085MH_AT.pdf")]) })
+    ).rejects.toThrow("transcribed cover H085MH_AT.pdf: not a report of a required period");
+
+    // Another candidate's scan of the same period builds the same header key; the tree's ownership rejects it.
+    await expect(
+      syncKansasCandidateFinance({ ...baseInput(db, paperFiler).input, loadPaperCovers: vi.fn(async () => [transcribed("H058AS_202607.pdf")]) })
+    ).rejects.toThrow("transcribed cover H058AS_202607.pdf: not among the 2 scans the KPDC tree lists for this candidate");
+    expect(client.query).not.toHaveBeenCalled();
+
+    // No viewer paper rows: the table is never read.
+    const untouched = vi.fn(async () => []);
+    await syncKansasCandidateFinance({ ...baseInput(db, resolved(filedReports())).input, loadPaperCovers: untouched, dryRun: true });
+    expect(untouched).not.toHaveBeenCalled();
   });
 });
 
