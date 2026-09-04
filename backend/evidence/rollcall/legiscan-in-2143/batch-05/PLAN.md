@@ -65,7 +65,7 @@ certification. More information on the ballot and party officials gatekeeping ho
 labelled are both defensible readings inside `election_integrity`.
 
 **HB 1633, study of election issues.** Directs the secretary of state to study election timing
-and vote centres and report by November 2025. A vote to commission a study is not a vote on any
+and vote centers and report by November 2025. A vote to commission a study is not a vote on any
 policy.
 
 **HB 1196, membership of aviation boards.** Exempts entities under 38,000 population from the

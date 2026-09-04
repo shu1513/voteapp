@@ -14,7 +14,7 @@ No AI provider was called at any point.
 | HB 1004, health care matters | `healthcare_affordability` | for | Senate 37-13 |
 
 **HB 1003** is titled like an omnibus and is not one. About sixty of its sixty-nine sections push
-the same way: price posting for laboratories, imaging centres and hospitals; the written price
+the same way: price posting for laboratories, imaging centers and hospitals; the written price
 estimate deadline cut from five working days to two; free copies of X-rays and of an electronic
 health record; a ban on billing an office visit with hospital facility codes, backed by a $1,000
 a day penalty; the removal of trade secret shields from pharmacy benefit manager audits. Nothing
