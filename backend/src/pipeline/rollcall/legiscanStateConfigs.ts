@@ -1717,9 +1717,9 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   //   Neither is divided, so the pool below is unaffected.
   //
   // Pool under the campaign's standard divided gate (the losing side at
-  // least a quarter of the winning side): 2,446 kept floor votes on bills
-  // and joint resolutions, 203 of them divided, and 130 of those on
-  // measures that became law, across 94 measures. Two wider gates were
+  // least a quarter of the winning side): 2,449 kept floor votes on bills
+  // and joint resolutions, 204 of them divided, and 131 of those on
+  // measures that became law, across 95 measures. Two wider gates were
   // measured before settling on the standard one, because Arkansas has a
   // Republican supermajority the way Texas and Kentucky do: a fifth of the
   // winning side gives 203 divided-and-enacted rolls on 136 measures, and
