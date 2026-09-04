@@ -1,0 +1,906 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-09-03T01:41:14.615Z",
+  "finishedAt": "2026-09-03T01:41:14.849Z",
+  "jurisdiction": "NV",
+  "sessionId": 2144,
+  "evidenceDir": "~/legiscan-data/nv-2144-evidence",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "~/legiscan-data/nv-2144-work/legiscan-people-nv-2144.json",
+  "peopleMembers": 75,
+  "candidatePool": 90,
+  "crosswalkFile": "~/legiscan-data/nv-2144-work/crosswalk.json",
+  "crosswalkEntries": 75,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 8496,
+      "rosterName": "Marilyn Dondero Loop",
+      "rosterSeat": "senate SD-008",
+      "candidateId": "87ddb1c7-fb9d-43e9-97db-c0dad438b801",
+      "candidateName": "Marilyn Dondero Loop",
+      "candidacy": "state_upper: State Senate District 8 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 8500,
+      "rosterName": "James Ohrenschall",
+      "rosterSeat": "senate SD-021",
+      "candidateId": "1a86c751-4d25-42c1-8819-6c50d9481de7",
+      "candidateName": "James Ohrenschall",
+      "candidacy": "state_upper: State Senate District 21 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12200,
+      "rosterName": "Ira Hansen",
+      "rosterSeat": "senate SD-014",
+      "candidateId": "502ee734-affc-490a-a6c0-509d41634029",
+      "candidateName": "Ira Hansen",
+      "candidacy": "state_upper: State Senate District 14 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12203,
+      "rosterName": "Richard Daly",
+      "rosterSeat": "senate SD-013",
+      "candidateId": "a9e68d81-1c25-4826-856b-fe469251aa70",
+      "candidateName": "Richard \"Skip\" Daly",
+      "candidacy": "state_upper: State Senate District 13 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17444,
+      "rosterName": "Robin Titus",
+      "rosterSeat": "senate SD-017",
+      "candidateId": "3256ed2e-d7bb-4acb-80ac-a05178ff8e8a",
+      "candidateName": "Robin L. Titus",
+      "candidacy": "state_upper: State Senate District 17 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17446,
+      "rosterName": "Jill Dickman",
+      "rosterSeat": "house HD-031",
+      "candidateId": "bfbe2d8f-5312-4b83-88ae-85e069e8b4f3",
+      "candidateName": "Jill Dickman",
+      "candidacy": "state_lower: Assembly District 31 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17518,
+      "rosterName": "Edgar Flores",
+      "rosterSeat": "senate SD-002",
+      "candidateId": "022df62a-9226-4ad4-b90a-244f3bfc9abc",
+      "candidateName": "Edgar Flores",
+      "candidacy": "state_upper: State Senate District 2 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19226,
+      "rosterName": "Lisa Krasner",
+      "rosterSeat": "senate SD-016",
+      "candidateId": "5d272762-6668-4196-a3c9-2cdcae470255",
+      "candidateName": "Lisa Krasner",
+      "candidacy": "state_upper: State Senate District 16 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19229,
+      "rosterName": "Brittney Miller",
+      "rosterSeat": "house HD-005",
+      "candidateId": "e4fcd90f-cbce-4bdb-9e44-9dd4483d5765",
+      "candidateName": "Brittney M. Miller",
+      "candidacy": "state_lower: Assembly District 5 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21172,
+      "rosterName": "Melanie Scheible",
+      "rosterSeat": "senate SD-009",
+      "candidateId": "ffc9f961-0b09-4f13-951f-d4d2866d39c8",
+      "candidateName": "Melanie Scheible",
+      "candidacy": "state_upper: State Senate District 9 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21174,
+      "rosterName": "Shea Backus",
+      "rosterSeat": "house HD-037",
+      "candidateId": "789cf65b-5256-4222-9b3a-9de312671dfa",
+      "candidateName": "Shea M. Backus",
+      "candidacy": "state_lower: Assembly District 37 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21177,
+      "rosterName": "Gregory Hafen",
+      "rosterSeat": "house HD-036",
+      "candidateId": "7b4e8759-3cf9-4e43-818e-3ad6a8c5211e",
+      "candidateName": "Gregory T. Hafen III",
+      "candidacy": "state_lower: Assembly District 36 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21178,
+      "rosterName": "Alexis Hansen",
+      "rosterSeat": "house HD-032",
+      "candidateId": "652d73f3-cacf-4f7e-9ada-4e3d81c3badc",
+      "candidateName": "Alexis M. Hansen",
+      "candidacy": "state_lower: Assembly District 32 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21179,
+      "rosterName": "Melissa Hardy",
+      "rosterSeat": "house HD-022",
+      "candidateId": "ccb1509a-39d1-4831-91b2-2ccd7e098a9f",
+      "candidateName": "Melissa Hardy",
+      "candidacy": "state_lower: Assembly District 22 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21185,
+      "rosterName": "Selena Torres-Fossett",
+      "rosterSeat": "house HD-003",
+      "candidateId": "3360064d-7aa7-493c-be3d-25165b0f89aa",
+      "candidateName": "Selena Torres-Fossett",
+      "candidacy": "state_lower: Assembly District 3 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22756,
+      "rosterName": "Cecelia Gonzalez",
+      "rosterSeat": "house HD-016",
+      "candidateId": "af566213-7e6c-4a10-8be6-c904ba596d8e",
+      "candidateName": "Cecelia Gonz\u00e1lez",
+      "candidacy": "state_lower: Assembly District 16 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22757,
+      "rosterName": "Natha Anderson",
+      "rosterSeat": "house HD-030",
+      "candidateId": "dbdc0ffd-9f9d-4e11-9e1a-a69a6785ecca",
+      "candidateName": "Natha C. Anderson",
+      "candidacy": "state_lower: Assembly District 30 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22758,
+      "rosterName": "David Orentlicher",
+      "rosterSeat": "house HD-020",
+      "candidateId": "91cc504c-8c92-4b3e-8a90-a0909825da3c",
+      "candidateName": "David Orentlicher",
+      "candidacy": "state_lower: Assembly District 20 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22798,
+      "rosterName": "Venicia Considine",
+      "rosterSeat": "house HD-018",
+      "candidateId": "4944d4f6-2ec4-4296-aa0b-88847d826a12",
+      "candidateName": "Venicia Considine",
+      "candidacy": "state_lower: Assembly District 18 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22829,
+      "rosterName": "Elaine Marzola",
+      "rosterSeat": "house HD-021",
+      "candidateId": "e4ec737a-5042-42cb-af81-058ed36f8fa7",
+      "candidateName": "Elaine Marzola",
+      "candidacy": "state_lower: Assembly District 21 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22830,
+      "rosterName": "Cameron Miller",
+      "rosterSeat": "house HD-007",
+      "candidateId": "bf027167-2637-4f5b-aa5a-ccfdfcb89d3b",
+      "candidateName": "Cameron Miller",
+      "candidacy": "state_lower: Assembly District 7 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22839,
+      "rosterName": "Fabian Donate",
+      "rosterSeat": "senate SD-010",
+      "candidateId": "d009c443-dd5c-4a4c-bb0b-e1fe1ef60967",
+      "candidateName": "Fabian Do\u00f1ate",
+      "candidacy": "state_upper: State Senate District 10 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24694,
+      "rosterName": "Rich DeLong",
+      "rosterSeat": "house HD-026",
+      "candidateId": "f8866974-eabd-4d33-a6db-8f6beae190a5",
+      "candidateName": "Richard DeLong",
+      "candidacy": "state_lower: Assembly District 26 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24695,
+      "rosterName": "Reuben D'Silva",
+      "rosterSeat": "house HD-028",
+      "candidateId": "80d413df-e226-458c-b7b9-77fb440f8c3b",
+      "candidateName": "Reuben D'Silva",
+      "candidacy": "state_lower: Assembly District 28 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24696,
+      "rosterName": "Danielle Gallant",
+      "rosterSeat": "house HD-023",
+      "candidateId": "55882868-2601-4155-92b0-9a4c4f0b3fda",
+      "candidateName": "Danielle Gallant",
+      "candidacy": "state_upper: State Senate District 20 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 24699,
+      "rosterName": "Brian Hibbetts",
+      "rosterSeat": "house HD-013",
+      "candidateId": "8599490d-f20f-49d7-99de-e2d7c75572a0",
+      "candidateName": "Brian Hibbetts",
+      "candidacy": "state_lower: Assembly District 13 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24701,
+      "rosterName": "Selena La Rue Hatch",
+      "rosterSeat": "house HD-025",
+      "candidateId": "4b96e6e1-b488-441f-a1b7-f04414df5598",
+      "candidateName": "Selena La Rue Hatch",
+      "candidacy": "state_lower: Assembly District 25 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24702,
+      "rosterName": "Erica Mosca",
+      "rosterSeat": "house HD-014",
+      "candidateId": "578cc068-9084-44b2-8aee-dfe434f0a122",
+      "candidateName": "Erica Mosca",
+      "candidacy": "state_lower: Assembly District 14 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24703,
+      "rosterName": "Duy Nguyen",
+      "rosterSeat": "house HD-008",
+      "candidateId": "38dac989-aa2f-4f29-b578-1067afcab12d",
+      "candidateName": "Duy Nguyen",
+      "candidacy": "state_lower: Assembly District 8 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24823,
+      "rosterName": "Max Carter",
+      "rosterSeat": "house HD-012",
+      "candidateId": "b18d925d-7658-422b-97b3-ff45f62d2e66",
+      "candidateName": "Max E. Carter II",
+      "candidacy": "state_lower: Assembly District 12 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24824,
+      "rosterName": "Julie Pazina",
+      "rosterSeat": "senate SD-012",
+      "candidateId": "934f0ac1-d0a8-44f4-922f-7b415c5cef44",
+      "candidateName": "Julie Ann Pazina",
+      "candidacy": "state_upper: State Senate District 12 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25733,
+      "rosterName": "Lisa Cole",
+      "rosterSeat": "house HD-004",
+      "candidateId": "ebdda2f3-9692-4092-9981-d7b77bd64355",
+      "candidateName": "Lisa Cole",
+      "candidacy": "state_lower: Assembly District 4 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25735,
+      "rosterName": "Rebecca Edgeworth",
+      "rosterSeat": "house HD-035",
+      "candidateId": "c19a1d15-c191-4634-b529-d4c75a451ddf",
+      "candidateName": "Rebecca Edgeworth",
+      "candidacy": "state_lower: Assembly District 35 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25737,
+      "rosterName": "Heather Goulding",
+      "rosterSeat": "house HD-027",
+      "candidateId": "84fca43c-2267-4c36-a873-8f562abdad39",
+      "candidateName": "Heather Goulding",
+      "candidacy": "state_lower: Assembly District 27 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25739,
+      "rosterName": "Jovan Jackson",
+      "rosterSeat": "house HD-006",
+      "candidateId": "fd354370-f178-4252-8107-23876e71bb38",
+      "candidateName": "Jovan Alexander Jackson",
+      "candidacy": "state_lower: Assembly District 6 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25742,
+      "rosterName": "Hanadi Nadeem",
+      "rosterSeat": "house HD-034",
+      "candidateId": "daad7f47-c4a5-4ada-aea3-3b728de8db36",
+      "candidateName": "Hanadi Nadeem",
+      "candidacy": "state_lower: Assembly District 34 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25743,
+      "rosterName": "Erica Roth",
+      "rosterSeat": "house HD-024",
+      "candidateId": "49d94471-3767-475e-a245-7305af1e36f0",
+      "candidateName": "Erica Roth",
+      "candidacy": "state_lower: Assembly District 24 (2024); Nevada",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 8518,
+      "name": "Pete Goicoechea",
+      "seat": "senate SD-019"
+    },
+    {
+      "peopleId": 12199,
+      "name": "John Ellison",
+      "seat": "senate SD-019"
+    },
+    {
+      "peopleId": 12213,
+      "name": "Dina Neal",
+      "seat": "senate SD-004"
+    },
+    {
+      "peopleId": 15869,
+      "name": "Lesley Cohen",
+      "seat": "house HD-029"
+    },
+    {
+      "peopleId": 15881,
+      "name": "Patricia Spearman",
+      "seat": "senate SD-001"
+    },
+    {
+      "peopleId": 17522,
+      "name": "Philip O'Neill",
+      "seat": "house HD-040"
+    },
+    {
+      "peopleId": 19220,
+      "name": "Nicole Cannizzaro",
+      "seat": "senate SD-006"
+    },
+    {
+      "peopleId": 19221,
+      "name": "Shannon Bilbray-Axelrod",
+      "seat": "house HD-034"
+    },
+    {
+      "peopleId": 19224,
+      "name": "Sandra Jauregui",
+      "seat": "house HD-041"
+    },
+    {
+      "peopleId": 19230,
+      "name": "Daniele Monroe-Moreno",
+      "seat": "house HD-001"
+    },
+    {
+      "peopleId": 19233,
+      "name": "Steve Yeager",
+      "seat": "house HD-009"
+    },
+    {
+      "peopleId": 21171,
+      "name": "Dallas Harris",
+      "seat": "senate SD-011"
+    },
+    {
+      "peopleId": 21175,
+      "name": "Bea Duran",
+      "seat": "house HD-011"
+    },
+    {
+      "peopleId": 21176,
+      "name": "Michelle Gorelow",
+      "seat": "house HD-035"
+    },
+    {
+      "peopleId": 21183,
+      "name": "Sarah Peters",
+      "seat": "house HD-024"
+    },
+    {
+      "peopleId": 21186,
+      "name": "Howard Watts",
+      "seat": "house HD-015"
+    },
+    {
+      "peopleId": 21252,
+      "name": "Rochelle Nguyen",
+      "seat": "senate SD-003"
+    },
+    {
+      "peopleId": 22753,
+      "name": "Carrie Ann Buck",
+      "seat": "senate SD-005"
+    },
+    {
+      "peopleId": 22754,
+      "name": "Roberta Lange",
+      "seat": "senate SD-007"
+    },
+    {
+      "peopleId": 22769,
+      "name": "Heidi Kasama",
+      "seat": "house HD-002"
+    },
+    {
+      "peopleId": 22828,
+      "name": "Tracy Brown-May",
+      "seat": "house HD-042"
+    },
+    {
+      "peopleId": 22831,
+      "name": "Shondra Summers-Armstrong",
+      "seat": "house HD-006"
+    },
+    {
+      "peopleId": 22832,
+      "name": "Clara Thomas",
+      "seat": "house HD-017"
+    },
+    {
+      "peopleId": 24697,
+      "name": "Ken Gray",
+      "seat": "house HD-039"
+    },
+    {
+      "peopleId": 24698,
+      "name": "Bert Gurr",
+      "seat": "house HD-033"
+    },
+    {
+      "peopleId": 24700,
+      "name": "Gregory Koenig",
+      "seat": "house HD-038"
+    },
+    {
+      "peopleId": 24704,
+      "name": "Jeff Stone",
+      "seat": "senate SD-020"
+    },
+    {
+      "peopleId": 24705,
+      "name": "Thaddeus Yurek",
+      "seat": "house HD-019"
+    },
+    {
+      "peopleId": 24825,
+      "name": "AngelaTaylor",
+      "seat": "senate SD-015"
+    },
+    {
+      "peopleId": 24874,
+      "name": "Sabra Newby",
+      "seat": "house HD-010"
+    },
+    {
+      "peopleId": 25734,
+      "name": "Joe Dalia",
+      "seat": "house HD-029"
+    },
+    {
+      "peopleId": 25736,
+      "name": "Tanya Flanagan",
+      "seat": "house HD-007"
+    },
+    {
+      "peopleId": 25738,
+      "name": "Linda Hunt",
+      "seat": "house HD-017"
+    },
+    {
+      "peopleId": 25740,
+      "name": "Venise Karris",
+      "seat": "house HD-010"
+    },
+    {
+      "peopleId": 25741,
+      "name": "Cinthia Zermeno Moore",
+      "seat": "house HD-011"
+    },
+    {
+      "peopleId": 25744,
+      "name": "Michelee Cruz-Crawford",
+      "seat": "senate SD-001"
+    },
+    {
+      "peopleId": 25745,
+      "name": "Lori Rogich",
+      "seat": "senate SD-011"
+    },
+    {
+      "peopleId": 25746,
+      "name": "John Steinbeck",
+      "seat": "senate SD-018"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "2a8c576a-367f-4e6f-889f-64d85f98f917",
+      "name": "Al Rojas",
+      "scope": "state_upper",
+      "districtName": "State Senate District 21 (2024); Nevada"
+    },
+    {
+      "candidateId": "4a092ce3-19e3-4848-8e2f-4817df30fb63",
+      "name": "Alex J. Pereszlenyi",
+      "scope": "state_lower",
+      "districtName": "Assembly District 29 (2024); Nevada"
+    },
+    {
+      "candidateId": "3ca45f63-7a4e-4311-8476-2da70ca2cc2f",
+      "name": "Alexis Elizabeth Esparza",
+      "scope": "state_lower",
+      "districtName": "Assembly District 1 (2024); Nevada"
+    },
+    {
+      "candidateId": "be751b8c-6685-43e6-bab4-579f2fe23883",
+      "name": "Andrew A. Schaefer",
+      "scope": "state_lower",
+      "districtName": "Assembly District 24 (2024); Nevada"
+    },
+    {
+      "candidateId": "c872a682-a40e-434f-83ea-fee79150a942",
+      "name": "Anthony Scott Willett",
+      "scope": "state_lower",
+      "districtName": "Assembly District 7 (2024); Nevada"
+    },
+    {
+      "candidateId": "75a33d0d-d889-4358-ad3a-c200557a0959",
+      "name": "Blayne Osborn",
+      "scope": "state_lower",
+      "districtName": "Assembly District 39 (2024); Nevada"
+    },
+    {
+      "candidateId": "f7bf1982-cea2-40a3-bdb1-617f2f0e9bbd",
+      "name": "Brandon Davis",
+      "scope": "state_lower",
+      "districtName": "Assembly District 34 (2024); Nevada"
+    },
+    {
+      "candidateId": "0af5663f-4797-4978-91a1-4b0988459597",
+      "name": "Calvin Sandoval",
+      "scope": "state_upper",
+      "districtName": "State Senate District 20 (2024); Nevada"
+    },
+    {
+      "candidateId": "a2a106d0-105c-4332-a3ef-56de63bb465e",
+      "name": "Charlene Young",
+      "scope": "state_upper",
+      "districtName": "State Senate District 13 (2024); Nevada"
+    },
+    {
+      "candidateId": "b0ef73b8-a2f3-40a3-becb-2fadb113fe39",
+      "name": "Chrystal Roll",
+      "scope": "state_upper",
+      "districtName": "State Senate District 16 (2024); Nevada"
+    },
+    {
+      "candidateId": "88d43a1d-8d6a-49fe-8018-3d80c54e5256",
+      "name": "Cinthia Moore",
+      "scope": "state_lower",
+      "districtName": "Assembly District 11 (2024); Nevada"
+    },
+    {
+      "candidateId": "5c9474c9-c1cc-4f67-9e01-a85fc7601942",
+      "name": "Crystal Newton",
+      "scope": "state_lower",
+      "districtName": "Assembly District 18 (2024); Nevada"
+    },
+    {
+      "candidateId": "4be61032-9fc8-4223-9c90-2debaa994bfc",
+      "name": "Daniel Andrews",
+      "scope": "state_lower",
+      "districtName": "Assembly District 13 (2024); Nevada"
+    },
+    {
+      "candidateId": "330ec4da-50a6-48b6-b6b0-ccb66a7ba26e",
+      "name": "Denise Daniels Fanning",
+      "scope": "state_lower",
+      "districtName": "Assembly District 23 (2024); Nevada"
+    },
+    {
+      "candidateId": "5202328c-8e08-4185-9e16-466391b2e3f9",
+      "name": "Drew Teitelbaum",
+      "scope": "state_lower",
+      "districtName": "Assembly District 2 (2024); Nevada"
+    },
+    {
+      "candidateId": "b88923be-d3d2-43b6-b754-365274d00906",
+      "name": "Eileen Eady",
+      "scope": "state_lower",
+      "districtName": "Assembly District 4 (2024); Nevada"
+    },
+    {
+      "candidateId": "17ac5402-8232-46cc-adcf-bab76cf718e0",
+      "name": "Erica Alejandra Neely",
+      "scope": "state_lower",
+      "districtName": "Assembly District 9 (2024); Nevada"
+    },
+    {
+      "candidateId": "9d9863b6-eb35-4050-afec-e9d413258215",
+      "name": "Erich Obermayr",
+      "scope": "state_lower",
+      "districtName": "Assembly District 39 (2024); Nevada"
+    },
+    {
+      "candidateId": "7187a272-66f4-45ae-8cdf-d824dbe9fa57",
+      "name": "Gage C. Beck",
+      "scope": "state_lower",
+      "districtName": "Assembly District 13 (2024); Nevada"
+    },
+    {
+      "candidateId": "03610048-42c9-44e0-9ce1-b744904088bf",
+      "name": "George E. Harris",
+      "scope": "state_upper",
+      "districtName": "State Senate District 8 (2024); Nevada"
+    },
+    {
+      "candidateId": "66d6a959-3cbe-4f71-9d4f-924bb13b909f",
+      "name": "Harold Erbacher",
+      "scope": "state_lower",
+      "districtName": "Assembly District 3 (2024); Nevada"
+    },
+    {
+      "candidateId": "e95f2710-fe33-4cb6-a6ba-d23369f354b4",
+      "name": "Jan Allen Aspelund",
+      "scope": "state_lower",
+      "districtName": "Assembly District 23 (2024); Nevada"
+    },
+    {
+      "candidateId": "c8f66444-6115-496f-817d-df8b62d78a2c",
+      "name": "Jason Patchett",
+      "scope": "state_lower",
+      "districtName": "Assembly District 19 (2024); Nevada"
+    },
+    {
+      "candidateId": "e6937a18-d964-44b1-bbc8-e392cbee20c2",
+      "name": "Jill M. Douglass",
+      "scope": "state_lower",
+      "districtName": "Assembly District 37 (2024); Nevada"
+    },
+    {
+      "candidateId": "08b22a78-3548-4d5f-aa5d-92382e1baced",
+      "name": "Joe Ludwig",
+      "scope": "state_lower",
+      "districtName": "Assembly District 29 (2024); Nevada"
+    },
+    {
+      "candidateId": "2049c46d-bf5c-4c67-ad90-fe3c3208e1b3",
+      "name": "Joe Spica",
+      "scope": "state_lower",
+      "districtName": "Assembly District 35 (2024); Nevada"
+    },
+    {
+      "candidateId": "9cc6f886-58b3-4645-935f-9e49171fc460",
+      "name": "John Carlo",
+      "scope": "state_lower",
+      "districtName": "Assembly District 16 (2024); Nevada"
+    },
+    {
+      "candidateId": "ff83d315-d666-4e6a-a866-fd4d986734a5",
+      "name": "Jon Penn Junejo",
+      "scope": "state_lower",
+      "districtName": "Assembly District 36 (2024); Nevada"
+    },
+    {
+      "candidateId": "14ce805e-a924-4ea0-a3e1-c4632738ffa7",
+      "name": "Joseph Charafi",
+      "scope": "state_lower",
+      "districtName": "Assembly District 8 (2024); Nevada"
+    },
+    {
+      "candidateId": "f974dd9c-5938-4292-a920-6fed45fc57d2",
+      "name": "Julie A. Butler",
+      "scope": "state_lower",
+      "districtName": "Assembly District 40 (2024); Nevada"
+    },
+    {
+      "candidateId": "12cd6710-8c84-47e8-a169-b65ef7981125",
+      "name": "Kamilah Bywaters",
+      "scope": "state_lower",
+      "districtName": "Assembly District 2 (2024); Nevada"
+    },
+    {
+      "candidateId": "c68dd842-5290-4c3e-9ed6-29adc8d46330",
+      "name": "Katherine Duncan",
+      "scope": "state_lower",
+      "districtName": "Assembly District 6 (2024); Nevada"
+    },
+    {
+      "candidateId": "35e8dd31-3707-4f28-bc75-d2632a23f0ca",
+      "name": "Kelly Chapman",
+      "scope": "state_lower",
+      "districtName": "Assembly District 41 (2024); Nevada"
+    },
+    {
+      "candidateId": "af7ca810-671f-4f0f-8b63-77eae9cf14be",
+      "name": "Kelly Quinn",
+      "scope": "state_lower",
+      "districtName": "Assembly District 5 (2024); Nevada"
+    },
+    {
+      "candidateId": "1deace81-5702-416d-b0cd-2a14055e609f",
+      "name": "Lynne Ballatore",
+      "scope": "state_upper",
+      "districtName": "State Senate District 17 (2024); Nevada"
+    },
+    {
+      "candidateId": "e4a1b2c6-479b-42f3-83c2-51e7651b7bd1",
+      "name": "Maria Thompson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 9 (2024); Nevada"
+    },
+    {
+      "candidateId": "01388646-d0e6-4f49-87cf-503858341ccc",
+      "name": "Matthew Buehler",
+      "scope": "state_upper",
+      "districtName": "State Senate District 13 (2024); Nevada"
+    },
+    {
+      "candidateId": "20f76f57-c542-4078-b62d-93ca1408596a",
+      "name": "Michael A. Ginsburg",
+      "scope": "state_lower",
+      "districtName": "Assembly District 25 (2024); Nevada"
+    },
+    {
+      "candidateId": "0bd0d5ac-1f0c-43d5-8e01-6fb0fcd1feab",
+      "name": "Miguel Davila",
+      "scope": "state_lower",
+      "districtName": "Assembly District 15 (2024); Nevada"
+    },
+    {
+      "candidateId": "460f5ed2-2bbb-4eb8-9b6a-7f126fe1c575",
+      "name": "Nancy Roecker",
+      "scope": "state_lower",
+      "districtName": "Assembly District 12 (2024); Nevada"
+    },
+    {
+      "candidateId": "6b2f1fdf-1f4f-4eac-b249-be048953e02b",
+      "name": "Neal Schwartz",
+      "scope": "state_lower",
+      "districtName": "Assembly District 31 (2024); Nevada"
+    },
+    {
+      "candidateId": "a28b1c95-73ab-4c88-b327-0aef8d29475c",
+      "name": "Oscar Fuentes",
+      "scope": "state_lower",
+      "districtName": "Assembly District 40 (2024); Nevada"
+    },
+    {
+      "candidateId": "35186aae-d235-47dc-ac40-e9c6430c3c71",
+      "name": "Patsy A. Carvalho",
+      "scope": "state_lower",
+      "districtName": "Assembly District 21 (2024); Nevada"
+    },
+    {
+      "candidateId": "40c1d49b-dbf2-4012-905e-1e1c7e93026b",
+      "name": "Rafael Arroyo",
+      "scope": "state_upper",
+      "districtName": "State Senate District 12 (2024); Nevada"
+    },
+    {
+      "candidateId": "89ff426d-314d-4a74-91b0-5c35c9160d7c",
+      "name": "Ryan Hampton",
+      "scope": "state_lower",
+      "districtName": "Assembly District 9 (2024); Nevada"
+    },
+    {
+      "candidateId": "8553724c-e671-41a6-812c-6ec0ea4b1410",
+      "name": "Sam Baugh",
+      "scope": "state_lower",
+      "districtName": "Assembly District 26 (2024); Nevada"
+    },
+    {
+      "candidateId": "0dea135e-5f3b-4bab-a06d-620fbcfe8724",
+      "name": "Shenea Booth",
+      "scope": "state_lower",
+      "districtName": "Assembly District 22 (2024); Nevada"
+    },
+    {
+      "candidateId": "df13bc70-78c7-4ab7-a513-2550e8e7c900",
+      "name": "Stan Vaughan",
+      "scope": "state_lower",
+      "districtName": "Assembly District 20 (2024); Nevada"
+    },
+    {
+      "candidateId": "d0c36d98-4205-448c-99ba-4681b2e4f550",
+      "name": "Tighe Galvin",
+      "scope": "state_lower",
+      "districtName": "Assembly District 21 (2024); Nevada"
+    },
+    {
+      "candidateId": "e7ab5fd6-ec5f-42f2-80b4-a12554c14f5a",
+      "name": "Trista Gomez",
+      "scope": "state_lower",
+      "districtName": "Assembly District 30 (2024); Nevada"
+    },
+    {
+      "candidateId": "de41cc86-bea9-4e9a-8faf-5a6302fa7e9f",
+      "name": "Veronica Cortes",
+      "scope": "state_lower",
+      "districtName": "Assembly District 27 (2024); Nevada"
+    },
+    {
+      "candidateId": "0d6fe222-af22-481b-ac4a-97547cfc559b",
+      "name": "Vinny Spotleson",
+      "scope": "state_lower",
+      "districtName": "Assembly District 41 (2024); Nevada"
+    },
+    {
+      "candidateId": "008d510d-b93d-4ef2-be1a-157a4ceee22c",
+      "name": "Zackaraih Lysaght",
+      "scope": "state_lower",
+      "districtName": "Assembly District 19 (2024); Nevada"
+    }
+  ],
+  "files": 1332,
+  "fileErrors": 0,
+  "counts": {
+    "matched": 26927,
+    "unmatched_reviewed": 14526
+  },
+  "note": "The per-roll resolution detail is omitted here on purpose: the full report is about 8 MB because it names every matched member on every one of the 1,332 rolls. The summary counts above are the part worth keeping. Regenerate the full report with rollcall:legiscan:resolve."
+}
