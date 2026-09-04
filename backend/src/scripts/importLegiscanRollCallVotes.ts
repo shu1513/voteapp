@@ -32,6 +32,7 @@ import {
   loadExistingRecordsForDate,
   parseRollCallLabels,
   planCandidateRecord,
+  refreshRollCallRecord,
   rewriteRollCallRecord,
   shouldNotifyForVoteDate,
   syncRollCallRecordTags,
@@ -349,6 +350,8 @@ async function main(): Promise<void> {
           const decision = planCandidateRecord({
             existing: existingByCandidate.get(voter.candidateId) ?? [],
             identityKey,
+            description: template.description,
+            sourceUrl: template.sourceUrl,
             rollCallKey,
             // State measures do not parse as federal ones; same-day rows
             // that name the bill without vote words are not detected, and
@@ -398,6 +401,14 @@ async function main(): Promise<void> {
             } else if (item.plan.action === "rewrite") {
               recordId = item.plan.recordId;
               await rewriteRollCallRecord(client, { ...content, recordId, oldIdentityKey: item.plan.oldIdentityKey });
+            } else if (item.plan.action === "refresh") {
+              recordId = item.plan.recordId;
+              await refreshRollCallRecord(client, {
+                ...content,
+                recordId,
+                oldDescription: item.plan.oldDescription,
+                oldSourceUrl: item.plan.oldSourceUrl,
+              });
             } else if (item.plan.action === "unchanged") {
               recordId = item.plan.recordId;
             }

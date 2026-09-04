@@ -140,6 +140,7 @@ export type ExistingCandidateRecord = {
   id: string;
   description: string;
   source_url: string;
+  origin: string | null;
   record_identity_key: string;
   retired_at: string | null;
 };
@@ -149,6 +150,11 @@ export type CandidateRecordPlan =
   | { action: "insert" }
   // This run's exact content is already there (re-run).
   | { action: "unchanged"; recordId: string }
+  // This pipeline's own row has this identity key but its stored text or
+  // URL differs in a way the key ignores (punctuation, case, spacing, a
+  // trailing slash). Updated in place; id, tags, and notification events
+  // stay. The old values guard the write against a concurrent edit.
+  | { action: "refresh"; recordId: string; oldDescription: string; oldSourceUrl: string }
   // One live hand-written row cites the same roll call: rewrite it in place.
   | { action: "rewrite"; recordId: string; oldIdentityKey: string; oldSourceUrl: string; oldDescription: string }
   // Same as rewrite, but the run asked to leave old rows alone.
@@ -177,6 +183,11 @@ export type CandidateRecordDecision = {
 export function planCandidateRecord(input: {
   existing: readonly ExistingCandidateRecord[];
   identityKey: string;
+  // The text and URL this run would write; compared byte for byte against
+  // a same-key row to tell a plain re-run (`unchanged`) from a formatting
+  // edit the key cannot see (`refresh`).
+  description: string;
+  sourceUrl: string;
   rollCallKey: string;
   measure: FederalMeasure | null;
   skipExisting: boolean;
@@ -223,7 +234,22 @@ export function planCandidateRecord(input: {
     };
   }
   if (sameKey.length > 0) {
-    return { plan: { action: "unchanged", recordId: sameKey[0]!.id }, relatedRecordIds };
+    const current = sameKey[0]!;
+    // The identity key hashes the description and URL only after
+    // normalizing them (lowercase, punctuation and extra spaces dropped,
+    // trailing slash dropped), so an edit that changes only punctuation,
+    // case, or spacing keeps the key. Word changes move the key and reach
+    // the rewrite path below. Refresh only this pipeline's own rows: a
+    // hand-written or pre-provenance row with the same key is left alone,
+    // as before, so --skip-existing keeps its meaning.
+    const differs = current.description !== input.description || current.source_url !== input.sourceUrl;
+    if (differs && current.origin === "rollcall_import") {
+      return {
+        plan: { action: "refresh", recordId: current.id, oldDescription: current.description, oldSourceUrl: current.source_url },
+        relatedRecordIds,
+      };
+    }
+    return { plan: { action: "unchanged", recordId: current.id }, relatedRecordIds };
   }
   const duplicate = sameRollCall[0];
   if (duplicate) {
@@ -277,7 +303,7 @@ export async function loadExistingRecordsForDate(
   }
   const result = await db.query<ExistingCandidateRecord & { candidate_id: string }>(
     `
-      SELECT candidate_id, id, description, source_url, record_identity_key, retired_at::text AS retired_at
+      SELECT candidate_id, id, description, source_url, origin, record_identity_key, retired_at::text AS retired_at
       FROM public.candidate_records
       WHERE candidate_id = ANY($1::uuid[])
         AND (
@@ -370,6 +396,44 @@ export async function rewriteRollCallRecord(
     newIdentityKey: record.identityKey,
     reason: "rollcall_normalization",
   });
+}
+
+/**
+ * The in-place formatting refresh of this pipeline's own row: same row id
+ * and identity key, so tags and notification events stay attached and no
+ * identity transition is needed. Guarded on the old description and URL
+ * (the key alone cannot see the edits this path exists for), so a row
+ * edited since the plan was made is left alone. Only description,
+ * source_url, and updated_at move.
+ */
+export async function refreshRollCallRecord(
+  client: Queryable,
+  record: {
+    recordId: string;
+    identityKey: string;
+    description: string;
+    sourceUrl: string;
+    oldDescription: string;
+    oldSourceUrl: string;
+  }
+): Promise<void> {
+  const result = await client.query(
+    `
+      UPDATE public.candidate_records
+      SET description = $3,
+          source_url = $4,
+          updated_at = now()
+      WHERE id = $1
+        AND record_identity_key = $2
+        AND description = $5
+        AND source_url = $6
+        AND retired_at IS NULL
+    `,
+    [record.recordId, record.identityKey, record.description, record.sourceUrl, record.oldDescription, record.oldSourceUrl]
+  );
+  if (result.rowCount !== 1) {
+    throw new Error(`record ${record.recordId} changed under the refresh (key ${record.identityKey})`);
+  }
 }
 
 /** Makes the record's area tags exactly the roll call's labels for that side. */
