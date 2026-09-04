@@ -43,6 +43,17 @@ export function useMyPicksProgress(): PickProgress | null {
 }
 
 /**
+ * The guest counterpart of useMyPicksProgress: progress over the draft's
+ * stored target day. Null until the guest has seen a ballot with an
+ * upcoming date, and again once that day has passed (draftProgress). Same
+ * shape as the signed-in value so the completion notice reads either one.
+ */
+export function useGuestPickProgress(): PickProgress | null {
+  const draft = useBallotDraft();
+  return draftProgress(draft, usLatestLocalDate());
+}
+
+/**
  * The logged-out header's draft link (the guest counterpart of "My Picks"),
  * pointing at /draft. Null — no link at all — until the guest has looked at
  * a ballot or made a pick: a first-time visitor on the address search has no
@@ -57,7 +68,7 @@ export function useMyPicksProgress(): PickProgress | null {
  */
 export function useGuestDraftNav(): { to: string; label: string; complete: boolean } | null {
   const draft = useBallotDraft();
-  const progress = draftProgress(draft);
+  const progress = useGuestPickProgress();
   if (progress && progress.picked > 0) {
     return {
       to: "/draft",

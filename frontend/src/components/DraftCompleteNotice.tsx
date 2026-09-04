@@ -1,0 +1,138 @@
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router";
+import { formatElectionDate, useMe } from "@voteapp/api-client";
+import { hasDraftCompleteBeenSeen, markDraftCompleteSeen } from "../lib/draftCompleteSeen";
+import { useGuestPickProgress, useMyPicksProgress } from "../lib/usePickProgress";
+
+// The draft's finish line (docs/plans/draft-completion-moment.md): one
+// notice, shown once per election day, when every race on the nearest
+// upcoming day has a pick. Driven by the SAME progress value the header
+// counter reads, not by the click that made the last pick — the last pick
+// can come from the election page's auto pick, the picks page's batch fill,
+// or another tab, and none of those pass through a pick card. Rendered as a
+// row of the sticky header, in flow: nothing floats over the candidate
+// page's bottom pick card (and its undo control), and no z-index contest
+// with the chatbot launcher or the terms gate, which all sit at z-30.
+//
+// Wording claims only what the counting rule establishes (isDecidedChoice:
+// one pick decides a race, even a multi-seat one; a withdrawn pick still
+// counts; ZIP/city partial ballots reach 100%): "picks added for every
+// race", never "your ballot is complete". No share mention — guests can't
+// share, and signed-in users find Share on the date card.
+//
+// Status message, not a dialog (WCAG 4.1.3): role="status" announces it
+// politely, focus stays where the user is — including when completion
+// arrives from another tab — and the actions are an ordinary link and a
+// dismiss button. The live region container is always in the DOM (empty
+// until it fires) so screen readers pick up the insertion.
+
+// Routes where the draft itself is on screen (or nothing is): the notice
+// never renders there, and a completion that happens there (batch auto
+// fill on /me/picks) counts as seen — it is not queued for the next page.
+const SUPPRESSED_PATHS = new Set(["/", "/draft", "/me/picks"]);
+
+export function DraftCompleteNotice() {
+  const { me } = useMe();
+  const { pathname } = useLocation();
+  const guestProgress = useGuestPickProgress();
+  const accountProgress = useMyPicksProgress();
+
+  // Nothing while identity is unresolved (me undefined): reading the guest
+  // draft then would let a signed-in user's stale localStorage draft speak
+  // for the account. Both hooks are cheap and already mounted by the header.
+  const identity = me === undefined ? null : me === null ? "guest" : me.email;
+  const progress = me === undefined ? null : me === null ? guestProgress : accountProgress;
+  // One tracked ballot = one identity + one election day. Null progress is
+  // "unknown", never "incomplete": the signed-in hook starts at null and
+  // resolves later, and treating that as false would congratulate every
+  // returning user whose first resolved value is already complete.
+  const trackedDate = identity !== null && progress !== null ? progress.election_date : null;
+  const trackedKey = trackedDate !== null ? `${identity}|${trackedDate}` : null;
+  const complete = progress?.complete ?? null;
+  const total = progress?.total ?? 0;
+  const suppressed = SUPPRESSED_PATHS.has(pathname);
+
+  // Baseline: the first KNOWN value per tracked ballot. Only a later known
+  // incomplete → known complete for the same ballot fires; a new identity
+  // or a new nearest day starts a fresh baseline instead (switching
+  // ballots, or a denominator shrinking to what is already picked, must
+  // not manufacture a completion).
+  const baseline = useRef<{ key: string; complete: boolean } | null>(null);
+  const [shown, setShown] = useState<{ date: string; total: number } | null>(null);
+
+  useEffect(() => {
+    if (trackedKey === null || trackedDate === null || complete === null) {
+      return;
+    }
+    const previous = baseline.current;
+    baseline.current = { key: trackedKey, complete };
+    if (previous === null) {
+      return;
+    }
+    if (previous.key !== trackedKey) {
+      // A different ballot is tracked now; an open notice about the old one
+      // would be stale.
+      setShown(null);
+      return;
+    }
+    if (previous.complete === complete) {
+      return;
+    }
+    if (!complete) {
+      // Unpick: the message no longer holds.
+      setShown(null);
+      return;
+    }
+    if (hasDraftCompleteBeenSeen(trackedDate)) {
+      return;
+    }
+    markDraftCompleteSeen(trackedDate);
+    if (!suppressed) {
+      setShown({ date: trackedDate, total });
+    }
+  }, [trackedKey, trackedDate, complete, total, suppressed]);
+
+  // Arriving on a page that shows the draft (via the header link, or the
+  // notice's own link) retires the notice: the destination speaks for
+  // itself, and it should not reappear on the way back out.
+  useEffect(() => {
+    if (suppressed) {
+      setShown(null);
+    }
+  }, [suppressed]);
+
+  const reviewPath = me === null ? "/draft" : "/me/picks";
+
+  return (
+    <div role="status">
+      {shown ? (
+        <div className="border-t border-line bg-green-50">
+          <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2 text-sm text-green-900">
+            <p className="min-w-0 flex-1">
+              <span className="font-semibold">
+                Picks added for every race in your {formatElectionDate(shown.date)} draft.
+              </span>{" "}
+              {shown.total} of {shown.total} race{shown.total === 1 ? "" : "s"} decided. Review your picks and
+              make any changes.
+            </p>
+            <Link
+              to={reviewPath}
+              onClick={() => setShown(null)}
+              className="whitespace-nowrap font-semibold text-green-800 hover:underline"
+            >
+              Review my picks
+            </Link>
+            <button
+              type="button"
+              onClick={() => setShown(null)}
+              aria-label="Dismiss"
+              className="rounded px-1.5 text-lg leading-none text-green-900 hover:bg-green-100"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+}

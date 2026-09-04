@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { ApiError, apiRequest, isDecidedChoice } from "@voteapp/api-client";
-import type { ElectionChoice } from "@voteapp/api-client";
+import type { ElectionChoice, PickProgress } from "@voteapp/api-client";
 
 // Moved to @voteapp/api-client so mobile shares the one "decided" rule;
 // re-exported here so this module stays the web's import site for it.
@@ -219,15 +219,41 @@ export function draftChoicesByElectionId(draft: BallotDraft): Map<string, Electi
   return new Map(Object.entries(draft.choices));
 }
 
-export function draftProgress(
-  draft: BallotDraft
-): { picked: number; total: number; complete: boolean } | null {
-  if (!draft.target || draft.target.election_ids.length === 0) {
+/** Progress against the stored target. Null without a target — and once the
+ * target day has passed (`today` is the usLatestLocalDate() calendar
+ * string): the snapshot only refreshes on a guest ballot-page load, so with
+ * no date check the header would keep counting toward an election that is
+ * over until the guest happens to reload a ballot. */
+export function draftProgress(draft: BallotDraft, today: string): PickProgress | null {
+  if (!draft.target || draft.target.election_ids.length === 0 || draft.target.election_date < today) {
     return null;
   }
   const picked = draft.target.election_ids.filter((id) => isDecidedChoice(draft.choices[id])).length;
   const total = draft.target.election_ids.length;
-  return { picked, total, complete: picked === total };
+  return { election_date: draft.target.election_date, picked, total, complete: picked === total };
+}
+
+/** The draft's progress denominator from a ballot payload: the nearest
+ * upcoming election day's races (all of them — computed from the FULL
+ * payload, never a filtered view, so hiding races cannot shrink the goal).
+ * Null when nothing is upcoming. Shared by every guest page that loads a
+ * full election list (/ballot and /draft) so each refreshes the target. */
+export function nearestUpcomingTarget(
+  elections: { id: string; election_date: string }[],
+  today: string
+): { election_date: string; election_ids: string[] } | null {
+  const upcoming = elections.filter((election) => election.election_date >= today);
+  if (upcoming.length === 0) {
+    return null;
+  }
+  const date = upcoming.reduce(
+    (min, election) => (election.election_date < min ? election.election_date : min),
+    upcoming[0].election_date
+  );
+  return {
+    election_date: date,
+    election_ids: upcoming.filter((election) => election.election_date === date).map((election) => election.id),
+  };
 }
 
 /** Decided races in the draft, counted with or without a target — the

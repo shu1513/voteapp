@@ -26,9 +26,10 @@ const decided = (electionId: string) =>
 describe("myDraftLabel", () => {
   it("stays plain until the first pick, counts up, then earns My Picks ✓", () => {
     expect(myDraftLabel(null)).toBe("My Draft");
-    expect(myDraftLabel({ picked: 0, total: 8, complete: false })).toBe("My Draft");
-    expect(myDraftLabel({ picked: 3, total: 8, complete: false })).toBe("My Draft 3/8");
-    expect(myDraftLabel({ picked: 8, total: 8, complete: true })).toBe("My Picks ✓");
+    const day = "2026-11-03";
+    expect(myDraftLabel({ election_date: day, picked: 0, total: 8, complete: false })).toBe("My Draft");
+    expect(myDraftLabel({ election_date: day, picked: 3, total: 8, complete: false })).toBe("My Draft 3/8");
+    expect(myDraftLabel({ election_date: day, picked: 8, total: 8, complete: true })).toBe("My Picks ✓");
   });
 });
 
@@ -56,12 +57,14 @@ describe("nearestDayPickProgress", () => {
       ["past-1", decided("past-1")],
     ]);
     expect(nearestDayPickProgress(elections, choices, "2026-08-28")).toEqual({
+      election_date: "2026-09-15",
       picked: 1,
       total: 1,
       complete: true,
     });
     // Once September passes, the November group (2 races, 1 decided) leads.
     expect(nearestDayPickProgress(elections, choices, "2026-10-01")).toEqual({
+      election_date: "2026-11-03",
       picked: 1,
       total: 2,
       complete: false,
@@ -71,6 +74,7 @@ describe("nearestDayPickProgress", () => {
   it("treats an election day itself as upcoming and an emptied choice as undecided", () => {
     const choices = new Map<string, ElectionChoice>([["sep-1", choice({ election_id: "sep-1" })]]);
     expect(nearestDayPickProgress(elections, choices, "2026-09-15")).toEqual({
+      election_date: "2026-09-15",
       picked: 0,
       total: 1,
       complete: false,

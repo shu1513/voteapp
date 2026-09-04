@@ -7,6 +7,7 @@ import {
   draftProgress,
   flushBallotDraftToAccount,
   hasDraftPicks,
+  nearestUpcomingTarget,
   readBallotDraft,
   setDraftBallotContext,
   setDraftCandidateChoice,
@@ -21,6 +22,8 @@ vi.mock("@voteapp/api-client", async (importOriginal) => {
 const mockedApiRequest = vi.mocked(apiRequest);
 
 const RACE = { electionId: "e1", raceTitle: "Governor", electionDate: "2026-11-03" };
+// "Today" for progress: the fixture races are upcoming from here.
+const TODAY = "2026-08-01";
 
 // Writes raw bytes to storage and fires the cross-tab storage event so the
 // module drops its in-memory cache and actually re-parses — without the
@@ -143,7 +146,7 @@ describe("ballotDraft store", () => {
     expect(Object.keys(draft.choices)).toEqual(["e1"]);
     expect(draft.choices.e1).toEqual(goodRow);
     expect(draftPickCount(draft)).toBe(1);
-    expect(draftProgress(draft)).toBeNull();
+    expect(draftProgress(draft, TODAY)).toBeNull();
   });
 
   it("caps district ids at the backend's 50-id limit", () => {
@@ -160,10 +163,15 @@ describe("ballotDraft store", () => {
 
   it("computes progress against the stored target", () => {
     setDraftBallotContext(["d1"], { election_date: "2026-11-03", election_ids: ["e1", "m1", "e9"] });
-    expect(draftProgress(readBallotDraft())).toEqual({ picked: 0, total: 3, complete: false });
+    expect(draftProgress(readBallotDraft(), TODAY)).toEqual({
+      election_date: "2026-11-03",
+      picked: 0,
+      total: 3,
+      complete: false,
+    });
     pickJane();
     setDraftMeasureChoice({ electionId: "m1", raceTitle: "Prop A", electionDate: "2026-11-03", position: "yes" });
-    expect(draftProgress(readBallotDraft())).toEqual({ picked: 2, total: 3, complete: false });
+    expect(draftProgress(readBallotDraft(), TODAY)).toMatchObject({ picked: 2, total: 3, complete: false });
     setDraftCandidateChoice({
       electionId: "e9",
       raceTitle: "Sheriff",
@@ -173,10 +181,36 @@ describe("ballotDraft store", () => {
       candidateName: "Pat Law",
       chosen: true,
     });
-    expect(draftProgress(readBallotDraft())).toEqual({ picked: 3, total: 3, complete: true });
+    expect(draftProgress(readBallotDraft(), TODAY)).toMatchObject({ picked: 3, total: 3, complete: true });
     // Picks outside the target don't inflate the numerator.
     setDraftMeasureChoice({ electionId: "m2", raceTitle: "Prop B", electionDate: "2027-03-02", position: "no" });
-    expect(draftProgress(readBallotDraft())?.picked).toBe(3);
+    expect(draftProgress(readBallotDraft(), TODAY)?.picked).toBe(3);
+  });
+
+  it("drops the progress once the target day has passed (the snapshot only refreshes on a ballot load)", () => {
+    setDraftBallotContext(["d1"], { election_date: "2026-11-03", election_ids: ["e1"] });
+    pickJane();
+    // Election day itself still counts as upcoming, matching nearestDayPickProgress.
+    expect(draftProgress(readBallotDraft(), "2026-11-03")).toMatchObject({ complete: true });
+    expect(draftProgress(readBallotDraft(), "2026-11-04")).toBeNull();
+  });
+
+  it("targets the nearest upcoming day's races from a full election list", () => {
+    const elections = [
+      { id: "past", election_date: "2026-06-02" },
+      { id: "nov-a", election_date: "2026-11-03" },
+      { id: "sep", election_date: "2026-09-15" },
+      { id: "nov-b", election_date: "2026-11-03" },
+    ];
+    expect(nearestUpcomingTarget(elections, "2026-08-01")).toEqual({
+      election_date: "2026-09-15",
+      election_ids: ["sep"],
+    });
+    expect(nearestUpcomingTarget(elections, "2026-10-01")).toEqual({
+      election_date: "2026-11-03",
+      election_ids: ["nov-a", "nov-b"],
+    });
+    expect(nearestUpcomingTarget(elections, "2026-11-04")).toBeNull();
   });
 
   it("exposes draft rows as an ElectionChoice map", () => {
