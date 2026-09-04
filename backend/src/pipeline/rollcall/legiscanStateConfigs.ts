@@ -1988,7 +1988,7 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // 2022). About 53 percent of them are on the November 2026 ballot, which is
   // why this term is in scope at all; the current term runs 87 percent.
   // Surveyed 2026-09-02: 1,492 bills, 1,634 roll calls, 140 people, nothing
-  // unmatched. 1,019 kept floor votes, 26 divided, 18 of those on measures that
+  // unmatched. 1,017 kept floor votes, 26 divided, 18 of those on measures that
   // became law. No Budget Isolation Resolution votes are recorded.
   "AL-1621": {
     jurisdiction: "AL",
@@ -2013,7 +2013,7 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
 
   // Alabama Legislature, 2021 Regular Session — the largest divided pool of any
   // Alabama session in scope. Surveyed 2026-09-02: 1,500 bills, 2,513 roll
-  // calls, 141 people, nothing unmatched. 1,001 kept floor votes, 46 divided,
+  // calls, 141 people rows (139 members), nothing unmatched. 998 kept floor votes, 46 divided,
   // 23 of those on measures that became law. This is one of the two sessions of
   // the term that records Budget Isolation Resolution votes.
   "AL-1756": {
@@ -2037,7 +2037,7 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   },
 
   // Alabama Legislature, 2021 Second Special Session (November 2021), the
-  // redistricting session. 74 bills, 54 roll calls, 139 people. 11 of its 23
+  // redistricting session. 74 bills, 54 roll calls, 139 people rows (138 members). 11 of its 23
   // kept floor votes are divided and enacted, covering the congressional, State
   // House, State Senate and Board of Education maps plus two vaccine-mandate
   // bills. The congressional map drawn here is the one the Supreme Court held
@@ -2054,7 +2054,7 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // Alabama Legislature, 2022 Regular Session — the last session of the previous
   // term, and the one with the highest crosswalk reach of the four (80 of 142
   // members are on the November 2026 ballot). Surveyed 2026-09-02: 1,265 bills,
-  // 1,898 roll calls, 142 people, nothing unmatched. 812 kept floor votes, 41
+  // 1,898 roll calls, 142 people rows (140 members), nothing unmatched. 811 kept floor votes, 41
   // divided, 25 of those on measures that became law.
   //
   // The 2019 First Special Session (LegiScan 1661) and the 2022 First Special

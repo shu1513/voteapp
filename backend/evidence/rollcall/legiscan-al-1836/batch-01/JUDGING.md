@@ -72,5 +72,7 @@ null-check misses them. Sponsorship records naming the same bill were left alone
 
 `candidateRecordPlainLanguageLint`: 0 warnings. Every description is 2 to 4 sentences with no sentence
 over 45 words, and a British-spelling scan is clean — it caught real slips on a first pass, including
-`legalised`, `licence`, `behaviour`, `labour` and `programme`, all corrected. Reading grade was measured
+`legalised`, `licence`, `behaviour`, `labour` and `programme`, all corrected. PR review then caught
+`maths`, `pupils` and `primary school` in SB 171 and HB 322, words the scan's list did not carry; they
+now read `math`, `students` and `elementary school`. Reading grade was measured
 per session; medians run 8.6 to 11.2.
