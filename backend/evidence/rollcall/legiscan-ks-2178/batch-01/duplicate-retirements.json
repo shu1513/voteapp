@@ -1,0 +1,6 @@
+[
+  {
+    "recordId": "edd4e833-92c6-48af-995b-5907a74b27bc",
+    "reason": "Duplicate of the imported roll-call record for the same vote. This hand-written row describes Rep. Barbara Ballard's nay on the Kansas House motion to override the governor's veto of SB 4 on 2025-03-25 (84-41), which is exactly the vote imported from LegiScan roll 1526411 in evidence/rollcall/legiscan-ks-2178/batch-01. The imported record cites the roll call itself, so this row makes the same claim twice."
+  }
+]
