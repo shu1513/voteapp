@@ -792,11 +792,16 @@ describe("getLegiscanStateConfig", () => {
     expect(ar("Upon Motion, Reconsideraton Passed - 3/4/2025 2:14:27 PM", 100).isFloorVote).toBe(false);
     expect(ar("The vote by which HB1365 Passed was expunged.", 100).isFloorVote).toBe(false);
     expect(ar("Motion to Rerefer back to Committee Failed of Adoption", 100).isFloorVote).toBe(false);
-    expect(ar("Placed on second reading for the purpose of amendment.", 100).isFloorVote).toBe(false);
-    expect(ar("Returned to the Senate as passed.", 100).isFloorVote).toBe(false);
+    expect(ar("Return from Governor's office as requested", 100).isFloorVote).toBe(false);
     // Deliberately unmatched so a human sees it: HJR 1004's failed adoption
     // is a real vote but a one-off string, typo and all.
     expect(ar("Upon sounding of the ballot, the HJR failded of adoption", 100, "house", "JR").isFloorVote).toBeNull();
+    // Also unmatched, not excluded: these read like clerk's lines but each
+    // captions exactly one roll, and that roll is a real vote filed under
+    // the wrong action (SB 450's House passage, HB 1049's concurrence in
+    // Senate amendment #1).
+    expect(ar("Returned to the Senate as passed.", 100).isFloorVote).toBeNull();
+    expect(ar("Placed on second reading for the purpose of amendment.", 100).isFloorVote).toBeNull();
   });
 
   it("classifies Missouri's real desc vocabulary as surveyed", () => {

@@ -174,10 +174,13 @@ const ARKANSAS_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
   // Motions about where the bill goes, not about the bill.
   /^motion to /,
   /^re-referred to the committee\b/,
-  /^placed on second reading\b/,
-  // Clerical transmittal lines and a bill recalled from the Governor.
-  /^returned to the (?:senate as passed|house as concurred in)\.$/,
+  // A bill recalled from the Governor.
   /^return from governor's office as requested$/,
+  // NOT excluded, although they read like clerk's lines: `Returned to the
+  // Senate as passed.` and `Placed on second reading for the purpose of
+  // amendment.` each caption exactly one roll, and in both cases the roll is
+  // a real vote that LegiScan filed under the wrong action (see the session
+  // note). They fall through to null and surface for a human.
 ];
 
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
@@ -1694,16 +1697,24 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // - `Roll Call Requested. Five Hands were seen.` and its three variants
   //   are Arkansas's procedural motion to force a recorded vote, not a vote
   //   on the measure. Expunging votes, reconsiderations, motions to extract
-  //   a bill from committee or re-refer it, second readings taken for the
-  //   purpose of amendment, and the two clerical `Returned to the …` lines
-  //   are excluded on the same ground.
-  // - ONE ROLL IS DELIBERATELY LEFT UNMATCHED so it surfaces for a human:
-  //   `Upon sounding of the ballot, the HJR failded of adoption` (HJR 1004,
-  //   the Article V convention application, 50-31 on 2025-04-01, including
-  //   Arkansas's own typo). It is a real substantive vote, but it is a
-  //   one-off with no family behind it and the measure failed, so it sits
-  //   outside the divided-and-enacted gate either way. Surfacing it stores
-  //   it for audit without inventing a pattern from a single string.
+  //   a bill from committee or re-refer it, and a bill recalled from the
+  //   Governor are excluded on the same ground.
+  // - THREE ROLLS ARE DELIBERATELY LEFT UNMATCHED so they surface for a
+  //   human. `Upon sounding of the ballot, the HJR failded of adoption`
+  //   (HJR 1004, the Article V convention application, 50-31 on
+  //   2025-04-01, including Arkansas's own typo) is a real substantive vote,
+  //   but a one-off with no family behind it on a measure that failed. The
+  //   other two carry a clerk's action line where the question should be:
+  //   SB 450's only House roll is captioned `Returned to the Senate as
+  //   passed.` (81-13 on 2025-04-15) but is the House passage vote — the
+  //   bill history has no other House passage line and arkleg.state.ar.us
+  //   records the 81-13 as the passage roll — and HB 1049's roll captioned
+  //   `Placed on second reading for the purpose of amendment.` (91-0 on
+  //   2025-02-25) is the concurrence in Senate amendment #1, the only House
+  //   action that day. Each caption occurs once, so neither gets a kept
+  //   rule (no pattern from a single string) nor an exclusion rule (that
+  //   would reject a real vote). Surfacing them stores them for audit.
+  //   Neither is divided, so the pool below is unaffected.
   //
   // Pool under the campaign's standard divided gate (the losing side at
   // least a quarter of the winning side): 2,446 kept floor votes on bills
