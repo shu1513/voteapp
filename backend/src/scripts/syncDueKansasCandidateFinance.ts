@@ -107,6 +107,13 @@ async function main(): Promise<void> {
         2
       )
     );
+    // The batch is fail-visible (per-candidate errors are recorded and the
+    // run continues); the exit code still has to say so for shell callers
+    // (Idaho / North Dakota convention). A paper filer fails every run until
+    // the OCR step, so a non-zero exit means "incomplete", not "broken".
+    if (result.failed > 0) {
+      process.exitCode = 1;
+    }
   } finally {
     await pool.end();
   }

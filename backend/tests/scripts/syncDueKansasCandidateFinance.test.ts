@@ -21,6 +21,9 @@ describe("parseSyncDueKansasCandidateFinanceScriptArgs", () => {
     expect(() => parseSyncDueKansasCandidateFinanceScriptArgs(["--aggregate"])).toThrow("Unknown Kansas candidate finance due sync flag");
     expect(() => parseSyncDueKansasCandidateFinanceScriptArgs(["dry-run"])).toThrow("Unexpected positional argument");
     expect(() => parseSyncDueKansasCandidateFinanceScriptArgs(["--max-candidates=0"])).toThrow("Invalid --max-candidates value");
+    // The flag guard runs first, so a value flag with no value never reaches readValueFlag.
+    expect(() => parseSyncDueKansasCandidateFinanceScriptArgs(["--dry-run", "--max-candidates"])).toThrow("Missing --max-candidates value");
+    expect(() => parseSyncDueKansasCandidateFinanceScriptArgs(["--max-candidates="])).toThrow("Missing --max-candidates value");
     expect(() => parseSyncDueKansasCandidateFinanceScriptArgs(["--max-candidates=1", "--max-candidates=2"])).toThrow("at most once");
   });
 });
