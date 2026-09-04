@@ -1160,28 +1160,55 @@ describe("getLegiscanStateConfig", () => {
       "conference_report"
     );
     // Kansas overrode the governor 69 times this biennium; an override is
-    // divided and enacted by definition, so it is a first-class kept class.
+    // divided by definition, so it is a first-class kept class. (Enactment
+    // is NOT by definition: SB 79's Senate override prevailed and the House
+    // never acted, so the veto stood.)
     expect(ks("Senate Motion to override veto prevailed - Yea: 30 Nay: 9", "senate").questionClass).toBe(
       "veto_override"
     );
+    // Failed final questions stay kept under their class, as Montana keeps
+    // `3rd Reading Failed`, so the superseded-stage gate sees a chamber's
+    // later rejection (HB 2527: passed 109-13, conference report then
+    // rejected 46-75).
+    expect(ks("House Motion to override veto failed; Veto sustained - Yea: 81 Nay: 42").questionClass).toBe(
+      "veto_override"
+    );
+    expect(ks("House Conference Committee Report not adopted - Yea: 46 Nay: 75").questionClass).toBe(
+      "conference_report"
+    );
+    expect(ks("Senate Motion to not adopt Conference Committee Report passed - Yea: 25 Nay: 15", "senate").questionClass).toBe(
+      "conference_report"
+    );
+    expect(ks("Senate Final Action - Not passed - Yea: 18 Nay: 22", "senate").questionClass).toBe("passage");
+    expect(ks("House Emergency Final Action - Not adopted by required 2/3 majority - Yea: 81 Nay: 43").questionClass).toBe(
+      "passage"
+    );
+    expect(ks("House Motion to concur with amendments failed - Yea: 45 Nay: 78").questionClass).toBe("concurrence");
+    // A roll the survey proved wrong is held: stored and surfaced, never
+    // queued, so it cannot be approved until the entry is removed.
+    expect(
+      classifyLegiscanRollCall({
+        desc: "House Motion to override veto prevailed - Yea: 84 Nay: 35",
+        total: 125,
+        chamber: "house",
+        billType: "B",
+        config,
+        rollCallId: 1491886,
+      })
+    ).toMatchObject({ isFloorVote: null, questionClass: null, reason: expect.stringMatching(/^held:SB 63 /) });
+    expect(ks("House Motion to override veto prevailed - Yea: 84 Nay: 35").isFloorVote).toBe(true);
     // A LINE-ITEM override is a vote on the vetoed items, not on the act,
     // and must never be read as the whole-bill override beside it.
     expect(
       ks("House Motion to override line item veto prevailed; Line item veto 88(k), 88(m) overridden - Yea: 84 Nay: 39")
     ).toMatchObject({ isFloorVote: false, questionClass: null });
     // Committee of the Whole is the amend-and-debate stage, and the rest are
-    // failed or procedural questions that sit beside a kept spelling.
+    // procedural questions that sit beside a kept spelling.
     for (const [desc, chamber] of [
       ["Senate Committee of the Whole - Amendment by Senator Holscher was rejected - Yea: 9 Nay: 31", "senate"],
       ["House Committee of the Whole - Ruling of the chair was sustained - Yea: 84 Nay: 38", "house"],
       ["House Committee of the Whole - Be passed as amended - Yea: 70 Nay: 53", "house"],
       ["House EFA Subject to Amendment and Debate - Amendment by Representative Carpenter, B. was adopted.", "house"],
-      ["House Motion to override veto failed; Veto sustained - Yea: 81 Nay: 42", "house"],
-      ["House Conference Committee Report not adopted - Yea: 42 Nay: 80", "house"],
-      ["Senate Motion to not adopt Conference Committee Report passed - Yea: 25 Nay: 15", "senate"],
-      ["Senate Final Action - Not passed - Yea: 18 Nay: 22", "senate"],
-      ["House Emergency Final Action - Not adopted by required 2/3 majority - Yea: 81 Nay: 43", "house"],
-      ["House Motion to concur with amendments failed - Yea: 45 Nay: 78", "house"],
       ["Senate Citing Rule 11(b), motion to withdraw from committee failed. - Yea: 9 Nay: 30", "senate"],
       ["House Motion to withdraw from Committee on Veterans and Military not adopted - Yea: 51 Nay: 71", "house"],
       ["Senate Motion to strike the enacting clause. Motion failed. - Yea: 11 Nay: 28", "senate"],

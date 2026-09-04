@@ -104,7 +104,10 @@ The eleven, with LegiScan's tally first and the bill history's second:
 | SB 356 | House | 2026-03-26 | 1670877 | 105-19 | 99-25 |
 
 SB 356 is off by six votes, the rest by one or two. Two are in the campaign gate
-(SB 63 and HB 2240) and are held in the worklist.
+(SB 63 and HB 2240). **All eleven are listed in the config's `heldRollCallIds`**, so
+the fetcher stores them with `is_floor_vote` null and `applyLegislativeVoteJudgment`
+refuses to approve them; a worklist note alone was not a hold. Remove an entry only
+after re-verifying the roll against the state's published vote record.
 
 **The check is cheap and should be part of every Kansas batch.** LegiScan's own
 `history[]` array carries the state's tally, so it costs no network requests: match a

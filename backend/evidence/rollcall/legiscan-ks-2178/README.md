@@ -24,11 +24,17 @@ not a gap in our rosters, so no Senate roster work would change it.
 Kansas pairs a Republican supermajority legislature with a Democratic governor.
 A veto override needs two thirds of each chamber, and the legislature used it
 **69 times** in this biennium. An override vote is divided by definition (it
-takes a two-thirds margin against an opposing minority) and the bill becomes law
-by definition, so overrides are a first-class part of the pool rather than an
-oddity. The config keeps them as the `veto_override` question class, and any
-description written from one has to say the measure became law over the
-governor's veto.
+takes a two-thirds margin against an opposing minority), so overrides are a
+first-class part of the pool rather than an oddity. The config keeps them as the
+`veto_override` question class.
+
+**A prevailing override in one chamber is not enactment.** SB 79's Senate
+override prevailed 29-11 on 2025-04-10; the House never took it up (`No motion
+to reconsider vetoed bill; Veto sustained`) and the veto stood. Before a
+description says a measure became law over the veto, check the bill's own
+history for both chambers' overrides and LegiScan `status` 4 (`Passed`). A
+one-chamber override is described as that chamber's vote to override, nothing
+more.
 
 ## What the survey established
 
@@ -48,25 +54,35 @@ governor's veto.
   chamber (125 House, 40 Senate), so nothing lands in the small-tally bucket.
 - Feed health is the cleanest tier: 0 repeated `roll_call_id`s, 0 summary-only
   rolls, 0 internal tally mismatches, 1 identity-duplicate extra.
+- **Eleven rolls disagree with the tally Kansas prints in its own bill history**,
+  one of them (SB 63, roll 1491886) with a member on the wrong side. They are
+  listed in the config's `heldRollCallIds`, so the fetcher stores them with
+  `is_floor_vote` null and the judge refuses to approve them. See
+  CODE-FINDINGS.md finding 5.
+- **Failed final questions are kept**, not excluded, the way Montana keeps
+  `3rd Reading Failed`: a chamber's later rejection (HB 2527's conference report,
+  46-75, after its 109-13 passage) must be visible to the judge's superseded-stage
+  gate. Nothing fans out from them; no failed vote is ever approved.
 
 ## Classification result
 
-Every description in the session classifies, with **nothing surfaced**:
+Every description in the session classifies; the only surfaced rolls are the
+11 held ones:
 
 | bucket | rolls |
 | --- | --- |
-| kept floor votes | 1,271 |
+| kept floor votes | 1,270 |
 | — passage | 836 |
 | — conference report | 297 |
 | — concurrence | 69 |
-| — veto override | 69 |
-| excluded questions | 110 |
+| — veto override | 68 |
+| excluded questions | 100 |
+| held (tally disagrees with Kansas's record) | 11 |
 | surfaced (unmatched) | **0** |
 
-The 110 excluded are Committee of the Whole amendments and rulings, line-item
-veto overrides, failed passage and failed override votes, rejected conference
-reports, and procedural motions (withdraw from committee, strike the enacting
-clause, previous question, germaneness).
+The 100 excluded are Committee of the Whole amendments and rulings, line-item
+veto overrides, and procedural motions (withdraw from committee, strike the
+enacting clause, previous question, germaneness).
 
 ## The pool
 
