@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
+import { KansasCfrClientError } from "../../../src/pipeline/kansasFinance/kansasCfrViewerClient.js";
 import { kansasCfrOfficeForRace } from "../../../src/pipeline/kansasFinance/kansasFinanceEligibleOffices.js";
 import {
   createKansasFilingPoolLoader,
@@ -16,6 +17,7 @@ const ENTRY = "https://sos.ks.gov/elections/cfr_viewer/cfr_examiner_entry.aspx";
 const FORM = "https://sos.ks.gov/elections/cfr_viewer/cfr_examiner.aspx";
 const RESULTS = "https://sos.ks.gov/elections/cfr_viewer/cfr_examiner_search_results.aspx";
 const COVER = "https://sos.ks.gov/elections/cfr_viewer/reports/exp_report_main.aspx";
+const SCHEDULE_A = "https://sos.ks.gov/elections/cfr_viewer/reports/schedule_a_report.aspx";
 const hidden = (state: string) =>
   `<input type="hidden" name="__VIEWSTATE" value="${state}" /><input type="hidden" name="__EVENTVALIDATION" value="ev" />`;
 
@@ -46,6 +48,7 @@ function fakeViewer() {
     if (url === FORM) return new Response(`<form>${hidden("form")}</form>`, { status: 200 });
     if (url === RESULTS) return new Response(RESULTS_HTML, { status: 200 });
     if (url === COVER) return new Response(`<span id="lblFileStartDate">1/1/2026</span>`, { status: 200 });
+    if (url === SCHEDULE_A) return new Response(`<span id="lblTotalReceipts">$1.00</span>`, { status: 200 });
     return new Response("nope", { status: 404 });
   });
   return { posts, fetchImpl };
@@ -94,6 +97,12 @@ describe("searchKansasFilings", () => {
       __EVENTTARGET: "grdviewCfrResults$ctl02$lnkbtnName",
       __EVENTARGUMENT: "",
     });
+
+    // Schedules are plain GETs of the report the session opened last.
+    const scheduleA = await filings[0]!.openSchedule("A");
+    expect(scheduleA.url).toBe(SCHEDULE_A);
+    expect(scheduleA.html).toContain("lblTotalReceipts");
+    expect(viewer.fetchImpl.mock.calls.filter((call) => call[0] === SCHEDULE_A).map((call) => call[1].method)).toEqual(["GET"]);
   });
 
   it("refuses to open a paper row (its name link answers 500 live)", async () => {
@@ -108,6 +117,7 @@ describe("searchKansasFilings", () => {
     });
     const postsBefore = viewer.posts.length;
     await expect(filings[1]!.openReport()).rejects.toThrow('no HTML report for paper filing "MUIR DANIEL"');
+    await expect(filings[1]!.openSchedule("A")).rejects.toThrow('no HTML report for paper filing "MUIR DANIEL"');
     expect(viewer.posts).toHaveLength(postsBefore);
   });
 });
@@ -126,6 +136,7 @@ describe("createKansasFilingPoolLoader", () => {
       postbackTarget: null,
     },
     openReport: () => Promise.reject(new Error("not opened")),
+    openSchedule: () => Promise.reject(new Error("not opened")),
   });
 
   it("runs the three searches once per office + cycle, tags kinds, and drops other-office rows", async () => {
@@ -159,5 +170,46 @@ describe("createKansasFilingPoolLoader", () => {
     expect(search).toHaveBeenCalledTimes(9);
     expect(search.mock.calls[3]![0]).toMatchObject({ startDate: "01/01/2025" });
     expect(search.mock.calls[6]![0]).toMatchObject({ startDate: "01/01/2026" });
+  });
+});
+
+describe("createKansasFilingPoolLoader enumeration retry", () => {
+  const searched = (name: string): KansasSearchedFiling => ({
+    row: { index: 0, fileDate: "07/27/2026", amendmentDate: "", amendmentNo: "", name, officeSought: "State Representative", district: "85", channel: "efile", postbackTarget: null },
+    openReport: () => Promise.reject(new Error("not opened")),
+    openSchedule: () => Promise.reject(new Error("not opened")),
+  });
+  const mismatch = () => new KansasCfrClientError("grid_count_changed", "grid grdviewCfrResults: collected 1127 rows but page reported 1128");
+
+  it("reruns an enumeration once after a mid-walk record-count mismatch", async () => {
+    let calls = 0;
+    const search = vi.fn(async () => {
+      calls += 1;
+      if (calls === 1) throw mismatch();
+      return [searched("HOLLOWAY MARGARET")];
+    });
+    const onEnumerationRetry = vi.fn();
+    const load = createKansasFilingPoolLoader({ now: NOW, search, onEnumerationRetry });
+    expect(await load(house, 2026)).toHaveLength(3);
+    expect(search).toHaveBeenCalledTimes(4);
+    expect(onEnumerationRetry).toHaveBeenCalledTimes(1);
+    expect(onEnumerationRetry).toHaveBeenCalledWith(house, "Receipts and Expenditures Report");
+  });
+
+  it("fails after a second mismatch, keeps the failure cached, and never retries other errors", async () => {
+    const failing = vi.fn(async () => {
+      throw mismatch();
+    });
+    const load = createKansasFilingPoolLoader({ now: NOW, search: failing });
+    await expect(load(house, 2026)).rejects.toThrow("but page reported");
+    await expect(load(house, 2026)).rejects.toThrow("but page reported");
+    expect(failing).toHaveBeenCalledTimes(2);
+
+    const other = vi.fn(async () => {
+      throw new KansasCfrClientError("http_error", "viewer answered 500", 500);
+    });
+    const loadOther = createKansasFilingPoolLoader({ now: NOW, search: other });
+    await expect(loadOther(house, 2026)).rejects.toThrow("viewer answered 500");
+    expect(other).toHaveBeenCalledTimes(1);
   });
 });

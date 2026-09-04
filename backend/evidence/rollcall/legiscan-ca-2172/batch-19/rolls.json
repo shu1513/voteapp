@@ -1,0 +1,84 @@
+{
+ "rolls": [
+  {
+   "measure": "AB 1136",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601104,
+   "date": "2025-09-04",
+   "yea": 29,
+   "nay": 10,
+   "title": "Employment: immigration and work authorization."
+  },
+  {
+   "measure": "AB 1296",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601289,
+   "date": "2025-09-08",
+   "yea": 30,
+   "nay": 8,
+   "title": "Local educational agencies: reserve funds."
+  },
+  {
+   "measure": "AB 1303",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601243,
+   "date": "2025-09-08",
+   "yea": 29,
+   "nay": 9,
+   "title": "Communications: lifeline telephone service program."
+  },
+  {
+   "measure": "AB 1348",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601280,
+   "date": "2025-09-08",
+   "yea": 30,
+   "nay": 8,
+   "title": "Average daily attendance: emergencies: immigration enforcement activity: independent study plans."
+  },
+  {
+   "measure": "AB 1525",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601621,
+   "date": "2025-09-09",
+   "yea": 30,
+   "nay": 10,
+   "title": "Attorneys: discipline: sensitive services."
+  },
+  {
+   "measure": "AB 1539",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725939,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 9,
+   "title": "Presidential elections: qualifications for office."
+  },
+  {
+   "measure": "SB 647",
+   "status": "vetoed",
+   "chamber": "house",
+   "roll": 1602061,
+   "date": "2025-09-12",
+   "yea": 61,
+   "nay": 18,
+   "title": "Energy: Equitable Building Decarbonization Program: Low-Income Oversight Board: membership."
+  },
+  {
+   "measure": "SB 682",
+   "status": "vetoed",
+   "chamber": "house",
+   "roll": 1602045,
+   "date": "2025-09-12",
+   "yea": 45,
+   "nay": 21,
+   "title": "Environmental health: product safety: perfluoroalkyl and polyfluoroalkyl substances."
+  }
+ ]
+}

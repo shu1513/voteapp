@@ -1,0 +1,5476 @@
+{
+  "jurisdiction": "NV",
+  "sessionId": 2144,
+  "people": [
+    {
+      "people_id": 8476,
+      "person_hash": "v8ovd7b3",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Education",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1573,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 8477,
+      "person_hash": "k4mg9mg8",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Health and Human Services",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1576,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 8478,
+      "person_hash": "ffoxlirr",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Ways and Means",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1581,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 8480,
+      "person_hash": "jrozeup8",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Commerce and Labor",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1570,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 8484,
+      "person_hash": "cnx4myoe",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Judiciary",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1577,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 8486,
+      "person_hash": "8pgwj6tl",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Government Affairs",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1575,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 8496,
+      "person_hash": "jzdvq7mr",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Marilyn Dondero Loop",
+      "first_name": "Marilyn",
+      "middle_name": "",
+      "last_name": "Dondero Loop",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-008",
+      "ftm_eid": 6491157,
+      "votesmart_id": 106888,
+      "opensecrets_id": "",
+      "knowwho_pid": 407374,
+      "ballotpedia": "Marilyn_Dondero_Loop",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1445",
+          "district_phone": "",
+          "email": "Marilyn.DonderoLoop@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/8",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/DonderoLoop.Marilyn.92.jpg",
+          "ballotpedia": "https://ballotpedia.org/Marilyn_Dondero_Loop",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/106888"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2129",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/8",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/marilyn.d.loop",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/marilyn-dondero-loop-aa496b78/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8500,
+      "person_hash": "s5x0jlrf",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "James Ohrenschall",
+      "first_name": "James",
+      "middle_name": "",
+      "last_name": "Ohrenschall",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-021",
+      "ftm_eid": 6476751,
+      "votesmart_id": 66853,
+      "opensecrets_id": "",
+      "knowwho_pid": 249423,
+      "ballotpedia": "James_Ohrenschall",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-6503",
+          "district_phone": "",
+          "email": "James.Ohrenschall@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/21",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Ohrenschall.James.67.jpg",
+          "ballotpedia": "https://ballotpedia.org/James_Ohrenschall",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/66853"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2125",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/21",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/james.ohrenschall",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8518,
+      "person_hash": "5t00d6zr",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Pete Goicoechea",
+      "first_name": "Pete",
+      "middle_name": "",
+      "last_name": "Goicoechea",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-019",
+      "ftm_eid": 6596444,
+      "votesmart_id": 43974,
+      "opensecrets_id": "",
+      "knowwho_pid": 211801,
+      "ballotpedia": "Peter_Goicoechea",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Peter_Goicoechea",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/43974"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nshe.nevada.edu/regents/regents/pete-goicoechea/",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 8539,
+      "person_hash": "cn46gzhf",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Finance",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1585,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 8543,
+      "person_hash": "pqg2pfqg",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Legislative Operations and Elections",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1589,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 8545,
+      "person_hash": "2lgzmhfg",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Judiciary",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1588,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 8548,
+      "person_hash": "t8vgryg7",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Commerce and Labor",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1582,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 8554,
+      "person_hash": "y6ovuqgh",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Government Affairs",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1586,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 8555,
+      "person_hash": "exrusar1",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Natural Resources",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1590,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 12182,
+      "person_hash": "d2dw0hlo",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Health and Human Services",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 2068,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 12183,
+      "person_hash": "hsaipaow",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Education",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 2067,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 12184,
+      "person_hash": "0pgzsgyr",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Legislative Operations and Elections",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 2103,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 12199,
+      "person_hash": "e3ijgdpp",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "John Ellison",
+      "first_name": "John",
+      "middle_name": "",
+      "last_name": "Ellison",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-019",
+      "ftm_eid": 13009106,
+      "votesmart_id": 90566,
+      "opensecrets_id": "",
+      "knowwho_pid": 294536,
+      "ballotpedia": "John_Ellison",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1447",
+          "district_phone": "",
+          "email": "John.Ellison@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/19",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Ellison.John.417.jpg",
+          "ballotpedia": "https://ballotpedia.org/John_Ellison",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/90566"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2102",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/john.ellison.10",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/john-ellison-a7858246/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 12200,
+      "person_hash": "g0marqja",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Ira Hansen",
+      "first_name": "Ira",
+      "middle_name": "",
+      "last_name": "Hansen",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-014",
+      "ftm_eid": 6686502,
+      "votesmart_id": 121908,
+      "opensecrets_id": "",
+      "knowwho_pid": 292353,
+      "ballotpedia": "Ira_Hansen",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1480",
+          "district_phone": "",
+          "email": "Ira.Hansen@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/14",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Hansen.Ira.157.jpg",
+          "ballotpedia": "https://ballotpedia.org/Ira_Hansen",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/121908"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2100",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/14",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/ira.hansen.1",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/ira-hansen-305b0149/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 12203,
+      "person_hash": "tbui8685",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Richard Daly",
+      "first_name": "Richard",
+      "middle_name": "",
+      "last_name": "Daly",
+      "suffix": "",
+      "nickname": "Skip",
+      "district": "SD-013",
+      "ftm_eid": 6508393,
+      "votesmart_id": 121904,
+      "opensecrets_id": "",
+      "knowwho_pid": 310124,
+      "ballotpedia": "Skip_Daly",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1433",
+          "district_phone": "",
+          "email": "Skip.Daly@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/13",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Daly.Skip.155.jpg",
+          "ballotpedia": "https://ballotpedia.org/Skip_Daly",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/121904"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2143",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/13",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 12213,
+      "person_hash": "5cfkl23s",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Dina Neal",
+      "first_name": "Dina",
+      "middle_name": "",
+      "last_name": "Neal",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-004",
+      "ftm_eid": 13009010,
+      "votesmart_id": 121828,
+      "opensecrets_id": "",
+      "knowwho_pid": 309643,
+      "ballotpedia": "Dina_Neal",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1429",
+          "district_phone": "",
+          "email": "Dina.Neal@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/4",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Neal.Dina.129.jpg",
+          "ballotpedia": "https://ballotpedia.org/Dina_Neal",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/121828"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2126",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/4",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/dinaneal",
+            "linkedin": "https://www.linkedin.com/in/dina-neal-juris-doctorate-8980b723/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 15869,
+      "person_hash": "l39z49p2",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Lesley Cohen",
+      "first_name": "Lesley",
+      "middle_name": "E.",
+      "last_name": "Cohen",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-029",
+      "ftm_eid": 9714575,
+      "votesmart_id": 144671,
+      "opensecrets_id": "",
+      "knowwho_pid": 446921,
+      "ballotpedia": "Lesley_Cohen",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Lesley_Cohen",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/144671"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/lesley.e.cohen",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/lesley-cohen-5904a734/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 15881,
+      "person_hash": "34gp8cwx",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Patricia Spearman",
+      "first_name": "Patricia",
+      "middle_name": "",
+      "last_name": "Spearman",
+      "suffix": "",
+      "nickname": "Pat",
+      "district": "SD-001",
+      "ftm_eid": 13789978,
+      "votesmart_id": 137684,
+      "opensecrets_id": "",
+      "knowwho_pid": 407281,
+      "ballotpedia": "Patricia_Spearman",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Patricia_Spearman",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/137684"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/Spearman4Congress",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/pat-spearman/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 17444,
+      "person_hash": "qs7cl79r",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Robin Titus",
+      "first_name": "Robin",
+      "middle_name": "L.",
+      "last_name": "Titus",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-017",
+      "ftm_eid": 9686236,
+      "votesmart_id": 151015,
+      "opensecrets_id": "",
+      "knowwho_pid": 285979,
+      "ballotpedia": "Robin_Titus",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1470",
+          "district_phone": "",
+          "email": "Robin.Titus@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/17",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Titus.Robin.281.jpg",
+          "ballotpedia": "https://ballotpedia.org/Robin_Titus",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/151015"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2160",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/17",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/robin.titus.526",
+            "instagram": "https://www.instagram.com/dr.robin.wellington/",
+            "linkedin": "https://www.linkedin.com/in/dr-robin-titus-a4917126/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 17446,
+      "person_hash": "s9wq4pkl",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Jill Dickman",
+      "first_name": "Jill",
+      "middle_name": "",
+      "last_name": "Dickman",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-031",
+      "ftm_eid": 23594371,
+      "votesmart_id": 152682,
+      "opensecrets_id": "",
+      "knowwho_pid": 490323,
+      "ballotpedia": "Jill_Dickman",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8563",
+          "district_phone": "",
+          "email": "Jill.Dickman@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/31",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Dickman.Jill.277.jpg",
+          "ballotpedia": "https://ballotpedia.org/Jill_Dickman",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/152682"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3124",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/31",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jill.dickman.35",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/jill-dickman-59aa3985/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 17518,
+      "person_hash": "4hgromez",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Edgar Flores",
+      "first_name": "Edgar",
+      "middle_name": "",
+      "last_name": "Flores",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-002",
+      "ftm_eid": 23594326,
+      "votesmart_id": 152832,
+      "opensecrets_id": "",
+      "knowwho_pid": 491441,
+      "ballotpedia": "Edgar_Flores",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1431",
+          "district_phone": "",
+          "email": "Edgar.Flores@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/2",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Flores.Edgar.273.jpg",
+          "ballotpedia": "https://ballotpedia.org/Edgar_Flores",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/152832"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2127",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/2",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/edgarunlv",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 17522,
+      "person_hash": "oa6p04si",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Philip O'Neill",
+      "first_name": "Philip",
+      "middle_name": "",
+      "last_name": "O'Neill",
+      "suffix": "",
+      "nickname": "P. K.",
+      "district": "HD-040",
+      "ftm_eid": 23594352,
+      "votesmart_id": 151021,
+      "opensecrets_id": "",
+      "knowwho_pid": 490331,
+      "ballotpedia": "Philip_O%27Neill",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8825",
+          "district_phone": "",
+          "email": "PK.Oneill@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/40",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/ONeill.PhilipPK.285.jpg",
+          "ballotpedia": "https://ballotpedia.org/Philip_O%2527Neill",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/151021"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3153",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/40",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/pk.oneill.5",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/pk-oneill-19036037/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19220,
+      "person_hash": "46hny4qo",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Nicole Cannizzaro",
+      "first_name": "Nicole",
+      "middle_name": "",
+      "last_name": "Cannizzaro",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-006",
+      "ftm_eid": 39827448,
+      "votesmart_id": 169489,
+      "opensecrets_id": "",
+      "knowwho_pid": 574111,
+      "ballotpedia": "Nicole_Cannizzaro",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1475",
+          "district_phone": "",
+          "email": "Nicole.Cannizzaro@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/6",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Cannizzaro.Nicole.347.jpg",
+          "ballotpedia": "https://ballotpedia.org/Nicole_Cannizzaro",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/169489"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 1221",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/6",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/ncannizzaro",
+            "instagram": "https://www.instagram.com/njcannizzaro/",
+            "linkedin": "https://www.linkedin.com/in/nicole-cannizzaro-03152b7/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19221,
+      "person_hash": "298gdt2b",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Shannon Bilbray-Axelrod",
+      "first_name": "Shannon",
+      "middle_name": "",
+      "last_name": "Bilbray-Axelrod",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-034",
+      "ftm_eid": 39827435,
+      "votesmart_id": 169567,
+      "opensecrets_id": "",
+      "knowwho_pid": 279961,
+      "ballotpedia": "Shannon_Bilbray-Axelrod",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Shannon_Bilbray-Axelrod",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/169567"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/bilbrayaxelrod",
+            "instagram": "https://www.instagram.com/vegasshannon/",
+            "linkedin": "https://www.linkedin.com/in/shannon-bilbray-axelrod-46112b133/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/user/MollyAnnsMom"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19224,
+      "person_hash": "bb15q1fb",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Sandra Jauregui",
+      "first_name": "Sandra",
+      "middle_name": "",
+      "last_name": "Jauregui",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-041",
+      "ftm_eid": 39827532,
+      "votesmart_id": 169582,
+      "opensecrets_id": "",
+      "knowwho_pid": 338681,
+      "ballotpedia": "Sandra_Jauregui",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8821",
+          "district_phone": "",
+          "email": "Sandra.Jauregui@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/41",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Jauregui.Sandra.344.jpg",
+          "ballotpedia": "https://ballotpedia.org/Sandra_Jauregui",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/169582"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 1102",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/41",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/sandra.jauregui.355",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/sandra-jauregui-0a7974176/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/@socialsands/"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19226,
+      "person_hash": "g53cgysi",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Lisa Krasner",
+      "first_name": "Lisa",
+      "middle_name": "",
+      "last_name": "Krasner",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-016",
+      "ftm_eid": 23594320,
+      "votesmart_id": 155017,
+      "opensecrets_id": "",
+      "knowwho_pid": 490319,
+      "ballotpedia": "Lisa_Krasner",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1450",
+          "district_phone": "",
+          "email": "Lisa.Krasner@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/16",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Krasner.Lisa.327.jpg",
+          "ballotpedia": "https://ballotpedia.org/Lisa_Krasner",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/155017"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2156",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/16",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/LisaKrasnerForNV",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/lisa-krasner-36a345b4/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19229,
+      "person_hash": "r6spypc8",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Brittney Miller",
+      "first_name": "Brittney",
+      "middle_name": "",
+      "last_name": "Miller",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-005",
+      "ftm_eid": 39827574,
+      "votesmart_id": 169513,
+      "opensecrets_id": "",
+      "knowwho_pid": 574124,
+      "ballotpedia": "Brittney_Miller",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8833",
+          "district_phone": "",
+          "email": "Brittney.Miller@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/5",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Miller.Brittney.304.jpg",
+          "ballotpedia": "https://ballotpedia.org/Brittney_Miller",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/169513"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3127",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/5",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/brittney.miller.5496",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/brittney-miller-6227a865/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19230,
+      "person_hash": "0keunslx",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Daniele Monroe-Moreno",
+      "first_name": "Daniele",
+      "middle_name": "",
+      "last_name": "Monroe-Moreno",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-001",
+      "ftm_eid": 24821003,
+      "votesmart_id": 169498,
+      "opensecrets_id": "",
+      "knowwho_pid": 574116,
+      "ballotpedia": "Daniele_Monroe-Moreno",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8509",
+          "district_phone": "",
+          "email": "Daniele.MonroeMoreno@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/1",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/MonroeMoreno.Daniele.307.jpg",
+          "ballotpedia": "https://ballotpedia.org/Daniele_Monroe-Moreno",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/169498"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3133",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/1",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100079471752745",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/daniele-monroe-moreno-8089062a/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19233,
+      "person_hash": "h2wc7y5d",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Steve Yeager",
+      "first_name": "Steve",
+      "middle_name": "",
+      "last_name": "Yeager",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-009",
+      "ftm_eid": 20540066,
+      "votesmart_id": 152786,
+      "opensecrets_id": "",
+      "knowwho_pid": 490284,
+      "ballotpedia": "Steve_Yeager",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8549",
+          "district_phone": "",
+          "email": "Steve.Yeager@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/9",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Yeager.Steve.310.jpg",
+          "ballotpedia": "https://ballotpedia.org/Steve_Yeager",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/152786"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 1104",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/9",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/sjyeager",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/steve-yeager-a2598882/",
+            "tiktok": "https://www.tiktok.com/@steve_yeager_nv",
+            "twitter": "",
+            "website": "https://www.battleborninjurylawyers.com/our-attorneys/steve-yeager/",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19691,
+      "person_hash": "bc8bj4ei",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Growth and Infrastructure",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 3774,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 19695,
+      "person_hash": "ols8tcs3",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Growth and Infrastructure",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 3775,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 19696,
+      "person_hash": "tyvlr2o7",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Revenue and Economic Development",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 3776,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 21171,
+      "person_hash": "7cpfshd9",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Dallas Harris",
+      "first_name": "Dallas",
+      "middle_name": "",
+      "last_name": "Harris",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-011",
+      "ftm_eid": 47065007,
+      "votesmart_id": 186124,
+      "opensecrets_id": "",
+      "knowwho_pid": 689868,
+      "ballotpedia": "Dallas_Harris",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Dallas_Harris",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/186124"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/dallasashle",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/dallasah/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21172,
+      "person_hash": "pq2s61fw",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Melanie Scheible",
+      "first_name": "Melanie",
+      "middle_name": "Lyn",
+      "last_name": "Scheible",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-009",
+      "ftm_eid": 45285521,
+      "votesmart_id": 180937,
+      "opensecrets_id": "",
+      "knowwho_pid": 669433,
+      "ballotpedia": "Melanie_Scheible",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1421",
+          "district_phone": "",
+          "email": "Melanie.Scheible@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/9",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Scheible.Melanie.358.jpg",
+          "ballotpedia": "https://ballotpedia.org/Melanie_Scheible",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/180937"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2128",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/9",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/melanie.scheible",
+            "instagram": "https://www.instagram.com/melaniescheible/",
+            "linkedin": "https://www.linkedin.com/in/melanie-scheible-52351622/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21174,
+      "person_hash": "s7gf4tcv",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Shea Backus",
+      "first_name": "Shea",
+      "middle_name": "",
+      "last_name": "Backus",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-037",
+      "ftm_eid": 45285418,
+      "votesmart_id": 181004,
+      "opensecrets_id": "",
+      "knowwho_pid": 669450,
+      "ballotpedia": "Shea_Backus",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8505",
+          "district_phone": "",
+          "email": "Shea.Backus@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/37",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Backus.Shea.368.jpg",
+          "ballotpedia": "https://ballotpedia.org/Shea_Backus",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/181004"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4109",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/37",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/sheabackusmcdermont",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/shea-backus-7369231b/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21175,
+      "person_hash": "uj2tt38g",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Bea Duran",
+      "first_name": "Beatrice",
+      "middle_name": "",
+      "last_name": "Duran",
+      "suffix": "",
+      "nickname": "Bea",
+      "district": "HD-011",
+      "ftm_eid": 49742581,
+      "votesmart_id": 186121,
+      "opensecrets_id": "",
+      "knowwho_pid": 693563,
+      "ballotpedia": "Beatrice_Duran",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Beatrice_Duran",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/186121"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21176,
+      "person_hash": "wcfs5692",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Michelle Gorelow",
+      "first_name": "Michelle",
+      "middle_name": "Suzanne",
+      "last_name": "Gorelow",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-035",
+      "ftm_eid": 6508308,
+      "votesmart_id": 121851,
+      "opensecrets_id": "",
+      "knowwho_pid": 659373,
+      "ballotpedia": "Michelle_Gorelow",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Michelle_Gorelow",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/121851"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/MichelleGSuzanne",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/mgorelow/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21177,
+      "person_hash": "dh6tbswr",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Gregory Hafen",
+      "first_name": "Gregory",
+      "middle_name": "T.",
+      "last_name": "Hafen",
+      "suffix": "II",
+      "nickname": "",
+      "district": "HD-036",
+      "ftm_eid": 40612305,
+      "votesmart_id": 186122,
+      "opensecrets_id": "",
+      "knowwho_pid": 693559,
+      "ballotpedia": "Gregory_Hafen",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8805",
+          "district_phone": "",
+          "email": "Gregory.Hafen@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/36",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Hafen.Gregory.371.jpg",
+          "ballotpedia": "https://ballotpedia.org/Gregory_Hafen",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/186122"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3105C",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/hafen4nevada",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/36",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/Assemblyman.Hafen",
+            "instagram": "https://www.instagram.com/ghafen2/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21178,
+      "person_hash": "rr9zko3t",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Alexis Hansen",
+      "first_name": "Alexis",
+      "middle_name": "M.",
+      "last_name": "Hansen",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-032",
+      "ftm_eid": 44890960,
+      "votesmart_id": 180994,
+      "opensecrets_id": "",
+      "knowwho_pid": 659230,
+      "ballotpedia": "Alexis_Hansen",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8851",
+          "district_phone": "",
+          "email": "Alexis.Hansen@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/32",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Hansen.Alexis.366.jpg",
+          "ballotpedia": "https://ballotpedia.org/Alexis_Hansen",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/180994"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3129",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/32",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/alexislloyd.hansen",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21179,
+      "person_hash": "l2dvoxpz",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Melissa Hardy",
+      "first_name": "Melissa",
+      "middle_name": "",
+      "last_name": "Hardy",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-022",
+      "ftm_eid": 45285463,
+      "votesmart_id": 180981,
+      "opensecrets_id": "",
+      "knowwho_pid": 659362,
+      "ballotpedia": "Melissa_Hardy",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8823",
+          "district_phone": "",
+          "email": "Melissa.Hardy@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/22",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Hardy.Melissa.364.jpg",
+          "ballotpedia": "https://ballotpedia.org/Melissa_Hardy",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/180981"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3105D",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/22",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/melissaraehardy",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/melissa-hardy-59505a26",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21183,
+      "person_hash": "15im7k94",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Sarah Peters",
+      "first_name": "Sarah",
+      "middle_name": "Crystin",
+      "last_name": "Peters",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-024",
+      "ftm_eid": 45285511,
+      "votesmart_id": 180988,
+      "opensecrets_id": "",
+      "knowwho_pid": 659235,
+      "ballotpedia": "Sarah_Peters",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Sarah_Peters",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/180988"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SarahCrystinPeters",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/sarah-peters-702a787b/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21185,
+      "person_hash": "xkoc54ab",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Selena Torres-Fossett",
+      "first_name": "Selena",
+      "middle_name": "Elizabeth",
+      "last_name": "Torres-Fossett",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-003",
+      "ftm_eid": 45285543,
+      "votesmart_id": 180952,
+      "opensecrets_id": "",
+      "knowwho_pid": 659267,
+      "ballotpedia": "Selena_Torres",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8599",
+          "district_phone": "",
+          "email": "Selena.Torres@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/3",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/TorresFossett.Selena.359.jpg",
+          "ballotpedia": "https://ballotpedia.org/Selena_Torres",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/180952"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4114",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/3",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/selenatorres95",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/selena-torres-6a755683/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21186,
+      "person_hash": "6dfq1b84",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Howard Watts",
+      "first_name": "Howard",
+      "middle_name": "",
+      "last_name": "Watts",
+      "suffix": "III",
+      "nickname": "",
+      "district": "HD-015",
+      "ftm_eid": 45285551,
+      "votesmart_id": 180976,
+      "opensecrets_id": "",
+      "knowwho_pid": 659350,
+      "ballotpedia": "Howard_Watts_III",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8835",
+          "district_phone": "",
+          "email": "Howard.Watts@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/15",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Watts.Howard.363.jpg",
+          "ballotpedia": "https://ballotpedia.org/Howard_Watts_III",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/180976"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3119",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/15",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/hdubtre",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/howard-watts-iii-9a1321109/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21252,
+      "person_hash": "1030xfan",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Rochelle Nguyen",
+      "first_name": "Rochelle",
+      "middle_name": "T.",
+      "last_name": "Nguyen",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-003",
+      "ftm_eid": 47065008,
+      "votesmart_id": 186123,
+      "opensecrets_id": "",
+      "knowwho_pid": 693565,
+      "ballotpedia": "Rochelle_Nguyen",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1422",
+          "district_phone": "",
+          "email": "Rochelle.Nguyen@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/3",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Nguyen.Rochelle.372.jpg",
+          "ballotpedia": "https://ballotpedia.org/Rochelle_Nguyen",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/186123"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2132",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/rochellenguyen",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/3",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/rochelle.nguyen1",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/rochelle-nguyen-706434250/",
+            "tiktok": "https://www.tiktok.com/@rochellenguyensd3",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21681,
+      "person_hash": "523jvgtr",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Revenue",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 4287,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 21682,
+      "person_hash": "jzpqirr4",
+      "party_id": "0",
+      "state_id": 28,
+      "party": "",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Natural Resources",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 4288,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 22753,
+      "person_hash": "8b9pogrr",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Carrie Ann Buck",
+      "first_name": "Carrie Ann",
+      "middle_name": "",
+      "last_name": "Buck",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-005",
+      "ftm_eid": 39827444,
+      "votesmart_id": 169487,
+      "opensecrets_id": "",
+      "knowwho_pid": 574109,
+      "ballotpedia": "Carrie_Buck_(Nevada)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1457",
+          "district_phone": "",
+          "email": "Carrie.Buck@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/5",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Buck.Carrie.387.jpg",
+          "ballotpedia": "https://ballotpedia.org/Carrie_Buck_%28Nevada%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/169487"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2103",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/5",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/cannbuck",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/dr-carrie-a-buck-1111b488/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22754,
+      "person_hash": "qk1o9uj4",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Roberta Lange",
+      "first_name": "Roberta",
+      "middle_name": "Ann",
+      "last_name": "Lange",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-007",
+      "ftm_eid": 9685811,
+      "votesmart_id": 191084,
+      "opensecrets_id": "",
+      "knowwho_pid": 735843,
+      "ballotpedia": "Roberta_Lange",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-6504",
+          "district_phone": "",
+          "email": "Roberta.Lange@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/7",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Lange.Roberta.383.jpg",
+          "ballotpedia": "https://ballotpedia.org/Roberta_Lange",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/191084"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 1224",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/7",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/rlange9",
+            "linkedin": "https://www.linkedin.com/in/robertalange/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22756,
+      "person_hash": "ga21qt55",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Cecelia Gonzalez",
+      "first_name": "Cecelia",
+      "middle_name": "",
+      "last_name": "Gonzalez",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-016",
+      "ftm_eid": 49742594,
+      "votesmart_id": 191131,
+      "opensecrets_id": "",
+      "knowwho_pid": 735962,
+      "ballotpedia": "Cecelia_Gonz\u00e1lez",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8595",
+          "district_phone": "",
+          "email": "Cecelia.Gonzalez@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/16",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Gonzlez.Cecelia.378.jpg",
+          "ballotpedia": "https://ballotpedia.org/Cecelia_Gonz%C3%A1lez",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/191131"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3160",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/AsmCeceliaGNV/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/16",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/cecelia-gonz%C3%A1lez-484738174/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22757,
+      "person_hash": "v9i1p1dj",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Natha Anderson",
+      "first_name": "Natha",
+      "middle_name": "C.",
+      "last_name": "Anderson",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-030",
+      "ftm_eid": 49742670,
+      "votesmart_id": 191357,
+      "opensecrets_id": "",
+      "knowwho_pid": 735970,
+      "ballotpedia": "Natha_Anderson",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8841",
+          "district_phone": "",
+          "email": "Natha.Anderson@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/30",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Anderson.Natha.375.jpg",
+          "ballotpedia": "https://ballotpedia.org/Natha_Anderson",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/191357"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3158",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/30",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/natha.anderson",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22758,
+      "person_hash": "p8vjmb26",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "David Orentlicher",
+      "first_name": "David",
+      "middle_name": "",
+      "last_name": "Orentlicher",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-020",
+      "ftm_eid": 13000434,
+      "votesmart_id": 33994,
+      "opensecrets_id": "",
+      "knowwho_pid": 212320,
+      "ballotpedia": "David_Orentlicher",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8577",
+          "district_phone": "",
+          "email": "David.Orentlicher@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/20",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Orentlicher.David.377.jpg",
+          "ballotpedia": "https://ballotpedia.org/David_Orentlicher",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/33994"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3156",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22769,
+      "person_hash": "qj5ahh09",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Heidi Kasama",
+      "first_name": "Heidi",
+      "middle_name": "W.",
+      "last_name": "Kasama",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-002",
+      "ftm_eid": 18780959,
+      "votesmart_id": 191090,
+      "opensecrets_id": "",
+      "knowwho_pid": 735895,
+      "ballotpedia": "Heidi_Kasama",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8827",
+          "district_phone": "",
+          "email": "Heidi.Kasama@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/2",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Kasama.Heidi.379.jpg",
+          "ballotpedia": "https://ballotpedia.org/Heidi_Kasama",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/191090"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3130",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/2",
+            "youtube": "https://www.youtube.com/@HeidiKasamaAssemblyDistr-zx5st"
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/heidi.kasama",
+            "instagram": "https://www.instagram.com/heidikasama/",
+            "linkedin": "https://www.linkedin.com/in/heidikasama/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/kasama_heidi",
+            "website": "",
+            "youtube": "https://www.youtube.com/user/heidikasama"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22798,
+      "person_hash": "4hfpg5ym",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Venicia Considine",
+      "first_name": "Venicia",
+      "middle_name": "",
+      "last_name": "Considine",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-018",
+      "ftm_eid": 13009055,
+      "votesmart_id": 107008,
+      "opensecrets_id": "",
+      "knowwho_pid": 735974,
+      "ballotpedia": "Venicia_Considine",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8801",
+          "district_phone": "",
+          "email": "Venicia.Considine@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/18",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Considine.Venicia.380.jpg",
+          "ballotpedia": "https://ballotpedia.org/Venicia_Considine",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/107008"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4115",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/18",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/venicia-considine-532aa63/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22828,
+      "person_hash": "a9q79kx4",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Tracy Brown-May",
+      "first_name": "Tracy",
+      "middle_name": "",
+      "last_name": "Brown-May",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-042",
+      "ftm_eid": 54282903,
+      "votesmart_id": 195813,
+      "opensecrets_id": "",
+      "knowwho_pid": 766387,
+      "ballotpedia": "Tracy_Brown-May",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8803",
+          "district_phone": "",
+          "email": "Tracy.BrownMay@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/42",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/BrownMay.Tracy.353.jpg",
+          "ballotpedia": "https://ballotpedia.org/Tracy_Brown-May",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/195813"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3132",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/tracybrownmayad42",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/42",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100053268187199",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/tracy-brown-may-a660a639/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22829,
+      "person_hash": "vnrs7bdb",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Elaine Marzola",
+      "first_name": "Elaine",
+      "middle_name": "",
+      "last_name": "Marzola",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-021",
+      "ftm_eid": 49742613,
+      "votesmart_id": 191161,
+      "opensecrets_id": "",
+      "knowwho_pid": 735991,
+      "ballotpedia": "Elaine_Marzola",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8839",
+          "district_phone": "",
+          "email": "Elaine.Marzola@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/21",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Marzola.Elaine.376.jpg",
+          "ballotpedia": "https://ballotpedia.org/Elaine_Marzola",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/191161"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4108",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/21",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/emarzola/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22830,
+      "person_hash": "o4tyu3dm",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Cameron Miller",
+      "first_name": "Cameron",
+      "middle_name": "",
+      "last_name": "Miller",
+      "suffix": "",
+      "nickname": "C H",
+      "district": "HD-007",
+      "ftm_eid": 49742570,
+      "votesmart_id": 191103,
+      "opensecrets_id": "",
+      "knowwho_pid": 735928,
+      "ballotpedia": "Cameron_Miller",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Cameron_Miller",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/191103"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/Cameron.H.Miller1",
+            "instagram": "https://www.instagram.com/chmillerspeaks",
+            "linkedin": "https://www.linkedin.com/in/cameron-ch-miller-9148bb37/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/CHMillerForNV",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22831,
+      "person_hash": "bdu3sfus",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Shondra Summers-Armstrong",
+      "first_name": "Shondra",
+      "middle_name": "",
+      "last_name": "Summers-Armstrong",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-006",
+      "ftm_eid": 49742567,
+      "votesmart_id": 191102,
+      "opensecrets_id": "",
+      "knowwho_pid": 735927,
+      "ballotpedia": "Shondra_Summers-Armstrong",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Shondra_Summers-Armstrong",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/191102"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.lasvegasnevada.gov/Government/Mayor-City-Council/Ward-5",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/shondra.summersarmstrong.1",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22832,
+      "person_hash": "zg2jmdko",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Clara Thomas",
+      "first_name": "Clara",
+      "middle_name": "",
+      "last_name": "Thomas",
+      "suffix": "",
+      "nickname": "Claire",
+      "district": "HD-017",
+      "ftm_eid": 49742598,
+      "votesmart_id": 191136,
+      "opensecrets_id": "",
+      "knowwho_pid": 735973,
+      "ballotpedia": "Clara_Thomas",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Clara_Thomas",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/191136"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/cithom/",
+            "linkedin": "https://www.linkedin.com/in/clara-thomas-192109207/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/clairethom11",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22839,
+      "person_hash": "2ghehydx",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Fabian Donate",
+      "first_name": "Fabian",
+      "middle_name": "",
+      "last_name": "Donate",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-010",
+      "ftm_eid": 54282902,
+      "votesmart_id": 195789,
+      "opensecrets_id": "",
+      "knowwho_pid": 766386,
+      "ballotpedia": "Fabian_Donate",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1427",
+          "district_phone": "",
+          "email": "Fabian.Donate@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/10",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Doate.Fabian.350.jpg",
+          "ballotpedia": "https://ballotpedia.org/Fabian_Donate",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/195789"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2124",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24694,
+      "person_hash": "o0e6cazj",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Rich DeLong",
+      "first_name": "Richard",
+      "middle_name": "",
+      "last_name": "DeLong",
+      "suffix": "",
+      "nickname": "Rich",
+      "district": "HD-026",
+      "ftm_eid": 55496532,
+      "votesmart_id": 204244,
+      "opensecrets_id": "",
+      "knowwho_pid": 658276,
+      "ballotpedia": "Rich_DeLong",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8848",
+          "district_phone": "",
+          "email": "Rich.Delong@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/26",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/DeLong.Richard.399.jpg",
+          "ballotpedia": "https://ballotpedia.org/Rich_DeLong",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/204244"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4107",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/26",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/richard.delong.71",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24695,
+      "person_hash": "671ke2ct",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Reuben D'Silva",
+      "first_name": "Reuben",
+      "middle_name": "",
+      "last_name": "D'Silva",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-028",
+      "ftm_eid": 55496540,
+      "votesmart_id": 169437,
+      "opensecrets_id": "",
+      "knowwho_pid": 575203,
+      "ballotpedia": "Reuben_D'Silva",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8583",
+          "district_phone": "",
+          "email": "Reuben.DSilva@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/28",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/DSilva.Reuben.401.jpg",
+          "ballotpedia": "https://ballotpedia.org/Reuben_D%27Silva",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/169437"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4117",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/28",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100010869822690",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/reuben-d-silva-90077414/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24696,
+      "person_hash": "tiplfkru",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Danielle Gallant",
+      "first_name": "Danielle",
+      "middle_name": "",
+      "last_name": "Gallant",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-023",
+      "ftm_eid": 45011178,
+      "votesmart_id": 204208,
+      "opensecrets_id": "",
+      "knowwho_pid": 806785,
+      "ballotpedia": "Danielle_Gallant",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8503",
+          "district_phone": "",
+          "email": "Danielle.Gallant@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/23",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Gallant.Danielle.397.jpg",
+          "ballotpedia": "https://ballotpedia.org/Danielle_Gallant",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/204208"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4110",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/23",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/danielle-gallant-a5267721/",
+            "tiktok": "https://www.tiktok.com/@daniellegallantnv",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24697,
+      "person_hash": "uxsh6ig3",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Ken Gray",
+      "first_name": "Ken",
+      "middle_name": "",
+      "last_name": "Gray",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-039",
+      "ftm_eid": 9697333,
+      "votesmart_id": 187391,
+      "opensecrets_id": "",
+      "knowwho_pid": 385780,
+      "ballotpedia": "Ken_Gray_(Nevada)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8843",
+          "district_phone": "",
+          "email": "Ken.Gray@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/39",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Gray.Ken.404.jpg",
+          "ballotpedia": "https://ballotpedia.org/Ken_Gray_%28Nevada%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/187391"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4118",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/39",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/KenDGray1",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/ken-gray-645ba76",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24698,
+      "person_hash": "ffif5jyf",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Bert Gurr",
+      "first_name": "Bert",
+      "middle_name": "",
+      "last_name": "Gurr",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-033",
+      "ftm_eid": 55496548,
+      "votesmart_id": 204095,
+      "opensecrets_id": "",
+      "knowwho_pid": 806881,
+      "ballotpedia": "Bert_Gurr",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8831",
+          "district_phone": "",
+          "email": "Bert.Gurr@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/33",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Gurr.Bert.402.jpg",
+          "ballotpedia": "https://ballotpedia.org/Bert_Gurr",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/204095"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4123",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/33",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/bert.gurr",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24699,
+      "person_hash": "e66grk69",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Brian Hibbetts",
+      "first_name": "Brian",
+      "middle_name": "",
+      "last_name": "Hibbetts",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-013",
+      "ftm_eid": 40349486,
+      "votesmart_id": 204187,
+      "opensecrets_id": "",
+      "knowwho_pid": 806640,
+      "ballotpedia": "Brian_Hibbetts",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8853",
+          "district_phone": "",
+          "email": "Brian.Hibbetts@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/13",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Hibbetts.Brian.394.jpg",
+          "ballotpedia": "https://ballotpedia.org/Brian_Hibbetts",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/204187"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4112",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/brianhibbettsnv",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/13",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/brian-hibbetts-701326103/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24700,
+      "person_hash": "gpzoy45d",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Gregory Koenig",
+      "first_name": "Gregory",
+      "middle_name": "S.",
+      "last_name": "Koenig",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-038",
+      "ftm_eid": 55496564,
+      "votesmart_id": 204098,
+      "opensecrets_id": "",
+      "knowwho_pid": 806927,
+      "ballotpedia": "Gregory_Koenig",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8507",
+          "district_phone": "",
+          "email": "Gregory.Koenig@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/38",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Koenig.Gregory.403.jpg",
+          "ballotpedia": "https://ballotpedia.org/Gregory_Koenig",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/204098"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3105E",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/38",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/gregory.s.koenig",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24701,
+      "person_hash": "gj3jmldv",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Selena La Rue Hatch",
+      "first_name": "Selena",
+      "middle_name": "",
+      "last_name": "La Rue Hatch",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-025",
+      "ftm_eid": 55496530,
+      "votesmart_id": 204239,
+      "opensecrets_id": "",
+      "knowwho_pid": 806817,
+      "ballotpedia": "Selena_La_Rue_Hatch",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8837",
+          "district_phone": "",
+          "email": "Selena.La.Rue.Hatch@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/25",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/LaRueHatch.Selena.398.jpg",
+          "ballotpedia": "https://ballotpedia.org/Selena_La_Rue_Hatch",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/204239"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3159",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/25",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/selena4nevada/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24702,
+      "person_hash": "mobmwymc",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Erica Mosca",
+      "first_name": "Erica",
+      "middle_name": "",
+      "last_name": "Mosca",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-014",
+      "ftm_eid": 55496489,
+      "votesmart_id": 169547,
+      "opensecrets_id": "",
+      "knowwho_pid": 574133,
+      "ballotpedia": "Erica_Mosca",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8597",
+          "district_phone": "",
+          "email": "Erica.Mosca@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/14",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Mosca.Erica.395.jpg",
+          "ballotpedia": "https://ballotpedia.org/Erica_Mosca",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/169547"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3128",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/14",
+            "youtube": "https://www.youtube.com/@ericamosca9749"
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/emlv/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24703,
+      "person_hash": "70iy5w9d",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Duy Nguyen",
+      "first_name": "Duy",
+      "middle_name": "",
+      "last_name": "Nguyen",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-008",
+      "ftm_eid": 55496451,
+      "votesmart_id": 204172,
+      "opensecrets_id": "",
+      "knowwho_pid": 806485,
+      "ballotpedia": "Duy_Nguyen_(Nevada)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8537",
+          "district_phone": "",
+          "email": "Duy.Nguyen@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/8",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Nguyen.Duy.392.jpg",
+          "ballotpedia": "https://ballotpedia.org/Duy_Nguyen_%28Nevada%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/204172"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3123",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/8",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/duymba/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24704,
+      "person_hash": "fbedvjfv",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Jeff Stone",
+      "first_name": "Jeff",
+      "middle_name": "",
+      "last_name": "Stone",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-020",
+      "ftm_eid": 52680782,
+      "votesmart_id": 204154,
+      "opensecrets_id": "",
+      "knowwho_pid": 807116,
+      "ballotpedia": "Jeff_Stone_(Nevada)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1481",
+          "district_phone": "",
+          "email": "Jeff.Stone@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/20",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Stone.Jeff.390.jpg",
+          "ballotpedia": "https://ballotpedia.org/Jeff_Stone_%28Nevada%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/204154"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2158",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/senatorjeffstone",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/20",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jeff.stone.108",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://jeffreystone.myrealtyonegroup.com",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24705,
+      "person_hash": "5add1bp0",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Thaddeus Yurek",
+      "first_name": "Thaddeus",
+      "middle_name": "",
+      "last_name": "Yurek",
+      "suffix": "",
+      "nickname": "Toby",
+      "district": "HD-019",
+      "ftm_eid": 55496511,
+      "votesmart_id": 204202,
+      "opensecrets_id": "",
+      "knowwho_pid": 806707,
+      "ballotpedia": "Thaddeus_Yurek",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8857",
+          "district_phone": "",
+          "email": "Toby.Yurek@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/19",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Yurek.Thaddeus.396.jpg",
+          "ballotpedia": "https://ballotpedia.org/Thaddeus_Yurek",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/204202"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3116",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/19",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/thaddeus-yurek-6978394/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24823,
+      "person_hash": "8m55yv0b",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Max Carter",
+      "first_name": "Max",
+      "middle_name": "",
+      "last_name": "Carter",
+      "suffix": "II",
+      "nickname": "",
+      "district": "HD-012",
+      "ftm_eid": 55496475,
+      "votesmart_id": 204180,
+      "opensecrets_id": "",
+      "knowwho_pid": 806534,
+      "ballotpedia": "Max_Carter_II",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8819",
+          "district_phone": "",
+          "email": "Max.Carter@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/12",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Carter.Max.393.jpg",
+          "ballotpedia": "https://ballotpedia.org/Max_Carter_II",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/204180"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3140",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/12",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/max.carterii",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/max-carter-ii-0b630867/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24824,
+      "person_hash": "dzi7xpwm",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Julie Pazina",
+      "first_name": "Julie",
+      "middle_name": "Ann",
+      "last_name": "Pazina",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-012",
+      "ftm_eid": 55496471,
+      "votesmart_id": 180946,
+      "opensecrets_id": "",
+      "knowwho_pid": 659253,
+      "ballotpedia": "Julie_Pazina",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1462",
+          "district_phone": "",
+          "email": "Julie.Pazina@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/12",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Pazina.Julie.391.jpg",
+          "ballotpedia": "https://ballotpedia.org/Julie_Pazina",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/180946"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2121",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/12",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/julie.pazina",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/julie-pazina-cem-ap-9b31a55/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24825,
+      "person_hash": "5vi49e5q",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "AngelaTaylor",
+      "first_name": "Angela",
+      "middle_name": "",
+      "last_name": "Taylor",
+      "suffix": "",
+      "nickname": "Angie",
+      "district": "SD-015",
+      "ftm_eid": 55496537,
+      "votesmart_id": 121893,
+      "opensecrets_id": "",
+      "knowwho_pid": 310104,
+      "ballotpedia": "Angie_Taylor",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1419",
+          "district_phone": "",
+          "email": "Angela.Taylor@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/15",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Taylor.Angela.424.jpg",
+          "ballotpedia": "https://ballotpedia.org/Angie_Taylor",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/121893"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2112",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/drangie22",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/angie-taylor/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24874,
+      "person_hash": "0mfys4d7",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Sabra Newby",
+      "first_name": "Sabra",
+      "middle_name": "",
+      "last_name": "Newby",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-010",
+      "ftm_eid": 0,
+      "votesmart_id": 211338,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Sabra_Newby",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Sabra_Newby",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/211338"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25733,
+      "person_hash": "cvnz1w8w",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Lisa Cole",
+      "first_name": "Lisa",
+      "middle_name": "K.",
+      "last_name": "Cole",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-004",
+      "ftm_eid": 59832327,
+      "votesmart_id": 215876,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Lisa_Cole_(Nevada)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8829",
+          "district_phone": "",
+          "email": "lisa.cole@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/4",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Cole.Lisa.410.jpg",
+          "ballotpedia": "https://ballotpedia.org/Lisa_Cole_%28Nevada%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215876"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4113",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=61555615569759",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/lisa-cole-48551264/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25734,
+      "person_hash": "de53caiv",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Joe Dalia",
+      "first_name": "Joe",
+      "middle_name": "",
+      "last_name": "Dalia",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-029",
+      "ftm_eid": 59832387,
+      "votesmart_id": 204215,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Joe_Dalia",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8855",
+          "district_phone": "",
+          "email": "joe.dalia@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/29",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Dalia.Joe.414.jpg",
+          "ballotpedia": "https://ballotpedia.org/Joe_Dalia",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/204215"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4103",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/joedalianv",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/joseph.dalia",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/joe-dalia-3b89a8166/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25735,
+      "person_hash": "u1j0qz20",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Rebecca Edgeworth",
+      "first_name": "Rebecca",
+      "middle_name": "",
+      "last_name": "Edgeworth",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-035",
+      "ftm_eid": 59832318,
+      "votesmart_id": 215873,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Rebecca_Edgeworth",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8573",
+          "district_phone": "",
+          "email": "rebecca.edgeworth@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/35",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Edgeworth.Rebecca.411.jpg",
+          "ballotpedia": "https://ballotpedia.org/Rebecca_Edgeworth",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215873"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4102",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/Shabbatones",
+            "instagram": "https://www.instagram.com/rebeccaedgeworth/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25736,
+      "person_hash": "di17ihd1",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Tanya Flanagan",
+      "first_name": "Tanya",
+      "middle_name": "P.",
+      "last_name": "Flanagan",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-007",
+      "ftm_eid": 59832264,
+      "votesmart_id": 215897,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Tanya_Flanagan",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8587",
+          "district_phone": "",
+          "email": "tanya.flanagan@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/7",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Flanagan.Tanya.423.jpg",
+          "ballotpedia": "https://ballotpedia.org/Tanya_Flanagan",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215897"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3134",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/7",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/tanya.flanagan",
+            "instagram": "https://www.instagram.com/tanyaflanagannvad7",
+            "linkedin": "https://www.linkedin.com/in/tanya-flanagan-8676882/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25737,
+      "person_hash": "p44tmjqw",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Heather Goulding",
+      "first_name": "Heather",
+      "middle_name": "",
+      "last_name": "Goulding",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-027",
+      "ftm_eid": 59832379,
+      "votesmart_id": 215861,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Heather_Goulding",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8845",
+          "district_phone": "",
+          "email": "heather.goulding@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/27",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Goulding.Heather.416.jpg",
+          "ballotpedia": "https://ballotpedia.org/Heather_Goulding",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215861"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4105",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/heather.goulding.9",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/heather-goulding-6b532511/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25738,
+      "person_hash": "glpwyvse",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Linda Hunt",
+      "first_name": "Linda",
+      "middle_name": "F.",
+      "last_name": "Hunt",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-017",
+      "ftm_eid": 59832353,
+      "votesmart_id": 215853,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Linda_Hunt_(Nevada)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8569",
+          "district_phone": "",
+          "email": "linda.hunt@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/17",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Hunt.Linda.420.jpg",
+          "ballotpedia": "https://ballotpedia.org/Linda_Hunt_%28Nevada%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215853"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4122",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/17",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25739,
+      "person_hash": "fbsr39q1",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Jovan Jackson",
+      "first_name": "Jovan",
+      "middle_name": "A.",
+      "last_name": "Jackson",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-006",
+      "ftm_eid": 59832282,
+      "votesmart_id": 215893,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Jovan_Jackson",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8545",
+          "district_phone": "",
+          "email": "jovan.jackson@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/6",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Jackson.Jovan.422.jpg",
+          "ballotpedia": "https://ballotpedia.org/Jovan_Jackson",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215893"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4111",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jovan23jackson",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/channel/UC3rAm4ifoD3tDasrEJn8A0w"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25740,
+      "person_hash": "9f9ljuob",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Venise Karris",
+      "first_name": "Venise",
+      "middle_name": "",
+      "last_name": "Karris",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-010",
+      "ftm_eid": 59832317,
+      "votesmart_id": 215840,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Venise_Karris",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8541",
+          "district_phone": "",
+          "email": "venise.karris@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/10",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Karris.Venise.421.jpg",
+          "ballotpedia": "https://ballotpedia.org/Venise_Karris",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215840"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4121",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100086032707264",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25741,
+      "person_hash": "30u0xltj",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Cinthia Zermeno Moore",
+      "first_name": "Cinthia",
+      "middle_name": "",
+      "last_name": "Zermeno Moore",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-011",
+      "ftm_eid": 59832306,
+      "votesmart_id": 180969,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Cinthia_Moore",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8553",
+          "district_phone": "",
+          "email": "cinthia.moore@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/11",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Moore.CinthiaZermeo.412.jpg",
+          "ballotpedia": "https://ballotpedia.org/Cinthia_Moore",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/180969"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3131",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/11",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25742,
+      "person_hash": "7aj43phb",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Hanadi Nadeem",
+      "first_name": "Hanadi",
+      "middle_name": "",
+      "last_name": "Nadeem",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-034",
+      "ftm_eid": 59832322,
+      "votesmart_id": 215870,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Hanadi_Nadeem",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8847",
+          "district_phone": "",
+          "email": "hanadi.nadeem@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/34",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Nadeem.Hanadi.415.jpg",
+          "ballotpedia": "https://ballotpedia.org/Hanadi_Nadeem",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215870"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 4104",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/34",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/hn2020",
+            "instagram": "https://www.instagram.com/hanadi_nadeem/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/HanadiNadeem",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25743,
+      "person_hash": "9u2ckudt",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Erica Roth",
+      "first_name": "Erica",
+      "middle_name": "P.",
+      "last_name": "Roth",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-024",
+      "ftm_eid": 59832384,
+      "votesmart_id": 215856,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Erica_Roth",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-8559",
+          "district_phone": "",
+          "email": "erica.roth@asm.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/24",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Assembly/Images/Roth.Erica.413.jpg",
+          "ballotpedia": "https://ballotpedia.org/Erica_Roth",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215856"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 3125",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Assembly/Current/24",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/erica.roth.986",
+            "instagram": "https://www.instagram.com/the.erica.roth/",
+            "linkedin": "https://www.linkedin.com/in/ericarothesq/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25744,
+      "person_hash": "zm8pw7p2",
+      "party_id": "1",
+      "state_id": 28,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Michelee Cruz-Crawford",
+      "first_name": "Michelee",
+      "middle_name": "",
+      "last_name": "Cruz-Crawford",
+      "suffix": "",
+      "nickname": "Shelly",
+      "district": "SD-001",
+      "ftm_eid": 59832348,
+      "votesmart_id": 215905,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Michelee_Crawford",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1424",
+          "district_phone": "",
+          "email": "Shelly.Cruzcrawford@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/1",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/CruzCrawford.MicheleeShelly.419.jpg",
+          "ballotpedia": "https://ballotpedia.org/Michelee_Crawford",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215905"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2107",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/micheleec",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25745,
+      "person_hash": "54i2z3ca",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Lori Rogich",
+      "first_name": "Lori",
+      "middle_name": "",
+      "last_name": "Rogich",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-011",
+      "ftm_eid": 59832338,
+      "votesmart_id": 215911,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Lori_Rogich",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-6502",
+          "district_phone": "",
+          "email": "Lori.Rogich@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/11",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Rogich.Lori.425.jpg",
+          "ballotpedia": "https://ballotpedia.org/Lori_Rogich",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215911"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2104",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/11",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25746,
+      "person_hash": "v80084rp",
+      "party_id": "2",
+      "state_id": 28,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "John Steinbeck",
+      "first_name": "John",
+      "middle_name": "C.",
+      "last_name": "Steinbeck",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-018",
+      "ftm_eid": 59832375,
+      "votesmart_id": 215917,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "John_Steinbeck",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "775-684-1442",
+          "district_phone": "",
+          "email": "John.Steinbeck@sen.state.nv.us",
+          "webmail": "",
+          "biography": "https://www.leg.state.nv.us/App/Legislator/A/Senate/Current/18",
+          "image": "https://www.leg.state.nv.us/Session/83rd2025/legislators/Senators/Images/Steinbeck.John.418.jpg",
+          "ballotpedia": "https://ballotpedia.org/John_Steinbeck",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215917"
+        },
+        "capitol_address": {
+          "address1": "401 South Carson St",
+          "address2": "Room 2101",
+          "city": "Carson City",
+          "state": "NV",
+          "zip": "89701"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/john.c.steinbeck",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    }
+  ]
+}

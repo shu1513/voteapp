@@ -1,0 +1,864 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "KS",
+  "sessionId": 2178,
+  "reviewedAt": "2026-09-02",
+  "entries": [
+    {
+      "people_id": 6694,
+      "candidate_id": null,
+      "note": "Elaine Bowers (SD-036). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 6698,
+      "candidate_id": "1eed8707-dc72-4471-9977-f442fb42a1a1",
+      "note": "Sydney Carlin (HD-066) -> Sydney Carlin; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 6724,
+      "candidate_id": "c5647762-bdb5-45b3-b13e-794361c86222",
+      "note": "Cindy Neighbor (HD-018) -> Cindy Neighbor; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 6732,
+      "candidate_id": null,
+      "note": "Louis Ruiz (HD-031). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 6733,
+      "candidate_id": "28872759-a6d1-4336-965e-e5015c48d644",
+      "note": "Tom Sawyer (HD-095) -> Tom Sawyer; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 6743,
+      "candidate_id": "871b5179-23b8-4a9a-a9b8-94a8b7515924",
+      "note": "Valdenia Winn (HD-034) -> Valdenia Winn; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 6757,
+      "candidate_id": null,
+      "note": "Steven Brunk (HD-085). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 6765,
+      "candidate_id": "6f45f8ee-7436-4b60-8c2c-52f8791434c1",
+      "note": "Steven Huebert (HD-090) -> Steve Huebert; proposed, first_prefix, seat agrees."
+    },
+    {
+      "people_id": 6774,
+      "candidate_id": null,
+      "note": "Virgil Peck (SD-015). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 6803,
+      "candidate_id": "b3bf8933-e6fe-445f-afbd-58bd8b962a39",
+      "note": "Barbara Ballard (HD-044) -> Barbara Ballard; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 6816,
+      "candidate_id": null,
+      "note": "Joe Seiwert (HD-101). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 6831,
+      "candidate_id": null,
+      "note": "David Haley (SD-004). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 6836,
+      "candidate_id": null,
+      "note": "Oletha Faust-Goudeau (SD-029). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 6838,
+      "candidate_id": null,
+      "note": "Ty Masterson (SD-016). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 6856,
+      "candidate_id": null,
+      "note": "Marci Francisco (SD-002). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 6871,
+      "candidate_id": null,
+      "note": "Mike Petersen (SD-028). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 12663,
+      "candidate_id": null,
+      "note": "Richard Billinger (SD-040). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 12681,
+      "candidate_id": null,
+      "note": "Kyle Hoffman (HD-116). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 12698,
+      "candidate_id": null,
+      "note": "Caryn Tyson (SD-012). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 14861,
+      "candidate_id": null,
+      "note": "Pat Pettey (SD-006). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 15637,
+      "candidate_id": "2c8a732b-102f-441e-a2ff-d14bf544a7bb",
+      "note": "John Alcala (HD-057) -> John Alcala; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 15644,
+      "candidate_id": null,
+      "note": "Will Carpenter (HD-075). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 15645,
+      "candidate_id": null,
+      "note": "J.R. Claeys (SD-024). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 15646,
+      "candidate_id": "bfa061ce-8012-4ed5-969b-7fa13dc9aa96",
+      "note": "Hand-added. LegiScan's `name` is 'Stephanie Clayton', byte-identical to our candidate, but its `last_name` is 'Sawyer-Clayton'. The proposer reads first_name plus last_name and never `name`, so the match was missed. Seat HD-019 agrees and she votes only in the House."
+    },
+    {
+      "people_id": 15648,
+      "candidate_id": null,
+      "note": "Ken Corbet (HD-054). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 15658,
+      "candidate_id": null,
+      "note": "Dan Hawkins (HD-100). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 15677,
+      "candidate_id": null,
+      "note": "Ronald Ryckman (SD-038). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 15679,
+      "candidate_id": "48e5047c-a25e-49dd-9a01-9f4bd196f216",
+      "note": "Hand-added. LegiScan's `first_name` is the legal 'William' with 'Bill' in `nickname`; its `name` field is 'Bill Sutton', byte-identical to our candidate. The proposer reads neither `name` nor `nickname`. Seat HD-043 agrees and he votes only in the House."
+    },
+    {
+      "people_id": 15682,
+      "candidate_id": "6257041c-30d4-4121-8112-9ecc263a5c77",
+      "note": "Troy Waymaster (HD-109) -> Troy L. Waymaster; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 15683,
+      "candidate_id": null,
+      "note": "Virgil Weigel (HD-056). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 16173,
+      "candidate_id": "2b5a6318-2d6c-4175-bd14-f68593637239",
+      "note": "John Carmichael (HD-092) -> John Carmichael; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 16233,
+      "candidate_id": null,
+      "note": "Pam Curtis (HD-032). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 17011,
+      "candidate_id": null,
+      "note": "Richard Wilborn (HD-073). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 17259,
+      "candidate_id": null,
+      "note": "Blake Carpenter (HD-081). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 17389,
+      "candidate_id": "bba46d7b-c169-4087-a574-25ea9ecac64a",
+      "note": "Shannon Francis (HD-125) -> Shannon Francis; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 17393,
+      "candidate_id": "364b8da2-1bc1-4fea-84b7-da3ad5e9c22f",
+      "note": "Jarrod Ousley (HD-024) -> Jarrod Ousley; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 17579,
+      "candidate_id": "b8de0a4e-3a85-476a-bc41-7ed0c5eea9c1",
+      "note": "Kristey Williams (HD-077) -> Kristey Williams; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 17602,
+      "candidate_id": null,
+      "note": "Charles Smith (HD-003). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 17847,
+      "candidate_id": null,
+      "note": "Ken Rahjes (HD-110). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 17848,
+      "candidate_id": null,
+      "note": "Henry Helgerson (HD-083). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 18441,
+      "candidate_id": null,
+      "note": "KC Ohaebosim (HD-089). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 18651,
+      "candidate_id": null,
+      "note": "Dinah Sykes (SD-021). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 18836,
+      "candidate_id": null,
+      "note": "Adam Smith (HD-120). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 18839,
+      "candidate_id": null,
+      "note": "Francis Awerkamp (HD-061). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 18842,
+      "candidate_id": null,
+      "note": "Douglas Blex (HD-012). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 18846,
+      "candidate_id": "f9c0b894-f291-474f-a03a-d447406f9e93",
+      "note": "Leo Delperdang (HD-094) -> Leo Delperdang; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 18847,
+      "candidate_id": null,
+      "note": "Brenda Dietrich (SD-020). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 18849,
+      "candidate_id": null,
+      "note": "Ronald Ellis (HD-047). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 18854,
+      "candidate_id": null,
+      "note": "Cindy Holscher (SD-008). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 18855,
+      "candidate_id": "071dda8a-3d87-4ec4-be53-3b0a8f1838a4",
+      "note": "Susan Humphries (HD-099) -> Susan Humphries; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 18869,
+      "candidate_id": "432165de-6f59-4cca-828f-37df4c658878",
+      "note": "Mark Schreiber (HD-060) -> Mark Schreiber; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 18870,
+      "candidate_id": "99b028c4-db5e-4d06-885e-c7b42256c824",
+      "note": "Jerry Stogsdill (HD-021) -> Jerry Stogsdill; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 18871,
+      "candidate_id": null,
+      "note": "Sean Tarwater (HD-027). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 18963,
+      "candidate_id": null,
+      "note": "Larry Alley (SD-032). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 18966,
+      "candidate_id": null,
+      "note": "Dan Goddard (HD-007). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 19297,
+      "candidate_id": null,
+      "note": "John Resman (HD-121). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 19553,
+      "candidate_id": "4f1f3655-289d-4058-820b-1eda7bc1078a",
+      "note": "Emil Bergquist (HD-091) -> Emil Bergquist; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 20149,
+      "candidate_id": "d6520441-267b-4be2-a943-074fb9a3fcb9",
+      "note": "Bill Rhiley (HD-080) -> Bill Rhiley; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 20250,
+      "candidate_id": null,
+      "note": "Mary Ware (SD-025). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 20436,
+      "candidate_id": "aa35b5e0-d3a9-4597-86ec-a1a030fec54f",
+      "note": "Nick Hoheisel (HD-097) -> Nick Hoheisel; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 20818,
+      "candidate_id": "6d7e34ed-d8c3-41cd-b0a7-5a883b6e3b8e",
+      "note": "Brandon Woodard (HD-108) -> Brandon Woodard; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 21060,
+      "candidate_id": "d994eb06-af2e-4577-b4b6-9f3f204967a6",
+      "note": "Susan Ruiz (HD-023) -> Susan Ruiz; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 21062,
+      "candidate_id": "590a5eea-d048-4cc8-8f50-65b34420e9cf",
+      "note": "Rui Xu (HD-025) -> Rui Xu; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 21067,
+      "candidate_id": "e35dd1ca-ed17-4131-915e-e12b437a86c5",
+      "note": "Mike Amyx (HD-045) -> Mike Amyx; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 21069,
+      "candidate_id": null,
+      "note": "Kenneth Collins (HD-002). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 21070,
+      "candidate_id": "4a184931-d42e-4b6d-bcfa-84ab103544f1",
+      "note": "Chris Croft (HD-008) -> Chris Croft; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 21071,
+      "candidate_id": null,
+      "note": "Renee Erickson (SD-030). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 21072,
+      "candidate_id": "f907bc93-b930-4bd1-9a95-a2893afb4111",
+      "note": "Charlotte Esau (HD-014) -> Charlotte Esau; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 21076,
+      "candidate_id": "5c042bc4-9484-449a-b284-707027e711d4",
+      "note": "Martin Long (HD-124) -> Martin Long; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 21079,
+      "candidate_id": null,
+      "note": "Stephen Owens (SD-031). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 21082,
+      "candidate_id": null,
+      "note": "Adam Thomas (SD-023). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 21084,
+      "candidate_id": null,
+      "note": "Paul Waggoner (HD-104). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 21085,
+      "candidate_id": null,
+      "note": "Kellie Warren (SD-011). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 21086,
+      "candidate_id": "5c23c1c0-3418-46eb-85fa-b4f9834926e4",
+      "note": "Barbara Wasinger (HD-111) -> Barbara Wasinger; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 21512,
+      "candidate_id": null,
+      "note": "Mike Thompson (SD-010). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 22008,
+      "candidate_id": null,
+      "note": "Lance Neelly (HD-042). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 22009,
+      "candidate_id": null,
+      "note": "Pat Proctor (HD-041). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 22010,
+      "candidate_id": "ecbdc3bf-3a65-4c54-b9ec-95b17278848f",
+      "note": "Timothy Johnson (HD-038) -> Timothy Johnson; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 22113,
+      "candidate_id": null,
+      "note": "Michael Fagg (SD-014). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 22114,
+      "candidate_id": null,
+      "note": "Rick Kloos (SD-003). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 22116,
+      "candidate_id": null,
+      "note": "Lindsay Vaughn (HD-022). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 22439,
+      "candidate_id": null,
+      "note": "Michael Murphy (SD-034). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 22492,
+      "candidate_id": null,
+      "note": "Ethan Corson (SD-007). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 22493,
+      "candidate_id": null,
+      "note": "Beverly Gossage (SD-009). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 22581,
+      "candidate_id": null,
+      "note": "Avery Anderson (HD-072). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 22582,
+      "candidate_id": "2a899a5a-586e-477d-bd6a-280561939d8c",
+      "note": "Brian Bergkamp (HD-093) -> Brian Bergkamp; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 22583,
+      "candidate_id": "11349c2b-708f-4e12-992a-a0ff4f8229e4",
+      "note": "Jesse Borjon (HD-052) -> Jesse Borjon; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 22586,
+      "candidate_id": "380cab28-a2e1-4f93-86d9-823a8bdbdd8d",
+      "note": "Brett Fairchild (HD-113) -> Brett Fairchild; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 22587,
+      "candidate_id": "9a68346b-f6ad-4a4f-9b1c-6cc0463be27b",
+      "note": "Linda Featherston (HD-016) -> Linda Featherston; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 22588,
+      "candidate_id": null,
+      "note": "Steven Howe (HD-071). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 22589,
+      "candidate_id": "15464eb0-e0a8-444e-8dff-e0d7ee9cbe98",
+      "note": "Jo Ella Hoye (HD-017) -> Jo Ella Hoye; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 22590,
+      "candidate_id": null,
+      "note": "Tom Kessler (HD-096). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 22592,
+      "candidate_id": "818fd9a9-a39a-42b7-908b-a5b70b9cf5cc",
+      "note": "Jim Minnix (HD-118) -> Jim Minnix; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 22593,
+      "candidate_id": "14ed3e10-3427-4026-a858-d203318328cc",
+      "note": "Lisa Moser (HD-106) -> Lisa Moser; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 22594,
+      "candidate_id": null,
+      "note": "Patrick Penn (HD-085). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 22595,
+      "candidate_id": "85072346-452f-429e-aeaf-1a76ce8f62d2",
+      "note": "Samantha Poetter Parshall (HD-006) -> Samantha Poetter Parshall; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 22596,
+      "candidate_id": "f419293d-9bf3-4782-bb7f-9789af834241",
+      "note": "Mari-Lynn Poskin (HD-020) -> Mari-Lynn Poskin; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 22597,
+      "candidate_id": null,
+      "note": "Clarke Sanders (HD-069). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 22598,
+      "candidate_id": null,
+      "note": "Carl Turner (HD-028). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 22853,
+      "candidate_id": "c476776c-5d32-476e-b501-c4f10d348001",
+      "note": "Susan Estes (HD-087) -> Susan Estes; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 22977,
+      "candidate_id": null,
+      "note": "Bill Clifford (SD-039). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 22978,
+      "candidate_id": "6207ac19-c339-42ff-aa6e-0f681784c504",
+      "note": "Cyndi Howerton (HD-098) -> Cyndi Howerton; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 22979,
+      "candidate_id": "569ea9c5-f87b-4182-995f-d48429b48b3b",
+      "note": "Heather Meyer (HD-029) -> Heather Meyer; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 22980,
+      "candidate_id": "bbe0126a-ba3e-428b-972f-7f4a82d710eb",
+      "note": "Dan Osman (HD-048) -> Dan Osman; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 23045,
+      "candidate_id": "e60d65c3-98ac-45b2-9072-715f172f0555",
+      "note": "Leah Howell (HD-082) -> Leah Howell; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 23743,
+      "candidate_id": null,
+      "note": "Carrie Barth (HD-005). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 23744,
+      "candidate_id": null,
+      "note": "Scott Hill (SD-024). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 23779,
+      "candidate_id": "834bd92f-456e-463d-baf1-453c32b24065",
+      "note": "David Buehler (HD-040) -> David Buehler; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 23780,
+      "candidate_id": null,
+      "note": "Robyn Essex (HD-078). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 23782,
+      "candidate_id": null,
+      "note": "Sandy Pickert (HD-088). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 23783,
+      "candidate_id": "af0cd2ab-8159-4f9f-a122-0892c7a1645f",
+      "note": "Adam Turk (HD-117) -> Adam Turk; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 24491,
+      "candidate_id": null,
+      "note": "Nathan Butler (HD-068). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 24658,
+      "candidate_id": null,
+      "note": "Chase Blasi (SD-026). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 24659,
+      "candidate_id": "0efefc77-1400-418c-91b9-cc226bb43411",
+      "note": "Lewis Bloom (HD-064) -> Lewis Bloom; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 24661,
+      "candidate_id": "99ac7911-c3b8-42c3-b1e8-97a74ea07454",
+      "note": "Duane Droge (HD-013) -> Duane Droge; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 24662,
+      "candidate_id": "ff1aa483-d432-4f01-a1c5-b55952425bf3",
+      "note": "Fred Gardner (HD-009) -> Fred Gardner; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 24663,
+      "candidate_id": "46030f8b-d14c-4aad-9321-a971c0b6000e",
+      "note": "Jason Goetz (HD-119) -> Jason Goetz; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 24664,
+      "candidate_id": "f07448f9-9b41-41b1-b401-4779fc061e74",
+      "note": "Kirk Haskins (HD-053) -> Kirk Haskins; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 24666,
+      "candidate_id": "fc839dc0-2a5c-4101-9a8f-ab3d8aa07baa",
+      "note": "Bob Lewis (HD-123) -> Bob Lewis; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 24667,
+      "candidate_id": "88c93b1c-09c5-4b57-b358-d006c2c2bf4f",
+      "note": "Angela Martinez (HD-103) -> Angela Martinez; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 24668,
+      "candidate_id": "79ebcffd-4acf-488c-a635-060760f2f661",
+      "note": "Lynn Melton (HD-036) -> Lynn Melton; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 24670,
+      "candidate_id": null,
+      "note": "Silas Miller (SD-025). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 24671,
+      "candidate_id": "e7ae3ce7-a4ca-495d-8b73-09530f97d245",
+      "note": "Melissa Oropeza (HD-037) -> Melissa Oropeza; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 24673,
+      "candidate_id": "e4f347d9-25db-4206-9bc8-e196bb114978",
+      "note": "Webster Roth (HD-079) -> Webster Roth; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 24674,
+      "candidate_id": "c15e9bfa-6662-4fab-8cdf-ec2fcfcb9867",
+      "note": "Rebecca Schmoe (HD-059) -> Rebecca Schmoe; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 24675,
+      "candidate_id": null,
+      "note": "Kenny Titus (SD-018). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 24676,
+      "candidate_id": "980b549a-1a95-4983-8805-3f5759af800b",
+      "note": "Gary White (HD-115) -> Gary White; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 24677,
+      "candidate_id": null,
+      "note": "Laura Williams (HD-030). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 24784,
+      "candidate_id": null,
+      "note": "Tobias Schlingensiepen (HD-055). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 24818,
+      "candidate_id": "541abeb9-1b08-4aa0-b022-1ddc5365b316",
+      "note": "Ron Bryce (HD-011) -> Ron Bryce; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 24856,
+      "candidate_id": null,
+      "note": "Tory Blew (SD-033). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 24857,
+      "candidate_id": null,
+      "note": "Ford Carr (HD-084). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 24862,
+      "candidate_id": null,
+      "note": "Mike Thompson (HD-033). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 24866,
+      "candidate_id": null,
+      "note": "Tim Shallenburger (SD-013). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 25024,
+      "candidate_id": "13b48d09-3d7d-4899-9387-de8cc2285221",
+      "note": "Nikki McDonald (HD-049) -> Nikki McDonald; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 25025,
+      "candidate_id": "5b2cd27f-2991-4b18-a1c9-8ed60dc86a77",
+      "note": "Kyle McNorton (HD-050) -> Kyle McNorton; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 25176,
+      "candidate_id": "24735ee1-0415-45eb-b9d2-e0bde59361f4",
+      "note": "Angela Stiens (HD-039) -> Angela Stiens; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 26141,
+      "candidate_id": null,
+      "note": "Brad Barrett (HD-076). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 26142,
+      "candidate_id": "1aabd29f-26f8-4b69-ad3f-5998b8cdebf7",
+      "note": "Lauren Bohi (HD-015) -> Lauren Bohi; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 26143,
+      "candidate_id": "4ab47c8d-cc65-4d66-adcc-b7a79da2a66b",
+      "note": "Sherri Brantley (HD-112) -> Sherri Brantley; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 26144,
+      "candidate_id": null,
+      "note": "Shawn Chauncey (HD-065). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 26145,
+      "candidate_id": "6108ce96-b4f8-499f-867b-508322484588",
+      "note": "Dale Helwig (HD-001) -> Dale Helwig; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 26146,
+      "candidate_id": "dc6ee1d8-0a34-45a0-98d6-472ae980b12e",
+      "note": "Rick James (HD-004) -> Rick James; proposed, first_prefix, seat agrees."
+    },
+    {
+      "people_id": 26147,
+      "candidate_id": null,
+      "note": "Mike King (HD-074). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 26148,
+      "candidate_id": "215e9c74-8c0f-49c0-bf77-2213097db9b2",
+      "note": "Brooklynne Mosley (HD-046) -> Brooklynne Mosley; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 26149,
+      "candidate_id": null,
+      "note": "Wanda Brownlee Paige (HD-035). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 26150,
+      "candidate_id": "0053b91b-4aa5-4f0c-b3a8-66c2f41616e2",
+      "note": "Lon Pishny (HD-122) -> Lon Pishny; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 26151,
+      "candidate_id": "6d967013-bb59-4e32-b52b-1e5af074c3b9",
+      "note": "Allen Reavis (HD-063) -> Allen Reavis; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 26152,
+      "candidate_id": null,
+      "note": "Angel Roeser (HD-067). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 26153,
+      "candidate_id": "57411931-a151-45d2-9b31-be61d0ab1b47",
+      "note": "Kevin Schwertfeger (HD-114) -> Kevin Schwertfeger; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 26154,
+      "candidate_id": "9a278bd8-ab69-44fa-8a2c-74f86527eb3d",
+      "note": "Alexis Simmons (HD-058) -> Alexis Simmons; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 26155,
+      "candidate_id": "3e730d11-3d69-48b2-94d9-3225680ff6a8",
+      "note": "Megan Steele (HD-051) -> Megan Steele; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 26156,
+      "candidate_id": null,
+      "note": "Kyler Sweely (HD-102). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 26157,
+      "candidate_id": null,
+      "note": "Chip VanHouden (HD-026). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 26158,
+      "candidate_id": "770cc471-8ab3-405c-9d25-1c8263afdede",
+      "note": "Jill Ward (HD-105) -> Jill Ward; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 26159,
+      "candidate_id": null,
+      "note": "Suzanne Wikle (HD-010). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 26160,
+      "candidate_id": "95d745a2-e8fd-4469-8593-d0862d3f590d",
+      "note": "Sean Willcott (HD-062) -> Sean Willcott; proposed, first_and_last, seat agrees."
+    },
+    {
+      "people_id": 26161,
+      "candidate_id": null,
+      "note": "Dawn Wolf (HD-107). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 26162,
+      "candidate_id": null,
+      "note": "Mike Argabright (SD-017). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 26163,
+      "candidate_id": null,
+      "note": "Craig Bowser (SD-001). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 26164,
+      "candidate_id": null,
+      "note": "Joe Claeys (SD-027). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 26165,
+      "candidate_id": null,
+      "note": "Jeff Klemp (SD-005). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 26166,
+      "candidate_id": null,
+      "note": "TJ Rose (SD-035). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 26167,
+      "candidate_id": null,
+      "note": "Patrick Schmidt (SD-019). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 26168,
+      "candidate_id": null,
+      "note": "Douglas Shane (SD-037). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 26169,
+      "candidate_id": null,
+      "note": "Brad Starnes (SD-022). No candidate: the Kansas Senate is not on the November 2026 ballot, so no senator has a 2026 candidacy."
+    },
+    {
+      "people_id": 26601,
+      "candidate_id": "8f40a5c5-1c24-430c-8f56-7b22396223c0",
+      "note": "Hand-added. LegiScan calls her 'Abi Boatman'; our candidate row is 'Elle Abigail Boatman', so neither first name is a prefix of the other. Same seat (HD-086), same party (Democratic), and she votes only in the House."
+    },
+    {
+      "people_id": 26602,
+      "candidate_id": null,
+      "note": "Carolyn Caiharr (HD-033). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 26603,
+      "candidate_id": null,
+      "note": "Courtney Sappington (HD-005). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 26604,
+      "candidate_id": null,
+      "note": "Greg Wilson (HD-070). No candidate: our database holds no November 2026 candidate row for this seat."
+    },
+    {
+      "people_id": 26640,
+      "candidate_id": null,
+      "note": "Mike Storm (HD-121). No candidate: our database holds no November 2026 candidate row for this seat."
+    }
+  ],
+  "note": "The Kansas people file carries 47 sponsor pseudo-people (committees and joint bodies with no role or district). The resolver filters them, so listing them here would only produce crosswalkPeopleNotInSnapshot noise; this file holds the 171 real members."
+}

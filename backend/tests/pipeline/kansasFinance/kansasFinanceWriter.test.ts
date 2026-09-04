@@ -5,6 +5,7 @@ import {
   normalizeKansasFilerKey,
   normalizeKansasNameForStorage,
   parseKansasFilerKey,
+  replaceKansasCandidateFinanceSnapshot,
   upsertKansasFinanceLink,
 } from "../../../src/pipeline/kansasFinance/kansasFinanceWriter.js";
 
@@ -78,5 +79,50 @@ describe("upsertKansasFinanceLink", () => {
       })
     ).rejects.toThrow("Invalid Kansas filer key");
     expect(db.query).not.toHaveBeenCalled();
+  });
+});
+
+describe("replaceKansasCandidateFinanceSnapshot", () => {
+  it("writes link, summary and breakdowns in one transaction, leaving outside columns alone", async () => {
+    const client = {
+      query: vi.fn((sql: unknown) =>
+        String(sql).includes("INSERT INTO public.ks_candidate_finance_links")
+          ? Promise.resolve({ rows: [{ id: "link-1" }], rowCount: 1 })
+          : Promise.resolve({ rows: [], rowCount: 0 })
+      ),
+      release: vi.fn(),
+    };
+    const db = { query: vi.fn(), connect: vi.fn().mockResolvedValue(client) };
+    const syncedAt = new Date("2026-09-03T12:00:00.000Z");
+    const result = await replaceKansasCandidateFinanceSnapshot({
+      db,
+      link: {
+        candidateId: "11111111-1111-4111-8111-111111111111",
+        electionId: "22222222-2222-4222-8222-222222222222",
+        electionYear: 2026,
+        candidateNameNormalized: "STEVEN BRUNSON",
+        officeName: "State Lower Chamber Legislator",
+        district: "85",
+        committeeId: " 7:85:brunson:steven ",
+        committeeName: "BRUNSON STEVEN",
+        linkSource: "manual",
+        lastVerifiedAt: syncedAt,
+      },
+      syncedAt,
+      summary: { totalReceipts: 1234.5, directContributionTotal: 1000, totalDisbursements: 200, cashOnHand: null, sourceUrl: "https://sos.ks.gov/x" },
+      directBreakdowns: [{ categoryType: "occupation", categoryName: "Retired", amount: 500, sourceUrl: "https://sos.ks.gov/x" }],
+    });
+    expect(result).toEqual({ linkId: "link-1", summaryWritten: true, directBreakdownsWritten: 1, outsideGroupsWritten: 0, outsideGroupBreakdownsWritten: 0 });
+    const sqls = client.query.mock.calls.map(([sql]) => String(sql).trim().split(/\s+/).slice(0, 4).join(" "));
+    expect(sqls[0]).toBe("BEGIN");
+    expect(sqls[sqls.length - 1]).toBe("COMMIT");
+    const insertLink = client.query.mock.calls.find(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_links"));
+    expect(insertLink?.[1]?.[6]).toBe("7:85:BRUNSON:STEVEN");
+    expect(insertLink?.[1]?.[9]).toBe("manual");
+    const summary = client.query.mock.calls.find(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_summaries"));
+    expect(summary?.[1]).toEqual(["link-1", 2026, 1234.5, 1000, 200, null, null, null, "https://sos.ks.gov/x", syncedAt.toISOString()]);
+    expect(client.query.mock.calls.some(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_direct_breakdowns"))).toBe(true);
+    expect(client.query.mock.calls.some(([sql]) => String(sql).includes("DELETE FROM public.ks_candidate_finance_direct_breakdowns"))).toBe(true);
+    expect(client.query.mock.calls.some(([sql]) => String(sql).includes("ks_candidate_finance_outside_groups"))).toBe(false);
   });
 });

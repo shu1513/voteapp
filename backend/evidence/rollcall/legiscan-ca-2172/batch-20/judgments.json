@@ -1,0 +1,217 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726386,
+   "measure_id": "AB 1595",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1595, which would make it easier to overturn a conviction after trial. A prisoner may seek release through a habeas corpus petition, and false evidence currently supports one only if the evidence was material to guilt or punishment. The bill would replace that with whether the false evidence created any reasonable likelihood it could have affected the outcome. For new evidence, the test would become whether there is a reasonable probability it would have produced a different result, enough to undermine confidence in the outcome. The same standard would replace the tougher tests now applied to motions to vacate based on official fraud, false testimony by an official or fabricated evidence. Where a prosecutor concedes a factual basis for relief in a signed filing that names that basis, the concession would bind the parties and could not be withdrawn. A stipulation could be withdrawn only on proof that the other side broke its terms or that the state withheld evidence that could have affected the decision to enter it. Courts could compel discovery for good cause and would have broad authority to fashion relief. The Senate passed it 30-8. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1595, which would make it easier to overturn a conviction after trial. A prisoner may seek release through a habeas corpus petition, and false evidence currently supports one only if the evidence was material to guilt or punishment. The bill would replace that with whether the false evidence created any reasonable likelihood it could have affected the outcome. For new evidence, the test would become whether there is a reasonable probability it would have produced a different result, enough to undermine confidence in the outcome. The same standard would replace the tougher tests now applied to motions to vacate based on official fraud, false testimony by an official or fabricated evidence. Where a prosecutor concedes a factual basis for relief in a signed filing that names that basis, the concession would bind the parties and could not be withdrawn. A stipulation could be withdrawn only on proof that the other side broke its terms or that the state withheld evidence that could have affected the decision to enter it. Courts could compel discovery for good cause and would have broad authority to fashion relief. The Senate passed it 30-8. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726384,
+   "measure_id": "AB 1629",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1629, which would require dental plans to pay an out-of-network dentist directly and tell patients the cost first. A dental plan or insurer may now send payment to the patient rather than to a dentist outside its network, even where the patient has assigned the benefit. The bill would require the plan to pay the non-contracting provider directly for covered services when the provider submits an assignment of benefits, and that includes a registered dental hygienist in alternative practice. The provider would first have to obtain the patient's signed and dated consent and keep a copy. Before taking that consent the provider would have to make six disclosures. The first three are that the provider is out of network, that a contracted dentist may cost less, and an estimate of the treatment cost and the patient's share. The rest are that plan benefits may not apply, that the patient may confirm coverage with the plan first, and that the assignment is optional and revocable. The provider could not charge the patient more than an estimate of their cost sharing before the plan pays. Failing any of those duties would become grounds for license discipline. Plans and insurers would also have to certify their network adequacy data under penalty of perjury, having counted everyone using the same provider network. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1629, which would require dental plans to pay an out-of-network dentist directly and tell patients the cost first. A dental plan or insurer may now send payment to the patient rather than to a dentist outside its network, even where the patient has assigned the benefit. The bill would require the plan to pay the non-contracting provider directly for covered services when the provider submits an assignment of benefits, and that includes a registered dental hygienist in alternative practice. The provider would first have to obtain the patient's signed and dated consent and keep a copy. Before taking that consent the provider would have to make six disclosures. The first three are that the provider is out of network, that a contracted dentist may cost less, and an estimate of the treatment cost and the patient's share. The rest are that plan benefits may not apply, that the patient may confirm coverage with the plan first, and that the assignment is optional and revocable. The provider could not charge the patient more than an estimate of their cost sharing before the plan pays. Failing any of those duties would become grounds for license discipline. Plans and insurers would also have to certify their network adequacy data under penalty of perjury, having counted everyone using the same provider network. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725655,
+   "measure_id": "AB 1655",
+   "vote_date": "2026-08-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1655, which would keep a family's cash aid intact when a member is held in immigration detention. CalWORKs grant size depends on how many people are in the assistance unit, and a member who is only temporarily absent does not reduce it. A child in hospital already counts as temporarily absent. The bill would treat a child or other member held in a federal immigration detention facility as temporarily absent for the length of the detention. Three conditions would apply. The remaining members must still meet eligibility rules, a member detained out of state must intend to return to California on release, and the detained member must otherwise be eligible apart from being detained. A written sworn statement from the applicant would be enough to establish the detention. The department could act through county letters until it adopts regulations. The change would not take effect before July 1, 2027, and not until the state's welfare computer system can handle it, and the usual automatic funding for county CalWORKs costs would not flow to it. The Senate passed it 28-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1655, which would keep a family's cash aid intact when a member is held in immigration detention. CalWORKs grant size depends on how many people are in the assistance unit, and a member who is only temporarily absent does not reduce it. A child in hospital already counts as temporarily absent. The bill would treat a child or other member held in a federal immigration detention facility as temporarily absent for the length of the detention. Three conditions would apply. The remaining members must still meet eligibility rules, a member detained out of state must intend to return to California on release, and the detained member must otherwise be eligible apart from being detained. A written sworn statement from the applicant would be enough to establish the detention. The department could act through county letters until it adopts regulations. The change would not take effect before July 1, 2027, and not until the state's welfare computer system can handle it, and the usual automatic funding for county CalWORKs costs would not flow to it. The Senate passed it 28-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726034,
+   "measure_id": "AB 1792",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1792, which would have the state's curriculum commission look at adding dating abuse and online abuse to school health teaching. The Instructional Quality Commission recommends curriculum frameworks to the State Board of Education. At the next revision of the health framework for public schools, the commission would have to consider including, and recommending for adoption, content on sexual health instruction covering dating abuse and digital violence. That content would cover digital and online safety, including intimate images shared without consent, deepfakes, online grooming, sextortion, stalking and the misuse of generative artificial intelligence. It would also cover age-appropriate teaching on legal rights and support for interpersonal violence, including restraining orders and how to seek help, and would be responsive to the experiences of LGBTQIA and gender diverse pupils. The commission is only required to consider the content, not to adopt it, and no school is required to teach anything. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1792, which would have the state's curriculum commission look at adding dating abuse and online abuse to school health teaching. The Instructional Quality Commission recommends curriculum frameworks to the State Board of Education. At the next revision of the health framework for public schools, the commission would have to consider including, and recommending for adoption, content on sexual health instruction covering dating abuse and digital violence. That content would cover digital and online safety, including intimate images shared without consent, deepfakes, online grooming, sextortion, stalking and the misuse of generative artificial intelligence. It would also cover age-appropriate teaching on legal rights and support for interpersonal violence, including restraining orders and how to seek help, and would be responsive to the experiences of LGBTQIA and gender diverse pupils. The commission is only required to consider the content, not to adopt it, and no school is required to teach anything. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726010,
+   "measure_id": "AB 1803",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1803, which would add anti-hate-speech training to the harassment training California employers already provide. An employer with five or more workers must give two hours of interactive sexual harassment training to supervisors and one hour to everyone else, repeated every two years, covering prevention of abusive conduct. From January 1, 2028 that training would also have to include an anti-hate-speech component. It would address speech vilifying people on the basis of the characteristics employment discrimination law already protects. Training that already covers unlawful harassment and abusive conduct based on those characteristics would satisfy the new requirement. The Senate passed it 30-8. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1803, which would add anti-hate-speech training to the harassment training California employers already provide. An employer with five or more workers must give two hours of interactive sexual harassment training to supervisors and one hour to everyone else, repeated every two years, covering prevention of abusive conduct. From January 1, 2028 that training would also have to include an anti-hate-speech component. It would address speech vilifying people on the basis of the characteristics employment discrimination law already protects. Training that already covers unlawful harassment and abusive conduct based on those characteristics would satisfy the new requirement. The Senate passed it 30-8. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725584,
+   "measure_id": "AB 1820",
+   "vote_date": "2026-08-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1820, which would cap what a city may charge to permit an electric vehicle charger at an apartment building. Local permit fees must already stay at or below the reasonable cost of providing the service, but there is no dollar limit for charger permits. For a level 2 charger installed at a new or existing multifamily housing development, the fee could not exceed $500, plus $5 for each kilowatt between 51 and 250, plus $2 for every kilowatt above 250. A city could still charge more if it adopts a written finding and a resolution or ordinance with substantial evidence of the reasonable cost. That finding would have to state that the city has adopted streamlining measures consistent with state guidance, calculate the administrative cost of issuing the permit, and describe how the higher fee produces a quicker approval. The cap would start July 1, 2027, or January 1, 2028 for places with fewer than 200,000 residents, and would expire in 2036. It reaches only level 2 chargers at multifamily housing, not chargers generally. The Senate passed it 27-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1820, which would cap what a city may charge to permit an electric vehicle charger at an apartment building. Local permit fees must already stay at or below the reasonable cost of providing the service, but there is no dollar limit for charger permits. For a level 2 charger installed at a new or existing multifamily housing development, the fee could not exceed $500, plus $5 for each kilowatt between 51 and 250, plus $2 for every kilowatt above 250. A city could still charge more if it adopts a written finding and a resolution or ordinance with substantial evidence of the reasonable cost. That finding would have to state that the city has adopted streamlining measures consistent with state guidance, calculate the administrative cost of issuing the permit, and describe how the higher fee produces a quicker approval. The cap would start July 1, 2027, or January 1, 2028 for places with fewer than 200,000 residents, and would expire in 2036. It reaches only level 2 chargers at multifamily housing, not chargers generally. The Senate passed it 27-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726301,
+   "measure_id": "AB 1838",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1838, which would require contractors bidding on local public works to disclose their wage and hour violations. There is no general disclosure requirement today outside contracts with participation goals for minority, women or disabled veteran businesses. As a condition of bidding, a contractor would have to disclose in writing any federal, state or local wage and hour violation in the past five years, including unpaid wages, overtime, meal or rest break violations, and misclassifying employees as contractors. It would also have to supply documents showing each disclosed violation has been resolved, including court orders or final agency determinations and proof that fines, penalties or back wages were paid. Failing to disclose may lead to disqualification, and the local agency must set up a process letting a contractor appeal that. Only a final judgment or determination counts, and a contractor cannot be disqualified over a matter still under appeal if the amount is secured. Work covered by a project labor agreement is exempt, as is a project where the agency already requires the same disclosure at prequalification. The bill does not say that a disclosed violation is itself grounds to reject a bid. The Senate passed it 31-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1838, which would require contractors bidding on local public works to disclose their wage and hour violations. There is no general disclosure requirement today outside contracts with participation goals for minority, women or disabled veteran businesses. As a condition of bidding, a contractor would have to disclose in writing any federal, state or local wage and hour violation in the past five years, including unpaid wages, overtime, meal or rest break violations, and misclassifying employees as contractors. It would also have to supply documents showing each disclosed violation has been resolved, including court orders or final agency determinations and proof that fines, penalties or back wages were paid. Failing to disclose may lead to disqualification, and the local agency must set up a process letting a contractor appeal that. Only a final judgment or determination counts, and a contractor cannot be disqualified over a matter still under appeal if the amount is secured. Work covered by a project labor agreement is exempt, as is a project where the agency already requires the same disclosure at prequalification. The bill does not say that a disclosed violation is itself grounds to reject a bid. The Senate passed it 31-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725362,
+   "measure_id": "AB 1944",
+   "vote_date": "2026-08-18",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1944, which would let zero-emission transit buses carry more weight on each axle for several years. A bus axle generally may not carry more than 20,500 pounds, and transit buses bought under later solicitations are held to a 22,000-pound curb weight. Batteries and hydrogen equipment make zero-emission buses heavier than diesel ones. For solicitations issued in 2027 the limit for a zero-emission transit bus would be 25,000 pounds, falling to 24,000 for 2028 and 2029, then 23,000 for 2030 and 2031, and back to 22,000 from 2032. The extra allowance would not apply to articulated buses that are not zero-emission. Federal weight limits on interstate highways would still override, and the existing rule requiring four wheels to support any axle above 20,000 pounds would remain. The Senate passed it 31-8. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1944, which would let zero-emission transit buses carry more weight on each axle for several years. A bus axle generally may not carry more than 20,500 pounds, and transit buses bought under later solicitations are held to a 22,000-pound curb weight. Batteries and hydrogen equipment make zero-emission buses heavier than diesel ones. For solicitations issued in 2027 the limit for a zero-emission transit bus would be 25,000 pounds, falling to 24,000 for 2028 and 2029, then 23,000 for 2030 and 2031, and back to 22,000 from 2032. The extra allowance would not apply to articulated buses that are not zero-emission. Federal weight limits on interstate highways would still override, and the existing rule requiring four wheels to support any axle above 20,000 pounds would remain. The Senate passed it 31-8. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726291,
+   "measure_id": "AB 1979",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1979, which would apply medical privacy law to health chatbots and require a licensed person to stay in charge of clinical decisions. California's medical confidentiality law bars providers, plans and their contractors from selling or sharing medical information beyond what care requires, and already treats businesses offering mental health or reproductive health digital services as providers. The bill would add businesses offering a health care chatbot, meaning a generative artificial intelligence system with a conversational interface marketed as supporting health services that uses health information a consumer gives or that it infers. A health facility, clinic, physician's office or group practice would have to take reasonable steps to ensure a licensed professional keeps the ability to exercise independent judgment whenever care is informed by a clinical decision support system. No artificial intelligence tool could independently perform a clinical function the law requires a licensed person to perform, or direct or supervise unlicensed staff in performing one. Licensing boards could seek an injunction where a violation amounts to unlicensed practice. Systems handling documentation, scheduling, reminders and similar work that involves no professional judgment are excluded, and trainees may use these tools under supervision. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1979, which would apply medical privacy law to health chatbots and require a licensed person to stay in charge of clinical decisions. California's medical confidentiality law bars providers, plans and their contractors from selling or sharing medical information beyond what care requires, and already treats businesses offering mental health or reproductive health digital services as providers. The bill would add businesses offering a health care chatbot, meaning a generative artificial intelligence system with a conversational interface marketed as supporting health services that uses health information a consumer gives or that it infers. A health facility, clinic, physician's office or group practice would have to take reasonable steps to ensure a licensed professional keeps the ability to exercise independent judgment whenever care is informed by a clinical decision support system. No artificial intelligence tool could independently perform a clinical function the law requires a licensed person to perform, or direct or supervise unlicensed staff in performing one. Licensing boards could seek an injunction where a violation amounts to unlicensed practice. Systems handling documentation, scheduling, reminders and similar work that involves no professional judgment are excluded, and trainees may use these tools under supervision. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725520,
+   "measure_id": "AB 2011",
+   "vote_date": "2026-08-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 2011, which would lock California's mental health insurance parity standard to the federal rules as they stood at the start of 2025. Federal parity law says limits on mental health and addiction benefits cannot be tougher than those on medical and surgical benefits, and California requires plans and policies to comply with it. A non-numeric limit, such as prior authorization or a narrow provider network, is called a nonquantitative treatment limitation. The bill would require individual, small group and large group contracts and policies to comply with the specified federal rules, regulations and guidance as they existed on January 1, 2025. That would keep a later federal loosening from flowing through into California coverage. The Department of Managed Health Care and the Department of Insurance would have to review provisions that conflict with or materially differ from federal regulations and jointly issue compliance guidance. The Senate passed it 28-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 2011, which would lock California's mental health insurance parity standard to the federal rules as they stood at the start of 2025. Federal parity law says limits on mental health and addiction benefits cannot be tougher than those on medical and surgical benefits, and California requires plans and policies to comply with it. A non-numeric limit, such as prior authorization or a narrow provider network, is called a nonquantitative treatment limitation. The bill would require individual, small group and large group contracts and policies to comply with the specified federal rules, regulations and guidance as they existed on January 1, 2025. That would keep a later federal loosening from flowing through into California coverage. The Department of Managed Health Care and the Department of Insurance would have to review provisions that conflict with or materially differ from federal regulations and jointly issue compliance guidance. The Senate passed it 28-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726112,
+   "measure_id": "AB 2164",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 2164, which would extend California's shield to people who helped someone get abortion or gender-affirming care in another state. State law already treats an out-of-state law allowing someone to be sued over abortion-related activity as contrary to California public policy, and bars California courts from applying it. The bill would extend the protection for legally protected health care activity to a person who previously acted in another jurisdiction to aid or encourage someone in exercising rights to reproductive or gender-affirming health care. That protection would apply only where the acts were permissible under the law of the place where the person was at the time. The bill would also bar the Governor from recognizing an extradition demand where the alleged criminal liability rests wholly or partly on providing or receiving such care, assisting with it, giving material support, or any theory of shared or conspiracy liability. The existing duty to surrender a person who was physically present in the demanding state when the crime occurred would remain. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 2164, which would extend California's shield to people who helped someone get abortion or gender-affirming care in another state. State law already treats an out-of-state law allowing someone to be sued over abortion-related activity as contrary to California public policy, and bars California courts from applying it. The bill would extend the protection for legally protected health care activity to a person who previously acted in another jurisdiction to aid or encourage someone in exercising rights to reproductive or gender-affirming health care. That protection would apply only where the acts were permissible under the law of the place where the person was at the time. The bill would also bar the Governor from recognizing an extradition demand where the alleged criminal liability rests wholly or partly on providing or receiving such care, assisting with it, giving material support, or any theory of shared or conspiracy liability. The existing duty to surrender a person who was physically present in the demanding state when the crime occurred would remain. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

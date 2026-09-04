@@ -454,6 +454,7 @@ async function main(): Promise<void> {
           chamber: rollCall.chamber,
           billType: bill.billType,
           config,
+          rollCallId: rollCall.rollCallId,
         });
         row.isFloorVote = classification.isFloorVote;
         row.questionClass = classification.questionClass;

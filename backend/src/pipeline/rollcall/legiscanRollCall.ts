@@ -383,9 +383,20 @@ export function classifyLegiscanRollCall(input: {
   chamber: LegislativeVoteChamber;
   billType: string;
   config: LegiscanStateConfig;
+  // Omitted only by callers that classify a bare desc (tests); the fetcher
+  // always passes it so a held roll cannot slip through.
+  rollCallId?: number;
 }): LegiscanRollCallClassification {
   if (!LEGISCAN_KEPT_BILL_TYPES.includes(input.billType)) {
     return { isFloorVote: false, questionClass: null, reason: `excluded_measure:${input.billType}` };
+  }
+  // A roll the survey proved wrong (a member on the wrong side, a tally the
+  // state's own record contradicts) is stored and surfaced but never
+  // queued: is_floor_vote stays null, so applyLegislativeVoteJudgment
+  // refuses to approve it until the config entry is removed.
+  const held = input.rollCallId === undefined ? undefined : input.config.heldRollCallIds?.[input.rollCallId];
+  if (held !== undefined) {
+    return { isFloorVote: null, questionClass: null, reason: `held:${held}` };
   }
   const normalized = input.desc.toLowerCase().replace(/\s+/g, " ").trim();
   if (input.config.excludedQuestions.some((pattern) => pattern.test(normalized))) {

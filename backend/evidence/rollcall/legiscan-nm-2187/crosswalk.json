@@ -1,0 +1,648 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "NM",
+  "session_id": 2187,
+  "note": "people_id -> VoteApp candidate id for the New Mexico 2025 Regular Session (LegiScan 2187). Every one of the 128 people in the dataset is listed. The 58 proposals the resolver produced all matched on first and last name with the seat agreeing, and all 58 were accepted; 5 more House members were added by hand and each carries the reason the proposer could not reach them. The 65 null entries are 7 sitting House members with no 2026 candidacy in our data and all 58 people the file gives a Senate district. New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot; Senate roll calls fan out to nobody. The Senate list holds 58 people for 42 seats because one roll call in this dataset, on SB 236 and stamped 2024-02-10, belongs to the 2024 session and carries the previous Senate's membership (see CODE-FINDINGS.md).",
+  "entries": [
+    {
+      "people_id": 6100,
+      "candidate_id": null,
+      "note": "Roberto Gonzales, SD-006. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 6101,
+      "candidate_id": null,
+      "note": "Mimi Stewart, SD-017. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 6115,
+      "candidate_id": "9d6b41d4-cafa-48cb-a489-f7d2f874c113",
+      "note": "Miguel Garcia, HD-014. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 6117,
+      "candidate_id": "170e5b60-c50a-4ac4-adc4-7c44fc85637f",
+      "note": "Patricia Lundstrom, HD-009. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 6120,
+      "candidate_id": "60faae9e-7f86-433b-b3f6-79a604bec1ba",
+      "note": "Eleanor Chavez, HD-026. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 6133,
+      "candidate_id": null,
+      "note": "Antonio Maestas, SD-026. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 6141,
+      "candidate_id": null,
+      "note": "Jeff Steinborn, SD-036. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 6142,
+      "candidate_id": null,
+      "note": "William O'Neill, SD-013. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 6144,
+      "candidate_id": null,
+      "note": "Joseph Cervantes, SD-031. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 6150,
+      "candidate_id": null,
+      "note": "Candy Ezzell, SD-032. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 6157,
+      "candidate_id": null,
+      "note": "Peter Wirth, SD-025. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 6158,
+      "candidate_id": null,
+      "note": "William Sharer, SD-001. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 6164,
+      "candidate_id": null,
+      "note": "Gerald Ortiz Y Pino, SD-012. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 6167,
+      "candidate_id": null,
+      "note": "George Munoz, SD-004. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 6169,
+      "candidate_id": null,
+      "note": "Linda Lopez, SD-011. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 6177,
+      "candidate_id": null,
+      "note": "Pete Campos, SD-008. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 6179,
+      "candidate_id": null,
+      "note": "Steven Neville, SD-002. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 6193,
+      "candidate_id": null,
+      "note": "Nancy Rodriguez, SD-024. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 12054,
+      "candidate_id": "b258dce0-2416-48ca-bb3c-fcd5e6788d1d",
+      "note": "Cathrynn Brown, HD-055. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 12357,
+      "candidate_id": null,
+      "note": "William Burt, SD-033. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 15017,
+      "candidate_id": null,
+      "note": "David Gallegos, SD-041. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 15018,
+      "candidate_id": "48a9cd51-c75f-4022-a533-a0dd2d6dd33e",
+      "note": "Doreen Gallegos, HD-052. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 15019,
+      "candidate_id": "35baff6b-79e1-4fd3-af8c-e858054c4d11",
+      "note": "Elizabeth Thomson, HD-024. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 15027,
+      "candidate_id": "69c65cb9-e503-4594-a75d-13a729da580f",
+      "note": "Patricia Roybal Caballero, HD-013. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 15036,
+      "candidate_id": null,
+      "note": "Craig Brandt, SD-040. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 15038,
+      "candidate_id": null,
+      "note": "Mark Moores, SD-021. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 15039,
+      "candidate_id": null,
+      "note": "Michael Padilla, SD-014. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 15109,
+      "candidate_id": null,
+      "note": "Ron Griggs, SD-034. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 15110,
+      "candidate_id": null,
+      "note": "Daniel Ivey-Soto, SD-015. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 15111,
+      "candidate_id": null,
+      "note": "Cliff Pirtle, SD-032. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 15113,
+      "candidate_id": null,
+      "note": "Benny Shendo, SD-022. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 15114,
+      "candidate_id": null,
+      "note": "William Soules, SD-037. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 15116,
+      "candidate_id": null,
+      "note": "Pat Woods, SD-007. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 17348,
+      "candidate_id": "f673089c-9003-404a-83d2-36a8ad35c09c",
+      "note": "Doreen Johnson, HD-005. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 17350,
+      "candidate_id": "3e088296-85e6-4a97-9f12-13805401dbfa",
+      "note": "Javier Martinez, HD-011. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 17351,
+      "candidate_id": null,
+      "note": "Matthew McQueen, HD-050. Not a 2026 candidate in our data; HD-050 is contested by Kenneth Brennan and Sarah Boses."
+    },
+    {
+      "people_id": 17352,
+      "candidate_id": "df4ef917-7459-459b-9541-95ed3a587477",
+      "note": "Rodney Montoya, HD-001. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 17353,
+      "candidate_id": "944914a8-5610-4eae-826a-452f14327fd4",
+      "note": "Added by hand. Andres Romero, HD-010. Our candidate row is 'G. Andres Romero', whose first token is a single initial. He is a different person from Andrea Romero of HD-046, who matched on her own."
+    },
+    {
+      "people_id": 17355,
+      "candidate_id": null,
+      "note": "Larry Scott, SD-042. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 17356,
+      "candidate_id": null,
+      "note": "James Townsend, SD-034. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 18992,
+      "candidate_id": "b7fd5536-f223-456a-9551-be522c3d169d",
+      "note": "Gail Armstrong, HD-049. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 18993,
+      "candidate_id": "733278ba-28b2-464a-bc7a-acd7b516904c",
+      "note": "Rebecca Dow, HD-038. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 18995,
+      "candidate_id": null,
+      "note": "Joanne Ferrary, HD-037. Not a 2026 candidate in our data; HD-037 is contested by Isabella Solis and Lori Martinez."
+    },
+    {
+      "people_id": 18996,
+      "candidate_id": "1d0d4351-4192-40a1-865f-b4c8a78f276f",
+      "note": "Derrick Lente, HD-065. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 18997,
+      "candidate_id": null,
+      "note": "Greg Nibert, SD-027. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 18998,
+      "candidate_id": "6b1e6dd4-0198-4fcc-97d6-3479e279e973",
+      "note": "Angelica Rubio, HD-035. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 18999,
+      "candidate_id": "0eb8a5a1-ca4a-41ef-80ff-213711685c78",
+      "note": "Debra Sarinana, HD-021. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 19000,
+      "candidate_id": "bea82c60-424d-4845-8b26-7369b0c08b39",
+      "note": "Nathan Small, HD-036. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 19002,
+      "candidate_id": null,
+      "note": "Linda Trujillo, SD-024. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 19018,
+      "candidate_id": null,
+      "note": "Gregory Baca, SD-029. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 19020,
+      "candidate_id": null,
+      "note": "Elizabeth Stefanics, SD-039. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 19021,
+      "candidate_id": null,
+      "note": "Bill Tallman, SD-018. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 20839,
+      "candidate_id": "fa7ecb3e-fc9e-437f-9d43-ce35b3f29d53",
+      "note": "Joseph Sanchez, HD-040. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 20840,
+      "candidate_id": "4251ca17-c8a5-4234-9973-055b45416796",
+      "note": "Christine Chandler, HD-043. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 20854,
+      "candidate_id": null,
+      "note": "Martin Zamora, HD-063. Not a 2026 candidate in our data; HD-063 is contested by Seth Martin."
+    },
+    {
+      "people_id": 20869,
+      "candidate_id": "6879ee20-b290-4ab9-8eae-6920ad128be6",
+      "note": "Joy Garratt, HD-029. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 20916,
+      "candidate_id": "dc7f44e7-b373-4f59-bd2c-177a015fcd64",
+      "note": "Andrea Romero, HD-046. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 20917,
+      "candidate_id": null,
+      "note": "Natalie Figueroa, SD-018. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 20918,
+      "candidate_id": "e9cb2f60-ec7d-4cc1-834d-3b29ceed574d",
+      "note": "Jack Chatfield, HD-067. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 20919,
+      "candidate_id": null,
+      "note": "Antoinette Sedillo Lopez, SD-016. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 20922,
+      "candidate_id": "b16698b9-ba70-471d-b83a-19793e8222f8",
+      "note": "Dayan Hochman-Vigil, HD-015. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 20923,
+      "candidate_id": null,
+      "note": "Gregg Schmedes, SD-019. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 20925,
+      "candidate_id": "9caae60f-eba5-4dfc-8718-d1f6d9a1d40d",
+      "note": "Raymundo Lara, HD-034. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 20926,
+      "candidate_id": null,
+      "note": "Susan Herrera, HD-041. Not a 2026 candidate in our data; HD-041 is contested by Yolanda Jaramillo."
+    },
+    {
+      "people_id": 20999,
+      "candidate_id": "4fa45bb0-1732-4912-98e1-a9ab8d14f6bc",
+      "note": "Micaela Cadena, HD-033. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 21020,
+      "candidate_id": null,
+      "note": "Gabriel Ramos, SD-028. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 21511,
+      "candidate_id": null,
+      "note": "Marian Matthews, HD-027. She is not a 2026 candidate anywhere in our data; the two people running for HD-027 are Abby Foster and Jahnelle Garcia."
+    },
+    {
+      "people_id": 21532,
+      "candidate_id": null,
+      "note": "Shannon Pinto, SD-003. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 21692,
+      "candidate_id": "01c30024-69c4-4c15-824e-dccd664786b4",
+      "note": "Art De La Cruz, HD-012. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 21693,
+      "candidate_id": "b30f8e2b-4153-4a2d-a6e4-1ba6a98b5c36",
+      "note": "Tara Lujan, HD-048. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 21694,
+      "candidate_id": "02328c63-4729-4fbb-ab9a-97d736a7078b",
+      "note": "Linda Serrato, HD-045. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 22536,
+      "candidate_id": null,
+      "note": "Katy Duhigg, SD-010. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 22537,
+      "candidate_id": "a9db9243-f14d-4732-8de7-f7917a41387a",
+      "note": "Randall Pettigrew, HD-061. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 22539,
+      "candidate_id": null,
+      "note": "Crystal Diamond Brantley, SD-035. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 22540,
+      "candidate_id": null,
+      "note": "Carrie Hamblen, SD-038. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 22541,
+      "candidate_id": null,
+      "note": "Siah Correa Hemphill, SD-028. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 22542,
+      "candidate_id": null,
+      "note": "Martin Hickey, SD-020. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 22543,
+      "candidate_id": null,
+      "note": "Leo Jaramillo, SD-005. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 22544,
+      "candidate_id": null,
+      "note": "Brenda McKenna, SD-009. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 22545,
+      "candidate_id": null,
+      "note": "Harold Pope, SD-023. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 22547,
+      "candidate_id": "b545c6b2-6f03-4971-ac5c-95e25b6654f9",
+      "note": "Joshua Hernandez, HD-060. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 22646,
+      "candidate_id": "26f5dd88-69db-4bdf-b850-fe69c68c63b4",
+      "note": "Luis Terrazas, HD-039. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 22648,
+      "candidate_id": "0c4e8a11-3e71-4c89-b09f-e58effff1ad7",
+      "note": "Stefani Lord, HD-022. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 22657,
+      "candidate_id": "6baee8e6-cc33-4ae0-b851-98e2596f8fda",
+      "note": "Meredith Dixon, HD-020. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 22659,
+      "candidate_id": "a513b827-38ac-4f94-b4b7-7c1ce54bdc17",
+      "note": "Kristina Ortez, HD-042. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 22751,
+      "candidate_id": null,
+      "note": "Joshua Sanchez, SD-029. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 22984,
+      "candidate_id": "56c3da81-1f46-40b4-ba80-1d3e63b524d9",
+      "note": "Pamelya Herndon, HD-028. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 23054,
+      "candidate_id": "c36bd407-8620-4f7a-bb9d-438c4e17d138",
+      "note": "Brian Baca, HD-008. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 24683,
+      "candidate_id": "45e7b9a0-c256-4ef1-b7b9-6214d4f11682",
+      "note": "Janelle Anyanonu, HD-019. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 24684,
+      "candidate_id": "2453b274-53c2-4260-a30d-9331c93ef192",
+      "note": "John Block, HD-051. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 24685,
+      "candidate_id": "ceb4e507-982b-4e9b-bc2e-e16ddd8c61b1",
+      "note": "Cynthia Borrego, HD-017. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 24687,
+      "candidate_id": "8927e590-4052-4dc9-9a20-1940f5be9fbe",
+      "note": "Jenifer Jones, HD-032. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 24688,
+      "candidate_id": "f4c8dc4e-4e11-4024-9d13-ce474b2b1fab",
+      "note": "Charlotte Little, HD-068. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 24689,
+      "candidate_id": "67c3f367-5226-4290-8fe7-1057b1b3730c",
+      "note": "Alan Martinez, HD-023. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 24690,
+      "candidate_id": null,
+      "note": "Jimmy Mason, HD-066. Not a 2026 candidate in our data; HD-066 is contested by Leanne Gandy. He is a different person from Robert Mason, the HD-021 candidate."
+    },
+    {
+      "people_id": 24691,
+      "candidate_id": "a35fdcfc-fbdb-456e-81d6-73088e985e6b",
+      "note": "Tanya Mirabal Moya, HD-007. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 24692,
+      "candidate_id": "2005fb72-57e5-4944-823a-2833be68fdf8",
+      "note": "Andrea Reeb, HD-064. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 24693,
+      "candidate_id": "3a1a1173-bc6e-4a3c-9fa3-7143e5513cb6",
+      "note": "Reena Szczepanski, HD-047. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 24782,
+      "candidate_id": "ab60e77d-454e-4512-b39d-62ef1517dddc",
+      "note": "Kathleen Cates, HD-044. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 24783,
+      "candidate_id": "918d8c79-0cb8-49b3-9fd4-118aca991bbc",
+      "note": "Harlan Vincent, HD-056. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 24821,
+      "candidate_id": "b2bcdc7d-1b33-43eb-8420-86203a82cf58",
+      "note": "Added by hand. Mark Duncan, HD-002. Our candidate row is 'P. Mark Duncan', whose first token is a single initial, so the proposer's first-name rule could not reach it."
+    },
+    {
+      "people_id": 24822,
+      "candidate_id": "68e3c60d-0aaa-400d-a164-f13689484082",
+      "note": "Added by hand. Yanira Gurrola, HD-016. Our candidate row carries the second surname, 'Yanira Gurrola Valenzuela'."
+    },
+    {
+      "people_id": 25067,
+      "candidate_id": "c5505075-4377-4107-990a-ed0f8c15289c",
+      "note": "Cristina Parajon, HD-025. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 25069,
+      "candidate_id": null,
+      "note": "Steven McCutcheon, SD-042. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 25211,
+      "candidate_id": "0671118e-881c-4180-a88a-dcb4499561c4",
+      "note": "Added by hand. William Hall, HD-003. He is on the ballot as 'Bill Hall'. LegiScan keeps the legal first name and the proposer does not read its nickname field."
+    },
+    {
+      "people_id": 26360,
+      "candidate_id": "0cc6b260-e675-4933-a15c-edaf5931f6fd",
+      "note": "Michelle Paulene Abeyta, HD-069. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 26361,
+      "candidate_id": "a3e0dfff-c06e-469f-acc1-c57ecf74d916",
+      "note": "Marianna Anaya, HD-018. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 26362,
+      "candidate_id": "c4aa0578-6fd6-46a1-8f07-ee77e67da1fa",
+      "note": "Nicole Chavez, HD-031. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 26363,
+      "candidate_id": "9412e066-5d38-4566-9721-925d293ed95e",
+      "note": "Catherine Cullen, HD-057. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 26364,
+      "candidate_id": "51f0af1a-08dc-4bec-8a0d-301a8fe42a16",
+      "note": "Anita Gonzales, HD-070. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 26365,
+      "candidate_id": "840a110d-ff04-454a-ada6-b50e261742df",
+      "note": "Jonathan Henry, HD-054. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 26366,
+      "candidate_id": "87d294fa-ffdb-497e-9aea-7a9c31824333",
+      "note": "Angelita Mejia, HD-058. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 26367,
+      "candidate_id": null,
+      "note": "Mark Murphy, HD-059. Not a 2026 candidate in our data; HD-059 is contested by Stephen Dodson."
+    },
+    {
+      "people_id": 26368,
+      "candidate_id": "a834e4ea-232b-415d-99f0-fadd46d418ae",
+      "note": "Elaine Sena Cortez, HD-062. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 26369,
+      "candidate_id": "7bf30dea-bc9a-48d6-b35b-9618f70182aa",
+      "note": "Sarah Silva, HD-053. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 26370,
+      "candidate_id": "6b713456-33a7-430c-b1ce-76ba0d6f31b2",
+      "note": "Added by hand. Diane Torres-Velasquez, HD-030. LegiScan prints her MIDDLE name as her first name; our candidate row is 'Elizabeth Torres-Velasquez' and its own summary opens 'Elizabeth Diane Torres-Velasquez'. Same district, same party."
+    },
+    {
+      "people_id": 26371,
+      "candidate_id": null,
+      "note": "Heather Berghmans, SD-015. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 26372,
+      "candidate_id": null,
+      "note": "Jay Block, SD-012. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 26373,
+      "candidate_id": null,
+      "note": "Pat Boone, SD-027. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 26374,
+      "candidate_id": null,
+      "note": "Angel Charley, SD-030. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 26375,
+      "candidate_id": null,
+      "note": "Steve Lanier, SD-002. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 26376,
+      "candidate_id": null,
+      "note": "Cindy Nava, SD-009. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 26377,
+      "candidate_id": null,
+      "note": "Debbie O'Malley, SD-013. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 26378,
+      "candidate_id": null,
+      "note": "Nicholas Paul, SD-033. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 26380,
+      "candidate_id": null,
+      "note": "Anthony Thornton, SD-019. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 26381,
+      "candidate_id": null,
+      "note": "Nicole Tobiassen, SD-021. New Mexico senators serve four-year terms and were elected in 2024, so no New Mexico Senate seat is on the 2026 ballot and our candidate pool holds none."
+    },
+    {
+      "people_id": 26382,
+      "candidate_id": "97e4f2e5-ae32-462c-b8a2-dff408006283",
+      "note": "Joseph Hernandez, HD-004. Proposed on first and last name with the seat agreeing; accepted."
+    },
+    {
+      "people_id": 26456,
+      "candidate_id": "99b4206e-7779-4e59-b14e-0b9cf0cb5e74",
+      "note": "Martha Garcia, HD-006. Proposed on first and last name with the seat agreeing; accepted."
+    }
+  ]
+}

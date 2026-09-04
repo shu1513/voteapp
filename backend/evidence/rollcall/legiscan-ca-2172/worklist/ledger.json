@@ -1,0 +1,2208 @@
+{
+ "generated": "2026-09-02",
+ "source": "worklist/worklist.json",
+ "total_live": 244,
+ "legend": {
+  "open": "not yet worked",
+  "judged": "imported",
+  "dropped": "read and excluded, reason recorded"
+ },
+ "measures": {
+  "AB 1049": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "California Food Assistance Program: sponsor deeming rules.",
+   "batch": "batch-11",
+   "reason": null
+  },
+  "AB 117": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Transit and Intercity Rail Capital Program: loans: transit operating purposes: San Francisco Bay area.",
+   "batch": "batch-11/12 read",
+   "reason": "budget package \u2014 carries the Budget Bill appropriations clause; batch-07 dropped 12 of these"
+  },
+  "AB 1201": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Family reunification services.",
+   "batch": "batch-11",
+   "reason": null
+  },
+  "AB 1223": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Local Transportation Authority and Improvement Act: Sacramento Transportation Authority.",
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways \u2014 infill and greenhouse-gas spending authority sits beside authority to pledge sales tax to toll-lane bonds"
+  },
+  "AB 1336": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Farmworkers: benefits.",
+   "batch": "batch-11",
+   "reason": null
+  },
+  "AB 137": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "State government.",
+   "batch": "batch-11/12 read",
+   "reason": "omnibus budget trailer \u2014 privacy funds, prison land, tribal gaming, climate lending and more in one measure"
+  },
+  "AB 1376": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Wards: probation.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 143": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Developmental services.",
+   "batch": "batch-11/12 read",
+   "reason": "budget trailer; tightens and loosens inside developmental services (repeals parental fee, but moves rate freeze earlier and makes duties appropriation-contingent)"
+  },
+  "AB 144": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Health.",
+   "batch": "batch-11/12 read",
+   "reason": "omnibus budget trailer \u2014 33 digest items across unrelated health topics, cutting both ways on vaccines and transparency"
+  },
+  "AB 1441": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "County of Merced Citizens Redistricting Commission.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 1448": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Coastal resources: California Coastal Sanctuary: tidelands and submerged lands: oil and gas development.",
+   "batch": "batch-11",
+   "reason": null
+  },
+  "AB 1457": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "General plan: environmental justice element: disadvantaged communities.",
+   "batch": "batch-11",
+   "reason": null
+  },
+  "AB 1633": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Taxation: private detention facilities.",
+   "batch": "batch-11",
+   "reason": null
+  },
+  "AB 1650": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Rental vehicles: law enforcement.",
+   "batch": "batch-11",
+   "reason": null
+  },
+  "AB 1661": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Oil and gas: low-production wells: Baldwin Hills Conservancy: Equitable Community Repair and Reinvestment Account: health impacts.",
+   "batch": "batch-11",
+   "reason": null
+  },
+  "AB 1664": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Elections: law enforcement investigations of election records or voting technology.",
+   "batch": "batch-11",
+   "reason": null
+  },
+  "AB 1743": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Firearms.",
+   "batch": "batch-11",
+   "reason": null
+  },
+  "AB 1758": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Sellers of travel.",
+   "batch": "batch-11",
+   "reason": null
+  },
+  "AB 1768": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Transactions and use taxes: Counties of Contra Costa and Los Angeles.",
+   "batch": "batch-11/12 read",
+   "reason": "no defensible research area \u2014 authorizes two counties to seek a sales tax above the state cap"
+  },
+  "AB 1770": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Arbitration: health care service plans: Lindalee\u2019s Law.",
+   "batch": "batch-12",
+   "reason": null
+  },
+  "AB 1801": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Public agencies: approval: detention facilities.",
+   "batch": "batch-12",
+   "reason": null
+  },
+  "AB 1806": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Department of Justice.",
+   "batch": "batch-12",
+   "reason": null
+  },
+  "AB 1807": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Immigration enforcement: use of state-owned property.",
+   "batch": "batch-12",
+   "reason": null
+  },
+  "AB 182": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "November 3, 2026, statewide general election: ballot measures.",
+   "batch": "batch-11/12 read",
+   "reason": "procedural only \u2014 sets ballot order and numbers for five named measures; no stance area fits"
+  },
+  "AB 1854": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Legally protected health care activities.",
+   "batch": "batch-12",
+   "reason": null
+  },
+  "AB 1876": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Health care coverage: nondiscrimination.",
+   "batch": "batch-12",
+   "reason": null
+  },
+  "AB 1886": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Wards: probation.",
+   "batch": "batch-12",
+   "reason": null
+  },
+  "AB 1905": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Juveniles: custodial interrogation.",
+   "batch": "batch-12",
+   "reason": null
+  },
+  "AB 1917": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Criminal procedure: information.",
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways \u2014 restricts prosecutors reviving dismissed counts but removes the defence route to challenge them"
+  },
+  "AB 1919": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Santa Cruz Metropolitan Transit District: transactions and use tax: qualified voter initiative.",
+   "batch": "batch-11/12 read",
+   "reason": "single-district special bill (Santa Cruz transit tax ballot access); no clean area, minimal statewide recognition"
+  },
+  "AB 1923": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Local ballot measures: County of Fresno.",
+   "batch": "batch-11/12 read",
+   "reason": "single-county procedural bill (Fresno initiative timing); operative text takes no position on the measure itself"
+  },
+  "AB 1930": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Abortion or gender-affirming health care services: subpoenas, discovery requests, or other requests for information.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 1973": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Abortion: authorized procedures.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 2084": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Corporation Tax Law: tax-exempt organizations: revocation of tax-exempt status.",
+   "batch": "batch-11/12 read",
+   "reason": "no defensible research area \u2014 discretion to keep a state tax exemption after federal revocation"
+  },
+  "AB 2122": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Infractions: warrants and penalties.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 2128": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Housing authorities: term limits and work requirements.",
+   "batch": "batch-12",
+   "reason": null
+  },
+  "AB 2142": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "School districts: community college districts: short-term employees: classified service.",
+   "batch": "batch-11/12 read",
+   "reason": "no defensible research area \u2014 classified status for long-serving short-term school staff"
+  },
+  "AB 2157": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Workforce development: Displaced Oil and Gas Worker Pilot Program: extension.",
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways \u2014 removes the sunset but conditions the program on an appropriation it did not previously need"
+  },
+  "AB 2168": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Active Transportation Program: guidelines.",
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways \u2014 widens eligibility while adding disqualification penalties and steering money to larger projects"
+  },
+  "AB 2186": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Personal Income Tax Law: exclusions: reparations programs.",
+   "batch": "batch-12",
+   "reason": null
+  },
+  "AB 2195": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Child support: license suspensions.",
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways on one dimension \u2014 extends the low-income shield to all license types but narrows the income test to a one-person household median"
+  },
+  "AB 2227": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Farm labor contractors: surety bonds.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 2257": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Corrections: jail administrators.",
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways \u2014 board gains a confirmation vote but the sheriff keeps sole power to nominate and to remove"
+  },
+  "AB 2313": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Gas corporations: gas distribution service line replacements: alternatives.",
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways \u2014 a capped, opt-in, expiring pilot with an exit fee and an incentive held below avoided cost"
+  },
+  "AB 2318": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Law enforcement: facilitating medical care.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 2393": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "False imprisonment: false arrest: remedies.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 2405": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Mental health.",
+   "batch": "batch-11/12 read",
+   "reason": "cuts both ways \u2014 closest-facility duty, but the stated preference is advisory and local destination policies survive"
+  },
+  "AB 2428": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Criminal fees.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 2448": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Medical information: confidentiality.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 2465": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "State government: benefits.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 2484": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "San Diego Metropolitan Transit System: transactions and use tax: voter initiatives.",
+   "batch": "batch-15 read",
+   "reason": "single-county procedural bill \u2014 ballot access for a San Diego transit tax; same class as the Santa Cruz and Fresno drops"
+  },
+  "AB 2494": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "State forests: forest management.",
+   "batch": "batch-15 read",
+   "reason": "cuts both ways \u2014 moves state forests toward ecology while preserving commercial logging, adding a sawmill preference and repealing the camping fee cap"
+  },
+  "AB 2531": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Public health: abortion services.",
+   "batch": "batch-15",
+   "reason": null
+  },
+  "AB 2646": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Employment: minimum wages: agricultural workers.",
+   "batch": "batch-15",
+   "reason": null
+  },
+  "AB 399": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Coastal resources: coastal development permits: blue carbon demonstration projects.",
+   "batch": "batch-15",
+   "reason": null
+  },
+  "AB 40": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "California Environmental Quality Act: environmental impact reports: coal handling, storage, and export.",
+   "batch": "batch-15",
+   "reason": null
+  },
+  "AB 604": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Redistricting: congressional districts.",
+   "batch": "batch-15 read",
+   "reason": "adopts a legislature-drawn congressional map; no available research area fits without asserting a contested political claim \u2014 see ACA 8"
+  },
+  "AB 679": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Department of Parks and Recreation: Big Basin Redwoods, A\u00f1o Nuevo, and Butano State Parks.",
+   "batch": "batch-15 read",
+   "reason": "cuts both ways and a three-park special bill \u2014 removes Public Works Board review while adding appraisal and public-notice duties"
+  },
+  "AB 695": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "California Community Colleges Access and Continuity for Deported Students Act.",
+   "batch": "batch-15",
+   "reason": null
+  },
+  "AB 699": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Elections: local tax measures.",
+   "batch": "batch-15 read",
+   "reason": "cuts both ways \u2014 lets the tax rate and revenue estimate leave the ballot question while requiring fuller disclosure in the voter guide"
+  },
+  "AB 7": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Postsecondary education: admissions preference: descendants of slavery.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 742": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Department of Consumer Affairs: licensing: applicants who are descendants of slaves.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 747": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Service of Process Accountability, Reform and Equity (SPARE) Act.",
+   "batch": "batch-13/14 read",
+   "reason": "cuts both ways \u2014 tightens service-of-process proof but narrows the existing route to set aside a default, and shields pre-2027 service from the new photo rule"
+  },
+  "AB 761": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Monterey-Salinas Transit District: sales and special taxes.",
+   "batch": "batch-13/14 read",
+   "reason": "cuts both ways and single-district \u2014 removes the district's existing ballot power while granting a narrower one that can exceed the county tax cap"
+  },
+  "AB 762": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Disposable, battery-embedded vapor inhalation device: prohibition and penalties.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 766": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "State agencies and departments: strategic plans: diversity, equity, and inclusion.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 93": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Water resources: data centers.",
+   "batch": "batch-13",
+   "reason": null
+  },
+  "AB 930": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Elections and voting procedures.",
+   "batch": "batch-13/14 read",
+   "reason": "cuts both ways and two-topic \u2014 extends the mail-ballot deadline but charges recount requesters for board members while giving them new control over recount order"
+  },
+  "ACA 8": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Congressional redistricting.",
+   "batch": "batch-13/14 read",
+   "reason": "constitutional amendment that sets aside the independent commission for congressional maps while declaring support for independent commissions; too contested to label"
+  },
+  "AJR 29": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Voting by mail.",
+   "batch": "batch-13/14 read",
+   "reason": "joint resolution \u2014 expresses a position and changes no law; a no vote may object to the Legislature weighing in at all"
+  },
+  "SB 1004": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Law enforcement: masks.",
+   "batch": "batch-13/14 read",
+   "reason": "cuts both ways \u2014 adds state peace officers to the mask ban but cuts the civil damages rule from six torts to two and delays the policy deadline"
+  },
+  "SB 1037": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Health care coverage: rate review.",
+   "batch": "batch-14",
+   "reason": null
+  },
+  "SB 1093": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Mobilehome parks: disaster assistance.",
+   "batch": "batch-14",
+   "reason": null
+  },
+  "SB 1105": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Law enforcement.",
+   "batch": "batch-13/14 read",
+   "reason": "cuts both ways \u2014 strips federal arrest authority while granting it to tribal officers, preserving it for land-management officers, and grandfathering existing agreements"
+  },
+  "SB 1135": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "California Wildlife Coexistence Act.",
+   "batch": "batch-13/14 read",
+   "reason": "cuts both ways \u2014 the protective program is contingent on an appropriation while the operative provision lets dogs pursue wolves, a listed species"
+  },
+  "SB 1164": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Elections.",
+   "batch": "batch-14",
+   "reason": null
+  },
+  "SB 1173": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Jury instructions: lesser related offenses.",
+   "batch": "batch-14",
+   "reason": null
+  },
+  "SB 122": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Taxation.",
+   "batch": "batch-13/14 read",
+   "reason": "budget trailer and omnibus \u2014 raises taxes on digital goods while cutting the minimum tax for new entities, plus a targeted 100 percent tax"
+  },
+  "SB 1237": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Civil Rights Department.",
+   "batch": "batch-14",
+   "reason": null
+  },
+  "SB 125": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Medi-Cal: managed care organization provider tax.",
+   "batch": "batch-13/14 read",
+   "reason": "budget trailer \u2014 central move is taking the managed care tax outside the voter-approved Proposition 35 spending conditions"
+  },
+  "SB 127": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Climate change.",
+   "batch": "batch-15 read",
+   "reason": "budget trailer from the Committee on Budget and Fiscal Review; nine unrelated changes pushing opposite ways on clean energy"
+  },
+  "SB 1349": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Taxation: tax expenditures: Legislative Analyst\u2019s Office: assessment, report, and recommendation.",
+   "batch": "batch-15",
+   "reason": null
+  },
+  "SB 1371": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Solid waste handling services: labor dispute.",
+   "batch": "batch-15",
+   "reason": null
+  },
+  "SB 1379": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "County of Riverside: separation of county offices: in-custody reports.",
+   "batch": "batch-15",
+   "reason": null
+  },
+  "SB 1406": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Sales and Use Tax Law: vehicles: shell companies.",
+   "batch": "batch-15",
+   "reason": null
+  },
+  "SB 1408": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Contra Costa Transportation Authority: transactions and use tax.",
+   "batch": "batch-15 read",
+   "reason": "single-county procedural bill \u2014 authorizes a Contra Costa transportation tax above the state cap"
+  },
+  "SB 1414": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "County of San Bernardino Citizens Redistricting Commission.",
+   "batch": "batch-15",
+   "reason": null
+  },
+  "SB 1425": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "High-Speed Rail Authority: property: operating right-of-way.",
+   "batch": "batch-15",
+   "reason": null
+  },
+  "SB 158": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Land use.",
+   "batch": "batch-15 read",
+   "reason": "budget trailer from the Committee on Budget and Fiscal Review; bundles housing finance, planning reports and five CEQA changes that cut both ways"
+  },
+  "SB 164": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Health.",
+   "batch": "batch-15 read",
+   "reason": "budget trailer from the Committee on Budget and Fiscal Review; 20 digest items that tighten and loosen immigrant Medi-Cal coverage in the same bill"
+  },
+  "SB 168": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Public Resources.",
+   "batch": "batch-16/17 read",
+   "reason": "budget trailer from the Committee on Budget and Fiscal Review; commissioner pay, cap-and-trade procurement, EV rebates and utility ratemaking in one bill, cutting both ways"
+  },
+  "SB 170": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Governor\u2019s Reorganization Plan No. 1 of 2025: codification.",
+   "batch": "batch-16/17 read",
+   "reason": "codification of a governor reorganization plan \u2014 118 sections of cross-reference cleanup with essentially no policy content to take a stance on"
+  },
+  "SB 171": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Labor.",
+   "batch": "batch-16/17 read",
+   "reason": "budget trailer; narrows injured-worker access to the subsequent injuries fund while tightening on employers and adding a $3 billion pension payment"
+  },
+  "SB 177": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Medi-Cal: Fair Share from Big Corporations Act.",
+   "batch": "batch-17",
+   "reason": null
+  },
+  "SB 280": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Elections.",
+   "batch": "batch-16/17 read",
+   "reason": "cuts both ways on election administration \u2014 expands signature relief and drop-off minimums while waiving the 131-day notice, cutting public review to 8 days and allowing polling-place consolidation"
+  },
+  "SB 281": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Pleas: immigration advisement.",
+   "batch": "batch-17 read",
+   "reason": "cuts both ways \u2014 requires a verbatim immigration advisement at plea but bars using that failure to reopen any plea taken before 2026"
+  },
+  "SB 327": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Public utilities: review of accounts: electrical and gas corporations: rates: political influence activities.",
+   "batch": "batch-17",
+   "reason": null
+  },
+  "SB 333": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Transactions and use taxes: San Luis Obispo Council of Governments.",
+   "batch": "batch-17 read",
+   "reason": "single-county tax authorization (San Luis Obispo) above the state cap; procedural class already dropped elsewhere"
+  },
+  "SB 354": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Insurance Information and Privacy Protection Act.",
+   "batch": "batch-17 read",
+   "reason": "cuts both ways \u2014 a large insurance privacy rewrite that also caps consumer remedies, grants disclosure immunity, preempts inconsistent state privacy law and exempts whole lines of insurance"
+  },
+  "SB 36": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Price gouging: state of emergency.",
+   "batch": "batch-17",
+   "reason": null
+  },
+  "SB 418": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Health care coverage: prescription hormone therapy and nondiscrimination.",
+   "batch": "batch-16",
+   "reason": null
+  },
+  "SB 437": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "California State University: claim eligibility: genealogy and descendancy.",
+   "batch": "batch-16",
+   "reason": null
+  },
+  "SB 477": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "California Fair Employment and Housing Act: enforcement procedures.",
+   "batch": "batch-16 read",
+   "reason": "cuts both ways \u2014 pauses deadlines for complainants but forces an individual to wait for a related group case to finish before getting a right-to-sue notice"
+  },
+  "SB 512": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "District elections: initiatives.",
+   "batch": "batch-16 read",
+   "reason": "procedural tax-ballot bill \u2014 lets voters initiate a district transportation sales tax; same class as the other ballot-access drops"
+  },
+  "SB 541": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Electricity: load shifting.",
+   "batch": "batch-16",
+   "reason": null
+  },
+  "SB 551": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Corrections and rehabilitation: state policy.",
+   "batch": "batch-16",
+   "reason": null
+  },
+  "SB 57": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Electrical corporations: data centers: report.",
+   "batch": "batch-16 read",
+   "reason": "no operative duty \u2014 the utilities commission may assess data center cost shifting but is not required to, and the section sunsets in 2031"
+  },
+  "SB 608": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Sexual health.",
+   "batch": "batch-16",
+   "reason": null
+  },
+  "SB 63": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "San Francisco Bay area: local revenue measure: public transit funding.",
+   "batch": "batch-16 read",
+   "reason": "cuts both ways \u2014 a 14-year regional transit sales tax paired with efficiency conditions and a committee that can withhold funds from the same operators"
+  },
+  "SB 630": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "State parks: real property: acquisitions and leases.",
+   "batch": "batch-16",
+   "reason": null
+  },
+  "SB 633": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Plastic beverage containers: recycling.",
+   "batch": "batch-18",
+   "reason": null
+  },
+  "SB 642": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Employment: payment of wages.",
+   "batch": "batch-18",
+   "reason": null
+  },
+  "SB 675": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Imperial County Air Pollution Control District: members and duties.",
+   "batch": "batch-18 read",
+   "reason": "single-county (Imperial air district) and cuts both ways \u2014 new disclosure duties alongside an address-redaction carve-out and a standing military consultation right"
+  },
+  "SB 7": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "vetoed",
+   "value": 7,
+   "title": "Employment: automated decision systems.",
+   "batch": "batch-18",
+   "reason": null
+  },
+  "SB 747": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Civil rights: deprivation of federal constitutional rights, privileges, and immunities.",
+   "batch": "batch-18",
+   "reason": null
+  },
+  "SB 770": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Common interest developments: EV charging stations.",
+   "batch": "batch-18 read",
+   "reason": "trivial technical change \u2014 deletes an additional-insured clause for EV chargers in homeowner associations; no research area fits"
+  },
+  "SB 786": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Planning and zoning: general plan: judicial challenges.",
+   "batch": "batch-18 read",
+   "reason": "cuts both ways \u2014 lengthens compliance deadlines to 120 days while making sanctions mandatory and removing extensions"
+  },
+  "SB 838": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Housing Accountability Act: housing development projects.",
+   "batch": "batch-18",
+   "reason": null
+  },
+  "SB 873": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Courthouses: privilege from civil arrest.",
+   "batch": "batch-18",
+   "reason": null
+  },
+  "SB 934": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Sexual orientation or gender identity change efforts.",
+   "batch": "batch-18",
+   "reason": null
+  },
+  "SB 937": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Law enforcement: flash-bang grenades and explosive breaching charges.",
+   "batch": "batch-18",
+   "reason": null
+  },
+  "SB 938": {
+   "status": "judged",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Peace officers: training requirements.",
+   "batch": "batch-18",
+   "reason": null
+  },
+  "SB 948": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "Firearms: safety certificates.",
+   "batch": "batch-18 read",
+   "reason": "cuts both ways \u2014 a new live-fire training requirement alongside a 180-day import window, an infraction-level penalty and an amnesty for late self-reporters"
+  },
+  "SB 954": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "enrolled",
+   "value": 7,
+   "title": "California Environmental Quality Act: advanced manufacturing facilities: exemption.",
+   "batch": "batch-18 read",
+   "reason": "cuts both ways and omnibus \u2014 adds species habitat protection but repeals the oil and gas exception to the housing rezoning exemption and switches the new habitat rule off for housing"
+  },
+  "SJR 18": {
+   "status": "dropped",
+   "chambers": "AS",
+   "bill_status": "chaptered",
+   "value": 7,
+   "title": "Campaign finance reform.",
+   "batch": "batch-18 read",
+   "reason": "joint resolution \u2014 states opposition to Citizens United and changes no law"
+  },
+  "SB 128": {
+   "status": "dropped",
+   "chambers": "A",
+   "bill_status": "chaptered",
+   "value": 6,
+   "title": "Transportation.",
+   "batch": "batch-18 read",
+   "reason": "budget trailer; delays a loosening and a tightening at once and bundles six unrelated transportation topics"
+  },
+  "SB 155": {
+   "status": "dropped",
+   "chambers": "A",
+   "bill_status": "chaptered",
+   "value": 6,
+   "title": "Governor\u2019s Office of Business and Economic Development: California Civic Media Program.",
+   "batch": "batch-18 read",
+   "reason": "no research area fits \u2014 a state program funding local journalism, housed in the economic development office"
+  },
+  "SB 162": {
+   "status": "dropped",
+   "chambers": "A",
+   "bill_status": "chaptered",
+   "value": 6,
+   "title": "Elections.",
+   "batch": "batch-18 read",
+   "reason": "one-time housekeeping for the November 2025 special election, with a single-county carve-out for Santa Clara"
+  },
+  "SB 172": {
+   "status": "dropped",
+   "chambers": "A",
+   "bill_status": "chaptered",
+   "value": 6,
+   "title": "State government.",
+   "batch": "batch-18 read",
+   "reason": "omnibus budget trailer \u2014 26 items from boxing fees to 911 procurement, adding and removing oversight in the same act"
+  },
+  "SB 274": {
+   "status": "dropped",
+   "chambers": "A",
+   "bill_status": "vetoed",
+   "value": 6,
+   "title": "Automated license plate recognition systems.",
+   "batch": "batch-18 read",
+   "reason": "cuts both ways on one dimension \u2014 tightens license plate data rules for police while removing transit, transportation and airport agencies from coverage entirely"
+  },
+  "SB 499": {
+   "status": "dropped",
+   "chambers": "A",
+   "bill_status": "chaptered",
+   "value": 6,
+   "title": "Residential projects: fees and charges.",
+   "batch": "batch-19 read",
+   "reason": "cuts both ways \u2014 binds one early fee-collection route to a cost cap while widening two others, including parkland under the emergency category"
+  },
+  "SB 647": {
+   "status": "judged",
+   "chambers": "A",
+   "bill_status": "vetoed",
+   "value": 6,
+   "title": "Energy: Equitable Building Decarbonization Program: Low-Income Oversight Board: membership.",
+   "batch": "batch-19",
+   "reason": null
+  },
+  "SB 682": {
+   "status": "judged",
+   "chambers": "A",
+   "bill_status": "vetoed",
+   "value": 6,
+   "title": "Environmental health: product safety: perfluoroalkyl and polyfluoroalkyl substances.",
+   "batch": "batch-19",
+   "reason": null
+  },
+  "SB 830": {
+   "status": "dropped",
+   "chambers": "A",
+   "bill_status": "chaptered",
+   "value": 6,
+   "title": "Public Transit Revenue Measure District: revenue measure: election procedures.",
+   "batch": "batch-19 read",
+   "reason": "single-region procedural bill \u2014 ballot designation and argument selection for one Bay Area transit measure"
+  },
+  "SB 851": {
+   "status": "dropped",
+   "chambers": "A",
+   "bill_status": "chaptered",
+   "value": 6,
+   "title": "Elections.",
+   "batch": "batch-19 read",
+   "reason": "cuts both ways \u2014 tightens certification duties and poll security while lowering the voting-system standards benchmark and deleting federal defect reporting"
+  },
+  "AB 1136": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Employment: immigration and work authorization.",
+   "batch": "batch-19",
+   "reason": null
+  },
+  "AB 1235": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "California State University: skilled and trained workforce requirement.",
+   "batch": "batch-19 read",
+   "reason": "no research area fits \u2014 mandatory skilled-and-trained workforce commitment on university construction contracts, with a broad housing carve-out"
+  },
+  "AB 1258": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Deferred entry of judgment pilot program.",
+   "batch": "batch-19 read",
+   "reason": "sunset extension and housekeeping for a three-county pilot, and it quietly drops Alameda County from the program"
+  },
+  "AB 1296": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Local educational agencies: reserve funds.",
+   "batch": "batch-19",
+   "reason": null
+  },
+  "AB 1303": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Communications: lifeline telephone service program.",
+   "batch": "batch-19",
+   "reason": null
+  },
+  "AB 1329": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Workers\u2019 Compensation: Subsequent injuries payments.",
+   "batch": "batch-19 read",
+   "reason": "cuts both ways \u2014 fixes a disability measuring method in workers favour but adds a proof burden and a filing deadline that do not exist in statute today"
+  },
+  "AB 134": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Public Safety.",
+   "batch": "batch-19 read",
+   "reason": "omnibus budget trailer from the Committee on Budget \u2014 abolishes two oversight bodies and a reentry grant fund while funding a new tribal police pilot"
+  },
+  "AB 1348": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Average daily attendance: emergencies: immigration enforcement activity: independent study plans.",
+   "batch": "batch-19",
+   "reason": null
+  },
+  "AB 138": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "State employment: state bargaining units.",
+   "batch": "batch-19 read",
+   "reason": "budget trailer \u2014 a negotiated package that cuts pay through a leave program while suspending pension and retiree-health contributions"
+  },
+  "AB 1417": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Energy: Voluntary Offshore Wind and Coastal Resources Protection Program: community capacity funding activities and grants.",
+   "batch": "batch-19 read",
+   "reason": "weak area fit and a transparency tradeoff \u2014 expands community funding but replaces per-donation posting with an annual report"
+  },
+  "AB 1439": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Public retirement systems: development projects: labor standards.",
+   "batch": "batch-19 read",
+   "reason": "no operative duty \u2014 every verb is requests, and the pension boards may decline on fiduciary grounds"
+  },
+  "AB 152": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Human services.",
+   "batch": "batch-19 read",
+   "reason": "omnibus budget trailer \u2014 16 unrelated items that raise cash aid while raising licensing fees and delaying consumer-protection deadlines"
+  },
+  "AB 1525": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Attorneys: discipline: sensitive services.",
+   "batch": "batch-19",
+   "reason": null
+  },
+  "AB 1539": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Presidential elections: qualifications for office.",
+   "batch": "batch-19",
+   "reason": null
+  },
+  "AB 1577": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Data centers: reporting.",
+   "batch": "batch-19 read",
+   "reason": "cuts both ways on disclosure \u2014 compels data center reporting to government while creating a new public records exemption and publishing only aggregated data"
+  },
+  "AB 1595": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Criminal procedure: writs of habeas corpus and motions to vacate.",
+   "batch": "batch-20",
+   "reason": null
+  },
+  "AB 1629": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Dental coverage.",
+   "batch": "batch-20",
+   "reason": null
+  },
+  "AB 1647": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Juveniles: transfer to criminal court: criminal procedure.",
+   "batch": "batch-20 read",
+   "reason": "declaratory of existing law by its own terms, and carves out sentencing, where the statements can matter most"
+  },
+  "AB 1655": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "CalWORKs: temporary absence: immigration detention.",
+   "batch": "batch-20",
+   "reason": null
+  },
+  "AB 1679": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Local pop-up small business program.",
+   "batch": "batch-20 read",
+   "reason": "cuts both ways \u2014 mandates that cities allow pop-up businesses while preserving fire, accessibility and enforcement authority and adding a new food inspection gate"
+  },
+  "AB 179": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Housing.",
+   "batch": "batch-20 read",
+   "reason": "omnibus budget trailer from the Assembly Committee on Budget \u2014 17 items that add money while exempting a new committee from open-meeting and rulemaking rules and dropping a fingerprinting duty"
+  },
+  "AB 1792": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Pupil instruction: health framework: sexual health.",
+   "batch": "batch-20",
+   "reason": null
+  },
+  "AB 1803": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Employment: sexual harassment training and education: anti-hate speech training.",
+   "batch": "batch-20",
+   "reason": null
+  },
+  "AB 1809": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Public contracts: school and community college districts.",
+   "batch": "batch-20 read",
+   "reason": "cuts both ways \u2014 deletes two existing cost checks on school job order contracting and replaces them with one test each district writes for itself"
+  },
+  "AB 1818": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "California State University: employer-employee relations: meeting and conferring.",
+   "batch": "batch-20 read",
+   "reason": "no research area fits \u2014 moves one procedural determination in university labor bargaining to a neutral state board"
+  },
+  "AB 1820": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Electric vehicle charging stations: permit fees.",
+   "batch": "batch-20",
+   "reason": null
+  },
+  "AB 1837": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Video imaging of parking violations.",
+   "batch": "batch-20 read",
+   "reason": "cuts both ways \u2014 extends camera parking enforcement seven years while adding facial-recognition, federal-access and blurring limits, and exempts San Francisco from the new reporting"
+  },
+  "AB 1838": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Public contracts: local agencies: responsive bidders.",
+   "batch": "batch-20",
+   "reason": null
+  },
+  "AB 1944": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Zero-emission transit buses: axle weight.",
+   "batch": "batch-20",
+   "reason": null
+  },
+  "AB 1977": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Notaries public.",
+   "batch": "batch-20 read",
+   "reason": "departmental omnibus that cuts both ways \u2014 a new renewal exam and fixed fees alongside electronic signature authority and lighter renewal filing"
+  },
+  "AB 1979": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Health care services: artificial intelligence.",
+   "batch": "batch-20",
+   "reason": null
+  },
+  "AB 2011": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Nonquantitative treatment limitations.",
+   "batch": "batch-20",
+   "reason": null
+  },
+  "AB 2015": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Department of Transportation: third-party navigation applications: study and report.",
+   "batch": "batch-20 read",
+   "reason": "study only \u2014 a Caltrans pilot on navigation apps in one unnamed region, with permissive recommendations and a sunset"
+  },
+  "AB 2161": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Medi-Cal eligibility: work or community engagement.",
+   "batch": "batch-20 read",
+   "reason": "implements the federal Medi-Cal work requirement rather than opposing it, and lets the department defer every protection it adds if no appropriation is made"
+  },
+  "AB 2164": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Legally protected activities.",
+   "batch": "batch-20",
+   "reason": null
+  },
+  "AB 2308": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Redevelopment: successor agency debt: City and County of San Francisco.",
+   "batch": "batch-21 read",
+   "reason": "single-jurisdiction San Francisco bill that only clarifies an existing borrowing power; no new duty on anyone"
+  },
+  "AB 2395": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Child support: compromise of arrears program.",
+   "batch": "batch-21",
+   "reason": null
+  },
+  "AB 2495": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Unlawful immigration-related practices.",
+   "batch": "batch-21",
+   "reason": null
+  },
+  "AB 2510": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "CalWORKs.",
+   "batch": "batch-21",
+   "reason": null
+  },
+  "AB 2599": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Slavery: corporate disclosures.",
+   "batch": "batch-21",
+   "reason": null
+  },
+  "AB 2619": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Water resources: data centers.",
+   "batch": "batch-21",
+   "reason": null
+  },
+  "AB 2634": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Workforce development: High road training partnerships: scoring preference.",
+   "batch": "batch-21 read",
+   "reason": "no research area fits \u2014 a scoring preference for union-linked applicants inside one grant program"
+  },
+  "AB 2682": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Transportation network company drivers: labor relations: appeals.",
+   "batch": "batch-21 read",
+   "reason": "party-neutral procedure \u2014 the new court appeal runs equally to rideshare companies and to drivers, so it carries no labor stance"
+  },
+  "AB 288": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Employment: labor organization and unfair practices.",
+   "batch": "batch-21 read",
+   "reason": "two bills in one vehicle \u2014 state takeover of labor enforcement plus a separate change to the farm labor board precedent duty, and it exempts supporting evidence from the public records act"
+  },
+  "AB 321": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Misdemeanors.",
+   "batch": "batch-21",
+   "reason": null
+  },
+  "AB 339": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Local public employee organizations: notice requirements.",
+   "batch": "batch-21 read",
+   "reason": "no research area fits \u2014 notice to unions before a public agency contracts out covered work"
+  },
+  "AB 361": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Best value procurement: school districts.",
+   "batch": "batch-21 read",
+   "reason": "cuts both ways on oversight \u2014 deletes Los Angeles Unified reporting while imposing reporting on every other district newly allowed to use the method"
+  },
+  "AB 373": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Dependency proceedings: counsel.",
+   "batch": "batch-21",
+   "reason": null
+  },
+  "AB 378": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Education finance: Classified School Employee Summer Assistance Program.",
+   "batch": "batch-21 read",
+   "reason": "trivial definitional expansion \u2014 adds joint powers authorities to an existing summer pay program"
+  },
+  "AB 39": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "General plans: Local Electrification Planning Act.",
+   "batch": "batch-21",
+   "reason": null
+  },
+  "AB 393": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Personal services contracts: state employees: physician and psychologist positions.",
+   "batch": "batch-21 read",
+   "reason": "no research area fits \u2014 a cost comparison and civil service preference before contracting out prison and state hospital clinician jobs"
+  },
+  "AB 419": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Educational equity: immigration enforcement.",
+   "batch": "batch-21",
+   "reason": null
+  },
+  "AB 43": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Wild and scenic rivers.",
+   "batch": "batch-21",
+   "reason": null
+  },
+  "AB 439": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "California Coastal Act of 1976: local planning and reporting.",
+   "batch": "batch-21 read",
+   "reason": "cuts both ways \u2014 de minimis coastal plan changes take effect faster while enforcement reporting drops from annual to every five years, though its contents widen"
+  },
+  "AB 450": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Public social services: support for older and aging immigrants.",
+   "batch": "batch-21 read",
+   "reason": "study only \u2014 a panel, a report and recommendations, all conditional on an appropriation the bill does not make, self-repealing in 2029"
+  },
+  "AB 461": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Truancy.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 499": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Robert F. Kennedy Farm Workers Medical Plan.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 52": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Farmer equity: advisory committees.",
+   "batch": "batch-22 read",
+   "reason": "purely permissive \u2014 the secretary may establish two advisory committees, and if none is created nothing in the bill binds anyone"
+  },
+  "AB 538": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Public works: payroll records.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 57": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "California Dream for All Program: descendants of formerly enslaved people.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 632": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Local ordinances: administrative fines or penalties.",
+   "batch": "batch-22 read",
+   "reason": "weak area fit \u2014 collection of local administrative fines across four unrelated violation types, from substandard housing to illegal cannabis grows"
+  },
+  "AB 681": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "California DREAM Loan Program: limits.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 690": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Criminal procedure: indigent defense compensation.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 713": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Public postsecondary education: student employment.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 723": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Real estate: digitally altered images: disclosure.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 734": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Environmental protection: biological resources data: State Energy Resources Conservation and Development Commission: powerplants: power lines: applica",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 749": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Youth Sports for All Act.",
+   "batch": "batch-22 read",
+   "reason": "study only \u2014 a blue ribbon commission and a feasibility report, contingent on funding and self-repealing in 2033, creating no rule for any youth sports body"
+  },
+  "AB 797": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Community Stabilization Act: Counties of Los Angeles and Ventura.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 801": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Nondiscrimination.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 812": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Recall and resentencing: incarcerated firefighters.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 82": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Health care: legally protected health care activity.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 851": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Real property transactions: Counties of Los Angeles and Ventura wildfires: unsolicited offers.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 86": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Instructional materials: health education.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 893": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Housing development projects: objective standards: campus development zone.",
+   "batch": "batch-22",
+   "reason": null
+  },
+  "AB 935": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "State agencies: complaints: demographic data.",
+   "batch": "batch-22 read",
+   "reason": "cuts both ways on disclosure \u2014 creates annual public reports on discrimination complaints while making the underlying collected data confidential and exempt from the public records act"
+  },
+  "AB 956": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Accessory dwelling units and junior accessory dwelling units.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "AB 963": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Public works: prevailing wages: access to records.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 1014": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Development projects: preliminary estimate of required improvements: onsite and offsite improvements.",
+   "batch": "batch-23 read",
+   "reason": "the headline preliminary estimate is expressly informational only and not legally binding, so the bill adds paperwork deadlines without changing what a city may require"
+  },
+  "SB 1154": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Public contracts: best value procurement: community college districts.",
+   "batch": "batch-23 read",
+   "reason": "permissive authority only \u2014 community college boards may use best value procurement, and no duty arises unless a district chooses to"
+  },
+  "SB 1166": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Alameda-Contra Costa Transit District: employee relations.",
+   "batch": "batch-23 read",
+   "reason": "cuts both ways and single-district \u2014 unfair practice duties and the court appeal run equally against the AC Transit district and the union"
+  },
+  "SB 1194": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Immigration Legal Fellowship Project.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 1196": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Small energization projects: electrical service connections.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 1255": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Postsecondary education: Designation of California Hispanic-Serving Institutions.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 1323": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Health care providers: patient access: immigration enforcement.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 1328": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Public postsecondary education: Equity in Higher Education Act: campus contact.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 1354": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "The military: defense of the state.",
+   "batch": "batch-09 (recorded late)",
+   "reason": "read and dropped in batch-09 (pre-ledger) \u2014 national_defense reads as military readiness and deterrence, and a bill restricting out-of-state deployments is not clearly for or against it"
+  },
+  "SB 1388": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Affordable Housing Risk Reduction Program.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 24": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Public utilities: review of accounts: electrical and gas corporations: rates: political influence activities.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 313": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Vital records: birth certificates.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 388": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "California Latino Commission.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 403": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "End of Life Option Act: sunset.",
+   "batch": "batch-09 (recorded late)",
+   "reason": "read and dropped in batch-09 (pre-ledger) \u2014 the only fitting area is womens_reproductive_rights, and filing an aid-in-dying vote there would display to voters as a reproductive rights record"
+  },
+  "SB 450": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Adoption.",
+   "batch": "batch-23 read",
+   "reason": "cuts both ways \u2014 widens court jurisdiction over adoptions while shifting the cost of completing a deficient out-of-state home study onto the adopting family"
+  },
+  "SB 501": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Responsible Battery Recycling Act of 2022: covered batteries.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 513": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Personnel records.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 515": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Local government: collection of demographic data.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 578": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "California Workplace Outreach Program.",
+   "batch": "batch-23 read",
+   "reason": "no research area fits \u2014 a state outreach programme telling workers about workplace protections, contingent on an appropriation"
+  },
+  "SB 610": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Disaster assistance: tenants, mobilehome parks, and mortgages.",
+   "batch": "batch-23 read",
+   "reason": "cuts both ways \u2014 adds disaster protections for tenants but removes the in-place market value payment owed to displaced mobilehome residents when the closure follows a disaster"
+  },
+  "SB 703": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Ports: truck drivers.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 762": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Transactions and use taxes: various jurisdictions.",
+   "batch": "batch-23 read",
+   "reason": "thirteen separate local sales tax authorizations across named cities and counties; no statewide operative effect a voter would recognize"
+  },
+  "SB 787": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "vetoed",
+   "value": 1,
+   "title": "Energy: equitable clean energy supply chains and industrial policy in California.",
+   "batch": "batch-23",
+   "reason": null
+  },
+  "SB 809": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Employees and independent contractors: construction trucking.",
+   "batch": "batch-23 read",
+   "reason": "cuts both ways \u2014 reimbursement and classification rules favour drivers while the amnesty relieves employers of misclassification penalties and bars claims for drivers who do not accept a settlement"
+  },
+  "SB 827": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Local agency officials: training.",
+   "batch": "batch-24",
+   "reason": null
+  },
+  "SB 909": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Public works.",
+   "batch": "batch-24",
+   "reason": null
+  },
+  "SB 98": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Elementary, secondary, and postsecondary education: immigration enforcement: notification.",
+   "batch": "batch-24",
+   "reason": null
+  },
+  "SB 983": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "San Diego Unified Port District: job order contracting: pilot program.",
+   "batch": "batch-24 read",
+   "reason": "cuts both ways and single-district pilot \u2014 lets the San Diego port district bypass normal competitive bidding while requiring a project labor agreement, prevailing wage below the usual threshold and independent cost estimates"
+  },
+  "SB 998": {
+   "status": "judged",
+   "chambers": "S",
+   "bill_status": "enrolled",
+   "value": 1,
+   "title": "Educational equity: discrimination prevention coordinators.",
+   "batch": "batch-24",
+   "reason": null
+  },
+  "SJR 12": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Proposed 2026\u20132031 National Outer Continental Shelf Oil and Gas Leasing Program: opposition.",
+   "batch": "batch-23 read",
+   "reason": "joint resolution \u2014 expresses the Legislature position and changes no law; same treatment as AJR 29 and SJR 18"
+  },
+  "SJR 7": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Tariffs.",
+   "batch": "batch-23 read",
+   "reason": "joint resolution \u2014 expresses the Legislature position and changes no law; same treatment as AJR 29 and SJR 18"
+  },
+  "SJR 9": {
+   "status": "dropped",
+   "chambers": "S",
+   "bill_status": "chaptered",
+   "value": 1,
+   "title": "Immigrants in California: mass immigration raids.",
+   "batch": "batch-23 read",
+   "reason": "joint resolution \u2014 expresses the Legislature position and changes no law; same treatment as AJR 29 and SJR 18"
+  }
+ }
+}

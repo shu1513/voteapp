@@ -1,8 +1,9 @@
 // The only live-portal caller on the North Dakota direct path besides
 // auto-link. For each election year it refreshes the two schedule files that
 // carry the election's periods, resolves the cycle window from them (the
-// same rule the sync applies), then refreshes the contributions CSV and the
-// CON API harvest for every year the window spans — so the cache always
+// same rule the sync applies), then refreshes the contributions CSV, the
+// CON API harvest and the IE API harvest for every year the window spans,
+// and the committee registry once per election year — so the cache always
 // holds exactly what the sync will ask for.
 
 import { pathToFileURL } from "node:url";
@@ -13,7 +14,9 @@ import {
   normalizeNorthDakotaArtifactYear,
   readNorthDakotaBulkArtifact,
   refreshNorthDakotaApiContributionsArtifact,
+  refreshNorthDakotaApiIndependentExpendituresArtifact,
   refreshNorthDakotaBulkArtifact,
+  refreshNorthDakotaRegistryArtifact,
   type NorthDakotaArtifactRefreshResult,
 } from "../pipeline/northDakotaFinance/northDakotaCfrsArtifactCache.js";
 import { resolveNorthDakotaCfrsCacheDir } from "../pipeline/northDakotaFinance/northDakotaCandidateFinanceSync.js";
@@ -114,6 +117,8 @@ export async function runRefreshNorthDakotaCampaignFinanceRawDataScript(input: {
   clientOptions?: NorthDakotaCfrsClientOptions;
   refreshBulk?: typeof refreshNorthDakotaBulkArtifact;
   refreshApi?: typeof refreshNorthDakotaApiContributionsArtifact;
+  refreshIe?: typeof refreshNorthDakotaApiIndependentExpendituresArtifact;
+  refreshRegistry?: typeof refreshNorthDakotaRegistryArtifact;
   fetchCatalog?: typeof getNorthDakotaDataDownloadCatalog;
   readBulk?: typeof readNorthDakotaBulkArtifact;
   /** Wait between portal-touching steps; tests pass 0. */
@@ -125,6 +130,8 @@ export async function runRefreshNorthDakotaCampaignFinanceRawDataScript(input: {
   };
   const refreshBulk = input.refreshBulk ?? refreshNorthDakotaBulkArtifact;
   const refreshApi = input.refreshApi ?? refreshNorthDakotaApiContributionsArtifact;
+  const refreshIe = input.refreshIe ?? refreshNorthDakotaApiIndependentExpendituresArtifact;
+  const refreshRegistry = input.refreshRegistry ?? refreshNorthDakotaRegistryArtifact;
   const readBulk = input.readBulk ?? readNorthDakotaBulkArtifact;
   const pauseMs = input.pauseMs ?? NORTH_DAKOTA_REFRESH_PAUSE_MS;
   const pause = () => (pauseMs > 0 ? new Promise<void>((done) => setTimeout(done, pauseMs)) : Promise.resolve());
@@ -170,8 +177,13 @@ export async function runRefreshNorthDakotaCampaignFinanceRawDataScript(input: {
         refreshedApi.add(year);
         await pause();
         artifacts.push(summarize(await refreshApi({ year, cacheDir, force: acceptEmpty, clientOptions })));
+        await pause();
+        artifacts.push(summarize(await refreshIe({ year, cacheDir, force: acceptEmpty, clientOptions })));
       }
     }
+    // Election years are deduped by the arg parser, so once each.
+    await pause();
+    artifacts.push(summarize(await refreshRegistry({ electionYear, cacheDir, force: acceptEmpty, clientOptions })));
   }
   return {
     type: "north_dakota_cfrs_raw_data_refresh",

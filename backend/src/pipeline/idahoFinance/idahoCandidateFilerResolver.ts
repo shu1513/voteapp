@@ -69,6 +69,26 @@ export type IdahoCandidateFilerResolution =
         | "no_active_registration";
     };
 
+/**
+ * Storage district label when the grid row is on this race's office,
+ * district, and cycle; undefined when it is not. The manual-link gate: the
+ * same office/district/cycle evidence the resolver applies, minus the name.
+ */
+export function idahoRegistrationDistrictLabelForRace(
+  row: IdahoCandidateRegistrationRow,
+  input: Pick<
+    IdahoCandidateFilerResolverInput,
+    "officeScope" | "officeName" | "district" | "legislativeDistrict" | "ballotTitle" | "electionYear"
+  >
+): string | null | undefined {
+  const office = idahoSunshineOfficeForRace({ officeScope: input.officeScope, officeCanonicalName: input.officeName });
+  if (office === null) return undefined;
+  const evidence = districtEvidence(office, input);
+  if (evidence === null) return undefined;
+  if (row.electionYear !== input.electionYear || row.office !== office.gridOffice) return undefined;
+  return rowDistrictLabel(row, evidence);
+}
+
 /** Match-time person-name normalization (generational suffixes stripped). */
 export function normalizeIdahoPersonNameForMatching(value: string): string {
   return value

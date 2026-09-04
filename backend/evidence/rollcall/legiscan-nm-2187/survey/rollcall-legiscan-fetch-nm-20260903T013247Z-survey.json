@@ -1,0 +1,95 @@
+{
+  "runId": "rollcall-legiscan-fetch-nm-20260903T013247Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "NM",
+  "startedAt": "2026-09-03T01:32:47.120Z",
+  "finishedAt": "2026-09-03T01:32:47.531Z",
+  "datasetDir": "~/legiscan-data/nm-2187/NM/2025-2025_Regular_Session",
+  "bills": 1328,
+  "votes": 571,
+  "people": 128,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "House Final Passage",
+      "count": 310,
+      "withoutMemberList": 0,
+      "minTotal": 69,
+      "maxTotal": 70,
+      "billTypes": [
+        "B",
+        "JM",
+        "JR",
+        "M"
+      ],
+      "sampleBills": [
+        "HB1",
+        "HM1",
+        "HM4"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Final Passage",
+      "count": 254,
+      "withoutMemberList": 0,
+      "minTotal": 42,
+      "maxTotal": 42,
+      "billTypes": [
+        "B",
+        "JM",
+        "JR",
+        "M"
+      ],
+      "sampleBills": [
+        "HB1",
+        "SB19",
+        "SB124"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 1182,
+    "CR": 1,
+    "JM": 14,
+    "JR": 37,
+    "M": 88,
+    "R": 6
+  },
+  "sessionIds": {
+    "2187": 1328
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": [
+    {
+      "file": "vote/1502166.json",
+      "error": "LegiScan roll call 1502166: yea says 57 but the member list holds 56"
+    },
+    {
+      "file": "vote/1502167.json",
+      "error": "LegiScan roll call 1502167: yea says 59 but the member list holds 58"
+    },
+    {
+      "file": "vote/1502168.json",
+      "error": "LegiScan roll call 1502168: yea says 57 but the member list holds 56"
+    },
+    {
+      "file": "vote/1502169.json",
+      "error": "LegiScan roll call 1502169: yea says 53 but the member list holds 52"
+    },
+    {
+      "file": "vote/1502170.json",
+      "error": "LegiScan roll call 1502170: absent says 4 but the member list holds 3"
+    },
+    {
+      "file": "vote/1502171.json",
+      "error": "LegiScan roll call 1502171: yea says 59 but the member list holds 58"
+    },
+    {
+      "file": "vote/1502172.json",
+      "error": "LegiScan roll call 1502172: yea says 66 but the member list holds 65"
+    }
+  ]
+}

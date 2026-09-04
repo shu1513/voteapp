@@ -1,0 +1,14 @@
+[
+  {
+    "recordId": "c675f848-b14e-4392-a5fd-7b8acbdc54cb",
+    "reason": "Duplicate of the imported roll-call record b03c0365-b41c-4607-8648-439fcacacfc7, which describes the same vote: Brian Maher's no vote when the Assembly passed Senate Bill 952-B 95-50 on 2025-05-27. The hand-written row cites the Assembly bill page rather than the roll call, so the importer's URL check could not fold it."
+  },
+  {
+    "recordId": "0b7d134f-c6d8-4523-aa2c-ec4e2d139628",
+    "reason": "Duplicate of the imported roll-call record 2dc75a84-3bd9-40fa-a32c-fd9615a19ee8, which describes the same vote: Brian Maher's no vote when the Assembly passed Senate Bill 7882 95-51 on 2025-06-10. The hand-written row cites the Assembly bill page rather than the roll call, so the importer's URL check could not fold it."
+  },
+  {
+    "recordId": "f14c04e0-87af-43cc-b992-a4138018c582",
+    "reason": "Duplicate of the imported roll-call record 788a125c-a5af-4070-847f-4b149433f757, which describes the same vote: Brian Maher's no vote when the Assembly passed Senate Bill 1985-A 93-46 on 2025-06-11. The hand-written row cites the Assembly bill page rather than the roll call, so the importer's URL check could not fold it."
+  }
+]

@@ -1,0 +1,318 @@
+{
+ "source": "legiscan",
+ "jurisdiction": "AK",
+ "session_id": 2171,
+ "note": "people_id -> VoteApp candidate id for the Alaska 34th Legislature 2025-2026 Regular Session (LegiScan 2171). Seats come from LegiScan's `district` field, never its `role` field: `role` says Rep for six sitting senators (Mike Cronk SD-R, Matt Claman SD-H, James Kaufman SD-F, Scott Kawasaki SD-P, Shelley Hughes SD-M, Kelly Merrick SD-L), while `district` is right for all 62. The 23 people in the dataset with a blank district are standing committees filed as sponsors; none of them casts a vote, so they are left out of this file. Six members are mapped: five the proposer matched and one hand-added. Every other entry is null because our Alaska roster is still being filled in - it covers 6 of 40 House districts and 1 of 20 Senate districts today. Extending the roster and re-running the import adds those members without duplicating anything.",
+ "entries": [
+  {
+   "people_id": 6052,
+   "candidate_id": null,
+   "note": "Scott Kawasaki, SD-P; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 6065,
+   "candidate_id": null,
+   "note": "Bryce Edgmon, HD-037; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 6072,
+   "candidate_id": "3e207f3a-d0a3-4462-857a-c1b1c387e230",
+   "note": "Neal Foster, HD-039; exact name match, same seat"
+  },
+  {
+   "people_id": 6075,
+   "candidate_id": null,
+   "note": "William Wielechowski, SD-K; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 6083,
+   "candidate_id": null,
+   "note": "Donald Olson, SD-T; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 6085,
+   "candidate_id": null,
+   "note": "Lyman Hoffman, SD-S; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 6089,
+   "candidate_id": null,
+   "note": "Bert Stedman, SD-A; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 6093,
+   "candidate_id": null,
+   "note": "Gary Stevens, SD-C; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 11277,
+   "candidate_id": null,
+   "note": "Dan Saddler, HD-024; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 11301,
+   "candidate_id": null,
+   "note": "Mia Costello, HD-015; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 11358,
+   "candidate_id": null,
+   "note": "Catherine Giessel, SD-E; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 14388,
+   "candidate_id": null,
+   "note": "Shelley Hughes, SD-M; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 14389,
+   "candidate_id": null,
+   "note": "Andrew Josephson, HD-013; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 16680,
+   "candidate_id": null,
+   "note": "Cathy Tilton, SD-M; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 17251,
+   "candidate_id": null,
+   "note": "Louise Stutes, HD-005; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 17255,
+   "candidate_id": null,
+   "note": "Matt Claman, SD-H; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 18610,
+   "candidate_id": null,
+   "note": "George Rauscher, SD-O; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 18974,
+   "candidate_id": null,
+   "note": "Charles Kopp, HD-010; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 19096,
+   "candidate_id": null,
+   "note": "DeLena Johnson, HD-025; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 19596,
+   "candidate_id": null,
+   "note": "Mike Shower, SD-O; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 20423,
+   "candidate_id": null,
+   "note": "William Fields, HD-017; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 20962,
+   "candidate_id": null,
+   "note": "Elvi Gray-Jackson, SD-G; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 20963,
+   "candidate_id": null,
+   "note": "Jesse Kiehl, SD-B; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 21261,
+   "candidate_id": null,
+   "note": "Sara Hannan, HD-004; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 21268,
+   "candidate_id": null,
+   "note": "Kelly Merrick, SD-L; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 21271,
+   "candidate_id": null,
+   "note": "Andrea Story, HD-003; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 21272,
+   "candidate_id": null,
+   "note": "Sarah Vance, HD-006; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 21614,
+   "candidate_id": null,
+   "note": "Mike Prax, HD-033; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 22728,
+   "candidate_id": null,
+   "note": "Robert Myers, SD-Q; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 22857,
+   "candidate_id": null,
+   "note": "Mike Cronk, SD-R; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 22859,
+   "candidate_id": null,
+   "note": "James Kaufman, SD-F; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 22861,
+   "candidate_id": null,
+   "note": "Kevin McCabe, HD-030; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 22863,
+   "candidate_id": null,
+   "note": "David Nelson, HD-018; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 22865,
+   "candidate_id": null,
+   "note": "Calvin Schrage, HD-012; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 23890,
+   "candidate_id": "95e1fb8d-5dd4-42b6-b29a-c7074bc15627",
+   "note": "Ashley Carrick, HD-035; exact name match, same seat"
+  },
+  {
+   "people_id": 24187,
+   "candidate_id": null,
+   "note": "Genevieve Mina, HD-019; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 24409,
+   "candidate_id": null,
+   "note": "Forrest Dunbar, SD-J; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 24544,
+   "candidate_id": null,
+   "note": "Jesse Bjorkman, SD-D; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 24545,
+   "candidate_id": "38cfb607-351a-42dd-aad8-dc902c1d6ef6",
+   "note": "Loki Tobin, SD-I; our candidate row spells her name Loeki Gale Tobin"
+  },
+  {
+   "people_id": 24586,
+   "candidate_id": "d7f6bba7-0e51-4c3e-8fe7-292b96a07df5",
+   "note": "Maxine Dibert, HD-031; exact name match, same seat"
+  },
+  {
+   "people_id": 24587,
+   "candidate_id": null,
+   "note": "Andrew Gray, HD-020; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 24590,
+   "candidate_id": null,
+   "note": "Justin Ruffridge, HD-007; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 24591,
+   "candidate_id": "66829f08-ebbe-47c5-b4b0-3038bdec6d15",
+   "note": "Will Stapp, HD-032; exact name match, same seat"
+  },
+  {
+   "people_id": 24593,
+   "candidate_id": null,
+   "note": "Frank Tomaszewski, HD-034; the seat IS on our Nov-2026 ballot but he is not on it. Harmony Tomaszewski, the House District 34 candidate, is a DIFFERENT person and is deliberately not linked"
+  },
+  {
+   "people_id": 24789,
+   "candidate_id": null,
+   "note": "Jamie Allard, HD-023; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 24790,
+   "candidate_id": null,
+   "note": "Julie Coulombe, HD-011; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 24791,
+   "candidate_id": null,
+   "note": "Alyse Galvin, HD-014; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 24792,
+   "candidate_id": null,
+   "note": "Rebecca Himschoot, HD-002; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 24793,
+   "candidate_id": null,
+   "note": "Donna Mears, HD-021; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 26273,
+   "candidate_id": null,
+   "note": "Ky Holland, HD-009; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 26346,
+   "candidate_id": null,
+   "note": "Robyn Frier, HD-040; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 26347,
+   "candidate_id": null,
+   "note": "Jeremy Bynum, HD-001; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 26348,
+   "candidate_id": null,
+   "note": "Ted Eischeid, HD-022; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 26349,
+   "candidate_id": null,
+   "note": "Bill Elam, HD-008; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 26350,
+   "candidate_id": null,
+   "note": "Carolyn Hall, HD-016; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 26351,
+   "candidate_id": null,
+   "note": "Nellie Jimmie, HD-038; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 26352,
+   "candidate_id": null,
+   "note": "Elexie Moore, HD-028; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 26353,
+   "candidate_id": "95967f6c-4190-44b9-bdd9-57f51cf024ed",
+   "note": "Rebecca Schwanke, HD-036; hand-added. Our candidate row reads Becky Schwanke, which is not a prefix of Rebecca, so the proposer could not reach it. Corroborated by her candidate record, which carries current_office AK State Representative"
+  },
+  {
+   "people_id": 26354,
+   "candidate_id": null,
+   "note": "Jubilee Underwood, HD-027; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 26355,
+   "candidate_id": null,
+   "note": "Robert Yundt, SD-N; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 26560,
+   "candidate_id": null,
+   "note": "Garret Nelson, HD-029; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  },
+  {
+   "people_id": 26561,
+   "candidate_id": null,
+   "note": "Steve St. Clair, HD-026; our Alaska roster has no Nov-2026 candidate row for that seat yet"
+  }
+ ]
+}

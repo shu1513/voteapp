@@ -1,0 +1,164 @@
+{
+ "rolls": [
+  {
+   "measure": "AB 57",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601295,
+   "date": "2025-09-08",
+   "yea": 28,
+   "nay": 9,
+   "title": "California Dream for All Program: descendants of formerly enslaved people."
+  },
+  {
+   "measure": "AB 82",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601680,
+   "date": "2025-09-09",
+   "yea": 29,
+   "nay": 8,
+   "title": "Health care: legally protected health care activity."
+  },
+  {
+   "measure": "AB 86",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601617,
+   "date": "2025-09-09",
+   "yea": 30,
+   "nay": 10,
+   "title": "Instructional materials: health education."
+  },
+  {
+   "measure": "AB 461",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601566,
+   "date": "2025-09-09",
+   "yea": 29,
+   "nay": 9,
+   "title": "Truancy."
+  },
+  {
+   "measure": "AB 499",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601292,
+   "date": "2025-09-08",
+   "yea": 29,
+   "nay": 10,
+   "title": "Robert F. Kennedy Farm Workers Medical Plan."
+  },
+  {
+   "measure": "AB 538",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601740,
+   "date": "2025-09-10",
+   "yea": 30,
+   "nay": 9,
+   "title": "Public works: payroll records."
+  },
+  {
+   "measure": "AB 681",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601167,
+   "date": "2025-09-04",
+   "yea": 30,
+   "nay": 9,
+   "title": "California DREAM Loan Program: limits."
+  },
+  {
+   "measure": "AB 690",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726622,
+   "date": "2026-08-27",
+   "yea": 29,
+   "nay": 11,
+   "title": "Criminal procedure: indigent defense compensation."
+  },
+  {
+   "measure": "AB 713",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726504,
+   "date": "2026-08-27",
+   "yea": 30,
+   "nay": 10,
+   "title": "Public postsecondary education: student employment."
+  },
+  {
+   "measure": "AB 723",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601647,
+   "date": "2025-09-09",
+   "yea": 29,
+   "nay": 10,
+   "title": "Real estate: digitally altered images: disclosure."
+  },
+  {
+   "measure": "AB 734",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1600980,
+   "date": "2025-09-03",
+   "yea": 31,
+   "nay": 9,
+   "title": "Environmental protection: biological resources data: State Energy Resources Conservation and Development Commission: powerplants: power lines: applica"
+  },
+  {
+   "measure": "AB 797",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601275,
+   "date": "2025-09-08",
+   "yea": 29,
+   "nay": 9,
+   "title": "Community Stabilization Act: Counties of Los Angeles and Ventura."
+  },
+  {
+   "measure": "AB 801",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725913,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 8,
+   "title": "Nondiscrimination."
+  },
+  {
+   "measure": "AB 812",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601654,
+   "date": "2025-09-09",
+   "yea": 30,
+   "nay": 10,
+   "title": "Recall and resentencing: incarcerated firefighters."
+  },
+  {
+   "measure": "AB 851",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601736,
+   "date": "2025-09-10",
+   "yea": 30,
+   "nay": 8,
+   "title": "Real property transactions: Counties of Los Angeles and Ventura wildfires: unsolicited offers."
+  },
+  {
+   "measure": "AB 893",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1600973,
+   "date": "2025-09-03",
+   "yea": 31,
+   "nay": 9,
+   "title": "Housing development projects: objective standards: campus development zone."
+  }
+ ]
+}

@@ -1,0 +1,225 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "KS",
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1478079,
+      "measure_id": "SB 63",
+      "vote_date": "2025-01-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 63, which enacts the Help Not Harm Act. A doctor may no longer give a child under 18 puberty blockers, cross-sex hormones, or surgery to treat a gender identity that differs from the child's sex. No state money, including Medicaid, may pay for that care. State buildings and state workers on the job may not promote it either, unless the U.S. Constitution requires it. A doctor who breaks the rule can lose a license and can be sued for up to ten years after the child turns 18. Malpractice insurance may not cover the damages. The Kansas House passed it 83-35. Governor Laura Kelly vetoed the bill, both chambers voted to override her, and it became law.",
+      "nay_description": "Voted against passing Senate Bill 63, which enacts the Help Not Harm Act. A doctor may no longer give a child under 18 puberty blockers, cross-sex hormones, or surgery to treat a gender identity that differs from the child's sex. No state money, including Medicaid, may pay for that care. State buildings and state workers on the job may not promote it either, unless the U.S. Constitution requires it. A doctor who breaks the rule can lose a license and can be sued for up to ten years after the child turns 18. Malpractice insurance may not cover the damages. The Kansas House passed it 83-35 over these votes. Governor Laura Kelly vetoed the bill, both chambers voted to override her, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1491886
+      ],
+      "note": "House passage roll used instead of the 2025-02-18 override roll 1491886, whose LegiScan tally (84-35) contradicts Kansas's official roll call (85-34) and puts Rep. Bob Lewis on the wrong side. Version check: the House adopted no amendments, so the text it passed on 2025-01-31 is the text enrolled on 2025-02-05."
+    },
+    {
+      "jurisdiction": "KS",
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1526411,
+      "measure_id": "SB 4",
+      "vote_date": "2025-03-25",
+      "review_status": "approved",
+      "yea_description": "Voted to override Governor Laura Kelly's veto of Senate Bill 4, which changes when a mailed early ballot has to arrive. Under the old law it still counted if it came in up to three days after the election. From January 1, 2026, it must reach the county election office by 7:00 p.m. on election day. The Kansas House voted 84-41 to override, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "nay_description": "Voted against overriding Governor Laura Kelly's veto of Senate Bill 4, which changes when a mailed early ballot has to arrive. Under the old law it still counted if it came in up to three days after the election. From January 1, 2026, it must reach the county election office by 7:00 p.m. on election day. The Kansas House voted 84-41 to override over these votes, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KS",
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1543283,
+      "measure_id": "HB 2062",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to override Governor Laura Kelly's veto of House Bill 2062, which counts an unborn child for child support and for state income tax. Child support now starts at the date of conception. It is capped at the mother's own medical and pregnancy costs, and the cost of an elective abortion does not count. The act defines an unborn child as a living human organism in the womb from fertilization on. Starting in tax year 2025, a parent may also claim a $2,320 personal exemption that lowers taxable income for the year the child is born or the year a stillbirth certificate is filed. The act also lets a judge order a parent's retirement savings used for child support if that parent lost a work license for misconduct or chose to work less. Those savings are no longer shielded from child support claims. The Kansas House voted 87-38 to override, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "nay_description": "Voted against overriding Governor Laura Kelly's veto of House Bill 2062, which counts an unborn child for child support and for state income tax. Child support now starts at the date of conception. It is capped at the mother's own medical and pregnancy costs, and the cost of an elective abortion does not count. The act defines an unborn child as a living human organism in the womb from fertilization on. Starting in tax year 2025, a parent may also claim a $2,320 personal exemption that lowers taxable income for the year the child is born or the year a stillbirth certificate is filed. The act also lets a judge order a parent's retirement savings used for child support if that parent lost a work license for misconduct or chose to work less. Those savings are no longer shielded from child support claims. The Kansas House voted 87-38 to override over these votes, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KS",
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1543322,
+      "measure_id": "HB 2382",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to override Governor Laura Kelly's veto of House Bill 2382, which makes Kansas schools show a video on how a fetus grows. Any class that covers human growth, human development, or sex education has to include it. The video must be a high-quality animation or a sharp ultrasound image. It must run at least three minutes and show the brain, heart, and other vital organs forming early in pregnancy. The same act also lets the State Board of Education set what its own members are paid to attend meetings. The Kansas House voted 84-41 to override, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "nay_description": "Voted against overriding Governor Laura Kelly's veto of House Bill 2382, which makes Kansas schools show a video on how a fetus grows. Any class that covers human growth, human development, or sex education has to include it. The video must be a high-quality animation or a sharp ultrasound image. It must run at least three minutes and show the brain, heart, and other vital organs forming early in pregnancy. The same act also lets the State Board of Education set what its own members are paid to attend meetings. The Kansas House voted 84-41 to override over these votes, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KS",
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1637133,
+      "measure_id": "SB 244",
+      "vote_date": "2026-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted to override Governor Laura Kelly's veto of Senate Bill 244, which makes every shared restroom, locker room, changing room, and shower room in a public building open to one sex only. A person may still go into the other one to clean, make repairs, give first aid, help someone who needs it, do police work, coach, or stop a serious threat to safety or order. So may a child under 9 with an adult. A city or state body gets a written notice from the attorney general and can avoid a fine by fixing the violation within 15 days of that notice. If it does not, it is fined $25,000 the first time and $125,000 after that, with each day counted on its own. For a person, a second time costs $1,000 and a third is a crime. In four Kansas laws the act also defines gender as the sex written down at birth, and it orders driver's licenses and birth certificates changed to match. The Kansas House voted 87-37 to override, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "nay_description": "Voted against overriding Governor Laura Kelly's veto of Senate Bill 244, which makes every shared restroom, locker room, changing room, and shower room in a public building open to one sex only. A person may still go into the other one to clean, make repairs, give first aid, help someone who needs it, do police work, coach, or stop a serious threat to safety or order. So may a child under 9 with an adult. A city or state body gets a written notice from the attorney general and can avoid a fine by fixing the violation within 15 days of that notice. If it does not, it is fined $25,000 the first time and $125,000 after that, with each day counted on its own. For a person, a second time costs $1,000 and a third is a crime. In four Kansas laws the act also defines gender as the sex written down at birth, and it orders driver's licenses and birth certificates changed to match. The Kansas House voted 87-37 to override over these votes, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "House Substitute for SB 244. The Senate's earlier 37-3 vote was on a different bill, so only the House roll is imported and the description describes the House substitute."
+    },
+    {
+      "jurisdiction": "KS",
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1679846,
+      "measure_id": "HB 2437",
+      "vote_date": "2026-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to override Governor Laura Kelly's veto of House Bill 2437, which sets up the SAVE Kansas Act to clean up Kansas voter lists. Twice a year the state must match its voter list against a federal list of who is a citizen. It must also use reports every three months on driver's licenses given to people who are not citizens. It must use reports on people who later got a license in another state, and a yearly federal list of who has died. If the noncitizen driver's license list flags a voter, the state checks it and the county removes the voter once that is confirmed. If the out-of-state driver's license list flags a voter instead, the county writes to them, puts them on hold, and may drop them after 45 days with no reply; that voter can get back on by showing they live in Kansas. The act also lets people sign up online only on a .gov site or one the state has cleared, and makes running any other one a crime. The Kansas House voted 84-39 to override, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "nay_description": "Voted against overriding Governor Laura Kelly's veto of House Bill 2437, which sets up the SAVE Kansas Act to clean up Kansas voter lists. Twice a year the state must match its voter list against a federal list of who is a citizen. It must also use reports every three months on driver's licenses given to people who are not citizens. It must use reports on people who later got a license in another state, and a yearly federal list of who has died. If the noncitizen driver's license list flags a voter, the state checks it and the county removes the voter once that is confirmed. If the out-of-state driver's license list flags a voter instead, the county writes to them, puts them on hold, and may drop them after 45 days with no reply; that voter can get back on by showing they live in Kansas. The act also lets people sign up online only on a .gov site or one the state has cleared, and makes running any other one a crime. The Kansas House voted 84-39 to override over these votes, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KS",
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1544084,
+      "measure_id": "SB 269",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to override Governor Laura Kelly's veto of Senate Bill 269, which sets up automatic future cuts to Kansas income tax rates. Each year the state budget director checks the income tax the state took in. If it beats what came in during the 2024 budget year, once inflation is counted, the extra is turned into a rate cut. Personal rates drop first, until both brackets reach 4.0 percent. Only then do rates on companies, banks, and savings firms start to fall. There is no cut in a year when the state's rainy day fund holds less than 15 percent of the last year's tax money. The Kansas House voted 87-37 to override, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "nay_description": "Voted against overriding Governor Laura Kelly's veto of Senate Bill 269, which sets up automatic future cuts to Kansas income tax rates. Each year the state budget director checks the income tax the state took in. If it beats what came in during the 2024 budget year, once inflation is counted, the extra is turned into a rate cut. Personal rates drop first, until both brackets reach 4.0 percent. Only then do rates on companies, banks, and savings firms start to fall. There is no cut in a year when the state's rainy day fund holds less than 15 percent of the last year's tax money. The Kansas House voted 87-37 to override over these votes, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KS",
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1495761,
+      "measure_id": "HB 2101",
+      "vote_date": "2025-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2101, which stops Kansas cities and counties from running a guaranteed income program with tax money. They may run one only if the Legislature passes a law allowing that program. Any local rule setting one up before July 1, 2025, is wiped out. Guaranteed income means a program, not required by federal law, that hands people cash on a regular schedule. The Kansas House passed it 86-37, the Senate agreed, and it became law.",
+      "nay_description": "Voted against passing House Bill 2101, which stops Kansas cities and counties from running a guaranteed income program with tax money. They may run one only if the Legislature passes a law allowing that program. Any local rule setting one up before July 1, 2025, is wiped out. Guaranteed income means a program, not required by federal law, that hands people cash on a regular schedule. The Kansas House passed it 86-37 over these votes, the Senate agreed, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KS",
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1529499,
+      "measure_id": "HB 2054",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted to adopt the conference committee report on House Bill 2054, which raises how much money each contributor may give Kansas candidates and parties. Per election, the cap on one contributor's gift doubles to $4,000 for governor and other statewide races. It doubles to $1,000 for state representative, district judge, district attorney, and local races in areas under 50,000 people. It doubles to $2,000 for state senator, State Board of Education, and larger local races. The cap on one cash gift doubles to $200. A party may now give a candidate any amount for a general election, and what a party spends to back a candidate no longer counts as a gift. Yearly gifts from one donor to a state or legislative party fund may reach $35,000, and to a county or district one $10,000. The Kansas House adopted the conference committee's final version 72-52, the Senate agreed, and the governor signed it into law.",
+      "nay_description": "Voted against adopting the conference committee report on House Bill 2054, which raises how much money each contributor may give Kansas candidates and parties. Per election, the cap on one contributor's gift doubles to $4,000 for governor and other statewide races. It doubles to $1,000 for state representative, district judge, district attorney, and local races in areas under 50,000 people. It doubles to $2,000 for state senator, State Board of Education, and larger local races. The cap on one cash gift doubles to $200. A party may now give a candidate any amount for a general election, and what a party spends to back a candidate no longer counts as a gift. Yearly gifts from one donor to a state or legislative party fund may reach $35,000, and to a county or district one $10,000. The Kansas House adopted the conference committee's final version 72-52 over these votes, the Senate agreed, and the governor signed it into law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KS",
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1543277,
+      "measure_id": "HB 2033",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to override Governor Laura Kelly's veto of House Bill 2033, which lets more reading help be paid for out of a school district's at-risk fund. Kansas keeps a list of the programs that fund may pay for. The act adds groups that do not run for profit and are cleared by a national body. That body trains teachers to teach reading step by step, the method used with students who have dyslexia. The Kansas House voted 87-38 to override, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "nay_description": "Voted against overriding Governor Laura Kelly's veto of House Bill 2033, which lets more reading help be paid for out of a school district's at-risk fund. Kansas keeps a list of the programs that fund may pay for. The act adds groups that do not run for profit and are cleared by a national body. That body trains teachers to teach reading step by step, the method used with students who have dyslexia. The Kansas House voted 87-38 to override over these votes, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KS",
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1679944,
+      "measure_id": "SB 30",
+      "vote_date": "2026-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to override Governor Laura Kelly's veto of Senate Bill 30, which gives the Legislature the last word on new job licenses. From January 1, 2026, a state agency that wants a new license for a trade, or a big change to one, must get the Legislature to pass a bill saying yes. First a committee in each chamber reads a staff report. It has to cover why the license is needed to keep people safe, what lighter options exist, how other states handle the job, and what it would cost. Agencies must also list every license they run for a legislative committee each September. Six health boards, among them nursing, dental, and pharmacy, are left out. The Kansas House voted 88-35 to override, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "nay_description": "Voted against overriding Governor Laura Kelly's veto of Senate Bill 30, which gives the Legislature the last word on new job licenses. From January 1, 2026, a state agency that wants a new license for a trade, or a big change to one, must get the Legislature to pass a bill saying yes. First a committee in each chamber reads a staff report. It has to cover why the license is needed to keep people safe, what lighter options exist, how other states handle the job, and what it would cost. Agencies must also list every license they run for a legislative committee each September. Six health boards, among them nursing, dental, and pharmacy, are left out. The Kansas House voted 88-35 to override over these votes, the Senate did the same, and the bill became law over Governor Laura Kelly's veto.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "KS",
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1524944,
+      "measure_id": "HB 2109",
+      "vote_date": "2025-03-24",
+      "review_status": "approved",
+      "yea_description": "Voted to agree to the Senate's changes to House Bill 2109, which shields power and phone companies from lawsuits over police gear on their poles. The company and a police force can agree to put police gear on a pole the company owns. After that, no one can sue the company over putting up, reaching, running, fixing, or taking down that gear. The shield covers companies owned by shareholders, by a city, or by their own members. The Kansas House agreed to the Senate's changes 78-44, which sent the bill to the governor, and it was signed into law.",
+      "nay_description": "Voted against agreeing to the Senate's changes to House Bill 2109, which shields power and phone companies from lawsuits over police gear on their poles. The company and a police force can agree to put police gear on a pole the company owns. After that, no one can sue the company over putting up, reaching, running, fixing, or taking down that gear. The shield covers companies owned by shareholders, by a city, or by their own members. The Kansas House agreed to the Senate's changes 78-44 over these votes, which sent the bill to the governor, and it was signed into law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
