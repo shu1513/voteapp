@@ -46,8 +46,8 @@ The other ten take `nay: null`, each for a reason on a different axis from the a
 
 - S 1985, S 743, S 744 — the objections run on gun owners' due process and on burdens on
   dealers, not on whether gun violence should fall.
-- S 36 — a no can rest on wanting the dispensing pharmacist named on a label, which is a
-  labeling question rather than a position on reproductive health access.
+- S 36 — a no can rest on wanting the prescriber or dispensing clinician named on a label,
+  which is a labeling question rather than a position on reproductive health access.
 - S 3072 — the objection is an employer's interest in screening for theft or fraud risk.
 - S 8416 — the objection is exposure to the attorney general and to litigation.
 - S 7882, S 952 — the objections are landlord compliance costs and liability.
@@ -78,8 +78,9 @@ These are the limits a shorter description would have dropped, and each one is i
 record:
 
 - **A 4040 is housing discrimination only**, not all discrimination, and the practice can
-  still be lawful with a proved business justification that no less harmful practice would
-  serve.
+  still be lawful with a proved business justification — though the complainant can still
+  win by proving a less harmful practice would serve it (§296(5-a)(d)(3); the burden of
+  that last step is the complainant's, not the owner's).
 - **S 8416's private right of action still covers deceptive acts only** — the new unfair
   and abusive categories are the attorney general's to enforce — and a business following
   federal trade rules has a complete defense.
