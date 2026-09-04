@@ -1,0 +1,4296 @@
+{
+  "jurisdiction": "DE",
+  "sessionId": 2163,
+  "people": [
+    {
+      "people_id": 10562,
+      "person_hash": "4575pk4e",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Stephanie Bolden",
+      "first_name": "Stephanie",
+      "middle_name": "T.",
+      "last_name": "Bolden",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-002",
+      "ftm_eid": 6511712,
+      "votesmart_id": 71997,
+      "opensecrets_id": "",
+      "knowwho_pid": 310638,
+      "ballotpedia": "Stephanie_Bolden",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "StephanieT.Bolden@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD2",
+          "biography": "https://housedems.delaware.gov/members/house-district-2",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Stephanie_Bolden",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/71997"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepBolden",
+            "instagram": "https://www.instagram.com/repbolden/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-2",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/StephanieTBolden",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/stephanie-t-bolden-423910137/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 10563,
+      "person_hash": "v43tj7wg",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Debra Heffernan",
+      "first_name": "Debra",
+      "middle_name": "J.",
+      "last_name": "Heffernan",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-006",
+      "ftm_eid": 6511717,
+      "votesmart_id": 122847,
+      "opensecrets_id": "",
+      "knowwho_pid": 299456,
+      "ballotpedia": "Debra_Heffernan",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "Debra.Heffernan@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD6",
+          "biography": "https://housedems.delaware.gov/members/house-district-6",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Debra_Heffernan",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/122847"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepDebraHeffernan/",
+            "instagram": "https://www.instagram.com/repdebraheffernan/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-6",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/deb.heffernan.5",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 10565,
+      "person_hash": "abiky6k1",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Edward Osienski",
+      "first_name": "Edward",
+      "middle_name": "S.",
+      "last_name": "Osienski",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-024",
+      "ftm_eid": 6511757,
+      "votesmart_id": 126460,
+      "opensecrets_id": "",
+      "knowwho_pid": 310649,
+      "ballotpedia": "Edward_Osienski",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "edward.osienski@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD24",
+          "biography": "https://housedems.delaware.gov/members/house-district-24",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Edward_Osienski",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/126460"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/EdOsienski",
+            "instagram": "https://www.instagram.com/repedosienski/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-24",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/ed.osienski.73",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 11375,
+      "person_hash": "log969vu",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "David Lawson",
+      "first_name": "David",
+      "middle_name": "G.",
+      "last_name": "Lawson",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-015",
+      "ftm_eid": 6696766,
+      "votesmart_id": 122841,
+      "opensecrets_id": "",
+      "knowwho_pid": 299460,
+      "ballotpedia": "David_G._Lawson",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4237",
+          "district_phone": "",
+          "email": "Dave.Lawson@delaware.gov",
+          "webmail": "",
+          "biography": "https://senategop.delaware.gov/members/senate-district-15",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/David_G._Lawson",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/122841"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 14543,
+      "person_hash": "cs2uz06l",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Timothy Dukes",
+      "first_name": "Timothy",
+      "middle_name": "D.",
+      "last_name": "Dukes",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-040",
+      "ftm_eid": 8449509,
+      "votesmart_id": 142597,
+      "opensecrets_id": "",
+      "knowwho_pid": 420510,
+      "ballotpedia": "Timothy_Dukes_(Delaware)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4171",
+          "district_phone": "",
+          "email": "Timothy.Dukes@delaware.gov",
+          "webmail": "",
+          "biography": "https://housegop.delaware.gov/members/house-district-40",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Timothy_Dukes_%28Delaware%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/142597"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepresentativeTimDukes/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housegop.delaware.gov/members/house-district-40",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/tim.dukes.52",
+            "instagram": "https://www.instagram.com/timothydukes/",
+            "linkedin": "https://www.linkedin.com/in/tim-dukes-65250a40/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 14544,
+      "person_hash": "wuwiq8re",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Ronald Gray",
+      "first_name": "Ronald",
+      "middle_name": "E.",
+      "last_name": "Gray",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-038",
+      "ftm_eid": 8449363,
+      "votesmart_id": 142596,
+      "opensecrets_id": "",
+      "knowwho_pid": 420509,
+      "ballotpedia": "Ronald_Gray",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4171",
+          "district_phone": "",
+          "email": "Ronald.Gray@delaware.gov",
+          "webmail": "",
+          "biography": "https://housegop.delaware.gov/members/house-district-38",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Ronald_Gray",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/142596"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/statereprongray/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housegop.delaware.gov/members/house-district-38",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/ron-gray-9230b339/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 14545,
+      "person_hash": "pwvdz5je",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Kimberly Williams",
+      "first_name": "Kimberly",
+      "middle_name": "",
+      "last_name": "Williams",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-019",
+      "ftm_eid": 13789769,
+      "votesmart_id": 142522,
+      "opensecrets_id": "",
+      "knowwho_pid": 427734,
+      "ballotpedia": "Kimberly_Williams",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "Kimberly.Williams@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD19",
+          "biography": "https://housedems.delaware.gov/members/house-district-19",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Kimberly_Williams",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/142522"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-19",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/kimcasey.williams",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/kimberly-williams-32134840/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 14546,
+      "person_hash": "nnlm2nv4",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Charles Paradee",
+      "first_name": "William",
+      "middle_name": "Charles",
+      "last_name": "Paradee",
+      "suffix": "III",
+      "nickname": "Trey",
+      "district": "SD-017",
+      "ftm_eid": 8400578,
+      "votesmart_id": 109397,
+      "opensecrets_id": "",
+      "knowwho_pid": 420283,
+      "ballotpedia": "Trey_Charles_Paradee",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4162",
+          "district_phone": "",
+          "email": "Trey.Paradee@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-17",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Trey_Charles_Paradee",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/109397"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenTreyParadee",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-17",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/tparadee",
+            "instagram": "https://www.instagram.com/treyparadee/",
+            "linkedin": "https://www.linkedin.com/in/trey-paradee-58757920a/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.paradeefinancial.com/trey-paradee",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 14549,
+      "person_hash": "i5lbk2ca",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Jeffrey Spiegelman",
+      "first_name": "Jeffrey",
+      "middle_name": "N.",
+      "last_name": "Spiegelman",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-011",
+      "ftm_eid": 13789762,
+      "votesmart_id": 142584,
+      "opensecrets_id": "",
+      "knowwho_pid": 420275,
+      "ballotpedia": "Jeffrey_Spiegelman",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4171",
+          "district_phone": "",
+          "email": "jeff.spiegelman@delaware.gov",
+          "webmail": "",
+          "biography": "https://housegop.delaware.gov/members/house-district-11",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Jeffrey_Spiegelman",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/142584"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housegop.delaware.gov/members/house-district-11",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jeffrey.spiegelman.9",
+            "instagram": "https://www.instagram.com/spiegelmanjeffrey/",
+            "linkedin": "https://www.linkedin.com/in/jeff-spiegelman-thecommercialmovingexperience/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 14551,
+      "person_hash": "9q6m1qkc",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Brian Pettyjohn",
+      "first_name": "Brian",
+      "middle_name": "Guy",
+      "last_name": "Pettyjohn",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-019",
+      "ftm_eid": 25162481,
+      "votesmart_id": 143611,
+      "opensecrets_id": "",
+      "knowwho_pid": 442608,
+      "ballotpedia": "Brian_Pettyjohn",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4117",
+          "district_phone": "",
+          "email": "Brian.Pettyjohn@delaware.gov",
+          "webmail": "",
+          "biography": "https://senategop.delaware.gov/members/senate-district-19",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Brian_Pettyjohn",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/143611"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/BrianGPettyjohn/",
+            "instagram": "https://www.instagram.com/senatorpettyjohn/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senategop.delaware.gov/members/senate-district-19",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/BrianPettyjohn",
+            "instagram": "https://www.instagram.com/brianpettyjohn/",
+            "linkedin": "https://www.linkedin.com/in/brianpettyjohn/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 14552,
+      "person_hash": "tkrhd39l",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Nicole Poore",
+      "first_name": "Nicole",
+      "middle_name": "",
+      "last_name": "Poore",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-012",
+      "ftm_eid": 13789972,
+      "votesmart_id": 142570,
+      "opensecrets_id": "",
+      "knowwho_pid": 420252,
+      "ballotpedia": "Nicole_Poore",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4164",
+          "district_phone": "",
+          "email": "Nicole.Poore@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-12",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Nicole_Poore",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/142570"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenatorNicolePoore/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-12",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/nicole.savillepoore",
+            "instagram": "https://www.instagram.com/pooreclan/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 14553,
+      "person_hash": "c90dhatx",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Bryan Townsend",
+      "first_name": "Bryan",
+      "middle_name": "",
+      "last_name": "Townsend",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-011",
+      "ftm_eid": 15749252,
+      "votesmart_id": 141520,
+      "opensecrets_id": "",
+      "knowwho_pid": 412507,
+      "ballotpedia": "Bryan_Townsend",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4165",
+          "district_phone": "",
+          "email": "Bryan.Townsend@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-11",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Bryan_Townsend",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/141520"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-11",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/bryantownsendde/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 16374,
+      "person_hash": "ogck0ewv",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Bryant Richardson",
+      "first_name": "Bryant",
+      "middle_name": "L.",
+      "last_name": "Richardson",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-021",
+      "ftm_eid": 13789976,
+      "votesmart_id": 142575,
+      "opensecrets_id": "",
+      "knowwho_pid": 420265,
+      "ballotpedia": "Bryant_Richardson",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4298",
+          "district_phone": "",
+          "email": "Bryant.Richardson@delaware.gov",
+          "webmail": "",
+          "biography": "https://senategop.delaware.gov/members/senate-district-21",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Bryant_Richardson",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/142575"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenBryantRichardson",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senategop.delaware.gov/members/senate-district-21",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/bryant.richardson.18",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/bryant-richardson-83696b9/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 16446,
+      "person_hash": "3mk22kin",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Sean Lynn",
+      "first_name": "Sean",
+      "middle_name": "M.",
+      "last_name": "Lynn",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-031",
+      "ftm_eid": 25085231,
+      "votesmart_id": 130476,
+      "opensecrets_id": "",
+      "knowwho_pid": 495107,
+      "ballotpedia": "Sean_M._Lynn",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "Sean.Lynn@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD31",
+          "biography": "https://housedems.delaware.gov/members/house-district-31",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Sean_M._Lynn",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/130476"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100057642417111",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-31",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/sean.m.lynn",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/sean-m-lynn-5b152821/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 16769,
+      "person_hash": "tw0fjvnf",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Richard Collins",
+      "first_name": "Richard",
+      "middle_name": "G.",
+      "last_name": "Collins",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-041",
+      "ftm_eid": 13789790,
+      "votesmart_id": 142598,
+      "opensecrets_id": "",
+      "knowwho_pid": 425951,
+      "ballotpedia": "Richard_Collins_(Delaware)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4171",
+          "district_phone": "",
+          "email": "Rich.Collins@delaware.gov",
+          "webmail": "",
+          "biography": "https://housegop.delaware.gov/members/house-district-41",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Richard_Collins_%28Delaware%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/142598"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100058140186638",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housegop.delaware.gov/members/house-district-41",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/richcollins41",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 16771,
+      "person_hash": "9u9x69w9",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Kevin Hensley",
+      "first_name": "Kevin",
+      "middle_name": "S.",
+      "last_name": "Hensley",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-009",
+      "ftm_eid": 19172114,
+      "votesmart_id": 154282,
+      "opensecrets_id": "",
+      "knowwho_pid": 495111,
+      "ballotpedia": "Kevin_S._Hensley",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4171",
+          "district_phone": "",
+          "email": "kevin.hensley@delaware.gov",
+          "webmail": "",
+          "biography": "https://housegop.delaware.gov/members/house-district-9",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Kevin_S._Hensley",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/154282"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/repkevinhensley/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housegop.delaware.gov/members/house-district-9",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/kevin.hensley.5",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/kevin-hensley-04ba803/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 16772,
+      "person_hash": "s3e2mse4",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Lyndon Yearick",
+      "first_name": "Lyndon",
+      "middle_name": "Dean",
+      "last_name": "Yearick",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-034",
+      "ftm_eid": 8437323,
+      "votesmart_id": 154269,
+      "opensecrets_id": "",
+      "knowwho_pid": 504456,
+      "ballotpedia": "Lyndon_Dean_Yearick",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4171",
+          "district_phone": "",
+          "email": "lyndon.yearick@delaware.gov",
+          "webmail": "",
+          "biography": "https://housegop.delaware.gov/members/house-district-34",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Lyndon_Dean_Yearick",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/154269"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100057907066180",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housegop.delaware.gov/members/house-district-34",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/lyndon.yearick",
+            "instagram": "https://www.instagram.com/lyndonyearick/",
+            "linkedin": "https://www.linkedin.com/in/lyndonyearick/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 18423,
+      "person_hash": "7b26g9wj",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Jack Walsh",
+      "first_name": "John",
+      "middle_name": "",
+      "last_name": "Walsh",
+      "suffix": "",
+      "nickname": "Jack",
+      "district": "SD-009",
+      "ftm_eid": 40814574,
+      "votesmart_id": 174060,
+      "opensecrets_id": "",
+      "knowwho_pid": 589835,
+      "ballotpedia": "Jack_Walsh_(Delaware)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4163",
+          "district_phone": "",
+          "email": "John.Walsh@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-9",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Jack_Walsh_%28Delaware%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/174060"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenJackWalsh/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-9",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jack.walsh.587",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/jack-walsh-8b563026/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 18565,
+      "person_hash": "j6srl6d6",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Charles Postles",
+      "first_name": "Charles",
+      "middle_name": "S.",
+      "last_name": "Postles",
+      "suffix": "Jr.",
+      "nickname": "",
+      "district": "HD-033",
+      "ftm_eid": 22204198,
+      "votesmart_id": 154268,
+      "opensecrets_id": "",
+      "knowwho_pid": 504455,
+      "ballotpedia": "Charles_S._Postles_Jr.",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4171",
+          "district_phone": "",
+          "email": "Charles.Postles@delaware.gov",
+          "webmail": "",
+          "biography": "https://housegop.delaware.gov/members/house-district-33",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Charles_S._Postles_Jr.",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/154268"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/Postles33rd/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housegop.delaware.gov/members/house-district-33",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100007105924983",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19351,
+      "person_hash": "jv7hhejm",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Stephanie Hansen",
+      "first_name": "Stephanie",
+      "middle_name": "L.",
+      "last_name": "Hansen",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-010",
+      "ftm_eid": 8438162,
+      "votesmart_id": 176088,
+      "opensecrets_id": "",
+      "knowwho_pid": 617527,
+      "ballotpedia": "Stephanie_Hansen_(Delaware)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4138",
+          "district_phone": "",
+          "email": "Stephanie.Hansen@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-10",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Stephanie_Hansen_%28Delaware%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/176088"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenatorStephanieHansen",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-10",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/stephanie.hansen.9849",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/stephanie-hansen-00623812/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19894,
+      "person_hash": "vb4pn7bo",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Franklin Cooke",
+      "first_name": "Franklin",
+      "middle_name": "D.",
+      "last_name": "Cooke",
+      "suffix": "Jr.",
+      "nickname": "",
+      "district": "HD-016",
+      "ftm_eid": 45401503,
+      "votesmart_id": 184875,
+      "opensecrets_id": "",
+      "knowwho_pid": 662389,
+      "ballotpedia": "Franklin_Cooke_Jr.",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "FranklinD.Cooke@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD16",
+          "biography": "https://housedems.delaware.gov/members/house-district-16",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Franklin_Cooke_Jr.",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184875"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/repfranklincooke",
+            "instagram": "https://www.instagram.com/repfranklincooke/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-16",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/franklin.cooke",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19896,
+      "person_hash": "qcwdte5a",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Krista Griffith",
+      "first_name": "Krista",
+      "middle_name": "",
+      "last_name": "Griffith",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-012",
+      "ftm_eid": 42101921,
+      "votesmart_id": 184874,
+      "opensecrets_id": "",
+      "knowwho_pid": 654467,
+      "ballotpedia": "Krista_Griffith",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "Krista.Griffith@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD12",
+          "biography": "https://housedems.delaware.gov/members/house-district-12",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Krista_Griffith",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184874"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepKristaGriffith/",
+            "instagram": "https://www.instagram.com/repkristagriffith/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-12",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/krista.z.griffith",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/krista-griffith-2564a8b9/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19897,
+      "person_hash": "7i2jcr7n",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Kendra Johnson",
+      "first_name": "Kendra",
+      "middle_name": "",
+      "last_name": "Johnson",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-005",
+      "ftm_eid": 45401493,
+      "votesmart_id": 184865,
+      "opensecrets_id": "",
+      "knowwho_pid": 662383,
+      "ballotpedia": "Kendra_Johnson",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "Kendra.Johnson@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD5",
+          "biography": "https://housedems.delaware.gov/members/house-district-5",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Kendra_Johnson",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184865"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepKendraJohnson",
+            "instagram": "https://www.instagram.com/repkendrajohnson/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-5",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/kendra.thompsonjohnson.9",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/kendraljohnson/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19898,
+      "person_hash": "g2l2bl89",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Elizabeth Lockman",
+      "first_name": "Elizabeth",
+      "middle_name": "",
+      "last_name": "Lockman",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-003",
+      "ftm_eid": 45401532,
+      "votesmart_id": 184858,
+      "opensecrets_id": "",
+      "knowwho_pid": 654454,
+      "ballotpedia": "S._Elizabeth_Lockman",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4168",
+          "district_phone": "",
+          "email": "elizabeth.lockman@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-3",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/S._Elizabeth_Lockman",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184858"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenatorLockman/",
+            "instagram": "https://www.instagram.com/senatortizzylockman/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-3",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/tizzylockman",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/selockman/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19899,
+      "person_hash": "0ne8cp64",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Michael Smith",
+      "first_name": "Michael",
+      "middle_name": "F.",
+      "last_name": "Smith",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-022",
+      "ftm_eid": 25085230,
+      "votesmart_id": 154878,
+      "opensecrets_id": "",
+      "knowwho_pid": 504929,
+      "ballotpedia": "Michael_Smith_(Delaware)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4171",
+          "district_phone": "",
+          "email": "michael.f.smith@delaware.gov",
+          "webmail": "",
+          "biography": "https://housegop.delaware.gov/members/house-district-22",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Michael_Smith_%28Delaware%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/154878"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/staterepresentativemikesmith/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housegop.delaware.gov/members/house-district-22",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=11303578",
+            "instagram": "https://www.instagram.com/micdupde/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19900,
+      "person_hash": "094tupky",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Melissa Minor-Brown",
+      "first_name": "Melissa",
+      "middle_name": "",
+      "last_name": "Minor-Brown",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-017",
+      "ftm_eid": 45401506,
+      "votesmart_id": 184879,
+      "opensecrets_id": "",
+      "knowwho_pid": 665063,
+      "ballotpedia": "Melissa_Minor-Brown",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "Melissa.MinorBrown@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD17",
+          "biography": "https://housedems.delaware.gov/members/house-district-17",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Melissa_Minor-Brown",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184879"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepMelissaMinorBrown",
+            "instagram": "https://www.instagram.com/rep_melissa_minor_brown/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/RepMinor",
+            "website": "https://housedems.delaware.gov/members/house-district-17",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/mspainbey",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/melissa-minor-brown-msn-rn-087451125/",
+            "tiktok": "https://www.tiktok.com/@melissaminorbrown",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19901,
+      "person_hash": "gpvyma9q",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Raymond Seigfried",
+      "first_name": "Raymond",
+      "middle_name": "",
+      "last_name": "Seigfried",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-005",
+      "ftm_eid": 4700374,
+      "votesmart_id": 184870,
+      "opensecrets_id": "",
+      "knowwho_pid": 662385,
+      "ballotpedia": "Raymond_Seigfried",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4137",
+          "district_phone": "",
+          "email": "ray.seigfried@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-5",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Raymond_Seigfried",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184870"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenRaySeigfried",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-5",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100014187137272",
+            "instagram": "https://www.instagram.com/seigfriedray/",
+            "linkedin": "https://www.linkedin.com/in/raymondjseigfried/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19902,
+      "person_hash": "1xe046ch",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Bryan Shupe",
+      "first_name": "Bryan",
+      "middle_name": "W.",
+      "last_name": "Shupe",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-036",
+      "ftm_eid": 45401526,
+      "votesmart_id": 184912,
+      "opensecrets_id": "",
+      "knowwho_pid": 662411,
+      "ballotpedia": "Bryan_Shupe",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4171",
+          "district_phone": "",
+          "email": "Bryan.Shupe@delaware.gov",
+          "webmail": "",
+          "biography": "https://housegop.delaware.gov/members/house-district-36",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Bryan_Shupe",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184912"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100057956172863",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housegop.delaware.gov/members/house-district-36",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/bryanshupeisdelaware",
+            "instagram": "https://www.instagram.com/bryanshupedelaware",
+            "linkedin": "https://www.linkedin.com/in/bryan-shupe-8706ba16/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19903,
+      "person_hash": "tkfkptp7",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Laura Sturgeon",
+      "first_name": "Laura",
+      "middle_name": "",
+      "last_name": "Sturgeon",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-004",
+      "ftm_eid": 43145471,
+      "votesmart_id": 184886,
+      "opensecrets_id": "",
+      "knowwho_pid": 654456,
+      "ballotpedia": "Laura_Sturgeon",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4135",
+          "district_phone": "",
+          "email": "laura.sturgeon@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-4",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Laura_Sturgeon",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184886"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenLauraSturgeon/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-4",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/lauraviviana65",
+            "instagram": "https://www.instagram.com/laura_v_sturgeon/",
+            "linkedin": "https://www.linkedin.com/in/laura-sturgeon-833b9b10a/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19904,
+      "person_hash": "ua9kaz9y",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Jesse Vanderwende",
+      "first_name": "Jesse",
+      "middle_name": "Rawlins",
+      "last_name": "Vanderwende",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-035",
+      "ftm_eid": 45401524,
+      "votesmart_id": 184884,
+      "opensecrets_id": "",
+      "knowwho_pid": 654472,
+      "ballotpedia": "Jesse_Vanderwende",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4171",
+          "district_phone": "",
+          "email": "jesse.vanderwende@delaware.gov",
+          "webmail": "",
+          "biography": "https://housegop.delaware.gov/members/house-district-35",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Jesse_Vanderwende",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184884"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jesserep35/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housegop.delaware.gov/members/house-district-35",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jared.vanderbilt.50",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19921,
+      "person_hash": "ny0zei3m",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Darius Brown",
+      "first_name": "Darius",
+      "middle_name": "",
+      "last_name": "Brown",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-002",
+      "ftm_eid": 39595778,
+      "votesmart_id": 143827,
+      "opensecrets_id": "",
+      "knowwho_pid": 256797,
+      "ballotpedia": "Darius_Brown",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4286",
+          "district_phone": "",
+          "email": "Darius.Brown@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-2",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Darius_Brown",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/143827"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenatorDariusBrown/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-2",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/dariusjbrown_/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20146,
+      "person_hash": "q7uylde2",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Shannon Morris",
+      "first_name": "Shannon",
+      "middle_name": "",
+      "last_name": "Morris",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-030",
+      "ftm_eid": 45401519,
+      "votesmart_id": 184908,
+      "opensecrets_id": "",
+      "knowwho_pid": 646467,
+      "ballotpedia": "Shannon_Morris",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4171",
+          "district_phone": "",
+          "email": "Shannon.Morris@delaware.gov",
+          "webmail": "",
+          "biography": "https://housegop.delaware.gov/members/house-district-30",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Shannon_Morris",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184908"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/staterepshannonmorris/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housegop.delaware.gov/members/house-district-30",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/shannon.morris.3705",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20203,
+      "person_hash": "xi1e1a3m",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Nnamdi Chukwuocha",
+      "first_name": "Nnamdi",
+      "middle_name": "",
+      "last_name": "Chukwuocha",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-001",
+      "ftm_eid": 45401487,
+      "votesmart_id": 143826,
+      "opensecrets_id": "",
+      "knowwho_pid": 672058,
+      "ballotpedia": "Nnamdi_Chukwuocha",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "Nnamdi.Chukwuocha@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD1",
+          "biography": "https://housedems.delaware.gov/members/house-district-1",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Nnamdi_Chukwuocha",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/143826"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepNnamdiChukwuocha",
+            "instagram": "https://www.instagram.com/repnnamdichukwuocha/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-1",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/nnamdi.chukwuocha.9",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20204,
+      "person_hash": "7lbi82am",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "William Bush",
+      "first_name": "William",
+      "middle_name": "G.",
+      "last_name": "Bush",
+      "suffix": "IV",
+      "nickname": "",
+      "district": "HD-029",
+      "ftm_eid": 14265945,
+      "votesmart_id": 184906,
+      "opensecrets_id": "",
+      "knowwho_pid": 650609,
+      "ballotpedia": "William_Bush",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "william.bush@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD29",
+          "biography": "https://housedems.delaware.gov/members/house-district-29",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/William_Bush",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184906"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepBillBush",
+            "instagram": "https://www.instagram.com/rep_bush/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/BillBush29",
+            "website": "https://housedems.delaware.gov/members/house-district-29",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/william.bush.980",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21729,
+      "person_hash": "xj0kncya",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Larry Lambert",
+      "first_name": "Larry",
+      "middle_name": "D.",
+      "last_name": "Lambert",
+      "suffix": "Jr.",
+      "nickname": "",
+      "district": "HD-007",
+      "ftm_eid": 45401496,
+      "votesmart_id": 184869,
+      "opensecrets_id": "",
+      "knowwho_pid": 669773,
+      "ballotpedia": "Larry_Lambert",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "Larry.Lambert@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD7",
+          "biography": "https://housedems.delaware.gov/members/house-district-7",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Larry_Lambert",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184869"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepLarryLambert",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-7",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/LarryLambertClaymont",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21730,
+      "person_hash": "hey7ij7k",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Eric Morrison",
+      "first_name": "Eric",
+      "middle_name": "A.",
+      "last_name": "Morrison",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-027",
+      "ftm_eid": 50271059,
+      "votesmart_id": 195158,
+      "opensecrets_id": "",
+      "knowwho_pid": 740576,
+      "ballotpedia": "Eric_Morrison_(Delaware)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "Eric.Morrison@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD27",
+          "biography": "https://housedems.delaware.gov/members/house-district-27",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Eric_Morrison_%28Delaware%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/195158"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepEricMorrison",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-27",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/eric.morrison.123829",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21731,
+      "person_hash": "br6k6c0n",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Sherae'a Moore",
+      "first_name": "Sherae'a",
+      "middle_name": "A.",
+      "last_name": "Moore",
+      "suffix": "",
+      "nickname": "Rae",
+      "district": "HD-008",
+      "ftm_eid": 50271026,
+      "votesmart_id": 195151,
+      "opensecrets_id": "",
+      "knowwho_pid": 746694,
+      "ballotpedia": "Sherae%27a_Moore",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "Rae.Moore@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD8",
+          "biography": "https://housedems.delaware.gov/members/house-district-8",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Sherae%2527a_Moore",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/195151"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepRaeMoore",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-8",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/sheraea.eboni",
+            "instagram": "https://www.instagram.com/smoore_please/",
+            "linkedin": "https://www.linkedin.com/in/sherae-a-rae-moore-959a64102/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21732,
+      "person_hash": "0yyw56dp",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Madinah Wilson-Anton",
+      "first_name": "Madinah",
+      "middle_name": "",
+      "last_name": "Wilson-Anton",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-026",
+      "ftm_eid": 50271057,
+      "votesmart_id": 195157,
+      "opensecrets_id": "",
+      "knowwho_pid": 644764,
+      "ballotpedia": "Madinah_Wilson-Anton",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "Madinah.Wilson-Anton@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD26",
+          "biography": "https://housedems.delaware.gov/members/house-district-26",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Madinah_Wilson-Anton",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/195157"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepMadinah",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-26",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/madinahw",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/madinah-wilson-anton-76506542/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21733,
+      "person_hash": "kmbhan1o",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Kyle Gay",
+      "first_name": "Kyle",
+      "middle_name": "Evans",
+      "last_name": "Gay",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-005",
+      "ftm_eid": 50271098,
+      "votesmart_id": 195143,
+      "opensecrets_id": "",
+      "knowwho_pid": 683705,
+      "ballotpedia": "Kyle_Evans_Gay",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Kyle_Evans_Gay",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/195143"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/kevansgay",
+            "instagram": "https://www.instagram.com/kevansgay/",
+            "linkedin": "https://www.linkedin.com/in/kyleevansgay/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/kevansgay",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21734,
+      "person_hash": "2bfzj7m2",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Spiros Mantzavinos",
+      "first_name": "Spiros",
+      "middle_name": "",
+      "last_name": "Mantzavinos",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-007",
+      "ftm_eid": 16213750,
+      "votesmart_id": 195195,
+      "opensecrets_id": "",
+      "knowwho_pid": 740570,
+      "ballotpedia": "Spiros_Mantzavinos",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4133",
+          "district_phone": "",
+          "email": "Spiros.Mantzavinos@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-7",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Spiros_Mantzavinos",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/195195"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenSpiros/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-7",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/spiros.mantzavinos.96",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/spirosmantzavinos/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21735,
+      "person_hash": "nh5tkdl7",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Marie Pinkney",
+      "first_name": "Marie",
+      "middle_name": "",
+      "last_name": "Pinkney",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-013",
+      "ftm_eid": 50271087,
+      "votesmart_id": 195144,
+      "opensecrets_id": "",
+      "knowwho_pid": 746688,
+      "ballotpedia": "Marie_Pinkney",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4167",
+          "district_phone": "",
+          "email": "Marie.Pinkney@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-13",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Marie_Pinkney",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/195144"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenMariePinkney",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-13",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/marie.d.pinkney",
+            "instagram": "https://www.instagram.com/senator_book_er/",
+            "linkedin": "https://www.linkedin.com/in/sen-marie-pinkney-lcsw-8797a41b4/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21736,
+      "person_hash": "hhgk3ebl",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Sarah McBride",
+      "first_name": "Sarah",
+      "middle_name": "",
+      "last_name": "McBride",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-001",
+      "ftm_eid": 50271082,
+      "votesmart_id": 195142,
+      "opensecrets_id": "",
+      "knowwho_pid": 740568,
+      "ballotpedia": "Sarah_McBride",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 25888,
+      "bio": {
+        "social": {
+          "capitol_phone": "",
+          "district_phone": "",
+          "email": "",
+          "webmail": "",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Sarah_McBride",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/195142"
+        },
+        "capitol_address": {
+          "address1": "",
+          "address2": "",
+          "city": "",
+          "state": "",
+          "zip": ""
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/CongresswomanSarahMcBride",
+            "instagram": "https://www.instagram.com/congresswomansarahmcbride/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/Rep_McBride",
+            "website": "https://mcbride.house.gov",
+            "youtube": "https://www.youtube.com/@CongresswomanSarahMcBride"
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/sarah.elizabeth.delaware",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23364,
+      "person_hash": "zuvbmnhw",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Jeff Hilovsky",
+      "first_name": "Jeff",
+      "middle_name": "",
+      "last_name": "Hilovsky",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-004",
+      "ftm_eid": 56424041,
+      "votesmart_id": 209884,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Jeff_Hilovsky",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4171",
+          "district_phone": "",
+          "email": "Jeff.Hilovsky@delaware.gov",
+          "webmail": "",
+          "biography": "https://housegop.delaware.gov/members/house-district-4",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Jeff_Hilovsky",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/209884"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100087995692816",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housegop.delaware.gov/members/house-district-4",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/jeffrey-hilovsky-715001182/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23365,
+      "person_hash": "klcfsc5y",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "DeShanna Neal",
+      "first_name": "DeShanna",
+      "middle_name": "U.",
+      "last_name": "Neal",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-013",
+      "ftm_eid": 56424076,
+      "votesmart_id": 209887,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "DeShanna_Neal",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "deshanna.neal@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD13",
+          "biography": "https://housedems.delaware.gov/members/house-district-13",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/DeShanna_Neal",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/209887"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepDeShannaNeal",
+            "instagram": "https://www.instagram.com/repdeshannaneal/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-13",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/deshanna_neal/",
+            "linkedin": "https://www.linkedin.com/in/deshanna-neal-a32184171/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23366,
+      "person_hash": "pov31s0v",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Sophie Phillips",
+      "first_name": "Sophie",
+      "middle_name": "",
+      "last_name": "Phillips",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-018",
+      "ftm_eid": 56424085,
+      "votesmart_id": 209889,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Sophie_Phillips",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "sophie.phillips@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD18",
+          "biography": "https://housedems.delaware.gov/members/house-district-18",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Sophie_Phillips",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/209889"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepSophiePhillips",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-18",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/sophiekpforde",
+            "instagram": "https://www.instagram.com/repsophiekp/",
+            "linkedin": "https://www.linkedin.com/in/sophie-phillips-5402821b6/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/@sophiephillips1535"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23367,
+      "person_hash": "228lxwpe",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Cyndie Romer",
+      "first_name": "Cyndie",
+      "middle_name": "",
+      "last_name": "Romer",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-025",
+      "ftm_eid": 56424091,
+      "votesmart_id": 209890,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Cyndie_Romer",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "cyndie.romer@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD25",
+          "biography": "https://housedems.delaware.gov/members/house-district-25",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Cyndie_Romer",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/209890"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepCyndieRomer",
+            "instagram": "https://www.instagram.com/repcyndieromer/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-25",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/cyndie.romer",
+            "instagram": "https://www.instagram.com/cyndie.romer/",
+            "linkedin": "https://www.linkedin.com/in/cyndie-romer-8a124b43/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/Cyndie_Romer",
+            "website": "",
+            "youtube": "https://www.youtube.com/@cyndieromer6831"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23368,
+      "person_hash": "j5f8gt6a",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Eric Buckson",
+      "first_name": "Eric",
+      "middle_name": "",
+      "last_name": "Buckson",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-016",
+      "ftm_eid": 13472859,
+      "votesmart_id": 81022,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Eric_Buckson",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4169",
+          "district_phone": "",
+          "email": "eric.buckson@delaware.gov",
+          "webmail": "",
+          "biography": "https://senategop.delaware.gov/members/senate-district-16",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Eric_Buckson",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/81022"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenEricBuckson",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senategop.delaware.gov/members/senate-district-16",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/eric.buckson",
+            "instagram": "https://www.instagram.com/buckson.eric/",
+            "linkedin": "https://www.linkedin.com/in/eric-buckson-782a1519/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23369,
+      "person_hash": "alzfhadk",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Kyra Hoffner",
+      "first_name": "Kyra",
+      "middle_name": "L.",
+      "last_name": "Hoffner",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-014",
+      "ftm_eid": 50271089,
+      "votesmart_id": 195145,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Kyra_Hoffner",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4286",
+          "district_phone": "",
+          "email": "Kyra.Hoffner@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-14",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Kyra_Hoffner",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/195145"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenKyraHoffner",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-14",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/kyra.hoffner",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/kyra-hoffner-74681b16/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23379,
+      "person_hash": "6qgtm6k1",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Kerri Harris",
+      "first_name": "Kerri",
+      "middle_name": "Evelyn",
+      "last_name": "Harris",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-032",
+      "ftm_eid": 56424035,
+      "votesmart_id": 182731,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Kerri_Evelyn_Harris",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "kerrievelyn.harris@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD32",
+          "biography": "https://housedems.delaware.gov/members/house-district-32",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Kerri_Evelyn_Harris",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/182731"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepKerriEvelynHarris",
+            "instagram": "https://www.instagram.com/repkerrievelynharris/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-32",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23984,
+      "person_hash": "v18ub03l",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Russ Huxtable",
+      "first_name": "Russ",
+      "middle_name": "",
+      "last_name": "Huxtable",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-006",
+      "ftm_eid": 56424044,
+      "votesmart_id": 209876,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Russ_Huxtable",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4286",
+          "district_phone": "",
+          "email": "russell.huxtable@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-6",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Russ_Huxtable",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/209876"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-6",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/russell.huxtable",
+            "instagram": "https://www.instagram.com/russellhuxtable/",
+            "linkedin": "https://www.linkedin.com/in/russell-huxtable/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24374,
+      "person_hash": "f0smkhq1",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Stell Parker Selby",
+      "first_name": "Stell",
+      "middle_name": "Parker",
+      "last_name": "Parker Selby",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-020",
+      "ftm_eid": 56424098,
+      "votesmart_id": 209869,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Stell_Selby",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "stell.parkerselby@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD20",
+          "biography": "https://housedems.delaware.gov/members/house-district-20",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Stell_Selby",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/209869"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/stell.perkerselby",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/stell-parker-selby-37380b16/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25026,
+      "person_hash": "mjcwdz1q",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Valerie Jones Giltner",
+      "first_name": "Valerie",
+      "middle_name": "",
+      "last_name": "Jones Giltner",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-037",
+      "ftm_eid": 59500372,
+      "votesmart_id": 214110,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Valerie_Jones_Giltner",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4171",
+          "district_phone": "",
+          "email": "Valerie.JonesGiltner@delaware.gov",
+          "webmail": "",
+          "biography": "https://housegop.delaware.gov/members/house-district-37",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Valerie_Jones_Giltner",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/214110"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/StateRepresentativeValerieJonesGiltner",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housegop.delaware.gov/members/house-district-37",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=61553828558212",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/valerie-jones-giltner-rn-23b7087b/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25513,
+      "person_hash": "xg55bmrs",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Josue Ortega",
+      "first_name": "Josue",
+      "middle_name": "O.",
+      "last_name": "Ortega",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-003",
+      "ftm_eid": 60040203,
+      "votesmart_id": 219335,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Josue_Ortega",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4284",
+          "district_phone": "",
+          "email": "josue.ortega@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD3",
+          "biography": "https://housedems.delaware.gov/members/house-district-3",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Josue_Ortega",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/219335"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-3",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100089528838037",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/josue-ortega-975a05136/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25514,
+      "person_hash": "n8d0jnk1",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Melanie Ross Levin",
+      "first_name": "Melanie",
+      "middle_name": "",
+      "last_name": "Ross Levin",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-010",
+      "ftm_eid": 53410364,
+      "votesmart_id": 219337,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Melanie_Ross_Levin",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "Melanie.RossLevin@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD10",
+          "biography": "https://housedems.delaware.gov/members/house-district-10",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Melanie_Ross_Levin",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/219337"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=61568426618823",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-10",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/melanie.ross.levin",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/melanierosslevin/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/mrosslevin",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25515,
+      "person_hash": "hafdak7f",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Claire Snyder-Hall",
+      "first_name": "Rebecca",
+      "middle_name": "Claire",
+      "last_name": "Snyder-Hall",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-014",
+      "ftm_eid": 60040210,
+      "votesmart_id": 154258,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Claire_Snyder-Hall",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "claire.snyder-hall@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD14",
+          "biography": "https://housedems.delaware.gov/members/house-district-14",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Claire_Snyder-Hall",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/154258"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=61568677078961",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-14",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/claire.snyderhall.5",
+            "instagram": "https://www.instagram.com/clairesnyderhall/",
+            "linkedin": "https://www.linkedin.com/in/clairesnyderhall/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25516,
+      "person_hash": "c24le6kj",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Kamela Smith",
+      "first_name": "Kamela",
+      "middle_name": "T.",
+      "last_name": "Smith",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-015",
+      "ftm_eid": 60040211,
+      "votesmart_id": 219340,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Kamela_Smith",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "kamela.smith@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD15",
+          "biography": "https://housedems.delaware.gov/members/house-district-15",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Kamela_Smith",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/219340"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-15",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/kamela.smith",
+            "instagram": "https://www.instagram.com/pamela_with_a_k/",
+            "linkedin": "https://www.linkedin.com/in/kamelasmithmed/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.kamelasmith.com/",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25517,
+      "person_hash": "trrmg7oq",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Frank Burns",
+      "first_name": "Frank",
+      "middle_name": "",
+      "last_name": "Burns",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-021",
+      "ftm_eid": 48905667,
+      "votesmart_id": 209871,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Frank_Burns_(Delaware)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "frank.burns@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD21",
+          "biography": "https://housedems.delaware.gov/members/house-district-21",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Frank_Burns_%28Delaware%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/209871"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-21",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/frank-burns-919a139/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25518,
+      "person_hash": "c37a18dm",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Mara Gorman",
+      "first_name": "Mara",
+      "middle_name": "",
+      "last_name": "Gorman",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-023",
+      "ftm_eid": 36701053,
+      "votesmart_id": 219352,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Mara_Gorman",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "mara.gorman@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD23",
+          "biography": "https://housedems.delaware.gov/members/house-district-23",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Mara_Gorman",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/219352"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=61568895772498",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-23",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/motherofalltrips",
+            "instagram": "https://www.instagram.com/motherofalltrips/",
+            "linkedin": "https://www.linkedin.com/in/maragorman/",
+            "tiktok": "https://www.tiktok.com/@maragorman",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26416,
+      "person_hash": "zon5n77x",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Daniel Cruce",
+      "first_name": "Daniel",
+      "middle_name": "",
+      "last_name": "Cruce",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-001",
+      "ftm_eid": 0,
+      "votesmart_id": 220727,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4147",
+          "district_phone": "",
+          "email": "daniel.cruce@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-1",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/220727"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-1",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/decruce",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/dancruce/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/DanCruce",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26491,
+      "person_hash": "wqjloaqp",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Alonna Berry",
+      "first_name": "Alonna",
+      "middle_name": "",
+      "last_name": "Berry",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-020",
+      "ftm_eid": 0,
+      "votesmart_id": 224727,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Alonna_Berry",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "Alonna.Berry@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD20",
+          "biography": "https://housedems.delaware.gov/members/house-district-20",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Alonna_Berry",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/224727"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/alonna-b-468922186/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 4411,
+      "person_hash": "2z94302f",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "William Carson",
+      "first_name": "William",
+      "middle_name": "J.",
+      "last_name": "Carson",
+      "suffix": "Jr.",
+      "nickname": "",
+      "district": "HD-028",
+      "ftm_eid": 6496696,
+      "votesmart_id": 102387,
+      "opensecrets_id": "",
+      "knowwho_pid": 261672,
+      "ballotpedia": "William_Carson_Jr.",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4351",
+          "district_phone": "",
+          "email": "William.Carson@delaware.gov",
+          "webmail": "https://housedems.delaware.gov/contact/?rep=HD28",
+          "biography": "https://housedems.delaware.gov/members/house-district-28",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/William_Carson_Jr.",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/102387"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepWilliamCarson",
+            "instagram": "https://www.instagram.com/repwilliamcarson/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housedems.delaware.gov/members/house-district-28",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/representativewilliam.carson",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 4428,
+      "person_hash": "26xsn3pg",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Daniel Short",
+      "first_name": "Daniel",
+      "middle_name": "B.",
+      "last_name": "Short",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-039",
+      "ftm_eid": 6664355,
+      "votesmart_id": 30692,
+      "opensecrets_id": "",
+      "knowwho_pid": 249249,
+      "ballotpedia": "Daniel_Short",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4171",
+          "district_phone": "",
+          "email": "Daniel.Short@delaware.gov",
+          "webmail": "",
+          "biography": "https://housegop.delaware.gov/members/house-district-39",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Daniel_Short",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/30692"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/dannyshort39th/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://housegop.delaware.gov/members/house-district-39",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 4447,
+      "person_hash": "5d17s5qe",
+      "party_id": "1",
+      "state_id": 8,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "David Sokola",
+      "first_name": "David",
+      "middle_name": "P.",
+      "last_name": "Sokola",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-008",
+      "ftm_eid": 6381592,
+      "votesmart_id": 5739,
+      "opensecrets_id": "",
+      "knowwho_pid": 193414,
+      "ballotpedia": "David_Sokola",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4139",
+          "district_phone": "",
+          "email": "David.Sokola@delaware.gov",
+          "webmail": "",
+          "biography": "https://senatedems.delaware.gov/members/senate-district-8",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/David_Sokola",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/5739"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenDaveSokola/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senatedems.delaware.gov/members/senate-district-8",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/david.p.sokola",
+            "instagram": "https://www.instagram.com/davidsokola/",
+            "linkedin": "https://www.linkedin.com/in/david-p-sokola-76b291a6/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 4457,
+      "person_hash": "pk3rar0i",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "David Wilson",
+      "first_name": "David",
+      "middle_name": "L.",
+      "last_name": "Wilson",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-018",
+      "ftm_eid": 12998462,
+      "votesmart_id": 109426,
+      "opensecrets_id": "",
+      "knowwho_pid": 271805,
+      "ballotpedia": "David_Wilson_(Delaware)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4048",
+          "district_phone": "",
+          "email": "David.L.Wilson@delaware.gov",
+          "webmail": "",
+          "biography": "https://senategop.delaware.gov/members/senate-district-18",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/David_Wilson_%28Delaware%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/109426"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senategop.delaware.gov/members/senate-district-18",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 4460,
+      "person_hash": "ar7jiksp",
+      "party_id": "2",
+      "state_id": 8,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Gerald Hocker",
+      "first_name": "Gerald",
+      "middle_name": "W.",
+      "last_name": "Hocker",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-020",
+      "ftm_eid": 12998468,
+      "votesmart_id": 53669,
+      "opensecrets_id": "",
+      "knowwho_pid": 212300,
+      "ballotpedia": "Gerald_Hocker",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "302-744-4144",
+          "district_phone": "",
+          "email": "Gerald.Hocker@delaware.gov",
+          "webmail": "",
+          "biography": "https://senategop.delaware.gov/members/senate-district-20",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Gerald_Hocker",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/53669"
+        },
+        "capitol_address": {
+          "address1": "State Capitol",
+          "address2": "411 Legislative Ave",
+          "city": "Dover",
+          "state": "DE",
+          "zip": "19901"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/Senatorgeraldhocker/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://senategop.delaware.gov/members/senate-district-20",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "runId": "rollcall-legiscan-fetch-de-20260903T013844Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "DE",
+  "startedAt": "2026-09-03T01:38:44.109Z",
+  "finishedAt": "2026-09-03T01:38:44.294Z",
+  "datasetDir": "~/legiscan-data/de-2163",
+  "bills": 1296,
+  "votes": 2044,
+  "people": 65,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "senate",
+      "desc": "Senate Third Reading",
+      "count": 1036,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 21,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SR1",
+        "SR4",
+        "SR2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Third Reading",
+      "count": 1008,
+      "withoutMemberList": 350,
+      "minTotal": 0,
+      "maxTotal": 41,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SCR3",
+        "SCR2",
+        "HCR1"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 830,
+    "CR": 378,
+    "JR": 35,
+    "R": 53
+  },
+  "sessionIds": {
+    "2163": 1296
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

@@ -1,0 +1,333 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "DE",
+  "session_id": 2163,
+  "note": "people_id -> VoteApp candidate id for the Delaware 153rd General Assembly (LegiScan 2163). Every person in the session file has an entry, so a null is a reviewed decision rather than a gap the resolver has yet to reach. Seats come from LegiScan's `district` field, which agrees with Delaware's own roster throughout this session; `role` is not read anywhere, because LegiScan has been seen to contradict itself between the two. Delaware's roster in this database is partial by design: all 11 Senate districts on the 2026 ballot are covered, but only 8 of the 41 House districts, so most nulls are members whose district simply has no candidate rows yet. A roster campaign is filling those in, and re-running the import after it lands adds the new members without duplicating anything.",
+  "entries": [
+    {
+      "people_id": 4411,
+      "candidate_id": null,
+      "note": "William Carson, HD-028. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 4428,
+      "candidate_id": null,
+      "note": "Daniel Short, HD-039. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 4447,
+      "candidate_id": null,
+      "note": "David Sokola, SD-008. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 1036 votes in this session."
+    },
+    {
+      "people_id": 4457,
+      "candidate_id": null,
+      "note": "David Wilson, SD-018. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 1036 votes in this session."
+    },
+    {
+      "people_id": 4460,
+      "candidate_id": "99177e7c-618c-4bc1-b633-c524ec61ce5d",
+      "note": "Gerald Hocker, SD-020. Exact name match both ways, declined because our roster holds TWO candidate rows for him in the same 2026 Senate District 20 race, which breaks the proposer's rule that a match be unique in both directions. Linked to the older row (created 2026-07-16), which carries his summary and three existing records; the newer duplicate (fe8a281c-7c2a-4f05-9892-d91671201409, display name `Gerald W. Hocker`, created 2026-08-27) is a roster defect recorded in the README and left alone here."
+    },
+    {
+      "people_id": 10562,
+      "candidate_id": null,
+      "note": "Stephanie Bolden, HD-002. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 10563,
+      "candidate_id": null,
+      "note": "Debra Heffernan, HD-006. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 10565,
+      "candidate_id": "b5405364-fe04-443f-9eba-1ce456936a79",
+      "note": "Edward Osienski, HD-024. Proposed by name (first prefix) and reviewed. Seat agrees."
+    },
+    {
+      "people_id": 11375,
+      "candidate_id": null,
+      "note": "David Lawson, SD-015. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 1036 votes in this session."
+    },
+    {
+      "people_id": 14543,
+      "candidate_id": null,
+      "note": "Timothy Dukes, HD-040. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 14544,
+      "candidate_id": null,
+      "note": "Ronald Gray, HD-038. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 14545,
+      "candidate_id": null,
+      "note": "Kimberly Williams, HD-019. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 14546,
+      "candidate_id": null,
+      "note": "Charles Paradee, SD-017. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 1036 votes in this session."
+    },
+    {
+      "people_id": 14549,
+      "candidate_id": null,
+      "note": "Jeffrey Spiegelman, HD-011. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 14551,
+      "candidate_id": "7b2e31bf-355d-46f5-8a7a-bb64792882cd",
+      "note": "Brian Pettyjohn, SD-019. Proposed by name (first and last) and reviewed. Seat agrees."
+    },
+    {
+      "people_id": 14552,
+      "candidate_id": "70e53866-6a35-4040-b640-85e4fa13e37d",
+      "note": "Nicole Poore, SD-012. Proposed by name (first and last) and reviewed. Seat agrees."
+    },
+    {
+      "people_id": 14553,
+      "candidate_id": null,
+      "note": "Bryan Townsend, SD-011. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 1036 votes in this session."
+    },
+    {
+      "people_id": 16374,
+      "candidate_id": null,
+      "note": "Bryant Richardson, SD-021. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 1036 votes in this session."
+    },
+    {
+      "people_id": 16446,
+      "candidate_id": null,
+      "note": "Sean Lynn, HD-031. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 16769,
+      "candidate_id": null,
+      "note": "Richard Collins, HD-041. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 16771,
+      "candidate_id": null,
+      "note": "Kevin Hensley, HD-009. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 16772,
+      "candidate_id": "0efa825e-9db4-48b0-9971-0c1a9e47dff3",
+      "note": "Lyndon Yearick, HD-034. Proposed by name (first and last) and reviewed. Seat agrees."
+    },
+    {
+      "people_id": 18423,
+      "candidate_id": "b82ec178-620c-48c5-8634-be1c86b93b60",
+      "note": "Jack Walsh, SD-009. LegiScan files the legal first name (John) in `first_name` and the working name in `name` and `nickname`; our candidate row reads `Jack Walsh`, which is byte-identical to LegiScan's `name`. The proposer reads neither field, so it missed him. Same finding as Pennsylvania, Connecticut, North Carolina, Indiana and Kentucky."
+    },
+    {
+      "people_id": 18565,
+      "candidate_id": null,
+      "note": "Charles Postles, HD-033. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 19351,
+      "candidate_id": null,
+      "note": "Stephanie Hansen, SD-010. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 1036 votes in this session."
+    },
+    {
+      "people_id": 19894,
+      "candidate_id": null,
+      "note": "Franklin Cooke, HD-016. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 19896,
+      "candidate_id": null,
+      "note": "Krista Griffith, HD-012. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 19897,
+      "candidate_id": null,
+      "note": "Kendra Johnson, HD-005. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 19898,
+      "candidate_id": null,
+      "note": "Elizabeth Lockman, SD-003. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 1036 votes in this session."
+    },
+    {
+      "people_id": 19899,
+      "candidate_id": null,
+      "note": "Michael Smith, HD-022. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 19900,
+      "candidate_id": "3c1df4d4-4222-4447-af00-c6b02c43f5ac",
+      "note": "Melissa Minor-Brown, HD-017. Proposed by name (first and last) and reviewed. Seat agrees."
+    },
+    {
+      "people_id": 19901,
+      "candidate_id": "76705b6a-59c6-44a9-b269-7ad77160c06c",
+      "note": "Raymond Seigfried, SD-005. Proposed by name (first and last) and reviewed. Seat agrees."
+    },
+    {
+      "people_id": 19902,
+      "candidate_id": null,
+      "note": "Bryan Shupe, HD-036. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 19903,
+      "candidate_id": null,
+      "note": "Laura Sturgeon, SD-004. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 1036 votes in this session."
+    },
+    {
+      "people_id": 19904,
+      "candidate_id": null,
+      "note": "Jesse Vanderwende, HD-035. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 19921,
+      "candidate_id": null,
+      "note": "Darius Brown, SD-002. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 1036 votes in this session."
+    },
+    {
+      "people_id": 20146,
+      "candidate_id": null,
+      "note": "Shannon Morris, HD-030. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 20203,
+      "candidate_id": null,
+      "note": "Nnamdi Chukwuocha, HD-001. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 20204,
+      "candidate_id": null,
+      "note": "William Bush, HD-029. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 21729,
+      "candidate_id": null,
+      "note": "Larry Lambert, HD-007. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 21730,
+      "candidate_id": null,
+      "note": "Eric Morrison, HD-027. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 21731,
+      "candidate_id": null,
+      "note": "Sherae'a Moore, HD-008. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 21732,
+      "candidate_id": null,
+      "note": "Madinah Wilson-Anton, HD-026. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 21733,
+      "candidate_id": null,
+      "note": "Kyle Gay, SD-005 at the start of the General Assembly. She left to become Lieutenant Governor; like Sarah McBride her only five votes are on the excluded 2024-12-16 organisational resolutions. Raymond Seigfried (people_id 19901) won the special election for the seat and is mapped."
+    },
+    {
+      "people_id": 21734,
+      "candidate_id": "e920cc7a-acb4-49bf-8f4a-f236a2889628",
+      "note": "Spiros Mantzavinos, SD-007. Proposed by name (first and last) and reviewed. Seat agrees."
+    },
+    {
+      "people_id": 21735,
+      "candidate_id": "fd4967fc-ef80-4af6-98fb-ce9b22d0b2de",
+      "note": "Marie Pinkney, SD-013. Proposed by name (first and last) and reviewed. Seat agrees."
+    },
+    {
+      "people_id": 21736,
+      "candidate_id": null,
+      "note": "Sarah McBride, SD-001 at the start of the General Assembly. She resigned to take Delaware's US House seat, and her only five votes in this dataset are on 2024-12-16 organisational resolutions that the pipeline excludes by measure type, so she casts nothing the importer would ever fan out. Her one 2026 candidacy is for the US House, outside the state-legislative pool. Daniel Cruce (people_id 26416) won the special election for the seat and is mapped."
+    },
+    {
+      "people_id": 23364,
+      "candidate_id": null,
+      "note": "Jeff Hilovsky, HD-004. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 23365,
+      "candidate_id": null,
+      "note": "DeShanna Neal, HD-013. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 23366,
+      "candidate_id": null,
+      "note": "Sophie Phillips, HD-018. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 23367,
+      "candidate_id": null,
+      "note": "Cyndie Romer, HD-025. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 23368,
+      "candidate_id": null,
+      "note": "Eric Buckson, SD-016. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 1036 votes in this session."
+    },
+    {
+      "people_id": 23369,
+      "candidate_id": "85447327-9fa9-4b39-8a26-6a6744681541",
+      "note": "Kyra Hoffner, SD-014. Proposed by name (first and last) and reviewed. Seat agrees."
+    },
+    {
+      "people_id": 23379,
+      "candidate_id": null,
+      "note": "Kerri Harris, HD-032. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 23984,
+      "candidate_id": null,
+      "note": "Russ Huxtable, SD-006. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 1036 votes in this session."
+    },
+    {
+      "people_id": 24374,
+      "candidate_id": null,
+      "note": "Stell Parker Selby, HD-020. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 134 votes in this session."
+    },
+    {
+      "people_id": 25026,
+      "candidate_id": null,
+      "note": "Valerie Jones Giltner, HD-037. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 25513,
+      "candidate_id": null,
+      "note": "Josue Ortega, HD-003. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 25514,
+      "candidate_id": "57111112-6d1b-4f2c-ae50-4ffe0089f326",
+      "note": "Melanie Ross Levin, HD-010. Proposed by name (first and last) and reviewed. Seat agrees."
+    },
+    {
+      "people_id": 25515,
+      "candidate_id": null,
+      "note": "Claire Snyder-Hall, HD-014. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 25516,
+      "candidate_id": null,
+      "note": "Kamela Smith, HD-015. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 25517,
+      "candidate_id": null,
+      "note": "Frank Burns, HD-021. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+    },
+    {
+      "people_id": 25518,
+      "candidate_id": "dd437a5b-8b8f-4790-84cd-f28fe24d88bf",
+      "note": "Mara Gorman, HD-023. Proposed by name (first and last) and reviewed. The seat deliberately disagrees: she sits for House District 23 and is on the 2026 ballot for Senate District 8, the seat David Sokola holds and is not defending."
+    },
+    {
+      "people_id": 26416,
+      "candidate_id": "a5d5bc1d-0697-4da8-8f36-263a046c8b83",
+      "note": "Daniel Cruce, SD-001. Proposed by name (first prefix) and reviewed. Seat agrees."
+    },
+    {
+      "people_id": 26491,
+      "candidate_id": null,
+      "note": "Alonna Berry, HD-020. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 386 votes in this session."
+    }
+  ]
+}
