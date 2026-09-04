@@ -14,7 +14,13 @@
 // outside leg closed. A row that names more than one candidate against a
 // single amount, or a candidate the transcriber could not resolve, carries
 // no target: it counts toward the statement total and toward no candidate
-// (the plan's "unallocated" rule; the Koch GA fixture).
+// (the plan's "unallocated" rule; the Koch GA fixture). It does keep the
+// recipes it names, and a candidate any such row names is "partial": the
+// filing proves spending on that candidate whose amount is unknown, so
+// the leg publishes nothing for them — not the explicit rows alone (an
+// understatement) and never an arbitrary split. Only a candidate whose
+// every naming row is explicit gets totals (the plan's
+// complete_for_explicit_rows).
 //
 // A candidate's outside groups are the filers naming it, summed per
 // direction; totals are the sums over those groups. A candidate no row
@@ -52,6 +58,8 @@ export type KansasOutsideRow = {
   vendorName: string | null;
   /** Target link recipe; null for an unallocated or unresolved row. */
   targetCommitteeId: string | null;
+  /** For an unallocated row: the recipes of every candidate it names (normalized). Empty otherwise. */
+  namedCommitteeIds: string[];
   targetAsFiled: string;
   supportOppose: "support" | "oppose" | null;
   amountCents: number;
@@ -70,6 +78,7 @@ const SELECT_OUTSIDE_ROWS_SQL = `
     row_date::text AS row_date,
     vendor_name,
     target_committee_id,
+    named_committee_ids,
     target_as_filed,
     support_oppose,
     amount::text AS amount
@@ -87,6 +96,10 @@ export async function loadKansasOutsideRows(db: Queryable, electionYear: number)
     if (direction !== null && direction !== "support" && direction !== "oppose") {
       throw new KansasOutsideSpendingError(`${label}: unknown direction ${JSON.stringify(direction)}`);
     }
+    const named = row.named_committee_ids;
+    if (named !== null && named !== undefined && !Array.isArray(named)) {
+      throw new KansasOutsideSpendingError(`${label}: named_committee_ids is not an array`);
+    }
     return {
       filerName: String(row.filer_name),
       sourceFileName: String(row.source_file_name),
@@ -97,6 +110,7 @@ export async function loadKansasOutsideRows(db: Queryable, electionYear: number)
       rowDate: row.row_date === null ? null : String(row.row_date),
       vendorName: row.vendor_name === null ? null : String(row.vendor_name),
       targetCommitteeId: row.target_committee_id === null ? null : String(row.target_committee_id),
+      namedCommitteeIds: (named ?? []).map((value: unknown) => normalizeKansasFilerKey(String(value))),
       targetAsFiled: String(row.target_as_filed),
       supportOppose: direction,
       amountCents: kansasNumericTextToCents(row.amount, `${label} amount`),
@@ -131,6 +145,12 @@ export type KansasOutsideSpending =
   | {
       status: "unpublishable";
       /** One line per quarantined filer period naming this candidate. */
+      reasons: string[];
+    }
+  | {
+      /** Named by spending whose per-candidate amount the filing does not give: nothing publishes. */
+      status: "partial_unallocated";
+      /** One line per unallocated row naming this candidate. */
       reasons: string[];
     }
   | {
@@ -214,13 +234,25 @@ export function aggregateKansasOutsideSpending(input: {
   const own = input.rows.filter(
     (row) => row.targetCommitteeId !== null && normalizeKansasFilerKey(row.targetCommitteeId) === target
   );
-  if (own.length === 0) return { status: "none_found" };
+  const shared = input.rows.filter((row) => row.targetCommitteeId === null && row.namedCommitteeIds.includes(target));
+  if (own.length === 0 && shared.length === 0) return { status: "none_found" };
 
+  // The checksum first: a quarantined filer period is evidence that cannot
+  // be trusted at all; only then does the shape of the trusted rows matter.
   const quarantined = reconcileKansasOutsideStatements(input.rows);
-  const reasons = [...new Set(own.map(filerPeriodKey))]
+  const reasons = [...new Set([...own, ...shared].map(filerPeriodKey))]
     .filter((key) => quarantined.has(key))
     .map((key) => quarantined.get(key)!);
   if (reasons.length > 0) return { status: "unpublishable", reasons };
+  if (shared.length > 0) {
+    return {
+      status: "partial_unallocated",
+      reasons: shared.map(
+        (row) =>
+          `${row.sourceFileName} row ${row.rowIndex}: ${row.amountCents} cents across ${row.namedCommitteeIds.length} candidates with no per-candidate amount`
+      ),
+    };
+  }
 
   const groups = new Map<string, KansasOutsideGroup>();
   for (const row of own) {

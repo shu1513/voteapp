@@ -25,7 +25,12 @@ BEGIN;
 --     when the printed row names more than one candidate against a single
 --     amount (unallocated) or the candidate cannot be resolved: such a row
 --     still counts toward the statement total but never toward a
---     candidate. target_as_filed keeps the printed text either way.
+--     candidate. named_committee_ids then lists the recipes of every
+--     candidate the row names, so each of them is "partial" (named by
+--     spending that cannot be allocated) rather than "none found" and
+--     publishes no outside figure at all — never an explicit-rows-only
+--     total, never an arbitrary split. target_as_filed keeps the printed
+--     text either way.
 -- Vendors are payees, not contributors; no contributor names are stored
 -- (K.S.A. 25-4154(d)).
 
@@ -41,6 +46,7 @@ CREATE TABLE IF NOT EXISTS public.ks_candidate_finance_outside_rows (
   row_date date,
   vendor_name text,
   target_committee_id text,
+  named_committee_ids text[],
   target_as_filed text NOT NULL,
   support_oppose text,
   amount numeric(16,2) NOT NULL,
@@ -66,6 +72,11 @@ CREATE TABLE IF NOT EXISTS public.ks_candidate_finance_outside_rows (
     CHECK (
       target_committee_id IS NULL
       OR target_committee_id ~ '^[0-9]+:[0-9]*:[A-Z0-9][A-Z0-9 ]*:[A-Z0-9][A-Z0-9 ]*$'
+    ),
+  CONSTRAINT ks_candidate_finance_outside_rows_named_check
+    CHECK (
+      named_committee_ids IS NULL
+      OR (target_committee_id IS NULL AND cardinality(named_committee_ids) >= 1)
     ),
   CONSTRAINT ks_candidate_finance_outside_rows_target_as_filed_check
     CHECK (btrim(target_as_filed) <> ''),

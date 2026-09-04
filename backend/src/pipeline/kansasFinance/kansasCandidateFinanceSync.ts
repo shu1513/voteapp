@@ -106,6 +106,7 @@ export type KansasCandidateFinanceSyncInput = {
 export type KansasOutsideSpendingSummary =
   | { status: "none_found" }
   | { status: "unpublishable"; reasons: string[] }
+  | { status: "partial_unallocated"; reasons: string[] }
   | { status: "ok"; supportTotal: number; opposeTotal: number; groupCount: number; statementCount: number };
 
 export type KansasCandidateFinanceSyncResult = {
@@ -256,7 +257,9 @@ export async function syncKansasCandidateFinance(input: KansasCandidateFinanceSy
 
   // Outside leg: read after the direct gate passed, so a candidate that
   // fails closed never touches the rows table. Totals are null unless the
-  // leg is "ok"; the group list is always passed so stale groups clear.
+  // leg is "ok" (a candidate named by unallocated spending is "partial"
+  // and publishes nothing); the group list is always passed so stale
+  // groups clear.
   const loadOutsideRows = input.loadOutsideRows ?? createKansasOutsideRowLoader(input.db);
   const outside = aggregateKansasOutsideSpending({ rows: await loadOutsideRows(input.electionYear), targetCommitteeId: recipe });
   const outsideSummary: KansasOutsideSpendingSummary =

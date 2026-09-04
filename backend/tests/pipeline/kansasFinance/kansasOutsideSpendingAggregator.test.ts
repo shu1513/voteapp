@@ -24,6 +24,7 @@ function row(
     rowDate: "2026-06-01",
     vendorName: "Example Media Inc.",
     targetCommitteeId: TARGET,
+    namedCommitteeIds: [],
     targetAsFiled: "Alex Sample, Governor",
     supportOppose: "oppose",
     ...overrides,
@@ -88,21 +89,30 @@ describe("aggregateKansasOutsideSpending", () => {
     expect(aggregateKansasOutsideSpending({ rows: [], targetCommitteeId: TARGET })).toEqual({ status: "none_found" });
   });
 
-  it("counts an unallocated row toward the statement checksum but toward no candidate", () => {
+  it("makes a candidate named by an unallocated row partial (nothing publishes), while the row still feeds the checksum", () => {
     const rows = [
-      row({ sourceFileName: "IE_AF_2607.pdf", rowIndex: 1, amountCents: 502_495, statementTotalCents: 2_331_370, filerName: "Sample Victory Fund", targetCommitteeId: "7:72:SAMPLE:ALEX", targetAsFiled: "KS HD 72 Alex Sample" }),
+      row({ sourceFileName: "IE_AF_2607.pdf", rowIndex: 1, amountCents: 502_495, statementTotalCents: 2_331_370, filerName: "Sample Victory Fund", targetCommitteeId: "7:72:OTHER:PAT", targetAsFiled: "KS HD 72 Pat Other" }),
       // One printed row, two candidates, one amount: no per-candidate figure exists.
-      row({ sourceFileName: "IE_AF_2607.pdf", rowIndex: 2, amountCents: 1_826_375, statementTotalCents: 2_331_370, filerName: "Sample Victory Fund", targetCommitteeId: null, supportOppose: null, targetAsFiled: "KS HD 5 Chris Example - Support; KS HD 72 Alex Sample - Support" }),
+      row({ sourceFileName: "IE_AF_2607.pdf", rowIndex: 2, amountCents: 1_826_375, statementTotalCents: 2_331_370, filerName: "Sample Victory Fund", targetCommitteeId: null, supportOppose: null, namedCommitteeIds: ["7:5:EXAMPLE:CHRIS", "7:72:SAMPLE:ALEX"], targetAsFiled: "KS HD 5 Chris Example - Support; KS HD 72 Alex Sample - Support" }),
       row({ sourceFileName: "IE_AF_2607.pdf", rowIndex: 3, amountCents: 2_500, statementTotalCents: 2_331_370, filerName: "Sample Victory Fund", targetCommitteeId: "7:5:EXAMPLE:CHRIS", supportOppose: "support", targetAsFiled: "KS HD 5 Chris Example" }),
     ];
-    expect(aggregateKansasOutsideSpending({ rows, targetCommitteeId: "7:72:SAMPLE:ALEX" })).toMatchObject({ status: "ok", supportCents: 0, opposeCents: 502_495, statementCount: 1 });
-    expect(aggregateKansasOutsideSpending({ rows, targetCommitteeId: "7:5:EXAMPLE:CHRIS" })).toMatchObject({ status: "ok", supportCents: 2_500, opposeCents: 0 });
-    // Drop the unallocated row and the checksum no longer holds for anyone the filer names.
+    // Only explicit rows name Pat: complete for explicit rows.
+    expect(aggregateKansasOutsideSpending({ rows, targetCommitteeId: "7:72:OTHER:PAT" })).toMatchObject({ status: "ok", supportCents: 0, opposeCents: 502_495, statementCount: 1 });
+    // Chris has an explicit $25 AND a shared row: the $25 alone would understate, so nothing publishes.
+    expect(aggregateKansasOutsideSpending({ rows, targetCommitteeId: "7:5:EXAMPLE:CHRIS" })).toEqual({
+      status: "partial_unallocated",
+      reasons: ["IE_AF_2607.pdf row 2: 1826375 cents across 2 candidates with no per-candidate amount"],
+    });
+    // Alex is named only by the shared row: partial, not "none found".
+    expect(aggregateKansasOutsideSpending({ rows, targetCommitteeId: " 7:72:sample:alex " })).toMatchObject({ status: "partial_unallocated" });
+    // Drop the unallocated row and the checksum no longer holds for anyone the filer names; that outranks "partial".
     const withoutUnallocated = rows.filter((entry) => entry.rowIndex !== 2);
-    expect(aggregateKansasOutsideSpending({ rows: withoutUnallocated, targetCommitteeId: "7:72:SAMPLE:ALEX" })).toEqual({
+    expect(aggregateKansasOutsideSpending({ rows: withoutUnallocated, targetCommitteeId: "7:72:OTHER:PAT" })).toEqual({
       status: "unpublishable",
       reasons: ["Sample Victory Fund 202607: running total 504995 != IE_AF_2607.pdf Total this Period 2331370"],
     });
+    const brokenShared = rows.map((entry) => (entry.rowIndex === 3 ? { ...entry, amountCents: 2_501 } : entry));
+    expect(aggregateKansasOutsideSpending({ rows: brokenShared, targetCommitteeId: "7:72:SAMPLE:ALEX" })).toMatchObject({ status: "unpublishable" });
   });
 
   it("quarantines only the candidates a failing filer period names", () => {
@@ -131,13 +141,14 @@ describe("loadKansasOutsideRows", () => {
     row_date: "2026-07-02",
     vendor_name: "Example Media Inc.",
     target_committee_id: TARGET,
+    named_committee_ids: null,
     target_as_filed: "Alex Sample, Governor",
     support_oppose: "oppose",
     amount: "8500.00",
   };
 
   it("selects a cycle's rows with amounts cast to text and maps them to cents", async () => {
-    const db = { query: vi.fn(async () => ({ rows: [dbRow, { ...dbRow, row_index: 2, target_committee_id: null, support_oppose: null, row_date: null, vendor_name: null }], rowCount: 2 })) };
+    const db = { query: vi.fn(async () => ({ rows: [dbRow, { ...dbRow, row_index: 2, target_committee_id: null, support_oppose: null, row_date: null, vendor_name: null, named_committee_ids: [" 1::sample:alex ", "7:5:EXAMPLE:CHRIS"] }], rowCount: 2 })) };
     const rows = await loadKansasOutsideRows(db as never, 2026);
     const [sql, params] = db.query.mock.calls[0] as unknown as [string, unknown[]];
     expect(sql).toContain("FROM public.ks_candidate_finance_outside_rows");
@@ -154,11 +165,12 @@ describe("loadKansasOutsideRows", () => {
       rowDate: "2026-07-02",
       vendorName: "Example Media Inc.",
       targetCommitteeId: TARGET,
+      namedCommitteeIds: [],
       targetAsFiled: "Alex Sample, Governor",
       supportOppose: "oppose",
       amountCents: 850_000,
     });
-    expect(rows[1]).toMatchObject({ rowIndex: 2, targetCommitteeId: null, supportOppose: null, rowDate: null, vendorName: null });
+    expect(rows[1]).toMatchObject({ rowIndex: 2, targetCommitteeId: null, supportOppose: null, rowDate: null, vendorName: null, namedCommitteeIds: [TARGET, "7:5:EXAMPLE:CHRIS"] });
   });
 
   it("fails closed on a direction outside the vocabulary or an amount not handed back as text", async () => {

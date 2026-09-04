@@ -225,6 +225,7 @@ function ieRow(
     rowDate: "2026-07-01",
     vendorName: "Example Vendor LLC",
     targetCommitteeId: "7:85:HOLLOWAY:MARGARET",
+    namedCommitteeIds: [],
     targetAsFiled: "KS HD 85 Margaret Holloway",
     supportOppose: "oppose",
     ...overrides,
@@ -299,7 +300,8 @@ describe("syncKansasCandidateFinance", () => {
     const { input } = baseInput(db, resolved(filedReports()));
     const rows: KansasOutsideRow[] = [
       ieRow({ sourceFileName: "IE_EX1_2607.pdf", rowIndex: 1, amountCents: 6_000, statementTotalCents: 10_000 }),
-      ieRow({ sourceFileName: "IE_EX1_2607.pdf", rowIndex: 2, amountCents: 4_000, statementTotalCents: 10_000, targetCommitteeId: null, supportOppose: null, targetAsFiled: "KS HD 85 Margaret Holloway; KS HD 2 Daniel Muir" }),
+      // A shared row naming two OTHER candidates: it feeds the filer's checksum, not this candidate.
+      ieRow({ sourceFileName: "IE_EX1_2607.pdf", rowIndex: 2, amountCents: 4_000, statementTotalCents: 10_000, targetCommitteeId: null, supportOppose: null, namedCommitteeIds: ["7:2:MUIR:DANIEL", "7:3:EXAMPLE:CHRIS"], targetAsFiled: "KS HD 2 Daniel Muir; KS HD 3 Chris Example" }),
       ieRow({ sourceFileName: "IE_OF_2607.pdf", rowIndex: 1, amountCents: 25_000, statementTotalCents: 25_000, filerName: "Other Fund", supportOppose: "support", targetCommitteeId: " 7:85:holloway:margaret " }),
       ieRow({ sourceFileName: "IE_ZZ_2607.pdf", rowIndex: 1, amountCents: 99_900, statementTotalCents: 99_900, filerName: "Unrelated Fund", targetCommitteeId: "7:2:MUIR:DANIEL" }),
     ];
@@ -336,6 +338,24 @@ describe("syncKansasCandidateFinance", () => {
       totalReceipts: 1400,
       outside: { status: "unpublishable", reasons: ["Example Fund 202607: running total 6000 != IE_EX1_2607.pdf Total this Period 10000"] },
       summaryWritten: true,
+      outsideGroupsWritten: 0,
+    });
+    const summaryInsert = client.query.mock.calls.find(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_summaries"));
+    expect(summaryInsert?.[1]?.slice(6, 8)).toEqual([null, null]);
+    expect(client.query.mock.calls.some(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_outside_groups"))).toBe(false);
+  });
+
+  it("publishes nothing for a candidate named by shared spending with no per-candidate amount", async () => {
+    const { db, client } = writingDb();
+    const { input } = baseInput(db, resolved(filedReports()));
+    const loadOutsideRows = vi.fn(async () => [
+      ieRow({ sourceFileName: "IE_EX1_2607.pdf", rowIndex: 1, amountCents: 6_000, statementTotalCents: 10_000 }),
+      ieRow({ sourceFileName: "IE_EX1_2607.pdf", rowIndex: 2, amountCents: 4_000, statementTotalCents: 10_000, targetCommitteeId: null, supportOppose: null, namedCommitteeIds: ["7:85:HOLLOWAY:MARGARET", "7:2:MUIR:DANIEL"], targetAsFiled: "KS HD 85 Margaret Holloway; KS HD 2 Daniel Muir" }),
+    ]);
+    const result = await syncKansasCandidateFinance({ ...input, loadOutsideRows });
+    expect(result).toMatchObject({
+      status: "synced",
+      outside: { status: "partial_unallocated", reasons: ["IE_EX1_2607.pdf row 2: 4000 cents across 2 candidates with no per-candidate amount"] },
       outsideGroupsWritten: 0,
     });
     const summaryInsert = client.query.mock.calls.find(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_summaries"));
