@@ -29,11 +29,23 @@ travelled→traveled, organisation→organization, favour→favor, neighbourhood
 recognised→recognized, practise→practice, honour→honor, counselling→counseling, and so on).
 Applied locally with:
 
-    npm run content:backfill-plain-language -- --rewrites-file evidence/records-repair/british-spelling-2026-09-04/rewrites.json --allow-sourced-facts
+    npm run content:backfill-plain-language -- --rewrites-file evidence/records-repair/british-spelling-2026-09-04/rewrites.json
 
-Dry run and real run both reported 69 processed, 69 applied, 0 flagged, 0 stale.
-`originalText` pins the pre-sweep text, so re-running against prod applies only to rows
-that still carry the old text and skips rows that moved.
+Dry run and real run both reported 69 processed, 69 applied, 0 flagged, 0 stale. The local
+run also passed `--allow-sourced-facts`; that was unnecessary. The flag only relaxes the
+upper length bound and the introduced-number check, and spelling-only rewrites trip
+neither (all 69 pass the strict mechanical checks without it), so leave it off.
+
+`originalText` pins the pre-sweep text, so re-running the file applies only to rows that
+still carry the old text and skips rows that moved.
+
+## Getting the fix to production
+
+The backfill script refuses any non-local database, so the file is never run against prod.
+The rewrite gave each row a new `record_identity_key` and logged the old→new pair in
+`candidate_record_identity_transitions`; `research:promote` follows that ledger and updates
+the prod row in place instead of inserting a duplicate. The roll-call rows reach prod the
+same way. Nothing here is a prod step; the promotion is.
 
 ## Deliberately left alone
 
