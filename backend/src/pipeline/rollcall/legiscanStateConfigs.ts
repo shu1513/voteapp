@@ -1637,6 +1637,17 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // 158 divided ones. That match is a selection-time step in the batch
   // recipe, not something a description pattern can do.
   //
+  // A roll the match leaves unresolved stays unselected. HB 245's roll
+  // 1599336 (House, 2025-08-12, 15-6, `passed: 0`) is the reference case:
+  // the feed calls it `House Third Reading`, this entry calls it `passage`,
+  // and the history line -- dated 2025-08-13, the day AFTER the roll --
+  // reads `Defeated By House ... Reason Taken: Motion to Suspend Rules on
+  // HB 245`. A motion to suspend the rules, wearing passage words. Nothing
+  // in the fetch, this classifier, or `rollcall:judge` can see that line;
+  // only the history match can, so it has to run before any Delaware roll
+  // is judged, and a roll it cannot place (the one-day date skew above is
+  // one of two such cases in the session) is left out, never guessed.
+  //
   // Nothing is excluded here because nothing else exists to exclude: a
   // config exclusion can only read the description, and the description is
   // the same on a passage vote and on an amendment vote. Excluding either
