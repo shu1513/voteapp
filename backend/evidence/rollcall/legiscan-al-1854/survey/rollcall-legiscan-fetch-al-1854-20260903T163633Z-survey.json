@@ -1,0 +1,291 @@
+{
+  "runId": "rollcall-legiscan-fetch-al-1854-20260903T163633Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "AL-1854",
+  "startedAt": "2026-09-03T16:36:33.736Z",
+  "finishedAt": "2026-09-03T16:36:33.764Z",
+  "datasetDir": "~/legiscan-data/al-1854",
+  "bills": 40,
+  "votes": 19,
+  "people": 138,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "Clouse motion to Concur In and Adopt Roll Call 12",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 102,
+      "maxTotal": 102,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Clouse motion to Table Roll Call 1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Ledbetter motion to Previous Question Roll Call 3",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Ledbetter motion to Previous Question Roll Call 5",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB5"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Ledbetter motion to Previous Question Roll Call 7",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB6"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Adopt Roll Call 10",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Adopt Roll Call 2",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Adopt Roll Call 9",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 11",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 4",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 6",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB5"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 8",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB6"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Albritton motion to Adopt Roll Call 15",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 11",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 12",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 16",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 17",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB5"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 18",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB6"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 19",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 17,
+    "JR": 11,
+    "R": 12
+  },
+  "sessionIds": {
+    "1854": 40
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

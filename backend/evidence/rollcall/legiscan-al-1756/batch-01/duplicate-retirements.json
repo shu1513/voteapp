@@ -1,0 +1,26 @@
+[
+ {
+  "recordId": "00fa9232-51ac-40dd-ba1a-7e932b1b063c",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1756 session batch-01 run: this hand-written record describes the same vote as HB 404 roll 1024976 on 2021-03-09 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1756/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "81fb254e-5ccb-4f1e-a2d8-a32798e3fb62",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1756 session batch-01 run: this hand-written record describes the same vote as HB 404 roll 1024976 on 2021-03-09 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1756/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "0ef0810f-621a-4dd5-849e-9a2668d98e65",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1756 session batch-01 run: this hand-written record describes the same vote as HB 404 roll 1024976 on 2021-03-09 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1756/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "317a5dee-4b28-4d51-8bfd-c633b680d0c4",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1756 session batch-01 run: this hand-written record describes the same vote as HB 285 roll 1031588 on 2021-03-18 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1756/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "f7c6ab8e-c5e2-4802-ac33-dc01e5b04078",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1756 session batch-01 run: this hand-written record describes the same vote as HB 285 roll 1031588 on 2021-03-18 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1756/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "08a72aa5-ad0e-4e42-a864-3ec9322893d4",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1756 session batch-01 run: this hand-written record describes the same vote as HB 285 roll 1031588 on 2021-03-18 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1756/batch-01/JUDGING.md."
+ }
+]

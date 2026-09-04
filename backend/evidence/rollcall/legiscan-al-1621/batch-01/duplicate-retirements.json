@@ -1,0 +1,14 @@
+[
+ {
+  "recordId": "001523f7-2d9a-4160-8c13-4b939c2e5824",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1621 session batch-01 run: this hand-written record describes the same vote as HB 380 roll 862047 on 2019-05-09 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1621/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "76e212bc-fa9f-4cc9-b2c2-23aad88d909a",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1621 session batch-01 run: this hand-written record describes the same vote as HB 380 roll 862047 on 2019-05-09 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1621/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "5cd012a2-0f4f-410b-851d-edc7c71e60b0",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1621 session batch-01 run: this hand-written record describes the same vote as HB 380 roll 862047 on 2019-05-09 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1621/batch-01/JUDGING.md."
+ }
+]

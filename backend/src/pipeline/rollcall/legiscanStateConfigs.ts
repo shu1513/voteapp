@@ -258,6 +258,95 @@ const ALABAMA_2024_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] 
   /\bsuspend rule\b/,
 ];
 
+// Alabama's 2019-2022 vocabulary, shared by the previous four-year term: the
+// 2019, 2020, 2021 and 2022 regular sessions and the 2021 first and second
+// special sessions. Surveyed separately 2026-09-02; all eight sessions of that
+// term print the same families and nothing is left unmatched.
+//
+// ⚠ THE CAPTION HISTORY IS NOT A STRAIGHT LINE. This term spells passage
+// `Motion to Read a Third Time and Pass`, the same as 2025 and 2026 — but 2023
+// in between DROPS the `Motion to` prefix and 2024 prints two systems at once.
+// Chronology is no guide to which vocabulary a session speaks; survey each one.
+//
+// Two things separate this term from the modern definition:
+// - The roll call suffix is printed WITHOUT a hyphen (`Motion to Read a Third
+//   Time and Pass Roll Call 215`), where 2024 onward writes ` - Roll Call 215`.
+//   Patterns are unanchored at the end, so this costs nothing, but a desc
+//   histogram folded with a hyphen-only stripper reports thousands of bogus
+//   one-roll families.
+// - A long tail of procedural motions this term takes by roll call and the
+//   modern sessions do not: local application certification (in six spellings,
+//   three of them misspelled in the feed), acceding to a conference, carrying a
+//   bill over, indefinite postponement, suspending the rules, and so on.
+//
+// The Budget Isolation Resolution appears only in the 2021 and 2022 REGULAR
+// sessions, in a fifth spelling — `HBIR:/SBIR: <sponsor> motion to Adopt` — and
+// the existing `^[hs]bir:` rule catches it. The 2019 and 2020 sessions and all
+// four special sessions of this term record no such votes at all, so those
+// resolutions were taken by voice.
+const ALABAMA_2019_2022_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Conference-report votes. First, so the concurrence rule cannot claim them.
+  { pattern: /\bconcur[ -]in and adopt conference committee report\b/, questionClass: "conference_report" },
+  { pattern: /\bconcur(?:s)?[ -]in\b/, questionClass: "concurrence" },
+  // Passage, with or without a sponsor prefix, ` as Amended`, or ` Again`.
+  { pattern: /\bmotion to read (?:again )?a third time and pass\b/, questionClass: "passage" },
+  // ⚠ A FEED TYPO, NOT A DIFFERENT QUESTION. HB 520 of 2022 has its passage
+  // vote printed as `otion to Read a Third Time and Pass Roll Call 881`, with
+  // the leading M missing from BOTH the desc and the matching bill-history
+  // line. It is a real passage vote (24-0, an Etowah County local act) and is
+  // kept as one rather than being quietly dropped as an unknown question.
+  { pattern: /^otion to read a third time and pass\b/, questionClass: "passage" },
+];
+const ALABAMA_2019_2022_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // ⚠ TWO TRUNCATED CAPTIONS. HB 192 of 2021 carries `Motion to Roll Call 6`,
+  // a caption cut off before it says anything; the bill history shows the same
+  // stub, and that measure's real passage is Roll Call 8. It states no
+  // question, so it cannot be judged.
+  //
+  // The empty-string rule is belt and braces. SB 124 of 2022 has a genuinely
+  // EMPTY desc and the date 1969-12-31, a null date printed as an epoch
+  // boundary — but the parser rejects that row for the missing desc before
+  // classification is ever reached, so this pattern never fires on it today.
+  /^$/,
+  /^motion to(?: roll call \d+)?$/,
+  // The Budget Isolation Resolution, which this term prefixes onto the
+  // sponsor's adoption motion.
+  /^[hs]bir:/,
+  // Floor adoption of an amendment or substitute, and tabling one.
+  /\bmotion to adopt\b/,
+  /\bmotion to table\b/,
+  /\bmotion to substitute\b/,
+  /\bsubstitute a companion bill\b/,
+  /\bremove from the\s*table\b/,
+  /\bremove from table\b/,
+  /\bremove his amendment from the table\b/,
+  // Debate cutoffs.
+  /\bprevious question\b/,
+  /\bcease debate\b/,
+  // Local-bill certification. Six spellings, three of them the feed's own
+  // typos (`Apploication`, `Applicaiton`, `Local Certification Application`),
+  // which is why this is a prefix match and not an exact one.
+  /\blocal appl/,
+  /\blocal certification\b/,
+  // Housekeeping and scheduling.
+  /^cosponsors added/,
+  /\badd cosponsor\b/,
+  /\bcarry over\b/,
+  /\bindefinitely postpone\b/,
+  /\bsuspend (?:rules|joint rule)\b/,
+  /\bmotion to adjourn\b/,
+  /\bmotion to rerefer\b/,
+  /\bmotion in writing\b/,
+  /\bexclude the resolution\b/,
+  /\bchallenging rule\b/,
+  /\bmotion to miscellaneous\b/,
+  // Conference procedure and reconsideration. `non concur` is written here
+  // WITHOUT a hyphen, unlike the modern sessions' `non-concur`.
+  /\bmotion to accede\b/,
+  /\bnon[ -]?concur\b/,
+  /\breconsider\b/,
+];
+
 // Arkansas's floor-question vocabulary. Defined here so the 2026 fiscal and
 // special sessions can share it once they are surveyed, rather than growing a
 // second copy that could drift.
@@ -2238,6 +2327,93 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     chamberSizes: { house: 105, senate: 35 },
     keptQuestions: ALABAMA_2024_KEPT_QUESTIONS,
     excludedQuestions: ALABAMA_2024_EXCLUDED_QUESTIONS,
+  },
+
+  // Alabama Legislature, 2019 Regular Session — the first session of the
+  // PREVIOUS four-year term (members elected November 2018, serving through
+  // 2022). About 53 percent of them are on the November 2026 ballot, which is
+  // why this term is in scope at all; the current term runs 87 percent.
+  // Surveyed 2026-09-02: 1,492 bills, 1,634 roll calls, 140 people, nothing
+  // unmatched. 1,017 kept floor votes, 26 divided, 18 of those on measures that
+  // became law. No Budget Isolation Resolution votes are recorded.
+  "AL-1621": {
+    jurisdiction: "AL",
+    sessionId: 1621,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_2019_2022_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_2019_2022_EXCLUDED_QUESTIONS,
+  },
+
+  // Alabama Legislature, 2020 Regular Session — the COVID-shortened session, and
+  // by far the thinnest regular session in scope. Surveyed 2026-09-02: 1,062
+  // bills but only 683 roll calls, 140 people, nothing unmatched. 445 kept floor
+  // votes, 5 divided, 2 of those on the one measure that became law. Registered
+  // for completeness of the term rather than for yield.
+  "AL-1706": {
+    jurisdiction: "AL",
+    sessionId: 1706,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_2019_2022_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_2019_2022_EXCLUDED_QUESTIONS,
+  },
+
+  // Alabama Legislature, 2021 Regular Session — the largest divided pool of any
+  // Alabama session in scope. Surveyed 2026-09-02: 1,500 bills, 2,513 roll
+  // calls, 141 people rows (139 members), nothing unmatched. 998 kept floor votes, 46 divided,
+  // 23 of those on measures that became law. This is one of the two sessions of
+  // the term that records Budget Isolation Resolution votes.
+  "AL-1756": {
+    jurisdiction: "AL",
+    sessionId: 1756,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_2019_2022_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_2019_2022_EXCLUDED_QUESTIONS,
+  },
+
+  // Alabama Legislature, 2021 First Special Session (September and October 2021),
+  // the prison construction session. Tiny and unusually contested: 40 bills, 19
+  // roll calls, 138 people, and 6 of its 11 kept floor votes are divided AND on
+  // measures that became law — the highest such share of any Alabama session.
+  "AL-1854": {
+    jurisdiction: "AL",
+    sessionId: 1854,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_2019_2022_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_2019_2022_EXCLUDED_QUESTIONS,
+  },
+
+  // Alabama Legislature, 2021 Second Special Session (November 2021), the
+  // redistricting session. 74 bills, 54 roll calls, 139 people rows (138 members). 11 of its 23
+  // kept floor votes are divided and enacted, covering the congressional, State
+  // House, State Senate and Board of Education maps plus two vaccine-mandate
+  // bills. The congressional map drawn here is the one the Supreme Court held
+  // likely unlawful in Allen v. Milligan, which the 2023 second special session
+  // (`AL-2060`) then redrew.
+  "AL-1857": {
+    jurisdiction: "AL",
+    sessionId: 1857,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_2019_2022_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_2019_2022_EXCLUDED_QUESTIONS,
+  },
+
+  // Alabama Legislature, 2022 Regular Session — the last session of the previous
+  // term, and the one with the highest crosswalk reach of the four (80 of 142
+  // members are on the November 2026 ballot). Surveyed 2026-09-02: 1,265 bills,
+  // 1,898 roll calls, 142 people rows (140 members), nothing unmatched. 811 kept floor votes, 41
+  // divided, 25 of those on measures that became law.
+  //
+  // The 2019 First Special Session (LegiScan 1661) and the 2022 First Special
+  // Session (LegiScan 1972) were surveyed the same day and are deliberately NOT
+  // registered: 11 and 4 kept floor votes respectively, and ZERO divided ones
+  // between them, so neither can ever contribute a record. Same call as the 2023
+  // first special session.
+  "AL-1836": {
+    jurisdiction: "AL",
+    sessionId: 1836,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_2019_2022_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_2019_2022_EXCLUDED_QUESTIONS,
   },
 
   // New York, 2025-2026 General Assembly (both years in one dataset;
