@@ -761,6 +761,93 @@ describe("Alabama's measured desc vocabulary", () => {
   });
 });
 
+describe("Alaska's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.AK!;
+  const ak = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+
+  it("keeps final passage however the chamber reached it", () => {
+    expect(ak("House: Third Reading Final Passage", 40)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(ak("Senate: Third Reading - Final Passage", 20, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(ak("Senate: Final Passage", 20, "senate")).toMatchObject({ questionClass: "passage" });
+    // Alaska can pass a bill in second reading once the chamber advances it
+    // by special order.
+    expect(ak("House: Second Reading Final Passage Special Order of Business", 40)).toMatchObject({
+      questionClass: "passage",
+    });
+    expect(ak("House: Third Reading Final Passage Reconsideration", 40)).toMatchObject({
+      questionClass: "passage",
+    });
+  });
+
+  it("reads a trailing Effective Date(s) as an annotation, not the question", () => {
+    // The journal line under this roll's tally reads `EFFECTIVE DATE(S) SAME
+    // AS PASSAGE` — there is no separate roll — so the vote is passage.
+    expect(ak("Senate: Third Reading - Final Passage Effective Date(s)", 20, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // A real effective-date vote wears the question at the FRONT.
+    expect(ak("House: Third Reading Effective Date", 40)).toMatchObject({
+      isFloorVote: false,
+      questionClass: null,
+    });
+    expect(ak("Senate: Effective Date Clause(s)", 20, "senate")).toMatchObject({ isFloorVote: false });
+    expect(ak("House: Effective Date Concur", 40)).toMatchObject({ isFloorVote: false });
+  });
+
+  it("keeps both chambers' concurrence spellings, including the one that names the bill", () => {
+    expect(ak("House: Concur", 40)).toMatchObject({ questionClass: "concurrence" });
+    expect(
+      ak("Senate: Shall the Senate Concur in the House Amendment(s) to CSSB 200(RES) am Effective Date(s)", 20, "senate")
+    ).toMatchObject({ isFloorVote: true, questionClass: "concurrence" });
+    expect(ak("House: Adopt", 40)).toMatchObject({ questionClass: "conference_report" });
+    expect(ak("Senate: Shall the Senate Adopt the Conference Committee Report", 20, "senate")).toMatchObject({
+      questionClass: "conference_report",
+    });
+  });
+
+  it("excludes every veto override, because Alaska overrides in joint session", () => {
+    // The 60-member joint session, filed under the House.
+    expect(ak("House: Veto Override", 60)).toMatchObject({ isFloorVote: false, questionClass: null });
+    expect(ak("House: Veto Override SENATE", 60)).toMatchObject({ isFloorVote: false });
+    expect(ak("Senate: Veto Override", 20, "senate")).toMatchObject({ isFloorVote: false });
+    expect(
+      ak("Senate: Schwanke, Stapp, Tilton, Tomaszewski, Underwood, Vance SENATE SB 183 Veto Override", 20, "senate")
+    ).toMatchObject({ isFloorVote: false });
+  });
+
+  it("excludes the amendment stage and the separate budget-reserve question", () => {
+    expect(ak("House: Second Reading Amendment No. 1", 40)).toMatchObject({ isFloorVote: false });
+    expect(ak("House: Second Reading Amendment No. 1 to Amendment No. 2", 40)).toMatchObject({ isFloorVote: false });
+    expect(ak("Senate: Adopt Budget Reserve Fund Section(s)", 20, "senate")).toMatchObject({ isFloorVote: false });
+    expect(ak("House: Second Reading Rescind Previous Action in Adopting Amendment No. 1", 40)).toMatchObject({
+      isFloorVote: false,
+    });
+    expect(ak("House: Discharge from Education Committee", 40)).toMatchObject({ isFloorVote: false });
+  });
+
+  it("surfaces the two families the journal could not settle", () => {
+    // `Special Order of Business` on its own maps to PASSED on some days and
+    // to a scheduling motion on others, and `Third Reading Constitutional
+    // Budget Reserve Appropriations` maps to both PASSED and `CBRF
+    // SECTION(S) FAILED`. Ten rolls, left for a human.
+    expect(ak("House: Special Order of Business", 40)).toMatchObject({
+      isFloorVote: null,
+      reason: "unknown_question",
+    });
+    expect(ak("House: Third Reading Constitutional Budget Reserve Appropriations", 40)).toMatchObject({
+      isFloorVote: null,
+    });
+  });
+});
+
 describe("South Carolina's measured desc vocabulary", () => {
   const config = LEGISCAN_STATE_CONFIGS.SC!;
   const sc = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
@@ -1048,6 +1135,7 @@ describe("getLegiscanStateConfig", () => {
       "AL",
       "AL-2218",
       "AL-2262",
+      "AK",
       "SC",
       "NV",
       "AL-2014",
@@ -1078,6 +1166,7 @@ describe("getLegiscanStateConfig", () => {
       "MT",
       "NC",
       "AL",
+      "AK",
       "SC",
       "NV",
       "NY",
@@ -1105,6 +1194,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("AL").sessionId).toBe(2148);
     expect(getLegiscanStateConfig("AL-2218")).toMatchObject({ jurisdiction: "AL", sessionId: 2218 });
     expect(getLegiscanStateConfig("AL-2262")).toMatchObject({ jurisdiction: "AL", sessionId: 2262 });
+    expect(getLegiscanStateConfig("AK").sessionId).toBe(2171);
     expect(getLegiscanStateConfig("SC").sessionId).toBe(2194);
     expect(getLegiscanStateConfig("NV").sessionId).toBe(2144);
     expect(getLegiscanStateConfig("AL-2014")).toMatchObject({ jurisdiction: "AL", sessionId: 2014 });
