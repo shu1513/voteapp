@@ -1,0 +1,226 @@
+{
+  "jurisdiction": "NV",
+  "session": "2144",
+  "measures": {
+    "AB 121": {
+      "area": "housing_affordability",
+      "yea": "for",
+      "nay": null,
+      "chapter": "Chapter 227",
+      "signed": "2025-06-03",
+      "rolls": [
+        {
+          "chamber": "assembly",
+          "roll": 1553680,
+          "date": "2025-04-22",
+          "tally": "27-15",
+          "version": "first reprint \u2014 NOT the enacted text"
+        },
+        {
+          "chamber": "senate",
+          "roll": 1576883,
+          "date": "2025-05-23",
+          "tally": "16-5",
+          "version": "second reprint \u2014 the enacted text"
+        }
+      ]
+    },
+    "SB 166": {
+      "area": "housing_affordability",
+      "yea": "for",
+      "nay": null,
+      "chapter": "Chapter 177",
+      "signed": "2025-05-31",
+      "rolls": [
+        {
+          "chamber": "assembly",
+          "roll": 1575985,
+          "date": "2025-05-22",
+          "tally": "30-12",
+          "version": "first reprint \u2014 the enacted text"
+        },
+        {
+          "chamber": "senate",
+          "roll": 1553772,
+          "date": "2025-04-22",
+          "tally": "14-7",
+          "version": "first reprint \u2014 the enacted text"
+        }
+      ]
+    },
+    "AB 343": {
+      "area": "corporate_accountability",
+      "yea": "for",
+      "nay": null,
+      "chapter": "Chapter 247",
+      "signed": "2025-06-03",
+      "rolls": [
+        {
+          "chamber": "assembly",
+          "roll": 1554429,
+          "date": "2025-04-22",
+          "tally": "28-14",
+          "version": "first reprint \u2014 NOT the enacted text"
+        },
+        {
+          "chamber": "senate",
+          "roll": 1576960,
+          "date": "2025-05-23",
+          "tally": "13-8",
+          "version": "second reprint \u2014 the enacted text"
+        }
+      ]
+    },
+    "AB 483": {
+      "area": "healthcare_affordability",
+      "yea": "for",
+      "nay": null,
+      "chapter": "Chapter 482",
+      "signed": "2025-06-10",
+      "rolls": [
+        {
+          "chamber": "assembly",
+          "roll": 1580715,
+          "date": "2025-05-28",
+          "tally": "29-13",
+          "version": "first reprint \u2014 the enacted text"
+        },
+        {
+          "chamber": "senate",
+          "roll": 1583907,
+          "date": "2025-06-02",
+          "tally": "14-6",
+          "version": "first reprint \u2014 the enacted text"
+        }
+      ]
+    },
+    "SB 246": {
+      "area": "healthcare_affordability",
+      "yea": "for",
+      "nay": null,
+      "chapter": "Chapter 288",
+      "signed": "2025-06-05",
+      "rolls": [
+        {
+          "chamber": "assembly",
+          "roll": 1576114,
+          "date": "2025-05-22",
+          "tally": "27-15",
+          "version": "first reprint \u2014 the enacted text"
+        }
+      ]
+    },
+    "AB 235": {
+      "area": "data_privacy",
+      "yea": "for",
+      "nay": null,
+      "chapter": "Chapter 117",
+      "signed": "2025-05-29",
+      "rolls": [
+        {
+          "chamber": "assembly",
+          "roll": 1551264,
+          "date": "2025-04-17",
+          "tally": "33-9",
+          "version": "introduced text \u2014 the enacted text, never amended"
+        },
+        {
+          "chamber": "senate",
+          "roll": 1575676,
+          "date": "2025-05-21",
+          "tally": "14-7",
+          "version": "introduced text \u2014 the enacted text, never amended"
+        }
+      ]
+    },
+    "AB 123": {
+      "area": "public_safety_and_crime_control",
+      "yea": "for",
+      "nay": null,
+      "chapter": "Chapter 517",
+      "signed": "2025-06-10",
+      "rolls": [
+        {
+          "chamber": "assembly",
+          "roll": 1581201,
+          "date": "2025-05-29",
+          "tally": "27-15",
+          "version": "second reprint \u2014 the enacted text"
+        },
+        {
+          "chamber": "senate",
+          "roll": 1582877,
+          "date": "2025-05-31",
+          "tally": "14-7",
+          "version": "second reprint \u2014 the enacted text",
+          "acknowledge_later_rolls": [
+            1582878
+          ],
+          "note": "The Senate passed the bill 13-8 as roll 1582878, reconsidered that action, then passed it again 14-7 as roll 1582877. The 14-7 vote is the one that stands, and LegiScan gave it the LOWER id. The gate cannot order same-day rolls, so the superseded 13-8 roll is acknowledged here."
+        }
+      ]
+    },
+    "SB 347": {
+      "area": "gun_control",
+      "yea": "for",
+      "nay": null,
+      "chapter": "Chapter 257",
+      "signed": "2025-06-05",
+      "rolls": [
+        {
+          "chamber": "assembly",
+          "roll": 1575998,
+          "date": "2025-05-22",
+          "tally": "27-15",
+          "version": "second reprint \u2014 the enacted text"
+        }
+      ]
+    },
+    "SB 260": {
+      "area": "environment_and_public_health",
+      "yea": "for",
+      "nay": null,
+      "chapter": "Chapter 499",
+      "signed": "2025-06-10",
+      "rolls": [
+        {
+          "chamber": "assembly",
+          "roll": 1584185,
+          "date": "2025-06-02",
+          "tally": "32-10",
+          "version": "second reprint \u2014 the enacted text"
+        },
+        {
+          "chamber": "senate",
+          "roll": 1582302,
+          "date": "2025-05-30",
+          "tally": "15-6",
+          "version": "second reprint \u2014 the enacted text"
+        }
+      ]
+    },
+    "AB 90": {
+      "area": "civil_rights",
+      "yea": "for",
+      "nay": null,
+      "chapter": "Chapter 51",
+      "signed": "2025-05-28",
+      "rolls": [
+        {
+          "chamber": "assembly",
+          "roll": 1550181,
+          "date": "2025-04-16",
+          "tally": "27-15",
+          "version": "introduced text \u2014 the enacted text, never amended"
+        },
+        {
+          "chamber": "senate",
+          "roll": 1573426,
+          "date": "2025-05-19",
+          "tally": "12-8",
+          "version": "introduced text \u2014 the enacted text, never amended"
+        }
+      ]
+    }
+  }
+}

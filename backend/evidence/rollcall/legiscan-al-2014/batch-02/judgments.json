@@ -1,0 +1,76 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2014",
+      "roll": 1318421,
+      "measure_id": "HB 209",
+      "vote_date": "2023-05-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 209, which would have made it a felony to handle another person's absentee ballot or absentee ballot application. Distributing, ordering, collecting, filling in, obtaining or delivering someone else's absentee paperwork would have been a Class D felony. A voter could still get help from a relative up to second degree, a housemate of six months, an election official or a court-appointed guardian. The House passed it 76-28, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 209, which would have made it a felony to handle another person's absentee ballot or absentee ballot application. Distributing, ordering, collecting, filling in, obtaining or delivering someone else's absentee paperwork would have been a Class D felony. A voter could still get help from a relative up to second degree, a housemate of six months, an election official or a court-appointed guardian. The House passed it 76-28 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2014",
+      "roll": 1326682,
+      "measure_id": "HB 392",
+      "vote_date": "2023-05-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 392, which would have made federal gun bans a state crime in Alabama. Anyone barred from having a gun under federal law would also have been barred under state law, and breaking that rule would have been a Class C felony. The federal list covers people convicted of a felony or of domestic violence, fugitives, people under some restraining orders, and others. The House passed it 64-36, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 392, which would have made federal gun bans a state crime in Alabama. Anyone barred from having a gun under federal law would also have been barred under state law, and breaking that rule would have been a Class C felony. The federal list covers people convicted of a felony or of domestic violence, fugitives, people under some restraining orders, and others. The House passed it 64-36 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2014",
+      "roll": 1325654,
+      "measure_id": "SB 181",
+      "vote_date": "2023-05-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 181, which would have set one statewide set of fair-hearing rules for students facing suspension or expulsion. Each local school board writes its own student conduct rules today, and the bill would have replaced that patchwork with uniform steps, with the State Board of Education writing the details. The vote was 11-20, short of the majority the Senate needed, so the bill failed.",
+      "nay_description": "Voted against passing Senate Bill 181, which would have set one statewide set of fair-hearing rules for students facing suspension or expulsion. Each local school board writes its own student conduct rules today, and the bill would have replaced that patchwork with uniform steps, with the State Board of Education writing the details. The vote was 11-20, short of the majority the Senate needed, so the bill failed.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2014",
+      "roll": 1325638,
+      "measure_id": "HB 229",
+      "vote_date": "2023-05-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 229, which would have let some prisoners serving sentences under Alabama's habitual felony offender law ask a court to be sentenced again. That law raises the punishment for someone with earlier felony convictions, in the harshest cases to life. The bill set out when a court could revisit such a sentence, and it would have expired after five years. The House passed it 64-37, but the Senate never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 229, which would have let some prisoners serving sentences under Alabama's habitual felony offender law ask a court to be sentenced again. That law raises the punishment for someone with earlier felony convictions, in the harshest cases to life. The bill set out when a court could revisit such a sentence, and it would have expired after five years. The House passed it 64-37 over these votes, but the Senate never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

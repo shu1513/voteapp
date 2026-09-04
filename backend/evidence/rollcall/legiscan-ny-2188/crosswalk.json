@@ -1,0 +1,1102 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "NY",
+  "note": "Reviewed people_id to candidate map for New York's 2025-2026 General Assembly (LegiScan session 2188). Every serving member appears exactly once: a candidate id where a human confirmed the identity, or null where a human confirmed there is no November 2026 candidate row to map. The two sponsor pseudo-people the dataset carries (people_id 1483 and 1484, both named \"Budget\" with a blank district) are left out, because they are not members and the resolver does not count them. Fifty entries come from the proposer, which matched them on first and last name with the seat agreeing, and all fifty were accepted. Five are hand-added: our roster stores those five sitting members with the surname first (\"Barrett, Didi\"), which no name rule can match, and each was confirmed by the district. The 164 nulls are members with no November 2026 candidate row, which is expected while New York's roster campaign is still filling seats in parallel; extending this file later and re-importing adds those members without duplicating anything.",
+  "entries": [
+    {
+      "people_id": 1262,
+      "candidate_id": null,
+      "note": "no candidate: William Barclay HD-120 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1265,
+      "candidate_id": null,
+      "note": "no candidate: Michael Benedetto HD-082 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1272,
+      "candidate_id": "f7f965c1-22ea-43f3-8d4b-fd17c6d68579",
+      "note": "proposer: Alec Brook-Krasny house HD-046 -> Alec Brook-Krasny (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 1283,
+      "candidate_id": null,
+      "note": "no candidate: William Colton HD-047 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1285,
+      "candidate_id": null,
+      "note": "no candidate: Vivian Cook HD-032 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1294,
+      "candidate_id": null,
+      "note": "no candidate: Jeffrey Dinowitz HD-081 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1302,
+      "candidate_id": "bff94d69-958d-4b3e-ad5a-9337928e1d22",
+      "note": "proposer: Michael Fitzpatrick house HD-008 -> Michael Fitzpatrick (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 1306,
+      "candidate_id": null,
+      "note": "no candidate: Michael Gianaris SD-012 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1309,
+      "candidate_id": null,
+      "note": "no candidate: Deborah Glick HD-066 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1313,
+      "candidate_id": null,
+      "note": "no candidate: Stephen Hawley HD-139 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1315,
+      "candidate_id": null,
+      "note": "no candidate: Carl Heastie HD-083 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1316,
+      "candidate_id": null,
+      "note": "no candidate: Andrew Hevesi HD-028 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1326,
+      "candidate_id": null,
+      "note": "no candidate: Brian Kavanagh SD-027 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1332,
+      "candidate_id": null,
+      "note": "no candidate: Charles Lavine HD-013 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1337,
+      "candidate_id": null,
+      "note": "no candidate: Donna Lupardo HD-123 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1339,
+      "candidate_id": null,
+      "note": "no candidate: William Magnarelli HD-129 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1343,
+      "candidate_id": null,
+      "note": "no candidate: David McDonough HD-014 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1354,
+      "candidate_id": null,
+      "note": "no candidate: Thomas O'Mara SD-058 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1358,
+      "candidate_id": "9ae8ae0e-675b-4628-a296-9b63f4dadec4",
+      "note": "proposer: Amy Paulin house HD-088 -> Amy Paulin (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 1359,
+      "candidate_id": null,
+      "note": "no candidate: Crystal Peoples-Stokes HD-141 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1364,
+      "candidate_id": null,
+      "note": "no candidate: Gary Pretlow HD-089 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1368,
+      "candidate_id": null,
+      "note": "no candidate: Philip Ramos HD-006 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1375,
+      "candidate_id": "6b053e51-3fca-4d94-8776-7718b6d5e260",
+      "note": "proposer: Linda Rosenthal house HD-067 -> Linda Rosenthal (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 1387,
+      "candidate_id": null,
+      "note": "no candidate: Albert Stirpe HD-127 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1389,
+      "candidate_id": null,
+      "note": "no candidate: James Tedisco SD-044 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1402,
+      "candidate_id": null,
+      "note": "no candidate: Joseph Addabbo SD-015 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1417,
+      "candidate_id": null,
+      "note": "no candidate: Joseph Griffo SD-053 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1424,
+      "candidate_id": "48c0e330-eef8-401b-a075-63bc0aba1de1",
+      "note": "proposer: Liz Krueger senate SD-028 -> Liz Krueger (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 1426,
+      "candidate_id": null,
+      "note": "no candidate: Andrew Lanza SD-024 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1442,
+      "candidate_id": null,
+      "note": "no candidate: Kevin Parker SD-021 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1450,
+      "candidate_id": null,
+      "note": "no candidate: Jose Serrano SD-029 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1456,
+      "candidate_id": null,
+      "note": "no candidate: Toby Stavisky SD-011 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1457,
+      "candidate_id": null,
+      "note": "no candidate: Andrea Stewart-Cousins SD-035 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 1491,
+      "candidate_id": null,
+      "note": "no candidate: David Weprin HD-024 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 2377,
+      "candidate_id": null,
+      "note": "no candidate: Dean Murray SD-003 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 11102,
+      "candidate_id": null,
+      "note": "no candidate: Edward Braunstein HD-026 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 11115,
+      "candidate_id": null,
+      "note": "no candidate: Jack Martins SD-007 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 11116,
+      "candidate_id": null,
+      "note": "no candidate: Gustavo Rivera SD-033 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 11312,
+      "candidate_id": null,
+      "note": "no candidate: Kenneth Blankenbush HD-117 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 11313,
+      "candidate_id": "06f45f00-bcbb-49cb-8890-27d1b310abaf",
+      "note": "hand: Harry Bronson house HD-138 -> roster row \"Bronson, Harry B.\" (same district; our roster stores the name surname first, which the proposer cannot match)"
+    },
+    {
+      "people_id": 11316,
+      "candidate_id": null,
+      "note": "no candidate: Christopher Friend HD-124 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 11325,
+      "candidate_id": null,
+      "note": "no candidate: Philip Palmesano HD-132 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 11326,
+      "candidate_id": "208e1f90-4c68-4737-a13c-e69a0e2e20f5",
+      "note": "proposer: Edward Ra house HD-019 -> Edward Ra (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 11331,
+      "candidate_id": null,
+      "note": "no candidate: Patrick Gallivan SD-060 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 13334,
+      "candidate_id": null,
+      "note": "no candidate: Sean Ryan SD-061 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 13939,
+      "candidate_id": null,
+      "note": "no candidate: Shelley Mayer SD-037 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 13946,
+      "candidate_id": "c8a57c8c-15cc-43f1-a771-413439d4adcc",
+      "note": "hand: Didi Barrett house HD-106 -> roster row \"Barrett, Didi\" (same district; our roster stores the name surname first, which the proposer cannot match)"
+    },
+    {
+      "people_id": 14205,
+      "candidate_id": null,
+      "note": "no candidate: Patricia Fahy SD-046 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 14206,
+      "candidate_id": "82bf4d1f-329a-418b-87c3-c4f239ba233a",
+      "note": "proposer: Ron Kim house HD-040 -> Ron Kim (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 14207,
+      "candidate_id": null,
+      "note": "no candidate: John McDonald HD-108 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 14210,
+      "candidate_id": "7d16af8d-e3d5-4c9f-b5f4-ee4492ea19ac",
+      "note": "proposer: Steven Otis house HD-091 -> Steven Otis (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 14213,
+      "candidate_id": null,
+      "note": "no candidate: Nily Rozic HD-025 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 14214,
+      "candidate_id": null,
+      "note": "no candidate: Angelo Santabarbara HD-111 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 14215,
+      "candidate_id": null,
+      "note": "no candidate: Luis Sepulveda SD-032 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 14216,
+      "candidate_id": null,
+      "note": "no candidate: James Skoufis SD-042 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 14217,
+      "candidate_id": "5b84d950-94e9-4c47-8875-fb8dfe1336ea",
+      "note": "proposer: Michaelle Solages house HD-022 -> Michaelle Solages (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 14218,
+      "candidate_id": null,
+      "note": "no candidate: Phillip Steck HD-110 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 14220,
+      "candidate_id": null,
+      "note": "no candidate: Brad Hoylman-Sigal SD-047 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 14574,
+      "candidate_id": "3c1c7fd9-8d4e-430e-9055-4ecc25868da5",
+      "note": "proposer: David DiPietro house HD-147 -> David J. DiPietro (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 14578,
+      "candidate_id": null,
+      "note": "no candidate: Daniel Stec SD-045 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 14666,
+      "candidate_id": null,
+      "note": "no candidate: Simcha Felder SD-022 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 14669,
+      "candidate_id": null,
+      "note": "no candidate: James Sanders SD-010 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 16097,
+      "candidate_id": null,
+      "note": "no candidate: Maritza Davila HD-053 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 16117,
+      "candidate_id": null,
+      "note": "no candidate: Anthony Palumbo SD-001 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 16653,
+      "candidate_id": null,
+      "note": "no candidate: Leroy Comrie SD-014 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 16693,
+      "candidate_id": null,
+      "note": "no candidate: Robert Ortt SD-062 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 16761,
+      "candidate_id": "5a458287-f06d-4de7-bb45-1a359c87a452",
+      "note": "hand: Carrie Woerner house HD-113 -> roster row \"Woerner, Carrie\" (same district; our roster stores the name surname first, which the proposer cannot match)"
+    },
+    {
+      "people_id": 16762,
+      "candidate_id": "a3cd5d1e-12a6-4d31-8e43-836111aa3a64",
+      "note": "proposer: Jo Simon house HD-052 -> Jo Anne Simon (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 17010,
+      "candidate_id": "8ad88977-3283-4e6d-9685-7f54adeb5805",
+      "note": "proposer: Karl Brabenec house HD-098 -> Karl Brabenec (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 17439,
+      "candidate_id": "14093c30-e4cd-4df8-b4a8-87b7a5821d96",
+      "note": "proposer: Rebecca Seawright house HD-076 -> Rebecca Seawright (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 17454,
+      "candidate_id": null,
+      "note": "no candidate: Erik Dilan HD-054 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 17551,
+      "candidate_id": null,
+      "note": "no candidate: Rodneyse Bichotte Hermelyn HD-042 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 17552,
+      "candidate_id": null,
+      "note": "no candidate: Roxanne Persaud SD-019 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 17792,
+      "candidate_id": "81a23eae-4e60-42b5-8924-b9cfb42a932e",
+      "note": "proposer: Pamela Hunter house HD-128 -> Pamela Jo Hunter (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 17804,
+      "candidate_id": null,
+      "note": "no candidate: Alicia Hyndman HD-029 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 17943,
+      "candidate_id": null,
+      "note": "no candidate: Jaime Williams HD-059 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 18241,
+      "candidate_id": null,
+      "note": "no candidate: Pamela Helming SD-054 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 18603,
+      "candidate_id": null,
+      "note": "no candidate: D. Billy Jones HD-115 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 18735,
+      "candidate_id": null,
+      "note": "no candidate: Clyde Vanel HD-033 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 18775,
+      "candidate_id": null,
+      "note": "no candidate: Stacey Pheffer Amato HD-023 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 18778,
+      "candidate_id": "843008fc-d997-4237-bb28-0885cb1bb6a5",
+      "note": "proposer: Robert Carroll house HD-044 -> Robert C. Carroll (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 18950,
+      "candidate_id": null,
+      "note": "no candidate: Jamaal Bailey SD-036 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 19102,
+      "candidate_id": "3aa9147f-27af-46c0-816e-55da17ff602f",
+      "note": "hand: Brian Miller house HD-122 -> roster row \"Miller, Brian D.\" (same district; our roster stores the name surname first, which the proposer cannot match)"
+    },
+    {
+      "people_id": 19136,
+      "candidate_id": null,
+      "note": "no candidate: Angelo Morinello HD-145 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 19198,
+      "candidate_id": "4ea0a173-f856-4a2b-8655-85e370927bef",
+      "note": "proposer: Mary Walsh house HD-112 -> Mary Beth Walsh (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 19379,
+      "candidate_id": null,
+      "note": "no candidate: Latrice Walker HD-055 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 19506,
+      "candidate_id": "c7e56ecf-09d6-4e2c-b09f-3c147443ff72",
+      "note": "proposer: Alfred Taylor house HD-071 -> Alfred Taylor (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 19639,
+      "candidate_id": "82924bed-1cf0-491c-b6ed-c34069b4d4c9",
+      "note": "proposer: John Mikulin house HD-017 -> John Mikulin (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 19640,
+      "candidate_id": null,
+      "note": "no candidate: Steve Stern HD-010 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 19642,
+      "candidate_id": null,
+      "note": "no candidate: Harvey Epstein HD-074 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 19643,
+      "candidate_id": null,
+      "note": "no candidate: Nathalia Fernandez SD-034 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 19644,
+      "candidate_id": "f8103280-3316-4b31-ad13-dc08c8a0a5e1",
+      "note": "proposer: Doug Smith house HD-005 -> Doug Smith (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 19648,
+      "candidate_id": null,
+      "note": "no candidate: Jacob Ashby SD-043 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 19649,
+      "candidate_id": null,
+      "note": "no candidate: Christopher Tague HD-102 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20155,
+      "candidate_id": null,
+      "note": "no candidate: Zellnor Myrie SD-020 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20156,
+      "candidate_id": null,
+      "note": "no candidate: Jessica Ramos SD-013 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20165,
+      "candidate_id": null,
+      "note": "no candidate: Robert Jackson SD-031 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20167,
+      "candidate_id": null,
+      "note": "no candidate: John Liu SD-016 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20168,
+      "candidate_id": null,
+      "note": "no candidate: Monica Martinez SD-004 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20169,
+      "candidate_id": null,
+      "note": "no candidate: Rachel May SD-048 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20251,
+      "candidate_id": null,
+      "note": "no candidate: Patrick Burke HD-142 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20252,
+      "candidate_id": "ce6ff30d-0bca-4957-b452-d4734969d043",
+      "note": "proposer: Catalina Cruz house HD-039 -> Catalina Cruz (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20253,
+      "candidate_id": null,
+      "note": "no candidate: Charles Fall HD-061 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20255,
+      "candidate_id": null,
+      "note": "no candidate: Judy Griffin HD-021 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20256,
+      "candidate_id": "70321465-f7f4-4ccb-b9a7-c50ab5cf124d",
+      "note": "proposer: Jonathan Jacobson house HD-104 -> Jonathan Jacobson (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20257,
+      "candidate_id": null,
+      "note": "no candidate: Karen McMahon HD-146 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20259,
+      "candidate_id": null,
+      "note": "no candidate: Karines Reyes HD-087 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20261,
+      "candidate_id": null,
+      "note": "no candidate: Nader Sayegh HD-090 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20262,
+      "candidate_id": null,
+      "note": "no candidate: Andrew Gounardes SD-026 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20263,
+      "candidate_id": null,
+      "note": "no candidate: Peter Harckham SD-040 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20264,
+      "candidate_id": null,
+      "note": "no candidate: Julia Salazar SD-018 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20470,
+      "candidate_id": "df2806a0-5055-47f7-8ade-3e3df30b4d0d",
+      "note": "proposer: Simcha Eichenstein house HD-048 -> Simcha Eichenstein (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20634,
+      "candidate_id": null,
+      "note": "no candidate: Marianne Buttenschon HD-119 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20635,
+      "candidate_id": "2b0a3f29-a90d-45ea-b16f-ee8426f65a44",
+      "note": "proposer: Michael Reilly house HD-062 -> Michael Reilly (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20637,
+      "candidate_id": null,
+      "note": "no candidate: Mark Walczyk SD-049 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20680,
+      "candidate_id": "0a4780e2-1f8b-4197-b943-9d46af95f7b3",
+      "note": "proposer: Joseph DeStefano house HD-003 -> Joseph DeStefano (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 20682,
+      "candidate_id": null,
+      "note": "no candidate: Brian Manktelow HD-130 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 20684,
+      "candidate_id": null,
+      "note": "no candidate: Robert Smullen HD-118 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 21405,
+      "candidate_id": null,
+      "note": "no candidate: George Borrello SD-057 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 21680,
+      "candidate_id": null,
+      "note": "no candidate: Khaleel Anderson HD-031 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 21690,
+      "candidate_id": null,
+      "note": "no candidate: Sarah Clark HD-136 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 21691,
+      "candidate_id": null,
+      "note": "no candidate: Demond Meeks HD-137 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 21908,
+      "candidate_id": null,
+      "note": "no candidate: Jodi Giglio HD-002 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 21910,
+      "candidate_id": null,
+      "note": "no candidate: Keith Brown HD-012 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 21914,
+      "candidate_id": null,
+      "note": "no candidate: Peter Oberacker SD-051 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22134,
+      "candidate_id": null,
+      "note": "no candidate: Jennifer Lunsford HD-135 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22135,
+      "candidate_id": null,
+      "note": "no candidate: Christopher Burdick HD-093 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22254,
+      "candidate_id": null,
+      "note": "no candidate: Michelle Hinchey SD-041 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22258,
+      "candidate_id": null,
+      "note": "no candidate: Samra Brouk SD-055 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22259,
+      "candidate_id": null,
+      "note": "no candidate: Jeremy Cooney SD-056 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22263,
+      "candidate_id": null,
+      "note": "no candidate: Stefani Zinerman HD-056 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22276,
+      "candidate_id": null,
+      "note": "no candidate: Jabari Brisport SD-025 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22278,
+      "candidate_id": null,
+      "note": "no candidate: Mario Mattera SD-002 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22279,
+      "candidate_id": null,
+      "note": "no candidate: Alexis Weik SD-008 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22361,
+      "candidate_id": null,
+      "note": "no candidate: Joseph Angelino HD-121 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22362,
+      "candidate_id": "34ba4c49-f869-4885-9e1b-6a98fbd494ba",
+      "note": "proposer: Michael Durso house HD-009 -> Michael Durso (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22363,
+      "candidate_id": null,
+      "note": "no candidate: Emily Gallagher HD-050 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22364,
+      "candidate_id": null,
+      "note": "no candidate: Jessica Gonzalez-Rojas HD-034 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22365,
+      "candidate_id": null,
+      "note": "no candidate: Josh Jensen HD-134 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22366,
+      "candidate_id": null,
+      "note": "no candidate: John Lemondes HD-126 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22367,
+      "candidate_id": null,
+      "note": "no candidate: Zohran Kwame Mamdani HD-036 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22368,
+      "candidate_id": "f7fa9eae-5725-4684-9095-00b54c8be78f",
+      "note": "proposer: Marcela Mitaynes house HD-051 -> Marcela Mitaynes (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22369,
+      "candidate_id": "e5fd6bc2-a951-4a49-867d-739be73a1baf",
+      "note": "proposer: Amanda Septimo house HD-084 -> Amanda Septimo (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22405,
+      "candidate_id": null,
+      "note": "no candidate: Jeff Gallahan HD-131 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22406,
+      "candidate_id": null,
+      "note": "no candidate: Anna Kelles HD-125 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22407,
+      "candidate_id": null,
+      "note": "no candidate: Matthew Simpson HD-114 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22408,
+      "candidate_id": null,
+      "note": "no candidate: William Conrad HD-140 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22410,
+      "candidate_id": null,
+      "note": "no candidate: Chantel Jackson HD-079 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22411,
+      "candidate_id": null,
+      "note": "no candidate: Jarett Gandolfo HD-007 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22412,
+      "candidate_id": null,
+      "note": "no candidate: Jenifer Rajkumar HD-038 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22413,
+      "candidate_id": "e6e0edad-3784-4eae-9b4b-183ff9738255",
+      "note": "proposer: Phara Souffrant Forrest house HD-057 -> Phara Souffrant Forrest (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 22417,
+      "candidate_id": null,
+      "note": "no candidate: Jonathan Rivera HD-149 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22418,
+      "candidate_id": null,
+      "note": "no candidate: Michael Tannousis HD-064 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 22982,
+      "candidate_id": null,
+      "note": "no candidate: Yudelka Tapia HD-086 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 23020,
+      "candidate_id": null,
+      "note": "no candidate: Cordell Cleare SD-030 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 23061,
+      "candidate_id": null,
+      "note": "no candidate: Eddie Gibbs HD-068 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 23095,
+      "candidate_id": "4f6f4b06-9e01-466a-9c34-998c633ad566",
+      "note": "proposer: Manny De Los Santos house HD-072 -> Manny De Los Santos (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23096,
+      "candidate_id": null,
+      "note": "no candidate: Nikki Lucas HD-060 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 23123,
+      "candidate_id": null,
+      "note": "no candidate: Brian Cunningham HD-043 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 23132,
+      "candidate_id": "fb9e8f07-2385-4ada-8068-00b8e110a84f",
+      "note": "proposer: Eric Brown house HD-020 -> Eric Ari Brown (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23147,
+      "candidate_id": "b357a2b6-a588-4182-876e-d44628be12e7",
+      "note": "proposer: Monique Chandler-Waterman house HD-058 -> Monique Chandler-Waterman (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 23386,
+      "candidate_id": null,
+      "note": "no candidate: Jacob Blumencranz HD-015 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 23530,
+      "candidate_id": null,
+      "note": "no candidate: Kristen Gonzalez SD-059 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 23785,
+      "candidate_id": null,
+      "note": "no candidate: Lea Webb SD-052 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 23900,
+      "candidate_id": null,
+      "note": "no candidate: Patricia Canzoneri-Fitzpatrick SD-009 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 23902,
+      "candidate_id": null,
+      "note": "no candidate: Steven Rhoads SD-005 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 23903,
+      "candidate_id": null,
+      "note": "no candidate: Robert Rolison SD-039 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 23904,
+      "candidate_id": null,
+      "note": "no candidate: Jessica Scarcella-Spanton SD-023 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 23905,
+      "candidate_id": null,
+      "note": "no candidate: William Weber SD-038 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 24189,
+      "candidate_id": null,
+      "note": "no candidate: George Alvarez HD-078 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 24191,
+      "candidate_id": null,
+      "note": "no candidate: Alex Bores HD-073 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 24192,
+      "candidate_id": null,
+      "note": "no candidate: Steven Raga HD-030 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 24193,
+      "candidate_id": null,
+      "note": "no candidate: Maryjane Shimsky HD-092 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 24194,
+      "candidate_id": "83c2e8f0-8338-4bee-a28b-98da89974d2f",
+      "note": "proposer: Sarahana Shrestha house HD-103 -> Sarahana Shrestha (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 24195,
+      "candidate_id": "5b94d14a-3005-4748-9d33-2c1f7970f60f",
+      "note": "proposer: Tony Simone house HD-075 -> Tony Simone (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 24297,
+      "candidate_id": "c115b59d-7f0d-4b7e-917c-896c24a87874",
+      "note": "proposer: Dana Levenberg house HD-095 -> Dana Levenberg (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 24383,
+      "candidate_id": null,
+      "note": "no candidate: Grace Lee HD-065 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 24398,
+      "candidate_id": null,
+      "note": "no candidate: John Zaccaro HD-080 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 24500,
+      "candidate_id": "0a0acef1-8a25-4727-810e-d7ef0d4241ee",
+      "note": "proposer: Anil Beephan house HD-105 -> Anil Beephan, Jr. (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 24501,
+      "candidate_id": null,
+      "note": "no candidate: Scott Bendett HD-107 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 24502,
+      "candidate_id": "aab84695-bc95-46a6-8144-888515cd0d2a",
+      "note": "proposer: Lester Chang house HD-049 -> Lester Chang (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 24503,
+      "candidate_id": "d28822e2-585a-4ac6-a0e5-286c6abbdf17",
+      "note": "proposer: Christopher Eachus house HD-099 -> Christopher Eachus (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 24505,
+      "candidate_id": null,
+      "note": "no candidate: Scott Gray HD-116 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 24506,
+      "candidate_id": "00f7fac6-1868-4cd3-af0b-ba2bfbd54698",
+      "note": "proposer: Brian Maher house HD-101 -> Brian Maher (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 24508,
+      "candidate_id": "328b17ae-ffb6-441d-b7de-aa743dd408b9",
+      "note": "proposer: Michael Novakhov house HD-045 -> Michael Novakhov (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 24509,
+      "candidate_id": "f4a9fa4a-4562-4938-815d-53924973ac9d",
+      "note": "proposer: Samuel Pirozzolo house HD-063 -> Samuel Pirozzolo (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 24510,
+      "candidate_id": "e6007931-7e93-4157-9a07-ba4ff855194e",
+      "note": "proposer: Matthew Slater house HD-094 -> Matthew Slater (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 24956,
+      "candidate_id": "3f119b03-474e-4bd3-865a-7319a1e94588",
+      "note": "proposer: Sam Berger house HD-027 -> Sam Berger (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25166,
+      "candidate_id": null,
+      "note": "no candidate: Landon Dais HD-077 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25666,
+      "candidate_id": null,
+      "note": "no candidate: Patrick Carroll HD-096 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25667,
+      "candidate_id": "d079d042-46d5-4a19-b538-6ccf5492b0a7",
+      "note": "proposer: Emerita Torres house HD-085 -> Emerita Torres (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25819,
+      "candidate_id": null,
+      "note": "no candidate: Andrea Bailey HD-133 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25820,
+      "candidate_id": null,
+      "note": "no candidate: Paul Bologna HD-144 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25821,
+      "candidate_id": "1d9b69ba-c178-400c-ba05-6891128435ce",
+      "note": "proposer: Noah Burroughs house HD-018 -> Noah Burroughs (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25822,
+      "candidate_id": null,
+      "note": "no candidate: Patrick Chludzinski HD-143 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25823,
+      "candidate_id": "fbca40a1-2fab-4419-85ec-83f55d9f4834",
+      "note": "proposer: Larinda Hooks house HD-035 -> Larinda Hooks (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25824,
+      "candidate_id": null,
+      "note": "no candidate: Rebecca Kassay HD-004 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25825,
+      "candidate_id": "5c70303f-04fb-4d8f-93ab-dd7b2ffe2509",
+      "note": "proposer: Paula Kay house HD-100 -> Paula Kay (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25826,
+      "candidate_id": null,
+      "note": "no candidate: Micah Lasher HD-069 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25827,
+      "candidate_id": "96546748-1fd5-4d4c-b3e3-ee8273949818",
+      "note": "proposer: Andrew Molitor house HD-150 -> Andrew M. Molitor (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25828,
+      "candidate_id": null,
+      "note": "no candidate: Daniel Norber HD-016 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25829,
+      "candidate_id": null,
+      "note": "no candidate: Kwani O'Pharrow HD-011 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25830,
+      "candidate_id": null,
+      "note": "no candidate: Gabriella Romero HD-109 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25831,
+      "candidate_id": "f486bc89-9ba8-448f-9eeb-b2952502d45b",
+      "note": "proposer: Tommy Schiavoni house HD-001 -> Thomas Schiavoni (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25832,
+      "candidate_id": null,
+      "note": "no candidate: Joe Sempolinski HD-148 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25833,
+      "candidate_id": null,
+      "note": "no candidate: Claire Valdez HD-037 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25834,
+      "candidate_id": null,
+      "note": "no candidate: Aron Wieder HD-097 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25835,
+      "candidate_id": null,
+      "note": "no candidate: Jordan Wright HD-070 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25836,
+      "candidate_id": "9eeab692-730a-4c83-bd8d-f798c51897f2",
+      "note": "proposer: Kalman Yeger house HD-041 -> Kalman Yeger (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 25837,
+      "candidate_id": null,
+      "note": "no candidate: April Baskin SD-063 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25838,
+      "candidate_id": null,
+      "note": "no candidate: Siela Bynoe SD-006 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25839,
+      "candidate_id": null,
+      "note": "no candidate: Stephen Chan SD-017 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 25840,
+      "candidate_id": null,
+      "note": "no candidate: Christopher Ryan SD-050 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 26471,
+      "candidate_id": null,
+      "note": "no candidate: Sam Sutton SD-022 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 26541,
+      "candidate_id": "6a4d6654-9370-4e85-b975-3c543cfd0f54",
+      "note": "hand: Michael Cashman house HD-115 -> roster row \"Cashman, Michael S.\" (same district; our roster stores the name surname first, which the proposer cannot match)"
+    },
+    {
+      "people_id": 26623,
+      "candidate_id": "8e327f24-24dd-495a-b11b-8773779e4ed1",
+      "note": "proposer: Diana Moreno house HD-036 -> Diana Moreno (first_and_last, seat agrees)"
+    },
+    {
+      "people_id": 26624,
+      "candidate_id": null,
+      "note": "no candidate: Keith Powers HD-074 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 26625,
+      "candidate_id": null,
+      "note": "no candidate: Erik Bottcher SD-047 has no November 2026 New York state-legislative candidate row"
+    },
+    {
+      "people_id": 26626,
+      "candidate_id": null,
+      "note": "no candidate: Jeremy Zellner SD-061 has no November 2026 New York state-legislative candidate row"
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   checkKansasScheduleA,
+  checkKansasScheduleB,
   parseKansasCfrGridCurrentPage,
   parseKansasCfrGridRows,
   parseKansasContributionExportRows,
@@ -12,6 +13,8 @@ import {
   parseKansasReportCover,
   parseKansasScheduleARows,
   parseKansasScheduleATotals,
+  parseKansasScheduleBRows,
+  parseKansasScheduleBTotals,
   parseKansasScheduleCTotals,
   reconcileKansasCoverArithmetic,
 } from "../../../src/pipeline/kansasFinance/kansasCfrViewerParsers.js";
@@ -434,6 +437,175 @@ describe("checkKansasScheduleA", () => {
       rowsParsed: false,
       itemizedSumMatchesTotal: false,
     });
+  });
+});
+
+// Synthetic Schedule B page mirroring the live e-filed shape (Governor 2026,
+// captured 2026-09-03): five cells per row, an entity with a blank
+// occupation and an address span that ends in <br />, a person with a
+// suite line and a zip+4, an under-$100 itemized row. Names and addresses
+// are invented (25-4154(d)).
+const SCHEDULE_B_HTML = `
+<table cellspacing='0' cellpadding='2' align='center' width='98%'>
+<tr>
+<td align='right' class='plain9' style="width: 79px"><b><span id="Repeater1_lblType_0">Candidate:</span></b></td>
+<td align='left' class='bold9'>
+Example
+
+Candidate
+</td>
+</tr>
+</table>
+<table width='98%' cellpadding='2' cellspacing='0' border='1'>
+<tr>
+<th align="left" class="bold10" rowspan="1" valign="middle">Date</th>
+<th class='bold10' align='left' valign='middle' rowspan='1'>Name&nbsp;and Address<br />of Contributor</th>
+<th class='bold10' align='left' valign='middle' rowspan='1'>Occupation of Individual Giving<br />More Than $150</th>
+<th class='bold10' align='left' valign='middle' rowspan='1'>Description of<br />In-Kind<br />Contribution</th>
+<th class='bold10' align='left' valign='middle' rowspan='1'>Value of<br />In-Kind<br />Contribution</th>
+</tr>
+<tr>
+<td align="left" class="plain8" valign="middle" width="80px">
+01/30/26</td>
+<td valign='middle' align='left' class='plain8' width="220px">
+
+
+Sample Sign Company<br />
+<span id="Repeater2_lblAddress_0">PO Box 1<br /></span>
+<br />
+Sampleton&nbsp;
+MO&nbsp;
+<span id="Repeater2_lblZip_0">63000</span></td>
+<td valign='middle' align='left' class='plain8' width="180px">
+<br />
+</td>
+<td align="left" class="plain8" valign="middle" width="180px">
+Donation of Signs</td>
+<td align="right" class="plain8" valign="middle" width="130px">
+$715.76</td>
+</tr>
+<tr>
+<td align="left" class="plain8" valign="middle" width="80px">
+05/14/26</td>
+<td valign='middle' align='left' class='plain8' width="220px">
+Testy
+Fixture<br />
+<span id="Repeater2_lblAddress_1">1 Example St<br /></span>
+# 22<br />
+Sampleton&nbsp;
+KS&nbsp;
+<span id="Repeater2_lblZip_1">66000-1234</span></td>
+<td valign='middle' align='left' class='plain8' width="180px">
+Attorney<br />
+</td>
+<td align="left" class="plain8" valign="middle" width="180px">
+Food and Drink</td>
+<td align="right" class="plain8" valign="middle" width="130px">
+$150.00</td>
+</tr>
+<tr>
+<td align="left" class="plain8" valign="middle" width="80px">
+05/19/26</td>
+<td valign='middle' align='left' class='plain8' width="220px">
+Sample
+Donor<br />
+<span id="Repeater2_lblAddress_2">2 Example St</span>
+<br />
+Sampleton&nbsp;
+KS&nbsp;
+<span id="Repeater2_lblZip_2">66000</span></td>
+<td valign='middle' align='left' class='plain8' width="180px">
+Retired<br />
+</td>
+<td align="left" class="plain8" valign="middle" width="180px">
+Food and Drink</td>
+<td align="right" class="plain8" valign="middle" width="130px">
+$50.00</td>
+</tr>
+</table>
+<table width='98%' border='1' cellpadding='2' cellspacing='0'>
+<tr>
+<td align="left" class="bold9" colspan="6" valign="top">Total Itemized (over $100) In-Kind Contributions</td>
+<td align="right" class="plain10" valign="top" width="110px">$<span id="lblTotalItemized" title="Total Itemized (over $100) In-Kind Contributions">915.76</span></td>
+</tr>
+<tr>
+<td align="left" class="bold9" colspan="6" valign="top">Total Unitemized ($100 or less) In-Kind Contributions</td>
+<td align="right" class="plain10" valign="top" width="110px">$<span id="lblTotalUnitemized" title="Total Unitemized (100 or less) In-Kind Contributions textbox">60.81</span></td>
+</tr>
+<tr>
+<td align='left' class='bold9' colspan="6" valign='middle' bgcolor='#bbbbbb'>TOTAL IN-KIND CONTRIBUTIONS THIS PERIOD</td>
+<td align='right' class='plain10' valign='top' width="110px">$<span id="lblTotalInKind" title="Total In-Kind Contributions This Period">976.57</span></td>
+</tr>
+</table>`;
+
+describe("parseKansasScheduleBRows", () => {
+  it("parses the live row shape: entity and person names, occupation, description, zip+4", () => {
+    const parsed = parseKansasScheduleBRows(SCHEDULE_B_HTML);
+    expect(parsed.malformedRowCount).toBe(0);
+    expect(parsed.rows).toEqual([
+      {
+        index: 0,
+        date: "01/30/26",
+        contributorName: "Sample Sign Company",
+        addressLines: ["PO Box 1", "Sampleton MO 63000"],
+        zip: "63000",
+        occupation: "",
+        description: "Donation of Signs",
+        valueCents: 71576,
+      },
+      {
+        index: 1,
+        date: "05/14/26",
+        contributorName: "Testy Fixture",
+        addressLines: ["1 Example St", "# 22", "Sampleton KS 66000-1234"],
+        zip: "66000-1234",
+        occupation: "Attorney",
+        description: "Food and Drink",
+        valueCents: 15000,
+      },
+      {
+        index: 2,
+        date: "05/19/26",
+        contributorName: "Sample Donor",
+        addressLines: ["2 Example St", "Sampleton KS 66000"],
+        zip: "66000",
+        occupation: "Retired",
+        description: "Food and Drink",
+        valueCents: 5000,
+      },
+    ]);
+  });
+
+  it("reports a Schedule A-shaped row (seven cells) as malformed instead of misreading it", () => {
+    expect(parseKansasScheduleBRows(SCHEDULE_A_HTML)).toEqual({ rows: [], malformedRowCount: 3 });
+    expect(parseKansasScheduleARows(SCHEDULE_B_HTML)).toEqual({ rows: [], malformedRowCount: 3 });
+  });
+
+  it("returns no rows for an empty schedule (live: a report with no in-kind)", () => {
+    const html = `<table><tr><th>Date</th></tr></table>
+      <span id="lblTotalItemized">0</span><span id="lblTotalUnitemized">0</span><span id="lblTotalInKind">0.00</span>`;
+    expect(parseKansasScheduleBRows(html)).toEqual({ rows: [], malformedRowCount: 0 });
+    expect(parseKansasScheduleBTotals(html)).toEqual({ totalItemizedCents: 0, totalUnitemizedCents: 0, totalInKindCents: 0 });
+  });
+});
+
+describe("checkKansasScheduleB", () => {
+  it("passes when the row sum equals lblTotalItemized and itemized + unitemized = total in-kind", () => {
+    const parsed = parseKansasScheduleBRows(SCHEDULE_B_HTML);
+    const totals = parseKansasScheduleBTotals(SCHEDULE_B_HTML);
+    expect(totals).toEqual({ totalItemizedCents: 91576, totalUnitemizedCents: 6081, totalInKindCents: 97657 });
+    expect(checkKansasScheduleB(parsed, totals)).toEqual({ rowsParsed: true, itemizedSumMatchesTotal: true, totalsArithmeticOk: true });
+  });
+
+  it("fails the sum check by one cent, the identity when a line is missing, and closed on an unparsed value", () => {
+    const parsed = parseKansasScheduleBRows(SCHEDULE_B_HTML);
+    const totals = parseKansasScheduleBTotals(SCHEDULE_B_HTML);
+    expect(checkKansasScheduleB(parsed, { ...totals, totalItemizedCents: 91577 })).toMatchObject({ itemizedSumMatchesTotal: false });
+    expect(checkKansasScheduleB(parsed, { ...totals, totalUnitemizedCents: null })).toMatchObject({ totalsArithmeticOk: false });
+    const unparsed = parseKansasScheduleBRows(SCHEDULE_B_HTML.replace("$50.00", "TBD"));
+    expect(unparsed.rows[2]!.valueCents).toBeNull();
+    expect(checkKansasScheduleB(unparsed, totals)).toMatchObject({ rowsParsed: false, itemizedSumMatchesTotal: false });
+    expect(checkKansasScheduleB({ rows: [], malformedRowCount: 1 }, totals)).toMatchObject({ rowsParsed: false });
   });
 });
 

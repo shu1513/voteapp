@@ -8,6 +8,7 @@ export * from "./northDakotaCandidateFinanceAutoLink.js";
 export * from "./northDakotaReportingCycleWindows.js";
 export * from "./northDakotaCfrsArtifactCache.js";
 export * from "./northDakotaDirectContributionAggregator.js";
+export * from "./northDakotaOutsideSpendingAggregator.js";
 export * from "./northDakotaCandidateFinanceSync.js";
 export * from "./northDakotaCandidateFinanceDueList.js";
 export * from "./northDakotaCandidateFinanceBatchSync.js";

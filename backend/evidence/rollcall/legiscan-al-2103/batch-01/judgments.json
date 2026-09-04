@@ -1,0 +1,166 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1396245,
+      "measure_id": "HB 129",
+      "vote_date": "2024-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 129, the CHOOSE Act, which pays families public money toward private school and home school costs. A parent gets a refundable tax credit of $7,000 for each child at a taking part school, or up to $4,000 in total for children taught at home, paid into an education savings account. For 2025 and 2026 a family must earn no more than three times the federal poverty level, and from 2027 any family may apply, with at least $100 million set aside each year. The House passed it 69-34 and it became law.",
+      "nay_description": "Voted against passing House Bill 129, the CHOOSE Act, which pays families public money toward private school and home school costs. A parent gets a refundable tax credit of $7,000 for each child at a taking part school, or up to $4,000 in total for children taught at home, paid into an education savings account. For 2025 and 2026 a family must earn no more than three times the federal poverty level, and from 2027 any family may apply, with at least $100 million set aside each year. The House passed it 69-34 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2103",
+      "roll": 1404666,
+      "measure_id": "HB 129",
+      "vote_date": "2024-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 129, the CHOOSE Act, which pays families public money toward private school and home school costs. A parent gets a refundable tax credit of $7,000 for each child at a taking part school, or up to $4,000 in total for children taught at home, paid into an education savings account. For 2025 and 2026 a family must earn no more than three times the federal poverty level, and from 2027 any family may apply, with at least $100 million set aside each year. The Senate passed it 23-9 and it became law.",
+      "nay_description": "Voted against passing House Bill 129, the CHOOSE Act, which pays families public money toward private school and home school costs. A parent gets a refundable tax credit of $7,000 for each child at a taking part school, or up to $4,000 in total for children taught at home, paid into an education savings account. For 2025 and 2026 a family must earn no more than three times the federal poverty level, and from 2027 any family may apply, with at least $100 million set aside each year. The Senate passed it 23-9 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1419812,
+      "measure_id": "HB 22",
+      "vote_date": "2024-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 22, which set out what an assistant principal does and said every public school should have one. From the 2024-2025 school year the job includes helping the principal with student discipline, teaching, management, safety and security. Each school must have an assistant principal if the money is there, the superintendent divides the work where there is more than one, and every local board must write and share a student discipline policy. The House passed it 66-18 and it became law.",
+      "nay_description": "Voted against passing House Bill 22, which set out what an assistant principal does and said every public school should have one. From the 2024-2025 school year the job includes helping the principal with student discipline, teaching, management, safety and security. Each school must have an assistant principal if the money is there, the superintendent divides the work where there is more than one, and every local board must write and share a student discipline policy. The House passed it 66-18 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2103",
+      "roll": 1383756,
+      "measure_id": "SB 1",
+      "vote_date": "2024-02-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1, which made it a crime to be paid for handling another person's absentee ballot form. Taking money or a gift to hand out, collect, fill in or deliver someone else's form is a Class C felony, and paying someone to do it is a Class B felony. Turning in another voter's filled-in form is also barred unless there is a medical emergency, though a voter who is blind, disabled or cannot read may still pick someone to help, so long as it is not a boss or a union officer. The Senate passed it 26-8 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 1, which made it a crime to be paid for handling another person's absentee ballot form. Taking money or a gift to hand out, collect, fill in or deliver someone else's form is a Class C felony, and paying someone to do it is a Class B felony. Turning in another voter's filled-in form is also barred unless there is a medical emergency, though a voter who is blind, disabled or cannot read may still pick someone to help, so long as it is not a boss or a union officer. The Senate passed it 26-8 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1404902,
+      "measure_id": "SB 1",
+      "vote_date": "2024-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1, which made it a crime to be paid for handling another person's absentee ballot form. Taking money or a gift to hand out, collect, fill in or deliver someone else's form is a Class C felony, and paying someone to do it is a Class B felony. Turning in another voter's filled-in form is also barred unless there is a medical emergency, though a voter who is blind, disabled or cannot read may still pick someone to help, so long as it is not a boss or a union officer. The House passed it 75-28 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 1, which made it a crime to be paid for handling another person's absentee ballot form. Taking money or a gift to hand out, collect, fill in or deliver someone else's form is a Class C felony, and paying someone to do it is a Class B felony. Turning in another voter's filled-in form is also barred unless there is a medical emergency, though a voter who is blind, disabled or cannot read may still pick someone to help, so long as it is not a boss or a union officer. The House passed it 75-28 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2103",
+      "roll": 1392591,
+      "measure_id": "SB 129",
+      "vote_date": "2024-02-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 129, which shut down diversity, equity and inclusion offices in state agencies, school boards and public colleges. Those bodies may no longer run such programs, or make a student, worker or contractor agree with a listed set of ideas about race, sex, faith or where a person is from. Public colleges must also label shared restrooms by sex at birth, and staff who break the law can be fired, though a course may still teach those ideas in an even-handed way. The Senate passed it 26-7 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 129, which shut down diversity, equity and inclusion offices in state agencies, school boards and public colleges. Those bodies may no longer run such programs, or make a student, worker or contractor agree with a listed set of ideas about race, sex, faith or where a person is from. Public colleges must also label shared restrooms by sex at birth, and staff who break the law can be fired, though a course may still teach those ideas in an even-handed way. The Senate passed it 26-7 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1405149,
+      "measure_id": "SB 129",
+      "vote_date": "2024-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 129, which shut down diversity, equity and inclusion offices in state agencies, school boards and public colleges. Those bodies may no longer run such programs, or make a student, worker or contractor agree with a listed set of ideas about race, sex, faith or where a person is from. Public colleges must also label shared restrooms by sex at birth, and staff who break the law can be fired, though a course may still teach those ideas in an even-handed way. The House passed it 75-28 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 129, which shut down diversity, equity and inclusion offices in state agencies, school boards and public colleges. Those bodies may no longer run such programs, or make a student, worker or contractor agree with a listed set of ideas about race, sex, faith or where a person is from. Public colleges must also label shared restrooms by sex at birth, and staff who break the law can be fired, though a course may still teach those ideas in an even-handed way. The House passed it 75-28 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1438138,
+      "measure_id": "SB 186",
+      "vote_date": "2024-05-02",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 186, which banned ranked-choice voting in Alabama. No local, state or federal race may be decided by letting voters rank candidates in order of preference and counting in rounds until someone reaches a majority. The one exception is military and overseas voters who cast absentee ballots under federal law. The House passed it 74-28 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 186, which banned ranked-choice voting in Alabama. No local, state or federal race may be decided by letting voters rank candidates in order of preference and counting in rounds until someone reaches a majority. The one exception is military and overseas voters who cast absentee ballots under federal law. The House passed it 74-28 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "2103",
+      "roll": 1441138,
+      "measure_id": "SB 231",
+      "vote_date": "2024-05-07",
+      "review_status": "approved",
+      "yea_description": "Voted for the final, conference committee version of Senate Bill 231, which cut off state and local business incentives for employers that recognize a union without a secret ballot. A firm that accepts a union on signed cards alone, or gives a worker's home contact details to a union without written consent, may not take a grant, loan or tax break for that project. A firm that already took one must pay it all back, and deals signed before January 2025, or workplaces that already have a union contract or a secret ballot, are not covered. The House agreed 73-29 and it became law.",
+      "nay_description": "Voted against the final, conference committee version of Senate Bill 231, which cut off state and local business incentives for employers that recognize a union without a secret ballot. A firm that accepts a union on signed cards alone, or gives a worker's home contact details to a union without written consent, may not take a grant, loan or tax break for that project. A firm that already took one must pay it all back, and deals signed before January 2025, or workplaces that already have a union contract or a secret ballot, are not covered. The House agreed 73-29 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

@@ -15,6 +15,8 @@ import {
   createStandardStateFinanceSnapshotWriter,
   type StandardStateFinanceLinkInput,
   type StandardStateFinanceLinkStatus,
+  type StandardStateFinanceSnapshotInput,
+  type StandardStateFinanceSnapshotWriteResult,
 } from "../finance/standardStateFinanceSnapshotWriter.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -25,6 +27,11 @@ export type KansasFinanceLinkSource = "manual" | "cfr_viewer";
 export type KansasFinanceLinkInput = Omit<StandardStateFinanceLinkInput, "linkSource"> & {
   linkSource?: KansasFinanceLinkSource;
 };
+
+export type KansasFinanceSnapshotInput = Omit<StandardStateFinanceSnapshotInput, "link"> & {
+  link: KansasFinanceLinkInput;
+};
+export type KansasFinanceSnapshotWriteResult = StandardStateFinanceSnapshotWriteResult;
 
 export const KANSAS_FILER_KEY_PATTERN = /^[0-9]+:[0-9]*:[A-Z0-9][A-Z0-9 ]*:[A-Z0-9][A-Z0-9 ]*$/;
 
@@ -118,6 +125,20 @@ export async function upsertKansasFinanceLink(input: {
 }): Promise<{ linkId: string }> {
   return writer.upsertLink({
     db: input.db,
+    link: { ...input.link, committeeId: normalizeKansasFilerKey(input.link.committeeId) },
+  });
+}
+
+/**
+ * Link + summary + direct breakdowns in one transaction (Phase 4). Outside
+ * columns are left to Phase 5: a direct sync passes no outside totals (the
+ * policy preserves them) and no outside groups (undefined leaves them alone).
+ */
+export async function replaceKansasCandidateFinanceSnapshot(
+  input: KansasFinanceSnapshotInput
+): Promise<KansasFinanceSnapshotWriteResult> {
+  return writer.replaceSnapshot({
+    ...input,
     link: { ...input.link, committeeId: normalizeKansasFilerKey(input.link.committeeId) },
   });
 }

@@ -12,7 +12,11 @@
 //   carry occupation — stored as JSON with rows sorted by transactionID so
 //   identical data hashes identically. The harvest deliberately sends no
 //   orgTypeCode: the probe verified the unfiltered CON dataset equals the
-//   bulk file row for row, and consumers filter by entityID themselves.
+//   bulk file row for row, and consumers filter by entityID themselves;
+// - the IE transaction-search harvest for one year (Phase 4: the only
+//   surface that carries independent expenditures — no bulk file exists) and
+//   the committee registry (Phase 4: IE rows name their target by the
+//   registry's candidate label), both stored as JSON the same way.
 // Every refresh re-parses the body before committing it; a body the parser
 // rejects (header drift, row errors) never displaces the last good artifact.
 //
@@ -27,10 +31,13 @@ import { basename, resolve } from "node:path";
 
 import {
   downloadNorthDakotaPresignedFile,
+  getAllNorthDakotaCommittees,
   getAllNorthDakotaTransactions,
   getNorthDakotaDataDownloadCatalog,
   getNorthDakotaDataDownloadFileUrl,
+  NORTH_DAKOTA_ORG_TYPE_CODES,
   type NorthDakotaCfrsClientOptions,
+  type NorthDakotaCommitteeRow,
   type NorthDakotaDataDownloadCatalogRow,
   type NorthDakotaTransactionRow,
 } from "./northDakotaCfrsClient.js";
@@ -44,7 +51,10 @@ import {
 export const DEFAULT_NORTH_DAKOTA_CFRS_CACHE_DIR = "scratch/north-dakota-campaign-finance/cfrs";
 
 export type NorthDakotaBulkArtifactKind = "contributions" | "reporting_schedules";
-export type NorthDakotaArtifactKind = NorthDakotaBulkArtifactKind | "api_contributions";
+/** API harvests: per transaction year (CON, IE) or, for the registry, per
+ * election year served (the registry itself is not year-scoped). */
+export type NorthDakotaApiArtifactKind = "api_contributions" | "api_independent_expenditures" | "api_registry";
+export type NorthDakotaArtifactKind = NorthDakotaBulkArtifactKind | NorthDakotaApiArtifactKind;
 
 /** Catalog dataType strings, verified live 2026-09-01. */
 export const NORTH_DAKOTA_BULK_ARTIFACT_DATA_TYPE: Record<NorthDakotaBulkArtifactKind, string> = {
@@ -56,12 +66,16 @@ const ARTIFACT_STEM: Record<NorthDakotaArtifactKind, string> = {
   contributions: "CON",
   reporting_schedules: "REPS",
   api_contributions: "APICON",
+  api_independent_expenditures: "APIIE",
+  api_registry: "REGISTRY",
 };
 
 const ARTIFACT_EXTENSION: Record<NorthDakotaArtifactKind, "csv" | "json"> = {
   contributions: "csv",
   reporting_schedules: "csv",
   api_contributions: "json",
+  api_independent_expenditures: "json",
+  api_registry: "json",
 };
 
 export const NORTH_DAKOTA_API_ARTIFACT_VERSION = 1;
@@ -71,6 +85,24 @@ export type NorthDakotaApiContributionsArtifactBody = {
   request: { transactionCategory: "CON"; transactionYear: number };
   rows: NorthDakotaTransactionRow[];
 };
+
+/** The IE dataset needs the org-type selector or the server silently
+ * returns every transaction (findings doc, gate 2). */
+export type NorthDakotaApiIndependentExpendituresArtifactBody = {
+  version: typeof NORTH_DAKOTA_API_ARTIFACT_VERSION;
+  request: { transactionCategory: "IE"; orgTypeCode: string; transactionYear: number };
+  rows: NorthDakotaTransactionRow[];
+};
+
+export type NorthDakotaRegistryArtifactBody = {
+  version: typeof NORTH_DAKOTA_API_ARTIFACT_VERSION;
+  /** The registry is one list for every cycle; `electionYear` records which
+   * candidacy window the harvest was taken for (the cache key). */
+  request: { registry: true; electionYear: number };
+  rows: NorthDakotaCommitteeRow[];
+};
+
+export const NORTH_DAKOTA_INDEPENDENT_EXPENDITURE_TYPE = "Independent Expenditures";
 
 export type NorthDakotaArtifactIdentity = { kind: NorthDakotaArtifactKind; year: number };
 
@@ -252,23 +284,59 @@ export function parseNorthDakotaBulkArtifactBytes(kind: NorthDakotaBulkArtifactK
   }
 }
 
-function parseApiArtifactBytes(bytes: Uint8Array, year: number): NorthDakotaApiContributionsArtifactBody {
+/** Decodes a JSON artifact body and checks version + the caller's request pin. */
+function parseJsonArtifactBytes<T extends { version: number; request: object; rows: unknown[] }>(input: {
+  bytes: Uint8Array;
+  label: string;
+  requestMatches: (request: Partial<T["request"]>) => boolean;
+}): T {
   let parsed: unknown;
   try {
-    parsed = JSON.parse(new TextDecoder().decode(bytes));
+    parsed = JSON.parse(new TextDecoder().decode(input.bytes));
   } catch {
-    throw new Error(`North Dakota API artifact ${year} is not valid JSON`);
+    throw new Error(`North Dakota API artifact ${input.label} is not valid JSON`);
   }
-  const body = parsed as Partial<NorthDakotaApiContributionsArtifactBody>;
+  const body = parsed as Partial<T>;
   if (
     body?.version !== NORTH_DAKOTA_API_ARTIFACT_VERSION ||
-    body.request?.transactionYear !== year ||
-    body.request.transactionCategory !== "CON" ||
+    typeof body.request !== "object" ||
+    body.request === null ||
+    !input.requestMatches(body.request as Partial<T["request"]>) ||
     !Array.isArray(body.rows)
   ) {
-    throw new Error(`North Dakota API artifact ${year} has an unexpected shape`);
+    throw new Error(`North Dakota API artifact ${input.label} has an unexpected shape`);
   }
-  return body as NorthDakotaApiContributionsArtifactBody;
+  return body as T;
+}
+
+function parseApiArtifactBytes(bytes: Uint8Array, year: number): NorthDakotaApiContributionsArtifactBody {
+  return parseJsonArtifactBytes<NorthDakotaApiContributionsArtifactBody>({
+    bytes,
+    label: String(year),
+    requestMatches: (request) => request.transactionYear === year && request.transactionCategory === "CON",
+  });
+}
+
+function parseApiIndependentExpendituresArtifactBytes(
+  bytes: Uint8Array,
+  year: number
+): NorthDakotaApiIndependentExpendituresArtifactBody {
+  return parseJsonArtifactBytes<NorthDakotaApiIndependentExpendituresArtifactBody>({
+    bytes,
+    label: `independent expenditures ${year}`,
+    requestMatches: (request) =>
+      request.transactionYear === year &&
+      request.transactionCategory === "IE" &&
+      request.orgTypeCode === NORTH_DAKOTA_ORG_TYPE_CODES.independentExpenditureCommittee,
+  });
+}
+
+function parseRegistryArtifactBytes(bytes: Uint8Array, electionYear: number): NorthDakotaRegistryArtifactBody {
+  return parseJsonArtifactBytes<NorthDakotaRegistryArtifactBody>({
+    bytes,
+    label: `registry ${electionYear}`,
+    requestMatches: (request) => request.registry === true && request.electionYear === electionYear,
+  });
 }
 
 type StagedArtifact = {
@@ -449,20 +517,98 @@ export async function refreshNorthDakotaApiContributionsArtifact(input: {
   const rows = await getAllNorthDakotaTransactions({ ...request, pageSize: input.pageSize ?? 5_000 }, input.clientOptions);
   rows.sort((left, right) => left.transactionID - right.transactionID);
   const body: NorthDakotaApiContributionsArtifactBody = { version: NORTH_DAKOTA_API_ARTIFACT_VERSION, request, rows };
-  const bytes = new TextEncoder().encode(`${JSON.stringify(body)}\n`);
+  return commitJsonArtifact({ artifact, cacheDir: input.cacheDir, body, recordCount: rows.length, force: input.force, now });
+}
+
+async function commitJsonArtifact(input: {
+  artifact: NorthDakotaArtifactIdentity;
+  cacheDir: string;
+  body: object;
+  recordCount: number;
+  force?: boolean;
+  now: Date;
+}): Promise<NorthDakotaArtifactRefreshResult> {
+  const bytes = new TextEncoder().encode(`${JSON.stringify(input.body)}\n`);
   return commitArtifact({
-    artifact,
+    artifact: input.artifact,
     cacheDir: input.cacheDir,
     staged: {
       bytes,
       sha256: sha256Of(bytes),
-      recordCount: rows.length,
+      recordCount: input.recordCount,
       recoveredRowCount: 0,
       source: { catalogId: null, s3ReportFilePath: null, dataType: null },
     },
     force: input.force === true,
-    now,
+    now: input.now,
   });
+}
+
+/**
+ * Harvests the IE transaction search for one year (all IE committees) and
+ * commits it. The selector is a query mode, not a row classifier: a row not
+ * typed "Independent Expenditures" means the server fell through to another
+ * dataset, so the harvest is refused rather than cached (findings doc gate 2).
+ */
+export async function refreshNorthDakotaApiIndependentExpendituresArtifact(input: {
+  year: number;
+  cacheDir: string;
+  force?: boolean;
+  clientOptions?: NorthDakotaCfrsClientOptions;
+  pageSize?: number;
+  now?: Date;
+}): Promise<NorthDakotaArtifactRefreshResult> {
+  const artifact: NorthDakotaArtifactIdentity = {
+    kind: "api_independent_expenditures",
+    year: normalizeNorthDakotaArtifactYear(input.year),
+  };
+  const now = requireTimestamp(input.now);
+  const paths = getNorthDakotaArtifactCachePaths({ ...artifact, cacheDir: input.cacheDir });
+  await prepareCacheDir(paths.cacheDir, paths.metadataPath);
+
+  const request = {
+    transactionCategory: "IE" as const,
+    orgTypeCode: NORTH_DAKOTA_ORG_TYPE_CODES.independentExpenditureCommittee,
+    transactionYear: artifact.year,
+  };
+  const rows = await getAllNorthDakotaTransactions({ ...request, pageSize: input.pageSize ?? 5_000 }, input.clientOptions);
+  const offType = rows.filter((row) => row.transactionTypeDesc !== NORTH_DAKOTA_INDEPENDENT_EXPENDITURE_TYPE);
+  if (offType.length > 0) {
+    throw new Error(
+      `North Dakota IE harvest ${artifact.year} returned ${offType.length} of ${rows.length} rows not typed ` +
+        `"${NORTH_DAKOTA_INDEPENDENT_EXPENDITURE_TYPE}" (first: ${JSON.stringify(offType[0]!.transactionTypeDesc)}); not cached`
+    );
+  }
+  rows.sort((left, right) => left.transactionID - right.transactionID);
+  const body: NorthDakotaApiIndependentExpendituresArtifactBody = { version: NORTH_DAKOTA_API_ARTIFACT_VERSION, request, rows };
+  return commitJsonArtifact({ artifact, cacheDir: input.cacheDir, body, recordCount: rows.length, force: input.force, now });
+}
+
+/** Harvests the full committee registry and commits it under the election year it serves. */
+export async function refreshNorthDakotaRegistryArtifact(input: {
+  electionYear: number;
+  cacheDir: string;
+  force?: boolean;
+  clientOptions?: NorthDakotaCfrsClientOptions;
+  pageSize?: number;
+  now?: Date;
+}): Promise<NorthDakotaArtifactRefreshResult> {
+  const artifact: NorthDakotaArtifactIdentity = {
+    kind: "api_registry",
+    year: normalizeNorthDakotaArtifactYear(input.electionYear),
+  };
+  const now = requireTimestamp(input.now);
+  const paths = getNorthDakotaArtifactCachePaths({ ...artifact, cacheDir: input.cacheDir });
+  await prepareCacheDir(paths.cacheDir, paths.metadataPath);
+
+  const rows = await getAllNorthDakotaCommittees({ pageSize: input.pageSize ?? 1_000 }, input.clientOptions);
+  rows.sort((left, right) => left.entityId.localeCompare(right.entityId) || left.orgID - right.orgID);
+  const body: NorthDakotaRegistryArtifactBody = {
+    version: NORTH_DAKOTA_API_ARTIFACT_VERSION,
+    request: { registry: true, electionYear: artifact.year },
+    rows,
+  };
+  return commitJsonArtifact({ artifact, cacheDir: input.cacheDir, body, recordCount: rows.length, force: input.force, now });
 }
 
 async function readVerifiedArtifact(input: {
@@ -508,4 +654,30 @@ export async function readNorthDakotaApiContributionsArtifact(input: {
     cacheDir: input.cacheDir,
   });
   return { metadata, rows: parseApiArtifactBytes(bytes, year).rows };
+}
+
+/** Read one cached IE harvest back as transaction rows (checksum-verified). */
+export async function readNorthDakotaApiIndependentExpendituresArtifact(input: {
+  year: number;
+  cacheDir: string;
+}): Promise<{ metadata: NorthDakotaArtifactCacheMetadata; rows: NorthDakotaTransactionRow[] }> {
+  const year = normalizeNorthDakotaArtifactYear(input.year);
+  const { metadata, bytes } = await readVerifiedArtifact({
+    artifact: { kind: "api_independent_expenditures", year },
+    cacheDir: input.cacheDir,
+  });
+  return { metadata, rows: parseApiIndependentExpendituresArtifactBytes(bytes, year).rows };
+}
+
+/** Read the cached registry harvest for an election year (checksum-verified). */
+export async function readNorthDakotaRegistryArtifact(input: {
+  electionYear: number;
+  cacheDir: string;
+}): Promise<{ metadata: NorthDakotaArtifactCacheMetadata; rows: NorthDakotaCommitteeRow[] }> {
+  const electionYear = normalizeNorthDakotaArtifactYear(input.electionYear);
+  const { metadata, bytes } = await readVerifiedArtifact({
+    artifact: { kind: "api_registry", year: electionYear },
+    cacheDir: input.cacheDir,
+  });
+  return { metadata, rows: parseRegistryArtifactBytes(bytes, electionYear).rows };
 }

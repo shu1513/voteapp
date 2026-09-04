@@ -1,0 +1,22 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "2060",
+      "roll": 1350905,
+      "measure_id": "SB 5",
+      "vote_date": "2023-07-21",
+      "review_status": "approved",
+      "yea_description": "Voted for the final, conference committee version of Senate Bill 5, which redrew Alabama's seven districts for the U.S. House. The Legislature met in a special session after the Supreme Court ruled in Allen versus Milligan that the map drawn in 2021 likely broke the Voting Rights Act. This map was the Legislature's answer and became Act 2023-563. The Senate agreed 24-6 and it became law.",
+      "nay_description": "Voted against the final, conference committee version of Senate Bill 5, which redrew Alabama's seven districts for the U.S. House. The Legislature met in a special session after the Supreme Court ruled in Allen versus Milligan that the map drawn in 2021 likely broke the Voting Rights Act. This map was the Legislature's answer and became Act 2023-563. The Senate agreed 24-6 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

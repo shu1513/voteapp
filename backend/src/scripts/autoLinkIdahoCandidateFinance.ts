@@ -6,6 +6,7 @@ import { loadProjectEnv } from "../config/env.js";
 import { isIdahoCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
 import { autoLinkMissingIdahoCandidateFinanceLinks } from "../pipeline/idahoFinance/idahoCandidateFinanceAutoLink.js";
 import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
+import { parseIdahoFinancePositiveIntegerFlag } from "./idahoCandidateFinanceCliArgs.js";
 
 export type AutoLinkIdahoCandidateFinanceScriptOptions = {
   force: boolean;
@@ -19,27 +20,6 @@ export type AutoLinkIdahoCandidateFinanceScriptOptions = {
 const BOOLEAN_FLAGS = new Set(["--force", "--dry-run"]);
 const VALUE_FLAGS = new Set(["--max-candidates", "--lookback-days", "--lookahead-days"]);
 
-function parsePositiveInteger<T extends number | null>(args: readonly string[], name: string, fallback: T): number | T {
-  const values: string[] = [];
-  const prefix = `${name}=`;
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index]!;
-    if (arg.startsWith(prefix)) {
-      values.push(arg.slice(prefix.length).trim());
-    } else if (arg === name) {
-      values.push(args[index + 1]!.trim());
-      index += 1;
-    }
-  }
-  if (values.length > 1) throw new Error(`Provide ${name} at most once`);
-  const value = values[0];
-  if (value === undefined) return fallback;
-  if (!/^[1-9]\d*$/.test(value) || !Number.isSafeInteger(Number(value))) {
-    throw new Error(`Invalid ${name} value: ${value}`);
-  }
-  return Number(value);
-}
-
 export function parseAutoLinkIdahoCandidateFinanceScriptArgs(
   args: readonly string[]
 ): AutoLinkIdahoCandidateFinanceScriptOptions {
@@ -47,9 +27,9 @@ export function parseAutoLinkIdahoCandidateFinanceScriptArgs(
   return {
     force: args.includes("--force"),
     dryRun: args.includes("--dry-run"),
-    maxCandidates: parsePositiveInteger(args, "--max-candidates", null),
-    electionLookbackDays: parsePositiveInteger(args, "--lookback-days", 98),
-    electionLookaheadDays: parsePositiveInteger(args, "--lookahead-days", 730),
+    maxCandidates: parseIdahoFinancePositiveIntegerFlag(args, "--max-candidates", null),
+    electionLookbackDays: parseIdahoFinancePositiveIntegerFlag(args, "--lookback-days", 98),
+    electionLookaheadDays: parseIdahoFinancePositiveIntegerFlag(args, "--lookahead-days", 730),
   };
 }
 

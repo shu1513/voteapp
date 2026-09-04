@@ -27,7 +27,12 @@ describe("syncDueNorthDakotaCandidateFinance", () => {
     const listDueRowsFn = vi.fn(async () => ({ rows, totalDueRows: 7 }));
     const syncCandidateFn = vi.fn(async (input: { candidateId: string; dryRun?: boolean }) => {
       if (input.candidateId === "candidate-2") throw new Error("2026 contributions do not reconcile");
-      return { status: "synced", dryRun: input.dryRun === true, totalReceipts: 5390 } as never;
+      return {
+        status: "synced",
+        dryRun: input.dryRun === true,
+        totalReceipts: 5390,
+        outside: { status: "skipped", reason: "committee_not_in_registry: entityId 1010001478 is not in the cached registry" },
+      } as never;
     });
     const log = vi.fn();
     const now = new Date("2026-09-02T00:00:00Z");
@@ -58,6 +63,10 @@ describe("syncDueNorthDakotaCandidateFinance", () => {
     expect(result.candidates[1]).toMatchObject({ ok: false, error: "2026 contributions do not reconcile" });
     expect(log).toHaveBeenCalledWith(
       "North Dakota finance sync failed for Bad Row (entityId 1010009999): 2026 contributions do not reconcile"
+    );
+    // A skipped outside component is a success with a visible reason.
+    expect(log).toHaveBeenCalledWith(
+      "North Dakota outside spending skipped for Jane Doe (entityId 1010001478): committee_not_in_registry: entityId 1010001478 is not in the cached registry"
     );
   });
 });
