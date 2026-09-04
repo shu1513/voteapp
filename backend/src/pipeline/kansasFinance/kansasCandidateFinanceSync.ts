@@ -21,6 +21,14 @@
 // candidate is synced — nothing is reported — and drops out of the due
 // list), never $0. In-kind is a contribution but not a receipt, so the
 // direct total can exceed total receipts.
+//
+// Outside leg (Phase 5): the transcribed IE rows naming this link's recipe
+// (kansasOutsideSpendingAggregator.ts) become outside_support_total /
+// outside_oppose_total and one outside group per filer and direction. It
+// is isolated from the direct gate the North Dakota way — a filer period
+// failing its checksum writes null totals and no groups and is reported in
+// the result, never thrown — but it rides on the direct write, so a
+// candidate whose direct leg fails closed gets no outside figures either.
 
 import type { Pool, PoolClient } from "pg";
 
@@ -41,6 +49,11 @@ import {
   type KansasFinanceLinkSource,
   type KansasFinanceSnapshotWriteResult,
 } from "./kansasFinanceWriter.js";
+import {
+  aggregateKansasOutsideSpending,
+  createKansasOutsideRowLoader,
+  type KansasOutsideRowLoader,
+} from "./kansasOutsideSpendingAggregator.js";
 import {
   kansasPaperCoverOverridesToCovers,
   loadKansasPaperCoverOverrides,
@@ -85,8 +98,15 @@ export type KansasCandidateFinanceSyncInput = {
   loadKpdcRows?: KansasKpdcRowLoader;
   /** Transcribed paper covers (ks_candidate_finance_paper_covers); consulted only when the viewer shows paper rows. Defaults to `db`. */
   loadPaperCovers?: KansasPaperCoverLoader;
+  /** Transcribed IE rows of the cycle (ks_candidate_finance_outside_rows); a batch shares one memoized loader. Defaults to `db`. */
+  loadOutsideRows?: KansasOutsideRowLoader;
   buildLedger?: typeof buildKansasCandidateLedger;
 };
+
+export type KansasOutsideSpendingSummary =
+  | { status: "none_found" }
+  | { status: "unpublishable"; reasons: string[] }
+  | { status: "ok"; supportTotal: number; opposeTotal: number; groupCount: number; statementCount: number };
 
 export type KansasCandidateFinanceSyncResult = {
   candidateId: string;
@@ -106,8 +126,11 @@ export type KansasCandidateFinanceSyncResult = {
   coverage: Omit<KansasItemizedContributions, "breakdowns"> | null;
   breakdownCounts: { occupation: number; contribution_size: number };
   diagnostics: string[];
+  /** Outside leg: the transcribed IE rows naming this recipe. */
+  outside: KansasOutsideSpendingSummary;
   summaryWritten: boolean;
   directBreakdownsWritten: number;
+  outsideGroupsWritten: number;
 };
 
 function requireNonEmpty(value: string, fieldName: string): string {
@@ -207,10 +230,11 @@ export async function syncKansasCandidateFinance(input: KansasCandidateFinanceSy
   // (KPDC versions exist only for a candidate the viewer shows paper rows
   // for), and each transcribed filename must be a scan the tree lists for
   // this candidate — the header alone cannot tell whose scan it is.
+  const recipe = normalizeKansasFilerKey(input.link.committeeId);
   const loadPaperCovers =
     input.loadPaperCovers ?? ((committeeId, electionYear) => loadKansasPaperCoverOverrides(input.db, committeeId, electionYear));
   const countsPaperVersion = ledger.ledger.entries.some((entry) => entry.canonical?.channel === "paper");
-  const paperOverrides = countsPaperVersion ? await loadPaperCovers(normalizeKansasFilerKey(input.link.committeeId), input.electionYear) : [];
+  const paperOverrides = countsPaperVersion ? await loadPaperCovers(recipe, input.electionYear) : [];
   const paperCovers = kansasPaperCoverOverridesToCovers({
     overrides: paperOverrides,
     periods: kansasReportingPeriods(office, input.electionYear),
@@ -229,6 +253,32 @@ export async function syncKansasCandidateFinance(input: KansasCandidateFinanceSy
     figures.diagnostics.push(`transcribed paper covers: ${paperOverrides.map((override) => override.sourceFileName).join(", ")}`);
   }
   const sourceUrl = input.link.sourceUrl?.trim() || KANSAS_CFR_LINK_SOURCE_URL;
+
+  // Outside leg: read after the direct gate passed, so a candidate that
+  // fails closed never touches the rows table. Totals are null unless the
+  // leg is "ok"; the group list is always passed so stale groups clear.
+  const loadOutsideRows = input.loadOutsideRows ?? createKansasOutsideRowLoader(input.db);
+  const outside = aggregateKansasOutsideSpending({ rows: await loadOutsideRows(input.electionYear), targetCommitteeId: recipe });
+  const outsideSummary: KansasOutsideSpendingSummary =
+    outside.status === "ok"
+      ? {
+          status: "ok",
+          supportTotal: dollars(outside.supportCents, "outside support total"),
+          opposeTotal: dollars(outside.opposeCents, "outside oppose total"),
+          groupCount: outside.groups.length,
+          statementCount: outside.statementCount,
+        }
+      : outside;
+  const outsideGroups =
+    outside.status === "ok"
+      ? outside.groups.map((group) => ({
+          committeeId: group.committeeId,
+          committeeName: group.committeeName,
+          supportOppose: group.supportOppose,
+          amount: dollars(group.amountCents, `outside group ${group.committeeName}`),
+          sourceUrl: group.sourceUrl,
+        }))
+      : [];
 
   let write: KansasFinanceSnapshotWriteResult | null = null;
   if (!dryRun) {
@@ -249,14 +299,20 @@ export async function syncKansasCandidateFinance(input: KansasCandidateFinanceSy
         lastVerifiedAt: now,
       },
       syncedAt: now,
-      summary: { ...figures.summary, sourceUrl },
-      // [] clears stale buckets when this run has none; outside groups stay untouched (Phase 5).
+      summary: {
+        ...figures.summary,
+        outsideSupportTotal: outsideSummary.status === "ok" ? outsideSummary.supportTotal : null,
+        outsideOpposeTotal: outsideSummary.status === "ok" ? outsideSummary.opposeTotal : null,
+        sourceUrl,
+      },
+      // [] clears stale rows when this run has none (both lists).
       directBreakdowns: figures.breakdowns.map((breakdown) => ({
         categoryType: breakdown.categoryType,
         categoryName: breakdown.categoryName,
         amount: breakdown.amountCents / 100,
         sourceUrl,
       })),
+      outsideGroups,
     });
   }
 
@@ -275,7 +331,9 @@ export async function syncKansasCandidateFinance(input: KansasCandidateFinanceSy
       contribution_size: figures.breakdowns.filter((breakdown) => breakdown.categoryType === "contribution_size").length,
     },
     diagnostics: figures.diagnostics,
+    outside: outsideSummary,
     summaryWritten: write?.summaryWritten ?? false,
     directBreakdownsWritten: write?.directBreakdownsWritten ?? 0,
+    outsideGroupsWritten: write?.outsideGroupsWritten ?? 0,
   };
 }
