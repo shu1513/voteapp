@@ -1021,6 +1021,7 @@ describe("getLegiscanStateConfig", () => {
       "AL-2060",
       "AL-2103",
       "NY",
+      "NM",
       "KS",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
@@ -1046,6 +1047,7 @@ describe("getLegiscanStateConfig", () => {
       "SC",
       "NV",
       "NY",
+      "NM",
       "KS",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
@@ -1074,6 +1076,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("AL-2060")).toMatchObject({ jurisdiction: "AL", sessionId: 2060 });
     expect(getLegiscanStateConfig("AL-2103")).toMatchObject({ jurisdiction: "AL", sessionId: 2103 });
     expect(getLegiscanStateConfig("NY").sessionId).toBe(2188);
+    expect(getLegiscanStateConfig("NM").sessionId).toBe(2187);
     expect(getLegiscanStateConfig("KS").sessionId).toBe(2178);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("WY")).toThrow("no LegiScan state config for WY");
@@ -1702,6 +1705,28 @@ describe("getLegiscanStateConfig", () => {
     for (const desc of ["Accept Report RC #21", "Acceptance Of Report RC #2", "Acc Majority Report RC #1"]) {
       expect(me(desc), desc).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
     }
+  });
+
+  it("classifies New Mexico's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.NM!;
+    const nm = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+    // The whole session speaks two sentences. Nothing else exists.
+    expect(nm("House Final Passage", 70)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(nm("Senate Final Passage", 42, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // Constitutional amendments ride joint resolutions and print the same
+    // two descriptions, so they need no rule of their own.
+    expect(nm("House Final Passage", 70, "house", "JR")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // Both patterns are anchored at both ends on purpose: a spelling this
+    // survey never saw must surface for a human, not classify quietly.
+    expect(nm("House Final Passage RC#12", 70).isFloorVote).toBeNull();
+    expect(nm("House Concurrence", 70).isFloorVote).toBeNull();
   });
 
   it("refuses a state that has its own pipeline, whatever the spelling", () => {
