@@ -90,9 +90,19 @@ covers 30 of 67 Senate districts and 1 of 134 House districts for November; a ro
 filling the House districts, followed by a re-import, adds those members without duplicating
 anything.
 
+## Batches
+
+`batch-01/` holds the whole campaign: **2 measures, 3 rolls, 28 records, 25 candidates**, with
+`PLAN.md` recording a disposition for every one of the 30 gated measures and `JUDGING.md`
+recording the reading. Twenty-eight measures are dropped, most of them biennial budget acts and
+seven of them because their 2025 vote was cast on text a 2026 conference committee replaced.
+
 ## Layout
 
-- `survey/` — the description histogram both sessions were configured from.
+- `survey/` — the description histogram both sessions were configured from, and
+  `divided-enacted-worklist.tsv`, which carries a disposition and a reason for all 51 gated
+  rolls across all 30 measures.
+- `batch-01/` — judgments, roll evidence, the two import ledgers and their convergence runs.
 - `crosswalk.json`, `legiscan-people-mn-2151.json`, `crosswalk-proposals-report.json` — the
   identity review. The full resolve report is tens of megabytes and is never committed.
 

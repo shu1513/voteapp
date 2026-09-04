@@ -1,0 +1,58 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MN",
+   "chamber": "house",
+   "session": "2217",
+   "roll": 1588802,
+   "measure_id": "HF 1",
+   "vote_date": "2025-06-09",
+   "review_status": "approved",
+   "yea_description": "Voted for House File 1, which ended MinnesotaCare health coverage for adults living in the country without legal permission. Adults 18 and older who were already signed up could keep the coverage only through the end of 2025, and no new adults could join. Children under 18 keep their coverage. The Minnesota House passed it 68-65, and it became law.",
+   "nay_description": "Voted against House File 1, which ended MinnesotaCare health coverage for adults living in the country without legal permission. Adults 18 and older who were already signed up could keep the coverage only through the end of 2025, and no new adults could join. Children under 18 keep their coverage. The Minnesota House passed it 68-65, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MN",
+   "chamber": "senate",
+   "session": "2217",
+   "roll": 1587239,
+   "measure_id": "HF 1",
+   "vote_date": "2025-06-09",
+   "review_status": "approved",
+   "yea_description": "Voted for House File 1, which ended MinnesotaCare health coverage for adults living in the country without legal permission. Adults 18 and older who were already signed up could keep the coverage only through the end of 2025, and no new adults could join. Children under 18 keep their coverage. The Minnesota Senate passed it 48-16, and it became law.",
+   "nay_description": "Voted against House File 1, which ended MinnesotaCare health coverage for adults living in the country without legal permission. Adults 18 and older who were already signed up could keep the coverage only through the end of 2025, and no new adults could join. Children under 18 keep their coverage. The Minnesota Senate passed it 48-16, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": "for"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MN",
+   "chamber": "house",
+   "session": "2151",
+   "roll": 1570373,
+   "measure_id": "SF 2200",
+   "vote_date": "2025-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate File 2200, which keeps what people say in a restorative justice meeting out of court. In these meetings a person who caused harm, the person harmed, and others talk about repairing the damage. Statements and papers from those meetings can no longer be used as evidence or demanded in a civil or criminal case. The law lists three exceptions: reports of abuse, warnings about a likely death, serious injury, or crime, and evidence that a licensed professional behaved badly. Government records naming who took part are now private. The Minnesota House passed it 98-36, and it became law.",
+   "nay_description": "Voted against Senate File 2200, which keeps what people say in a restorative justice meeting out of court. In these meetings a person who caused harm, the person harmed, and others talk about repairing the damage. Statements and papers from those meetings can no longer be used as evidence or demanded in a civil or criminal case. The law lists three exceptions: reports of abuse, warnings about a likely death, serious injury, or crime, and evidence that a licensed professional behaved badly. Government records naming who took part are now private. The Minnesota House passed it 98-36, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
