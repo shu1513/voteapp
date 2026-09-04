@@ -105,11 +105,14 @@ endpoint returns `"VoteExist":false` once the journal is published.
 
 ## What this is worth doing in
 
-If the Montana defect rate holds elsewhere, roughly 4% of rolls would put a
-member on the wrong side, and about half of those would be on a third reading —
-the stage this campaign actually uses. Montana came through clean because the
-eight affected final rolls happened not to be ones already imported. That was
-luck, not design.
+If the Montana defect rate holds elsewhere, about 1% of rolls would put a member
+on the wrong side — 20 of the 1,780 rolls that paired there — and just under half
+of those would be on a third reading, the stage this campaign actually uses.
+Counting the 23 rolls that show an excused member as voting, the rate of rolls
+with a wrong member vote of any kind is 43 of 1,780, or 2.4%.
+
+Montana came through clean because the eight affected final rolls happened not
+to be ones already imported. That was luck, not design.
 
 The sensible order is by imported record count among the easy states, since
 those need no PDF or browser work: Alabama, California, Nevada, North Carolina,

@@ -36,7 +36,7 @@ compared member by member against
 
 One near miss worth recording: HB 492's earlier House third reading, roll
 1503251 of 3 March, **is** one of the rolls where LegiScan puts a member on the
-wrong side. It is superseded by the 22 April vote this batch uses, so it was
+wrong side. It is superseded by the 17 April vote this batch uses, so it was
 never a candidate — but it is a reminder that the check has to run on the roll
 actually selected, every time.
 

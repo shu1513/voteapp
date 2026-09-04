@@ -171,8 +171,10 @@ compared member by member, after pairing each LegiScan roll with the Montana
 vote it agrees with best (neither the motion name nor the tally nor the order
 taken is a reliable join; the members are). In short:
 
-- **None of the 81 rolls this campaign has imported disagrees.** Every one
-  paired, and every one matches. No Montana record is wrong.
+- **None of the 81 rolls this campaign had imported when the audit ran
+  disagrees.** Every one paired, and every one matches. No Montana record is
+  wrong. Batches 08 and 09 added 16 more rolls, each checked the same way at
+  import and each agreeing exactly, so all 97 imported rolls stand checked.
 - **20 rolls have a member's vote flipped**, yes for no or no for yes. In
   nineteen it is one member; HB 2's House third reading of 2025-04-07 has
   three. Every flip moves the tally: no paired roll has a matching tally with a

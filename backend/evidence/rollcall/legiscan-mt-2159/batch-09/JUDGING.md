@@ -226,7 +226,7 @@ Chapter 500. Amends 16-12-224. Dropped under filter 5.
 One line changes: "10" struck, "5" underlined, and "a package" inserted. The THC
 in a single serving of an edible falls from 10 mg to 5 mg, and the 100 mg cap is
 now explicitly per package — so a package holds up to 20 servings instead of 10.
-Nothing else moves: not the 35% flower potency cap, not licence fees, not taxes,
+Nothing else moves: not the 35% flower potency cap, not license fees, not taxes,
 not local opt-outs, and not the higher-potency allowance for registered
 cardholders. Effective 1 July 2026.
 

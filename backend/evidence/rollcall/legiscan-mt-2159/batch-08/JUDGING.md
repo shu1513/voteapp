@@ -127,7 +127,7 @@ Two real changes, and only two:
   imagery are new.
 
 Everything else is untouched: the 15-breeding-pair floor, snares, extra
-licences, more than one wolf per trapper, unlimited harvest on a single licence,
+licenses, more than one wolf per trapper, unlimited harvest on a single license,
 and bait were all already law. The second sentence shows "may" struck and "may"
 re-inserted underlined — a drafting artefact with no effect.
 
@@ -288,8 +288,8 @@ as removing a requirement. Both readings are wrong, and the reason is that
   species designated by FWP as a species in need of management" — in identical
   words in the 2022 and the 2026 editions, that is before and after this act.
 - Everything operative keys to the wolf **by name**, not to its classification:
-  the Class E-1 and E-2 wolf hunting licences at 87-2-523 and 87-2-524, the
-  Class C trapping licence at 87-2-601, the seasons and methods at 87-1-901, and
+  the Class E-1 and E-2 wolf hunting licenses at 87-2-523 and 87-2-524, the
+  Class C trapping license at 87-2-601, the seasons and methods at 87-1-901, and
   the $1,000 restitution at 87-6-906(1)(b).
 
 So the act deleted a dormant option. Nothing about what may lawfully be done to
@@ -304,7 +304,7 @@ HB 623 authorizes siting a temporary spent nuclear fuel storage facility, on the
 site of and holding fuel from a nuclear plant operating in Montana. HB 696
 authorizes uranium conversion and enrichment facilities. Both condition that
 authorization on a state recommendation from the Department of Environmental
-Quality and a federal Nuclear Regulatory Commission licence, and both amend
+Quality and a federal Nuclear Regulatory Commission license, and both amend
 75-20-204 identically so that the state's existing review, notice and fee
 process reaches Nuclear Regulatory Commission applications, which it did not
 before. **Neither deletes anything**: HB 623 has no strike-throughs at all, and

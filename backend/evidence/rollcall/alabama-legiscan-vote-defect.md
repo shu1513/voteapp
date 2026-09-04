@@ -18,6 +18,13 @@ two Moores voted differently, LegiScan has them the wrong way round. Outside
 those sessions LegiScan is right: the two differ on 28 other audited rolls with
 no errors.
 
+The swap takes a second form on **3 more rolls**: one of the pair cast no yes or
+no vote, and LegiScan hands that member's absence to the other one. On 2023RS
+SB 278, 2024RS HB 63 and 2024RS HB 130, Alabama records Mary Moore (or Randy
+Wood) as casting no yes or no vote while the other Moore (or Wood) voted yes,
+and LegiScan has it exactly reversed. These are the same defect, not a separate
+one, and they are counted with it below.
+
 The likely cause is visible in Alabama's own data. Alabama prints the name as
 **"M. Moore"** on these roll calls, and LegiScan appears to resolve that
 abbreviation to the wrong member.
@@ -54,20 +61,25 @@ recorded as inferred.
 
 ## What was done
 
-**46 live candidate records were retired** with
+**All 49 live candidate records were retired** with
 `npm run manual:records:retire`, which is a soft retirement — it sets
 `retired_at` and `retired_reason` and is reversible with `--unretire`. The
 breakdown:
 
-| Member | Records retired |
-| --- | --- |
-| Mary Moore | 22 |
-| Parker Moore | 22 |
-| Randy Wood | 2 |
+| Member | Records retired | of which the member cast no yes or no vote |
+| --- | --- | --- |
+| Mary Moore | 24 | 2 |
+| Parker Moore | 22 | 0 |
+| Randy Wood | 3 | 1 |
 
 Each retirement reason names the session, bill, date and Alabama roll-call
 number, states what Alabama's record says and what LegiScan says, and cites the
 endpoint.
+
+The manifest is committed alongside this file as
+`alabama-vote-defect-retirements.json`, one `{recordId, reason}` entry per
+record. Re-running it reports every row as already retired, so the cleanup can
+be repeated and checked.
 
 The other roughly 2,000 records on those same 24 rolls are untouched. Only the
 two members in each swapped pair are wrong; everyone else on the roll is
@@ -109,7 +121,7 @@ must always be reported, never treated as a match.
 
 ## What this means for the other states
 
-Montana's defect never touched an imported record. Alabama's touched 46. The
+Montana's defect never touched an imported record. Alabama's touched 49. The
 difference is luck, not method, and the lesson is that the check has to be run
 per state before that state's records are promoted.
 
