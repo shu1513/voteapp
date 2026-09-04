@@ -1,0 +1,67 @@
+bill	chamber	roll	date	tally	question	title	bill_outcome	disposition	reason
+HB10	house	1567843	2025-05-07	23-17	passage	Add Faculty Member Univ Board Of Regents	enrolled in the dataset; both were vetoed before 2026-09-04	not-selected	an earlier roll on a text the chamber later replaced; the batch uses the roll on the enrolled text
+HB10	house	1699350	2026-05-16	26-14	concurrence	Add Faculty Member Univ Board Of Regents	enrolled in the dataset; both were vetoed before 2026-09-04	batch-02	imported
+HB125	house	1572962	2025-05-17	22-17	passage	Board Of Fisheries Membership	passed one chamber only	dropped	two strands: mandating interest-group seats on the Board of Fisheries, and deleting the rural-domicile requirement from the subsistence definitions
+HB133	house	1687789	2026-04-22	27-10	passage	Payment Of Contracts	vetoed	not-selected	an earlier roll on a text the chamber later replaced; the batch uses the roll on the enrolled text
+HB133	senate	1699364	2026-05-17	15-5	passage	Payment Of Contracts	vetoed	batch-02	imported
+HB133	house	1700368	2026-05-19	22-18	concurrence	Payment Of Contracts	vetoed	batch-02	imported
+HB133	house	1700369	2026-05-19	22-18	concurrence	Payment Of Contracts	vetoed	not-selected	LegiScan filed this concurrence vote twice; the fetch stored the identical twin 1700368, which is the roll imported (see CODE-FINDINGS.md section 7)
+HB16	house	1559317	2025-04-28	22-18	passage	Campaign Finance;contribution Limits;apoc	vetoed	dropped	raises contribution limits and repeals the foreign-money provisions in AS 15.13.068(b) and (c), while adding an in-state address rule and ethics-commission deadlines - opposite directions of comparable weight inside anti_corruption
+HB16	senate	1700422	2026-05-19	12-8	passage	Campaign Finance;contribution Limits;apoc	vetoed	dropped	raises contribution limits and repeals the foreign-money provisions in AS 15.13.068(b) and (c), while adding an in-state address rule and ethics-commission deadlines - opposite directions of comparable weight inside anti_corruption
+HB16	house	1701439	2026-05-20	21-19	concurrence	Campaign Finance;contribution Limits;apoc	vetoed	dropped	raises contribution limits and repeals the foreign-money provisions in AS 15.13.068(b) and (c), while adding an in-state address rule and ethics-commission deadlines - opposite directions of comparable weight inside anti_corruption
+HB194	senate	1670361	2026-03-25	12-7	passage	Oil/gas Corp. Income Tax; Royalty Sale	passed one chamber only	dropped	two unrelated halves: a new income tax on non-corporate oil and gas producers, and ratification of one named Marathon royalty-oil contract the bill does not reproduce
+HB194	house	1681390	2026-04-13	17-23	concurrence	Oil/gas Corp. Income Tax; Royalty Sale	passed one chamber only	dropped	two unrelated halves: a new income tax on non-corporate oil and gas producers, and ratification of one named Marathon royalty-oil contract the bill does not reproduce
+HB20	house	1653447	2026-03-04	26-14	passage	Prohibit Fees For Paper Documents	passed one chamber only	batch-03	imported
+HB25	house	1686658	2026-04-21	25-15	passage	Disposable Food Service Ware	vetoed	not-selected	an earlier roll on a text the chamber later replaced; the batch uses the roll on the enrolled text
+HB25	senate	1699783	2026-05-18	13-7	passage	Disposable Food Service Ware	vetoed	batch-02	imported
+HB25	house	1700405	2026-05-19	26-14	concurrence	Disposable Food Service Ware	vetoed	batch-02	imported
+HB26	house	1592106	2025-05-02	22-17	passage	Statewide Public & Community Transit Plan	vetoed	not-selected	an earlier roll on a text the chamber later replaced; the batch uses the roll on the enrolled text
+HB26	senate	1691681	2026-04-29	16-4	passage	Statewide Public & Community Transit Plan	vetoed	batch-02	imported
+HB26	house	1692486	2026-05-01	22-14	concurrence	Statewide Public & Community Transit Plan	vetoed	batch-02	imported
+HB261	house	1697300	2026-05-12	31-9	passage	Education Funding	passed one chamber only	dropped	moves both ways on the same question - adds a greater-of-three-counts cushion and mid-year catch-up payments, and repeals the five-percent enrollment-decline hold-harmless and the year-end recomputation
+HB280	house	1675330	2026-04-01	22-17	passage	Apportion Taxable Income	vetoed	not-selected	an earlier roll on a text the chamber later replaced; the batch uses the roll on the enrolled text
+HB280	house	1701704	2026-05-20	28-11	concurrence	Apportion Taxable Income	vetoed	batch-02	imported
+HB381	senate	1710625	2026-06-19	12-8	passage	Oil & Gas Property Tax; Muni Tax; Agdc	passed one chamber only	dropped	eight strands and openly opposite tax directions; the House roll is also a failed conference report at 19-19
+HB381	house	1710464	2026-06-20	12-28	concurrence	Oil & Gas Property Tax; Muni Tax; Agdc	passed one chamber only	dropped	eight strands and openly opposite tax directions; the House roll is also a failed conference report at 19-19
+HB381	house	1715874	2026-07-16	19-19	conference_report	Oil & Gas Property Tax; Muni Tax; Agdc	passed one chamber only	dropped	eight strands and openly opposite tax directions; the House roll is also a failed conference report at 19-19
+HB381	senate	1715872	2026-07-16	11-8	conference_report	Oil & Gas Property Tax; Muni Tax; Agdc	passed one chamber only	dropped	eight strands and openly opposite tax directions; the House roll is also a failed conference report at 19-19
+HB52	house	1699385	2026-05-17	26-14	concurrence	Minors & Psychiatric Hospitals	vetoed	batch-02	imported
+HB56	house	1536437	2025-04-03	21-19	passage	Approp: Supp; Fund Cap; Cap; Amending	passed one chamber only	excluded	appropriations
+HB58	house	1563282	2025-04-30	27-12	passage	Opa: Public Advocate Appointment	passed one chamber only	batch-03	imported
+HB69	house	1516444	2025-03-12	24-16	passage	Education: Funding	vetoed	not-selected	an earlier roll on a text the chamber later replaced; the batch uses the roll on the enrolled text
+HB69	house	1546456	2025-04-11	21-16	concurrence	Education: Funding	vetoed	batch-02	imported
+HB69	senate	1546119	2025-04-11	11-9	passage	Education: Funding	vetoed	batch-02	imported
+HB70	house	1592120	2025-04-25	29-8	passage	Emergency Med Svcs; Operational Canines	vetoed	not-selected	the House voted again on the enrolled text and that vote, 34-6, is not divided, so both divided House rolls are superseded
+HB70	house	1592121	2025-04-28	32-8	passage	Emergency Med Svcs; Operational Canines	vetoed	not-selected	the House voted again on the enrolled text and that vote, 34-6, is not divided, so both divided House rolls are superseded
+HB78	house	1570059	2025-05-12	21-19	passage	Retirement Systems; Defined Benefit Opt.	vetoed	dropped	reopens the defined benefit pension for teachers and public employees; one coherent subject, but no research area describes public employee retirement benefits
+HB78	senate	1691304	2026-04-28	12-8	passage	Retirement Systems; Defined Benefit Opt.	vetoed	dropped	reopens the defined benefit pension for teachers and public employees; one coherent subject, but no research area describes public employee retirement benefits
+HB78	senate	1691301	2026-04-28	12-8	passage	Retirement Systems; Defined Benefit Opt.	vetoed	dropped	reopens the defined benefit pension for teachers and public employees; one coherent subject, but no research area describes public employee retirement benefits
+HB78	house	1691753	2026-04-29	21-19	concurrence	Retirement Systems; Defined Benefit Opt.	vetoed	dropped	reopens the defined benefit pension for teachers and public employees; one coherent subject, but no research area describes public employee retirement benefits
+HB79	house	1700367	2026-05-19	29-11	concurrence	Vic Fischer Marine Park; Research Program	vetoed	dropped	renames a university research institute and a marine park; no policy stance to take
+HB93	house	1620425	2026-01-30	27-12	passage	Residency Req: Hunting, Trapping, Fishing	enrolled in the dataset; both were vetoed before 2026-09-04	dropped	tightens residency for hunting, trapping and sport fishing licenses; no research area describes it (same reason as HB 75 in batch-01)
+HB93	senate	1699324	2026-05-16	13-6	passage	Residency Req: Hunting, Trapping, Fishing	enrolled in the dataset; both were vetoed before 2026-09-04	dropped	tightens residency for hunting, trapping and sport fishing licenses; no research area describes it (same reason as HB 75 in batch-01)
+HB93	house	1699374	2026-05-17	24-16	concurrence	Residency Req: Hunting, Trapping, Fishing	enrolled in the dataset; both were vetoed before 2026-09-04	dropped	tightens residency for hunting, trapping and sport fishing licenses; no research area describes it (same reason as HB 75 in batch-01)
+SB111	senate	1696552	2026-05-11	15-5	passage	Digital Product Repair	passed one chamber only	batch-03	imported
+SB113	senate	1548818	2025-04-15	16-4	passage	Apportion Taxable Income;digital Business	vetoed	batch-02	imported
+SB113	house	1567929	2025-05-07	26-14	passage	Apportion Taxable Income;digital Business	vetoed	batch-02	imported
+SB170	senate	1696531	2026-05-11	14-6	passage	Gaming; Electronic Pull-tabs	passed one chamber only	dropped	gaming rewrite that moves both ways at comparable weight on prize caps, promotion rules, revenue floors and reporting
+SB21	senate	1687735	2026-04-22	15-4	passage	Ak Work & Save Prgrm; Pfd Investment Acct	vetoed	not-selected	the Senate voted again on the enrolled text and concurred 17-3, which is not divided
+SB21	house	1699781	2026-05-18	31-9	passage	Ak Work & Save Prgrm; Pfd Investment Acct	vetoed	batch-02	imported
+SB24	senate	1569748	2025-05-12	15-5	passage	Tobacco/nicotine/e-cig Age; E-cig Tax	vetoed	not-selected	the Senate voted again on the enrolled text and that concurrence roll is the one used
+SB24	house	1700401	2026-05-19	24-16	passage	Tobacco/nicotine/e-cig Age; E-cig Tax	vetoed	batch-02	imported
+SB24	senate	1701656	2026-05-20	15-5	concurrence	Tobacco/nicotine/e-cig Age; E-cig Tax	vetoed	batch-02	imported
+SB250	senate	1699328	2026-05-16	14-5	passage	Data Centers, Utilities	passed one chamber only	batch-03	imported
+SB250	senate	1699327	2026-05-16	13-5	passage	Data Centers, Utilities	passed one chamber only	not-selected	an earlier roll on a text the chamber later replaced; the batch uses the roll on the enrolled text
+SB258	house	1701685	2026-05-20	26-13	passage	Contract: Licensing Software Applications	vetoed	batch-02	imported
+SB39	senate	1548753	2025-04-15	14-6	passage	Loans Under $25,000; Payday Loans	vetoed	dropped	raises the monthly rate ceiling on the $850-$10,000 band from 2% to 3% and deletes the mandatory 18-month examination cycle, while capping the previously uncapped $10,000-$25,000 band and repealing the payday loan chapter
+SB39	house	1574409	2025-05-20	24-16	passage	Loans Under $25,000; Payday Loans	vetoed	dropped	raises the monthly rate ceiling on the $850-$10,000 band from 2% to 3% and deletes the mandatory 18-month examination cycle, while capping the previously uncapped $10,000-$25,000 band and repealing the payday loan chapter
+SB41	house	1699131	2026-05-14	27-13	passage	Public Schools: Mental Health Education	vetoed	batch-02	imported
+SB54	house	1574400	2025-05-20	30-10	passage	Arch, Eng, Surveyors; Reg Int Design	vetoed	dropped	four unrelated strands: a new registered interior designer credential, an eight-year board sunset extension, a gas-pipeline engineering exemption that reverses itself between two sections, and board housekeeping
+SB64	senate	1569684	2025-05-12	14-6	passage	Elections	vetoed	dropped	narrows accepted voter ID and collapses two inactivation notices into one, while adding postage-paid return envelopes, a ballot tracker and a cure process - opposite directions inside election_integrity
+SB64	house	1668327	2026-03-23	23-16	passage	Elections	vetoed	dropped	narrows accepted voter ID and collapses two inactivation notices into one, while adding postage-paid return envelopes, a ballot tracker and a cure process - opposite directions inside election_integrity
+SB64	senate	1670512	2026-03-25	16-4	concurrence	Elections	vetoed	dropped	narrows accepted voter ID and collapses two inactivation notices into one, while adding postage-paid return envelopes, a ballot tracker and a cure process - opposite directions inside election_integrity
+SB83	senate	1592125	2025-05-07	14-6	passage	Telehealth: Coverage, Reimbursement Rates	passed one chamber only	dropped	telehealth payment parity plus an unrelated section moving a 2022 session-law effective date from 2030 to 2040 that the bill never restates
+SCR201	house	1702771	2026-05-21	22-18	passage	Authorizing A Recess Longer Than 3 Days	enrolled in the dataset; both were vetoed before 2026-09-04	excluded	legislative procedure - authorizing a recess longer than three days
+SCR202	house	1702774	2026-05-21	28-10	passage	Carry-over Of Bills To Spec Session	enrolled in the dataset; both were vetoed before 2026-09-04	excluded	legislative procedure - carrying bills over to a special session
+SCR28	senate	1701691	2026-05-20	16-4	passage	Suspend Uniform Rules For Hb 302	enrolled in the dataset; both were vetoed before 2026-09-04	excluded	legislative procedure - suspending the uniform rules
+SJR2	senate	1674038	2026-03-31	14-6	passage	Const. Am: Votes Needed For Veto Override	passed one chamber only	dropped	constitutional amendment on the votes needed to override a veto; no research area covers the balance between the legislature and the governor

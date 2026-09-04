@@ -1,0 +1,145 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-04T20:30:16.058Z",
+  "finishedAt": "2026-09-04T20:30:16.734Z",
+  "jurisdiction": "AK",
+  "sessionId": 2171,
+  "evidenceDir": "evidence/rollcall/legiscan-ak-2171/batch-03",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-ak-2171/crosswalk.json",
+  "crosswalkEntries": 62,
+  "peopleFile": "evidence/rollcall/legiscan-ak-2171/legiscan-people-ak-2171.json",
+  "peopleMembers": 62,
+  "files": 4,
+  "outcomes": {
+    "imported": 4
+  },
+  "actions": {
+    "unchanged": 12
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ak-house-2171-roll1563282.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1563282,
+      "outcome": "imported",
+      "legislativeVoteId": "544c6b45-8a32-46c1-aa75-195b3460b327",
+      "reviewStatus": "approved",
+      "bill": "HB58",
+      "voteDate": "2025-04-30",
+      "officialVoteDate": null,
+      "measureId": "HB 58",
+      "question": "House: Third Reading Final Passage",
+      "originRunId": "rollcall:AK:house:2171:1563282:2026-09-04T20:30:16.058Z",
+      "members": 39,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 34,
+        "matched": 5
+      },
+      "actions": {
+        "unchanged": 5
+      },
+      "notified": 0,
+      "candidates": 5,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-house-2171-roll1653447.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1653447,
+      "outcome": "imported",
+      "legislativeVoteId": "cb90479a-323b-4533-96ce-f56fad05b356",
+      "reviewStatus": "approved",
+      "bill": "HB20",
+      "voteDate": "2026-03-04",
+      "officialVoteDate": null,
+      "measureId": "HB 20",
+      "question": "House: Third Reading Final Passage",
+      "originRunId": "rollcall:AK:house:2171:1653447:2026-09-04T20:30:16.058Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "unchanged": 5
+      },
+      "notified": 0,
+      "candidates": 5,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-senate-2171-roll1696552.json",
+      "state": "AK",
+      "chamber": "senate",
+      "sessionId": 2171,
+      "roll": 1696552,
+      "outcome": "imported",
+      "legislativeVoteId": "b1188d91-0e58-4ca2-8de2-2bbbc0a61014",
+      "reviewStatus": "approved",
+      "bill": "SB111",
+      "voteDate": "2026-05-11",
+      "officialVoteDate": null,
+      "measureId": "SB 111",
+      "question": "Senate: Third Reading - Final Passage Effective Date(s)",
+      "originRunId": "rollcall:AK:senate:2171:1696552:2026-09-04T20:30:16.058Z",
+      "members": 20,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 1
+      },
+      "actions": {
+        "unchanged": 1
+      },
+      "notified": 0,
+      "candidates": 1,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-senate-2171-roll1699328.json",
+      "state": "AK",
+      "chamber": "senate",
+      "sessionId": 2171,
+      "roll": 1699328,
+      "outcome": "imported",
+      "legislativeVoteId": "134835f5-f264-4dad-8484-18daa96c606c",
+      "reviewStatus": "approved",
+      "bill": "SB250",
+      "voteDate": "2026-05-16",
+      "officialVoteDate": null,
+      "measureId": "SB 250",
+      "question": "Senate: Third Reading - On Reconsideration",
+      "originRunId": "rollcall:AK:senate:2171:1699328:2026-09-04T20:30:16.058Z",
+      "members": 19,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 18,
+        "matched": 1
+      },
+      "actions": {
+        "unchanged": 1
+      },
+      "notified": 0,
+      "candidates": 1,
+      "error": null,
+      "related": 0
+    }
+  ]
+}

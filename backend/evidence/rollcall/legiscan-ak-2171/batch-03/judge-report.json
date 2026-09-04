@@ -1,0 +1,38 @@
+{
+  "judgmentsFile": "/Users/shu/voteApp/.claude/worktrees/focused-hofstadter-3ebce2/backend/evidence/rollcall/legiscan-ak-2171/batch-03/judgments.json",
+  "dryRun": false,
+  "judgments": 4,
+  "counts": {
+    "updated": 4
+  },
+  "rows": [
+    {
+      "chamber": "house",
+      "session": "2171",
+      "roll": 1653447,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2171",
+      "roll": 1563282,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2171",
+      "roll": 1696552,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2171",
+      "roll": 1699328,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    }
+  ]
+}

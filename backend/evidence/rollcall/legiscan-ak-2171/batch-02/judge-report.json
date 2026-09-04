@@ -1,0 +1,136 @@
+{
+  "judgmentsFile": "/Users/shu/voteApp/.claude/worktrees/focused-hofstadter-3ebce2/backend/evidence/rollcall/legiscan-ak-2171/batch-02/judgments.json",
+  "dryRun": false,
+  "judgments": 18,
+  "counts": {
+    "updated": 18
+  },
+  "rows": [
+    {
+      "chamber": "house",
+      "session": "2171",
+      "roll": 1699350,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2171",
+      "roll": 1700368,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2171",
+      "roll": 1699364,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2171",
+      "roll": 1700405,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2171",
+      "roll": 1699783,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2171",
+      "roll": 1692486,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2171",
+      "roll": 1691681,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2171",
+      "roll": 1701704,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2171",
+      "roll": 1699385,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2171",
+      "roll": 1546456,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2171",
+      "roll": 1546119,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2171",
+      "roll": 1567929,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2171",
+      "roll": 1548818,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2171",
+      "roll": 1699781,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2171",
+      "roll": 1700401,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2171",
+      "roll": 1701656,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2171",
+      "roll": 1701685,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2171",
+      "roll": 1699131,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    }
+  ]
+}
