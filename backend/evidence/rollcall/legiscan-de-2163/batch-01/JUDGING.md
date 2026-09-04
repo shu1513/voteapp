@@ -91,12 +91,16 @@ after the rewrite and eleven claims were repaired before importing, among them:
 ## Per measure
 
 **HB 37 — civil_rights / for.** Rewrites the definition of "place of public
-accommodation" in the Equal Accommodations Law so it names state agencies, local
-government agencies, public libraries, a person receiving state funding to perform a
-public function, and a person performing a public function under state or local control
-and supervision. Also adds a definition of "person". The exclusions for home sales and
-rentals and for tourist homes with fewer than 10 rental units survive, and the
-description says so.
+accommodation" in the Equal Accommodations Law. The old text already listed state
+agencies, local agencies, public libraries, and state-funded agencies performing public
+functions, but only inside the "establishment which caters to ... the general public"
+clause. The act lists them as covered on their own, widens "state-funded agencies" to
+any person receiving state funding to perform a public function, and adds a person
+performing a public function under state or local control and supervision. Also adds a
+definition of "person". The description says the old law already listed the agencies,
+so it does not present existing coverage as new (review fix, PR #1074). The exclusions
+for home sales and rentals and for tourist homes with fewer than 10 rental units
+survive, and the description says so.
 
 **HB 105 — reduce_wealth_gap / for.** Maine's LD 54 set the precedent that pay-range
 transparency sits in this area. New §709C: pay or pay range plus a general description
@@ -135,7 +139,10 @@ prosecute. Effective July 1, 2027.
 **HB 427 — gun_control / against, and the one measure with a stated nay.** The act
 removes the direct-supervision requirement for 16- and 17-year-olds in both §1445 and
 §1448, conditioned on a parent's or guardian's permission and a completed hunter
-education course, plus a hunting license for hunting. The nay is stated as `for`
+education course, plus a hunting license for hunting. The description says the old
+rule applied "generally" and names the shotgun and muzzle-loader exceptions, because
+§1448(a)(5)a-d already exempted those, non-firearm weapons for adults, military and
+police, and transport to a lawful activity (review fix, PR #1074). The nay is stated as `for`
 because the act is single-subject, its whole operative content is the area's own
 mechanism — who may hold a firearm without supervision — and a no vote is a vote to
 keep the existing restriction. Every other stance label in the batch carries
