@@ -387,7 +387,12 @@ async function main(): Promise<void> {
               await rewriteRollCallRecord(client, { ...content, recordId, oldIdentityKey: item.plan.oldIdentityKey });
             } else if (item.plan.action === "refresh") {
               recordId = item.plan.recordId;
-              await refreshRollCallRecord(client, { ...content, recordId });
+              await refreshRollCallRecord(client, {
+                ...content,
+                recordId,
+                oldDescription: item.plan.oldDescription,
+                oldSourceUrl: item.plan.oldSourceUrl,
+              });
             } else if (item.plan.action === "unchanged") {
               recordId = item.plan.recordId;
             }

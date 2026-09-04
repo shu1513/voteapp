@@ -129,6 +129,7 @@ describe("planCandidateRecord", () => {
     return {
       description: "Voted for the One Big Beautiful Bill Act. It passed 215-214.",
       source_url: "https://clerk.house.gov/Votes/2025145",
+      origin: "rollcall_import",
       record_identity_key: `v3_${overrides.id}`,
       retired_at: null,
       ...overrides,
@@ -171,14 +172,24 @@ describe("planCandidateRecord", () => {
     expect(plan([record({ id: "page" })], true).plan).toEqual({ action: "skip_existing", recordId: "page" });
   });
 
-  it("refreshes a same-key row whose description or URL was edited, even under --skip-existing", () => {
-    // The identity key does not cover the sentence, so an edited judgment
-    // re-run against an old row must update the text, not report unchanged.
-    const edited = record({ id: "done", record_identity_key: NEW_KEY, description: "Voted for the old wording." });
-    expect(plan([edited]).plan).toEqual({ action: "refresh", recordId: "done" });
-    expect(plan([edited], true).plan).toEqual({ action: "refresh", recordId: "done" });
-    const movedUrl = record({ id: "done", record_identity_key: NEW_KEY, source_url: "https://clerk.house.gov/evs/2025/roll145.xml" });
-    expect(plan([movedUrl]).plan).toEqual({ action: "refresh", recordId: "done" });
+  it("refreshes its own same-key row whose text differs only in ways the key ignores, and leaves other rows alone", () => {
+    // The key hashes normalized text, so a punctuation or case edit keeps
+    // the key; a re-run must still update the stored text. The old values
+    // ride along to guard the write.
+    const edited = record({
+      id: "done",
+      record_identity_key: NEW_KEY,
+      description: "Voted for the one big beautiful bill act; it passed 215-214",
+    });
+    const refresh = { action: "refresh", recordId: "done", oldDescription: edited.description, oldSourceUrl: edited.source_url };
+    expect(plan([edited]).plan).toEqual(refresh);
+    // --skip-existing guards hand-written duplicates, not this pipeline's own rows.
+    expect(plan([edited], true).plan).toEqual(refresh);
+    const slash = record({ id: "done", record_identity_key: NEW_KEY, source_url: "https://clerk.house.gov/Votes/2025145/" });
+    expect(plan([slash]).plan).toEqual({ ...refresh, oldDescription: slash.description, oldSourceUrl: slash.source_url });
+    // A hand-written or pre-provenance row with the same key is untouched.
+    expect(plan([{ ...edited, origin: "manual" }]).plan).toEqual({ action: "unchanged", recordId: "done" });
+    expect(plan([{ ...edited, origin: null }]).plan).toEqual({ action: "unchanged", recordId: "done" });
     // A retired same-key row is still retired, never refreshed.
     expect(plan([{ ...edited, retired_at: "2026-01-01" }]).plan).toEqual({ action: "retired", recordId: "done" });
   });
@@ -358,21 +369,24 @@ describe("database writes", () => {
     expect(stale).toHaveBeenCalledTimes(1);
   });
 
-  it("refreshes text in place guarded on the same key, touching only description, source_url, and updated_at", async () => {
+  it("refreshes text in place guarded on the key and the old text, touching only description, source_url, and updated_at", async () => {
+    const old = { oldDescription: "Voted to pass H.R. 1; it passed the House 215-214", oldSourceUrl: content.sourceUrl };
     const query = vi.fn().mockResolvedValueOnce({ rowCount: 1 });
-    await refreshRollCallRecord({ query }, { ...content, recordId: "done-id" });
+    await refreshRollCallRecord({ query }, { ...content, ...old, recordId: "done-id" });
     expect(query).toHaveBeenCalledTimes(1);
     const [sql, params] = query.mock.calls[0]!;
     expect(sql).toMatch(/UPDATE public\.candidate_records/);
     expect(sql).toMatch(/SET description = \$3,\s+source_url = \$4,\s+updated_at = now\(\)/);
-    expect(sql).toMatch(/WHERE id = \$1\s+AND record_identity_key = \$2\s+AND retired_at IS NULL/);
+    expect(sql).toMatch(
+      /WHERE id = \$1\s+AND record_identity_key = \$2\s+AND description = \$5\s+AND source_url = \$6\s+AND retired_at IS NULL/
+    );
     // The key does not change, so no identity transition and no touch of
     // event_date, origin, or origin_run_id in the SET clause.
     expect(sql.slice(0, sql.indexOf("WHERE"))).not.toMatch(/record_identity_key|event_date|origin/);
-    expect(params).toEqual(["done-id", "v3_new", content.description, content.sourceUrl]);
+    expect(params).toEqual(["done-id", "v3_new", content.description, content.sourceUrl, old.oldDescription, old.oldSourceUrl]);
 
     const stale = vi.fn().mockResolvedValueOnce({ rowCount: 0 });
-    await expect(refreshRollCallRecord({ query: stale }, { ...content, recordId: "done-id" })).rejects.toThrow(
+    await expect(refreshRollCallRecord({ query: stale }, { ...content, ...old, recordId: "done-id" })).rejects.toThrow(
       /changed under the refresh/
     );
   });

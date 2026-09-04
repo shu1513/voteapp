@@ -552,15 +552,25 @@ ND SB 2377 committee-name subject):
   `nay` fields (usually `null`) to re-apply one; a judgment that then
   matches the stored row byte-for-what-it-means is still `unchanged` (the
   apply-time gates run only when something would change).
-- Fan-out `refresh` action (2026-09-04): the record identity key does not
-  cover the description, so an edited `yea_description` / `nay_description`
-  re-imported over an old row used to come back `unchanged` and keep the
-  stale text (seen on DE batch-01: 33 rows patched by hand). The plan step
-  now compares the stored description and source_url with the incoming
-  ones; a same-key row that differs is `refresh`, which updates
-  description, source_url, and updated_at on that row (same id, tags, and
-  notification events) and is counted separately in the import report.
-  `--skip-existing` still only guards hand-written rows.
+- Fan-out `refresh` action (2026-09-04, PR #1091). The identity key hashes
+  the description and URL after normalizing them (lowercase, punctuation
+  and extra spaces dropped, trailing slash dropped), so an edit that only
+  changes punctuation, case, or spacing keeps the key and used to come back
+  `unchanged` with the old text still stored (the IL comma-splice fix
+  needed a direct SQL `replace()`). The plan step now compares the stored
+  description and source_url byte for byte with the incoming ones; a
+  same-key `rollcall_import` row that differs is `refresh`, which updates
+  description, source_url, and updated_at on that row (same id, key, tags,
+  and notification events), guarded on the old text, and is counted
+  separately in the import report. Hand-written and pre-provenance rows
+  with the same key stay `unchanged`; `--skip-existing` still only guards
+  hand-written duplicates. Word changes still move the key and take the
+  `rewrite` path, but only after `rollcall:judge` has applied the edited
+  judgments file. DE batch-01 (2026-09-04) skipped that step: the importer
+  reads `legislative_votes`, not `judgments.json`, so it recomputed the old
+  keys and reported 177 `unchanged`; the rows were then patched by hand
+  while `legislative_votes` still holds the old text. A fixed description
+  is a re-judge plus a real re-run, not a file edit.
 
 ## Open questions
 
