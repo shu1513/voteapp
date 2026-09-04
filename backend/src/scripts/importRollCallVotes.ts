@@ -31,6 +31,7 @@ import {
   memberVoteSide,
   parseRollCallLabels,
   planCandidateRecord,
+  refreshRollCallRecord,
   rewriteRollCallRecord,
   shouldNotifyForVoteDate,
   syncRollCallRecordTags,
@@ -414,6 +415,8 @@ async function main(): Promise<void> {
           const decision = planCandidateRecord({
             existing: existingByCandidate.get(voter.candidateId) ?? [],
             identityKey,
+            description: template.description,
+            sourceUrl: template.sourceUrl,
             rollCallKey,
             measure,
             skipExisting,
@@ -459,6 +462,9 @@ async function main(): Promise<void> {
             } else if (item.plan.action === "rewrite") {
               recordId = item.plan.recordId;
               await rewriteRollCallRecord(client, { ...content, recordId, oldIdentityKey: item.plan.oldIdentityKey });
+            } else if (item.plan.action === "refresh") {
+              recordId = item.plan.recordId;
+              await refreshRollCallRecord(client, { ...content, recordId });
             } else if (item.plan.action === "unchanged") {
               recordId = item.plan.recordId;
             }

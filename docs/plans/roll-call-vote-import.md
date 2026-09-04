@@ -552,6 +552,15 @@ ND SB 2377 committee-name subject):
   `nay` fields (usually `null`) to re-apply one; a judgment that then
   matches the stored row byte-for-what-it-means is still `unchanged` (the
   apply-time gates run only when something would change).
+- Fan-out `refresh` action (2026-09-04): the record identity key does not
+  cover the description, so an edited `yea_description` / `nay_description`
+  re-imported over an old row used to come back `unchanged` and keep the
+  stale text (seen on DE batch-01: 33 rows patched by hand). The plan step
+  now compares the stored description and source_url with the incoming
+  ones; a same-key row that differs is `refresh`, which updates
+  description, source_url, and updated_at on that row (same id, tags, and
+  notification events) and is counted separately in the import report.
+  `--skip-existing` still only guards hand-written rows.
 
 ## Open questions
 

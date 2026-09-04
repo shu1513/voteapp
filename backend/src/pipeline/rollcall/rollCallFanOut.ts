@@ -149,6 +149,11 @@ export type CandidateRecordPlan =
   | { action: "insert" }
   // This run's exact content is already there (re-run).
   | { action: "unchanged"; recordId: string }
+  // A previous run's row with this identity key holds different text or a
+  // different source URL (the judgment's description was edited after the
+  // first import). The key does not cover the description, so the row is
+  // updated in place; id, tags, and notification events stay.
+  | { action: "refresh"; recordId: string }
   // One live hand-written row cites the same roll call: rewrite it in place.
   | { action: "rewrite"; recordId: string; oldIdentityKey: string; oldSourceUrl: string; oldDescription: string }
   // Same as rewrite, but the run asked to leave old rows alone.
@@ -177,6 +182,11 @@ export type CandidateRecordDecision = {
 export function planCandidateRecord(input: {
   existing: readonly ExistingCandidateRecord[];
   identityKey: string;
+  // The text and URL this run would write; compared against a same-key
+  // row to tell a plain re-run (`unchanged`) from an edited judgment
+  // (`refresh`).
+  description: string;
+  sourceUrl: string;
   rollCallKey: string;
   measure: FederalMeasure | null;
   skipExisting: boolean;
@@ -223,7 +233,13 @@ export function planCandidateRecord(input: {
     };
   }
   if (sameKey.length > 0) {
-    return { plan: { action: "unchanged", recordId: sameKey[0]!.id }, relatedRecordIds };
+    const current = sameKey[0]!;
+    // The identity key embeds the vote, side, and date but not the sentence
+    // itself, so an edited description (or a corrected source URL) still
+    // matches the key. Refresh the row rather than leaving stale text.
+    // --skip-existing only guards hand-written rows, so it does not apply.
+    const action = current.description === input.description && current.source_url === input.sourceUrl ? "unchanged" : "refresh";
+    return { plan: { action, recordId: current.id }, relatedRecordIds };
   }
   const duplicate = sameRollCall[0];
   if (duplicate) {
@@ -370,6 +386,34 @@ export async function rewriteRollCallRecord(
     newIdentityKey: record.identityKey,
     reason: "rollcall_normalization",
   });
+}
+
+/**
+ * The in-place text refresh of this pipeline's own row after the judgment
+ * was edited: same row id and identity key, so tags and notification
+ * events stay attached and no identity transition is needed. Guarded on
+ * the key and live status so a row edited since the plan was made is left
+ * alone. Only description, source_url, and updated_at move.
+ */
+export async function refreshRollCallRecord(
+  client: Queryable,
+  record: { recordId: string; identityKey: string; description: string; sourceUrl: string }
+): Promise<void> {
+  const result = await client.query(
+    `
+      UPDATE public.candidate_records
+      SET description = $3,
+          source_url = $4,
+          updated_at = now()
+      WHERE id = $1
+        AND record_identity_key = $2
+        AND retired_at IS NULL
+    `,
+    [record.recordId, record.identityKey, record.description, record.sourceUrl]
+  );
+  if (result.rowCount !== 1) {
+    throw new Error(`record ${record.recordId} changed under the refresh (key ${record.identityKey})`);
+  }
 }
 
 /** Makes the record's area tags exactly the roll call's labels for that side. */
