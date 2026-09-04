@@ -1,0 +1,716 @@
+{
+ "source": "legiscan",
+ "jurisdiction": "AL",
+ "entries": [
+  {
+   "people_id": 3357,
+   "candidate_id": "fdbd71f8-e1df-46d0-8038-0df92944762c",
+   "note": null
+  },
+  {
+   "people_id": 3358,
+   "candidate_id": "c6197c77-62f1-414d-890b-61cd539d55fa",
+   "note": null
+  },
+  {
+   "people_id": 3360,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Barbara Boyd (HD-032) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 3370,
+   "candidate_id": "b55f7a52-f739-44c5-9a47-813b647de60f",
+   "note": null
+  },
+  {
+   "people_id": 3371,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Ralph Howard (HD-072) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 3374,
+   "candidate_id": "5693fcfe-1a15-40fe-8067-5f3c012d3036",
+   "note": null
+  },
+  {
+   "people_id": 3382,
+   "candidate_id": "86d81638-7ae0-4580-a02e-545868f9653d",
+   "note": null
+  },
+  {
+   "people_id": 3386,
+   "candidate_id": "eab7dcdd-fbc6-4786-b4df-486225f6d630",
+   "note": "legal first name in LegiScan, working name on the roster: William 'Billy' Beasley -> Billy Beasley (Senate District 28) (carried over from the 2025 session crosswalk)"
+  },
+  {
+   "people_id": 3387,
+   "candidate_id": "5c9e0d4d-6388-41fd-b63c-b32067ed36db",
+   "note": "nickname that is not a prefix of the legal name: Stephen Hurst -> Steve Hurst (House District 35) (carried over from the 2025 session crosswalk)"
+  },
+  {
+   "people_id": 3389,
+   "candidate_id": "a2acf695-6223-4f53-bb3b-107b1749e0c2",
+   "note": null
+  },
+  {
+   "people_id": 3391,
+   "candidate_id": "27c65448-9016-4c8f-bd07-84f8dd510008",
+   "note": "surname shortened on the roster: Merika Coleman-Evans -> Merika Coleman (Senate District 19) (carried over from the 2025 session crosswalk)"
+  },
+  {
+   "people_id": 3411,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Mac McCutcheon (HD-025) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 3415,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Victor Gaston (HD-100) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 3416,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Mike Ball (HD-010) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 3419,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Dickie Drake (HD-045) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 3420,
+   "candidate_id": "1029b26e-2e95-4229-b5e2-85086d8f1152",
+   "note": null
+  },
+  {
+   "people_id": 3423,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Harry Shiver (HD-064) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 3424,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Joe Faust (HD-094) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 3426,
+   "candidate_id": "2cfe614e-586a-4795-8290-eb27c5b4c04d",
+   "note": null
+  },
+  {
+   "people_id": 3427,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Steve McMillan (HD-095) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 3429,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Jim McClendon (SD-011) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 3430,
+   "candidate_id": "0f38486f-3a26-4e29-a0a2-74acbd8e3e59",
+   "note": null
+  },
+  {
+   "people_id": 3432,
+   "candidate_id": "de18f1df-6953-455e-a8db-695defbe6b0d",
+   "note": null
+  },
+  {
+   "people_id": 3435,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Howard Sanderford (HD-020) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 3445,
+   "candidate_id": "5fea2608-2736-4795-8e49-109354252f64",
+   "note": null
+  },
+  {
+   "people_id": 3454,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for John Rogers (HD-052), who resigned in 2024 and did not sit in the 2025 or 2026 sessions"
+  },
+  {
+   "people_id": 3456,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Roderick Scott (HD-055) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 3459,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for K.L. Brown (HD-040) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 3461,
+   "candidate_id": "ce0cb0f6-1c23-423d-9f61-b7747012c8a6",
+   "note": null
+  },
+  {
+   "people_id": 3462,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Del Marsh (SD-012) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 3465,
+   "candidate_id": "0200583e-3154-4b6f-989e-ffb8a1cf6143",
+   "note": null
+  },
+  {
+   "people_id": 3479,
+   "candidate_id": "1554d457-6564-464f-9291-a89ab739af89",
+   "note": null
+  },
+  {
+   "people_id": 3480,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Priscilla Dunn (SD-019) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 3481,
+   "candidate_id": "315936a0-4a71-4901-8b4d-bfc1b63bd614",
+   "note": null
+  },
+  {
+   "people_id": 3482,
+   "candidate_id": "1c43076c-8180-461a-8687-7a2e83250bb1",
+   "note": null
+  },
+  {
+   "people_id": 3486,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Tom Butler (SD-002) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 3490,
+   "candidate_id": "769d6b3f-04a1-47cc-94ac-b827cbb2ba4b",
+   "note": null
+  },
+  {
+   "people_id": 3491,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Jimmy Holley (SD-031) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 12485,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Kerry Rich (HD-026) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 12486,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Terri Collins (HD-008) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 12488,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Lynn Greer (HD-002) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 12490,
+   "candidate_id": "04397c0b-5e89-4490-b315-1a33da29eff3",
+   "note": null
+  },
+  {
+   "people_id": 12492,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Greg Reed (SD-005), who left the Senate in 2025 and did not sit in the 2025 or 2026 sessions"
+  },
+  {
+   "people_id": 12499,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Clay Scofield (SD-009), who resigned in 2023 and did not sit in the 2025 or 2026 sessions"
+  },
+  {
+   "people_id": 12500,
+   "candidate_id": "f76f47a4-c3b4-4c12-afd2-837aacb51b5b",
+   "note": null
+  },
+  {
+   "people_id": 12506,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Becky Nordgren (HD-029) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 12509,
+   "candidate_id": "cc72983f-e744-419d-a6b2-9d2519a268ab",
+   "note": null
+  },
+  {
+   "people_id": 12521,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Thomas Whatley (SD-027) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 12525,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Mike Jones (HD-092) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 12542,
+   "candidate_id": "673f2686-d1b6-4c43-9916-cf9c11b7173a",
+   "note": null
+  },
+  {
+   "people_id": 12543,
+   "candidate_id": "89f4051c-66fe-4dfe-a0bb-899f6df6220e",
+   "note": null
+  },
+  {
+   "people_id": 12548,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Allen Farley (HD-015) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 12549,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Dexter Grimsley (HD-085) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 12550,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Juandalynn Givan (HD-060) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 13150,
+   "candidate_id": "b8680106-dcb4-4d11-97dd-74523d0aef01",
+   "note": null
+  },
+  {
+   "people_id": 13766,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Jim Carns (HD-048) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 15745,
+   "candidate_id": "3931c189-d065-4ff1-9f6c-9220f99573fb",
+   "note": null
+  },
+  {
+   "people_id": 16021,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Randall Shedd (HD-011) — not on the ballot again, or a roster gap (carried over from the modern-session crosswalks)"
+  },
+  {
+   "people_id": 16140,
+   "candidate_id": "e6839de3-785e-4f9c-8559-430a182839ed",
+   "note": null
+  },
+  {
+   "people_id": 16211,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Mike Holmes (HD-031) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 16212,
+   "candidate_id": "3ea182f5-d5a1-4e8d-8d6b-678d12a915e3",
+   "note": null
+  },
+  {
+   "people_id": 16871,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Greg Albritton (SD-022) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 16872,
+   "candidate_id": "0b87d7dc-118f-4fe7-b001-c560013756bf",
+   "note": null
+  },
+  {
+   "people_id": 16873,
+   "candidate_id": "e4c6246e-d64f-4840-82a2-40ecf9a6dfe1",
+   "note": null
+  },
+  {
+   "people_id": 16874,
+   "candidate_id": "805b0ab9-194c-4539-b845-455816c873ef",
+   "note": null
+  },
+  {
+   "people_id": 16875,
+   "candidate_id": "bdaeb37e-8b8e-45b5-83de-7028d4777818",
+   "note": null
+  },
+  {
+   "people_id": 16876,
+   "candidate_id": "6974cc1e-36e0-48ab-a44c-7136da640e73",
+   "note": null
+  },
+  {
+   "people_id": 17025,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Corey Harbison (HD-012) — not on the ballot again, or a roster gap (carried over from the modern-session crosswalks)"
+  },
+  {
+   "people_id": 17026,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Phillip Pettus (HD-001) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 17027,
+   "candidate_id": "f394d3fe-e370-465c-b123-431895e2ce76",
+   "note": null
+  },
+  {
+   "people_id": 17028,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Connie Rowe (HD-013) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 17589,
+   "candidate_id": "883217e0-5e23-40cc-9d2f-3a0207bbf62e",
+   "note": null
+  },
+  {
+   "people_id": 17591,
+   "candidate_id": "12a28c88-c264-4e5c-a147-70cf412565db",
+   "note": null
+  },
+  {
+   "people_id": 17592,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for James Hanes (HD-023) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 17593,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Jim Hill (HD-050) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 17594,
+   "candidate_id": "9f2863cd-19eb-460b-9b29-94f41e446a8b",
+   "note": null
+  },
+  {
+   "people_id": 17595,
+   "candidate_id": "dda45b80-3fea-4821-b8d1-b47078834976",
+   "note": null
+  },
+  {
+   "people_id": 17596,
+   "candidate_id": "edb282eb-f0c3-4e53-98c9-c3c1c2bb1cc6",
+   "note": null
+  },
+  {
+   "people_id": 17597,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Kyle South (HD-016), who resigned in 2023 and did not sit in the 2025 or 2026 sessions"
+  },
+  {
+   "people_id": 17598,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Jack Williams (SD-034) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 17603,
+   "candidate_id": "16600ad3-4aba-41db-9b83-f942029628e7",
+   "note": null
+  },
+  {
+   "people_id": 17622,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Bob Fincher (HD-037) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 17624,
+   "candidate_id": "e55c09d0-58c2-4ef7-ae43-e79a618ed13e",
+   "note": null
+  },
+  {
+   "people_id": 17625,
+   "candidate_id": "a6594191-5999-482f-906c-bf517b2bf81f",
+   "note": null
+  },
+  {
+   "people_id": 17632,
+   "candidate_id": "f4fcbce0-9a63-4b2f-b64e-dac79e9ce3e6",
+   "note": "first-name prefix match (Timothy Wadsworth -> Tim Wadsworth), seat agrees"
+  },
+  {
+   "people_id": 17633,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Rich Wingo (HD-062) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 17634,
+   "candidate_id": "f39ba82f-ac8e-423e-89fe-e986fb657132",
+   "note": null
+  },
+  {
+   "people_id": 17641,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Louise Alexander (HD-056) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 17642,
+   "candidate_id": "e35fd97a-c312-4069-b76d-eec09810b148",
+   "note": null
+  },
+  {
+   "people_id": 17874,
+   "candidate_id": "add3cf55-f26d-40bb-b239-b3ded7c459c9",
+   "note": null
+  },
+  {
+   "people_id": 17899,
+   "candidate_id": "032ef9fa-7515-474b-96ec-a49f6cf5d0a8",
+   "note": null
+  },
+  {
+   "people_id": 19256,
+   "candidate_id": "6a35c075-5c6e-4d21-8a44-4b1ad1906612",
+   "note": null
+  },
+  {
+   "people_id": 19257,
+   "candidate_id": "6ab0e4ae-9370-416a-b278-d2848ce4dc41",
+   "note": null
+  },
+  {
+   "people_id": 19353,
+   "candidate_id": "34e37657-4eed-4fcf-9a86-5dbf03000c14",
+   "note": null
+  },
+  {
+   "people_id": 19368,
+   "candidate_id": "a098ef0e-ccb4-4703-bb6e-f5dbb0baa6cb",
+   "note": null
+  },
+  {
+   "people_id": 19618,
+   "candidate_id": "6c5c1380-7a5c-4ee2-b4fe-cd45d2dfcc97",
+   "note": null
+  },
+  {
+   "people_id": 20421,
+   "candidate_id": "a6702778-584a-4876-95c6-04bb460c5638",
+   "note": null
+  },
+  {
+   "people_id": 21169,
+   "candidate_id": "7a5e1e2a-e1c9-49ec-974a-359abd9430a1",
+   "note": null
+  },
+  {
+   "people_id": 21247,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Will Dismukes (HD-088) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 21248,
+   "candidate_id": "7aa0c089-1c76-4aa5-9233-d46ce606340b",
+   "note": "roster name leads with a single-letter first token: Craig Lipscomb -> B. Craig Lipscomb (House District 30) (carried over from the 2025 session crosswalk)"
+  },
+  {
+   "people_id": 21249,
+   "candidate_id": "d5f7c91d-207c-4164-a12c-6d16cc1f53fe",
+   "note": null
+  },
+  {
+   "people_id": 21250,
+   "candidate_id": "3605b793-dd4e-4e0f-9117-343d22a36d90",
+   "note": null
+  },
+  {
+   "people_id": 21254,
+   "candidate_id": "8c933bc0-a437-475e-a77c-0e3e8161b101",
+   "note": null
+  },
+  {
+   "people_id": 21283,
+   "candidate_id": "5c94f938-9fca-4b45-850c-dd67aff2dd32",
+   "note": null
+  },
+  {
+   "people_id": 21284,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Dan Roberts (SD-015) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 21285,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for David Wheeler (HD-047) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 21287,
+   "candidate_id": "f08e9059-68e7-4b15-bc9c-954e38e12065",
+   "note": null
+  },
+  {
+   "people_id": 21288,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Tracy Estes (HD-017) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 21289,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Matt Simpson (HD-096) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 21291,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Andrew Sorrell (HD-003) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 21297,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Brett Easterbrook (HD-065) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 21298,
+   "candidate_id": "c1815573-798b-4e5b-9668-756c2064c2f9",
+   "note": null
+  },
+  {
+   "people_id": 21299,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Kirk Hatcher (SD-026) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 21300,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Gil Isbell (HD-028) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 21301,
+   "candidate_id": "5b957020-3c3d-46f8-aed4-05b33af8a9d8",
+   "note": null
+  },
+  {
+   "people_id": 21302,
+   "candidate_id": "d82af746-ce39-4f18-8033-b5c3c7e48ca8",
+   "note": null
+  },
+  {
+   "people_id": 21303,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Rhett Marques (HD-091) — not on the ballot again, or a roster gap"
+  },
+  {
+   "people_id": 21304,
+   "candidate_id": "c116ab44-1f3b-459f-a6e9-9ef13ed8095e",
+   "note": null
+  },
+  {
+   "people_id": 21305,
+   "candidate_id": "0d0454ea-eb1a-4f39-aef9-e57e9ed2dc28",
+   "note": null
+  },
+  {
+   "people_id": 21306,
+   "candidate_id": "afa8f309-1899-4962-811e-316bc9da3f25",
+   "note": null
+  },
+  {
+   "people_id": 21307,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Proncey Robertson (HD-007) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 21308,
+   "candidate_id": "74ca080c-0477-4069-b2f5-6f68ff8a7d99",
+   "note": null
+  },
+  {
+   "people_id": 21309,
+   "candidate_id": "30e281cc-9c07-4af3-b6b9-f799c509e72d",
+   "note": null
+  },
+  {
+   "people_id": 21310,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Rodney Sullivan (HD-061) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 21311,
+   "candidate_id": "44007ca3-0e0c-4caf-ac52-6d5821a29fb5",
+   "note": null
+  },
+  {
+   "people_id": 21312,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Debbie Wood (HD-038) — not on the ballot again, or a roster gap (carried over from the modern-session crosswalks)"
+  },
+  {
+   "people_id": 21313,
+   "candidate_id": "ae3717c3-55b7-46cd-ad47-24b230e9b495",
+   "note": "two candidate rows carry this name because Alabama reverted to the 2021 Senate map: Barfoot is running again in Senate District 25, his own seat, and the Senate District 26 row (d89336d3-0d85-4ad1-aa4b-ac5f547b91a4) is left over from the court-drawn map and is a roster defect this campaign does not fix (carried over from the 2025 session crosswalk)"
+  },
+  {
+   "people_id": 21315,
+   "candidate_id": "344a020e-e294-4afc-8327-f25c0fada851",
+   "note": null
+  },
+  {
+   "people_id": 21316,
+   "candidate_id": "663a8375-dc4f-4a02-b675-ecded7580ba7",
+   "note": null
+  },
+  {
+   "people_id": 21317,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Malika Sanders-Fortier (SD-023) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 21318,
+   "candidate_id": "87ba2bf5-812a-4c66-911e-5face2e525da",
+   "note": null
+  },
+  {
+   "people_id": 21322,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Wes Allen (HD-089) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 21416,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Charlotte Meadows (HD-074) — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 21548,
+   "candidate_id": "07746a73-8d61-4672-ae2c-a37570b167b2",
+   "note": null
+  },
+  {
+   "people_id": 22671,
+   "candidate_id": "4d606c48-ca4d-4a2c-bdf5-6773df9bd01f",
+   "note": null
+  },
+  {
+   "people_id": 22761,
+   "candidate_id": "f4dde56c-099c-43d2-9d7e-e4d9950ef909",
+   "note": null
+  },
+  {
+   "people_id": 22885,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Rules () — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 22886,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Rules () — left the Legislature before 2023 and is not on the ballot"
+  },
+  {
+   "people_id": 22952,
+   "candidate_id": "d1d9edba-5e4f-4393-9961-dd4ace0507c7",
+   "note": null
+  },
+  {
+   "people_id": 22953,
+   "candidate_id": "58e0a3cd-2eb5-48a2-91fa-835c910f3912",
+   "note": null
+  },
+  {
+   "people_id": 22964,
+   "candidate_id": null,
+   "note": "no Nov-2026 Alabama candidate row for Cynthia Almond (HD-063) — not on the ballot again, or a roster gap (carried over from the modern-session crosswalks)"
+  },
+  {
+   "people_id": 23107,
+   "candidate_id": "127181ea-45ec-4e83-8ef9-bd375629343d",
+   "note": null
+  }
+ ]
+}

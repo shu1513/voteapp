@@ -1,0 +1,12 @@
+bill	type	chamber	date	roll	yea	nay	status	qclass	roll_number_in_history	disposition	desc	title
+HB1	B	house	2021-11-01	1111185	65	38	4	passage	yes	batch-01	Motion to Read a Third Time and Pass Roll Call 4	U.S. Congressional, districts redrawn, Sec. 17-14-70 repealed; Sec. 17-14-70 added
+HB1	B	senate	2021-11-03	1115467	22	7	4	passage	yes	batch-01	Motion to Read a Third Time and Pass Roll Call 34	U.S. Congressional, districts redrawn, Sec. 17-14-70 repealed; Sec. 17-14-70 added
+HB2	B	house	2021-11-01	1111175	68	35	4	passage	yes	batch-01	Motion to Read a Third Time and Pass Roll Call 10	House, districts redrawn, Sec. 29-1-2.3 repealed; Sec. 29-1-2.3 added
+HB2	B	senate	2021-11-03	1115491	25	7	4	passage	yes	batch-01	Motion to Read a Third Time and Pass Roll Call 35	House, districts redrawn, Sec. 29-1-2.3 repealed; Sec. 29-1-2.3 added
+SB1	B	senate	2021-11-01	1111153	25	7	4	passage	yes	batch-01	Motion to Read a Third Time and Pass Roll Call 9	Senate, districts redrawn, Sec. 29-1-2.3 repealed; Sec. 29-1-2.3 added
+SB1	B	house	2021-11-03	1115492	76	26	4	passage	yes	batch-01	Motion to Read a Third Time and Pass Roll Call 16	Senate, districts redrawn, Sec. 29-1-2.3 repealed; Sec. 29-1-2.3 added
+SB15	B	house	2021-11-04	1115542	59	19	4	concurrence	yes	batch-01	Marques motion to Concur In and Adopt Roll Call 26	Vaccine mandates, prohibited unless federally required, vaccine exemption for medical and religious reasons created, parental consent for minor to rec
+SB15	B	house	2021-11-04	1115532	65	23	4	passage	yes	superseded: a later kept floor vote in this chamber is imported instead	Motion to Read a Third Time and Pass Roll Call 23	Vaccine mandates, prohibited unless federally required, vaccine exemption for medical and religious reasons created, parental consent for minor to rec
+SB2	B	house	2021-11-03	1115493	76	26	4	passage	yes	batch-01	Motion to Read a Third Time and Pass Roll Call 17	Board of Education, State, districts redrawn, Sec. 16-3-1.1 repealed; Sec. 16-3-1.1 added
+SB9	B	house	2021-11-04	1115535	67	23	4	passage	yes	superseded: a later kept floor vote in this chamber is imported instead	Motion to Read a Third Time and Pass Roll Call 21	Vaccines, exemption from COVID-19 vaccination for medical reasons or religious belief, submission of a form requesting the exemption
+SB9	B	house	2021-11-04	1115544	75	27	4	concurrence	yes	batch-01	Jones (M) motion to Concur In and Adopt Roll Call 27	Vaccines, exemption from COVID-19 vaccination for medical reasons or religious belief, submission of a form requesting the exemption

@@ -1,0 +1,211 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1621",
+      "roll": 841881,
+      "measure_id": "HB 212",
+      "vote_date": "2019-04-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 212, the Anti-Road Rage Act, which limits how long a driver may sit in the fast lane. On an interstate a vehicle may not stay in the leftmost lane for more than a mile and a half without fully passing another vehicle. Traffic jams, bad weather, exits, tolls, emergency vehicles and work zones are all excepted, and police could only give warnings for the first 60 days. The House passed it 61-24 and it became law.",
+      "nay_description": "Voted against passing House Bill 212, the Anti-Road Rage Act, which limits how long a driver may sit in the fast lane. On an interstate a vehicle may not stay in the leftmost lane for more than a mile and a half without fully passing another vehicle. Traffic jams, bad weather, exits, tolls, emergency vehicles and work zones are all excepted, and police could only give warnings for the first 60 days. The House passed it 61-24 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1621",
+      "roll": 862047,
+      "measure_id": "HB 380",
+      "vote_date": "2019-05-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 380, which rebuilt Alabama's parole system after a paroled prisoner killed three people. It writes into law how much of a sentence must be served before parole is first considered, and for nine serious felonies that is 85 percent of the sentence or 15 years, whichever is less. The board may depart from those dates only on clear and convincing evidence, and the Governor or Attorney General can veto a departure. The House passed it 73-27 and it became law.",
+      "nay_description": "Voted against passing House Bill 380, which rebuilt Alabama's parole system after a paroled prisoner killed three people. It writes into law how much of a sentence must be served before parole is first considered, and for nine serious felonies that is 85 percent of the sentence or 15 years, whichever is less. The board may depart from those dates only on clear and convincing evidence, and the Governor or Attorney General can veto a departure. The House passed it 73-27 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1621",
+      "roll": 861143,
+      "measure_id": "SB 128",
+      "vote_date": "2019-05-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 128, which made it a crime to photograph someone else's ballot at a polling place. Taking a picture of another person's ballot, or showing its contents to anyone other than someone lawfully helping that voter, is a Class A misdemeanor. Photographing your own ballot stays legal, and so does sharing that picture online. The Senate passed it 23-7 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 128, which made it a crime to photograph someone else's ballot at a polling place. Taking a picture of another person's ballot, or showing its contents to anyone other than someone lawfully helping that voter, is a Class A misdemeanor. Photographing your own ballot stays legal, and so does sharing that picture online. The Senate passed it 23-7 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1621",
+      "roll": 863631,
+      "measure_id": "SB 193",
+      "vote_date": "2019-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 193, which cut how long an out-of-work person can draw unemployment pay. The maximum fell from 26 weeks to 14, rising to 20 only if the state jobless rate reaches 9.5 percent, and the separate cap on total pay dropped from a third of past wages to a quarter. The weekly maximum rose by $10 to $275, and five extra weeks are available to someone in an approved training course. The House passed it 74-26 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 193, which cut how long an out-of-work person can draw unemployment pay. The maximum fell from 26 weeks to 14, rising to 20 only if the state jobless rate reaches 9.5 percent, and the separate cap on total pay dropped from a third of past wages to a quarter. The weekly maximum rose by $10 to $275, and five extra weeks are available to someone in an approved training course. The House passed it 74-26 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1621",
+      "roll": 875913,
+      "measure_id": "HB 209",
+      "vote_date": "2019-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 209, which changed who may be armed as a school resource officer. Before this, the person had to be a currently certified law enforcement officer who had finished active shooter training. The law lets a retired officer with at least 20 years of service qualify instead, and says nothing in it gives anyone the power of arrest. The House passed it 55-41 and it became law.",
+      "nay_description": "Voted against passing House Bill 209, which changed who may be armed as a school resource officer. Before this, the person had to be a currently certified law enforcement officer who had finished active shooter training. The law lets a retired officer with at least 20 years of service qualify instead, and says nothing in it gives anyone the power of arrest. The House passed it 55-41 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1621",
+      "roll": 861380,
+      "measure_id": "HB 361",
+      "vote_date": "2019-05-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 361, the Fantasy Contests Act, which legalized paid fantasy sports in Alabama. Operators must register with the Attorney General, verify players are 19 or older, keep player money separate, bar contests on high school and youth sports, and pay a tax on their Alabama revenue. Fantasy contests are taken out of the state gambling laws, and breaking the rules is treated as a deceptive trade practice rather than a crime. The House passed it 74-22 and it became law.",
+      "nay_description": "Voted against passing House Bill 361, the Fantasy Contests Act, which legalized paid fantasy sports in Alabama. Operators must register with the Attorney General, verify players are 19 or older, keep player money separate, bar contests on high school and youth sports, and pay a tax on their Alabama revenue. Fantasy contests are taken out of the state gambling laws, and breaking the rules is treated as a deceptive trade practice rather than a crime. The House passed it 74-22 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        873645
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1621",
+      "roll": 873644,
+      "measure_id": "HB 361",
+      "vote_date": "2019-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 361, the Fantasy Contests Act, which legalized paid fantasy sports in Alabama. Operators must register with the Attorney General, verify players are 19 or older, keep player money separate, bar contests on high school and youth sports, and pay a tax on their Alabama revenue. Fantasy contests are taken out of the state gambling laws, and breaking the rules is treated as a deceptive trade practice rather than a crime. The Senate passed it 22-8 and it became law.",
+      "nay_description": "Voted against passing House Bill 361, the Fantasy Contests Act, which legalized paid fantasy sports in Alabama. Operators must register with the Attorney General, verify players are 19 or older, keep player money separate, bar contests on high school and youth sports, and pay a tax on their Alabama revenue. Fantasy contests are taken out of the state gambling laws, and breaking the rules is treated as a deceptive trade practice rather than a crime. The Senate passed it 22-8 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        873642
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1621",
+      "roll": 875179,
+      "measure_id": "HB 498",
+      "vote_date": "2019-05-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 498, which told every public college in Alabama to adopt a free expression policy. Outdoor areas of campus become open forums, free speech zones are banned, and a college may not charge higher security fees because of what a speaker says or how people might react. Colleges must also punish anyone who seriously disrupts someone else's speech, and may not write harassment rules broader than the definition in the law. The House passed it 73-26 and it became law.",
+      "nay_description": "Voted against passing House Bill 498, which told every public college in Alabama to adopt a free expression policy. Outdoor areas of campus become open forums, free speech zones are banned, and a college may not charge higher security fees because of what a speaker says or how people might react. Colleges must also punish anyone who seriously disrupts someone else's speech, and may not write harassment rules broader than the definition in the law. The House passed it 73-26 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1621",
+      "roll": 861734,
+      "measure_id": "SB 236",
+      "vote_date": "2019-05-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 236, which set up a commission to study medical marijuana and kept an existing legal shield alive one more year. The 14-member commission had to hold at least three public hearings and report with draft legislation by December 2019. The shield, known as Carly's Law, protects people using low-strength cannabidiol prescribed through the University of Alabama at Birmingham for severe seizures, and its expiry moved from July 2019 to July 2020. The Senate passed it 17-6 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 236, which set up a commission to study medical marijuana and kept an existing legal shield alive one more year. The 14-member commission had to hold at least three public hearings and report with draft legislation by December 2019. The shield, known as Carly's Law, protects people using low-strength cannabidiol prescribed through the University of Alabama at Birmingham for severe seizures, and its expiry moved from July 2019 to July 2020. The Senate passed it 17-6 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        875873
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1621",
+      "roll": 875747,
+      "measure_id": "SB 397",
+      "vote_date": "2019-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 397, which asked voters to replace Alabama's elected State Board of Education with an appointed commission. Nine members would be named by the Governor and confirmed by the Senate, serving six-year terms, with the membership required to reflect the state's students by geography, gender and race. Because it changes the constitution it took effect only if voters approved it at a statewide election. The House passed it 78-21 and it went to the voters.",
+      "nay_description": "Voted against passing Senate Bill 397, which asked voters to replace Alabama's elected State Board of Education with an appointed commission. Nine members would be named by the Governor and confirmed by the Senate, serving six-year terms, with the membership required to reflect the state's students by geography, gender and race. Because it changes the constitution it took effect only if voters approved it at a statewide election. The House passed it 78-21 over these votes and it went to the voters.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1621",
+      "roll": 870365,
+      "measure_id": "SB 69",
+      "vote_date": "2019-05-23",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 69, which abolished the Alabama marriage license. Instead of asking a probate judge for permission, two people file sworn statements that they are at least 18, or 16 with a parent's consent, are not already married, are not closely related, and are acting freely. The probate judge must record any filing that meets those requirements, and the state no longer requires a ceremony of any kind. The House passed it 67-26 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 69, which abolished the Alabama marriage license. Instead of asking a probate judge for permission, two people file sworn statements that they are at least 18, or 16 with a parent's consent, are not already married, are not closely related, and are acting freely. The probate judge must record any filing that meets those requirements, and the state no longer requires a ceremony of any kind. The House passed it 67-26 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

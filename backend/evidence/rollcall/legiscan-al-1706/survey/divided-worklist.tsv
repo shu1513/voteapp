@@ -1,0 +1,6 @@
+bill	type	chamber	date	roll	yea	nay	status	qclass	roll_number_in_history	disposition	desc	title
+HB147	B	house	2020-02-11	920063	74	27	4	passage		batch-01	Motion to Read a Third Time and Pass	Municipal occupational taxes, prohibited if not already in effect unless authorized by local law
+HB147	B	senate	2020-02-27	937125	27	7	4	passage		batch-01	Motion to Read a Third Time and Pass	Municipal occupational taxes, prohibited if not already in effect unless authorized by local law
+HB167	B	house	2020-02-25	933582	68	19	2	passage		deferred to batch-02: the measure did not become law	Motion to Read a Third Time and Pass	Social Work Examiners, Board of, duties, board authorized to charge and collect fees to verify existence of current license, Sec. 34-30-57 am'd.
+HB34	B	house	2020-03-10	947969	61	32	2	passage		deferred to batch-02: the measure did not become law	Motion to Read a Third Time and Pass	Motor vehicles, driving without a license, penalties, Sec. 32-6-19 am'd.
+SB165	B	senate	2020-03-12	950624	22	11	2	passage		deferred to batch-02: the measure did not become law	Motion to Read a Third Time and Pass	Medical Cannabis, program established to allow use of for certain conditions, defense against prosecution for marijuana possession established, Secs. 

@@ -1,0 +1,40 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1706",
+      "roll": 920063,
+      "measure_id": "HB 147",
+      "vote_date": "2020-02-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 147, which barred Alabama cities from starting new taxes on what people earn at work. No municipality may impose an occupational or license tax on a person's trade or profession unless the Legislature passes a law for that city by name. Every such tax already in place before February 2020 is untouched, and ordinary business license taxes are not affected. The House passed it 74-27 and it became law.",
+      "nay_description": "Voted against passing House Bill 147, which barred Alabama cities from starting new taxes on what people earn at work. No municipality may impose an occupational or license tax on a person's trade or profession unless the Legislature passes a law for that city by name. Every such tax already in place before February 2020 is untouched, and ordinary business license taxes are not affected. The House passed it 74-27 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1706",
+      "roll": 937125,
+      "measure_id": "HB 147",
+      "vote_date": "2020-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 147, which barred Alabama cities from starting new taxes on what people earn at work. No municipality may impose an occupational or license tax on a person's trade or profession unless the Legislature passes a law for that city by name. Every such tax already in place before February 2020 is untouched, and ordinary business license taxes are not affected. The Senate passed it 27-7 and it became law.",
+      "nay_description": "Voted against passing House Bill 147, which barred Alabama cities from starting new taxes on what people earn at work. No municipality may impose an occupational or license tax on a person's trade or profession unless the Legislature passes a law for that city by name. Every such tax already in place before February 2020 is untouched, and ordinary business license taxes are not affected. The Senate passed it 27-7 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
