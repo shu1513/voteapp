@@ -82,7 +82,8 @@ import {
   parseContentReportBodyValue,
   parseBallotPreferencesBodyValue,
   parseEmailPreferencesBodyValue,
-  parseEmailUnsubscribePreference,
+  parseEmailUnsubscribeFormBody,
+  parseEmailUnsubscribePreferences,
   parsePushTokenDeleteBodyValue,
   parsePushTokenRegisterBodyValue,
   parseBallotSummaryOptions,
@@ -119,6 +120,13 @@ import {
 } from "./apiResponses.js";
 import { renderPickCardOgImage } from "./pickCardOgImage.js";
 import { CURRENT_TERMS_VERSION, isAcceptableTermsVersion } from "../constants/legal.js";
+import {
+  buildEmailSettingsUrl,
+  EMAIL_UNSUBSCRIBE_PAGE_CSP,
+  renderEmailUnsubscribeConfirmPage,
+  renderEmailUnsubscribeDonePage,
+  renderEmailUnsubscribeInvalidPage,
+} from "./emailUnsubscribePage.js";
 
 type ApiResponseLocals = {
   clientIp?: string;
@@ -448,6 +456,26 @@ function createContentReportRateLimitMiddleware(options: AddressApiServerOptions
         "retry-after": String(retryAfterSeconds),
       })
     );
+  };
+}
+
+// The unsubscribe confirmation page is a plain HTML form (no JavaScript), so
+// its POST arrives urlencoded; RFC 8058 one-click POSTs from mailbox
+// providers use the same content type ("List-Unsubscribe=One-Click"). Parse
+// it for that one path only and keep the limit tiny: the body is a handful
+// of checkbox values.
+function createEmailUnsubscribeFormBodyParser() {
+  const parseForm = express.urlencoded({
+    extended: false,
+    limit: "4kb",
+    type: "application/x-www-form-urlencoded",
+  });
+  return (request: Request, response: Response, next: NextFunction): void => {
+    if (request.method === "POST" && request.path === EMAIL_UNSUBSCRIBE_PATH) {
+      parseForm(request, response, next);
+      return;
+    }
+    next();
   };
 }
 
@@ -2015,50 +2043,68 @@ async function dispatchApiRequest(
     }
 
     const token = url.searchParams.get("token")?.trim() ?? "";
-    // Unknown pref values 400 rather than falling back: a mangled link must
-    // not silently flip a different opt-in than the email advertised.
-    const preference = parseEmailUnsubscribePreference(url.searchParams.get("pref"));
+    const settingsUrl = buildEmailSettingsUrl(options.publicSiteOrigin);
+    const htmlHeaders = {
+      ...corsHeaders,
+      "content-type": "text/html; charset=utf-8",
+      "content-security-policy": EMAIL_UNSUBSCRIBE_PAGE_CSP,
+    };
+    const sendInvalidPage = () => {
+      response.status(400).set(htmlHeaders).send(renderEmailUnsubscribeInvalidPage({ settingsUrl }));
+    };
     // GET must not mutate: mail security gateways, previewers, and prefetchers
     // GET every link in an email body, which would silently unsubscribe users.
     // GET renders a confirmation form that POSTs back here; POST (the form and
     // RFC 8058 one-click) performs the unsubscribe.
     const mode = request.method === "GET" ? ("confirm" as const) : ("execute" as const);
-    const outcome =
-      token && preference
-        ? await options.unsubscribeFromEmailNotifications(token, mode, preference)
-        : "invalid_token";
-    const invalidPage =
-      "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Invalid link</title></head><body><p>This unsubscribe link is invalid or incomplete.</p><p>You can manage email settings in your account settings.</p></body></html>";
-    if (outcome !== "ok" || !preference) {
-      response
-        .status(400)
-        .set({ ...corsHeaders, "content-type": "text/html; charset=utf-8" })
-        .send(invalidPage);
+    // The opt-in(s) the link advertised. Unknown values 400 rather than
+    // falling back: a mangled link must not flip a different opt-in than the
+    // email advertised. A link without pref is a legacy digest link.
+    const parsedLinked = parseEmailUnsubscribePreferences(url.searchParams.getAll("pref"));
+    const linkedPreferences = parsedLinked && parsedLinked.length === 0 ? (["digest"] as const) : parsedLinked;
+    // The confirmation form posts its checkbox choices in the body (marked
+    // form=1) so the user can widen or narrow the selection; without the
+    // marker (one-click and bodiless POSTs) exactly the advertised opt-ins
+    // are unsubscribed.
+    const form = parseEmailUnsubscribeFormBody(request.body);
+    const selectedPreferences =
+      mode === "execute" && form.isForm ? parseEmailUnsubscribePreferences(form.preferenceValues) : linkedPreferences;
+    if (!token || !linkedPreferences || !selectedPreferences) {
+      sendInvalidPage();
       return;
     }
-    const preferenceLabel =
-      preference === "new_election_alerts"
-        ? "new election alert emails"
-        : preference === "election_reminders"
-          ? "election reminder emails"
-          : preference === "issue_updates"
-            ? "emails about your saved issues"
-            : preference === "member_newsletter"
-              ? "member newsletter emails"
-              : "candidate update digest emails";
-    const formAction = `${EMAIL_UNSUBSCRIBE_PATH}?token=${encodeURIComponent(token)}&pref=${encodeURIComponent(preference)}`;
-    const confirmPage =
-      "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Unsubscribe</title></head><body>" +
-      `<p>Unsubscribe from ${preferenceLabel}?</p>` +
-      `<form method="post" action="${formAction}">` +
-      "<button type=\"submit\">Unsubscribe</button></form>" +
-      "</body></html>";
-    const donePage =
-      `<!doctype html><html lang="en"><head><meta charset="UTF-8"><title>Unsubscribed</title></head><body><p>You have been unsubscribed from ${preferenceLabel}.</p><p>You can turn them back on any time in your account settings.</p></body></html>`;
+    const formAction = `${EMAIL_UNSUBSCRIBE_PATH}?token=${encodeURIComponent(token)}`;
+    if (selectedPreferences.length === 0) {
+      // Form submitted with nothing checked: change nothing, ask again. Still
+      // verify the token first so a garbage link gets the invalid page.
+      const outcome = await options.unsubscribeFromEmailNotifications(token, "confirm", linkedPreferences);
+      if (outcome !== "ok") {
+        sendInvalidPage();
+        return;
+      }
+      response.status(400).set(htmlHeaders).send(
+        renderEmailUnsubscribeConfirmPage({
+          formAction,
+          selected: linkedPreferences,
+          settingsUrl,
+          notice: "Choose at least one kind of email to unsubscribe from.",
+        })
+      );
+      return;
+    }
+    const outcome = await options.unsubscribeFromEmailNotifications(token, mode, selectedPreferences);
+    if (outcome !== "ok") {
+      sendInvalidPage();
+      return;
+    }
     response
       .status(200)
-      .set({ ...corsHeaders, "content-type": "text/html; charset=utf-8" })
-      .send(mode === "confirm" ? confirmPage : donePage);
+      .set(htmlHeaders)
+      .send(
+        mode === "confirm"
+          ? renderEmailUnsubscribeConfirmPage({ formAction, selected: selectedPreferences, settingsUrl })
+          : renderEmailUnsubscribeDonePage({ preferences: selectedPreferences, settingsUrl })
+      );
     return;
   }
 
@@ -2536,6 +2582,7 @@ export function createApiApp(options: AddressApiServerOptions): Express {
   app.use(createContentReportRateLimitMiddleware(options));
   app.use(createStripeWebhookBodyParser());
   app.use(createJsonBodyParser());
+  app.use(createEmailUnsubscribeFormBodyParser());
   app.use((request, response, next) => {
     void dispatchApiRequest(request, response, options).catch(next);
   });

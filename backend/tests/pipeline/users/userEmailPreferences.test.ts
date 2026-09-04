@@ -5,6 +5,7 @@ import {
   disableUserEmailElectionReminders,
   disableUserEmailIssueUpdates,
   disableUserEmailNewElectionAlerts,
+  disableUserEmailPreferences,
   getUserEmailPreferences,
   setUserEmailPreferences,
   UserEmailPreferencesError,
@@ -57,6 +58,37 @@ describe("userEmailPreferences", () => {
 
     await expect(setUserEmailPreferences({ query } as never, USER_ID, updated)).resolves.toEqual(updated);
     expect(query.mock.calls[0][1]).toEqual([USER_ID, false, true, false, false, true]);
+  });
+
+  it("disableUserEmailPreferences flips only the named columns in one statement", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 1 });
+
+    await expect(
+      disableUserEmailPreferences({ query } as never, USER_ID, ["email_member_newsletter", "email_digest"])
+    ).resolves.toBeUndefined();
+    expect(query).toHaveBeenCalledTimes(1);
+    const sql = String(query.mock.calls[0][0]);
+    expect(sql).toContain("email_digest = false, email_member_newsletter = false");
+    expect(sql).not.toContain("email_election_reminders");
+    expect(sql).toContain("deleted_at IS NULL");
+    expect(query.mock.calls[0][1]).toEqual([USER_ID]);
+  });
+
+  it("disableUserEmailPreferences ignores unknown columns and refuses an empty list", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 1 });
+
+    await expect(
+      disableUserEmailPreferences({ query } as never, USER_ID, ["password_hash" as never])
+    ).rejects.toThrow("at least one known column");
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  it("disableUserEmailPreferences throws user_not_found when no row matched", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 0 });
+
+    await expect(disableUserEmailPreferences({ query } as never, USER_ID, ["email_digest"])).rejects.toMatchObject({
+      code: "user_not_found",
+    });
   });
 
   it("disableUserEmailDigest flips only the digest flag and is idempotent-friendly", async () => {
