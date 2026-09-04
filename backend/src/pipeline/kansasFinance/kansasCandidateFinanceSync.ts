@@ -1,11 +1,13 @@
 // Kansas per-candidate finance sync (plan-kansas-finance.md, Phase 4 step 3).
 // The link is the input (auto-link or an operator wrote it). This builds the
 // candidate's period ledger from the live SOS CFR viewer with the canonical
-// reports' Schedules A and B, aggregates (kansasDirectContributionAggregator),
-// and replaces the snapshot. Any failure throws so the prior snapshot
-// survives (the plan's "retain last-good snapshot on refresh failure"):
-// a link that no longer resolves, an incomplete ledger, a cover or schedule
-// that does not reconcile, or a negative figure.
+// reports' Schedules A and B, adds the transcribed covers of its paper
+// versions (kansasPaperCoverOverrides.ts), aggregates
+// (kansasDirectContributionAggregator), and replaces the snapshot. Any
+// failure throws so the prior snapshot survives (the plan's "retain
+// last-good snapshot on refresh failure"): a link that no longer resolves,
+// an incomplete ledger, a paper version with no transcribed cover, a cover
+// or schedule that does not reconcile, or a negative figure.
 //
 // What is written:
 //   total_receipts            = sum of cover line 2 (contributions and other receipts)
@@ -33,13 +35,19 @@ import {
 import { createKansasFilingPoolLoader, type KansasFilingPoolLoader } from "./kansasFilingSearch.js";
 import { kansasCfrOfficeForRace } from "./kansasFinanceEligibleOffices.js";
 import {
+  normalizeKansasFilerKey,
   normalizeKansasNameForStorage,
   replaceKansasCandidateFinanceSnapshot,
   type KansasFinanceLinkSource,
   type KansasFinanceSnapshotWriteResult,
 } from "./kansasFinanceWriter.js";
+import {
+  kansasPaperCoverOverridesToCovers,
+  loadKansasPaperCoverOverrides,
+  type KansasPaperCoverLoader,
+} from "./kansasPaperCoverOverrides.js";
 import { createKansasKpdcRowLoader, type KansasKpdcRowLoader } from "./kansasPaperInventory.js";
-import type { KansasPeriodStatus } from "./kansasReportInventory.js";
+import { kansasReportingPeriods, type KansasPeriodStatus } from "./kansasReportInventory.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & { connect: () => Promise<PoolClient> };
@@ -75,6 +83,8 @@ export type KansasCandidateFinanceSyncInput = {
   loadFilingPool?: KansasFilingPoolLoader;
   /** Memoized KPDC candidate trees (paper rows); a batch shares one. */
   loadKpdcRows?: KansasKpdcRowLoader;
+  /** Transcribed paper covers (ks_candidate_finance_paper_covers); consulted only when the viewer shows paper rows. Defaults to `db`. */
+  loadPaperCovers?: KansasPaperCoverLoader;
   buildLedger?: typeof buildKansasCandidateLedger;
 };
 
@@ -192,14 +202,29 @@ export async function syncKansasCandidateFinance(input: KansasCandidateFinanceSy
     throw new KansasCandidateFinanceSyncError(`link ${input.link.committeeId} does not resolve in the viewer: ${ledger.reason}`);
   }
 
+  // A paper version has no viewer cover; a transcribed one stands in
+  // (totals only). Loaded only when the viewer shows paper rows, since only
+  // then does the ledger hold a paper version for one to match.
+  const loadPaperCovers =
+    input.loadPaperCovers ?? ((committeeId, electionYear) => loadKansasPaperCoverOverrides(input.db, committeeId, electionYear));
+  const paperOverrides =
+    ledger.paperReports.length === 0 ? [] : await loadPaperCovers(normalizeKansasFilerKey(input.link.committeeId), input.electionYear);
+  const paperCovers = kansasPaperCoverOverridesToCovers({
+    overrides: paperOverrides,
+    periods: kansasReportingPeriods(office, input.electionYear),
+  });
+
   // The gate is the candidate's completeness (ledger AND every paper row explained), not the ledger's alone.
   const figures = kansasSnapshotFigures(
     aggregateKansasDirectFinance({
       ledger: { ...ledger.ledger, complete: ledger.complete },
-      covers: ledger.reports,
+      covers: [...ledger.reports, ...paperCovers],
       maxOccupationBreakdowns: input.maxOccupationBreakdowns,
     })
   );
+  if (paperOverrides.length > 0) {
+    figures.diagnostics.push(`transcribed paper covers: ${paperOverrides.map((override) => override.sourceFileName).join(", ")}`);
+  }
   const sourceUrl = input.link.sourceUrl?.trim() || KANSAS_CFR_LINK_SOURCE_URL;
 
   let write: KansasFinanceSnapshotWriteResult | null = null;

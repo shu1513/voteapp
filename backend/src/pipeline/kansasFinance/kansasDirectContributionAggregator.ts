@@ -31,8 +31,8 @@
 // counts (25-4154(d): no contributor name is kept or compared).
 //
 // Fail closed, per candidate: a cover that fails its own arithmetic, a
-// canonical version with no opened cover (a paper scan — its totals come
-// from OCR in a later step), a schedule that does not reconcile, or a
+// canonical version with no opened cover (a paper scan whose cover has not
+// been transcribed — kansasPaperCoverOverrides.ts), a schedule that does not reconcile, or a
 // ledger that is not complete leaves the candidate unpublishable. A cycle
 // with no filed report at all (an affidavit of exemption — under $1,000 in
 // and out, not $0 — or a first report not yet due) has no figures, never a

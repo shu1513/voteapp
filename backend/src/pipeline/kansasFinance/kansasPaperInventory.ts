@@ -38,6 +38,7 @@ import {
   parseKansasKpdcFileName,
   type KansasKpdcCandidateRow,
   type KansasKpdcFetchOptions,
+  type KansasKpdcFileNameInfo,
 } from "./kansasKpdcIndexClient.js";
 import { kansasDateToIso, kansasPeriodDueKey, type KansasFilingHeader, type KansasReportingPeriod } from "./kansasReportInventory.js";
 
@@ -61,6 +62,28 @@ export function createKansasKpdcRowLoader(
       trees.set(treePath, tree);
     }
     return tree;
+  };
+}
+
+/**
+ * The date-less version a KPDC report filename names for its period. Shared
+ * with the transcribed-cover loader (kansasPaperCoverOverrides.ts) so a
+ * transcribed cover and the ledger's paper version build one
+ * kansasFilingHeaderKey.
+ */
+export function kansasPaperFilingHeader(
+  info: Pick<KansasKpdcFileNameInfo, "kind" | "amendment" | "amendmentOrdinal">,
+  period: Pick<KansasReportingPeriod, "start" | "end">
+): KansasFilingHeader {
+  return {
+    periodStart: period.start,
+    periodEnd: period.end,
+    fileDate: null,
+    amendmentDate: null,
+    amended: info.amendment,
+    amendmentOrdinal: info.amendmentOrdinal,
+    termination: info.kind === "termination",
+    channel: "paper",
   };
 }
 
@@ -162,16 +185,7 @@ export function buildKansasPaperInventory(input: {
         if (period === undefined) {
           unmapped.push(link.fileName);
         } else if (period.due >= input.windowStart) {
-          headers.push({
-            periodStart: period.start,
-            periodEnd: period.end,
-            fileDate: null,
-            amendmentDate: null,
-            amended: info.amendment,
-            amendmentOrdinal: info.amendmentOrdinal,
-            termination: info.kind === "termination",
-            channel: "paper",
-          });
+          headers.push(kansasPaperFilingHeader(info, period));
         }
       }
     }
