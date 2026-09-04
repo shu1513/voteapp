@@ -26,9 +26,13 @@ words are new.
 back with section-numbered quotations. Every claim a description rests on was then re-checked
 against the act. The claim that decided a label — that HB 1017's female-only eligibility is
 newly added rather than pre-existing — was verified directly, by reading the marked text of
-§ 6-17-122(a)(1) and confirming that all three conditions are underlined additions and that the
-prior definition of maternity leave carried no sex restriction. Kentucky's campaign had a
-subagent write a section it had not read, so a report is evidence, not testimony.
+§ 6-17-122(a)(1) and confirming that the female-only and leave-abuse conditions are underlined
+additions and that the prior definition of maternity leave carried no sex restriction. The
+one-year service condition is not new: the prior definition of "education personnel" already
+required full-time employment for more than one year, and that clause is unmarked in the act.
+The first draft called all three limits new; PR review caught it and the description was
+corrected. Kentucky's campaign had a subagent write a section it had not read, so a report is
+evidence, not testimony.
 
 ## Writing
 
@@ -94,15 +98,19 @@ The act pushes in opposite directions on different subjects, so it takes one lab
 the pattern set by Florida SB 700. The state now pays the entire cost of school maternity leave
 instead of half, schools can no longer opt out, and foster placement of an infant is newly
 covered — `social_programs_and_welfare`/for. In the same act, eligibility is newly narrowed to
-female employees with a year of service and no leave-abuse discipline, which writes adoptive
-and foster fathers out of a benefit the prior text did not limit by sex — `civil_rights`/against.
+female employees with no leave-abuse discipline (the year of service was already required), which
+writes adoptive and foster fathers out of a benefit the prior text did not limit by sex —
+`civil_rights`/against.
 Both strands are stated in the description.
 
 ### SB 591 is a standby law, and the description says so
 
 Act 973 would ban abortions sought because of the race of the fetus, but Section 2 makes the
-whole act effective only if a court blocks Arkansas's existing near-total abortion ban or the
-state repeals it. Describing it as a live restriction would be false. The description opens by
+whole act effective only once the Attorney General certifies that a court has blocked Arkansas's
+existing near-total abortion ban or that the state has repealed or loosened it. The description
+keeps the substance (blocked, repealed or loosened) and leaves out the certification step, which
+is procedure rather than a condition a voter weighs. Describing it as a live restriction would be
+false. The description opens by
 saying it does not apply yet and writes the substance in the conditional. The label stays
 `womens_reproductive_rights`/against, because the vote is on a measure that would restrict.
 
@@ -134,6 +142,16 @@ Three acts do materially more than their titles say, and the descriptions follow
   proof `--dry-run` wrote nothing.
 - Convergence: a second dry run reports all 812 `unchanged`
   (`import-dry-run-rerun-report.json`). The original insert ledger was not overwritten.
+- **Review fixes.** PR review found four descriptions that misstated their act: HB 1017 called
+  the pre-existing one-year service rule new; SB 486 dropped the conditions on the right to sue
+  (the operator let the person in or failed to take reasonable steps; sleeping-quarter claims
+  need compelled sharing); SB 211 dropped the exception that lets a canvasser keep collecting
+  once the Secretary of State finds the petition eligible for a cure period; SB 591 said
+  "repeals" where the act also triggers on a partial amendment. `judgments.json` was corrected,
+  re-judged (15 `updated`) and re-imported, stamp `2026-09-04T05:39:54.643Z`: **306 `rewrite`,
+  506 `unchanged`, 0 errors**, ledger `import-rerun-report.json`. The 306 are exactly the five
+  affected rolls (HB 1017 74, SB 486 72, SB 591 70, SB 211 House 79 + Senate 11), and a query
+  for the old wording afterwards matched 0 live rows.
 - 96 candidates is every member the crosswalk maps. **Arkansas's Speaker votes**, so there is no
   shortfall of the kind Texas (Burrows) and Georgia (Burns) show.
 
