@@ -1,0 +1,387 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1498856,
+      "measure_id": "SB 208",
+      "vote_date": "2025-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 208. A canvasser must now look at a copy of a person's photo ID before taking that person's name. A canvasser is someone who carries a petition around and collects names to put a measure on the ballot. If the canvasser cannot tell who the person is, the canvasser may not take the name. So a person without an accepted photo ID cannot sign. Each sheet carries a sworn oath. A canvasser who swears it without checking IDs is treated as having lied on that form. The Arkansas House passed it 70-24 and it became Act 240 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 208. A canvasser must now look at a copy of a person's photo ID before taking that person's name. A canvasser is someone who carries a petition around and collects names to put a measure on the ballot. If the canvasser cannot tell who the person is, the canvasser may not take the name. So a person without an accepted photo ID cannot sign. Each sheet carries a sworn oath. A canvasser who swears it without checking IDs is treated as having lied on that form. The Arkansas House passed it 70-24 and it became Act 240 of 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1487812,
+      "measure_id": "SB 209",
+      "vote_date": "2025-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 209. The Secretary of State must throw out every signature a canvasser collected if that canvasser is found to have broken Arkansas law on collecting names, lying under oath, forgery or fraud. A canvasser is someone who collects names to put a measure on the ballot. The finding is made by the Secretary of State alone, using the lowest standard of proof in American law, which asks only whether something is more likely true than not. No court ruling, charge or conviction is needed. Signatures with nothing wrong with them are thrown out too. The act sets out no hearing and no appeal. The Arkansas Senate passed it 21-11 and it became Act 273 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 209. The Secretary of State must throw out every signature a canvasser collected if that canvasser is found to have broken Arkansas law on collecting names, lying under oath, forgery or fraud. A canvasser is someone who collects names to put a measure on the ballot. The finding is made by the Secretary of State alone, using the lowest standard of proof in American law, which asks only whether something is more likely true than not. No court ruling, charge or conviction is needed. Signatures with nothing wrong with them are thrown out too. The act sets out no hearing and no appeal. The Arkansas Senate passed it 21-11 and it became Act 273 of 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1509495,
+      "measure_id": "SB 209",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 209. The Secretary of State must throw out every signature a canvasser collected if that canvasser is found to have broken Arkansas law on collecting names, lying under oath, forgery or fraud. A canvasser is someone who collects names to put a measure on the ballot. The finding is made by the Secretary of State alone, using the lowest standard of proof in American law, which asks only whether something is more likely true than not. No court ruling, charge or conviction is needed. Signatures with nothing wrong with them are thrown out too. The act sets out no hearing and no appeal. The Arkansas House passed it 62-29 and it became Act 273 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 209. The Secretary of State must throw out every signature a canvasser collected if that canvasser is found to have broken Arkansas law on collecting names, lying under oath, forgery or fraud. A canvasser is someone who collects names to put a measure on the ballot. The finding is made by the Secretary of State alone, using the lowest standard of proof in American law, which asks only whether something is more likely true than not. No court ruling, charge or conviction is needed. Signatures with nothing wrong with them are thrown out too. The act sets out no hearing and no appeal. The Arkansas House passed it 62-29 and it became Act 273 of 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1487545,
+      "measure_id": "SB 210",
+      "vote_date": "2025-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 210. A person may now sign a petition only after reading the ballot title in front of the canvasser, or hearing it read aloud there. The ballot title is the official summary voters see. A canvasser is someone who collects names to put a measure on the ballot. Having read it earlier somewhere else does not count. A canvasser who knowingly takes a signature without that step commits an offense. The canvasser must also swear on each signature sheet that every signer did it. The Arkansas Senate passed it 22-10 and it became Act 274 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 210. A person may now sign a petition only after reading the ballot title in front of the canvasser, or hearing it read aloud there. The ballot title is the official summary voters see. A canvasser is someone who collects names to put a measure on the ballot. Having read it earlier somewhere else does not count. A canvasser who knowingly takes a signature without that step commits an offense. The canvasser must also swear on each signature sheet that every signer did it. The Arkansas Senate passed it 22-10 and it became Act 274 of 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1509512,
+      "measure_id": "SB 210",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 210. A person may now sign a petition only after reading the ballot title in front of the canvasser, or hearing it read aloud there. The ballot title is the official summary voters see. A canvasser is someone who collects names to put a measure on the ballot. Having read it earlier somewhere else does not count. A canvasser who knowingly takes a signature without that step commits an offense. The canvasser must also swear on each signature sheet that every signer did it. The Arkansas House passed it 57-33 and it became Act 274 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 210. A person may now sign a petition only after reading the ballot title in front of the canvasser, or hearing it read aloud there. The ballot title is the official summary voters see. A canvasser is someone who collects names to put a measure on the ballot. Having read it earlier somewhere else does not count. A canvasser who knowingly takes a signature without that step commits an offense. The canvasser must also swear on each signature sheet that every signer did it. The Arkansas House passed it 57-33 and it became Act 274 of 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1536102,
+      "measure_id": "SB 551",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 551. It adds new rules to petitions for a local vote on whether alcohol may be sold. A canvasser is the person who collects names. The canvasser must warn each signer that petition fraud is a crime. The canvasser must also check a copy of the signer's photo ID, and may not take a name if identity cannot be confirmed. The signer must read the ballot title in front of the canvasser. Skipping the warning or the reading step is now a crime. The county clerk must throw out all of a canvasser's names if the clerk finds it more likely than not that the canvasser broke these laws. The Arkansas Senate passed it 18-9 and it became Act 764 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 551. It adds new rules to petitions for a local vote on whether alcohol may be sold. A canvasser is the person who collects names. The canvasser must warn each signer that petition fraud is a crime. The canvasser must also check a copy of the signer's photo ID, and may not take a name if identity cannot be confirmed. The signer must read the ballot title in front of the canvasser. Skipping the warning or the reading step is now a crime. The county clerk must throw out all of a canvasser's names if the clerk finds it more likely than not that the canvasser broke these laws. The Arkansas Senate passed it 18-9 and it became Act 764 of 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1547361,
+      "measure_id": "SB 551",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 551. It adds new rules to petitions for a local vote on whether alcohol may be sold. A canvasser is the person who collects names. The canvasser must warn each signer that petition fraud is a crime. The canvasser must also check a copy of the signer's photo ID, and may not take a name if identity cannot be confirmed. The signer must read the ballot title in front of the canvasser. Skipping the warning or the reading step is now a crime. The county clerk must throw out all of a canvasser's names if the clerk finds it more likely than not that the canvasser broke these laws. The Arkansas House passed it 71-20 and it became Act 764 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 551. It adds new rules to petitions for a local vote on whether alcohol may be sold. A canvasser is the person who collects names. The canvasser must warn each signer that petition fraud is a crime. The canvasser must also check a copy of the signer's photo ID, and may not take a name if identity cannot be confirmed. The signer must read the ballot title in front of the canvasser. Skipping the warning or the reading step is now a crime. The county clerk must throw out all of a canvasser's names if the clerk finds it more likely than not that the canvasser broke these laws. The Arkansas House passed it 71-20 and it became Act 764 of 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1547270,
+      "measure_id": "SB 584",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 584. It takes the rules that already govern statewide ballot petitions and applies them to county and city petitions as well. Sponsors of a local measure must now file the wording with the county clerk first, and the clerk may reject it as misleading or as conflicting with federal law. Paid canvassers, the people paid to collect names, must be listed with the clerk, and paying by the signature stays banned. The clerk must throw out a canvasser's names if the clerk finds it more likely than not that the canvasser broke the canvassing or fraud laws. The Arkansas House passed it 73-20 and it became Act 768 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 584. It takes the rules that already govern statewide ballot petitions and applies them to county and city petitions as well. Sponsors of a local measure must now file the wording with the county clerk first, and the clerk may reject it as misleading or as conflicting with federal law. Paid canvassers, the people paid to collect names, must be listed with the clerk, and paying by the signature stays banned. The clerk must throw out a canvasser's names if the clerk finds it more likely than not that the canvasser broke the canvassing or fraud laws. The Arkansas House passed it 73-20 and it became Act 768 of 2025.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1491742,
+      "measure_id": "HB 1221",
+      "vote_date": "2025-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1221. A signature on a ballot petition is no longer valid if it was collected after the next general election that follows approval of the measure's wording. The Attorney General's approval of that wording also expires on the same date. A sponsor whose approval expires must start over. Officials must reject late signatures at the first count, not only on review. The act took effect the day the Governor signed it, in time for the 2026 election cycle. The Arkansas Senate passed it 25-8 and it became Act 153 of 2025.",
+      "nay_description": "Voted against passing House Bill 1221. A signature on a ballot petition is no longer valid if it was collected after the next general election that follows approval of the measure's wording. The Attorney General's approval of that wording also expires on the same date. A sponsor whose approval expires must start over. Officials must reject late signatures at the first count, not only on review. The act took effect the day the Governor signed it, in time for the 2026 election cycle. The Arkansas Senate passed it 25-8 and it became Act 153 of 2025.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1485094,
+      "measure_id": "HB 1222",
+      "vote_date": "2025-02-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1222. The Attorney General may now turn down a proposed ballot measure if its text clashes with the United States Constitution or a federal law. That is a new reason, on top of the old power to reject wording that misleads. It stays the Attorney General's choice. The act also bars a sponsor from filing more than one version of the same idea. Two measures clash if they cover the same subject, have the same aim, and differ in wording anywhere. So even near-identical drafts are caught. Petitions filed against that rule must be turned down. The Arkansas House passed it 62-30 and it became Act 154 of 2025.",
+      "nay_description": "Voted against passing House Bill 1222. The Attorney General may now turn down a proposed ballot measure if its text clashes with the United States Constitution or a federal law. That is a new reason, on top of the old power to reject wording that misleads. It stays the Attorney General's choice. The act also bars a sponsor from filing more than one version of the same idea. Two measures clash if they cover the same subject, have the same aim, and differ in wording anywhere. So even near-identical drafts are caught. Petitions filed against that rule must be turned down. The Arkansas House passed it 62-30 and it became Act 154 of 2025.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1491745,
+      "measure_id": "HB 1222",
+      "vote_date": "2025-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1222. The Attorney General may now turn down a proposed ballot measure if its text clashes with the United States Constitution or a federal law. That is a new reason, on top of the old power to reject wording that misleads. It stays the Attorney General's choice. The act also bars a sponsor from filing more than one version of the same idea. Two measures clash if they cover the same subject, have the same aim, and differ in wording anywhere. So even near-identical drafts are caught. Petitions filed against that rule must be turned down. The Arkansas Senate passed it 25-8 and it became Act 154 of 2025.",
+      "nay_description": "Voted against passing House Bill 1222. The Attorney General may now turn down a proposed ballot measure if its text clashes with the United States Constitution or a federal law. That is a new reason, on top of the old power to reject wording that misleads. It stays the Attorney General's choice. The act also bars a sponsor from filing more than one version of the same idea. Two measures clash if they cover the same subject, have the same aim, and differ in wording anywhere. So even near-identical drafts are caught. Petitions filed against that rule must be turned down. The Arkansas Senate passed it 25-8 and it became Act 154 of 2025.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1530915,
+      "measure_id": "HB 1574",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1574. Only Arkansas residents may now be paid to collect names for a ballot petition. For a statewide measure the person must also be domiciled here, which means Arkansas is their one fixed and permanent home. A sponsor who knowingly hires someone outside those limits is fined two thousand five hundred dollars for each such person hired. That fine is the act's only enforcement. Unpaid volunteers are not covered. The Arkansas Senate passed it 25-8 and it became Act 453 of 2025.",
+      "nay_description": "Voted against passing House Bill 1574. Only Arkansas residents may now be paid to collect names for a ballot petition. For a statewide measure the person must also be domiciled here, which means Arkansas is their one fixed and permanent home. A sponsor who knowingly hires someone outside those limits is fined two thousand five hundred dollars for each such person hired. That fine is the act's only enforcement. Unpaid volunteers are not covered. The Arkansas Senate passed it 25-8 and it became Act 453 of 2025.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1549802,
+      "measure_id": "HB 1878",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1878. County election officials must now hold early voting at a site in each city with more than fifteen thousand people, counted at the last national census. The duty applies at the main party primary and at the general election. It does not apply where the county clerk already runs early voting in that city. Counties may still add other early voting sites if they choose. The Arkansas Senate passed it 18-16 and it became Act 978 of 2025.",
+      "nay_description": "Voted against passing House Bill 1878. County election officials must now hold early voting at a site in each city with more than fifteen thousand people, counted at the last national census. The duty applies at the main party primary and at the general election. It does not apply where the county clerk already runs early voting in that city. Counties may still add other early voting sites if they choose. The Arkansas Senate passed it 18-16 and it became Act 978 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1549800,
+        1549801
+      ],
+      "note": "The Senate voted on this bill three times on 2025-04-16. It failed 15-16 (roll 1549800), the Senate expunged that vote and passed it 18-17 (roll 1549801), a sounding of the ballot then made it fail, the Senate expunged that vote too, and it finally passed 18-16 (roll 1549802). The last of the three is the vote that stands, and it is the one judged here."
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1509491,
+      "measure_id": "SB 296",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 296. The county clerk's early voting site must now sit in the county seat, which is the town where county government is based. It may no longer be placed elsewhere in the county. Any extra early voting site must be chosen again by a unanimous vote of the county election board for every single election, instead of carrying over from the last one. The act does not change early voting hours, dates or who may vote. The Arkansas House passed it 72-21 and it became Act 282 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 296. The county clerk's early voting site must now sit in the county seat, which is the town where county government is based. It may no longer be placed elsewhere in the county. Any extra early voting site must be chosen again by a unanimous vote of the county election board for every single election, instead of carrying over from the last one. The act does not change early voting hours, dates or who may vote. The Arkansas House passed it 72-21 and it became Act 282 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1536151,
+      "measure_id": "HB 1365",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1365. It strips race and sex requirements from the membership of about twenty state boards. Seats once set aside for a Black member, a woman, or a member of a minority race are now open to anyone. That covers the pharmacy board, the athletic commission, the bail bond board, the counseling board, the teacher retirement board and the tobacco board, among others. Two whole statutes are repealed. They had asked health licensing boards to reflect the state's makeup. They had also let named Black and Hispanic health groups put forward names. One deleted line called for geographic balance on community college boards, so that is gone too. The Arkansas House passed it 60-24 and it became Act 938 of 2025.",
+      "nay_description": "Voted against passing House Bill 1365. It strips race and sex requirements from the membership of about twenty state boards. Seats once set aside for a Black member, a woman, or a member of a minority race are now open to anyone. That covers the pharmacy board, the athletic commission, the bail bond board, the counseling board, the teacher retirement board and the tobacco board, among others. Two whole statutes are repealed. They had asked health licensing boards to reflect the state's makeup. They had also let named Black and Hispanic health groups put forward names. One deleted line called for geographic balance on community college boards, so that is gone too. The Arkansas House passed it 60-24 and it became Act 938 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1548505,
+      "measure_id": "HB 1365",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1365. It strips race and sex requirements from the membership of about twenty state boards. Seats once set aside for a Black member, a woman, or a member of a minority race are now open to anyone. That covers the pharmacy board, the athletic commission, the bail bond board, the counseling board, the teacher retirement board and the tobacco board, among others. Two whole statutes are repealed. They had asked health licensing boards to reflect the state's makeup. They had also let named Black and Hispanic health groups put forward names. One deleted line called for geographic balance on community college boards, so that is gone too. The Arkansas Senate passed it 24-6 and it became Act 938 of 2025.",
+      "nay_description": "Voted against passing House Bill 1365. It strips race and sex requirements from the membership of about twenty state boards. Seats once set aside for a Black member, a woman, or a member of a minority race are now open to anyone. That covers the pharmacy board, the athletic commission, the bail bond board, the counseling board, the teacher retirement board and the tobacco board, among others. Two whole statutes are repealed. They had asked health licensing boards to reflect the state's makeup. They had also let named Black and Hispanic health groups put forward names. One deleted line called for geographic balance on community college boards, so that is gone too. The Arkansas Senate passed it 24-6 and it became Act 938 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1547861,
+      "measure_id": "HB 1428",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1428. Hotel rooms built for guests with mobility disabilities must have a bed no more than twenty-three inches high, measured from the floor to the top of the mattress. The height has to be met whether or not the mattress is pressed down. New lodging businesses are bound straight away. A business that already existed must meet the rule only when that room is upgraded or reaches the end of its life. The Arkansas Senate passed it 18-14 and it became Act 855 of 2025.",
+      "nay_description": "Voted against passing House Bill 1428. Hotel rooms built for guests with mobility disabilities must have a bed no more than twenty-three inches high, measured from the floor to the top of the mattress. The height has to be met whether or not the mattress is pressed down. New lodging businesses are bound straight away. A business that already existed must meet the rule only when that room is upgraded or reaches the end of its life. The Arkansas Senate passed it 18-14 and it became Act 855 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1498775,
+      "measure_id": "SB 223",
+      "vote_date": "2025-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 223. It lists religious rights that students and staff keep at public schools, and makes every district and open-enrollment charter school hand the list to each student and employee once a year. Students may pray alone or together whenever they may speak freely, form religious clubs, hand out religious texts, and use religious views in assignments they choose. Most of the listed rights are written as equal treatment with comparable non-religious activity. The staff list is much shorter and does not include praying aloud or leading prayer. Schools may keep religious texts in libraries. The act sets no penalty and creates no right to sue. The Arkansas Senate passed it 25-8 and it became Act 400 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 223. It lists religious rights that students and staff keep at public schools, and makes every district and open-enrollment charter school hand the list to each student and employee once a year. Students may pray alone or together whenever they may speak freely, form religious clubs, hand out religious texts, and use religious views in assignments they choose. Most of the listed rights are written as equal treatment with comparable non-religious activity. The staff list is much shorter and does not include praying aloud or leading prayer. Schools may keep religious texts in libraries. The act sets no penalty and creates no right to sue. The Arkansas Senate passed it 25-8 and it became Act 400 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1538646,
+      "measure_id": "SB 433",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 433. A poster of the Ten Commandments must now hang in every public school and public college classroom and library in the state. It must also hang in every public building paid for with tax money. The act sets out the wording word for word. The poster must be at least sixteen by twenty inches and readable from anywhere in the room. The national motto must hang beside it. Posters are meant to be donated or paid for by gifts. But the act lets a school use public money to replace one that does not meet the rules. The Arkansas House passed it 71-20 and it became Act 573 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 433. A poster of the Ten Commandments must now hang in every public school and public college classroom and library in the state. It must also hang in every public building paid for with tax money. The act sets out the wording word for word. The poster must be at least sixteen by twenty inches and readable from anywhere in the room. The national motto must hang beside it. Posters are meant to be donated or paid for by gifts. But the act lets a school use public money to replace one that does not meet the rules. The Arkansas House passed it 71-20 and it became Act 573 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1544090,
+      "measure_id": "SJR 11",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Joint Resolution 11. It would change the Arkansas Constitution's right to keep and bear arms. The right would cover hunting, recreation and any other lawful purpose, not just common defense, and it would reach ammunition, firearm parts and accessories. The amendment calls the right natural, fundamental and individual, and says it shall not be infringed. This is not law. It goes to Arkansas voters at the November 2026 general election, and would take effect on January 1, 2027 only if they approve it. The Arkansas Senate adopted it 28-7. Both chambers agreed, so it goes on the November 2026 ballot.",
+      "nay_description": "Voted against passing Senate Joint Resolution 11. It would change the Arkansas Constitution's right to keep and bear arms. The right would cover hunting, recreation and any other lawful purpose, not just common defense, and it would reach ammunition, firearm parts and accessories. The amendment calls the right natural, fundamental and individual, and says it shall not be infringed. This is not law. It goes to Arkansas voters at the November 2026 general election, and would take effect on January 1, 2027 only if they approve it. The Arkansas Senate adopted it 28-7. Both chambers agreed, so it goes on the November 2026 ballot.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1549605,
+      "measure_id": "SJR 15",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Joint Resolution 15. It would change the state constitution to let lawmakers set up economic development districts. It would also let them hand out public loans and grants to build up the economy. A district could borrow money without that debt counting toward the limits the constitution sets. Land inside a district would pay no ordinary taxes, only charges the district itself sets. Cities and counties could lend their credit to a district. The constitution otherwise bars them from doing that for a private firm. Anything in the constitution that clashes with the change would be wiped out. This is not law. It goes to Arkansas voters in November 2026. The Arkansas House adopted it 74-21. Both chambers agreed, so it goes on the November 2026 ballot.",
+      "nay_description": "Voted against passing Senate Joint Resolution 15. It would change the state constitution to let lawmakers set up economic development districts. It would also let them hand out public loans and grants to build up the economy. A district could borrow money without that debt counting toward the limits the constitution sets. Land inside a district would pay no ordinary taxes, only charges the district itself sets. Cities and counties could lend their credit to a district. The constitution otherwise bars them from doing that for a private firm. Anything in the constitution that clashes with the change would be wiped out. This is not law. It goes to Arkansas voters in November 2026. The Arkansas House adopted it 74-21. Both chambers agreed, so it goes on the November 2026 ballot.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

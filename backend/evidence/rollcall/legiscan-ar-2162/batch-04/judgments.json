@@ -1,0 +1,238 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1540907,
+      "measure_id": "HB 1641",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1641. Using a tracking device to follow someone is now part of the crime of harassment in Arkansas. A tracking device is defined as one that shows where a device is, or where it moves, by sending electronic signals. Three things must all be true for the offense: the person meant to track someone, had no good cause or legal authority, and did not have that person's consent. A parent or legal guardian may still track a child under eighteen. The act does not change the penalty for harassment. The Arkansas Senate passed it 20-6 and it became Act 600 of 2025.",
+      "nay_description": "Voted against passing House Bill 1641. Using a tracking device to follow someone is now part of the crime of harassment in Arkansas. A tracking device is defined as one that shows where a device is, or where it moves, by sending electronic signals. Three things must all be true for the offense: the person meant to track someone, had no good cause or legal authority, and did not have that person's consent. A parent or legal guardian may still track a child under eighteen. The act does not change the penalty for harassment. The Arkansas Senate passed it 20-6 and it became Act 600 of 2025.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1547193,
+      "measure_id": "HB 1866",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1866. Eli's Law requires every public school and open-enrollment charter school in Arkansas to put an audio recording device in each locker room and changing room. It starts with the 2027-2028 school year. A sign must be posted in each room saying a recording device is there. A recording must be kept at least ninety days and no more than twelve months, unless someone has alleged wrongdoing it could help prove. The school must post notice on its website ten days before destroying a recording. Only a school administrator, or a parent or guardian raising an allegation, may ask for one. The act provides no money. The Arkansas House passed it 71-21 and it became Act 908 of 2025.",
+      "nay_description": "Voted against passing House Bill 1866. Eli's Law requires every public school and open-enrollment charter school in Arkansas to put an audio recording device in each locker room and changing room. It starts with the 2027-2028 school year. A sign must be posted in each room saying a recording device is there. A recording must be kept at least ninety days and no more than twelve months, unless someone has alleged wrongdoing it could help prove. The school must post notice on its website ten days before destroying a recording. Only a school administrator, or a parent or guardian raising an allegation, may ask for one. The act provides no money. The Arkansas House passed it 71-21 and it became Act 908 of 2025.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1542308,
+      "measure_id": "SB 446",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 446. Private landowners and businesses may now use automatic license plate readers, which were unlawful for them before. A plate reader is a camera that photographs passing plates and turns them into searchable data. They may use it for public safety, to deter crime, and to watch who enters property they own or lease. A private user must delete the data within sixty days, and may not sell or trade it. The act also removes a broad line barring plate data from being used or shared for any other purpose. Government may demand a private user's data only with a subpoena. Private users face a much lighter reporting duty than public ones. The Arkansas House passed it 56-27 and it became Act 668 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 446. Private landowners and businesses may now use automatic license plate readers, which were unlawful for them before. A plate reader is a camera that photographs passing plates and turns them into searchable data. They may use it for public safety, to deter crime, and to watch who enters property they own or lease. A private user must delete the data within sixty days, and may not sell or trade it. The act also removes a broad line barring plate data from being used or shared for any other purpose. Government may demand a private user's data only with a subpoena. Private users face a much lighter reporting duty than public ones. The Arkansas House passed it 56-27 and it became Act 668 of 2025.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1549644,
+      "measure_id": "SB 638",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 638. Sales tax on a motorboat is now paid by the buyer straight to the state when the boat is registered, instead of being collected by the dealer. Dealers are barred from collecting it. A buyer who pays late owes a penalty of ten percent on top, and cannot register the boat until both are paid. Tax is charged only on the difference when a boat is traded in. The same rules apply to a boat bought from a dealer in another state. If the price on the invoice is below the published value for that boat, the buyer must satisfy the state that the invoice is genuine. The Arkansas House passed it 58-23 and it became Act 1019 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 638. Sales tax on a motorboat is now paid by the buyer straight to the state when the boat is registered, instead of being collected by the dealer. Dealers are barred from collecting it. A buyer who pays late owes a penalty of ten percent on top, and cannot register the boat until both are paid. Tax is charged only on the difference when a boat is traded in. The same rules apply to a boat bought from a dealer in another state. If the price on the invoice is below the published value for that boat, the buyer must satisfy the state that the invoice is genuine. The Arkansas House passed it 58-23 and it became Act 1019 of 2025.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1532560,
+      "measure_id": "SB 392",
+      "vote_date": "2025-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 392. It rebuilds how Arkansas classifies and pays state employees. Four pay tables become six, adding new ones for law enforcement and safety and for specialized work, and every job title and code is rewritten. A career path is created so staff can move up within a job family. A new program helps repay student loans for a degree tied to the job, at up to two thousand dollars a payment and ten thousand dollars in all, paid from money agencies already have. Separate extra payments for hazardous duty, education and location are folded into two. The pools of spare positions agencies could draw on are cut from 1,500 to 500 and from 500 to 250. The Arkansas Senate passed it 22-7 and it became Act 499 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 392. It rebuilds how Arkansas classifies and pays state employees. Four pay tables become six, adding new ones for law enforcement and safety and for specialized work, and every job title and code is rewritten. A career path is created so staff can move up within a job family. A new program helps repay student loans for a degree tied to the job, at up to two thousand dollars a payment and ten thousand dollars in all, paid from money agencies already have. Separate extra payments for hazardous duty, education and location are folded into two. The pools of spare positions agencies could draw on are cut from 1,500 to 500 and from 500 to 250. The Arkansas Senate passed it 22-7 and it became Act 499 of 2025.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1547390,
+      "measure_id": "SB 406",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 406. A county recorder may no longer file a deed unless the person giving up the land shows up in person with a state or federal photo ID. If the deed is mailed in, a photocopy of the ID must come with it. The recorder attaches a copy of the ID to the recorded deed, and files an unredacted copy under seal. The aim is to stop forged property transfers. Seven groups are exempt, including lawyers, real estate agents, banks and title agents, so the burden falls mainly on owners who file their own deeds. The Arkansas House passed it 51-31 and it became Act 752 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 406. A county recorder may no longer file a deed unless the person giving up the land shows up in person with a state or federal photo ID. If the deed is mailed in, a photocopy of the ID must come with it. The recorder attaches a copy of the ID to the recorded deed, and files an unredacted copy under seal. The aim is to stop forged property transfers. Seven groups are exempt, including lawyers, real estate agents, banks and title agents, so the burden falls mainly on owners who file their own deeds. The Arkansas House passed it 51-31 and it became Act 752 of 2025.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1522063,
+      "measure_id": "SB 411",
+      "vote_date": "2025-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 411. It is now an offense to drive on a public road with a front bumper raised at least four inches above the rear one. It covers cars, pickups, sport utility vehicles and panel trucks whose suspension, frame or body has been changed to do that. Raising the front changes where the headlights point and where the vehicle strikes in a crash. The fine is two hundred fifty dollars, rising to five hundred for a second offense within a year. A third offense within a year also costs the driver their license for twelve months. The state does not have to prove the driver knew. The Arkansas Senate passed it 18-10 and it became Act 492 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 411. It is now an offense to drive on a public road with a front bumper raised at least four inches above the rear one. It covers cars, pickups, sport utility vehicles and panel trucks whose suspension, frame or body has been changed to do that. Raising the front changes where the headlights point and where the vehicle strikes in a crash. The fine is two hundred fifty dollars, rising to five hundred for a second offense within a year. A third offense within a year also costs the driver their license for twelve months. The state does not have to prove the driver knew. The Arkansas Senate passed it 18-10 and it became Act 492 of 2025.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1504355,
+      "measure_id": "HB 1489",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1489. Arkansas may now carry out a death sentence with nitrogen gas as well as lethal injection. The act sets no procedure for a nitrogen execution and does not say who picks between the two. The prison director must tell a condemned prisoner in writing, within seven days of the death warrant, which method will be used, and must name the drugs if it is injection. The secrecy rule that already hid drug suppliers is widened to cover nitrogen suppliers, and shielding them from public records requests and lawsuits. The division must publish its nitrogen procedure on request. A death sentence now stays in force even if a court strikes down a method. The Arkansas House passed it 67-23 and it became Act 302 of 2025.",
+      "nay_description": "Voted against passing House Bill 1489. Arkansas may now carry out a death sentence with nitrogen gas as well as lethal injection. The act sets no procedure for a nitrogen execution and does not say who picks between the two. The prison director must tell a condemned prisoner in writing, within seven days of the death warrant, which method will be used, and must name the drugs if it is injection. The secrecy rule that already hid drug suppliers is widened to cover nitrogen suppliers, and shielding them from public records requests and lawsuits. The division must publish its nitrogen procedure on request. A death sentence now stays in force even if a court strikes down a method. The Arkansas House passed it 67-23 and it became Act 302 of 2025.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1513562,
+      "measure_id": "HB 1489",
+      "vote_date": "2025-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1489. Arkansas may now carry out a death sentence with nitrogen gas as well as lethal injection. The act sets no procedure for a nitrogen execution and does not say who picks between the two. The prison director must tell a condemned prisoner in writing, within seven days of the death warrant, which method will be used, and must name the drugs if it is injection. The secrecy rule that already hid drug suppliers is widened to cover nitrogen suppliers, and shielding them from public records requests and lawsuits. The division must publish its nitrogen procedure on request. A death sentence now stays in force even if a court strikes down a method. The Arkansas Senate passed it 26-9 and it became Act 302 of 2025.",
+      "nay_description": "Voted against passing House Bill 1489. Arkansas may now carry out a death sentence with nitrogen gas as well as lethal injection. The act sets no procedure for a nitrogen execution and does not say who picks between the two. The prison director must tell a condemned prisoner in writing, within seven days of the death warrant, which method will be used, and must name the drugs if it is injection. The secrecy rule that already hid drug suppliers is widened to cover nitrogen suppliers, and shielding them from public records requests and lawsuits. The division must publish its nitrogen procedure on request. A death sentence now stays in force even if a court strikes down a method. The Arkansas Senate passed it 26-9 and it became Act 302 of 2025.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1548583,
+      "measure_id": "SB 640",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 640. It ends the term of every sitting member of the State Library Board on the day the act takes effect. The Governor then appoints all seven replacements at once and must call their first meeting within thirty days. At that meeting the new members draw lots for staggered terms: one serves a year, two serve three years, two serve five and two serve seven. Everyone appointed after them serves seven years. A short term drawn by lot does not count against the limit on how many terms a member may serve. The Arkansas House passed it 60-29 and it became Act 903 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 640. It ends the term of every sitting member of the State Library Board on the day the act takes effect. The Governor then appoints all seven replacements at once and must call their first meeting within thirty days. At that meeting the new members draw lots for staggered terms: one serves a year, two serve three years, two serve five and two serve seven. Everyone appointed after them serves seven years. A short term drawn by lot does not count against the limit on how many terms a member may serve. The Arkansas House passed it 60-29 and it became Act 903 of 2025.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1547631,
+      "measure_id": "HB 1929",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1929. Arkansas state agencies may no longer use the term West Bank for the land Israel took from Jordan in the 1967 war. They must call it Judea and Samaria instead. Agencies also may not spend state money making material that uses the banned term. The rule covers guidance, rules, briefings, press releases and other agency material, and reaches state colleges. The head of an agency may waive it if they decide a waiver serves the state and write to lawmakers within thirty days. The act sets no penalty, and it does not bind private speech, local government or school districts. The Arkansas Senate passed it 22-11 and it became Act 797 of 2025.",
+      "nay_description": "Voted against passing House Bill 1929. Arkansas state agencies may no longer use the term West Bank for the land Israel took from Jordan in the 1967 war. They must call it Judea and Samaria instead. Agencies also may not spend state money making material that uses the banned term. The rule covers guidance, rules, briefings, press releases and other agency material, and reaches state colleges. The head of an agency may waive it if they decide a waiver serves the state and write to lawmakers within thirty days. The act sets no penalty, and it does not bind private speech, local government or school districts. The Arkansas Senate passed it 22-11 and it became Act 797 of 2025.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1549855,
+      "measure_id": "SB 437",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 437. It creates a permit system for large wind farms, meaning those of five megawatts or more and taller than two hundred feet. A developer needs a state permit and, where a local government has its own rules, a local permit too, and local rules may not be looser than the state's. A turbine must sit back from a neighbor's property line by 3.5 times its height or 2,500 feet, whichever is more, and at least a mile from a school, hospital, church, nursing home or town. Noise is capped and flicker from the blades is limited to thirty hours a year. The developer pays for an outside study of effects on wildlife, water, property values and tourism, must carry insurance, and must post a bond for the full cost of taking the farm down. The Arkansas Senate passed it 18-14 and it became Act 945 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 437. It creates a permit system for large wind farms, meaning those of five megawatts or more and taller than two hundred feet. A developer needs a state permit and, where a local government has its own rules, a local permit too, and local rules may not be looser than the state's. A turbine must sit back from a neighbor's property line by 3.5 times its height or 2,500 feet, whichever is more, and at least a mile from a school, hospital, church, nursing home or town. Noise is capped and flicker from the blades is limited to thirty hours a year. The developer pays for an outside study of effects on wildlife, water, property values and tourism, must carry insurance, and must post a bond for the full cost of taking the farm down. The Arkansas Senate passed it 18-14 and it became Act 945 of 2025.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1543185,
+      "measure_id": "HB 1945",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1945. It widens public school choice in Arkansas. A student may now transfer to another public school inside their own district, not just to a school in a different district. Under the Opportunity Act a family no longer needs the school to be failing or the district to be under intensive support: believing the move is in the student's best interest is enough on its own. Districts must write a transfer policy, post it, and report each year how many applications they took, accepted and refused, with a reason for each refusal. A district may refuse for lack of room only when the school hits the teacher-to-student limit or ninety-five percent of seats are filled. The Arkansas House passed it 59-30 and it became Act 913 of 2025.",
+      "nay_description": "Voted against passing House Bill 1945. It widens public school choice in Arkansas. A student may now transfer to another public school inside their own district, not just to a school in a different district. Under the Opportunity Act a family no longer needs the school to be failing or the district to be under intensive support: believing the move is in the student's best interest is enough on its own. Districts must write a transfer policy, post it, and report each year how many applications they took, accepted and refused, with a reason for each refusal. A district may refuse for lack of room only when the school hits the teacher-to-student limit or ninety-five percent of seats are filled. The Arkansas House passed it 59-30 and it became Act 913 of 2025.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
