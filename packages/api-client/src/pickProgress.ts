@@ -1,7 +1,19 @@
 import type { ElectionChoice } from "./types";
 import { isDecidedChoice } from "./useElectionChoices";
 
-export type PickProgress = { picked: number; total: number; complete: boolean };
+/** Progress over one election day. `election_date` and `election_ids`
+ * name the ballot the counts describe (the day, and the races counted on
+ * it) so a consumer can tell "this ballot went from 12/13 to 13/13" apart
+ * from "a different day is nearest" or "the race list changed under me"
+ * (an address change or a retired race can shrink 1/2 into 1/1 with no
+ * new pick). */
+export type PickProgress = {
+  election_date: string;
+  election_ids: string[];
+  picked: number;
+  total: number;
+  complete: boolean;
+};
 
 /**
  * The draft link's label, shared by the web header nav, the web candidate
@@ -44,5 +56,11 @@ export function nearestDayPickProgress(
   );
   const group = upcoming.filter((election) => election.election_date === date);
   const picked = group.filter((election) => isDecidedChoice(choiceByElectionId.get(election.id))).length;
-  return { picked, total: group.length, complete: picked === group.length };
+  return {
+    election_date: date,
+    election_ids: group.map((election) => election.id),
+    picked,
+    total: group.length,
+    complete: picked === group.length,
+  };
 }
