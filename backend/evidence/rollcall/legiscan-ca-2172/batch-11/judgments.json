@@ -1,0 +1,410 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1726539,
+   "measure_id": "AB 1049",
+   "vote_date": "2026-08-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1049, which would stop a sponsor's income from counting against someone applying for state food aid. California runs the California Food Assistance Program for people who cannot get federal food benefits only because of their immigration status. Today the state applies the federal sponsor rules to it. When someone has signed an affidavit of support for the applicant, that sponsor's income and resources are treated as the applicant's own, which cuts the benefit or blocks it. The bill would end that practice for this program. It would begin on January 1, 2028, or later if the state's benefits computer system cannot yet handle it, whichever comes last. The Assembly passed it 59-15. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1049, which would stop a sponsor's income from counting against someone applying for state food aid. California runs the California Food Assistance Program for people who cannot get federal food benefits only because of their immigration status. Today the state applies the federal sponsor rules to it. When someone has signed an affidavit of support for the applicant, that sponsor's income and resources are treated as the applicant's own, which cuts the benefit or blocks it. The bill would end that practice for this program. It would begin on January 1, 2028, or later if the state's benefits computer system cannot yet handle it, whichever comes last. The Assembly passed it 59-15. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726261,
+   "measure_id": "AB 1049",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1049, which would stop a sponsor's income from counting against someone applying for state food aid. California runs the California Food Assistance Program for people who cannot get federal food benefits only because of their immigration status. Today the state applies the federal sponsor rules to it. When someone has signed an affidavit of support for the applicant, that sponsor's income and resources are treated as the applicant's own, which cuts the benefit or blocks it. The bill would end that practice for this program. It would begin on January 1, 2028, or later if the state's benefits computer system cannot yet handle it, whichever comes last. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1049, which would stop a sponsor's income from counting against someone applying for state food aid. California runs the California Food Assistance Program for people who cannot get federal food benefits only because of their immigration status. Today the state applies the federal sponsor rules to it. When someone has signed an affidavit of support for the applicant, that sponsor's income and resources are treated as the applicant's own, which cuts the benefit or blocks it. The bill would end that practice for this program. It would begin on January 1, 2028, or later if the state's benefits computer system cannot yet handle it, whichever comes last. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1725634,
+   "measure_id": "AB 1201",
+   "vote_date": "2026-08-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1201, which would narrow when a parent can be denied help getting their child back from foster care. When a juvenile court takes a child into its care, county social workers normally provide reunification services aimed at returning the child home. A court may skip those services today if the parent has a violent felony conviction, whatever the offense involved and whoever the victim was. The bill would apply that exception only where the victim was a child, or was someone the parent had a child with at the time of the crime. A parent whose violent felony involved an unrelated adult could no longer be denied services on that ground alone. The Assembly passed it 56-14. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1201, which would narrow when a parent can be denied help getting their child back from foster care. When a juvenile court takes a child into its care, county social workers normally provide reunification services aimed at returning the child home. A court may skip those services today if the parent has a violent felony conviction, whatever the offense involved and whoever the victim was. The bill would apply that exception only where the victim was a child, or was someone the parent had a child with at the time of the crime. A parent whose violent felony involved an unrelated adult could no longer be denied services on that ground alone. The Assembly passed it 56-14. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725404,
+   "measure_id": "AB 1201",
+   "vote_date": "2026-08-19",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1201, which would narrow when a parent can be denied help getting their child back from foster care. When a juvenile court takes a child into its care, county social workers normally provide reunification services aimed at returning the child home. A court may skip those services today if the parent has a violent felony conviction, whatever the offense involved and whoever the victim was. The bill would apply that exception only where the victim was a child, or was someone the parent had a child with at the time of the crime. A parent whose violent felony involved an unrelated adult could no longer be denied services on that ground alone. The Senate passed it 27-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1201, which would narrow when a parent can be denied help getting their child back from foster care. When a juvenile court takes a child into its care, county social workers normally provide reunification services aimed at returning the child home. A court may skip those services today if the parent has a violent felony conviction, whatever the offense involved and whoever the victim was. The bill would apply that exception only where the victim was a child, or was someone the parent had a child with at the time of the crime. A parent whose violent felony involved an unrelated adult could no longer be denied services on that ground alone. The Senate passed it 27-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1602466,
+   "measure_id": "AB 1336",
+   "vote_date": "2025-09-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1336, which would have made it easier for farmworkers to win compensation for heat illness. Workers' compensation already assumes that certain injuries to police officers and firefighters are job-related, leaving the employer to disprove it. The bill would have created that same assumption, through 2030, for heat-related illness, injury or death suffered by an outdoor farmworker whose employer broke the state's heat illness prevention rules. An employer could still rebut it with evidence, but if they did not the appeals board would have had to rule for the worker. A covered claim would have included hospital, surgical and medical treatment, disability payments and death benefits. One provision ran the other way for workers. A finding made in the compensation case could not be used against the employer before the state workplace safety appeals board. The bill would also have moved $5 million from an existing employer-funded account to run the program. The Assembly passed it 61-17, but the governor vetoed it, so it did not become law.",
+   "nay_description": "Voted against passing Assembly Bill 1336, which would have made it easier for farmworkers to win compensation for heat illness. Workers' compensation already assumes that certain injuries to police officers and firefighters are job-related, leaving the employer to disprove it. The bill would have created that same assumption, through 2030, for heat-related illness, injury or death suffered by an outdoor farmworker whose employer broke the state's heat illness prevention rules. An employer could still rebut it with evidence, but if they did not the appeals board would have had to rule for the worker. A covered claim would have included hospital, surgical and medical treatment, disability payments and death benefits. One provision ran the other way for workers. A finding made in the compensation case could not be used against the employer before the state workplace safety appeals board. The bill would also have moved $5 million from an existing employer-funded account to run the program. The Assembly passed it 61-17, but the governor vetoed it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1601455,
+   "measure_id": "AB 1336",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1336, which would have made it easier for farmworkers to win compensation for heat illness. Workers' compensation already assumes that certain injuries to police officers and firefighters are job-related, leaving the employer to disprove it. The bill would have created that same assumption, through 2030, for heat-related illness, injury or death suffered by an outdoor farmworker whose employer broke the state's heat illness prevention rules. An employer could still rebut it with evidence, but if they did not the appeals board would have had to rule for the worker. A covered claim would have included hospital, surgical and medical treatment, disability payments and death benefits. One provision ran the other way for workers. A finding made in the compensation case could not be used against the employer before the state workplace safety appeals board. The bill would also have moved $5 million from an existing employer-funded account to run the program. The Senate passed it 30-10, but the governor vetoed it, so it did not become law.",
+   "nay_description": "Voted against passing Assembly Bill 1336, which would have made it easier for farmworkers to win compensation for heat illness. Workers' compensation already assumes that certain injuries to police officers and firefighters are job-related, leaving the employer to disprove it. The bill would have created that same assumption, through 2030, for heat-related illness, injury or death suffered by an outdoor farmworker whose employer broke the state's heat illness prevention rules. An employer could still rebut it with evidence, but if they did not the appeals board would have had to rule for the worker. A covered claim would have included hospital, surgical and medical treatment, disability payments and death benefits. One provision ran the other way for workers. A finding made in the compensation case could not be used against the employer before the state workplace safety appeals board. The bill would also have moved $5 million from an existing employer-funded account to run the program. The Senate passed it 30-10, but the governor vetoed it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1726619,
+   "measure_id": "AB 1448",
+   "vote_date": "2026-08-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1448, which would tighten the rules on oil and gas drilling in California's coastal waters. The State Lands Commission may now lease state tidelands for oil or gas when a neighboring federal well is draining the deposit and the lease serves the state's interest. The bill would bar those leases inside state marine protected areas and federal national marine sanctuaries. It would move a cutoff date from 2018 to 2026, and would newly bar using existing pipelines and facilities to serve federal offshore leases issued after that date. Before renewing or changing a lease the commission would have to weigh seven added factors. Those include any past spill, whether the change moves more oil through state waters, and whether the operator has filed spill-response and decommissioning guarantees. Before approving a sale to another company it would have to examine the buyer's finances, safety record and history of breaking other laws. A company selling a lease would stay responsible for plugging wells and cleaning the site, unless the commission found those duties met or accepted security worth the estimated cost plus twenty percent. The Assembly passed it 46-18. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1448, which would tighten the rules on oil and gas drilling in California's coastal waters. The State Lands Commission may now lease state tidelands for oil or gas when a neighboring federal well is draining the deposit and the lease serves the state's interest. The bill would bar those leases inside state marine protected areas and federal national marine sanctuaries. It would move a cutoff date from 2018 to 2026, and would newly bar using existing pipelines and facilities to serve federal offshore leases issued after that date. Before renewing or changing a lease the commission would have to weigh seven added factors. Those include any past spill, whether the change moves more oil through state waters, and whether the operator has filed spill-response and decommissioning guarantees. Before approving a sale to another company it would have to examine the buyer's finances, safety record and history of breaking other laws. A company selling a lease would stay responsible for plugging wells and cleaning the site, unless the commission found those duties met or accepted security worth the estimated cost plus twenty percent. The Assembly passed it 46-18. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726328,
+   "measure_id": "AB 1448",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1448, which would tighten the rules on oil and gas drilling in California's coastal waters. The State Lands Commission may now lease state tidelands for oil or gas when a neighboring federal well is draining the deposit and the lease serves the state's interest. The bill would bar those leases inside state marine protected areas and federal national marine sanctuaries. It would move a cutoff date from 2018 to 2026, and would newly bar using existing pipelines and facilities to serve federal offshore leases issued after that date. Before renewing or changing a lease the commission would have to weigh seven added factors. Those include any past spill, whether the change moves more oil through state waters, and whether the operator has filed spill-response and decommissioning guarantees. Before approving a sale to another company it would have to examine the buyer's finances, safety record and history of breaking other laws. A company selling a lease would stay responsible for plugging wells and cleaning the site, unless the commission found those duties met or accepted security worth the estimated cost plus twenty percent. The Senate passed it 29-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1448, which would tighten the rules on oil and gas drilling in California's coastal waters. The State Lands Commission may now lease state tidelands for oil or gas when a neighboring federal well is draining the deposit and the lease serves the state's interest. The bill would bar those leases inside state marine protected areas and federal national marine sanctuaries. It would move a cutoff date from 2018 to 2026, and would newly bar using existing pipelines and facilities to serve federal offshore leases issued after that date. Before renewing or changing a lease the commission would have to weigh seven added factors. Those include any past spill, whether the change moves more oil through state waters, and whether the operator has filed spill-response and decommissioning guarantees. Before approving a sale to another company it would have to examine the buyer's finances, safety record and history of breaking other laws. A company selling a lease would stay responsible for plugging wells and cleaning the site, unless the commission found those duties met or accepted security worth the estimated cost plus twenty percent. The Senate passed it 29-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1726587,
+   "measure_id": "AB 1457",
+   "vote_date": "2026-08-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1457, which would require cities and counties to involve poor and pollution-burdened neighborhoods in their environmental justice planning. A city or county containing such a community must already include an environmental justice section in its general plan, but the law does not say how residents must be brought in. The bill would require at least two public workshops at accessible times, offered both in person and online. It would also require at least two other ways of involving residents and two ways of notifying them. Drafts and workshop information would have to be posted online and translated into the three most commonly spoken local languages. A first draft would have to appear at least 90 days before adoption, with 45 days for comment and a revised draft 15 days ahead. The city would have to summarize the comments, give them to every member of the governing body, and publish the summary in the adopted plan. It would also set a deadline of June 30, 2031 for places that never revise two plan sections at once. The Assembly passed it 58-18. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1457, which would require cities and counties to involve poor and pollution-burdened neighborhoods in their environmental justice planning. A city or county containing such a community must already include an environmental justice section in its general plan, but the law does not say how residents must be brought in. The bill would require at least two public workshops at accessible times, offered both in person and online. It would also require at least two other ways of involving residents and two ways of notifying them. Drafts and workshop information would have to be posted online and translated into the three most commonly spoken local languages. A first draft would have to appear at least 90 days before adoption, with 45 days for comment and a revised draft 15 days ahead. The city would have to summarize the comments, give them to every member of the governing body, and publish the summary in the adopted plan. It would also set a deadline of June 30, 2031 for places that never revise two plan sections at once. The Assembly passed it 58-18. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726341,
+   "measure_id": "AB 1457",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1457, which would require cities and counties to involve poor and pollution-burdened neighborhoods in their environmental justice planning. A city or county containing such a community must already include an environmental justice section in its general plan, but the law does not say how residents must be brought in. The bill would require at least two public workshops at accessible times, offered both in person and online. It would also require at least two other ways of involving residents and two ways of notifying them. Drafts and workshop information would have to be posted online and translated into the three most commonly spoken local languages. A first draft would have to appear at least 90 days before adoption, with 45 days for comment and a revised draft 15 days ahead. The city would have to summarize the comments, give them to every member of the governing body, and publish the summary in the adopted plan. It would also set a deadline of June 30, 2031 for places that never revise two plan sections at once. The Senate passed it 29-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1457, which would require cities and counties to involve poor and pollution-burdened neighborhoods in their environmental justice planning. A city or county containing such a community must already include an environmental justice section in its general plan, but the law does not say how residents must be brought in. The bill would require at least two public workshops at accessible times, offered both in person and online. It would also require at least two other ways of involving residents and two ways of notifying them. Drafts and workshop information would have to be posted online and translated into the three most commonly spoken local languages. A first draft would have to appear at least 90 days before adoption, with 45 days for comment and a revised draft 15 days ahead. The city would have to summarize the comments, give them to every member of the governing body, and publish the summary in the adopted plan. It would also set a deadline of June 30, 2031 for places that never revise two plan sections at once. The Senate passed it 29-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1726774,
+   "measure_id": "AB 1633",
+   "vote_date": "2026-08-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1633, which would tax companies that run private detention facilities in California. Starting July 1, 2028 an operator would owe a yearly tax equal to 25 percent of the gross income it earned in the state the year before. The tax would apply whether the facility is under contract to a federal, state or local agency. The money, less refunds and collection costs, would go into a new Due Process for All Fund and pay for immigration-related services once the Legislature appropriates it. The bill does not define which services qualify. Operators would have to register with the state tax department and file a return each July. Because it raises a tax it needs a two-thirds vote in both houses. The Assembly passed it 57-17. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1633, which would tax companies that run private detention facilities in California. Starting July 1, 2028 an operator would owe a yearly tax equal to 25 percent of the gross income it earned in the state the year before. The tax would apply whether the facility is under contract to a federal, state or local agency. The money, less refunds and collection costs, would go into a new Due Process for All Fund and pay for immigration-related services once the Legislature appropriates it. The bill does not define which services qualify. Operators would have to register with the state tax department and file a return each July. Because it raises a tax it needs a two-thirds vote in both houses. The Assembly passed it 57-17. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726500,
+   "measure_id": "AB 1633",
+   "vote_date": "2026-08-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1633, which would tax companies that run private detention facilities in California. Starting July 1, 2028 an operator would owe a yearly tax equal to 25 percent of the gross income it earned in the state the year before. The tax would apply whether the facility is under contract to a federal, state or local agency. The money, less refunds and collection costs, would go into a new Due Process for All Fund and pay for immigration-related services once the Legislature appropriates it. The bill does not define which services qualify. Operators would have to register with the state tax department and file a return each July. Because it raises a tax it needs a two-thirds vote in both houses. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1633, which would tax companies that run private detention facilities in California. Starting July 1, 2028 an operator would owe a yearly tax equal to 25 percent of the gross income it earned in the state the year before. The tax would apply whether the facility is under contract to a federal, state or local agency. The money, less refunds and collection costs, would go into a new Due Process for All Fund and pay for immigration-related services once the Legislature appropriates it. The bill does not define which services qualify. Operators would have to register with the state tax department and file a return each July. Because it raises a tax it needs a two-thirds vote in both houses. The Senate passed it 30-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1726621,
+   "measure_id": "AB 1650",
+   "vote_date": "2026-08-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1650, which would require police to mark rented cars used to stop, arrest or transport people. A car rented by or supplied to a federal, state or local law enforcement agency for that purpose would have to carry a temporary decal on the front doors. The decal would show the agency's name or insignia, stand out against the background, and be readable from 50 feet in daylight. The agency, not the rental company, would make and attach it. The Attorney General, a district attorney, county counsel or a city attorney could sue to enforce the rule and recover legal fees. There is no fine and no private lawsuit. The requirement would not reach plainclothes officers, emergencies, tactical teams, protective details for officials, or officers doing surveillance, undercover or investigative work. It would not apply to rental contracts signed before January 1, 2027. The Assembly passed it 55-19. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1650, which would require police to mark rented cars used to stop, arrest or transport people. A car rented by or supplied to a federal, state or local law enforcement agency for that purpose would have to carry a temporary decal on the front doors. The decal would show the agency's name or insignia, stand out against the background, and be readable from 50 feet in daylight. The agency, not the rental company, would make and attach it. The Attorney General, a district attorney, county counsel or a city attorney could sue to enforce the rule and recover legal fees. There is no fine and no private lawsuit. The requirement would not reach plainclothes officers, emergencies, tactical teams, protective details for officials, or officers doing surveillance, undercover or investigative work. It would not apply to rental contracts signed before January 1, 2027. The Assembly passed it 55-19. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726620,
+   "measure_id": "AB 1650",
+   "vote_date": "2026-08-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1650, which would require police to mark rented cars used to stop, arrest or transport people. A car rented by or supplied to a federal, state or local law enforcement agency for that purpose would have to carry a temporary decal on the front doors. The decal would show the agency's name or insignia, stand out against the background, and be readable from 50 feet in daylight. The agency, not the rental company, would make and attach it. The Attorney General, a district attorney, county counsel or a city attorney could sue to enforce the rule and recover legal fees. There is no fine and no private lawsuit. The requirement would not reach plainclothes officers, emergencies, tactical teams, protective details for officials, or officers doing surveillance, undercover or investigative work. It would not apply to rental contracts signed before January 1, 2027. The Senate passed it 29-11. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1650, which would require police to mark rented cars used to stop, arrest or transport people. A car rented by or supplied to a federal, state or local law enforcement agency for that purpose would have to carry a temporary decal on the front doors. The decal would show the agency's name or insignia, stand out against the background, and be readable from 50 feet in daylight. The agency, not the rental company, would make and attach it. The Attorney General, a district attorney, county counsel or a city attorney could sue to enforce the rule and recover legal fees. There is no fine and no private lawsuit. The requirement would not reach plainclothes officers, emergencies, tactical teams, protective details for officials, or officers doing surveillance, undercover or investigative work. It would not apply to rental contracts signed before January 1, 2027. The Senate passed it 29-11. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1726277,
+   "measure_id": "AB 1661",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1661, which would send oil-well penalty money directly to households near the Inglewood oil field. Penalties collected from low-producing wells there already flow into an account used for community projects. The bill would require the first $5 million, after administration costs, to go to Los Angeles County to pay equal one-time cash grants to qualifying households. A household would qualify if it sits within two and a half miles of the identified wells, asks for help, has a member with respiratory or reproductive health effects, and proves it lives there. The county could accept a person's own statement about the health effect. No more than 1,000 households could be paid, chosen by random lottery if more qualify, and paid within 60 days of selection. The money would not count as income when the state or county decides eligibility for other benefits. Community projects would have to wait until these payments are made. The Assembly passed it 60-16. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1661, which would send oil-well penalty money directly to households near the Inglewood oil field. Penalties collected from low-producing wells there already flow into an account used for community projects. The bill would require the first $5 million, after administration costs, to go to Los Angeles County to pay equal one-time cash grants to qualifying households. A household would qualify if it sits within two and a half miles of the identified wells, asks for help, has a member with respiratory or reproductive health effects, and proves it lives there. The county could accept a person's own statement about the health effect. No more than 1,000 households could be paid, chosen by random lottery if more qualify, and paid within 60 days of selection. The money would not count as income when the state or county decides eligibility for other benefits. Community projects would have to wait until these payments are made. The Assembly passed it 60-16. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726104,
+   "measure_id": "AB 1661",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1661, which would send oil-well penalty money directly to households near the Inglewood oil field. Penalties collected from low-producing wells there already flow into an account used for community projects. The bill would require the first $5 million, after administration costs, to go to Los Angeles County to pay equal one-time cash grants to qualifying households. A household would qualify if it sits within two and a half miles of the identified wells, asks for help, has a member with respiratory or reproductive health effects, and proves it lives there. The county could accept a person's own statement about the health effect. No more than 1,000 households could be paid, chosen by random lottery if more qualify, and paid within 60 days of selection. The money would not count as income when the state or county decides eligibility for other benefits. Community projects would have to wait until these payments are made. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1661, which would send oil-well penalty money directly to households near the Inglewood oil field. Penalties collected from low-producing wells there already flow into an account used for community projects. The bill would require the first $5 million, after administration costs, to go to Los Angeles County to pay equal one-time cash grants to qualifying households. A household would qualify if it sits within two and a half miles of the identified wells, asks for help, has a member with respiratory or reproductive health effects, and proves it lives there. The county could accept a person's own statement about the health effect. No more than 1,000 households could be paid, chosen by random lottery if more qualify, and paid within 60 days of selection. The money would not count as income when the state or county decides eligibility for other benefits. Community projects would have to wait until these payments are made. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1726340,
+   "measure_id": "AB 1664",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1664, which would require local election officials to alert the state when police or prosecutors seek election records. An agency or elections official would have to notify the Secretary of State and the Attorney General no later than one calendar day after learning of a warrant, subpoena or active investigation. That duty would cover election records and certified voting equipment the official holds. Either state official could then go to court to challenge the warrant or subpoena, or seek other relief. The requirement would expire on January 1, 2030. It would take effect at once as an urgency measure. The Assembly passed it 59-17. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1664, which would require local election officials to alert the state when police or prosecutors seek election records. An agency or elections official would have to notify the Secretary of State and the Attorney General no later than one calendar day after learning of a warrant, subpoena or active investigation. That duty would cover election records and certified voting equipment the official holds. Either state official could then go to court to challenge the warrant or subpoena, or seek other relief. The requirement would expire on January 1, 2030. It would take effect at once as an urgency measure. The Assembly passed it 59-17. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725947,
+   "measure_id": "AB 1664",
+   "vote_date": "2026-08-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1664, which would require local election officials to alert the state when police or prosecutors seek election records. An agency or elections official would have to notify the Secretary of State and the Attorney General no later than one calendar day after learning of a warrant, subpoena or active investigation. That duty would cover election records and certified voting equipment the official holds. Either state official could then go to court to challenge the warrant or subpoena, or seek other relief. The requirement would expire on January 1, 2030. It would take effect at once as an urgency measure. The Senate passed it 30-8. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1664, which would require local election officials to alert the state when police or prosecutors seek election records. An agency or elections official would have to notify the Secretary of State and the Attorney General no later than one calendar day after learning of a warrant, subpoena or active investigation. That duty would cover election records and certified voting equipment the official holds. Either state official could then go to court to challenge the warrant or subpoena, or seek other relief. The requirement would expire on January 1, 2030. It would take effect at once as an urgency measure. The Senate passed it 30-8. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1725696,
+   "measure_id": "AB 1743",
+   "vote_date": "2026-08-24",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1743, which would widen who can obtain the state's crime-gun tracing data. Police already report recovered crime guns to the Department of Justice, which keeps the data at least ten years and studies it for patterns such as where the guns came from. The bill would require the data behind those studies to be available on request to any California city, county or state agency, to the California State University and the University of California, and to certain accredited private colleges. The Attorney General would set the conditions and the format. The bill does not change who may buy, own or carry a firearm. The Assembly passed it 60-18. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1743, which would widen who can obtain the state's crime-gun tracing data. Police already report recovered crime guns to the Department of Justice, which keeps the data at least ten years and studies it for patterns such as where the guns came from. The bill would require the data behind those studies to be available on request to any California city, county or state agency, to the California State University and the University of California, and to certain accredited private colleges. The Attorney General would set the conditions and the format. The bill does not change who may buy, own or carry a firearm. The Assembly passed it 60-18. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725611,
+   "measure_id": "AB 1743",
+   "vote_date": "2026-08-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1743, which would widen who can obtain the state's crime-gun tracing data. Police already report recovered crime guns to the Department of Justice, which keeps the data at least ten years and studies it for patterns such as where the guns came from. The bill would require the data behind those studies to be available on request to any California city, county or state agency, to the California State University and the University of California, and to certain accredited private colleges. The Attorney General would set the conditions and the format. The bill does not change who may buy, own or carry a firearm. The Senate passed it 28-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1743, which would widen who can obtain the state's crime-gun tracing data. Police already report recovered crime guns to the Department of Justice, which keeps the data at least ten years and studies it for patterns such as where the guns came from. The bill would require the data behind those studies to be available on request to any California city, county or state agency, to the California State University and the University of California, and to certain accredited private colleges. The Attorney General would set the conditions and the format. The bill does not change who may buy, own or carry a firearm. The Senate passed it 28-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "house",
+   "session": "2172",
+   "roll": 1703043,
+   "measure_id": "AB 1758",
+   "vote_date": "2026-05-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1758, which would raise the yearly fee travel sellers pay into a fund that repays their defrauded customers. Travel sellers register each year with the Attorney General, and the Travel Consumer Restitution Corporation may charge each one up to $35 a year for its operating fund. The bill would lift that ceiling to $60, and to $70 starting January 1, 2031. It would also let the corporation raise its own ceiling once a fiscal year, by no more than the rise in the California Consumer Price Index. Because it increases a charge it counts as raising a tax and needs a two-thirds vote in both houses. The Assembly passed it 57-15. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1758, which would raise the yearly fee travel sellers pay into a fund that repays their defrauded customers. Travel sellers register each year with the Attorney General, and the Travel Consumer Restitution Corporation may charge each one up to $35 a year for its operating fund. The bill would lift that ceiling to $60, and to $70 starting January 1, 2031. It would also let the corporation raise its own ceiling once a fiscal year, by no more than the rise in the California Consumer Price Index. Because it increases a charge it counts as raising a tax and needs a two-thirds vote in both houses. The Assembly passed it 57-15. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1725598,
+   "measure_id": "AB 1758",
+   "vote_date": "2026-08-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1758, which would raise the yearly fee travel sellers pay into a fund that repays their defrauded customers. Travel sellers register each year with the Attorney General, and the Travel Consumer Restitution Corporation may charge each one up to $35 a year for its operating fund. The bill would lift that ceiling to $60, and to $70 starting January 1, 2031. It would also let the corporation raise its own ceiling once a fiscal year, by no more than the rise in the California Consumer Price Index. Because it increases a charge it counts as raising a tax and needs a two-thirds vote in both houses. The Senate passed it 28-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Assembly Bill 1758, which would raise the yearly fee travel sellers pay into a fund that repays their defrauded customers. Travel sellers register each year with the Attorney General, and the Travel Consumer Restitution Corporation may charge each one up to $35 a year for its operating fund. The bill would lift that ceiling to $60, and to $70 starting January 1, 2031. It would also let the corporation raise its own ceiling once a fiscal year, by no more than the rise in the California Consumer Price Index. Because it increases a charge it counts as raising a tax and needs a two-thirds vote in both houses. The Senate passed it 28-10. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

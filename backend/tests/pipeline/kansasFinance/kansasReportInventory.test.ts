@@ -4,6 +4,7 @@ import { kansasCfrOfficeForRace } from "../../../src/pipeline/kansasFinance/kans
 import {
   buildKansasReportLedger,
   kansasDateToIso,
+  kansasFilingHeaderKey,
   kansasGeneralDate,
   kansasLastMinuteWindows,
   kansasPrimaryDate,
@@ -309,5 +310,85 @@ describe("buildKansasReportLedger", () => {
       buildKansasReportLedger({ ...base, filings: [filing({ periodStart: "1/1/26", periodEnd: "7/23/2026", fileDate: "07/27/2026" })] })
     ).toThrow("unparseable Kansas date");
     expect(() => buildKansasReportLedger({ ...base, filings: [], now: new Date("nope") })).toThrow("invalid now");
+  });
+});
+
+describe("date-less KPDC versions", () => {
+  const house = kansasCfrOfficeForRace({ officeScope: "state_lower", officeCanonicalName: "State Lower Chamber Legislator" })!;
+  const periods = kansasReportingPeriods(house, 2026);
+  const now = new Date("2026-09-02T12:00:00.000Z");
+  const paper = (amendmentOrdinal: number | null, termination = false): KansasFilingHeader => ({
+    periodStart: "2026-01-01",
+    periodEnd: "2026-07-23",
+    fileDate: null,
+    amendmentDate: null,
+    amended: amendmentOrdinal !== null,
+    amendmentOrdinal,
+    termination,
+    channel: "paper",
+  });
+  const build = (filings: KansasFilingHeader[]) =>
+    buildKansasReportLedger({ periods, filings, appointmentsOfTreasurer: [], affidavitDates: [], lastMinuteWindows: [], now })
+      .entries.find((entry) => entry.period.key === "2026-pre_primary")!;
+
+  it("orders undated versions by the amend prefix", () => {
+    const entry = build([paper(null), paper(2), paper(1)]);
+    expect(entry.status).toBe("amended");
+    expect(entry.canonical?.amendmentOrdinal).toBe(2);
+    expect(entry.filings.map((filing) => filing.amendmentOrdinal)).toEqual([2, 1, null]);
+  });
+
+  it("does not trust two undated amendments with the same prefix, nor an undated one against a dated one", () => {
+    expect(build([paper(null), paper(1), paper(1)]).status).toBe("ambiguous");
+    const efileAmendment: KansasFilingHeader = {
+      periodStart: "1/1/2026",
+      periodEnd: "7/23/2026",
+      fileDate: "07/27/2026",
+      amendmentDate: "08/06/2026",
+      amended: true,
+      termination: false,
+      channel: "efile",
+    };
+    expect(build([paper(null), efileAmendment, paper(1)]).status).toBe("ambiguous");
+    // A dated original with one undated amendment is an ordinary chain.
+    const efileOriginal = { ...efileAmendment, amendmentDate: null, amended: false };
+    expect(build([efileOriginal, paper(1)]).status).toBe("amended");
+  });
+
+  it("never lets a KPDC ordinal outrank a dated e-file amendment, whatever the input order", () => {
+    // The e-file amendment carries no ordinal: "2amend" may be older or
+    // newer than it, so the mix is ambiguous in every order — including
+    // orders where the sort would leave the two paper versions adjacent.
+    const efileAmendment: KansasFilingHeader = {
+      periodStart: "1/1/2026",
+      periodEnd: "7/23/2026",
+      fileDate: "07/27/2026",
+      amendmentDate: "08/06/2026",
+      amended: true,
+      termination: false,
+      channel: "efile",
+    };
+    const efileOriginal = { ...efileAmendment, amendmentDate: null, amended: false };
+    for (const order of [
+      [paper(null), efileAmendment, paper(2)],
+      [paper(2), efileAmendment, paper(null)],
+      [efileOriginal, paper(2), paper(1), efileAmendment],
+      [efileAmendment, paper(1), paper(2), efileOriginal],
+      [paper(2), paper(1), efileAmendment, efileOriginal],
+    ]) {
+      expect(build(order)).toMatchObject({ status: "ambiguous", canonical: null });
+    }
+    // Only paper versions: the ordinals alone order them.
+    expect(build([paper(1), paper(null), paper(3), paper(2)]).canonical?.amendmentOrdinal).toBe(3);
+  });
+
+  it("keys a version by every field the ordering uses, ordinal included", () => {
+    expect(kansasFilingHeaderKey(paper(1))).not.toBe(kansasFilingHeaderKey(paper(2)));
+    expect(kansasFilingHeaderKey(paper(null))).not.toBe(kansasFilingHeaderKey(paper(1)));
+    // Viewer and ISO dates, and an absent vs null ordinal, are one identity.
+    const efile: KansasFilingHeader = { periodStart: "1/1/2026", periodEnd: "7/23/2026", fileDate: "07/27/2026", amendmentDate: null, amended: false, termination: false, channel: "efile" };
+    expect(kansasFilingHeaderKey(efile)).toBe(kansasFilingHeaderKey({ ...efile, periodStart: "2026-01-01", fileDate: "2026-07-27", amendmentOrdinal: null }));
+    expect(kansasFilingHeaderKey(efile)).toBe("2026-01-01|2026-07-23|2026-07-27||original||efile");
+    expect(kansasFilingHeaderKey({ ...efile, channel: "paper" })).not.toBe(kansasFilingHeaderKey(efile));
   });
 });

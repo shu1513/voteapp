@@ -24,7 +24,31 @@ import {
 } from "./idahoCfsClient.js";
 
 export const DEFAULT_IDAHO_FINANCE_CACHE_DIR = "scratch/idaho-campaign-finance/registrations";
+export const DEFAULT_IDAHO_FINANCE_RUN_CACHE_DIR = "scratch/idaho-campaign-finance/runs";
 export const IDAHO_REGISTRATION_ARTIFACT_SCHEMA_VERSION = 1;
+export const IDAHO_RUN_ARTIFACT_SCHEMA_VERSION = 1;
+
+// One artifact per sync run: the whole candidate grid and the whole IE list
+// the run selected outside money from. Outside totals are computed across an
+// entity's OTHER registrations and name-only rows (finding 3), which the
+// per-registration artifact cannot hold, so this file plus the registration
+// artifact is what reproduces a published snapshot.
+export type IdahoRunArtifact = {
+  version: typeof IDAHO_RUN_ARTIFACT_SCHEMA_VERSION;
+  retrievedAt: string;
+  registrations: IdahoCandidateRegistrationRow[];
+  independentExpenditures: IdahoIndependentExpenditureRow[];
+};
+
+export type IdahoRunArtifactManifest = {
+  version: typeof IDAHO_RUN_ARTIFACT_SCHEMA_VERSION;
+  retrievedAt: string;
+  file: string;
+  sha256: string;
+  byteSize: number;
+  registrationCount: number;
+  independentExpenditureCount: number;
+};
 
 export type IdahoRegistrationArtifact = {
   version: typeof IDAHO_REGISTRATION_ARTIFACT_SCHEMA_VERSION;
@@ -126,6 +150,42 @@ export async function storeIdahoRegistrationArtifact(input: {
     independentExpenditureCount: input.artifact.independentExpenditures.length,
   };
   await atomicWrite(paths.manifest, `${JSON.stringify(manifest, null, 2)}\n`, 0o600);
+  return manifest;
+}
+
+export async function storeIdahoRunArtifact(input: {
+  cacheDir?: string;
+  retrievedAt: Date;
+  registrations: readonly IdahoCandidateRegistrationRow[];
+  independentExpenditures: readonly IdahoIndependentExpenditureRow[];
+}): Promise<IdahoRunArtifactManifest> {
+  if (Number.isNaN(input.retrievedAt.getTime())) {
+    throw new Error("Invalid Idaho run artifact timestamp");
+  }
+  const retrievedAt = input.retrievedAt.toISOString();
+  const artifact: IdahoRunArtifact = {
+    version: IDAHO_RUN_ARTIFACT_SCHEMA_VERSION,
+    retrievedAt,
+    registrations: [...input.registrations],
+    independentExpenditures: [...input.independentExpenditures],
+  };
+  const body = `${JSON.stringify(artifact)}\n`;
+  const bytes = Buffer.from(body, "utf8");
+  const cacheDir = resolve(input.cacheDir ?? DEFAULT_IDAHO_FINANCE_RUN_CACHE_DIR);
+  const file = resolve(cacheDir, `${retrievedAt.replace(/[:.]/g, "-")}.json`);
+  await mkdir(cacheDir, { recursive: true, mode: 0o700 });
+  await chmod(cacheDir, 0o700);
+  await atomicWrite(file, body, 0o600);
+  const manifest: IdahoRunArtifactManifest = {
+    version: IDAHO_RUN_ARTIFACT_SCHEMA_VERSION,
+    retrievedAt,
+    file,
+    sha256: sha256Hex(bytes),
+    byteSize: bytes.byteLength,
+    registrationCount: input.registrations.length,
+    independentExpenditureCount: input.independentExpenditures.length,
+  };
+  await atomicWrite(`${file}.manifest.json`, `${JSON.stringify(manifest, null, 2)}\n`, 0o600);
   return manifest;
 }
 

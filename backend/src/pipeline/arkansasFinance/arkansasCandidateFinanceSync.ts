@@ -13,8 +13,13 @@ import {
   type ArkansasCfisClientOptions,
   type ArkansasFilerRegistrationRow,
 } from "./arkansasCfisClient.js";
-import { normalizeArkansasCandidateNameForStorage } from "./arkansasCandidateFilerResolver.js";
+import {
+  arkansasDistrictNumberFromDistrictName,
+  arkansasRegistrationDistrictNumber,
+  normalizeArkansasCandidateNameForStorage,
+} from "./arkansasCandidateFilerResolver.js";
 import { createArkansasRegistrationSweepLoader } from "./arkansasCandidateFinanceAutoLink.js";
+import { arkansasCfisOfficeNameForOffice } from "./arkansasFinanceEligibleOffices.js";
 import {
   aggregateArkansasDirectContributions,
   type ArkansasDirectContributionAggregationResult,
@@ -36,6 +41,7 @@ export type ArkansasCandidateFinanceSyncInput = {
   electionId: string;
   candidateName: string;
   electionYear: number;
+  officeScope: string;
   officeName: string;
   district?: string | null;
   link: {
@@ -89,16 +95,38 @@ function normalizeTimestamp(value: Date | undefined): Date {
 export function selectArkansasCandidateRegistration(
   rows: readonly ArkansasFilerRegistrationRow[],
   filingEntityId: number,
-  electionYear: number
+  electionYear: number,
+  office: { cfisOfficeName: string; district: string | null }
 ): ArkansasFilerRegistrationRow {
-  const matches = rows.filter(
-    (row) => row.filerEntityId === filingEntityId && row.electionYear === electionYear && row.filerTypeCode === "CAN"
+  // The link names an entity, not a registration; an entity can hold several
+  // candidate registrations (other cycles, other offices). Only rows for the
+  // linked office and district qualify.
+  const label = `${office.cfisOfficeName}${office.district === null ? "" : ` district ${office.district}`}`;
+  const officeRows = rows.filter(
+    (row) =>
+      row.filerEntityId === filingEntityId &&
+      row.filerTypeCode === "CAN" &&
+      (row.office?.trim() ?? "") === office.cfisOfficeName &&
+      arkansasRegistrationDistrictNumber(row.officeDistrictName) === office.district
   );
+  let matches = officeRows.filter((row) => row.electionYear === electionYear);
   if (matches.length === 0) {
-    throw new Error(`Arkansas CFIS has no candidate registration for entity ${filingEntityId} in the ${electionYear} cycle`);
+    // Some live 2026 registrations carry no electionYear at all (61 of 480
+    // legislative candidate rows on 2026-09-02, e.g. Holladay HD70, Teeter
+    // HD44, Wilson SD1). The link already pins the entity, office, district
+    // and cycle, so the single year-less registration for that office stands
+    // in; a registration for a different cycle never does.
+    matches = officeRows.filter((row) => row.electionYear === null);
+  }
+  if (matches.length === 0) {
+    throw new Error(
+      `Arkansas CFIS has no candidate registration for entity ${filingEntityId} as ${label} in the ${electionYear} cycle`
+    );
   }
   if (matches.length > 1) {
-    throw new Error(`Arkansas CFIS carries entity ${filingEntityId} ${matches.length} times for the ${electionYear} cycle`);
+    throw new Error(
+      `Arkansas CFIS carries entity ${filingEntityId} ${matches.length} times as ${label} for the ${electionYear} cycle`
+    );
   }
   return matches[0]!;
 }
@@ -110,6 +138,13 @@ export async function syncArkansasCandidateFinance(
   const electionId = requireNonEmpty(input.electionId, "election id");
   const candidateName = requireNonEmpty(input.candidateName, "candidate name");
   const officeName = requireNonEmpty(input.officeName, "office name");
+  const cfisOfficeName = arkansasCfisOfficeNameForOffice({
+    officeScope: input.officeScope,
+    officeCanonicalName: officeName,
+  });
+  if (cfisOfficeName === null) {
+    throw new Error(`Arkansas finance sync does not cover office ${input.officeScope}::${officeName}`);
+  }
   const filerName = requireNonEmpty(input.link.filerName, "filer name");
   const electionYear = normalizeElectionYear(input.electionYear);
   const now = normalizeTimestamp(input.now);
@@ -123,7 +158,8 @@ export async function syncArkansasCandidateFinance(
   const registration = selectArkansasCandidateRegistration(
     await loadRegistrations(),
     input.link.filingEntityId,
-    electionYear
+    electionYear,
+    { cfisOfficeName, district: arkansasDistrictNumberFromDistrictName(input.district) }
   );
 
   const fetchTransactions = input.fetchTransactions ?? getAllArkansasTransactions;

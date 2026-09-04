@@ -119,6 +119,7 @@ export async function syncDueArkansasCandidateFinance(
         electionId: row.electionId,
         candidateName: row.candidateName,
         electionYear: row.electionYear,
+        officeScope: row.officeScope,
         officeName: row.officeName,
         district: row.district,
         link: {

@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { statSync } from "node:fs";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -8,6 +9,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   readIdahoRegistrationArtifact,
   storeIdahoRegistrationArtifact,
+  storeIdahoRunArtifact,
   type IdahoRegistrationArtifact,
 } from "../../../src/pipeline/idahoFinance/idahoRegistrationArtifactCache.js";
 import { contribution, GUID_A, GUID_B, independentExpenditure, registration } from "./idahoTestFixtures.js";
@@ -91,5 +93,33 @@ describe("idahoRegistrationArtifactCache", () => {
     await expect(readIdahoRegistrationArtifact({ cacheDir, registrationGuid: "../escape" })).rejects.toThrow(
       "Invalid Idaho registration guid"
     );
+  });
+});
+
+describe("storeIdahoRunArtifact", () => {
+  it("stores the run's grid and IE list with a sha256 manifest and restricted modes", async () => {
+    const retrievedAt = new Date("2026-09-03T12:34:56.789Z");
+    const manifest = await storeIdahoRunArtifact({
+      cacheDir,
+      retrievedAt,
+      registrations: [registration({ registrationGuid: GUID_A }), registration({ registrationGuid: GUID_B })],
+      independentExpenditures: [independentExpenditure()],
+    });
+    expect(manifest).toMatchObject({
+      version: 1,
+      retrievedAt: "2026-09-03T12:34:56.789Z",
+      file: resolve(cacheDir, "2026-09-03T12-34-56-789Z.json"),
+      registrationCount: 2,
+      independentExpenditureCount: 1,
+    });
+    const bytes = await readFile(manifest.file);
+    expect(bytes.byteLength).toBe(manifest.byteSize);
+    expect(createHash("sha256").update(bytes).digest("hex")).toBe(manifest.sha256);
+    const stored = JSON.parse(bytes.toString("utf8"));
+    expect(stored.registrations.map((row: { registrationGuid: string }) => row.registrationGuid)).toEqual([GUID_A, GUID_B]);
+    expect(stored.independentExpenditures).toHaveLength(1);
+    expect(JSON.parse(await readFile(`${manifest.file}.manifest.json`, "utf8"))).toEqual(manifest);
+    expect(statSync(manifest.file).mode & 0o777).toBe(0o600);
+    expect(statSync(cacheDir).mode & 0o777).toBe(0o700);
   });
 });

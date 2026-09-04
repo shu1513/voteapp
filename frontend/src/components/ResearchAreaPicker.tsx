@@ -172,7 +172,9 @@ export function ResearchAreaPicker({ areas, ranked, disabled, onChange }: Resear
         <div className="mt-6 lg:mt-0">
           <p className="text-sm font-medium text-ink">
             Choose issues{" "}
-            <span className="font-normal text-ink-soft">({ranked.length} selected)</span>
+            <span className="font-normal text-ink-soft">
+              ({ranked.length > 0 ? `${ranked.length} selected \u00b7 no limit` : "no limit"})
+            </span>
           </p>
           {/* Public-salience order, not the catalog's alphabetical order — the
               same ranking the election and candidate pages use, so the issues
