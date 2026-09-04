@@ -1,0 +1,253 @@
+// Kansas per-candidate finance sync (plan-kansas-finance.md, Phase 4 step 3).
+// The link is the input (auto-link or an operator wrote it). This builds the
+// candidate's period ledger from the live SOS CFR viewer with the canonical
+// reports' Schedules A and B, aggregates (kansasDirectContributionAggregator),
+// and replaces the snapshot. Any failure throws so the prior snapshot
+// survives (the plan's "retain last-good snapshot on refresh failure"):
+// a link that no longer resolves, an incomplete ledger, a cover or schedule
+// that does not reconcile, or a negative figure.
+//
+// What is written:
+//   total_receipts            = sum of cover line 2 (contributions and other receipts)
+//   direct_contribution_total = line 2 + line 6 (in-kind) - Schedule A Loan/Refund
+//                               rows; null when a counted cover came without
+//                               schedules (the loan share is then unknown)
+//   total_disbursements       = sum of cover line 4
+//   cash_on_hand              = line 5 of the latest canonical report (null when negative)
+//   direct breakdowns         = occupation + contribution_size buckets (dollars only)
+// A cycle with no filed report writes a summary with null figures (the
+// candidate is synced — nothing is reported — and drops out of the due
+// list), never $0. In-kind is a contribution but not a receipt, so the
+// direct total can exceed total receipts.
+
+import type { Pool, PoolClient } from "pg";
+
+import { KANSAS_CFR_LINK_SOURCE_URL } from "./kansasCandidateFinanceAutoLink.js";
+import { buildKansasCandidateLedger } from "./kansasCandidateLedger.js";
+import type { KansasCfrSessionOptions } from "./kansasCfrViewerClient.js";
+import {
+  aggregateKansasDirectFinance,
+  type KansasDirectFinance,
+  type KansasItemizedContributions,
+} from "./kansasDirectContributionAggregator.js";
+import { createKansasFilingPoolLoader, type KansasFilingPoolLoader } from "./kansasFilingSearch.js";
+import { kansasCfrOfficeForRace } from "./kansasFinanceEligibleOffices.js";
+import {
+  normalizeKansasNameForStorage,
+  replaceKansasCandidateFinanceSnapshot,
+  type KansasFinanceLinkSource,
+  type KansasFinanceSnapshotWriteResult,
+} from "./kansasFinanceWriter.js";
+import { createKansasKpdcRowLoader, type KansasKpdcRowLoader } from "./kansasPaperInventory.js";
+import type { KansasPeriodStatus } from "./kansasReportInventory.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+type ConnectableQueryable = Queryable & { connect: () => Promise<PoolClient> };
+
+export class KansasCandidateFinanceSyncError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "KansasCandidateFinanceSyncError";
+  }
+}
+
+export type KansasCandidateFinanceSyncInput = {
+  db: ConnectableQueryable;
+  candidateId: string;
+  electionId: string;
+  candidateName: string;
+  electionYear: number;
+  officeScope: string;
+  officeName: string;
+  district?: string | null;
+  link: {
+    /** The viewer search recipe (ks_candidate_finance_links.committee_id). */
+    committeeId: string;
+    committeeName: string;
+    linkSource: KansasFinanceLinkSource;
+    sourceUrl?: string | null;
+  };
+  now?: Date;
+  dryRun?: boolean;
+  maxOccupationBreakdowns?: number;
+  sessionOptions?: KansasCfrSessionOptions;
+  /** Memoized per-office enumeration; a batch shares one across every candidate. */
+  loadFilingPool?: KansasFilingPoolLoader;
+  /** Memoized KPDC candidate trees (paper rows); a batch shares one. */
+  loadKpdcRows?: KansasKpdcRowLoader;
+  buildLedger?: typeof buildKansasCandidateLedger;
+};
+
+export type KansasCandidateFinanceSyncResult = {
+  candidateId: string;
+  electionId: string;
+  electionYear: number;
+  dryRun: boolean;
+  /** "no_filed_report": every period accounted for, none by a report — null figures written. */
+  status: "synced" | "no_filed_report";
+  committeeId: string;
+  /** Period key -> ledger status, cycle order. */
+  periods: Record<string, KansasPeriodStatus>;
+  totalReceipts: number | null;
+  directContributionTotal: number | null;
+  totalDisbursements: number | null;
+  cashOnHand: number | null;
+  /** Coverage in cents (the aggregator's itemized figures without the buckets); null when no schedules were read. */
+  coverage: Omit<KansasItemizedContributions, "breakdowns"> | null;
+  breakdownCounts: { occupation: number; contribution_size: number };
+  diagnostics: string[];
+  summaryWritten: boolean;
+  directBreakdownsWritten: number;
+};
+
+function requireNonEmpty(value: string, fieldName: string): string {
+  const trimmed = value.trim();
+  if (!trimmed) throw new KansasCandidateFinanceSyncError(`${fieldName} is required`);
+  return trimmed;
+}
+
+function dollars(cents: number, fieldName: string): number {
+  // The summaries table pins every amount >= 0; a negative sum is an
+  // evidence problem to look at, not a number to publish.
+  if (!Number.isSafeInteger(cents)) throw new KansasCandidateFinanceSyncError(`${fieldName} is not an integer cent amount`);
+  if (cents < 0) throw new KansasCandidateFinanceSyncError(`${fieldName} is negative (${cents} cents)`);
+  return cents / 100;
+}
+
+type KansasSnapshotFigures = {
+  status: KansasCandidateFinanceSyncResult["status"];
+  summary: { totalReceipts: number | null; directContributionTotal: number | null; totalDisbursements: number | null; cashOnHand: number | null };
+  breakdowns: KansasItemizedContributions["breakdowns"];
+  coverage: KansasCandidateFinanceSyncResult["coverage"];
+  diagnostics: string[];
+};
+
+/** The publishable figures of an aggregate, or a thrown blocker. Pure. */
+export function kansasSnapshotFigures(finance: KansasDirectFinance): KansasSnapshotFigures {
+  if (finance.status === "unpublishable") {
+    throw new KansasCandidateFinanceSyncError(`unpublishable: ${finance.reasons.join("; ")}`);
+  }
+  if (finance.status === "no_filed_report") {
+    return {
+      status: "no_filed_report",
+      summary: { totalReceipts: null, directContributionTotal: null, totalDisbursements: null, cashOnHand: null },
+      breakdowns: [],
+      coverage: null,
+      diagnostics: [],
+    };
+  }
+  const { itemized } = finance;
+  const coverage =
+    itemized === null
+      ? null
+      : {
+          contributionCents: itemized.contributionCents,
+          occupationCoveredCents: itemized.occupationCoveredCents,
+          unitemizedCents: itemized.unitemizedCents,
+          nonContributionReceiptCents: itemized.nonContributionReceiptCents,
+        };
+  return {
+    status: "synced",
+    summary: {
+      totalReceipts: dollars(finance.totalReceiptsCents, "total receipts"),
+      directContributionTotal:
+        itemized === null
+          ? null
+          : dollars(finance.totalReceiptsCents + finance.inKindCents - itemized.nonContributionReceiptCents, "direct contribution total"),
+      totalDisbursements: dollars(finance.totalDisbursementsCents, "total disbursements"),
+      cashOnHand: finance.cashOnHandCents === null ? null : dollars(finance.cashOnHandCents, "cash on hand"),
+    },
+    breakdowns: itemized?.breakdowns ?? [],
+    coverage,
+    diagnostics: [...finance.diagnostics, ...(itemized === null ? ["no breakdowns: direct contribution total not reported"] : [])],
+  };
+}
+
+export async function syncKansasCandidateFinance(input: KansasCandidateFinanceSyncInput): Promise<KansasCandidateFinanceSyncResult> {
+  const candidateId = requireNonEmpty(input.candidateId, "candidate id");
+  const electionId = requireNonEmpty(input.electionId, "election id");
+  const candidateName = requireNonEmpty(input.candidateName, "candidate name");
+  const officeName = requireNonEmpty(input.officeName, "office name");
+  const committeeName = requireNonEmpty(input.link.committeeName, "link committee name");
+  if (!Number.isInteger(input.electionYear) || input.electionYear < 2024 || input.electionYear > 2100) {
+    throw new KansasCandidateFinanceSyncError(`invalid election year: ${input.electionYear}`);
+  }
+  const now = input.now ?? new Date();
+  if (Number.isNaN(now.getTime())) throw new KansasCandidateFinanceSyncError("invalid now");
+  const dryRun = input.dryRun === true;
+  const office = kansasCfrOfficeForRace({ officeScope: input.officeScope, officeCanonicalName: officeName });
+  if (office === null) {
+    throw new KansasCandidateFinanceSyncError(`office ${input.officeScope}::${officeName} is not Kansas-finance eligible`);
+  }
+
+  const buildLedger = input.buildLedger ?? buildKansasCandidateLedger;
+  const ledger = await buildLedger({
+    target: { committeeId: input.link.committeeId, committeeName, office, electionYear: input.electionYear },
+    now,
+    loadFilingPool: input.loadFilingPool ?? createKansasFilingPoolLoader({ now, sessionOptions: input.sessionOptions }),
+    loadKpdcRows: input.loadKpdcRows ?? createKansasKpdcRowLoader(),
+    openSchedules: true,
+  });
+  if (ledger.status !== "resolved") {
+    throw new KansasCandidateFinanceSyncError(`link ${input.link.committeeId} does not resolve in the viewer: ${ledger.reason}`);
+  }
+
+  // The gate is the candidate's completeness (ledger AND every paper row explained), not the ledger's alone.
+  const figures = kansasSnapshotFigures(
+    aggregateKansasDirectFinance({
+      ledger: { ...ledger.ledger, complete: ledger.complete },
+      covers: ledger.reports,
+      maxOccupationBreakdowns: input.maxOccupationBreakdowns,
+    })
+  );
+  const sourceUrl = input.link.sourceUrl?.trim() || KANSAS_CFR_LINK_SOURCE_URL;
+
+  let write: KansasFinanceSnapshotWriteResult | null = null;
+  if (!dryRun) {
+    write = await replaceKansasCandidateFinanceSnapshot({
+      db: input.db,
+      link: {
+        candidateId,
+        electionId,
+        electionYear: input.electionYear,
+        candidateNameNormalized: normalizeKansasNameForStorage(candidateName),
+        officeName,
+        district: input.district ?? null,
+        committeeId: input.link.committeeId,
+        committeeName,
+        linkStatus: "active",
+        linkSource: input.link.linkSource,
+        sourceUrl,
+        lastVerifiedAt: now,
+      },
+      syncedAt: now,
+      summary: { ...figures.summary, sourceUrl },
+      // [] clears stale buckets when this run has none; outside groups stay untouched (Phase 5).
+      directBreakdowns: figures.breakdowns.map((breakdown) => ({
+        categoryType: breakdown.categoryType,
+        categoryName: breakdown.categoryName,
+        amount: breakdown.amountCents / 100,
+        sourceUrl,
+      })),
+    });
+  }
+
+  return {
+    candidateId,
+    electionId,
+    electionYear: input.electionYear,
+    dryRun,
+    status: figures.status,
+    committeeId: input.link.committeeId,
+    periods: Object.fromEntries(ledger.ledger.entries.map((entry) => [entry.period.key, entry.status])),
+    ...figures.summary,
+    coverage: figures.coverage,
+    breakdownCounts: {
+      occupation: figures.breakdowns.filter((breakdown) => breakdown.categoryType === "occupation").length,
+      contribution_size: figures.breakdowns.filter((breakdown) => breakdown.categoryType === "contribution_size").length,
+    },
+    diagnostics: figures.diagnostics,
+    summaryWritten: write?.summaryWritten ?? false,
+    directBreakdownsWritten: write?.directBreakdownsWritten ?? 0,
+  };
+}

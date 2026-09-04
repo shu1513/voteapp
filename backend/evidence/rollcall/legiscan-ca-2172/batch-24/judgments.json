@@ -1,0 +1,81 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1601525,
+   "measure_id": "SB 827",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 827, which widens who must take ethics training in local government and adds a new financial training requirement. Elected and compensated local officials, designated employees and school board members must already take ethics training within a year of starting and every two years after. The bill adds department heads and similar administrative officers, including a district or county superintendent and a charter school's chief administrator. For officials starting from January 1, 2026 the first ethics training must come within six months rather than a year. From July 1, 2026 an agency with a website must post clear instructions and contact details for requesting training records. It also creates a separate requirement of at least two hours of fiscal and financial training, repeated every two years, for legislative body members, elected officers, officials who make budget or public resource decisions, and local agency executives. Existing officials would have until January 1, 2028. Courses must be developed with recognized experts in local government finance, and officials serving several agencies need only train once every two years. The fiscal training does not reach school districts, and the bill sets no penalty for not complying. The Senate passed it 30-10 and it became law.",
+   "nay_description": "Voted against passing Senate Bill 827, which widens who must take ethics training in local government and adds a new financial training requirement. Elected and compensated local officials, designated employees and school board members must already take ethics training within a year of starting and every two years after. The bill adds department heads and similar administrative officers, including a district or county superintendent and a charter school's chief administrator. For officials starting from January 1, 2026 the first ethics training must come within six months rather than a year. From July 1, 2026 an agency with a website must post clear instructions and contact details for requesting training records. It also creates a separate requirement of at least two hours of fiscal and financial training, repeated every two years, for legislative body members, elected officers, officials who make budget or public resource decisions, and local agency executives. Existing officials would have until January 1, 2028. Courses must be developed with recognized experts in local government finance, and officials serving several agencies need only train once every two years. The fiscal training does not reach school districts, and the bill sets no penalty for not complying. The Senate passed it 30-10 and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726217,
+   "measure_id": "SB 909",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 909, which would raise the penalties for underpaying workers on public construction. Contractors on public works must pay the prevailing wage, and the penalties have not changed since 2012. The maximum penalty for underpaying would rise from $200 to $280 for each worker for each day. The minimums would rise from $40, $80 and $120 to $56, $112 and $168, the higher figures applying to a contractor with a violation in the past three years and to a willful violation. The penalty for failing to produce payroll records within ten days would rise from $100 to $140 for each worker for each day. Apprenticeship penalties would rise from $100 to $140 a day, and from $300 to $420 for a repeat violation. The ceiling on contractor registration fees would rise from $800 to $1,000. Penalty money would go into the state enforcement fund, which could pay for staffing the Labor Commissioner's public works enforcement. The existing power to reduce a penalty for a promptly corrected good faith mistake, or where it would be disproportionate, is unchanged. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Senate Bill 909, which would raise the penalties for underpaying workers on public construction. Contractors on public works must pay the prevailing wage, and the penalties have not changed since 2012. The maximum penalty for underpaying would rise from $200 to $280 for each worker for each day. The minimums would rise from $40, $80 and $120 to $56, $112 and $168, the higher figures applying to a contractor with a violation in the past three years and to a willful violation. The penalty for failing to produce payroll records within ten days would rise from $100 to $140 for each worker for each day. Apprenticeship penalties would rise from $100 to $140 a day, and from $300 to $420 for a repeat violation. The ceiling on contractor registration fees would rise from $800 to $1,000. Penalty money would go into the state enforcement fund, which could pay for staffing the Labor Commissioner's public works enforcement. The existing power to reduce a penalty for a promptly corrected good faith mistake, or where it would be disproportionate, is unchanged. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1600845,
+   "measure_id": "SB 98",
+   "vote_date": "2025-09-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 98, which requires schools and colleges to tell their communities when immigration enforcement is confirmed on site. Every district and county office of education must keep a comprehensive school safety plan, and colleges must already advise students and staff to alert the chancellor's or president's office about immigration officers on campus. By March 1, 2026 a school safety plan must include procedures for notifying parents, guardians, teachers, administrators and school staff when the school confirms immigration enforcement is present at the site. Timing and content must consider the safety and wellbeing of pupils, employees and the community, and the notice may link to resources on educational rights, privacy law and counseling. A chartering authority may deny a charter petition that lacks such procedures. State universities, community colleges and Cal Grant private colleges, and each campus, must notify students, faculty, staff and people who work on campus when immigration enforcement is confirmed there, giving the date, time and location and a link to resources. No notice may contain personally identifying information. The bill adds notification duties only. It does not restrict officers' access, and all of it expires on January 1, 2031. The Senate passed it 31-8 and it became law.",
+   "nay_description": "Voted against passing Senate Bill 98, which requires schools and colleges to tell their communities when immigration enforcement is confirmed on site. Every district and county office of education must keep a comprehensive school safety plan, and colleges must already advise students and staff to alert the chancellor's or president's office about immigration officers on campus. By March 1, 2026 a school safety plan must include procedures for notifying parents, guardians, teachers, administrators and school staff when the school confirms immigration enforcement is present at the site. Timing and content must consider the safety and wellbeing of pupils, employees and the community, and the notice may link to resources on educational rights, privacy law and counseling. A chartering authority may deny a charter petition that lacks such procedures. State universities, community colleges and Cal Grant private colleges, and each campus, must notify students, faculty, staff and people who work on campus when immigration enforcement is confirmed there, giving the date, time and location and a link to resources. No notice may contain personally identifying information. The bill adds notification duties only. It does not restrict officers' access, and all of it expires on January 1, 2031. The Senate passed it 31-8 and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CA",
+   "chamber": "senate",
+   "session": "2172",
+   "roll": 1726427,
+   "measure_id": "SB 998",
+   "vote_date": "2026-08-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 998, which would add state staff working to prevent discrimination in schools. The Office of Civil Rights employs four discrimination prevention coordinators covering religion, race and ethnicity, gender, and LGBTQ issues, each appointed by the Governor and confirmed by the Senate. The bill would add a fifth for disability discrimination on the same terms, and rename the LGBTQ post. It would set out what every coordinator does. Each would develop and provide discrimination education for teachers, staff, board members and administrators, give technical assistance on restorative justice resources when a superintendent or governing board asks, and help administrators address conflicts early. From September 1, 2027 each would track and report complaints and their resolutions, without personally identifying information. Four deputy coordinators would be added on anti-Black racism, anti-Asian American and Pacific Islander discrimination, anti-Latino discrimination and anti-Native American discrimination, each reporting to the race and ethnicity coordinator. The office would provide resources on cases involving more than one protected characteristic. The bill acts on state staff. It creates no new duty for any school district. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "nay_description": "Voted against passing Senate Bill 998, which would add state staff working to prevent discrimination in schools. The Office of Civil Rights employs four discrimination prevention coordinators covering religion, race and ethnicity, gender, and LGBTQ issues, each appointed by the Governor and confirmed by the Senate. The bill would add a fifth for disability discrimination on the same terms, and rename the LGBTQ post. It would set out what every coordinator does. Each would develop and provide discrimination education for teachers, staff, board members and administrators, give technical assistance on restorative justice resources when a superintendent or governing board asks, and help administrators address conflicts early. From September 1, 2027 each would track and report complaints and their resolutions, without personally identifying information. Four deputy coordinators would be added on anti-Black racism, anti-Asian American and Pacific Islander discrimination, anti-Latino discrimination and anti-Native American discrimination, each reporting to the race and ethnicity coordinator. The office would provide resources on cases involving more than one protected characteristic. The bill acts on state staff. It creates no new duty for any school district. The Senate passed it 30-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

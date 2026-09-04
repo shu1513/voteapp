@@ -1,0 +1,61 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2143",
+      "roll": 1556472,
+      "measure_id": "HB 1003",
+      "vote_date": "2025-04-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1003, which makes health care prices easier to see and cuts some patient bills. Labs and scan centres must post cash prices for 50 common services by July 2026. They must post the range of prices they have agreed with insurers too, in plain words. Hospitals join an existing posting rule. A patient who asks for a written price estimate must get it in two working days instead of five. Copies of X-rays become free. A provider may not charge for a digital copy of a health record. Hospitals may not bill an office visit using hospital facility codes. From January 2026 they must be paid the doctor fee rate instead. A hospital that breaks that rule can be fined $1,000 a day. Insurers and drug benefit firms lose the secrecy shields that kept audits hidden. They must show fee rates and denial rules while agreeing a contract. A claim may not be refused only because the referring doctor is out of network. A doctor moving practices gets 60 days of temporary approval to treat patients. The Indiana House adopted the final version 67-25, and it became law.",
+      "nay_description": "Voted against House Bill 1003, which makes health care prices easier to see and cuts some patient bills. Labs and scan centres must post cash prices for 50 common services by July 2026. They must post the range of prices they have agreed with insurers too, in plain words. Hospitals join an existing posting rule. A patient who asks for a written price estimate must get it in two working days instead of five. Copies of X-rays become free. A provider may not charge for a digital copy of a health record. Hospitals may not bill an office visit using hospital facility codes. From January 2026 they must be paid the doctor fee rate instead. A hospital that breaks that rule can be fined $1,000 a day. Insurers and drug benefit firms lose the secrecy shields that kept audits hidden. They must show fee rates and denial rules while agreeing a contract. A claim may not be refused only because the referring doctor is out of network. A doctor moving practices gets 60 days of temporary approval to treat patients. The Indiana House adopted the final version 67-25, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Adoption of the conference committee report, which is the enacted text. The House's own third reading of 2025-02-18 is a version trap and is NOT used: word-level comparison puts it at 0.70 similarity to the enrolled act across 339 differing runs. Member list verified name by name against official roll-call PDF HB1003.544_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2143",
+      "roll": 1556836,
+      "measure_id": "HB 1003",
+      "vote_date": "2025-04-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1003, which makes health care prices easier to see and cuts some patient bills. Labs and scan centres must post cash prices for 50 common services by July 2026. They must post the range of prices they have agreed with insurers too, in plain words. Hospitals join an existing posting rule. A patient who asks for a written price estimate must get it in two working days instead of five. Copies of X-rays become free. A provider may not charge for a digital copy of a health record. Hospitals may not bill an office visit using hospital facility codes. From January 2026 they must be paid the doctor fee rate instead. A hospital that breaks that rule can be fined $1,000 a day. Insurers and drug benefit firms lose the secrecy shields that kept audits hidden. They must show fee rates and denial rules while agreeing a contract. A claim may not be refused only because the referring doctor is out of network. A doctor moving practices gets 60 days of temporary approval to treat patients. The Indiana Senate adopted the final version 30-20, and it became law.",
+      "nay_description": "Voted against House Bill 1003, which makes health care prices easier to see and cuts some patient bills. Labs and scan centres must post cash prices for 50 common services by July 2026. They must post the range of prices they have agreed with insurers too, in plain words. Hospitals join an existing posting rule. A patient who asks for a written price estimate must get it in two working days instead of five. Copies of X-rays become free. A provider may not charge for a digital copy of a health record. Hospitals may not bill an office visit using hospital facility codes. From January 2026 they must be paid the doctor fee rate instead. A hospital that breaks that rule can be fined $1,000 a day. Insurers and drug benefit firms lose the secrecy shields that kept audits hidden. They must show fee rates and denial rules while agreeing a contract. A claim may not be refused only because the referring doctor is out of network. A doctor moving practices gets 60 days of temporary approval to treat patients. The Indiana Senate adopted the final version 30-20, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Adoption of the conference committee report, which is the enacted text. The Senate's own third reading of 2025-04-15 was 48-1 and is not divided. Member list verified name by name against official roll-call PDF HB1003.513_S.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2143",
+      "roll": 1557738,
+      "measure_id": "HB 1004",
+      "vote_date": "2025-04-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1004, which caps what big hospital groups may charge employers. A non-profit hospital group with at least $2 billion in Indiana patient income must offer employers a direct deal. The price may not top 260 percent of what Medicare pays. That starts in September 2025 for the largest groups and September 2026 for the rest. The state health office checks this each year and may fine $10,000 a day. From 2029 a large non-profit group whose average prices sit above the state average loses its state tax break for at least a year. Non-profit hospitals must file their full community benefit worksheets each year. Those go on a public website. The law also rebuilds how Medicaid pays hospitals. It scraps a fee committee drawn from a hospital industry list and gives that power to the state Medicaid office. Brokers must tell employers what they are paid before a sale. Hospitals may no longer tie one contract or product to another. The Indiana Senate adopted the final version 37-13, and it became law.",
+      "nay_description": "Voted against House Bill 1004, which caps what big hospital groups may charge employers. A non-profit hospital group with at least $2 billion in Indiana patient income must offer employers a direct deal. The price may not top 260 percent of what Medicare pays. That starts in September 2025 for the largest groups and September 2026 for the rest. The state health office checks this each year and may fine $10,000 a day. From 2029 a large non-profit group whose average prices sit above the state average loses its state tax break for at least a year. Non-profit hospitals must file their full community benefit worksheets each year. Those go on a public website. The law also rebuilds how Medicaid pays hospitals. It scraps a fee committee drawn from a hospital industry list and gives that power to the state Medicaid office. Brokers must tell employers what they are paid before a sale. Hospitals may no longer tie one contract or product to another. The Indiana Senate adopted the final version 37-13, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Adoption of the conference committee report, which is the enacted text. This is the measure's only usable roll. The House's matching conference roll FAILED the member-list check: LegiScan reports 67-23 where the official journal reports 68-23, and Representative Behning appears in the journal's yeas but not in LegiScan's. The House and Senate third readings both predate the conference committee, which rewrote the bill at 0.89 similarity across 355 differing runs. Member list on THIS roll verified name by name against official roll-call PDF HB1004.528_S.pdf."
+    }
+  ]
+}

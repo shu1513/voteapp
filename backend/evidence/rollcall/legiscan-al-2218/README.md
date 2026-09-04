@@ -29,6 +29,15 @@ number appears in its own bill's history.
 dispositioned in `survey/divided-worklist.tsv`, which carries a `roll_number_in_history` column so
 the misfiled rolls are visible at a glance.
 
+## ⚠ Some rolls list fewer members than the chamber holds
+
+Found while sweeping for duplicates during the 2023 and 2024 batches. HB 95's House roll 1614139
+lists **100 of the 105 House members** (69 yea, 25 nay, 1 not voting, 5 absent), and Heath Allbright
+is not among them. A hand-written record says he voted yes on that measure, and it is still in the
+database, deliberately: the roll not listing him is not evidence that he did not vote, only that
+this feed does not cover him. Do not retire such a record as a duplicate, and do not assume a member
+missing from a roll abstained.
+
 ## Identity
 
 The crosswalk holds 140 entries: 112 proposed by the resolver and all accepted, 10 carried over from

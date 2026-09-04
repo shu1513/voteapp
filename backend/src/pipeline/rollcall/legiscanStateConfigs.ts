@@ -86,11 +86,21 @@ const MISSOURI_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
   /^senate: emergency clause$/,
 ];
 
-// Alabama's floor-question vocabulary, shared by its 2025 and 2026 regular
-// sessions. Both were surveyed separately and print the SAME families, so
-// they share one definition rather than two copies that could drift apart.
-// The 2026 session adds two spellings, both harmless no-ops against 2025
-// (verified: zero 2025 rolls match either).
+// Alabama's MODERN floor-question vocabulary, shared by the 2025 and 2026
+// regular sessions and the 2026 first special session. Each was surveyed
+// separately and prints the SAME families, so they share one definition
+// rather than three copies that could drift apart. The 2026 session adds two
+// spellings, both harmless no-ops against 2025 (verified: zero 2025 rolls
+// match either).
+//
+// ⚠ THIS VOCABULARY DOES NOT DESCRIBE ALABAMA BEFORE 2025. The feed rewrote
+// its captions twice. The 2023 sessions print a third, older set, and 2024
+// prints BOTH systems side by side inside one session. Two further
+// definitions below cover them, and the same string can mean opposite things
+// across them: `Passed House Of Origin` is the 2024 feed's PASSAGE vote,
+// while 2025's `SBIR: Passed by House of Origin` is a Budget Isolation
+// Resolution. Never reuse one session's patterns on another without
+// surveying it first.
 const ALABAMA_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
   // Conference-report votes. Listed first so the concurrence rule below
   // cannot claim them.
@@ -136,6 +146,110 @@ const ALABAMA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
   /^in conference committee$/,
   /\bnon-concur\b/,
   /\breconsider\b/,
+];
+
+// Alabama's 2023 vocabulary, shared by the 2023 regular session and both
+// 2023 special sessions. Surveyed separately 2026-09-02; all three print the
+// same families and nothing is left unmatched.
+//
+// Two things make it unlike the modern one. First, the passage question
+// carries NO `Motion to` prefix — it is plainly `Read a Third Time and Pass`,
+// in four casings and with or without ` as Amended`. Applying the modern
+// patterns here matches almost nothing and reports a false empty pool.
+// Second, THERE ARE NO BUDGET ISOLATION RESOLUTION ROLL CALLS AT ALL. The
+// bill history records `On Third Reading in House of Origin` as a stage line
+// with no vote attached, so 2023 took those resolutions by voice. The only
+// `Passed by House of Origin` rolls in 2023 are on SPECIAL ORDER CALENDAR
+// resolutions, a procedural question, and they are excluded by name.
+const ALABAMA_2023_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // `Read a Third Time and Pass`, `Read A Third Time And Passed As Amended`,
+  // `Read Again a Third Time and Pass as Amended`, `READ A THIRD TIME AND
+  // PASSED`. Anchored at the end so a tabling or reconsideration motion
+  // naming the same stage cannot match.
+  { pattern: /\bread (?:again )?a third time and pass(?:ed)?(?: as amended)?$/, questionClass: "passage" },
+  // The second chamber accepting the other's changes: `Concur In and Adopt`,
+  // the 2023 first special session's `House Concur and Adopt`, and the bare
+  // `Concur`.
+  { pattern: /^(?:house )?concur(?: in)? and adopt$/, questionClass: "concurrence" },
+  { pattern: /^concur$/, questionClass: "concurrence" },
+];
+const ALABAMA_2023_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // Refusing to concur and sending the bill to a conference committee.
+  // Listed first so the concurrence rule above cannot claim it.
+  /\bnon concur\b/,
+  // Adoption of a SPECIAL ORDER CALENDAR resolution — the chamber setting
+  // its own order of business, not a vote on a measure.
+  /^passed by (?:house of origin|second house)$/,
+  // Floor adoption of an amendment or substitute (`Adopt`, `Adopt 4XDG33-1`)
+  // and tabling one. Start-anchored, so `Concur In and Adopt` is untouched.
+  /^adopt\b/,
+  /^table\b/,
+  // Housekeeping and procedure.
+  /\badd cosponsor\b/,
+  /^accede$/,
+  /^local certification resolution$/,
+  /\bprevious question\b/,
+  /\bpetition to cease debate\b/,
+  /\bcarry over to the call of the chair\b/,
+  /\breconsider\b/,
+];
+
+// Alabama's 2024 vocabulary. THIS SESSION USES TWO CAPTION SYSTEMS AT ONCE,
+// which is the single most important thing to know about it. Surveyed
+// 2026-09-02 over 1,229 bills and 2,147 roll calls; 111 families, nothing
+// left unmatched.
+//
+// System A is the older style, with no roll call number in the desc:
+//   `Third Reading House of Origin`   = the Budget Isolation Resolution
+//   `Passed House Of Origin`          = THE PASSAGE VOTE
+// System B is the modern style, with ` - Roll Call <n>` in the desc:
+//   `Third Reading in House of Origin`          = the Budget Isolation Resolution
+//   `Motion to Read a Third Time and Pass`      = the passage vote
+//
+// The two BIR captions differ by one word (`in`), and the System A passage
+// caption looks like a stage marker. Proof, from SB 47: the bill history
+// records `Third Reading in House of Origin` and then `Motion to Read a
+// Third Time and Pass - Adopted Roll Call 108`, while the stored rolls are
+// captioned `Third Reading House of Origin` (34-0) and `Passed House Of
+// Origin` (34-0). The passage vote is there; only its caption changed.
+// Reading `Passed House Of Origin` as a Budget Isolation Resolution — which
+// is what it is in 2025 — hides 176 real passage votes and understates the
+// divided pool by more than half.
+const ALABAMA_2024_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Conference-report votes, in four spellings. Listed first so the
+  // concurrence rule below cannot claim them.
+  {
+    pattern: /\bconcur in and adopt (?:conference committee report|conf rpt|concurrence request)/,
+    questionClass: "conference_report",
+  },
+  // `Reed Concur In and Adopt House Amendment`, plain `Concur In and Adopt`.
+  { pattern: /\bconcur in and adopt\b/, questionClass: "concurrence" },
+  // Accepting a change the Governor sent back with the bill.
+  { pattern: /\bmotion to concur in executive amendment\b/, questionClass: "concurrence" },
+  // System B passage.
+  { pattern: /\bmotion to read (?:again )?a third time and pass(?: as amended)?\b/, questionClass: "passage" },
+  // System A passage. End-anchored: nothing else in the session ends this
+  // way, and the anchor keeps it from swallowing a longer caption.
+  { pattern: /^passed (?:house of origin|second house)$/, questionClass: "passage" },
+];
+const ALABAMA_2024_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // Refusing to concur. First, so the concurrence rules cannot claim it.
+  /\bnon concur\b/,
+  // THE BUDGET ISOLATION RESOLUTION under both of this session's captions.
+  // The optional `in` is the whole difference between them.
+  /^third reading (?:in )?(?:house of origin|second house)$/,
+  // Floor adoption of an amendment or substitute, and tabling one. System B
+  // spells these `<sponsor> motion to Adopt`; System A spells them
+  // `<sponsor> amendment <code>`, `<sponsor> substitution <code>` and
+  // `Instrument Change[ Tabled]`.
+  /\bmotion to adopt\b/,
+  /\bmotion to table\b/,
+  /^[a-z.'-]+ (?:amendment|substitution)\b/,
+  /^instrument change\b/,
+  // Housekeeping and procedure.
+  /^local_?certification/,
+  /^in conference committee$/,
+  /\bsuspend rule\b/,
 ];
 
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
@@ -1278,6 +1392,125 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     ],
   },
 
+  // Indiana General Assembly, 2026 Regular Session (LegiScan session 2234).
+  // The 124th General Assembly's short session: it convened 2025-11-18 and
+  // adjourned sine die 2026-03-12, so the session is closed and the dataset
+  // is final. Vocabulary measured from the full dataset survey on 2026-09-02:
+  // 935 bills, 689 roll calls, 152 people, 131 distinct descriptions. The
+  // survey is written up in
+  // backend/evidence/rollcall/legiscan-in-2234/README.md.
+  //
+  // Indiana needs a SECOND entry rather than a new sessionId on `IN` because
+  // the 2025 batches must stay re-runnable. Records still land under
+  // `jurisdiction: "IN"`, and nothing collides: evidence filenames carry the
+  // session, and a legislative_votes row is keyed by jurisdiction, chamber,
+  // session and roll.
+  //
+  // The feed is shaped exactly like 2025 and, unlike Kentucky, the kept
+  // vocabulary does carry across: `Third reading` is still final passage in
+  // both chambers, `<chamber> concurred with <chamber> amendments` is still
+  // the second chamber's agreement, `Conference Committee Report <n>` is
+  // still numbered, and `Rules Suspended. ` is still a scheduling prefix that
+  // does not change the question. There are again no committee votes at all —
+  // every total is 100 in the House and 49 or 50 in the Senate.
+  //
+  // What DID change is the procedural vocabulary, and one change is a trap.
+  //
+  // *** `House - Concurrence defeated` IS EXCLUDED, NOT KEPT. *** 2025 spelt
+  // a failed concurrence `Concurrence failed for lack of constitutional
+  // majority` and that spelling is kept above, because it is a recorded vote
+  // on the measure. 2026's one occurrence looks like the same question under
+  // a shorter name and is not safe to treat that way: on HB 1368 roll 399
+  // (2026-02-26) the House DEFEATED the motion 48-42 — an Indiana concurrence
+  // needs a constitutional majority of 51 — but LegiScan sets `passed: 1`,
+  // because its flag is a bare-majority check. fetchLegiscanRollCallVotes
+  // writes `result` straight from that flag, so keeping this desc would store
+  // a defeated vote as "Passed". It is the ONLY roll in the session whose
+  // flag disagrees with the constitutional-majority rule; the 2025
+  // counterpart carries `passed: 0` and stored correctly. Nothing is lost by
+  // excluding it: a defeated concurrence can never be the final action on a
+  // bill that became law, and this one was superseded the next day by roll
+  // 420, which concurred 57-40 and is kept. Same defect class as Montana's
+  // eight two-thirds rolls — never trust LegiScan's `passed` flag against a
+  // chamber's own majority rule.
+  //
+  // The other four new families are all procedural and all excluded. Written
+  // against the classification measured on 2026-09-02, which reconciles
+  // exactly: 689 dataset rolls = 536 floor + 139 excluded question + 12 on
+  // excluded measure types (11 CR, 1 R) + 2 surfaced.
+  // - `Committee report`, `Rules Suspended. Committee report, adopted` — the
+  //   full chamber voting to accept a committee's recommendation. It is a
+  //   pre-passage stage like second reading, and each of the three rolls sits
+  //   on a bill whose own passage vote is kept separately.
+  // - `Motion to postpone indefinitely, failed` — a motion to kill the bill.
+  // - `Recommitted to Committee on ... pursuant to House Rule 126.4` — 2026's
+  //   spelling of the 2025 `Referred to committee on ` exclusion, a motion to
+  //   send the bill back to committee. Both verbs are covered below.
+  // - `First reading` — DEFENSIVE ONLY. The session's one occurrence sits on
+  //   SCR 1, a concurrent resolution, so the shared kept-types list drops it
+  //   before this config is consulted and the pattern never fires today. It
+  //   is written down because for a bill Indiana's first reading is a
+  //   referral with no vote, so a bill-typed roll under this desc would be
+  //   procedural, not passage.
+  //
+  // TWO HAZARDS carry over from 2025, both in
+  // evidence/rollcall/legiscan-in-2143/CODE-FINDINGS.md:
+  // (1) The blank-question defect recurs. Two House rolls carry the literal
+  //     desc `House -` with nothing after the dash (HB 1002 and SB 0076).
+  //     They stay unmatched and surface for a human, exactly as in 2025.
+  // (2) LegiScan's Indiana member lists still disagree with the official
+  //     journal. Five of the worklist's 95 divided-and-enacted rolls report a
+  //     tally with no exact match in the bill history, and HB 1032's `House -
+  //     Committee report` is a sixth (LegiScan 63-23, journal 63-24). All five
+  //     were then checked against the official PDF and ALL FIVE disagree, each
+  //     with a member on the wrong side. Every roll selected for a batch must
+  //     be checked name by name against
+  //     iga.in.gov/pdf-documents/124/2026/<chamber>/bills/<BILL>/rollcalls/<BILL>.<n>_<H|S>.pdf
+  //     before it is judged. Note the `2026` path segment.
+  "IN-2234": {
+    jurisdiction: "IN",
+    sessionId: 2234,
+    chamberSizes: { house: 100, senate: 50 },
+    keptQuestions: [
+      // Final passage in both chambers: 196 House rolls and 200 Senate.
+      { pattern: /^(?:house|senate) - third reading$/, questionClass: "passage" },
+      // The second chamber's agreement, with and without the scheduling
+      // prefix: 45 + 39 + 1 + 1 rolls.
+      {
+        pattern: /^(?:house|senate) - (?:rules suspended\. )?(?:house|senate) concurred with (?:house|senate) amendments$/,
+        questionClass: "concurrence",
+      },
+      // 26 + 16 + 11 + 1 rolls. Every conference report in this session is
+      // numbered 1.
+      {
+        pattern: /^(?:house|senate) - (?:rules suspended\. )?conference committee report \d+$/,
+        questionClass: "conference_report",
+      },
+    ],
+    excludedQuestions: [
+      // Floor amendments, both outcomes (`failed`, `prevailed`).
+      /^(?:house|senate) - amendment #\d+ /,
+      // A vote on whether the presiding officer's ruling stands.
+      /^(?:house|senate) - appeal the ruling of the chair/,
+      // Indiana's amend-and-engross stage.
+      /^(?:house|senate) - second reading$/,
+      // 2025 said `referred`, 2026 says `recommitted`; both are a motion to
+      // send the measure back to committee, and both carry the rule citation.
+      /^(?:house|senate) - (?:referred|recommitted) to committee on /,
+      // The full chamber accepting a committee's recommendation, a
+      // pre-passage stage. Covers the bare and scheduling-prefixed spellings.
+      /^(?:house|senate) - (?:rules suspended\. )?committee report(?:, adopted)?$/,
+      // A motion to kill the measure.
+      /^(?:house|senate) - motion to postpone indefinitely/,
+      // Referral for a bill, adoption for a resolution; never passage of a
+      // measure that can become law.
+      /^(?:house|senate) - first reading$/,
+      // See the block comment: LegiScan's `passed` flag is wrong on this
+      // roll, so the vote must not be stored from this feed.
+      /^(?:house|senate) - concurrence defeated$/,
+    ],
+  },
+
   // Montana Legislature, 2025 Regular Session (convened January 6, adjourned
   // sine die April 30 2025). Montana's legislature meets only in odd years,
   // so this one closed session is the entire dataset available to the
@@ -1600,6 +1833,326 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     chamberSizes: { house: 105, senate: 35 },
     keptQuestions: ALABAMA_KEPT_QUESTIONS,
     excludedQuestions: ALABAMA_EXCLUDED_QUESTIONS,
+  },
+
+  // South Carolina General Assembly, 126th (2025-2026 Regular Session; both
+  // years sit in one dataset). Vocabulary measured from the full survey on
+  // 2026-09-02: 4,032 bills, 2,054 roll calls, 185 people (124 House + 46
+  // Senate seats plus mid-term turnover).
+  //
+  // What the survey established:
+  // - The two chambers name their final vote differently. The HOUSE prints
+  //   `House: Passage Of Bill` (377 rolls) and `House: Passage Of Joint
+  //   Resolution` (18). The SENATE's substantive vote is SECOND reading
+  //   (`Senate: 2nd Reading`, 294 rolls); it takes a recorded third reading
+  //   too (`Senate: 3rd Reading`, 59), so both are kept as passage and the
+  //   judge's superseded-stage gate picks the chamber's last one.
+  // - Concurrence is `House: Concur In Senate Amendments` / `Senate: To
+  //   Concur`; conference reports come as `Adopt Conference Report` and
+  //   `Adopt Free Conference Report` (`To Adopt The …` in the Senate);
+  //   vetoes are overridden by `House: Override Veto By The Governor` /
+  //   `Senate: To Override The Veto`.
+  // - THE BUDGET IS VOTED SECTION BY SECTION AND ALL OF IT IS EXCLUDED. The
+  //   House votes each part of the appropriations act on its own
+  //   (`House: Adopt Section 5, Part 1B` 211 rolls, `House: Passage Of
+  //   Section 33, Part 1A` 198) and the Senate votes each agency's section
+  //   (`Senate: To Adopt Section 22 - Corrections, Department Of`, one per
+  //   agency). None of those is a vote on the measure. The appropriations
+  //   act's own conference-report vote still classifies as a kept
+  //   conference report; the campaign's own gate drops appropriations.
+  // - Every desc names its chamber and question in full, so the whole
+  //   session classifies with NOTHING unmatched and nothing surfaced.
+  // - Feed health is the cleanest tier: 0 repeated roll_call_ids, 0
+  //   identity duplicates, 0 summary-only rolls, 0 tally mismatches, 0
+  //   committee votes (every tally is whole-chamber; the one exception is a
+  //   single 0-8 Senate second reading, which the tally cut rejects).
+  // - South Carolina proposes CONSTITUTIONAL AMENDMENTS as joint
+  //   resolutions, a type the shared kept-types list already keeps, so
+  //   Georgia's resolution gap does not recur here.
+  SC: {
+    jurisdiction: "SC",
+    sessionId: 2194,
+    chamberSizes: { house: 124, senate: 46 },
+    keptQuestions: [
+      // Final passage. The House names the instrument; the Senate names the
+      // reading.
+      { pattern: /^house: passage of (?:bill|joint resolution)$/, questionClass: "passage" },
+      { pattern: /^senate: (?:2nd|3rd) reading$/, questionClass: "passage" },
+      // Accepting the other chamber's amendments.
+      { pattern: /^house: concur in senate amendments$/, questionClass: "concurrence" },
+      { pattern: /^senate: to concur$/, questionClass: "concurrence" },
+      // Conference and free-conference reports.
+      { pattern: /^house: adopt (?:free )?conference report$/, questionClass: "conference_report" },
+      { pattern: /^senate: to adopt the (?:free )?conference report$/, questionClass: "conference_report" },
+      // Veto overrides.
+      { pattern: /^house: override veto by the governor$/, questionClass: "veto_override" },
+      { pattern: /^senate: to override the veto$/, questionClass: "veto_override" },
+    ],
+    excludedQuestions: [
+      // Floor amendment votes, adopted and tabled alike. South Carolina
+      // repeats the amendment number in the desc
+      // (`House: Table Amendment 6 Amendment Number 6`), and the Senate
+      // spells its own several ways
+      // (`Senate: To Lay On The Table Amendment No. 3`,
+      // `Senate: To Adopt Amendment Number Rfh-1`).
+      /^house: (?:adopt|table) amendment/,
+      /^senate: to (?:adopt|lay on the table) amendment/,
+      /^senate: to adopt [a-z&' ]+ committee amendment$/,
+      /^senate: to (?:allow|consider|take up|carry over) amendment/,
+      // The appropriations act, voted one section or part at a time, plus
+      // single-proviso votes.
+      /^house: adopt section/,
+      /^house: passage of section/,
+      /^house: proviso /,
+      /^senate: to adopt section/,
+      // Scheduling, debate and other procedural motions.
+      /^house: table\b/,
+      /^house: (?:motion to )?(?:recommit|commit|continue|recede|reconsider)/,
+      /^house: recommit bill$/,
+      /^house: reconsider the vote$/,
+      /^house: adjourn/,
+      /^house: (?:table )?cloture$/,
+      /^house: invoke the previous question/,
+      /^house: waive rule/,
+      /^house: grant free conference powers$/,
+      /^senate: to lay on the table$/,
+      /^senate: (?:motion to )?suspend rule/,
+      /^senate: rule /,
+      /^senate: cloture motion$/,
+      /^senate: to grant free conference powers$/,
+      /^senate: to (?:continue the bill|recede)/,
+      /^senate: to set for special order$/,
+      /^senate: to take up the order of the day$/,
+      // Simple and concurrent resolutions, whose types the shared kept-types
+      // list already drops; listed so a stray one cannot reach a kept rule.
+      /^house: adopt (?:house resolution|concurrent resolution)$/,
+      /^senate: to adopt the resolution$/,
+    ],
+  },
+
+  // Nevada Legislature, 83rd Session (2025). Nevada meets in odd years only,
+  // so this one regular session is the whole campaign apart from the 36th
+  // Special Session (LegiScan 2233), which is surveyed separately.
+  //
+  // NEVADA TIES NEW YORK FOR THE SMALLEST FLOOR VOCABULARY IN THIS REGISTRY.
+  // The survey of 2026-09-02 read all 1,333 roll calls and found exactly TWO
+  // descriptions: `Senate Final Passage` (670) and `Assembly Final Passage`
+  // (663). There is no third spelling to exclude, which is why
+  // `excludedQuestions` is empty — not an oversight. LegiScan carries no
+  // concurrence, conference-report or veto-override roll for Nevada at all,
+  // and no committee vote: every Assembly roll lists all 42 members and
+  // every Senate roll lists all 21 but one (see the SB 26 note below).
+  //
+  // ⚠ WHAT THE EMPTY VOCABULARY COSTS: because the feed holds only final
+  // passage, a bill the second chamber amended has NO roll on the first
+  // chamber accepting that amendment. The first chamber's only recorded vote
+  // can therefore predate the text that became law. Nevada gives no version
+  // check in the description, so every selected roll needs its version
+  // confirmed against the bill history on the Legislature's own site
+  // (leg.state.nv.us) before it is judged.
+  //
+  // ⚠ NINE bill-and-chamber pairs carry TWO `Final Passage` rolls. They are
+  // reconsider-and-revote pairs, mostly the same day with consecutive roll
+  // call ids (AB 123 Senate 14-7 then 13-8; AB 44 Senate 13-8 then 14-7),
+  // and one where the second vote FAILED (AB 500 Assembly 25-17 then 20-22).
+  // The superseded-stage gate in `rollcall:judge` catches these; the bill
+  // history says which vote stands.
+  //
+  // Feed health is the cleanest tier: 0 repeated roll call ids, 0 identity
+  // duplicates, 0 summary-only rolls, 0 tally mismatches, 0 parse errors and
+  // 0 committee-chamber rolls. Two data notes, both recorded in the
+  // campaign's CODE-FINDINGS.md and neither fixed here:
+  //   1. 46 Nevada bills carry an `A` letter after the number (`SB88A`,
+  //      `AJR6A`). The dataset parser rejects those file names, so the
+  //      survey reports 46 file errors and a non-zero exit. All 46 are dead
+  //      bills with ZERO roll calls, so nothing reachable is lost, but the
+  //      non-zero exit on a Nevada run is expected, not a failure.
+  //   2. One Senate roll lists only 2 of 21 senators (SB 26, roll 1550268,
+  //      recorded 2-0). The small-tally guard classifies it null and
+  //      surfaces it rather than queueing it, which is the wanted outcome.
+  //
+  // Pool measured before any batch was promised: 292 divided floor votes,
+  // of which 104 rolls on 73 measures are on bills that became law. Nevada's
+  // government is divided — a Democratic legislature and a Republican
+  // governor — so a further 145 divided rolls on 79 measures sit on bills he
+  // vetoed. Those are outside the standard divided-and-enacted gate.
+  NV: {
+    jurisdiction: "NV",
+    sessionId: 2144,
+    chamberSizes: { house: 42, senate: 21 },
+    keptQuestions: [
+      // The Assembly's only floor question. LegiScan files Assembly rolls
+      // under chamber code `A`, which `parseLegiscanRollCall` maps to
+      // `house` (the mapping added for California; verified on all 663
+      // Nevada Assembly rolls).
+      { pattern: /^assembly final passage$/, questionClass: "passage" },
+      // The Senate's only floor question.
+      { pattern: /^senate final passage$/, questionClass: "passage" },
+    ],
+    // Nothing to exclude: the survey left NOTHING unmatched, and a Nevada
+    // description that is neither of the two above has never been seen. A
+    // future one would fall through to `unknown_question` and surface, which
+    // is the behaviour we want over a guessed rule.
+    excludedQuestions: [],
+  },
+
+  // Alabama Legislature, 2023 Regular Session. The same legislators as the
+  // 2025 and 2026 sessions: Alabama elects its whole legislature to
+  // four-year terms, so the members elected in November 2022 sit through
+  // 2026 and are the people on the November 2026 ballot. Vocabulary measured
+  // from the full dataset survey 2026-09-02: 1,255 bills, 1,485 roll calls,
+  // 140 people, nothing left unmatched.
+  //
+  // This session predates the caption rewrite, so it uses the 2023
+  // definitions above, NOT the modern ones. It also has no Budget Isolation
+  // Resolution roll calls at all, which is why it stores far fewer votes
+  // than 2024 or 2025 while passing a comparable number of bills.
+  //
+  // 1,003 kept floor votes, of which 28 are divided and 21 of those are on
+  // measures that became law — the largest divided-and-enacted pool of any
+  // Alabama session in scope.
+  "AL-2014": {
+    jurisdiction: "AL",
+    sessionId: 2014,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_2023_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_2023_EXCLUDED_QUESTIONS,
+  },
+
+  // Alabama Legislature, 2023 Second Special Session (July 2023), called to
+  // redraw the congressional map after Allen v. Milligan. Surveyed
+  // 2026-09-02: 39 bills, 26 roll calls, 138 people, nothing unmatched under
+  // the 2023 definitions.
+  //
+  // Only 10 kept floor votes, 4 divided, and 2 of those on the one measure
+  // that became law: SB 5, the reapportionment act, which the Senate passed
+  // 24-8 and then re-passed 24-6 after the House amended it.
+  //
+  // The 2023 FIRST special session (LegiScan 2048) was surveyed the same day
+  // and is deliberately NOT registered: 32 bills, 6 roll calls, 6 kept floor
+  // votes and ZERO divided ones, so it can never contribute a record.
+  "AL-2060": {
+    jurisdiction: "AL",
+    sessionId: 2060,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_2023_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_2023_EXCLUDED_QUESTIONS,
+  },
+
+  // Alabama Legislature, 2024 Regular Session — the transition year, and the
+  // only Alabama session that prints two caption systems at once. See the
+  // 2024 vocabulary above for what that means and why it matters. Vocabulary
+  // measured from the full dataset survey 2026-09-02: 1,229 bills, 2,147
+  // roll calls, 139 people, nothing left unmatched across 111 families.
+  //
+  // 838 kept floor votes, of which 31 are divided and 10 of those are on
+  // measures that became law.
+  "AL-2103": {
+    jurisdiction: "AL",
+    sessionId: 2103,
+    chamberSizes: { house: 105, senate: 35 },
+    keptQuestions: ALABAMA_2024_KEPT_QUESTIONS,
+    excludedQuestions: ALABAMA_2024_EXCLUDED_QUESTIONS,
+  },
+
+  // New York, 2025-2026 General Assembly (both years in one dataset;
+  // surveyed 2026-09-02 over 25,313 bills / 14,737 roll calls / 221 people).
+  //
+  // New York has the smallest floor vocabulary of any state surveyed so far:
+  // EXACTLY TWO descriptions are floor votes, and both say so in words --
+  // `Senate Floor Vote - Final Passage` (3,614 rolls, total 61-63 of 63
+  // seats) and `Assembly Floor Vote - Final Passage` (1,856 rolls, total
+  // 148-150 of 150). Every one of the other 212 description families names a
+  // committee (`Senate Health Committee Vote`, `Assembly Codes Committee:
+  // Favorable refer to committee Rules`), and NOT ONE of them reaches even
+  // 40 votes, so the tally check rejects them all before the queue and this
+  // entry needs no exclusion rules at all. The largest committee is Assembly
+  // Rules at 31 of 150 seats.
+  //
+  // New York prints no concurrence, conference-report or veto-override
+  // question: a bill must pass both houses in identical form, and the second
+  // house substitutes its own companion bill and votes the SAME bill number,
+  // so 234 of the 236 divided-and-enacted measures carry one floor vote per
+  // chamber under a single bill id.
+  //
+  // Constitutional amendments are ordinary bills here (type B), so the
+  // Georgia resolution gap does not recur. The four floor votes on type CR
+  // are the joint sessions that ELECT REGENTS of the University of the State
+  // of New York plus the sine-die resolution -- not measures, and dropped
+  // before this config is read because CR is not a kept bill type.
+  //
+  // Feed health is the cleanest tier: 0 repeated roll call ids, 0
+  // summary-only rolls, 0 tally mismatches against a roll's own member list,
+  // 68 identity-duplicate extras that the fetcher collapses. ONE roll is a
+  // permanent parse error -- roll 1473007 (S 824, Senate, 2025-01-22) says
+  // yea 35 while its member list holds 36 yes votes, so it can never be
+  // stored; a non-zero fetch exit for that single row is expected here.
+  NY: {
+    jurisdiction: "NY",
+    sessionId: 2188,
+    chamberSizes: { house: 150, senate: 63 },
+    keptQuestions: [
+      { pattern: /^assembly floor vote - final passage$/, questionClass: "passage" },
+      { pattern: /^senate floor vote - final passage$/, questionClass: "passage" },
+    ],
+    excludedQuestions: [],
+  },
+
+  // New Mexico Legislature, 2025 Regular Session (60 days, January 21 to
+  // March 22 2025). Vocabulary measured from the full dataset survey
+  // 2026-09-02: 1,328 bills, 571 roll calls, 128 people (70 House seats and
+  // 42 Senate seats plus turnover).
+  //
+  // NEW MEXICO HAS THE SMALLEST VOCABULARY OF ANY STATE IN THIS REGISTRY:
+  // every roll call in the session carries one of exactly two descriptions,
+  // `House Final Passage` (310) and `Senate Final Passage` (254). There is
+  // nothing to exclude, so `excludedQuestions` is deliberately empty, and
+  // both patterns are anchored at both ends so any new spelling in a future
+  // session surfaces for review instead of being classified silently.
+  //
+  // What the survey established:
+  // - The feed carries FINAL PASSAGE ONLY. No bill has more than one roll
+  //   call in the same chamber anywhere in the session (checked over all
+  //   571), so there are no amendment votes, no concurrence votes and no
+  //   conference-report votes to classify or exclude. ⚠ That is a JUDGING
+  //   hazard, not a convenience: when the other chamber amends a bill, the
+  //   vote that accepts the change is simply absent, so a chamber's only
+  //   recorded vote can be on text that is not the text that became law.
+  //   Every selected roll needs its own version check against nmlegis.gov.
+  // - There are no committee votes at all. Every House tally totals 69 or
+  //   70 and every Senate tally totals exactly 42, so nothing lands in the
+  //   small-tally or committee buckets.
+  // - New Mexico proposes CONSTITUTIONAL AMENDMENTS as joint resolutions
+  //   (type JR, which the shared kept-types list already keeps), so the
+  //   Georgia resolution gap does not recur. A joint resolution goes to the
+  //   VOTERS and never to the governor, so a description of one must never
+  //   say it became law.
+  // - MEMORIALS (types M and JM, 88 and 14 bills) also take final-passage
+  //   votes and are dropped before this config by the kept-types list. They
+  //   express the legislature's opinion and change no law.
+  //
+  // Feed health is the cleanest tier: 0 repeated roll call ids, 0 identity
+  // duplicates, 0 summary-only rolls. Three defects are recorded in
+  // evidence/rollcall/legiscan-nm-2187/CODE-FINDINGS.md and none is fixable
+  // here: seven House rolls of 2025-02-27 drop the same member from their
+  // member lists while their header tallies stay right (they fail the parser
+  // and never reach the queue); one Senate roll is stamped 2024-02-10 inside
+  // a 2025 session; and roll 1496261 (House vote on SB 3) stores 42-23 where
+  // the official sheet reads 44-23, with the header and the 69-member list
+  // agreeing with each other, so no parser check can see it. ⚠ That last one
+  // means a clean parse proves nothing about the tally: every roll picked
+  // for a batch is checked against its nmlegis.gov official sheet (date,
+  // yeas, nays, present-not-voting, absent + excused) before judging, and a
+  // mismatch holds the roll — survey/tally-audit.json records the check.
+  NM: {
+    jurisdiction: "NM",
+    sessionId: 2187,
+    chamberSizes: { house: 70, senate: 42 },
+    keptQuestions: [
+      { pattern: /^house final passage$/, questionClass: "passage" },
+      { pattern: /^senate final passage$/, questionClass: "passage" },
+    ],
+    excludedQuestions: [],
   },
 
   // Delaware General Assembly, 153rd (2025-2026). Both years sit in one

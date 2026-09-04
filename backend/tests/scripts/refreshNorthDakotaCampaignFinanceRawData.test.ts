@@ -65,6 +65,8 @@ describe("refreshNorthDakotaCampaignFinanceRawData script", () => {
       fetchCatalog: vi.fn(async () => []),
       refreshBulk: vi.fn(async (input: { kind: string; year: number }) => fakeRefresh(input.kind, input.year)) as never,
       refreshApi: vi.fn(async (input: { year: number }) => fakeRefresh("api_contributions", input.year)) as never,
+      refreshIe: vi.fn(async (input: { year: number }) => fakeRefresh("api_independent_expenditures", input.year)) as never,
+      refreshRegistry: vi.fn(async (input: { electionYear: number }) => fakeRefresh("api_registry", input.electionYear)) as never,
       readBulk: vi.fn(async (input: { year: number }) => ({ csvText: SCHEDULE_CSV[input.year]! })) as never,
       pauseMs: 0,
     });
@@ -82,10 +84,13 @@ describe("refreshNorthDakotaCampaignFinanceRawData script", () => {
       "reporting_schedules:2027",
       "contributions:2025",
       "api_contributions:2025",
+      "api_independent_expenditures:2025",
       "contributions:2026",
       "api_contributions:2026",
+      "api_independent_expenditures:2026",
+      "api_registry:2026",
     ]);
-    expect(result.artifacts).toHaveLength(6);
+    expect(result.artifacts).toHaveLength(9);
   });
 });
 

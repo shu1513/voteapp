@@ -1,0 +1,164 @@
+{
+ "rolls": [
+  {
+   "measure": "AB 956",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725927,
+   "date": "2026-08-25",
+   "yea": 28,
+   "nay": 7,
+   "title": "Accessory dwelling units and junior accessory dwelling units."
+  },
+  {
+   "measure": "AB 963",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1602251,
+   "date": "2025-09-12",
+   "yea": 29,
+   "nay": 8,
+   "title": "Public works: prevailing wages: access to records."
+  },
+  {
+   "measure": "SB 24",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1602142,
+   "date": "2025-09-12",
+   "yea": 29,
+   "nay": 9,
+   "title": "Public utilities: review of accounts: electrical and gas corporations: rates: political influence activities."
+  },
+  {
+   "measure": "SB 313",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601875,
+   "date": "2025-09-11",
+   "yea": 29,
+   "nay": 10,
+   "title": "Vital records: birth certificates."
+  },
+  {
+   "measure": "SB 388",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601733,
+   "date": "2025-09-10",
+   "yea": 32,
+   "nay": 8,
+   "title": "California Latino Commission."
+  },
+  {
+   "measure": "SB 501",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725899,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 10,
+   "title": "Responsible Battery Recycling Act of 2022: covered batteries."
+  },
+  {
+   "measure": "SB 513",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1580526,
+   "date": "2025-05-28",
+   "yea": 29,
+   "nay": 9,
+   "title": "Personnel records."
+  },
+  {
+   "measure": "SB 515",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1581767,
+   "date": "2025-05-29",
+   "yea": 28,
+   "nay": 10,
+   "title": "Local government: collection of demographic data."
+  },
+  {
+   "measure": "SB 703",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1602939,
+   "date": "2025-09-13",
+   "yea": 29,
+   "nay": 8,
+   "title": "Ports: truck drivers."
+  },
+  {
+   "measure": "SB 787",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1602933,
+   "date": "2025-09-13",
+   "yea": 29,
+   "nay": 8,
+   "title": "Energy: equitable clean energy supply chains and industrial policy in California."
+  },
+  {
+   "measure": "SB 1194",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1700179,
+   "date": "2026-05-19",
+   "yea": 30,
+   "nay": 9,
+   "title": "Immigration Legal Fellowship Project."
+  },
+  {
+   "measure": "SB 1196",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725354,
+   "date": "2026-08-18",
+   "yea": 30,
+   "nay": 10,
+   "title": "Small energization projects: electrical service connections."
+  },
+  {
+   "measure": "SB 1255",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726796,
+   "date": "2026-08-28",
+   "yea": 30,
+   "nay": 10,
+   "title": "Postsecondary education: Designation of California Hispanic-Serving Institutions."
+  },
+  {
+   "measure": "SB 1323",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726285,
+   "date": "2026-08-26",
+   "yea": 30,
+   "nay": 10,
+   "title": "Health care providers: patient access: immigration enforcement."
+  },
+  {
+   "measure": "SB 1328",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725746,
+   "date": "2026-08-24",
+   "yea": 30,
+   "nay": 8,
+   "title": "Public postsecondary education: Equity in Higher Education Act: campus contact."
+  },
+  {
+   "measure": "SB 1388",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726874,
+   "date": "2026-08-28",
+   "yea": 30,
+   "nay": 10,
+   "title": "Affordable Housing Risk Reduction Program."
+  }
+ ]
+}

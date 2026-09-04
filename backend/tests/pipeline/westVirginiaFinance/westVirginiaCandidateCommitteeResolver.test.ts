@@ -121,6 +121,104 @@ describe("resolveWestVirginiaCandidateCommittee", () => {
     ]);
   });
 
+  it("accepts a committee still registered as office Undeclared for the same seat", () => {
+    // Live 2026-09-03: Thorne, Darren James | Undeclared 15 — the only 2026
+    // committee for the certified State Senate 15 candidate "Darren J Thorne".
+    const undeclared = committee({
+      entityId: "1010003518",
+      orgID: 3518,
+      orgName: null,
+      candidateName: "Thorne, Darren James",
+      office: "Undeclared",
+      district: "15",
+    });
+    expect(
+      resolveWestVirginiaCandidateCommittee({
+        ...base,
+        districtNumber: 15,
+        candidateName: "Darren J Thorne",
+        committees: [undeclared],
+      })
+    ).toMatchObject({ status: "matched", entityId: "1010003518", committeeName: "Thorne, Darren James" });
+    // Still the exact seat and the exact name.
+    expect(
+      resolveWestVirginiaCandidateCommittee({ ...base, districtNumber: 16, candidateName: "Darren J Thorne", committees: [undeclared] })
+    ).toEqual({ status: "unmatched", reason: "no_matching_committee" });
+    expect(
+      resolveWestVirginiaCandidateCommittee({ ...base, districtNumber: 15, candidateName: "Darren Thorne-Smith", committees: [undeclared] })
+    ).toEqual({ status: "unmatched", reason: "no_matching_committee" });
+    // An Undeclared row carries no chamber, so the same seat number in the
+    // other chamber reaches it too. Accepted on purpose (see the resolver
+    // comment): only a same-named second person on that seat could go wrong,
+    // and the exact-office path does not guard against that either.
+    expect(
+      resolveWestVirginiaCandidateCommittee({
+        ...base,
+        registryOffice: "House of Delegates",
+        districtNumber: 15,
+        candidateName: "Darren J Thorne",
+        committees: [undeclared],
+      })
+    ).toMatchObject({ status: "matched", entityId: "1010003518" });
+  });
+
+  it("treats a declared + undeclared pair for one person as ambiguous", () => {
+    const declared = committee({ entityId: "1010003700", orgID: 3700, candidateName: "Thorne, Darren James", district: "15" });
+    const undeclared = committee({ entityId: "1010003518", orgID: 3518, candidateName: "Thorne, Darren James", office: "Undeclared", district: "15" });
+    const resolution = resolveWestVirginiaCandidateCommittee({
+      ...base,
+      districtNumber: 15,
+      candidateName: "Darren Thorne",
+      committees: [declared, undeclared],
+    });
+    expect(resolution).toMatchObject({ status: "ambiguous", reason: "multiple_matching_committees" });
+  });
+
+  it("reads double-quoted call names as first-name aliases on both sides", () => {
+    // Registry side: `Jeffries, Warren "Dean"` must match the roster's "Dean Jeffries".
+    const jeffries = committee({
+      entityId: "1010003610",
+      orgID: 3610,
+      orgName: "Committee to Elect Dean Jeffries",
+      candidateName: 'Jeffries, Warren "Dean"',
+      office: "House of Delegates",
+      district: "61",
+    });
+    for (const rosterName of ["Dean Jeffries", "Warren Jeffries"]) {
+      expect(
+        resolveWestVirginiaCandidateCommittee({
+          ...base,
+          registryOffice: "House of Delegates",
+          districtNumber: 61,
+          candidateName: rosterName,
+          committees: [jeffries],
+        })
+      ).toMatchObject({ status: "matched", entityId: "1010003610" });
+    }
+    // Roster side: `Carl "Robbie" Martin` vs "Martin, Carl Robert" — the call
+    // name is not a middle name, so it no longer contradicts "Robert".
+    const martin = committee({ entityId: "1010003825", orgID: 3825, orgName: null, candidateName: "Martin, Carl Robert", office: "House of Delegates", district: "65" });
+    expect(
+      resolveWestVirginiaCandidateCommittee({
+        ...base,
+        registryOffice: "House of Delegates",
+        districtNumber: 65,
+        candidateName: 'Carl "Robbie" Martin',
+        committees: [martin],
+      })
+    ).toMatchObject({ status: "matched", entityId: "1010003825" });
+    // A real middle-name contradiction still rejects.
+    expect(
+      resolveWestVirginiaCandidateCommittee({
+        ...base,
+        registryOffice: "House of Delegates",
+        districtNumber: 65,
+        candidateName: 'Carl B. "Robbie" Martin',
+        committees: [martin],
+      })
+    ).toEqual({ status: "unmatched", reason: "no_matching_committee" });
+  });
+
   it("normalizes stored names the Delaware way", () => {
     expect(normalizeWestVirginiaCandidateNameForStorage("José M. O'Neill-Smith, Jr.")).toBe("JOSE M O NEILL SMITH JR");
   });

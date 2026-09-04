@@ -1,0 +1,114 @@
+{
+ "rolls": [
+  {
+   "measure": "AB 1595",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726386,
+   "date": "2026-08-26",
+   "yea": 30,
+   "nay": 8,
+   "title": "Criminal procedure: writs of habeas corpus and motions to vacate."
+  },
+  {
+   "measure": "AB 1629",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726384,
+   "date": "2026-08-26",
+   "yea": 30,
+   "nay": 10,
+   "title": "Dental coverage."
+  },
+  {
+   "measure": "AB 1655",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725655,
+   "date": "2026-08-20",
+   "yea": 28,
+   "nay": 10,
+   "title": "CalWORKs: temporary absence: immigration detention."
+  },
+  {
+   "measure": "AB 1792",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726034,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 9,
+   "title": "Pupil instruction: health framework: sexual health."
+  },
+  {
+   "measure": "AB 1803",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726010,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 8,
+   "title": "Employment: sexual harassment training and education: anti-hate speech training."
+  },
+  {
+   "measure": "AB 1820",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725584,
+   "date": "2026-08-20",
+   "yea": 27,
+   "nay": 10,
+   "title": "Electric vehicle charging stations: permit fees."
+  },
+  {
+   "measure": "AB 1838",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726301,
+   "date": "2026-08-26",
+   "yea": 31,
+   "nay": 9,
+   "title": "Public contracts: local agencies: responsive bidders."
+  },
+  {
+   "measure": "AB 1944",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725362,
+   "date": "2026-08-18",
+   "yea": 31,
+   "nay": 8,
+   "title": "Zero-emission transit buses: axle weight."
+  },
+  {
+   "measure": "AB 1979",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726291,
+   "date": "2026-08-26",
+   "yea": 30,
+   "nay": 9,
+   "title": "Health care services: artificial intelligence."
+  },
+  {
+   "measure": "AB 2011",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725520,
+   "date": "2026-08-20",
+   "yea": 28,
+   "nay": 10,
+   "title": "Nonquantitative treatment limitations."
+  },
+  {
+   "measure": "AB 2164",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726112,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 10,
+   "title": "Legally protected activities."
+  }
+ ]
+}

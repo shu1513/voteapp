@@ -1,0 +1,14 @@
+[
+ {
+  "recordId": "6c49428e-f650-48c8-a6c8-c1324d7c892a",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2060 session batch-02 run: this hand-written record describes the same vote as HB 5 roll 1350857 on 2023-07-19 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2060/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "0f503c06-f1b2-4af2-97b2-910959716ef6",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2060 session batch-02 run: this hand-written record describes the same vote as HB 5 roll 1350857 on 2023-07-19 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2060/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "5eb3ca3a-f05a-441b-9a07-f6b004c460ad",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 2060 session batch-02 run: this hand-written record describes the same vote as HB 5 roll 1350857 on 2023-07-19 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-2060/batch-02/JUDGING.md."
+ }
+]
