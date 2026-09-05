@@ -4,8 +4,8 @@
 
 Each measure was judged from the version its chamber voted, fetched through the LegiScan bulk API and
 verified against the byte length and MD5 hash the dataset records: the engrossed print where one exists,
-the introduced print otherwise. None of these measures is recorded as having become law, and no
-description says one did.
+the introduced print otherwise. The feed records none of these measures as having become law; the one
+that did (SB 46, 2021) is covered below and its description says so.
 
 ## Reading the outcome of each roll, not guessing it
 
@@ -22,8 +22,11 @@ passages, and each of those descriptions says the bill failed rather than report
 
 Two measures in the 2021 regular session, SB 46 and SB 94, passed both chambers and were delivered to
 the Governor, and the dataset records nothing after that. Their LegiScan status is `Enrolled`, not
-`Passed`, which is why they fall outside batch-01. **The descriptions say the bill went to the Governor
-and stop there**, because the feed does not support saying either that it became law or that it died.
+`Passed`, which is why they fall outside batch-01. Because the feed stops at delivery, the outcome was
+taken from the public record: **SB 46 was signed on 2021-05-17 and became Act 2021-450** (the act as
+published by the Alabama Department of Agriculture and Industries, agi.alabama.gov), and **SB 94 was
+vetoed on 2021-05-27** (the Governor's statement on SB 94, governor.alabama.gov). Both descriptions say
+so. A first draft stopped at "went to the Governor"; review caught it and the records were re-imported.
 
 ## Label reasoning
 
@@ -53,4 +56,5 @@ carry a `manual:candidate-records:...` run id.
 `candidateRecordPlainLanguageLint`: 0 warnings, every description 2 to 4 sentences with no sentence over
 45 words. The British-spelling scan again earned its place, catching twelve slips across four sessions
 including `enrol`, `programme`, `licence`, `immunisation`, `penalised`, `authorise` and `behaviour`, all
-corrected. Reading-grade medians run 9.5 to 11.3.
+corrected. Review then found twelve more the scan had missed (`maths`, `licences`, `offences`, `offence`,
+`counselling`); those were corrected and the records re-imported. Reading-grade medians run 9.5 to 11.3.
