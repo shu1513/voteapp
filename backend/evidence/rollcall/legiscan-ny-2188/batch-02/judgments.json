@@ -1,0 +1,202 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NY",
+   "chamber": "house",
+   "session": "2188",
+   "roll": 1536285,
+   "measure_id": "A 1820",
+   "vote_date": "2025-04-02",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 1820, which clears racist language out of property deeds. Many old deeds still carry covenants barring sale to people of a certain race or religion. Those promises already cannot be enforced, but the words stay in the public record. The bill makes a seller file a form striking that language before or at closing, and the county charges no fee for it. Condo boards, co-op boards and homeowner associations must clean their own recorded documents within a year, without asking owners. Any owner may file the form themselves. The bill does not void the covenants and does not block a sale, and it carries no penalty. The New York Assembly passed it 100-48. It became law.",
+   "nay_description": "Voted against Assembly Bill 1820, which clears racist language out of property deeds. Many old deeds still carry covenants barring sale to people of a certain race or religion. Those promises already cannot be enforced, but the words stay in the public record. The bill makes a seller file a form striking that language before or at closing, and the county charges no fee for it. Condo boards, co-op boards and homeowner associations must clean their own recorded documents within a year, without asking owners. Any owner may file the form themselves. The bill does not void the covenants and does not block a sale, and it carries no penalty. The New York Assembly passed it 100-48. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "senate",
+   "session": "2188",
+   "roll": 1589185,
+   "measure_id": "A 1820",
+   "vote_date": "2025-06-11",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 1820, which clears racist language out of property deeds. Many old deeds still carry covenants barring sale to people of a certain race or religion. Those promises already cannot be enforced, but the words stay in the public record. The bill makes a seller file a form striking that language before or at closing, and the county charges no fee for it. Condo boards, co-op boards and homeowner associations must clean their own recorded documents within a year, without asking owners. Any owner may file the form themselves. The bill does not void the covenants and does not block a sale, and it carries no penalty. The New York Senate passed it 47-12. It became law.",
+   "nay_description": "Voted against Assembly Bill 1820, which clears racist language out of property deeds. Many old deeds still carry covenants barring sale to people of a certain race or religion. Those promises already cannot be enforced, but the words stay in the public record. The bill makes a seller file a form striking that language before or at closing, and the county charges no fee for it. Condo boards, co-op boards and homeowner associations must clean their own recorded documents within a year, without asking owners. Any owner may file the form themselves. The bill does not void the covenants and does not block a sale, and it carries no penalty. The New York Senate passed it 47-12. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "house",
+   "session": "2188",
+   "roll": 1571864,
+   "measure_id": "A 387",
+   "vote_date": "2025-05-14",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 387, which makes hospitals help patients who do not speak English well. Every general hospital must run a language assistance program and name someone to run it. Interpreters must be free to the patient, and signs at public entrances must say so. Staff who deal with patients must be trained, and the patient's preferred language goes in the medical record. A hospital may not use a family member as the interpreter unless the patient agrees after being offered a free one. Forms must be translated for any language group that is more than one percent of the area the hospital serves. The rules reach general hospitals only, not clinics or doctors' offices, and the law names no penalty. The New York Assembly passed it 113-34. It became law.",
+   "nay_description": "Voted against Assembly Bill 387, which makes hospitals help patients who do not speak English well. Every general hospital must run a language assistance program and name someone to run it. Interpreters must be free to the patient, and signs at public entrances must say so. Staff who deal with patients must be trained, and the patient's preferred language goes in the medical record. A hospital may not use a family member as the interpreter unless the patient agrees after being offered a free one. Forms must be translated for any language group that is more than one percent of the area the hospital serves. The rules reach general hospitals only, not clinics or doctors' offices, and the law names no penalty. The New York Assembly passed it 113-34. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "house",
+   "session": "2188",
+   "roll": 1589090,
+   "measure_id": "S 123",
+   "vote_date": "2025-06-10",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 123, which bans the sale of infant walkers in New York. An infant walker is a seat on a wheeled frame that lets a baby scoot across the floor. No shop, wholesaler or secondhand dealer may sell or lease one. Child care centers may not keep one either, unless a medical professional says a particular child needs it. Parents may still own and use one at home, and owning one is not an offense. The Attorney General can go to court to stop a seller, and a judge may fine up to $500 for each sale. The New York Assembly passed it 97-49. It became law.",
+   "nay_description": "Voted against Senate Bill 123, which bans the sale of infant walkers in New York. An infant walker is a seat on a wheeled frame that lets a baby scoot across the floor. No shop, wholesaler or secondhand dealer may sell or lease one. Child care centers may not keep one either, unless a medical professional says a particular child needs it. Parents may still own and use one at home, and owning one is not an offense. The Attorney General can go to court to stop a seller, and a judge may fine up to $500 for each sale. The New York Assembly passed it 97-49. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "house",
+   "session": "2188",
+   "roll": 1589619,
+   "measure_id": "S 1353",
+   "vote_date": "2025-06-11",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 1353, which helps people forced into debt by an abuser. Coerced debt means a debt someone took on through force, threats, fraud or being kept in the dark. A debtor tells the creditor which debt is coerced and backs it with a police report, an identity theft report, a court order or a sworn statement from a professional such as a doctor, lawyer or social worker. The creditor must then stop collecting while it reviews the claim, and flag the account as disputed. A debtor can also go to court for a ruling, or raise it as a defense if sued. The creditor may still collect from anyone else, may sue the abuser, and may start again if it explains why. The debtor has to prove the debt is coerced. The New York Assembly passed it 96-50. It became law.",
+   "nay_description": "Voted against Senate Bill 1353, which helps people forced into debt by an abuser. Coerced debt means a debt someone took on through force, threats, fraud or being kept in the dark. A debtor tells the creditor which debt is coerced and backs it with a police report, an identity theft report, a court order or a sworn statement from a professional such as a doctor, lawyer or social worker. The creditor must then stop collecting while it reviews the claim, and flag the account as disputed. A debtor can also go to court for a ruling, or raise it as a defense if sued. The creditor may still collect from anyone else, may sue the abuser, and may start again if it explains why. The debtor has to prove the debt is coerced. The New York Assembly passed it 96-50. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "house",
+   "session": "2188",
+   "roll": 1592527,
+   "measure_id": "S 2551",
+   "vote_date": "2025-06-17",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 2551, which raises the fines a court may impose on a company convicted of a crime. The ceiling for a felony goes from $10,000 to $80,000. For the more serious class of misdemeanor it goes from $5,000 to $40,000, and for the lesser class from $2,000 to $15,000. For a violation, the lowest tier, it goes from $500 to $4,000. A judge may instead fine up to three times what the company gained, where the old limit was double. The change reaches companies only, not people, and only where no other law sets its own company fine. The New York Assembly passed it 107-33. It became law.",
+   "nay_description": "Voted against Senate Bill 2551, which raises the fines a court may impose on a company convicted of a crime. The ceiling for a felony goes from $10,000 to $80,000. For the more serious class of misdemeanor it goes from $5,000 to $40,000, and for the lesser class from $2,000 to $15,000. For a violation, the lowest tier, it goes from $500 to $4,000. A judge may instead fine up to three times what the company gained, where the old limit was double. The change reaches companies only, not people, and only where no other law sets its own company fine. The New York Assembly passed it 107-33. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "senate",
+   "session": "2188",
+   "roll": 1527071,
+   "measure_id": "S 2551",
+   "vote_date": "2025-03-25",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 2551, which raises the fines a court may impose on a company convicted of a crime. The ceiling for a felony goes from $10,000 to $80,000. For the more serious class of misdemeanor it goes from $5,000 to $40,000, and for the lesser class from $2,000 to $15,000. For a violation, the lowest tier, it goes from $500 to $4,000. A judge may instead fine up to three times what the company gained, where the old limit was double. The change reaches companies only, not people, and only where no other law sets its own company fine. The New York Senate passed it 42-20. It became law.",
+   "nay_description": "Voted against Senate Bill 2551, which raises the fines a court may impose on a company convicted of a crime. The ceiling for a felony goes from $10,000 to $80,000. For the more serious class of misdemeanor it goes from $5,000 to $40,000, and for the lesser class from $2,000 to $15,000. For a violation, the lowest tier, it goes from $500 to $4,000. A judge may instead fine up to three times what the company gained, where the old limit was double. The change reaches companies only, not people, and only where no other law sets its own company fine. The New York Senate passed it 42-20. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "house",
+   "session": "2188",
+   "roll": 1592223,
+   "measure_id": "S 4914",
+   "vote_date": "2025-06-16",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 4914, which shields people who give or get reproductive and gender-affirming care from other states' courts. It gathers scattered protections under one definition and drops the rule that the care had to happen in New York. Anyone asking a New York court to help an out-of-state case must swear it is not about punishing that care, and a false oath costs $15,000. A New York business holding records may not answer an out-of-state demand without that oath, and must tell the Attorney General within 72 hours. Police may not make an arrest over it, doctors and lawyers may not be disciplined for it, and insurers may not retaliate. A family court may not take a child away because a parent allowed this care. The bill does not change who may get care or what a doctor may do. The New York Assembly passed it 94-50. It became law.",
+   "nay_description": "Voted against Senate Bill 4914, which shields people who give or get reproductive and gender-affirming care from other states' courts. It gathers scattered protections under one definition and drops the rule that the care had to happen in New York. Anyone asking a New York court to help an out-of-state case must swear it is not about punishing that care, and a false oath costs $15,000. A New York business holding records may not answer an out-of-state demand without that oath, and must tell the Attorney General within 72 hours. Police may not make an arrest over it, doctors and lawyers may not be disciplined for it, and insurers may not retaliate. A family court may not take a child away because a parent allowed this care. The bill does not change who may get care or what a doctor may do. The New York Assembly passed it 94-50. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "senate",
+   "session": "2188",
+   "roll": 1575829,
+   "measure_id": "S 4914",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 4914, which shields people who give or get reproductive and gender-affirming care from other states' courts. It gathers scattered protections under one definition and drops the rule that the care had to happen in New York. Anyone asking a New York court to help an out-of-state case must swear it is not about punishing that care, and a false oath costs $15,000. A New York business holding records may not answer an out-of-state demand without that oath, and must tell the Attorney General within 72 hours. Police may not make an arrest over it, doctors and lawyers may not be disciplined for it, and insurers may not retaliate. A family court may not take a child away because a parent allowed this care. The bill does not change who may get care or what a doctor may do. The New York Senate passed it 37-20. It became law.",
+   "nay_description": "Voted against Senate Bill 4914, which shields people who give or get reproductive and gender-affirming care from other states' courts. It gathers scattered protections under one definition and drops the rule that the care had to happen in New York. Anyone asking a New York court to help an out-of-state case must swear it is not about punishing that care, and a false oath costs $15,000. A New York business holding records may not answer an out-of-state demand without that oath, and must tell the Attorney General within 72 hours. Police may not make an arrest over it, doctors and lawyers may not be disciplined for it, and insurers may not retaliate. A family court may not take a child away because a parent allowed this care. The bill does not change who may get care or what a doctor may do. The New York Senate passed it 37-20. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "senate",
+   "session": "2188",
+   "roll": 1590406,
+   "measure_id": "S 8311",
+   "vote_date": "2025-06-12",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 8311, which makes the New York City Housing Authority put its succession rules in writing. Succession is a household member taking over the lease when the named tenant dies or moves out for good. The authority must keep written policies covering who qualifies, any move that follows, paying for the apartment while a claim is decided, and the right to complain if it says no. It must give 30 days notice and take comments before changing them. The bill gives nobody a succession right and leaves who qualifies to the authority itself. The New York Senate passed it 45-14. It became law.",
+   "nay_description": "Voted against Senate Bill 8311, which makes the New York City Housing Authority put its succession rules in writing. Succession is a household member taking over the lease when the named tenant dies or moves out for good. The authority must keep written policies covering who qualifies, any move that follows, paying for the apartment while a claim is decided, and the right to complain if it says no. It must give 30 days notice and take comments before changing them. The bill gives nobody a succession right and leaves who qualifies to the authority itself. The New York Senate passed it 45-14. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "house",
+   "session": "2188",
+   "roll": 1592494,
+   "measure_id": "S 8420",
+   "vote_date": "2025-06-17",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 8420, which makes advertisers say when a person in an ad is not real. A synthetic performer is a figure built by computer to look like a human performer who is nobody real. A business that makes an ad and knows one is in it must say so clearly, in the ad itself. The fine is $1,000 the first time and $5,000 after that. The rule falls on whoever makes the ad, not on the paper, channel or platform that carries it. Audio-only ads are exempt, as is using the technology just to translate a real person's words. Ads for films, television, streaming and video games are exempt only when the synthetic performer is used in the ad the same way it is used in the work itself. The New York Assembly passed it 92-49. It became law.",
+   "nay_description": "Voted against Senate Bill 8420, which makes advertisers say when a person in an ad is not real. A synthetic performer is a figure built by computer to look like a human performer who is nobody real. A business that makes an ad and knows one is in it must say so clearly, in the ad itself. The fine is $1,000 the first time and $5,000 after that. The rule falls on whoever makes the ad, not on the paper, channel or platform that carries it. Audio-only ads are exempt, as is using the technology just to translate a real person's words. Ads for films, television, streaming and video games are exempt only when the synthetic performer is used in the ad the same way it is used in the work itself. The New York Assembly passed it 92-49. It became law."
+  }
+ ]
+}

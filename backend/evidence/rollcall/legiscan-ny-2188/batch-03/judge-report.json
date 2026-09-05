@@ -1,0 +1,66 @@
+{
+  "judgmentsFile": "/Users/shu/voteApp/.claude/worktrees/focused-hofstadter-3ebce2/backend/evidence/rollcall/legiscan-ny-2188/batch-03/judgments.json",
+  "dryRun": false,
+  "judgments": 8,
+  "counts": {
+    "updated": 8
+  },
+  "rows": [
+    {
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1590519,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1589368,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1589668,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1589349,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1589424,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1592516,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1522289,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1478801,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NY",
+   "chamber": "senate",
+   "session": "2188",
+   "roll": 1590519,
+   "measure_id": "A 584",
+   "vote_date": "2025-06-12",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 584, which bans contracts that make a worker pay to quit. Some employers ask staff to sign a promise to repay training costs if they leave before a set date. The bill makes those promises void and unenforceable, and says an employer may not require one. A worker sued over such a promise can recover their legal fees. The labor commissioner must fine an employer between $1,000 and $5,000, counted separately for each worker. Plain repayment of a cash advance, or of property the employer sold the worker, still stands, as do deals agreed with a union. The New York Senate passed it 38-21. It became law.",
+   "nay_description": "Voted against Assembly Bill 584, which bans contracts that make a worker pay to quit. Some employers ask staff to sign a promise to repay training costs if they leave before a set date. The bill makes those promises void and unenforceable, and says an employer may not require one. A worker sued over such a promise can recover their legal fees. The labor commissioner must fine an employer between $1,000 and $5,000, counted separately for each worker. Plain repayment of a cash advance, or of property the employer sold the worker, still stands, as do deals agreed with a union. The New York Senate passed it 38-21. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "senate",
+   "session": "2188",
+   "roll": 1589368,
+   "measure_id": "A 6558",
+   "vote_date": "2025-06-11",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 6558, which makes food shops label allergens on food they pack themselves. The label must name any major food allergen in the item. Those are milk, eggs, fish, shellfish, tree nuts, wheat, peanuts, sesame and soybeans. It covers delis, bakeries, sandwich shops, cafeterias, food trucks and grocery stores. The rule reaches only food prepared and packed on the same premises. Loose food, and food packed after a customer orders it, are left out. The New York Senate passed it 47-12. It became law.",
+   "nay_description": "Voted against Assembly Bill 6558, which makes food shops label allergens on food they pack themselves. The label must name any major food allergen in the item. Those are milk, eggs, fish, shellfish, tree nuts, wheat, peanuts, sesame and soybeans. It covers delis, bakeries, sandwich shops, cafeterias, food trucks and grocery stores. The rule reaches only food prepared and packed on the same premises. Loose food, and food packed after a customer orders it, are left out. The New York Senate passed it 47-12. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "house",
+   "session": "2188",
+   "roll": 1589668,
+   "measure_id": "S 1069",
+   "vote_date": "2025-06-11",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 1069, which bars drilling for oil and gas on more state land. State law already kept gas and oil work off state park land and the coastal district. The bill adds state forests, reforestation areas, wildlife management areas and unique areas to that list. It covers looking for, developing and producing gas and oil. It reaches state-owned land in those categories only, not private land. The New York Assembly passed it 91-48. It became law.",
+   "nay_description": "Voted against Senate Bill 1069, which bars drilling for oil and gas on more state land. State law already kept gas and oil work off state park land and the coastal district. The bill adds state forests, reforestation areas, wildlife management areas and unique areas to that list. It covers looking for, developing and producing gas and oil. It reaches state-owned land in those categories only, not private land. The New York Assembly passed it 91-48. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "senate",
+   "session": "2188",
+   "roll": 1589349,
+   "measure_id": "S 3294",
+   "vote_date": "2025-06-11",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 3294, which makes medical cannabis easier to get in New York. The registry card is abolished, so a patient shows the doctor's certification and a photo ID at the dispensary. A certification now lasts two years instead of one, and a doctor may extend or reissue it. A doctor no longer has to check the prescription monitoring database before certifying a patient. The age to grow at home, or to act as a caregiver, drops from 21 to 18. Patients from other states may buy at New York dispensaries. A photo ID is checked at every sale, records must follow federal privacy law, and knowingly tampering with patient data becomes a crime. The New York Senate passed it 39-20. It became law.",
+   "nay_description": "Voted against Senate Bill 3294, which makes medical cannabis easier to get in New York. The registry card is abolished, so a patient shows the doctor's certification and a photo ID at the dispensary. A certification now lasts two years instead of one, and a doctor may extend or reissue it. A doctor no longer has to check the prescription monitoring database before certifying a patient. The age to grow at home, or to act as a caregiver, drops from 21 to 18. Patients from other states may buy at New York dispensaries. A photo ID is checked at every sale, records must follow federal privacy law, and knowingly tampering with patient data becomes a crime. The New York Senate passed it 39-20. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "house",
+   "session": "2188",
+   "roll": 1589424,
+   "measure_id": "S 4906",
+   "vote_date": "2025-06-11",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 4906, which lets assault victims give their statement at work instead of at a police station. It applies where the workplace was the scene of the assault and is a hospital, an emergency medical facility, a nursing home, another residential health care facility, or a mental health facility. The choice belongs to the victim. Officers must tell the victim about it when they have reason to believe the attack was second-degree assault. The New York Assembly passed it 105-41. It became law.",
+   "nay_description": "Voted against Senate Bill 4906, which lets assault victims give their statement at work instead of at a police station. It applies where the workplace was the scene of the assault and is a hospital, an emergency medical facility, a nursing home, another residential health care facility, or a mental health facility. The choice belongs to the victim. Officers must tell the victim about it when they have reason to believe the attack was second-degree assault. The New York Assembly passed it 105-41. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "house",
+   "session": "2188",
+   "roll": 1592516,
+   "measure_id": "S 6997",
+   "vote_date": "2025-06-17",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 6997, which sets up a way to report unsafe work on utility poles. Pole owners and anyone attaching equipment must file, electronically, who owns what is on a pole and which contractor is working on it. The Public Service Commission must run a public online complaint form for the public and for telecoms workers. It must inspect a reported complaint within two weeks and decide whether a rule was broken. A party usually gets a week to put a violation right before any fine, but the commission can shorten or extend that time. Fines are ceilings, not set amounts: up to $20,000 for a first violation and up to $50,000 for a second. Breaking the commission's one-touch make-ready rules, which let a single crew move every company's lines on a pole in one visit, brings a fine of up to $20,000 with no time to fix it first. Anyone seeking a permit to work in a public right of way must also tell the local government every contractor doing the work. The New York Assembly passed it 111-31. It became law.",
+   "nay_description": "Voted against Senate Bill 6997, which sets up a way to report unsafe work on utility poles. Pole owners and anyone attaching equipment must file, electronically, who owns what is on a pole and which contractor is working on it. The Public Service Commission must run a public online complaint form for the public and for telecoms workers. It must inspect a reported complaint within two weeks and decide whether a rule was broken. A party usually gets a week to put a violation right before any fine, but the commission can shorten or extend that time. Fines are ceilings, not set amounts: up to $20,000 for a first violation and up to $50,000 for a second. Breaking the commission's one-touch make-ready rules, which let a single crew move every company's lines on a pole in one visit, brings a fine of up to $20,000 with no time to fix it first. Anyone seeking a permit to work in a public right of way must also tell the local government every contractor doing the work. The New York Assembly passed it 111-31. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "house",
+   "session": "2188",
+   "roll": 1522289,
+   "measure_id": "S 745",
+   "vote_date": "2025-03-19",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 745, which takes ammunition sellers out of a card-tracking rule. A 2024 law made payment card networks give gun and ammunition sellers their own merchant code, so those purchases can be told apart. The bill removes dealers of ammunition from that rule. The code still applies to licensed firearms dealers. A firearms dealer that also sells ammunition is still covered. Every other state and federal rule on selling ammunition is unchanged. The New York Assembly passed it 96-52. It became law.",
+   "nay_description": "Voted against Senate Bill 745, which takes ammunition sellers out of a card-tracking rule. A 2024 law made payment card networks give gun and ammunition sellers their own merchant code, so those purchases can be told apart. The bill removes dealers of ammunition from that rule. The code still applies to licensed firearms dealers. A firearms dealer that also sells ammunition is still covered. Every other state and federal rule on selling ammunition is unchanged. The New York Assembly passed it 96-52. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "senate",
+   "session": "2188",
+   "roll": 1478801,
+   "measure_id": "S 745",
+   "vote_date": "2025-02-03",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 745, which takes ammunition sellers out of a card-tracking rule. A 2024 law made payment card networks give gun and ammunition sellers their own merchant code, so those purchases can be told apart. The bill removes dealers of ammunition from that rule. The code still applies to licensed firearms dealers. A firearms dealer that also sells ammunition is still covered. Every other state and federal rule on selling ammunition is unchanged. The New York Senate passed it 46-17. It became law.",
+   "nay_description": "Voted against Senate Bill 745, which takes ammunition sellers out of a card-tracking rule. A 2024 law made payment card networks give gun and ammunition sellers their own merchant code, so those purchases can be told apart. The bill removes dealers of ammunition from that rule. The code still applies to licensed firearms dealers. A firearms dealer that also sells ammunition is still covered. Every other state and federal rule on selling ammunition is unchanged. The New York Senate passed it 46-17. It became law."
+  }
+ ]
+}
