@@ -1,0 +1,306 @@
+{
+  "jurisdiction": "GA",
+  "sessionId": 2008,
+  "chamber": "senate",
+  "rollNumber": 1288670,
+  "bill": "SB44",
+  "measureId": "SB 44",
+  "machineUrl": "https://legiscan.com/GA/rollcall/SB44/id/1288670",
+  "fetchedAt": "2026-09-05T03:31:34.553Z",
+  "rollCall": {
+    "roll_call_id": 1288670,
+    "bill_id": 1686571,
+    "date": "2023-03-29",
+    "desc": "Agree To House Substitute: Senate Vote #368",
+    "yea": 30,
+    "nay": 20,
+    "nv": 3,
+    "absent": 3,
+    "total": 56,
+    "passed": 1,
+    "chamber": "S",
+    "chamber_id": 30,
+    "votes": [
+      {
+        "people_id": 1782,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 1884,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 1931,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 1969,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 1974,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 1982,
+        "vote_id": 3,
+        "vote_text": "NV"
+      },
+      {
+        "people_id": 1993,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 1995,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 1999,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 2006,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 2008,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 2013,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 11785,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 11786,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 11788,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 11792,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 11926,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 11927,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 15155,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 15156,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 15161,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 15169,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 15198,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 15201,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 16730,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 16731,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 16732,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 16735,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 17843,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 18708,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 18709,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 18899,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 19105,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 19498,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 20734,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 20735,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 20737,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 20738,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 20842,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 20985,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 21619,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 22295,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 22297,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 22298,
+        "vote_id": 3,
+        "vote_text": "NV"
+      },
+      {
+        "people_id": 22299,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 22300,
+        "vote_id": 3,
+        "vote_text": "NV"
+      },
+      {
+        "people_id": 22301,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 22302,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 22303,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 22305,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 22338,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 23944,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 23945,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 23973,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 23974,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 23975,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      }
+    ]
+  }
+}

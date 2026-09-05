@@ -1,0 +1,295 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2008",
+   "roll": 1412627,
+   "measure_id": "HB 1015",
+   "vote_date": "2024-03-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1015. It cut Georgia's personal income tax rate for 2024 from 5.49 percent to 5.39 percent, and it keeps cutting the rate a tenth of a point each year until it reaches 4.99 percent. Each later cut is put off a year whenever the state's finances fall short of set targets. The Georgia Senate passed it 40-12, and it became law.",
+   "nay_description": "Voted against HB 1015. It cut Georgia's personal income tax rate for 2024 from 5.49 percent to 5.39 percent, and it keeps cutting the rate a tenth of a point each year until it reaches 4.99 percent. Each later cut is put off a year whenever the state's finances fall short of set targets. The Georgia Senate passed it 40-12, and it became law.",
+   "labels": [
+    {
+     "slug": "personal_income_tax_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2008",
+   "roll": 1397045,
+   "measure_id": "HB 1018",
+   "vote_date": "2024-02-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1018. It bars banks and card networks from using a special merchant code that marks a business as a gun shop, and from sharing customers' gun-related purchase records. It also bars anyone, including government, from keeping a registry of guns or gun owners. The Georgia House passed it 106-60, and it became law.",
+   "nay_description": "Voted against HB 1018. It bars banks and card networks from using a special merchant code that marks a business as a gun shop, and from sharing customers' gun-related purchase records. It also bars anyone, including government, from keeping a registry of guns or gun owners. The Georgia House passed it 106-60, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2008",
+   "roll": 1416002,
+   "measure_id": "HB 1018",
+   "vote_date": "2024-03-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1018. It bars banks and card networks from using a special merchant code that marks a business as a gun shop, and from sharing customers' gun-related purchase records. It also bars anyone, including government, from keeping a registry of guns or gun owners. The Georgia Senate passed it 33-19, and it became law.",
+   "nay_description": "Voted against HB 1018. It bars banks and card networks from using a special merchant code that marks a business as a gun shop, and from sharing customers' gun-related purchase records. It also bars anyone, including government, from keeping a registry of guns or gun owners. The Georgia Senate passed it 33-19, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2008",
+   "roll": 1417511,
+   "measure_id": "HB 1105",
+   "vote_date": "2024-03-28",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the final version of HB 1105. It requires jails to check the immigration status of the people they book and to honor federal immigration detainer requests. It requires local police agencies to seek working agreements with federal immigration officers, and it adds penalties for local governments that adopt sanctuary policies. The Georgia House agreed it 99-75, and it became law.",
+   "nay_description": "Voted against the final version of HB 1105. It requires jails to check the immigration status of the people they book and to honor federal immigration detainer requests. It requires local police agencies to seek working agreements with federal immigration officers, and it adds penalties for local governments that adopt sanctuary policies. The Georgia House agreed it 99-75, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2008",
+   "roll": 1413965,
+   "measure_id": "HB 1105",
+   "vote_date": "2024-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1105. It requires jails to check the immigration status of the people they book and to honor federal immigration detainer requests. It requires local police agencies to seek working agreements with federal immigration officers, and it adds penalties for local governments that adopt sanctuary policies. The Georgia Senate passed it 34-19, and it became law.",
+   "nay_description": "Voted against HB 1105. It requires jails to check the immigration status of the people they book and to honor federal immigration detainer requests. It requires local police agencies to seek working agreements with federal immigration officers, and it adds penalties for local governments that adopt sanctuary policies. The Georgia Senate passed it 34-19, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2008",
+   "roll": 1277752,
+   "measure_id": "SB 140",
+   "vote_date": "2023-03-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 140. It bans hormone replacement therapy and sex reassignment surgery for minors being treated for gender dysphoria, both in licensed hospitals and by doctors, with limited exceptions. A facility that breaks the ban can lose its permit. The Georgia House passed it 96-75, and it became law.",
+   "nay_description": "Voted against SB 140. It bans hormone replacement therapy and sex reassignment surgery for minors being treated for gender dysphoria, both in licensed hospitals and by doctors, with limited exceptions. A facility that breaks the ban can lose its permit. The Georgia House passed it 96-75, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2008",
+   "roll": 1280757,
+   "measure_id": "SB 140",
+   "vote_date": "2023-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the final version of SB 140. It bans hormone replacement therapy and sex reassignment surgery for minors being treated for gender dysphoria, both in licensed hospitals and by doctors, with limited exceptions. A facility that breaks the ban can lose its permit. The Georgia Senate agreed it 31-21, and it became law.",
+   "nay_description": "Voted against the final version of SB 140. It bans hormone replacement therapy and sex reassignment surgery for minors being treated for gender dysphoria, both in licensed hospitals and by doctors, with limited exceptions. A facility that breaks the ban can lose its permit. The Georgia Senate agreed it 31-21, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2008",
+   "roll": 1286179,
+   "measure_id": "SB 222",
+   "vote_date": "2023-03-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 222. It bars county and city governments and election officials from taking donations, grants or gifts to help run elections, so election costs come only from public money. It also makes the State Election Board its own state agency with its own director, no longer run through the Secretary of State's office. The Georgia House passed it 100-69, and it became law.",
+   "nay_description": "Voted against SB 222. It bars county and city governments and election officials from taking donations, grants or gifts to help run elections, so election costs come only from public money. It also makes the State Election Board its own state agency with its own director, no longer run through the Secretary of State's office. The Georgia House passed it 100-69, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1286178
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2008",
+   "roll": 1288706,
+   "measure_id": "SB 222",
+   "vote_date": "2023-03-29",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the final version of SB 222. It bars county and city governments and election officials from taking donations, grants or gifts to help run elections, so election costs come only from public money. It also makes the State Election Board its own state agency with its own director, no longer run through the Secretary of State's office. The Georgia Senate agreed it 32-21, and it became law.",
+   "nay_description": "Voted against the final version of SB 222. It bars county and city governments and election officials from taking donations, grants or gifts to help run elections, so election costs come only from public money. It also makes the State Election Board its own state agency with its own director, no longer run through the Secretary of State's office. The Georgia Senate agreed it 32-21, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2008",
+   "roll": 1417436,
+   "measure_id": "SB 351",
+   "vote_date": "2024-03-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 351. It bars social media companies from letting a minor hold an account without a parent's clear consent. It also makes public schools adopt social media policies and use internet filters, and it lets the state hold back school money when those filters fall short. The Georgia House passed it 120-45, and it became law.",
+   "nay_description": "Voted against SB 351. It bars social media companies from letting a minor hold an account without a parent's clear consent. It also makes public schools adopt social media policies and use internet filters, and it lets the state hold back school money when those filters fall short. The Georgia House passed it 120-45, and it became law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2008",
+   "roll": 1413998,
+   "measure_id": "SB 420",
+   "vote_date": "2024-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 420. It bars people acting for governments the United States lists as foreign adversaries, and companies based in or largely owned from those countries, from buying farmland in Georgia. The final version also added transfer-on-death deeds, which let an owner name who gets a property when the owner dies. The Georgia House passed it 97-67, and it became law.",
+   "nay_description": "Voted against SB 420. It bars people acting for governments the United States lists as foreign adversaries, and companies based in or largely owned from those countries, from buying farmland in Georgia. The final version also added transfer-on-death deeds, which let an owner name who gets a property when the owner dies. The Georgia House passed it 97-67, and it became law.",
+   "labels": [
+    {
+     "slug": "national_defense",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2008",
+   "roll": 1415971,
+   "measure_id": "SB 420",
+   "vote_date": "2024-03-26",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the final version of SB 420. It bars people acting for governments the United States lists as foreign adversaries, and companies based in or largely owned from those countries, from buying farmland in Georgia. The final version also added transfer-on-death deeds, which let an owner name who gets a property when the owner dies. The Georgia Senate agreed it 41-11, and it became law.",
+   "nay_description": "Voted against the final version of SB 420. It bars people acting for governments the United States lists as foreign adversaries, and companies based in or largely owned from those countries, from buying farmland in Georgia. The final version also added transfer-on-death deeds, which let an owner name who gets a property when the owner dies. The Georgia Senate agreed it 41-11, and it became law.",
+   "labels": [
+    {
+     "slug": "national_defense",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2008",
+   "roll": 1279364,
+   "measure_id": "SB 44",
+   "vote_date": "2023-03-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 44. It sets a prison term of at least five years, and up to 20, for recruiting someone into a criminal street gang. The term must be served on top of any other sentence and cannot be probated, and prosecutors may appeal when a judge goes below it. The Georgia House passed it 99-74, and it became law.",
+   "nay_description": "Voted against SB 44. It sets a prison term of at least five years, and up to 20, for recruiting someone into a criminal street gang. The term must be served on top of any other sentence and cannot be probated, and prosecutors may appeal when a judge goes below it. The Georgia House passed it 99-74, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2008",
+   "roll": 1288670,
+   "measure_id": "SB 44",
+   "vote_date": "2023-03-29",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the final version of SB 44. It sets a prison term of at least five years, and up to 20, for recruiting someone into a criminal street gang. The term must be served on top of any other sentence and cannot be probated, and prosecutors may appeal when a judge goes below it. The Georgia Senate agreed it 30-20, and it became law.",
+   "nay_description": "Voted against the final version of SB 44. It sets a prison term of at least five years, and up to 20, for recruiting someone into a criminal street gang. The term must be served on top of any other sentence and cannot be probated, and prosecutors may appeal when a judge goes below it. The Georgia Senate agreed it 30-20, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2008",
+   "roll": 1377795,
+   "measure_id": "SB 63",
+   "vote_date": "2024-02-06",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the compromise version of SB 63. It requires money bail for a longer list of offenses and limits release without money. It also caps at three a year the number of cash bonds any person, charity or group may post, and makes groups that raise money to bail people out meet the same rules as professional bail companies. The Georgia House adopted it 97-69, and it became law.",
+   "nay_description": "Voted against the compromise version of SB 63. It requires money bail for a longer list of offenses and limits release without money. It also caps at three a year the number of cash bonds any person, charity or group may post, and makes groups that raise money to bail people out meet the same rules as professional bail companies. The Georgia House adopted it 97-69, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2008",
+   "roll": 1374259,
+   "measure_id": "SB 63",
+   "vote_date": "2024-02-01",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the compromise version of SB 63. It requires money bail for a longer list of offenses and limits release without money. It also caps at three a year the number of cash bonds any person, charity or group may post, and makes groups that raise money to bail people out meet the same rules as professional bail companies. The Georgia Senate adopted it 30-17, and it became law.",
+   "nay_description": "Voted against the compromise version of SB 63. It requires money bail for a longer list of offenses and limits release without money. It also caps at three a year the number of cash bonds any person, charity or group may post, and makes groups that raise money to bail people out meet the same rules as professional bail companies. The Georgia Senate adopted it 30-17, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
