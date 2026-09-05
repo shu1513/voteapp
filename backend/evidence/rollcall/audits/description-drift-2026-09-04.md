@@ -10,9 +10,13 @@ nobody knew. This audit answers it.
 ## Result, in one line
 
 **13,186 records across 11 states carry a description that differs from the committed
-judgment governing them — and in every case the row is NEWER than the file, not older.**
-No record anywhere is serving text that a later judgment superseded. The committed
-evidence is what has fallen behind, not the database.
+judgment governing them — and every one of those rows was updated AFTER its file was
+last committed, not before.** No record anywhere is serving text that a later judgment
+superseded. The committed evidence is what has fallen behind, not the database.
+
+Numbers below were re-derived on 2026-09-05 with the script pinned to the judgments at
+`HEAD` and dating each row to the second; the drift figures are unchanged from the
+2026-09-04 run, and the 1,500 rows that run could only date to the day are now ordered.
 
 ## What was compared
 
@@ -28,23 +32,24 @@ sides and the figure settles at 13,186.
 
 Where a roll appears in more than one committed file — 40 of them do, because a
 `rejudge-*` or correction directory supersedes the batch that first judged it — the later
-directory wins.
+directory wins. "Committed" is literal: the judgments are read from `HEAD`, so an edited
+or untracked file cannot shift the baseline.
 
 | | records |
 | --- | --- |
-| matched a committed description exactly | 97,489 |
+| matched a committed description exactly | 104,925 |
 | matched neither the yea nor the nay text | **13,186** |
-| roll has no committed judgment (federal, and rolls judged before this format) | 15,830 |
+| roll has no committed judgment (federal, rolls judged before this format, and states whose judgment PRs were still open on 2026-09-05) | 31,308 |
 
 ## Which way the drift runs
 
-Each drifting group was dated two ways: the last commit date of the `judgments.json` that
-governs it, and the last `updated_at` of the rows themselves.
+Each drifting row was dated individually, to the second: the last commit time of the
+`judgments.json` that governs it against the row's own `updated_at`.
 
 | | records | texts |
 | --- | --- | --- |
-| row updated **after** the file was last committed | 11,686 | 230 |
-| same day, cannot be ordered | 1,500 | 31 |
+| row updated **after** the file was last committed | 13,186 | 261 |
+| same second, cannot be ordered | 0 | 0 |
 | **row older than the file (would mean stale text on a live record)** | **0** | **0** |
 
 **Zero.** Not one drifting record predates its own evidence. Delaware's 73 rows were the
@@ -88,11 +93,13 @@ So the two pipelines overwrite each other, and whichever ran last wins. Any futu
 re-import of one of these eleven states — to pick up new roster members, or to correct a
 description — silently reverts the sweep's work in that state as a side effect.
 
-Note the asymmetry with Delaware, which looks contradictory and is not. The sweep moves
+Delaware looked like the opposite case, and the difference is historical. The sweep moves
 the identity key, so the importer no longer recognises the row and rewrites it.
-Delaware's rows were edited by direct SQL without touching the key, so the importer
-matched them, called them `unchanged`, and left the stale text in place. **The importer
-repairs drift only when the identity key moved.**
+Delaware's rows were edited by direct SQL without touching the key, and at the time the
+importer matched them, called them `unchanged`, and left the stale text in place. That
+gap was closed on 2026-09-03: `planCandidateRecord()` now returns `refresh` for a
+same-key row of its own origin whose text differs, and the importer executes it. So today
+a re-import reverts the sweep by either path — key moved, rewrite; key unmoved, refresh.
 
 ## What is not at risk
 
@@ -122,6 +129,7 @@ Option 1 is the recommendation. Option 2 is cheaper today and worse later.
 
 ## Reproducing this
 
-`backend/evidence/rollcall/audits/description_drift_audit.py`, run against local
-`voteapp`. It re-derives every number above from the committed evidence and the database,
-and prints examples per class.
+`backend/evidence/rollcall/audits/description_drift_audit.py`, run from the repository
+root against local `voteapp`. It reads the judgments from `HEAD`, dates them by their last
+commit, dates every row to the second, fails loudly if the query does not succeed, and
+prints the numbers above with examples per class.
