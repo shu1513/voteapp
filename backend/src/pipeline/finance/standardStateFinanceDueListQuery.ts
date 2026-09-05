@@ -26,6 +26,8 @@ export type StandardStateFinanceDueQueryRow = {
   district: string | null;
   /** Present only when the config sets selectElectionDate. */
   election_date?: string;
+  /** Present only when the config sets selectBallotTitle. */
+  ballot_title?: string;
   source_url: string | null;
   last_synced_at: string | null;
   total_due_rows: string | number;
@@ -85,6 +87,11 @@ export type StandardStateFinanceDueListConfig = {
    * election_year and office_scope). Read through mapRow. Default false.
    */
   selectElectionDate?: boolean;
+  /**
+   * Also select election.official_ballot_title AS ballot_title (between
+   * office_name and district). Read through mapRow. Default false.
+   */
+  selectBallotTitle?: boolean;
 };
 
 const ELECTION_STAGES: readonly string[] = ["general"];
@@ -157,6 +164,8 @@ function buildDueListSql(config: StandardStateFinanceDueListConfig): string {
   const stageFilter = electionStage === undefined ? "" : `          AND election.election_stage = '${electionStage}'\n`;
   const innerElectionDate = config.selectElectionDate ? "          election.election_date::text AS election_date,\n" : "";
   const outerElectionDate = config.selectElectionDate ? "        election_date,\n" : "";
+  const innerBallotTitle = config.selectBallotTitle ? "          election.official_ballot_title AS ballot_title,\n" : "";
+  const outerBallotTitle = config.selectBallotTitle ? "        ballot_title,\n" : "";
   return `
       WITH due AS (
         SELECT
@@ -170,7 +179,7 @@ function buildDueListSql(config: StandardStateFinanceDueListConfig): string {
           link.election_year,
 ${innerElectionDate}          office.scope AS office_scope,
           link.office_name,
-          link.district,
+${innerBallotTitle}          link.district,
 ${innerLinkColumns}
           link.source_url,
           summary.last_synced_at::text AS last_synced_at,
@@ -215,7 +224,7 @@ ${stageFilter}          AND election.election_date >= (($1::timestamptz AT TIME 
         election_year,
 ${outerElectionDate}        office_scope,
         office_name,
-        district,
+${outerBallotTitle}        district,
 ${outerLinkColumns}
         source_url,
         last_synced_at,

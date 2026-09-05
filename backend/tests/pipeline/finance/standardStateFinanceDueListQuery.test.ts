@@ -322,6 +322,55 @@ describe("createStandardStateFinanceDueListQuery", () => {
     expect(defaultSql).not.toContain("election_date::text");
   });
 
+  it("adds ballot_title only when configured", async () => {
+    const db = createMockDb([dueRow({ ballot_title: "Circuit Judge, 10th Circuit, Place 1", fcpa_committee_number: null })]);
+    const mapRow = vi.fn((row: StandardStateFinanceDueQueryRow) => ({
+      ballotTitle: row.ballot_title,
+      fcpaCommitteeNumber: row.fcpa_committee_number,
+    }));
+    const listDueRows = createStandardStateFinanceDueListQuery({
+      state: "AL",
+      tables: {
+        links: "al_candidate_finance_links",
+        summaries: "al_candidate_finance_summaries",
+      },
+      eligibleOfficeKeys: ["statewide::Governor"],
+      electionStage: "general",
+      linkColumns: ["committee_id", "committee_name", "fcpa_committee_number", "link_source"],
+      mapRow,
+    });
+
+    const result = await listDueRows(db, DUE_LIST_INPUT);
+
+    const sql = String(db.query.mock.calls[0]?.[0]);
+    // Nothing selected without the flag; the stage filter is independent of it.
+    expect(sql).not.toContain("ballot_title");
+    expect(sql).toContain("          AND election.election_stage = 'general'\n");
+    expect(result.rows).toEqual([{ ballotTitle: "Circuit Judge, 10th Circuit, Place 1", fcpaCommitteeNumber: null }]);
+
+    const titledDb = createMockDb([dueRow({ ballot_title: "Governor" })]);
+    const listTitledRows = createStandardStateFinanceDueListQuery({
+      state: "AL",
+      tables: {
+        links: "al_candidate_finance_links",
+        summaries: "al_candidate_finance_summaries",
+      },
+      eligibleOfficeKeys: ["statewide::Governor"],
+      selectBallotTitle: true,
+      mapRow: (row) => row.ballot_title,
+    });
+    const titledResult = await listTitledRows(titledDb, DUE_LIST_INPUT);
+    const titledSql = String(titledDb.query.mock.calls[0]?.[0]);
+    // ballot_title is selected between office_name and district, inside and outside the CTE.
+    expect(titledSql).toContain(
+      "          link.office_name,\n          election.official_ballot_title AS ballot_title,\n          link.district,"
+    );
+    expect(titledSql).toContain("        office_name,\n        ballot_title,\n        district,");
+    expect(titledSql).not.toContain("election_date::text");
+    expect(titledSql).not.toContain("election_stage");
+    expect(titledResult.rows).toEqual(["Governor"]);
+  });
+
   it("returns zero totals for an empty result and tolerates malformed counts", async () => {
     const listDueRows = createCanonicalQuery();
 
