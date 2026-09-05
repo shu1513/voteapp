@@ -107,8 +107,11 @@ the licence and fee, the application, the bond, the display duty, the processing
 rules and the consequences of non-compliance. **One of them, 7-21-2408, gave an
 aggrieved purchaser a right against the seller's bond**, and the record says so,
 because that is a consumer protection lost rather than merely relocated. The new
-section gives counties open-ended power to regulate and license instead.
-Direction **against** `corporate_accountability`.
+section lets counties regulate and license instead, "subject to any restrictions
+or limitations as are prescribed by law". The repealed part was the county
+scheme only: 7-21-2403(1) survives and keeps a city's own ordinances on these
+sellers intact, so the record does not say that no rules apply where a county
+does nothing. Direction **against** `corporate_accountability`.
 
 ## HB 446 — indecent exposure
 
@@ -231,3 +234,25 @@ becomes "a vaccine", twice. The prohibition on requiring an emergency-use
 authorisation vaccine was enacted in 2021 and its scope is unchanged. This is
 exactly the struck-block-nearly-identical-to-its-replacement shape the campaign
 has been watching for. Dropped as housekeeping.
+
+## Review fixes (2026-09-05)
+
+Four review findings, all checked against the enrolled text and all real.
+Re-judged and re-imported: 183 rows rewritten, 1,027 unchanged, nothing
+inserted (`import-rerun-report.json`).
+
+- **HB 621** listed two confidentiality exceptions; §1(2)(i) has four. Added
+  the licensing-board request and the licensing boards' mandatory reporting
+  rules. "May not be made to speak" became "may not testify", which is what
+  §1(3) says.
+- **SB 97** said "passed in the last two years", a rolling window. §1(2)(b)
+  defines a fixed biennium from the first Monday of January of an odd year, so
+  a 2025 act challenged in February 2027 is outside it. Now says "passed or
+  changed in the current two-year legislative period" and explains the period.
+  §5's change of venue is "on motion", so the record says "if a party asks".
+- **HB 443** said counties got "open-ended" power and that no rules applied
+  where a county did nothing. Corrected as recorded in the HB 443 section
+  above; the spelling is now "license".
+- **HB 358** said the pension depends on the fund being sound. Only §1(3)'s
+  increments for years past 30 do; (3)(b) reduces those to the (2)(c) amount
+  and leaves the base pension and the 20–30-year increments alone.
