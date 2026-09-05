@@ -237,7 +237,15 @@ function recordOfficeMatch(input: {
   }
 
   if (input.expectedDistrict) {
-    return normalizeMinnesotaFinanceDistrict(input.record["District"] || input.record["Office District"] || "") === input.expectedDistrict;
+    const recordDistrict = normalizeMinnesotaFinanceDistrict(
+      input.record["District"] || input.record["Office District"] || ""
+    );
+    // The bulk contribution export carries no district column at all, so a
+    // legislative row can only ever be identified by name, chamber and year.
+    // Enforce the district whenever the row actually states one — if the export
+    // ever gains the column, a mismatch must still reject — and fall through to
+    // the caller's name and year checks when it does not.
+    return recordDistrict ? recordDistrict === input.expectedDistrict : true;
   }
   return true;
 }

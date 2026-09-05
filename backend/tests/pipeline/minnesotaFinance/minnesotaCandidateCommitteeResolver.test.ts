@@ -272,7 +272,9 @@ describe("Minnesota candidate committee resolver", () => {
     ).toMatchObject({ status: "matched", committeeId: "19283" });
   });
 
-  it("does not auto-link legislative PCC rows without authoritative district data", () => {
+  it("matches a legislative PCC row on name and chamber when the export states no district", () => {
+    // The bulk contribution export has no district column, so identity rests on
+    // the candidate name, the chamber and the election year.
     expect(
       resolveMinnesotaCandidateCommittee({
         candidateName: "Tina Liebling",
@@ -289,7 +291,54 @@ describe("Minnesota candidate committee resolver", () => {
           },
         ],
       })
+    ).toMatchObject({ status: "matched", committeeId: "15719" });
+  });
+
+  it("still rejects a legislative PCC row whose stated district contradicts the candidate", () => {
+    expect(
+      resolveMinnesotaCandidateCommittee({
+        candidateName: "Tina Liebling",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "24B",
+        electionYear: 2026,
+        candidateRows: [
+          {
+            "Recipient reg num": "15719",
+            Recipient: "Liebling, Tina House Committee",
+            "Recipient type": "PCC",
+            District: "11A",
+            Year: "2025",
+          },
+        ],
+      })
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("refuses rather than guesses when two committees share a name and chamber", () => {
+    expect(
+      resolveMinnesotaCandidateCommittee({
+        candidateName: "Tina Liebling",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "24B",
+        electionYear: 2026,
+        candidateRows: [
+          {
+            "Recipient reg num": "15719",
+            Recipient: "Liebling, Tina House Committee",
+            "Recipient type": "PCC",
+            Year: "2025",
+          },
+          {
+            "Recipient reg num": "99999",
+            Recipient: "Liebling, Tina House Committee",
+            "Recipient type": "PCC",
+            Year: "2026",
+          },
+        ],
+      })
+    ).toMatchObject({ status: "ambiguous", reason: "multiple_matching_committees" });
   });
 
   it("requires legislative districts for state senate and house candidates", () => {

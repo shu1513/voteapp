@@ -110,7 +110,9 @@ describe("minnesotaCandidateFinanceAutoLink", () => {
         "statewide::State Auditor",
       ]),
     ]);
-    expect(db.query.mock.calls[0]?.[1]?.[4]).not.toEqual(
+    // Legislators are auto-linkable: name plus chamber identifies a committee
+    // uniquely in this source, and a collision returns "ambiguous" rather than a guess.
+    expect(db.query.mock.calls[0]?.[1]?.[4]).toEqual(
       expect.arrayContaining(["state_upper::State Senator", "state_lower::State Lower Chamber Legislator"])
     );
   });
