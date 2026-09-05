@@ -25,7 +25,7 @@ import { useMyPicksProgress } from "../lib/useMyPicksProgress";
 // milestone (DraftMilestone) is the persistent one.
 //
 // Wording (owner's call, same as the web): "You have completed your {day}
-// draft." plus the link, nothing else. Status message, not a modal: polite live
+// election draft." plus the link, nothing else. Status message, not a modal: polite live
 // region on Android, an explicit VoiceOver announcement on iOS, focus and
 // scroll position untouched.
 
@@ -89,7 +89,7 @@ export function DraftCompleteNotice() {
 
   // accessibilityLiveRegion below is Android-only; VoiceOver needs an
   // explicit announcement (same pattern as TermsRenewalGate's error line).
-  const message = shown ? `You have completed your ${formatElectionDate(shown.date)} draft.` : null;
+  const message = shown ? `You have completed your ${formatElectionDate(shown.date)} election draft.` : null;
   useEffect(() => {
     if (message !== null) {
       AccessibilityInfo.announceForAccessibility(message);

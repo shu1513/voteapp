@@ -13,7 +13,7 @@ import { track } from "../lib/usage";
 // where it points, so it stays as long as the picks do. Same counting rule
 // as the date card's "N of M races decided" line (allRacesDecided /
 // isDecidedChoice) and the same one-line wording as the notice — "You have
-// completed your {day} draft." (owner's call; the card's count line right
+// completed your {day} election draft." (owner's call; the card's count line right
 // below it is the only hedge). Rendering it marks the day as seen so the
 // header notice never fires for a day the user has already read about here.
 
@@ -50,12 +50,12 @@ export function DraftMilestone({
   }
   return (
     <section
-      aria-label={`${formatElectionDate(date)} draft milestone`}
+      aria-label={`${formatElectionDate(date)} election draft milestone`}
       className="mt-4 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-900"
     >
       <p className="font-semibold">
         <span aria-hidden="true">✓ </span>
-        You have completed your {formatElectionDate(date)} draft.
+        You have completed your {formatElectionDate(date)} election draft.
       </p>
       {signup ? (
         <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">

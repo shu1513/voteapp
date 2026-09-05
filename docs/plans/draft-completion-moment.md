@@ -1,4 +1,4 @@
-# Draft completion moment ("You have completed your … draft")
+# Draft completion moment ("You have completed your … election draft")
 
 Status: PR 1 (notice + plumbing) merged 2026-09-04 (#1108); PR 2
 (draft-page milestone, `DraftMilestone.tsx`) implemented 2026-09-04.
@@ -50,7 +50,7 @@ and city searches produce partial ballots that can reach 100%. So "your
 ballot is complete" and "you're done" promise more than the data
 establishes. We keep the counting rule and say only what it establishes:
 
-- Headline: "You have completed your November 3, 2026 draft."
+- Headline: "You have completed your November 3, 2026 election draft."
 - Action: "Review my picks"
 
 Owner decision 2026-09-04, after seeing it live: the earlier hedged copy
@@ -174,7 +174,7 @@ card's count line), and renders nothing unless every race is decided:
   list. On `/me/picks` that is not always `dates[0]` because just-finished
   dates stay carded for a few days.
 - Render when that date's decided count equals its race count: check icon,
-  "You have completed your November 3, 2026 draft.", and the
+  "You have completed your November 3, 2026 election draft.", and the
   "13 of 13 races decided" line.
 - Guest: a "Sign up free to save your picks" link (same wording and
   target, `/register?next=/draft`, as the existing bottom CTA, which

@@ -97,7 +97,7 @@ describe("DraftPage", () => {
     expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Draft" })).toBeInTheDocument();
     expect(screen.getByText("1 of 2 races decided")).toBeInTheDocument();
     // Not finished: no milestone, no seen marker.
-    expect(screen.queryByRole("region", { name: /draft milestone/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: /election draft milestone/ })).not.toBeInTheDocument();
     expect(window.localStorage.getItem("voteapp_draft_complete_seen")).toBeNull();
     expect(screen.getByText("Jane Smith")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Mayor — no pick yet" })).toBeInTheDocument();
@@ -149,8 +149,8 @@ describe("DraftPage", () => {
     });
     renderDraft();
 
-    const milestone = await screen.findByRole("region", { name: "November 3, 2026 draft milestone" });
-    expect(milestone).toHaveTextContent("You have completed your November 3, 2026 draft.");
+    const milestone = await screen.findByRole("region", { name: "November 3, 2026 election draft milestone" });
+    expect(milestone).toHaveTextContent("You have completed your November 3, 2026 election draft.");
     expect(milestone).not.toHaveTextContent(/decided/);
     // ONE sign-up link on the page: the milestone's, with the device hint;
     // the bottom CTA steps aside rather than repeat it.
@@ -167,7 +167,7 @@ describe("DraftPage", () => {
     });
     await user.click(screen.getByRole("button", { name: "Ballot preview" }));
     expect(await screen.findByRole("heading", { name: /Ballot preview — November 3, 2026/ })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: "November 3, 2026 draft milestone" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "November 3, 2026 election draft milestone" })).toBeInTheDocument();
   });
 
   it("gives guests the ballot view over the public preview endpoint", async () => {

@@ -78,8 +78,8 @@ describe("PicksPage", () => {
     );
     renderPicks();
 
-    const milestone = await screen.findByRole("region", { name: "November 3, 2026 draft milestone" });
-    expect(milestone).toHaveTextContent("You have completed your November 3, 2026 draft.");
+    const milestone = await screen.findByRole("region", { name: "November 3, 2026 election draft milestone" });
+    expect(milestone).toHaveTextContent("You have completed your November 3, 2026 election draft.");
     expect(milestone).not.toHaveTextContent(/decided/);
     expect(screen.queryByRole("link", { name: /Sign up/ })).not.toBeInTheDocument();
     expect(JSON.parse(window.localStorage.getItem("voteapp_draft_complete_seen") ?? "[]")).toEqual(["2026-11-03"]);
@@ -101,8 +101,8 @@ describe("PicksPage", () => {
     );
     renderPicks();
 
-    expect(await screen.findByRole("region", { name: "November 3, 2026 draft milestone" })).toBeInTheDocument();
-    expect(screen.queryByRole("region", { name: /July 28, 2026 draft milestone/ })).not.toBeInTheDocument();
+    expect(await screen.findByRole("region", { name: "November 3, 2026 election draft milestone" })).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: /July 28, 2026 election draft milestone/ })).not.toBeInTheDocument();
   });
 
   it("shows no milestone while a race on the nearest day is still open", async () => {
@@ -110,7 +110,7 @@ describe("PicksPage", () => {
     stubApiRoutes(verifiedRoutes());
     renderPicks();
     expect(await screen.findByText("1 of 2 races decided")).toBeInTheDocument();
-    expect(screen.queryByRole("region", { name: /draft milestone/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: /election draft milestone/ })).not.toBeInTheDocument();
     expect(window.localStorage.getItem("voteapp_draft_complete_seen")).toBeNull();
   });
 

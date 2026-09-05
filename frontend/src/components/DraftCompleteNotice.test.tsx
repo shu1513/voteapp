@@ -32,7 +32,7 @@ function renderShell(initialEntry = "/elections/e-1") {
 
 const GUEST = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 
-const NOTICE_TEXT = /You have completed your November 3, 2026 draft/;
+const NOTICE_TEXT = /You have completed your November 3, 2026 election draft/;
 
 function seedDraft(draft: {
   target: { election_date: string; election_ids: string[] } | null;
@@ -103,7 +103,7 @@ describe("DraftCompleteNotice", () => {
     const status = screen.getByRole("status");
     expect(await screen.findByText(NOTICE_TEXT)).toBeInTheDocument();
     // One sentence plus the link — no count line, no "review and change" copy.
-    expect(status).toHaveTextContent(/^You have completed your November 3, 2026 draft\.\s*Review my picks\s*×$/);
+    expect(status).toHaveTextContent(/^You have completed your November 3, 2026 election draft\.\s*Review my picks\s*×$/);
     expect(screen.getByRole("link", { name: "Review my picks" })).toHaveAttribute("href", "/draft");
     // Status message, not a dialog: focus stays where it was.
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -249,7 +249,7 @@ describe("DraftCompleteNotice", () => {
     renderShell();
     expect(await screen.findByRole("link", { name: "My Draft 1/2" })).toBeInTheDocument();
 
-    const notice = /You have completed your November 5, 2026 draft/;
+    const notice = /You have completed your November 5, 2026 election draft/;
     pickMayor(true);
     expect(await screen.findByText(notice)).toBeInTheDocument();
     expect(window.localStorage.getItem("voteapp_draft_complete_seen")).toBeNull();
