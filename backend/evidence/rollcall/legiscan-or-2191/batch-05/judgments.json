@@ -1,0 +1,166 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1548773,
+      "measure_id": "HB 2964",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2964, which creates state loans for the early costs of building affordable homes, the money spent long before a shovel goes in. Loans can pay for architects, engineers, planners and lawyers. They can pay for studies of the site, market, traffic, soil and environment, and for permit fees and community outreach. They may not be used to buy land. The homes must stay affordable to low income families for a set period, and only nonprofits, tribes and like bodies can borrow. The Oregon House passed it 37-16, and it became law.",
+      "nay_description": "Voted against House Bill 2964, which creates state loans for the early costs of building affordable homes, the money spent long before a shovel goes in. Loans can pay for architects, engineers, planners and lawyers. They can pay for studies of the site, market, traffic, soil and environment, and for permit fees and community outreach. They may not be used to buy land. The homes must stay affordable to low income families for a set period, and only nonprofits, tribes and like bodies can borrow. The Oregon House passed it 37-16, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1578792,
+      "measure_id": "HB 3144",
+      "vote_date": "2025-05-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3144, which voids deed rules and homeowner group rules that let someone build a house on a lot but block a manufactured home or a factory-built structure there. The ban reaches only documents signed, adopted or amended on or after the day the law took effect, so it does not clear out restrictions already on the books. It covers accessory dwellings too. The law also pushes back the end date of an existing program for resolving disputes in manufactured home parks and marinas. The Oregon Senate passed it 21-9, and it became law.",
+      "nay_description": "Voted against House Bill 3144, which voids deed rules and homeowner group rules that let someone build a house on a lot but block a manufactured home or a factory-built structure there. The ban reaches only documents signed, adopted or amended on or after the day the law took effect, so it does not clear out restrictions already on the books. It covers accessory dwellings too. The law also pushes back the end date of an existing program for resolving disputes in manufactured home parks and marinas. The Oregon Senate passed it 21-9, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1553001,
+      "measure_id": "HB 3932",
+      "vote_date": "2025-04-21",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3932, which bars hunting or trapping beavers for sport or sale in and beside Oregon's most polluted waters on public land. It applies where the state has listed a waterway as impaired under the federal Clean Water Act and the water flows through or beside public land, or where public land sits within 200 feet of a river or stream. The wildlife department must publish a map and refresh it every two years. Land management staff may still remove a beaver threatening roads, culverts or crops, though non-lethal methods come first. None of it reaches private land. The Oregon House passed it 35-18, and it became law.",
+      "nay_description": "Voted against House Bill 3932, which bars hunting or trapping beavers for sport or sale in and beside Oregon's most polluted waters on public land. It applies where the state has listed a waterway as impaired under the federal Clean Water Act and the water flows through or beside public land, or where public land sits within 200 feet of a river or stream. The wildlife department must publish a map and refresh it every two years. Land management staff may still remove a beaver threatening roads, culverts or crops, though non-lethal methods come first. None of it reaches private land. The Oregon House passed it 35-18, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1591248,
+      "measure_id": "HB 3932",
+      "vote_date": "2025-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3932, which bars hunting or trapping beavers for sport or sale in and beside Oregon's most polluted waters on public land. It applies where the state has listed a waterway as impaired under the federal Clean Water Act and the water flows through or beside public land, or where public land sits within 200 feet of a river or stream. The wildlife department must publish a map and refresh it every two years. Land management staff may still remove a beaver threatening roads, culverts or crops, though non-lethal methods come first. None of it reaches private land. The Oregon Senate passed it 17-11, and it became law.",
+      "nay_description": "Voted against House Bill 3932, which bars hunting or trapping beavers for sport or sale in and beside Oregon's most polluted waters on public land. It applies where the state has listed a waterway as impaired under the federal Clean Water Act and the water flows through or beside public land, or where public land sits within 200 feet of a river or stream. The wildlife department must publish a map and refresh it every two years. Land management staff may still remove a beaver threatening roads, culverts or crops, though non-lethal methods come first. None of it reaches private land. The Oregon Senate passed it 17-11, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1593964,
+      "measure_id": "SB 598",
+      "vote_date": "2025-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 598, which makes a health plan that pays for drugs cover at least one non-opioid pain drug for each opioid it covers. The choice must be clinically appropriate, which means backed by accepted medical guidance. A plan may still apply its usual controls, such as prior approval, step therapy, copays and deductibles. But those controls may not be tighter than the ones the plan puts on the matching opioid. The Oregon Senate passed it 23-6, and it became law.",
+      "nay_description": "Voted against Senate Bill 598, which makes a health plan that pays for drugs cover at least one non-opioid pain drug for each opioid it covers. The choice must be clinically appropriate, which means backed by accepted medical guidance. A plan may still apply its usual controls, such as prior approval, step therapy, copays and deductibles. But those controls may not be tighter than the ones the plan puts on the matching opioid. The Oregon Senate passed it 23-6, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1594358,
+      "measure_id": "SB 822",
+      "vote_date": "2025-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 822, which tightens the test for whether a health insurer has enough doctors in its network. The state must write standards for judging that, in line with federal rules. Those standards must take account of areas that are short of health workers. Insurers must show that care can be had without long delay, for both first and follow-up visits. The law names mental health care, drug and alcohol treatment and reproductive health care as services that must be within reach. It also says care must suit patients of different backgrounds, sexual orientations, gender identities and disabilities. The Oregon House passed it 31-14, and it became law.",
+      "nay_description": "Voted against Senate Bill 822, which tightens the test for whether a health insurer has enough doctors in its network. The state must write standards for judging that, in line with federal rules. Those standards must take account of areas that are short of health workers. Insurers must show that care can be had without long delay, for both first and follow-up visits. The law names mental health care, drug and alcohol treatment and reproductive health care as services that must be within reach. It also says care must suit patients of different backgrounds, sexual orientations, gender identities and disabilities. The Oregon House passed it 31-14, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1591085,
+      "measure_id": "SB 822",
+      "vote_date": "2025-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 822, which tightens the test for whether a health insurer has enough doctors in its network. The state must write standards for judging that, in line with federal rules. Those standards must take account of areas that are short of health workers. Insurers must show that care can be had without long delay, for both first and follow-up visits. The law names mental health care, drug and alcohol treatment and reproductive health care as services that must be within reach. It also says care must suit patients of different backgrounds, sexual orientations, gender identities and disabilities. The Oregon Senate passed it 17-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 822, which tightens the test for whether a health insurer has enough doctors in its network. The state must write standards for judging that, in line with federal rules. Those standards must take account of areas that are short of health workers. Insurers must show that care can be had without long delay, for both first and follow-up visits. The law names mental health care, drug and alcohol treatment and reproductive health care as services that must be within reach. It also says care must suit patients of different backgrounds, sexual orientations, gender identities and disabilities. The Oregon Senate passed it 17-10, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1595617,
+      "measure_id": "HB 3865",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3865, which extends Oregon's telemarketing rules to text messages and sets limits on when sales pitches may arrive. A seller may not call or text before 8 a.m. or after 8 p.m., or reach the same person more than three times in 24 hours, unless they have done business with that person in the past 18 months. Lying about who is calling, or about why, is barred outright. Charities, public agencies, polling, business to business contact and direct replies to a customer's own message are all outside the rules. The Oregon House agreed to the Senate's changes 33-9, and it became law.",
+      "nay_description": "Voted against House Bill 3865, which extends Oregon's telemarketing rules to text messages and sets limits on when sales pitches may arrive. A seller may not call or text before 8 a.m. or after 8 p.m., or reach the same person more than three times in 24 hours, unless they have done business with that person in the past 18 months. Lying about who is calling, or about why, is barred outright. Charities, public agencies, polling, business to business contact and direct replies to a customer's own message are all outside the rules. The Oregon House agreed to the Senate's changes 33-9, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1595035,
+      "measure_id": "HB 3865",
+      "vote_date": "2025-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3865, which extends Oregon's telemarketing rules to text messages and sets limits on when sales pitches may arrive. A seller may not call or text before 8 a.m. or after 8 p.m., or reach the same person more than three times in 24 hours, unless they have done business with that person in the past 18 months. Lying about who is calling, or about why, is barred outright. Charities, public agencies, polling, business to business contact and direct replies to a customer's own message are all outside the rules. The Oregon Senate passed it 19-9, and it became law.",
+      "nay_description": "Voted against House Bill 3865, which extends Oregon's telemarketing rules to text messages and sets limits on when sales pitches may arrive. A seller may not call or text before 8 a.m. or after 8 p.m., or reach the same person more than three times in 24 hours, unless they have done business with that person in the past 18 months. Lying about who is calling, or about why, is barred outright. Charities, public agencies, polling, business to business contact and direct replies to a customer's own message are all outside the rules. The Oregon Senate passed it 19-9, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

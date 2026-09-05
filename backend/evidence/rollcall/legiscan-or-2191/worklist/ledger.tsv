@@ -51,7 +51,7 @@ HB2932	drop:screened	lets a public official be paid for teaching at certain scho
 HB2933	drop:screened	approves Criminal Justice Commission rule changes; ratification	1495078	1570627	Relating to the Oregon Criminal Justice Commission.
 HB2944	drop:filter-5	penalties under the public employee collective bargaining act; labor relations, no area fits	1578774	1575042	Relating to penalties for failure to comply with certain requirements under the laws governing public employee collective bargaining.
 HB2957	batch-03	Senate only; the House concurrence roll is held, LegiScan puts Boice on the wrong side	1590950	1588995	Relating to time limitations associated with violations over which the Bureau of Labor and Industries has enforcement authority; and declaring an emergency.
-HB2964	candidate		1548773		Relating to affordable housing; and declaring an emergency.
+HB2964	batch-05	judged and imported	1548773		Relating to affordable housing; and declaring an emergency.
 HB2982	drop:screened	raises boat fees for an invasive species fund; fee bill		1589622	Relating to small watercraft.
 HB3003	drop:filter-5	adds data to a child welfare report and disaggregates it by race; reporting only	1526808		Relating to Department of Human Services annual child welfare reporting.
 HB3020	drop:filter-5	bans wagering on dog racing; no research area covers animal welfare		1560046	Relating to racing.
@@ -66,7 +66,7 @@ HB3041	drop:screened	changes the type of law providing for an educator council; 
 HB3045	drop:screened	lets the pharmacy board require an examination of a licensee under investigation; narrow	1518993	1591076	Relating to the State Board of Pharmacy; and prescribing an effective date.
 HB3054	batch-02	judged and imported	1549926	1589837	Relating to residential tenancies for a space in a facility; and declaring an emergency.
 HB3069	candidate		1595533	1594228	Relating to public safety; and declaring an emergency.
-HB3144	candidate			1578792	Relating to dwellings.
+HB3144	batch-05	judged and imported		1578792	Relating to dwellings.
 HB3148	candidate		1594164		Relating to the availability of residential telecommunication services for low-income customers; and declaring an emergency.
 HB3167	drop:filter-5	its only divided House roll is superseded by a 37-3 concurrence and the Senate never divided; attributing the superseded vote is the federal roll-160 retraction shape	1552514		Relating to regulating sales of admission tickets to entertainment events.
 HB3179	candidate			1594492	Relating to public utilities; and declaring an emergency.
@@ -99,11 +99,11 @@ HB3794	drop:screened	creates a task force on municipal solid waste; study body o
 HB3824	drop:filter-5	physical therapy licensing and scope; narrow	1595878	1595434	Relating to physical therapy; and prescribing an effective date.
 HB3825	candidate		1590491		Relating to monetary obligations in criminal cases; and prescribing an effective date.
 HB3863	candidate		1547696	1570876	Relating to qualifying facilities under the Public Utility Regulatory Policies Act of 1978; and prescribing an effective date.
-HB3865	candidate		1595617	1595035	Relating to telephone solicitations.
+HB3865	batch-05	judged and imported	1595617	1595035	Relating to telephone solicitations.
 HB3874	drop:filter-5	raises the state siting threshold for wind projects but adds county decommissioning security; runs both ways	1573086		Relating to the jurisdiction of the Energy Facility Siting Council over wind energy facilities.
 HB3908	park:direction-call	raises the share of voters a party needs for major party status; election_integrity is security and accuracy and does not cover ballot access, and the California rule sends access questions to civil_rights. Direction arguable either way, so this is a user direction call	1587700	1593325	Relating to party membership registration requirements; and declaring an emergency.
 HB3912	candidate			1591734	"Relating to use of the title ""doctor"""
-HB3932	candidate		1553001	1591248	Relating to protecting beavers.
+HB3932	batch-05	judged and imported	1553001	1591248	Relating to protecting beavers.
 HB3940	drop:filter-5	wildfire funding through a beverage container surcharge and fund transfers; revenue and appropriation		1595487	Relating to wildfire; prescribing an effective date; and providing for revenue raising that requires approval by a three-fifths majority.
 HB3963	drop:screened	extends a DLCD reporting deadline; housekeeping	1585557	1593893	Relating to offshore wind energy development; and prescribing an effective date.
 HB5004	excluded:appropriations	budget or fee-ratification bill		1593114	Relating to the financial administration of the Department of Corrections; and declaring an emergency.
@@ -147,7 +147,7 @@ SB476	candidate		1595626	1595884	Relating to professional workforce; and declari
 SB537	candidate		1595462	1593990	Relating to violence in health care settings.
 SB551	batch-02	judged and imported	1575305	1579005	Relating to plastic waste.
 SB558	drop:filter-5	lets marijuana licensees share samples at trade events; narrow industry rule	1573386	1551803	Relating to cannabis market growth; and prescribing an effective date.
-SB598	candidate			1593964	Relating to step therapy for nonopioids.
+SB598	batch-05	judged and imported		1593964	Relating to step therapy for nonopioids.
 SB599	batch-01	judged and imported	1573242	1524701	Relating to immigration status discrimination in real estate transactions; and declaring an emergency.
 SB605	batch-01	judged and imported	1581306	1586668	Relating to medical debt reporting.
 SB610	drop:screened	changes duties around behavioural health resource networks; administrative	1581446	1572112	Relating to funding for substance use services.
@@ -159,7 +159,7 @@ SB789	drop:screened	lets the psychology board charge costs to a disciplined lice
 SB793	drop:screened	sets fees and rates for easements on state submerged land; fee bill	1593111	1591925	Relating to easements on state land; and declaring an emergency.
 SB805	drop:screened	shortens a TSPC complaint verification wait and adds civil penalties; narrow		1572184	Relating to complaints filed with the Teacher Standards and Practices Commission.
 SB817	drop:screened	raises LUBA filing fees; fee bill	1571965		Relating to Land Use Board of Appeals fees.
-SB822	candidate		1594358	1591085	Relating to provider networks.
+SB822	batch-05	judged and imported	1594358	1591085	Relating to provider networks.
 SB824	candidate		1595935	1595559	Relating to health insurance.
 SB827	candidate		1574023	1501258	Relating to the Oregon Solar and Storage Rebate Program.
 SB833	drop:screened	changes rules on soil amendments; narrow		1501602	Relating to soil-enhancing products.
