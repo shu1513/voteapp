@@ -261,6 +261,8 @@ Extend `utils/cliFlags.ts` / add `scripts/financeCliArgs.ts`: strict value readi
 
 `defineStateFinanceFlagPair(prefix)` for the uniform enabled/sync pair (reads env at call time, `force` never bypasses the master flag, short-circuit + invalid-value errors kept); third gates take their existing explicit env key. No unused raw-refresh functions are generated.
 
+**DONE (2026-09-05).** `featureFlags.ts` exports `defineStateFinanceFlagPair(prefix)` returning `{ isEnabled, isSyncEnabled, gate(envName) }`; each reader calls `readBooleanEnv` at call time. All 53 state/city pairs now read `const xFinance = defineStateFinanceFlagPair("X_CAMPAIGN_FINANCE")` + two `export const` lines; their 27 third gates are `xFinance.gate("<existing explicit key>")`. Kept explicit: the federal `CANDIDATE_FINANCE` pair (not a state) and the three masters with no sync flag (New Hampshire, Nevada, North Dakota) plus their raw-refresh gates, so no unused sync/raw-refresh reader exists. Export set unchanged (143 names, same env keys and master gates, checked by script); 879 → 409 lines. Helper invariants pinned in `tests/config/stateFinanceFlagPair.test.ts`.
+
 #### Deferred / not promised
 
 - Phase 6 full batch runner: stays deferred; Phase 4 alone is not justification (see finding 4).
