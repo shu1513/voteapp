@@ -1,0 +1,634 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1537137,
+   "measure_id": "HB 162",
+   "vote_date": "2025-04-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 162, which lets Montana resort towns spend a local tax on housing for workers. A resort community may charge a resort tax, and it may add an extra levy of up to 1 percent that must go to infrastructure. The act adds workforce and community housing projects to what counts as infrastructure. So the extra levy may now pay for homes as well as water pipes, roads and emergency services. The act also bars a resort community over the population limit from charging the extra levy unless it was set up before January 2025. The Montana Senate passed it 35-14, and it became law.",
+   "nay_description": "Voted against House Bill 162, which lets Montana resort towns spend a local tax on housing for workers. A resort community may charge a resort tax, and it may add an extra levy of up to 1 percent that must go to infrastructure. The act adds workforce and community housing projects to what counts as infrastructure. So the extra levy may now pay for homes as well as water pipes, roads and emergency services. The act also bars a resort community over the population limit from charging the extra levy unless it was set up before January 2025. The Montana Senate passed it 35-14, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1527866,
+   "measure_id": "HB 165",
+   "vote_date": "2025-03-26",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 165, which removes the notary step from transferring a vehicle. Signing over a car title used to need an oath sworn in front of a notary or another official who could take oaths. The act lets the person sign under penalty of perjury instead, using Montana's ordinary declaration rule. A bill of sale no longer has to be notarised either, though a sworn statement confirming it is genuine must go with it. The justice department may not bring the notary requirement back by rule. The Montana Senate passed it 37-13, and it became law.",
+   "nay_description": "Voted against House Bill 165, which removes the notary step from transferring a vehicle. Signing over a car title used to need an oath sworn in front of a notary or another official who could take oaths. The act lets the person sign under penalty of perjury instead, using Montana's ordinary declaration rule. A bill of sale no longer has to be notarised either, though a sworn statement confirming it is genuine must go with it. The justice department may not bring the notary requirement back by rule. The Montana Senate passed it 37-13, and it became law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1481846,
+   "measure_id": "HB 184",
+   "vote_date": "2025-01-30",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 184, which updates how Montana law describes people who cannot hear well, and widens two rights. The phrase hearing impaired is replaced with deaf or hard of hearing throughout. The legal meaning of a deaf person also changes. It used to cover only someone whose hearing was gone or nearly gone. It now covers a difference in how the ear processes sound, which decides who may have a qualified interpreter in court. The state school for the deaf and blind also widens who it serves, from children who cannot be taught in ordinary schools to those needing specialist support. The Montana House passed it 78-22, and it became law.",
+   "nay_description": "Voted against House Bill 184, which updates how Montana law describes people who cannot hear well, and widens two rights. The phrase hearing impaired is replaced with deaf or hard of hearing throughout. The legal meaning of a deaf person also changes. It used to cover only someone whose hearing was gone or nearly gone. It now covers a difference in how the ear processes sound, which decides who may have a qualified interpreter in court. The state school for the deaf and blind also widens who it serves, from children who cannot be taught in ordinary schools to those needing specialist support. The Montana House passed it 78-22, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1519648,
+   "measure_id": "HB 211",
+   "vote_date": "2025-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 211, which sets rules for having beer and wine delivered to your door. A shop with an off-premises licence may now deliver, and a separate third-party delivery licence is created for firms that deliver on a shop's behalf. The shop, not the delivery firm, makes the sale and sets the price. A driver must be at least 21, hold a licence, have no drink-driving offence in the past 7 years, and be trained. The person receiving it must be at least 21 and have their identification scanned, and nothing may be handed to someone who is obviously drunk. The Montana Senate passed it 37-12, and it became law.",
+   "nay_description": "Voted against House Bill 211, which sets rules for having beer and wine delivered to your door. A shop with an off-premises licence may now deliver, and a separate third-party delivery licence is created for firms that deliver on a shop's behalf. The shop, not the delivery firm, makes the sale and sets the price. A driver must be at least 21, hold a licence, have no drink-driving offence in the past 7 years, and be trained. The person receiving it must be at least 21 and have their identification scanned, and nothing may be handed to someone who is obviously drunk. The Montana Senate passed it 37-12, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1483359,
+   "measure_id": "HB 215",
+   "vote_date": "2025-02-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 215, which ends the duty to seek balanced membership on state boards. People who fill seats on state boards and councils used to be told by law to work toward two goals. One was an even split between men and women. The other was to seat minority residents in step with their share of the state. The act deletes both goals. It also deletes the governor's duty to report to the legislature on how it was going. All that is left is the monthly list of new appointments and coming vacancies. The Montana House passed it 58-41, and it became law.",
+   "nay_description": "Voted against House Bill 215, which ends the duty to seek balanced membership on state boards. People who fill seats on state boards and councils used to be told by law to work toward two goals. One was an even split between men and women. The other was to seat minority residents in step with their share of the state. The act deletes both goals. It also deletes the governor's duty to report to the legislature on how it was going. All that is left is the monthly list of new appointments and coming vacancies. The Montana House passed it 58-41, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1525154,
+   "measure_id": "HB 215",
+   "vote_date": "2025-03-24",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 215, which ends the duty to seek balanced membership on state boards. People who fill seats on state boards and councils used to be told by law to work toward two goals. One was an even split between men and women. The other was to seat minority residents in step with their share of the state. The act deletes both goals. It also deletes the governor's duty to report to the legislature on how it was going. All that is left is the monthly list of new appointments and coming vacancies. The Montana Senate passed it 33-17, and it became law.",
+   "nay_description": "Voted against House Bill 215, which ends the duty to seek balanced membership on state boards. People who fill seats on state boards and councils used to be told by law to work toward two goals. One was an even split between men and women. The other was to seat minority residents in step with their share of the state. The act deletes both goals. It also deletes the governor's duty to report to the legislature on how it was going. All that is left is the monthly list of new appointments and coming vacancies. The Montana Senate passed it 33-17, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546696,
+   "measure_id": "HB 358",
+   "vote_date": "2025-04-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 358, which raises the pension paid to Montana's volunteer firefighters. A volunteer who has served long enough draws a set monthly amount from the Volunteer Firefighters' Compensation Act. The act lifts the full monthly pension from $175 to $200, a rise of about 14 percent. Nothing else changes. The extra payment for each year served beyond the minimum stays at $7.50, the 20-year and 30-year service marks stay, and the pension still depends on the fund being financially sound. The Montana Senate passed it 37-13, and it became law.",
+   "nay_description": "Voted against House Bill 358, which raises the pension paid to Montana's volunteer firefighters. A volunteer who has served long enough draws a set monthly amount from the Volunteer Firefighters' Compensation Act. The act lifts the full monthly pension from $175 to $200, a rise of about 14 percent. Nothing else changes. The extra payment for each year served beyond the minimum stays at $7.50, the 20-year and 30-year service marks stay, and the pension still depends on the fund being financially sound. The Montana Senate passed it 37-13, and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1494271,
+   "measure_id": "HB 365",
+   "vote_date": "2025-02-19",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 365, which stops a court weighing how the legislature behaved when awarding legal costs. If someone sues the state over a law and wins, the court may order the state to pay their legal costs where the state fought the case in bad faith. The act says the conduct of the legislature in passing the law may not count in that judgement, and may not be put in evidence for it. It says this applies even where the court finds the state's defence was pointless or in bad faith. It reaches back to court cases already under way. The Montana House passed it 57-43, and it became law.",
+   "nay_description": "Voted against House Bill 365, which stops a court weighing how the legislature behaved when awarding legal costs. If someone sues the state over a law and wins, the court may order the state to pay their legal costs where the state fought the case in bad faith. The act says the conduct of the legislature in passing the law may not count in that judgement, and may not be put in evidence for it. It says this applies even where the court finds the state's defence was pointless or in bad faith. It reaches back to court cases already under way. The Montana House passed it 57-43, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1547627,
+   "measure_id": "HB 365",
+   "vote_date": "2025-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 365, which stops a court weighing how the legislature behaved when awarding legal costs. If someone sues the state over a law and wins, the court may order the state to pay their legal costs where the state fought the case in bad faith. The act says the conduct of the legislature in passing the law may not count in that judgement, and may not be put in evidence for it. It says this applies even where the court finds the state's defence was pointless or in bad faith. It reaches back to court cases already under way. The Montana Senate passed it 31-17, and it became law.",
+   "nay_description": "Voted against House Bill 365, which stops a court weighing how the legislature behaved when awarding legal costs. If someone sues the state over a law and wins, the court may order the state to pay their legal costs where the state fought the case in bad faith. The act says the conduct of the legislature in passing the law may not count in that judgement, and may not be put in evidence for it. It says this applies even where the court finds the state's defence was pointless or in bad faith. It reaches back to court cases already under way. The Montana Senate passed it 31-17, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1528094,
+   "measure_id": "HB 411",
+   "vote_date": "2025-03-26",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 411, which stops farm and forest land paying open space levies. A local government may levy a property tax to buy or protect open space. Farm land, forest land, the farm buildings on that land and farm machinery were already exempt from the property taxes that repay open space bonds. The act widens that exemption to cover all open space levies, not only bond repayments. It applies to levies and bonds voters have already approved, and starts with the 2026 property tax year. The Montana House passed it 56-43, and it became law.",
+   "nay_description": "Voted against House Bill 411, which stops farm and forest land paying open space levies. A local government may levy a property tax to buy or protect open space. Farm land, forest land, the farm buildings on that land and farm machinery were already exempt from the property taxes that repay open space bonds. The act widens that exemption to cover all open space levies, not only bond repayments. It applies to levies and bonds voters have already approved, and starts with the 2026 property tax year. The Montana House passed it 56-43, and it became law.",
+   "labels": [
+    {
+     "slug": "government_spending_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1554841,
+   "measure_id": "HB 411",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 411, which stops farm and forest land paying open space levies. A local government may levy a property tax to buy or protect open space. Farm land, forest land, the farm buildings on that land and farm machinery were already exempt from the property taxes that repay open space bonds. The act widens that exemption to cover all open space levies, not only bond repayments. It applies to levies and bonds voters have already approved, and starts with the 2026 property tax year. The Montana Senate passed it 38-12, and it became law.",
+   "nay_description": "Voted against House Bill 411, which stops farm and forest land paying open space levies. A local government may levy a property tax to buy or protect open space. Farm land, forest land, the farm buildings on that land and farm machinery were already exempt from the property taxes that repay open space bonds. The act widens that exemption to cover all open space levies, not only bond repayments. It applies to levies and bonds voters have already approved, and starts with the 2026 property tax year. The Montana Senate passed it 38-12, and it became law.",
+   "labels": [
+    {
+     "slug": "government_spending_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546894,
+   "measure_id": "HB 442",
+   "vote_date": "2025-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 442, which removes two duties to report a doctor to the licensing board. An insurer had to tell the Board of Medical Examiners when a claim alleged professional negligence by a doctor. The act repeals that duty outright. It also deletes the rule that made a medical legal panel send a copy of its decision to the health care provider's licensing board. The board therefore learns of fewer negligence allegations from these routes. The chiropractic part of the act's title changes only a section heading. The Montana Senate passed it 30-18, and it became law.",
+   "nay_description": "Voted against House Bill 442, which removes two duties to report a doctor to the licensing board. An insurer had to tell the Board of Medical Examiners when a claim alleged professional negligence by a doctor. The act repeals that duty outright. It also deletes the rule that made a medical legal panel send a copy of its decision to the health care provider's licensing board. The board therefore learns of fewer negligence allegations from these routes. The chiropractic part of the act's title changes only a section heading. The Montana Senate passed it 30-18, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1503739,
+   "measure_id": "HB 443",
+   "vote_date": "2025-03-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 443, which scraps Montana's statewide rules for door-to-door and pop-up sellers. Eight sections are repealed. They set the licence and its fee, the application, the bond a seller had to post, the duty to display the licence, and what happened if a seller did not comply. One of the repealed sections gave a buyer a right to claim against that bond. In their place, county commissioners get open-ended power to regulate and license these sellers themselves. Where a county does not act, no rules apply. The Montana House passed it 63-35, and it became law.",
+   "nay_description": "Voted against House Bill 443, which scraps Montana's statewide rules for door-to-door and pop-up sellers. Eight sections are repealed. They set the licence and its fee, the application, the bond a seller had to post, the duty to display the licence, and what happened if a seller did not comply. One of the repealed sections gave a buyer a right to claim against that bond. In their place, county commissioners get open-ended power to regulate and license these sellers themselves. Where a county does not act, no rules apply. The Montana House passed it 63-35, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1560255,
+   "measure_id": "HB 446",
+   "vote_date": "2025-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 446, which creates a new offence of indecent exposure based on birth sex. A person commits it by knowingly exposing their genitals or intimate parts, in a public place, to people of the opposite sex at birth, where they know it is likely to cause alarm. Public place is defined to include restrooms, changing rooms and showers set aside for one sex, as well as schools, parks and shops. A child with a parent, and a person with developmental disabilities with a carer, are excepted. A first conviction carries up to $500 or 6 months in jail, and a conviction requires the person to register as a sexual offender. The Montana House passed it 50-49, and it became law.",
+   "nay_description": "Voted against House Bill 446, which creates a new offence of indecent exposure based on birth sex. A person commits it by knowingly exposing their genitals or intimate parts, in a public place, to people of the opposite sex at birth, where they know it is likely to cause alarm. Public place is defined to include restrooms, changing rooms and showers set aside for one sex, as well as schools, parks and shops. A child with a parent, and a person with developmental disabilities with a carer, are excepted. A first conviction carries up to $500 or 6 months in jail, and a conviction requires the person to register as a sexual offender. The Montana House passed it 50-49, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1560256,
+   "measure_id": "HB 446",
+   "vote_date": "2025-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 446, which creates a new offence of indecent exposure based on birth sex. A person commits it by knowingly exposing their genitals or intimate parts, in a public place, to people of the opposite sex at birth, where they know it is likely to cause alarm. Public place is defined to include restrooms, changing rooms and showers set aside for one sex, as well as schools, parks and shops. A child with a parent, and a person with developmental disabilities with a carer, are excepted. A first conviction carries up to $500 or 6 months in jail, and a conviction requires the person to register as a sexual offender. The Montana Senate passed it 31-19, and it became law.",
+   "nay_description": "Voted against House Bill 446, which creates a new offence of indecent exposure based on birth sex. A person commits it by knowingly exposing their genitals or intimate parts, in a public place, to people of the opposite sex at birth, where they know it is likely to cause alarm. Public place is defined to include restrooms, changing rooms and showers set aside for one sex, as well as schools, parks and shops. A child with a parent, and a person with developmental disabilities with a carer, are excepted. A first conviction carries up to $500 or 6 months in jail, and a conviction requires the person to register as a sexual offender. The Montana Senate passed it 31-19, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1508658,
+   "measure_id": "HB 521",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 521, which bars someone convicted of a crime from suing over injuries they got committing it. The bar applies only where the injury was caused by a victim, and only where that victim used no force at all or used force the law treats as justified. If the victim used force that was not justified, the person may still sue. The rule also turns on there being a conviction, so a person who is charged but not convicted is not covered. The Montana House passed it 58-41, and it became law.",
+   "nay_description": "Voted against House Bill 521, which bars someone convicted of a crime from suing over injuries they got committing it. The bar applies only where the injury was caused by a victim, and only where that victim used no force at all or used force the law treats as justified. If the victim used force that was not justified, the person may still sue. The rule also turns on there being a conviction, so a person who is charged but not convicted is not covered. The Montana House passed it 58-41, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1547802,
+   "measure_id": "HB 521",
+   "vote_date": "2025-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 521, which bars someone convicted of a crime from suing over injuries they got committing it. The bar applies only where the injury was caused by a victim, and only where that victim used no force at all or used force the law treats as justified. If the victim used force that was not justified, the person may still sue. The rule also turns on there being a conviction, so a person who is charged but not convicted is not covered. The Montana Senate passed it 34-14, and it became law.",
+   "nay_description": "Voted against House Bill 521, which bars someone convicted of a crime from suing over injuries they got committing it. The bar applies only where the injury was caused by a victim, and only where that victim used no force at all or used force the law treats as justified. If the victim used force that was not justified, the person may still sue. The rule also turns on there being a conviction, so a person who is charged but not convicted is not covered. The Montana Senate passed it 34-14, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1536513,
+   "measure_id": "HB 588",
+   "vote_date": "2025-04-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 588, which brings motorised scooters into Montana's traffic laws for the first time. A motorised scooter is defined as a vehicle with no seat, pushed by foot or by a motor that cannot drive it faster than 30 miles an hour. Electrically assisted bicycles are excluded. Scooters must follow the rules that already apply to bicycles and mopeds, including lamps and brakes. A powered scooter may not be ridden on a pavement. A rider or passenger under 18 must wear protective headgear. The Montana Senate passed it 37-13, and it became law.",
+   "nay_description": "Voted against House Bill 588, which brings motorised scooters into Montana's traffic laws for the first time. A motorised scooter is defined as a vehicle with no seat, pushed by foot or by a motor that cannot drive it faster than 30 miles an hour. Electrically assisted bicycles are excluded. Scooters must follow the rules that already apply to bicycles and mopeds, including lamps and brakes. A powered scooter may not be ridden on a pavement. A rider or passenger under 18 must wear protective headgear. The Montana Senate passed it 37-13, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1538792,
+   "measure_id": "HB 621",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 621, which lets local emergency services offer private peer support. A police force, fire service or ambulance service may set up a scheme where staff talk through the strain of the job with a trained workmate. The written policy must cover nine points. They include a ban on recording a session, the right not to be handed to your own boss, and a ban on treating anyone badly for asking for help. What is said stays private, and the workmate may not be made to speak about it in court. That falls away if the person has done or plans a crime, or says they will hurt themselves or someone else. The Montana Senate passed it 37-12, and it became law.",
+   "nay_description": "Voted against House Bill 621, which lets local emergency services offer private peer support. A police force, fire service or ambulance service may set up a scheme where staff talk through the strain of the job with a trained workmate. The written policy must cover nine points. They include a ban on recording a session, the right not to be handed to your own boss, and a ban on treating anyone badly for asking for help. What is said stays private, and the workmate may not be made to speak about it in court. That falls away if the person has done or plans a crime, or says they will hurt themselves or someone else. The Montana Senate passed it 37-12, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1538595,
+   "measure_id": "HB 667",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 667, which protects an employee who runs for or holds public office. An employer may not stop a worker seeking election or appointment to a city, county or state office, and may not punish them for it. During the leave the law already gives an office holder, the employer may not make the worker use up their own leave without agreeing, and may not make them work. If the employer allows personal use of a work phone or computer, it may not withdraw that during the leave. If it provides health cover, it must keep providing the same cover. The act reaches back to anything that happened from January 2025. The Montana Senate passed it 32-17, and it became law.",
+   "nay_description": "Voted against House Bill 667, which protects an employee who runs for or holds public office. An employer may not stop a worker seeking election or appointment to a city, county or state office, and may not punish them for it. During the leave the law already gives an office holder, the employer may not make the worker use up their own leave without agreeing, and may not make them work. If the employer allows personal use of a work phone or computer, it may not withdraw that during the leave. If it provides health cover, it must keep providing the same cover. The act reaches back to anything that happened from January 2025. The Montana Senate passed it 32-17, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1553597,
+   "measure_id": "HB 710",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 710, which gives child exploitation investigators a new way to get records. A judge of the Supreme Court or a district court may issue an order compelling a company to hand over records, at the request of an officer on an Internet Crimes Against Children task force. The officer must swear a written statement, the case must involve the sexual exploitation of a minor, and the judge must find that justice requires the order. Only listed account details may be demanded, such as the name, address, e-mail, telephone number and payment source. The contents of messages are not on that list. The Montana Senate passed it 32-18, and it became law.",
+   "nay_description": "Voted against House Bill 710, which gives child exploitation investigators a new way to get records. A judge of the Supreme Court or a district court may issue an order compelling a company to hand over records, at the request of an officer on an Internet Crimes Against Children task force. The officer must swear a written statement, the case must involve the sexual exploitation of a minor, and the judge must find that justice requires the order. Only listed account details may be demanded, such as the name, address, e-mail, telephone number and payment source. The contents of messages are not on that list. The Montana Senate passed it 32-18, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1552218,
+   "measure_id": "HB 791",
+   "vote_date": "2025-04-18",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 791, which rewrites Montana's law on public nuisance and puts products beyond it. A public nuisance used to cover anything harmful to a whole community. It now covers only conditions arising from the use of land, plus blocking a public road or waterway. A closed list of things can never be a public nuisance. That list includes the design, manufacture, sale or marketing of any product, and names firearms, firearm parts and ammunition. A government suing may no longer recover damages of any kind, only limited clean-up costs. A private person must prove an injury different in kind from the public's, and group claims are barred. The state's opioid case is protected for four years. The Montana House passed it 58-41, and it became law.",
+   "nay_description": "Voted against House Bill 791, which rewrites Montana's law on public nuisance and puts products beyond it. A public nuisance used to cover anything harmful to a whole community. It now covers only conditions arising from the use of land, plus blocking a public road or waterway. A closed list of things can never be a public nuisance. That list includes the design, manufacture, sale or marketing of any product, and names firearms, firearm parts and ammunition. A government suing may no longer recover damages of any kind, only limited clean-up costs. A private person must prove an injury different in kind from the public's, and group claims are barred. The state's opioid case is protected for four years. The Montana House passed it 58-41, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546675,
+   "measure_id": "HB 791",
+   "vote_date": "2025-04-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 791, which rewrites Montana's law on public nuisance and puts products beyond it. A public nuisance used to cover anything harmful to a whole community. It now covers only conditions arising from the use of land, plus blocking a public road or waterway. A closed list of things can never be a public nuisance. That list includes the design, manufacture, sale or marketing of any product, and names firearms, firearm parts and ammunition. A government suing may no longer recover damages of any kind, only limited clean-up costs. A private person must prove an injury different in kind from the public's, and group claims are barred. The state's opioid case is protected for four years. The Montana Senate passed it 32-18, and it became law.",
+   "nay_description": "Voted against House Bill 791, which rewrites Montana's law on public nuisance and puts products beyond it. A public nuisance used to cover anything harmful to a whole community. It now covers only conditions arising from the use of land, plus blocking a public road or waterway. A closed list of things can never be a public nuisance. That list includes the design, manufacture, sale or marketing of any product, and names firearms, firearm parts and ammunition. A government suing may no longer recover damages of any kind, only limited clean-up costs. A private person must prove an injury different in kind from the public's, and group claims are barred. The state's opioid case is protected for four years. The Montana Senate passed it 32-18, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1508523,
+   "measure_id": "HB 819",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 819, which limits which flags may be flown on public property in Montana. It covers buildings, grounds, vehicles and uniforms of the state, counties, towns, schools and colleges. Only flags on a set list may be shown. That list holds the United States flag, Montana's flag, other state flags, tribal flags, other countries' flags, military flags, some old flags, school mascot flags and police flags. A flag that stands for a political view is barred. The act names party, race, sexual orientation, gender and belief. Staff clothing and jewellery are not covered unless a dress code applies. The Montana House passed it 57-42, and it became law.",
+   "nay_description": "Voted against House Bill 819, which limits which flags may be flown on public property in Montana. It covers buildings, grounds, vehicles and uniforms of the state, counties, towns, schools and colleges. Only flags on a set list may be shown. That list holds the United States flag, Montana's flag, other state flags, tribal flags, other countries' flags, military flags, some old flags, school mascot flags and police flags. A flag that stands for a political view is barred. The act names party, race, sexual orientation, gender and belief. Staff clothing and jewellery are not covered unless a dress code applies. The Montana House passed it 57-42, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1553969,
+   "measure_id": "HB 819",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 819, which limits which flags may be flown on public property in Montana. It covers buildings, grounds, vehicles and uniforms of the state, counties, towns, schools and colleges. Only flags on a set list may be shown. That list holds the United States flag, Montana's flag, other state flags, tribal flags, other countries' flags, military flags, some old flags, school mascot flags and police flags. A flag that stands for a political view is barred. The act names party, race, sexual orientation, gender and belief. Staff clothing and jewellery are not covered unless a dress code applies. The Montana Senate passed it 32-18, and it became law.",
+   "nay_description": "Voted against House Bill 819, which limits which flags may be flown on public property in Montana. It covers buildings, grounds, vehicles and uniforms of the state, counties, towns, schools and colleges. Only flags on a set list may be shown. That list holds the United States flag, Montana's flag, other state flags, tribal flags, other countries' flags, military flags, some old flags, school mascot flags and police flags. A flag that stands for a political view is barred. The act names party, race, sexual orientation, gender and belief. Staff clothing and jewellery are not covered unless a dress code applies. The Montana Senate passed it 32-18, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1552278,
+   "measure_id": "HB 888",
+   "vote_date": "2025-04-18",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 888, which bars a local health board from requiring anyone to be vaccinated. A local board of health runs public health for a county or city. The act says such a board may not require a person to receive any vaccination, medication, supplement or other drug treatment. No exception is written in for an outbreak, for schools, for health care workers, or for a declared emergency. The act sets aside $300 so the state health department can tell local boards about the change. The Montana Senate passed it 30-20, and it became law.",
+   "nay_description": "Voted against House Bill 888, which bars a local health board from requiring anyone to be vaccinated. A local board of health runs public health for a county or city. The act says such a board may not require a person to receive any vaccination, medication, supplement or other drug treatment. No exception is written in for an outbreak, for schools, for health care workers, or for a declared emergency. The act sets aside $300 so the state health department can tell local boards about the change. The Montana Senate passed it 30-20, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1537815,
+   "measure_id": "HB 891",
+   "vote_date": "2025-04-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 891, which lets the state health department demand records without going to a judge. The department has an inspector general who looks into waste, fraud and abuse in health services and public assistance. That office may now order a person or company to hand over financial records, documents and data, including electronic data. The material must be relevant to such an investigation. Every order must be signed by both the department director and the inspector general. Unlike a court order, no judge reviews it first. The Montana House passed it 57-41, and it became law.",
+   "nay_description": "Voted against House Bill 891, which lets the state health department demand records without going to a judge. The department has an inspector general who looks into waste, fraud and abuse in health services and public assistance. That office may now order a person or company to hand over financial records, documents and data, including electronic data. The material must be relevant to such an investigation. Every order must be signed by both the department director and the inspector general. Unlike a court order, no judge reviews it first. The Montana House passed it 57-41, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1552333,
+   "measure_id": "HB 891",
+   "vote_date": "2025-04-18",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 891, which lets the state health department demand records without going to a judge. The department has an inspector general who looks into waste, fraud and abuse in health services and public assistance. That office may now order a person or company to hand over financial records, documents and data, including electronic data. The material must be relevant to such an investigation. Every order must be signed by both the department director and the inspector general. Unlike a court order, no judge reviews it first. The Montana Senate passed it 32-18, and it became law.",
+   "nay_description": "Voted against House Bill 891, which lets the state health department demand records without going to a judge. The department has an inspector general who looks into waste, fraud and abuse in health services and public assistance. That office may now order a person or company to hand over financial records, documents and data, including electronic data. The material must be relevant to such an investigation. Every order must be signed by both the department director and the inspector general. Unlike a court order, no judge reviews it first. The Montana Senate passed it 32-18, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546146,
+   "measure_id": "SB 30",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 30, which narrows an old rule that lets a conflicted judge stay on a case. The rule of necessity says a judge with a conflict of interest may still hear a case when there is no one else to hear it. The act says a judge may not lean on that rule to avoid stepping aside when other judges are available whose conflicts are smaller or less direct. Nothing else about when a judge must step aside changes. The Montana House passed it 57-42, and it became law.",
+   "nay_description": "Voted against Senate Bill 30, which narrows an old rule that lets a conflicted judge stay on a case. The rule of necessity says a judge with a conflict of interest may still hear a case when there is no one else to hear it. The act says a judge may not lean on that rule to avoid stepping aside when other judges are available whose conflicts are smaller or less direct. Nothing else about when a judge must step aside changes. The Montana House passed it 57-42, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1481035,
+   "measure_id": "SB 30",
+   "vote_date": "2025-01-27",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 30, which narrows an old rule that lets a conflicted judge stay on a case. The rule of necessity says a judge with a conflict of interest may still hear a case when there is no one else to hear it. The act says a judge may not lean on that rule to avoid stepping aside when other judges are available whose conflicts are smaller or less direct. Nothing else about when a judge must step aside changes. The Montana Senate passed it 31-18, and it became law.",
+   "nay_description": "Voted against Senate Bill 30, which narrows an old rule that lets a conflicted judge stay on a case. The rule of necessity says a judge with a conflict of interest may still hear a case when there is no one else to hear it. The act says a judge may not lean on that rule to avoid stepping aside when other judges are available whose conflicts are smaller or less direct. Nothing else about when a judge must step aside changes. The Montana Senate passed it 31-18, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546261,
+   "measure_id": "SB 38",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 38, which removes a way to recover legal costs from the state. When the legislature is not sitting, members may be polled on whether to override a governor's veto. Someone may go to court to force that poll to happen. Under the act, if the poll then fails to override the veto, the person who forced it does not count as having won, so they cannot be paid their legal costs. The act says this holds even where a court finds the state's defence was pointless or made in bad faith. The Montana House passed it 58-41, and it became law.",
+   "nay_description": "Voted against Senate Bill 38, which removes a way to recover legal costs from the state. When the legislature is not sitting, members may be polled on whether to override a governor's veto. Someone may go to court to force that poll to happen. Under the act, if the poll then fails to override the veto, the person who forced it does not count as having won, so they cannot be paid their legal costs. The act says this holds even where a court finds the state's defence was pointless or made in bad faith. The Montana House passed it 58-41, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1481219,
+   "measure_id": "SB 38",
+   "vote_date": "2025-02-03",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 38, which removes a way to recover legal costs from the state. When the legislature is not sitting, members may be polled on whether to override a governor's veto. Someone may go to court to force that poll to happen. Under the act, if the poll then fails to override the veto, the person who forced it does not count as having won, so they cannot be paid their legal costs. The act says this holds even where a court finds the state's defence was pointless or made in bad faith. The Montana Senate passed it 36-13, and it became law.",
+   "nay_description": "Voted against Senate Bill 38, which removes a way to recover legal costs from the state. When the legislature is not sitting, members may be polled on whether to override a governor's veto. Someone may go to court to force that poll to happen. Under the act, if the poll then fails to override the veto, the person who forced it does not count as having won, so they cannot be paid their legal costs. The act says this holds even where a court finds the state's defence was pointless or made in bad faith. The Montana Senate passed it 36-13, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546393,
+   "measure_id": "SB 97",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 97, which moves lawsuits over new Montana laws out of the capital. If someone argues in court that a law passed in the last two years is unconstitutional, or seeks to block it, the case must be heard in a county inside the home district of the legislator who sponsored the bill. A judge must move a case that was filed elsewhere. A case must also be moved when the sponsor of the bill joins it. Before the act, such a case was usually heard where the state government sits. The Montana House passed it 57-42, and it became law.",
+   "nay_description": "Voted against Senate Bill 97, which moves lawsuits over new Montana laws out of the capital. If someone argues in court that a law passed in the last two years is unconstitutional, or seeks to block it, the case must be heard in a county inside the home district of the legislator who sponsored the bill. A judge must move a case that was filed elsewhere. A case must also be moved when the sponsor of the bill joins it. Before the act, such a case was usually heard where the state government sits. The Montana House passed it 57-42, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1481606,
+   "measure_id": "SB 97",
+   "vote_date": "2025-01-31",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 97, which moves lawsuits over new Montana laws out of the capital. If someone argues in court that a law passed in the last two years is unconstitutional, or seeks to block it, the case must be heard in a county inside the home district of the legislator who sponsored the bill. A judge must move a case that was filed elsewhere. A case must also be moved when the sponsor of the bill joins it. Before the act, such a case was usually heard where the state government sits. The Montana Senate passed it 32-18, and it became law.",
+   "nay_description": "Voted against Senate Bill 97, which moves lawsuits over new Montana laws out of the capital. If someone argues in court that a law passed in the last two years is unconstitutional, or seeks to block it, the case must be heard in a county inside the home district of the legislator who sponsored the bill. A judge must move a case that was filed elsewhere. A case must also be moved when the sponsor of the bill joins it. Before the act, such a case was usually heard where the state government sits. The Montana Senate passed it 32-18, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1551380,
+   "measure_id": "SB 147",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 147, which stops Montana's Indian Child Welfare Act from expiring. That Act sets the rules for what happens when the state removes an American Indian child from home, including who the child should be placed with. The 2023 law that created it also set it to end on 30 June 2025. The act repeals that end date, so the protections stay in force with no expiry. The Secretary of State must send a copy to every federally recognised tribal government in Montana. The Montana Senate passed it 31-19, and it became law.",
+   "nay_description": "Voted against Senate Bill 147, which stops Montana's Indian Child Welfare Act from expiring. That Act sets the rules for what happens when the state removes an American Indian child from home, including who the child should be placed with. The 2023 law that created it also set it to end on 30 June 2025. The act repeals that end date, so the protections stay in force with no expiry. The Secretary of State must send a copy to every federally recognised tribal government in Montana. The Montana Senate passed it 31-19, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
