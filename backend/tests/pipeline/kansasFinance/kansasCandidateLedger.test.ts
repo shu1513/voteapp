@@ -28,14 +28,13 @@ function gridRow(overrides: Partial<KansasCfrGridRow>): KansasCfrGridRow {
   };
 }
 
-function coverHtml(input: { start: string; end: string; amended?: boolean; termination?: boolean; receipts?: string }): string {
+function coverHtml(input: { start: string; end: string; amended?: boolean; termination?: boolean }): string {
   return `
     <span id="lblCandOrgName">Margaret Holloway</span>
     <span id="lblFileStartDate">${input.start}</span>
     <span id="lblFileEndDate">${input.end}</span>
     <input id="chkAmended" type="checkbox" ${input.amended ? "checked" : ""} disabled />
     <input id="chkTermination" type="checkbox" ${input.termination ? "checked" : ""} disabled />
-    <span id="lblTotalContributions">${input.receipts ?? "$0.00"}</span>
     <span id="lblCashBeginning">$0.00</span>`;
 }
 
@@ -115,49 +114,6 @@ describe("buildKansasCandidateLedger", () => {
     expect(result.complete).toBe(true);
     expect(result.reports.every((report) => report.scheduleA === null && report.scheduleB === null)).toBe(true);
     expect(annual.openSchedule).not.toHaveBeenCalled();
-  });
-
-  // Live: Proctor's 2026 pre-primary amendment is two grid rows (ctl07 and
-  // ctl08) with one file date, one amendment date and covers equal line for
-  // line. Kept as two versions they never order, so the period went
-  // `ambiguous` and the candidate published nothing.
-  it("drops a grid row that repeats a report already opened, and keeps a same-day pair whose covers differ", async () => {
-    const amendedRow = { index: 1, fileDate: "07/27/2026", amendmentDate: "08/10/2026" };
-    const amendedCover = { start: "1/1/2026", end: "7/23/2026", amended: true, receipts: "$42,480.00" };
-    const annual = filing({ row: { fileDate: "01/09/2026" }, cover: { start: "1/1/2025", end: "12/31/2025" } });
-    const original = filing({ row: { index: 3 }, cover: { start: "1/1/2026", end: "7/23/2026", receipts: "$37,480.00" } });
-    const amendment = filing({ row: amendedRow, cover: amendedCover });
-    const listedTwice = filing({ row: { ...amendedRow, index: 2, postbackTarget: "grdviewCfrResults$ctl08$lnkbtnName" }, cover: amendedCover });
-
-    const result = await buildKansasCandidateLedger({
-      target: houseTarget,
-      now: NOW,
-      loadFilingPool: poolOf([annual, amendment, listedTwice, original]),
-    });
-
-    expect(result.status).toBe("resolved");
-    if (result.status !== "resolved") return;
-    // Both rows are opened — the duplicate is only knowable from its cover.
-    expect(listedTwice.openReport).toHaveBeenCalled();
-    expect(result.duplicateReports.map((row) => row.postbackTarget)).toEqual(["grdviewCfrResults$ctl08$lnkbtnName"]);
-    expect(result.reports).toHaveLength(3);
-    const prePrimary = result.ledger.entries.find((entry) => entry.period.key === "2026-pre_primary")!;
-    expect(prePrimary.status).toBe("amended");
-    expect(prePrimary.canonical).toMatchObject({ amended: true, amendmentDate: "2026-08-10" });
-    expect(result.complete).toBe(true);
-
-    // A genuine same-day pair whose covers differ still cannot be ordered.
-    const rival = filing({ row: { ...amendedRow, index: 2 }, cover: { ...amendedCover, receipts: "$42,481.00" } });
-    const ambiguous = await buildKansasCandidateLedger({
-      target: houseTarget,
-      now: NOW,
-      loadFilingPool: poolOf([annual, amendment, rival, original]),
-    });
-    expect(ambiguous.status).toBe("resolved");
-    if (ambiguous.status !== "resolved") return;
-    expect(ambiguous.duplicateReports).toEqual([]);
-    expect(ambiguous.ledger.entries.find((entry) => entry.period.key === "2026-pre_primary")!.status).toBe("ambiguous");
-    expect(ambiguous.complete).toBe(false);
   });
 
   it("with openSchedules, reopens each counted period's canonical cover and reads its Schedules A and B", async () => {
@@ -387,12 +343,11 @@ describe("buildKansasCandidateLedger", () => {
     expect(kansasLedgerCandidateName(recipe, "FRIENDS OF MARGARET")).toBe("HOLLOWAY, MARGARET");
     expect(kansasLedgerCandidateName(recipe, "HOLLOWAYS MARGARET")).toBe("HOLLOWAY, MARGARET");
 
-    // Distinct receipts: these are separate filings, not one row listed twice.
     const cover = { start: "1/1/2026", end: "7/23/2026" };
     const filings = () => [
-      filing({ row: { name: "HOLLOWAY MARGARET A" }, cover: { ...cover, receipts: "$1.00" } }),
-      filing({ row: { index: 1, name: "HOLLOWAY MARGARET" }, cover: { ...cover, receipts: "$2.00" } }),
-      filing({ row: { index: 2, name: "HOLLOWAY MARGARET B" }, cover: { ...cover, receipts: "$3.00" } }),
+      filing({ row: { name: "HOLLOWAY MARGARET A" }, cover }),
+      filing({ row: { index: 1, name: "HOLLOWAY MARGARET" }, cover }),
+      filing({ row: { index: 2, name: "HOLLOWAY MARGARET B" }, cover }),
     ];
     // The recipe alone aligns both middles and must report the contradiction.
     expect(await buildKansasCandidateLedger({ target: houseTarget, now: NOW, loadFilingPool: poolOf(filings()) })).toMatchObject({

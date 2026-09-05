@@ -116,10 +116,8 @@ export type KansasCandidateLedgerResult =
   | {
       status: "resolved";
       match: KansasFilerMatch;
-      /** E-filed reports, cover opened; grid order. One entry per distinct filing. */
+      /** E-filed reports, cover opened; grid order. */
       reports: KansasCandidateReport[];
-      /** Grid rows dropped as a duplicate listing of a report already in `reports` (same header, same cover). */
-      duplicateReports: KansasCfrGridRow[];
       /** Paper report rows: period unknown from the viewer, never opened. */
       paperReports: KansasCfrGridRow[];
       /** KPDC tree inventory for the paper rows; null when there are none or no tree loader was given. */
@@ -179,7 +177,6 @@ export async function buildKansasCandidateLedger(input: {
 
   const reports: KansasCandidateReport[] = [];
   const reportFilings = new Map<KansasCandidateReport, KansasPooledFiling>();
-  const duplicateReports: KansasCfrGridRow[] = [];
   const paperReports: KansasCfrGridRow[] = [];
   const appointments: KansasAppointmentOfTreasurer[] = [];
   const affidavitDates: string[] = [];
@@ -217,25 +214,6 @@ export async function buildKansasCandidateLedger(input: {
         scheduleA: null,
         scheduleB: null,
       };
-      // The same filing can appear as two grid rows (live: Proctor's 2026
-      // pre-primary amendment, rows ctl07 and ctl08 — one file date, one
-      // amendment date, and covers equal line for line). Two rows whose
-      // header AND whole cover match are one filing listed twice: keeping
-      // both would make the version chain untrustworthy (two versions with
-      // one key never order) and would then hand the aggregator two covers
-      // for one canonical version. Dropping the duplicate cannot lose
-      // money — the figures are identical — and a cover that differs in
-      // any line is kept, so a real pair of same-day versions still fails
-      // closed.
-      const duplicate = reports.find(
-        (earlier) =>
-          kansasFilingHeaderKey(earlier.header) === kansasFilingHeaderKey(report.header) &&
-          JSON.stringify(earlier.cover) === JSON.stringify(report.cover)
-      );
-      if (duplicate !== undefined) {
-        duplicateReports.push(row);
-        continue;
-      }
       reports.push(report);
       reportFilings.set(report, filing);
     }
@@ -315,7 +293,6 @@ export async function buildKansasCandidateLedger(input: {
     status: "resolved",
     match: resolution.match,
     reports,
-    duplicateReports,
     paperReports,
     paper,
     appointments,
