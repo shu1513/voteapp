@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { apiRequest, APP_NAME } from "@voteapp/api-client";
-import type { MembershipKind, MembershipMembership, MembershipPayment, MembershipStatus } from "@voteapp/api-client";
+import type { MembershipKind, MembershipMembership, MembershipPayment } from "@voteapp/api-client";
 import { ErrorNotice } from "./Status";
 import { navigateExternal } from "../lib/externalNavigation";
 import { trackSettled } from "../lib/usage";
+import { useMembershipStatus } from "../lib/useMembershipStatus";
 
 // Membership payments through Stripe Checkout (full-page redirect, no Stripe
 // SDK here). Three surfaces share the pieces in this file:
@@ -175,17 +176,6 @@ function useCheckoutOutcome(): string | null {
     }
   }, [searchParams, setSearchParams]);
   return outcome;
-}
-
-// staleTime 0 (the app default is 60s): the webhook that records a payment
-// can land after the return from Checkout, so every mount must ask again
-// rather than reuse a pre-webhook snapshot — no polling, just no caching.
-function useMembershipStatus() {
-  return useQuery({
-    queryKey: ["me", "membership"],
-    queryFn: () => apiRequest<MembershipStatus>("/api/me/membership"),
-    staleTime: 0,
-  });
 }
 
 function useCheckoutMutation() {

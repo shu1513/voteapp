@@ -6,7 +6,10 @@ import type { AutoPickElectionResult, BallotSummary, ElectionChoice, ElectionSum
 import { AutoPickFillControl, reasonLabel } from "../components/AutoPickFillControl";
 import { RemoveStrandedPickButton } from "../components/ElectionChoiceControls";
 import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
+import { DraftMembershipCta } from "../components/DraftMembershipCta";
 import { DraftMilestone } from "../components/DraftMilestone";
+import { allRacesDecided } from "../lib/ballotDraft";
+import { useShowDraftMilestone } from "../lib/useShowDraftMilestone";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import type { CandidateNavState, ElectionNavState } from "../lib/detailNavContext";
 import { ShareButton } from "../components/ShareButton";
@@ -552,6 +555,33 @@ export function PicksPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ballot.data, choicesReadyForUsage]);
 
+  const today = usLatestLocalDate();
+  // Strict date grouping: cards are "everything you face on this day", and
+  // within a day the payload's ballot order stands as-is. No date filter of our own: the ballot
+  // payload already keeps just-finished elections for a few days
+  // (BALLOT_PAST_ELECTION_VISIBILITY_DAYS), and the card should live exactly
+  // as long — results land right on it before it retires to Past elections.
+  // Computed above the early returns because the milestone hook below needs
+  // the nearest upcoming day on every render.
+  const byDate = new Map<string, ElectionSummary[]>();
+  for (const election of ballot.data?.elections ?? []) {
+    const group = byDate.get(election.election_date) ?? [];
+    group.push(election);
+    byDate.set(election.election_date, group);
+  }
+  const dates = [...byDate.keys()].sort();
+  // Nearest UPCOMING day, not dates[0]: cards keep just-finished days for a
+  // few days, and a finished day has nothing left to celebrate.
+  const nearestUpcomingDate = dates.find((date) => date >= today);
+  const cardedElectionIds = new Set((ballot.data?.elections ?? []).map((election) => election.id));
+  // The finish-line box and the honorary-member ask share ONE moment: the
+  // first visit after every race on the nearest day is decided, once per
+  // day per browser (owner's rule: persistent = nag).
+  const nearestComplete =
+    nearestUpcomingDate !== undefined &&
+    allRacesDecided(byDate.get(nearestUpcomingDate) ?? [], choiceByElectionId);
+  const milestoneShown = useShowDraftMilestone(nearestUpcomingDate, nearestComplete);
+
   if (isLoading || me === undefined) {
     return <LoadingNotice text="Loading…" />;
   }
@@ -582,22 +612,6 @@ export function PicksPage() {
       </>
     );
   }
-
-  const today = usLatestLocalDate();
-  // Strict date grouping: cards are "everything you face on this day", and
-  // within a day the payload's ballot order stands as-is. No date filter of our own: the ballot
-  // payload already keeps just-finished elections for a few days
-  // (BALLOT_PAST_ELECTION_VISIBILITY_DAYS), and the card should live exactly
-  // as long — results land right on it before it retires to Past elections.
-  const byDate = new Map<string, ElectionSummary[]>();
-  for (const election of ballot.data?.elections ?? []) {
-    const group = byDate.get(election.election_date) ?? [];
-    group.push(election);
-    byDate.set(election.election_date, group);
-  }
-  const dates = [...byDate.keys()].sort();
-  const nearestUpcomingDate = dates.find((date) => date >= today);
-  const cardedElectionIds = new Set((ballot.data?.elections ?? []).map((election) => election.id));
 
   // Cards are meaningless without the choices: rendering them from an
   // unloaded map claims "no pick yet" on races the user already decided
@@ -647,16 +661,9 @@ export function PicksPage() {
         ) : null}
         {picksSettled ? (
           <>
-            {/* Above the toggle so both views carry it. Nearest UPCOMING
-                day, not dates[0]: cards keep just-finished days for a few
-                days, and a finished day has nothing left to celebrate. */}
+            {/* Above the toggle so both views carry it. */}
             {nearestUpcomingDate !== undefined ? (
-              <DraftMilestone
-                date={nearestUpcomingDate}
-                elections={byDate.get(nearestUpcomingDate) ?? []}
-                choiceByElectionId={choiceByElectionId}
-                signup={false}
-              />
+              <DraftMilestone show={milestoneShown} date={nearestUpcomingDate} signup={false} />
             ) : null}
             {dates.length > 0 ? (
               <div className="mt-4">
@@ -696,6 +703,9 @@ export function PicksPage() {
                 ))}
               </div>
             )}
+            {/* One slot below whichever view is on: the honorary-member ask,
+                riding the milestone's single moment. */}
+            <DraftMembershipCta show={milestoneShown} />
             <UpcomingUncardedPicks
               title="Other upcoming picks"
               choices={choices ?? []}
