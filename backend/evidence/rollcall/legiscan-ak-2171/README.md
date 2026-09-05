@@ -12,7 +12,11 @@ votes here do not follow party lines.
 - `resolve-proposals-report.json` — what the proposer suggested, before review.
 - `survey/divided-enacted-worklist.tsv` — every divided roll on a measure that became law,
   each with a disposition and a reason.
-- `batch-01/` — the first batch: plan, judging notes, judgments, roll evidence, ledgers.
+- `batch-01/` — measures that became law: plan, judging notes, judgments, roll evidence, ledgers.
+- `batch-02/` — measures the governor vetoed. Same layout.
+- `batch-03/` — measures that passed one chamber and then died. Same layout.
+- `survey/remaining-pool-worklist.tsv` — every divided roll outside the enacted set, with a
+  disposition and a reason, covering batch-02 and batch-03.
 - `CODE-FINDINGS.md` — data defects found and deliberately not fixed in code.
 
 ## What the survey measured

@@ -71,3 +71,40 @@ same off-by-one in the opposite direction.
 scheduling motion on others, and `House: Third Reading Constitutional Budget Reserve
 Appropriations` maps to both `PASSED` and `CBRF SECTION(S) FAILED`. Ten rolls in total,
 stored and flagged for a person rather than guessed at.
+
+## 6. LegiScan's bill status lags the state's own page by weeks
+
+Our dataset was cut on 2026-08-30. In it, HB 10 and HB 93 both carry status 3, "enrolled",
+with HB 10 showing a transmittal to the governor on 2026-08-14 and HB 93 still showing
+`AWAITING TRANSMITTAL TO GOV` from 2026-05-17.
+
+Both were wrong on the day we read them. The state's own bill pages, read on 2026-09-04, show:
+
+- HB 10: `9/1/2026 (H) VETOED BY GOVERNOR 8/31/26`
+- HB 93: `8/11/2026 (H) VETOED BY GOVERNOR 8/10/26`, transmitted to the governor 2026-07-17
+
+HB 93's snapshot was stale by nearly three months, not by days. The bill had been transmitted
+and vetoed while the dataset still showed it waiting to be sent.
+
+**Rule this produced.** A bill's status in the dataset is a starting point, never the answer.
+Any measure whose description depends on what finally happened to it — became law, vetoed,
+died — must have that fact confirmed against `www.akleg.gov` before the description is
+written. A record that says a bill is "waiting on the governor" goes stale on its own; a
+record that says it was vetoed does not.
+
+## 7. A selected roll can have no stored evidence, because the fetch collapsed its twin
+
+LegiScan filed HB 133's House concurrence vote twice, as roll `1700368` and roll `1700369`.
+The two are identical in every field the identity key uses: same chamber, bill, date,
+description, 22-18 tally, zero not-voting, zero absent, same passed flag, and a byte-identical
+member list.
+
+The fetch collapsed the pair and stored `1700368`. Selection for this batch ran over the raw
+dataset with its own de-duplication and kept `1700369`. Both choices are defensible in
+isolation, and together they produce a judgment that points at a roll with no evidence file
+and no database row.
+
+**Rule this produced.** Select rolls from the stored evidence set, not from the raw dataset.
+If selection must run over the dataset, reconcile the chosen roll ids against
+`ls-ak-*-roll*.json` before judging. The failure is loud — the importer simply finds nothing —
+but it is easy to mistake for a fetch gap when it is really a duplicate-pair disagreement.
