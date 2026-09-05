@@ -1,0 +1,322 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1526132,
+   "measure_id": "SB 14",
+   "vote_date": "2025-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 14. The act repeals Colorado's old statute saying a marriage is valid only between one man and one woman. Courts struck that rule down years ago, but it stayed on the books. The act also removes the rule that such a marriage from another state would not count here. It updates the civil union law's statement of purpose to drop the same wording. The Colorado House passed it 45-14 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 14. The act repeals Colorado's old statute saying a marriage is valid only between one man and one woman. Courts struck that rule down years ago, but it stayed on the books. The act also removes the rule that such a marriage from another state would not count here. It updates the civil union law's statement of purpose to drop the same wording. The Colorado House passed it 45-14 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1558167,
+   "measure_id": "SB 50",
+   "vote_date": "2025-04-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 50. Government forms that ask a person's race must offer a Middle Eastern, North African or South Asian choice. That is on top of the categories the federal government requires. The rule covers forms that gather data about groups, not about named people. It binds state agencies, colleges and local governments. A government is excused if it must send the data to Washington and the choice would get it rejected. Even then, the choice has to appear as a subcategory on the form. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 50. Government forms that ask a person's race must offer a Middle Eastern, North African or South Asian choice. That is on top of the categories the federal government requires. The rule covers forms that gather data about groups, not about named people. It binds state agencies, colleges and local governments. A government is excused if it must send the data to Washington and the choice would get it rejected. Even then, the choice has to appear as a subcategory on the form. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564558,
+   "measure_id": "SB 50",
+   "vote_date": "2025-05-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 50. Government forms that ask a person's race must offer a Middle Eastern, North African or South Asian choice. That is on top of the categories the federal government requires. The rule covers forms that gather data about groups, not about named people. It binds state agencies, colleges and local governments. A government is excused if it must send the data to Washington and the choice would get it rejected. Even then, the choice has to appear as a subcategory on the form. The Colorado House passed it 42-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 50. Government forms that ask a person's race must offer a Middle Eastern, North African or South Asian choice. That is on top of the categories the federal government requires. The rule covers forms that gather data about groups, not about named people. It binds state agencies, colleges and local governments. A government is excused if it must send the data to Washington and the choice would get it rejected. Even then, the choice has to appear as a subcategory on the form. The Colorado House passed it 42-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1537383,
+   "measure_id": "SB 87",
+   "vote_date": "2025-04-04",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 87 and pass it. Colleges have to set up a clear process for a student to report a disability. The student can then ask for an academic adjustment. An academic adjustment changes how a course is taken, not what it teaches. The policy has to say how the college decides, and which papers it may ask for. It must also describe how a student can appeal. A college has to consider school records, such as a special education plan or a section 504 plan. Each college has to publish its policy. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 87. Colleges have to set up a clear process for a student to report a disability. The student can then ask for an academic adjustment. An academic adjustment changes how a course is taken, not what it teaches. The policy has to say how the college decides, and which papers it may ask for. It must also describe how a student can appeal. A college has to consider school records, such as a special education plan or a section 504 plan. Each college has to publish its policy. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1537382
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1508794,
+   "measure_id": "HB 1109",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1109. The act says a death certificate must record a person's gender as their gender identity. If someone hands over a document showing that identity, the person filling in the certificate has to follow it. Those papers include a court order, written instructions, a health care directive, or a driver's license. Proof of treatment for a gender transition or a changed birth certificate also counts. Without such a document, the next of kin or the best available source can give the gender. The certificate can record male, female, or X. The Colorado House passed it 38-26 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1109. The act says a death certificate must record a person's gender as their gender identity. If someone hands over a document showing that identity, the person filling in the certificate has to follow it. Those papers include a court order, written instructions, a health care directive, or a driver's license. Proof of treatment for a gender transition or a changed birth certificate also counts. Without such a document, the next of kin or the best available source can give the gender. The certificate can record male, female, or X. The Colorado House passed it 38-26 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1527582,
+   "measure_id": "HB 1109",
+   "vote_date": "2025-03-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1109. The act says a death certificate must record a person's gender as their gender identity. If someone hands over a document showing that identity, the person filling in the certificate has to follow it. Those papers include a court order, written instructions, a health care directive, or a driver's license. Proof of treatment for a gender transition or a changed birth certificate also counts. Without such a document, the next of kin or the best available source can give the gender. The certificate can record male, female, or X. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1109. The act says a death certificate must record a person's gender as their gender identity. If someone hands over a document showing that identity, the person filling in the certificate has to follow it. Those papers include a court order, written instructions, a health care directive, or a driver's license. Proof of treatment for a gender transition or a changed birth certificate also counts. Without such a document, the next of kin or the best available source can give the gender. The certificate can record male, female, or X. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1558154,
+   "measure_id": "HB 1239",
+   "vote_date": "2025-04-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1239. The act merges and widens the remedies in Colorado's anti-discrimination law. Someone who wins a claim about a public place gets a court order to fix it, plus legal fees and costs. They then pick one of two payouts. One is their real losses plus money for harm that is not financial. The other is a flat $5,000 for each violation. Damages for harm that is not financial are capped at $50,000. A defendant who fixes the problem within 30 days pays only half that cap. That discount is not available if the violation was knowing, intentional or reckless. A defendant making a real effort can get up to 120 days. It is also now illegal to retaliate against someone for asking for a disability accommodation. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1239. The act merges and widens the remedies in Colorado's anti-discrimination law. Someone who wins a claim about a public place gets a court order to fix it, plus legal fees and costs. They then pick one of two payouts. One is their real losses plus money for harm that is not financial. The other is a flat $5,000 for each violation. Damages for harm that is not financial are capped at $50,000. A defendant who fixes the problem within 30 days pays only half that cap. That discount is not available if the violation was knowing, intentional or reckless. A defendant making a real effort can get up to 120 days. It is also now illegal to retaliate against someone for asking for a disability accommodation. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564031,
+   "measure_id": "HB 1239",
+   "vote_date": "2025-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1239 and pass it. The act merges and widens the remedies in Colorado's anti-discrimination law. Someone who wins a claim about a public place gets a court order to fix it, plus legal fees and costs. They then pick one of two payouts. One is their real losses plus money for harm that is not financial. The other is a flat $5,000 for each violation. Damages for harm that is not financial are capped at $50,000. A defendant who fixes the problem within 30 days pays only half that cap. That discount is not available if the violation was knowing, intentional or reckless. A defendant making a real effort can get up to 120 days. It is also now illegal to retaliate against someone for asking for a disability accommodation. The Colorado House voted 40-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1239. The act merges and widens the remedies in Colorado's anti-discrimination law. Someone who wins a claim about a public place gets a court order to fix it, plus legal fees and costs. They then pick one of two payouts. One is their real losses plus money for harm that is not financial. The other is a flat $5,000 for each violation. Damages for harm that is not financial are capped at $50,000. A defendant who fixes the problem within 30 days pays only half that cap. That discount is not available if the violation was knowing, intentional or reckless. A defendant making a real effort can get up to 120 days. It is also now illegal to retaliate against someone for asking for a disability accommodation. The Colorado House voted 40-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1564030
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1565866,
+   "measure_id": "HB 1259",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1259. The act writes a right to fertility care into state law. It covers in vitro fertilization, surrogacy, and the storing, donating and testing of eggs, sperm and embryos. Every person has the right to decide about their own reproductive health care. That includes using, donating or destroying eggs and embryos. State and local government cannot restrict a doctor's ability to provide that care. Colorado will not help another state bring a case over that care or an abortion. The act also changes what sperm and egg banks must collect, disclose and give in writing to donors and parents. The Colorado Senate passed it 28-7 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1259. The act writes a right to fertility care into state law. It covers in vitro fertilization, surrogacy, and the storing, donating and testing of eggs, sperm and embryos. Every person has the right to decide about their own reproductive health care. That includes using, donating or destroying eggs and embryos. State and local government cannot restrict a doctor's ability to provide that care. Colorado will not help another state bring a case over that care or an abortion. The act also changes what sperm and egg banks must collect, disclose and give in writing to donors and parents. The Colorado Senate passed it 28-7 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1567105,
+   "measure_id": "HB 1259",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1259 and pass it. The act writes a right to fertility care into state law. It covers in vitro fertilization, surrogacy, and the storing, donating and testing of eggs, sperm and embryos. Every person has the right to decide about their own reproductive health care. That includes using, donating or destroying eggs and embryos. State and local government cannot restrict a doctor's ability to provide that care. Colorado will not help another state bring a case over that care or an abortion. The act also changes what sperm and egg banks must collect, disclose and give in writing to donors and parents. The Colorado House voted 42-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1259. The act writes a right to fertility care into state law. It covers in vitro fertilization, surrogacy, and the storing, donating and testing of eggs, sperm and embryos. Every person has the right to decide about their own reproductive health care. That includes using, donating or destroying eggs and embryos. State and local government cannot restrict a doctor's ability to provide that care. Colorado will not help another state bring a case over that care or an abortion. The act also changes what sperm and egg banks must collect, disclose and give in writing to donors and parents. The Colorado House voted 42-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1567104
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1566695,
+   "measure_id": "HB 1309",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1309. The act makes state-regulated health plans cover gender-affirming care. A plan cannot deny or limit that coverage. Covered care includes hormone therapy, hair removal, chest surgery, facial procedures and genital surgery. A provider has to find the care medically necessary to treat gender dysphoria. The insurance commissioner writes the rules. The state drug monitoring program has to hide archived testosterone records from view. A state health insurance body can use gifts, grants and private money toward the cost of care the state legally protects. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1309. The act makes state-regulated health plans cover gender-affirming care. A plan cannot deny or limit that coverage. Covered care includes hormone therapy, hair removal, chest surgery, facial procedures and genital surgery. A provider has to find the care medically necessary to treat gender dysphoria. The insurance commissioner writes the rules. The state drug monitoring program has to hide archived testosterone records from view. A state health insurance body can use gifts, grants and private money toward the cost of care the state legally protects. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1567678,
+   "measure_id": "HB 1309",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1309 and pass it. The act makes state-regulated health plans cover gender-affirming care. A plan cannot deny or limit that coverage. Covered care includes hormone therapy, hair removal, chest surgery, facial procedures and genital surgery. A provider has to find the care medically necessary to treat gender dysphoria. The insurance commissioner writes the rules. The state drug monitoring program has to hide archived testosterone records from view. A state health insurance body can use gifts, grants and private money toward the cost of care the state legally protects. The Colorado House voted 42-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1309. The act makes state-regulated health plans cover gender-affirming care. A plan cannot deny or limit that coverage. Covered care includes hormone therapy, hair removal, chest surgery, facial procedures and genital surgery. A provider has to find the care medically necessary to treat gender dysphoria. The insurance commissioner writes the rules. The state drug monitoring program has to hide archived testosterone records from view. A state health insurance body can use gifts, grants and private money toward the cost of care the state legally protects. The Colorado House voted 42-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1567677
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1537920,
+   "measure_id": "SB 129",
+   "vote_date": "2025-04-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 129. The act strengthens Colorado's shield for care that is legal here. That includes abortion and gender-affirming care. A pharmacy label for abortion pills can name the clinic instead of the doctor. The clinic has to be named on the prescription. Its arrest and handover rules now say Colorado will not help another state punish that care. Public agencies and their staff are barred from helping such an investigation. The state health department cannot gather certain information about that care. Each unauthorized collection can be stopped by a court and carries a penalty. The attorney general can enforce the new protections. The Colorado House passed it 39-20 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 129. The act strengthens Colorado's shield for care that is legal here. That includes abortion and gender-affirming care. A pharmacy label for abortion pills can name the clinic instead of the doctor. The clinic has to be named on the prescription. Its arrest and handover rules now say Colorado will not help another state punish that care. Public agencies and their staff are barred from helping such an investigation. The state health department cannot gather certain information about that care. Each unauthorized collection can be stopped by a court and carries a penalty. The attorney general can enforce the new protections. The Colorado House passed it 39-20 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1539497,
+   "measure_id": "SB 129",
+   "vote_date": "2025-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 129 and pass it. The act strengthens Colorado's shield for care that is legal here. That includes abortion and gender-affirming care. A pharmacy label for abortion pills can name the clinic instead of the doctor. The clinic has to be named on the prescription. Its arrest and handover rules now say Colorado will not help another state punish that care. Public agencies and their staff are barred from helping such an investigation. The state health department cannot gather certain information about that care. Each unauthorized collection can be stopped by a court and carries a penalty. The attorney general can enforce the new protections. The Colorado Senate voted 23-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 129. The act strengthens Colorado's shield for care that is legal here. That includes abortion and gender-affirming care. A pharmacy label for abortion pills can name the clinic instead of the doctor. The clinic has to be named on the prescription. Its arrest and handover rules now say Colorado will not help another state punish that care. Public agencies and their staff are barred from helping such an investigation. The state health department cannot gather certain information about that care. Each unauthorized collection can be stopped by a court and carries a penalty. The attorney general can enforce the new protections. The Colorado Senate voted 23-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1539496
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1515950,
+   "measure_id": "SB 183",
+   "vote_date": "2025-03-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 183. Colorado voters removed the state constitution's ban on public money for abortion in 2024. The act updates state law to match. A public employer can no longer refuse abortion coverage by pointing to that old ban. An employer with a sincere religious objection is still excused. The act removes the delay that had held the coverage rule back for individual and small group plans. State health programs must pay for abortion care with state money only. Abortion care now counts as a family planning service, which is covered with no copay or deductible. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 183. Colorado voters removed the state constitution's ban on public money for abortion in 2024. The act updates state law to match. A public employer can no longer refuse abortion coverage by pointing to that old ban. An employer with a sincere religious objection is still excused. The act removes the delay that had held the coverage rule back for individual and small group plans. State health programs must pay for abortion care with state money only. Abortion care now counts as a family planning service, which is covered with no copay or deductible. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1537893,
+   "measure_id": "SB 183",
+   "vote_date": "2025-04-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 183. Colorado voters removed the state constitution's ban on public money for abortion in 2024. The act updates state law to match. A public employer can no longer refuse abortion coverage by pointing to that old ban. An employer with a sincere religious objection is still excused. The act removes the delay that had held the coverage rule back for individual and small group plans. State health programs must pay for abortion care with state money only. Abortion care now counts as a family planning service, which is covered with no copay or deductible. The Colorado House passed it 40-21 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 183. Colorado voters removed the state constitution's ban on public money for abortion in 2024. The act updates state law to match. A public employer can no longer refuse abortion coverage by pointing to that old ban. An employer with a sincere religious objection is still excused. The act removes the delay that had held the coverage rule back for individual and small group plans. State health programs must pay for abortion care with state money only. Abortion care now counts as a family planning service, which is covered with no copay or deductible. The Colorado House passed it 40-21 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
