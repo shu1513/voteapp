@@ -1,0 +1,40 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2227",
+      "roll": 1603193,
+      "measure_id": "HB 2",
+      "vote_date": "2025-10-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2 from the October 2025 special session, which widens what New Mexico's health care affordability fund may do. That fund holds down premiums for people who buy coverage on the state exchange. The act lets the state draw on it whenever a change in any federal program cuts residents' coverage, not only if the Affordable Care Act itself is struck down. It also drops the income ceiling for the fund's help with premiums. The New Mexico House passed it 49-13, and it became law.",
+      "nay_description": "Voted against House Bill 2 from the October 2025 special session, which widens what New Mexico's health care affordability fund may do. That fund holds down premiums for people who buy coverage on the state exchange. The act lets the state draw on it whenever a change in any federal program cuts residents' coverage, not only if the Affordable Care Act itself is struck down. It also drops the income ceiling for the fund's help with premiums. The New Mexico House passed it 49-13, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2227",
+      "roll": 1603536,
+      "measure_id": "SB 3",
+      "vote_date": "2025-10-02",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 3 from the October 2025 special session, which moved control of New Mexico's vaccine rules to the state. School shot rules had to match a federal advisory committee. They now follow the state Department of Health, or the American Academy of Pediatrics. The department also sets adult advice, guided by national doctors' groups or its own judgment, and the rules now reach children in licensed child care. The New Mexico House passed it 43-26, and it became law.",
+      "nay_description": "Voted against Senate Bill 3 from the October 2025 special session, which moved control of New Mexico's vaccine rules to the state. School shot rules had to match a federal advisory committee. They now follow the state Department of Health, or the American Academy of Pediatrics. The department also sets adult advice, guided by national doctors' groups or its own judgment, and the rules now reach children in licensed child care. The New Mexico House passed it 43-26, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
