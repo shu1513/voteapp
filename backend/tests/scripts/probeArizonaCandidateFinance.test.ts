@@ -233,4 +233,15 @@ describe("probeArizonaCandidateFinance script", () => {
       ])
     ).toThrow("Invalid --limit value");
   });
+
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() =>
+      parseProbeArizonaCandidateFinanceArgs([
+        "--candidate-name=Katie Hobbs",
+        "--year=2024",
+        "--office=Governor",
+        "--limit=9007199254740993",
+      ])
+    ).toThrow("Invalid --limit value: 9007199254740993");
+  });
 });

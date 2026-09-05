@@ -234,4 +234,15 @@ describe("probeWashingtonCandidateFinance script", () => {
       parseProbeWashingtonCandidateFinanceArgs(["--candidate-name=Bob Ferguson", "--year=2024x", "--office=Governor"])
     ).toThrow("Invalid --year value");
   });
+
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() =>
+      parseProbeWashingtonCandidateFinanceArgs([
+        "--candidate-name=Bob Ferguson",
+        "--year=2024",
+        "--office=Governor",
+        "--limit=9007199254740993",
+      ])
+    ).toThrow("Invalid --limit value: 9007199254740993");
+  });
 });

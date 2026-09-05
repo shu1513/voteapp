@@ -21,6 +21,13 @@ import {
   type WashingtonPdcClientOptions,
   type WashingtonPdcIndependentSpendingGroup,
 } from "../pipeline/washingtonFinance/washingtonPdcClient.js";
+import {
+  readStrictFlagValue,
+  readStrictNonNegativeNumberFlag,
+  readStrictPositiveIntegerFlag,
+  readStrictRequiredFlagValue,
+  readStrictRequiredPositiveIntegerFlag,
+} from "../utils/cliFlags.js";
 
 type WashingtonFinanceProbeArgs = {
   candidateName: string;
@@ -108,82 +115,6 @@ const DEFAULT_CLIENT: WashingtonFinanceProbeClient = {
   getSponsorOrganizationFunders: getWashingtonPdcSponsorOrganizationFunders,
 };
 
-function parseFlagValue(args: readonly string[], name: string): string | null {
-  const inlinePrefix = `${name}=`;
-  const values: string[] = [];
-
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index];
-    if (arg.startsWith(inlinePrefix)) {
-      const value = arg.slice(inlinePrefix.length).trim();
-      if (value.length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(value);
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--") || next.trim().length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(next.trim());
-      index += 1;
-    }
-  }
-
-  if (values.length > 1) {
-    throw new Error(`Provide ${name} at most once`);
-  }
-  return values[0] ?? null;
-}
-
-function parseRequiredFlag(args: readonly string[], name: string): string {
-  const value = parseFlagValue(args, name);
-  if (!value) {
-    throw new Error(`Missing required ${name}`);
-  }
-  return value;
-}
-
-function parsePositiveIntegerFlag(
-  args: readonly string[],
-  name: string,
-  fallback: number
-): number {
-  const raw = parseFlagValue(args, name);
-  if (raw === null) {
-    return fallback;
-  }
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
-function parseRequiredPositiveIntegerFlag(args: readonly string[], name: string): number {
-  const raw = parseRequiredFlag(args, name);
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
-function parseNonNegativeNumberFlag(
-  args: readonly string[],
-  name: string,
-  fallback: number
-): number {
-  const raw = parseFlagValue(args, name);
-  if (raw === null) {
-    return fallback;
-  }
-  if (!/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
 function parseOfficeScope(value: string | null): WashingtonFinanceProbeArgs["officeScope"] {
   const normalized = value?.trim() || "statewide";
   if (normalized === "statewide" || normalized === "state_upper" || normalized === "state_lower") {
@@ -196,16 +127,16 @@ export function parseProbeWashingtonCandidateFinanceArgs(
   args: readonly string[]
 ): WashingtonFinanceProbeArgs {
   return {
-    candidateName: parseRequiredFlag(args, "--candidate-name"),
-    electionYear: parseRequiredPositiveIntegerFlag(args, "--year"),
-    officeScope: parseOfficeScope(parseFlagValue(args, "--scope")),
-    officeName: parseRequiredFlag(args, "--office"),
-    legislativeDistrict: parseFlagValue(args, "--district"),
-    limit: parsePositiveIntegerFlag(args, "--limit", DEFAULT_LIMIT),
-    funderLimit: parsePositiveIntegerFlag(args, "--funder-limit", DEFAULT_FUNDER_LIMIT),
-    minIndustryAmount: parseNonNegativeNumberFlag(args, "--min-industry-amount", DEFAULT_MIN_INDUSTRY_AMOUNT),
-    timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms", DEFAULT_TIMEOUT_MS),
-    appToken: parseFlagValue(args, "--app-token") ?? process.env.WASHINGTON_PDC_APP_TOKEN?.trim() ?? null,
+    candidateName: readStrictRequiredFlagValue(args, "--candidate-name"),
+    electionYear: readStrictRequiredPositiveIntegerFlag(args, "--year"),
+    officeScope: parseOfficeScope(readStrictFlagValue(args, "--scope")),
+    officeName: readStrictRequiredFlagValue(args, "--office"),
+    legislativeDistrict: readStrictFlagValue(args, "--district"),
+    limit: readStrictPositiveIntegerFlag(args, "--limit") ?? DEFAULT_LIMIT,
+    funderLimit: readStrictPositiveIntegerFlag(args, "--funder-limit") ?? DEFAULT_FUNDER_LIMIT,
+    minIndustryAmount: readStrictNonNegativeNumberFlag(args, "--min-industry-amount") ?? DEFAULT_MIN_INDUSTRY_AMOUNT,
+    timeoutMs: readStrictPositiveIntegerFlag(args, "--timeout-ms") ?? DEFAULT_TIMEOUT_MS,
+    appToken: readStrictFlagValue(args, "--app-token") ?? process.env.WASHINGTON_PDC_APP_TOKEN?.trim() ?? null,
   };
 }
 

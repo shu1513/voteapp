@@ -101,6 +101,17 @@ describe("probeLouisianaCandidateFinance script", () => {
     });
   });
 
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() =>
+      parseProbeLouisianaCandidateFinanceArgs([
+        "--candidate-name=John Bel Edwards",
+        "--year=2027",
+        "--office=Governor",
+        "--limit=9007199254740993",
+      ])
+    ).toThrow("Invalid --limit value: 9007199254740993");
+  });
+
   it("builds a no-write Louisiana validation summary with portal total comparisons", async () => {
     const args = parseProbeLouisianaCandidateFinanceArgs([
       "--candidate-name=John Bel Edwards",

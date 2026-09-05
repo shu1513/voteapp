@@ -32,6 +32,13 @@ import {
   type MassachusettsOcpfIepacReportSummary,
   type MassachusettsOcpfReportDetail,
 } from "../pipeline/massachusettsFinance/massachusettsOcpfClient.js";
+import {
+  readStrictFlagValue,
+  readStrictNonNegativeNumberFlag,
+  readStrictPositiveIntegerFlag,
+  readStrictRequiredFlagValue,
+  readStrictRequiredPositiveIntegerFlag,
+} from "../utils/cliFlags.js";
 
 type MassachusettsFinanceProbeArgs = {
   candidateName: string;
@@ -171,85 +178,6 @@ async function fetchReportDetailsBounded(input: {
   return details;
 }
 
-function parseFlagValue(args: readonly string[], name: string): string | null {
-  const inlinePrefix = `${name}=`;
-  const values: string[] = [];
-
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index];
-    if (arg.startsWith(inlinePrefix)) {
-      const value = arg.slice(inlinePrefix.length).trim();
-      if (value.length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(value);
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--") || next.trim().length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(next.trim());
-      index += 1;
-    }
-  }
-
-  if (values.length > 1) {
-    throw new Error(`Provide ${name} at most once`);
-  }
-  return values[0] ?? null;
-}
-
-function parseRequiredFlag(args: readonly string[], name: string): string {
-  const value = parseFlagValue(args, name);
-  if (!value) {
-    throw new Error(`Missing required ${name}`);
-  }
-  return value;
-}
-
-function parsePositiveIntegerFlag(args: readonly string[], name: string, fallback: number): number {
-  const raw = parseFlagValue(args, name);
-  if (raw === null) {
-    return fallback;
-  }
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
-function parseOptionalPositiveIntegerFlag(args: readonly string[], name: string): number | undefined {
-  const raw = parseFlagValue(args, name);
-  if (raw === null) {
-    return undefined;
-  }
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
-function parseRequiredPositiveIntegerFlag(args: readonly string[], name: string): number {
-  const raw = parseRequiredFlag(args, name);
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
-function parseNonNegativeNumberFlag(args: readonly string[], name: string, fallback: number): number {
-  const raw = parseFlagValue(args, name);
-  if (raw === null) {
-    return fallback;
-  }
-  if (!/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
 function parseOfficeScope(value: string | null): MassachusettsFinanceProbeArgs["officeScope"] {
   const normalized = value?.trim() || "statewide";
   if (normalized === "statewide" || normalized === "state_upper" || normalized === "state_lower") {
@@ -262,16 +190,16 @@ export function parseProbeMassachusettsCandidateFinanceArgs(
   args: readonly string[]
 ): MassachusettsFinanceProbeArgs {
   return {
-    candidateName: parseRequiredFlag(args, "--candidate-name"),
-    electionYear: parseRequiredPositiveIntegerFlag(args, "--year"),
-    officeScope: parseOfficeScope(parseFlagValue(args, "--scope")),
-    officeName: parseRequiredFlag(args, "--office"),
-    district: parseFlagValue(args, "--district"),
-    limit: parsePositiveIntegerFlag(args, "--limit", DEFAULT_LIMIT),
-    contributionItemLimit: parseOptionalPositiveIntegerFlag(args, "--contribution-limit"),
-    iepacReportLimit: parsePositiveIntegerFlag(args, "--iepac-report-limit", DEFAULT_IEPAC_REPORT_LIMIT),
-    minIndustryAmount: parseNonNegativeNumberFlag(args, "--min-industry-amount", DEFAULT_MIN_INDUSTRY_AMOUNT),
-    timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms", DEFAULT_TIMEOUT_MS),
+    candidateName: readStrictRequiredFlagValue(args, "--candidate-name"),
+    electionYear: readStrictRequiredPositiveIntegerFlag(args, "--year"),
+    officeScope: parseOfficeScope(readStrictFlagValue(args, "--scope")),
+    officeName: readStrictRequiredFlagValue(args, "--office"),
+    district: readStrictFlagValue(args, "--district"),
+    limit: readStrictPositiveIntegerFlag(args, "--limit") ?? DEFAULT_LIMIT,
+    contributionItemLimit: readStrictPositiveIntegerFlag(args, "--contribution-limit"),
+    iepacReportLimit: readStrictPositiveIntegerFlag(args, "--iepac-report-limit") ?? DEFAULT_IEPAC_REPORT_LIMIT,
+    minIndustryAmount: readStrictNonNegativeNumberFlag(args, "--min-industry-amount") ?? DEFAULT_MIN_INDUSTRY_AMOUNT,
+    timeoutMs: readStrictPositiveIntegerFlag(args, "--timeout-ms") ?? DEFAULT_TIMEOUT_MS,
   };
 }
 
