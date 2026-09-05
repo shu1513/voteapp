@@ -336,7 +336,13 @@ describe("syncKansasCandidateFinance", () => {
     expect(result).toMatchObject({
       status: "synced",
       totalReceipts: 1400,
-      outside: { status: "unpublishable", reasons: ["Example Fund 202607: running total 6000 != IE_EX1_2607.pdf Total this Period 10000"] },
+      outside: {
+        status: "unpublishable",
+        reasons: [
+          "Example Fund 202607: IE_EX1_2607.pdf rows 6000 != Total this Period 10000 (read as one filing)" +
+            " and running total 6000 != IE_EX1_2607.pdf Total this Period 10000 (read as cumulative)",
+        ],
+      },
       summaryWritten: true,
       outsideGroupsWritten: 0,
     });

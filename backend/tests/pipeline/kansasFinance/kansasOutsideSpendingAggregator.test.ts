@@ -51,11 +51,16 @@ describe("reconcileKansasOutsideStatements", () => {
   it("fails a filer period when a row is missing, misread, or its statement rows disagree on the total", () => {
     const missing = comeback().filter((entry) => !(entry.sourceFileName === "IE_EC1_2607.pdf" && entry.rowIndex === 2));
     expect([...reconcileKansasOutsideStatements(missing).entries()]).toEqual([
-      ["EXAMPLE COMEBACK FUND|202607", "Example Comeback Fund 202607: running total 35963300 != IE_EC1_2607.pdf Total this Period 37044363"],
+      [
+        "EXAMPLE COMEBACK FUND|202607",
+        "Example Comeback Fund 202607: IE_EC1_2607.pdf rows 35963300 != Total this Period 37044363 (read as one filing)" +
+          " and running total 35963300 != IE_EC1_2607.pdf Total this Period 37044363 (read as cumulative)",
+      ],
     ]);
     const misread = comeback().map((entry) => (entry.sourceFileName === "IE_EC3_2607.pdf" ? { ...entry, amountCents: 500_001 } : entry));
     expect(reconcileKansasOutsideStatements(misread).get("EXAMPLE COMEBACK FUND|202607")).toBe(
-      "Example Comeback Fund 202607: running total 38394364 != IE_EC3_2607.pdf Total this Period 38394363"
+      "Example Comeback Fund 202607: IE_EC2_2607.pdf rows 850000 != Total this Period 37894363 (read as one filing)" +
+        " and running total 38394364 != IE_EC3_2607.pdf Total this Period 38394363 (read as cumulative)"
     );
     const disagree = comeback().map((entry) => (entry.sourceFileName === "IE_EC1_2607.pdf" && entry.rowIndex === 2 ? { ...entry, statementTotalCents: 1 } : entry));
     expect(reconcileKansasOutsideStatements(disagree).get("EXAMPLE COMEBACK FUND|202607")).toBe(
@@ -63,6 +68,32 @@ describe("reconcileKansasOutsideStatements", () => {
     );
     // The 202610 period of the same filer is judged on its own.
     expect(reconcileKansasOutsideStatements(misread).has("EXAMPLE COMEBACK FUND|202610")).toBe(false);
+  });
+
+  // The American Conservative Fund shape: one filing scanned as a file per
+  // page, every page repeating the filing's own total, beside an earlier
+  // filing of the same period with its own smaller total.
+  function perFiling(): KansasOutsideRow[] {
+    const pages = [
+      row({ sourceFileName: "IE_XC_2610.pdf", rowIndex: 1, amountCents: 1_639_608, statementTotalCents: 3_092_288 }),
+      row({ sourceFileName: "IE_XC2_2610.pdf", rowIndex: 1, amountCents: 1_000_000, statementTotalCents: 3_092_288 }),
+      row({ sourceFileName: "IE_XC2_2610.pdf", rowIndex: 2, amountCents: 452_680, statementTotalCents: 3_092_288 }),
+      row({ sourceFileName: "IE_XC3_2610.pdf", rowIndex: 1, amountCents: 221_169, statementTotalCents: 221_169 }),
+    ];
+    return pages.map((entry) => ({ ...entry, filerName: "Example Conservative Fund", periodDueKey: "202610" }));
+  }
+
+  it("accepts per-filing totals, including a filing whose pages are one file each", () => {
+    expect(reconcileKansasOutsideStatements(perFiling())).toEqual(new Map());
+    expect(reconcileKansasOutsideStatements([...perFiling()].reverse())).toEqual(new Map());
+  });
+
+  it("still fails a per-filing period when the pages on hand fall short of the printed total", () => {
+    const short = perFiling().filter((entry) => !(entry.sourceFileName === "IE_XC2_2610.pdf" && entry.rowIndex === 2));
+    expect(reconcileKansasOutsideStatements(short).get("EXAMPLE CONSERVATIVE FUND|202610")).toBe(
+      "Example Conservative Fund 202610: IE_XC_2610.pdf, IE_XC2_2610.pdf rows 2639608 != Total this Period 3092288 (read as one filing)" +
+        " and running total 2860777 != IE_XC_2610.pdf, IE_XC2_2610.pdf Total this Period 3092288 (read as cumulative)"
+    );
   });
 });
 
@@ -109,7 +140,10 @@ describe("aggregateKansasOutsideSpending", () => {
     const withoutUnallocated = rows.filter((entry) => entry.rowIndex !== 2);
     expect(aggregateKansasOutsideSpending({ rows: withoutUnallocated, targetCommitteeId: "7:72:OTHER:PAT" })).toEqual({
       status: "unpublishable",
-      reasons: ["Sample Victory Fund 202607: running total 504995 != IE_AF_2607.pdf Total this Period 2331370"],
+      reasons: [
+        "Sample Victory Fund 202607: IE_AF_2607.pdf rows 504995 != Total this Period 2331370 (read as one filing)" +
+          " and running total 504995 != IE_AF_2607.pdf Total this Period 2331370 (read as cumulative)",
+      ],
     });
     const brokenShared = rows.map((entry) => (entry.rowIndex === 3 ? { ...entry, amountCents: 2_501 } : entry));
     expect(aggregateKansasOutsideSpending({ rows: brokenShared, targetCommitteeId: "7:72:SAMPLE:ALEX" })).toMatchObject({ status: "unpublishable" });

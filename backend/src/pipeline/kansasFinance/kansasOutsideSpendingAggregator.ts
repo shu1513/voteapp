@@ -168,11 +168,26 @@ function filerPeriodKey(row: Pick<KansasOutsideRow, "filerName" | "periodDueKey"
 }
 
 /**
- * The transcription checksum. For each filer and period: rows group into
- * statements by file; every row of a statement must carry one total and
- * one period; statements sorted by total ascending must see the running
- * sum of their rows equal each total. Returns one reason per failing
- * filer period, keyed by filerPeriodKey.
+ * The transcription checksum. For each filer and period, rows group into
+ * statements by file and every row of a statement must carry one total.
+ * Kansas filers then use "Total this Period" in one of two ways, and a
+ * period passes when EITHER reading reconciles (verified live on the 2026
+ * cycle):
+ *
+ *   * cumulative — each statement's total is the filer's period-to-date
+ *     figure, so statements ordered by total ascending must see the
+ *     running sum of transcribed rows equal every total (Kansas Comeback:
+ *     370,443.63 -> 378,943.63 -> 383,943.63);
+ *   * per filing — each total covers only its own filing, so the rows
+ *     carrying one total must sum to it (American Conservative Fund's
+ *     8/13 filing of $2,211.69 beside its 8/20 filing of $309,228.84).
+ *
+ * A filing that runs over several pages is scanned as one PDF per page and
+ * every page repeats the filing's total, so files sharing a total are
+ * summed together before either reading is applied (the ACF 8/20 filing is
+ * five files). Returns one reason per failing filer period, keyed by
+ * filerPeriodKey; a period that fails both readings is quarantined and
+ * every candidate it names fails the outside leg closed.
  */
 export function reconcileKansasOutsideStatements(rows: readonly KansasOutsideRow[]): Map<string, string> {
   const byFilerPeriod = new Map<string, Map<string, KansasOutsideRow[]>>();
@@ -202,17 +217,33 @@ export function reconcileKansasOutsideStatements(rows: readonly KansasOutsideRow
       reasons.set(key, inconsistent);
       continue;
     }
-    totals.sort((left, right) => left.totalCents - right.totalCents || left.fileName.localeCompare(right.fileName));
-    let running = 0;
+    // Files sharing a total are pages of one filing: sum them first.
+    const filings = new Map<number, { fileNames: string[]; rowsCents: number }>();
     for (const statement of totals) {
-      running += statement.rowsCents;
-      if (running !== statement.totalCents) {
-        reasons.set(
-          key,
-          `${label}: running total ${running} != ${statement.fileName} Total this Period ${statement.totalCents}`
-        );
-        break;
+      const filing = filings.get(statement.totalCents) ?? { fileNames: [], rowsCents: 0 };
+      filing.fileNames.push(statement.fileName);
+      filing.rowsCents += statement.rowsCents;
+      filings.set(statement.totalCents, filing);
+    }
+    const ordered = [...filings.entries()]
+      .map(([totalCents, filing]) => ({ totalCents, ...filing }))
+      .sort((left, right) => left.totalCents - right.totalCents);
+
+    let running = 0;
+    let cumulative: string | null = null;
+    let perFiling: string | null = null;
+    for (const filing of ordered) {
+      const files = filing.fileNames.join(", ");
+      running += filing.rowsCents;
+      if (cumulative === null && running !== filing.totalCents) {
+        cumulative = `running total ${running} != ${files} Total this Period ${filing.totalCents}`;
       }
+      if (perFiling === null && filing.rowsCents !== filing.totalCents) {
+        perFiling = `${files} rows ${filing.rowsCents} != Total this Period ${filing.totalCents}`;
+      }
+    }
+    if (cumulative !== null && perFiling !== null) {
+      reasons.set(key, `${label}: ${perFiling} (read as one filing) and ${cumulative} (read as cumulative)`);
     }
   }
   return reasons;
