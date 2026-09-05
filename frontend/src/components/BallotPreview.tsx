@@ -209,14 +209,7 @@ function BallotSheet({
         ))}
       </div>
       <footer className="mt-3 border-t border-line pt-2 text-xs text-ink-soft">
-        <p>
-          Races appear in a typical ballot order — federal, then state, then local — which may not match your
-          state's exact rules. This preview may include
-          nearby district races that aren't on your ballot, or miss local ones — and candidate order and
-          instructions on your printed ballot may differ (some places use ranked-choice ballots, which look
-          different). Compare with your official sample ballot.
-        </p>
-        <p className="mt-1">Polling-place device rules vary — print this page or check your local rules.</p>
+        <p>Races and order may differ from your official ballot — check your sample ballot.</p>
       </footer>
     </section>
   );
