@@ -492,3 +492,77 @@ subjects, no single direction.
 support guidelines, with associated duties and reporting. The guidelines
 themselves are unchanged. It alters who reviews a rule rather than the rule, and
 no research area carries a position on the composition of a review committee.
+
+## Correction — SB 172, dropped after import
+
+**SB 172** was imported in batch 14 and has been withdrawn. It is marked
+`dropped:coordination-voided`, a disposition used here for the first time.
+
+Its four operative sections amend 7-6-1503, 7-6-1504, 7-6-1541 and 7-6-1542.
+HB 162 section 2 voids the first and replaces that statute outright; HB 162
+section 3 voids the other three. Both acts were signed, so SB 172 has no
+operative section left and changed no law.
+
+This is not a filter 5 failure. SB 172 had a nameable subject and a defensible
+direction; it simply never took effect. The campaign's filters do not currently
+ask whether another act voided the measure being judged, and they should: a
+coordination instruction that kills a bill lives in the *other* bill's text, so
+reading the measure on its own can never reveal it.
+
+## Batch 17
+
+### Housekeeping, a new disposition
+
+Three measures are marked `dropped:housekeeping` rather than filter 5, because
+they have a nameable subject but no operative effect worth a record.
+
+**HB 807** strikes subsection (4) of 49-2-312 and puts it back with two words
+changed: "any vaccine" becomes "a vaccine", twice. The ban on requiring a vaccine
+authorised for emergency use has been law since Chapter 418, Laws of 2021, and
+its scope is identical afterwards. This measure had been held as a question for
+the user; it needs no decision.
+
+**HB 430** repeals all eight sections of the county public scales law and puts
+nothing in their place.
+
+**SB 237** requires the revenue interim committee to recommend to the next
+legislature whether property tax rates should change. No rate, levy or obligation
+moves.
+
+### Seven measures that cut both ways
+
+These follow the rule settled in batch 11 and applied to SB 101 in batch 14: an
+act that strengthens one side and weakens another in the same provision has no
+defensible single direction.
+
+- **HB 642** makes camping a public nuisance wherever an ordinance already
+  forbids it, carrying a fine of up to $500 a day. **HB 940** bans overnight
+  camping and unattended property on state highway right-of-way, with a $50 fine
+  and a disposal process. Both are public order measures aimed at people without
+  housing. Neither `public_safety_and_crime_control` nor `housing_affordability`
+  can say which way a yes vote cuts.
+- **HB 312** raises the limit to 75 miles an hour on qualifying four-lane
+  national highways. **SB 428** lets local authorities drop paved rural roads to
+  25 miles an hour and lower limits across a whole urban district. Speed limits
+  moving in both directions in the same session is the clearest possible
+  demonstration that the area does not settle the question.
+- **SB 348** raises the fine and prison maximum at every tier of sexual assault
+  and triggers sex offender registration one conviction earlier. It is a pure
+  sentencing increase, which batch 11 established this campaign does not treat as
+  automatically "for" `public_safety_and_crime_control`.
+- **HB 350** bars Montana governments from enforcing anything issued by the World
+  Health Organization, the United Nations or the World Economic Forum. It is a
+  position on international bodies, and no research area covers it.
+- **HB 409** bars courts from using the sliding scale or serious questions tests
+  when deciding whether to grant a preliminary injunction, overriding a Montana
+  Supreme Court decision. Court procedure, which batch 09 already established has
+  no area with a defensible direction, when HB 480 was dropped.
+
+### One measure too narrow to carry a record
+
+**HB 611** adds the words "ex officio commissioner of insurance and securities"
+to the state auditor's entry in the salary statute. That changes which
+out-of-state officials count as holding a similar title, and so changes the
+average the auditor's salary is measured against from 2028. One office's pay
+comparison basket. Note that the worklist title, "Generally revise salaries for
+certain elected officials", is much broader than the act.

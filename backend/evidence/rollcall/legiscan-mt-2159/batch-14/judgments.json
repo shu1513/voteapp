@@ -58,42 +58,6 @@
    "jurisdiction": "MT",
    "chamber": "house",
    "session": "2159",
-   "roll": 1524092,
-   "measure_id": "SB 172",
-   "vote_date": "2025-03-21",
-   "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 172, which lets certain Montana resort towns spend tax money on housing for local workers. A resort community may charge an extra resort tax of up to 1 percent on top of its normal rate. That extra money could previously be spent only on infrastructure. The act adds workforce housing as an allowed use. A community must still say which specific uses the money is for in the petition or resolution that puts the tax to voters. The Montana House passed it 57-40, and it became law.",
-   "nay_description": "Voted against Senate Bill 172, which lets certain Montana resort towns spend tax money on housing for local workers. A resort community may charge an extra resort tax of up to 1 percent on top of its normal rate. That extra money could previously be spent only on infrastructure. The act adds workforce housing as an allowed use. A community must still say which specific uses the money is for in the petition or resolution that puts the tax to voters. The Montana House passed it 57-40, and it became law.",
-   "labels": [
-    {
-     "slug": "housing_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "senate",
-   "session": "2159",
-   "roll": 1487519,
-   "measure_id": "SB 172",
-   "vote_date": "2025-02-12",
-   "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 172, which lets certain Montana resort towns spend tax money on housing for local workers. A resort community may charge an extra resort tax of up to 1 percent on top of its normal rate. That extra money could previously be spent only on infrastructure. The act adds workforce housing as an allowed use. A community must still say which specific uses the money is for in the petition or resolution that puts the tax to voters. The Montana Senate passed it 38-12, and it became law.",
-   "nay_description": "Voted against Senate Bill 172, which lets certain Montana resort towns spend tax money on housing for local workers. A resort community may charge an extra resort tax of up to 1 percent on top of its normal rate. That extra money could previously be spent only on infrastructure. The act adds workforce housing as an allowed use. A community must still say which specific uses the money is for in the petition or resolution that puts the tax to voters. The Montana Senate passed it 38-12, and it became law.",
-   "labels": [
-    {
-     "slug": "housing_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "house",
-   "session": "2159",
    "roll": 1546377,
    "measure_id": "SB 213",
    "vote_date": "2025-04-11",

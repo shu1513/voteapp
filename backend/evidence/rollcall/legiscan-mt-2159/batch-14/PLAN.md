@@ -1,8 +1,12 @@
 # Montana batch-14 — housing, zoning and property
 
-Eight measures, twelve roll calls, 579 candidate records. All eight became law.
+Seven measures, ten roll calls, 494 candidate records. All seven became law.
 
-This is the most single-minded batch of the campaign: seven of the eight land in
+**SB 172 was withdrawn from this batch after import.** Every one of its operative
+sections was voided by HB 162's coordination instructions, so it changed no law.
+Its 85 records were retired. See the correction note at the end of this file.
+
+This is the most single-minded batch of the campaign: six of the seven land in
 `housing_affordability`, all in the same direction, because the 2025 session
 worked through a connected set of building and zoning rules.
 
@@ -10,7 +14,6 @@ worked through a connected set of building and zoning rules.
 | --- | --- | --- | --- | --- | --- |
 | HB 416 an association must ask before entering your land | 452 | civil_rights | **for** | 56-44 | — |
 | SB 133 impact fees capped to inflation, admin charge removed | 556 | housing_affordability | **for** | 54-45 | 32-18 |
-| SB 172 resort towns may spend the extra 1% on worker housing | 71 | housing_affordability | **for** | 57-40 | 38-12 |
 | SB 213 some flats may be built with a single staircase | 368 | housing_affordability | **for** | 67-32 | — |
 | SB 214 unclear zoning read in favour of the existing use | 369 | housing_affordability | **for** | 50-48 | 34-16 |
 | SB 275 farm covenant may be lifted on land taken into a town | 213 | housing_affordability | **for** | — | 34-16 |
@@ -65,3 +68,36 @@ applicability. It is land-title mechanics with no position a voter would hold.
 All twelve imported rolls, and every other floor roll on the ten measures read,
 were compared member by member against
 `api.legmt.gov/bills/v1/votes/findByBillId`. **All agree exactly.**
+
+
+## Correction — SB 172 was withdrawn after import
+
+SB 172 was imported with this batch and has since been withdrawn. Its 85 records
+are retired, and the measure is marked `dropped:coordination-voided` in the
+worklist.
+
+**Why.** SB 172 contains exactly four operative sections, amending 7-6-1503,
+7-6-1504, 7-6-1541 and 7-6-1542. HB 162 carries two coordination instructions:
+
+> "Section 2. Coordination instruction. If both Senate Bill No. 172 and [this
+> act] are passed and approved and Senate Bill No. 172 includes a section that
+> amends 7-6-1503, then the section in Senate Bill No. 172 amending 7-6-1503 is
+> void and 7-6-1503 must be amended as follows:"
+
+> "Section 3. Coordination instruction. If both Senate Bill No. 172 and [this
+> act] are passed and approved, then the sections of Senate Bill No. 172 amending
+> 7-6-1504, 7-6-1541, and 7-6-1542 are void."
+
+Both acts were signed, so both instructions fired and **all four of SB 172's
+sections are void**. SB 172 changed no law.
+
+The workforce housing outcome the retired records described is real, but it is
+HB 162's doing, not SB 172's: HB 162 adds "workforce and community housing
+projects" to the definition of infrastructure in 7-6-1501, and its replacement
+text for 7-6-1503 keeps the extra 1% levy tied to infrastructure.
+
+**How this was missed.** SB 172 was read on its own. Nothing in its text points
+at HB 162, because a coordination instruction lives in the *other* bill. The
+campaign already knew to read coordination instructions inside the bill being
+judged; the lesson here is that a bill can be voided from outside, and that is
+only visible by reading the acts that name it.
