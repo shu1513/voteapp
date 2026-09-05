@@ -164,7 +164,7 @@ The factory itself has a dedicated config-option test file (`tests/pipeline/fina
 
 ## Post-pause-point modules (added 2026-09-04, plan v3 addendum)
 
-Hand-verified from each module's writer/loader/due-list files. Legend: **W** = writer-factory wrapper, **L** = shared-loader wrapper, **D** = due-list builder config, **D\*** = bespoke due list that is the builder + `election_stage='general'` (Phase 2b cohort, six states), **AL/BS/SCH** = auto-link / batchSync / scheduler file present. Writer options listed only where set.
+Hand-verified from each module's writer/loader/due-list files. Legend: **W** = writer-factory wrapper, **L** = shared-loader wrapper, **D** = due-list builder config, **D\*** = bespoke due list that was the builder + `election_stage='general'` (Phase 2b cohort, six states — all migrated to **D** by 2026-09-05), **AL/BS/SCH** = auto-link / batchSync / scheduler file present. Writer options listed only where set.
 
 | Module | Lines | Tables | W | L | D | AL/BS/SCH | Writer options | Loader options |
 |---|---|---|---|---|---|---|---|---|
@@ -179,13 +179,13 @@ Hand-verified from each module's writer/loader/due-list files. Legend: **W** = w
 | montana | 5,070 | `mt_` 5 | W | L | D (`electionStage: "general"`, `selectElectionDate`, `linkColumns` +`link_source`; Phase 2b pilot, migrated 2026-09-04) | 1/1/1 | floor 2024, pairing, `cers_portal` supersession, M+ | donor-only |
 | arkansas | 3,373 | `ar_` 5 | W | L | D | 1/1/0 | floor 2026, signed cash, M+ | `linkIdentityColumn: filing_entity_id` |
 | westVirginia | 3,805 | `wv_` 5 | W | L | D | 1/1/0 | floor 2026, M+, `cfrs_registry` supersession | `occupation`+`industry`+`contribution_size` |
-| idaho | 3,819 | `id_` 5 | W | L | **D\*** (`registration_guid`/`filer_name`) | 1/1/0 | floor 2026, signed cash, M+ | `linkIdentityColumn: registration_guid`, `contribution_size` only, donor-only |
+| idaho | 3,819 | `id_` 5 | W | L | D (`electionStage: "general"`, `selectElectionDate`, `linkColumns` `registration_guid`/`filer_name`/`link_source`, guid normalized in `mapRow`; migrated 2026-09-05) | 1/1/0 | floor 2026, signed cash, M+ | `linkIdentityColumn: registration_guid`, `contribution_size` only, donor-only |
 | northDakota | 4,827 | `nd_` 5 | W | L | D | 1/1/0 | floor 2026, pairing, M+ | `occupation`+`contribution_size` |
 | kansas | 5,625 | `ks_` 5 | W | **none yet** (not in registry) | D | 1/1/0 | floor 2024, pairing, `cfr_viewer` supersession, M+ | — |
-| alabama | 3,481 | `al_` 5 | W | L | **D\*** (+ `official_ballot_title`, `fcpa_committee_number`, no `election_date`) | 1/1/0 | floor 2024, M+, `fcpa_race_search` supersession | defaults |
-| southCarolina | 2,691 | `sc_` 5 | W | L | **D\*** (`candidate_filer_id`/`candidate_filer_name`) | 1/1/1 | floor 2008, signed cash, M+, `ethics_filer_search` supersession | `linkIdentityColumn: candidate_filer_id` |
+| alabama | 3,481 | `al_` 5 | W | L | D (`electionStage: "general"`, `selectBallotTitle`, no `election_date`, `linkColumns` +`fcpa_committee_number`/`link_source`; migrated 2026-09-05) | 1/1/0 | floor 2024, M+, `fcpa_race_search` supersession | defaults |
+| southCarolina | 2,691 | `sc_` 5 | W | L | D (`electionStage: "general"`, `selectElectionDate`, `linkColumns` `candidate_filer_id`/`candidate_filer_name`/`link_source`, filer id parsed in `mapRow`; migrated 2026-09-05) | 1/1/1 | floor 2008, signed cash, M+, `ethics_filer_search` supersession | `linkIdentityColumn: candidate_filer_id` |
 | austin (city) | 3,588 | city | bespoke | L | D | 1/1/0 | — | — |
 | denver (city) | 3,018 | city | bespoke | L | D | 1/1/0 | — | — |
 | phoenix, sanDiegoCity, sanJose, sanFrancisco (cities) | 4,491 / 3,446 / 3,101 / 4,065 | city | bespoke | bespoke | bespoke | 1/1/0 · 1/1/0 · 1/1/0 · 1/1/1 | — | — |
 
-Phase 2b cohort (D\*, six states): **montana (pilot), missouri, delaware migrated** → idaho, southCarolina, alabama. newHampshire is excluded (see its row). Normalized WHERE/JOIN/ORDER clauses of all seven files, newHampshire included, are identical — the exclusion is about its projection, not its predicates.
+Phase 2b cohort (six states): **all migrated** — montana (pilot), missouri, delaware on 2026-09-04; idaho, southCarolina, alabama on 2026-09-05 (`selectBallotTitle` landed with alabama). newHampshire is excluded (see its row). Normalized WHERE/JOIN/ORDER clauses of all seven files, newHampshire included, are identical — the exclusion is about its projection, not its predicates.
