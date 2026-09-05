@@ -47,6 +47,9 @@ function verifiedRoutes(overrides: Record<string, unknown> = {}) {
     // AutoPickFillControl reads the viewer's ranked issues on every verified
     // render (button gating); empty keeps it inert unless a test overrides.
     "/api/me/research-area-preferences": { body: { preferences: [] } },
+    // Read only once the nearest day is fully decided (the member ask);
+    // default = Stripe on, not a member.
+    "/api/me/membership": { body: { enabled: true, membership: null, total_net_cents: 0, payments: [] } },
     ...overrides,
   } as Parameters<typeof stubApiRoutes>[0];
 }
@@ -78,11 +81,76 @@ describe("PicksPage", () => {
     );
     renderPicks();
 
-    const milestone = await screen.findByRole("region", { name: "November 3, 2026 draft milestone" });
-    expect(milestone).toHaveTextContent("Picks added for every race in your November 3, 2026 draft.");
-    expect(milestone).toHaveTextContent("2 of 2 races decided.");
+    const milestone = await screen.findByRole("region", { name: "November 3, 2026 election draft milestone" });
+    expect(milestone).toHaveTextContent("You have completed your November 3, 2026 election draft.");
+    expect(milestone).not.toHaveTextContent(/decided/);
     expect(screen.queryByRole("link", { name: /Sign up/ })).not.toBeInTheDocument();
+    // Both scopes marked: this box never comes back, and the header notice
+    // must not fire for a day read about here.
     expect(JSON.parse(window.localStorage.getItem("voteapp_draft_complete_seen") ?? "[]")).toEqual(["2026-11-03"]);
+    expect(JSON.parse(window.localStorage.getItem("voteapp_draft_milestone_seen") ?? "[]")).toEqual(["2026-11-03"]);
+    // The honorary-member ask rides the same single moment (not a member).
+    const ask = await screen.findByRole("region", { name: "Support this work" });
+    expect(ask).toHaveTextContent("Your draft is done.");
+    expect(screen.getByRole("link", { name: "See our mission and join us" })).toHaveAttribute("href", "/mission");
+  });
+
+  it("shows neither the milestone nor the member ask on a later visit (once per browser)", async () => {
+    window.localStorage.clear();
+    window.localStorage.setItem("voteapp_draft_milestone_seen", JSON.stringify(["2026-11-03"]));
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/election-choices": {
+          body: {
+            choices: [electionChoice(), electionChoice({ election_id: "e-2", official_ballot_title: "Mayor" })],
+          },
+        },
+      })
+    );
+    renderPicks();
+    expect(await screen.findByText("2 of 2 races decided")).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: /election draft milestone/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Support this work" })).not.toBeInTheDocument();
+  });
+
+  it("skips the member ask for members and when Stripe is off", async () => {
+    const complete = {
+      "/api/me/election-choices": {
+        body: {
+          choices: [electionChoice(), electionChoice({ election_id: "e-2", official_ballot_title: "Mayor" })],
+        },
+      },
+    };
+    window.localStorage.clear();
+    stubApiRoutes(
+      verifiedRoutes({
+        ...complete,
+        "/api/me/membership": {
+          body: {
+            enabled: true,
+            membership: {
+              stripe_status: "active",
+              monthly_amount_cents: 500,
+              cancel_at_period_end: false,
+              current_period_end: null,
+              started_at: "2026-08-01T00:00:00.000Z",
+            },
+            total_net_cents: 500,
+            payments: [],
+          },
+        },
+      })
+    );
+    const first = renderPicks();
+    expect(await screen.findByRole("region", { name: /election draft milestone/ })).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Support this work" })).not.toBeInTheDocument();
+    first.unmount();
+
+    window.localStorage.clear();
+    stubApiRoutes(verifiedRoutes({ ...complete, "/api/me/membership": { body: { enabled: false } } }));
+    renderPicks();
+    expect(await screen.findByRole("region", { name: /election draft milestone/ })).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Support this work" })).not.toBeInTheDocument();
   });
 
   it("judges the nearest UPCOMING day, skipping a just-finished day still carded", async () => {
@@ -101,8 +169,8 @@ describe("PicksPage", () => {
     );
     renderPicks();
 
-    expect(await screen.findByRole("region", { name: "November 3, 2026 draft milestone" })).toBeInTheDocument();
-    expect(screen.queryByRole("region", { name: /July 28, 2026 draft milestone/ })).not.toBeInTheDocument();
+    expect(await screen.findByRole("region", { name: "November 3, 2026 election draft milestone" })).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: /July 28, 2026 election draft milestone/ })).not.toBeInTheDocument();
   });
 
   it("shows no milestone while a race on the nearest day is still open", async () => {
@@ -110,7 +178,7 @@ describe("PicksPage", () => {
     stubApiRoutes(verifiedRoutes());
     renderPicks();
     expect(await screen.findByText("1 of 2 races decided")).toBeInTheDocument();
-    expect(screen.queryByRole("region", { name: /draft milestone/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: /election draft milestone/ })).not.toBeInTheDocument();
     expect(window.localStorage.getItem("voteapp_draft_complete_seen")).toBeNull();
   });
 

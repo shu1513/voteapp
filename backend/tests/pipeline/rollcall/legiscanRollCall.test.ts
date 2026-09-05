@@ -1323,6 +1323,8 @@ describe("getLegiscanStateConfig", () => {
       "AL-1836",
       "NY",
       "NM",
+      "NM-2251",
+      "NM-2227",
       "KS",
       "DE",
       "AR",
@@ -1400,6 +1402,8 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("AL-1836")).toMatchObject({ jurisdiction: "AL", sessionId: 1836 });
     expect(getLegiscanStateConfig("NY").sessionId).toBe(2188);
     expect(getLegiscanStateConfig("NM").sessionId).toBe(2187);
+    expect(getLegiscanStateConfig("NM-2251")).toMatchObject({ jurisdiction: "NM", sessionId: 2251 });
+    expect(getLegiscanStateConfig("NM-2227")).toMatchObject({ jurisdiction: "NM", sessionId: 2227 });
     expect(getLegiscanStateConfig("KS").sessionId).toBe(2178);
     expect(getLegiscanStateConfig("DE").sessionId).toBe(2163);
     expect(getLegiscanStateConfig("AR").sessionId).toBe(2162);
@@ -2172,6 +2176,26 @@ describe("getLegiscanStateConfig", () => {
     // survey never saw must surface for a human, not classify quietly.
     expect(nm("House Final Passage RC#12", 70).isFloorVote).toBeNull();
     expect(nm("House Concurrence", 70).isFloorVote).toBeNull();
+  });
+
+  it("reads the 2026 session and the first special session with the same two rules", () => {
+    // Both later sessions were surveyed on 2026-09-05 and print the same two
+    // descriptions and nothing else, so they share one definition with the
+    // 2025 regular session rather than restating it.
+    for (const key of ["NM-2251", "NM-2227"] as const) {
+      const config = LEGISCAN_STATE_CONFIGS[key]!;
+      const nm = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+        classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+      // Unlike 2025, every House roll in these datasets totals exactly 70.
+      expect(nm("House Final Passage", 70)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+      expect(nm("Senate Final Passage", 42, "senate")).toMatchObject({
+        isFloorVote: true,
+        questionClass: "passage",
+      });
+      expect(nm("House Final Passage RC#12", 70).isFloorVote).toBeNull();
+    }
+    expect(LEGISCAN_STATE_CONFIGS["NM-2251"]!.excludedQuestions).toHaveLength(0);
+    expect(LEGISCAN_STATE_CONFIGS["NM-2227"]!.excludedQuestions).toHaveLength(0);
   });
 
   it("classifies Arizona's real desc vocabulary as surveyed", () => {

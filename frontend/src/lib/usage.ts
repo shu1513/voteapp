@@ -1,6 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useLocation, useMatches } from "react-router";
-import { ApiError, useMe } from "@voteapp/api-client";
+import { ApiError, hasFinanceContent, useMe } from "@voteapp/api-client";
+import { readCandidateNavState, readElectionNavState } from "./detailNavContext";
+import { usLatestLocalDate } from "./usLatestLocalDate";
 
 // First-party usage analytics (docs/plans/usage-analytics.md). What leaves
 // the browser: a per-tab session id, a per-page-view id, a route id (never a
@@ -111,6 +113,135 @@ export function positionBucket(position: number): "1-3" | "4-10" | "11+" {
 
 type Props = Record<string, unknown>;
 
+/** Office scope / district type → a coarse level. The two vocabularies
+ * share their words (statewide, county, place, us_house, state_lower, …). */
+export function officeLevel(scope: string | null | undefined): "federal" | "state" | "county" | "city" | "school" | "other" {
+  switch (scope) {
+    case "us_house":
+    case "us_senate":
+    case "presidential":
+      return "federal";
+    case "statewide":
+    case "state_lower":
+    case "state_upper":
+      return "state";
+    case "county":
+      return "county";
+    case "place":
+      return "city";
+    default:
+      return typeof scope === "string" && scope.startsWith("school") ? "school" : "other";
+  }
+}
+
+/** official_source_click props for an outbound source: is it a .gov host,
+ * is it a PDF. Never the URL itself. */
+export function sourceLinkProps(url: string): { gov: boolean; pdf: boolean } {
+  let gov = false;
+  try {
+    gov = new URL(url).hostname.toLowerCase().endsWith(".gov");
+  } catch {
+    gov = false;
+  }
+  return { gov, pdf: /\.pdf($|[?#])/i.test(url) };
+}
+
+export type ChatSource = "candidate" | "record" | "finance" | "election" | "measure" | "official" | "source" | "page" | "other";
+
+/** chat_result_click's source: the server's card source_type folded to a
+ * short list; anything new the server invents lands in "other" rather
+ * than dropping the event. */
+export function chatSourceBucket(sourceType: string): ChatSource {
+  switch (sourceType) {
+    case "candidate_profile":
+      return "candidate";
+    case "candidate_record":
+      return "record";
+    case "finance_summary":
+      return "finance";
+    case "election":
+      return "election";
+    case "ballot_measure":
+      return "measure";
+    case "official_state_resource":
+      return "official";
+    case "source_link":
+      return "source";
+    case "page":
+      return "page";
+    default:
+      return "other";
+  }
+}
+
+type Arrival = "list" | "roster" | "candidate" | "draft" | "picks" | "share" | "deep";
+
+/** How a detail page was reached, from the validated nav state's back
+ * destination — a route family, never the destination's ids. */
+export function arrivalFor(route: UsageRoute, state: unknown): Arrival {
+  const nav = route === "election" ? readElectionNavState(state) : readCandidateNavState(state);
+  if (!nav) return "deep";
+  const path = nav.backTo.path;
+  if (path.startsWith("/ballot") || path.startsWith("/me/ballot")) return "list";
+  if (path.startsWith("/elections/")) return "roster";
+  if (path.startsWith("/candidates/")) return "candidate";
+  if (path.startsWith("/draft")) return "draft";
+  if (path.startsWith("/me/picks")) return "picks";
+  if (path.startsWith("/picks/")) return "share";
+  return "deep";
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+/** The content shape of a detail page from its loader data: enough to read
+ * decision rates against what the page offered, nothing that names it. */
+export function pageViewProps(route: UsageRoute, data: unknown, state: unknown): Props {
+  if (route !== "election" && route !== "candidate") return {};
+  const props: Props = { arrival: arrivalFor(route, state) };
+  if (!isRecord(data)) return props;
+  const today = usLatestLocalDate();
+  if (route === "election") {
+    const raceType = data.race_type === "ballot_measure" ? "ballot_measure" : "office";
+    const office = isRecord(data.office) ? data.office : null;
+    const district = isRecord(data.district) ? data.district : null;
+    const measure = isRecord(data.ballot_measure) ? data.ballot_measure : null;
+    const candidates = Array.isArray(data.candidates) ? data.candidates : [];
+    props.race_type = raceType;
+    props.office_level = officeLevel(
+      (typeof office?.scope === "string" ? office.scope : null) ??
+        (typeof district?.district_type === "string" ? district.district_type : null)
+    );
+    props.upcoming = typeof data.election_date === "string" && data.election_date >= today;
+    if (raceType === "ballot_measure") {
+      props.measure_tbd = measure === null;
+      props.has_summary = typeof measure?.summary === "string" && measure.summary.length > 0;
+      props.has_official_url = typeof measure?.official_measure_url === "string";
+      const tags = Array.isArray(measure?.research_area_tags) ? measure.research_area_tags : [];
+      props.has_stance_tags = tags.some(
+        (tag) => isRecord(tag) && (tag.stance === "for" || tag.stance === "against")
+      );
+    } else {
+      props.has_summary = typeof office?.summary === "string" && office.summary.length > 0;
+      props.candidate_count_bucket = countBucket(candidates.length);
+    }
+    return props;
+  }
+  const candidate = isRecord(data.candidate) ? data.candidate : null;
+  if (!candidate) return props;
+  const records = Array.isArray(candidate.records) ? candidate.records : [];
+  const elections = Array.isArray(candidate.elections) ? candidate.elections : [];
+  const finance = isRecord(data.ongoing_finance) ? Object.values(data.ongoing_finance) : [];
+  props.has_summary = typeof candidate.summary === "string" && candidate.summary.length > 0;
+  props.record_count_bucket = countBucket(records.length);
+  props.upcoming = elections.some(
+    (election) => isRecord(election) && typeof election.election_date === "string" && election.election_date >= today
+  );
+  props.has_finance = finance.some((summary) => hasFinanceContent(summary as Parameters<typeof hasFinanceContent>[0]));
+  return props;
+}
+
 type UsageEvent = {
   event_id: string;
   session_id: string;
@@ -149,8 +280,8 @@ let currentRoute: UsageRoute = "other";
 // DURING render (parents render before children, but child effects run
 // before parent effects — so a child's track() on mount would otherwise
 // see the previous page). track() syncs the page view from it lazily.
-let desired: { route: UsageRoute; key: string } | null = null;
-let view: { id: string; key: string; visibleMs: number; visibleSince: number | null } | null = null;
+let desired: { route: UsageRoute; key: string; props: Props } | null = null;
+let view: { id: string; key: string; startedAt: number; visibleMs: number; visibleSince: number | null } | null = null;
 
 function isEnabled(): boolean {
   if (typeof window === "undefined" || typeof navigator === "undefined") return false;
@@ -320,24 +451,88 @@ function syncPageView(): void {
     accumulateVisible(performance.now());
   }
   const visible = typeof document !== "undefined" && document.visibilityState === "visible";
+  const now = performance.now();
   currentRoute = desired.route;
-  view = { id: crypto.randomUUID(), key: desired.key, visibleMs: 0, visibleSince: visible ? performance.now() : null };
+  view = { id: crypto.randomUUID(), key: desired.key, startedAt: now, visibleMs: 0, visibleSince: visible ? now : null };
   if (previous) {
     // The closing view's final time, attributed to the page it measured.
     enqueue("page_time", { visible_ms: Math.round(previous.visibleMs) }, { route: previousRoute, pageViewId: previous.id });
   }
-  enqueue("page_view", {});
+  enqueue("page_view", desired.props);
+}
+
+export type UsageAttribution = { route: UsageRoute; pageViewId: string | null };
+
+/** The page an operation started on — capture it before awaiting anything,
+ * so a late result is not attributed to whatever page comes next. */
+export function currentAttribution(): UsageAttribution {
+  try {
+    if (isEnabled()) syncPageView();
+  } catch {
+    // fall through to whatever is current
+  }
+  return { route: currentRoute, pageViewId: view?.id ?? null };
+}
+
+/** Milliseconds since the current page view started (0 before any view). */
+export function msSincePageView(): number {
+  return view ? Math.max(0, Math.round(performance.now() - view.startedAt)) : 0;
 }
 
 /** Records one catalog event. Safe to call from anywhere; never throws. */
-export function track(name: string, props: Props = {}): void {
+export function track(name: string, props: Props = {}, attribution?: UsageAttribution): void {
   try {
     if (!isEnabled()) return;
     syncPageView();
-    enqueue(name, props);
+    enqueue(name, props, attribution);
   } catch {
     // Analytics must never surface as an app error.
   }
+}
+
+/**
+ * Records `name` once `promise` settles — outcome `okOutcome` or "error"
+ * with a category — on the page the operation started from. The promise's
+ * own rejection is left to the caller; this only observes.
+ */
+export function trackSettled(promise: Promise<unknown>, name: string, props: Props, okOutcome = "ok"): void {
+  const attribution = currentAttribution();
+  promise.then(
+    () => track(name, { ...props, outcome: okOutcome }, attribution),
+    (error: unknown) => track(name, { ...props, outcome: "error", error_category: errorCategoryOf(error) }, attribution)
+  );
+}
+
+/**
+ * Fires `section_exposed` once per page view when the returned ref's element
+ * first enters the viewport. Attach to a heading or a short marker, not a
+ * tall section. `key` re-arms it (detail route elements stay mounted across
+ * sibling walks, so a new election on the same page needs a new exposure).
+ */
+export function useSectionExposure(section: string, key: string): (node: Element | null) => void {
+  const nodeRef = useRef<Element | null>(null);
+  const setNode = useCallback((node: Element | null) => {
+    nodeRef.current = node;
+  }, []);
+  useEffect(() => {
+    const node = nodeRef.current;
+    if (!node || !isEnabled() || typeof IntersectionObserver === "undefined") return;
+    const attribution = currentAttribution();
+    let fired = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!fired && entries.some((entry) => entry.isIntersecting)) {
+          fired = true;
+          track("section_exposed", { section }, attribution);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [section, key]);
+  return setNode;
 }
 
 function takeBatch(): UsageEvent[] {
@@ -458,7 +653,9 @@ export function useUsageTracking(): void {
   // rendering under this layout, and their mount effects, already see the
   // page they belong to.
   if (typeof window !== "undefined") {
-    desired = { route: routeForMatchId(matches[matches.length - 1]?.id), key: location.pathname };
+    const leaf = matches[matches.length - 1];
+    const route = routeForMatchId(leaf?.id);
+    desired = { route, key: location.pathname, props: pageViewProps(route, leaf?.data, location.state) };
   }
   const lastAuth = useRef<"guest" | "signed_in" | null>(null);
 

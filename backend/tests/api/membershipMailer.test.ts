@@ -15,7 +15,7 @@ function createSesCapture() {
       sesClient: { send },
       fromEmailAddress: "no-reply@site.test",
       replyToEmailAddress: "contact@site.test",
-      manageMembershipUrl: "https://site.test/me/settings",
+      manageMembershipUrl: "https://site.test/me/membership",
       // An ampersand, so the HTML escaping is exercised.
       termsUrl: "https://site.test/terms?v=1&x=2",
     },
@@ -54,9 +54,9 @@ describe("membership changed email (SES)", () => {
     expect(sent.replyTo).toEqual(["contact@site.test"]);
     expect(sent.subject).toBe("[Elections Simplified] Your membership will end on October 4, 2026");
     expect(sent.text).toContain("will not renew after October 4, 2026");
-    expect(sent.text).toContain("https://site.test/me/settings");
+    expect(sent.text).toContain("https://site.test/me/membership");
     expect(sent.html).toContain("<strong>October 4, 2026</strong>");
-    expect(sent.html).toContain('href="https://site.test/me/settings"');
+    expect(sent.html).toContain('href="https://site.test/me/membership"');
   });
 
   it("cancel without a known end date still reads correctly", async () => {
@@ -85,19 +85,42 @@ describe("membership changed email (SES)", () => {
     expect(sent.html).toContain('href="https://site.test/terms?v=1&amp;x=2"');
     expect(sent.html).not.toContain("&x=2\"");
   });
+
+  // §17602(g)(2) advance notice: the new amount, when it starts, how to
+  // cancel, and the not-a-contribution line the start acknowledgment carries.
+  it("amount notice: states the new amount, the start date, no charge today, and the cancel path", async () => {
+    const { send, options } = createSesCapture();
+    await createSesMembershipChangedSender(options)({
+      kind: "amount_notice",
+      email: "user@example.com",
+      newAmountCents: 2000,
+      startsAt: ENDS_AT,
+    });
+
+    const sent = sentContent(send);
+    expect(sent.subject).toBe("[Elections Simplified] Your membership amount changes on October 4, 2026");
+    expect(sent.text).toContain("Starting on October 4, 2026, $20.00 will be charged to your payment method each month until you cancel.");
+    expect(sent.text).toContain("Nothing is charged today.");
+    expect(sent.text).toContain("not a contribution to any candidate");
+    expect(sent.text).toContain("Cancel anytime: open Manage membership.\nhttps://site.test/me/membership");
+    expect(sent.text).toContain("Terms of Use: https://site.test/terms?v=1&x=2");
+    expect(sent.html).toContain("<strong>$20.00</strong>");
+    expect(sent.html).toContain("Starting on <strong>October 4, 2026</strong>");
+    expect(sent.html).toContain('href="https://site.test/me/membership"');
+  });
 });
 
 describe("membership changed email (console)", () => {
   it("logs the kind, recipient, and subject instead of sending", async () => {
     const log = vi.fn();
     await createConsoleMembershipChangedSender({
-      manageMembershipUrl: "https://site.test/me/settings",
+      manageMembershipUrl: "https://site.test/me/membership",
       termsUrl: "https://site.test/terms",
       log,
     })({ kind: "resumed", email: "user@example.com", monthlyAmountCents: 500, renewsAt: null });
 
     expect(log).toHaveBeenCalledWith(
-      "[membership-mailer:console] resumed confirmation for user@example.com: [Elections Simplified] Your membership continues"
+      "[membership-mailer:console] resumed email for user@example.com: [Elections Simplified] Your membership continues"
     );
   });
 });

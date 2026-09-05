@@ -16,8 +16,9 @@ describe("listDueMissouriCandidateFinanceSyncRows", () => {
     });
     expect(result.totalDueRows).toBe(3);
     expect(result.rows[0]).toMatchObject({ electionDate: "2026-11-03", linkSource: "mec_portal" });
-    expect(query.mock.calls[0]![0]).toContain("election.election_date::text election_date");
-    expect(query.mock.calls[0]![0]).toContain("election.election_stage='general'");
+    // Builder wording (the bespoke query wrote these without AS/spaces); same select + predicate.
+    expect(query.mock.calls[0]![0]).toContain("election.election_date::text AS election_date");
+    expect(query.mock.calls[0]![0]).toContain("election.election_stage = 'general'");
     expect(query.mock.calls[0]![1]).toHaveLength(6);
     expect(query.mock.calls[0]![1][5]).toEqual(expect.arrayContaining([
       "state_lower::State Lower Chamber Legislator",

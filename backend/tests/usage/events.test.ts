@@ -104,6 +104,93 @@ describe("parseUsageEvent", () => {
     expect(parseUsageEvent(event({ name: "ballot_result", props: { ...props, states: [] } }))).not.toBeNull();
   });
 
+  it("accepts detail-page content props on page_view and drops ids", () => {
+    const row = parseUsageEvent(
+      event({
+        route: "election",
+        props: {
+          arrival: "list",
+          race_type: "ballot_measure",
+          office_level: "county",
+          upcoming: true,
+          has_summary: true,
+          has_stance_tags: false,
+          has_official_url: true,
+          measure_tbd: false,
+          candidate_count_bucket: "0",
+          election_id: "e-1",
+        },
+      })
+    );
+    expect(row?.props).toEqual({
+      arrival: "list",
+      race_type: "ballot_measure",
+      office_level: "county",
+      upcoming: true,
+      has_summary: true,
+      has_stance_tags: false,
+      has_official_url: true,
+      measure_tbd: false,
+      candidate_count_bucket: "0",
+    });
+    expect(parseUsageEvent(event({ route: "election", props: { arrival: "rail" } }))).toBeNull();
+  });
+
+  it("validates the pick and follow outcome events", () => {
+    const pick = {
+      kind: "measure",
+      surface: "measure_card",
+      store: "draft",
+      change: "added",
+      outcome: "draft_memory",
+    };
+    expect(parseUsageEvent(event({ name: "pick_result", route: "election", props: pick }))?.props).toEqual(pick);
+    expect(parseUsageEvent(event({ name: "pick_result", route: "election", props: { ...pick, outcome: "yes" } }))).toBeNull();
+    expect(
+      parseUsageEvent(event({ name: "pick_result", route: "election", props: { ...pick, position: "yes" } }))?.props
+    ).toEqual(pick);
+    expect(
+      parseUsageEvent(
+        event({ name: "follow_result", route: "candidate", props: { change: "follow", outcome: "error", error_category: "server" } })
+      )?.props
+    ).toEqual({ change: "follow", outcome: "error", error_category: "server" });
+    expect(
+      parseUsageEvent(
+        event({ name: "autopick_result", route: "election", props: { scope: "election", outcome: "no_pick", races_bucket: "1-3", reason: "tie" } })
+      )?.props
+    ).toEqual({ scope: "election", outcome: "no_pick", races_bucket: "1-3", reason: "tie" });
+  });
+
+  it("validates the chat and checkout events", () => {
+    const ask = { entry: "typed", context_kind: "candidate", first_turn: true, outcome: "ok" };
+    expect(
+      parseUsageEvent(
+        event({ name: "chat_ask", route: "candidate", props: { ...ask, answer: "retrieval", result_count_bucket: "1-3", ai_generated: false } })
+      )?.props
+    ).toEqual({ ...ask, answer: "retrieval", result_count_bucket: "1-3", ai_generated: false });
+    // Question text has no slot; an unknown answer kind drops the event.
+    expect(
+      parseUsageEvent(event({ name: "chat_ask", route: "candidate", props: { ...ask, question: "who is running?" } }))?.props
+    ).toEqual(ask);
+    expect(parseUsageEvent(event({ name: "chat_ask", route: "candidate", props: { ...ask, answer: "prose" } }))).toBeNull();
+    expect(parseUsageEvent(event({ name: "chat_ask", route: "candidate", props: { ...ask, entry: "voice" } }))).toBeNull();
+    expect(
+      parseUsageEvent(event({ name: "chat_open", route: "ballot", props: { context_kind: "none", wall: "register" } }))?.props
+    ).toEqual({ context_kind: "none", wall: "register" });
+    expect(
+      parseUsageEvent(event({ name: "chat_result_click", route: "ballot", props: { source: "official", position_bucket: "1-3" } }))?.props
+    ).toEqual({ source: "official", position_bucket: "1-3" });
+    expect(
+      parseUsageEvent(event({ name: "chat_feedback", route: "ballot", props: { verdict: "down", outcome: "ok" } }))?.props
+    ).toEqual({ verdict: "down", outcome: "ok" });
+    expect(
+      parseUsageEvent(
+        event({ name: "checkout_start", route: "support_once", props: { kind: "one_time", outcome: "error", error_category: "server", amount_cents: 1200 } })
+      )?.props
+    ).toEqual({ kind: "one_time", outcome: "error", error_category: "server" });
+    expect(parseUsageEvent(event({ name: "checkout_start", route: "support_once", props: { kind: "yearly", outcome: "ok" } }))).toBeNull();
+  });
+
   it("rejects unknown names, unknown routes, and raw paths in the route field", () => {
     expect(parseUsageEvent(event({ name: "click" }))).toBeNull();
     expect(parseUsageEvent(event({ route: "/picks/abc123" }))).toBeNull();

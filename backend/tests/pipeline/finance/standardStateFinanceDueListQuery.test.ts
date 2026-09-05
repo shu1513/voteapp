@@ -270,6 +270,107 @@ describe("createStandardStateFinanceDueListQuery", () => {
     expect(normalizeSql(sql)).toContain("link.district, link.committee_key, link.committee_name, link.link_source, link.source_url,");
   });
 
+  it("adds the general-stage filter and election_date only when configured", async () => {
+    const db = createMockDb([dueRow({ election_date: "2026-11-03T00:00:00.000Z", link_source: "cers_portal" })]);
+    const mapRow = vi.fn((row: StandardStateFinanceDueQueryRow) => ({
+      electionDate: row.election_date,
+      linkSource: row.link_source,
+    }));
+    const listDueRows = createStandardStateFinanceDueListQuery({
+      state: "MT",
+      tables: {
+        links: "mt_candidate_finance_links",
+        summaries: "mt_candidate_finance_summaries",
+      },
+      eligibleOfficeKeys: ["state_upper::State Senator"],
+      electionStage: "general",
+      selectElectionDate: true,
+      linkColumns: ["committee_id", "committee_name", "link_source"],
+      mapRow,
+    });
+
+    const result = await listDueRows(db, DUE_LIST_INPUT);
+
+    const sql = String(db.query.mock.calls[0]?.[0]);
+    // Stage filter sits directly after the race_type predicate.
+    expect(sql).toContain(
+      "          AND election.race_type = 'office'\n          AND election.election_stage = 'general'\n          AND election.election_date >="
+    );
+    // election_date is selected between election_year and office_scope, inside and outside the CTE.
+    expect(sql).toContain(
+      "          link.election_year,\n          election.election_date::text AS election_date,\n          office.scope AS office_scope,"
+    );
+    expect(sql).toContain("        election_year,\n        election_date,\n        office_scope,");
+    expect(sql).toContain("          link.committee_id,\n          link.committee_name,\n          link.link_source,\n          link.source_url,");
+    // Parameters are unchanged: the stage is a validated literal, not a bind.
+    expect(db.query.mock.calls[0]?.[1]).toEqual([
+      "2026-06-01T00:00:00.000Z",
+      7,
+      25,
+      30,
+      730,
+      ["state_upper::State Senator"],
+    ]);
+    expect(result.rows).toEqual([{ electionDate: "2026-11-03T00:00:00.000Z", linkSource: "cers_portal" }]);
+
+    // The default template carries neither line (the byte-for-byte pin above
+    // guards the exact default text; this guards the option gating).
+    const defaultDb = createMockDb();
+    await createCanonicalQuery()(defaultDb, DUE_LIST_INPUT);
+    const defaultSql = String(defaultDb.query.mock.calls[0]?.[0]);
+    expect(defaultSql).not.toContain("election_stage");
+    expect(defaultSql).not.toContain("election_date::text");
+  });
+
+  it("adds ballot_title only when configured", async () => {
+    const db = createMockDb([dueRow({ ballot_title: "Circuit Judge, 10th Circuit, Place 1", fcpa_committee_number: null })]);
+    const mapRow = vi.fn((row: StandardStateFinanceDueQueryRow) => ({
+      ballotTitle: row.ballot_title,
+      fcpaCommitteeNumber: row.fcpa_committee_number,
+    }));
+    const listDueRows = createStandardStateFinanceDueListQuery({
+      state: "AL",
+      tables: {
+        links: "al_candidate_finance_links",
+        summaries: "al_candidate_finance_summaries",
+      },
+      eligibleOfficeKeys: ["statewide::Governor"],
+      electionStage: "general",
+      linkColumns: ["committee_id", "committee_name", "fcpa_committee_number", "link_source"],
+      mapRow,
+    });
+
+    const result = await listDueRows(db, DUE_LIST_INPUT);
+
+    const sql = String(db.query.mock.calls[0]?.[0]);
+    // Nothing selected without the flag; the stage filter is independent of it.
+    expect(sql).not.toContain("ballot_title");
+    expect(sql).toContain("          AND election.election_stage = 'general'\n");
+    expect(result.rows).toEqual([{ ballotTitle: "Circuit Judge, 10th Circuit, Place 1", fcpaCommitteeNumber: null }]);
+
+    const titledDb = createMockDb([dueRow({ ballot_title: "Governor" })]);
+    const listTitledRows = createStandardStateFinanceDueListQuery({
+      state: "AL",
+      tables: {
+        links: "al_candidate_finance_links",
+        summaries: "al_candidate_finance_summaries",
+      },
+      eligibleOfficeKeys: ["statewide::Governor"],
+      selectBallotTitle: true,
+      mapRow: (row) => row.ballot_title,
+    });
+    const titledResult = await listTitledRows(titledDb, DUE_LIST_INPUT);
+    const titledSql = String(titledDb.query.mock.calls[0]?.[0]);
+    // ballot_title is selected between office_name and district, inside and outside the CTE.
+    expect(titledSql).toContain(
+      "          link.office_name,\n          election.official_ballot_title AS ballot_title,\n          link.district,"
+    );
+    expect(titledSql).toContain("        office_name,\n        ballot_title,\n        district,");
+    expect(titledSql).not.toContain("election_date::text");
+    expect(titledSql).not.toContain("election_stage");
+    expect(titledResult.rows).toEqual(["Governor"]);
+  });
+
   it("returns zero totals for an empty result and tolerates malformed counts", async () => {
     const listDueRows = createCanonicalQuery();
 
@@ -344,5 +445,11 @@ describe("createStandardStateFinanceDueListQuery", () => {
     expect(() => createStandardStateFinanceDueListQuery({ ...base, eligibleOfficeKeys: [] })).toThrow(
       "Standard finance due-list eligible office keys must not be empty"
     );
+    expect(() =>
+      createStandardStateFinanceDueListQuery({
+        ...base,
+        electionStage: "primary' OR 1=1 --",
+      } as unknown as Parameters<typeof createStandardStateFinanceDueListQuery>[0])
+    ).toThrow("Invalid standard finance due-list election stage: primary' OR 1=1 --");
   });
 });

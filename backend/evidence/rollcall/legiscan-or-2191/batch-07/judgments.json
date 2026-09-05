@@ -1,0 +1,184 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1583050,
+      "measure_id": "SB 726",
+      "vote_date": "2025-06-02",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 726, which makes the city landfill in Benton County watch for methane leaking out of its surface and plug the leaks. State rule makers set the terms. The search must use modern tools that show where gas escapes and how fast, such as satellites, aircraft, drones or remote sensors. It must cover the whole surface, and the results go to the state. The law is written to reach only landfills in that one county. The Oregon House passed it 31-24, and it became law.",
+      "nay_description": "Voted against Senate Bill 726, which makes the city landfill in Benton County watch for methane leaking out of its surface and plug the leaks. State rule makers set the terms. The search must use modern tools that show where gas escapes and how fast, such as satellites, aircraft, drones or remote sensors. It must cover the whole surface, and the results go to the state. The law is written to reach only landfills in that one county. The Oregon House passed it 31-24, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1584598,
+      "measure_id": "SB 726",
+      "vote_date": "2025-06-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 726, which makes the city landfill in Benton County watch for methane leaking out of its surface and plug the leaks. State rule makers set the terms. The search must use modern tools that show where gas escapes and how fast, such as satellites, aircraft, drones or remote sensors. It must cover the whole surface, and the results go to the state. The law is written to reach only landfills in that one county. The Oregon Senate agreed to the House's changes 18-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 726, which makes the city landfill in Benton County watch for methane leaking out of its surface and plug the leaks. State rule makers set the terms. The search must use modern tools that show where gas escapes and how fast, such as satellites, aircraft, drones or remote sensors. It must cover the whole surface, and the results go to the state. The law is written to reach only landfills in that one county. The Oregon Senate agreed to the House's changes 18-12, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1574023,
+      "measure_id": "SB 827",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 827, which widens Oregon's solar rebate so it also pays for a home battery added to solar panels that were bought and put in earlier. Before this, a battery only counted when it went in with the panels. The state energy office may set rebate levels for panels alone, batteries alone, and the two together. It may also write rules for running and checking the program. The battery must be set up to store what the panels make. The Oregon House passed it 36-16, and it became law.",
+      "nay_description": "Voted against Senate Bill 827, which widens Oregon's solar rebate so it also pays for a home battery added to solar panels that were bought and put in earlier. Before this, a battery only counted when it went in with the panels. The state energy office may set rebate levels for panels alone, batteries alone, and the two together. It may also write rules for running and checking the program. The battery must be set up to store what the panels make. The Oregon House passed it 36-16, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1501258,
+      "measure_id": "SB 827",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 827, which widens Oregon's solar rebate so it also pays for a home battery added to solar panels that were bought and put in earlier. Before this, a battery only counted when it went in with the panels. The state energy office may set rebate levels for panels alone, batteries alone, and the two together. It may also write rules for running and checking the program. The battery must be set up to store what the panels make. The Oregon Senate passed it 21-7, and it became law.",
+      "nay_description": "Voted against Senate Bill 827, which widens Oregon's solar rebate so it also pays for a home battery added to solar panels that were bought and put in earlier. Before this, a battery only counted when it went in with the panels. The state energy office may set rebate levels for panels alone, batteries alone, and the two together. It may also write rules for running and checking the program. The battery must be set up to store what the panels make. The Oregon Senate passed it 21-7, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1504353,
+      "measure_id": "HB 3024",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3024, which ends an extra penalty in Oregon's jobless pay system. A worker cut off for misconduct, or for a felony or theft at work, used to lose part of the year's total pay as well. The cut was eight times the weekly amount, and it stuck even after the worker earned their way back on. This law wipes out that extra cut. Being cut off in the first place still stands, so a worker must still work their way back on. The Oregon House passed it 35-22, and it became law.",
+      "nay_description": "Voted against House Bill 3024, which ends an extra penalty in Oregon's jobless pay system. A worker cut off for misconduct, or for a felony or theft at work, used to lose part of the year's total pay as well. The cut was eight times the weekly amount, and it stuck even after the worker earned their way back on. This law wipes out that extra cut. Being cut off in the first place still stands, so a worker must still work their way back on. The Oregon House passed it 35-22, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1589550,
+      "measure_id": "HB 3024",
+      "vote_date": "2025-06-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3024, which ends an extra penalty in Oregon's jobless pay system. A worker cut off for misconduct, or for a felony or theft at work, used to lose part of the year's total pay as well. The cut was eight times the weekly amount, and it stuck even after the worker earned their way back on. This law wipes out that extra cut. Being cut off in the first place still stands, so a worker must still work their way back on. The Oregon Senate passed it 18-10, and it became law.",
+      "nay_description": "Voted against House Bill 3024, which ends an extra penalty in Oregon's jobless pay system. A worker cut off for misconduct, or for a felony or theft at work, used to lose part of the year's total pay as well. The cut was eight times the weekly amount, and it stuck even after the worker earned their way back on. This law wipes out that extra cut. Being cut off in the first place still stands, so a worker must still work their way back on. The Oregon Senate passed it 18-10, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1572193,
+      "measure_id": "SB 295",
+      "vote_date": "2025-05-15",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 295, which lets pharmacists keep testing people for COVID-19 and treating it. That power was granted in 2024 with an end date attached, and this law repeals the end date. Nothing else changes: the same pharmacists may do the same things, with no time limit. The Oregon House passed it 40-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 295, which lets pharmacists keep testing people for COVID-19 and treating it. That power was granted in 2024 with an end date attached, and this law repeals the end date. Nothing else changes: the same pharmacists may do the same things, with no time limit. The Oregon House passed it 40-11, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1555828,
+      "measure_id": "SB 1032",
+      "vote_date": "2025-04-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1032, which bars stores from selling aerosol dusters containing the gas DFE to anyone under 18. These are the pressurized cans sold for cleaning electronics, and the gas in them is inhaled to get high. Before a sale the store must check a passport, a driver license from any state, or a state identification card. The law names the gas by its chemical formula and registry number, so the rule does not turn on the brand. The Oregon Senate passed it 22-6, and it became law.",
+      "nay_description": "Voted against Senate Bill 1032, which bars stores from selling aerosol dusters containing the gas DFE to anyone under 18. These are the pressurized cans sold for cleaning electronics, and the gas in them is inhaled to get high. Before a sale the store must check a passport, a driver license from any state, or a state identification card. The law names the gas by its chemical formula and registry number, so the rule does not turn on the brand. The Oregon Senate passed it 22-6, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1584102,
+      "measure_id": "SB 150",
+      "vote_date": "2025-06-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 150, which stops people charging veterans for help with a benefits claim, work the Department of Veterans Affairs does for free. No one may take payment for preparing or presenting a claim, or for advising or representing a veteran on one. The same goes for handling an appeal of a first decision, or for referring a veteran to someone who does that work, unless federal law or this law allows it. Promising that a veteran is sure to get a benefit, or a particular level of one, is barred. So is charging an unreasonable fee, which a court judges on the work done, the difficulty, the time spent and what it achieved. The Oregon House passed it 32-22, and it became law.",
+      "nay_description": "Voted against Senate Bill 150, which stops people charging veterans for help with a benefits claim, work the Department of Veterans Affairs does for free. No one may take payment for preparing or presenting a claim, or for advising or representing a veteran on one. The same goes for handling an appeal of a first decision, or for referring a veteran to someone who does that work, unless federal law or this law allows it. Promising that a veteran is sure to get a benefit, or a particular level of one, is barred. So is charging an unreasonable fee, which a court judges on the work done, the difficulty, the time spent and what it achieved. The Oregon House passed it 32-22, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1573092,
+      "measure_id": "HB 2530",
+      "vote_date": "2025-05-19",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2530, which helps schools run cameras on school bus stop arms, which catch drivers who pass a bus while children are getting on or off. A school may hire a private firm to install and run the cameras, but only in agreement with a police agency. In court a warning sign is presumed to have been posted and the bus lights presumed working and on, unless the driver shows otherwise. Fine money from a camera ticket must be passed on in full to the school that put the camera up. The Oregon Senate passed it 22-7, and it became law.",
+      "nay_description": "Voted against House Bill 2530, which helps schools run cameras on school bus stop arms, which catch drivers who pass a bus while children are getting on or off. A school may hire a private firm to install and run the cameras, but only in agreement with a police agency. In court a warning sign is presumed to have been posted and the bus lights presumed working and on, unless the driver shows otherwise. Fine money from a camera ticket must be passed on in full to the school that put the camera up. The Oregon Senate passed it 22-7, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

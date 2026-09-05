@@ -1,0 +1,462 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1545911,
+   "measure_id": "SB 6",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 6. The act lets the state treasurer invest up to $50 million in bonds issued by quasi-governmental agencies. The money has to finance affordable, income-limited homes that are for sale, not for rent. It is meant for homes that would not otherwise be built on those terms. An investment can run for up to 45 years, and the treasurer reinvests the money that comes back. The Colorado House passed it 42-20 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 6. The act lets the state treasurer invest up to $50 million in bonds issued by quasi-governmental agencies. The money has to finance affordable, income-limited homes that are for sale, not for rent. It is meant for homes that would not otherwise be built on those terms. An investment can run for up to 45 years, and the treasurer reinvests the money that comes back. The Colorado House passed it 42-20 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1549765,
+   "measure_id": "SB 6",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 6 and pass it. The act lets the state treasurer invest up to $50 million in bonds issued by quasi-governmental agencies. The money has to finance affordable, income-limited homes that are for sale, not for rent. It is meant for homes that would not otherwise be built on those terms. An investment can run for up to 45 years, and the treasurer reinvests the money that comes back. The Colorado Senate voted 21-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 6. The act lets the state treasurer invest up to $50 million in bonds issued by quasi-governmental agencies. The money has to finance affordable, income-limited homes that are for sale, not for rent. It is meant for homes that would not otherwise be built on those terms. An investment can run for up to 45 years, and the treasurer reinvests the money that comes back. The Colorado Senate voted 21-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1549764
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1557953,
+   "measure_id": "SB 20",
+   "vote_date": "2025-04-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 20. The act puts the attorney general behind Colorado's tenant laws. The office can enforce the rules protecting survivors of domestic violence, stalking and sexual assault, and the rules on rental agreements. It can see eviction court records that are otherwise hidden, but only to investigate. A court can appoint a receiver to run a large rental property that keeps breaking the habitability rules. That receiver has to maintain the property and cannot raise rents or fees above what tenants paid when the court stepped in. The receiver also cannot evict anyone over rent that went unpaid before it took over. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 20. The act puts the attorney general behind Colorado's tenant laws. The office can enforce the rules protecting survivors of domestic violence, stalking and sexual assault, and the rules on rental agreements. It can see eviction court records that are otherwise hidden, but only to investigate. A court can appoint a receiver to run a large rental property that keeps breaking the habitability rules. That receiver has to maintain the property and cannot raise rents or fees above what tenants paid when the court stepped in. The receiver also cannot evict anyone over rent that went unpaid before it took over. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1558834,
+   "measure_id": "SB 20",
+   "vote_date": "2025-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 20 and pass it. The act puts the attorney general behind Colorado's tenant laws. The office can enforce the rules protecting survivors of domestic violence, stalking and sexual assault, and the rules on rental agreements. It can see eviction court records that are otherwise hidden, but only to investigate. A court can appoint a receiver to run a large rental property that keeps breaking the habitability rules. That receiver has to maintain the property and cannot raise rents or fees above what tenants paid when the court stepped in. The receiver also cannot evict anyone over rent that went unpaid before it took over. The Colorado Senate voted 20-13 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 20. The act puts the attorney general behind Colorado's tenant laws. The office can enforce the rules protecting survivors of domestic violence, stalking and sexual assault, and the rules on rental agreements. It can see eviction court records that are otherwise hidden, but only to investigate. A court can appoint a receiver to run a large rental property that keeps breaking the habitability rules. That receiver has to maintain the property and cannot raise rents or fees above what tenants paid when the court stepped in. The receiver also cannot evict anyone over rent that went unpaid before it took over. The Colorado Senate voted 20-13 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1558833
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1539636,
+   "measure_id": "HB 1240",
+   "vote_date": "2025-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1240. The act bars a landlord from turning someone away because they pay with a housing voucher or other subsidy. A landlord cannot make the tenant pay costs the landlord runs up if the tenant loses that subsidy. A landlord cannot start an eviction for unpaid rent until 30 days after giving notice to leave. The act also tells the state to gather and publish help for landlords and tenants. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1240. The act bars a landlord from turning someone away because they pay with a housing voucher or other subsidy. A landlord cannot make the tenant pay costs the landlord runs up if the tenant loses that subsidy. A landlord cannot start an eviction for unpaid rent until 30 days after giving notice to leave. The act also tells the state to gather and publish help for landlords and tenants. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1545977,
+   "measure_id": "HB 1240",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1240 and pass it. The act bars a landlord from turning someone away because they pay with a housing voucher or other subsidy. A landlord cannot make the tenant pay costs the landlord runs up if the tenant loses that subsidy. A landlord cannot start an eviction for unpaid rent until 30 days after giving notice to leave. The act also tells the state to gather and publish help for landlords and tenants. The Colorado House voted 39-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1240. The act bars a landlord from turning someone away because they pay with a housing voucher or other subsidy. A landlord cannot make the tenant pay costs the landlord runs up if the tenant loses that subsidy. A landlord cannot start an eviction for unpaid rent until 30 days after giving notice to leave. The act also tells the state to gather and publish help for landlords and tenants. The Colorado House voted 39-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1545976
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1592147,
+   "measure_id": "HB 1273",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the conference committee's report on House Bill 1273 and pass it. Colorado building codes follow a national model that makes any building over three stories have two stairways. That rule shapes what can be built on a small lot. By December 1, 2027, a city of 100,000 or more with an accredited fire service has to allow buildings up to five stories with a single stairway. The building has to meet safety conditions the act sets out. Cities must hold meetings and give notice before adopting the change. The Colorado Senate voted 27-8 to adopt that report and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against adopting the conference committee's report on House Bill 1273. Colorado building codes follow a national model that makes any building over three stories have two stairways. That rule shapes what can be built on a small lot. By December 1, 2027, a city of 100,000 or more with an accredited fire service has to allow buildings up to five stories with a single stairway. The building has to meet safety conditions the act sets out. Cities must hold meetings and give notice before adopting the change. The Colorado Senate voted 27-8 to adopt that report and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1592146
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1592149,
+   "measure_id": "HB 1273",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the conference committee's report on House Bill 1273 and pass it. Colorado building codes follow a national model that makes any building over three stories have two stairways. That rule shapes what can be built on a small lot. By December 1, 2027, a city of 100,000 or more with an accredited fire service has to allow buildings up to five stories with a single stairway. The building has to meet safety conditions the act sets out. Cities must hold meetings and give notice before adopting the change. The Colorado House voted 43-22 to adopt that report and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against adopting the conference committee's report on House Bill 1273. Colorado building codes follow a national model that makes any building over three stories have two stairways. That rule shapes what can be built on a small lot. By December 1, 2027, a city of 100,000 or more with an accredited fire service has to allow buildings up to five stories with a single stairway. The building has to meet safety conditions the act sets out. Cities must hold meetings and give notice before adopting the change. The Colorado House voted 43-22 to adopt that report and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1592148
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1541387,
+   "measure_id": "HB 1043",
+   "vote_date": "2025-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the conference committee's report on House Bill 1043 and pass it. The act tightens what a homeowners association must do before taking money from an owner. It has to follow its own bylaws and state law first. If it has not, a court can pause the case until it does. The association cannot keep adding charges during that pause. Associations also have to report more about their enforcement and foreclosures. The state publishes a summary each year. The Colorado Senate voted 23-11 to adopt that report and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against adopting the conference committee's report on House Bill 1043. The act tightens what a homeowners association must do before taking money from an owner. It has to follow its own bylaws and state law first. If it has not, a court can pause the case until it does. The association cannot keep adding charges during that pause. Associations also have to report more about their enforcement and foreclosures. The state publishes a summary each year. The Colorado Senate voted 23-11 to adopt that report and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1541386
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1549467,
+   "measure_id": "HB 1043",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the conference committee's report on House Bill 1043 and pass it. The act tightens what a homeowners association must do before taking money from an owner. It has to follow its own bylaws and state law first. If it has not, a court can pause the case until it does. The association cannot keep adding charges during that pause. Associations also have to report more about their enforcement and foreclosures. The state publishes a summary each year. The Colorado House voted 41-23 to adopt that report and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against adopting the conference committee's report on House Bill 1043. The act tightens what a homeowners association must do before taking money from an owner. It has to follow its own bylaws and state law first. If it has not, a court can pause the case until it does. The association cannot keep adding charges during that pause. Associations also have to report more about their enforcement and foreclosures. The state publishes a summary each year. The Colorado House voted 41-23 to adopt that report and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1549466
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1549388,
+   "measure_id": "HB 1211",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1211 and pass it. Water and sanitation districts charge a tap fee to connect a new home to the system. The act says that fee has to be reasonably related to the cost of providing service. That cost covers building the infrastructure, planning for water rights and running the system. A district can set a smaller fee for a home that uses less water, and can charge more later if demand goes up. The Colorado House voted 44-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1211. Water and sanitation districts charge a tap fee to connect a new home to the system. The act says that fee has to be reasonably related to the cost of providing service. That cost covers building the infrastructure, planning for water rights and running the system. A district can set a smaller fee for a home that uses less water, and can charge more later if demand goes up. The Colorado House voted 44-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1549387
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1552501,
+   "measure_id": "SB 2",
+   "vote_date": "2025-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 2. Factory-built homes are made in a plant and put together on site. They cost less than homes built start to finish on site. The act tells the State Housing Board to develop regional building codes for them. An advisory committee has to write the standards and a plan for putting them in place. It has to report to lawmakers during the 2026 session. The aim is one set of rules across a region instead of a different code in each town. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 2. Factory-built homes are made in a plant and put together on site. They cost less than homes built start to finish on site. The act tells the State Housing Board to develop regional building codes for them. An advisory committee has to write the standards and a plan for putting them in place. It has to report to lawmakers during the 2026 session. The aim is one set of rules across a region instead of a different code in each town. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1555157,
+   "measure_id": "SB 2",
+   "vote_date": "2025-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 2 and pass it. Factory-built homes are made in a plant and put together on site. They cost less than homes built start to finish on site. The act tells the State Housing Board to develop regional building codes for them. An advisory committee has to write the standards and a plan for putting them in place. It has to report to lawmakers during the 2026 session. The aim is one set of rules across a region instead of a different code in each town. The Colorado Senate voted 24-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 2. Factory-built homes are made in a plant and put together on site. They cost less than homes built start to finish on site. The act tells the State Housing Board to develop regional building codes for them. An advisory committee has to write the standards and a plan for putting them in place. It has to report to lawmakers during the 2026 session. The aim is one set of rules across a region instead of a different code in each town. The Colorado Senate voted 24-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1525950,
+   "measure_id": "HB 1238",
+   "vote_date": "2025-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1238. The act rewrites the rules for gun shows. A promoter has to prepare a security plan and give it to each local law enforcement agency before the show. The promoter has to carry liability insurance. Background check rules for sales at the show stay in place. Events that show only antique, curio or relic firearms are not treated as gun shows. The rules start on January 1, 2026. The Colorado Senate passed it 22-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1238. The act rewrites the rules for gun shows. A promoter has to prepare a security plan and give it to each local law enforcement agency before the show. The promoter has to carry liability insurance. Background check rules for sales at the show stay in place. Events that show only antique, curio or relic firearms are not treated as gun shows. The rules start on January 1, 2026. The Colorado Senate passed it 22-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1530219,
+   "measure_id": "HB 1238",
+   "vote_date": "2025-03-28",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1238 and pass it. The act rewrites the rules for gun shows. A promoter has to prepare a security plan and give it to each local law enforcement agency before the show. The promoter has to carry liability insurance. Background check rules for sales at the show stay in place. Events that show only antique, curio or relic firearms are not treated as gun shows. The rules start on January 1, 2026. The Colorado House voted 35-28 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1238. The act rewrites the rules for gun shows. A promoter has to prepare a security plan and give it to each local law enforcement agency before the show. The promoter has to carry liability insurance. Background check rules for sales at the show stay in place. Events that show only antique, curio or relic firearms are not treated as gun shows. The rules start on January 1, 2026. The Colorado House voted 35-28 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": "against"
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1530218
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1551029,
+   "measure_id": "SB 34",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 34. The act creates the Colorado Voluntary Do-Not-Sell Act. A person can file a waiver giving up their own right to buy a firearm. The state bureau of investigation has to build an online portal to file, update contacts or cancel the waiver, and has to check the filer's identity. While the waiver stands, a firearm transfer to that person is denied. The bureau tells the person and the contacts they named when a waiver is accepted or cancelled. Lawmakers pointed to suicide: 717 Coloradans died by self-inflicted gunshot in 2023, seven in ten of the state's firearm deaths. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 34. The act creates the Colorado Voluntary Do-Not-Sell Act. A person can file a waiver giving up their own right to buy a firearm. The state bureau of investigation has to build an online portal to file, update contacts or cancel the waiver, and has to check the filer's identity. While the waiver stands, a firearm transfer to that person is denied. The bureau tells the person and the contacts they named when a waiver is accepted or cancelled. Lawmakers pointed to suicide: 717 Coloradans died by self-inflicted gunshot in 2023, seven in ten of the state's firearm deaths. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1565116,
+   "measure_id": "SB 34",
+   "vote_date": "2025-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 34. The act creates the Colorado Voluntary Do-Not-Sell Act. A person can file a waiver giving up their own right to buy a firearm. The state bureau of investigation has to build an online portal to file, update contacts or cancel the waiver, and has to check the filer's identity. While the waiver stands, a firearm transfer to that person is denied. The bureau tells the person and the contacts they named when a waiver is accepted or cancelled. Lawmakers pointed to suicide: 717 Coloradans died by self-inflicted gunshot in 2023, seven in ten of the state's firearm deaths. The Colorado House passed it 36-28 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 34. The act creates the Colorado Voluntary Do-Not-Sell Act. A person can file a waiver giving up their own right to buy a firearm. The state bureau of investigation has to build an online portal to file, update contacts or cancel the waiver, and has to check the filer's identity. While the waiver stands, a firearm transfer to that person is denied. The bureau tells the person and the contacts they named when a waiver is accepted or cancelled. Lawmakers pointed to suicide: 717 Coloradans died by self-inflicted gunshot in 2023, seven in ten of the state's firearm deaths. The Colorado House passed it 36-28 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1558242,
+   "measure_id": "SB 205",
+   "vote_date": "2025-04-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 205. A licensed gun dealer can ask police to check a firearm's serial number before buying it from a private person. The dealer asks the city police where the shop sits, or the county sheriff otherwise. Police have to set up a system for those checks by July 1, 2026 and answer within three days. A dealer who does not report as required faces a penalty. The Colorado House passed it 36-27 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 205. A licensed gun dealer can ask police to check a firearm's serial number before buying it from a private person. The dealer asks the city police where the shop sits, or the county sheriff otherwise. Police have to set up a system for those checks by July 1, 2026 and answer within three days. A dealer who does not report as required faces a penalty. The Colorado House passed it 36-27 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1558907,
+   "measure_id": "SB 205",
+   "vote_date": "2025-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 205 and pass it. A licensed gun dealer can ask police to check a firearm's serial number before buying it from a private person. The dealer asks the city police where the shop sits, or the county sheriff otherwise. Police have to set up a system for those checks by July 1, 2026 and answer within three days. A dealer who does not report as required faces a penalty. The Colorado Senate voted 22-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 205. A licensed gun dealer can ask police to check a firearm's serial number before buying it from a private person. The dealer asks the city police where the shop sits, or the county sheriff otherwise. Police have to set up a system for those checks by July 1, 2026 and answer within three days. A dealer who does not report as required faces a penalty. The Colorado Senate voted 22-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": "against"
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1558906
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1563463,
+   "measure_id": "SB 158",
+   "vote_date": "2025-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 158. The act sets rules for how the state buys firearms, ammunition and accessories. A contractor selling them to the state has to be licensed. The contractor has to tell the state about federal gun-trace requests it has received. The state gives a bidding preference to contractors that meet the new standards. The Colorado House passed it 39-24 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 158. The act sets rules for how the state buys firearms, ammunition and accessories. A contractor selling them to the state has to be licensed. The contractor has to tell the state about federal gun-trace requests it has received. The state gives a bidding preference to contractors that meet the new standards. The Colorado House passed it 39-24 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1564732,
+   "measure_id": "SB 158",
+   "vote_date": "2025-05-02",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 158 and pass it. The act sets rules for how the state buys firearms, ammunition and accessories. A contractor selling them to the state has to be licensed. The contractor has to tell the state about federal gun-trace requests it has received. The state gives a bidding preference to contractors that meet the new standards. The Colorado Senate voted 22-13 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 158. The act sets rules for how the state buys firearms, ammunition and accessories. A contractor selling them to the state has to be licensed. The contractor has to tell the state about federal gun-trace requests it has received. The state gives a bidding preference to contractors that meet the new standards. The Colorado Senate voted 22-13 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1564731
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1520970,
+   "measure_id": "HB 1250",
+   "vote_date": "2025-03-19",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1250. Colorado's Office of Gun Violence Prevention already develops material on preventing gun violence. The act makes the office post that material online for schools to hand to parents and guardians. Schools can then pass it to families of elementary and secondary students. The department has to report each January on how the material is used. The Colorado House passed it 43-21 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1250. Colorado's Office of Gun Violence Prevention already develops material on preventing gun violence. The act makes the office post that material online for schools to hand to parents and guardians. Schools can then pass it to families of elementary and secondary students. The department has to report each January on how the material is used. The Colorado House passed it 43-21 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1560159,
+   "measure_id": "HB 1250",
+   "vote_date": "2025-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1250. Colorado's Office of Gun Violence Prevention already develops material on preventing gun violence. The act makes the office post that material online for schools to hand to parents and guardians. Schools can then pass it to families of elementary and secondary students. The department has to report each January on how the material is used. The Colorado Senate passed it 21-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1250. Colorado's Office of Gun Violence Prevention already develops material on preventing gun violence. The act makes the office post that material online for schools to hand to parents and guardians. Schools can then pass it to families of elementary and secondary students. The department has to report each January on how the material is used. The Colorado Senate passed it 21-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

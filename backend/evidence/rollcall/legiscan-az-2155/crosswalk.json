@@ -1,0 +1,463 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "AZ",
+  "sessionId": 2155,
+  "scopeFrom": "2026-11-01",
+  "entries": [
+    {
+      "people_id": 4230,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 4233,
+      "candidate_id": "b0d63685-35e7-40ce-8614-c6c5c57c0095",
+      "note": "Arizona nests House District N and Senate District N inside the same legislative district, so the seat number agrees while the chamber does not: sitting Senator for District 19 running for the District 19 House seat, confirmed against the candidate record's current office."
+    },
+    {
+      "people_id": 4260,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 4262,
+      "candidate_id": "1c8f2c24-c809-486d-95d3-7b32145fddc8",
+      "note": null
+    },
+    {
+      "people_id": 4343,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 10680,
+      "candidate_id": "c53dfe10-f19f-4af0-bc2e-535a5501382f",
+      "note": null
+    },
+    {
+      "people_id": 10696,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 10699,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 10704,
+      "candidate_id": "c5226d2c-7f37-448b-b6bf-d80368afa097",
+      "note": "Arizona nests House District N and Senate District N inside the same legislative district, so the seat number agrees while the chamber does not: sitting Senator for District 20 running for the District 20 House seat, confirmed against the candidate record's current office."
+    },
+    {
+      "people_id": 10708,
+      "candidate_id": "61d87166-7897-4c50-9cdb-71340bc4616e",
+      "note": "Arizona nests House District N and Senate District N inside the same legislative district, so the seat number agrees while the chamber does not: sitting Representative for District 19 running for the District 19 Senate seat, confirmed against the candidate record's current office."
+    },
+    {
+      "people_id": 11744,
+      "candidate_id": "13fc1850-ca2d-42a0-8340-92b61a7b9cbc",
+      "note": null
+    },
+    {
+      "people_id": 14554,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 14555,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 14703,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 14707,
+      "candidate_id": null,
+      "note": "Senate President. His only 2026 candidacy in our database is a statewide race on the July primary ballot, so he is outside the November state-legislative pool."
+    },
+    {
+      "people_id": 14709,
+      "candidate_id": "dedd79bd-616e-4048-b837-f437a8fcbece",
+      "note": null
+    },
+    {
+      "people_id": 15258,
+      "candidate_id": "09932726-7d66-4d43-8a81-33d7adc61a7a",
+      "note": null
+    },
+    {
+      "people_id": 16506,
+      "candidate_id": "3e031f5a-b99e-4433-b1f4-67fc5b49de88",
+      "note": null
+    },
+    {
+      "people_id": 16648,
+      "candidate_id": "eeb3d1b9-181e-49ab-8760-e8d8357f112e",
+      "note": null
+    },
+    {
+      "people_id": 16649,
+      "candidate_id": null,
+      "note": "His only 2026 candidacy in our database is a Chandler city race on the July primary ballot. Note the separate November candidate Janet Weninger in House District 13 is a DIFFERENT person and must not be linked to him."
+    },
+    {
+      "people_id": 16652,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 18569,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 18663,
+      "candidate_id": "fe32eee0-75b2-4560-9580-3d7ae9e4e361",
+      "note": null
+    },
+    {
+      "people_id": 19572,
+      "candidate_id": "bc98a359-cbc4-41ca-a58f-d4c12cf7b9b7",
+      "note": null
+    },
+    {
+      "people_id": 20172,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 20249,
+      "candidate_id": "8e59d813-05fa-4a6e-abcd-236dd4610bf6",
+      "note": "Arizona nests House District N and Senate District N inside the same legislative district, so the seat number agrees while the chamber does not: sitting Representative for District 30 running for the District 30 Senate seat, confirmed against the candidate record's current office."
+    },
+    {
+      "people_id": 20571,
+      "candidate_id": "3ee1e9fa-d02f-4235-a6b5-eb99ecdd2a18",
+      "note": "Arizona nests House District N and Senate District N inside the same legislative district, so the seat number agrees while the chamber does not: sitting Representative for District 20 running for the District 20 Senate seat, confirmed against the candidate record's current office."
+    },
+    {
+      "people_id": 20688,
+      "candidate_id": "0d31d12d-4d76-43b4-ab43-4bcef22366d3",
+      "note": null
+    },
+    {
+      "people_id": 20749,
+      "candidate_id": "ef02cc00-9a1a-4b4c-aa57-b97f9f7c20ce",
+      "note": null
+    },
+    {
+      "people_id": 20754,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 21898,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 21899,
+      "candidate_id": "6eaf50c9-9e25-4269-bd96-ec5144d0be53",
+      "note": null
+    },
+    {
+      "people_id": 21902,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 21903,
+      "candidate_id": "fcc7b958-5179-4361-b62b-5d107f9776e5",
+      "note": null
+    },
+    {
+      "people_id": 21904,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 22291,
+      "candidate_id": "586ca81f-a610-4352-9530-57c375e34eab",
+      "note": null
+    },
+    {
+      "people_id": 22293,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 23000,
+      "candidate_id": "e04a8c6e-aa52-4174-8444-de4c22e9f54c",
+      "note": null
+    },
+    {
+      "people_id": 23001,
+      "candidate_id": "8499c1e2-9452-40f7-9dfa-367b929e129d",
+      "note": null
+    },
+    {
+      "people_id": 23022,
+      "candidate_id": "128ec15b-883a-4f1d-adf6-2ce0edcc8e3e",
+      "note": null
+    },
+    {
+      "people_id": 23027,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 23038,
+      "candidate_id": "b977f238-0d4e-4ec7-8271-773ce80e943c",
+      "note": null
+    },
+    {
+      "people_id": 23039,
+      "candidate_id": "a0e7d691-5bfd-4b29-872f-c16090482055",
+      "note": "Matched on a first-name prefix; checked by hand against the seat."
+    },
+    {
+      "people_id": 23050,
+      "candidate_id": "57ff149d-358c-4fc6-8819-3e37777a8033",
+      "note": null
+    },
+    {
+      "people_id": 23641,
+      "candidate_id": "55678f6d-67ed-4b00-bd28-6743f0df6dff",
+      "note": null
+    },
+    {
+      "people_id": 23642,
+      "candidate_id": "006f9d47-3873-4f27-ac00-99d8c42c44aa",
+      "note": null
+    },
+    {
+      "people_id": 23883,
+      "candidate_id": "3813e326-3e84-4739-b7fc-864d46ed9573",
+      "note": null
+    },
+    {
+      "people_id": 24183,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 24184,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 24229,
+      "candidate_id": "b76a1dbc-da87-4b44-a996-60c1d3f17139",
+      "note": null
+    },
+    {
+      "people_id": 24230,
+      "candidate_id": "f20866b6-2536-46ab-b096-baf54a23f3b5",
+      "note": null
+    },
+    {
+      "people_id": 24232,
+      "candidate_id": "b4aa8039-ee17-4d41-bd5e-587ec2e9033c",
+      "note": null
+    },
+    {
+      "people_id": 24233,
+      "candidate_id": "4fa6453c-1ea4-450b-a09f-7dcd2248abec",
+      "note": "Arizona nests House District N and Senate District N inside the same legislative district, so the seat number agrees while the chamber does not: sitting Representative for District 12 running for the District 12 Senate seat, confirmed against the candidate record's current office."
+    },
+    {
+      "people_id": 24234,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 24235,
+      "candidate_id": "add5b35f-1ec9-4bac-bd92-de3297ab5814",
+      "note": null
+    },
+    {
+      "people_id": 24239,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 24240,
+      "candidate_id": null,
+      "note": "His only 2026 candidacy in our database is a statewide race on the July primary ballot, so he is outside the November pool."
+    },
+    {
+      "people_id": 24241,
+      "candidate_id": "cea56964-5a1c-40ac-a679-3fcc0d3d75ff",
+      "note": null
+    },
+    {
+      "people_id": 24242,
+      "candidate_id": "cdc31ca3-712a-411f-a152-4c54874d18f5",
+      "note": null
+    },
+    {
+      "people_id": 24246,
+      "candidate_id": "36cd3ad3-ba4d-4bf0-98c9-677b1c91f863",
+      "note": "Hand-added: LegiScan holds the legal first name Anastasia with `nickname` Stacey, and our candidate is rostered under the nickname, so no name rule could reach it. Sitting District 12 Representative running for re-election in District 12."
+    },
+    {
+      "people_id": 24247,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 24248,
+      "candidate_id": "b6b9672a-698a-4175-bf06-7b9c3d2c1505",
+      "note": null
+    },
+    {
+      "people_id": 24251,
+      "candidate_id": "2af06c21-9e3c-46b3-b449-57505e721bac",
+      "note": null
+    },
+    {
+      "people_id": 24253,
+      "candidate_id": "2af35279-af64-4f6d-8d2c-61b41543342c",
+      "note": null
+    },
+    {
+      "people_id": 24254,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 24370,
+      "candidate_id": "5472d870-6218-412b-b48b-673f7463175e",
+      "note": null
+    },
+    {
+      "people_id": 24497,
+      "candidate_id": "c5ac5896-b0d9-487f-9248-8c5e7b032085",
+      "note": null
+    },
+    {
+      "people_id": 24498,
+      "candidate_id": "e80953fd-302a-4326-922a-c503dc955f7d",
+      "note": "CORRECTED BY HAND, do not take the proposal here. LegiScan person 24498 is the sitting District 6 Representative: its own `name` field reads Mae Peshlakai, its district is HD-006, and its `first_name` holds the legal name Jamescita with `nickname` Mae. The name matcher therefore proposed a DIFFERENT person in our database \u2014 Jamescita Peshlakai, who holds no legislative seat (current office: Arizona State Transportation Board) and is running for the District 6 SENATE seat. Linking that row would have written this representative's votes onto someone else. The seat disagreement was the only signal."
+    },
+    {
+      "people_id": 24939,
+      "candidate_id": "5b2983d0-8860-4659-ab2d-a89b6b602a9b",
+      "note": "Arizona nests House District N and Senate District N inside the same legislative district, so the seat number agrees while the chamber does not: sitting Representative for District 13 running for the District 13 Senate seat, confirmed against the candidate record's current office."
+    },
+    {
+      "people_id": 24946,
+      "candidate_id": "16a5895e-4af4-479d-87d7-075133a03959",
+      "note": null
+    },
+    {
+      "people_id": 24950,
+      "candidate_id": "366ea5d1-920f-4442-aff6-cd536eeb3c88",
+      "note": null
+    },
+    {
+      "people_id": 25172,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 25195,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 25436,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 25437,
+      "candidate_id": "e8de7760-8deb-4782-9487-eee10c75b2ae",
+      "note": null
+    },
+    {
+      "people_id": 25438,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 25439,
+      "candidate_id": "db382bea-35a2-421d-882b-97c3bab4fde3",
+      "note": null
+    },
+    {
+      "people_id": 25440,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 25441,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 25442,
+      "candidate_id": "b733cd93-4ee6-4dc4-88de-3ff549a7a613",
+      "note": "Matched on a first-name prefix; checked by hand against the seat."
+    },
+    {
+      "people_id": 25443,
+      "candidate_id": "509d3fad-e7ba-46ba-bf17-e53235d9ccd8",
+      "note": null
+    },
+    {
+      "people_id": 25444,
+      "candidate_id": "98feb0e7-6403-4d18-ad1e-4941dad6b856",
+      "note": null
+    },
+    {
+      "people_id": 25445,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 25446,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 25447,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 25448,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 25449,
+      "candidate_id": "5b618bc9-f44d-4465-8c10-84dd680b1bb9",
+      "note": null
+    },
+    {
+      "people_id": 25450,
+      "candidate_id": null,
+      "note": "Reviewed: no Arizona state-legislative candidate on the November 2026 ballot in our database."
+    },
+    {
+      "people_id": 25451,
+      "candidate_id": "e17a28ce-709f-46e7-81b8-9283c3a9a91d",
+      "note": null
+    },
+    {
+      "people_id": 25452,
+      "candidate_id": "69131e88-e86c-4008-a717-3f59b3f9630f",
+      "note": null
+    },
+    {
+      "people_id": 26455,
+      "candidate_id": "be18cae6-5151-46ec-a9e2-d8c52ee1b227",
+      "note": null
+    }
+  ]
+}

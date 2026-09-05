@@ -1,9 +1,10 @@
 # Usage analytics (first-party, privacy-preserving)
 
 Status: PR 1 (collector + search-to-ballot events + report + policy 1.5 +
-opt-out) implemented 2026-09-04 on branch `claude/caveman-ultra-45d7b8`;
-migration 272 applied locally, verified end to end in the browser. PR 2
-(research and pick flows) and PR 3 (follow, chat, share) not started.
+opt-out) MERGED 2026-09-04 (#1115); migration 272 applied locally. PR 2
+(research and pick flows, guest/account events, follow, share, report
+sections 4–5) MERGED 2026-09-05 (#1123). PR 3 (chat, checkout, report
+section 6) implemented 2026-09-05 on branch `claude/usage-analytics-pr3`.
 Production still needs: privacy policy 1.5 live, migration 272 applied,
 `API_DATABASE_URL` confirmed on the API service (the anonymous intake should
 write as `voteapp_api`, not the owner — docs/postgres-api-role.md), then
@@ -192,29 +193,34 @@ page: `summary`, `stance`, `finance`, `track_record`, `pick_card`.
 
 | name | trigger | props |
 |---|---|---|
+| `page_view` (detail pages) | election / candidate route | `arrival` (`list\|roster\|candidate\|draft\|picks\|share\|deep`, from the validated nav state's back destination), `race_type`, `office_level` (`federal\|state\|county\|city\|school\|other`), `upcoming`, `has_summary`, `has_stance_tags`, `has_official_url`, `measure_tbd`, `candidate_count_bucket`, `record_count_bucket`, `has_finance` — all from the route's loader data, in render, so the view event is complete when emitted |
+| `section_exposed` | `useSectionExposure(name, key)` on a heading marker; threshold 0, once per key | `section` (election: `vote_power\|office\|measure_summary\|measure_yes_no\|candidates\|results`; candidate: `summary\|stance\|finance\|track_record`) |
 | `candidate_open` | roster card activated | `position_bucket`, `has_summary`, `has_stances`, `incumbent` |
-| `detail_control` | party filter, roster sort, rail, pager, record view, show-all, finance/record-group toggle | `control`, `value` (bounded enum), `open?` |
-| `official_source_click` | measure official URL, record source, election source | `kind` (`measure_official\|record_source\|election_source`), `gov` (bool), `pdf` (bool) |
-| `pick_attempt` | control activated | `kind` (`candidate\|measure`), `surface` (`election_inline\|candidate_card\|candidate_row\|measure_card\|stranded`), `race_type`, `store` (`account\|draft`), `ms_since_view` |
-| `pick_result` | mutation settled, or draft setter returned | `outcome` (`saved\|draft_memory\|error`), `change` (`added\|changed\|removed`), `error_category?`. Draft writes report `draft_memory`, not "saved": `writeDraft` swallows storage failures. |
-| `autopick_attempt` / `autopick_result` | `AutoPickControl`, `AutoPickFillControl` | `scope` (`election\|date`), `race_type`, `outcome` (`picked\|no_pick\|error`), `reason?`, `prompted_rank_issues` |
+| `detail_control` | party filter, roster sort, rail tab/sort/item, pager prev/next/back, vote-power how, record view, show-all, finance / record-group toggle | `control`, `value` (bounded enum; `open\|close` for toggles, `none` for links) |
+| `official_source_click` | measure official URL, record / result / election source, profile link | `kind` (`measure_official\|record_source\|result_source\|election_source\|profile_link`), `gov` (bool), `pdf` (bool) |
+| `pick_attempt` | control activated | `kind` (`candidate\|measure`), `surface` (`election_inline\|candidate_card\|candidate_row\|measure_card\|stranded`), `store` (`account\|draft`), `change` (`added\|changed\|removed`), `ms_since_view` |
+| `pick_result` | `mutateAsync` settled (account) or draft setter returned | same `kind/surface/store/change` + `outcome` (`saved\|draft_memory\|error`), `error_category?`. Draft writes report `draft_memory`, not "saved": `writeDraft` swallows storage failures. Attributed to the page the pick started on. |
+| `autopick_attempt` / `autopick_result` | `AutoPickControl` (scope `election`), `AutoPickFillControl` (scope `date`) | `scope`, `races_bucket`, `prompted_rank_issues` (attempt); `outcome` (`picked\|no_pick\|mixed\|error`), `reason?` (AutoPickReason), `error_category?` (result) |
 | `address_nudge_click` | `AddressNudge` link | `route` already says where |
 | `post_pick_click` | `PostPickActions` | `target` (`back\|draft`) |
+| `share_open` | `ShareButton` opened (not proof of sharing) | `subject` (`election\|candidate\|picks`) |
 
 ### Guests, accounts, follow, chat (PR 2/3)
 
 | name | trigger | props |
 |---|---|---|
-| `draft_review` | `/draft` or `/me/picks` view with ≥ 1 pick | `pick_count_bucket`, `view` |
-| `signup_prompt` | any register/login prompt shown | `source` (`follow\|pick\|chat\|draft\|picks_wall\|header`) |
-| `auth_attempt` / `auth_result` | login / register / google / logout | `action`, `method` (`password\|google`), `outcome`, `error_category?`, `source?` (from `?next` origin) |
+| `draft_review` | `/draft` or `/me/picks` settled with ≥ 1 pick, once per payload | `pick_count_bucket`, `view` (`list\|ballot`), `store` (`account\|draft`) |
+| `signup_prompt` | register/login prompt shown, and its link clicked | `source` (`follow\|pick\|draft\|milestone\|picks_wall\|chat`), `action` (`shown\|click`) |
+| `auth_result` | login / register / google / logout settled (from inside `mutationFn`) | `action` (`login\|register\|google_login\|google_signup\|logout`), `outcome` (`ok\|error`), `error_category?`, `has_next` |
 | `welcome_result` | `WelcomePage` | `action` (`save\|skip`), `ranked_count_bucket` |
 | `handoff_result` | `SavedBallotPage` districts initialize | `outcome` (`done\|failed\|rejected`) |
 | `draft_complete_notice` | shown / review / dismiss | `action` |
-| `follow_attempt` / `follow_result` | `FollowButton` | `change` (`follow\|unfollow`), `outcome` |
-| `chat_open` / `chat_wall` / `chat_ask` / `chat_result_click` / `chat_feedback` | `ChatWidget` | `entry` (`typed\|starter\|followup`), `context_kind`, `outcome`, `result_count_bucket`, `verdict` |
-| `share_open` | share control opened (not proof of sharing) | `subject` (`election\|candidate\|picks`) |
-| `checkout_start` | support pages (not proof of payment) | `kind` |
+| `follow_result` | `FollowButton` `mutateAsync` settled | `change` (`follow\|unfollow`), `outcome` (`ok\|error`), `error_category?` |
+| `chat_open` | `ChatWidget` launcher clicked | `context_kind` (`candidate\|election\|none`, the remembered page), `wall` (`none\|register\|verify`) — the register wall also fires `signup_prompt` with source `chat` |
+| `chat_ask` | ask settled (from inside `mutationFn`) | `entry` (`typed\|starter\|followup`), `context_kind`, `first_turn`, `outcome` (`ok\|error`), `answer?` (server outcome: `template\|retrieval\|clarify\|refuse_no_data\|refuse_policy\|other`), `result_count_bucket?`, `ai_generated?`, `error_category?` — never the text |
+| `chat_result_click` | a result card clicked | `source` (`candidate\|record\|finance\|election\|measure\|official\|source\|page\|other`), `position_bucket` — never the URL |
+| `chat_feedback` | 👍/👎 settled | `verdict` (`up\|down`), `outcome`, `error_category?` |
+| `checkout_start` | Checkout session requested (`MembershipSection`, support pages; not proof of payment) | `kind` (`monthly\|one_time`), `outcome`, `error_category?` — never the amount |
 
 Interaction events fire from explicit handlers (`onSubmit`, `onChange`,
 existing `onClick`s) calling `track(name, props)`. A delegated
@@ -319,7 +325,9 @@ signed-in returners are separate cohorts, never one mandatory funnel.
    store, office vs measure paths.
 5. Guest retention (PR 2): `draft_review`, `signup_prompt` → `auth_result`,
    `handoff_result`.
-6. Follow and chat (PR 3).
+6. Chat and support (PR 3): `chat_open` by wall, `chat_ask` by entry and
+   answer kind, card clicks by source, feedback verdicts, `checkout_start`
+   by kind and outcome (follow lives in section 5).
 7. What breaks: `error_shown` by route and category; `pick_result(error)`;
    `address_result(error)`.
 
@@ -335,8 +343,10 @@ sections 1–3 and 7.
 PR 2 — research and pick flows: election/candidate page events, section
 exposures, measure specifics, guest/account events, report sections 4–5.
 
-PR 3 — follow, chat, share, plus whatever controls the first reports
-show we still cannot answer.
+PR 3 — chat (`chat_open`, `chat_ask`, `chat_result_click`,
+`chat_feedback`, the register wall as a `signup_prompt`), `checkout_start`,
+report section 6. Anything the first production reports show we still
+cannot answer is a follow-up, not part of this plan.
 
 ## Tests (the boundaries that would corrupt results)
 

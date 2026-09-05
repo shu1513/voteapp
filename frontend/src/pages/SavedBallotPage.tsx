@@ -272,6 +272,7 @@ export function SavedBallotPage() {
           method: "POST",
           body: { district_ids: districtIds },
         });
+        track("handoff_result", { outcome: "done" });
         clearPendingDistrictIds();
         setHandoffState("done");
         void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
@@ -281,10 +282,12 @@ export function SavedBallotPage() {
         void queryClient.invalidateQueries({ queryKey: ["me", "districts"] });
       } catch (error) {
         if (error instanceof ApiError && error.status === 400) {
+          track("handoff_result", { outcome: "rejected" });
           clearPendingDistrictIds();
           setHandoffState("done");
           void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
         } else {
+          track("handoff_result", { outcome: "failed" });
           setHandoffState("failed");
         }
       }

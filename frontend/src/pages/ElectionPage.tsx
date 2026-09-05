@@ -46,6 +46,7 @@ import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { aggregateRecordAreaStances, scoreStanceRelevance } from "@voteapp/api-client";
 import { partyBucket } from "@voteapp/api-client";
+import { positionBucket, sourceLinkProps, track, useSectionExposure } from "../lib/usage";
 
 // "alphabetical" is the payload's own order: the API sorts candidates by
 // display name (there is no true ballot-position data). "my_issues" is the
@@ -180,6 +181,14 @@ export function ElectionPage() {
   });
 
   const data = useLoaderData<typeof loader>();
+  // Usage: which parts of the page reached the viewport, once per election
+  // (this element stays mounted across rail walks, hence the key).
+  const votePowerRef = useSectionExposure("vote_power", data.id);
+  const officeRef = useSectionExposure("office", data.id);
+  const measureSummaryRef = useSectionExposure("measure_summary", data.id);
+  const measureYesNoRef = useSectionExposure("measure_yes_no", data.id);
+  const candidatesRef = useSectionExposure("candidates", data.id);
+  const resultsRef = useSectionExposure("results", data.id);
   const chosenPartyFilter = partyPick.electionId === data.id ? partyPick.bucket : "all";
   // Data-driven visibility: the filter renders only when the roster spans
   // >= 2 buckets — a nonpartisan or one-party roster gets no filter because
@@ -468,14 +477,24 @@ export function ElectionPage() {
               <p className="text-xs font-semibold uppercase tracking-wide text-ink">Elections:</p>
               <div className="flex flex-col gap-2">
                 {railTabsAvailable ? (
-                  <RaceTypeTabs raceType={railTab} onChange={setRailTabState} compact />
+                  <RaceTypeTabs
+                    raceType={railTab}
+                    onChange={(next) => {
+                      track("detail_control", { control: "rail_tab", value: next ?? "all" });
+                      setRailTabState(next);
+                    }}
+                    compact
+                  />
                 ) : null}
                 {offeredRailSorts.length > 0 ? (
                   <label className="flex items-center gap-1.5 text-xs text-ink-soft">
                     Sort
                     <select
                       value={railSort ?? ""}
-                      onChange={(event) => setRailSortState(event.target.value as RailSortKey)}
+                      onChange={(event) => {
+                        track("detail_control", { control: "rail_sort", value: event.target.value });
+                        setRailSortState(event.target.value as RailSortKey);
+                      }}
                       className="min-w-0 flex-1 rounded-md border border-line bg-white px-1.5 py-1 text-xs text-ink focus:border-ink focus:outline-none"
                     >
                       {RAIL_SORTS.filter((option) => offeredRailSorts.includes(option.value)).map(
@@ -538,6 +557,7 @@ export function ElectionPage() {
             divider sits at the same fraction of the width however short the
             verdict is. Only the verdict is bold. */}
         <div
+          ref={votePowerRef}
           className={
             data.vote_power.label !== "unknown"
               ? "mt-3 grid grid-cols-[minmax(9rem,1fr)_2fr] gap-x-6"
@@ -593,7 +613,12 @@ export function ElectionPage() {
           </div>
         ) : null}
         {data.vote_power.label !== "unknown" && data.vote_power.explanation ? (
-          <details className="mt-2 text-sm">
+          <details
+            className="mt-2 text-sm"
+            onToggle={(event) =>
+              track("detail_control", { control: "vote_power_how", value: event.currentTarget.open ? "open" : "close" })
+            }
+          >
             <summary className="cursor-pointer text-xs font-medium text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink">
               How do we calculate my vote power?
             </summary>
@@ -644,7 +669,7 @@ export function ElectionPage() {
           // Description first, then what the election affects — what the office does,
           // then which issues it touches.
           <section className="mt-6 rounded-xl border border-line bg-white p-4">
-            <h2 className="text-heading font-semibold">About this office</h2>
+            <h2 ref={officeRef} className="text-heading font-semibold">About this office</h2>
             {officeSummary ? (
               <>
                 {officeSummary.hook ? <p className="mt-2 text-body text-ink">{officeSummary.hook}</p> : null}
@@ -689,7 +714,7 @@ export function ElectionPage() {
 
         {measure ? (
           <section className="mt-6 rounded-xl border border-line bg-white p-4">
-            <h2 className="text-heading font-semibold text-dem-blue">Ballot Measure</h2>
+            <h2 ref={measureSummaryRef} className="text-heading font-semibold text-dem-blue">Ballot Measure</h2>
             {measure.research_area_tags.length > 0 ? (
               // Comma-separated colored text, not boxed chips (boxes read as
               // buttons). Tags group by stance under a leading verb
@@ -755,6 +780,12 @@ export function ElectionPage() {
                   href={measure.official_measure_url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() =>
+                    track("official_source_click", {
+                      kind: "measure_official",
+                      ...sourceLinkProps(measure.official_measure_url ?? ""),
+                    })
+                  }
                   className="font-medium text-ink underline underline-offset-2 hover:text-ink-soft"
                 >
                   {isGovernmentUrl(measure.official_measure_url)
@@ -763,7 +794,7 @@ export function ElectionPage() {
                 </a>
               </p>
             ) : null}
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            <div ref={measureYesNoRef} className="mt-3 grid gap-3 sm:grid-cols-2">
               <div className="rounded border border-green-200 bg-green-50 p-3">
                 <h3 className="text-subheading font-semibold text-green-900">A YES vote means</h3>
                 <p className="mt-1 text-sm text-green-900">{measure.what_yes_means}</p>
@@ -805,7 +836,11 @@ export function ElectionPage() {
                           <span className="text-ink-soft"> · {formatOutcome(result.result_status)}</span>
                         ) : null}
                       </p>
-                      <SourceLine url={result.source_url} researchedDate={result.retrieved_at.slice(0, 10)} />
+                      <SourceLine
+                        url={result.source_url}
+                        researchedDate={result.retrieved_at.slice(0, 10)}
+                        kind="result_source"
+                      />
                     </li>
                   ))}
                 </ul>
@@ -838,7 +873,7 @@ export function ElectionPage() {
         {data.candidates.length > 0 || (showChoiceControls && hasStrandedPicks) ? (
           <section className="mt-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-heading font-semibold">Candidates</h2>
+              <h2 ref={candidatesRef} className="text-heading font-semibold">Candidates</h2>
               {showChoiceControls && data.seats_to_fill != null && data.seats_to_fill > 1 ? (
                 <span className="text-xs text-ink-soft">
                   This election fills {data.seats_to_fill} seats — pick up to {data.seats_to_fill} candidates.
@@ -849,7 +884,10 @@ export function ElectionPage() {
                   Sort by
                   <select
                     value={candidateSort}
-                    onChange={(event) => setChosenSort(event.target.value as CandidateSort)}
+                    onChange={(event) => {
+                      track("detail_control", { control: "roster_sort", value: event.target.value });
+                      setChosenSort(event.target.value as CandidateSort);
+                    }}
                     className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
                   >
                     <option value="my_issues">My issues first</option>
@@ -885,7 +923,10 @@ export function ElectionPage() {
                   <button
                     key={option.bucket}
                     type="button"
-                    onClick={() => setPartyPick({ electionId: data.id, bucket: option.bucket })}
+                    onClick={() => {
+                      track("detail_control", { control: "party_filter", value: option.bucket });
+                      setPartyPick({ electionId: data.id, bucket: option.bucket });
+                    }}
                     aria-pressed={partyFilter === option.bucket}
                     className={`rounded-full border px-3 py-1 text-sm font-medium transition ${
                       partyFilter === option.bucket
@@ -928,7 +969,7 @@ export function ElectionPage() {
               </div>
             ) : null}
             <div className="mt-3 space-y-3">
-              {orderedCandidates.map(({ candidate, stances }) => (
+              {orderedCandidates.map(({ candidate, stances }, index) => (
                 // Whole-card click target via a stretched link: the name
                 // Link's ::after overlays the wrapper. Campaign finance is
                 // deliberately NOT rendered here — it lives on the candidate
@@ -950,6 +991,14 @@ export function ElectionPage() {
                           <Link
                             to={`/candidates/${candidate.candidate_id}`}
                             state={candidateNavState}
+                            onClick={() =>
+                              track("candidate_open", {
+                                position_bucket: positionBucket(index + 1),
+                                has_summary: Boolean(candidate.summary),
+                                has_stances: stances.length > 0,
+                                incumbent: Boolean(candidate.is_incumbent),
+                              })
+                            }
                             // Brand red at rest, not only on hover — black
                             // names read as plain headings, not links.
                             // rausch-deep, not -dark: AA contrast on the
@@ -996,6 +1045,7 @@ export function ElectionPage() {
                             choice={myChoice}
                             seatsToFill={data.seats_to_fill ?? null}
                             size="sm"
+                            surface="election_inline"
                           />
                         </span>
                       ) : null}
@@ -1099,7 +1149,7 @@ export function ElectionPage() {
 
         {data.results.length > 0 ? (
           <section className="mt-6 rounded-xl border border-line bg-white p-4">
-            <h2 className="text-heading font-semibold">Results</h2>
+            <h2 ref={resultsRef} className="text-heading font-semibold">Results</h2>
             {hasCertifiedRow(data.results) ? null : (
               <p className="mt-1 text-xs text-ink-soft">
                 Unofficial until certified by the relevant election authority.
@@ -1124,7 +1174,11 @@ export function ElectionPage() {
                         .join(", ")}
                     </p>
                   ) : null}
-                  <SourceLine url={result.source_url} researchedDate={result.retrieved_at.slice(0, 10)} />
+                  <SourceLine
+                    url={result.source_url}
+                    researchedDate={result.retrieved_at.slice(0, 10)}
+                    kind="result_source"
+                  />
                 </li>
               ))}
             </ul>

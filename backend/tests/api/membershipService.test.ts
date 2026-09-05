@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   createMembershipService,
@@ -17,9 +17,15 @@ const STRIPE_CUSTOMER_ID = "cus_test1";
 // implementation detail; the statements are not).
 type DbRoute = [substring: string, respond: (params: unknown[]) => { rows?: unknown[]; rowCount?: number }];
 
+// Every status read and subscription poke now also reads the amount-change
+// table (docs/plans/membership-manage-page.md); it is empty for most tests,
+// so that read answers no rows unless a test routes it first (earlier
+// routes win).
+const NO_AMOUNT_CHANGES: DbRoute = ["FROM public.billing_subscription_amount_changes", () => ({ rows: [] })];
+
 function createRoutedDb(routes: DbRoute[]) {
   const query = vi.fn(async (sql: string, params: unknown[] = []) => {
-    for (const [substring, respond] of routes) {
+    for (const [substring, respond] of [...routes, NO_AMOUNT_CHANGES]) {
       if (sql.includes(substring)) {
         const result = respond(params);
         return { rows: result.rows ?? [], rowCount: result.rowCount ?? result.rows?.length ?? 0 };
@@ -46,7 +52,13 @@ function stripeSubscription(overrides: Record<string, unknown> = {}) {
     canceled_at: null,
     start_date: 1_755_000_000,
     items: {
-      data: [{ price: { unit_amount: 700, product: "prod_test" }, current_period_end: 1_757_600_000 }],
+      data: [
+        {
+          id: "si_1",
+          price: { unit_amount: 700, product: "prod_test", currency: "usd", recurring: { interval: "month" } },
+          current_period_end: 1_757_600_000,
+        },
+      ],
     },
     ...overrides,
   };
@@ -179,6 +191,7 @@ describe("membership getMembership", () => {
       cancel_at_period_end: false,
       current_period_end: "2026-09-10T00:00:00.000Z",
       started_at: "2026-08-10T00:00:00.000Z",
+      pending_amount_change: null,
     });
     expect(result.total_net_cents).toBe(900);
     expect(result.payments).toHaveLength(2);
@@ -342,7 +355,7 @@ describe("membership createPortalSession", () => {
     expect(await service.createPortalSession(USER_ID)).toEqual({ url: "https://portal.stripe.test/ps_1" });
     expect(stripe.billingPortal.sessions.create).toHaveBeenCalledWith({
       customer: STRIPE_CUSTOMER_ID,
-      return_url: "https://site.test/me/settings",
+      return_url: "https://site.test/me/membership",
     });
   });
 
@@ -354,7 +367,7 @@ describe("membership createPortalSession", () => {
     await service.createPortalSession(USER_ID, { flow: null });
     expect(stripe.billingPortal.sessions.create).toHaveBeenCalledWith({
       customer: STRIPE_CUSTOMER_ID,
-      return_url: "https://site.test/me/settings",
+      return_url: "https://site.test/me/membership",
     });
   });
 
@@ -715,9 +728,13 @@ describe("membership webhook: subscription sync (poke pattern)", () => {
       new Date(1_757_600_000 * 1000),
       new Date(1_755_000_000 * 1000),
       null,
+      // stripe_synced_at: when this state was known current at Stripe.
+      expect.any(Date),
     ]);
     // Consent pointers survive later pokes.
     expect(String(upsert?.[0])).toContain("COALESCE");
+    // Stale-write guard: an older poke's write never lands over a newer one.
+    expect(String(upsert?.[0])).toContain("stripe_synced_at <= EXCLUDED.stripe_synced_at");
   });
 
   it("records a portal period-end cancel that arrives as cancel_at with cancel_at_period_end false", async () => {
@@ -1145,5 +1162,624 @@ describe("membership cancelSubscriptionsForAccountDeletion", () => {
     } finally {
       errorSpy.mockRestore();
     }
+  });
+});
+
+// Amount changes (docs/plans/membership-manage-page.md, PR 2). The §17602(g)(2)
+// window — apply and notice only 7–30 days before the renewal — is driven by
+// the clock, so these tests pin "now" relative to the fixture's period end.
+const PERIOD_END = new Date(PERIOD_END_EPOCH * 1000);
+const daysBeforePeriodEnd = (days: number) => new Date(PERIOD_END.getTime() - days * 24 * 60 * 60 * 1000);
+const CHANGE_ID = "33333333-3333-4333-8333-333333333333";
+
+const changeRow = (overrides: Record<string, unknown> = {}) => ({
+  id: CHANGE_ID,
+  previous_amount_cents: 700,
+  new_amount_cents: 2000,
+  requested_at: daysBeforePeriodEnd(12),
+  applied_at: null,
+  effective_at: null,
+  notice_sent_at: null,
+  superseded_at: null,
+  ...overrides,
+});
+
+/** Amount-change table routes. `rows` answers every read of the table (the
+ * request's pre-check, apply-if-due, the status): one array repeats; several
+ * are consumed in order and the last repeats, so a test can show the
+ * request its pre-state and then the row it just inserted. Writes are
+ * routed by their SET clause; the supersede UPDATE goes first because its
+ * predicate shares text with the read. */
+const amountRoutes = (rows: unknown[][] = [[]]): DbRoute[] => {
+  const answers = [...rows];
+  return [
+    ["SET superseded_at", () => ({ rowCount: 1 })],
+    ["INSERT INTO public.billing_subscription_amount_changes", () => ({ rowCount: 1 })],
+    ["SET applied_at", () => ({ rowCount: 1 })],
+    ["SET notice_sent_at", () => ({ rowCount: 1 })],
+    ["FROM public.billing_subscription_amount_changes", () => ({ rows: answers.length > 1 ? answers.shift() : answers[0] })],
+  ];
+};
+
+function callsContaining(db: { query: ReturnType<typeof vi.fn> }, substring: string) {
+  return db.query.mock.calls.filter((call) => String(call[0]).includes(substring));
+}
+
+const monthlyUsdItem = (unitAmount: number, periodEndEpoch = PERIOD_END_EPOCH) => ({
+  id: "si_1",
+  price: { unit_amount: unitAmount, product: "prod_test", currency: "usd", recurring: { interval: "month" } },
+  current_period_end: periodEndEpoch,
+});
+
+const swapParams = (unitAmount: number) => ({
+  items: [
+    {
+      id: "si_1",
+      price_data: { currency: "usd", product: "prod_test", unit_amount: unitAmount, recurring: { interval: "month" } },
+    },
+  ],
+  proration_behavior: "none",
+});
+
+const NOTICE = { kind: "amount_notice", email: "user@example.com", newAmountCents: 2000, startsAt: PERIOD_END };
+
+describe("membership changeMonthlyAmount", () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  /** Default: no prior request, then apply-if-due sees the inserted one. */
+  function setup(opts: { rows?: unknown[][]; subscription?: Record<string, unknown> } = {}) {
+    const db = createRoutedDb([...amountRoutes(opts.rows ?? [[], [changeRow()]]), ...manageRoutes()]);
+    const stripe = createStripeMock();
+    stripe.subscriptions.retrieve.mockResolvedValue(stripeSubscription(opts.subscription));
+    stripe.subscriptions.update.mockResolvedValue(stripeSubscription({ items: { data: [monthlyUsdItem(2000)] } }));
+    const sendMembershipChangedEmail = vi.fn(async () => {});
+    const service = createService({ db, stripe, sendMembershipChangedEmail });
+    return { db, stripe, sendMembershipChangedEmail, service };
+  }
+
+  it("rejects amounts outside the checkout bounds before touching Stripe", async () => {
+    const { stripe, service } = setup();
+    for (const amount_cents of [499, 100_001, 10.5]) {
+      await expect(service.changeMonthlyAmount(USER_ID, { amount_cents })).rejects.toThrow(TypeError);
+    }
+    expect(stripe.subscriptions.retrieve).not.toHaveBeenCalled();
+  });
+
+  it("inside the notice window: records the request, sends the notice FIRST, then swaps the price with no proration", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(10));
+    const { db, stripe, sendMembershipChangedEmail, service } = setup();
+
+    await service.changeMonthlyAmount(USER_ID, { amount_cents: 2000 });
+
+    const insert = callsContaining(db, "INSERT INTO public.billing_subscription_amount_changes")[0];
+    expect(insert?.[1]).toEqual(["sub_1", 700, 2000]);
+    // One pending request per subscription: a concurrent duplicate is dropped.
+    expect(String(insert?.[0])).toContain("ON CONFLICT (stripe_subscription_id) WHERE applied_at IS NULL AND superseded_at IS NULL DO NOTHING");
+    expect(sendMembershipChangedEmail).toHaveBeenCalledWith(NOTICE);
+    // The notice names the renewal it precedes.
+    expect(callsContaining(db, "SET notice_sent_at")[0]?.[1]).toEqual([CHANGE_ID, PERIOD_END]);
+    expect(stripe.subscriptions.update).toHaveBeenCalledWith("sub_1", swapParams(2000));
+    // Order: the notice went out before the swap.
+    const noticeOrder = sendMembershipChangedEmail.mock.invocationCallOrder[0];
+    const swapOrder = stripe.subscriptions.update.mock.invocationCallOrder[0];
+    expect(noticeOrder).toBeLessThan(swapOrder as number);
+    const applied = callsContaining(db, "SET applied_at")[0];
+    expect(applied?.[1]).toEqual([CHANGE_ID]);
+    // A request replaced mid-flight is never stamped applied.
+    expect(String(applied?.[0])).toContain("AND superseded_at IS NULL");
+    // The row catches up with Stripe's new price after the swap.
+    expect(upsertParams(db)).toBeDefined();
+  });
+
+  it.each([
+    ["fewer than 7 days before the renewal", 3],
+    ["more than 30 days before the renewal", 40],
+  ])("%s: records the request and leaves notice and swap to a later poke", async (_name, days) => {
+    vi.setSystemTime(daysBeforePeriodEnd(days));
+    const { db, stripe, sendMembershipChangedEmail, service } = setup();
+
+    await service.changeMonthlyAmount(USER_ID, { amount_cents: 2000 });
+
+    expect(callsContaining(db, "INSERT INTO public.billing_subscription_amount_changes")).toHaveLength(1);
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+    expect(sendMembershipChangedEmail).not.toHaveBeenCalled();
+    expect(callsContaining(db, "SET applied_at")).toHaveLength(0);
+  });
+
+  it("re-saving the current amount withdraws a pending request and touches nothing else", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(10));
+    const { db, stripe, service } = setup({ rows: [[changeRow()], []] });
+
+    await service.changeMonthlyAmount(USER_ID, { amount_cents: 700 });
+
+    const supersede = callsContaining(db, "SET superseded_at");
+    expect(supersede).toHaveLength(1);
+    expect(String(supersede[0]?.[0])).toContain("AND applied_at IS NULL");
+    expect(String(supersede[0]?.[0])).not.toContain("effective_at");
+    expect(callsContaining(db, "INSERT INTO public.billing_subscription_amount_changes")).toHaveLength(0);
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+  });
+
+  it("re-saving the current amount with nothing pending is a no-op (lost-response retry)", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(10));
+    const { db, stripe, service } = setup({ rows: [[]] });
+
+    await expect(service.changeMonthlyAmount(USER_ID, { amount_cents: 700 })).resolves.toMatchObject({ enabled: true });
+    expect(callsContaining(db, "SET superseded_at")).toHaveLength(0);
+    expect(callsContaining(db, "INSERT INTO public.billing_subscription_amount_changes")).toHaveLength(0);
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+  });
+
+  it("a newer request replaces a pending one", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(40));
+    const { db, service } = setup({ rows: [[changeRow()], [changeRow({ new_amount_cents: 3000 })]] });
+
+    await service.changeMonthlyAmount(USER_ID, { amount_cents: 3000 });
+
+    const supersede = callsContaining(db, "SET superseded_at");
+    expect(supersede).toHaveLength(1);
+    expect(String(supersede[0]?.[0])).toContain("effective_at > now()");
+    expect(callsContaining(db, "INSERT INTO public.billing_subscription_amount_changes")[0]?.[1]).toEqual(["sub_1", 700, 3000]);
+  });
+
+  it("an applied change can be replaced while the window is still open (new notice, new swap)", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(10));
+    const applied = changeRow({ applied_at: daysBeforePeriodEnd(12), effective_at: PERIOD_END, notice_sent_at: daysBeforePeriodEnd(12) });
+    const replacement = changeRow({ id: "44444444-4444-4444-8444-444444444444", previous_amount_cents: 2000, new_amount_cents: 3000 });
+    // Stripe already carries the applied $20 price.
+    const { db, stripe, sendMembershipChangedEmail, service } = setup({
+      rows: [[applied], [replacement]],
+      subscription: { items: { data: [monthlyUsdItem(2000)] } },
+    });
+
+    await service.changeMonthlyAmount(USER_ID, { amount_cents: 3000 });
+
+    expect(callsContaining(db, "SET superseded_at")).toHaveLength(1);
+    expect(callsContaining(db, "INSERT INTO public.billing_subscription_amount_changes")[0]?.[1]).toEqual(["sub_1", 2000, 3000]);
+    expect(sendMembershipChangedEmail).toHaveBeenCalledWith({ ...NOTICE, newAmountCents: 3000 });
+    expect(stripe.subscriptions.update).toHaveBeenCalledWith("sub_1", swapParams(3000));
+  });
+
+  it("refuses to replace an applied change once fewer than 7 days remain (no time to notice again)", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(3));
+    const applied = changeRow({ applied_at: daysBeforePeriodEnd(12), effective_at: PERIOD_END, notice_sent_at: daysBeforePeriodEnd(12) });
+    const { db, stripe, service } = setup({ rows: [[applied]], subscription: { items: { data: [monthlyUsdItem(2000)] } } });
+
+    await expect(service.changeMonthlyAmount(USER_ID, { amount_cents: 3000 })).rejects.toMatchObject({
+      code: "membership_pending",
+      message: expect.stringContaining("$20.00 is already set for your next renewal"),
+    });
+    expect(callsContaining(db, "SET superseded_at")).toHaveLength(0);
+    expect(callsContaining(db, "INSERT INTO public.billing_subscription_amount_changes")).toHaveLength(0);
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["incomplete", { status: "incomplete" }, "still being confirmed"],
+    ["unpaid", { status: "unpaid" }, "didn't go through"],
+    ["scheduled to cancel", { cancel_at: PERIOD_END_EPOCH }, "Keep membership first"],
+  ])("refuses a %s subscription without recording anything", async (_name, overrides, message) => {
+    vi.setSystemTime(daysBeforePeriodEnd(10));
+    const { db, stripe, service } = setup({ subscription: overrides });
+
+    await expect(service.changeMonthlyAmount(USER_ID, { amount_cents: 2000 })).rejects.toMatchObject({
+      code: "membership_pending",
+      message: expect.stringContaining(message),
+    });
+    expect(callsContaining(db, "INSERT INTO public.billing_subscription_amount_changes")).toHaveLength(0);
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+  });
+
+  it("refuses to re-price anything but a single monthly USD item", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(10));
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const usd = monthlyUsdItem(700);
+      for (const items of [
+        { data: [{ ...usd, price: { ...usd.price, currency: "eur" } }] },
+        { data: [{ ...usd, price: { ...usd.price, recurring: { interval: "year" } } }] },
+        { data: [usd, { ...usd, id: "si_2" }] },
+      ]) {
+        const { stripe, service } = setup({ subscription: { items } });
+        await expect(service.changeMonthlyAmount(USER_ID, { amount_cents: 2000 })).rejects.toMatchObject({ code: "membership_conflict" });
+        expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+      }
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("a failed notice does not fail the request, and nothing changes at Stripe: the request stays pending", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(10));
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const { db, stripe, sendMembershipChangedEmail, service } = setup();
+      sendMembershipChangedEmail.mockRejectedValue(new Error("SES down"));
+
+      await expect(service.changeMonthlyAmount(USER_ID, { amount_cents: 2000 })).resolves.toMatchObject({ enabled: true });
+      expect(callsContaining(db, "INSERT INTO public.billing_subscription_amount_changes")).toHaveLength(1);
+      expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+      expect(callsContaining(db, "SET notice_sent_at")).toHaveLength(0);
+      expect(callsContaining(db, "SET applied_at")).toHaveLength(0);
+      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("stays pending"));
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it("throws no_membership without a live subscription", async () => {
+    const service = createService({ db: createRoutedDb(manageRoutes({ noLive: true })), stripe: createStripeMock() });
+    await expect(service.changeMonthlyAmount(USER_ID, { amount_cents: 2000 })).rejects.toMatchObject({ code: "no_membership" });
+  });
+});
+
+describe("membership webhook: amount change apply-if-due", () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  const pokeRoutes = (rows: unknown[][]): DbRoute[] => [
+    ...amountRoutes(rows),
+    ["WHERE stripe_customer_id", () => ({ rows: [customerRow()] })],
+    ["SELECT stripe_subscription_id", () => ({ rows: [] })],
+    ["INSERT INTO public.billing_subscriptions", () => ({ rows: [{ acknowledgment_sent_at: new Date() }] })],
+    ["SELECT email", () => ({ rows: [{ email: "user@example.com" }] })],
+  ];
+
+  const upcomingInvoice = (subscription: string | null) =>
+    webhookEvent("invoice.upcoming", {
+      object: "invoice",
+      parent: subscription ? { type: "subscription_details", subscription_details: { subscription } } : null,
+    });
+
+  function setup(event: unknown, opts: { rows?: unknown[][]; subscription?: Record<string, unknown>; sender?: null } = {}) {
+    const db = createRoutedDb(pokeRoutes(opts.rows ?? [[changeRow()]]));
+    const stripe = stripeDelivering(event);
+    stripe.subscriptions.retrieve.mockResolvedValue(stripeSubscription(opts.subscription));
+    const sendMembershipChangedEmail = vi.fn(async () => {});
+    const service = createService({ db, stripe, sendMembershipChangedEmail: opts.sender === null ? null : sendMembershipChangedEmail });
+    return { db, stripe, sendMembershipChangedEmail, service };
+  }
+
+  it("invoice.upcoming (14 days out) applies the pending change: notice, then swap, both stamped", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(14));
+    const { db, stripe, sendMembershipChangedEmail, service } = setup(upcomingInvoice("sub_1"));
+
+    expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+
+    expect(stripe.subscriptions.retrieve).toHaveBeenCalledWith("sub_1");
+    expect(sendMembershipChangedEmail).toHaveBeenCalledWith(NOTICE);
+    expect(callsContaining(db, "SET notice_sent_at")[0]?.[1]).toEqual([CHANGE_ID, PERIOD_END]);
+    expect(stripe.subscriptions.update).toHaveBeenCalledWith("sub_1", swapParams(2000));
+    expect(callsContaining(db, "SET applied_at")[0]?.[1]).toEqual([CHANGE_ID]);
+  });
+
+  it("invoice.upcoming without a subscription is ignored", async () => {
+    const { stripe, service } = setup(upcomingInvoice(null));
+    expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+    expect(stripe.subscriptions.retrieve).not.toHaveBeenCalled();
+  });
+
+  it("a subscription poke outside the window leaves the change pending", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(3));
+    const { db, stripe, sendMembershipChangedEmail, service } = setup(webhookEvent("customer.subscription.updated", stripeSubscription()));
+
+    expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+    expect(sendMembershipChangedEmail).not.toHaveBeenCalled();
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+    expect(callsContaining(db, "SET applied_at")).toHaveLength(0);
+  });
+
+  it("the post-renewal poke applies a change that missed the previous window", async () => {
+    // Renewed: the period end moved a month on, and "now" is right after it.
+    const NEXT_PERIOD_END_EPOCH = PERIOD_END_EPOCH + 30 * 24 * 60 * 60;
+    vi.setSystemTime(new Date(PERIOD_END_EPOCH * 1000 + 60_000));
+    const renewed = { items: { data: [monthlyUsdItem(700, NEXT_PERIOD_END_EPOCH)] } };
+    const { db, stripe, sendMembershipChangedEmail, service } = setup(
+      webhookEvent("customer.subscription.updated", stripeSubscription(renewed)),
+      { subscription: renewed }
+    );
+    stripe.subscriptions.update.mockResolvedValue(stripeSubscription(renewed));
+
+    expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+    expect(sendMembershipChangedEmail).toHaveBeenCalledWith({ ...NOTICE, startsAt: new Date(NEXT_PERIOD_END_EPOCH * 1000) });
+    expect(stripe.subscriptions.update).toHaveBeenCalledWith("sub_1", swapParams(2000));
+  });
+
+  it("a noticed change whose swap failed earlier is swapped without a second notice", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(10));
+    const noticed = changeRow({ notice_sent_at: daysBeforePeriodEnd(11), effective_at: PERIOD_END });
+    const { db, stripe, sendMembershipChangedEmail, service } = setup(
+      webhookEvent("customer.subscription.updated", stripeSubscription()),
+      { rows: [[noticed]] }
+    );
+
+    expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+    expect(sendMembershipChangedEmail).not.toHaveBeenCalled();
+    expect(callsContaining(db, "SET notice_sent_at")).toHaveLength(0);
+    expect(stripe.subscriptions.update).toHaveBeenCalledWith("sub_1", swapParams(2000));
+    expect(callsContaining(db, "SET applied_at")).toHaveLength(1);
+  });
+
+  it("a notice sent for a renewal that has since passed is stale: re-sent for the new date before the swap", async () => {
+    const NEXT_PERIOD_END_EPOCH = PERIOD_END_EPOCH + 30 * 24 * 60 * 60;
+    vi.setSystemTime(new Date(NEXT_PERIOD_END_EPOCH * 1000 - 14 * 24 * 60 * 60 * 1000));
+    const renewed = { items: { data: [monthlyUsdItem(700, NEXT_PERIOD_END_EPOCH)] } };
+    const staleNotice = changeRow({ notice_sent_at: daysBeforePeriodEnd(10), effective_at: PERIOD_END });
+    const { db, stripe, sendMembershipChangedEmail, service } = setup(upcomingInvoice("sub_1"), {
+      rows: [[staleNotice]],
+      subscription: renewed,
+    });
+    stripe.subscriptions.update.mockResolvedValue(stripeSubscription(renewed));
+
+    expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+    expect(sendMembershipChangedEmail).toHaveBeenCalledWith({ ...NOTICE, startsAt: new Date(NEXT_PERIOD_END_EPOCH * 1000) });
+    expect(callsContaining(db, "SET notice_sent_at")[0]?.[1]).toEqual([CHANGE_ID, new Date(NEXT_PERIOD_END_EPOCH * 1000)]);
+    expect(stripe.subscriptions.update).toHaveBeenCalledWith("sub_1", swapParams(2000));
+  });
+
+  it("a failed notice 5xxes the webhook (Stripe redelivers) and leaves the Stripe price alone", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(14));
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const { db, stripe, sendMembershipChangedEmail, service } = setup(upcomingInvoice("sub_1"));
+      sendMembershipChangedEmail.mockRejectedValue(new Error("SES down"));
+
+      await expect(service.handleWebhookEvent(WEBHOOK_INPUT)).rejects.toThrow(MembershipWebhookRetryError);
+      expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+      expect(callsContaining(db, "SET notice_sent_at")).toHaveLength(0);
+      expect(callsContaining(db, "SET applied_at")).toHaveLength(0);
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it("no notice sender means no swap: the change stays pending", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(14));
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const { db, stripe, service } = setup(upcomingInvoice("sub_1"), { sender: null });
+
+      expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+      expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+      expect(callsContaining(db, "SET applied_at")).toHaveLength(0);
+      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("stays pending unnoticed"));
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it("an applied change whose price Stripe no longer carries (an older swap landed late) is restored, no new notice", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(9));
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const applied = changeRow({ applied_at: daysBeforePeriodEnd(10), effective_at: PERIOD_END, notice_sent_at: daysBeforePeriodEnd(10) });
+      // Stripe reads the OLDER request's $15, not the noticed $20.
+      const drifted = { items: { data: [monthlyUsdItem(1500)] } };
+      const { db, stripe, sendMembershipChangedEmail, service } = setup(
+        webhookEvent("customer.subscription.updated", stripeSubscription(drifted)),
+        { rows: [[applied]], subscription: drifted }
+      );
+
+      expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+      expect(stripe.subscriptions.update).toHaveBeenCalledWith("sub_1", swapParams(2000));
+      expect(sendMembershipChangedEmail).not.toHaveBeenCalled();
+      expect(callsContaining(db, "SET applied_at")).toHaveLength(0);
+      expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining("restoring"));
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("an applied change Stripe already carries needs nothing", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(9));
+    const applied = changeRow({ applied_at: daysBeforePeriodEnd(10), effective_at: PERIOD_END, notice_sent_at: daysBeforePeriodEnd(10) });
+    const current = { items: { data: [monthlyUsdItem(2000)] } };
+    const { stripe, sendMembershipChangedEmail, service } = setup(
+      webhookEvent("customer.subscription.updated", stripeSubscription(current)),
+      { rows: [[applied]], subscription: current }
+    );
+
+    expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+    expect(sendMembershipChangedEmail).not.toHaveBeenCalled();
+  });
+
+  it("a scheduled cancel parks the change (no notice, no swap) until the member resumes", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(14));
+    const { db, stripe, sendMembershipChangedEmail, service } = setup(upcomingInvoice("sub_1"), {
+      subscription: { cancel_at: PERIOD_END_EPOCH },
+    });
+
+    expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+    expect(sendMembershipChangedEmail).not.toHaveBeenCalled();
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+    expect(callsContaining(db, "SET superseded_at")).toHaveLength(0);
+  });
+
+  it("a terminal subscription supersedes the change instead of applying it", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(14));
+    const canceled = { status: "canceled", canceled_at: 1_755_900_000 };
+    const { db, stripe, service } = setup(webhookEvent("customer.subscription.deleted", stripeSubscription(canceled)), {
+      subscription: canceled,
+    });
+
+    expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+    expect(callsContaining(db, "SET superseded_at")[0]?.[1]).toEqual([CHANGE_ID]);
+  });
+
+  it("resume brings a parked change back into play", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(10));
+    const db = createRoutedDb([...amountRoutes([[changeRow()]]), ...manageRoutes()]);
+    const stripe = createStripeMock();
+    stripe.subscriptions.retrieve.mockResolvedValue(stripeSubscription({ cancel_at: PERIOD_END_EPOCH }));
+    // First update clears the cancel; the second is the price swap.
+    stripe.subscriptions.update.mockResolvedValue(stripeSubscription());
+    const sendMembershipChangedEmail = vi.fn(async () => {});
+    const service = createService({ db, stripe, sendMembershipChangedEmail });
+
+    await service.resumeMembership(USER_ID);
+    expect(sendMembershipChangedEmail).toHaveBeenCalledWith(NOTICE);
+    expect(stripe.subscriptions.update.mock.calls).toEqual([
+      ["sub_1", { cancel_at: "" }],
+      ["sub_1", swapParams(2000)],
+    ]);
+  });
+});
+
+describe("membership getMembership: pending amount change", () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  function statusWith(
+    changes: unknown[],
+    opts: { rowAmountCents?: number; periodEnd?: Date | null; startedAt?: Date } = {}
+  ) {
+    const db = createRoutedDb([
+      ["FROM public.billing_customers", () => ({ rows: [customerRow()] })],
+      ["FROM public.billing_subscription_amount_changes", () => ({ rows: changes })],
+      [
+        "FROM public.billing_subscriptions",
+        () => ({
+          rows: [
+            {
+              stripe_subscription_id: "sub_1",
+              stripe_status: "active",
+              monthly_amount_cents: opts.rowAmountCents ?? 700,
+              cancel_at_period_end: false,
+              current_period_end: opts.periodEnd === undefined ? PERIOD_END : opts.periodEnd,
+              started_at: opts.startedAt ?? new Date("2026-08-10T00:00:00Z"),
+            },
+          ],
+        }),
+      ],
+      ["SUM(amount_cents - refunded_amount_cents)", () => ({ rows: [{ total_net_cents: 0 }] })],
+      ["FROM public.billing_payments", () => ({ rows: [] })],
+    ]);
+    return createService({ db, stripe: createStripeMock() }).getMembership(USER_ID);
+  }
+
+  it("reports no pending change for a plain subscription", async () => {
+    const result = await statusWith([]);
+    expect(result.membership).toMatchObject({ monthly_amount_cents: 700, pending_amount_change: null });
+  });
+
+  it("projects an unapplied request onto this period's end while 7 days remain", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(12));
+    const result = await statusWith([changeRow()]);
+    expect(result.membership?.pending_amount_change).toEqual({
+      new_amount_cents: 2000,
+      starts_at: PERIOD_END.toISOString(),
+      applied: false,
+    });
+    expect(result.membership?.monthly_amount_cents).toBe(700);
+  });
+
+  it("projects an unapplied request onto the renewal after next once fewer than 7 days remain", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(3));
+    // Started on the 11th → renews on the 11th; 2025-09-11T14:13:20Z + one month.
+    const result = await statusWith([changeRow()], { startedAt: new Date("2025-08-11T14:13:20Z") });
+    expect(result.membership?.pending_amount_change?.starts_at).toBe("2025-10-11T14:13:20.000Z");
+  });
+
+  it("keeps the subscription's anchor day across a short month, like Stripe (31st → Feb 28 → Mar 31)", async () => {
+    const feb28 = new Date("2026-02-28T12:00:00Z");
+    vi.setSystemTime(new Date(feb28.getTime() - 3 * 24 * 60 * 60 * 1000));
+    const result = await statusWith([changeRow()], { periodEnd: feb28, startedAt: new Date("2026-01-31T12:00:00Z") });
+    expect(result.membership?.pending_amount_change?.starts_at).toBe("2026-03-31T12:00:00.000Z");
+  });
+
+  it("clamps the anchor day to the shorter month (31st → Apr 30)", async () => {
+    const mar31 = new Date("2026-03-31T12:00:00Z");
+    vi.setSystemTime(new Date(mar31.getTime() - 3 * 24 * 60 * 60 * 1000));
+    const result = await statusWith([changeRow()], { periodEnd: mar31, startedAt: new Date("2026-01-31T12:00:00Z") });
+    expect(result.membership?.pending_amount_change?.starts_at).toBe("2026-04-30T12:00:00.000Z");
+  });
+
+  it("omits the date rather than inventing one when the period end is unknown", async () => {
+    const result = await statusWith([changeRow()], { periodEnd: null });
+    expect(result.membership?.pending_amount_change).toEqual({ new_amount_cents: 2000, starts_at: null, applied: false });
+  });
+
+  it("an applied change reports the firm date and keeps this period's amount as the monthly amount", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(5));
+    const applied = changeRow({ applied_at: daysBeforePeriodEnd(12), effective_at: PERIOD_END, notice_sent_at: daysBeforePeriodEnd(12) });
+    // Stripe (and the row) already carry the new price.
+    const result = await statusWith([applied], { rowAmountCents: 2000 });
+    expect(result.membership).toMatchObject({
+      monthly_amount_cents: 700,
+      pending_amount_change: { new_amount_cents: 2000, starts_at: PERIOD_END.toISOString(), applied: true },
+    });
+  });
+
+  it("a change back to this period's amount (revert inside the window) reports nothing pending", async () => {
+    vi.setSystemTime(daysBeforePeriodEnd(5));
+    const first = changeRow({
+      applied_at: daysBeforePeriodEnd(12),
+      effective_at: PERIOD_END,
+      notice_sent_at: daysBeforePeriodEnd(12),
+      superseded_at: daysBeforePeriodEnd(8),
+    });
+    const revert = changeRow({
+      id: "44444444-4444-4444-8444-444444444444",
+      previous_amount_cents: 2000,
+      new_amount_cents: 700,
+      requested_at: daysBeforePeriodEnd(8),
+      applied_at: daysBeforePeriodEnd(8),
+      effective_at: PERIOD_END,
+      notice_sent_at: daysBeforePeriodEnd(8),
+    });
+    const result = await statusWith([first, revert], { rowAmountCents: 700 });
+    expect(result.membership).toMatchObject({ monthly_amount_cents: 700, pending_amount_change: null });
+  });
+});
+
+describe("membership stale-write guard", () => {
+  it("a write the row refused as stale sends no acknowledgment", async () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    try {
+      const db = createRoutedDb([
+        ["WHERE stripe_customer_id", () => ({ rows: [customerRow()] })],
+        ["SELECT stripe_subscription_id", () => ({ rows: [] })],
+        // The guard's WHERE rejected the write: no RETURNING row.
+        ["INSERT INTO public.billing_subscriptions", () => ({ rows: [] })],
+      ]);
+      const stripe = stripeDelivering(webhookEvent("customer.subscription.updated", stripeSubscription()));
+      const sender = vi.fn(async () => {});
+      const service = createService({ db, stripe, sendMembershipStartedEmail: sender });
+
+      expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+      expect(sender).not.toHaveBeenCalled();
+      expect(logSpy).toHaveBeenCalledWith(expect.stringContaining("skipped a stale write"));
+    } finally {
+      logSpy.mockRestore();
+    }
+  });
+
+  it("a mutation's write carries an instant no earlier than the retrieve before it", async () => {
+    const db = createRoutedDb(manageRoutes());
+    const stripe = createStripeMock();
+    stripe.subscriptions.update.mockResolvedValue(stripeSubscription({ cancel_at: PERIOD_END_EPOCH }));
+    const service = createService({ db, stripe });
+    const before = new Date();
+
+    await service.cancelMembership(USER_ID);
+
+    const syncedAt = upsertParams(db)?.[9] as Date;
+    expect(syncedAt).toBeInstanceOf(Date);
+    expect(syncedAt.getTime()).toBeGreaterThanOrEqual(before.getTime());
   });
 });

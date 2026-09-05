@@ -1,0 +1,229 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1565904,
+   "measure_id": "SB 48",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 48. The act makes large employer health plans cover treatment for obesity and for pre-diabetes. That covers a diabetes prevention program, nutrition therapy, and weight loss surgery. It also covers intensive coaching to change diet and daily habits. Plans must also offer employers the chance to buy coverage for weight loss drugs. That must include at least one GLP-1 drug. A carrier need not offer coverage whose premiums would not cover the expected benefits. The state's low-cost children's health plan is left out of the new rule. It applies to plans issued or renewed from January 1, 2027. The Colorado House passed it 41-24 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 48. The act makes large employer health plans cover treatment for obesity and for pre-diabetes. That covers a diabetes prevention program, nutrition therapy, and weight loss surgery. It also covers intensive coaching to change diet and daily habits. Plans must also offer employers the chance to buy coverage for weight loss drugs. That must include at least one GLP-1 drug. A carrier need not offer coverage whose premiums would not cover the expected benefits. The state's low-cost children's health plan is left out of the new rule. It applies to plans issued or renewed from January 1, 2027. The Colorado House passed it 41-24 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1565907,
+   "measure_id": "SB 48",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 48 and pass it. The act makes large employer health plans cover treatment for obesity and for pre-diabetes. That covers a diabetes prevention program, nutrition therapy, and weight loss surgery. It also covers intensive coaching to change diet and daily habits. Plans must also offer employers the chance to buy coverage for weight loss drugs. That must include at least one GLP-1 drug. A carrier need not offer coverage whose premiums would not cover the expected benefits. The state's low-cost children's health plan is left out of the new rule. It applies to plans issued or renewed from January 1, 2027. The Colorado Senate voted 25-10 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 48. The act makes large employer health plans cover treatment for obesity and for pre-diabetes. That covers a diabetes prevention program, nutrition therapy, and weight loss surgery. It also covers intensive coaching to change diet and daily habits. Plans must also offer employers the chance to buy coverage for weight loss drugs. That must include at least one GLP-1 drug. A carrier need not offer coverage whose premiums would not cover the expected benefits. The state's low-cost children's health plan is left out of the new rule. It applies to plans issued or renewed from January 1, 2027. The Colorado Senate voted 25-10 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1565905,
+    1565906
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1558842,
+   "measure_id": "SB 118",
+   "vote_date": "2025-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 118. The act makes health plans that cover maternity care pay in full for up to three prenatal office visits. The patient owes no copay, deductible or share of the cost for those visits. Standardized Colorado Option plans are left out. It applies to plans issued or renewed from January 1, 2027. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 118. The act makes health plans that cover maternity care pay in full for up to three prenatal office visits. The patient owes no copay, deductible or share of the cost for those visits. Standardized Colorado Option plans are left out. It applies to plans issued or renewed from January 1, 2027. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564550,
+   "measure_id": "SB 118",
+   "vote_date": "2025-05-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 118. The act makes health plans that cover maternity care pay in full for up to three prenatal office visits. The patient owes no copay, deductible or share of the cost for those visits. Standardized Colorado Option plans are left out. It applies to plans issued or renewed from January 1, 2027. The Colorado House passed it 48-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 118. The act makes health plans that cover maternity care pay in full for up to three prenatal office visits. The patient owes no copay, deductible or share of the cost for those visits. Standardized Colorado Option plans are left out. It applies to plans issued or renewed from January 1, 2027. The Colorado House passed it 48-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564754,
+   "measure_id": "SB 130",
+   "vote_date": "2025-05-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 130. The act writes emergency care duties into state law. They track the federal rules hospitals already follow. A place must examine anyone who asks for emergency care, or who plainly looks like they need it. It must then treat the person until they are stable. It cannot hold up care to ask how the patient will pay. Emergency care includes an abortion or a sterilization when that is what makes the patient stable. A facility can move or send home a patient who is not stable only under set conditions. Those are the patient's written request, or a doctor's signed statement that the benefits outweigh the risks. Another hospital must also have agreed to take the patient. A facility cannot punish staff who refuse an unsafe transfer, and it counts as a public place that may not discriminate. The state can investigate a facility, and a doctor who breaks the rules commits unprofessional conduct. The Colorado House passed it 42-21 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 130. The act writes emergency care duties into state law. They track the federal rules hospitals already follow. A place must examine anyone who asks for emergency care, or who plainly looks like they need it. It must then treat the person until they are stable. It cannot hold up care to ask how the patient will pay. Emergency care includes an abortion or a sterilization when that is what makes the patient stable. A facility can move or send home a patient who is not stable only under set conditions. Those are the patient's written request, or a doctor's signed statement that the benefits outweigh the risks. Another hospital must also have agreed to take the patient. A facility cannot punish staff who refuse an unsafe transfer, and it counts as a public place that may not discriminate. The state can investigate a facility, and a doctor who breaks the rules commits unprofessional conduct. The Colorado House passed it 42-21 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1566496,
+   "measure_id": "SB 130",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 130 and pass it. The act writes emergency care duties into state law. They track the federal rules hospitals already follow. A place must examine anyone who asks for emergency care, or who plainly looks like they need it. It must then treat the person until they are stable. It cannot hold up care to ask how the patient will pay. Emergency care includes an abortion or a sterilization when that is what makes the patient stable. A facility can move or send home a patient who is not stable only under set conditions. Those are the patient's written request, or a doctor's signed statement that the benefits outweigh the risks. Another hospital must also have agreed to take the patient. A facility cannot punish staff who refuse an unsafe transfer, and it counts as a public place that may not discriminate. The state can investigate a facility, and a doctor who breaks the rules commits unprofessional conduct. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 130. The act writes emergency care duties into state law. They track the federal rules hospitals already follow. A place must examine anyone who asks for emergency care, or who plainly looks like they need it. It must then treat the person until they are stable. It cannot hold up care to ask how the patient will pay. Emergency care includes an abortion or a sterilization when that is what makes the patient stable. A facility can move or send home a patient who is not stable only under set conditions. Those are the patient's written request, or a doctor's signed statement that the benefits outweigh the risks. Another hospital must also have agreed to take the patient. A facility cannot punish staff who refuse an unsafe transfer, and it counts as a public place that may not discriminate. The state can investigate a facility, and a doctor who breaks the rules commits unprofessional conduct. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1566495
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1539473,
+   "measure_id": "SB 196",
+   "vote_date": "2025-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 196. Colorado already makes health plans cover a list of preventive services free to the patient. That list follows federal expert advice. The act protects that coverage if the federal advice is repealed or changed. The insurance commissioner can then require plans to follow the advice that was in force in January 2025. The commissioner can instead follow a Colorado nurse and doctor task force. That group has to consult the national medical society for the illness at issue. It also has to hear from patients, experts and insurers. Plans tied to a health savings account are exempt where federal law requires it. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 196. Colorado already makes health plans cover a list of preventive services free to the patient. That list follows federal expert advice. The act protects that coverage if the federal advice is repealed or changed. The insurance commissioner can then require plans to follow the advice that was in force in January 2025. The commissioner can instead follow a Colorado nurse and doctor task force. That group has to consult the national medical society for the illness at issue. It also has to hear from patients, experts and insurers. Plans tied to a health savings account are exempt where federal law requires it. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1557969,
+   "measure_id": "SB 196",
+   "vote_date": "2025-04-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 196. Colorado already makes health plans cover a list of preventive services free to the patient. That list follows federal expert advice. The act protects that coverage if the federal advice is repealed or changed. The insurance commissioner can then require plans to follow the advice that was in force in January 2025. The commissioner can instead follow a Colorado nurse and doctor task force. That group has to consult the national medical society for the illness at issue. It also has to hear from patients, experts and insurers. Plans tied to a health savings account are exempt where federal law requires it. The Colorado House passed it 40-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 196. Colorado already makes health plans cover a list of preventive services free to the patient. That list follows federal expert advice. The act protects that coverage if the federal advice is repealed or changed. The insurance commissioner can then require plans to follow the advice that was in force in January 2025. The commissioner can instead follow a Colorado nurse and doctor task force. That group has to consult the national medical society for the illness at issue. It also has to hear from patients, experts and insurers. Plans tied to a health savings account are exempt where federal law requires it. The Colorado House passed it 40-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564672,
+   "measure_id": "SB 289",
+   "vote_date": "2025-05-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 289. The act creates the Colorado Drug Donation Program so unused medicine can reach people who need it. Pharmacies, clinics, care homes, jails, prisons, wholesalers and government agencies can donate. Hospitals, pharmacies, clinics and prescribers can take the medicine in and hand it out. People who are poor, uninsured or underinsured come first. Controlled substances, compounded drugs and medicine dispensed outside the country are left out. Donors and recipients have to keep records, check the medicine is safe and in date, and destroy what does not qualify. People acting in good faith are protected from lawsuits and from discipline. The Colorado House passed it 48-15 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 289. The act creates the Colorado Drug Donation Program so unused medicine can reach people who need it. Pharmacies, clinics, care homes, jails, prisons, wholesalers and government agencies can donate. Hospitals, pharmacies, clinics and prescribers can take the medicine in and hand it out. People who are poor, uninsured or underinsured come first. Controlled substances, compounded drugs and medicine dispensed outside the country are left out. Donors and recipients have to keep records, check the medicine is safe and in date, and destroy what does not qualify. People acting in good faith are protected from lawsuits and from discipline. The Colorado House passed it 48-15 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1567155,
+   "measure_id": "HB 1094",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1094 and pass it. The act changes how pharmacy benefit managers get paid. These middlemen run drug benefits for health plans. They may earn only a flat fee for each prescription, written into their agreement with the plan. They cannot earn money tied to a drug's price, such as mark-ups, spread pricing, or money from drug makers. They cannot build a drug list that favors a brand over an equal generic unless it costs less and the patient pays less. They have to pay pharmacies at least the national average cost of the drug plus a fair dispensing fee. Plans must be able to see claim-level cost data and to audit the manager each year. The rules start on January 1, 2027. The Colorado House voted 49-16 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1094. The act changes how pharmacy benefit managers get paid. These middlemen run drug benefits for health plans. They may earn only a flat fee for each prescription, written into their agreement with the plan. They cannot earn money tied to a drug's price, such as mark-ups, spread pricing, or money from drug makers. They cannot build a drug list that favors a brand over an equal generic unless it costs less and the patient pays less. They have to pay pharmacies at least the national average cost of the drug plus a fair dispensing fee. Plans must be able to see claim-level cost data and to audit the manager each year. The rules start on January 1, 2027. The Colorado House voted 49-16 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1567154
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1552701,
+   "measure_id": "SB 83",
+   "vote_date": "2025-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 83 and pass it. Colorado already voids most non-compete agreements, but not for highly paid workers. The act removes that exception for doctors, advanced practice nurses, certified midwives and dentists. However much they earn, a non-compete or a no-soliciting clause cannot restrict their practice. A clause also counts as restricting practice if it stops a provider telling patients three things. Those are that the provider is still working, how to reach them, and that the patient can pick their own provider. Agreements tied to selling a business are still allowed. For a minority owner who got shares as pay, the act caps how long such an agreement can bind them. The attorney general can enforce these rules. The Colorado Senate voted 28-7 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 83. Colorado already voids most non-compete agreements, but not for highly paid workers. The act removes that exception for doctors, advanced practice nurses, certified midwives and dentists. However much they earn, a non-compete or a no-soliciting clause cannot restrict their practice. A clause also counts as restricting practice if it stops a provider telling patients three things. Those are that the provider is still working, how to reach them, and that the patient can pick their own provider. Agreements tied to selling a business are still allowed. For a minority owner who got shares as pay, the act caps how long such an agreement can bind them. The attorney general can enforce these rules. The Colorado Senate voted 28-7 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1552700
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  }
+ ]
+}

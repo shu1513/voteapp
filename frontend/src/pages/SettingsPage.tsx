@@ -5,7 +5,6 @@ import { apiRequest } from "@voteapp/api-client";
 import type { MembershipStatus } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { EmailPreferenceToggles } from "../components/EmailPreferenceToggles";
-import { MembershipSection } from "../components/MembershipSection";
 import { ResearchAreasSection } from "../components/ResearchAreasSection";
 import { SavedAddressForm } from "../components/SavedAddressForm";
 import { purgeAccountScopedQueries, useMe, type Me } from "@voteapp/api-client";
@@ -31,11 +30,13 @@ const inputClass =
 const buttonClass =
   "rounded-lg bg-rausch px-4 py-2 text-sm font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:bg-line";
 
-/** One quiet line under the email: membership state + where to act on it.
- * Rides the same query key as MembershipSection further down the page (one
- * request, two observers). Renders nothing while loading, on error, when
- * Stripe is unconfigured, or before the email is verified — the membership
- * endpoint is verified-only, so the query must not fire before then. */
+const membershipLinkClass = "font-medium underline hover:text-ink";
+
+/** One quiet line under the email: membership state + where to act on it
+ * (/me/membership carries the management itself). Renders nothing while
+ * loading, on error, when Stripe is unconfigured, or before the email is
+ * verified — the membership endpoint is verified-only, so the query must
+ * not fire before then. */
 function MembershipProfileLine({ me }: { me: Me }) {
   const status = useQuery({
     queryKey: ["me", "membership"],
@@ -45,32 +46,40 @@ function MembershipProfileLine({ me }: { me: Me }) {
   if (!status.data?.enabled) {
     return null;
   }
-  if (status.data.membership) {
-    // Thank only a paid-up member. Other nonterminal states (incomplete,
-    // past_due, unpaid) say nothing here — the support section further down
-    // carries the accurate pending / fix-your-card copy, and "Become a
-    // member" would be wrong too: checkout 409s while any of them exists.
-    if (status.data.membership.stripe_status !== "active") {
-      return null;
-    }
+  const { membership, payments } = status.data;
+  if (membership) {
+    // Every nonterminal state gets a line: "Become a member" would be wrong
+    // for all of them (checkout 409s while any exists), and the page behind
+    // the link carries the accurate pending / fix-your-card detail.
+    const state = membership.stripe_status;
+    const [text, label] =
+      state === "incomplete"
+        ? ["Your membership is being set up.", "Manage membership"]
+        : state === "past_due" || state === "unpaid"
+          ? ["Your last membership payment didn't go through.", "Fix payment"]
+          : ["Thank you for being a supporting member.", "Manage membership"];
     return (
-      <p className="mt-1 text-sm text-ink-soft">
-        Thank you for being a supporting member.{" "}
-        {/* Plain anchor: the section lives on this same page. */}
-        <a href="#support" className="font-medium underline hover:text-ink">
-          Manage membership
-        </a>
+      <p className="mt-1 text-sm text-ink">
+        {text}{" "}
+        <Link to="/me/membership" className={membershipLinkClass}>
+          {label}
+        </Link>
       </p>
     );
   }
   return (
-    <p className="mt-2 text-sm">
+    <p className="mt-2 flex flex-wrap items-center gap-3 text-sm">
       <Link
         to="/support/member"
         className="inline-block rounded-lg bg-green-700 px-4 py-2 font-semibold text-white transition hover:bg-green-800"
       >
         Become an honorary member
       </Link>
+      {payments.length > 0 ? (
+        <Link to="/me/membership" className={membershipLinkClass}>
+          Payment history
+        </Link>
+      ) : null}
     </p>
   );
 }
@@ -446,9 +455,6 @@ export function SettingsPage() {
           <HomeAddressSection />
           <ResearchAreasSection />
           <EmailPreferencesSection />
-          {/* Verified-only like the backend's gate; renders nothing when
-              Stripe isn't configured. */}
-          <MembershipSection />
         </>
       ) : (
         <p className="rounded-xl border border-line bg-surface p-4 text-sm text-ink-soft">

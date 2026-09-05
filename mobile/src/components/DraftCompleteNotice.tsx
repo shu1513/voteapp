@@ -24,8 +24,8 @@ import { useMyPicksProgress } from "../lib/useMyPicksProgress";
 // baseline current. Losing focus retires the notice; the My Draft screen's
 // milestone (DraftMilestone) is the persistent one.
 //
-// Wording claims only what the counting rule establishes ("picks added for
-// every race", never "complete"). Status message, not a modal: polite live
+// Wording (owner's call, same as the web): "You have completed your {day}
+// election draft." plus the link, nothing else. Status message, not a modal: polite live
 // region on Android, an explicit VoiceOver announcement on iOS, focus and
 // scroll position untouched.
 
@@ -42,10 +42,9 @@ export function DraftCompleteNotice() {
       ? `${identity}|${trackedDate}|${[...progress.election_ids].sort().join(",")}`
       : null;
   const complete = progress?.complete ?? null;
-  const total = progress?.total ?? 0;
 
   const baseline = useRef<{ key: string; complete: boolean } | null>(null);
-  const [shown, setShown] = useState<{ key: string; date: string; total: number } | null>(null);
+  const [shown, setShown] = useState<{ key: string; date: string } | null>(null);
   // Render-time reset (the pattern TermsRenewalGate uses for its identity
   // key): the notice is CLEARED — not merely hidden — the moment progress
   // stops confirming it (unpick, ballot change, unknown) or the screen loses
@@ -81,18 +80,16 @@ export function DraftCompleteNotice() {
         return;
       }
       void markDraftCompleteSeen(trackedDate);
-      setShown({ key: trackedKey, date: trackedDate, total });
+      setShown({ key: trackedKey, date: trackedDate });
     });
     return () => {
       cancelled = true;
     };
-  }, [trackedKey, trackedDate, complete, total, focused]);
+  }, [trackedKey, trackedDate, complete, focused]);
 
   // accessibilityLiveRegion below is Android-only; VoiceOver needs an
   // explicit announcement (same pattern as TermsRenewalGate's error line).
-  const message = shown
-    ? `Picks added for every race in your ${formatElectionDate(shown.date)} draft. ${shown.total} of ${shown.total} race${shown.total === 1 ? "" : "s"} decided. Review your picks and make any changes.`
-    : null;
+  const message = shown ? `You have completed your ${formatElectionDate(shown.date)} election draft.` : null;
   useEffect(() => {
     if (message !== null) {
       AccessibilityInfo.announceForAccessibility(message);
@@ -104,13 +101,7 @@ export function DraftCompleteNotice() {
   }
   return (
     <View accessibilityLiveRegion="polite" className="border-b border-green-200 bg-green-50 px-4 py-2">
-      <Text className="text-sm text-green-900">
-        <Text className="font-semibold">
-          Picks added for every race in your {formatElectionDate(shown.date)} draft.
-        </Text>{" "}
-        {shown.total} of {shown.total} race{shown.total === 1 ? "" : "s"} decided. Review your picks and make any
-        changes.
-      </Text>
+      <Text className="text-sm font-semibold text-green-900">{message}</Text>
       <View className="mt-1 flex-row items-center justify-between gap-3">
         <Text
           accessibilityRole="link"

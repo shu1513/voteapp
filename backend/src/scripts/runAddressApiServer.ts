@@ -502,7 +502,7 @@ async function main(): Promise<void> {
         "STRIPE_SECRET_KEY is set but SITE_ORIGIN (or AUTH_PUBLIC_BASE_URL) is not; Checkout redirect URLs need the site origin"
       );
     }
-    const manageMembershipUrl = `${membershipPublicBaseUrl}/me/settings`;
+    const manageMembershipUrl = `${membershipPublicBaseUrl}/me/membership`;
     const membershipTermsUrl = `${membershipPublicBaseUrl}/terms`;
     // The §17602 membership-started acknowledgment rides the same mailer
     // config as auth email, and it is a LEGAL requirement of taking the
@@ -842,6 +842,8 @@ async function main(): Promise<void> {
             membershipService.createPortalSession(userId, input),
           cancelAuthenticatedMembership: (userId: string) => membershipService.cancelMembership(userId),
           resumeAuthenticatedMembership: (userId: string) => membershipService.resumeMembership(userId),
+          changeAuthenticatedMembershipAmount: (userId: string, input: { amount_cents: number }) =>
+            membershipService.changeMonthlyAmount(userId, input),
           handleStripeWebhookEvent: (input: { rawBody: Buffer; signatureHeader: string | null }) =>
             membershipService.handleWebhookEvent(input),
         }

@@ -5,7 +5,7 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
-import { flushUsageEventsForTests, resetUsageForTests, track, useUsageTracking } from "./usage";
+import { flushUsageEventsForTests, resetUsageForTests, track, useSectionExposure, useUsageTracking } from "./usage";
 
 type Sent = { name: string; route: string; page_view_id: string | null; props: Record<string, unknown> };
 
@@ -32,6 +32,34 @@ function Ballot() {
     track("list_control", { control: "sort", value: "soonest" });
   }, []);
   return <p>ballot</p>;
+}
+
+// jsdom has no IntersectionObserver; this stub records observed targets and
+// lets the test fire an intersection by hand.
+type IoCallback = (entries: { isIntersecting: boolean }[]) => void;
+function stubIntersectionObserver() {
+  const instances: { callback: IoCallback; targets: Element[]; disconnected: boolean }[] = [];
+  class FakeIntersectionObserver {
+    private record: { callback: IoCallback; targets: Element[]; disconnected: boolean };
+    constructor(callback: IoCallback) {
+      this.record = { callback, targets: [], disconnected: false };
+      instances.push(this.record);
+    }
+    observe(target: Element) {
+      this.record.targets.push(target);
+    }
+    disconnect() {
+      this.record.disconnected = true;
+    }
+    unobserve() {}
+  }
+  vi.stubGlobal("IntersectionObserver", FakeIntersectionObserver);
+  return instances;
+}
+
+function Sectioned({ id }: { id: string }) {
+  const ref = useSectionExposure("candidates", id);
+  return <h2 ref={ref}>Candidates {id}</h2>;
 }
 
 function usageBodies(fetchMock: ReturnType<typeof stubApiRoutes>): Sent[][] {
@@ -91,5 +119,33 @@ describe("useUsageTracking", () => {
     // auth_resolved carries the page it settled on, and every event names a route id, never a path.
     expect(byName("auth_resolved")[0]!.props).toEqual({ auth: "guest" });
     for (const event of events) expect(event.route).not.toContain("/");
+  });
+});
+
+describe("useSectionExposure", () => {
+  it("fires section_exposed once when the marker first intersects", async () => {
+    const observers = stubIntersectionObserver();
+    const fetchMock = stubApiRoutes({
+      "/api/me": apiError(401, "unauthorized", "Not logged in"),
+      "/api/usage/events": { status: 204, body: null },
+    });
+    renderRoutes(
+      [{ element: <Layout />, children: [{ id: "pages/ElectionPage", path: "/", element: <Sectioned id="a" /> }] }],
+      "/"
+    );
+    await screen.findByText("Candidates a");
+    expect(observers).toHaveLength(1);
+    expect(observers[0]!.targets[0]!.textContent).toBe("Candidates a");
+    // Not yet on screen: nothing. Then two intersections: one event, and
+    // the observer is done with this key.
+    observers[0]!.callback([{ isIntersecting: false }]);
+    observers[0]!.callback([{ isIntersecting: true }]);
+    observers[0]!.callback([{ isIntersecting: true }]);
+    expect(observers[0]!.disconnected).toBe(true);
+    flushUsageEventsForTests();
+    await vi.waitFor(() => expect(usageBodies(fetchMock)).toHaveLength(1));
+    const exposures = usageBodies(fetchMock)[0]!.filter((event) => event.name === "section_exposed");
+    expect(exposures).toHaveLength(1);
+    expect(exposures[0]).toMatchObject({ route: "election", props: { section: "candidates" } });
   });
 });

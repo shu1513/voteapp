@@ -42,6 +42,7 @@ import type { EmailUnsubscribePreference } from "./apiValidation.js";
 import type { AddressResolutionDiagnostics } from "./addressApiResponses.js";
 import type { StateVotingResourcesResult } from "./stateVotingResources.js";
 import type {
+  MembershipAmountInput,
   MembershipCheckoutInput,
   MembershipPortalInput,
   MembershipStatusResult,
@@ -206,6 +207,9 @@ export type AddressApiServerOptions = {
   /** POST /api/me/membership/resume — clears a scheduled cancel; answers
    * the fresh status. */
   resumeAuthenticatedMembership?: (userId: string) => Promise<MembershipStatusResult>;
+  /** POST /api/me/membership/amount — requests a new monthly amount from a
+   * future renewal (nothing charged today); answers the fresh status. */
+  changeAuthenticatedMembershipAmount?: (userId: string, input: MembershipAmountInput) => Promise<MembershipStatusResult>;
   /** POST /api/stripe/webhook — signature-verified Stripe event intake.
    * "bad_signature" → 400; thrown errors → 5xx so Stripe redelivers. */
   handleStripeWebhookEvent?: (input: {

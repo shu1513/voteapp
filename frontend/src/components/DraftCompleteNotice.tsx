@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router";
 import { formatElectionDate, useMe } from "@voteapp/api-client";
 import { hasDraftCompleteBeenSeen, markDraftCompleteSeen } from "../lib/draftCompleteSeen";
 import { useGuestPickProgress, useMyPicksProgress } from "../lib/usePickProgress";
+import { track } from "../lib/usage";
 
 // The draft's finish line (docs/plans/draft-completion-moment.md): one
 // notice, shown once per election day, when every race on the nearest
@@ -14,11 +15,13 @@ import { useGuestPickProgress, useMyPicksProgress } from "../lib/usePickProgress
 // page's bottom pick card (and its undo control), and no z-index contest
 // with the chatbot launcher or the terms gate, which all sit at z-30.
 //
-// Wording claims only what the counting rule establishes (isDecidedChoice:
-// one pick decides a race, even a multi-seat one; a withdrawn pick still
-// counts; ZIP/city partial ballots reach 100%): "picks added for every
-// race", never "your ballot is complete". No share mention — guests can't
-// share, and signed-in users find Share on the date card.
+// Wording (user decision 2026-09-04): "You have completed your {day}
+// draft." plus the link — no count line, no "review and change" sentence.
+// "Completed" leans on the counting rule (isDecidedChoice: one pick decides
+// a race, even a multi-seat one; a withdrawn pick still counts; ZIP/city
+// partial ballots reach 100%), which the owner accepted for the sake of a
+// shorter message. No share mention — guests can't share, and signed-in
+// users find Share on the date card.
 //
 // Status message, not a dialog (WCAG 4.1.3): role="status" announces it
 // politely, focus stays where the user is — including when completion
@@ -54,7 +57,6 @@ export function DraftCompleteNotice() {
       ? `${identity}|${trackedDate}|${[...progress.election_ids].sort().join(",")}`
       : null;
   const complete = progress?.complete ?? null;
-  const total = progress?.total ?? 0;
   const suppressed = SUPPRESSED_PATHS.has(pathname);
 
   // Baseline: the last KNOWN value for the tracked ballot. Only a later
@@ -64,7 +66,7 @@ export function DraftCompleteNotice() {
   // into 1/1 with no new pick — that is not a completion). Unknown breaks
   // the chain too: a pick made while progress was unknown is not observed.
   const baseline = useRef<{ key: string; complete: boolean } | null>(null);
-  const [shown, setShown] = useState<{ date: string; total: number } | null>(null);
+  const [shown, setShown] = useState<{ date: string } | null>(null);
 
   useEffect(() => {
     if (trackedKey === null || trackedDate === null || complete === null) {
@@ -99,9 +101,10 @@ export function DraftCompleteNotice() {
     }
     markDraftCompleteSeen(trackedDate);
     if (!suppressed) {
-      setShown({ date: trackedDate, total });
+      track("draft_complete_notice", { action: "shown" });
+      setShown({ date: trackedDate });
     }
-  }, [trackedKey, trackedDate, complete, total, suppressed]);
+  }, [trackedKey, trackedDate, complete, suppressed]);
 
   // Arriving on a page that shows the draft (via the header link, or the
   // notice's own link) retires the notice: the destination speaks for
@@ -121,23 +124,25 @@ export function DraftCompleteNotice() {
       {shown && !suppressed ? (
         <div className="border-t border-line bg-green-50">
           <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2 text-sm text-green-900">
-            <p className="min-w-0 flex-1">
-              <span className="font-semibold">
-                Picks added for every race in your {formatElectionDate(shown.date)} draft.
-              </span>{" "}
-              {shown.total} of {shown.total} race{shown.total === 1 ? "" : "s"} decided. Review your picks and
-              make any changes.
+            <p className="min-w-0 flex-1 font-semibold">
+              You have completed your {formatElectionDate(shown.date)} election draft.
             </p>
             <Link
               to={reviewPath}
-              onClick={() => setShown(null)}
+              onClick={() => {
+                track("draft_complete_notice", { action: "review" });
+                setShown(null);
+              }}
               className="whitespace-nowrap font-semibold text-green-800 hover:underline"
             >
               Review my picks
             </Link>
             <button
               type="button"
-              onClick={() => setShown(null)}
+              onClick={() => {
+                track("draft_complete_notice", { action: "dismiss" });
+                setShown(null);
+              }}
               aria-label="Dismiss"
               className="rounded px-1.5 text-lg leading-none text-green-900 hover:bg-green-100"
             >

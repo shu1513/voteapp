@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import type { BackTo } from "../lib/detailNavContext";
+import { track } from "../lib/usage";
 
 type PagerLink = { path: string; label: string };
 
@@ -64,6 +65,7 @@ export function DetailPager({
         state={backToState}
         aria-label={`Back to ${backTo.label}`}
         title={backTo.label}
+        onClick={() => track("detail_control", { control: "pager_back", value: "none" })}
         className={linkClass}
       >
         {backTo.label}
@@ -103,6 +105,7 @@ export function DetailPager({
               state={siblingState}
               aria-label={`Previous: ${prev.label}`}
               title={prev.label}
+              onClick={() => track("detail_control", { control: "pager_prev", value: "none" })}
               className={`line-clamp-2 ${linkClass}`}
             >
               <span aria-hidden="true">← </span>
@@ -118,6 +121,7 @@ export function DetailPager({
               state={siblingState}
               aria-label={`Next: ${next.label}`}
               title={next.label}
+              onClick={() => track("detail_control", { control: "pager_next", value: "none" })}
               className={`line-clamp-2 ${linkClass}`}
             >
               <span className={captionClass}>Next: </span>

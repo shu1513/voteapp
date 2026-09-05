@@ -11,6 +11,7 @@ import {
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import type { AutoPickCandidateReport, AutoPickElectionResult } from "@voteapp/api-client";
+import { currentAttribution, errorCategoryOf, track } from "../lib/usage";
 
 // "Pick by my issues": one button that runs the auto-pick engine for this election
 // (POST /api/me/auto-picks, mode replace) and opens a "Why this pick" panel
@@ -62,16 +63,25 @@ export function AutoPickControl({ electionId, seatsToFill, compact = false, onPi
 
   function onClick() {
     setResult(null);
+    const usage = { scope: "election", races_bucket: "1-3" };
     // The issue-floor prompt only fires on a LOADED list: a failed fetch
     // returns the same empty array, and telling a user with five ranked
     // issues to go rank issues would be wrong — on error the backend's
     // per-result too_few_issues is the authority (the panel renders it).
     if (!preferencesError && preferences.length < MIN_AUTO_PICK_ISSUES) {
+      track("autopick_attempt", { ...usage, prompted_rank_issues: true });
       setPrompt("rank_issues");
       return;
     }
+    track("autopick_attempt", { ...usage, prompted_rank_issues: false });
     setPrompt(null);
-    autoPick.mutate(
+    // UI work stays in the per-call onSuccess: react-query skips it once
+    // this control has unmounted, so a run started on election A can't
+    // clear election B's party filter through a stale onPicked. The usage
+    // outcome rides the promise instead — it must land even after unmount.
+    // The rejection is observed by the hook's own isError.
+    const attribution = currentAttribution();
+    const request = autoPick.mutateAsync(
       { election_ids: [electionId], mode: "replace" },
       {
         onSuccess: (response) => {
@@ -82,6 +92,22 @@ export function AutoPickControl({ electionId, seatsToFill, compact = false, onPi
           }
         },
       }
+    );
+    request.then(
+      (response) => {
+        const first = response.results[0] ?? null;
+        track(
+          "autopick_result",
+          {
+            ...usage,
+            outcome: first?.outcome === "picked" ? "picked" : "no_pick",
+            ...(first?.reason ? { reason: first.reason } : {}),
+          },
+          attribution
+        );
+      },
+      (error: unknown) =>
+        track("autopick_result", { ...usage, outcome: "error", error_category: errorCategoryOf(error) }, attribution)
     );
   }
 

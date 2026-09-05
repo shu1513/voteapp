@@ -1,6 +1,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useEffect, useRef, useState } from "react";
 import { SITE_ORIGIN } from "../lib/pageMeta";
+import { track } from "../lib/usage";
 
 // Share control for candidate, election, and pick-card pages. Two shapes:
 //
@@ -92,10 +93,21 @@ export function ShareButton({ path, shareText, affirmative = false, ariaLabel }:
   }
 
   const buttonClass = affirmative ? AFFIRMATIVE_BUTTON_CLASS : BUTTON_CLASS;
+  // share_open = the control was opened, not proof anything was shared.
+  const shareSubject = path.startsWith("/elections/") ? "election" : path.startsWith("/candidates/") ? "candidate" : "picks";
+  const onShareOpen = () => track("share_open", { subject: shareSubject });
 
   if (canNativeShare) {
     return (
-      <button type="button" onClick={shareNative} className={buttonClass} aria-label={ariaLabel}>
+      <button
+        type="button"
+        onClick={() => {
+          onShareOpen();
+          void shareNative();
+        }}
+        className={buttonClass}
+        aria-label={ariaLabel}
+      >
         Share
       </button>
     );
@@ -105,7 +117,7 @@ export function ShareButton({ path, shareText, affirmative = false, ariaLabel }:
   const encodedText = encodeURIComponent(shareText);
   return (
     <Menu as="div" className="relative inline-block">
-      <MenuButton className={buttonClass} aria-label={ariaLabel}>
+      <MenuButton className={buttonClass} aria-label={ariaLabel} onClick={onShareOpen}>
         Share
       </MenuButton>
       {/* role="status": announce the copy outcome to screen readers without

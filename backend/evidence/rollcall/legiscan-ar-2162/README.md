@@ -148,14 +148,30 @@ Two records carry an expiry. SJR 11 and SJR 15 are on the November 2026 ballot, 
 descriptions are written in the conditional. **Both must be revisited once Arkansas votes**, the
 rule Missouri's HJR 3 established.
 
-## Sessions not yet worked
+## Arkansas's other two sessions: surveyed, and both yield nothing
 
-Arkansas's other two sessions in scope, both downloaded and neither surveyed:
+Both were downloaded and surveyed on 2026-09-04. Neither is registered, and neither needs to be.
+This section replaces an earlier note calling them "not yet worked", which would have gone stale
+the way Alabama's did.
 
-- **LegiScan 2242**, the 2026 Fiscal Session (279 bills, 387 rolls).
-- **LegiScan 2261**, the 2026 First Special Session (2 bills, 4 rolls).
+**LegiScan 2242, the 2026 Fiscal Session** (279 bills, 387 roll calls, 137 people). The vocabulary
+is a strict subset of the 2025 entry's, with one spelling the 2025 session never printed: the
+Senate writes a failed adoption as `Read third time and failed of adoption.` (4 rolls). Feed health
+is the same cleanest tier — 0 parse errors, 0 file errors, 0 committee votes.
 
-Each would need only its own registry key (`AR-2242`, `AR-2261`) if its vocabulary turns out
-to be a subset of this one, following Missouri, Maryland and Alabama. Neither is claimed to
-be out of scope: they are simply not done, and Alabama's campaign showed what a stale
-"not registered" note costs.
+Under the campaign's standard gate the session gives 366 kept floor votes, 15 divided, and **12
+divided-and-enacted rolls on 9 measures. Every one of the nine is an appropriation act or a
+Revenue Stabilization Law transfer bill** — the Department of Human Services, the Department of
+Health, two universities, the Division of Environmental Quality, the Auditor of State, educational
+television, and the two acts that move money between funds. The campaign has excluded
+appropriations everywhere since the federal 119th run, because there is no honest research-area
+direction for a vote to fund the government, and Maine's campaign reconsidered and kept that rule
+under pressure. **So the fiscal session yields no importable measure.** A fiscal session is
+appropriations by design, so this is what the gate should produce, not a shortfall.
+
+**LegiScan 2261, the 2026 First Special Session** (2 bills, 4 roll calls). All four are floor votes
+and **none is divided**, so nothing reaches the gate.
+
+Registering either session would add a key that could never produce a record. If Arkansas's gate is
+ever widened — to appropriations, or to divided votes on measures that did not become law, the
+scope Pennsylvania opened — 2242 becomes worth a second look. Until then Arkansas is finished.

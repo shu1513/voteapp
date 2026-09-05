@@ -29,6 +29,7 @@ export function RegisterToFollowButton({ candidateName, size = "md" }: RegisterT
       <RegisterPromptDialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
+        source="follow"
         title={`Follow ${candidateName}`}
         // Event-gated, not scheduled: the digest job runs daily but emails
         // only followers with unsent events, so "whenever there's news" is

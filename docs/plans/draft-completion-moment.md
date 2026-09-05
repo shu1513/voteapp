@@ -1,12 +1,14 @@
-# Draft completion moment ("picks added for every race")
+# Draft completion moment ("You have completed your … election draft")
 
 Status: PR 1 (notice + plumbing) merged 2026-09-04 (#1108); PR 2
-(draft-page milestone, `DraftMilestone.tsx`) implemented 2026-09-04.
+(draft-page milestone) merged (#1112); single sign-up CTA (#1118); mobile
+parity (#1119); copy PR (#1125); milestone once-per-browser + member ask
+(this branch), all 2026-09-04.
 
 ## Idea
 
 Today nothing marks the moment a user decides the last race on their
-ballot. The header label quietly flips from "My Draft 12/13" to "My Picks ✓"
+ballot. The header label quietly flips from "My Draft 12/13" to "My Draft ✓"
 and that is all. We want a visible finish line: tell the user every race
 has a pick, name the election day, and hand them the next step (review the
 draft, sign up to save it).
@@ -50,9 +52,15 @@ and city searches produce partial ballots that can reach 100%. So "your
 ballot is complete" and "you're done" promise more than the data
 establishes. We keep the counting rule and say only what it establishes:
 
-- Headline: "Picks added for every race in your November 3, 2026 draft"
-- Body: "13 of 13 races decided. Review your picks and make any changes."
+- Headline: "You have completed your November 3, 2026 election draft."
 - Action: "Review my picks"
+
+Owner decision 2026-09-04, after seeing it live: the earlier hedged copy
+("Picks added for every race…", "13 of 13 races decided. Review your picks
+and make any changes.") was replaced by the one sentence above. "Completed"
+therefore leans on the counting rule described here; the date card's own
+"N of M races decided" line, directly under the milestone, is the only
+remaining hedge.
 
 No mention of sharing in the notice: guests cannot share until they have
 an account, and signed-in users find Share on the date card already.
@@ -168,20 +176,49 @@ card's count line), and renders nothing unless every race is decided:
   list. On `/me/picks` that is not always `dates[0]` because just-finished
   dates stay carded for a few days.
 - Render when that date's decided count equals its race count: check icon,
-  "Picks added for every race in your November 3, 2026 draft", and the
+  "You have completed your November 3, 2026 election draft.", and the
   "13 of 13 races decided" line.
 - Guest: a "Sign up free to save your picks" link (same wording and
   target, `/register?next=/draft`, as the existing bottom CTA, which
   stays).
 - Signed in: no extra action. Share is already on the date card in List
   view.
-- Rendering the milestone adds the date to `voteapp_draft_complete_seen`.
+- Once per election day per browser (owner's rule, 2026-09-04: persistent
+  = nag, for guests and members alike). `useShowDraftMilestone` snapshots
+  the `voteapp_draft_milestone_seen` marker the first time a day is
+  tracked, so the box stays for that visit and is gone on the next mount.
+  Rendering it marks both that scope and `voteapp_draft_complete_seen`
+  (the notice's), so the header notice never fires for a day read about
+  here. Mobile does the same with AsyncStorage, per focus rather than per
+  mount (My Draft stays mounted under the screens it pushes): the marker is
+  re-read on each focus, and the box shows and marks only while focused,
+  so a last pick made on the election screen above still earns the box on
+  the way back. No timers: content that
+  vanishes on its own is worse for screen readers than a box that simply
+  does not return.
 
 `PickDateCard` itself is unchanged; its count line stays.
 
+### 2b. Honorary-member ask (web, `/me/picks` only)
+
+`DraftMembershipCta.tsx`: the one moment a registered user feels done is
+the right time to ask. Rides the milestone's single visit (`show` is the
+same visibility), so it is not a second persistent box. Registered users
+who are not yet members only: `GET /api/me/membership` (hook moved to
+`frontend/src/lib/useMembershipStatus.ts`, `enabled` only when the day is
+complete) must report `enabled: true` and `membership: null`; Stripe-off
+deployments and members see nothing. Guests get the sign-up ask instead.
+One slot below whichever view is on (cards or ballot sheets). Copy: "Your
+draft is done. Help us keep this research free and current for every
+voter." + button "See our mission and join us" → `/mission`, which carries
+the member / one-time buttons. Nudge green (the "Set your address" tint),
+distinct from the pick green and from rausch sign-up buttons. Web only:
+membership checkout on mobile would run into the app stores' in-app
+purchase rules.
+
 ### 3. Pick card: no change
 
-The post-pick link already reads "My Picks ✓" through `myDraftLabel` once
+The post-pick link already reads "My Draft ✓" through `myDraftLabel` once
 the day is complete. Leave `PostPickActions.tsx` alone.
 
 ### 4. Guest target expiry (small correctness fix)

@@ -1,0 +1,153 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1590864,
+      "measure_id": "SB 916",
+      "vote_date": "2025-06-12",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 916, which lets workers draw unemployment pay during a labor dispute, which Oregon law had barred. Workers shut out by a lockout are no longer disqualified at all. Workers on strike lose the first week, then may draw benefits for up to ten more weeks, or eight if the state's unemployment fund is on one of its stronger tax schedules when the strike starts. The law defines strike, lockout and labor dispute for the first time in this part of the code. The Oregon House passed it again 35-22 under the conference committee report, and it became law.",
+      "nay_description": "Voted against Senate Bill 916, which lets workers draw unemployment pay during a labor dispute, which Oregon law had barred. Workers shut out by a lockout are no longer disqualified at all. Workers on strike lose the first week, then may draw benefits for up to ten more weeks, or eight if the state's unemployment fund is on one of its stronger tax schedules when the strike starts. The law defines strike, lockout and labor dispute for the first time in this part of the code. The Oregon House passed it again 35-22 under the conference committee report, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1590863
+      ],
+      "note": "The House took two rolls the same day: adopting the conference committee report (1590863) and then repassing the bill (1590864). The repass is the chamber's final action on the enacted text, so it is the judged roll and the adopt roll is acknowledged."
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1590862,
+      "measure_id": "SB 916",
+      "vote_date": "2025-06-12",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 916, which lets workers draw unemployment pay during a labor dispute, which Oregon law had barred. Workers shut out by a lockout are no longer disqualified at all. Workers on strike lose the first week, then may draw benefits for up to ten more weeks, or eight if the state's unemployment fund is on one of its stronger tax schedules when the strike starts. The law defines strike, lockout and labor dispute for the first time in this part of the code. The Oregon Senate passed it again 16-12 under the conference committee report, and it became law.",
+      "nay_description": "Voted against Senate Bill 916, which lets workers draw unemployment pay during a labor dispute, which Oregon law had barred. Workers shut out by a lockout are no longer disqualified at all. Workers on strike lose the first week, then may draw benefits for up to ten more weeks, or eight if the state's unemployment fund is on one of its stronger tax schedules when the strike starts. The law defines strike, lockout and labor dispute for the first time in this part of the code. The Oregon Senate passed it again 16-12 under the conference committee report, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "The House took two rolls the same day: adopting the conference committee report (1590863) and then repassing the bill (1590864). The repass is the chamber's final action on the enacted text, so it is the judged roll and the adopt roll is acknowledged."
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1579955,
+      "measure_id": "SB 951",
+      "vote_date": "2025-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 951, which stops outside investors from running medical practices through a management company. A firm that handles payroll, hiring and other back-office work for a practice may no longer own most of it. Nor may it run the practice, vote its shares, or control who buys its shares or assets. The law also voids noncompete deals that stop a doctor or nurse from working elsewhere. Gag clauses between a licensed clinician and a management firm, hospital or hospital clinic are void too. Both bans have exceptions, mainly for clinicians who hold a real ownership stake, and for terms agreed to settle a dispute. The Oregon House passed it 41-16, and it became law.",
+      "nay_description": "Voted against Senate Bill 951, which stops outside investors from running medical practices through a management company. A firm that handles payroll, hiring and other back-office work for a practice may no longer own most of it. Nor may it run the practice, vote its shares, or control who buys its shares or assets. The law also voids noncompete deals that stop a doctor or nurse from working elsewhere. Gag clauses between a licensed clinician and a management firm, hospital or hospital clinic are void too. Both bans have exceptions, mainly for clinicians who hold a real ownership stake, and for terms agreed to settle a dispute. The Oregon House passed it 41-16, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1539698,
+      "measure_id": "SB 951",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 951, which stops outside investors from running medical practices through a management company. A firm that handles payroll, hiring and other back-office work for a practice may no longer own most of it. Nor may it run the practice, vote its shares, or control who buys its shares or assets. The law also voids noncompete deals that stop a doctor or nurse from working elsewhere. Gag clauses between a licensed clinician and a management firm, hospital or hospital clinic are void too. Both bans have exceptions, mainly for clinicians who hold a real ownership stake, and for terms agreed to settle a dispute. The Oregon Senate passed it 21-8, and it became law.",
+      "nay_description": "Voted against Senate Bill 951, which stops outside investors from running medical practices through a management company. A firm that handles payroll, hiring and other back-office work for a practice may no longer own most of it. Nor may it run the practice, vote its shares, or control who buys its shares or assets. The law also voids noncompete deals that stop a doctor or nurse from working elsewhere. Gag clauses between a licensed clinician and a management firm, hospital or hospital clinic are void too. Both bans have exceptions, mainly for clinicians who hold a real ownership stake, and for terms agreed to settle a dispute. The Oregon Senate passed it 21-8, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1595898,
+      "measure_id": "SB 1154",
+      "vote_date": "2025-06-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1154, which adds an early warning step to how Oregon deals with polluted ground water. The state environmental agency must now ask the Environmental Quality Commission to name a ground water quality concern area. That happens once the agency confirms pollution that looks to come at least partly from spread-out sources, such as farms or septic systems. One more test must be met: many wells are hit, the sources need more study, or the water could break legal limits within 20 years. Before this, the state acted only once pollution was bad enough for a management area. The Oregon House passed it 39-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 1154, which adds an early warning step to how Oregon deals with polluted ground water. The state environmental agency must now ask the Environmental Quality Commission to name a ground water quality concern area. That happens once the agency confirms pollution that looks to come at least partly from spread-out sources, such as farms or septic systems. One more test must be met: many wells are hit, the sources need more study, or the water could break legal limits within 20 years. Before this, the state acted only once pollution was bad enough for a management area. The Oregon House passed it 39-11, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1591482,
+      "measure_id": "SB 1154",
+      "vote_date": "2025-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1154, which adds an early warning step to how Oregon deals with polluted ground water. The state environmental agency must now ask the Environmental Quality Commission to name a ground water quality concern area. That happens once the agency confirms pollution that looks to come at least partly from spread-out sources, such as farms or septic systems. One more test must be met: many wells are hit, the sources need more study, or the water could break legal limits within 20 years. Before this, the state acted only once pollution was bad enough for a management area. The Oregon Senate passed it 18-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 1154, which adds an early warning step to how Oregon deals with polluted ground water. The state environmental agency must now ask the Environmental Quality Commission to name a ground water quality concern area. That happens once the agency confirms pollution that looks to come at least partly from spread-out sources, such as farms or septic systems. One more test must be met: many wells are hit, the sources need more study, or the water could break legal limits within 20 years. Before this, the state acted only once pollution was bad enough for a management area. The Oregon Senate passed it 18-12, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1591480,
+      "measure_id": "HB 3365",
+      "vote_date": "2025-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3365, which requires Oregon to teach about climate change in six school subjects. The next time the state revises what schools must teach in science, health, history, geography, economics and civics, those standards must cover what causes climate change and what it does. They must also cover ways to slow it, adapt to it, and help communities cope. The rule applies to every review of the standards from the day the law took effect. The Oregon House agreed to the Senate's changes 32-21, and it became law.",
+      "nay_description": "Voted against House Bill 3365, which requires Oregon to teach about climate change in six school subjects. The next time the state revises what schools must teach in science, health, history, geography, economics and civics, those standards must cover what causes climate change and what it does. They must also cover ways to slow it, adapt to it, and help communities cope. The rule applies to every review of the standards from the day the law took effect. The Oregon House agreed to the Senate's changes 32-21, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1589737,
+      "measure_id": "HB 3365",
+      "vote_date": "2025-06-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3365, which requires Oregon to teach about climate change in six school subjects. The next time the state revises what schools must teach in science, health, history, geography, economics and civics, those standards must cover what causes climate change and what it does. They must also cover ways to slow it, adapt to it, and help communities cope. The rule applies to every review of the standards from the day the law took effect. The Oregon Senate passed it 18-10, and it became law.",
+      "nay_description": "Voted against House Bill 3365, which requires Oregon to teach about climate change in six school subjects. The next time the state revises what schools must teach in science, health, history, geography, economics and civics, those standards must cover what causes climate change and what it does. They must also cover ways to slow it, adapt to it, and help communities cope. The rule applies to every review of the standards from the day the law took effect. The Oregon Senate passed it 18-10, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

@@ -12,6 +12,7 @@ import {
 import type { ChatbotAskContext, ChatbotAskResponse, ChatbotResultCard, ContentReportEntityType } from "@voteapp/api-client";
 
 import { ReportContentButton } from "../ReportContentButton";
+import { chatSourceBucket, countBucket, currentAttribution, errorCategoryOf, positionBucket, track, trackSettled } from "../../lib/usage";
 
 // Floating "Ask" widget (docs/plans/chatbot-rag.md Phase 1): a minimized
 // bubble in the lower-right on most pages, expanding to a small chat box.
@@ -62,7 +63,7 @@ export function isChatWidgetHidden(pathname: string, isLoggedIn: boolean): boole
   );
 }
 
-function ResultCardLink({ card }: { card: ChatbotResultCard }) {
+function ResultCardLink({ card, position }: { card: ChatbotResultCard; position: number }) {
   const body = (
     <>
       <p className="text-sm font-semibold text-ink">{card.title}</p>
@@ -70,18 +71,21 @@ function ResultCardLink({ card }: { card: ChatbotResultCard }) {
     </>
   );
   const className = "block rounded-lg border border-line px-3 py-2 transition hover:border-ink-soft hover:bg-surface";
+  // Usage: which kind of card gets clicked and how far down — never its URL.
+  const onClick = () =>
+    track("chat_result_click", { source: chatSourceBucket(card.source_type), position_bucket: positionBucket(position) });
   // Official state resources are absolute external URLs; everything else is
   // a site-relative page. Both are server-constructed.
   if (card.url.startsWith("http://") || card.url.startsWith("https://")) {
     return (
-      <a href={card.url} target="_blank" rel="noopener noreferrer" className={className}>
+      <a href={card.url} target="_blank" rel="noopener noreferrer" onClick={onClick} className={className}>
         {body}
         <p className="mt-0.5 text-xs text-ink-soft">Official resource ↗</p>
       </a>
     );
   }
   return (
-    <Link to={card.url} className={className}>
+    <Link to={card.url} onClick={onClick} className={className}>
       {body}
     </Link>
   );
@@ -96,6 +100,9 @@ function formatDataCurrentAsOf(timestamp: string): string {
 }
 
 type Turn = { question: string; response: ChatbotAskResponse };
+type ChatEntry = "typed" | "starter" | "followup";
+// Server answer kinds the usage catalog knows; anything newer is "other".
+const CHAT_ANSWER_KINDS: ReadonlySet<string> = new Set(["template", "retrieval", "clarify", "refuse_no_data", "refuse_policy"]);
 
 /** The one election an answer cited, as ask context — null when it cited
  * zero or several distinct elections. Off detail pages the deictic roster
@@ -177,7 +184,11 @@ export function reportTargetFromResults(
  * so retrying can never succeed — give up honestly instead. */
 function FeedbackButtons({ token }: { token: string }) {
   const feedback = useMutation({
-    mutationFn: (verdict: "up" | "down") => submitChatbotFeedback(token, verdict),
+    mutationFn: (verdict: "up" | "down") => {
+      const request = submitChatbotFeedback(token, verdict);
+      trackSettled(request, "chat_feedback", { verdict });
+      return request;
+    },
   });
   if (feedback.isSuccess) {
     return <p className="text-xs text-ink-soft">Thanks for the feedback.</p>;
@@ -232,7 +243,7 @@ function TurnView({ turn, reporterEmail }: { turn: Turn; reporterEmail: string |
               index disambiguates safely. */}
           {turn.response.results.map((card, index) => (
             <li key={`${index}:${card.source_type}:${card.url}`}>
-              <ResultCardLink card={card} />
+              <ResultCardLink card={card} position={index + 1} />
             </li>
           ))}
         </ul>
@@ -264,7 +275,15 @@ function TurnView({ turn, reporterEmail }: { turn: Turn; reporterEmail: string |
 /** The register/verify walls. The widget stays visible to logged-out
  * visitors on purpose: opening it is the acquisition prompt. */
 function AccessPrompt({ kind }: { kind: "register" | "verify" }) {
+  // The register wall is a sign-up prompt like the follow/pick dialogs;
+  // usage counts it shown once per mount and its links when clicked.
+  useEffect(() => {
+    if (kind === "register") {
+      track("signup_prompt", { source: "chat", action: "shown" });
+    }
+  }, [kind]);
   if (kind === "register") {
+    const onLinkClick = () => track("signup_prompt", { source: "chat", action: "click" });
     return (
       <div className="px-4 py-6 text-center">
         <p className="text-sm text-ink">
@@ -273,11 +292,12 @@ function AccessPrompt({ kind }: { kind: "register" | "verify" }) {
         <div className="mt-4 flex justify-center gap-3">
           <Link
             to="/register"
+            onClick={onLinkClick}
             className="rounded-lg bg-rausch px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-rausch-dark"
           >
             Sign up
           </Link>
-          <Link to="/login" className="rounded-lg border border-line px-3 py-1.5 text-sm font-medium text-ink">
+          <Link to="/login" onClick={onLinkClick} className="rounded-lg border border-line px-3 py-1.5 text-sm font-medium text-ink">
             Log in
           </Link>
         </div>
@@ -347,8 +367,36 @@ function ChatWidgetSession() {
   }, [location.pathname]);
 
   const ask = useMutation({
-    mutationFn: (input: { question: string; previousQuestion: string | null; context: ChatbotAskContext | null }) =>
-      askChatbot(input.question, { previousQuestion: input.previousQuestion, context: input.context }),
+    mutationFn: (input: {
+      question: string;
+      previousQuestion: string | null;
+      context: ChatbotAskContext | null;
+      entry: ChatEntry;
+    }) => {
+      const request = askChatbot(input.question, { previousQuestion: input.previousQuestion, context: input.context });
+      // Usage (docs/plans/usage-analytics.md): how the question was entered
+      // and what kind of answer came back — never the text. Recorded from
+      // inside mutationFn, on the page the question was asked from, so an
+      // answer that lands after the widget remounts still counts.
+      const attribution = currentAttribution();
+      const base = { entry: input.entry, context_kind: input.context?.kind ?? "none", first_turn: input.previousQuestion === null };
+      request.then(
+        (response) =>
+          track(
+            "chat_ask",
+            {
+              ...base,
+              outcome: "ok",
+              answer: CHAT_ANSWER_KINDS.has(response.outcome) ? response.outcome : "other",
+              result_count_bucket: countBucket(response.results.length),
+              ai_generated: response.ai_generated === true,
+            },
+            attribution
+          ),
+        (error: unknown) => track("chat_ask", { ...base, outcome: "error", error_category: errorCategoryOf(error) }, attribution)
+      );
+      return request;
+    },
     onSuccess: (response, input) => {
       setTurns((previous) => [...previous, { question: input.question, response }]);
     },
@@ -380,7 +428,7 @@ function ChatWidgetSession() {
     return null;
   }
 
-  function sendQuestion(text: string, contextOverride: ChatbotAskContext | null = null) {
+  function sendQuestion(text: string, entry: ChatEntry, contextOverride: ChatbotAskContext | null = null) {
     const trimmed = text.trim();
     if (trimmed.length === 0 || ask.isPending) {
       return;
@@ -389,27 +437,14 @@ function ChatWidgetSession() {
       question: trimmed,
       previousQuestion: turns.length > 0 ? (turns[turns.length - 1] as Turn).question : null,
       context: contextOverride ?? context,
+      entry,
     });
     setQuestion("");
   }
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
-    sendQuestion(question);
-  }
-
-  if (!open) {
-    return (
-      <button
-        type="button"
-        ref={launcherRef}
-        onClick={() => setOpen(true)}
-        aria-label="Open Ask"
-        className="chat-launcher fixed bottom-4 right-4 z-30 rounded-full border border-line bg-white px-4 py-3 text-sm font-semibold text-ink shadow-lg transition hover:bg-surface"
-      >
-        Ask
-      </button>
-    );
+    sendQuestion(question, "typed");
   }
 
   const accessKind = !me ? "register" : !me.email_verified ? "verify" : null;
@@ -421,7 +456,28 @@ function ChatWidgetSession() {
       : ask.error instanceof ApiError && ask.error.status === 403
         ? "verify"
         : null;
+  // The one wall the panel will show — rendering and the chat_open event
+  // read the same value, so a reopen after a mid-session 401 is counted
+  // as the register wall it displays.
+  const wall = accessKind ?? errorAccessKind;
   const notAvailable = ask.error instanceof ApiError && ask.error.status === 404;
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        ref={launcherRef}
+        onClick={() => {
+          track("chat_open", { context_kind: context?.kind ?? "none", wall: wall ?? "none" });
+          setOpen(true);
+        }}
+        aria-label="Open Ask"
+        className="chat-launcher fixed bottom-4 right-4 z-30 rounded-full border border-line bg-white px-4 py-3 text-sm font-semibold text-ink shadow-lg transition hover:bg-surface"
+      >
+        Ask
+      </button>
+    );
+  }
 
   return (
     <div
@@ -481,8 +537,8 @@ function ChatWidgetSession() {
         </div>
       </div>
 
-      {accessKind ?? errorAccessKind ? (
-        <AccessPrompt kind={(accessKind ?? errorAccessKind) as "register" | "verify"} />
+      {wall ? (
+        <AccessPrompt kind={wall} />
       ) : (
         <>
           <div ref={transcriptRef} className="min-h-[8rem] flex-1 overflow-y-auto px-3 py-3">
@@ -497,7 +553,7 @@ function ChatWidgetSession() {
                     <button
                       key={starter}
                       type="button"
-                      onClick={() => sendQuestion(starter)}
+                      onClick={() => sendQuestion(starter, "starter")}
                       className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition hover:border-ink-soft hover:bg-surface"
                     >
                       {starter}
@@ -551,7 +607,7 @@ function ChatWidgetSession() {
                       if (electionContext) {
                         setContext(electionContext);
                       }
-                      sendQuestion(suggestion, electionContext);
+                      sendQuestion(suggestion, "followup", electionContext);
                     }}
                     className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition hover:border-ink-soft hover:bg-surface"
                   >

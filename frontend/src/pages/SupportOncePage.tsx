@@ -1,7 +1,7 @@
 import type { MetaFunction } from "react-router";
 import { Link, useLocation } from "react-router";
 import { APP_NAME, useMe } from "@voteapp/api-client";
-import { SupportCheckout } from "../components/MembershipSection";
+import { SupportCheckout } from "../components/SupportCheckout";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { pageMeta } from "../lib/pageMeta";
 

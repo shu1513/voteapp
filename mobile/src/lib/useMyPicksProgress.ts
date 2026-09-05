@@ -4,7 +4,7 @@ import { apiRequest, nearestDayPickProgress, useElectionChoices, useMe } from "@
 import { usLatestLocalDate } from "./usLatestLocalDate";
 
 /**
- * The saved-ballot header's pick counter ("My Draft 4/13" → "My Picks ✓"):
+ * The saved-ballot header's pick counter ("My Draft 4/13" → "My Draft ✓"):
  * progress over the nearest upcoming election day, the same denominator as
  * that day's card on the My Draft screen. Null hides the counter (logged
  * out, unverified, ballot not loaded, no upcoming races, or choices still

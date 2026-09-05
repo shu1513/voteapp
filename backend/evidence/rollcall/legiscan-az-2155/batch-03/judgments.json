@@ -1,0 +1,1052 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1487586,
+      "measure_id": "HB 2004",
+      "vote_date": "2025-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2004, which would have stopped a county recorder sending a voter registration card to an address outside Arizona. The card is the paper that confirms a person is registered. Voters serving in the military or living overseas would have been exempt, as would residents with no United States post office in the state to serve them. The Arizona House passed it 32-27, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2004, which would have stopped a county recorder sending a voter registration card to an address outside Arizona. The card is the paper that confirms a person is registered. Voters serving in the military or living overseas would have been exempt, as would residents with no United States post office in the state to serve them. The Arizona House passed it 32-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1539490,
+      "measure_id": "HB 2004",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2004, which would have stopped a county recorder sending a voter registration card to an address outside Arizona. The card is the paper that confirms a person is registered. Voters serving in the military or living overseas would have been exempt, as would residents with no United States post office in the state to serve them. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2004, which would have stopped a county recorder sending a voter registration card to an address outside Arizona. The card is the paper that confirms a person is registered. Voters serving in the military or living overseas would have been exempt, as would residents with no United States post office in the state to serve them. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1483092,
+      "measure_id": "HB 2006",
+      "vote_date": "2025-02-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2006, which would have made anyone outside government who sends out an official-looking election document print the words Not from a Government Agency on the envelope. The wording would have had to be bold and easy to read. The rule would have covered any document that resembles an official election document. The Arizona House passed it 37-19, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2006, which would have made anyone outside government who sends out an official-looking election document print the words Not from a Government Agency on the envelope. The wording would have had to be bold and easy to read. The rule would have covered any document that resembles an official election document. The Arizona House passed it 37-19, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1543990,
+      "measure_id": "HB 2006",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2006, which would have made anyone outside government who sends out an official-looking election document print the words Not from a Government Agency on the envelope. The wording would have had to be bold and easy to read. The rule would have covered any document that resembles an official election document. The Arizona Senate passed it 16-12, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2006, which would have made anyone outside government who sends out an official-looking election document print the words Not from a Government Agency on the envelope. The wording would have had to be bold and easy to read. The rule would have covered any document that resembles an official election document. The Arizona Senate passed it 16-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1483044,
+      "measure_id": "HB 2007",
+      "vote_date": "2025-02-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2007, which would have banned paying anyone, or being paid, by the number of voter registration forms collected, filled in or handed in. Payment based on how many forms a person gathers is what the ban would have reached. Paid registration work itself was not otherwise addressed. The Arizona House passed it 34-23, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2007, which would have banned paying anyone, or being paid, by the number of voter registration forms collected, filled in or handed in. Payment based on how many forms a person gathers is what the ban would have reached. Paid registration work itself was not otherwise addressed. The Arizona House passed it 34-23, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1543723,
+      "measure_id": "HB 2007",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2007, which would have banned paying anyone, or being paid, by the number of voter registration forms collected, filled in or handed in. Payment based on how many forms a person gathers is what the ban would have reached. Paid registration work itself was not otherwise addressed. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2007, which would have banned paying anyone, or being paid, by the number of voter registration forms collected, filled in or handed in. Payment based on how many forms a person gathers is what the ban would have reached. Paid registration work itself was not otherwise addressed. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1486183,
+      "measure_id": "HB 2017",
+      "vote_date": "2025-02-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2017, which would have closed voting centers and cut back early voting sites. A voting center lets any voter in the county vote there rather than at one assigned polling place. County supervisors could no longer have authorized them. The law letting a county recorder set up on-site early voting places would have been repealed, and no precinct could have held more than 1,000 registered voters. The Arizona House passed it 32-26, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2017, which would have closed voting centers and cut back early voting sites. A voting center lets any voter in the county vote there rather than at one assigned polling place. County supervisors could no longer have authorized them. The law letting a county recorder set up on-site early voting places would have been repealed, and no precinct could have held more than 1,000 registered voters. The Arizona House passed it 32-26, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1560518,
+      "measure_id": "HB 2017",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2017, which would have closed voting centers and cut back early voting sites. A voting center lets any voter in the county vote there rather than at one assigned polling place. County supervisors could no longer have authorized them. The law letting a county recorder set up on-site early voting places would have been repealed, and no precinct could have held more than 1,000 registered voters. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2017, which would have closed voting centers and cut back early voting sites. A voting center lets any voter in the county vote there rather than at one assigned polling place. County supervisors could no longer have authorized them. The law letting a county recorder set up on-site early voting places would have been repealed, and no precinct could have held more than 1,000 registered voters. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1560413,
+      "measure_id": "HB 2046",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2046, which would have set out how the hand count check on election results is run. At least 2 percent of a county's precincts or voting centers would have had to be included. The count would have had to start straight after those places were picked. Hand counting of early ballots would have had to begin within 48 hours of tabulation finishing. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2046, which would have set out how the hand count check on election results is run. At least 2 percent of a county's precincts or voting centers would have had to be included. The count would have had to start straight after those places were picked. Hand counting of early ballots would have had to begin within 48 hours of tabulation finishing. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1487729,
+      "measure_id": "HB 2062",
+      "vote_date": "2025-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2062, which would have set one meaning for sex-based words across state law and public policy. Any rule against sex discrimination would also have had to bar unfair treatment of a similar person of the other sex. The state and local government could have kept single-sex spaces. The bill named athletics, living quarters, locker rooms, bathrooms, domestic violence shelters and sexual assault centers. The Arizona House passed it 32-27, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2062, which would have set one meaning for sex-based words across state law and public policy. Any rule against sex discrimination would also have had to bar unfair treatment of a similar person of the other sex. The state and local government could have kept single-sex spaces. The bill named athletics, living quarters, locker rooms, bathrooms, domestic violence shelters and sexual assault centers. The Arizona House passed it 32-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1539608,
+      "measure_id": "HB 2062",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2062, which would have set one meaning for sex-based words across state law and public policy. Any rule against sex discrimination would also have had to bar unfair treatment of a similar person of the other sex. The state and local government could have kept single-sex spaces. The bill named athletics, living quarters, locker rooms, bathrooms, domestic violence shelters and sexual assault centers. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2062, which would have set one meaning for sex-based words across state law and public policy. Any rule against sex discrimination would also have had to bar unfair treatment of a similar person of the other sex. The state and local government could have kept single-sex spaces. The bill named athletics, living quarters, locker rooms, bathrooms, domestic violence shelters and sexual assault centers. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1541844,
+      "measure_id": "HB 2099",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2099, which would have required Arizona officials to help enforce federal immigration law. The Governor and Attorney General would have had to carry out and work with federal immigration actions and orders. Cities, towns and counties would have had the same duty. An existing duty on the Governor and Attorney General would have been removed. The Arizona Senate passed it 17-13, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2099, which would have required Arizona officials to help enforce federal immigration law. The Governor and Attorney General would have had to carry out and work with federal immigration actions and orders. Cities, towns and counties would have had the same duty. An existing duty on the Governor and Attorney General would have been removed. The Arizona Senate passed it 17-13, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1503398,
+      "measure_id": "HB 2154",
+      "vote_date": "2025-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2154, which would have taken a voter off the list that automatically sends them an early ballot when post came back undelivered. Arizona sends a notice every 90 days to people on that list. If the notice was returned as undeliverable, the county recorder would have had to mark the voter inactive and drop them from the list. The Arizona House passed it 32-26, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2154, which would have taken a voter off the list that automatically sends them an early ballot when post came back undelivered. Arizona sends a notice every 90 days to people on that list. If the notice was returned as undeliverable, the county recorder would have had to mark the voter inactive and drop them from the list. The Arizona House passed it 32-26, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1560172,
+      "measure_id": "HB 2154",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2154, which would have taken a voter off the list that automatically sends them an early ballot when post came back undelivered. Arizona sends a notice every 90 days to people on that list. If the notice was returned as undeliverable, the county recorder would have had to mark the voter inactive and drop them from the list. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2154, which would have taken a voter off the list that automatically sends them an early ballot when post came back undelivered. Arizona sends a notice every 90 days to people on that list. If the notice was returned as undeliverable, the county recorder would have had to mark the voter inactive and drop them from the list. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1548507,
+      "measure_id": "HB 2438",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2438, which would have stopped a person changing the sex recorded on their birth certificate. Existing law allows the change after sex reassignment surgery, or where a chromosome count differs from the recorded sex, and both routes would have gone. Any other correction would have required proof of factual error beyond a reasonable doubt, the standard used in criminal trials. The Arizona Senate passed it 17-13, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2438, which would have stopped a person changing the sex recorded on their birth certificate. Existing law allows the change after sex reassignment surgery, or where a chromosome count differs from the recorded sex, and both routes would have gone. Any other correction would have required proof of factual error beyond a reasonable doubt, the standard used in criminal trials. The Arizona Senate passed it 17-13, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1506024,
+      "measure_id": "HB 2440",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2440, which would have barred the Attorney General bringing a criminal or civil case against a county supervisor for voting against certifying an election count. The protection would have applied where the supervisor acted in a good faith belief, or had been shown material suggesting irregularities or errors. Certifying the count is the step that makes a result final. Other election offenses could still have been prosecuted. The Arizona House passed it 33-24, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2440, which would have barred the Attorney General bringing a criminal or civil case against a county supervisor for voting against certifying an election count. The protection would have applied where the supervisor acted in a good faith belief, or had been shown material suggesting irregularities or errors. Certifying the count is the step that makes a result final. Other election offenses could still have been prosecuted. The Arizona House passed it 33-24, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1560493,
+      "measure_id": "HB 2440",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2440, which would have barred the Attorney General bringing a criminal or civil case against a county supervisor for voting against certifying an election count. The protection would have applied where the supervisor acted in a good faith belief, or had been shown material suggesting irregularities or errors. Certifying the count is the step that makes a result final. Other election offenses could still have been prosecuted. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2440, which would have barred the Attorney General bringing a criminal or civil case against a county supervisor for voting against certifying an election count. The protection would have applied where the supervisor acted in a good faith belief, or had been shown material suggesting irregularities or errors. Certifying the count is the step that makes a result final. Other election offenses could still have been prosecuted. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1566377,
+      "measure_id": "HB 2868",
+      "vote_date": "2025-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2868, which would have banned diversity, equity and inclusion offices across much of Arizona government. The ban would have covered cities, counties, community college districts and the state universities. None could have run such an office or employed anyone to do its work. None could have hired an outside firm for it, or made anyone take part. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2868, which would have banned diversity, equity and inclusion offices across much of Arizona government. The ban would have covered cities, counties, community college districts and the state universities. None could have run such an office or employed anyone to do its work. None could have hired an outside firm for it, or made anyone take part. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1594703,
+      "measure_id": "SB 1001",
+      "vote_date": "2025-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1001, which would have let counties count early ballots on site during the early voting period, and tightened how a late early ballot is handed in. A voter dropping off their own early ballot after the Friday before election day would have had to show identification and sign an attestation. Someone delivering another person's ballot would have had to show their own identification and sign as well. The Arizona House passed it 31-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1001, which would have let counties count early ballots on site during the early voting period, and tightened how a late early ballot is handed in. A voter dropping off their own early ballot after the Friday before election day would have had to show identification and sign an attestation. Someone delivering another person's ballot would have had to show their own identification and sign as well. The Arizona House passed it 31-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1594433
+      ],
+      "note": "Roll 1594433 is the House third reading that FAILED 29-26 earlier the same day: 31 votes are needed to pass a bill in a 60-seat chamber, so a plurality is not enough. LegiScan nonetheless stores that roll with passed=1. The House moved to reconsider and passed the bill 31-25 on roll 1594703, which is the vote judged here."
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1563639,
+      "measure_id": "SB 1002",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1002, which would have stopped school staff calling a pupil by a name or pronoun that differs from school records without written permission from a parent. The rule would have covered employees and contractors at district and charter schools. It would have applied to any pronoun not matching the pupil's biological sex, and to any first or middle name other than the one on the official record. The Arizona House passed it 31-27, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1002, which would have stopped school staff calling a pupil by a name or pronoun that differs from school records without written permission from a parent. The rule would have covered employees and contractors at district and charter schools. It would have applied to any pronoun not matching the pupil's biological sex, and to any first or middle name other than the one on the official record. The Arizona House passed it 31-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1495006,
+      "measure_id": "SB 1002",
+      "vote_date": "2025-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1002, which would have stopped school staff calling a pupil by a name or pronoun that differs from school records without written permission from a parent. The rule would have covered employees and contractors at district and charter schools. It would have applied to any pronoun not matching the pupil's biological sex, and to any first or middle name other than the one on the official record. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1002, which would have stopped school staff calling a pupil by a name or pronoun that differs from school records without written permission from a parent. The rule would have covered employees and contractors at district and charter schools. It would have applied to any pronoun not matching the pupil's biological sex, and to any first or middle name other than the one on the official record. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1563691,
+      "measure_id": "SB 1003",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1003, which would have required a public school to make a separate arrangement for anyone unwilling or unable to share a restroom, changing room or sleeping quarters with someone of another sex. The person would have had to ask in writing. The bill would have created a private right to sue a school that did not comply. The Arizona House passed it 31-27, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1003, which would have required a public school to make a separate arrangement for anyone unwilling or unable to share a restroom, changing room or sleeping quarters with someone of another sex. The person would have had to ask in writing. The bill would have created a private right to sue a school that did not comply. The Arizona House passed it 31-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1486522,
+      "measure_id": "SB 1003",
+      "vote_date": "2025-02-11",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1003, which would have required a public school to make a separate arrangement for anyone unwilling or unable to share a restroom, changing room or sleeping quarters with someone of another sex. The person would have had to ask in writing. The bill would have created a private right to sue a school that did not comply. The Arizona Senate passed it 17-9, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1003, which would have required a public school to make a separate arrangement for anyone unwilling or unable to share a restroom, changing room or sleeping quarters with someone of another sex. The person would have had to ask in writing. The bill would have created a private right to sue a school that did not comply. The Arizona Senate passed it 17-9, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1563579,
+      "measure_id": "SB 1014",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1014, which would have taken firearm suppressors out of Arizona's list of prohibited weapons. A suppressor is a device fitted to a firearm to muffle the sound of a shot. Removing it from that list would have ended the state offense attached to it. The Arizona House passed it 31-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1014, which would have taken firearm suppressors out of Arizona's list of prohibited weapons. A suppressor is a device fitted to a firearm to muffle the sound of a shot. Removing it from that list would have ended the state offense attached to it. The Arizona House passed it 31-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1501563,
+      "measure_id": "SB 1014",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1014, which would have taken firearm suppressors out of Arizona's list of prohibited weapons. A suppressor is a device fitted to a firearm to muffle the sound of a shot. Removing it from that list would have ended the state offense attached to it. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1014, which would have taken firearm suppressors out of Arizona's list of prohibited weapons. A suppressor is a device fitted to a firearm to muffle the sound of a shot. Removing it from that list would have ended the state offense attached to it. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1563544,
+      "measure_id": "SB 1020",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1020, which would have stopped universities and community colleges banning guns on campus. A governing board could no longer have prohibited someone with a valid permit carrying a concealed weapon. Nor could it have prohibited a firearm being transported or stored, properly secured, in a car or motorcycle. The Arizona House passed it 31-27, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1020, which would have stopped universities and community colleges banning guns on campus. A governing board could no longer have prohibited someone with a valid permit carrying a concealed weapon. Nor could it have prohibited a firearm being transported or stored, properly secured, in a car or motorcycle. The Arizona House passed it 31-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1501577,
+      "measure_id": "SB 1020",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1020, which would have stopped universities and community colleges banning guns on campus. A governing board could no longer have prohibited someone with a valid permit carrying a concealed weapon. Nor could it have prohibited a firearm being transported or stored, properly secured, in a car or motorcycle. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1020, which would have stopped universities and community colleges banning guns on campus. A governing board could no longer have prohibited someone with a valid permit carrying a concealed weapon. Nor could it have prohibited a firearm being transported or stored, properly secured, in a car or motorcycle. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1564990,
+      "measure_id": "SB 1052",
+      "vote_date": "2025-05-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1052, which would have taken the vote away from United States citizens who have never lived in the country. Arizona law lets such a citizen cast a federal write-in absentee ballot if a parent is a citizen registered to vote in Arizona. This bill would have removed that provision. The Arizona House passed it 32-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1052, which would have taken the vote away from United States citizens who have never lived in the country. Arizona law lets such a citizen cast a federal write-in absentee ballot if a parent is a citizen registered to vote in Arizona. This bill would have removed that provision. The Arizona House passed it 32-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1500046,
+      "measure_id": "SB 1052",
+      "vote_date": "2025-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1052, which would have taken the vote away from United States citizens who have never lived in the country. Arizona law lets such a citizen cast a federal write-in absentee ballot if a parent is a citizen registered to vote in Arizona. This bill would have removed that provision. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1052, which would have taken the vote away from United States citizens who have never lived in the country. Arizona law lets such a citizen cast a federal write-in absentee ballot if a parent is a citizen registered to vote in Arizona. This bill would have removed that provision. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1564920,
+      "measure_id": "SB 1064",
+      "vote_date": "2025-05-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1064, which would have set minimum security standards for the machines that record and count votes. The machines would have had to be set up to security standards issued by the federal cybersecurity agency. They could not have carried hardware supporting internet or other remote access, or software able to change results files. The Arizona House passed it 32-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1064, which would have set minimum security standards for the machines that record and count votes. The machines would have had to be set up to security standards issued by the federal cybersecurity agency. They could not have carried hardware supporting internet or other remote access, or software able to change results files. The Arizona House passed it 32-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1499978,
+      "measure_id": "SB 1064",
+      "vote_date": "2025-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1064, which would have set minimum security standards for the machines that record and count votes. The machines would have had to be set up to security standards issued by the federal cybersecurity agency. They could not have carried hardware supporting internet or other remote access, or software able to change results files. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1064, which would have set minimum security standards for the machines that record and count votes. The machines would have had to be set up to security standards issued by the federal cybersecurity agency. They could not have carried hardware supporting internet or other remote access, or software able to change results files. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1564528,
+      "measure_id": "SB 1088",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1088, which would have tied Arizona government to federal immigration enforcement. The duty would have covered the state, its agencies, cities, counties and firms working under contract for them. Each would have had to follow federal immigration and deportation law. Each would also have had to work with the three federal agencies that carry it out. The Arizona House passed it 31-27, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1088, which would have tied Arizona government to federal immigration enforcement. The duty would have covered the state, its agencies, cities, counties and firms working under contract for them. Each would have had to follow federal immigration and deportation law. Each would also have had to work with the three federal agencies that carry it out. The Arizona House passed it 31-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1505951,
+      "measure_id": "SB 1088",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1088, which would have tied Arizona government to federal immigration enforcement. The duty would have covered the state, its agencies, cities, counties and firms working under contract for them. Each would have had to follow federal immigration and deportation law. Each would also have had to work with the three federal agencies that carry it out. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1088, which would have tied Arizona government to federal immigration enforcement. The duty would have covered the state, its agencies, cities, counties and firms working under contract for them. Each would have had to follow federal immigration and deportation law. Each would also have had to work with the three federal agencies that carry it out. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1566387,
+      "measure_id": "SB 1097",
+      "vote_date": "2025-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1097, which would have opened more buildings as polling places. Public offices, including public schools with a gymnasium, would have had to serve as a polling place when the officer running the election asked. District schools would have had to close on primary and general election days, with staff paid and doing training instead, and unable to take leave on those days. The Arizona House passed it 31-23, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1097, which would have opened more buildings as polling places. Public offices, including public schools with a gymnasium, would have had to serve as a polling place when the officer running the election asked. District schools would have had to close on primary and general election days, with staff paid and doing training instead, and unable to take leave on those days. The Arizona House passed it 31-23, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1506405,
+      "measure_id": "SB 1097",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1097, which would have opened more buildings as polling places. Public offices, including public schools with a gymnasium, would have had to serve as a polling place when the officer running the election asked. District schools would have had to close on primary and general election days, with staff paid and doing training instead, and unable to take leave on those days. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1097, which would have opened more buildings as polling places. Public offices, including public schools with a gymnasium, would have had to serve as a polling place when the officer running the election asked. District schools would have had to close on primary and general election days, with staff paid and doing training instead, and unable to take leave on those days. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1565002,
+      "measure_id": "SB 1098",
+      "vote_date": "2025-05-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1098, which would have required proof of identity to hand in an early ballot. A voter dropping off their own ballot would have had to show identification with a name that matches the envelope. Someone dropping off another person's ballot would have had to show their own. Both would have had to sign a statement. The Arizona House passed it 32-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1098, which would have required proof of identity to hand in an early ballot. A voter dropping off their own ballot would have had to show identification with a name that matches the envelope. Someone dropping off another person's ballot would have had to show their own. Both would have had to sign a statement. The Arizona House passed it 32-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1505995,
+      "measure_id": "SB 1098",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1098, which would have required proof of identity to hand in an early ballot. A voter dropping off their own ballot would have had to show identification with a name that matches the envelope. Someone dropping off another person's ballot would have had to show their own. Both would have had to sign a statement. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1098, which would have required proof of identity to hand in an early ballot. A voter dropping off their own ballot would have had to show identification with a name that matches the envelope. Someone dropping off another person's ballot would have had to show their own. Both would have had to sign a statement. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1548881,
+      "measure_id": "SB 1123",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1123, which would have set security rules for the paper ballots are printed on. A supplier would have had to hold one of three named quality or security certifications. The paper would have had to carry at least three anti-fraud features from a set list. Examples include watermarked security paper of controlled supply, or a holographic foil that cannot be copied. The Arizona House passed it 31-21, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1123, which would have set security rules for the paper ballots are printed on. A supplier would have had to hold one of three named quality or security certifications. The paper would have had to carry at least three anti-fraud features from a set list. Examples include watermarked security paper of controlled supply, or a holographic foil that cannot be copied. The Arizona House passed it 31-21, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1503358,
+      "measure_id": "SB 1123",
+      "vote_date": "2025-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1123, which would have set security rules for the paper ballots are printed on. A supplier would have had to hold one of three named quality or security certifications. The paper would have had to carry at least three anti-fraud features from a set list. Examples include watermarked security paper of controlled supply, or a holographic foil that cannot be copied. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1123, which would have set security rules for the paper ballots are printed on. A supplier would have had to hold one of three named quality or security certifications. The paper would have had to carry at least three anti-fraud features from a set list. Examples include watermarked security paper of controlled supply, or a holographic foil that cannot be copied. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1565143,
+      "measure_id": "SB 1143",
+      "vote_date": "2025-05-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1143, which would have blocked records that show who owns firearms. Government bodies could not have kept any list or registry of privately owned firearms or their owners, except during a criminal investigation or where the law requires it. Card payment networks could not have used a separate merchant code to mark out gun retailers. The Arizona House passed it 32-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1143, which would have blocked records that show who owns firearms. Government bodies could not have kept any list or registry of privately owned firearms or their owners, except during a criminal investigation or where the law requires it. Card payment networks could not have used a separate merchant code to mark out gun retailers. The Arizona House passed it 32-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1506197,
+      "measure_id": "SB 1143",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1143, which would have blocked records that show who owns firearms. Government bodies could not have kept any list or registry of privately owned firearms or their owners, except during a criminal investigation or where the law requires it. Card payment networks could not have used a separate merchant code to mark out gun retailers. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1143, which would have blocked records that show who owns firearms. Government bodies could not have kept any list or registry of privately owned firearms or their owners, except during a criminal investigation or where the law requires it. Card payment networks could not have used a separate merchant code to mark out gun retailers. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1544215,
+      "measure_id": "SB 1164",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1164, which would have pushed local officials toward federal immigration enforcement. State and local officials could have worked with federal immigration agents. Jails would have had to act on immigration detainers. A detainer is a request to hold someone so federal agents can come for them. The Attorney General could have investigated and enforced compliance. The Arizona House passed it 33-26, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1164, which would have pushed local officials toward federal immigration enforcement. State and local officials could have worked with federal immigration agents. Jails would have had to act on immigration detainers. A detainer is a request to hold someone so federal agents can come for them. The Attorney General could have investigated and enforced compliance. The Arizona House passed it 33-26, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1501761,
+      "measure_id": "SB 1164",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1164, which would have pushed local officials toward federal immigration enforcement. State and local officials could have worked with federal immigration agents. Jails would have had to act on immigration detainers. A detainer is a request to hold someone so federal agents can come for them. The Attorney General could have investigated and enforced compliance. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1164, which would have pushed local officials toward federal immigration enforcement. State and local officials could have worked with federal immigration agents. Jails would have had to act on immigration detainers. A detainer is a request to hold someone so federal agents can come for them. The Attorney General could have investigated and enforced compliance. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1550159,
+      "measure_id": "SB 1256",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1256, which would have barred state agencies, boards and commissions using diversity, equity and inclusion programs when hiring, training or promoting staff. They could not have required an employee to take part in one, or made taking part a condition of a contract. The Department of Administration would have monitored hiring to enforce it. The Arizona House passed it 33-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1256, which would have barred state agencies, boards and commissions using diversity, equity and inclusion programs when hiring, training or promoting staff. They could not have required an employee to take part in one, or made taking part a condition of a contract. The Department of Administration would have monitored hiring to enforce it. The Arizona House passed it 33-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1495018,
+      "measure_id": "SB 1256",
+      "vote_date": "2025-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1256, which would have barred state agencies, boards and commissions using diversity, equity and inclusion programs when hiring, training or promoting staff. They could not have required an employee to take part in one, or made taking part a condition of a contract. The Department of Administration would have monitored hiring to enforce it. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1256, which would have barred state agencies, boards and commissions using diversity, equity and inclusion programs when hiring, training or promoting staff. They could not have required an employee to take part in one, or made taking part a condition of a contract. The Department of Administration would have monitored hiring to enforce it. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1565150,
+      "measure_id": "SB 1268",
+      "vote_date": "2025-05-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1268, which would have made hospitals ask patients about their immigration status. Any hospital taking payment from the state health program would have had to put a space on its admission form for the patient, or their representative, to say whether they are a United States citizen, lawfully present, or not lawfully present. The health department would have reported the answers every three months. The Arizona House passed it 32-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1268, which would have made hospitals ask patients about their immigration status. Any hospital taking payment from the state health program would have had to put a space on its admission form for the patient, or their representative, to say whether they are a United States citizen, lawfully present, or not lawfully present. The health department would have reported the answers every three months. The Arizona House passed it 32-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1500188,
+      "measure_id": "SB 1268",
+      "vote_date": "2025-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1268, which would have made hospitals ask patients about their immigration status. Any hospital taking payment from the state health program would have had to put a space on its admission form for the patient, or their representative, to say whether they are a United States citizen, lawfully present, or not lawfully present. The health department would have reported the answers every three months. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1268, which would have made hospitals ask patients about their immigration status. Any hospital taking payment from the state health program would have had to put a space on its admission form for the patient, or their representative, to say whether they are a United States citizen, lawfully present, or not lawfully present. The health department would have reported the answers every three months. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1549942,
+      "measure_id": "SB 1280",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1280, which would have required counties to send the cast vote record to the Secretary of State within 48 hours of the county count. A cast vote record is the anonymous list of how each ballot was marked. It would have had to go unaltered and in its original order, and would have become a public record. Precincts with under 25 registered voters would have been left out. The Arizona House passed it 33-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1280, which would have required counties to send the cast vote record to the Secretary of State within 48 hours of the county count. A cast vote record is the anonymous list of how each ballot was marked. It would have had to go unaltered and in its original order, and would have become a public record. Precincts with under 25 registered voters would have been left out. The Arizona House passed it 33-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1548760,
+      "measure_id": "SB 1584",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1584, which would have required the state and local government to hire on merit and nothing else. They also could not have shaped the make-up of their workforce by race, ethnicity, sex or national origin. The one exception was keeping hiring color-blind under existing anti-discrimination law. The Attorney General, a county attorney or any person could have gone to court to enforce it. The Arizona House passed it 31-21, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1584, which would have required the state and local government to hire on merit and nothing else. They also could not have shaped the make-up of their workforce by race, ethnicity, sex or national origin. The one exception was keeping hiring color-blind under existing anti-discrimination law. The Attorney General, a county attorney or any person could have gone to court to enforce it. The Arizona House passed it 31-21, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1504671,
+      "measure_id": "SB 1584",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1584, which would have required the state and local government to hire on merit and nothing else. They also could not have shaped the make-up of their workforce by race, ethnicity, sex or national origin. The one exception was keeping hiring color-blind under existing anti-discrimination law. The Attorney General, a county attorney or any person could have gone to court to enforce it. The Arizona Senate passed it 16-11, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1584, which would have required the state and local government to hire on merit and nothing else. They also could not have shaped the make-up of their workforce by race, ethnicity, sex or national origin. The one exception was keeping hiring color-blind under existing anti-discrimination law. The Attorney General, a county attorney or any person could have gone to court to enforce it. The Arizona Senate passed it 16-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1563694,
+      "measure_id": "SB 1586",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1586, which would have made a clinician personally liable for the cost of reversing gender transition care given to a minor. The liability would have been strict, so fault would not have had to be shown. It would have lasted 25 years after the original care. A person who later had reversal treatment could have sued until they turned 26. The Arizona House passed it 31-27, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1586, which would have made a clinician personally liable for the cost of reversing gender transition care given to a minor. The liability would have been strict, so fault would not have had to be shown. It would have lasted 25 years after the original care. A person who later had reversal treatment could have sued until they turned 26. The Arizona House passed it 31-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1506355,
+      "measure_id": "SB 1586",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1586, which would have made a clinician personally liable for the cost of reversing gender transition care given to a minor. The liability would have been strict, so fault would not have had to be shown. It would have lasted 25 years after the original care. A person who later had reversal treatment could have sued until they turned 26. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1586, which would have made a clinician personally liable for the cost of reversing gender transition care given to a minor. The liability would have been strict, so fault would not have had to be shown. It would have lasted 25 years after the original care. A person who later had reversal treatment could have sued until they turned 26. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1550685,
+      "measure_id": "SB 1610",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1610, which would have required county jails to feed information to federal immigration agents. For people arrested on listed offenses, a jail would have had to send the name, address, date of birth, sex and social security number daily or on request. It would also have had to hand over a photograph and description, and allow an interview. The Arizona House passed it 33-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1610, which would have required county jails to feed information to federal immigration agents. For people arrested on listed offenses, a jail would have had to send the name, address, date of birth, sex and social security number daily or on request. It would also have had to hand over a photograph and description, and allow an interview. The Arizona House passed it 33-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1512282,
+      "measure_id": "SB 1610",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1610, which would have required county jails to feed information to federal immigration agents. For people arrested on listed offenses, a jail would have had to send the name, address, date of birth, sex and social security number daily or on request. It would also have had to hand over a photograph and description, and allow an interview. The Arizona Senate passed it 17-10, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1610, which would have required county jails to feed information to federal immigration agents. For people arrested on listed offenses, a jail would have had to send the name, address, date of birth, sex and social security number daily or on request. It would also have had to hand over a photograph and description, and allow an interview. The Arizona Senate passed it 17-10, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1559077,
+      "measure_id": "SB 1694",
+      "vote_date": "2025-04-28",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1694, which would have cut off all state money to any public university or community college that offers a course on diversity, equity and inclusion. The ban would have applied for the whole financial year in which such a course was offered. The state treasurer, the board of regents and the Department of Administration would all have been barred from paying the institution. The Arizona House passed it 32-23, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1694, which would have cut off all state money to any public university or community college that offers a course on diversity, equity and inclusion. The ban would have applied for the whole financial year in which such a course was offered. The state treasurer, the board of regents and the Department of Administration would all have been barred from paying the institution. The Arizona House passed it 32-23, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1504889,
+      "measure_id": "SB 1694",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1694, which would have cut off all state money to any public university or community college that offers a course on diversity, equity and inclusion. The ban would have applied for the whole financial year in which such a course was offered. The state treasurer, the board of regents and the Department of Administration would all have been barred from paying the institution. The Arizona Senate passed it 16-11, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1694, which would have cut off all state money to any public university or community college that offers a course on diversity, equity and inclusion. The ban would have applied for the whole financial year in which such a course was offered. The state treasurer, the board of regents and the Department of Administration would all have been barred from paying the institution. The Arizona Senate passed it 16-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1550082,
+      "measure_id": "SB 1705",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1705, which would have let a court fine a local official personally for making local gun rules. Arizona reserves firearm regulation to the state. An elected or appointed local official, or an agency head, who knowingly and willfully broke that rule could have been fined up to $5,000. The Arizona House passed it 31-24, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1705, which would have let a court fine a local official personally for making local gun rules. Arizona reserves firearm regulation to the state. An elected or appointed local official, or an agency head, who knowingly and willfully broke that rule could have been fined up to $5,000. The Arizona House passed it 31-24, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1507354,
+      "measure_id": "SB 1705",
+      "vote_date": "2025-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1705, which would have let a court fine a local official personally for making local gun rules. Arizona reserves firearm regulation to the state. An elected or appointed local official, or an agency head, who knowingly and willfully broke that rule could have been fined up to $5,000. The Arizona Senate passed it 16-9, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1705, which would have let a court fine a local official personally for making local gun rules. Arizona reserves firearm regulation to the state. An elected or appointed local official, or an agency head, who knowingly and willfully broke that rule could have been fined up to $5,000. The Arizona Senate passed it 16-9, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

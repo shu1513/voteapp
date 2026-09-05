@@ -10,6 +10,7 @@ import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { safeInternalPath } from "../lib/safeInternalPath";
 import { postLoginDestination } from "../lib/postLoginDestination";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
+import { trackSettled } from "../lib/usage";
 
 export const meta: MetaFunction = () => [{ title: `Log in · ${APP_NAME}` }];
 
@@ -29,11 +30,14 @@ export function LoginPage() {
   const next = safeInternalPath(searchParams.get("next"));
 
   const login = useMutation({
-    mutationFn: () =>
-      apiRequest<{ status: string }>("/api/auth/login", {
+    mutationFn: () => {
+      const request = apiRequest<{ status: string }>("/api/auth/login", {
         method: "POST",
         body: { email: email.trim(), password },
-      }),
+      });
+      trackSettled(request, "auth_result", { action: "login", has_next: next !== null });
+      return request;
+    },
     onSuccess: async () => {
       // A previous session may have ended without a clean logout; cached
       // account data (e.g. ["me","ballot"]) must not bleed into this one.
@@ -52,11 +56,14 @@ export function LoginPage() {
   // account (intent: "login"): a Google user without one is routed to the
   // register page, where the clickwrap checkbox gates the signup.
   const googleLogin = useMutation({
-    mutationFn: (credential: string) =>
-      apiRequest<{ status: string }>("/api/auth/google", {
+    mutationFn: (credential: string) => {
+      const request = apiRequest<{ status: string }>("/api/auth/google", {
         method: "POST",
         body: { credential, intent: "login" },
-      }),
+      });
+      trackSettled(request, "auth_result", { action: "google_login", has_next: next !== null });
+      return request;
+    },
     onSuccess: async () => {
       purgeAccountScopedQueries(queryClient);
       await queryClient.invalidateQueries({ queryKey: ["me"] });

@@ -14,6 +14,7 @@ import { renderRoutes } from "../../test/render";
 import { ME_UNVERIFIED, ME_VERIFIED } from "../../test/fixtures";
 import { apiError, stubApiRoutes, type ApiRoute } from "../../test/mockApi";
 import type { ChatbotAskResponse } from "@voteapp/api-client";
+import { flushUsageEventsForTests, resetUsageForTests } from "../../lib/usage";
 
 const RETRIEVAL_RESPONSE: ChatbotAskResponse = {
   outcome: "retrieval",
@@ -40,7 +41,16 @@ function renderWidgetAt(pathname: string, askRoute: ApiRoute = { body: RETRIEVAL
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.unstubAllEnvs();
 });
+
+type UsageEvent = { name: string; props: Record<string, unknown> };
+/** Every usage event the widget posted, across batches. */
+function usageEvents(fetchMock: ReturnType<typeof stubApiRoutes>): UsageEvent[] {
+  return fetchMock.mock.calls
+    .filter((call) => String(call[0]).endsWith("/api/usage/events"))
+    .flatMap((call) => (JSON.parse((call[1] as RequestInit).body as string) as { events: UsageEvent[] }).events);
+}
 
 describe("visibility rules", () => {
   it("hides on the logged-out home page, shows there when logged in", () => {
@@ -624,6 +634,110 @@ describe("ChatWidget", () => {
     // must not be read out as answer text.
     const chip = screen.getByRole("button", { name: "Who is funding their campaign?" });
     expect(chip.closest('[aria-live="polite"]')).toBeNull();
+  });
+
+  // Usage analytics (docs/plans/usage-analytics.md PR 3): the trail records
+  // how the chat was entered and what kind of answer came back — never the
+  // question, the answer, or a card's URL.
+  it("records open → ask → card click → feedback without any question text", async () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    resetUsageForTests();
+    sessionStorage.clear();
+    const user = userEvent.setup();
+    const fetchMock = stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/chatbot/ask": { body: { ...RETRIEVAL_RESPONSE, feedback_token: "payload.signature" } },
+      "/api/chatbot/feedback": { body: { status: "ok" } },
+      "/api/usage/events": { status: 204, body: null },
+    });
+    renderRoutes([{ path: "*", element: <ChatWidget /> }], "/candidates/44444444-4444-4444-a444-444444444444");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Tell me more about this candidate.");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByText("Here's what our data has on that.");
+    await user.click(screen.getByRole("link", { name: /Jon Ossoff/ }));
+    await user.click(screen.getByRole("button", { name: "Good answer" }));
+    await screen.findByText("Thanks for the feedback.");
+
+    flushUsageEventsForTests();
+    await waitFor(() => expect(usageEvents(fetchMock).some((event) => event.name === "chat_feedback")).toBe(true));
+    const chat = usageEvents(fetchMock).filter((event) => event.name.startsWith("chat_"));
+    expect(chat.map((event) => event.name)).toEqual(["chat_open", "chat_ask", "chat_result_click", "chat_feedback"]);
+    expect(chat[0]!.props).toEqual({ context_kind: "candidate", wall: "none" });
+    expect(chat[1]!.props).toEqual({
+      entry: "typed",
+      context_kind: "candidate",
+      first_turn: true,
+      outcome: "ok",
+      answer: "retrieval",
+      result_count_bucket: "1-3",
+      ai_generated: false,
+    });
+    expect(chat[2]!.props).toEqual({ source: "candidate", position_bucket: "1-3" });
+    expect(chat[3]!.props).toEqual({ verdict: "up", outcome: "ok" });
+    const payload = JSON.stringify(usageEvents(fetchMock));
+    expect(payload).not.toContain("Tell me more");
+    expect(payload).not.toContain("Ossoff");
+    expect(payload).not.toContain("44444444");
+  });
+
+  it("counts the register wall as a chat sign-up prompt", async () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    resetUsageForTests();
+    sessionStorage.clear();
+    const user = userEvent.setup();
+    const fetchMock = stubApiRoutes({
+      "/api/me": apiError(401, "unauthorized", "Not logged in"),
+      "/api/usage/events": { status: 204, body: null },
+    });
+    renderRoutes(
+      [
+        { path: "/ballot", element: <ChatWidget /> },
+        { path: "/register", element: <p>Register page</p> },
+      ],
+      "/ballot"
+    );
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.click(await screen.findByRole("link", { name: "Sign up" }));
+    await screen.findByText("Register page");
+
+    flushUsageEventsForTests();
+    await waitFor(() => expect(usageEvents(fetchMock).some((event) => event.name === "signup_prompt")).toBe(true));
+    const trail = usageEvents(fetchMock)
+      .filter((event) => event.name === "chat_open" || event.name === "signup_prompt")
+      .map((event) => [event.name, event.props]);
+    expect(trail).toEqual([
+      ["chat_open", { context_kind: "none", wall: "register" }],
+      ["signup_prompt", { source: "chat", action: "shown" }],
+      ["signup_prompt", { source: "chat", action: "click" }],
+    ]);
+  });
+
+  it("counts a reopen after a mid-session 401 as the register wall it shows", async () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    resetUsageForTests();
+    sessionStorage.clear();
+    const user = userEvent.setup();
+    const fetchMock = stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/chatbot/ask": apiError(401, "unauthorized", "Session expired"),
+      "/api/usage/events": { status: 204, body: null },
+    });
+    renderRoutes([{ path: "*", element: <ChatWidget /> }], "/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByRole("link", { name: "Sign up" });
+    await user.click(screen.getByRole("button", { name: "Minimize Ask" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    expect(await screen.findByRole("link", { name: "Sign up" })).toBeInTheDocument();
+
+    flushUsageEventsForTests();
+    await waitFor(() => expect(usageEvents(fetchMock).filter((event) => event.name === "chat_open")).toHaveLength(2));
+    expect(usageEvents(fetchMock).filter((event) => event.name === "chat_open").map((event) => event.props.wall)).toEqual([
+      "none",
+      "register",
+    ]);
   });
 
   it("shows no thumbs when the answer carries no feedback token", async () => {

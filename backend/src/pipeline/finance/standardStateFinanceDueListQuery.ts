@@ -24,6 +24,10 @@ export type StandardStateFinanceDueQueryRow = {
   office_scope: string;
   office_name: string;
   district: string | null;
+  /** Present only when the config sets selectElectionDate. */
+  election_date?: string;
+  /** Present only when the config sets selectBallotTitle. */
+  ballot_title?: string;
   source_url: string | null;
   last_synced_at: string | null;
   total_due_rows: string | number;
@@ -71,7 +75,26 @@ export type StandardStateFinanceDueListConfig = {
    * so validated as identifiers at construction.
    */
   linkColumns?: readonly string[];
+  /**
+   * Restrict due links to elections in this stage. Nov-2026-scoped states
+   * that link FROM the general roster only pass "general". Interpolated as a
+   * literal, so the accepted values are a closed list. Default: no stage
+   * filter (every stage the link universe carries).
+   */
+  electionStage?: "general";
+  /**
+   * Also select election.election_date::text AS election_date (between
+   * election_year and office_scope). Read through mapRow. Default false.
+   */
+  selectElectionDate?: boolean;
+  /**
+   * Also select election.official_ballot_title AS ballot_title (between
+   * office_name and district). Read through mapRow. Default false.
+   */
+  selectBallotTitle?: boolean;
 };
+
+const ELECTION_STAGES: readonly string[] = ["general"];
 
 const DEFAULT_LINK_COLUMNS: readonly string[] = ["committee_id", "committee_name"];
 
@@ -90,6 +113,13 @@ function assertIdentifier(value: string): string {
 function assertLinkColumn(value: string): string {
   if (!/^[a-z][a-z0-9_]*$/.test(value)) {
     throw new Error(`Invalid standard finance due-list link column: ${value}`);
+  }
+  return value;
+}
+
+function assertElectionStage(value: string): string {
+  if (!ELECTION_STAGES.includes(value)) {
+    throw new Error(`Invalid standard finance due-list election stage: ${value}`);
   }
   return value;
 }
@@ -128,6 +158,14 @@ function buildDueListSql(config: StandardStateFinanceDueListConfig): string {
   }
   const innerLinkColumns = linkColumns.map((column) => `          link.${column},`).join("\n");
   const outerLinkColumns = linkColumns.map((column) => `        ${column},`).join("\n");
+  // Optional lines are emitted with their trailing newline so an unset option
+  // leaves the canonical template byte-identical.
+  const electionStage = config.electionStage === undefined ? undefined : assertElectionStage(config.electionStage);
+  const stageFilter = electionStage === undefined ? "" : `          AND election.election_stage = '${electionStage}'\n`;
+  const innerElectionDate = config.selectElectionDate ? "          election.election_date::text AS election_date,\n" : "";
+  const outerElectionDate = config.selectElectionDate ? "        election_date,\n" : "";
+  const innerBallotTitle = config.selectBallotTitle ? "          election.official_ballot_title AS ballot_title,\n" : "";
+  const outerBallotTitle = config.selectBallotTitle ? "        ballot_title,\n" : "";
   return `
       WITH due AS (
         SELECT
@@ -139,9 +177,9 @@ function buildDueListSql(config: StandardStateFinanceDueListConfig): string {
             link.candidate_name_normalized
           ) AS candidate_name,
           link.election_year,
-          office.scope AS office_scope,
+${innerElectionDate}          office.scope AS office_scope,
           link.office_name,
-          link.district,
+${innerBallotTitle}          link.district,
 ${innerLinkColumns}
           link.source_url,
           summary.last_synced_at::text AS last_synced_at,
@@ -165,7 +203,7 @@ ${innerLinkColumns}
           AND candidate.deleted_at IS NULL
           AND district.state = '${state}'
           AND election.race_type = 'office'
-          AND election.election_date >= (($1::timestamptz AT TIME ZONE 'UTC')::date - make_interval(days => $4::int))
+${stageFilter}          AND election.election_date >= (($1::timestamptz AT TIME ZONE 'UTC')::date - make_interval(days => $4::int))
           AND election.election_date <= (($1::timestamptz AT TIME ZONE 'UTC')::date + make_interval(days => $5::int))
           AND candidate_election.status NOT IN ('withdrawn', 'lost')
           AND (office.scope || '::' || office.canonical_name) = ANY($6::text[])
@@ -184,9 +222,9 @@ ${innerLinkColumns}
         election_id,
         candidate_name,
         election_year,
-        office_scope,
+${outerElectionDate}        office_scope,
         office_name,
-        district,
+${outerBallotTitle}        district,
 ${outerLinkColumns}
         source_url,
         last_synced_at,

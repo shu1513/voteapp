@@ -96,6 +96,7 @@ export const ME_MEMBERSHIP_CHECKOUT_PATH = "/api/me/membership/checkout";
 export const ME_MEMBERSHIP_PORTAL_PATH = "/api/me/membership/portal";
 export const ME_MEMBERSHIP_CANCEL_PATH = "/api/me/membership/cancel";
 export const ME_MEMBERSHIP_RESUME_PATH = "/api/me/membership/resume";
+export const ME_MEMBERSHIP_AMOUNT_PATH = "/api/me/membership/amount";
 // Stripe webhook: signature-verified raw body, no session auth, exempt from
 // the per-IP rate limiter (Stripe's shared delivery IPs would 429).
 export const STRIPE_WEBHOOK_PATH = "/api/stripe/webhook";
@@ -820,15 +821,7 @@ export function parseMembershipPortalBodyValue(parsed: unknown): MembershipPorta
   return { flow };
 }
 
-export function parseMembershipCheckoutBodyValue(parsed: unknown): MembershipCheckoutPayload {
-  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
-  }
-  const record = parsed as Record<string, unknown>;
-  const kind = record.kind;
-  if (kind !== "one_time" && kind !== "monthly") {
-    throw new TypeError("Body field kind must be one_time or monthly");
-  }
+function parseMembershipAmountCents(record: Record<string, unknown>): number {
   const amountCents = record.amount_cents;
   if (typeof amountCents !== "number" || !Number.isInteger(amountCents)) {
     throw new TypeError("Body field amount_cents must be an integer number of cents");
@@ -839,7 +832,32 @@ export function parseMembershipCheckoutBodyValue(parsed: unknown): MembershipChe
   if (amountCents > MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS) {
     throw new TypeError(`amount_cents must be at most ${MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS} ($1,000.00)`);
   }
-  return { kind, amount_cents: amountCents };
+  return amountCents;
+}
+
+export function parseMembershipCheckoutBodyValue(parsed: unknown): MembershipCheckoutPayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+  const record = parsed as Record<string, unknown>;
+  const kind = record.kind;
+  if (kind !== "one_time" && kind !== "monthly") {
+    throw new TypeError("Body field kind must be one_time or monthly");
+  }
+  return { kind, amount_cents: parseMembershipAmountCents(record) };
+}
+
+// Amount change (docs/plans/membership-manage-page.md): the same money
+// bounds as checkout; the new amount bills at a future renewal, never today.
+export type MembershipAmountPayload = {
+  amount_cents: number;
+};
+
+export function parseMembershipAmountBodyValue(parsed: unknown): MembershipAmountPayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+  return { amount_cents: parseMembershipAmountCents(parsed as Record<string, unknown>) };
 }
 
 export function parseInitializeUserDistrictsBodyValue(parsed: unknown): InitializeUserDistrictsPayload {

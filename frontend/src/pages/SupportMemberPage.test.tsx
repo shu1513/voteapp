@@ -14,6 +14,7 @@ const ACTIVE_MEMBER = {
     cancel_at_period_end: false,
     current_period_end: "2026-09-15T12:00:00.000Z",
     started_at: "2026-08-15T12:00:00.000Z",
+    pending_amount_change: null,
   },
   total_net_cents: 500,
   payments: [],
@@ -84,18 +85,32 @@ describe("SupportMemberPage", () => {
     expect(screen.getByRole("link", { name: "Terms of Use" })).toHaveAttribute("href", "/terms");
   });
 
-  it("shows an existing member their plan instead of the form", async () => {
+  it("points an existing member at the membership page instead of the form", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/membership": { body: ACTIVE_MEMBER },
     });
     renderPage();
 
-    expect(
-      await screen.findByText(/Monthly supporter: \$5\.00\/month since August 15, 2026/)
-    ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Manage membership" })).toBeEnabled();
+    expect(await screen.findByText(/You're already an honorary member/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Manage membership" })).toHaveAttribute("href", "/me/membership");
     expect(screen.queryByRole("button", { name: "Become an honorary member" })).not.toBeInTheDocument();
+    // The one-time path stays open to members.
+    expect(screen.getByRole("link", { name: "Support once" })).toHaveAttribute("href", "/support/once");
+  });
+
+  it("never calls an unconfirmed first payment a member", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/membership": {
+        body: { ...ACTIVE_MEMBER, membership: { ...ACTIVE_MEMBER.membership, stripe_status: "incomplete" } },
+      },
+    });
+    renderPage();
+
+    expect(await screen.findByText("Your membership is being set up.")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Manage membership" })).toHaveAttribute("href", "/me/membership");
+    expect(screen.queryByText(/honorary member — thank you/)).not.toBeInTheDocument();
   });
 
   it("thanks the supporter returning from Checkout and locks the form", async () => {

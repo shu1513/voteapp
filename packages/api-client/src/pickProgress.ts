@@ -21,19 +21,19 @@ export type PickProgress = {
  * drift: plain until the first pick (no homework-flavored "0/8", and no
  * counter while the queries haven't settled — a counter that flashes in
  * later is fine, a wrong one is not), then counting up, then the earned name
- * "My Picks ✓" when every race on the nearest election day is decided.
+ * "My Draft ✓" when every race on the nearest election day is decided.
  */
 export function myDraftLabel(progress: PickProgress | null): string {
   return progress && progress.picked > 0
     ? progress.complete
-      ? "My Picks ✓"
+      ? "My Draft ✓"
       : `My Draft ${progress.picked}/${progress.total}`
     : "My Draft";
 }
 
 /**
- * Pick progress over the nearest upcoming election day ("My Picks 4/13" →
- * "My Picks ✓"): the same denominator as that day's draft card. Null means
+ * Pick progress over the nearest upcoming election day ("My Draft 4/13" →
+ * "My Draft ✓"): the same denominator as that day's draft card. Null means
  * no counter (ballot or choices not loaded, or no upcoming races). Pure —
  * each platform's hook supplies its own ballot fetch and today string; only
  * id + election_date are read so any election payload shape qualifies.

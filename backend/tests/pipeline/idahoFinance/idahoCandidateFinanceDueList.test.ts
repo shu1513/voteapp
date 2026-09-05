@@ -42,8 +42,10 @@ describe("listDueIdahoCandidateFinanceSyncRows", () => {
     const [sql, params] = db.query.mock.calls[0]!;
     expect(String(sql)).toContain("id_candidate_finance_links");
     expect(String(sql)).toContain("id_candidate_finance_summaries");
-    expect(String(sql)).toContain("election.election_stage='general'");
-    expect(String(sql)).toContain("district_row.state='ID'");
+    // Builder wording (the bespoke query wrote these without spaces and
+    // aliased districts as district_row); same predicates.
+    expect(String(sql)).toContain("election.election_stage = 'general'");
+    expect(String(sql)).toContain("district.state = 'ID'");
     expect(String(sql)).toContain("link.registration_guid");
     expect(params).toEqual(["2026-09-03T00:00:00.000Z", 7, 25, 98, 730, [...IDAHO_FINANCE_ELIGIBLE_OFFICE_KEYS]]);
 

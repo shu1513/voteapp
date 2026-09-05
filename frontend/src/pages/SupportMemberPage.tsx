@@ -1,7 +1,7 @@
 import type { MetaFunction } from "react-router";
 import { Link, useLocation } from "react-router";
 import { APP_NAME, useMe } from "@voteapp/api-client";
-import { SupportCheckout } from "../components/MembershipSection";
+import { SupportCheckout } from "../components/SupportCheckout";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { pageMeta } from "../lib/pageMeta";
 
@@ -16,7 +16,7 @@ export const meta: MetaFunction = () =>
 // one-time form competes for attention. The amount is picked here because
 // Stripe's hosted Checkout cannot take a customer-chosen recurring amount;
 // the button hands off to Stripe to pay. Verified login required by the
-// membership endpoints; an existing member sees their plan and the portal.
+// membership endpoints; an existing member is pointed at /me/membership.
 export default function SupportMemberPage() {
   const { me } = useMe();
   // ?next preserves the FULL url, query included: a Stripe return

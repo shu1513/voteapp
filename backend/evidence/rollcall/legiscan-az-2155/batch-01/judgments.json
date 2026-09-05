@@ -1,0 +1,274 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1494778,
+      "measure_id": "HB 2110",
+      "vote_date": "2025-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2110, which changes how much older commercial property a city must open up for housing. The old law let a city stop at 10 percent of its commercial, office, and mixed-use property. The new law makes 10 percent a floor, not a ceiling. It counts the share by parcel instead of by building. A city may no longer pick which parcels qualify, or rule out a parcel that is quiet enough to live on. The Arizona House passed it 42-16, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2110, which changes how much older commercial property a city must open up for housing. The old law let a city stop at 10 percent of its commercial, office, and mixed-use property. The new law makes 10 percent a floor, not a ceiling. It counts the share by parcel instead of by building. A city may no longer pick which parcels qualify, or rule out a parcel that is quiet enough to live on. The Arizona House passed it 42-16, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1567388,
+      "measure_id": "HB 2928",
+      "vote_date": "2025-05-07",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2928, which makes counties allow small second homes on lots zoned for one house. A county must permit at least one attached and one detached unit. A lot of an acre or more may get another. Counties may not demand extra parking, extra fees, a design that matches the main house, or a prior tie between the two households. The bill also lets local governments require an owner to live on site when a lot with one of these units is rented out short term. It takes historic districts out of a fast-track review. The Arizona Senate passed it 21-6, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2928, which makes counties allow small second homes on lots zoned for one house. A county must permit at least one attached and one detached unit. A lot of an acre or more may get another. Counties may not demand extra parking, extra fees, a design that matches the main house, or a prior tie between the two households. The bill also lets local governments require an owner to live on site when a lot with one of these units is rented out short term. It takes historic districts out of a fast-track review. The Arizona Senate passed it 21-6, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1567301,
+      "measure_id": "SB 1353",
+      "vote_date": "2025-05-07",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1353, which speeds up city review of home building permits. In a city of 30,000 or more people, once the city has approved a home's construction documents and allowed building to start on the lot or subdivision, it has 15 working days to answer the permit request for a single-family home. If it does not answer, an outside reviewer the city picks may do the review. The city must keep a list of at least three such reviewers. A city also may not change or cancel a plan it has already approved while the work is under way, apart from listed exceptions. If the city wants corrections, it must meet the builder within 10 working days and explain them. The Arizona House passed it 44-14, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1353, which speeds up city review of home building permits. In a city of 30,000 or more people, once the city has approved a home's construction documents and allowed building to start on the lot or subdivision, it has 15 working days to answer the permit request for a single-family home. If it does not answer, an outside reviewer the city picks may do the review. The city must keep a list of at least three such reviewers. A city also may not change or cancel a plan it has already approved while the work is under way, apart from listed exceptions. If the city wants corrections, it must meet the builder within 10 working days and explain them. The Arizona House passed it 44-14, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1595696,
+      "measure_id": "SB 1529",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1529, which makes cities keep a set of ready-made house plans that any builder can use. A city must offer at least three designs, each with at least three outside looks. Plans for single-family homes and small second homes start in July 2026, and plans for duplexes and triplexes start in January 2027. Cities must post the approved plans and the plan owner's contact details on their website. Building from a plan that is already approved is meant to cut the time and cost of getting a permit. The Arizona House passed it 44-12, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1529, which makes cities keep a set of ready-made house plans that any builder can use. A city must offer at least three designs, each with at least three outside looks. Plans for single-family homes and small second homes start in July 2026, and plans for duplexes and triplexes start in January 2027. Cities must post the approved plans and the plan owner's contact details on their website. Building from a plan that is already approved is meant to cut the time and cost of getting a permit. The Arizona House passed it 44-12, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1562137,
+      "measure_id": "SB 1590",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1590, which removes the yearly dollar limit on insurance coverage for autism therapy. The old law paid for no more than $50,000 of that therapy a year for a child under 9. For a child aged 9 through 15 the limit was $25,000 a year. The new law drops both limits. It also defines autism by the current psychiatric manual, rather than by a fixed list of three conditions. The Arizona House passed it 43-12, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1590, which removes the yearly dollar limit on insurance coverage for autism therapy. The old law paid for no more than $50,000 of that therapy a year for a child under 9. For a child aged 9 through 15 the limit was $25,000 a year. The new law drops both limits. It also defines autism by the current psychiatric manual, rather than by a fixed list of three conditions. The Arizona House passed it 43-12, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1584733,
+      "measure_id": "SB 1247",
+      "vote_date": "2025-06-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1247, which raises the age for buying or having tobacco and vaping products from 18 to 21, matching federal law. Someone aged 18 to 20 who is serving in the armed forces or the National Guard may still have and use them. This bill started out as a measure about the Arizona teachers academy, and the House replaced its entire text with the tobacco rules. The Arizona House passed it 39-13, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1247, which raises the age for buying or having tobacco and vaping products from 18 to 21, matching federal law. Someone aged 18 to 20 who is serving in the armed forces or the National Guard may still have and use them. This bill started out as a measure about the Arizona teachers academy, and the House replaced its entire text with the tobacco rules. The Arizona House passed it 39-13, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1528727,
+      "measure_id": "SB 1159",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1159, which raises the size of an unpaid wage claim a worker can bring to the Industrial Commission of Arizona from $5,000 to $12,000. That office can collect unpaid wages for a worker without the worker having to sue. A worker whose claim is larger than the limit still has to go to court. The Arizona House passed it 42-15, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1159, which raises the size of an unpaid wage claim a worker can bring to the Industrial Commission of Arizona from $5,000 to $12,000. That office can collect unpaid wages for a worker without the worker having to sue. A worker whose claim is larger than the limit still has to go to court. The Arizona House passed it 42-15, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1495180,
+      "measure_id": "HB 2291",
+      "vote_date": "2025-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2291, which ends the rule that a pharmacist must put a red cap on a bottle of prescription opioids. Lawmakers added the red cap in 2018 so that strong painkillers would stand out in a medicine cabinet. The warning label about the risk of addiction stays in place, and the state pharmacy board loses the power it had to excuse a pharmacy from the red cap rule. The Arizona House passed it 36-22, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2291, which ends the rule that a pharmacist must put a red cap on a bottle of prescription opioids. Lawmakers added the red cap in 2018 so that strong painkillers would stand out in a medicine cabinet. The warning label about the risk of addiction stays in place, and the state pharmacy board loses the power it had to excuse a pharmacy from the red cap rule. The Arizona House passed it 36-22, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1532796,
+      "measure_id": "HB 2291",
+      "vote_date": "2025-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2291, which ends the rule that a pharmacist must put a red cap on a bottle of prescription opioids. Lawmakers added the red cap in 2018 so that strong painkillers would stand out in a medicine cabinet. The warning label about the risk of addiction stays in place, and the state pharmacy board loses the power it had to excuse a pharmacy from the red cap rule. The Arizona Senate passed it 16-13, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2291, which ends the rule that a pharmacist must put a red cap on a bottle of prescription opioids. Lawmakers added the red cap in 2018 so that strong painkillers would stand out in a medicine cabinet. The warning label about the risk of addiction stays in place, and the state pharmacy board loses the power it had to excuse a pharmacy from the red cap rule. The Arizona Senate passed it 16-13, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1503490,
+      "measure_id": "HB 2607",
+      "vote_date": "2025-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2607, which sets fixed prison terms for carrying a large amount of fentanyl in a vehicle. The terms apply to someone convicted of having or moving at least 200 grams of fentanyl for sale in a motor vehicle. That person faces 5 years at the low end, 10 years as the standard term, and 15 years at the top. A second such conviction raises those terms to 10, 15, and 20 years. A judge may still move the standard term up or down for reasons already set out in state law. The Arizona House passed it 46-12, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2607, which sets fixed prison terms for carrying a large amount of fentanyl in a vehicle. The terms apply to someone convicted of having or moving at least 200 grams of fentanyl for sale in a motor vehicle. That person faces 5 years at the low end, 10 years as the standard term, and 15 years at the top. A second such conviction raises those terms to 10, 15, and 20 years. A judge may still move the standard term up or down for reasons already set out in state law. The Arizona House passed it 46-12, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1549814,
+      "measure_id": "HB 2607",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2607, which sets fixed prison terms for carrying a large amount of fentanyl in a vehicle. The terms apply to someone convicted of having or moving at least 200 grams of fentanyl for sale in a motor vehicle. That person faces 5 years at the low end, 10 years as the standard term, and 15 years at the top. A second such conviction raises those terms to 10, 15, and 20 years. A judge may still move the standard term up or down for reasons already set out in state law. The Arizona Senate passed it 17-13, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2607, which sets fixed prison terms for carrying a large amount of fentanyl in a vehicle. The terms apply to someone convicted of having or moving at least 200 grams of fentanyl for sale in a motor vehicle. That person faces 5 years at the low end, 10 years as the standard term, and 15 years at the top. A second such conviction raises those terms to 10, 15, and 20 years. A judge may still move the standard term up or down for reasons already set out in state law. The Arizona Senate passed it 17-13, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1487550,
+      "measure_id": "HB 2114",
+      "vote_date": "2025-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2114, which raises the penalty for an adult who has sex with a teenager aged 15 to 17. That offense becomes a class 4 felony instead of a class 6 felony when the adult is older than 21 and more than five years older than the teenager. Anyone convicted who is put on probation rather than sent to prison must serve one year in jail. The Arizona House passed it 39-20, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2114, which raises the penalty for an adult who has sex with a teenager aged 15 to 17. That offense becomes a class 4 felony instead of a class 6 felony when the adult is older than 21 and more than five years older than the teenager. Anyone convicted who is put on probation rather than sent to prison must serve one year in jail. The Arizona House passed it 39-20, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1534405,
+      "measure_id": "HB 2114",
+      "vote_date": "2025-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2114, which raises the penalty for an adult who has sex with a teenager aged 15 to 17. That offense becomes a class 4 felony instead of a class 6 felony when the adult is older than 21 and more than five years older than the teenager. Anyone convicted who is put on probation rather than sent to prison must serve one year in jail. The Arizona Senate passed it 17-13, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2114, which raises the penalty for an adult who has sex with a teenager aged 15 to 17. That offense becomes a class 4 felony instead of a class 6 felony when the adult is older than 21 and more than five years older than the teenager. Anyone convicted who is put on probation rather than sent to prison must serve one year in jail. The Arizona Senate passed it 17-13, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1567335,
+      "measure_id": "SB 1351",
+      "vote_date": "2025-05-07",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1351, which creates a new crime called gift card theft. A person commits it by taking a gift card or its numbers without the holder's consent, by getting them by exploiting the holder, or by spending a card obtained either way. The crime is a class 4 felony, and forging a gift card now counts as forgery. The law covers physical and digital cards, activated or not. The Arizona House passed it 33-25, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1351, which creates a new crime called gift card theft. A person commits it by taking a gift card or its numbers without the holder's consent, by getting them by exploiting the holder, or by spending a card obtained either way. The crime is a class 4 felony, and forging a gift card now counts as forgery. The law covers physical and digital cards, activated or not. The Arizona House passed it 33-25, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1504424,
+      "measure_id": "SB 1351",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1351, which creates a new crime called gift card theft. A person commits it by taking a gift card or its numbers without the holder's consent, by getting them by exploiting the holder, or by spending a card obtained either way. The crime is a class 4 felony, and forging a gift card now counts as forgery. The law covers physical and digital cards, activated or not. The Arizona Senate passed it 16-10, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1351, which creates a new crime called gift card theft. A person commits it by taking a gift card or its numbers without the holder's consent, by getting them by exploiting the holder, or by spending a card obtained either way. The crime is a class 4 felony, and forging a gift card now counts as forgery. The law covers physical and digital cards, activated or not. The Arizona Senate passed it 16-10, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

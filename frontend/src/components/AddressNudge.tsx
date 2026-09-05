@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { track } from "../lib/usage";
 
 // The pick gate's state-3 conversion nudge (docs/plans/pick-district-gate.md):
 // rendered where the pick controls would sit when the viewer's districts are
@@ -9,7 +10,7 @@ import { Link } from "react-router";
 export function AddressNudge() {
   return (
     <p className="rounded-md border border-nudge-line bg-nudge px-3 py-2 text-sm text-ink">
-      <Link to="/" className="font-medium text-nudge-deep underline hover:text-ink">
+      <Link to="/" onClick={() => track("address_nudge_click")} className="font-medium text-nudge-deep underline hover:text-ink">
         Enter your address
       </Link>{" "}
       to check if you can vote in this race.

@@ -1,0 +1,476 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1478874,
+      "measure_id": "HB 2074",
+      "vote_date": "2025-02-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2074, which widens what the state School Safety Program pays for. Schools may now use the money for school safety officers and for safety equipment, training and building work, not just for resource officers and counselors. A school that takes the money must have an emergency response plan and a yearly safety check, and must share its floor plans with local police, fire and ambulance services. Officers placed under the program must be trained in student privacy law, civil rights and teenage mental health. School floor plans are also closed to public records requests. The Arizona House passed it 35-24, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2074, which widens what the state School Safety Program pays for. Schools may now use the money for school safety officers and for safety equipment, training and building work, not just for resource officers and counselors. A school that takes the money must have an emergency response plan and a yearly safety check, and must share its floor plans with local police, fire and ambulance services. Officers placed under the program must be trained in student privacy law, civil rights and teenage mental health. School floor plans are also closed to public records requests. The Arizona House passed it 35-24, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1560390,
+      "measure_id": "HB 2074",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2074, which widens what the state School Safety Program pays for. Schools may now use the money for school safety officers and for safety equipment, training and building work, not just for resource officers and counselors. A school that takes the money must have an emergency response plan and a yearly safety check, and must share its floor plans with local police, fire and ambulance services. Officers placed under the program must be trained in student privacy law, civil rights and teenage mental health. School floor plans are also closed to public records requests. The Arizona Senate passed it 17-12, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2074, which widens what the state School Safety Program pays for. Schools may now use the money for school safety officers and for safety equipment, training and building work, not just for resource officers and counselors. A school that takes the money must have an emergency response plan and a yearly safety check, and must share its floor plans with local police, fire and ambulance services. Officers placed under the program must be trained in student privacy law, civil rights and teenage mental health. School floor plans are also closed to public records requests. The Arizona Senate passed it 17-12, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1500460,
+      "measure_id": "HB 2173",
+      "vote_date": "2025-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2173, which bars a health licensing board from asking on its application whether the applicant has ever sought mental health help or been diagnosed or treated. The ban covers boards that license doctors, nurses and other health workers. A board may still ask whether the applicant is currently under another state's order to monitor a health condition, including substance use. The applicant need not answer even that if the monitoring is part of a confidential program. The Arizona House passed it 34-25, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2173, which bars a health licensing board from asking on its application whether the applicant has ever sought mental health help or been diagnosed or treated. The ban covers boards that license doctors, nurses and other health workers. A board may still ask whether the applicant is currently under another state's order to monitor a health condition, including substance use. The applicant need not answer even that if the monitoring is part of a confidential program. The Arizona House passed it 34-25, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1568089,
+      "measure_id": "HB 2195",
+      "vote_date": "2025-05-07",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2195, which makes apps aimed at children keep mature advertising off their screens. An app that is directed at children must take appropriate steps to stop such ads from appearing. The law lists the factors that decide whether an app counts as directed at children. The Attorney General enforces it, and a breach can cost up to $100,000. The rules start on January 1, 2027. The Arizona Senate passed it 16-9, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2195, which makes apps aimed at children keep mature advertising off their screens. An app that is directed at children must take appropriate steps to stop such ads from appearing. The law lists the factors that decide whether an app counts as directed at children. The Attorney General enforces it, and a breach can cost up to $100,000. The rules start on January 1, 2027. The Arizona Senate passed it 16-9, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1500064,
+      "measure_id": "HB 2374",
+      "vote_date": "2025-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2374, which targets foreign governments that go after people living in Arizona. Stalking, threats, harassment and assault each move up one offense class when an agent of a foreign government or a foreign terrorist group does them. The law also bars foreign police from working in Arizona without permission. The state police must build a training course so officers can spot this kind of pressure and act on it. The Arizona House passed it 35-25, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2374, which targets foreign governments that go after people living in Arizona. Stalking, threats, harassment and assault each move up one offense class when an agent of a foreign government or a foreign terrorist group does them. The law also bars foreign police from working in Arizona without permission. The state police must build a training course so officers can spot this kind of pressure and act on it. The Arizona House passed it 35-25, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1592838,
+      "measure_id": "HB 2374",
+      "vote_date": "2025-06-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2374, which targets foreign governments that go after people living in Arizona. Stalking, threats, harassment and assault each move up one offense class when an agent of a foreign government or a foreign terrorist group does them. The law also bars foreign police from working in Arizona without permission. The state police must build a training course so officers can spot this kind of pressure and act on it. The Arizona Senate passed it 16-12, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2374, which targets foreign governments that go after people living in Arizona. Stalking, threats, harassment and assault each move up one offense class when an agent of a foreign government or a foreign terrorist group does them. The law also bars foreign police from working in Arizona without permission. The state police must build a training course so officers can spot this kind of pressure and act on it. The Arizona Senate passed it 16-12, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1592311,
+      "measure_id": "HB 2386",
+      "vote_date": "2025-06-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2386, which is meant to help the state police compete on pay. The Department of Public Safety must set yearly pay benchmarks for each rank, based on what the three largest county or city police agencies in Arizona pay for comparable ranks. It then uses those benchmarks to decide how much to spend from the existing Parity Compensation Fund on recruiting and keeping officers. The pay benchmarks go into the yearly report on state personnel. The Arizona Senate passed it 22-6, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2386, which is meant to help the state police compete on pay. The Department of Public Safety must set yearly pay benchmarks for each rank, based on what the three largest county or city police agencies in Arizona pay for comparable ranks. It then uses those benchmarks to decide how much to spend from the existing Parity Compensation Fund on recruiting and keeping officers. The pay benchmarks go into the yearly report on state personnel. The Arizona Senate passed it 22-6, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1499431,
+      "measure_id": "HB 2447",
+      "vote_date": "2025-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2447, which turns several optional city practices into required ones. A city must let staff sign off site plans, development plans, land splits, lot line changes and plats without a public hearing. It must let staff approve design plans against written standards. It must allow early grading and drainage work at the builder's own risk. And it must offer faster review to builders with a record of following the rules. The duties start in January 2026. The Arizona House passed it 38-22, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2447, which turns several optional city practices into required ones. A city must let staff sign off site plans, development plans, land splits, lot line changes and plats without a public hearing. It must let staff approve design plans against written standards. It must allow early grading and drainage work at the builder's own risk. And it must offer faster review to builders with a record of following the rules. The duties start in January 2026. The Arizona House passed it 38-22, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1527485,
+      "measure_id": "HB 2447",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2447, which turns several optional city practices into required ones. A city must let staff sign off site plans, development plans, land splits, lot line changes and plats without a public hearing. It must let staff approve design plans against written standards. It must allow early grading and drainage work at the builder's own risk. And it must offer faster review to builders with a record of following the rules. The duties start in January 2026. The Arizona Senate passed it 19-8, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2447, which turns several optional city practices into required ones. A city must let staff sign off site plans, development plans, land splits, lot line changes and plats without a public hearing. It must let staff approve design plans against written standards. It must allow early grading and drainage work at the builder's own risk. And it must offer faster review to builders with a record of following the rules. The duties start in January 2026. The Arizona Senate passed it 19-8, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1527483
+      ],
+      "note": "Roll 1527483 is the Senate third reading that FAILED 15-12 earlier the same day. The Senate then moved to reconsider and passed the bill 19-8 on roll 1527485, which is the vote judged here. The bill history records all three steps on 2025-03-26."
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1544413,
+      "measure_id": "HB 2514",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2514, which limits what a school may give out about a student. Some student details count as directory information a school may release. Before treating anything that way, the school must tell the parent or the adult student which details it means, that they can say no, and by when they must put that in writing. A school may not give out a student's address, phone number or email without that consent, unless the law requires it. The Arizona Senate passed it 18-11, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2514, which limits what a school may give out about a student. Some student details count as directory information a school may release. Before treating anything that way, the school must tell the parent or the adult student which details it means, that they can say no, and by when they must put that in writing. A school may not give out a student's address, phone number or email without that consent, unless the law requires it. The Arizona Senate passed it 18-11, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1560913,
+      "measure_id": "HB 2611",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2611, known as Preston's Law, which makes a group attack a more serious crime. Assaulting one person while helped by two or more accomplices now counts as aggravated assault if the victim is physically injured. That form of the crime is a class 4 felony. Before this law the same conduct could be charged as ordinary assault, a misdemeanor. The Arizona Senate passed it 18-10, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2611, known as Preston's Law, which makes a group attack a more serious crime. Assaulting one person while helped by two or more accomplices now counts as aggravated assault if the victim is physically injured. That form of the crime is a class 4 felony. Before this law the same conduct could be charged as ordinary assault, a misdemeanor. The Arizona Senate passed it 18-10, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1550194,
+      "measure_id": "HB 2653",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2653, which lets crime victims and witnesses keep their names out of records given to the public. A victim may ask for the name to be blacked out where police reasonably expect that releasing it would bring harassment, threats or pressure on a witness. The shield does not cover records passed between police, prosecutors and the courts, or given to the defense. It also does not apply if the victim has died, has agreed to release, or if a judge orders it. The Arizona Senate passed it 22-7, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2653, which lets crime victims and witnesses keep their names out of records given to the public. A victim may ask for the name to be blacked out where police reasonably expect that releasing it would bring harassment, threats or pressure on a witness. The shield does not cover records passed between police, prosecutors and the courts, or given to the defense. It also does not apply if the victim has died, has agreed to release, or if a judge orders it. The Arizona Senate passed it 22-7, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1503753,
+      "measure_id": "HB 2880",
+      "vote_date": "2025-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2880, which bans encampments on university and community college campuses. An encampment means a temporary shelter, including a tent, used to stay on campus overnight or for a long period. Administrators must order any group that sets one up to take it down and leave, warn them that staying is criminal trespass, go to court or the police to have them removed, and discipline any student who refuses. Police and campus security may clear an encampment themselves. Anyone who takes part is liable for the cost of repairing damage they caused. The Arizona House passed it 41-17, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2880, which bans encampments on university and community college campuses. An encampment means a temporary shelter, including a tent, used to stay on campus overnight or for a long period. Administrators must order any group that sets one up to take it down and leave, warn them that staying is criminal trespass, go to court or the police to have them removed, and discipline any student who refuses. Police and campus security may clear an encampment themselves. Anyone who takes part is liable for the cost of repairing damage they caused. The Arizona House passed it 41-17, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1562091,
+      "measure_id": "HB 2880",
+      "vote_date": "2025-04-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2880, which bans encampments on university and community college campuses. An encampment means a temporary shelter, including a tent, used to stay on campus overnight or for a long period. Administrators must order any group that sets one up to take it down and leave, warn them that staying is criminal trespass, go to court or the police to have them removed, and discipline any student who refuses. Police and campus security may clear an encampment themselves. Anyone who takes part is liable for the cost of repairing damage they caused. The Arizona Senate passed it 18-10, and the Governor signed it into law.",
+      "nay_description": "Voted against House Bill 2880, which bans encampments on university and community college campuses. An encampment means a temporary shelter, including a tent, used to stay on campus overnight or for a long period. Administrators must order any group that sets one up to take it down and leave, warn them that staying is criminal trespass, go to court or the police to have them removed, and discipline any student who refuses. Police and campus security may clear an encampment themselves. Anyone who takes part is liable for the cost of repairing damage they caused. The Arizona Senate passed it 18-10, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1527145,
+      "measure_id": "SB 1060",
+      "vote_date": "2025-03-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1060, which changes how a police force questions one of its own officers. An officer facing an internal inquiry must get the papers first. The employer has to hand over any relevant material it has on hand at least 24 hours before the interview. Three things excuse that. The officer can waive it. The employer can decide an earlier interview will keep the officer's account clean. Or the evidence can mean the interview must happen within a day of a major incident. The Arizona House passed it 38-20, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1060, which changes how a police force questions one of its own officers. An officer facing an internal inquiry must get the papers first. The employer has to hand over any relevant material it has on hand at least 24 hours before the interview. Three things excuse that. The officer can waive it. The employer can decide an earlier interview will keep the officer's account clean. Or the evidence can mean the interview must happen within a day of a major incident. The Arizona House passed it 38-20, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1501530,
+      "measure_id": "SB 1060",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1060, which changes how a police force questions one of its own officers. An officer facing an internal inquiry must get the papers first. The employer has to hand over any relevant material it has on hand at least 24 hours before the interview. Three things excuse that. The officer can waive it. The employer can decide an earlier interview will keep the officer's account clean. Or the evidence can mean the interview must happen within a day of a major incident. The Arizona Senate passed it 20-9, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1060, which changes how a police force questions one of its own officers. An officer facing an internal inquiry must get the papers first. The employer has to hand over any relevant material it has on hand at least 24 hours before the interview. Three things excuse that. The officer can waive it. The employer can decide an earlier interview will keep the officer's account clean. Or the evidence can mean the interview must happen within a day of a major incident. The Arizona Senate passed it 20-9, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1565057,
+      "measure_id": "SB 1295",
+      "vote_date": "2025-05-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1295, which makes a convincing fake of a real person a crime. It is now criminal impersonation to use a computer-made voice, image or video of someone else to cheat people. Doing so is a class 5 felony. Comedy, parody, art and criticism are not covered, and neither is anything a reasonable person can see has been altered. The Arizona House passed it 40-17, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1295, which makes a convincing fake of a real person a crime. It is now criminal impersonation to use a computer-made voice, image or video of someone else to cheat people. Doing so is a class 5 felony. Comedy, parody, art and criticism are not covered, and neither is anything a reasonable person can see has been altered. The Arizona House passed it 40-17, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1563753,
+      "measure_id": "SB 1307",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1307, which tells the state to plan for small electric aircraft. From September 2026 the Department of Transportation must write a statewide plan, or add to the existing aviation plan, covering public landing pads for these aircraft, charging stations and what else the technology needs. It must consult airports, airlines and federal regulators, and name an in-house expert that cities and regions can turn to. The law orders a plan; it does not itself build anything. The Arizona House passed it 44-12, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1307, which tells the state to plan for small electric aircraft. From September 2026 the Department of Transportation must write a statewide plan, or add to the existing aviation plan, covering public landing pads for these aircraft, charging stations and what else the technology needs. It must consult airports, airlines and federal regulators, and name an in-house expert that cities and regions can turn to. The law orders a plan; it does not itself build anything. The Arizona House passed it 44-12, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1504554,
+      "measure_id": "SB 1308",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1308, which tightens the rules for sober living homes. State health standards must require each home to keep an environment that supports residents' recovery and safety and that of the surrounding neighborhood, and to stay free of alcohol and illegal drugs. Standards must also cover independent living and life skills. The cap on the fine for breaking the rules doubles from $500 to $1,000, and the law sets out how homes are inspected and penalized when they do not comply. The Arizona Senate passed it 20-7, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1308, which tightens the rules for sober living homes. State health standards must require each home to keep an environment that supports residents' recovery and safety and that of the surrounding neighborhood, and to stay free of alcohol and illegal drugs. Standards must also cover independent living and life skills. The cap on the fine for breaking the rules doubles from $500 to $1,000, and the law sets out how homes are inspected and penalized when they do not comply. The Arizona Senate passed it 20-7, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1558911,
+      "measure_id": "SB 1316",
+      "vote_date": "2025-04-28",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1316, which makes Arizona's review of mothers who die permanent. The Maternal Mortality Review Program takes this work over from the child death team. It looks at how often deaths tied to pregnancy happen, what causes them, and which could have been avoided. The program must collect the data, train the agencies that help, run the case reviews, and say whether state law and services need to change. The Arizona House passed it 42-14, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1316, which makes Arizona's review of mothers who die permanent. The Maternal Mortality Review Program takes this work over from the child death team. It looks at how often deaths tied to pregnancy happen, what causes them, and which could have been avoided. The program must collect the data, train the agencies that help, run the case reviews, and say whether state law and services need to change. The Arizona House passed it 42-14, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1541854,
+      "measure_id": "SB 1333",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1333, which pushes the state to place foster children in family homes rather than group settings. The Department of Child Safety must keep enough licensed foster homes that a child can be placed in the one that best suits their needs. When a child is put in a group setting instead, the department must follow set steps and report within 30 days. A group foster home that gives a child medicine must have written procedures for how it does so and how it provides qualified health care around the clock. The Arizona House passed it 44-11, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1333, which pushes the state to place foster children in family homes rather than group settings. The Department of Child Safety must keep enough licensed foster homes that a child can be placed in the one that best suits their needs. When a child is put in a group setting instead, the department must follow set steps and report within 30 days. A group foster home that gives a child medicine must have written procedures for how it does so and how it provides qualified health care around the clock. The Arizona House passed it 44-11, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1551353,
+      "measure_id": "SB 1378",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1378, which stops a homeowners association banning a political flag. State law already barred these groups from banning political signs. A flag now counts as one. The rule covers a sign or flag that tries to sway an election, a recall, or the gathering of names for a ballot measure. The Arizona House passed it 32-25, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1378, which stops a homeowners association banning a political flag. State law already barred these groups from banning political signs. A flag now counts as one. The rule covers a sign or flag that tries to sway an election, a recall, or the gathering of names for a ballot measure. The Arizona House passed it 32-25, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1520278,
+      "measure_id": "SB 1437",
+      "vote_date": "2025-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1437, which widens who must report suspected abuse of a child at school. School board members, charter school board members and substitute teachers now carry the same duty to report as other school staff. A school resource officer or school safety officer who receives such a report must pass it straight to the police force covering the area, with everything they have. A student thought to be a victim may be interviewed only under the county's agreed protocol. The Arizona House passed it 38-20, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1437, which widens who must report suspected abuse of a child at school. School board members, charter school board members and substitute teachers now carry the same duty to report as other school staff. A school resource officer or school safety officer who receives such a report must pass it straight to the police force covering the area, with everything they have. A student thought to be a victim may be interviewed only under the county's agreed protocol. The Arizona House passed it 38-20, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1545093,
+      "measure_id": "SB 1461",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1461, which protects a police officer who is promoted and then fails the probation that goes with the higher rank. The employer may no longer dismiss that officer and may only demote them. The employer can still dismiss any officer for just cause at any time. The protection does not cover a recruit promoted out of the police academy, or an officer who transfers in from another force and fails an initial probation. The Arizona House passed it 42-17, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1461, which protects a police officer who is promoted and then fails the probation that goes with the higher rank. The employer may no longer dismiss that officer and may only demote them. The employer can still dismiss any officer for just cause at any time. The protection does not cover a recruit promoted out of the police academy, or an officer who transfers in from another force and fails an initial probation. The Arizona House passed it 42-17, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1551093,
+      "measure_id": "SB 1462",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1462, which extends Arizona's law on sharing explicit images to fakes made by computer. The crime now covers an image that looks like a real, named person but was made or changed with software, artificial intelligence or editing tools. For such an image it no longer matters whether the person could expect privacy. Images made for science, teaching or news are left out. The Arizona House passed it 33-24, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1462, which extends Arizona's law on sharing explicit images to fakes made by computer. The crime now covers an image that looks like a real, named person but was made or changed with software, artificial intelligence or editing tools. For such an image it no longer matters whether the person could expect privacy. Images made for science, teaching or news are left out. The Arizona House passed it 33-24, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1595751,
+      "measure_id": "SB 1537",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1537, which sets up a state license for housing that people move into after prison. The state health department must write minimum standards to keep residents and the public safe. Each licensed home must have written rules that help residents settle back into daily life, through treatment, self-help groups or other support. Until now these homes had no license of their own. The Arizona House passed it 31-25, and the Governor signed it into law.",
+      "nay_description": "Voted against Senate Bill 1537, which sets up a state license for housing that people move into after prison. The state health department must write minimum standards to keep residents and the public safe. Each licensed home must have written rules that help residents settle back into daily life, through treatment, self-help groups or other support. Until now these homes had no license of their own. The Arizona House passed it 31-25, and the Governor signed it into law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

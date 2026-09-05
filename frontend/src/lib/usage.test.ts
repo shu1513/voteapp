@@ -1,15 +1,21 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "@voteapp/api-client";
 import {
+  arrivalFor,
   countBucket,
   errorCategoryOf,
   flushUsageEventsForTests,
   isUsageOptedOut,
+  officeLevel,
+  pageViewProps,
   positionBucket,
   resetUsageForTests,
   routeForMatchId,
   setUsageOptOut,
+  chatSourceBucket,
+  sourceLinkProps,
   track,
+  trackSettled,
 } from "./usage";
 
 type SentBody = {
@@ -206,6 +212,113 @@ describe("helpers", () => {
   it("buckets counts and positions", () => {
     expect([0, 1, 3, 4, 10, 11, 25, 26].map(countBucket)).toEqual(["0", "1-3", "1-3", "4-10", "4-10", "11-25", "11-25", "26+"]);
     expect([1, 3, 4, 10, 11].map(positionBucket)).toEqual(["1-3", "1-3", "4-10", "4-10", "11+"]);
+  });
+
+  it("maps office scopes and district types to coarse levels", () => {
+    expect(officeLevel("us_house")).toBe("federal");
+    expect(officeLevel("statewide")).toBe("state");
+    expect(officeLevel("state_lower")).toBe("state");
+    expect(officeLevel("county")).toBe("county");
+    expect(officeLevel("place")).toBe("city");
+    expect(officeLevel("school_unified")).toBe("school");
+    expect(officeLevel(null)).toBe("other");
+  });
+
+  it("reads arrival from the nav state's back destination, never its ids", () => {
+    expect(arrivalFor("election", null)).toBe("deep");
+    expect(arrivalFor("election", { backTo: { path: "/ballot?d=abc", label: "All elections" } })).toBe("list");
+    expect(arrivalFor("election", { backTo: { path: "/me/ballot", label: "My Elections" } })).toBe("list");
+    expect(arrivalFor("election", { backTo: { path: "/candidates/c-1", label: "Jane" } })).toBe("candidate");
+    expect(arrivalFor("candidate", { backTo: { path: "/elections/e-1", label: "Governor" } })).toBe("roster");
+    expect(arrivalFor("candidate", { backTo: { path: "/draft", label: "My Ballot Draft" } })).toBe("draft");
+    expect(arrivalFor("candidate", { backTo: { path: "/me/picks", label: "My Election Draft" } })).toBe("picks");
+    expect(arrivalFor("candidate", { backTo: { path: "/picks/tok3n", label: "Shared picks" } })).toBe("share");
+    expect(arrivalFor("candidate", { backTo: { path: "https://evil.example", label: "x" } })).toBe("deep");
+  });
+
+  it("describes a detail page's content shape without naming it", () => {
+    const election = {
+      id: "e-1",
+      race_type: "ballot_measure",
+      election_date: "2099-11-03",
+      office: null,
+      district: { id: "d-1", district_type: "county", name: "Kings County", state: "NY" },
+      candidates: [],
+      ballot_measure: {
+        id: "m-1",
+        summary: "A short summary.",
+        official_measure_url: "https://sos.ca.gov/measure.pdf",
+        research_area_tags: [{ research_area_id: "a", slug: "housing", name: "Housing", stance: "for" }],
+      },
+    };
+    const props = pageViewProps("election", election, null);
+    expect(props).toEqual({
+      arrival: "deep",
+      race_type: "ballot_measure",
+      office_level: "county",
+      upcoming: true,
+      measure_tbd: false,
+      has_summary: true,
+      has_official_url: true,
+      has_stance_tags: true,
+    });
+    expect(JSON.stringify(props)).not.toContain("e-1");
+
+    const office = pageViewProps(
+      "election",
+      { race_type: "office", election_date: "2000-01-01", office: { scope: "statewide", summary: "" }, district: {}, candidates: [{}, {}, {}, {}] },
+      { backTo: { path: "/ballot", label: "All" } }
+    );
+    expect(office).toEqual({
+      arrival: "list",
+      race_type: "office",
+      office_level: "state",
+      upcoming: false,
+      has_summary: false,
+      candidate_count_bucket: "4-10",
+    });
+
+    const candidate = pageViewProps(
+      "candidate",
+      {
+        candidate: { candidate_id: "c-1", summary: "Bio.", records: [{}, {}], elections: [{ election_date: "2099-11-03" }] },
+        ongoing_finance: { x: null },
+      },
+      null
+    );
+    expect(candidate).toEqual({ arrival: "deep", has_summary: true, record_count_bucket: "1-3", upcoming: true, has_finance: false });
+    expect(pageViewProps("home", { anything: 1 }, null)).toEqual({});
+  });
+
+  it("folds chat card source types to a short list, unknown to other", () => {
+    expect(chatSourceBucket("candidate_profile")).toBe("candidate");
+    expect(chatSourceBucket("official_state_resource")).toBe("official");
+    expect(chatSourceBucket("brand_new_type")).toBe("other");
+  });
+
+  it("flags .gov hosts and PDFs for source clicks without keeping the URL", () => {
+    expect(sourceLinkProps("https://sos.ca.gov/measures/prop-1.pdf?x=1")).toEqual({ gov: true, pdf: true });
+    expect(sourceLinkProps("https://ballotpedia.org/Prop_1")).toEqual({ gov: false, pdf: false });
+    expect(sourceLinkProps("not a url")).toEqual({ gov: false, pdf: false });
+  });
+
+  it("records a settled outcome on the page the operation started from", async () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    const fetchMock = stubFetch();
+    let reject!: (error: unknown) => void;
+    const request = new Promise((_resolve, rej) => {
+      reject = rej;
+    });
+    trackSettled(request, "follow_result", { change: "follow" });
+    reject(new ApiError(503, "unavailable", "down"));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    flushUsageEventsForTests();
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
+    const events = sentBodies(fetchMock)[0]!.events;
+    expect(events.at(-1)).toMatchObject({
+      name: "follow_result",
+      props: { change: "follow", outcome: "error", error_category: "server" },
+    });
   });
 
   it("categorizes errors without carrying their messages", () => {

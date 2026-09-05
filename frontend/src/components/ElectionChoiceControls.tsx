@@ -2,6 +2,29 @@ import { useId } from "react";
 import { ApiError, useElectionChoiceSaving, useMe, useSetElectionChoice } from "@voteapp/api-client";
 import type { ElectionChoice } from "@voteapp/api-client";
 import { setDraftCandidateChoice, setDraftMeasureChoice } from "../lib/ballotDraft";
+import { msSincePageView, track, trackSettled } from "../lib/usage";
+
+type PickSurface = "election_inline" | "candidate_card" | "candidate_row" | "measure_card" | "stranded";
+type PickBase = {
+  kind: "candidate" | "measure";
+  surface: PickSurface;
+  store: "account" | "draft";
+  change: "added" | "changed" | "removed";
+};
+
+// pick_attempt now, pick_result when the write settles. A guest draft write
+// is synchronous and in memory only (writeDraft swallows storage failures),
+// so it reports "draft_memory", never "saved"; an account write reports on
+// the page it started from even if that page has since unmounted.
+function recordPick(base: PickBase, request: Promise<unknown> | null): void {
+  track("pick_attempt", { ...base, ms_since_view: msSincePageView() });
+  if (request === null) {
+    track("pick_result", { ...base, outcome: "draft_memory" });
+    return;
+  }
+  trackSettled(request, "pick_result", base, "saved");
+  request.catch(() => undefined);
+}
 
 // "My choice" controls: the viewer's planned vote per election. Signed-in
 // viewers write to /api/me/election-choices; guests write to the local
@@ -48,6 +71,8 @@ type CandidatePickButtonProps = {
   size?: "sm" | "md";
   /** Stretch the control to its container's width (the mobile sticky bar). */
   fullWidth?: boolean;
+  /** Where the control sits, for the pick usage events. */
+  surface?: "election_inline" | "candidate_card";
 };
 
 /**
@@ -66,6 +91,7 @@ export function CandidatePickButton({
   seatsToFill,
   size = "md",
   fullWidth = false,
+  surface = "election_inline",
 }: CandidatePickButtonProps) {
   const { me } = useMe();
   const isGuest = me === null;
@@ -75,6 +101,23 @@ export function CandidatePickButton({
   const picks = choice?.picks ?? [];
   const isPicked = picks.some((pick) => pick.candidate_id === candidateId);
   const seatCap = seatsToFill ?? 1;
+  function toggle() {
+    const chosen = !isPicked;
+    const base: PickBase = {
+      kind: "candidate",
+      surface,
+      store: isGuest ? "draft" : "account",
+      // Single-seat races replace the previous pick (a change); multi-seat
+      // ones add a seat.
+      change: !chosen ? "removed" : picks.length > 0 && seatCap <= 1 ? "changed" : "added",
+    };
+    if (isGuest) {
+      setDraftCandidateChoice({ electionId, raceTitle, electionDate, seatsToFill, candidateId, candidateName, chosen });
+      recordPick(base, null);
+      return;
+    }
+    recordPick(base, setChoice.mutateAsync({ election_id: electionId, candidate_id: candidateId, chosen }));
+  }
   const atMultiSeatCap = seatCap > 1 && !isPicked && picks.length >= seatCap;
   // Yellow only ever marks an UNDONE decision (same grammar as
   // MeasureChoiceButtons): once the race's seats are all picked, the other
@@ -117,19 +160,7 @@ export function CandidatePickButton({
             ? `This election fills ${seatCap} seats — remove a pick first`
             : undefined
         }
-        onClick={() =>
-          isGuest
-            ? setDraftCandidateChoice({
-                electionId,
-                raceTitle,
-                electionDate,
-                seatsToFill,
-                candidateId,
-                candidateName,
-                chosen: !isPicked,
-              })
-            : setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: !isPicked })
-        }
+        onClick={toggle}
         className={
           isPicked
             ? `${base} bg-green-700 text-white hover:bg-green-800`
@@ -204,6 +235,29 @@ export function CandidatePickRow({
   const raceDecided = picks.length >= seatCap;
   const base =
     "w-full rounded-xl border p-3 text-left text-sm transition disabled:opacity-50";
+  function toggle() {
+    const chosen = !isPicked;
+    const pickBase: PickBase = {
+      kind: "candidate",
+      surface: "candidate_row",
+      store: isGuest ? "draft" : "account",
+      change: !chosen ? "removed" : picks.length > 0 && seatCap <= 1 ? "changed" : "added",
+    };
+    if (isGuest) {
+      setDraftCandidateChoice({
+        electionId,
+        raceTitle: raceName,
+        electionDate,
+        seatsToFill,
+        candidateId,
+        candidateName,
+        chosen,
+      });
+      recordPick(pickBase, null);
+      return;
+    }
+    recordPick(pickBase, setChoice.mutateAsync({ election_id: electionId, candidate_id: candidateId, chosen }));
+  }
 
   return (
     <div className="flex flex-col gap-1">
@@ -212,19 +266,7 @@ export function CandidatePickRow({
         disabled={saving || atMultiSeatCap}
         aria-pressed={isPicked}
         aria-describedby={atMultiSeatCap ? capMessageId : undefined}
-        onClick={() =>
-          isGuest
-            ? setDraftCandidateChoice({
-                electionId,
-                raceTitle: raceName,
-                electionDate,
-                seatsToFill,
-                candidateId,
-                candidateName,
-                chosen: !isPicked,
-              })
-            : setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: !isPicked })
-        }
+        onClick={toggle}
         className={
           isPicked
             ? `${base} border-green-700 bg-green-50 text-green-900 hover:bg-green-100`
@@ -298,25 +340,35 @@ export function RemoveStrandedPickButton({
   const isGuest = me === null;
   const setChoice = useSetElectionChoice();
   const saving = useElectionChoiceSaving();
+  function remove() {
+    const pickBase: PickBase = {
+      kind: "candidate",
+      surface: "stranded",
+      store: isGuest ? "draft" : "account",
+      change: "removed",
+    };
+    if (isGuest) {
+      setDraftCandidateChoice({
+        electionId,
+        raceTitle,
+        electionDate,
+        seatsToFill,
+        candidateId,
+        candidateName,
+        chosen: false,
+      });
+      recordPick(pickBase, null);
+      return;
+    }
+    recordPick(pickBase, setChoice.mutateAsync({ election_id: electionId, candidate_id: candidateId, chosen: false }));
+  }
   return (
     <span className="inline-flex flex-wrap items-center gap-2">
       <button
         type="button"
         disabled={saving}
         aria-label={`Remove pick: ${candidateName}`}
-        onClick={() =>
-          isGuest
-            ? setDraftCandidateChoice({
-                electionId,
-                raceTitle,
-                electionDate,
-                seatsToFill,
-                candidateId,
-                candidateName,
-                chosen: false,
-              })
-            : setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: false })
-        }
+        onClick={remove}
         className="rounded-full border border-line bg-white px-2 py-0.5 text-xs font-medium text-ink transition hover:border-ink disabled:opacity-50"
       >
         {setChoice.isPending ? "…" : "Remove pick"}
@@ -427,11 +479,18 @@ export function MeasureChoiceButtons({
   const undecided = position === null;
 
   function setPosition(next: "yes" | "no" | null) {
+    const pickBase: PickBase = {
+      kind: "measure",
+      surface: "measure_card",
+      store: isGuest ? "draft" : "account",
+      change: next === null ? "removed" : position === null ? "added" : "changed",
+    };
     if (isGuest) {
       setDraftMeasureChoice({ electionId, raceTitle, electionDate, position: next });
-    } else {
-      setChoice.mutate({ election_id: electionId, measure_position: next });
+      recordPick(pickBase, null);
+      return;
     }
+    recordPick(pickBase, setChoice.mutateAsync({ election_id: electionId, measure_position: next }));
   }
 
   return (
