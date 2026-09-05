@@ -8,6 +8,7 @@ import {
   syncDueConnecticutCandidateFinance,
   type ConnecticutCandidateFinanceBatchSyncResult,
 } from "../pipeline/connecticutFinance/connecticutCandidateFinanceBatchSync.js";
+import { readStrictFlagValue, readStrictPositiveIntegerFlag } from "../utils/cliFlags.js";
 import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export type SyncDueConnecticutCandidateFinanceScriptOptions = {
@@ -20,40 +21,6 @@ export type SyncDueConnecticutCandidateFinanceScriptOptions = {
   rawCacheDir?: string;
 };
 
-function parseFlagValue(args: readonly string[], name: string): string | null {
-  const inlinePrefix = `${name}=`;
-  const inline = args.find((arg) => arg.startsWith(inlinePrefix));
-  if (inline) {
-    const value = inline.slice(inlinePrefix.length).trim();
-    if (value.length === 0) {
-      throw new Error(`Missing ${name} value`);
-    }
-    return value;
-  }
-
-  const index = args.indexOf(name);
-  if (index >= 0) {
-    const next = args[index + 1];
-    if (!next || next.startsWith("--") || next.trim().length === 0) {
-      throw new Error(`Missing ${name} value`);
-    }
-    return next.trim();
-  }
-
-  return null;
-}
-
-function parsePositiveIntegerFlag(args: readonly string[], name: string): number | undefined {
-  const value = parseFlagValue(args, name)?.trim();
-  if (!value) {
-    return undefined;
-  }
-  if (!/^[1-9]\d*$/.test(value)) {
-    throw new Error(`Invalid ${name} value: ${value}`);
-  }
-  return Number(value);
-}
-
 const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
 const KNOWN_VALUE_FLAGS = new Set(["--lookahead-days", "--lookback-days", "--max-candidates", "--raw-cache-dir", "--stale-after-days"]);
 
@@ -64,11 +31,11 @@ export function parseSyncDueConnecticutCandidateFinanceScriptArgs(
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),
-    maxCandidates: parsePositiveIntegerFlag(args, "--max-candidates"),
-    staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
-    electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
-    electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
-    rawCacheDir: parseFlagValue(args, "--raw-cache-dir") || undefined,
+    maxCandidates: readStrictPositiveIntegerFlag(args, "--max-candidates"),
+    staleAfterDays: readStrictPositiveIntegerFlag(args, "--stale-after-days"),
+    electionLookbackDays: readStrictPositiveIntegerFlag(args, "--lookback-days"),
+    electionLookaheadDays: readStrictPositiveIntegerFlag(args, "--lookahead-days"),
+    rawCacheDir: readStrictFlagValue(args, "--raw-cache-dir") || undefined,
   };
 }
 
