@@ -58,6 +58,12 @@ describe("syncDueWisconsinCandidateFinance script", () => {
     ).toThrow("Provide --max-candidates at most once");
   });
 
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() => parseSyncDueWisconsinCandidateFinanceScriptArgs(["--max-candidates=9007199254740993"])).toThrow(
+      "Invalid --max-candidates value: 9007199254740993"
+    );
+  });
+
   it("formats script output", () => {
     const output = toSyncDueWisconsinCandidateFinanceScriptOutput({
       startedAt: new Date("2026-01-02T03:04:05.000Z"),
