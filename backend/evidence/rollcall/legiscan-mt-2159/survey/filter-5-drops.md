@@ -387,3 +387,29 @@ HB 74, which makes a fish pond licence mandatory and raises the fees and bond.
   carries it.
 - **HB 897** creates a $50 non-resident shed hunting licence with a warning and
   fines up to $500. A narrow licensing rule.
+
+## Batch 12
+
+Fifteen measures were read for batch 12 and three were dropped. All three fail
+for the same reason: the act pulls in two directions at once, so no single
+research area carries a defensible position.
+
+**HB 167** removes the requirement that the chief election judge post a list of
+absentee voters' names at the polling place. Subsection (4) of 13-13-233 is
+struck in full, and the election administrator now keeps a record instead of
+issuing a certificate. Read one way this removes a check the public could see at
+the poll; read the other it stops voters' names being posted in public. Both are
+defensible, so neither is.
+
+**HB 348** raises the number of legislators needed to trigger a special session
+poll from 10 to 30, and requires the request to carry draft legislation prepared
+by legislative services. It is a real change in who can convene the legislature,
+but "fewer costly polls" and "a smaller group can no longer force the question"
+are equally supportable readings of the same text.
+
+**HB 562** eliminates agency reports across thirteen amended statutes and repeals
+four more, covering biodiesel tax refunds, unemployment insurance, Medicaid,
+highways, water resources, hunting licences and economic development. Less
+paperwork and less public reporting are the same act. There is no single subject
+a reader could hold a position on, which is the plainest form of a filter 5
+failure.

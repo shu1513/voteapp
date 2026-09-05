@@ -1,0 +1,310 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1519952,
+   "measure_id": "HB 78",
+   "vote_date": "2025-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 78, which sets consumer rules for pet insurance. A seller must tell buyers in plain terms what the policy will not cover. That includes any pre-existing condition, and any waiting period before cover starts. The seller must also explain how it works out what it pays, and must show the benefit schedule in the policy. If the insurer requires a vet exam, it must say so before purchase, and must warn that the exam notes may lead to a pre-existing condition being excluded. A buyer may return the policy within 15 days and get the full premium back within 30 days. The Montana Senate passed it 29-20, and it became law.",
+   "nay_description": "Voted against House Bill 78, which sets consumer rules for pet insurance. A seller must tell buyers in plain terms what the policy will not cover. That includes any pre-existing condition, and any waiting period before cover starts. The seller must also explain how it works out what it pays, and must show the benefit schedule in the policy. If the insurer requires a vet exam, it must say so before purchase, and must warn that the exam notes may lead to a pre-existing condition being excluded. A buyer may return the policy within 15 days and get the full premium back within 30 days. The Montana Senate passed it 29-20, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1551996,
+   "measure_id": "HB 207",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 207, which changes how people get on the ballot in Montana. A candidate for a local or state office must now file before the primary election. A candidate who loses a primary may not then seek the same nomination as a write-in at the general election. The act also lowers the number of signatures an independent or minor party candidate needs. For statewide and federal offices it falls from 5 percent to 4 percent of the vote the winner got last time. Filing deadlines for local offices move as well. The Montana House passed it 63-36, and it became law.",
+   "nay_description": "Voted against House Bill 207, which changes how people get on the ballot in Montana. A candidate for a local or state office must now file before the primary election. A candidate who loses a primary may not then seek the same nomination as a write-in at the general election. The act also lowers the number of signatures an independent or minor party candidate needs. For statewide and federal offices it falls from 5 percent to 4 percent of the vote the winner got last time. Filing deadlines for local offices move as well. The Montana House passed it 63-36, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1485363,
+   "measure_id": "HB 245",
+   "vote_date": "2025-02-10",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 245, which keeps Montana's HELP Act going and changes its job side. The HELP Act provides health coverage to lower-income adults. It was written to end on a set date, and the act repeals those end dates, so the programme has no expiry. The act also changes the job help that comes with it. The state no longer has to hire outside groups to run training aimed at in-demand jobs such as health care and entry-level cybersecurity. Instead the state contacts each person subject to the work rules and helps them finish a work assessment. The Montana House passed it 63-37, and it became law.",
+   "nay_description": "Voted against House Bill 245, which keeps Montana's HELP Act going and changes its job side. The HELP Act provides health coverage to lower-income adults. It was written to end on a set date, and the act repeals those end dates, so the programme has no expiry. The act also changes the job help that comes with it. The state no longer has to hire outside groups to run training aimed at in-demand jobs such as health care and entry-level cybersecurity. Instead the state contacts each person subject to the work rules and helps them finish a work assessment. The Montana House passed it 63-37, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1501769,
+   "measure_id": "HB 245",
+   "vote_date": "2025-02-27",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 245, which keeps Montana's HELP Act going and changes its job side. The HELP Act provides health coverage to lower-income adults. It was written to end on a set date, and the act repeals those end dates, so the programme has no expiry. The act also changes the job help that comes with it. The state no longer has to hire outside groups to run training aimed at in-demand jobs such as health care and entry-level cybersecurity. Instead the state contacts each person subject to the work rules and helps them finish a work assessment. The Montana Senate passed it 30-20, and it became law.",
+   "nay_description": "Voted against House Bill 245, which keeps Montana's HELP Act going and changes its job side. The HELP Act provides health coverage to lower-income adults. It was written to end on a set date, and the act repeals those end dates, so the programme has no expiry. The act also changes the job help that comes with it. The state no longer has to hire outside groups to run training aimed at in-demand jobs such as health care and entry-level cybersecurity. Instead the state contacts each person subject to the work rules and helps them finish a work assessment. The Montana Senate passed it 30-20, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1497876,
+   "measure_id": "HB 393",
+   "vote_date": "2025-02-24",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 393, which makes small Montana towns record their public meetings. A town with more than 300 people must now make an audio recording of a public meeting. It must put the recording online within 14 business days, with a link on the town's website. A town with no website must keep a social media page and post the link there. If the recording fails for technical reasons, the town must post a notice saying why and what it is doing to fix it. Larger cities, counties and school boards already had similar duties. The Montana House passed it 69-30, and it became law.",
+   "nay_description": "Voted against House Bill 393, which makes small Montana towns record their public meetings. A town with more than 300 people must now make an audio recording of a public meeting. It must put the recording online within 14 business days, with a link on the town's website. A town with no website must keep a social media page and post the link there. If the recording fails for technical reasons, the town must post a notice saying why and what it is doing to fix it. Larger cities, counties and school boards already had similar duties. The Montana House passed it 69-30, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1547354,
+   "measure_id": "HB 393",
+   "vote_date": "2025-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 393, which makes small Montana towns record their public meetings. A town with more than 300 people must now make an audio recording of a public meeting. It must put the recording online within 14 business days, with a link on the town's website. A town with no website must keep a social media page and post the link there. If the recording fails for technical reasons, the town must post a notice saying why and what it is doing to fix it. Larger cities, counties and school boards already had similar duties. The Montana Senate passed it 37-11, and it became law.",
+   "nay_description": "Voted against House Bill 393, which makes small Montana towns record their public meetings. A town with more than 300 people must now make an audio recording of a public meeting. It must put the recording online within 14 business days, with a link on the town's website. A town with no website must keep a social media page and post the link there. If the recording fails for technical reasons, the town must post a notice saying why and what it is doing to fix it. Larger cities, counties and school boards already had similar duties. The Montana Senate passed it 37-11, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1535825,
+   "measure_id": "HB 399",
+   "vote_date": "2025-04-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 399, which limits when a health insurer may make a patient get approval before filling a prescription. That step is called prior authorization. The insurer may no longer ask for it for most generic pills and inhalers. It may not ask for it for inhalers used to treat asthma and other long-term lung disease. It may not ask for it for insulin used by a patient with diabetes. A refusal must be made by a doctor who treats that kind of illness. If the insurer says no to a drug, it must give the patient a list of other drugs it will pay for. The Montana Senate passed it 38-12, and it became law.",
+   "nay_description": "Voted against House Bill 399, which limits when a health insurer may make a patient get approval before filling a prescription. That step is called prior authorization. The insurer may no longer ask for it for most generic pills and inhalers. It may not ask for it for inhalers used to treat asthma and other long-term lung disease. It may not ask for it for insulin used by a patient with diabetes. A refusal must be made by a doctor who treats that kind of illness. If the insurer says no to a drug, it must give the patient a list of other drugs it will pay for. The Montana Senate passed it 38-12, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1520054,
+   "measure_id": "HB 476",
+   "vote_date": "2025-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 476, which pays for newborn safety devices. These are safe places where a parent may legally leave a newborn baby they cannot care for. The state health department must run a grant competition open to fire departments, hospitals and law enforcement agencies. The money covers putting a device in and keeping it working. No applicant may receive more than $20,000. The act sets aside $160,000 from the general fund for the two years starting July 2025. The department must report on the results by September 2027, and the programme ends in June 2027. The Montana House passed it 74-24, and it became law.",
+   "nay_description": "Voted against House Bill 476, which pays for newborn safety devices. These are safe places where a parent may legally leave a newborn baby they cannot care for. The state health department must run a grant competition open to fire departments, hospitals and law enforcement agencies. The money covers putting a device in and keeping it working. No applicant may receive more than $20,000. The act sets aside $160,000 from the general fund for the two years starting July 2025. The department must report on the results by September 2027, and the programme ends in June 2027. The Montana House passed it 74-24, and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1547222,
+   "measure_id": "HB 476",
+   "vote_date": "2025-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 476, which pays for newborn safety devices. These are safe places where a parent may legally leave a newborn baby they cannot care for. The state health department must run a grant competition open to fire departments, hospitals and law enforcement agencies. The money covers putting a device in and keeping it working. No applicant may receive more than $20,000. The act sets aside $160,000 from the general fund for the two years starting July 2025. The department must report on the results by September 2027, and the programme ends in June 2027. The Montana Senate passed it 32-16, and it became law.",
+   "nay_description": "Voted against House Bill 476, which pays for newborn safety devices. These are safe places where a parent may legally leave a newborn baby they cannot care for. The state health department must run a grant competition open to fire departments, hospitals and law enforcement agencies. The money covers putting a device in and keeping it working. No applicant may receive more than $20,000. The act sets aside $160,000 from the general fund for the two years starting July 2025. The department must report on the results by September 2027, and the programme ends in June 2027. The Montana Senate passed it 32-16, and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1508459,
+   "measure_id": "HB 531",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 531, which bars courts from reviewing the rules the legislature writes for itself. The act states that the legislature alone may make, enforce, interpret, suspend, repeal or waive the rules for its own proceedings. A judge may not review or interpret one of those rules. The one exception is a rule that conflicts with the Montana constitution or the United States constitution. Before the act, a court could be asked whether the legislature had followed its own rules. The Montana House passed it 59-40, and it became law.",
+   "nay_description": "Voted against House Bill 531, which bars courts from reviewing the rules the legislature writes for itself. The act states that the legislature alone may make, enforce, interpret, suspend, repeal or waive the rules for its own proceedings. A judge may not review or interpret one of those rules. The one exception is a rule that conflicts with the Montana constitution or the United States constitution. Before the act, a court could be asked whether the legislature had followed its own rules. The Montana House passed it 59-40, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1544837,
+   "measure_id": "HB 531",
+   "vote_date": "2025-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 531, which bars courts from reviewing the rules the legislature writes for itself. The act states that the legislature alone may make, enforce, interpret, suspend, repeal or waive the rules for its own proceedings. A judge may not review or interpret one of those rules. The one exception is a rule that conflicts with the Montana constitution or the United States constitution. Before the act, a court could be asked whether the legislature had followed its own rules. The Montana Senate passed it 29-19, and it became law.",
+   "nay_description": "Voted against House Bill 531, which bars courts from reviewing the rules the legislature writes for itself. The act states that the legislature alone may make, enforce, interpret, suspend, repeal or waive the rules for its own proceedings. A judge may not review or interpret one of those rules. The one exception is a rule that conflicts with the Montana constitution or the United States constitution. Before the act, a court could be asked whether the legislature had followed its own rules. The Montana Senate passed it 29-19, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1551129,
+   "measure_id": "HB 543",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 543, which makes a hospital reporting duty permanent. Montana requires health care employers to record and report violence against their staff. That duty was written to expire, and the act repeals the expiry date. So hospitals and other health care employers must keep tracking and disclosing assaults on employees with no end date. Nothing else about what must be reported changes. The Montana Senate passed it 31-19, and it became law.",
+   "nay_description": "Voted against House Bill 543, which makes a hospital reporting duty permanent. Montana requires health care employers to record and report violence against their staff. That duty was written to expire, and the act repeals the expiry date. So hospitals and other health care employers must keep tracking and disclosing assaults on employees with no end date. Nothing else about what must be reported changes. The Montana Senate passed it 31-19, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546559,
+   "measure_id": "HB 601",
+   "vote_date": "2025-04-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 601, which creates an online tool to help people sign up for Medicaid. Medicaid is the public health coverage programme for people on low incomes. A community assister is a person or group that helps others apply. By May 2026 the state must run a portal where an assister can check the status of an application, see notices sent to the person, report a change, see what the person still has to do, and update contact details. A person applying must be able to name one or more assisters to help them. The Montana Senate passed it 28-22, and it became law.",
+   "nay_description": "Voted against House Bill 601, which creates an online tool to help people sign up for Medicaid. Medicaid is the public health coverage programme for people on low incomes. A community assister is a person or group that helps others apply. By May 2026 the state must run a portal where an assister can check the status of an application, see notices sent to the person, report a change, see what the person still has to do, and update contact details. A person applying must be able to name one or more assisters to help them. The Montana Senate passed it 28-22, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1508724,
+   "measure_id": "HB 770",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 770, which tightens campaign finance reporting for candidates. A candidate must now file the required reports even when they took in no money and spent none. The act also states the consequence plainly: a candidate who does not meet these reporting duties will not have their name printed on the ballot for the election. The reporting deadlines themselves, which run quarterly and then monthly in an election year, are not changed. The Montana House passed it 56-43, and it became law.",
+   "nay_description": "Voted against House Bill 770, which tightens campaign finance reporting for candidates. A candidate must now file the required reports even when they took in no money and spent none. The act also states the consequence plainly: a candidate who does not meet these reporting duties will not have their name printed on the ballot for the election. The reporting deadlines themselves, which run quarterly and then monthly in an election year, are not changed. The Montana House passed it 56-43, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1552186,
+   "measure_id": "HB 804",
+   "vote_date": "2025-04-18",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 804, which changes Montana's lobbying reports. A group that pays for lobbying must register and report once its yearly spending passes a set figure. That figure rises from $2,150 to $3,000, and is adjusted for inflation after each general election. Reports must now be filed electronically. The act also lowers the point at which a month's spending triggers a separate monthly report, from $5,000 down to the same $3,000, so more months of heavy spending must be reported. The Montana House passed it 56-42, and it became law.",
+   "nay_description": "Voted against House Bill 804, which changes Montana's lobbying reports. A group that pays for lobbying must register and report once its yearly spending passes a set figure. That figure rises from $2,150 to $3,000, and is adjusted for inflation after each general election. Reports must now be filed electronically. The act also lowers the point at which a month's spending triggers a separate monthly report, from $5,000 down to the same $3,000, so more months of heavy spending must be reported. The Montana House passed it 56-42, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546151,
+   "measure_id": "HB 804",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 804, which changes Montana's lobbying reports. A group that pays for lobbying must register and report once its yearly spending passes a set figure. That figure rises from $2,150 to $3,000, and is adjusted for inflation after each general election. Reports must now be filed electronically. The act also lowers the point at which a month's spending triggers a separate monthly report, from $5,000 down to the same $3,000, so more months of heavy spending must be reported. The Montana Senate passed it 35-13, and it became law.",
+   "nay_description": "Voted against House Bill 804, which changes Montana's lobbying reports. A group that pays for lobbying must register and report once its yearly spending passes a set figure. That figure rises from $2,150 to $3,000, and is adjusted for inflation after each general election. Reports must now be filed electronically. The act also lowers the point at which a month's spending triggers a separate monthly report, from $5,000 down to the same $3,000, so more months of heavy spending must be reported. The Montana Senate passed it 35-13, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546138,
+   "measure_id": "HB 825",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 825, which lets a hospital patient name someone they trust to make health decisions for them. The patient may do this after being admitted, at any time before a provider decides they can no longer decide for themselves. The patient just tells a provider who it is, out loud or otherwise. If the patient later cannot decide, the act sets the order in which someone is chosen. A court-appointed guardian and a formal written appointment come first, then a spouse, adult child, parent and sibling. The trusted person the patient named ranks after those relatives, but ahead of a close friend. The Montana Senate passed it 27-21, and it became law.",
+   "nay_description": "Voted against House Bill 825, which lets a hospital patient name someone they trust to make health decisions for them. The patient may do this after being admitted, at any time before a provider decides they can no longer decide for themselves. The patient just tells a provider who it is, out loud or otherwise. If the patient later cannot decide, the act sets the order in which someone is chosen. A court-appointed guardian and a formal written appointment come first, then a spouse, adult child, parent and sibling. The trusted person the patient named ranks after those relatives, but ahead of a close friend. The Montana Senate passed it 27-21, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
