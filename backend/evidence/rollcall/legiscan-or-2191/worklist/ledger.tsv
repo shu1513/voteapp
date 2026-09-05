@@ -32,7 +32,7 @@ HB2594	drop:screened	requires dental laboratories to register; narrow licensing	
 HB2677	candidate		1590931	1593041	Relating to juvenile records; and prescribing an effective date.
 HB2680	drop:filter-5	glazing contractor certification on large public works; narrow licensing	1551804	1583173	Relating to certifications required for work with fenestration systems in public buildings; and prescribing an effective date.
 HB2682	drop:screened	creates an advisory committee on services for young children; study body only		1565963	Relating to services for young children with special needs.
-HB2684	candidate		1591030		Relating to integrated pest management.
+HB2684	batch-08	judged and imported	1591030		Relating to integrated pest management.
 HB2688	drop:filter-5	extends prevailing wage to off-site custom fabrication; labor relations, and no research area covers union or wage-standard questions	1595456	1595879	Relating to the application of a prevailing rate of wage to off-site custom work for use in public works; and prescribing an effective date.
 HB2695	drop:filter-5	composition of the OHSU presidential search committee; governance	1538190	1574184	Relating to duties of the Oregon Health and Science University Board of Directors.
 HB2698	drop:filter-5	sets a homeownership rate goal and a dashboard; a target and reporting, no operative duty		1574169	Relating to homeownership goal; and declaring an emergency.
@@ -67,9 +67,9 @@ HB3045	drop:screened	lets the pharmacy board require an examination of a license
 HB3054	batch-02	judged and imported	1549926	1589837	Relating to residential tenancies for a space in a facility; and declaring an emergency.
 HB3069	candidate		1595533	1594228	Relating to public safety; and declaring an emergency.
 HB3144	batch-05	judged and imported		1578792	Relating to dwellings.
-HB3148	candidate		1594164		Relating to the availability of residential telecommunication services for low-income customers; and declaring an emergency.
+HB3148	batch-08	judged and imported	1594164		Relating to the availability of residential telecommunication services for low-income customers; and declaring an emergency.
 HB3167	drop:filter-5	its only divided House roll is superseded by a 37-3 concurrence and the Senate never divided; attributing the superseded vote is the federal roll-160 retraction shape	1552514		Relating to regulating sales of admission tickets to entertainment events.
-HB3179	candidate			1594492	Relating to public utilities; and declaring an emergency.
+HB3179	batch-08	judged and imported		1594492	Relating to public utilities; and declaring an emergency.
 HB3187	batch-01	judged and imported	1549674	1570360	Relating to age-based employment discrimination; and prescribing an effective date.
 HB3194	drop:filter-5	landowner liability for farmworker camps; farm labour housing enforcement, and no research area covers labour or worker-protection questions, the same gap that dropped HB 2688 and HB 2944	1593104	1595282	Relating to farmworker camps.
 HB3233	candidate		1549709	1560449	Relating to rail; and prescribing an effective date.
@@ -87,7 +87,7 @@ HB3546	batch-03	judged and imported	1585424	1584043	Relating to large energy use
 HB3550	batch-06	judged and imported	1526805		Relating to an exemption for certain minor league baseball players from certain laws governing employment conditions.
 HB3630	drop:filter-5	estate tax exemption for farm, forest and fishing interests; family farm preservation against wealth transfer is contested		1595532	Relating to estate tax treatment of natural resource property; and prescribing an effective date.
 HB3644	batch-03	judged and imported	1593994	1595480	Relating to a statewide shelter program; and declaring an emergency.
-HB3646	candidate		1552801	1583613	Relating to contract preferences in public procurement for employee-owned businesses; and prescribing an effective date.
+HB3646	batch-08	judged and imported	1552801	1583613	Relating to contract preferences in public procurement for employee-owned businesses; and prescribing an effective date.
 HB3681	drop:filter-5	speeds energy facility siting and changes transmission line review; faster clean energy build-out and weaker project review pull opposite ways inside the same area	1555409	1583169	Relating to energy facilities.
 HB3687	drop:filter-5	sets a simple majority for county and city charter elections; election_integrity is security and accuracy, not vote thresholds, and the direction is contested	1589147	1595609	Relating to majority vote thresholds for local charters; and prescribing an effective date.
 HB3694	drop:filter-5	college athlete name and likeness pay, paired with an exemption from public records disclosure; runs both ways		1591008	Relating to student athletes; and declaring an emergency.
@@ -102,7 +102,7 @@ HB3863	candidate		1547696	1570876	Relating to qualifying facilities under the Pu
 HB3865	batch-05	judged and imported	1595617	1595035	Relating to telephone solicitations.
 HB3874	drop:filter-5	raises the state siting threshold for wind projects but adds county decommissioning security; runs both ways	1573086		Relating to the jurisdiction of the Energy Facility Siting Council over wind energy facilities.
 HB3908	park:direction-call	raises the share of voters a party needs for major party status; election_integrity is security and accuracy and does not cover ballot access, and the California rule sends access questions to civil_rights. Direction arguable either way, so this is a user direction call	1587700	1593325	Relating to party membership registration requirements; and declaring an emergency.
-HB3912	candidate			1591734	"Relating to use of the title ""doctor"""
+HB3912	batch-08	judged and imported		1591734	"Relating to use of the title ""doctor"""
 HB3932	batch-05	judged and imported	1553001	1591248	Relating to protecting beavers.
 HB3940	drop:filter-5	wildfire funding through a beverage container surcharge and fund transfers; revenue and appropriation		1595487	Relating to wildfire; prescribing an effective date; and providing for revenue raising that requires approval by a three-fifths majority.
 HB3963	drop:screened	extends a DLCD reporting deadline; housekeeping	1585557	1593893	Relating to offshore wind energy development; and prescribing an effective date.
@@ -186,7 +186,7 @@ SB916	batch-04	judged and imported	1590864	1590862	Relating to unemployment insu
 SB951	batch-04	judged and imported	1579955	1539698	Relating to the practice of health care; and declaring an emergency.
 SB952	drop:filter-5	lets the Governor appoint a US Senator pending a special election; appointment against election is a contested structural question	1584127	1558808	Relating to vacancies in the United States Senate.
 SB968	drop:screened	sets how public employers recoup wages paid in error; narrow	1594456	1592314	Relating to deductions from employee wages.
-SB982	candidate		1578807		Relating to out-of-state residential placements of students; and declaring an emergency.
+SB982	batch-08	judged and imported	1578807		Relating to out-of-state residential placements of students; and declaring an emergency.
 SB1032	batch-07	judged and imported		1555828	Relating to aerosol dusters that contain 1,1-Difluoroethane.
 SB1051	drop:screened	gives the Governor the power to appoint the State Forester; appointment structure	1595540	1592274	Relating to the State Forester; and declaring an emergency.
 SB1098	batch-01	judged and imported	1587412	1530994	Relating to access to materials in schools; and declaring an emergency.
