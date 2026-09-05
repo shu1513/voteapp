@@ -1,9 +1,5 @@
-import { Queue, Worker, type JobsOptions, type Processor } from "bullmq";
-import type { ConnectionOptions } from "bullmq";
-import { toConnectionOptions } from "../utils/redisConnection.js";
-import { Pool } from "pg";
+import type { Queue, Worker } from "bullmq";
 
-import { getPipelineEnv } from "../config/env.js";
 import {
   isMassachusettsCampaignFinanceEnabled,
   isMassachusettsCampaignFinanceSyncEnabled,
@@ -12,21 +8,17 @@ import {
   syncDueMassachusettsCandidateFinance,
   type MassachusettsCandidateFinanceBatchSyncResult,
 } from "../pipeline/massachusettsFinance/massachusettsCandidateFinanceBatchSync.js";
+import {
+  createStateCandidateFinanceSyncScheduler,
+  type StateCandidateFinanceSyncEnqueueOptions,
+  type StateCandidateFinanceSyncJobData,
+} from "./stateCandidateFinanceSyncScheduler.js";
 
 export const MASSACHUSETTS_CANDIDATE_FINANCE_SYNC_JOB_NAME = "massachusetts_candidate_finance_sync_due";
 export const MASSACHUSETTS_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID =
   "massachusetts_candidate_finance_sync_daily";
 
-export type MassachusettsCandidateFinanceSyncJobData = {
-  dryRun?: boolean;
-  force?: boolean;
-  maxCandidates?: number;
-  staleAfterDays?: number;
-  electionLookbackDays?: number;
-  electionLookaheadDays?: number;
-  triggeredBy?: "daily" | "manual" | "unknown";
-  requestedAt?: string;
-};
+export type MassachusettsCandidateFinanceSyncJobData = StateCandidateFinanceSyncJobData;
 
 export type MassachusettsCandidateFinanceSyncJobResult = MassachusettsCandidateFinanceBatchSyncResult & {
   enabled: boolean;
@@ -34,242 +26,41 @@ export type MassachusettsCandidateFinanceSyncJobResult = MassachusettsCandidateF
   triggeredBy: NonNullable<MassachusettsCandidateFinanceSyncJobData["triggeredBy"]>;
 };
 
-export type MassachusettsCandidateFinanceSyncEnqueueOptions = {
-  jobId?: string;
-};
+export type MassachusettsCandidateFinanceSyncEnqueueOptions = StateCandidateFinanceSyncEnqueueOptions;
 
-type MassachusettsCandidateFinanceSyncSchedulerRuntimeConfig = {
-  queueName: string;
-  dailyCron: string;
-  dailyTz: string;
-};
+const scheduler = createStateCandidateFinanceSyncScheduler({
+  stateLabel: "Massachusetts",
+  jobName: MASSACHUSETTS_CANDIDATE_FINANCE_SYNC_JOB_NAME,
+  dailySchedulerId: MASSACHUSETTS_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID,
+  defaultQueueName: "massachusetts_candidate_finance_sync_maintenance",
+  linkedElectionJobIdPrefix: "massachusetts-candidate-finance-linked-election-sync-",
+  envPrefix: "MASSACHUSETTS_CAMPAIGN_FINANCE_SYNC",
+  defaultDailyCron: "25 9 * * *",
+  isEnabled: isMassachusettsCampaignFinanceEnabled,
+  isSyncEnabled: isMassachusettsCampaignFinanceSyncEnabled,
+  syncDue: syncDueMassachusettsCandidateFinance,
+});
 
-const DISABLED_RESULT_DEFAULT_MAX_CANDIDATES = 0;
-const DISABLED_RESULT_DEFAULT_STALE_AFTER_DAYS = 0;
+export const createMassachusettsCandidateFinanceSyncSchedulerQueue: () => Queue<MassachusettsCandidateFinanceSyncJobData> =
+  scheduler.createQueue;
 
-function readSchedulerRuntimeConfig(): MassachusettsCandidateFinanceSyncSchedulerRuntimeConfig {
-  return {
-    queueName:
-      process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_SYNC_SCHEDULER_QUEUE?.trim() ||
-      "massachusetts_candidate_finance_sync_maintenance",
-    dailyCron: process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_SYNC_DAILY_CRON?.trim() || "25 9 * * *",
-    dailyTz: process.env.MASSACHUSETTS_CAMPAIGN_FINANCE_SYNC_DAILY_TZ?.trim() || "UTC",
-  };
-}
+export const buildMassachusettsCandidateFinanceLinkedElectionSyncJobId: (now?: Date) => string =
+  scheduler.buildLinkedElectionSyncJobId;
 
-function assertPositiveInteger(value: number | undefined, label: string): void {
-  // isSafeInteger, not isInteger: Number("9007199254740993") silently rounds
-  // to 2^53 and still passes isInteger.
-  if (value !== undefined && (!Number.isSafeInteger(value) || value <= 0)) {
-    throw new Error(`Invalid Massachusetts finance sync scheduler ${label}: ${value}`);
-  }
-}
+export const upsertRecurringMassachusettsCandidateFinanceSyncJobs: (
+  jobData?: MassachusettsCandidateFinanceSyncJobData
+) => Promise<void> = scheduler.upsertRecurringJobs;
 
-function getQueueConnection(): ConnectionOptions {
-  const env = getPipelineEnv();
-  return toConnectionOptions(env.REDIS_URL);
-}
+export const enqueueManualMassachusettsCandidateFinanceSyncJob: (
+  jobData?: MassachusettsCandidateFinanceSyncJobData,
+  options?: MassachusettsCandidateFinanceSyncEnqueueOptions
+) => Promise<string> = scheduler.enqueueManualJob;
 
-function getQueueName(): string {
-  return readSchedulerRuntimeConfig().queueName;
-}
+export const runMassachusettsCandidateFinanceSyncJob: (
+  data?: MassachusettsCandidateFinanceSyncJobData
+) => Promise<MassachusettsCandidateFinanceSyncJobResult> = scheduler.runJob;
 
-function defaultJobOptions(): JobsOptions {
-  return {
-    removeOnComplete: 1000,
-    removeOnFail: 1000,
-  };
-}
-
-function normalizeOptionalJobId(value: string | undefined): string | undefined {
-  const trimmed = value?.trim();
-  if (!trimmed) {
-    return undefined;
-  }
-  if (trimmed.includes(":")) {
-    throw new Error("Massachusetts finance sync scheduler jobId must not contain ':'");
-  }
-  return trimmed;
-}
-
-function jobOptionsWithId(jobId: string | undefined): JobsOptions {
-  const normalizedJobId = normalizeOptionalJobId(jobId);
-  return normalizedJobId ? { ...defaultJobOptions(), jobId: normalizedJobId } : defaultJobOptions();
-}
-
-function assertValidJobOptions(data: MassachusettsCandidateFinanceSyncJobData): void {
-  assertPositiveInteger(data.maxCandidates, "maxCandidates");
-  assertPositiveInteger(data.staleAfterDays, "staleAfterDays");
-  assertPositiveInteger(data.electionLookbackDays, "electionLookbackDays");
-  assertPositiveInteger(data.electionLookaheadDays, "electionLookaheadDays");
-}
-
-export function createMassachusettsCandidateFinanceSyncSchedulerQueue(): Queue<MassachusettsCandidateFinanceSyncJobData> {
-  return new Queue<MassachusettsCandidateFinanceSyncJobData>(getQueueName(), {
-    connection: getQueueConnection(),
-    defaultJobOptions: defaultJobOptions(),
-  });
-}
-
-export function buildMassachusettsCandidateFinanceLinkedElectionSyncJobId(now = new Date()): string {
-  if (!(now instanceof Date) || Number.isNaN(now.getTime())) {
-    throw new Error("Invalid Massachusetts finance linked-election sync job date");
-  }
-  return `massachusetts-candidate-finance-linked-election-sync-${now.toISOString().slice(0, 10)}`;
-}
-
-export async function upsertRecurringMassachusettsCandidateFinanceSyncJobs(
-  jobData: MassachusettsCandidateFinanceSyncJobData = {}
-): Promise<void> {
-  assertValidJobOptions(jobData);
-  if (!isMassachusettsCampaignFinanceEnabled()) {
-    const queue = createMassachusettsCandidateFinanceSyncSchedulerQueue();
-    try {
-      await queue.removeJobScheduler(MASSACHUSETTS_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID);
-    } finally {
-      await queue.close();
-    }
-    return;
-  }
-
-  const config = readSchedulerRuntimeConfig();
-  const queue = createMassachusettsCandidateFinanceSyncSchedulerQueue();
-
-  try {
-    await queue.upsertJobScheduler(
-      MASSACHUSETTS_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID,
-      {
-        pattern: config.dailyCron,
-        tz: config.dailyTz,
-      },
-      {
-        name: MASSACHUSETTS_CANDIDATE_FINANCE_SYNC_JOB_NAME,
-        data: {
-          dryRun: Boolean(jobData.dryRun),
-          force: Boolean(jobData.force),
-          maxCandidates: jobData.maxCandidates,
-          staleAfterDays: jobData.staleAfterDays,
-          electionLookbackDays: jobData.electionLookbackDays,
-          electionLookaheadDays: jobData.electionLookaheadDays,
-          triggeredBy: "daily",
-        },
-        opts: defaultJobOptions(),
-      }
-    );
-  } finally {
-    await queue.close();
-  }
-}
-
-export async function enqueueManualMassachusettsCandidateFinanceSyncJob(
-  jobData: MassachusettsCandidateFinanceSyncJobData = {},
-  options: MassachusettsCandidateFinanceSyncEnqueueOptions = {}
-): Promise<string> {
-  assertValidJobOptions(jobData);
-  if (!isMassachusettsCampaignFinanceSyncEnabled(Boolean(jobData.force))) {
-    return "disabled";
-  }
-
-  const queue = createMassachusettsCandidateFinanceSyncSchedulerQueue();
-
-  try {
-    const job = await queue.add(
-      MASSACHUSETTS_CANDIDATE_FINANCE_SYNC_JOB_NAME,
-      {
-        dryRun: Boolean(jobData.dryRun),
-        force: Boolean(jobData.force),
-        maxCandidates: jobData.maxCandidates,
-        staleAfterDays: jobData.staleAfterDays,
-        electionLookbackDays: jobData.electionLookbackDays,
-        electionLookaheadDays: jobData.electionLookaheadDays,
-        triggeredBy: "manual",
-        requestedAt: new Date().toISOString(),
-      },
-      jobOptionsWithId(options.jobId)
-    );
-    return job.id ?? "unknown";
-  } finally {
-    await queue.close();
-  }
-}
-
-export async function runMassachusettsCandidateFinanceSyncJob(
-  data: MassachusettsCandidateFinanceSyncJobData = {}
-): Promise<MassachusettsCandidateFinanceSyncJobResult> {
-  assertValidJobOptions(data);
-  const force = Boolean(data.force);
-  const dryRun = Boolean(data.dryRun);
-  const triggeredBy = data.triggeredBy ?? "unknown";
-  const now = new Date();
-  const enabled = isMassachusettsCampaignFinanceSyncEnabled(force);
-
-  if (!data.triggeredBy) {
-    console.warn("Massachusetts finance sync job missing triggeredBy; recording as unknown");
-  }
-
-  if (!enabled) {
-    return {
-      enabled: false,
-      force,
-      triggeredBy,
-      dryRun,
-      now: now.toISOString(),
-      staleAfterDays: data.staleAfterDays ?? DISABLED_RESULT_DEFAULT_STALE_AFTER_DAYS,
-      maxCandidates: data.maxCandidates ?? DISABLED_RESULT_DEFAULT_MAX_CANDIDATES,
-      dueCandidateCount: 0,
-      selectedCandidateCount: 0,
-      syncedCandidateCount: 0,
-      failedCandidateCount: 0,
-      autoLinkAttemptedCount: 0,
-      autoLinkLinkedCount: 0,
-      results: [],
-    };
-  }
-
-  const env = getPipelineEnv();
-  const pool = new Pool({ connectionString: env.DATABASE_URL });
-  try {
-    const result = await syncDueMassachusettsCandidateFinance({
-      db: pool,
-      now,
-      dryRun,
-      maxCandidates: data.maxCandidates,
-      staleAfterDays: data.staleAfterDays,
-      electionLookbackDays: data.electionLookbackDays,
-      electionLookaheadDays: data.electionLookaheadDays,
-    });
-
-    return {
-      enabled: true,
-      force,
-      triggeredBy,
-      ...result,
-    };
-  } finally {
-    await pool.end();
-  }
-}
-
-export function createMassachusettsCandidateFinanceSyncSchedulerWorker(): Worker<
+export const createMassachusettsCandidateFinanceSyncSchedulerWorker: () => Worker<
   MassachusettsCandidateFinanceSyncJobData,
   MassachusettsCandidateFinanceSyncJobResult
-> {
-  const connection = getQueueConnection();
-  const queueName = getQueueName();
-
-  const processor: Processor<
-    MassachusettsCandidateFinanceSyncJobData,
-    MassachusettsCandidateFinanceSyncJobResult
-  > = async (job) => {
-    return runMassachusettsCandidateFinanceSyncJob(job.data ?? {});
-  };
-
-  return new Worker<MassachusettsCandidateFinanceSyncJobData, MassachusettsCandidateFinanceSyncJobResult>(
-    queueName,
-    processor,
-    {
-      connection,
-      concurrency: 1,
-    }
-  );
-}
+> = scheduler.createWorker;
