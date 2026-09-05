@@ -1,0 +1,14 @@
+[
+ {
+  "recordId": "786f9684-aaa6-441f-8633-c110f6213315",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1706 session batch-02 run: this hand-written record describes the same vote as HB 34 roll 947969 on 2020-03-10 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1706/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "6bcf0857-087b-479b-b20e-d31a891c1766",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1706 session batch-02 run: this hand-written record describes the same vote as HB 34 roll 947969 on 2020-03-10 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1706/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "bd919423-649f-4fd9-b5fd-c2eade901d52",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1706 session batch-02 run: this hand-written record describes the same vote as HB 34 roll 947969 on 2020-03-10 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1706/batch-02/JUDGING.md."
+ }
+]

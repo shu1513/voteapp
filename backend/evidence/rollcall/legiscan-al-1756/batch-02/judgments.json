@@ -1,0 +1,310 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1029612,
+      "measure_id": "HB 184",
+      "vote_date": "2021-03-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 184, which would have made reporting to Alabama's immunization registry compulsory. Providers would have had to check the registry before giving a vaccine and enter what they gave, where the old law merely encouraged it. The registry would have held records for all ages, and the bill barred any tracking of people who have not been vaccinated. The House passed it 73-27, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 184, which would have made reporting to Alabama's immunization registry compulsory. Providers would have had to check the registry before giving a vaccine and enter what they gave, where the old law merely encouraged it. The registry would have held records for all ages, and the bill barred any tracking of people who have not been vaccinated. The House passed it 73-27, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1066323,
+      "measure_id": "HB 202",
+      "vote_date": "2021-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 202, which would have freed grand jury witnesses to talk about their own testimony. Witnesses would have been removed from the list of people barred from revealing grand jury matters, while jurors, court reporters and interpreters stayed bound. The ban on trying to influence a grand juror by threat or reward would have remained. The House passed it 71-21, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 202, which would have freed grand jury witnesses to talk about their own testimony. Witnesses would have been removed from the list of people barred from revealing grand jury matters, while jurors, court reporters and interpreters stayed bound. The ban on trying to influence a grand juror by threat or reward would have remained. The House passed it 71-21, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1057114,
+      "measure_id": "HB 238",
+      "vote_date": "2021-04-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 238, which would have tightened Alabama's boating rules. A conviction for boating under the influence would have suspended the person's boating certificate for 90 days up to five years, and a drink-driving conviction would have done the same. It also set idle-speed zones near docks, swimmers and shorelines, raised the minimum age for a personal watercraft to 14, and widened the engine cut-off switch rule. The House vote was 42-45 and the bill failed.",
+      "nay_description": "Voted against passing House Bill 238, which would have tightened Alabama's boating rules. A conviction for boating under the influence would have suspended the person's boating certificate for 90 days up to five years, and a drink-driving conviction would have done the same. It also set idle-speed zones near docks, swimmers and shorelines, raised the minimum age for a personal watercraft to 14, and widened the engine cut-off switch rule. The House vote was 42-45 and the bill failed.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1054860,
+      "measure_id": "HB 239",
+      "vote_date": "2021-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 239, which would have rewritten the penalties for fleeing police. Causing serious injury or death while fleeing would have become a Class B felony, up from Class C. At the same time the route to a felony by crossing a state line would have narrowed. It would have applied only where the person was also committing a separate felony. The House passed it 76-24, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 239, which would have rewritten the penalties for fleeing police. Causing serious injury or death while fleeing would have become a Class B felony, up from Class C. At the same time the route to a felony by crossing a state line would have narrowed. It would have applied only where the person was also committing a separate felony. The House passed it 76-24, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 999235,
+      "measure_id": "HB 24",
+      "vote_date": "2021-02-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 24, which would have let some prisoners ask to be sentenced again under newer guidelines. It applied only to nonviolent offenses committed before October 2013, and only to people still held by the prison system. The prisoner had to show good conduct in prison, the district attorney could be heard, and a single earlier refusal would have closed the door for good. The House passed it 63-33, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 24, which would have let some prisoners ask to be sentenced again under newer guidelines. It applied only to nonviolent offenses committed before October 2013, and only to people still held by the prison system. The prisoner had to show good conduct in prison, the district attorney could be heard, and a single earlier refusal would have closed the door for good. The House passed it 63-33, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1031548,
+      "measure_id": "HB 445",
+      "vote_date": "2021-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 445, the Anti-Aggravated Riot Act, which would have created new crimes around protests. Injuring a first responder would have been a felony with a mandatory minimum, and riot was redefined to require a dispersal order or curfew breach first, with 30 days' mandatory jail. Blocking a road on foot would have become a crime, and a city that cut its police budget by half could lose state money. The House passed it 74-25, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 445, the Anti-Aggravated Riot Act, which would have created new crimes around protests. Injuring a first responder would have been a felony with a mandatory minimum, and riot was redefined to require a dispersal order or curfew breach first, with 30 days' mandatory jail. Blocking a road on foot would have become a crime, and a city that cut its police budget by half could lose state money. The House passed it 74-25, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1029124,
+      "measure_id": "HB 72",
+      "vote_date": "2021-03-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 72, which would have shortened supervised release for the longest prison sentences. For a sentence of 10 years or more, release to supervision would have moved from between 12 and 24 months before the end of the sentence to between 10 and 12 months. The parole board would have set the level of supervision using a validated risk assessment instead of a required intensive program. The House passed it 58-38, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 72, which would have shortened supervised release for the longest prison sentences. For a sentence of 10 years or more, release to supervision would have moved from between 12 and 24 months before the end of the sentence to between 10 and 12 months. The parole board would have set the level of supervision using a validated risk assessment instead of a required intensive program. The House passed it 58-38, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1045935,
+      "measure_id": "HB 90",
+      "vote_date": "2021-04-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 90, called CiCi and Jay's Law, which would have banned holding a phone while driving. Writing or reading a message, watching or recording video, or simply holding the device would all have been barred, with fines of $100 rising to $300. It was a traffic infraction rather than a crime, and police could not have used it as grounds to search a car. The House vote was 47-48 and the bill failed.",
+      "nay_description": "Voted against passing House Bill 90, called CiCi and Jay's Law, which would have banned holding a phone while driving. Writing or reading a message, watching or recording video, or simply holding the device would all have been barred, with fines of $100 rising to $300. It was a traffic infraction rather than a crime, and police could not have used it as grounds to search a car. The House vote was 47-48 and the bill failed.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1756",
+      "roll": 1021832,
+      "measure_id": "SB 158",
+      "vote_date": "2021-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 158, which would have built a statewide database of police misconduct. Agencies would have had to report discipline within seven days, use-of-force complaints within 30 days, and every officer departure, and would have had to run a ten-item check before hiring. The database would have been closed to the public and released only by court order. The Senate passed it 21-8, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing Senate Bill 158, which would have built a statewide database of police misconduct. Agencies would have had to report discipline within seven days, use-of-force complaints within 30 days, and every officer departure, and would have had to run a ten-item check before hiring. The database would have been closed to the public and released only by court order. The Senate passed it 21-8, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1756",
+      "roll": 1024562,
+      "measure_id": "SB 214",
+      "vote_date": "2021-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 214, which would have asked voters to allow a state lottery, casinos at five named sites and sports betting. A new gaming commission would have licensed and taxed them at 20 percent of net revenue, with lottery money going to scholarships. It also redefined bingo as a paper-only game, which would have closed the electronic bingo halls outside those five sites. The Senate vote was 19-13 and the bill failed.",
+      "nay_description": "Voted against passing Senate Bill 214, which would have asked voters to allow a state lottery, casinos at five named sites and sports betting. A new gaming commission would have licensed and taxed them at 20 percent of net revenue, with lottery money going to scholarships. It also redefined bingo as a paper-only game, which would have closed the electronic bingo halls outside those five sites. The Senate vote was 19-13 and the bill failed.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1756",
+      "roll": 1051702,
+      "measure_id": "SB 319",
+      "vote_date": "2021-04-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 319, a second attempt to ask voters to allow a lottery, casinos and sports betting. Licenses at six named sites would have gone by competitive bid, with minimum bids from $5 million to $35 million, taxed at 20 percent. Like the earlier bill it defined bingo as paper only and repealed 18 local bingo amendments, and it barred any new form of gambling for 10 years. The Senate passed it 23-9, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing Senate Bill 319, a second attempt to ask voters to allow a lottery, casinos and sports betting. Licenses at six named sites would have gone by competitive bid, with minimum bids from $5 million to $35 million, taxed at 20 percent. Like the earlier bill it defined bingo as paper only and repealed 18 local bingo amendments, and it barred any new form of gambling for 10 years. The Senate passed it 23-9, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1073791,
+      "measure_id": "SB 46",
+      "vote_date": "2021-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 46, the Compassion Act, which created a medical cannabis program in Alabama. Patients with one of 16 listed conditions can hold limited doses in tablet, capsule, cream or patch form, but not raw plant, anything smoked or vaped, or edibles. Employers can still refuse to hire or can dismiss someone for using it, whether or not they were impaired at work. The House passed it 68-34, and Governor Ivey signed it into law as Act 2021-450.",
+      "nay_description": "Voted against passing Senate Bill 46, the Compassion Act, which created a medical cannabis program in Alabama. Patients with one of 16 listed conditions can hold limited doses in tablet, capsule, cream or patch form, but not raw plant, anything smoked or vaped, or edibles. Employers can still refuse to hire or can dismiss someone for using it, whether or not they were impaired at work. The House passed it 68-34, and Governor Ivey signed it into law as Act 2021-450.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1756",
+      "roll": 1074242,
+      "measure_id": "SB 46",
+      "vote_date": "2021-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 46, the Compassion Act, which created a medical cannabis program in Alabama. Patients with one of 16 listed conditions can hold limited doses in tablet, capsule, cream or patch form, but not raw plant, anything smoked or vaped, or edibles. Employers can still refuse to hire or can dismiss someone for using it, whether or not they were impaired at work. The Senate passed it 20-9, and Governor Ivey signed it into law as Act 2021-450.",
+      "nay_description": "Voted against passing Senate Bill 46, the Compassion Act, which created a medical cannabis program in Alabama. Patients with one of 16 listed conditions can hold limited doses in tablet, capsule, cream or patch form, but not raw plant, anything smoked or vaped, or edibles. Employers can still refuse to hire or can dismiss someone for using it, whether or not they were impaired at work. The Senate passed it 20-9, and Governor Ivey signed it into law as Act 2021-450.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1756",
+      "roll": 1057291,
+      "measure_id": "SB 91",
+      "vote_date": "2021-04-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 91, which would have banned racial profiling in traffic stops. Race or ethnicity could not have been the sole basis for a stop, and every police agency would have adopted a written policy and collected data on who was stopped, by whom, and what followed. The word solely is doing a lot of work: a stop with any other contributing reason falls outside the ban. The Senate passed it 19-7, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing Senate Bill 91, which would have banned racial profiling in traffic stops. Race or ethnicity could not have been the sole basis for a stop, and every police agency would have adopted a written policy and collected data on who was stopped, by whom, and what followed. The word solely is doing a lot of work: a stop with any other contributing reason falls outside the ban. The Senate passed it 19-7, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1078959,
+      "measure_id": "SB 94",
+      "vote_date": "2021-05-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 94, which would have delayed by two years the rule holding back third graders who cannot read well enough. Under the Alabama Literacy Act such a pupil may not move up to fourth grade, and this would have moved the start from the 2021 school year to 2023. The reading help, summer camps and reporting duties in the Act would have continued unchanged during the delay. The House passed it 68-27, but Governor Ivey vetoed it and the delay never took effect.",
+      "nay_description": "Voted against passing Senate Bill 94, which would have delayed by two years the rule holding back third graders who cannot read well enough. Under the Alabama Literacy Act such a pupil may not move up to fourth grade, and this would have moved the start from the 2021 school year to 2023. The reading help, summer camps and reporting duties in the Act would have continued unchanged during the delay. The House passed it 68-27, but Governor Ivey vetoed it and the delay never took effect.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1756",
+      "roll": 1051414,
+      "measure_id": "SB 94",
+      "vote_date": "2021-04-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 94, which would have delayed by two years the rule holding back third graders who cannot read well enough. Under the Alabama Literacy Act such a pupil may not move up to fourth grade, and this would have moved the start from the 2021 school year to 2023. The reading help, summer camps and reporting duties in the Act would have continued unchanged during the delay. The Senate passed it 23-9, but Governor Ivey vetoed it and the delay never took effect.",
+      "nay_description": "Voted against passing Senate Bill 94, which would have delayed by two years the rule holding back third graders who cannot read well enough. Under the Alabama Literacy Act such a pupil may not move up to fourth grade, and this would have moved the start from the 2021 school year to 2023. The reading help, summer camps and reporting duties in the Act would have continued unchanged during the delay. The Senate passed it 23-9, but Governor Ivey vetoed it and the delay never took effect.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1756",
+      "roll": 1043087,
+      "measure_id": "SB 97",
+      "vote_date": "2021-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 97, which would have cut back emergency powers in Alabama. A state of emergency would end after 45 days instead of 60, and past 120 days only the Legislature could extend it, though the Governor kept unlimited extensions for weather, oil spills and emergencies touching under a third of counties. A state health order would take effect only with the Governor's approval, and no vaccination could be ordered over a stated medical, religious or personal objection. The Senate passed it 24-8, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing Senate Bill 97, which would have cut back emergency powers in Alabama. A state of emergency would end after 45 days instead of 60, and past 120 days only the Legislature could extend it, though the Governor kept unlimited extensions for weather, oil spills and emergencies touching under a third of counties. A state health order would take effect only with the Governor's approval, and no vaccination could be ordered over a stated medical, religious or personal objection. The Senate passed it 24-8, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

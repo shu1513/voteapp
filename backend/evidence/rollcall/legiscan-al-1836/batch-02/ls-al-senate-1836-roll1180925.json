@@ -1,0 +1,201 @@
+{
+  "jurisdiction": "AL",
+  "sessionId": 1836,
+  "chamber": "senate",
+  "rollNumber": 1180925,
+  "bill": "SB301",
+  "measureId": "SB 301",
+  "machineUrl": "https://legiscan.com/AL/rollcall/SB301/id/1180925",
+  "fetchedAt": "2026-09-03T16:36:37.768Z",
+  "rollCall": {
+    "roll_call_id": 1180925,
+    "bill_id": 1604675,
+    "date": "2022-03-31",
+    "desc": "Motion to Read a Third Time and Pass Roll Call 894",
+    "yea": 16,
+    "nay": 6,
+    "nv": 1,
+    "absent": 12,
+    "total": 35,
+    "passed": 1,
+    "chamber": "S",
+    "chamber_id": 12,
+    "votes": [
+      {
+        "people_id": 3386,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 3420,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 3429,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 3461,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 3462,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 3465,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 3479,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 3480,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 3481,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 3482,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 3486,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 3490,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 3491,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 12492,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 12499,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 12500,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 12509,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 12521,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 13150,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 16871,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 16872,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 16873,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 16874,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 16875,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 16876,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 17598,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21169,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 21254,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21283,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21284,
+        "vote_id": 3,
+        "vote_text": "NV"
+      },
+      {
+        "people_id": 21299,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 21313,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21315,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      },
+      {
+        "people_id": 21316,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21317,
+        "vote_id": 4,
+        "vote_text": "Absent"
+      }
+    ]
+  }
+}

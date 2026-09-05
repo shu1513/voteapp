@@ -1,0 +1,22 @@
+[
+ {
+  "recordId": "6e8ed19b-b724-4bf9-bab9-3f24b4e47cb3",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1836 session batch-02 run: this hand-written record describes the same vote as HB 312 roll 1171782 on 2022-03-17 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1836/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "309b497d-5091-4587-b83c-dc6c7d198088",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1836 session batch-02 run: this hand-written record describes the same vote as HB 312 roll 1171782 on 2022-03-17 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1836/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "d8ee21ca-4c33-4214-b3a5-b85f27328f86",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1836 session batch-02 run: this hand-written record describes the same vote as HB 312 roll 1171782 on 2022-03-17 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1836/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "bc908d77-146d-48cb-8871-7dac266cd221",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1836 session batch-02 run: this hand-written record describes the same vote as SB 255 roll 1185525 on 2022-04-07 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1836/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "c95221e0-e9da-46c6-8c45-53937fc22704",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1836 session batch-02 run: this hand-written record describes the same vote as SB 255 roll 1185525 on 2022-04-07 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1836/batch-02/JUDGING.md."
+ }
+]
