@@ -2,7 +2,13 @@ import { Fragment, useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type { BallotRaceType, ElectionDetail, PartyBucket, RailSortKey } from "@voteapp/api-client";
-import { RAIL_SORTS, railSortForBallotSort, railSortsOffered, sortRailEntries } from "@voteapp/api-client";
+import {
+  RAIL_SORTS,
+  competitivenessChip,
+  railSortForBallotSort,
+  railSortsOffered,
+  sortRailEntries,
+} from "@voteapp/api-client";
 import { partyColorClass } from "@voteapp/api-client";
 import { DetailPager } from "../components/DetailPager";
 import { DetailRail } from "../components/DetailRail";
@@ -181,6 +187,7 @@ export function ElectionPage() {
   });
 
   const data = useLoaderData<typeof loader>();
+  const competitiveness = competitivenessChip(data);
   // Usage: which parts of the page reached the viewport, once per election
   // (this element stays mounted across rail walks, hence the key).
   const votePowerRef = useSectionExposure("vote_power", data.id);
@@ -592,23 +599,10 @@ export function ElectionPage() {
             district above. We can&rsquo;t match an address to an area this small, so this race may not be on your ballot.
           </p>
         ) : null}
-        {/* The current-cycle chip replaces the historic one whenever a fresh
-            analyst rating drove the decisiveness grade (the backend only
-            sends current_competitiveness in that case) — showing both would
-            read as a contradiction on races that flipped. */}
-        {data.current_competitiveness ? (
+        {competitiveness ? (
           <div className="mt-2 flex flex-wrap gap-2 text-xs">
-            <span
-              className="rounded bg-surface px-2 py-0.5 text-ink-soft"
-              title={data.current_competitiveness.display_description}
-            >
-              {data.current_competitiveness.display_label}
-            </span>
-          </div>
-        ) : data.historical_competitiveness ? (
-          <div className="mt-2 flex flex-wrap gap-2 text-xs">
-            <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
-              {data.historical_competitiveness.display_label}
+            <span className="rounded bg-surface px-2 py-0.5 text-ink-soft" title={competitiveness.description}>
+              {competitiveness.label}
             </span>
           </div>
         ) : null}

@@ -11,6 +11,7 @@ import type {
 import type { BackTo, ElectionNavState } from "../lib/detailNavContext";
 import {
   buildResultChipParts,
+  competitivenessChip,
   formatChoiceLabel,
   formatDistrictName,
   formatElectionDate,
@@ -262,6 +263,7 @@ function ElectionCard({
   // the absence of a green chip already marks them.
   const isUpcoming = election.election_date >= usLatestLocalDate();
   const choiceLabel = myChoice && isUpcoming ? formatChoiceLabel(myChoice) : null;
+  const competitiveness = competitivenessChip(election);
   // The viewer's picked candidate ids, feeding the result chip's
   // "My pick won ✓" marker. Built even on past races — the pick CHIP hides
   // once the election passes (a choice is history), but the marker is the
@@ -372,17 +374,8 @@ function ElectionCard({
               {election.followed_candidates.length === 1 ? "is" : "are"} running
             </span>
           ) : null}
-          {/* Current-cycle rating replaces the historic chip when present —
-              the backend only sends it when the rating drove the grade, and
-              showing both would contradict on races that flipped. */}
-          {election.current_competitiveness ? (
-            <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
-              {election.current_competitiveness.display_label}
-            </span>
-          ) : election.historical_competitiveness ? (
-            <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
-              {election.historical_competitiveness.display_label}
-            </span>
+          {competitiveness ? (
+            <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">{competitiveness.label}</span>
           ) : null}
           {election.has_results ? (
             // Called results get the badge colors from the election page
