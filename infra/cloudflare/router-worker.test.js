@@ -401,10 +401,10 @@ describe("security headers", () => {
     "referrer-policy": "strict-origin-when-cross-origin",
     "permissions-policy": "camera=(), microphone=(), geolocation=()",
     "content-security-policy":
-      "default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client; " +
+      "default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client https://static.cloudflareinsights.com; " +
       "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; " +
       "img-src 'self' data:; font-src 'self'; " +
-      "connect-src 'self' https://*.sentry.io https://accounts.google.com/gsi/; " +
+      "connect-src 'self' https://*.sentry.io https://accounts.google.com/gsi/ https://cloudflareinsights.com; " +
       "frame-src https://accounts.google.com/gsi/; " +
       "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
   };
@@ -487,6 +487,9 @@ describe("security headers", () => {
     assert.match(csp, /script-src 'self' 'unsafe-inline' https:\/\/accounts\.google\.com\/gsi\/client/);
     assert.match(csp, /connect-src 'self' https:\/\/\*\.sentry\.io https:\/\/accounts\.google\.com\/gsi\//);
     assert.match(csp, /frame-ancestors 'none'/);
+    // Cloudflare Web Analytics beacon, injected by the zone into every page.
+    assert.match(csp, /script-src [^;]*https:\/\/static\.cloudflareinsights\.com/);
+    assert.match(csp, /connect-src [^;]*https:\/\/cloudflareinsights\.com/);
   });
 
   it("withSecurityHeaders copies immutable-header responses instead of mutating", () => {

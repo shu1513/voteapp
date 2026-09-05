@@ -74,11 +74,15 @@ export const CLIENT_IP_HEADER = "X-Voteapp-Client-IP";
 // The accounts.google.com sources are Sign in with Google (GIS): the button
 // script, its styles, the credential iframe, and its status requests —
 // Google's documented CSP set for the web sign-in flow.
+// The cloudflareinsights.com sources are Cloudflare Web Analytics: the zone
+// setting injects beacon.min.js from static.cloudflareinsights.com into
+// every HTML response and the beacon posts to cloudflareinsights.com;
+// enforcing without them silently ended analytics collection (2026-09-05).
 const CSP_POLICY =
-  "default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client; " +
+  "default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client https://static.cloudflareinsights.com; " +
   "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; " +
   "img-src 'self' data:; font-src 'self'; " +
-  "connect-src 'self' https://*.sentry.io https://accounts.google.com/gsi/; " +
+  "connect-src 'self' https://*.sentry.io https://accounts.google.com/gsi/ https://cloudflareinsights.com; " +
   "frame-src https://accounts.google.com/gsi/; " +
   "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";
 
