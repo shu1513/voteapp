@@ -19,6 +19,7 @@ import { PickDateCard } from "./PicksPage";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { countBucket, track } from "../lib/usage";
+import { useShowDraftMilestone } from "../lib/useShowDraftMilestone";
 
 // The page-bottom sign-up CTA, its own component so the "shown" usage event
 // rides a mount effect instead of the page's early-return-laden body.
@@ -156,22 +157,12 @@ export function DraftPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [me, reviewSettled, ballot.data]);
 
-  // No-flash rule: nothing until the session state is known.
-  if (me === undefined) {
-    return <LoadingNotice text="Loading…" />;
-  }
-  // Signed-in visitors have the real thing — and this is where a guest lands
-  // right after registering from the CTA below (?next=/draft), by which time
-  // the flush hook has replayed the draft into the account.
-  if (me !== null) {
-    return <Navigate to="/me/picks" replace />;
-  }
-
   const pickCount = draftPickCount(draft);
   const choices = draftChoicesByElectionId(draft);
   const today = usLatestLocalDate();
   // Same strict date grouping as /me/picks, upcoming only: a draft is a plan,
-  // and past races can no longer be picked.
+  // and past races can no longer be picked. Computed before the early
+  // returns below because the milestone hook needs the nearest day.
   const byDate = new Map<string, ElectionSummary[]>();
   for (const election of ballot.data?.elections ?? []) {
     if (election.election_date < today) {
@@ -188,9 +179,22 @@ export function DraftPage() {
   // list.
   const cardedIds = new Set([...byDate.values()].flat().map((election) => election.id));
   const extraRows = [...choices.values()].filter((choice) => !cardedIds.has(choice.election_id));
-  // Mirrors DraftMilestone's own render test (same helper), so the bottom
-  // CTA below can step aside exactly when the milestone shows.
-  const milestoneShown = ballot.isSuccess && dates.length > 0 && allRacesDecided(byDate.get(dates[0]) ?? [], choices);
+  // The finish-line box shows once per day per browser (owner's rule), and
+  // while it does the bottom sign-up CTA steps aside — one button per page.
+  const nearestComplete =
+    ballot.isSuccess && dates.length > 0 && allRacesDecided(byDate.get(dates[0]) ?? [], choices);
+  const milestoneShown = useShowDraftMilestone(dates[0], nearestComplete);
+
+  // No-flash rule: nothing until the session state is known.
+  if (me === undefined) {
+    return <LoadingNotice text="Loading…" />;
+  }
+  // Signed-in visitors have the real thing — and this is where a guest lands
+  // right after registering from the CTA below (?next=/draft), by which time
+  // the flush hook has replayed the draft into the account.
+  if (me !== null) {
+    return <Navigate to="/me/picks" replace />;
+  }
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -237,12 +241,7 @@ export function DraftPage() {
               <>
                 {/* Above the toggle so both views carry it; dates holds
                     upcoming days only, so the first is the nearest. */}
-                <DraftMilestone
-                  date={dates[0]}
-                  elections={byDate.get(dates[0]) ?? []}
-                  choiceByElectionId={choices}
-                  signup
-                />
+                <DraftMilestone show={milestoneShown} date={dates[0]} signup />
                 <div className="mt-4">
                   <BallotViewToggle
                     view={view}

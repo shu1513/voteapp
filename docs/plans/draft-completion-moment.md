@@ -1,7 +1,9 @@
 # Draft completion moment ("You have completed your … election draft")
 
 Status: PR 1 (notice + plumbing) merged 2026-09-04 (#1108); PR 2
-(draft-page milestone, `DraftMilestone.tsx`) implemented 2026-09-04.
+(draft-page milestone) merged (#1112); single sign-up CTA (#1118); mobile
+parity (#1119); copy PR (#1125); milestone once-per-browser + member ask
+(this branch), all 2026-09-04.
 
 ## Idea
 
@@ -181,9 +183,34 @@ card's count line), and renders nothing unless every race is decided:
   stays).
 - Signed in: no extra action. Share is already on the date card in List
   view.
-- Rendering the milestone adds the date to `voteapp_draft_complete_seen`.
+- Once per election day per browser (owner's rule, 2026-09-04: persistent
+  = nag, for guests and members alike). `useShowDraftMilestone` snapshots
+  the `voteapp_draft_milestone_seen` marker the first time a day is
+  tracked, so the box stays for that visit and is gone on the next mount.
+  Rendering it marks both that scope and `voteapp_draft_complete_seen`
+  (the notice's), so the header notice never fires for a day read about
+  here. Mobile does the same with AsyncStorage. No timers: content that
+  vanishes on its own is worse for screen readers than a box that simply
+  does not return.
 
 `PickDateCard` itself is unchanged; its count line stays.
+
+### 2b. Honorary-member ask (web, `/me/picks` only)
+
+`DraftMembershipCta.tsx`: the one moment a registered user feels done is
+the right time to ask. Rides the milestone's single visit (`show` is the
+same visibility), so it is not a second persistent box. Registered users
+who are not yet members only: `GET /api/me/membership` (hook moved to
+`frontend/src/lib/useMembershipStatus.ts`, `enabled` only when the day is
+complete) must report `enabled: true` and `membership: null`; Stripe-off
+deployments and members see nothing. Guests get the sign-up ask instead.
+One slot below whichever view is on (cards or ballot sheets). Copy: "Your
+draft is done. Help us keep this research free and current for every
+voter." + button "See our mission and join us" → `/mission`, which carries
+the member / one-time buttons. Nudge green (the "Set your address" tint),
+distinct from the pick green and from rausch sign-up buttons. Web only:
+membership checkout on mobile would run into the app stores' in-app
+purchase rules.
 
 ### 3. Pick card: no change
 
