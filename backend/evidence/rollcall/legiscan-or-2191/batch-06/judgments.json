@@ -1,0 +1,112 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1526805,
+      "measure_id": "HB 3550",
+      "vote_date": "2025-03-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3550, which takes minor league baseball players out of Oregon's minimum wage and workplace rules. It covers a player signed to a pro sports club who is also covered by a union contract that sets pay and working conditions. State rules on pay floors, overtime and meal breaks no longer reach those players. The Oregon House passed it 35-15, and it became law.",
+      "nay_description": "Voted against House Bill 3550, which takes minor league baseball players out of Oregon's minimum wage and workplace rules. It covers a player signed to a pro sports club who is also covered by a union contract that sets pay and working conditions. State rules on pay floors, overtime and meal breaks no longer reach those players. The Oregon House passed it 35-15, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1595933,
+      "measure_id": "SB 1173",
+      "vote_date": "2025-06-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1173, which shields hospitals, clinics and medical practices from product liability claims over things they hand a patient. A health care facility no longer counts as the maker, seller or distributor of a product if it supplied the item as part of care and had no hand in designing or making it. The shield drops away for anything the facility sells to the general public in a retail setting. It applies to lawsuits filed on or after the law took effect. The Oregon House passed it 39-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 1173, which shields hospitals, clinics and medical practices from product liability claims over things they hand a patient. A health care facility no longer counts as the maker, seller or distributor of a product if it supplied the item as part of care and had no hand in designing or making it. The shield drops away for anything the facility sells to the general public in a retail setting. It applies to lawsuits filed on or after the law took effect. The Oregon House passed it 39-12, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1573964,
+      "measure_id": "SB 1191",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1191, which says that telling someone what their civil or constitutional rights are is not a crime. Oregon law makes it a crime to obstruct government or court business, to refuse to help a peace officer, and to interfere with an officer. This law carves the act of informing a person of their rights out of all three. It covers conduct from the day the law took effect. The Oregon House passed it 32-19, and it became law.",
+      "nay_description": "Voted against Senate Bill 1191, which says that telling someone what their civil or constitutional rights are is not a crime. Oregon law makes it a crime to obstruct government or court business, to refuse to help a peace officer, and to interfere with an officer. This law carves the act of informing a person of their rights out of all three. It covers conduct from the day the law took effect. The Oregon House passed it 32-19, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1563826,
+      "measure_id": "HB 2081",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2081, which tells the state's investment board and treasurer to treat climate change as a risk to the public employee pension fund. They must study and manage that risk, and report on the emissions of the fund's fossil fuel holdings, both those the companies produce directly and those from the energy they buy. They must look at how doing so affects returns, and aim to cut the fund's carbon intensity by favoring investments that lower net emissions. A report goes to the Legislature every two years. Existing duties to the fund and its contracts still bind them. The Oregon House passed it 36-18, and it became law.",
+      "nay_description": "Voted against House Bill 2081, which tells the state's investment board and treasurer to treat climate change as a risk to the public employee pension fund. They must study and manage that risk, and report on the emissions of the fund's fossil fuel holdings, both those the companies produce directly and those from the energy they buy. They must look at how doing so affects returns, and aim to cut the fund's carbon intensity by favoring investments that lower net emissions. A report goes to the Legislature every two years. Existing duties to the fund and its contracts still bind them. The Oregon House passed it 36-18, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1591137,
+      "measure_id": "HB 2081",
+      "vote_date": "2025-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2081, which tells the state's investment board and treasurer to treat climate change as a risk to the public employee pension fund. They must study and manage that risk, and report on the emissions of the fund's fossil fuel holdings, both those the companies produce directly and those from the energy they buy. They must look at how doing so affects returns, and aim to cut the fund's carbon intensity by favoring investments that lower net emissions. A report goes to the Legislature every two years. Existing duties to the fund and its contracts still bind them. The Oregon Senate passed it 18-10, and it became law.",
+      "nay_description": "Voted against House Bill 2081, which tells the state's investment board and treasurer to treat climate change as a risk to the public employee pension fund. They must study and manage that risk, and report on the emissions of the fund's fossil fuel holdings, both those the companies produce directly and those from the energy they buy. They must look at how doing so affects returns, and aim to cut the fund's carbon intensity by favoring investments that lower net emissions. A report goes to the Legislature every two years. Existing duties to the fund and its contracts still bind them. The Oregon Senate passed it 18-10, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1569520,
+      "measure_id": "SB 867",
+      "vote_date": "2025-05-12",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 867, which gives the State Board of Education more ways to act when a school is found to have discriminated. The board may order the school to adopt or change a policy, train staff, publish information or take expert help. Sometimes the discrimination costs a student a class, an activity, or full use of a school service. In those cases the board may order the school to give the student what was missed, or to pay back what the family spent getting it elsewhere. The law also widens the state education department's power to look into reports of abuse and sexual conduct in schools. The Oregon House passed it 35-15, and it became law.",
+      "nay_description": "Voted against Senate Bill 867, which gives the State Board of Education more ways to act when a school is found to have discriminated. The board may order the school to adopt or change a policy, train staff, publish information or take expert help. Sometimes the discrimination costs a student a class, an activity, or full use of a school service. In those cases the board may order the school to give the student what was missed, or to pay back what the family spent getting it elsewhere. The law also widens the state education department's power to look into reports of abuse and sexual conduct in schools. The Oregon House passed it 35-15, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

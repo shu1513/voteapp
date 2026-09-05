@@ -1,0 +1,130 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1552801,
+      "measure_id": "HB 3646",
+      "vote_date": "2025-04-21",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3646, which lets state and local agencies favor employee-owned firms when they buy goods or services. The firm counts if its workers own at least half of it, either outright or through a retirement plan the IRS treats as qualified. The preference only holds if the price is no more than five percent above what other bidders ask, though an agency may raise that margin by order. A bidder must send proof of the ownership with its bid. The Oregon House passed it 31-27, and it became law.",
+      "nay_description": "Voted against House Bill 3646, which lets state and local agencies favor employee-owned firms when they buy goods or services. The firm counts if its workers own at least half of it, either outright or through a retirement plan the IRS treats as qualified. The preference only holds if the price is no more than five percent above what other bidders ask, though an agency may raise that margin by order. A bidder must send proof of the ownership with its bid. The Oregon House passed it 31-27, and it became law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1583613,
+      "measure_id": "HB 3646",
+      "vote_date": "2025-06-02",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3646, which lets state and local agencies favor employee-owned firms when they buy goods or services. The firm counts if its workers own at least half of it, either outright or through a retirement plan the IRS treats as qualified. The preference only holds if the price is no more than five percent above what other bidders ask, though an agency may raise that margin by order. A bidder must send proof of the ownership with its bid. The Oregon Senate passed it 19-10, and it became law.",
+      "nay_description": "Voted against House Bill 3646, which lets state and local agencies favor employee-owned firms when they buy goods or services. The firm counts if its workers own at least half of it, either outright or through a retirement plan the IRS treats as qualified. The preference only holds if the price is no more than five percent above what other bidders ask, though an agency may raise that margin by order. A bidder must send proof of the ownership with its bid. The Oregon Senate passed it 19-10, and it became law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1591734,
+      "measure_id": "HB 3912",
+      "vote_date": "2025-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3912, which makes anyone who calls themselves a doctor in their health work say which field their doctorate is in. The label has to appear on all their material, which the law defines to include websites, social media, ads, billboards, signs, professional notices and name badges. It must be at least a quarter the size of the largest print used, and as easy to read in color, type and lighting. The Oregon Senate passed it 22-7, and it became law.",
+      "nay_description": "Voted against House Bill 3912, which makes anyone who calls themselves a doctor in their health work say which field their doctorate is in. The label has to appear on all their material, which the law defines to include websites, social media, ads, billboards, signs, professional notices and name badges. It must be at least a quarter the size of the largest print used, and as easy to read in color, type and lighting. The Oregon Senate passed it 22-7, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1591030,
+      "measure_id": "HB 2684",
+      "vote_date": "2025-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2684, which makes school boards keep their pest control plans current and public. The plan must be reviewed, updated and readopted at least once every five years, and must carry the day it was adopted. Boards must post both the plan and their list of low-risk pesticides on their website, which they can do by folding them into the health and safety plan they already post. The Oregon House agreed to the Senate's changes 43-12, and it became law.",
+      "nay_description": "Voted against House Bill 2684, which makes school boards keep their pest control plans current and public. The plan must be reviewed, updated and readopted at least once every five years, and must carry the day it was adopted. Boards must post both the plan and their list of low-risk pesticides on their website, which they can do by folding them into the health and safety plan they already post. The Oregon House agreed to the Senate's changes 43-12, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1594164,
+      "measure_id": "HB 3148",
+      "vote_date": "2025-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3148, which names Oregon's phone and internet help for low-income households the Oregon Lifeline plan and adds a computer to it. A household can get one payment of up to $100 toward a new or refurbished desktop, laptop or tablet, plus items to go with it such as a keyboard, mouse or assistive software. The benefit comes once. The utility regulator may hire outside help to run it, and may vary the ordinary assistance by what the service costs. The Oregon House passed it 37-14, and it became law.",
+      "nay_description": "Voted against House Bill 3148, which names Oregon's phone and internet help for low-income households the Oregon Lifeline plan and adds a computer to it. A household can get one payment of up to $100 toward a new or refurbished desktop, laptop or tablet, plus items to go with it such as a keyboard, mouse or assistive software. The benefit comes once. The utility regulator may hire outside help to run it, and may vary the ordinary assistance by what the service costs. The Oregon House passed it 37-14, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1594492,
+      "measure_id": "HB 3179",
+      "vote_date": "2025-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3179, which makes the state weigh what a rate rise does to households on top of what they already pay. The utility board decides whether a power or gas company's home rates are fair. In doing so it must now balance the investor's interest against the customer's. It must also look at the piled-up cost to homes, not just the one rise in front of it. The company must file its own study of that piled-up cost when it seeks a home rate rise and its profit rate is up for review. The Oregon Senate passed it 20-9, and it became law.",
+      "nay_description": "Voted against House Bill 3179, which makes the state weigh what a rate rise does to households on top of what they already pay. The utility board decides whether a power or gas company's home rates are fair. In doing so it must now balance the investor's interest against the customer's. It must also look at the piled-up cost to homes, not just the one rise in front of it. The company must file its own study of that piled-up cost when it seeks a home rate rise and its profit rate is up for review. The Oregon Senate passed it 20-9, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1578807,
+      "measure_id": "SB 982",
+      "vote_date": "2025-05-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 982, which sets conditions before a school district may spend public money placing a student in an out-of-state residential facility. The facility must meet Oregon's licensing standards, and the district must hold a current contract with it. That contract has to make the facility hand over a list of every other body it is placing children for, and give the district notice of problems. The rules do not reach another state's school for deaf or blind students. The Oregon House passed it 44-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 982, which sets conditions before a school district may spend public money placing a student in an out-of-state residential facility. The facility must meet Oregon's licensing standards, and the district must hold a current contract with it. That contract has to make the facility hand over a list of every other body it is placing children for, and give the district notice of problems. The rules do not reach another state's school for deaf or blind students. The Oregon House passed it 44-12, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

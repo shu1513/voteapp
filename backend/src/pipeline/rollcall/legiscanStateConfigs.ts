@@ -3282,6 +3282,22 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     chamberSizes: { house: 60, senate: 30 },
     keptQuestions: OREGON_KEPT_QUESTIONS,
     excludedQuestions: OREGON_EXCLUDED_QUESTIONS,
+    // ⚠ LegiScan places one member on the WRONG SIDE of these five rolls.
+    // Every divided-and-enacted roll in the session (393 of them) was audited
+    // against the tally Oregon's own bill history prints, and 388 match
+    // exactly. These five are each off by one, and in every case the history
+    // NAMES the nay voters, so the extra member is identifiable: LegiScan
+    // adds Girod to SB 906's nays and Boice to HB 2957's, and Oregon's
+    // journal names neither. A wrong side writes a false record about a named
+    // legislator, and the approval check copies the stored tally into the
+    // record text, so these must never be queued.
+    heldRollCallIds: {
+      1543833: "SB 906 Senate 2025-04-10: LegiScan reports 19-8 and lists Girod as a nay; Oregon's journal reports 20-7 and does not name him among the seven nays",
+      1590950: "HB 2957 House 2025-06-16: LegiScan reports 35-19 and lists Boice as a nay; Oregon's journal reports 36-18 and does not name him among the eighteen nays",
+      1571965: "SB 817 House 2025-05-15: LegiScan reports 37-12, Oregon's journal reports 36-13",
+      1595861: "HB 2005 House 2025-06-27: LegiScan reports 39-10, Oregon's journal reports 38-11",
+      1594908: "HB 5015 House 2025-06-25: LegiScan reports 40-11, Oregon's journal reports 39-12",
+    },
   },
 };
 

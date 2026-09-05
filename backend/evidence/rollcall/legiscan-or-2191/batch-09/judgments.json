@@ -1,0 +1,130 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1595462,
+      "measure_id": "SB 537",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 537, which widens Oregon's rules on violence against health care workers. The state must write steps for how employers look into, record and report violent incidents. It must do the same for the safety committees that watch over them. More employers are covered, including home health agencies, home hospice programs, and hospitals other than the Oregon State Hospital. Staff must get training and a copy of the employer's plan. Employers may also mark a patient's health record to warn that the patient could pose a risk, under set rules. The Oregon House passed it 37-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 537, which widens Oregon's rules on violence against health care workers. The state must write steps for how employers look into, record and report violent incidents. It must do the same for the safety committees that watch over them. More employers are covered, including home health agencies, home hospice programs, and hospitals other than the Oregon State Hospital. Staff must get training and a copy of the employer's plan. Employers may also mark a patient's health record to warn that the patient could pose a risk, under set rules. The Oregon House passed it 37-12, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1593990,
+      "measure_id": "SB 537",
+      "vote_date": "2025-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 537, which widens Oregon's rules on violence against health care workers. The state must write steps for how employers look into, record and report violent incidents. It must do the same for the safety committees that watch over them. More employers are covered, including home health agencies, home hospice programs, and hospitals other than the Oregon State Hospital. Staff must get training and a copy of the employer's plan. Employers may also mark a patient's health record to warn that the patient could pose a risk, under set rules. The Oregon Senate passed it 18-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 537, which widens Oregon's rules on violence against health care workers. The state must write steps for how employers look into, record and report violent incidents. It must do the same for the safety committees that watch over them. More employers are covered, including home health agencies, home hospice programs, and hospitals other than the Oregon State Hospital. Staff must get training and a copy of the employer's plan. Employers may also mark a patient's health record to warn that the patient could pose a risk, under set rules. The Oregon Senate passed it 18-11, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1590491,
+      "measure_id": "HB 3825",
+      "vote_date": "2025-06-13",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3825, which wipes out old court debts from small marijuana convictions. It reaches fines and other money judgments from a city or county court for possessing less than an ounce of marijuana before July 1, 2015, where the debt had not already lapsed. Those debts end on the day the law took effect. The person is then treated as having served the sentence for that money, which matters because an unpaid debt can block getting a conviction set aside. The Oregon House agreed to the Senate's changes 32-8, and it became law.",
+      "nay_description": "Voted against House Bill 3825, which wipes out old court debts from small marijuana convictions. It reaches fines and other money judgments from a city or county court for possessing less than an ounce of marijuana before July 1, 2015, where the debt had not already lapsed. Those debts end on the day the law took effect. The person is then treated as having served the sentence for that money, which matters because an unpaid debt can block getting a conviction set aside. The Oregon House agreed to the Senate's changes 32-8, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1580006,
+      "measure_id": "SB 426",
+      "vote_date": "2025-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 426, which makes the main contractor on a building job answer for wages a subcontractor fails to pay. The main contractor is the firm that signs the deal with the owner. A worker who is owed can act through a building trades union, or another representative they pick. The duty covers work on buildings, other structures and land. It reaches deals to build, rebuild, alter, maintain, move or tear down. The Oregon House passed it 31-26, and it became law.",
+      "nay_description": "Voted against Senate Bill 426, which makes the main contractor on a building job answer for wages a subcontractor fails to pay. The main contractor is the firm that signs the deal with the owner. A worker who is owed can act through a building trades union, or another representative they pick. The duty covers work on buildings, other structures and land. It reaches deals to build, rebuild, alter, maintain, move or tear down. The Oregon House passed it 31-26, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1581241,
+      "measure_id": "SB 426",
+      "vote_date": "2025-05-29",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 426, which makes the main contractor on a building job answer for wages a subcontractor fails to pay. The main contractor is the firm that signs the deal with the owner. A worker who is owed can act through a building trades union, or another representative they pick. The duty covers work on buildings, other structures and land. It reaches deals to build, rebuild, alter, maintain, move or tear down. The Oregon Senate agreed to the House's changes 17-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 426, which makes the main contractor on a building job answer for wages a subcontractor fails to pay. The main contractor is the firm that signs the deal with the owner. A worker who is owed can act through a building trades union, or another representative they pick. The duty covers work on buildings, other structures and land. It reaches deals to build, rebuild, alter, maintain, move or tear down. The Oregon Senate agreed to the House's changes 17-12, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1590931,
+      "measure_id": "HB 2677",
+      "vote_date": "2025-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2677, which makes county juvenile departments apply to clear old juvenile records rather than leaving it to the young person to ask. The department files with the court once the person turns 18, is out of juvenile court supervision, and has no disqualifying adult conviction. For records from before 2024 the department must make a reasonable effort to tell the victim when it files. The case is heard in the county of the most recent finding. The Oregon House passed it 37-18, and it became law.",
+      "nay_description": "Voted against House Bill 2677, which makes county juvenile departments apply to clear old juvenile records rather than leaving it to the young person to ask. The department files with the court once the person turns 18, is out of juvenile court supervision, and has no disqualifying adult conviction. For records from before 2024 the department must make a reasonable effort to tell the victim when it files. The case is heard in the county of the most recent finding. The Oregon House passed it 37-18, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1593041,
+      "measure_id": "HB 2677",
+      "vote_date": "2025-06-19",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2677, which makes county juvenile departments apply to clear old juvenile records rather than leaving it to the young person to ask. The department files with the court once the person turns 18, is out of juvenile court supervision, and has no disqualifying adult conviction. For records from before 2024 the department must make a reasonable effort to tell the victim when it files. The case is heard in the county of the most recent finding. The Oregon Senate passed it 17-12, and it became law.",
+      "nay_description": "Voted against House Bill 2677, which makes county juvenile departments apply to clear old juvenile records rather than leaving it to the young person to ask. The department files with the court once the person turns 18, is out of juvenile court supervision, and has no disqualifying adult conviction. For records from before 2024 the department must make a reasonable effort to tell the victim when it files. The case is heard in the county of the most recent finding. The Oregon Senate passed it 17-12, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
