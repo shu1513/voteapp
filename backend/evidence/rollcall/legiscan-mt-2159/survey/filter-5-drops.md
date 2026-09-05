@@ -449,3 +449,19 @@ Child Welfare Act", which strongly suggests a repealed sunset, but Montana's
 archive would not serve the 2023 chapter text, so it is unconfirmed. A record
 that says "repealed section 55" tells a reader nothing, and a record that guesses
 at a sunset could be wrong. It waits for the 2023 chapter text.
+
+## Batch 14
+
+**SB 101** creates the offences of unlawful squatting and fraudulent sale or
+lease of property, provides a process for removing the person, and indemnifies
+law enforcement acting in good faith. It fails filter 5 under the rule set in
+batch 11: `public_safety_and_crime_control` is not an axis where a new offence
+has an automatic direction. The act strengthens a property owner's position and
+narrows an occupant's process in the same breath, and neither reading is more
+defensible than the other.
+
+**HB 233** provides for transferring title to open space shown on a recorded
+final plat to a homeowners' association, requires a public hearing, and applies
+retroactively. It is title mechanics between a developer, a local government and
+an association. No research area carries a position on who holds the deed to a
+subdivision's open space.
