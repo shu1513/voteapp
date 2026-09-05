@@ -73,7 +73,7 @@ HB 231	B	house	2025-04-30	1561886	60	39	batch-07	Revise property tax rates for c
 HB 231	B	senate	2025-04-24	1557138	25	25	superseded:later-roll-used	Revise property tax rates for certain property
 HB 231	B	senate	2025-04-25	1558093	25	24	superseded:later-roll-used	Revise property tax rates for certain property
 HB 231	B	senate	2025-04-30	1562488	28	22	batch-07	Revise property tax rates for certain property
-HB 233	B	house	2025-02-11	1486213	63	36	unbatched	Provide for transfer of title of open spaces in final plat to HOA
+HB 233	B	house	2025-02-11	1486213	63	36	dropped:filter-5	Provide for transfer of title of open spaces in final plat to HOA
 HB 239	B	senate	2025-04-22	1553971	38	12	batch-11	Revise laws related to construction contractors
 HB 24	B	house	2025-01-21	1480872	79	20	dropped:filter-5	Clarify laws related to kindergarten
 HB 245	B	house	2025-02-10	1485363	63	37	batch-12	Revise the Montana HELP Act workforce development provisions and termination date
@@ -158,7 +158,7 @@ HB 413	B	house	2025-02-27	1501539	56	42	batch-05	Revise election laws regarding 
 HB 413	B	senate	2025-04-11	1545872	30	18	batch-05	Revise election laws regarding residency
 HB 415	B	house	2025-02-21	1496478	63	35	dropped:filter-5	Revise laws on a judge's ability to provide bail to certain defendants
 HB 415	B	senate	2025-04-14	1547363	34	14	dropped:filter-5	Revise laws on a judge's ability to provide bail to certain defendants
-HB 416	B	house	2025-02-26	1500714	56	44	unbatched	Require homeowners' associations to seek permission for entry on real property
+HB 416	B	house	2025-02-26	1500714	56	44	batch-14	Require homeowners' associations to seek permission for entry on real property
 HB 421	B	senate	2025-04-24	1557114	37	13	unbatched	Increase DNRC fire assessment fees
 HB 423	B	senate	2025-04-14	1547202	31	17	dropped:filter-5	Revise election laws related to active and inactive voter lists
 HB 427	B	house	2025-03-01	1503077	57	40	superseded:later-roll-used	Require government to provide certain building code text or citation causing delay or stop
@@ -438,9 +438,9 @@ HJ 7	JR	house	2025-02-05	1482113	53	47	dropped:filter-2-not-law	Joint resolution
 HJ 7	JR	senate	2025-04-22	1554831	30	20	dropped:filter-2-not-law	Joint resolution congratulating President Donald J. Trump on his re-election
 HJ 74	JR	house	2025-04-28	1558777	63	37	dropped:filter-2-not-law	Study resolution analyzing water re-use in the state
 HJ 74	JR	senate	2025-04-30	1562664	33	17	dropped:filter-2-not-law	Study resolution analyzing water re-use in the state
-SB 101	B	house	2025-03-27	1529013	58	41	unbatched	Revise laws related to squatting
+SB 101	B	house	2025-03-27	1529013	58	41	dropped:filter-5	Revise laws related to squatting
 SB 101	B	senate	2025-01-24	1481618	35	14	superseded:later-roll-used	Revise laws related to squatting
-SB 101	B	senate	2025-04-01	1533264	35	15	unbatched	Revise laws related to squatting
+SB 101	B	senate	2025-04-01	1533264	35	15	dropped:filter-5	Revise laws related to squatting
 SB 104	B	senate	2025-02-28	1502635	38	11	unbatched	Expanding access to low-cost capital to certain eligible projects and entities
 SB 105	B	house	2025-03-31	1531112	77	21	batch-05	Generally revise election laws related to electioneering at polling locations
 SB 105	B	senate	2025-02-26	1500296	28	22	superseded:later-roll-used	Generally revise election laws related to electioneering at polling locations
@@ -450,9 +450,9 @@ SB 113	B	house	2025-03-21	1524060	76	21	unbatched	Revise exemptions related to t
 SB 116	B	house	2025-04-28	1558991	58	41	unbatched	Revise the Montana heritage preservation and development commission membership
 SB 117	B	house	2025-04-16	1550344	67	31	unbatched	Revise government entity limitations on property tax increases
 SB 132	B	senate	2025-02-07	1484302	37	12	unbatched	Generally revise minor in possession laws
-SB 133	B	house	2025-04-11	1546389	54	45	unbatched	Revise impact fee laws
+SB 133	B	house	2025-04-11	1546389	54	45	batch-14	Revise impact fee laws
 SB 133	B	senate	2025-02-07	1484106	32	17	superseded:later-roll-used	Revise impact fee laws
-SB 133	B	senate	2025-04-15	1548486	32	18	unbatched	Revise impact fee laws
+SB 133	B	senate	2025-04-15	1548486	32	18	batch-14	Revise impact fee laws
 SB 134	B	senate	2025-02-14	1490625	33	17	unbatched	Generally revise laws relating to gifts and endowments
 SB 137	B	senate	2025-02-06	1483351	38	11	unbatched	Require excusal of prospective jurors aged 75 and older
 SB 143	B	house	2025-03-28	1530366	58	41	unbatched	Generally revise civil liability laws relating to statutes of limitations for certain actions
@@ -467,8 +467,8 @@ SB 154	B	senate	2025-04-12	1546642	36	14	unbatched	Revise prohibition on sale or
 SB 168	B	house	2025-04-11	1546399	64	35	batch-11	Revise laws related to lakeshore protection
 SB 170	B	house	2025-03-21	1524212	57	40	batch-02	Eliminate termination date of community health aide program
 SB 170	B	senate	2025-02-11	1486315	34	16	batch-02	Eliminate termination date of community health aide program
-SB 172	B	house	2025-03-21	1524092	57	40	unbatched	Revise resort tax eligibility and allow use for workforce housing
-SB 172	B	senate	2025-02-12	1487519	38	12	unbatched	Revise resort tax eligibility and allow use for workforce housing
+SB 172	B	house	2025-03-21	1524092	57	40	batch-14	Revise resort tax eligibility and allow use for workforce housing
+SB 172	B	senate	2025-02-12	1487519	38	12	batch-14	Revise resort tax eligibility and allow use for workforce housing
 SB 177	B	house	2025-04-11	1546071	57	42	unbatched	Allow community choice school commission to seek public funding
 SB 177	B	senate	2025-02-06	1483650	38	11	unbatched	Allow community choice school commission to seek public funding
 SB 178	B	senate	2025-02-14	1497072	33	17	superseded:later-roll-used	Provide for temporary lease of water rights
@@ -483,9 +483,9 @@ SB 193	B	senate	2025-02-12	1488273	31	19	unbatched	Provide that members of the a
 SB 194	B	house	2025-04-11	1546375	56	43	unbatched	Eliminate the board of public assistance
 SB 198	B	house	2025-03-31	1531386	57	42	unbatched	Generally revise professional occupation laws related to private security
 SB 212	B	house	2025-03-28	1529953	61	38	unbatched	Creating the Right to Compute Act and requiring shutdowns of AI controlled critical infrastructure
-SB 213	B	house	2025-04-11	1546377	67	32	unbatched	Revise the state building code to allow single stairwells in certain buildings
-SB 214	B	house	2025-04-11	1546212	50	48	unbatched	Revise zoning laws to clarify decisions regarding prior nonconforming use of property
-SB 214	B	senate	2025-02-27	1501786	34	16	unbatched	Revise zoning laws to clarify decisions regarding prior nonconforming use of property
+SB 213	B	house	2025-04-11	1546377	67	32	batch-14	Revise the state building code to allow single stairwells in certain buildings
+SB 214	B	house	2025-04-11	1546212	50	48	batch-14	Revise zoning laws to clarify decisions regarding prior nonconforming use of property
+SB 214	B	senate	2025-02-27	1501786	34	16	batch-14	Revise zoning laws to clarify decisions regarding prior nonconforming use of property
 SB 218	B	house	2025-04-11	1546384	55	44	unbatched	Provide for private right of action for injuries caused by certain medical interventions to treat gender dysphoria
 SB 218	B	senate	2025-02-18	1492242	30	20	superseded:later-roll-used	Provide for private right of action for injuries caused by certain medical interventions to treat gender dysphoria
 SB 218	B	senate	2025-04-17	1551250	32	18	superseded:later-roll-used	Provide for private right of action for injuries caused by certain medical interventions to treat gender dysphoria
@@ -516,7 +516,7 @@ SB 264	B	house	2025-04-11	1546473	52	47	unbatched	Eliminate a defense to the veh
 SB 264	B	senate	2025-02-18	1492323	33	17	unbatched	Eliminate a defense to the vehicle noise statute
 SB 265	B	house	2025-04-11	1546128	70	29	unbatched	Revise cryptocurrency laws to create Financial Freedom and Innovation Act
 SB 271	B	senate	2025-02-19	1494176	39	10	unbatched	Remove prohibition on certain compensation for collegiate student-athlete's name/image/likeness
-SB 275	B	senate	2025-02-18	1492352	34	16	unbatched	Allow revocation of agricultural covenant on lands annexed into municipality
+SB 275	B	senate	2025-02-18	1492352	34	16	batch-14	Allow revocation of agricultural covenant on lands annexed into municipality
 SB 276	B	house	2025-04-11	1546387	57	42	batch-13	Generally revise voter identification laws
 SB 278	B	house	2025-04-11	1546451	75	24	unbatched	Revise education laws to support advanced opportunities
 SB 278	B	senate	2025-03-04	1505542	38	12	superseded:later-roll-used	Revise education laws to support advanced opportunities
@@ -538,8 +538,8 @@ SB 33	B	senate	2025-02-06	1483471	31	18	dropped:filter-5	State buildings subject
 SB 330	B	senate	2025-03-05	1505703	40	10	superseded:later-roll-used	Create a Montana blockchain and digital innovation task force
 SB 333	B	house	2025-04-24	1557270	58	42	unbatched	Repeal sunset on coal washing credit
 SB 335	B	senate	2025-03-03	1503707	28	22	superseded:later-roll-used	Generally revise laws related to dental insurance
-SB 337	B	house	2025-04-24	1557751	60	40	unbatched	Provide a 5 year prepaid property tax exemption during subdivision development
-SB 337	B	senate	2025-03-27	1529146	34	16	unbatched	Provide a 5 year prepaid property tax exemption during subdivision development
+SB 337	B	house	2025-04-24	1557751	60	40	batch-14	Provide a 5 year prepaid property tax exemption during subdivision development
+SB 337	B	senate	2025-03-27	1529146	34	16	batch-14	Provide a 5 year prepaid property tax exemption during subdivision development
 SB 342	B	house	2025-04-11	1546349	58	41	held:legiscan-vote-defect	Provide that chief justice appoints the court administrator
 SB 342	B	senate	2025-03-03	1503771	32	18	unbatched	Provide that chief justice appoints the court administrator
 SB 348	B	house	2025-04-11	1546122	58	40	unbatched	Revise laws on sexual assault
@@ -588,7 +588,7 @@ SB 511	B	house	2025-04-11	1546250	77	22	unbatched	Generally revising laws relate
 SB 511	B	senate	2025-03-06	1508137	34	15	unbatched	Generally revising laws related to litigation financing
 SB 520	B	house	2025-04-11	1546443	61	38	batch-08	Revise laws regarding mining leases on state lands
 SB 520	B	senate	2025-03-06	1508186	36	13	superseded:later-roll-used	Revise laws regarding mining leases on state lands
-SB 532	B	house	2025-04-23	1556216	75	24	unbatched	Revise county zoning to allow accessory dwelling units
+SB 532	B	house	2025-04-23	1556216	75	24	batch-14	Revise county zoning to allow accessory dwelling units
 SB 534	B	house	2025-04-24	1557670	65	35	unbatched	Provide property tax exemption for wireless infrastructure
 SB 534	B	senate	2025-04-03	1536907	40	10	unbatched	Provide property tax exemption for wireless infrastructure
 SB 535	B	house	2025-04-25	1558163	50	50	superseded:later-roll-used	Revise laws related to experimental treatments
