@@ -112,3 +112,20 @@ The original insert ledger is `import-report.json`; the convergence run wrote
 `import-rerun-report.json` and left it alone.
 
 **Production is untouched.** It holds no Arizona roll-call records.
+
+## Review fixes (2026-09-05)
+
+PR review caught two descriptions that overstated the enacted law. Both were checked against
+the chaptered text on azleg.gov and corrected in `judgments.json`, re-applied with
+`rollcall:judge`, and fanned out again with `rollcall:legiscan:import`:
+
+- **SB 1353** (House roll 1567301): the 15-working-day permit deadline applies only to a
+  municipality of 30,000 or more people, and the clock starts only after the city has approved
+  the construction documents and cleared vertical construction (§9-470.01(A)). The old text
+  stated an unconditional 15-day deadline.
+- **SB 1529** (House roll 1595696): accessory-dwelling-unit plans start July 1, 2026 alongside
+  single-family plans; only duplex and triplex plans start January 1, 2027 (§9-461.20, the
+  codified section). The old text put ADUs in the 2027 group.
+
+The re-import rewrote exactly the 60 records on those two rolls (31 + 29) and left the other
+348 unchanged; `import-rerun-report.json` is now that run's ledger. Record count stays 3,847.
