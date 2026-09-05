@@ -8,7 +8,7 @@ import { TermsRenewalGate } from "./components/TermsRenewalGate";
 import { APP_NAME, VERIFY_WITH_OFFICIALS_NOTE, apiRequest, purgeAccountScopedQueries, useMe } from "@voteapp/api-client";
 import { useFlushBallotDraft } from "./lib/useFlushBallotDraft";
 import { myDraftLabel, useGuestDraftNav, useMyPicksProgress } from "./lib/usePickProgress";
-import { useUsageTracking } from "./lib/usage";
+import { trackSettled, useUsageTracking } from "./lib/usage";
 
 /**
  * The signed-in account menu: a "Hi {first name} ▾" button that discloses
@@ -28,7 +28,11 @@ function AccountMenu({ firstName }: { firstName: string }) {
   // Signs out everywhere (all devices), not just this session: one button is
   // simpler for non-technical users than a this-device/everywhere pair.
   const logoutAll = useMutation({
-    mutationFn: () => apiRequest<{ status: string }>("/api/auth/logout-all", { method: "POST", body: {} }),
+    mutationFn: () => {
+      const request = apiRequest<{ status: string }>("/api/auth/logout-all", { method: "POST", body: {} });
+      trackSettled(request, "auth_result", { action: "logout", has_next: false });
+      return request;
+    },
     onSuccess: () => {
       queryClient.setQueryData(["me"], null);
       purgeAccountScopedQueries(queryClient);

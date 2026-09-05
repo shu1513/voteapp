@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { useMe } from "@voteapp/api-client";
 import { myDraftLabel, useGuestDraftNav, useMyPicksProgress } from "../lib/usePickProgress";
+import { track } from "../lib/usage";
 
 // Post-pick confirmation actions — the "added to cart" moment, shared by the
 // candidate page's sticky pick card and the measure page's sticky Yes/No
@@ -29,6 +30,7 @@ export function PostPickActions({ back }: PostPickActionsProps) {
         <Link
           to={back.path}
           state={back.state}
+          onClick={() => track("post_pick_click", { target: "back" })}
           className="whitespace-nowrap text-ink-soft underline hover:text-ink"
         >
           Back to {back.label}
@@ -38,6 +40,7 @@ export function PostPickActions({ back }: PostPickActionsProps) {
         guestDraftNav ? (
           <Link
             to={guestDraftNav.to}
+            onClick={() => track("post_pick_click", { target: "draft" })}
             className="whitespace-nowrap font-semibold text-green-800 hover:underline"
           >
             {guestDraftNav.label}
@@ -46,6 +49,7 @@ export function PostPickActions({ back }: PostPickActionsProps) {
       ) : (
         <Link
           to="/me/picks"
+          onClick={() => track("post_pick_click", { target: "draft" })}
           className="whitespace-nowrap font-semibold text-green-800 hover:underline"
         >
           {myDraftLabel(picksProgress)}

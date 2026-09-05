@@ -18,6 +18,29 @@ import {
 import { PickDateCard } from "./PicksPage";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
+import { countBucket, track } from "../lib/usage";
+
+// The page-bottom sign-up CTA, its own component so the "shown" usage event
+// rides a mount effect instead of the page's early-return-laden body.
+function DraftSignupCta() {
+  useEffect(() => {
+    track("signup_prompt", { source: "draft", action: "shown" });
+  }, []);
+  return (
+    <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+      <Link
+        to={`/register?next=${encodeURIComponent("/draft")}`}
+        onClick={() => track("signup_prompt", { source: "draft", action: "click" })}
+        className="rounded-lg bg-rausch px-3 py-1.5 font-semibold text-white transition hover:bg-rausch-dark"
+      >
+        Sign up free to save your picks
+      </Link>
+      <span className="text-xs text-ink-soft">
+        Your draft lives only on this device until you sign up.
+      </span>
+    </p>
+  );
+}
 
 // The guest's My Picks: the header's "My Draft" link lands here, and
 // the page renders the SAME date cards the signed-in /me/picks page shows —
@@ -120,6 +143,19 @@ export function DraftPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [me, ballotElections, districtIds.join(",")]);
 
+  // draft_review once per settled load with something to review. The
+  // deep-link case (picks, no stored ballot) settles with no query at all.
+  const reviewablePicks = draftPickCount(draft);
+  const reviewSettled = ballot.isSuccess || districtIds.length === 0;
+  useEffect(() => {
+    if (me !== null || !reviewSettled || reviewablePicks === 0) {
+      return;
+    }
+    track("draft_review", { pick_count_bucket: countBucket(reviewablePicks), view, store: "draft" });
+    // Fires per settled payload, not per pick or view change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [me, reviewSettled, ballot.data]);
+
   // No-flash rule: nothing until the session state is known.
   if (me === undefined) {
     return <LoadingNotice text="Loading…" />;
@@ -208,7 +244,13 @@ export function DraftPage() {
                   signup
                 />
                 <div className="mt-4">
-                  <BallotViewToggle view={view} onChange={setView} />
+                  <BallotViewToggle
+                    view={view}
+                    onChange={(next) => {
+                      track("list_control", { control: "view_toggle", value: next });
+                      setView(next);
+                    }}
+                  />
                 </div>
                 {view === "ballot" ? (
                   // Same settled payload as the cards — no second fetch, no
@@ -266,19 +308,7 @@ export function DraftPage() {
       {/* Hidden while the milestone above the toggle renders: it carries
           this same link and hint, and two identical buttons on one short
           page read as a mistake. */}
-      {pickCount > 0 && !milestoneShown ? (
-        <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-          <Link
-            to={`/register?next=${encodeURIComponent("/draft")}`}
-            className="rounded-lg bg-rausch px-3 py-1.5 font-semibold text-white transition hover:bg-rausch-dark"
-          >
-            Sign up free to save your picks
-          </Link>
-          <span className="text-xs text-ink-soft">
-            Your draft lives only on this device until you sign up.
-          </span>
-        </p>
-      ) : null}
+      {pickCount > 0 && !milestoneShown ? <DraftSignupCta /> : null}
     </div>
   );
 }

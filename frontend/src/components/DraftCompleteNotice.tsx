@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router";
 import { formatElectionDate, useMe } from "@voteapp/api-client";
 import { hasDraftCompleteBeenSeen, markDraftCompleteSeen } from "../lib/draftCompleteSeen";
 import { useGuestPickProgress, useMyPicksProgress } from "../lib/usePickProgress";
+import { track } from "../lib/usage";
 
 // The draft's finish line (docs/plans/draft-completion-moment.md): one
 // notice, shown once per election day, when every race on the nearest
@@ -99,6 +100,7 @@ export function DraftCompleteNotice() {
     }
     markDraftCompleteSeen(trackedDate);
     if (!suppressed) {
+      track("draft_complete_notice", { action: "shown" });
       setShown({ date: trackedDate, total });
     }
   }, [trackedKey, trackedDate, complete, total, suppressed]);
@@ -130,14 +132,20 @@ export function DraftCompleteNotice() {
             </p>
             <Link
               to={reviewPath}
-              onClick={() => setShown(null)}
+              onClick={() => {
+                track("draft_complete_notice", { action: "review" });
+                setShown(null);
+              }}
               className="whitespace-nowrap font-semibold text-green-800 hover:underline"
             >
               Review my picks
             </Link>
             <button
               type="button"
-              onClick={() => setShown(null)}
+              onClick={() => {
+                track("draft_complete_notice", { action: "dismiss" });
+                setShown(null);
+              }}
               aria-label="Dismiss"
               className="rounded px-1.5 text-lg leading-none text-green-900 hover:bg-green-100"
             >

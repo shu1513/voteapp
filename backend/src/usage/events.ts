@@ -78,7 +78,28 @@ const CATALOG: Record<string, { required: Record<string, PropRule>; optional?: R
     },
   },
   auth_resolved: { required: { auth: oneOf("guest", "signed_in") } },
-  page_view: { required: {} },
+  // Detail pages (election, candidate) describe their content shape and how
+  // the reader arrived; every prop is optional because most routes send
+  // none. Never an id.
+  page_view: {
+    required: {},
+    optional: {
+      // Where the reader came from: a ballot list, an election's roster (to a
+      // candidate), a candidate page (back to an election), the draft/picks
+      // pages, a shared pick card, or nowhere in-app (deep link, chatbot card).
+      arrival: oneOf("list", "roster", "candidate", "draft", "picks", "share", "deep"),
+      race_type: oneOf("office", "ballot_measure"),
+      office_level: oneOf("federal", "state", "county", "city", "school", "other"),
+      upcoming: bool,
+      has_summary: bool,
+      has_stance_tags: bool,
+      has_official_url: bool,
+      measure_tbd: bool,
+      has_finance: bool,
+      candidate_count_bucket: oneOf(...COUNT_BUCKETS),
+      record_count_bucket: oneOf(...COUNT_BUCKETS),
+    },
+  },
   page_time: { required: { visible_ms: int(0, 86_400_000) } },
   error_shown: {
     required: { category: oneOf("not_found", "rate_limited", "server", "network", "address", "render", "other") },
@@ -155,6 +176,140 @@ const CATALOG: Record<string, { required: Record<string, PropRule>; optional?: R
     },
   },
   partial_upgrade_click: { required: { banner: oneOf("partial", "ambiguous") } },
+
+  // --- PR 2: research and pick flows (docs/plans/usage-analytics.md) ----
+  // A detail page's content shape, so decision rates can be read against
+  // what the page had to offer — never which election or candidate it was.
+  section_exposed: {
+    required: {
+      section: oneOf(
+        "vote_power",
+        "office",
+        "measure_summary",
+        "measure_yes_no",
+        "candidates",
+        "results",
+        "summary",
+        "stance",
+        "finance",
+        "track_record"
+      ),
+    },
+  },
+  candidate_open: {
+    required: { position_bucket: oneOf("1-3", "4-10", "11+"), has_summary: bool, has_stances: bool, incumbent: bool },
+  },
+  detail_control: {
+    required: {
+      control: oneOf(
+        "party_filter",
+        "roster_sort",
+        "rail_tab",
+        "rail_sort",
+        "rail_item",
+        "pager_prev",
+        "pager_next",
+        "pager_back",
+        "record_view",
+        "records_show_all",
+        "finance_toggle",
+        "record_group_toggle",
+        "vote_power_how"
+      ),
+      value: oneOf(
+        "all",
+        "democratic",
+        "republican",
+        "other",
+        "my_issues",
+        "my_areas",
+        "alphabetical",
+        "vote_power",
+        "soonest",
+        "office",
+        "ballot_measure",
+        "newest",
+        "open",
+        "close",
+        "none"
+      ),
+    },
+  },
+  official_source_click: {
+    required: {
+      kind: oneOf("measure_official", "record_source", "election_source", "result_source", "profile_link"),
+      gov: bool,
+      pdf: bool,
+    },
+  },
+  pick_attempt: {
+    required: {
+      kind: oneOf("candidate", "measure"),
+      surface: oneOf("election_inline", "candidate_card", "candidate_row", "measure_card", "stranded"),
+      store: oneOf("account", "draft"),
+      change: oneOf("added", "changed", "removed"),
+      ms_since_view: int(0, 86_400_000),
+    },
+  },
+  pick_result: {
+    required: {
+      kind: oneOf("candidate", "measure"),
+      surface: oneOf("election_inline", "candidate_card", "candidate_row", "measure_card", "stranded"),
+      store: oneOf("account", "draft"),
+      change: oneOf("added", "changed", "removed"),
+      outcome: oneOf("saved", "draft_memory", "error"),
+    },
+    optional: { error_category: oneOf("address", "not_found", "rate_limited", "server", "network", "other") },
+  },
+  autopick_attempt: {
+    required: { scope: oneOf("election", "date"), prompted_rank_issues: bool, races_bucket: oneOf(...COUNT_BUCKETS) },
+  },
+  autopick_result: {
+    required: {
+      scope: oneOf("election", "date"),
+      outcome: oneOf("picked", "no_pick", "mixed", "error"),
+      races_bucket: oneOf(...COUNT_BUCKETS),
+    },
+    optional: {
+      // AutoPickReason (packages/api-client/src/types.ts) — the single-race
+      // control's no-pick reason; a date fill has many and reports none.
+      reason: oneOf(
+        "by_elimination",
+        "insufficient_evidence",
+        "only_negative_evidence",
+        "tie",
+        "all_vetoed",
+        "veto",
+        "too_few_issues",
+        "election_closed"
+      ),
+      error_category: oneOf("address", "not_found", "rate_limited", "server", "network", "other"),
+    },
+  },
+  address_nudge_click: { required: {} },
+  post_pick_click: { required: { target: oneOf("back", "draft") } },
+  share_open: { required: { subject: oneOf("election", "candidate", "picks") } },
+  draft_review: {
+    required: { pick_count_bucket: oneOf(...COUNT_BUCKETS), view: oneOf("list", "ballot"), store: oneOf("account", "draft") },
+  },
+  signup_prompt: {
+    required: { source: oneOf("follow", "pick", "draft", "milestone", "picks_wall", "chat"), action: oneOf("shown", "click") },
+  },
+  auth_result: {
+    required: {
+      action: oneOf("login", "register", "google_login", "google_signup", "logout"),
+      outcome: oneOf("ok", "error"),
+      has_next: bool,
+    },
+    optional: { error_category: oneOf("address", "not_found", "rate_limited", "server", "network", "other") },
+  },
+  welcome_result: { required: { action: oneOf("save", "skip"), ranked_count_bucket: oneOf(...COUNT_BUCKETS) } },
+  handoff_result: { required: { outcome: oneOf("done", "rejected", "failed") } },
+  draft_complete_notice: { required: { action: oneOf("shown", "review", "dismiss") } },
+  follow_result: {
+    required: { change: oneOf("follow", "unfollow"), outcome: oneOf("ok", "error") },
+    optional: { error_category: oneOf("address", "not_found", "rate_limited", "server", "network", "other") },
+  },
 };
 
 export const USAGE_EVENT_NAMES: readonly string[] = Object.keys(CATALOG);

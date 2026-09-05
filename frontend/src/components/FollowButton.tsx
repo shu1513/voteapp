@@ -1,4 +1,5 @@
 import { ApiError, useFollowSaving, useSetFollow } from "@voteapp/api-client";
+import { trackSettled } from "../lib/usage";
 
 // Follow/unfollow toggle. Rendered only for verified users (callers gate on
 // useFollows().canFollow); new follows default to both notification kinds on,
@@ -27,12 +28,21 @@ export function FollowButton({ candidateId, isFollowing, size = "md" }: FollowBu
       : "Something went wrong. Please try again."
     : null;
 
+  function toggle() {
+    // mutateAsync (not mutate + per-call callbacks): the usage outcome must
+    // land even if this button unmounts before the server answers. The
+    // rejection is observed by the hook's own isError; swallow it here.
+    const request = setFollow.mutateAsync({ candidate_id: candidateId, following: !isFollowing });
+    trackSettled(request, "follow_result", { change: isFollowing ? "unfollow" : "follow" });
+    request.catch(() => undefined);
+  }
+
   return (
     <div>
       <button
         type="button"
         disabled={saving}
-        onClick={() => setFollow.mutate({ candidate_id: candidateId, following: !isFollowing })}
+        onClick={toggle}
         className={
           isFollowing
             ? `${base} border border-line bg-white text-ink hover:border-rausch`

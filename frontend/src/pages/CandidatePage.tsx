@@ -52,6 +52,7 @@ import { APP_NAME } from "@voteapp/api-client";
 import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { UNRANKED_RESEARCH_AREA_RANK } from "@voteapp/api-client";
+import { sourceLinkProps, track, useSectionExposure } from "../lib/usage";
 
 type RecordView = "my_issues" | "newest";
 
@@ -174,12 +175,15 @@ function OngoingElectionFinance({
   election,
   summary,
   showElection,
+  exposureRef,
 }: {
   election: CandidateElection;
   summary: FinanceSummary | null;
   // True when the candidate is in more than one ongoing race: the
   // placeholder then names its race, or two of them are indistinguishable.
   showElection: boolean;
+  /** section_exposed marker for the first finance disclosure on the page. */
+  exposureRef?: (node: Element | null) => void;
 }) {
   if (!hasFinanceContent(summary)) {
     // Quiet placeholder where the disclosure row would sit, so a reader who
@@ -208,7 +212,12 @@ function OngoingElectionFinance({
           can be in two concurrent races, which would otherwise render two
           indistinguishable "Campaign finance" rows. */}
       <h2 className="sr-only">{`Campaign Finance Information — ${election.official_ballot_title}`}</h2>
-      <details>
+      <details
+        ref={exposureRef as ((node: HTMLDetailsElement | null) => void) | undefined}
+        onToggle={(event) =>
+          track("detail_control", { control: "finance_toggle", value: event.currentTarget.open ? "open" : "close" })
+        }
+      >
         <summary className="cursor-pointer select-none">
           <span className="text-lg font-semibold text-green-600" aria-hidden="true">$ </span>
           <span className="text-lg font-semibold">Campaign Finance Information</span>{" "}
@@ -291,10 +300,13 @@ function StanceSummary({
   candidateName,
   records,
   preferences,
+  exposureRef,
 }: {
   candidateName: string;
   records: CandidateRecord[];
   preferences: readonly ResearchAreaPreference[];
+  /** section_exposed marker (the lead-in line). */
+  exposureRef?: (node: Element | null) => void;
 }) {
   const { supports, opposes, mixed } = classifyStanceSummary(records, preferences);
   if (supports.length === 0 && opposes.length === 0 && mixed.length === 0) {
@@ -346,7 +358,7 @@ function StanceSummary({
           visible lead-in is aria-hidden because it says the same thing —
           without the name, which a heading jumped to on its own needs. */}
       <h2 className="sr-only">{`Where ${candidateName} stands, based on their records`}</h2>
-      <p className="text-sm text-ink-soft" aria-hidden="true">
+      <p ref={exposureRef} className="text-sm text-ink-soft" aria-hidden="true">
         Where they stand, based on their records:
       </p>
       {supports.length > 0 || opposes.length > 0 ? (
@@ -553,6 +565,12 @@ export function CandidatePage() {
 
   const detail = useLoaderData<typeof loader>();
   const candidate = detail.candidate;
+  // Usage: which parts of the profile reached the viewport, once per
+  // candidate (the route element stays mounted across rail walks).
+  const summaryRef = useSectionExposure("summary", candidate.candidate_id);
+  const stanceRef = useSectionExposure("stance", candidate.candidate_id);
+  const financeRef = useSectionExposure("finance", candidate.candidate_id);
+  const trackRecordRef = useSectionExposure("track_record", candidate.candidate_id);
   const showAllNewest = newestExpansion.candidateId === candidate.candidate_id && newestExpansion.on;
   // ?? {}: tolerates loader data from before this field existed (deploy skew
   // between a cached document and fresh code) by rendering no finance.
@@ -889,6 +907,7 @@ export function CandidatePage() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => track("official_source_click", { kind: "profile_link", ...sourceLinkProps(link.href) })}
                   className="text-ink underline hover:text-rausch"
                 >
                   {link.label}
@@ -897,7 +916,11 @@ export function CandidatePage() {
             ))}
           </p>
         ) : null}
-        {candidate.summary ? <p className="mt-3 text-body text-ink">{candidate.summary}</p> : null}
+        {candidate.summary ? (
+          <p ref={summaryRef} className="mt-3 text-body text-ink">
+            {candidate.summary}
+          </p>
+        ) : null}
 
         {/* Directly after the summary, before the pick rows — the same order
             as the measure page (explainer boxes, then choice buttons). */}
@@ -907,6 +930,7 @@ export function CandidatePage() {
           // Personalized order/emphasis only in the "my issues first" view,
           // so the summary always matches the record groups below it.
           preferences={recordView === "my_issues" ? preferences : []}
+          exposureRef={stanceRef}
         />
 
         {/* Districts unknown: the address nudge takes the pick controls'
@@ -942,12 +966,13 @@ export function CandidatePage() {
           </div>
         ) : null}
 
-        {ongoingElections.map((election) => (
+        {ongoingElections.map((election, index) => (
           <OngoingElectionFinance
             key={election.candidate_election_id}
             election={election}
             summary={ongoingFinance[election.candidate_election_id] ?? null}
             showElection={ongoingElections.length > 1}
+            exposureRef={index === 0 ? financeRef : undefined}
           />
         ))}
 
@@ -958,12 +983,15 @@ export function CandidatePage() {
                   a typo next to a list of many items, and "Records" reads as
                   documents. This is the home-page promise ("who these
                   candidates really are by their records") paid off. */}
-              <h2 className="text-heading font-semibold">Track record</h2>
+              <h2 ref={trackRecordRef} className="text-heading font-semibold">Track record</h2>
               <label className="flex items-center gap-2 text-sm text-ink-soft">
                 View
                 <select
                   value={recordView}
-                  onChange={(event) => setRecordView(event.target.value as RecordView)}
+                  onChange={(event) => {
+                    track("detail_control", { control: "record_view", value: event.target.value });
+                    setRecordView(event.target.value as RecordView);
+                  }}
                   className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
                 >
                   <option value="my_issues">My issues first</option>
@@ -984,7 +1012,10 @@ export function CandidatePage() {
                 {!showAllNewest && candidate.records.length > INITIAL_NEWEST_RECORDS ? (
                   <button
                     type="button"
-                    onClick={() => setNewestExpansion({ candidateId: candidate.candidate_id, on: true })}
+                    onClick={() => {
+                      track("detail_control", { control: "records_show_all", value: "none" });
+                      setNewestExpansion({ candidateId: candidate.candidate_id, on: true });
+                    }}
                     className="mt-3 rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink"
                   >
                     Show all {candidate.records.length} records
@@ -1014,7 +1045,14 @@ export function CandidatePage() {
                     {/* Every group starts collapsed; with no `open` prop React
                         never re-applies a default, so a reader's toggles
                         survive a view switch that reorders the groups. */}
-                    <details>
+                    <details
+                      onToggle={(event) =>
+                        track("detail_control", {
+                          control: "record_group_toggle",
+                          value: event.currentTarget.open ? "open" : "close",
+                        })
+                      }
+                    >
                       <summary className="cursor-pointer select-none">
                         {/* Title-case ink subheading, one role step below the
                             finance/Track-record h2 tier. Not the eyebrow idiom
@@ -1146,6 +1184,7 @@ export function CandidatePage() {
               choice={choiceForElection(primaryPickElection.election_id)}
               seatsToFill={primaryPickElection.seats_to_fill ?? null}
               fullWidth
+              surface="candidate_card"
             />
             {/* "Back to election" only for election arrivals: a My-Picks
                 arrival would get a back link and a draft link to the same

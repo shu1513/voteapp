@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest, formatElectionDate, useElectionChoices, useMe, useMintPickCardShare } from "@voteapp/api-client";
@@ -14,6 +14,7 @@ import { VerifyPrompt } from "../components/VerifyPrompt";
 import { SITE_ORIGIN } from "../lib/pageMeta";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
+import { countBucket, track } from "../lib/usage";
 
 // My Picks (the header calls it "My Draft" until the nearest election day is
 // fully decided): the pick cards — fight-card view of each upcoming election
@@ -468,6 +469,28 @@ function PastPicks({
   );
 }
 
+// The logged-out wall, its own component so the signup_prompt "shown" usage
+// event rides a mount effect (no hooks after PicksPage's early returns).
+function PicksLoginWall() {
+  useEffect(() => {
+    track("signup_prompt", { source: "picks_wall", action: "shown" });
+  }, []);
+  return (
+    <div className="mx-auto max-w-md px-4 py-10 text-center">
+      <p className="text-ink-soft">Log in to plan your votes and manage the candidates you follow.</p>
+      <p className="mt-4">
+        <Link
+          to="/login"
+          onClick={() => track("signup_prompt", { source: "picks_wall", action: "click" })}
+          className="rounded-lg bg-rausch px-4 py-2 font-semibold text-white transition hover:bg-rausch-dark"
+        >
+          Log in
+        </Link>
+      </p>
+    </div>
+  );
+}
+
 export function PicksPage() {
   useDocumentTitle("My Election Draft");
   const { me, isLoading } = useMe();
@@ -516,23 +539,24 @@ export function PicksPage() {
     });
   };
 
+  // draft_review once per settled load with something to review — above the
+  // early returns, like the state above.
+  const reviewablePicks = (choices ?? []).filter(hasRenderablePick).length;
+  const choicesReadyForUsage = choiceByElectionId !== undefined;
+  useEffect(() => {
+    if (!ballot.isSuccess || !choicesReadyForUsage || reviewablePicks === 0) {
+      return;
+    }
+    track("draft_review", { pick_count_bucket: countBucket(reviewablePicks), view, store: "account" });
+    // Fires per settled payload, not per pick or view change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ballot.data, choicesReadyForUsage]);
+
   if (isLoading || me === undefined) {
     return <LoadingNotice text="Loading…" />;
   }
   if (me === null) {
-    return (
-      <div className="mx-auto max-w-md px-4 py-10 text-center">
-        <p className="text-ink-soft">Log in to plan your votes and manage the candidates you follow.</p>
-        <p className="mt-4">
-          <Link
-            to="/login"
-            className="rounded-lg bg-rausch px-4 py-2 font-semibold text-white transition hover:bg-rausch-dark"
-          >
-            Log in
-          </Link>
-        </p>
-      </div>
-    );
+    return <PicksLoginWall />;
   }
   if (!me.email_verified) {
     // The verify wall must not hide the picks themselves: the choice API
@@ -636,7 +660,13 @@ export function PicksPage() {
             ) : null}
             {dates.length > 0 ? (
               <div className="mt-4">
-                <BallotViewToggle view={view} onChange={setView} />
+                <BallotViewToggle
+                  view={view}
+                  onChange={(next) => {
+                    track("list_control", { control: "view_toggle", value: next });
+                    setView(next);
+                  }}
+                />
               </div>
             ) : null}
             {view === "ballot" ? (

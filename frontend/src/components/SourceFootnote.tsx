@@ -1,5 +1,9 @@
 import { Fragment } from "react";
 import { groupSourcesByHost } from "@voteapp/api-client";
+import { sourceLinkProps, track } from "../lib/usage";
+
+const onSourceClick = (url: string) => () =>
+  track("official_source_click", { kind: "election_source", ...sourceLinkProps(url) });
 
 // One-line provenance footnote for a list of source URLs: each site named
 // once, linked to its first page; further pages from the same site hang off
@@ -24,7 +28,13 @@ export function SourceFootnote({ urls, className }: SourceFootnoteProps) {
       {groups.map((group, index) => (
         <Fragment key={group.host}>
           {index > 0 ? " · " : null}
-          <a href={group.urls[0]} target="_blank" rel="noopener noreferrer" className="underline hover:text-ink">
+          <a
+            href={group.urls[0]}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={onSourceClick(group.urls[0])}
+            className="underline hover:text-ink"
+          >
             {group.host}
           </a>
           {group.urls.slice(1).map((url, extra) => (
@@ -34,6 +44,7 @@ export function SourceFootnote({ urls, className }: SourceFootnoteProps) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${group.host}, page ${extra + 2}`}
+              onClick={onSourceClick(url)}
               className="ml-0.5 align-super text-[10px] underline hover:text-ink"
             >
               {extra + 2}
