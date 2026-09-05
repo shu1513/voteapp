@@ -159,7 +159,10 @@ export function normalizeMinnesotaCandidateNameKeys(value: string): Set<string> 
   const trimmed = value.trim();
   const keys = new Set<string>();
 
-  function addName(raw: string): void {
+  // Returns the surname token the first+last collapse used, so a parenthetical
+  // nickname can be anchored to it below.
+  function addName(raw: string): string {
+    let surname = "";
     const hasComma = raw.includes(",");
     const normalized = normalizePersonName(raw);
     if (normalized) {
@@ -168,7 +171,8 @@ export function normalizeMinnesotaCandidateNameKeys(value: string): Set<string> 
 
     const parts = normalized.split(" ").filter(Boolean);
     if (!hasComma && parts.length >= 2) {
-      keys.add(`${parts[0]} ${parts[parts.length - 1]}`);
+      surname = parts[parts.length - 1] ?? "";
+      keys.add(`${parts[0]} ${surname}`);
     }
 
     const commaParts = raw
@@ -183,16 +187,23 @@ export function normalizeMinnesotaCandidateNameKeys(value: string): Set<string> 
         keys.add(flipped);
         const flippedParts = flipped.split(" ").filter(Boolean);
         if (flippedParts.length >= 2) {
-          keys.add(`${flippedParts[0]} ${flippedParts[flippedParts.length - 1]}`);
+          surname = flippedParts[flippedParts.length - 1] ?? "";
+          keys.add(`${flippedParts[0]} ${surname}`);
         }
       }
     }
+    return surname;
   }
 
-  addName(trimmed.replace(/\([^()]+\)/g, " "));
+  const surname = addName(trimmed.replace(/\([^()]+\)/g, " "));
+  // A parenthetical is the same person's working name ("Staloch, Joseph (Joe)
+  // House Committee"), so it replaces the first name only. Left bare, "JOE"
+  // was a key on its own and every Joe matched every other Joe's committee;
+  // anchor it to the surname instead, and drop it when there is no surname.
   for (const match of trimmed.matchAll(/\(([^()]+)\)/g)) {
-    if (match[1]) {
-      addName(match[1]);
+    const nickname = normalizePersonName(match[1]);
+    if (nickname && surname) {
+      keys.add(`${nickname} ${surname}`);
     }
   }
 
@@ -237,7 +248,15 @@ function recordOfficeMatch(input: {
   }
 
   if (input.expectedDistrict) {
-    return normalizeMinnesotaFinanceDistrict(input.record["District"] || input.record["Office District"] || "") === input.expectedDistrict;
+    const recordDistrict = normalizeMinnesotaFinanceDistrict(
+      input.record["District"] || input.record["Office District"] || ""
+    );
+    // The bulk contribution export carries no district column at all, so a
+    // legislative row can only ever be identified by name, chamber and year.
+    // Enforce the district whenever the row actually states one — if the export
+    // ever gains the column, a mismatch must still reject — and fall through to
+    // the caller's name and year checks when it does not.
+    return recordDistrict ? recordDistrict === input.expectedDistrict : true;
   }
   return true;
 }

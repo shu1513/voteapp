@@ -26,14 +26,23 @@ export const MINNESOTA_FINANCE_ELIGIBLE_OFFICE_KEYS = [
   "state_lower::State Representative",
 ] as const;
 
-// Bulk contribution rows identify legislative chambers but not districts.
-// Keep automatic linking to offices that the source can identify completely;
-// manually verified legislative links remain eligible for recurring syncs.
+// Bulk contribution rows identify legislative chambers but not districts, so
+// legislators were originally excluded from automatic linking. They are included
+// now because the district is not needed to identify them uniquely: measured over
+// the 2025-2026 window of all_contributions_received.csv there are 482 distinct
+// legislative committees and ZERO name-plus-chamber pairs served by more than one
+// of them. Identity still rests on the candidate name, the chamber and the
+// election year, a contradicting middle name still rejects a row, and two
+// matching committees still return "ambiguous" rather than a guess — so a future
+// collision fails closed instead of attaching one candidate's money to another.
 export const MINNESOTA_FINANCE_AUTO_LINK_OFFICE_KEYS = [
   "statewide::Governor",
   "statewide::Secretary of State",
   "statewide::Attorney General",
   "statewide::State Auditor",
+  "state_upper::State Senator",
+  "state_lower::State Lower Chamber Legislator",
+  "state_lower::State Representative",
 ] as const;
 
 export type MinnesotaFinanceOfficeInput = {
