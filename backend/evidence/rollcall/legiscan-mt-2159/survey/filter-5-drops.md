@@ -465,3 +465,23 @@ final plat to a homeowners' association, requires a public hearing, and applies
 retroactively. It is title mechanics between a developer, a local government and
 an association. No research area carries a position on who holds the deed to a
 subdivision's open space.
+
+## Batch 15
+
+**SB 246** allows a governmental body to buy Montana-produced food by direct
+purchase instead of standard procurement, where the quality is substantially
+equivalent, a vendor can supply enough, and the bid does not unreasonably exceed
+the lowest outside bid. Preferring local producers and stepping around
+competitive bidding are the same provision. Neither `government_efficiency` nor
+any economic area can say which way a yes vote cuts.
+
+**SB 247** classifies shooting ranges as class four property and revises the tax
+rate that applies to them. One facility type's tax classification.
+
+**SB 265** creates the Financial Freedom and Innovation Act. It prohibits
+governing authorities from using central bank digital currency, permits the use
+of digital assets and blockchain protocols, and requires issuers of network
+tokens to be certified. The certification duty would read "for"
+`corporate_accountability`; the central bank digital currency prohibition is a
+position on federal monetary policy that no research area covers. One act, two
+subjects, no single direction.

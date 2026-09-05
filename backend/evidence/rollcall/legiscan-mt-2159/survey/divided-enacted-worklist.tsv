@@ -259,12 +259,12 @@ HB 638	B	senate	2025-04-15	1548414	31	19	batch-06	Revise human rights laws
 HB 642	B	house	2025-03-07	1508506	57	42	unbatched	Revise civil liability laws
 HB 642	B	senate	2025-04-15	1548408	34	16	unbatched	Revise civil liability laws
 HB 650	B	house	2025-03-07	1508645	60	39	superseded:later-roll-used	Revise bonding laws to include broadband projects
-HB 650	B	house	2025-04-17	1551989	61	38	unbatched	Revise bonding laws to include broadband projects
+HB 650	B	house	2025-04-17	1551989	61	38	batch-15	Revise bonding laws to include broadband projects
 HB 655	B	house	2025-03-07	1508732	59	40	unbatched	Prohibit discriminatory action against persons providing adoption or foster care services
 HB 655	B	senate	2025-04-08	1548839	29	19	unbatched	Prohibit discriminatory action against persons providing adoption or foster care services
 HB 664	B	house	2025-03-07	1508647	69	30	batch-03	Repeal numeric nutrient standards
 HB 664	B	senate	2025-04-15	1548853	34	16	batch-03	Repeal numeric nutrient standards
-HB 665	B	senate	2025-04-16	1550431	36	14	unbatched	Preclude non-profit officers from personal liability for unpaid tax withholding
+HB 665	B	senate	2025-04-16	1550431	36	14	batch-15	Preclude non-profit officers from personal liability for unpaid tax withholding
 HB 667	B	senate	2025-04-07	1538595	32	17	unbatched	Revise labor laws relating to employers and public service
 HB 668	B	senate	2025-04-11	1546383	33	15	unbatched	Revising alcohol law to prohibit certain licensees from offering gambling
 HB 669	B	senate	2025-04-23	1578754	33	17	unbatched	Revise laws related to educating children receiving in-state inpatient treatment of serious emotional disturbances
@@ -441,7 +441,7 @@ HJ 74	JR	senate	2025-04-30	1562664	33	17	dropped:filter-2-not-law	Study resoluti
 SB 101	B	house	2025-03-27	1529013	58	41	dropped:filter-5	Revise laws related to squatting
 SB 101	B	senate	2025-01-24	1481618	35	14	superseded:later-roll-used	Revise laws related to squatting
 SB 101	B	senate	2025-04-01	1533264	35	15	dropped:filter-5	Revise laws related to squatting
-SB 104	B	senate	2025-02-28	1502635	38	11	unbatched	Expanding access to low-cost capital to certain eligible projects and entities
+SB 104	B	senate	2025-02-28	1502635	38	11	batch-15	Expanding access to low-cost capital to certain eligible projects and entities
 SB 105	B	house	2025-03-31	1531112	77	21	batch-05	Generally revise election laws related to electioneering at polling locations
 SB 105	B	senate	2025-02-26	1500296	28	22	superseded:later-roll-used	Generally revise election laws related to electioneering at polling locations
 SB 105	B	senate	2025-04-04	1537120	36	13	batch-05	Generally revise election laws related to electioneering at polling locations
@@ -501,8 +501,8 @@ SB 238	B	senate	2025-04-04	1537096	38	11	unbatched	Allow hunters to donate funds
 SB 242	B	house	2025-03-31	1531507	71	28	dropped:filter-5	Revise election laws related to ballot form and uniformity
 SB 242	B	senate	2025-03-01	1502923	31	19	dropped:filter-5	Revise election laws related to ballot form and uniformity
 SB 243	B	house	2025-04-11	1546282	77	22	held:legiscan-vote-defect	Amend zoning regulations to allow taller buildings
-SB 246	B	house	2025-04-02	1535298	60	35	unbatched	Provide for Montana First Procurement laws and establish reporting requirements
-SB 247	B	house	2025-04-16	1550158	57	41	unbatched	Modify tax classification of shooting ranges
+SB 246	B	house	2025-04-02	1535298	60	35	dropped:filter-5	Provide for Montana First Procurement laws and establish reporting requirements
+SB 247	B	house	2025-04-16	1550158	57	41	dropped:filter-5	Modify tax classification of shooting ranges
 SB 248	B	house	2025-03-28	1529988	61	38	unbatched	Provide that legislator access to CPS records includes drug testing results
 SB 248	B	senate	2025-02-21	1496930	37	13	unbatched	Provide that legislator access to CPS records includes drug testing results
 SB 249	B	house	2025-03-28	1529989	61	38	unbatched	Revise child abuse and neglect laws involving adjudication
@@ -514,7 +514,7 @@ SB 262	B	house	2025-04-11	1546445	57	42	batch-02	Exempt subdivision, water/sewer
 SB 262	B	senate	2025-02-21	1496351	39	11	batch-02	Exempt subdivision, water/sewer plans from environmental review
 SB 264	B	house	2025-04-11	1546473	52	47	unbatched	Eliminate a defense to the vehicle noise statute
 SB 264	B	senate	2025-02-18	1492323	33	17	unbatched	Eliminate a defense to the vehicle noise statute
-SB 265	B	house	2025-04-11	1546128	70	29	unbatched	Revise cryptocurrency laws to create Financial Freedom and Innovation Act
+SB 265	B	house	2025-04-11	1546128	70	29	dropped:filter-5	Revise cryptocurrency laws to create Financial Freedom and Innovation Act
 SB 271	B	senate	2025-02-19	1494176	39	10	unbatched	Remove prohibition on certain compensation for collegiate student-athlete's name/image/likeness
 SB 275	B	senate	2025-02-18	1492352	34	16	batch-14	Allow revocation of agricultural covenant on lands annexed into municipality
 SB 276	B	house	2025-04-11	1546387	57	42	batch-13	Generally revise voter identification laws
@@ -530,13 +530,13 @@ SB 319	B	house	2025-04-11	1546140	56	43	superseded:later-roll-used	Generally rev
 SB 319	B	house	2025-04-30	1562296	54	46	batch-02	Generally revise health care laws related to doulas
 SB 319	B	senate	2025-03-26	1528029	31	19	superseded:later-roll-used	Generally revise health care laws related to doulas
 SB 319	B	senate	2025-04-30	1562297	28	22	batch-02	Generally revise health care laws related to doulas
-SB 326	B	house	2025-04-25	1558011	62	38	unbatched	Generally revise laws related to MEDIA Act film tax credits
+SB 326	B	house	2025-04-25	1558011	62	38	batch-15	Generally revise laws related to MEDIA Act film tax credits
 SB 326	B	senate	2025-04-04	1537133	29	20	superseded:later-roll-used	Generally revise laws related to MEDIA Act film tax credits
-SB 326	B	senate	2025-04-29	1560389	31	19	unbatched	Generally revise laws related to MEDIA Act film tax credits
+SB 326	B	senate	2025-04-29	1560389	31	19	batch-15	Generally revise laws related to MEDIA Act film tax credits
 SB 33	B	house	2025-03-26	1527812	60	39	dropped:filter-5	State buildings subject to state building code review
 SB 33	B	senate	2025-02-06	1483471	31	18	dropped:filter-5	State buildings subject to state building code review
 SB 330	B	senate	2025-03-05	1505703	40	10	superseded:later-roll-used	Create a Montana blockchain and digital innovation task force
-SB 333	B	house	2025-04-24	1557270	58	42	unbatched	Repeal sunset on coal washing credit
+SB 333	B	house	2025-04-24	1557270	58	42	batch-15	Repeal sunset on coal washing credit
 SB 335	B	senate	2025-03-03	1503707	28	22	superseded:later-roll-used	Generally revise laws related to dental insurance
 SB 337	B	house	2025-04-24	1557751	60	40	batch-14	Provide a 5 year prepaid property tax exemption during subdivision development
 SB 337	B	senate	2025-03-27	1529146	34	16	batch-14	Provide a 5 year prepaid property tax exemption during subdivision development
@@ -584,13 +584,13 @@ SB 497	B	senate	2025-03-06	1507844	28	21	dropped:filter-5	Provide laws related t
 SB 497	B	senate	2025-04-18	1552290	30	20	dropped:filter-5	Provide laws related to healthcare provider burnout
 SB 498	B	senate	2025-03-06	1508234	30	19	dropped:filter-5	Revise election laws related to preparation procedures for primary elections
 SB 508	B	house	2025-04-11	1546324	62	37	unbatched	Generally revise driving under the influence laws for THC levels in drivers under 21
-SB 511	B	house	2025-04-11	1546250	77	22	unbatched	Generally revising laws related to litigation financing
-SB 511	B	senate	2025-03-06	1508137	34	15	unbatched	Generally revising laws related to litigation financing
+SB 511	B	house	2025-04-11	1546250	77	22	batch-15	Generally revising laws related to litigation financing
+SB 511	B	senate	2025-03-06	1508137	34	15	batch-15	Generally revising laws related to litigation financing
 SB 520	B	house	2025-04-11	1546443	61	38	batch-08	Revise laws regarding mining leases on state lands
 SB 520	B	senate	2025-03-06	1508186	36	13	superseded:later-roll-used	Revise laws regarding mining leases on state lands
 SB 532	B	house	2025-04-23	1556216	75	24	batch-14	Revise county zoning to allow accessory dwelling units
-SB 534	B	house	2025-04-24	1557670	65	35	unbatched	Provide property tax exemption for wireless infrastructure
-SB 534	B	senate	2025-04-03	1536907	40	10	unbatched	Provide property tax exemption for wireless infrastructure
+SB 534	B	house	2025-04-24	1557670	65	35	batch-15	Provide property tax exemption for wireless infrastructure
+SB 534	B	senate	2025-04-03	1536907	40	10	batch-15	Provide property tax exemption for wireless infrastructure
 SB 535	B	house	2025-04-25	1558163	50	50	superseded:later-roll-used	Revise laws related to experimental treatments
 SB 535	B	house	2025-04-25	1558165	49	48	unbatched	Revise laws related to experimental treatments
 SB 535	B	senate	2025-04-29	1559961	29	21	unbatched	Revise laws related to experimental treatments
