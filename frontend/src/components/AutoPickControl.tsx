@@ -79,18 +79,17 @@ export function AutoPickControl({
   if (me === undefined) {
     return null;
   }
-  // Signed-out: the teaser instead of the button. Text link, not the
-  // orange pill — orange means "runs the engine now", and this only leads
-  // to sign-up. Nudge green, semibold, no underline: the color of the
-  // address nudge and draft milestone (the other "next step" prompts),
-  // clearly not body text, and not the red of the sign-up buttons.
+  // Signed-out: the teaser instead of the button. Same pill shape and
+  // size as the button it stands in for, so it is obviously clickable, but
+  // an outline in ink — not orange (that means "runs the engine now"), not
+  // the red of the sign-up buttons, and not the green the issue chips use.
   if (me === null) {
     return (
       <Link
         to={`/register?next=${encodeURIComponent(pathname)}`}
         onClick={() => track("signup_prompt", { source: "autopick", action: "click" })}
-        className={`inline-block font-semibold text-nudge-deep hover:text-ink ${
-          compact ? "text-xs" : "text-sm"
+        className={`inline-block rounded-full border border-ink bg-white font-semibold text-ink transition hover:bg-surface ${
+          compact ? "px-2.5 py-1 text-xs" : "px-3 py-1.5 text-sm"
         }`}
       >
         {measure ? "Does this measure match your values?" : "Which candidate best matches your values?"}
