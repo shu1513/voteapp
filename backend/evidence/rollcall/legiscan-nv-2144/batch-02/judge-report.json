@@ -1,0 +1,108 @@
+{
+  "judgmentsFile": "/Users/shu/voteApp/.claude/worktrees/focused-hofstadter-3ebce2/backend/evidence/rollcall/legiscan-nv-2144/batch-02/judgments.json",
+  "dryRun": false,
+  "judgments": 14,
+  "counts": {
+    "updated": 14
+  },
+  "rows": [
+    {
+      "chamber": "house",
+      "session": "2144",
+      "roll": 1552615,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1576919,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2144",
+      "roll": 1551589,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1576740,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1577969,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2144",
+      "roll": 1554449,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2144",
+      "roll": 1550524,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1575990,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2144",
+      "roll": 1576066,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1553044,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1554298,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2144",
+      "roll": 1583877,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1578729,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1575479,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    }
+  ]
+}

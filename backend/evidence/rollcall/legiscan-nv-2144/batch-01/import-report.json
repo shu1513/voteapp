@@ -1,0 +1,565 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-05T03:29:56.126Z",
+  "finishedAt": "2026-09-05T03:29:59.959Z",
+  "jurisdiction": "NV",
+  "sessionId": 2144,
+  "evidenceDir": "evidence/rollcall/legiscan-nv-2144/batch-01",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-nv-2144/crosswalk.json",
+  "crosswalkEntries": 75,
+  "peopleFile": "evidence/rollcall/legiscan-nv-2144/legiscan-people-nv-2144.json",
+  "peopleMembers": 75,
+  "files": 18,
+  "outcomes": {
+    "imported": 18
+  },
+  "actions": {
+    "insert": 387
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-nv-house-2144-roll1550181.json",
+      "state": "NV",
+      "chamber": "house",
+      "sessionId": 2144,
+      "roll": 1550181,
+      "outcome": "imported",
+      "legislativeVoteId": "2183f600-80c7-45e2-aaa5-0336c905050d",
+      "reviewStatus": "approved",
+      "bill": "AB90",
+      "voteDate": "2025-04-16",
+      "officialVoteDate": null,
+      "measureId": "AB 90",
+      "question": "Assembly Final Passage",
+      "originRunId": "rollcall:NV:house:2144:1550181:2026-09-05T03:29:56.126Z",
+      "members": 42,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 30,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "insert": 30
+      },
+      "notified": 0,
+      "candidates": 30,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-nv-house-2144-roll1551264.json",
+      "state": "NV",
+      "chamber": "house",
+      "sessionId": 2144,
+      "roll": 1551264,
+      "outcome": "imported",
+      "legislativeVoteId": "6a87fd3c-6ba6-4fb9-aacd-1ecd004c31a6",
+      "reviewStatus": "approved",
+      "bill": "AB235",
+      "voteDate": "2025-04-17",
+      "officialVoteDate": null,
+      "measureId": "AB 235",
+      "question": "Assembly Final Passage",
+      "originRunId": "rollcall:NV:house:2144:1551264:2026-09-05T03:29:56.126Z",
+      "members": 42,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 30,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "insert": 30
+      },
+      "notified": 0,
+      "candidates": 30,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-nv-house-2144-roll1553680.json",
+      "state": "NV",
+      "chamber": "house",
+      "sessionId": 2144,
+      "roll": 1553680,
+      "outcome": "imported",
+      "legislativeVoteId": "3ab05bf8-0f5a-4c34-97f9-c489d780ad05",
+      "reviewStatus": "approved",
+      "bill": "AB121",
+      "voteDate": "2025-04-22",
+      "officialVoteDate": null,
+      "measureId": "AB 121",
+      "question": "Assembly Final Passage",
+      "originRunId": "rollcall:NV:house:2144:1553680:2026-09-05T03:29:56.126Z",
+      "members": 42,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 30,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "insert": 30
+      },
+      "notified": 0,
+      "candidates": 30,
+      "error": null,
+      "related": 3
+    },
+    {
+      "file": "ls-nv-house-2144-roll1554429.json",
+      "state": "NV",
+      "chamber": "house",
+      "sessionId": 2144,
+      "roll": 1554429,
+      "outcome": "imported",
+      "legislativeVoteId": "e5c01205-3477-4f96-a73b-fc53992dc6f5",
+      "reviewStatus": "approved",
+      "bill": "AB343",
+      "voteDate": "2025-04-22",
+      "officialVoteDate": null,
+      "measureId": "AB 343",
+      "question": "Assembly Final Passage",
+      "originRunId": "rollcall:NV:house:2144:1554429:2026-09-05T03:29:56.126Z",
+      "members": 42,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 30,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "insert": 30
+      },
+      "notified": 0,
+      "candidates": 30,
+      "error": null,
+      "related": 3
+    },
+    {
+      "file": "ls-nv-house-2144-roll1575985.json",
+      "state": "NV",
+      "chamber": "house",
+      "sessionId": 2144,
+      "roll": 1575985,
+      "outcome": "imported",
+      "legislativeVoteId": "23948dae-e2ea-4398-a9c5-ee66dd3df8c6",
+      "reviewStatus": "approved",
+      "bill": "SB166",
+      "voteDate": "2025-05-22",
+      "officialVoteDate": null,
+      "measureId": "SB 166",
+      "question": "Assembly Final Passage",
+      "originRunId": "rollcall:NV:house:2144:1575985:2026-09-05T03:29:56.126Z",
+      "members": 42,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 12,
+        "matched": 30
+      },
+      "actions": {
+        "insert": 30
+      },
+      "notified": 0,
+      "candidates": 30,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-nv-house-2144-roll1575998.json",
+      "state": "NV",
+      "chamber": "house",
+      "sessionId": 2144,
+      "roll": 1575998,
+      "outcome": "imported",
+      "legislativeVoteId": "4de0a034-bb37-4a6b-8638-cf33ce77ef50",
+      "reviewStatus": "approved",
+      "bill": "SB347",
+      "voteDate": "2025-05-22",
+      "officialVoteDate": null,
+      "measureId": "SB 347",
+      "question": "Assembly Final Passage",
+      "originRunId": "rollcall:NV:house:2144:1575998:2026-09-05T03:29:56.126Z",
+      "members": 42,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 30,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "insert": 30
+      },
+      "notified": 0,
+      "candidates": 30,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-nv-house-2144-roll1576114.json",
+      "state": "NV",
+      "chamber": "house",
+      "sessionId": 2144,
+      "roll": 1576114,
+      "outcome": "imported",
+      "legislativeVoteId": "382d7cf2-e423-43a2-bf50-09dddc89345f",
+      "reviewStatus": "approved",
+      "bill": "SB246",
+      "voteDate": "2025-05-22",
+      "officialVoteDate": null,
+      "measureId": "SB 246",
+      "question": "Assembly Final Passage",
+      "originRunId": "rollcall:NV:house:2144:1576114:2026-09-05T03:29:56.126Z",
+      "members": 42,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 30,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "insert": 30
+      },
+      "notified": 0,
+      "candidates": 30,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-nv-house-2144-roll1580715.json",
+      "state": "NV",
+      "chamber": "house",
+      "sessionId": 2144,
+      "roll": 1580715,
+      "outcome": "imported",
+      "legislativeVoteId": "3a54cd70-3365-40d4-8fc2-0ad4f489691f",
+      "reviewStatus": "approved",
+      "bill": "AB483",
+      "voteDate": "2025-05-28",
+      "officialVoteDate": null,
+      "measureId": "AB 483",
+      "question": "Assembly Final Passage",
+      "originRunId": "rollcall:NV:house:2144:1580715:2026-09-05T03:29:56.126Z",
+      "members": 42,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 30,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "insert": 30
+      },
+      "notified": 0,
+      "candidates": 30,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-nv-house-2144-roll1581201.json",
+      "state": "NV",
+      "chamber": "house",
+      "sessionId": 2144,
+      "roll": 1581201,
+      "outcome": "imported",
+      "legislativeVoteId": "93f864e3-2c88-48bb-aba7-ad2316873010",
+      "reviewStatus": "approved",
+      "bill": "AB123",
+      "voteDate": "2025-05-29",
+      "officialVoteDate": null,
+      "measureId": "AB 123",
+      "question": "Assembly Final Passage",
+      "originRunId": "rollcall:NV:house:2144:1581201:2026-09-05T03:29:56.126Z",
+      "members": 42,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 30,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "insert": 30
+      },
+      "notified": 0,
+      "candidates": 30,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-nv-house-2144-roll1584185.json",
+      "state": "NV",
+      "chamber": "house",
+      "sessionId": 2144,
+      "roll": 1584185,
+      "outcome": "imported",
+      "legislativeVoteId": "d0e800d8-b1fa-4e87-b3ee-4599af461436",
+      "reviewStatus": "approved",
+      "bill": "SB260",
+      "voteDate": "2025-06-02",
+      "officialVoteDate": null,
+      "measureId": "SB 260",
+      "question": "Assembly Final Passage",
+      "originRunId": "rollcall:NV:house:2144:1584185:2026-09-05T03:29:56.126Z",
+      "members": 42,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 30,
+        "unmatched_reviewed": 12
+      },
+      "actions": {
+        "insert": 30
+      },
+      "notified": 0,
+      "candidates": 30,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-nv-senate-2144-roll1553772.json",
+      "state": "NV",
+      "chamber": "senate",
+      "sessionId": 2144,
+      "roll": 1553772,
+      "outcome": "imported",
+      "legislativeVoteId": "4fd11114-76de-4ca7-a127-66c8d6949e6a",
+      "reviewStatus": "approved",
+      "bill": "SB166",
+      "voteDate": "2025-04-22",
+      "officialVoteDate": null,
+      "measureId": "SB 166",
+      "question": "Senate Final Passage",
+      "originRunId": "rollcall:NV:senate:2144:1553772:2026-09-05T03:29:56.126Z",
+      "members": 21,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 11,
+        "unmatched_reviewed": 10
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-nv-senate-2144-roll1573426.json",
+      "state": "NV",
+      "chamber": "senate",
+      "sessionId": 2144,
+      "roll": 1573426,
+      "outcome": "imported",
+      "legislativeVoteId": "44baeadc-5502-4c50-aa36-78e07c25b20f",
+      "reviewStatus": "approved",
+      "bill": "AB90",
+      "voteDate": "2025-05-19",
+      "officialVoteDate": null,
+      "measureId": "AB 90",
+      "question": "Senate Final Passage",
+      "originRunId": "rollcall:NV:senate:2144:1573426:2026-09-05T03:29:56.126Z",
+      "members": 20,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "matched": 11,
+        "unmatched_reviewed": 9
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-nv-senate-2144-roll1575676.json",
+      "state": "NV",
+      "chamber": "senate",
+      "sessionId": 2144,
+      "roll": 1575676,
+      "outcome": "imported",
+      "legislativeVoteId": "7130c02c-14a7-4236-be9e-8fd54b20e943",
+      "reviewStatus": "approved",
+      "bill": "AB235",
+      "voteDate": "2025-05-21",
+      "officialVoteDate": null,
+      "measureId": "AB 235",
+      "question": "Senate Final Passage",
+      "originRunId": "rollcall:NV:senate:2144:1575676:2026-09-05T03:29:56.126Z",
+      "members": 21,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 11,
+        "unmatched_reviewed": 10
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-nv-senate-2144-roll1576883.json",
+      "state": "NV",
+      "chamber": "senate",
+      "sessionId": 2144,
+      "roll": 1576883,
+      "outcome": "imported",
+      "legislativeVoteId": "ec5add1f-3cff-40bd-9a6f-6eee3103d2f4",
+      "reviewStatus": "approved",
+      "bill": "AB121",
+      "voteDate": "2025-05-23",
+      "officialVoteDate": null,
+      "measureId": "AB 121",
+      "question": "Senate Final Passage",
+      "originRunId": "rollcall:NV:senate:2144:1576883:2026-09-05T03:29:56.126Z",
+      "members": 21,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 11,
+        "unmatched_reviewed": 10
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-nv-senate-2144-roll1576960.json",
+      "state": "NV",
+      "chamber": "senate",
+      "sessionId": 2144,
+      "roll": 1576960,
+      "outcome": "imported",
+      "legislativeVoteId": "4ad707c6-edc6-495c-b55a-6e96ba581a0c",
+      "reviewStatus": "approved",
+      "bill": "AB343",
+      "voteDate": "2025-05-23",
+      "officialVoteDate": null,
+      "measureId": "AB 343",
+      "question": "Senate Final Passage",
+      "originRunId": "rollcall:NV:senate:2144:1576960:2026-09-05T03:29:56.126Z",
+      "members": 21,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 11,
+        "unmatched_reviewed": 10
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-nv-senate-2144-roll1582302.json",
+      "state": "NV",
+      "chamber": "senate",
+      "sessionId": 2144,
+      "roll": 1582302,
+      "outcome": "imported",
+      "legislativeVoteId": "f21b2054-7df9-4baa-8a11-aa4772edc9a5",
+      "reviewStatus": "approved",
+      "bill": "SB260",
+      "voteDate": "2025-05-30",
+      "officialVoteDate": null,
+      "measureId": "SB 260",
+      "question": "Senate Final Passage",
+      "originRunId": "rollcall:NV:senate:2144:1582302:2026-09-05T03:29:56.126Z",
+      "members": 21,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 11,
+        "unmatched_reviewed": 10
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-nv-senate-2144-roll1582877.json",
+      "state": "NV",
+      "chamber": "senate",
+      "sessionId": 2144,
+      "roll": 1582877,
+      "outcome": "imported",
+      "legislativeVoteId": "3814432f-58fd-4b1a-8908-94e37b78c0d0",
+      "reviewStatus": "approved",
+      "bill": "AB123",
+      "voteDate": "2025-05-31",
+      "officialVoteDate": null,
+      "measureId": "AB 123",
+      "question": "Senate Final Passage",
+      "originRunId": "rollcall:NV:senate:2144:1582877:2026-09-05T03:29:56.126Z",
+      "members": 21,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 11,
+        "unmatched_reviewed": 10
+      },
+      "actions": {
+        "insert": 11
+      },
+      "notified": 0,
+      "candidates": 11,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-nv-senate-2144-roll1583907.json",
+      "state": "NV",
+      "chamber": "senate",
+      "sessionId": 2144,
+      "roll": 1583907,
+      "outcome": "imported",
+      "legislativeVoteId": "586d7ac9-6374-4e94-a0cb-135ce0355956",
+      "reviewStatus": "approved",
+      "bill": "AB483",
+      "voteDate": "2025-06-02",
+      "officialVoteDate": null,
+      "measureId": "AB 483",
+      "question": "Senate Final Passage",
+      "originRunId": "rollcall:NV:senate:2144:1583907:2026-09-05T03:29:56.126Z",
+      "members": 20,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "matched": 10,
+        "unmatched_reviewed": 10
+      },
+      "actions": {
+        "insert": 10
+      },
+      "notified": 0,
+      "candidates": 10,
+      "error": null,
+      "related": 0
+    }
+  ]
+}

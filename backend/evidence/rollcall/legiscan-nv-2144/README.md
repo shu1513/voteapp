@@ -115,3 +115,17 @@ on and how the bill became law.
 The full 1,332-file evidence set and the dataset itself live outside the
 repository at `/Users/shu/legiscan-data/nv-2144*`, following the precedent set
 by Texas. Only the curated subset is committed.
+
+## Batch status — complete
+
+All 104 divided rolls in `survey/divided-enacted-worklist.tsv` carry a disposition and a
+reason. Nothing in session 2144 is left to judge.
+
+| batch | measures | rolls | records | area tags |
+| --- | --- | --- | --- | --- |
+| batch-01 | 10 | 18 | 387 | 274 |
+| batch-02 | 11 | 14 | 265 | 189 |
+| batch-03 | 7 | 7 | 94 | 69 |
+| **total** | **28** | **39** | **746** | **532** |
+
+50 rolls were dropped, 12 excluded as appropriations or procedural, and 3 superseded.
