@@ -400,7 +400,7 @@ describe("security headers", () => {
     "x-frame-options": "DENY",
     "referrer-policy": "strict-origin-when-cross-origin",
     "permissions-policy": "camera=(), microphone=(), geolocation=()",
-    "content-security-policy-report-only":
+    "content-security-policy":
       "default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client; " +
       "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; " +
       "img-src 'self' data:; font-src 'self'; " +
@@ -474,6 +474,19 @@ describe("security headers", () => {
       const response = await worker.fetch(new Request(`https://electionssimplified.com${path}`), ENV);
       assert.equal(response.headers.get("referrer-policy"), "strict-origin-when-cross-origin", path);
     }
+  });
+
+  it("withSecurityHeaders enforces the CSP rather than only reporting it", () => {
+    const stamped = withSecurityHeaders(new Response("ok"));
+    const csp = stamped.headers.get("content-security-policy");
+
+    assert.ok(csp, "Content-Security-Policy header must be set");
+    assert.equal(stamped.headers.get("content-security-policy-report-only"), null);
+    // The allowances the live pages depend on: SSR hydration inline
+    // scripts, Google Sign-In, and Sentry error reporting.
+    assert.match(csp, /script-src 'self' 'unsafe-inline' https:\/\/accounts\.google\.com\/gsi\/client/);
+    assert.match(csp, /connect-src 'self' https:\/\/\*\.sentry\.io https:\/\/accounts\.google\.com\/gsi\//);
+    assert.match(csp, /frame-ancestors 'none'/);
   });
 
   it("withSecurityHeaders copies immutable-header responses instead of mutating", () => {

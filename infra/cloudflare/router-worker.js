@@ -57,10 +57,10 @@ export const CLIENT_IP_HEADER = "X-Voteapp-Client-IP";
 // CSP ships Report-Only first: violations surface in the browser console
 // without ever blocking a resource. There is deliberately no report-uri
 // yet, so "observation" means the operator browsing the site with devtools
-// open — adequate at this traffic level; when a Sentry DSN goes live, add
-// its security-report endpoint as report-uri to collect real-traffic
-// violations before promoting to enforcing Content-Security-Policy.
-// Inventory behind the policy (2026-07): every loaded resource is
+// open — adequate at this traffic level. Enforced since 2026-09-05 (see
+// SECURITY_HEADERS); when a Sentry DSN goes live, add its security-report
+// endpoint as report-uri so real-traffic violations become visible.
+// Inventory behind the policy (2026-07, re-verified 2026-09-05): every loaded resource is
 // same-origin (no fonts/analytics/CDN; external URLs in the app are plain
 // hyperlinks). connect-src allows *.sentry.io because the frontend ships
 // dark Sentry support (VITE_SENTRY_DSN, errorMonitoring.ts) — enforcing
@@ -88,7 +88,12 @@ const SECURITY_HEADERS = {
   "X-Frame-Options": "DENY",
   "Referrer-Policy": "strict-origin-when-cross-origin",
   "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
-  "Content-Security-Policy-Report-Only": CSP_POLICY,
+  // Enforcing since 2026-09-05. The Report-Only phase never had a report-uri
+  // (the report-to header on responses is Cloudflare NEL, not CSP), so it
+  // collected nothing; the resource inventory above was re-verified by hand
+  // instead: no <img>, @font-face, iframe, or form action reaches a host
+  // outside 'self' plus the Google GIS and Sentry allowances.
+  "Content-Security-Policy": CSP_POLICY,
 };
 
 // Pages whose URLs carry single-use auth tokens in the query string
