@@ -842,7 +842,7 @@ describe("ElectionPage", () => {
     // Auto-pick is account-only: guests get the sign-up teaser in its
     // place (measure wording), never the button itself.
     expect(screen.queryByRole("button", { name: "Auto-pick by my issues" })).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Does this measure match your values?" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Does this measure match your values?" })).toBeInTheDocument();
     // Nothing to confirm before the pick.
     expect(screen.queryByRole("link", { name: /My Draft/ })).not.toBeInTheDocument();
     await userEvent.setup().click(yes);

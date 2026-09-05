@@ -118,24 +118,33 @@ async function clickPickForMe() {
 
 describe("AutoPickControl", () => {
   // Guests get the pitch instead of the button: a plain-words question
-  // linking to sign-up, with this page as the post-auth return path so the
-  // visitor lands back on the race. The teal button itself never renders
-  // for them (issue preferences are account-only).
-  it("shows guests a sign-up teaser in the button's place", () => {
+  // that opens the shared log in / sign up dialog, both links carrying
+  // this page as the post-auth return path so the visitor lands back on
+  // the race. The auto-pick button itself never renders for them (issue
+  // preferences are account-only).
+  it("shows guests a teaser that opens the sign-up dialog", async () => {
     mockMe = null;
     stubApiRoutes({});
     renderControl();
     expect(screen.queryByRole("button", { name: "Auto-pick by my issues" })).not.toBeInTheDocument();
-    const teaser = screen.getByRole("link", { name: "Which candidate best matches your values?" });
-    expect(teaser).toHaveAttribute("href", `/register?next=${encodeURIComponent(`/elections/${ELECTION_ID}`)}`);
+    await userEvent.setup().click(screen.getByRole("button", { name: "Which candidate best matches your values?" }));
+    expect(
+      await screen.findByText(
+        "Sign up to rank the issues you care about, and see which candidate best matches what you believe. Signing up is free."
+      )
+    ).toBeInTheDocument();
+    const next = encodeURIComponent(`/elections/${ELECTION_ID}`);
+    expect(screen.getByRole("link", { name: "Sign up" })).toHaveAttribute("href", `/register?next=${next}`);
+    expect(screen.getByRole("link", { name: "Log in" })).toHaveAttribute("href", `/login?next=${next}`);
   });
 
-  it("asks about the measure, not a candidate, on a ballot measure", () => {
+  it("asks about the measure, not a candidate, on a ballot measure", async () => {
     mockMe = null;
     stubApiRoutes({});
     renderControl(null, true);
-    expect(screen.getByRole("link", { name: "Does this measure match your values?" })).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: /Which candidate/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Which candidate/ })).not.toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Does this measure match your values?" }));
+    expect(await screen.findByText(/see whether this measure matches what you believe/)).toBeInTheDocument();
   });
 
   it("renders nothing while the session is still resolving", () => {
@@ -143,7 +152,7 @@ describe("AutoPickControl", () => {
     stubApiRoutes({});
     renderControl();
     expect(screen.queryByRole("button", { name: "Auto-pick by my issues" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: /your values/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /your values/ })).not.toBeInTheDocument();
   });
 
   it("prompts for more ranked issues below the floor, linking to the issue editor", async () => {

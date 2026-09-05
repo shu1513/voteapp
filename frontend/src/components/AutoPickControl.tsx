@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router";
+import { useState } from "react";
+import { Link } from "react-router";
 import {
   ApiError,
   joinNames,
@@ -12,6 +12,7 @@ import {
 } from "@voteapp/api-client";
 import type { AutoPickCandidateReport, AutoPickElectionResult } from "@voteapp/api-client";
 import { currentAttribution, errorCategoryOf, track } from "../lib/usage";
+import { RegisterPromptDialog } from "./RegisterPromptDialog";
 
 // "Pick by my issues": one button that runs the auto-pick engine for this election
 // (POST /api/me/auto-picks, mode replace) and opens a "Why this pick" panel
@@ -22,12 +23,12 @@ import { currentAttribution, errorCategoryOf, track } from "../lib/usage";
 // port); this file keeps the web widgets.
 //
 // Below the issue floor the button explains what to do instead of calling
-// the API. Guests get a one-line teaser in the button's place — "Which
-// candidate best matches your values?" — linking to sign-up (the register
-// page offers log in for existing accounts) with this page as the return
-// path: issue preferences are account-only, and the question is the pitch
-// for an account. Plain words on purpose: a first visit has no idea the
-// app keeps "my issues".
+// the API. Guests get a teaser pill in the button's place — "Which
+// candidate best matches your values?" — that opens the shared log in /
+// sign up dialog (same as the follow button), with this page as the
+// post-auth return path: issue preferences are account-only, and the
+// question is the pitch for an account. Plain words on purpose: a first
+// visit has no idea the app keeps "my issues".
 export { MIN_AUTO_PICK_ISSUES };
 
 type AutoPickControlProps = {
@@ -56,23 +57,15 @@ export function AutoPickControl({
   onPicked,
 }: AutoPickControlProps) {
   const { me } = useMe();
-  const { pathname } = useLocation();
   const { preferences, isLoading: preferencesLoading, isError: preferencesError } = useMyResearchAreas();
   const autoPick = useAutoPick();
   const saving = useElectionChoiceSaving();
   const [prompt, setPrompt] = useState<"rank_issues" | null>(null);
   const [result, setResult] = useState<AutoPickElectionResult | null>(null);
+  const [teaserOpen, setTeaserOpen] = useState(false);
 
   const areaNames = new Map(preferences.map((preference) => [preference.research_area_id, preference.name]));
   const areaName = (researchAreaId: string) => areaNames.get(researchAreaId) ?? "one of your issues";
-
-  // Usage: the guest teaser counts as a sign-up prompt shown once per mount.
-  const isGuest = me === null;
-  useEffect(() => {
-    if (isGuest) {
-      track("signup_prompt", { source: "autopick", action: "shown" });
-    }
-  }, [isGuest]);
 
   // Still-resolving (undefined) sessions render nothing, so neither the
   // button nor the teaser flashes at a user who is about to be signed in.
@@ -83,17 +76,34 @@ export function AutoPickControl({
   // size as the button it stands in for, so it is obviously clickable, but
   // an outline in ink — not orange (that means "runs the engine now"), not
   // the red of the sign-up buttons, and not the green the issue chips use.
+  // The click opens the shared dialog (the dialog owns the signup_prompt
+  // usage events), which explains the two-step deal: rank issues, then see
+  // the match.
   if (me === null) {
+    const question = measure ? "Does this measure match your values?" : "Which candidate best matches your values?";
     return (
-      <Link
-        to={`/register?next=${encodeURIComponent(pathname)}`}
-        onClick={() => track("signup_prompt", { source: "autopick", action: "click" })}
-        className={`inline-block rounded-full border border-ink bg-white font-semibold text-ink transition hover:bg-surface ${
-          compact ? "px-2.5 py-1 text-xs" : "px-3 py-1.5 text-sm"
-        }`}
-      >
-        {measure ? "Does this measure match your values?" : "Which candidate best matches your values?"}
-      </Link>
+      <>
+        <button
+          type="button"
+          onClick={() => setTeaserOpen(true)}
+          className={`inline-block rounded-full border border-ink bg-white font-semibold text-ink transition hover:bg-surface ${
+            compact ? "px-2.5 py-1 text-xs" : "px-3 py-1.5 text-sm"
+          }`}
+        >
+          {question}
+        </button>
+        <RegisterPromptDialog
+          open={teaserOpen}
+          onClose={() => setTeaserOpen(false)}
+          source="autopick"
+          title={question}
+          description={
+            measure
+              ? "Sign up to rank the issues you care about, and see whether this measure matches what you believe. Signing up is free."
+              : "Sign up to rank the issues you care about, and see which candidate best matches what you believe. Signing up is free."
+          }
+        />
+      </>
     );
   }
 
