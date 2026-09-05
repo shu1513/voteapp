@@ -1,7 +1,7 @@
 # Draft completion moment ("picks added for every race")
 
-Status: PR 1 (notice + plumbing) implemented 2026-09-04; PR 2 (draft-page
-milestone) not started.
+Status: PR 1 (notice + plumbing) merged 2026-09-04 (#1108); PR 2
+(draft-page milestone, `DraftMilestone.tsx`) implemented 2026-09-04.
 
 ## Idea
 
@@ -158,8 +158,11 @@ Presentation:
 
 ### 2. Milestone on the draft pages
 
-On `/draft` and `/me/picks`, above the List / Ballot preview toggle (so it
-shows in both views), for the nearest upcoming date only:
+`DraftMilestone.tsx` in `frontend/src/components/`, rendered by both pages
+above the List / Ballot preview toggle (so it shows in both views), for
+the nearest upcoming date only. It takes the day's elections and the
+choice map, counts with `isDecidedChoice` (the same rule as the date
+card's count line), and renders nothing unless every race is decided:
 
 - Nearest upcoming = the first date on or after today in the page's date
   list. On `/me/picks` that is not always `dates[0]` because just-finished
