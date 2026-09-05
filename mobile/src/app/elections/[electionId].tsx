@@ -30,6 +30,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AddressNudge } from "../../components/AddressNudge";
 import { AutoPickControl } from "../../components/AutoPickControls";
+import { DraftCompleteNotice } from "../../components/DraftCompleteNotice";
 import {
   CandidatePickButton,
   LogInToPlanLine,
@@ -230,6 +231,10 @@ export default function ElectionScreen() {
     // position:sticky, and a plain flex sibling below the ScrollView can
     // never cover content.
     <View className="flex-1 bg-white">
+      {/* In flow above the scroller, like the web's header row: the draft's
+          finish line when the last pick lands here (or on a candidate
+          screen), never covering the footer. */}
+      <DraftCompleteNotice />
       <ScrollView className="flex-1" contentContainerClassName="px-4 py-8">
       <Stack.Screen options={{ title: data.official_ballot_title }} />
       <View className="flex-row flex-wrap items-center justify-between gap-3">
