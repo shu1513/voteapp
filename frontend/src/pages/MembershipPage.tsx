@@ -70,22 +70,32 @@ function planLine(membership: MembershipMembership): string {
 
 /** One POST that answers with the fresh status. The in-flight GET (if any)
  * is canceled before the result is installed, so a slower GET that started
- * before the change cannot overwrite it. */
+ * before the change cannot overwrite it.
+ *
+ * The install runs from a callback passed to `mutate()`, not from
+ * useMutation's own `onSuccess`: TanStack drops mutate-level callbacks once
+ * the component that started the mutation is gone, while the hook-level
+ * one fires regardless. Logging out (or switching accounts) unmounts this
+ * panel, and a delayed answer for the previous account must never land in
+ * the shared ["me", "membership"] cache the next account reads. */
 function useMembershipAction<TVars>(input: {
   request: (vars: TVars) => Promise<MembershipStatus>;
   message: (status: MembershipStatus) => string;
   setNotice: (notice: string | null) => void;
 }) {
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: input.request,
-    onMutate: () => input.setNotice(null),
-    onSuccess: async (status) => {
-      await queryClient.cancelQueries({ queryKey: MEMBERSHIP_QUERY_KEY });
-      queryClient.setQueryData(MEMBERSHIP_QUERY_KEY, status);
-      input.setNotice(input.message(status));
-    },
-  });
+  const mutation = useMutation({ mutationFn: input.request });
+  const run = (vars: TVars) => {
+    input.setNotice(null);
+    mutation.mutate(vars, {
+      onSuccess: async (status) => {
+        await queryClient.cancelQueries({ queryKey: MEMBERSHIP_QUERY_KEY });
+        queryClient.setQueryData(MEMBERSHIP_QUERY_KEY, status);
+        input.setNotice(input.message(status));
+      },
+    });
+  };
+  return { run, isPending: mutation.isPending, isError: mutation.isError, error: mutation.error };
 }
 
 function membershipOf(status: MembershipStatus): MembershipMembership | null {
@@ -208,10 +218,10 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
         method: "POST",
         body: { flow: "payment_method_update" },
       }),
-    onSuccess: (response) => {
-      navigateExternal(response.url);
-    },
   });
+  // Same mutate-level rule as useMembershipAction: a portal session for the
+  // previous account must not redirect whoever is signed in now.
+  const openPortal = () => portal.mutate(undefined, { onSuccess: (response) => navigateExternal(response.url) });
 
   // Every control locks while any change is in flight; the portal redirect
   // stays "in flight" until the browser actually leaves the page.
@@ -251,7 +261,7 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
         </p>
         {canceling ? (
           <div className="mt-1">
-            <button type="button" disabled={busy} onClick={() => resume.mutate()} className={secondaryButtonClass}>
+            <button type="button" disabled={busy} onClick={() => resume.run()} className={secondaryButtonClass}>
               {resume.isPending ? "Saving…" : "Keep membership"}
             </button>
             {resume.isError ? (
@@ -279,7 +289,7 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
               // Re-saving the current amount is a no-op — unless a change is
               // pending, when it withdraws that change.
               unchangedCents={membership.pending_amount_change ? null : membership.monthly_amount_cents}
-              onSubmit={(amountCents) => changeAmount.mutate(amountCents)}
+              onSubmit={(amountCents) => changeAmount.run(amountCents)}
             >
               <p className="text-xs text-ink-soft">
                 {projectedStart
@@ -304,7 +314,7 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
           </p>
         ) : null}
         <div>
-          <button type="button" disabled={busy} onClick={() => portal.mutate()} className={secondaryButtonClass}>
+          <button type="button" disabled={busy} onClick={openPortal} className={secondaryButtonClass}>
             {portal.isPending ? "Opening…" : "Update payment method"}
           </button>
           {portal.isError ? (
@@ -315,7 +325,7 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
         </div>
         {status !== "incomplete" && !canceling ? (
           <div>
-            <CancelControls membership={membership} disabled={busy} onCancel={() => cancel.mutate()} />
+            <CancelControls membership={membership} disabled={busy} onCancel={() => cancel.run()} />
             {cancel.isError ? (
               <div className="mt-2">
                 <ErrorNotice error={cancel.error} />

@@ -177,9 +177,6 @@ function useCheckoutMutation() {
       trackSettled(request, "checkout_start", { kind: input.kind });
       return request;
     },
-    onSuccess: (response) => {
-      navigateExternal(response.url);
-    },
   });
 }
 
@@ -293,7 +290,13 @@ export function SupportCheckout({ kind }: { kind: MembershipKind }) {
                 buttonClassName={kind === "monthly" ? memberButtonClass : undefined}
                 initialDollars="10"
                 disabled={busy}
-                onSubmit={(amountCents) => checkout.mutate({ kind, amountCents })}
+                onSubmit={(amountCents) =>
+                  // Redirect from a mutate-level callback: TanStack drops it
+                  // once this component is gone, so a delayed answer never
+                  // sends whoever is on the page now (or the next account)
+                  // to a Checkout session someone else asked for.
+                  checkout.mutate({ kind, amountCents }, { onSuccess: (response) => navigateExternal(response.url) })
+                }
               />
               <p className="text-xs text-ink-soft">
                 {kind === "monthly"

@@ -321,6 +321,31 @@ describe("MembershipPage", () => {
     expect(screen.queryByRole("link", { name: "Become an honorary member" })).not.toBeInTheDocument();
   });
 
+  it("drops a delayed answer once the member has left the page, so it never lands in the next account's cache", async () => {
+    const user = userEvent.setup();
+    let releaseCancel: (() => void) | null = null;
+    renderMember(ACTIVE, {
+      "/api/me/membership/cancel": () =>
+        new Promise((resolve) => {
+          releaseCancel = () => resolve({ body: withMembership({ cancel_at_period_end: true }) });
+        }),
+    });
+    const { queryClient } = renderPage();
+
+    await user.click(await screen.findByRole("button", { name: "Cancel membership…" }));
+    await user.click(screen.getByRole("button", { name: "Cancel membership" }));
+
+    // Account A signs out while the cancel is in flight; account B's status
+    // then occupies the shared cache.
+    queryClient.setQueryData(["me"], null);
+    expect(await screen.findByText("Log in to manage your membership.")).toBeInTheDocument();
+    queryClient.setQueryData(["me", "membership"], NOT_MEMBER);
+
+    (releaseCancel as (() => void) | null)?.();
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    expect(queryClient.getQueryData(["me", "membership"])).toEqual(NOT_MEMBER);
+  });
+
   it("does not let an in-flight status GET overwrite a mutation's result", async () => {
     const user = userEvent.setup();
     let releaseStale: (() => void) | null = null;
