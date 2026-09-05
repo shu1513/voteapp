@@ -5,7 +5,7 @@ import { Outlet } from "react-router";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { ME_UNVERIFIED, ME_VERIFIED } from "../test/fixtures";
-import { readPendingDistrictIds, savePendingDistrictIds } from "../lib/pendingDistricts";
+import { clearPendingDistrictIds, readPendingDistrictIds, savePendingDistrictIds } from "../lib/pendingDistricts";
 import {
   resetDistrictHandoffForTests,
   retryDistrictHandoff,
@@ -118,6 +118,54 @@ describe("useDistrictHandoffRunner", () => {
       ["handoff_result", { outcome: "failed" }],
       ["handoff_result", { outcome: "done" }],
     ]);
+  });
+
+  it("scopes a failure to the ids that failed: clearing or replacing the queue moves on", async () => {
+    savePendingDistrictIds(["district-1"]);
+    const initializeCalls: string[][] = [];
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts/initialize": (_url, init) => {
+        const ids = (JSON.parse(String(init?.body)) as { district_ids: string[] }).district_ids;
+        initializeCalls.push(ids);
+        return ids[0] === "district-1" ? apiError(503, "unavailable", "Down") : { body: { ok: true } };
+      },
+    });
+    renderElectionPage();
+    expect(await screen.findByText("handoff: failed")).toBeInTheDocument();
+
+    // A later partial (ZIP) search clears the queue: nothing left to retry,
+    // so My Ballot must not keep showing the old failure.
+    act(() => clearPendingDistrictIds());
+    expect(await screen.findByText("handoff: done")).toBeInTheDocument();
+
+    // A new exact search replaces the queue: it runs on its own, no retry click.
+    act(() => savePendingDistrictIds(["district-2"]));
+    expect(await screen.findByText("handoff: done")).toBeInTheDocument();
+    expect(initializeCalls).toEqual([["district-1"], ["district-2"]]);
+    expect(readPendingDistrictIds()).toEqual([]);
+  });
+
+  it("forgets a failure when the session ends, so the next login retries by itself", async () => {
+    savePendingDistrictIds(["district-1"]);
+    let attempts = 0;
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts/initialize": () => {
+        attempts += 1;
+        return attempts === 1 ? apiError(403, "forbidden", "Session changed") : { body: { ok: true } };
+      },
+    });
+    const { queryClient } = renderElectionPage();
+    expect(await screen.findByText("handoff: failed")).toBeInTheDocument();
+
+    act(() => queryClient.setQueryData(["me"], null));
+    expect(await screen.findByText("handoff: pending")).toBeInTheDocument();
+    expect(attempts).toBe(1);
+
+    act(() => queryClient.setQueryData(["me"], ME_VERIFIED.user));
+    expect(await screen.findByText("handoff: done")).toBeInTheDocument();
+    expect(attempts).toBe(2);
   });
 
   it("drops a rejected payload without touching the district set", async () => {

@@ -20,14 +20,18 @@ import { track } from "./usage";
  * a retry after a recoverable failure.
  *
  * Status is derived, not stored: "pending" while ids sit in the queue,
- * "done" once the queue is empty, "failed" after a recoverable failure
- * (the ids stay queued for `retryDistrictHandoff`). The server snapshot is
- * "done" so the hydration render matches the SSR HTML; the client snapshot
- * takes over one paint later.
+ * "done" once the queue is empty, "failed" after a recoverable failure of
+ * exactly the ids still queued (they stay put for `retryDistrictHandoff`).
+ * A failure is scoped to that attempt: a later search that clears or
+ * replaces the queue, or a session that ends, discards it — an empty queue
+ * is always "done" and a new set of ids runs on its own. The server
+ * snapshot is "done" so the hydration render matches the SSR HTML; the
+ * client snapshot takes over one paint later.
  */
 export type DistrictHandoffStatus = "pending" | "done" | "failed";
 
-let failed = false;
+// Serialized ids of the queue whose last attempt failed; null when none.
+let failedIds: string | null = null;
 let inFlight = false;
 const listeners = new Set<() => void>();
 
@@ -47,10 +51,18 @@ function subscribe(listener: () => void): () => void {
 }
 
 function getStatus(): DistrictHandoffStatus {
-  if (failed) {
-    return "failed";
+  const ids = readPendingDistrictIds();
+  if (ids.length === 0) {
+    return "done";
   }
-  return readPendingDistrictIds().length > 0 ? "pending" : "done";
+  return failedIds === JSON.stringify(ids) ? "failed" : "pending";
+}
+
+function clearFailure(): void {
+  if (failedIds !== null) {
+    failedIds = null;
+    notify();
+  }
 }
 
 const getServerStatus = (): DistrictHandoffStatus => "done";
@@ -61,8 +73,7 @@ export function useDistrictHandoffStatus(): DistrictHandoffStatus {
 
 /** Re-arms the handoff after a failure; the App runner picks it up. */
 export function retryDistrictHandoff(): void {
-  failed = false;
-  notify();
+  clearFailure();
 }
 
 // Only a definitive rejection of the payload itself (400: malformed or
@@ -96,7 +107,7 @@ async function runDistrictHandoff(queryClient: QueryClient): Promise<void> {
       void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
     } else {
       track("handoff_result", { outcome: "failed" });
-      failed = true;
+      failedIds = JSON.stringify(districtIds);
       notify();
     }
   }
@@ -114,7 +125,13 @@ export function useDistrictHandoffRunner(): void {
   const status = useDistrictHandoffStatus();
   const verified = me?.email_verified === true;
   useEffect(() => {
-    if (!verified || status !== "pending" || inFlight) {
+    if (!verified) {
+      // Session gone (logout, or a 401/403 failure that the user is now
+      // fixing by logging in again): the next verified session starts clean.
+      clearFailure();
+      return;
+    }
+    if (status !== "pending" || inFlight) {
       return;
     }
     void runDistrictHandoff(queryClient);
@@ -123,6 +140,6 @@ export function useDistrictHandoffRunner(): void {
 
 /** Test seam: wipes module state between tests. */
 export function resetDistrictHandoffForTests(): void {
-  failed = false;
+  failedIds = null;
   inFlight = false;
 }
