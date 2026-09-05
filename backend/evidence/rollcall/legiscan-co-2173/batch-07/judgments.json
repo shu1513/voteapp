@@ -1,0 +1,520 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1537190,
+   "measure_id": "HB 1113",
+   "vote_date": "2025-04-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1113. Colorado already bars local governments from planting nonfunctional turf on their own property. Nonfunctional turf is grass that is only decorative, not lawn people use. From January 1, 2028 the ban also covers new homes in developments of 12 units or more. Local governments have to change their rules by 2028 to limit that turf. The act protects trees: a local government cannot stop someone watering a tree in a drought. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1113. Colorado already bars local governments from planting nonfunctional turf on their own property. Nonfunctional turf is grass that is only decorative, not lawn people use. From January 1, 2028 the ban also covers new homes in developments of 12 units or more. Local governments have to change their rules by 2028 to limit that turf. The act protects trees: a local government cannot stop someone watering a tree in a drought. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1545996,
+   "measure_id": "HB 1113",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1113 and pass it. Colorado already bars local governments from planting nonfunctional turf on their own property. Nonfunctional turf is grass that is only decorative, not lawn people use. From January 1, 2028 the ban also covers new homes in developments of 12 units or more. Local governments have to change their rules by 2028 to limit that turf. The act protects trees: a local government cannot stop someone watering a tree in a drought. The Colorado House voted 41-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1113. Colorado already bars local governments from planting nonfunctional turf on their own property. Nonfunctional turf is grass that is only decorative, not lawn people use. From January 1, 2028 the ban also covers new homes in developments of 12 units or more. Local governments have to change their rules by 2028 to limit that turf. The act protects trees: a local government cannot stop someone watering a tree in a drought. The Colorado House voted 41-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1545995
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1567628,
+   "measure_id": "SB 7",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 7. A prescribed burn is a fire lit on purpose to clear fuel before a wildfire can use it. The act creates a state fund to pay damage claims when such a burn causes harm. It starts with $250,000 and pays claims the state has checked. A single burn's claims are capped by what is in the fund when the claim is filed. A burn has to be registered with the state, and a certified burn manager has to be there, for the fund to apply. The Colorado House passed it 44-21 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 7. A prescribed burn is a fire lit on purpose to clear fuel before a wildfire can use it. The act creates a state fund to pay damage claims when such a burn causes harm. It starts with $250,000 and pays claims the state has checked. A single burn's claims are capped by what is in the fund when the claim is filed. A burn has to be registered with the state, and a certified burn manager has to be there, for the fund to apply. The Colorado House passed it 44-21 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1567630,
+   "measure_id": "SB 7",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 7 and pass it. A prescribed burn is a fire lit on purpose to clear fuel before a wildfire can use it. The act creates a state fund to pay damage claims when such a burn causes harm. It starts with $250,000 and pays claims the state has checked. A single burn's claims are capped by what is in the fund when the claim is filed. A burn has to be registered with the state, and a certified burn manager has to be there, for the fund to apply. The Colorado Senate voted 24-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 7. A prescribed burn is a fire lit on purpose to clear fuel before a wildfire can use it. The act creates a state fund to pay damage claims when such a burn causes harm. It starts with $250,000 and pays claims the state has checked. A single burn's claims are capped by what is in the fund when the claim is filed. A burn has to be registered with the state, and a certified burn manager has to be there, for the fund to apply. The Colorado Senate voted 24-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1567629
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1551031,
+   "measure_id": "SB 53",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 53. The act treats wild bison as wildlife and big game under state law. That makes it illegal to take or hold one without permission from Colorado Parks and Wildlife. Bison that are privately owned, held lawfully in captivity, or owned by a tribe are not covered. The act also sets the value of a bison for the penalties that follow illegal taking. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 53. The act treats wild bison as wildlife and big game under state law. That makes it illegal to take or hold one without permission from Colorado Parks and Wildlife. Bison that are privately owned, held lawfully in captivity, or owned by a tribe are not covered. The act also sets the value of a bison for the penalties that follow illegal taking. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1559041,
+   "measure_id": "SB 53",
+   "vote_date": "2025-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 53. The act treats wild bison as wildlife and big game under state law. That makes it illegal to take or hold one without permission from Colorado Parks and Wildlife. Bison that are privately owned, held lawfully in captivity, or owned by a tribe are not covered. The act also sets the value of a bison for the penalties that follow illegal taking. The Colorado House passed it 40-24 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 53. The act treats wild bison as wildlife and big game under state law. That makes it illegal to take or hold one without permission from Colorado Parks and Wildlife. Bison that are privately owned, held lawfully in captivity, or owned by a tribe are not covered. The act also sets the value of a bison for the penalties that follow illegal taking. The Colorado House passed it 40-24 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1565756,
+   "measure_id": "SB 163",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 163. The act creates the Battery Stewardship Act, which puts recycling on the companies that make batteries. A producer has to join a stewardship organization and run an approved plan for collecting, moving and recycling batteries. A producer that does not take part cannot sell batteries or products containing them in Colorado. From July 1, 2029 retailers cannot sell those products either. A shop does not have to be a drop-off point, but one that volunteers must follow the plan. Plans have to set collection targets and report on how they are met. The Colorado House passed it 44-21 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 163. The act creates the Battery Stewardship Act, which puts recycling on the companies that make batteries. A producer has to join a stewardship organization and run an approved plan for collecting, moving and recycling batteries. A producer that does not take part cannot sell batteries or products containing them in Colorado. From July 1, 2029 retailers cannot sell those products either. A shop does not have to be a drop-off point, but one that volunteers must follow the plan. Plans have to set collection targets and report on how they are met. The Colorado House passed it 44-21 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1566680,
+   "measure_id": "SB 163",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 163 and pass it. The act creates the Battery Stewardship Act, which puts recycling on the companies that make batteries. A producer has to join a stewardship organization and run an approved plan for collecting, moving and recycling batteries. A producer that does not take part cannot sell batteries or products containing them in Colorado. From July 1, 2029 retailers cannot sell those products either. A shop does not have to be a drop-off point, but one that volunteers must follow the plan. Plans have to set collection targets and report on how they are met. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 163. The act creates the Battery Stewardship Act, which puts recycling on the companies that make batteries. A producer has to join a stewardship organization and run an approved plan for collecting, moving and recycling batteries. A producer that does not take part cannot sell batteries or products containing them in Colorado. From July 1, 2029 retailers cannot sell those products either. A shop does not have to be a drop-off point, but one that volunteers must follow the plan. Plans have to set collection targets and report on how they are met. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1566679
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564757,
+   "measure_id": "SB 286",
+   "vote_date": "2025-05-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 286. When federal rules require cleaner reformulated gasoline in an area with dirty air, the state can now fine a retailer that sells fuel failing the standard. The fine can reach $5,000 a day. A seller has a defense if it relied on a transfer document showing the fuel complied. The power starts on August 15, 2025. The Colorado House passed it 43-20 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 286. When federal rules require cleaner reformulated gasoline in an area with dirty air, the state can now fine a retailer that sells fuel failing the standard. The fine can reach $5,000 a day. A seller has a defense if it relied on a transfer document showing the fuel complied. The power starts on August 15, 2025. The Colorado House passed it 43-20 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1565401,
+   "measure_id": "SB 286",
+   "vote_date": "2025-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 286 and pass it. When federal rules require cleaner reformulated gasoline in an area with dirty air, the state can now fine a retailer that sells fuel failing the standard. The fine can reach $5,000 a day. A seller has a defense if it relied on a transfer document showing the fuel complied. The power starts on August 15, 2025. The Colorado Senate voted 26-9 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 286. When federal rules require cleaner reformulated gasoline in an area with dirty air, the state can now fine a retailer that sells fuel failing the standard. The fine can reach $5,000 a day. A seller has a defense if it relied on a transfer document showing the fuel complied. The power starts on August 15, 2025. The Colorado Senate voted 26-9 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1565399
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1513369,
+   "measure_id": "HB 1009",
+   "vote_date": "2025-03-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1009. The act lets a fire district or a fire-serving metro district set up a program requiring property owners to clear dead or dry plant material. That means leaves, grass, shrubs, litter and fallen pine needles that can carry a fire. The program has to follow the 2024 international code for building near wildland. The district can charge for doing the work itself, up to $200 per property at a time and $1,200 a year. Districts running such a program have to set up an appeal and adopt rules. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1009. The act lets a fire district or a fire-serving metro district set up a program requiring property owners to clear dead or dry plant material. That means leaves, grass, shrubs, litter and fallen pine needles that can carry a fire. The program has to follow the 2024 international code for building near wildland. The district can charge for doing the work itself, up to $200 per property at a time and $1,200 a year. Districts running such a program have to set up an appeal and adopt rules. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1518393,
+   "measure_id": "HB 1009",
+   "vote_date": "2025-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1009 and pass it. The act lets a fire district or a fire-serving metro district set up a program requiring property owners to clear dead or dry plant material. That means leaves, grass, shrubs, litter and fallen pine needles that can carry a fire. The program has to follow the 2024 international code for building near wildland. The district can charge for doing the work itself, up to $200 per property at a time and $1,200 a year. Districts running such a program have to set up an appeal and adopt rules. The Colorado House voted 43-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1009. The act lets a fire district or a fire-serving metro district set up a program requiring property owners to clear dead or dry plant material. That means leaves, grass, shrubs, litter and fallen pine needles that can carry a fire. The program has to follow the 2024 international code for building near wildland. The district can charge for doing the work itself, up to $200 per property at a time and $1,200 a year. Districts running such a program have to set up an appeal and adopt rules. The Colorado House voted 43-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1518392
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1566577,
+   "measure_id": "HB 1267",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1267. The act sets minimum standards for public electric vehicle charging. The state's oil and public safety division has to write those rules by July 1, 2026 and enforce them. It works with the Colorado Energy Office on the standards. The act also changes the state's electric vehicle grant fund and lowers a delivery fee charged by a state energy body. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1267. The act sets minimum standards for public electric vehicle charging. The state's oil and public safety division has to write those rules by July 1, 2026 and enforce them. It works with the Colorado Energy Office on the standards. The act also changes the state's electric vehicle grant fund and lowers a delivery fee charged by a state energy body. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1567171,
+   "measure_id": "HB 1267",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1267 and pass it. The act sets minimum standards for public electric vehicle charging. The state's oil and public safety division has to write those rules by July 1, 2026 and enforce them. It works with the Colorado Energy Office on the standards. The act also changes the state's electric vehicle grant fund and lowers a delivery fee charged by a state energy body. The Colorado House voted 41-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1267. The act sets minimum standards for public electric vehicle charging. The state's oil and public safety division has to write those rules by July 1, 2026 and enforce them. It works with the Colorado Energy Office on the standards. The act also changes the state's electric vehicle grant fund and lowers a delivery fee charged by a state energy body. The Colorado House voted 41-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1567170
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1567609,
+   "measure_id": "HB 1269",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1269 and pass it. The act creates a Building Decarbonization Enterprise in the Colorado Energy Office. It offers large building owners technical help, financing, energy audits and tracking software. Owners of covered buildings pay a fee to fund it, which the act treats as a fee rather than a tax. Covered buildings keep reporting their energy use each year. The enterprise can agree alternative timelines with an owner who cannot meet a target on schedule. The Colorado House voted 42-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1269. The act creates a Building Decarbonization Enterprise in the Colorado Energy Office. It offers large building owners technical help, financing, energy audits and tracking software. Owners of covered buildings pay a fee to fund it, which the act treats as a fee rather than a tax. Covered buildings keep reporting their energy use each year. The enterprise can agree alternative timelines with an owner who cannot meet a target on schedule. The Colorado House voted 42-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1567608
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1567096,
+   "measure_id": "HB 1269",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1269. The act creates a Building Decarbonization Enterprise in the Colorado Energy Office. It offers large building owners technical help, financing, energy audits and tracking software. Owners of covered buildings pay a fee to fund it, which the act treats as a fee rather than a tax. Covered buildings keep reporting their energy use each year. The enterprise can agree alternative timelines with an owner who cannot meet a target on schedule. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1269. The act creates a Building Decarbonization Enterprise in the Colorado Energy Office. It offers large building owners technical help, financing, energy audits and tracking software. Owners of covered buildings pay a fee to fund it, which the act treats as a fee rather than a tax. Covered buildings keep reporting their energy use each year. The enterprise can agree alternative timelines with an owner who cannot meet a target on schedule. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1567674,
+   "measure_id": "SB 161",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the conference committee's report on Senate Bill 161 and pass it. The act sets performance rules for the Regional Transportation District, the Denver area's transit agency. It has to plan, track its performance and report to a public board. It has to work with local governments, other transit agencies and planning bodies. It has to set goals for keeping staff and measure how it is doing against them. Its planning has to line up with the mode choice work another 2025 act started. The Colorado House voted 43-22 to adopt that report and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against adopting the conference committee's report on Senate Bill 161. The act sets performance rules for the Regional Transportation District, the Denver area's transit agency. It has to plan, track its performance and report to a public board. It has to work with local governments, other transit agencies and planning bodies. It has to set goals for keeping staff and measure how it is doing against them. Its planning has to line up with the mode choice work another 2025 act started. The Colorado House voted 43-22 to adopt that report and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1567671
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1567982,
+   "measure_id": "SB 161",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the conference committee's report on Senate Bill 161 and pass it. The act sets performance rules for the Regional Transportation District, the Denver area's transit agency. It has to plan, track its performance and report to a public board. It has to work with local governments, other transit agencies and planning bodies. It has to set goals for keeping staff and measure how it is doing against them. Its planning has to line up with the mode choice work another 2025 act started. The Colorado Senate voted 23-12 to adopt that report and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against adopting the conference committee's report on Senate Bill 161. The act sets performance rules for the Regional Transportation District, the Denver area's transit agency. It has to plan, track its performance and report to a public board. It has to work with local governments, other transit agencies and planning bodies. It has to set goals for keeping staff and measure how it is doing against them. Its planning has to line up with the mode choice work another 2025 act started. The Colorado Senate voted 23-12 to adopt that report and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1567981
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1558189,
+   "measure_id": "SB 81",
+   "vote_date": "2025-04-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 81. The act creates a state authority to finance public infrastructure. The authority can raise money and lend it for transport, energy, water systems and public buildings. It has to write policies for how it lends, and lenders it works with sign agreements. It reports on its activities to lawmakers. The act also changes the state's public financing fund and its options for paying for buildings. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 81. The act creates a state authority to finance public infrastructure. The authority can raise money and lend it for transport, energy, water systems and public buildings. It has to write policies for how it lends, and lenders it works with sign agreements. It reports on its activities to lawmakers. The act also changes the state's public financing fund and its options for paying for buildings. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1558866,
+   "measure_id": "SB 81",
+   "vote_date": "2025-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 81 and pass it. The act creates a state authority to finance public infrastructure. The authority can raise money and lend it for transport, energy, water systems and public buildings. It has to write policies for how it lends, and lenders it works with sign agreements. It reports on its activities to lawmakers. The act also changes the state's public financing fund and its options for paying for buildings. The Colorado Senate voted 22-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 81. The act creates a state authority to finance public infrastructure. The authority can raise money and lend it for transport, energy, water systems and public buildings. It has to write policies for how it lends, and lenders it works with sign agreements. It reports on its activities to lawmakers. The act also changes the state's public financing fund and its options for paying for buildings. The Colorado Senate voted 22-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1558865
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1566448,
+   "measure_id": "HB 1292",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1292. The act sets out how a company can put high voltage power lines inside a state highway right-of-way. The transport department has to run a preconstruction process and get information from the developer. That has to cover how the line would be built, reached and maintained, and how it would avoid harm. The department sets what the developer pays for using the right-of-way. The department also writes rules to carry this out. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1292. The act sets out how a company can put high voltage power lines inside a state highway right-of-way. The transport department has to run a preconstruction process and get information from the developer. That has to cover how the line would be built, reached and maintained, and how it would avoid harm. The department sets what the developer pays for using the right-of-way. The department also writes rules to carry this out. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1567132,
+   "measure_id": "HB 1292",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1292 and pass it. The act sets out how a company can put high voltage power lines inside a state highway right-of-way. The transport department has to run a preconstruction process and get information from the developer. That has to cover how the line would be built, reached and maintained, and how it would avoid harm. The department sets what the developer pays for using the right-of-way. The department also writes rules to carry this out. The Colorado House voted 46-18 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1292. The act sets out how a company can put high voltage power lines inside a state highway right-of-way. The transport department has to run a preconstruction process and get information from the developer. That has to cover how the line would be built, reached and maintained, and how it would avoid harm. The department sets what the developer pays for using the right-of-way. The department also writes rules to carry this out. The Colorado House voted 46-18 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1567131
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1558188,
+   "measure_id": "SB 182",
+   "vote_date": "2025-04-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 182. Special districts can already lend property owners money for energy improvements and be repaid through the property. The act adds embodied carbon improvements to what such a loan can pay for. Embodied carbon is the pollution created making materials like cement, asphalt and steel. A qualifying improvement has to use materials the state energy office lists and cut those emissions. The Colorado House passed it 45-18 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 182. Special districts can already lend property owners money for energy improvements and be repaid through the property. The act adds embodied carbon improvements to what such a loan can pay for. Embodied carbon is the pollution created making materials like cement, asphalt and steel. A qualifying improvement has to use materials the state energy office lists and cut those emissions. The Colorado House passed it 45-18 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564681,
+   "measure_id": "SB 162",
+   "vote_date": "2025-05-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 162. The act tightens railroad safety reporting. When the state watch center hears from a railroad about an emergency involving a train, it has to tell the utilities commission and the rail safety office at once. Within 30 days the office has to brief named legislative committees. The act also requires an assessment of rail safety, with set contents. The Colorado House passed it 44-19 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 162. The act tightens railroad safety reporting. When the state watch center hears from a railroad about an emergency involving a train, it has to tell the utilities commission and the rail safety office at once. Within 30 days the office has to brief named legislative committees. The act also requires an assessment of rail safety, with set contents. The Colorado House passed it 44-19 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1566774,
+   "measure_id": "SB 162",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 162 and pass it. The act tightens railroad safety reporting. When the state watch center hears from a railroad about an emergency involving a train, it has to tell the utilities commission and the rail safety office at once. Within 30 days the office has to brief named legislative committees. The act also requires an assessment of rail safety, with set contents. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 162. The act tightens railroad safety reporting. When the state watch center hears from a railroad about an emergency involving a train, it has to tell the utilities commission and the rail safety office at once. Within 30 days the office has to brief named legislative committees. The act also requires an assessment of rail safety, with set contents. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1566773
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1567586,
+   "measure_id": "SB 321",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 321. The act targets vehicle air pollution in parts of Colorado that fail federal air quality standards. The air quality commission has to write rules for the emissions inspection program in those areas. It updates who may hold the state inspection contract and how inspections run. The Colorado House passed it 44-20 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 321. The act targets vehicle air pollution in parts of Colorado that fail federal air quality standards. The air quality commission has to write rules for the emissions inspection program in those areas. It updates who may hold the state inspection contract and how inspections run. The Colorado House passed it 44-20 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
