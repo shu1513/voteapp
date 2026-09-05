@@ -1,4 +1,4 @@
-# Draft completion moment ("picks added for every race")
+# Draft completion moment ("You have completed your … draft")
 
 Status: PR 1 (notice + plumbing) merged 2026-09-04 (#1108); PR 2
 (draft-page milestone, `DraftMilestone.tsx`) implemented 2026-09-04.
