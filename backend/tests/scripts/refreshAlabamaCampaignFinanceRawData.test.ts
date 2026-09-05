@@ -54,4 +54,9 @@ describe("refreshAlabamaCampaignFinanceRawData script", () => {
       "Provide --cache-dir at most once"
     );
   });
+
+  it("rejects a flag given without a value instead of crashing on the missing token", () => {
+    expect(() => parseArgs(["--cache-dir"])).toThrow("Missing --cache-dir value");
+    expect(() => parseArgs(["--cache-dir", "--dry-run"])).toThrow("Missing --cache-dir value");
+  });
 });

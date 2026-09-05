@@ -168,8 +168,12 @@ describe("probeCaliforniaCampaignFinanceRawData script", () => {
       parseProbeCaliforniaCampaignFinanceRawDataScriptArgs(["--head-only", "--manifest"])
     ).toThrow("--manifest cannot be used with --head-only because manifest validation requires ZIP samples");
     expect(() => parseProbeCaliforniaCampaignFinanceRawDataScriptArgs(["--url", "--head-only"])).toThrow(
-      "Missing value for --url"
+      "Missing --url value"
     );
+  });
+
+  it("rejects an empty inline value instead of reading it as an empty string", () => {
+    expect(() => parseProbeCaliforniaCampaignFinanceRawDataScriptArgs(["--url="])).toThrow("Missing --url value");
   });
 
   it("fetches remote ZIP metadata with HEAD", async () => {

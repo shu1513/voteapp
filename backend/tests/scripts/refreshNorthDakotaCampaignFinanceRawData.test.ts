@@ -36,6 +36,11 @@ describe("refreshNorthDakotaCampaignFinanceRawData script", () => {
     expect(() => parseArgs(["--cache-dir=/a", "--cache-dir=/b"])).toThrow("Provide --cache-dir at most once");
   });
 
+  it("rejects a flag given without a value instead of crashing on the missing token", () => {
+    expect(() => parseArgs(["--cache-dir"])).toThrow("Missing --cache-dir value");
+    expect(() => parseArgs(["--cache-dir", "--dry-run"])).toThrow("Missing --cache-dir value");
+  });
+
   it("refreshes both schedule files, resolves the window, then every window year's data artifacts", async () => {
     const refreshed: string[] = [];
     const fakeRefresh = (kind: string, year: number) => {

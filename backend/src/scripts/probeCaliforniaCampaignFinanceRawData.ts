@@ -14,6 +14,7 @@ import {
   validateCalAccessRawDataManifest,
 } from "../pipeline/californiaFinance/calAccessRawDataManifest.js";
 import { probeCalAccessRawDataZip } from "../pipeline/californiaFinance/calAccessRawDataProbe.js";
+import { readStrictFlagValues } from "../utils/cliFlags.js";
 
 export {
   CAL_ACCESS_RAW_DATA_FETCH_TIMEOUT_MS,
@@ -36,31 +37,8 @@ export type ProbeCaliforniaCampaignFinanceRawDataScriptOptions = {
   timeoutMs: number;
 };
 
-function readValueFlags(args: readonly string[], name: string): string[] {
-  const values: string[] = [];
-  const inlinePrefix = `${name}=`;
-
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index];
-    if (arg?.startsWith(inlinePrefix)) {
-      values.push(arg.slice(inlinePrefix.length));
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--")) {
-        throw new Error(`Missing value for ${name}`);
-      }
-      values.push(next);
-      index += 1;
-    }
-  }
-
-  return values;
-}
-
 function readValueFlag(args: readonly string[], name: string): string | undefined {
-  const values = readValueFlags(args, name);
+  const values = readStrictFlagValues(args, name);
   if (values.length > 1) {
     throw new Error(`Provide ${name} at most once`);
   }
@@ -108,10 +86,10 @@ export function parseProbeCaliforniaCampaignFinanceRawDataScriptArgs(
     throw new Error("--manifest cannot be used with --head-only because manifest validation requires ZIP samples");
   }
 
-  const sampleFileNames = readValueFlags(args, "--sample-file")
+  const sampleFileNames = readStrictFlagValues(args, "--sample-file")
     .map((value) => value.trim())
     .filter(Boolean);
-  const samplePatterns = readValueFlags(args, "--sample-pattern")
+  const samplePatterns = readStrictFlagValues(args, "--sample-pattern")
     .map((value) => value.trim())
     .filter(Boolean);
 

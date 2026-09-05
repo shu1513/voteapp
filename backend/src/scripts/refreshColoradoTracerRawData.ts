@@ -10,6 +10,7 @@ import {
   refreshColoradoTracerContributionArtifactCache,
 } from "../pipeline/coloradoFinance/coloradoTracerContributionArtifactCache.js";
 import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
+import { readStrictFlagValues } from "../utils/cliFlags.js";
 
 export { DEFAULT_COLORADO_TRACER_CONTRIBUTION_CACHE_DIR };
 
@@ -21,31 +22,8 @@ export type RefreshColoradoTracerRawDataScriptOptions = {
   timeoutMs: number;
 };
 
-function readValueFlags(args: readonly string[], name: string): string[] {
-  const values: string[] = [];
-  const inlinePrefix = `${name}=`;
-
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index];
-    if (arg?.startsWith(inlinePrefix)) {
-      values.push(arg.slice(inlinePrefix.length));
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--")) {
-        throw new Error(`Missing value for ${name}`);
-      }
-      values.push(next);
-      index += 1;
-    }
-  }
-
-  return values;
-}
-
 function readValueFlag(args: readonly string[], name: string): string | undefined {
-  const values = readValueFlags(args, name);
+  const values = readStrictFlagValues(args, name);
   if (values.length > 1) {
     throw new Error(`Provide ${name} at most once`);
   }

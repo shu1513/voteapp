@@ -39,4 +39,8 @@ describe("refreshColoradoTracerRawData script", () => {
       "Only https is allowed"
     );
   });
+
+  it("rejects an empty inline value instead of reading it as an empty string", () => {
+    expect(() => parseRefreshColoradoTracerRawDataScriptArgs(["--url="])).toThrow("Missing --url value");
+  });
 });

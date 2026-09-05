@@ -15,6 +15,7 @@ import {
   requireErtsOrgId,
   type ErtsTransport,
 } from "../pipeline/rhodeIslandFinance/rhodeIslandErtsClient.js";
+import { readStrictFlagValues } from "../utils/cliFlags.js";
 
 // Downloads one cycle of Rhode Island ERTS campaign-finance artifacts into
 // the local cache (rhode_island_plan.md PR 4): per-organization filing lists,
@@ -65,7 +66,7 @@ function assertKnownRefreshScriptArgs(args: readonly string[]): void {
     }
     if (valueFlagNames.includes(name)) {
       if (arg === name) {
-        // The next token is this flag's value; readValueFlags validates it.
+        // The next token is this flag's value; readStrictFlagValues validates it.
         index += 1;
       }
       continue;
@@ -74,33 +75,8 @@ function assertKnownRefreshScriptArgs(args: readonly string[]): void {
   }
 }
 
-function readValueFlags(args: readonly string[], name: string): string[] {
-  const values: string[] = [];
-  const inlinePrefix = `${name}=`;
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index]!;
-    if (arg.startsWith(inlinePrefix)) {
-      const value = arg.slice(inlinePrefix.length).trim();
-      if (value.length === 0) {
-        throw new Error(`Missing value for ${name}`);
-      }
-      values.push(value);
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--") || next.trim().length === 0) {
-        throw new Error(`Missing value for ${name}`);
-      }
-      values.push(next.trim());
-      index += 1;
-    }
-  }
-  return values;
-}
-
 function readValueFlag(args: readonly string[], name: string): string | undefined {
-  const values = readValueFlags(args, name);
+  const values = readStrictFlagValues(args, name);
   if (values.length > 1) {
     throw new Error(`Provide ${name} at most once`);
   }
@@ -151,7 +127,7 @@ export function parseRefreshRhodeIslandErtsRawDataScriptArgs(
     DEFAULT_RHODE_ISLAND_ERTS_CACHE_DIR
   ).trim();
 
-  const organizations = readValueFlags(args, "--organization").map(parseErtsOrganizationArg);
+  const organizations = readStrictFlagValues(args, "--organization").map(parseErtsOrganizationArg);
   const seen = new Set<string>();
   for (const organization of organizations) {
     if (seen.has(organization.orgId)) {

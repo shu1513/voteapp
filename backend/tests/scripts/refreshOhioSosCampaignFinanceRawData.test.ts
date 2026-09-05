@@ -78,8 +78,8 @@ describe("refreshOhioSosCampaignFinanceRawData script", () => {
   });
 
   it("rejects a flag given without a value", () => {
-    expect(() => parseArgs(["--cache-dir"])).toThrow(/Missing value for --cache-dir/);
-    expect(() => parseArgs(["--spacing-ms="])).toThrow(/Missing value for --spacing-ms/);
+    expect(() => parseArgs(["--cache-dir"])).toThrow(/Missing --cache-dir value/);
+    expect(() => parseArgs(["--spacing-ms="])).toThrow(/Missing --spacing-ms value/);
   });
 
   it("accepts space-separated flag values", () => {

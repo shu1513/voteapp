@@ -23,6 +23,7 @@ import {
   connectOhioSosChrome,
   DEFAULT_OHIO_SOS_CHROME_DEBUG_URL,
 } from "../pipeline/ohioFinance/ohioSosChromeClient.js";
+import { readStrictFlagValues } from "../utils/cliFlags.js";
 
 // Downloads one cycle of Ohio SoS bulk campaign-finance artifacts into the
 // local cache, then fetches the Form 31-U detail for every independent
@@ -90,7 +91,7 @@ function assertKnownRefreshScriptArgs(args: readonly string[]): void {
     }
     if (valueFlagNames.includes(name)) {
       if (arg === name) {
-        // The next token is this flag's value; readValueFlags validates it.
+        // The next token is this flag's value; readStrictFlagValues validates it.
         index += 1;
       }
       continue;
@@ -99,35 +100,8 @@ function assertKnownRefreshScriptArgs(args: readonly string[]): void {
   }
 }
 
-function readValueFlags(args: readonly string[], name: string): string[] {
-  const values: string[] = [];
-  const inlinePrefix = `${name}=`;
-
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index]!;
-    if (arg.startsWith(inlinePrefix)) {
-      const value = arg.slice(inlinePrefix.length).trim();
-      if (value.length === 0) {
-        throw new Error(`Missing value for ${name}`);
-      }
-      values.push(value);
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--") || next.trim().length === 0) {
-        throw new Error(`Missing value for ${name}`);
-      }
-      values.push(next.trim());
-      index += 1;
-    }
-  }
-
-  return values;
-}
-
 function readValueFlag(args: readonly string[], name: string): string | undefined {
-  const values = readValueFlags(args, name);
+  const values = readStrictFlagValues(args, name);
   if (values.length > 1) {
     throw new Error(`Provide ${name} at most once`);
   }
@@ -148,8 +122,8 @@ export function parseRefreshOhioSosCampaignFinanceRawDataScriptArgs(
   args: readonly string[]
 ): RefreshOhioSosCampaignFinanceRawDataScriptOptions {
   assertKnownRefreshScriptArgs(args);
-  const cycleYearValues = readValueFlags(args, "--cycle-year");
-  const yearValues = readValueFlags(args, "--year");
+  const cycleYearValues = readStrictFlagValues(args, "--cycle-year");
+  const yearValues = readStrictFlagValues(args, "--year");
   if (cycleYearValues.length > 0 && yearValues.length > 0) {
     throw new Error("Provide --cycle-year or --year, not both");
   }

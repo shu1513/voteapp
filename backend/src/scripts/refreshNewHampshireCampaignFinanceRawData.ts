@@ -12,6 +12,7 @@ import {
 } from "../pipeline/newHampshireFinance/newHampshireCfsArtifactCache.js";
 import { NEW_HAMPSHIRE_CFS_FETCH_TIMEOUT_MS } from "../pipeline/newHampshireFinance/newHampshireCfsClient.js";
 import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
+import { readStrictFlagValues } from "../utils/cliFlags.js";
 
 export type RefreshNewHampshireCampaignFinanceRawDataScriptOptions = {
   filingYear: number;
@@ -30,23 +31,8 @@ const VALUE_FLAGS = new Set([
   "--timeout-ms",
 ]);
 
-function readValueFlags(args: readonly string[], name: string): string[] {
-  const values: string[] = [];
-  const prefix = `${name}=`;
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index]!;
-    if (arg.startsWith(prefix)) {
-      values.push(arg.slice(prefix.length).trim());
-    } else if (arg === name) {
-      values.push(args[index + 1]!.trim());
-      index += 1;
-    }
-  }
-  return values;
-}
-
 function readValueFlag(args: readonly string[], name: string): string | undefined {
-  const values = readValueFlags(args, name);
+  const values = readStrictFlagValues(args, name);
   if (values.length > 1) throw new Error(`Provide ${name} at most once`);
   return values[0];
 }
@@ -64,8 +50,8 @@ export function parseRefreshNewHampshireCampaignFinanceRawDataScriptArgs(
 ): RefreshNewHampshireCampaignFinanceRawDataScriptOptions {
   assertKnownCliFlags(args, "New Hampshire CFS raw data refresh", BOOLEAN_FLAGS, VALUE_FLAGS);
   const yearValues = [
-    ...readValueFlags(args, "--filing-year"),
-    ...readValueFlags(args, "--year"),
+    ...readStrictFlagValues(args, "--filing-year"),
+    ...readStrictFlagValues(args, "--year"),
   ];
   if (yearValues.length > 1) throw new Error("Provide --filing-year at most once");
 
