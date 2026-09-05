@@ -47,6 +47,12 @@ describe("triggerKentuckyCandidateFinanceSync script", () => {
     ).toThrow("Provide --max-candidates at most once");
   });
 
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() => parseKentuckyCandidateFinanceSyncTriggerArgs(["--max-candidates=9007199254740993"])).toThrow(
+      "Invalid --max-candidates value: 9007199254740993"
+    );
+  });
+
   it("rejects conflicting auto-link flags", () => {
     expect(() => parseKentuckyCandidateFinanceSyncTriggerArgs(["--auto-link", "--no-auto-link"])).toThrow(
       "Provide either --auto-link or --no-auto-link, not both"

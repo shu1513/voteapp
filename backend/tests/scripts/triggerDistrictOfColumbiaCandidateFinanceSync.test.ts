@@ -39,6 +39,12 @@ describe("triggerDistrictOfColumbiaCandidateFinanceSync script", () => {
     ).toThrow("Provide --max-candidates at most once");
   });
 
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() => parseDistrictOfColumbiaCandidateFinanceSyncTriggerArgs(["--max-candidates=9007199254740993"])).toThrow(
+      "Invalid --max-candidates value: 9007199254740993"
+    );
+  });
+
   it("rejects unknown flags", () => {
     expect(() => parseDistrictOfColumbiaCandidateFinanceSyncTriggerArgs(["--dry-runn"])).toThrow(
       "Unknown District of Columbia candidate finance sync flag: --dry-runn"

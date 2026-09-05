@@ -40,4 +40,13 @@ describe("Vermont candidate finance sync scheduler scripts", () => {
       "Missing --stale-after-days value"
     );
   });
+
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() => parseVermontCandidateFinanceSyncTriggerArgs(["--max-candidates=9007199254740993"])).toThrow(
+      "Invalid --max-candidates value: 9007199254740993"
+    );
+    expect(() => parseUpsertVermontCandidateFinanceSyncSchedulerArgs(["--max-candidates=9007199254740993"])).toThrow(
+      "Invalid --max-candidates value: 9007199254740993"
+    );
+  });
 });

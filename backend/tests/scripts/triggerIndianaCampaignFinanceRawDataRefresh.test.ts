@@ -47,4 +47,10 @@ describe("triggerIndianaCampaignFinanceRawDataRefresh script", () => {
       "Unknown Indiana campaign finance flag: --bogus"
     );
   });
+
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() => parseIndianaCampaignFinanceRawDataRefreshTriggerArgs(["--timeout-ms=9007199254740993"])).toThrow(
+      "Invalid --timeout-ms value: 9007199254740993"
+    );
+  });
 });

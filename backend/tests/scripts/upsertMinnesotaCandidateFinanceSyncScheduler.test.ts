@@ -37,4 +37,10 @@ describe("upsertMinnesotaCandidateFinanceSyncScheduler script", () => {
       "Missing --raw-cache-dir value"
     );
   });
+
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() => parseUpsertMinnesotaCandidateFinanceSyncSchedulerArgs(["--max-candidates=9007199254740993"])).toThrow(
+      "Invalid --max-candidates value: 9007199254740993"
+    );
+  });
 });

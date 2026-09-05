@@ -40,4 +40,10 @@ describe("triggerIndianaCandidateFinanceSync script", () => {
       "Unknown Indiana campaign finance flag: --bogus"
     );
   });
+
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() => parseIndianaCandidateFinanceSyncTriggerArgs(["--max-candidates=9007199254740993"])).toThrow(
+      "Invalid --max-candidates value: 9007199254740993"
+    );
+  });
 });

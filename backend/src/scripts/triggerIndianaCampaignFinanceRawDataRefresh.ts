@@ -6,48 +6,8 @@ import {
   type IndianaCampaignFinanceRawDataRefreshJobData,
 } from "../scheduler/indianaCampaignFinanceRawDataRefreshScheduler.js";
 import { normalizeIndianaCampaignFinanceArtifactKind } from "../pipeline/indianaFinance/indianaCampaignFinanceArtifactCache.js";
+import { readStrictFlagValue, readStrictPositiveIntegerFlag } from "../utils/cliFlags.js";
 import { assertKnownIndianaCampaignFinanceCliArgs } from "./indianaCampaignFinanceCliArgs.js";
-
-function parseFlagValue(args: readonly string[], name: string): string | null {
-  const inlinePrefix = `${name}=`;
-  const values: string[] = [];
-
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index];
-    if (arg.startsWith(inlinePrefix)) {
-      const value = arg.slice(inlinePrefix.length).trim();
-      if (value.length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(value);
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--") || next.trim().length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(next.trim());
-      index += 1;
-    }
-  }
-
-  if (values.length > 1) {
-    throw new Error(`Provide ${name} at most once`);
-  }
-  return values[0] ?? null;
-}
-
-function parsePositiveIntegerFlag(args: readonly string[], name: string): number | undefined {
-  const raw = parseFlagValue(args, name);
-  if (raw === null) {
-    return undefined;
-  }
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
 
 export function parseIndianaCampaignFinanceRawDataRefreshTriggerArgs(
   args: readonly string[]
@@ -60,14 +20,14 @@ export function parseIndianaCampaignFinanceRawDataRefreshTriggerArgs(
     { name: "--cache-dir", takesValue: true },
     { name: "--timeout-ms", takesValue: true },
   ]);
-  const artifactKind = parseFlagValue(args, "--artifact-kind");
+  const artifactKind = readStrictFlagValue(args, "--artifact-kind");
   return {
     force: args.includes("--force"),
-    year: parsePositiveIntegerFlag(args, "--year"),
+    year: readStrictPositiveIntegerFlag(args, "--year"),
     artifactKind: artifactKind ? normalizeIndianaCampaignFinanceArtifactKind(artifactKind) : undefined,
-    url: parseFlagValue(args, "--url") || undefined,
-    cacheDir: parseFlagValue(args, "--cache-dir") || undefined,
-    timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
+    url: readStrictFlagValue(args, "--url") || undefined,
+    cacheDir: readStrictFlagValue(args, "--cache-dir") || undefined,
+    timeoutMs: readStrictPositiveIntegerFlag(args, "--timeout-ms"),
   };
 }
 

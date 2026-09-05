@@ -44,4 +44,10 @@ describe("upsertOregonCandidateFinanceSyncScheduler script", () => {
       parseUpsertOregonCandidateFinanceSyncSchedulerArgs(["--outside-max-groups=5", "--outside-max-groups", "10"])
     ).toThrow("Provide --outside-max-groups at most once");
   });
+
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() => parseUpsertOregonCandidateFinanceSyncSchedulerArgs(["--max-candidates=9007199254740993"])).toThrow(
+      "Invalid --max-candidates value: 9007199254740993"
+    );
+  });
 });
