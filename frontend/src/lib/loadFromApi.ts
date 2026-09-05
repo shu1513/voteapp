@@ -93,7 +93,7 @@ function resolveApiBase(): string {
 // loop always runs over the longer input and folds the length difference
 // into the result, so neither an early exit nor the iteration count leaks
 // where a guess diverges from the secret.
-function timingSafeStringEqual(presented: string, expected: string): boolean {
+export function timingSafeStringEqual(presented: string, expected: string): boolean {
   const length = Math.max(presented.length, expected.length);
   // Unequal lengths already force a nonzero result here, so the loop's
   // out-of-range padding (charCodeAt is NaN past the end; NaN | 0 is 0)

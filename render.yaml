@@ -339,6 +339,14 @@ services:
           name: voteapp-api
           type: web
           envVarKey: EDGE_SHARED_SECRET
+      # Canonical site origin. With this AND EDGE_SHARED_SECRET set, the root
+      # loader 301s any request that lacks the Worker's X-Edge-Secret proof —
+      # i.e. a direct hit on this service's *.onrender.com hostname, which
+      # would otherwise serve the site without the Worker's security headers
+      # (frontend/src/lib/canonicalHostRedirect.ts). Deleting this key turns
+      # the redirect off without a deploy. Must match the Worker's zone.
+      - key: CANONICAL_SITE_ORIGIN
+        value: https://electionssimplified.com
       # Chatbot widget flag, baked into the bundle at build time. References
       # the API's flag so the two services cannot drift; a mismatch degrades
       # gracefully (widget hidden, or open shows "not available").

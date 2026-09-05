@@ -1,12 +1,25 @@
 import type { ReactNode } from "react";
-import { Links, Meta, Outlet, Scripts } from "react-router";
-import type { MetaFunction } from "react-router";
+import { Links, Meta, Outlet, redirect, Scripts } from "react-router";
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { isServer, MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
 import { APP_NAME, ApiError } from "@voteapp/api-client";
 import { RouteError } from "./components/RouteError";
+import { canonicalHostRedirectUrl } from "./lib/canonicalHostRedirect";
 import { captureMonitoredError } from "./lib/errorMonitoring";
 import { pageMeta } from "./lib/pageMeta";
+
+// Runs on the server for every document request. A request that reached the
+// SSR service on its raw *.onrender.com hostname (bypassing the edge Worker
+// and its security headers) is sent to the canonical site; see
+// lib/canonicalHostRedirect.ts for the gate. Returns nothing otherwise.
+export function loader({ request }: LoaderFunctionArgs): null {
+  const target = canonicalHostRedirectUrl(request);
+  if (target !== null) {
+    throw redirect(target, 301);
+  }
+  return null;
+}
 
 // The default for every page that does not export its own meta — which is most
 // of them, since the rest set their title client-side with useDocumentTitle.
