@@ -119,11 +119,24 @@ export function referrerPolicyForPath(pathname) {
   return NO_REFERRER_PATHS.has(normalized) ? "no-referrer" : SECURITY_HEADERS["Referrer-Policy"];
 }
 
-/** Copies the response (upstream headers are immutable) and stamps the set. */
+/**
+ * Copies the response (upstream headers are immutable) and stamps the set.
+ *
+ * Content-Security-Policy is APPENDED when the upstream already sent one:
+ * browsers enforce every CSP header on a response, so the stricter upstream
+ * policy keeps applying and the site-wide one adds to it. Today that is the
+ * API's unsubscribe page (default-src 'none' on a token-bearing URL) —
+ * overwriting it would re-allow inline scripts there. Every other header
+ * is overwritten so the edge stays authoritative.
+ */
 export function withSecurityHeaders(response, pathname = "") {
   const wrapped = new Response(response.body, response);
   for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
-    wrapped.headers.set(name, value);
+    if (name === "Content-Security-Policy" && wrapped.headers.has(name)) {
+      wrapped.headers.append(name, value);
+    } else {
+      wrapped.headers.set(name, value);
+    }
   }
   wrapped.headers.set("Referrer-Policy", referrerPolicyForPath(pathname));
   return wrapped;

@@ -492,6 +492,21 @@ describe("security headers", () => {
     assert.match(csp, /connect-src [^;]*https:\/\/cloudflareinsights\.com/);
   });
 
+  it("withSecurityHeaders keeps an upstream CSP and appends the site-wide one instead of replacing it", () => {
+    const upstreamCsp = "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'";
+    const stamped = withSecurityHeaders(
+      new Response("<!doctype html>", { headers: { "content-security-policy": upstreamCsp, "x-frame-options": "SAMEORIGIN" } }),
+      "/api/email/unsubscribe"
+    );
+
+    // Headers.get joins repeated headers with ", "; browsers enforce each
+    // policy independently, so the stricter upstream one still applies.
+    const csp = stamped.headers.get("content-security-policy");
+    assert.ok(csp.startsWith(upstreamCsp + ", default-src 'self';"), csp);
+    // Every other baseline header is still overwritten by the edge value.
+    assert.equal(stamped.headers.get("x-frame-options"), "DENY");
+  });
+
   it("withSecurityHeaders copies immutable-header responses instead of mutating", () => {
     const original = Response.redirect("https://electionssimplified.com/", 301);
     const stamped = withSecurityHeaders(original);
