@@ -1,0 +1,59 @@
+{
+  "judgmentsFile": "/Users/shu/voteApp/.claude/worktrees/focused-hofstadter-3ebce2/backend/evidence/rollcall/legiscan-nv-2144/batch-03/judgments.json",
+  "dryRun": false,
+  "judgments": 7,
+  "counts": {
+    "updated": 7
+  },
+  "rows": [
+    {
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1575560,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1583340,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1583679,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2144",
+      "roll": 1586837,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1549434,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1576737,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "senate",
+      "session": "2144",
+      "roll": 1578452,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    }
+  ]
+}
