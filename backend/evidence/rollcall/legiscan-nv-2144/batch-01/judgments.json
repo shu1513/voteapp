@@ -1,0 +1,331 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1553680,
+   "measure_id": "AB 121",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 121, which sets rules on how landlords charge rent and fees. A landlord must offer at least one way to pay rent that costs the tenant no fee. Rent has to be listed as one figure that already includes every required fee. The landlord may not charge more than that figure. If a landlord offers online payment, the fee passed to the tenant may not be more than the payment company charges the landlord. Application and background-check fees must be refunded if the unit goes to someone else and the landlord never ran the check. A tenant can sue over the rent-figure rules and recover costs and legal fees. The Nevada Assembly passed this earlier version 27-15. The Senate later let landlords bill some utilities as a separate monthly charge, and the bill was signed into law.",
+   "nay_description": "Voted against Assembly Bill 121, which sets rules on how landlords charge rent and fees. A landlord must offer at least one way to pay rent that costs the tenant no fee. Rent has to be listed as one figure that already includes every required fee. The landlord may not charge more than that figure. If a landlord offers online payment, the fee passed to the tenant may not be more than the payment company charges the landlord. Application and background-check fees must be refunded if the unit goes to someone else and the landlord never ran the check. A tenant can sue over the rent-figure rules and recover costs and legal fees. The Nevada Assembly passed this earlier version 27-15. The Senate later let landlords bill some utilities as a separate monthly charge, and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1576883,
+   "measure_id": "AB 121",
+   "vote_date": "2025-05-23",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 121, which sets rules on how landlords charge rent and fees. A landlord must offer at least one way to pay rent that costs the tenant no fee. Rent has to be listed as one figure that already includes every required fee. The landlord may not charge more than that figure. If a landlord offers online payment, the fee passed to the tenant may not be more than the payment company charges the landlord. Application and background-check fees must be refunded if the unit goes to someone else and the landlord never ran the check. The version the Senate voted also lets a landlord bill electricity, gas and water for the tenant's own unit as a separate monthly charge at cost. That is allowed only where the utility cannot bill the tenant directly. The Nevada Senate passed it 16-5. and the bill was signed into law.",
+   "nay_description": "Voted against Assembly Bill 121, which sets rules on how landlords charge rent and fees. A landlord must offer at least one way to pay rent that costs the tenant no fee. Rent has to be listed as one figure that already includes every required fee. The landlord may not charge more than that figure. If a landlord offers online payment, the fee passed to the tenant may not be more than the payment company charges the landlord. Application and background-check fees must be refunded if the unit goes to someone else and the landlord never ran the check. The version the Senate voted also lets a landlord bill electricity, gas and water for the tenant's own unit as a separate monthly charge at cost. That is allowed only where the utility cannot bill the tenant directly. The Nevada Senate passed it 16-5. and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1581201,
+   "measure_id": "AB 123",
+   "vote_date": "2025-05-29",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 123, which makes threatening a candidate for public office a crime. The threat can be sent straight to the candidate or passed through someone else. It counts when the sender knows, or has reason to know, that it says they mean to hurt the candidate or a family member, or damage their property. It must also be made in a way that leaves the person receiving it in real fear it will happen. A first offense is a misdemeanor and a later one is a gross misdemeanor. A candidate may report a threat to the Secretary of State, who must look into it. The bill says it does not reach speech the Constitution protects, including political hyperbole. The Nevada Assembly passed it 27-15. and the bill was signed into law.",
+   "nay_description": "Voted against Assembly Bill 123, which makes threatening a candidate for public office a crime. The threat can be sent straight to the candidate or passed through someone else. It counts when the sender knows, or has reason to know, that it says they mean to hurt the candidate or a family member, or damage their property. It must also be made in a way that leaves the person receiving it in real fear it will happen. A first offense is a misdemeanor and a later one is a gross misdemeanor. A candidate may report a threat to the Secretary of State, who must look into it. The bill says it does not reach speech the Constitution protects, including political hyperbole. The Nevada Assembly passed it 27-15. and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1582877,
+   "measure_id": "AB 123",
+   "vote_date": "2025-05-31",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 123, which makes threatening a candidate for public office a crime. The threat can be sent straight to the candidate or passed through someone else. It counts when the sender knows, or has reason to know, that it says they mean to hurt the candidate or a family member, or damage their property. It must also be made in a way that leaves the person receiving it in real fear it will happen. A first offense is a misdemeanor and a later one is a gross misdemeanor. A candidate may report a threat to the Secretary of State, who must look into it. The bill says it does not reach speech the Constitution protects, including political hyperbole. The Nevada Senate passed it 14-7. and the bill was signed into law.",
+   "nay_description": "Voted against Assembly Bill 123, which makes threatening a candidate for public office a crime. The threat can be sent straight to the candidate or passed through someone else. It counts when the sender knows, or has reason to know, that it says they mean to hurt the candidate or a family member, or damage their property. It must also be made in a way that leaves the person receiving it in real fear it will happen. A first offense is a misdemeanor and a later one is a gross misdemeanor. A candidate may report a threat to the Secretary of State, who must look into it. The bill says it does not reach speech the Constitution protects, including political hyperbole. The Nevada Senate passed it 14-7. and the bill was signed into law.",
+   "acknowledge_later_rolls": [
+    1582878
+   ]
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1551264,
+   "measure_id": "AB 235",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 235, which lets more people hide their home address in public records. Judges, police officers and prosecutors could already ask a court to seal their personal details held by county recorders, assessors and election clerks. The bill adds health workers who practice reproductive health care, staff and volunteers at clinics that provide it, and providers of gender-affirming care. A spouse, domestic partner or minor child may ask too. Sealing still takes a sworn statement and a court order. The bill also lets these people show a different address on a driver's license, which needs only proof to the DMV and no court order. The Nevada Assembly passed it 33-9. and the bill was signed into law.",
+   "nay_description": "Voted against Assembly Bill 235, which lets more people hide their home address in public records. Judges, police officers and prosecutors could already ask a court to seal their personal details held by county recorders, assessors and election clerks. The bill adds health workers who practice reproductive health care, staff and volunteers at clinics that provide it, and providers of gender-affirming care. A spouse, domestic partner or minor child may ask too. Sealing still takes a sworn statement and a court order. The bill also lets these people show a different address on a driver's license, which needs only proof to the DMV and no court order. The Nevada Assembly passed it 33-9. and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1575676,
+   "measure_id": "AB 235",
+   "vote_date": "2025-05-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 235, which lets more people hide their home address in public records. Judges, police officers and prosecutors could already ask a court to seal their personal details held by county recorders, assessors and election clerks. The bill adds health workers who practice reproductive health care, staff and volunteers at clinics that provide it, and providers of gender-affirming care. A spouse, domestic partner or minor child may ask too. Sealing still takes a sworn statement and a court order. The bill also lets these people show a different address on a driver's license, which needs only proof to the DMV and no court order. The Nevada Senate passed it 14-7. and the bill was signed into law.",
+   "nay_description": "Voted against Assembly Bill 235, which lets more people hide their home address in public records. Judges, police officers and prosecutors could already ask a court to seal their personal details held by county recorders, assessors and election clerks. The bill adds health workers who practice reproductive health care, staff and volunteers at clinics that provide it, and providers of gender-affirming care. A spouse, domestic partner or minor child may ask too. Sealing still takes a sworn statement and a court order. The bill also lets these people show a different address on a driver's license, which needs only proof to the DMV and no court order. The Nevada Senate passed it 14-7. and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1554429,
+   "measure_id": "AB 343",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 343, which makes hospitals publish their prices. A hospital must post the standard charge for every item and service it offers. It must also post a list of at least 300 services people shop around for. Both go in a free file anyone can search. A hospital that breaks these rules may not send medical debt to collections, sue over it, or report it to a credit bureau. Hospitals must also file a yearly report on facility fees. The version the Assembly voted let patients sue a hospital directly. They could win damages, legal fees and up to $10,000 for each violation. The Nevada Assembly passed it 28-14. The Senate later replaced that lawsuit with a state complaint process, and the bill was signed into law.",
+   "nay_description": "Voted against Assembly Bill 343, which makes hospitals publish their prices. A hospital must post the standard charge for every item and service it offers. It must also post a list of at least 300 services people shop around for. Both go in a free file anyone can search. A hospital that breaks these rules may not send medical debt to collections, sue over it, or report it to a credit bureau. Hospitals must also file a yearly report on facility fees. The version the Assembly voted let patients sue a hospital directly. They could win damages, legal fees and up to $10,000 for each violation. The Nevada Assembly passed it 28-14. The Senate later replaced that lawsuit with a state complaint process, and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1576960,
+   "measure_id": "AB 343",
+   "vote_date": "2025-05-23",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 343, which makes hospitals publish their prices. A hospital must post the standard charge for every item and service it offers. It must also post a list of at least 300 services people shop around for. Both go in a free file anyone can search. A hospital can skip the second list if it runs a free price-estimate tool instead. A hospital that breaks these rules may not send medical debt to collections, sue over it, or report it to a credit bureau. A patient can complain to the state Bureau of Consumer Protection. The Bureau must investigate, and collection stops while it does. If it finds a violation the hospital must cancel the debt and refund anything paid. The Nevada Senate passed it 13-8. and the bill was signed into law.",
+   "nay_description": "Voted against Assembly Bill 343, which makes hospitals publish their prices. A hospital must post the standard charge for every item and service it offers. It must also post a list of at least 300 services people shop around for. Both go in a free file anyone can search. A hospital can skip the second list if it runs a free price-estimate tool instead. A hospital that breaks these rules may not send medical debt to collections, sue over it, or report it to a credit bureau. A patient can complain to the state Bureau of Consumer Protection. The Bureau must investigate, and collection stops while it does. If it finds a violation the hospital must cancel the debt and refund anything paid. The Nevada Senate passed it 13-8. and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1580715,
+   "measure_id": "AB 483",
+   "vote_date": "2025-05-28",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 483, which moves some health license applications to the front of the line. Boards that license health workers, ambulance attendants and emergency medical technicians must set up that process. It applies to a person seeking a first license who shows they will work mainly in a community that has long gone underserved. A letter from an employer in such a community, naming the job and its start date, counts as proof. The bill only reorders the queue. It sets no deadline, waives no qualification, cuts no fee, and does not require the person to stay. The Nevada Assembly passed it 29-13. and the bill was signed into law.",
+   "nay_description": "Voted against Assembly Bill 483, which moves some health license applications to the front of the line. Boards that license health workers, ambulance attendants and emergency medical technicians must set up that process. It applies to a person seeking a first license who shows they will work mainly in a community that has long gone underserved. A letter from an employer in such a community, naming the job and its start date, counts as proof. The bill only reorders the queue. It sets no deadline, waives no qualification, cuts no fee, and does not require the person to stay. The Nevada Assembly passed it 29-13. and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1583907,
+   "measure_id": "AB 483",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 483, which moves some health license applications to the front of the line. Boards that license health workers, ambulance attendants and emergency medical technicians must set up that process. It applies to a person seeking a first license who shows they will work mainly in a community that has long gone underserved. A letter from an employer in such a community, naming the job and its start date, counts as proof. The bill only reorders the queue. It sets no deadline, waives no qualification, cuts no fee, and does not require the person to stay. The Nevada Senate passed it 14-6. and the bill was signed into law.",
+   "nay_description": "Voted against Assembly Bill 483, which moves some health license applications to the front of the line. Boards that license health workers, ambulance attendants and emergency medical technicians must set up that process. It applies to a person seeking a first license who shows they will work mainly in a community that has long gone underserved. A letter from an employer in such a community, naming the job and its start date, counts as proof. The bill only reorders the queue. It sets no deadline, waives no qualification, cuts no fee, and does not require the person to stay. The Nevada Senate passed it 14-6. and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1550181,
+   "measure_id": "AB 90",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 90, which extends the rights of children held in state custody. Nevada's Juvenile Justice Bill of Rights already covered detention centers. The bill adds regional facilities that treat and rehabilitate children. Staff there must tell a child their rights, give the child and, where possible, a parent a copy, and post them where they can be seen. A juvenile court must also make two findings before sending a child to one of these facilities. It must find that no suitable community option exists or one was tried and failed, and that the child poses a public safety risk. The Nevada Assembly passed it 27-15. and the bill was signed into law.",
+   "nay_description": "Voted against Assembly Bill 90, which extends the rights of children held in state custody. Nevada's Juvenile Justice Bill of Rights already covered detention centers. The bill adds regional facilities that treat and rehabilitate children. Staff there must tell a child their rights, give the child and, where possible, a parent a copy, and post them where they can be seen. A juvenile court must also make two findings before sending a child to one of these facilities. It must find that no suitable community option exists or one was tried and failed, and that the child poses a public safety risk. The Nevada Assembly passed it 27-15. and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1573426,
+   "measure_id": "AB 90",
+   "vote_date": "2025-05-19",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 90, which extends the rights of children held in state custody. Nevada's Juvenile Justice Bill of Rights already covered detention centers. The bill adds regional facilities that treat and rehabilitate children. Staff there must tell a child their rights, give the child and, where possible, a parent a copy, and post them where they can be seen. A juvenile court must also make two findings before sending a child to one of these facilities. It must find that no suitable community option exists or one was tried and failed, and that the child poses a public safety risk. The Nevada Senate passed it 12-8. and the bill was signed into law.",
+   "nay_description": "Voted against Assembly Bill 90, which extends the rights of children held in state custody. Nevada's Juvenile Justice Bill of Rights already covered detention centers. The bill adds regional facilities that treat and rehabilitate children. Staff there must tell a child their rights, give the child and, where possible, a parent a copy, and post them where they can be seen. A juvenile court must also make two findings before sending a child to one of these facilities. It must find that no suitable community option exists or one was tried and failed, and that the child poses a public safety risk. The Nevada Senate passed it 12-8. and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1575985,
+   "measure_id": "SB 166",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 166, which limits how insurers treat dog breeds. Nevada already barred an insurer from refusing or repricing a policy when the dog's breed was the only reason. This bill drops the word only. Now the ban applies whenever the decision is based on breed. It also covers policies on multi-family buildings. An insurer may still act on a dog known to be dangerous or vicious. It may also act on sound underwriting principles. The bill also requires anyone who takes a state supportive-housing grant to let a tenant keep at least one pet. The Nevada Assembly passed it 30-12. and the bill was signed into law.",
+   "nay_description": "Voted against Senate Bill 166, which limits how insurers treat dog breeds. Nevada already barred an insurer from refusing or repricing a policy when the dog's breed was the only reason. This bill drops the word only. Now the ban applies whenever the decision is based on breed. It also covers policies on multi-family buildings. An insurer may still act on a dog known to be dangerous or vicious. It may also act on sound underwriting principles. The bill also requires anyone who takes a state supportive-housing grant to let a tenant keep at least one pet. The Nevada Assembly passed it 30-12. and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1553772,
+   "measure_id": "SB 166",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 166, which limits how insurers treat dog breeds. Nevada already barred an insurer from refusing or repricing a policy when the dog's breed was the only reason. This bill drops the word only. Now the ban applies whenever the decision is based on breed. It also covers policies on multi-family buildings. An insurer may still act on a dog known to be dangerous or vicious. It may also act on sound underwriting principles. The bill also requires anyone who takes a state supportive-housing grant to let a tenant keep at least one pet. The Nevada Senate passed it 14-7. and the bill was signed into law.",
+   "nay_description": "Voted against Senate Bill 166, which limits how insurers treat dog breeds. Nevada already barred an insurer from refusing or repricing a policy when the dog's breed was the only reason. This bill drops the word only. Now the ban applies whenever the decision is based on breed. It also covers policies on multi-family buildings. An insurer may still act on a dog known to be dangerous or vicious. It may also act on sound underwriting principles. The bill also requires anyone who takes a state supportive-housing grant to let a tenant keep at least one pet. The Nevada Senate passed it 14-7. and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1576114,
+   "measure_id": "SB 246",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 246, which lets a woman get gynecological and pregnancy care without going through a gatekeeper. Her health plan must cover that care with no referral and no prior approval. She may also name an obstetrician or gynecologist as her own primary care doctor. Outside Medicaid that doctor must be in the plan's network. The doctor must also meet the insurer's rules for primary care doctors and take the same terms as other primary care doctors. The rules reach almost every kind of plan sold in Nevada, plus Medicaid and the state employee plan. They start with plans issued or renewed on or after January 1, 2026. The Nevada Assembly passed it 27-15. and the bill was signed into law.",
+   "nay_description": "Voted against Senate Bill 246, which lets a woman get gynecological and pregnancy care without going through a gatekeeper. Her health plan must cover that care with no referral and no prior approval. She may also name an obstetrician or gynecologist as her own primary care doctor. Outside Medicaid that doctor must be in the plan's network. The doctor must also meet the insurer's rules for primary care doctors and take the same terms as other primary care doctors. The rules reach almost every kind of plan sold in Nevada, plus Medicaid and the state employee plan. They start with plans issued or renewed on or after January 1, 2026. The Nevada Assembly passed it 27-15. and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1584185,
+   "measure_id": "SB 260",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 260, which starts state rules on wildfire smoke at work. It orders the head of the Division of Industrial Relations to write those rules. They must say what employers do to check air quality and cut workers' exposure when the air quality index reaches 150, and again at 200. The regulator, not the bill, picks the level at which outdoor work must stop. From January 2026 a covered employer must run a system that warns workers when the index reaches 150 and tells them what protection is available. Workers must be able to report symptoms such as trouble breathing or chest pain. Mines, trucking employers, emergency services and employers with ten or fewer workers are left out. The Nevada Assembly passed it 32-10. and the bill was signed into law.",
+   "nay_description": "Voted against Senate Bill 260, which starts state rules on wildfire smoke at work. It orders the head of the Division of Industrial Relations to write those rules. They must say what employers do to check air quality and cut workers' exposure when the air quality index reaches 150, and again at 200. The regulator, not the bill, picks the level at which outdoor work must stop. From January 2026 a covered employer must run a system that warns workers when the index reaches 150 and tells them what protection is available. Workers must be able to report symptoms such as trouble breathing or chest pain. Mines, trucking employers, emergency services and employers with ten or fewer workers are left out. The Nevada Assembly passed it 32-10. and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1582302,
+   "measure_id": "SB 260",
+   "vote_date": "2025-05-30",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 260, which starts state rules on wildfire smoke at work. It orders the head of the Division of Industrial Relations to write those rules. They must say what employers do to check air quality and cut workers' exposure when the air quality index reaches 150, and again at 200. The regulator, not the bill, picks the level at which outdoor work must stop. From January 2026 a covered employer must run a system that warns workers when the index reaches 150 and tells them what protection is available. Workers must be able to report symptoms such as trouble breathing or chest pain. Mines, trucking employers, emergency services and employers with ten or fewer workers are left out. The Nevada Senate passed it 15-6. and the bill was signed into law.",
+   "nay_description": "Voted against Senate Bill 260, which starts state rules on wildfire smoke at work. It orders the head of the Division of Industrial Relations to write those rules. They must say what employers do to check air quality and cut workers' exposure when the air quality index reaches 150, and again at 200. The regulator, not the bill, picks the level at which outdoor work must stop. From January 2026 a covered employer must run a system that warns workers when the index reaches 150 and tells them what protection is available. Workers must be able to report symptoms such as trouble breathing or chest pain. Mines, trucking employers, emergency services and employers with ten or fewer workers are left out. The Nevada Senate passed it 15-6. and the bill was signed into law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1575998,
+   "measure_id": "SB 347",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 347, which sets rules for guns when someone is placed on a mental health crisis hold. An officer who can make arrests may take a firearm found on the person or right beside them. Taking the gun is the officer's choice. What follows is not. The officer must hand over a receipt describing the firearm and a written notice saying how to get it back. When the person is released the agency must make the gun available for return. It may keep the gun only if an officer has applied for a high-risk protection order, or the person is already barred from owning one. Before this bill Nevada's crisis-hold law had no rule for taking guns or giving them back. The Nevada Assembly passed it 27-15. and the bill was signed into law.",
+   "nay_description": "Voted against Senate Bill 347, which sets rules for guns when someone is placed on a mental health crisis hold. An officer who can make arrests may take a firearm found on the person or right beside them. Taking the gun is the officer's choice. What follows is not. The officer must hand over a receipt describing the firearm and a written notice saying how to get it back. When the person is released the agency must make the gun available for return. It may keep the gun only if an officer has applied for a high-risk protection order, or the person is already barred from owning one. Before this bill Nevada's crisis-hold law had no rule for taking guns or giving them back. The Nevada Assembly passed it 27-15. and the bill was signed into law."
+  }
+ ]
+}
