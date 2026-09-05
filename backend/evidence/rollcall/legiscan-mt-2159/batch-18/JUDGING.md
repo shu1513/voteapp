@@ -75,20 +75,30 @@ the four tax-break measures in batches 10 and 15.
 
 ## SB 113 — towed vehicles
 
-Chapter 178. The act's preamble says it clarifies. It narrows, three ways, and
-the record says all three. A gate is inserted so the protected list applies only
-to vehicles of "an uninsured or underinsured person, or for which an insurance
-claim was not filed or insurance coverage for towing and storage cannot be
-verified". Each protected item shrinks, so only **original** licences, identity
-papers and records are covered. And containers lose protection: "wallets, or
-purses, bags, or other containers that contain the items listed" becomes "wallet
-or purse". Direction **against** `corporate_accountability`.
+Chapter 178. The act's preamble says it clarifies. It does two opposite things,
+and the record says both. Before the act the towing lien reached everything in
+any towed vehicle except a protected list. A new condition is inserted into
+71-3-1201(2)(b): the lien now reaches belongings only in a vehicle "belonging to
+an uninsured or underinsured person, or for which an insurance claim was not
+filed or insurance coverage for towing and storage cannot be verified". An
+insured owner with a filed, verifiable claim gets everything back and the
+protected list no longer matters to them. For everyone still under the lien the
+list shrinks three ways: food and perishables are protected only as consumer
+products "not for resale or purchase"; only **original** licences, identity
+papers and records are covered; and "wallets, or purses, bags, or other
+containers that contain the items listed" becomes "wallets or purses". Direction
+**against** `corporate_accountability`, on the act's own stated purpose (the
+preamble narrows the exemptions so that "tow truck operators [can] effectively
+conduct business") and because the people who still face the hold are those
+with no insurer to fall back on. The insurance carve-out is the counterweight
+and is stated in the record so the direction is not read as the whole act.
 
 ## SB 143 — deadlines to sue
 
 Chapter 174. Written contract claims fall from 8 years to 6. Construction and
-land surveying claims fall from 10 years to 6. The late-injury window that ran
-into the tenth year now runs into the sixth. Direction **against**
+land surveying claims fall from 10 years to 6. The late-injury rule, one year to
+sue from an injury in the last year of the period, now attaches to the sixth
+year rather than the tenth. Direction **against**
 `corporate_accountability`.
 
 ## SB 149 — emotional support animals
