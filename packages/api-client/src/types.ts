@@ -114,6 +114,7 @@ export type HistoricalCompetitiveness = {
   source_url: string | null;
   election_year: number;
   margin_percent: number;
+  competitiveness_label: string;
   stale_after_redistricting: boolean;
 };
 

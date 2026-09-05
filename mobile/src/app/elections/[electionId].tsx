@@ -4,6 +4,7 @@ import {
   aggregateRecordAreaStances,
   ApiError,
   apiRequest,
+  competitivenessChip,
   deriveCandidateResultBadges,
   formatDistrictName,
   formatDistrictType,
@@ -148,6 +149,7 @@ export default function ElectionScreen() {
   }
 
   const data = election.data;
+  const competitiveness = competitivenessChip(data);
   const measure = data.ballot_measure;
   // Election-level sources the measure section did not already show (its
   // source_urls plus the official-measure link), mirroring the web page.
@@ -256,25 +258,16 @@ export default function ElectionScreen() {
             My vote power: {formatVotePowerLabel(data.vote_power.label)}
           </Text>
         ) : null}
-        {/* Current-cycle rating replaces the historic chip when present —
-            the backend only sends it when the rating drove the grade, and
-            showing both would contradict on races that flipped. */}
-        {data.current_competitiveness ? (
-          <Text className="rounded bg-surface px-2 py-0.5 text-xs text-ink-soft">
-            {data.current_competitiveness.display_label}
-          </Text>
-        ) : data.historical_competitiveness ? (
-          <Text className="rounded bg-surface px-2 py-0.5 text-xs text-ink-soft">
-            {data.historical_competitiveness.display_label}
-          </Text>
+        {competitiveness ? (
+          <Text className="rounded bg-surface px-2 py-0.5 text-xs text-ink-soft">{competitiveness.label}</Text>
         ) : null}
       </View>
       {/* Mobile has no vote-power explanation panel, so without this line the
           rating chip would be an unsourced claim — name the analyst outlet
           and the as-of date (web carries the same attribution in its
           explanation panel). */}
-      {data.current_competitiveness ? (
-        <Text className="mt-1 text-xs text-ink-soft">{data.current_competitiveness.display_description}</Text>
+      {competitiveness && data.current_competitiveness ? (
+        <Text className="mt-1 text-xs text-ink-soft">{competitiveness.description}</Text>
       ) : null}
 
       {measure ? (

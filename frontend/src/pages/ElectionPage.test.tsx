@@ -60,12 +60,13 @@ describe("ElectionPage", () => {
     renderElection(() =>
       electionDetail({
         historical_competitiveness: {
-          display_label: "Historically not competitive",
+          display_label: "Historically competitive",
           display_description: "Based on the 2024 Governor result.",
           source: "MIT_2024",
           source_url: null,
           election_year: 2024,
-          margin_percent: 22.4,
+          margin_percent: 8.4,
+          competitiveness_label: "competitive",
           stale_after_redistricting: false,
         },
         current_competitiveness: {
@@ -81,6 +82,26 @@ describe("ElectionPage", () => {
 
     // Both chips at once would contradict on a race that flipped.
     expect(await screen.findByText("Currently a toss-up")).toBeInTheDocument();
+    expect(screen.queryByText("Historically competitive")).not.toBeInTheDocument();
+  });
+
+  it("shows no competitiveness chip for the safe tier", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        historical_competitiveness: {
+          display_label: "Historically not competitive",
+          display_description: "Based on the 2024 Governor result.",
+          source: "MIT_2024",
+          source_url: null,
+          election_year: 2024,
+          margin_percent: 22.4,
+          competitiveness_label: "safe",
+          stale_after_redistricting: false,
+        },
+      })
+    );
+    expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
     expect(screen.queryByText("Historically not competitive")).not.toBeInTheDocument();
   });
 
