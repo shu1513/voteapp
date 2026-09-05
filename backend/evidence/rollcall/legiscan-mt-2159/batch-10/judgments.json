@@ -1,0 +1,238 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1524072,
+   "measure_id": "HB 15",
+   "vote_date": "2025-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 15, which raises the set dollar figures in Montana's school funding formula. The state uses these per-school and per-student figures to work out what each district is owed. The act lifts 21 of them. They cover the basic entitlement, the per-student payment, the quality educator payment, and the special education share, among others. Each rises about 3 percent for the 2026 school year and about 3 percent more for 2027. The 2027 figures then stay in place until lawmakers change them. The act sets aside no money of its own. The Montana Senate passed it 33-17, and it became law.",
+   "nay_description": "Voted against House Bill 15, which raises the set dollar figures in Montana's school funding formula. The state uses these per-school and per-student figures to work out what each district is owed. The act lifts 21 of them. They cover the basic entitlement, the per-student payment, the quality educator payment, and the special education share, among others. Each rises about 3 percent for the 2026 school year and about 3 percent more for 2027. The 2027 figures then stay in place until lawmakers change them. The act sets aside no money of its own. The Montana Senate passed it 33-17, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1558131,
+   "measure_id": "HB 59",
+   "vote_date": "2025-04-25",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 59, which tightens the rules for licensed water well contractors. The bond a contractor must post rises from $4,000 to $25,000, and the blanket bond for a firm rises from $10,000 to $25,000. A bond is money set aside to pay a customer if the work goes wrong. Abandoning or decommissioning a well now needs a license too. The act also drops the rule that let a contractor answer a complaint and fix the problem before the board could start discipline. The board may now begin discipline once the contractor has answered. The Montana House passed it 57-43, and it became law.",
+   "nay_description": "Voted against House Bill 59, which tightens the rules for licensed water well contractors. The bond a contractor must post rises from $4,000 to $25,000, and the blanket bond for a firm rises from $10,000 to $25,000. A bond is money set aside to pay a customer if the work goes wrong. Abandoning or decommissioning a well now needs a license too. The act also drops the rule that let a contractor answer a complaint and fix the problem before the board could start discipline. The board may now begin discipline once the contractor has answered. The Montana House passed it 57-43, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1558132,
+   "measure_id": "HB 59",
+   "vote_date": "2025-04-25",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 59, which tightens the rules for licensed water well contractors. The bond a contractor must post rises from $4,000 to $25,000, and the blanket bond for a firm rises from $10,000 to $25,000. A bond is money set aside to pay a customer if the work goes wrong. Abandoning or decommissioning a well now needs a license too. The act also drops the rule that let a contractor answer a complaint and fix the problem before the board could start discipline. The board may now begin discipline once the contractor has answered. The Montana Senate passed it 35-14, and it became law.",
+   "nay_description": "Voted against House Bill 59, which tightens the rules for licensed water well contractors. The bond a contractor must post rises from $4,000 to $25,000, and the blanket bond for a firm rises from $10,000 to $25,000. A bond is money set aside to pay a customer if the work goes wrong. Abandoning or decommissioning a well now needs a license too. The act also drops the rule that let a contractor answer a complaint and fix the problem before the board could start discipline. The board may now begin discipline once the contractor has answered. The Montana Senate passed it 35-14, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1549032,
+   "measure_id": "HB 311",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 311, which makes a property manager give back a rental application fee. It covers managers of four or more units. The fee must be refunded within a reasonable time if the applicant does not end up with a rental agreement. The manager may keep only real out-of-pocket costs, such as a credit check, and only if the applicant got written notice of each cost when the fee was paid. The manager may not keep money for a service it never carried out, and may not charge for its own time. An applicant who is not paid back may sue for the amount held. The Montana House passed it 68-29, and it became law.",
+   "nay_description": "Voted against House Bill 311, which makes a property manager give back a rental application fee. It covers managers of four or more units. The fee must be refunded within a reasonable time if the applicant does not end up with a rental agreement. The manager may keep only real out-of-pocket costs, such as a credit check, and only if the applicant got written notice of each cost when the fee was paid. The manager may not keep money for a service it never carried out, and may not charge for its own time. An applicant who is not paid back may sue for the amount held. The Montana House passed it 68-29, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1540633,
+   "measure_id": "HB 311",
+   "vote_date": "2025-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 311, which makes a property manager give back a rental application fee. It covers managers of four or more units. The fee must be refunded within a reasonable time if the applicant does not end up with a rental agreement. The manager may keep only real out-of-pocket costs, such as a credit check, and only if the applicant got written notice of each cost when the fee was paid. The manager may not keep money for a service it never carried out, and may not charge for its own time. An applicant who is not paid back may sue for the amount held. The Montana Senate passed it 34-14, and it became law.",
+   "nay_description": "Voted against House Bill 311, which makes a property manager give back a rental application fee. It covers managers of four or more units. The fee must be refunded within a reasonable time if the applicant does not end up with a rental agreement. The manager may keep only real out-of-pocket costs, such as a credit check, and only if the applicant got written notice of each cost when the fee was paid. The manager may not keep money for a service it never carried out, and may not charge for its own time. An applicant who is not paid back may sue for the amount held. The Montana Senate passed it 34-14, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546110,
+   "measure_id": "HB 338",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 338, which widens Montana's early help for young children from reading alone to reading and math. The state may now approve more than one screening tool instead of a single one. Schools may give the check at any time of year, where before it had to be April, May or June. A child found eligible is no longer limited to help in the next school year alone. The home-based option keeps its cap of $1,000 a year for each child. The Montana Senate passed it 32-16, and it became law.",
+   "nay_description": "Voted against House Bill 338, which widens Montana's early help for young children from reading alone to reading and math. The state may now approve more than one screening tool instead of a single one. Schools may give the check at any time of year, where before it had to be April, May or June. A child found eligible is no longer limited to help in the next school year alone. The home-based option keeps its cap of $1,000 a year for each child. The Montana Senate passed it 32-16, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1550413,
+   "measure_id": "HB 427",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 427, which makes a building department explain itself in writing. The rule applies when the state labour department or a local building department holds up a permit past the normal review time. It also applies when one of them stops work for breaking the building code. The applicant or builder may then ask in writing for the code sections being relied on. The department must give the text or the citation within 7 working days. If it misses that, it owes the person $50 for every day it is late. The person may also sue in district court, and the winning side may be paid its legal costs. The Montana House passed it 61-37, and it became law.",
+   "nay_description": "Voted against House Bill 427, which makes a building department explain itself in writing. The rule applies when the state labour department or a local building department holds up a permit past the normal review time. It also applies when one of them stops work for breaking the building code. The applicant or builder may then ask in writing for the code sections being relied on. The department must give the text or the citation within 7 working days. If it misses that, it owes the person $50 for every day it is late. The person may also sue in district court, and the winning side may be paid its legal costs. The Montana House passed it 61-37, and it became law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1538689,
+   "measure_id": "HB 427",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 427, which makes a building department explain itself in writing. The rule applies when the state labour department or a local building department holds up a permit past the normal review time. It also applies when one of them stops work for breaking the building code. The applicant or builder may then ask in writing for the code sections being relied on. The department must give the text or the citation within 7 working days. If it misses that, it owes the person $50 for every day it is late. The person may also sue in district court, and the winning side may be paid its legal costs. The Montana Senate passed it 39-10, and it became law.",
+   "nay_description": "Voted against House Bill 427, which makes a building department explain itself in writing. The rule applies when the state labour department or a local building department holds up a permit past the normal review time. It also applies when one of them stops work for breaking the building code. The applicant or builder may then ask in writing for the code sections being relied on. The department must give the text or the citation within 7 working days. If it misses that, it owes the person $50 for every day it is late. The person may also sue in district court, and the winning side may be paid its legal costs. The Montana Senate passed it 39-10, and it became law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1557972,
+   "measure_id": "HB 515",
+   "vote_date": "2025-04-25",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 515, which puts more state money into school buildings and technology. The multiplier in the school major maintenance aid formula rises from 187 percent to 355 percent. The set amount for a district rises from $15,000 to $40,000, plus $115 for each student instead of $110. Two state accounts for school buildings and school technology are merged into one. The order of spending is set: technology first, then major upkeep, then help with school debt. The act also sets aside $1 million a year for school technology grants. It moves general fund money to bring the school buildings fund to $275 million. The Montana House passed it 80-20, and it became law.",
+   "nay_description": "Voted against House Bill 515, which puts more state money into school buildings and technology. The multiplier in the school major maintenance aid formula rises from 187 percent to 355 percent. The set amount for a district rises from $15,000 to $40,000, plus $115 for each student instead of $110. Two state accounts for school buildings and school technology are merged into one. The order of spending is set: technology first, then major upkeep, then help with school debt. The act also sets aside $1 million a year for school technology grants. It moves general fund money to bring the school buildings fund to $275 million. The Montana House passed it 80-20, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1553789,
+   "measure_id": "HB 515",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 515, which puts more state money into school buildings and technology. The multiplier in the school major maintenance aid formula rises from 187 percent to 355 percent. The set amount for a district rises from $15,000 to $40,000, plus $115 for each student instead of $110. Two state accounts for school buildings and school technology are merged into one. The order of spending is set: technology first, then major upkeep, then help with school debt. The act also sets aside $1 million a year for school technology grants. It moves general fund money to bring the school buildings fund to $275 million. The Montana Senate passed it 29-21, and it became law.",
+   "nay_description": "Voted against House Bill 515, which puts more state money into school buildings and technology. The multiplier in the school major maintenance aid formula rises from 187 percent to 355 percent. The set amount for a district rises from $15,000 to $40,000, plus $115 for each student instead of $110. Two state accounts for school buildings and school technology are merged into one. The order of spending is set: technology first, then major upkeep, then help with school debt. The act also sets aside $1 million a year for school technology grants. It moves general fund money to bring the school buildings fund to $275 million. The Montana Senate passed it 29-21, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1508673,
+   "measure_id": "HB 599",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 599, which changes who decides about school data on a child. A school may still collect information that does not name the child unless a parent opts out. But any collection that does name the child now needs the parent to say yes first. A child's own education record and a demographic survey used to check a college admission test are outside the rule. Schools must also tell parents they may opt out of physical and mental health checks and surveys, and must tell them about any concern such a check turns up. The Montana House passed it 74-25, and it became law.",
+   "nay_description": "Voted against House Bill 599, which changes who decides about school data on a child. A school may still collect information that does not name the child unless a parent opts out. But any collection that does name the child now needs the parent to say yes first. A child's own education record and a demographic survey used to check a college admission test are outside the rule. Schools must also tell parents they may opt out of physical and mental health checks and surveys, and must tell them about any concern such a check turns up. The Montana House passed it 74-25, and it became law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1553709,
+   "measure_id": "HB 599",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 599, which changes who decides about school data on a child. A school may still collect information that does not name the child unless a parent opts out. But any collection that does name the child now needs the parent to say yes first. A child's own education record and a demographic survey used to check a college admission test are outside the rule. Schools must also tell parents they may opt out of physical and mental health checks and surveys, and must tell them about any concern such a check turns up. The Montana Senate passed it 29-21, and it became law.",
+   "nay_description": "Voted against House Bill 599, which changes who decides about school data on a child. A school may still collect information that does not name the child unless a parent opts out. But any collection that does name the child now needs the parent to say yes first. A child's own education record and a demographic survey used to check a college admission test are outside the rule. Schools must also tell parents they may opt out of physical and mental health checks and surveys, and must tell them about any concern such a check turns up. The Montana Senate passed it 29-21, and it became law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1553664,
+   "measure_id": "HB 908",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 908, which widens a state tax credit for employers and makes it permanent. The job growth credit pays an employer half of what it owes in federal payroll taxes on the wages of a new worker. A registered apprentice in the building trades now counts as such a worker. That apprentice need not meet the $50,000 wage floor, the 6-month test, or the rule about growing staff numbers. An employer may now claim this credit and the apprentice credit in the same year, which was barred before. The act also deletes the December 2028 end date, so the credit no longer expires. The Montana Senate passed it 30-20, and it became law.",
+   "nay_description": "Voted against House Bill 908, which widens a state tax credit for employers and makes it permanent. The job growth credit pays an employer half of what it owes in federal payroll taxes on the wages of a new worker. A registered apprentice in the building trades now counts as such a worker. That apprentice need not meet the $50,000 wage floor, the 6-month test, or the rule about growing staff numbers. An employer may now claim this credit and the apprentice credit in the same year, which was barred before. The act also deletes the December 2028 end date, so the credit no longer expires. The Montana Senate passed it 30-20, and it became law.",
+   "labels": [
+    {
+     "slug": "government_spending_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
