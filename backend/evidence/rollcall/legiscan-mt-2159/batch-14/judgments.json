@@ -1,0 +1,184 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1500714,
+   "measure_id": "HB 416",
+   "vote_date": "2025-02-26",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 416, which limits when a homeowners' association may walk onto a member's land. An association must now get the owner's permission before one of its agents enters. When asking, it must try to agree a date and time that suits the owner, and must say which part of the land it wants to reach. The owner may insist on being there, or on sending someone in their place. The act does not change the ordinary right any member of the public has to use a sidewalk, front path or front door. It also does not apply to condominiums whose shared areas can only be reached through a unit and whose rules already cover that access, or to recorded easements that benefit the association. The Montana House passed it 56-44, and it became law.",
+   "nay_description": "Voted against House Bill 416, which limits when a homeowners' association may walk onto a member's land. An association must now get the owner's permission before one of its agents enters. When asking, it must try to agree a date and time that suits the owner, and must say which part of the land it wants to reach. The owner may insist on being there, or on sending someone in their place. The act does not change the ordinary right any member of the public has to use a sidewalk, front path or front door. It also does not apply to condominiums whose shared areas can only be reached through a unit and whose rules already cover that access, or to recorded easements that benefit the association. The Montana House passed it 56-44, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546389,
+   "measure_id": "SB 133",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 133, which limits the impact fees a local government may charge on new building. An impact fee is a one-off charge meant to cover the cost of new roads, water lines or similar services. The act removes the extra charge of up to 5 percent that a local government could add to cover the cost of running the fee scheme. It also caps how fast an impact fee may rise, tying any increase to the producer price index for all commodities. Fees for plan review and inspection are unaffected. The Montana House passed it 54-45, and it became law.",
+   "nay_description": "Voted against Senate Bill 133, which limits the impact fees a local government may charge on new building. An impact fee is a one-off charge meant to cover the cost of new roads, water lines or similar services. The act removes the extra charge of up to 5 percent that a local government could add to cover the cost of running the fee scheme. It also caps how fast an impact fee may rise, tying any increase to the producer price index for all commodities. Fees for plan review and inspection are unaffected. The Montana House passed it 54-45, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1548486,
+   "measure_id": "SB 133",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 133, which limits the impact fees a local government may charge on new building. An impact fee is a one-off charge meant to cover the cost of new roads, water lines or similar services. The act removes the extra charge of up to 5 percent that a local government could add to cover the cost of running the fee scheme. It also caps how fast an impact fee may rise, tying any increase to the producer price index for all commodities. Fees for plan review and inspection are unaffected. The Montana Senate passed it 32-18, and it became law.",
+   "nay_description": "Voted against Senate Bill 133, which limits the impact fees a local government may charge on new building. An impact fee is a one-off charge meant to cover the cost of new roads, water lines or similar services. The act removes the extra charge of up to 5 percent that a local government could add to cover the cost of running the fee scheme. It also caps how fast an impact fee may rise, tying any increase to the producer price index for all commodities. Fees for plan review and inspection are unaffected. The Montana Senate passed it 32-18, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546377,
+   "measure_id": "SB 213",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 213, which lets some apartment buildings be built with only one staircase. The state building code must now allow a single stairway to serve as the exit for every flat in a building, but only where four conditions are met. The building may be no more than six storeys above ground. There may be no more than four flats on any floor. The building must have an automatic sprinkler system. And every flat must have a window or another way out in an emergency. Building with one staircase instead of two costs less. The Montana House passed it 67-32, and it became law.",
+   "nay_description": "Voted against Senate Bill 213, which lets some apartment buildings be built with only one staircase. The state building code must now allow a single stairway to serve as the exit for every flat in a building, but only where four conditions are met. The building may be no more than six storeys above ground. There may be no more than four flats on any floor. The building must have an automatic sprinkler system. And every flat must have a window or another way out in an emergency. Building with one staircase instead of two costs less. The Montana House passed it 67-32, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546212,
+   "measure_id": "SB 214",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 214, which tips close zoning arguments toward the landowner. Some land is used in a way that was legal when it started but no longer fits the zoning rules. Where the rules are unclear about whether that use is allowed, the act says the doubt must be read in favour of the use. The same applies to whether it was allowed when it began. The act also takes away the power of historic preservation boards to review requests for zoning permits and for exceptions to the rules. The Montana House passed it 50-48, and it became law.",
+   "nay_description": "Voted against Senate Bill 214, which tips close zoning arguments toward the landowner. Some land is used in a way that was legal when it started but no longer fits the zoning rules. Where the rules are unclear about whether that use is allowed, the act says the doubt must be read in favour of the use. The same applies to whether it was allowed when it began. The act also takes away the power of historic preservation boards to review requests for zoning permits and for exceptions to the rules. The Montana House passed it 50-48, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1501786,
+   "measure_id": "SB 214",
+   "vote_date": "2025-02-27",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 214, which tips close zoning arguments toward the landowner. Some land is used in a way that was legal when it started but no longer fits the zoning rules. Where the rules are unclear about whether that use is allowed, the act says the doubt must be read in favour of the use. The same applies to whether it was allowed when it began. The act also takes away the power of historic preservation boards to review requests for zoning permits and for exceptions to the rules. The Montana Senate passed it 34-16, and it became law.",
+   "nay_description": "Voted against Senate Bill 214, which tips close zoning arguments toward the landowner. Some land is used in a way that was legal when it started but no longer fits the zoning rules. Where the rules are unclear about whether that use is allowed, the act says the doubt must be read in favour of the use. The same applies to whether it was allowed when it began. The act also takes away the power of historic preservation boards to review requests for zoning permits and for exceptions to the rules. The Montana Senate passed it 34-16, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1492352,
+   "measure_id": "SB 275",
+   "vote_date": "2025-02-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 275, which makes it easier to build on farmland taken into a town. Land split off under a farming exemption carries a promise, recorded on the title, that it will stay in farm use. Changing that use normally forces the split through full subdivision review. The act adds a third way for a local council to lift that promise and let the split go ahead without review. It applies where the land has been taken into a town. Health and sanitation rules still apply. The Montana Senate passed it 34-16, and it became law.",
+   "nay_description": "Voted against Senate Bill 275, which makes it easier to build on farmland taken into a town. Land split off under a farming exemption carries a promise, recorded on the title, that it will stay in farm use. Changing that use normally forces the split through full subdivision review. The act adds a third way for a local council to lift that promise and let the split go ahead without review. It applies where the land has been taken into a town. Health and sanitation rules still apply. The Montana Senate passed it 34-16, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1557751,
+   "measure_id": "SB 337",
+   "vote_date": "2025-04-24",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 337, which lets a builder pause property tax while building a new subdivision. The builder applies to the revenue department. It must pay up front five times the property tax and charges owed for the most recent year, plus a 5% fee. The county treasurer shares that money out to the same funds as normal property tax. Once approved, the land pays no property tax from the start of the next tax year, for up to five years. The break ends sooner on any lot once a home is built on it, and for the whole subdivision once 95% of the lots have homes. The Montana House passed it 60-40, and it became law.",
+   "nay_description": "Voted against Senate Bill 337, which lets a builder pause property tax while building a new subdivision. The builder applies to the revenue department. It must pay up front five times the property tax and charges owed for the most recent year, plus a 5% fee. The county treasurer shares that money out to the same funds as normal property tax. Once approved, the land pays no property tax from the start of the next tax year, for up to five years. The break ends sooner on any lot once a home is built on it, and for the whole subdivision once 95% of the lots have homes. The Montana House passed it 60-40, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1529146,
+   "measure_id": "SB 337",
+   "vote_date": "2025-03-27",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 337, which lets a builder pause property tax while building a new subdivision. The builder applies to the revenue department. It must pay up front five times the property tax and charges owed for the most recent year, plus a 5% fee. The county treasurer shares that money out to the same funds as normal property tax. Once approved, the land pays no property tax from the start of the next tax year, for up to five years. The break ends sooner on any lot once a home is built on it, and for the whole subdivision once 95% of the lots have homes. The Montana Senate passed it 34-16, and it became law.",
+   "nay_description": "Voted against Senate Bill 337, which lets a builder pause property tax while building a new subdivision. The builder applies to the revenue department. It must pay up front five times the property tax and charges owed for the most recent year, plus a 5% fee. The county treasurer shares that money out to the same funds as normal property tax. Once approved, the land pays no property tax from the start of the next tax year, for up to five years. The break ends sooner on any lot once a home is built on it, and for the whole subdivision once 95% of the lots have homes. The Montana Senate passed it 34-16, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1556216,
+   "measure_id": "SB 532",
+   "vote_date": "2025-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 532, which requires Montana counties with zoning to allow small second homes on house plots. These are called accessory dwelling units, and at least one must be allowed as of right on a plot that already holds a single-family house. It may be attached, detached, or built inside the house. A county may not require it to match the main house's look, roof pitch or materials. It may not require an owner to live in either home, or require the occupants to be related. It may not charge impact fees on one, and it may not demand street improvements except to repair damage from the building work. The Montana House passed it 75-24, and it became law.",
+   "nay_description": "Voted against Senate Bill 532, which requires Montana counties with zoning to allow small second homes on house plots. These are called accessory dwelling units, and at least one must be allowed as of right on a plot that already holds a single-family house. It may be attached, detached, or built inside the house. A county may not require it to match the main house's look, roof pitch or materials. It may not require an owner to live in either home, or require the occupants to be related. It may not charge impact fees on one, and it may not demand street improvements except to repair damage from the building work. The Montana House passed it 75-24, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

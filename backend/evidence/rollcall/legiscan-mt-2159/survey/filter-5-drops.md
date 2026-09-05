@@ -413,3 +413,228 @@ highways, water resources, hunting licences and economic development. Less
 paperwork and less public reporting are the same act. There is no single subject
 a reader could hold a position on, which is the plainest form of a filter 5
 failure.
+
+## Batch 13
+
+### The 58 joint-resolution rolls, disposed under filter 2
+
+These were left as `unbatched` from the start of the campaign, and they should
+not have been. **A Montana joint resolution does not become law.** Its whole
+action trail ends at "Filed with Secretary of State": no governor's signature, no
+session law chapter number, no statute amended. That is filter 2, not filter 5.
+
+All 58 rolls across 38 resolutions are now marked
+`dropped:filter-2-not-law`. They are study resolutions (interim studies of youth
+court law, guardianships, wildfire safety, the primary election date), position
+resolutions (urging changes to federal wildfire policy, supporting the federal
+SAFER banking act), and honorary resolutions. A candidate record saying someone
+"voted for" a study of farmers' markets would tell a reader nothing about the
+law, because nothing changed.
+
+### One measure dropped after a full read
+
+**SB 498** removes the rule that election judges separate each party's primary
+ballots and count them separately, keeping it only in counties that count solely
+by hand. Everything else in 13-10-311 survives, including reconciling the totals
+against the number of electors and bundling each party's ballots separately for
+return. It changes the order of work at the count table and nothing a voter
+experiences.
+
+### One measure deferred, not dropped
+
+**SB 147** is left `unbatched` on purpose. Its only operative content is
+"Section 55, Chapter 716, Laws of 2023, is repealed", and the enrolled text does
+not say what that section did. The bill's title is "revising the Montana Indian
+Child Welfare Act", which strongly suggests a repealed sunset, but Montana's
+archive would not serve the 2023 chapter text, so it is unconfirmed. A record
+that says "repealed section 55" tells a reader nothing, and a record that guesses
+at a sunset could be wrong. It waits for the 2023 chapter text.
+
+## Batch 14
+
+**SB 101** creates the offences of unlawful squatting and fraudulent sale or
+lease of property, provides a process for removing the person, and indemnifies
+law enforcement acting in good faith. It fails filter 5 under the rule set in
+batch 11: `public_safety_and_crime_control` is not an axis where a new offence
+has an automatic direction. The act strengthens a property owner's position and
+narrows an occupant's process in the same breath, and neither reading is more
+defensible than the other.
+
+**HB 233** provides for transferring title to open space shown on a recorded
+final plat to a homeowners' association, requires a public hearing, and applies
+retroactively. It is title mechanics between a developer, a local government and
+an association. No research area carries a position on who holds the deed to a
+subdivision's open space.
+
+## Batch 15
+
+**SB 246** allows a governmental body to buy Montana-produced food by direct
+purchase instead of standard procurement, where the quality is substantially
+equivalent, a vendor can supply enough, and the bid does not unreasonably exceed
+the lowest outside bid. Preferring local producers and stepping around
+competitive bidding are the same provision. Neither `government_efficiency` nor
+any economic area can say which way a yes vote cuts.
+
+**SB 247** classifies shooting ranges as class four property and revises the tax
+rate that applies to them. One facility type's tax classification.
+
+**SB 265** creates the Financial Freedom and Innovation Act. It prohibits
+governing authorities from using central bank digital currency, permits the use
+of digital assets and blockchain protocols, and requires issuers of network
+tokens to be certified. The certification duty would read "for"
+`corporate_accountability`; the central bank digital currency prohibition is a
+position on federal monetary policy that no research area covers. One act, two
+subjects, no single direction.
+
+## Batch 16
+
+**HB 352** establishes a guidelines review committee for the Montana child
+support guidelines, with associated duties and reporting. The guidelines
+themselves are unchanged. It alters who reviews a rule rather than the rule, and
+no research area carries a position on the composition of a review committee.
+
+## Correction — SB 172, dropped after import
+
+**SB 172** was imported in batch 14 and has been withdrawn. It is marked
+`dropped:coordination-voided`, a disposition used here for the first time.
+
+Its four operative sections amend 7-6-1503, 7-6-1504, 7-6-1541 and 7-6-1542.
+HB 162 section 2 voids the first and replaces that statute outright; HB 162
+section 3 voids the other three. Both acts were signed, so SB 172 has no
+operative section left and changed no law.
+
+This is not a filter 5 failure. SB 172 had a nameable subject and a defensible
+direction; it simply never took effect. The campaign's filters do not currently
+ask whether another act voided the measure being judged, and they should: a
+coordination instruction that kills a bill lives in the *other* bill's text, so
+reading the measure on its own can never reveal it.
+
+## Batch 17
+
+### Housekeeping, a new disposition
+
+Three measures are marked `dropped:housekeeping` rather than filter 5, because
+they have a nameable subject but no operative effect worth a record.
+
+**HB 807** strikes subsection (4) of 49-2-312 and puts it back with two words
+changed: "any vaccine" becomes "a vaccine", twice. The ban on requiring a vaccine
+authorised for emergency use has been law since Chapter 418, Laws of 2021, and
+its scope is identical afterwards. This measure had been held as a question for
+the user; it needs no decision.
+
+**HB 430** repeals all eight sections of the county public scales law and puts
+nothing in their place.
+
+**SB 237** requires the revenue interim committee to recommend to the next
+legislature whether property tax rates should change. No rate, levy or obligation
+moves.
+
+### Seven measures that cut both ways
+
+These follow the rule settled in batch 11 and applied to SB 101 in batch 14: an
+act that strengthens one side and weakens another in the same provision has no
+defensible single direction.
+
+- **HB 642** makes camping a public nuisance wherever an ordinance already
+  forbids it, carrying a fine of up to $500 a day. **HB 940** bans overnight
+  camping and unattended property on state highway right-of-way, with a $50 fine
+  and a disposal process. Both are public order measures aimed at people without
+  housing. Neither `public_safety_and_crime_control` nor `housing_affordability`
+  can say which way a yes vote cuts.
+- **HB 312** raises the limit to 75 miles an hour on qualifying four-lane
+  national highways. **SB 428** lets local authorities drop paved rural roads to
+  25 miles an hour and lower limits across a whole urban district. Speed limits
+  moving in both directions in the same session is the clearest possible
+  demonstration that the area does not settle the question.
+- **SB 348** raises the fine and prison maximum at every tier of sexual assault
+  and triggers sex offender registration one conviction earlier. It is a pure
+  sentencing increase, which batch 11 established this campaign does not treat as
+  automatically "for" `public_safety_and_crime_control`.
+- **HB 350** bars Montana governments from enforcing anything issued by the World
+  Health Organization, the United Nations or the World Economic Forum. It is a
+  position on international bodies, and no research area covers it.
+- **HB 409** bars courts from using the sliding scale or serious questions tests
+  when deciding whether to grant a preliminary injunction, overriding a Montana
+  Supreme Court decision. Court procedure, which batch 09 already established has
+  no area with a defensible direction, when HB 480 was dropped.
+
+### One measure too narrow to carry a record
+
+**HB 611** adds the words "ex officio commissioner of insurance and securities"
+to the state auditor's entry in the salary statute. That changes which
+out-of-state officials count as holding a similar title, and so changes the
+average the auditor's salary is measured against from 2028. One office's pay
+comparison basket. Note that the worklist title, "Generally revise salaries for
+certain elected officials", is much broader than the act.
+
+## Batch 19 — the remaining tail
+
+Fifty-three measures were dispositioned in the final batch. Every one was read
+from its enrolled text. They fall into four groups.
+
+### Housekeeping (14 measures)
+
+`dropped:housekeeping`. Each has a nameable subject but no effect worth putting
+in front of a voter.
+
+**HB 142** raises the number of interim committee bill drafts that may be
+requested on a partisan basis from four to five. **HB 171** abolishes the alfalfa
+seed committee and its grower assessment. **HB 181** extends Highway Patrol
+arrest authority to the capitol complex. **HB 206** narrows who may demand to see
+an electrician's licence. **HB 219** changes wolf hunting reimbursement from
+holding a licence to lawfully harvesting. **HB 268** requires the county attorney
+to copy the attorney general on a sexual offender deregistration petition.
+**SB 116** moves the heritage commission's staff to the commerce department; its
+own transition section describes a membership cut from 14 to 9 that the operative
+text does not make, because the struck number and its replacement are identical.
+**SB 132** splits minor in possession into three offences with **no change to any
+penalty**. **SB 198** redraws two private security definitions. **SB 237**
+requires a legislative committee to make a recommendation. **SB 264** removes a
+reasonable belief defence to the exhaust noise limit.
+
+### Several unrelated subjects in one act (6 measures)
+
+**HB 863**, **HB 864**, **HB 913** and **HB 924** are budget implementation acts.
+HB 924 alone runs to 46 sections and creates a savings trust, a homeowner
+property tax credit, a pension fund, a housing trust, a water account and a
+bridge account. There is no single subject a reader could hold a position on.
+**SB 212** pairs a presumption against restricting private computing with an
+after-the-fact risk policy duty on AI-controlled infrastructure. **SB 426** adopts
+the 2022 Uniform Commercial Code amendments and, in the same act, writes central
+bank digital currency out of the definition of money.
+
+### Cuts both ways (8 measures)
+
+**SB 430** makes the state hospital a placement of last resort and opens
+community placements, and in the same act shields the hospital from contempt when
+it is full and switches off the unfunded mandate protections for counties.
+**HB 742** requires three neighbours to complain before a county inspects, and
+strips cities of their express power to fine nuisance offenders. **HB 939**
+sets wind turbine setbacks that protect nearby homes and restrict renewable
+generation. **SB 286** makes a court's reading of a statute yield to later
+legislative action. **SB 271** lets colleges pay athletes for their name and
+image, which is both an athlete gain and a commercial opening. **SB 177** lets a
+charter school authorising commission seek public money. **HB 917** exempts joint
+candidate advertising from committee registration.
+
+### Too narrow for any research area (26 measures)
+
+HB 141, HB 146, HB 157, HB 159, HB 227, HB 284, HB 349, HB 486, HB 523, HB 571,
+HB 668, HB 679, HB 756, HB 757, HB 834, HB 849, HB 867, HB 876, HB 882, HB 899,
+HB 943, HB 949, SB 134, SB 137, SB 236, SB 238, SB 248, SB 393, SB 56 and SB 87.
+
+These are task forces and advisory councils, single-industry fee and licence
+changes, grant criteria, one profession's assistance programme, and one county's
+conditional appropriation. **SB 56** is also the measure whose section 1 was
+voided by HB 924's coordination instruction; its three surviving sections add
+supplemental employer retirement contributions for three uniformed systems.
+
+## Correction — SB 117, dropped after import
+
+**SB 117** was imported in batch 19 and has been withdrawn under filter 5; its
+74 records are retired. It raises the inflation allowance in the 15-10-420
+maximum-mill formula and, in the same subsection, leaves part of newly taxable
+value in the base that was wholly excluded before. The first raises the
+permitted levy and the second lowers it, and the act does not say which wins.
+The batch-19 records had read the second change as a gain. Full note in
+`../batch-19/PLAN.md`.

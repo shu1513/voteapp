@@ -1,0 +1,148 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546356,
+   "measure_id": "SB 39",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 39, which sets rules for what a lawyer may charge the losing side. When a court orders one side to pay the other's legal costs, the act says the amount must be reasonable and lists what a request must show. Time must be billed in tenths of an hour, each task described specifically, and expenses itemised with receipts. Four things are assumed unreasonable unless argued otherwise, including sending more than one lawyer to a deposition and charging above the state average rate with under 10 years in practice. Where the state is paying, the court must weigh what the state's own lawyers charge. The rules apply to requests of $10,000 or more, and to cases already under way. The Montana House passed it 60-39, and it became law.",
+   "nay_description": "Voted against Senate Bill 39, which sets rules for what a lawyer may charge the losing side. When a court orders one side to pay the other's legal costs, the act says the amount must be reasonable and lists what a request must show. Time must be billed in tenths of an hour, each task described specifically, and expenses itemised with receipts. Four things are assumed unreasonable unless argued otherwise, including sending more than one lawyer to a deposition and charging above the state average rate with under 10 years in practice. Where the state is paying, the court must weigh what the state's own lawyers charge. The rules apply to requests of $10,000 or more, and to cases already under way. The Montana House passed it 60-39, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1549122,
+   "measure_id": "SB 39",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 39, which sets rules for what a lawyer may charge the losing side. When a court orders one side to pay the other's legal costs, the act says the amount must be reasonable and lists what a request must show. Time must be billed in tenths of an hour, each task described specifically, and expenses itemised with receipts. Four things are assumed unreasonable unless argued otherwise, including sending more than one lawyer to a deposition and charging above the state average rate with under 10 years in practice. Where the state is paying, the court must weigh what the state's own lawyers charge. The rules apply to requests of $10,000 or more, and to cases already under way. The Montana Senate passed it 31-19, and it became law.",
+   "nay_description": "Voted against Senate Bill 39, which sets rules for what a lawyer may charge the losing side. When a court orders one side to pay the other's legal costs, the act says the amount must be reasonable and lists what a request must show. Time must be billed in tenths of an hour, each task described specifically, and expenses itemised with receipts. Four things are assumed unreasonable unless argued otherwise, including sending more than one lawyer to a deposition and charging above the state average rate with under 10 years in practice. Where the state is paying, the court must weigh what the state's own lawyers charge. The rules apply to requests of $10,000 or more, and to cases already under way. The Montana Senate passed it 31-19, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1543333,
+   "measure_id": "SB 154",
+   "vote_date": "2025-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 154, which bans selling human bodies and widens the ban on selling body parts. Montana already barred buying or selling a part for transplant or treatment. The act extends that to parts sold for research, for teaching, and for training search and rescue dogs. It adds tissue from a dead embryo or foetus to what counts as a part, though established cell lines are excluded. Selling a whole body for any of those purposes is banned for the first time. Reasonable payment for removing, storing or transporting remains lawful. The Montana House passed it 56-42, and it became law.",
+   "nay_description": "Voted against Senate Bill 154, which bans selling human bodies and widens the ban on selling body parts. Montana already barred buying or selling a part for transplant or treatment. The act extends that to parts sold for research, for teaching, and for training search and rescue dogs. It adds tissue from a dead embryo or foetus to what counts as a part, though established cell lines are excluded. Selling a whole body for any of those purposes is banned for the first time. Reasonable payment for removing, storing or transporting remains lawful. The Montana House passed it 56-42, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546642,
+   "measure_id": "SB 154",
+   "vote_date": "2025-04-12",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 154, which bans selling human bodies and widens the ban on selling body parts. Montana already barred buying or selling a part for transplant or treatment. The act extends that to parts sold for research, for teaching, and for training search and rescue dogs. It adds tissue from a dead embryo or foetus to what counts as a part, though established cell lines are excluded. Selling a whole body for any of those purposes is banned for the first time. Reasonable payment for removing, storing or transporting remains lawful. The Montana Senate passed it 36-14, and it became law.",
+   "nay_description": "Voted against Senate Bill 154, which bans selling human bodies and widens the ban on selling body parts. Montana already barred buying or selling a part for transplant or treatment. The act extends that to parts sold for research, for teaching, and for training search and rescue dogs. It adds tissue from a dead embryo or foetus to what counts as a part, though established cell lines are excluded. Selling a whole body for any of those purposes is banned for the first time. Reasonable payment for removing, storing or transporting remains lawful. The Montana Senate passed it 36-14, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546351,
+   "measure_id": "SB 193",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 193, which moves the power to appoint the board that examines would-be lawyers. The attorneys' examining board decides who may practise law in Montana. Its members used to be appointed by the Montana Supreme Court acting as a body of seven justices. The act gives that power to the chief justice alone. The chief justice may also remove a member, set the board's duties, and make the rules that govern it. The board still may not exceed seven members. The Montana House passed it 57-42, and it became law.",
+   "nay_description": "Voted against Senate Bill 193, which moves the power to appoint the board that examines would-be lawyers. The attorneys' examining board decides who may practise law in Montana. Its members used to be appointed by the Montana Supreme Court acting as a body of seven justices. The act gives that power to the chief justice alone. The chief justice may also remove a member, set the board's duties, and make the rules that govern it. The board still may not exceed seven members. The Montana House passed it 57-42, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1488273,
+   "measure_id": "SB 193",
+   "vote_date": "2025-02-12",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 193, which moves the power to appoint the board that examines would-be lawyers. The attorneys' examining board decides who may practise law in Montana. Its members used to be appointed by the Montana Supreme Court acting as a body of seven justices. The act gives that power to the chief justice alone. The chief justice may also remove a member, set the board's duties, and make the rules that govern it. The board still may not exceed seven members. The Montana Senate passed it 31-19, and it became law.",
+   "nay_description": "Voted against Senate Bill 193, which moves the power to appoint the board that examines would-be lawyers. The attorneys' examining board decides who may practise law in Montana. Its members used to be appointed by the Montana Supreme Court acting as a body of seven justices. The act gives that power to the chief justice alone. The chief justice may also remove a member, set the board's duties, and make the rules that govern it. The board still may not exceed seven members. The Montana Senate passed it 31-19, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1503771,
+   "measure_id": "SB 342",
+   "vote_date": "2025-03-03",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 342, which puts the state court administrator under the chief justice alone. The court administrator runs the day-to-day business of Montana's court system. That post used to be filled by the Supreme Court acting as a body, and the holder served at the court's pleasure. The act gives the appointment, the direction and the power to dismiss to the chief justice personally. It applies not only to future appointments but to the person already in the job. The Montana Senate passed it 32-18, and it became law.",
+   "nay_description": "Voted against Senate Bill 342, which puts the state court administrator under the chief justice alone. The court administrator runs the day-to-day business of Montana's court system. That post used to be filled by the Supreme Court acting as a body, and the holder served at the court's pleasure. The act gives the appointment, the direction and the power to dismiss to the chief justice personally. It applies not only to future appointments but to the person already in the job. The Montana Senate passed it 32-18, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1551149,
+   "measure_id": "SB 375",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 375, which bars shops from selling hemp products that contain THC. THC is the substance in cannabis that makes people high. Hemp is the same plant grown with very little of it, but some products concentrate it. The act says a hemp product containing THC may not be sold to a consumer in Montana. It covers anything meant to be eaten, smoked, vaped or otherwise taken, not only edibles. The only exception is a product the federal food and drug regulator has approved as a food or a medicine. Sales between businesses for resale are not covered. The Montana Senate passed it 34-16, and it became law.",
+   "nay_description": "Voted against Senate Bill 375, which bars shops from selling hemp products that contain THC. THC is the substance in cannabis that makes people high. Hemp is the same plant grown with very little of it, but some products concentrate it. The act says a hemp product containing THC may not be sold to a consumer in Montana. It covers anything meant to be eaten, smoked, vaped or otherwise taken, not only edibles. The only exception is a product the federal food and drug regulator has approved as a food or a medicine. Sales between businesses for resale are not covered. The Montana Senate passed it 34-16, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

@@ -96,7 +96,7 @@ repository at `/Users/shu/legiscan-data/mt_doc.py` and `mt_diff.py`.
   `divided-enacted-worklist.tsv` (one row per divided-and-enacted roll with its
   disposition), and `filter-5-drops.md` (why each dropped measure was dropped
   after a full read)
-- `batch-01/` through `batch-12/` — each holds `PLAN.md`, `JUDGING.md`,
+- `batch-01/` through `batch-19/` — each holds `PLAN.md`, `JUDGING.md`,
   `judgments.json`, the roll evidence files, and the import ledgers
 
 ## Status
@@ -118,11 +118,34 @@ records.**
 | batch-10 | 8 | 13 | 462 | schools, renters, permits, data, tax credits |
 | batch-11 | 12 | 19 | 773 | environment, courts, contractors, workers' comp, drink-driving, judges |
 | batch-12 | 12 | 17 | 630 | elections, lobbying, transparency, health cover, consumer rules |
-| **total** | **85** | **146** | **6,103** | 18 areas, 87 candidates, 3,676 tags |
+| batch-13 | 8 | 9 | 417 | safety, disclosure, tribal education, voter ID |
+| batch-14 | 7 | 10 | 494 | housing, zoning, impact fees, property |
+| batch-15 | 7 | 10 | 433 | tax credits, bonding, broadband, litigation funding |
+| batch-16 | 12 | 17 | 633 | children, schools, responders, brownfields, wildlife |
+| batch-17 | 24 | 35 | 1,210 | courts, civil rights, nuisance, flags, health boards |
+| batch-18 | 22 | 29 | 1,149 | health, courts, schools, marijuana, consumer |
+| batch-19 | 5 | 8 | 280 | courts, hemp, human remains |
+| **total** | **170** | **264** | **10,719** | 19 areas, 87 candidates, 6,505 tags |
 
-**217 divided-and-enacted rolls remain unworked, across 158 bills**, plus 58
-joint-resolution rolls excluded by rule. 90 rolls are marked
-`superseded:later-roll-used`, 114 are dropped under filter 5, one is dropped
+85 further records were imported and then retired: every operative section of
+SB 172 was voided by HB 162's coordination instructions, so SB 172 changed no
+law. See `batch-14/PLAN.md`. A further 74 SB 117 records were retired after
+batch 19: the act raises one levy limit and lowers another in the same
+provision, so it has no single direction. See `batch-19/PLAN.md`.
+
+**The survey queue is complete. Every one of the 633 divided-and-enacted roll
+calls carries a disposition and none is unworked.** 264 rolls across 170
+measures were imported. 193 rolls are dropped under filter 5, 90 are superseded
+by a later roll on the same measure, 58 are joint resolutions that never became
+law, 18 are housekeeping, seven are held on the LegiScan vote defect, two were
+voided by another act's coordination instruction, and one chamber's final vote
+was not divided. The 58
+joint-resolution rolls that used to be listed here separately are now disposed:
+a Montana joint resolution never becomes law, so all of them fail filter 2 and
+are marked `dropped:filter-2-not-law`. 90 rolls are marked
+`superseded:later-roll-used`, 135 are dropped under filter 5, four are dropped
+as housekeeping, two are dropped because a coordination instruction voided the
+measure, one is dropped
 because its chamber's final vote was not divided, and seven are held on the
 LegiScan vote defect described in `CODE-FINDINGS.md` §7 and
 `survey/legiscan-vote-audit.md`.
