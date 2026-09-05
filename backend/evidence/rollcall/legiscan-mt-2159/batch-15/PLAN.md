@@ -6,10 +6,10 @@ Seven measures, ten roll calls, 433 candidate records. All seven became law.
 | --- | --- | --- | --- | --- | --- |
 | HB 650 the state may borrow to build broadband | 334 | public_infrastructure | **for** | 61-38 | — |
 | HB 665 unpaid charity officers not liable for withheld tax | 468 | corporate_accountability | against | — | 36-14 |
-| SB 104 facility finance bond ceiling raised to $1.5 billion | 158 | public_infrastructure | **for** | — | 38-11 |
+| SB 104 facility finance two-year bond cap raised to $1.5 billion | 158 | public_infrastructure | **for** | — | 38-11 |
 | SB 326 film tax credits extended through 2045 | 598 | government_spending_reduction | against | 62-38 | 31-19 |
 | SB 333 coal washing tax break runs to 2027 | 599 | government_spending_reduction | against | 58-42 | — |
-| SB 511 litigation funders regulated, foreign money barred | 413 | corporate_accountability | **for** | 77-22 | 34-15 |
+| SB 511 litigation funders regulated, adversary-state money barred | 413 | corporate_accountability | **for** | 77-22 | 34-15 |
 | SB 534 new cable and wireless kit exempt from property tax | 620 | government_spending_reduction | against | 65-35 | 40-10 |
 
 ## The worklist title on SB 333 was wrong, and the enrolled text said so

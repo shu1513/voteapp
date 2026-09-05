@@ -50,18 +50,27 @@ records the department can inspect. Direction **against**
 ## SB 104 — facility finance authority
 
 Chapter 158. Amends 90-5-101, 90-7-102, 90-7-104, 90-7-225, 90-7-229 and
-90-7-302. Raises the Montana Facility Finance Authority's bond issuance cap to
-$1.5 billion, adds a biennial inflation adjustment to that cap, and widens
-eligibility to 501(c)(3) entities and other public-benefit facilities. Direction
-**for** `public_infrastructure`.
+90-7-302. The cap in 90-7-302 is per biennium and excludes refunding bonds: the
+authority "may in each biennium borrow money and issue bonds and notes in an
+aggregate principal amount not to exceed ~~$500 million~~ **$1.5 billion**,
+exclusive of bonds or notes issued to refund outstanding bonds or notes."
+The escalator is fixed, not indexed: "Starting July 1, 2027, and each
+subsequent biennium, the bond issuance cap must be increased by 3% each
+biennium." The act's own title calls this an "inflationary adjustment", but the
+record follows the operative text. Eligibility widens to 501(c)(3) entities
+and other public-benefit facilities. Direction **for** `public_infrastructure`.
 
 ## HB 650 — broadband bonding
 
-Chapter 334. Amends 90-5-101 by adding broadband services to the definition of a
-"project" eligible for state bonding. That is the whole act, and the record says
-so rather than implying a new programme. The description explains what broadband
-is, because the term is used without definition in the statute. Direction **for**
-`public_infrastructure`. It has a delayed effective date.
+Chapter 334. Amends 90-5-101 by adding to the definition of a "project" eligible
+for state bonding: "providing broadband service exclusively to unserved areas and
+underserved areas as defined in 90-1-602 or to locations where broadband is
+available only by satellite technologies". The word "exclusively" is
+load-bearing, so the record states the limitation rather than describing
+broadband generally. That is the whole act, and the record says so rather than
+implying a new programme. The description explains what broadband is, because
+the term is used without definition in the statute. Direction **for**
+`public_infrastructure`. Section 2: "[This act] is effective January 1, 2028."
 
 ## HB 665 — nonprofit officer liability
 
@@ -70,11 +79,13 @@ of a small nonprofit corporation "is exempt from the provisions of this section
 imposing individual liability" for tax withheld from employees' wages and not
 paid over.
 
-Two exceptions bring the liability back, and both are in the record: the officer
-receives monetary compensation or wages for their services, where reasonable
-expense reimbursement does not count; or the corporation "is out of compliance
-with the provisions this section for more than 12 months with outstanding unpaid
-taxes, penalties, and interest".
+Three exceptions in (7)(b) bring the liability back, and all three are in the
+record: (i) the officer receives monetary compensation or wages for their
+services, where reasonable expense reimbursement does not count; (ii) the
+corporation "is out of compliance with the provisions this section for more than
+12 months with outstanding unpaid taxes, penalties, and interest"; or (iii) "the
+officer or director is involved in fraud, embezzlement, or intentional
+misconduct".
 
 Direction **against** `corporate_accountability`: personal responsibility for
 money withheld from employees is removed, subject to those limits.
@@ -88,11 +99,21 @@ restrictions on what a financer, a service provider and a party's own lawyers ma
 do. It then creates the Foreign Investment in Litigation Financing Act at
 sections 6 through 11.
 
-Section 10 bars a foreign person from litigation financing, from affiliating with
-a litigation financer, and from financing or lending money to one. Section 9 bars
-a party from disclosing proprietary information to a foreign person, a foreign
-adversary or a foreign person of concern. "Foreign adversary" is tied to the
-federal designation at 15 CFR 791.4.
+The ban is not on foreign money as such. Section 8 bars a "foreign adversary" or
+a "foreign person of concern" from litigation financing in Montana and from
+investing in or lending to a financer. Section 10 applies to any other foreign
+person that does engage in litigation financing: such a person "may not"
+affiliate with, take money from, or be controlled by a foreign adversary or
+person of concern. Section 11(1) confirms the rest are allowed: "A foreign person
+who is qualified to engage in litigation financing in this state shall comply
+with this chapter", and 11(2)-(3) require the financer to disclose the foreign
+person's name, address and citizenship and a copy of each contract to the
+Secretary of State. Section 9 bars a party from disclosing proprietary
+information to a foreign person, a foreign adversary or a foreign person of
+concern. "Foreign adversary" is tied to the federal designation at 15 CFR
+791.4; "foreign person of concern" covers persons formed in, based in, or
+owned or controlled by an adversary, and SDN-listed or terrorist-designated
+persons.
 
 Judged **for** `corporate_accountability`: registration, disclosure duties and
 conduct rules on an industry that previously operated without them. The
