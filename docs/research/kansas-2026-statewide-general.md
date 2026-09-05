@@ -139,7 +139,126 @@ it row by row against the database. Results:
 
 The district's open elections deferral ("awaiting primary certification") is resolved.
 
+## Candidate records, 4 September 2026
+
+The records stage of the cascade for the same six contests. Records are candidate-wide, so the
+baseline audit first checked what each of the 15 linked candidates already had.
+
+Twelve of the fifteen already carried a finished, evidence-backed sweep from the primary-stage
+runs in July and August (a `candidate_record_sweep_confirmations` row plus a
+`last_records_searched_at` stamp). Those twelve were not re-swept from scratch: each got a delta
+pass over the window since its own checkpoint, following the
+`voteapp-followed-records-refresh` workflow, so every candidate on the six contests was worked in
+this run. The three minor-party nominees who entered at the general stage had no sweep at all and
+got full first sweeps. The two running mates, KC Ohaebosim and Jeffrey Klemp, were swept on
+19 August and are not on a general-election roster, so they were left alone.
+
+Per-candidate record counts, before and after this run:
+
+| Office | Candidate | Records before | Records after | Pass |
+| --- | --- | ---: | ---: | --- |
+| Attorney General | Chris Mann | 6 | 6 | delta since 2026-07-23, nothing new |
+| Attorney General | Kris Kobach | 17 | 20 | delta since 2026-07-24, 3 new |
+| Commissioner of Insurance | Daniel Hawkins | 9 | 9 | delta since 2026-07-23, nothing new |
+| Commissioner of Insurance | Dinah Sykes | 11 | 11 | delta since 2026-07-23, nothing new |
+| Commissioner of Insurance | Ric Koehn | 0 | 3 | full first sweep |
+| Governor | Cindy Holscher | 20 | 22 | delta since 2026-07-23, 2 new |
+| Governor | Ty Masterson | 14 | 15 | delta since 2026-07-23, 1 new |
+| Secretary of State | Jennifer Day | 6 | 6 | delta since 2026-07-23, nothing new |
+| Secretary of State | Pat Proctor | 9 | 9 | delta since 2026-07-29, nothing new |
+| Secretary of State | Scott E. Morgan | 0 | 2 | full first sweep |
+| State Treasurer | Eric Lund | 0 | 2 | full first sweep |
+| State Treasurer | Juan C. Luengo | 0 | 2 | full sweep (his earlier confirmation covered all-neutral labels, not a zero-record claim) |
+| State Treasurer | Steven Johnson | 17 | 18 | delta since 2026-08-01, 1 new |
+| United States Senator | Adam Hamilton | 6 | 6 | delta since 2026-07-23, nothing new |
+| United States Senator | Roger Marshall | 58 | 61 | delta since 2026-08-01, 3 new |
+
+Every candidate now carries `last_records_searched_at` and
+`last_records_researched_through` of 2026-09-04.
+
+Nineteen records were written in total, all through `manual:candidate-records:write` with a
+per-question evidence ledger attached to every pass. Each write's insert/update split matched the
+prediction, and no write produced an unexpected update.
+
+### Delta passes on the twelve already-swept candidates
+
+The Kansas Legislature was out of session for the whole window and no special session was called,
+so the five sitting legislators (Masterson, Holscher, Sykes, Hawkins, Proctor) cast no roll-call
+votes in it. What the window did contain:
+
+- **Kris Kobach** - three official actions: the 2026-08-26 $17.1 billion multistate Meta
+  settlement worth more than $134 million to Kansas, the 2026-08-04 federal injunction ending
+  registration of gun suppressors and short-barreled firearms, and the 2026-08-10 ruling that
+  Nexstar violated an injunction in the Tegna merger case. Routine items (a single sentencing
+  announcement, a storm-contractor alert) were left out as non-material.
+- **Roger Marshall** - three material Senate roll calls, each confirmed in the Senate's own
+  member-by-member XML: yes on the 2027 stopgap funding bill (90-6, 2026-08-08), yes on the
+  Sanctioning Russia and Iran Act (86-11, 2026-08-07), and yes to confirm Todd Blanche as
+  attorney general (50-49, 2026-08-08). Cloture and en-bloc nomination votes were left out.
+- **Cindy Holscher** - two endorsements received: Gov. Laura Kelly on 2026-08-05 and Planned
+  Parenthood Great Plains Votes on 2026-08-11.
+- **Steven Johnson** - his 2026-08-20 statement on the national debt passing $40 trillion, the
+  only item in the treasurer office's press feed for the window.
+- **Ty Masterson** - his 2026-08-14 leave of absence from the GoCreate directorship at Wichita
+  State. The dismissal of the ethics complaint against him could not be written: the writer's
+  source policy requires an official or listed news source for a damaging claim, and only
+  unlisted local outlets carry it.
+- **Mann, Sykes, Hawkins, Day, Proctor, Hamilton** - nothing writable in the window. Their
+  coverage is primary results, campaign ads and platform material, none of which is a record.
+  Each was closed with a window-scoped evidence ledger and zero new rows.
+
+### Ric Koehn (Libertarian, Commissioner of Insurance)
+
+Routed never-held: no source shows him holding public office, and his 2024 Libertarian
+presidential elector nomination was a nomination, not service. Three treasurer roles, each
+pinned to him by the P.O. Box 468 Cimarron address, phone and email on the filing: the Bleeding
+Kansas Advocates PAC (medical marijuana advocacy, 2019-04-25), the Libertarian Party of Kansas
+(2024-07-29), and the Libertarian Porcupine Club of Kansas PAC (2026-01-09). All three are
+neutral background, so the write carries `candidate_records.only_general_labels`.
+
+### Scott E. Morgan (United Kansas, Secretary of State)
+
+Routed officeholder on his two Lawrence school board terms. Two records: his vote in the 6-1
+majority that closed Wakarusa Valley School over a budget shortfall (2011-03-28), labelled
+`government_efficiency: for`; and co-founding the Free State Party and becoming executive
+director of United Kansas after the April 2026 merger (2026-04-28). His Senate, Federal Election
+Commission and Hayden-administration staff roles are biography only - no accessible source
+carries a dated action from any of them.
+
+### Eric Lund (Libertarian, State Treasurer)
+
+Routed officeholder on his stored California park-district service. Two records, both party
+organisation roles: chairperson of the Libertarian Porcupine Club of Kansas PAC (2026-01-09) and
+secretary of the Libertarian Party of Kansas (reported after the 2026-04-25 state convention).
+Neutral only, so the write carries `candidate_records.only_general_labels`.
+
+### Juan C. Luengo (Democrat, State Treasurer)
+
+His July sweep had confirmed all-neutral labels but left him at zero records, so a delta pass
+could not close him out; he got a full never-held sweep instead. Two records: renaming his agency
+from J. Luengo Insurance Advisors to Engage Insurance Group as its chief executive (2020-05-14,
+the firm's own press release) and his board service at Mental Health America of the Heartland
+since 2021 (the nonprofit's undated leadership page, dated by research-date substitution).
+
+### Records gap ledger
+
+| Item | Outcome |
+| --- | --- |
+| Ric Koehn, career phases as options trader and as accountant | confirmed_null (no employer, client, filing or dated action in accessible sources) |
+| Ric Koehn / Eric Lund / Scott E. Morgan, court and legal records | unresolved (Kansas case search is a login/JS portal; logged as an access gap, not as "no issues") |
+| Scott E. Morgan, Lawrence school board 1999-2003 votes | unresolved (no online minutes or vote-level coverage for that term) |
+| Scott E. Morgan, Morgan Quitno Press founding and 2007 sale | blocked_by_contract (no dated source both names him and carries the claim; Wikipedia's company page does not name him) |
+| Scott E. Morgan, 2007 criticism of his company's city crime rankings | unresolved (sources naming him - thecrimereport.org, contexts.org - fail TLS verification; the reachable Wikipedia page does not name him) |
+| Scott E. Morgan, Free State Party signature drive | unresolved (only www2.ljworld.com carries it and that host timed out for the validator) |
+| Eric Lund, Cordova Recreation and Park District board era | unresolved (his service predates the district's online archive; the county roster lists only current directors) |
+| Eric Lund, 2024 Miami County Clerk candidacy | blocked_by_contract (a prior candidacy is pure_candidacy; the one local article is region-blocked, so no canvass result was reachable) |
+| Endorsements, all three new candidates | confirmed_null (no dated, cycle-pinned endorsement for any of them) |
+| Ty Masterson, dismissal of the ethics complaint over his Wichita State salary | blocked_by_contract (damaging claim; only unlisted outlets carry it and the commission's order is not published online) |
+| Roger Marshall, his no vote on the motion to proceed to S.J.Res. 187 (PFAS reporting rule) | unresolved (the roll call alone does not settle which way the resolution cut, so no record was written) |
+| Juan C. Luengo, the turnaround claims for Engage Insurance Group | confirmed_null as records (undated and self-sourced; they belong to the profile) |
+| Juan C. Luengo, Builders' Association board seat | unresolved (claimed only on his campaign site, no organisation-side confirmation) |
+
 ## Not done here
 
-Candidate records, record area labels and campaign finance for these contests are later stages
-and were not part of this run.
+Campaign finance for these contests is a later stage and was not part of this run. Nothing on
+this page has been promoted to production.
