@@ -75,6 +75,8 @@ describe("DraftPage", () => {
     expect(screen.getByRole("link", { name: "Start with your address" })).toHaveAttribute("href", "/");
     // No CTA without a pick to save.
     expect(screen.queryByRole("link", { name: "Sign up free to save your picks" })).not.toBeInTheDocument();
+    // No ballot to go back to either — the address link is the only exit.
+    expect(screen.queryByRole("navigation", { name: "Draft navigation" })).not.toBeInTheDocument();
   });
 
   it("renders the ballot's date card from the draft, share-free, with the signup CTA", async () => {
@@ -106,6 +108,11 @@ describe("DraftPage", () => {
     expect(screen.getByRole("link", { name: "Sign up free to save your picks" })).toBeInTheDocument();
     // Every draft pick is on a card — no leftover section.
     expect(screen.queryByText("Other saved picks")).not.toBeInTheDocument();
+    // The way back to the ballot: the detail pages' top bar, back slot only,
+    // pointing at the draft's own districts.
+    const back = screen.getByRole("link", { name: "Back to My elections" });
+    expect(back).toHaveAttribute("href", "/ballot?d=dddddddd-1111-4111-8111-111111111111");
+    expect(screen.getByRole("navigation", { name: "Draft navigation" })).toContainElement(back);
   });
 
   it("refreshes the draft's progress target from the loaded ballot, like /ballot does", async () => {
@@ -331,5 +338,6 @@ describe("DraftPage", () => {
     expect(screen.getByRole("link", { name: "Governor" })).toHaveAttribute("href", "/elections/e-1");
     expect(screen.getByRole("link", { name: "Search your address" })).toHaveAttribute("href", "/");
     expect(screen.getByRole("link", { name: "Sign up free to save your picks" })).toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Draft navigation" })).not.toBeInTheDocument();
   });
 });

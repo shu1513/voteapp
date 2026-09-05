@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { apiRequest, formatElectionDate, useMe } from "@voteapp/api-client";
 import type { BallotSummary, ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
+import { DetailPager } from "../components/DetailPager";
 import { DraftMilestone } from "../components/DraftMilestone";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import type { CandidateNavState, ElectionNavState } from "../lib/detailNavContext";
@@ -184,6 +185,9 @@ export function DraftPage() {
   const nearestComplete =
     ballot.isSuccess && dates.length > 0 && allRacesDecided(byDate.get(dates[0]) ?? [], choices);
   const milestoneShown = useShowDraftMilestone(dates[0], nearestComplete);
+  // The guest's ballot, by the draft's own district ids — the same URL
+  // /ballot hands the header counter.
+  const ballotPath = `/ballot?d=${encodeURIComponent(districtIds.join(","))}`;
 
   // No-flash rule: nothing until the session state is known.
   if (me === undefined) {
@@ -198,6 +202,21 @@ export function DraftPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
+      {/* Same top bar as the election and candidate pages, back slot only:
+          this page is one step below the guest's ballot, and the guest
+          header has no ballot link (only "My Draft"), so without it the
+          browser's back button was the sole way out. Rendered as soon as
+          the draft carries district ids — the /ballot URL needs nothing
+          else — and skipped for the no-ballot cases below, which already
+          point at the address search. The label is BallotPage's own title. */}
+      {districtIds.length > 0 ? (
+        <DetailPager
+          ariaLabel="Draft navigation"
+          prev={null}
+          next={null}
+          backTo={{ path: ballotPath, label: "My elections" }}
+        />
+      ) : null}
       <h1 className="text-title font-bold">My Ballot Draft</h1>
 
       {districtIds.length === 0 ? (
@@ -292,15 +311,6 @@ export function DraftPage() {
               <DraftChoiceRows rows={extraRows} />
             </section>
           ) : null}
-          <p className="mt-3 text-sm text-ink-soft">
-            <Link
-              to={`/ballot?d=${encodeURIComponent(districtIds.join(","))}`}
-              className="underline hover:text-ink"
-            >
-              View your full ballot
-            </Link>{" "}
-            to read up on each race.
-          </p>
         </>
       )}
 
