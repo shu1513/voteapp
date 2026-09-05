@@ -213,7 +213,7 @@ describe("App account nav", () => {
     expect(
       await screen.findByRole("heading", { name: "My November 3, 2026 Election Draft" })
     ).toBeInTheDocument();
-    expect(await screen.findByRole("link", { name: "My Picks ✓" })).toBeInTheDocument();
+    expect(await screen.findByRole("link", { name: "My Draft ✓" })).toBeInTheDocument();
 
     const ballotCalls = fetchMock.mock.calls.filter(([input]) => String(input).includes("/api/me/ballot?"));
     expect(ballotCalls).toHaveLength(1);

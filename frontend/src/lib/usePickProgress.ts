@@ -11,7 +11,7 @@ export { myDraftLabel };
 export type { PickProgress };
 
 /**
- * The signed-in header's pick counter ("My Picks 4/13" → "My Picks ✓"):
+ * The signed-in header's pick counter ("My Draft 4/13" → "My Draft ✓"):
  * progress over the nearest upcoming election day on the user's saved
  * ballot — the same denominator as that day's PickDateCard. Null hides the
  * counter (logged out, unverified, ballot not loaded, no upcoming races, or
@@ -62,7 +62,7 @@ export function useGuestPickProgress(): PickProgress | null {
  * edge-cached anonymous document stays draft-free and identical for every
  * visitor. Once live, the label stays a plain "My Draft" until the first
  * pick — a "0/20" on arrival reads as homework, not collecting — then
- * counts up and finally takes the earned name, "My Picks ✓". Same short
+ * counts up and finally takes the earned name, "My Draft ✓". Same short
  * vocabulary as the signed-in labels (myDraftLabel) so the header fits one
  * line on a 375px phone.
  */
@@ -72,7 +72,7 @@ export function useGuestDraftNav(): { to: string; label: string; complete: boole
   if (progress && progress.picked > 0) {
     return {
       to: "/draft",
-      label: progress.complete ? "My Picks ✓" : `My Draft ${progress.picked}/${progress.total}`,
+      label: progress.complete ? "My Draft ✓" : `My Draft ${progress.picked}/${progress.total}`,
       complete: progress.complete,
     };
   }

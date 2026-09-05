@@ -6,7 +6,7 @@ Status: PR 1 (notice + plumbing) merged 2026-09-04 (#1108); PR 2
 ## Idea
 
 Today nothing marks the moment a user decides the last race on their
-ballot. The header label quietly flips from "My Draft 12/13" to "My Picks ✓"
+ballot. The header label quietly flips from "My Draft 12/13" to "My Draft ✓"
 and that is all. We want a visible finish line: tell the user every race
 has a pick, name the election day, and hand them the next step (review the
 draft, sign up to save it).
@@ -187,7 +187,7 @@ card's count line), and renders nothing unless every race is decided:
 
 ### 3. Pick card: no change
 
-The post-pick link already reads "My Picks ✓" through `myDraftLabel` once
+The post-pick link already reads "My Draft ✓" through `myDraftLabel` once
 the day is complete. Leave `PostPickActions.tsx` alone.
 
 ### 4. Guest target expiry (small correctness fix)

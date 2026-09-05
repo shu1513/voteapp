@@ -116,7 +116,7 @@ describe("DraftCompleteNotice", () => {
 
     // Re-pick: the day was already celebrated on this browser.
     pickMayor(true);
-    expect(await screen.findByRole("link", { name: "My Picks ✓" })).toBeInTheDocument();
+    expect(await screen.findByRole("link", { name: "My Draft ✓" })).toBeInTheDocument();
     expect(screen.queryByText(NOTICE_TEXT)).not.toBeInTheDocument();
   });
 
@@ -127,7 +127,7 @@ describe("DraftCompleteNotice", () => {
     });
     stubApiRoutes(GUEST);
     renderShell();
-    expect(await screen.findByRole("link", { name: "My Picks ✓" })).toBeInTheDocument();
+    expect(await screen.findByRole("link", { name: "My Draft ✓" })).toBeInTheDocument();
     expect(screen.getByRole("status")).toBeEmptyDOMElement();
     expect(window.localStorage.getItem("voteapp_draft_complete_seen")).toBeNull();
   });
@@ -139,7 +139,7 @@ describe("DraftCompleteNotice", () => {
       "/api/me/election-choices": { body: { choices: [choice("e-1", "Governor")] } },
     });
     renderShell();
-    expect(await screen.findByRole("link", { name: "My Picks ✓" })).toBeInTheDocument();
+    expect(await screen.findByRole("link", { name: "My Draft ✓" })).toBeInTheDocument();
     expect(screen.getByRole("status")).toBeEmptyDOMElement();
   });
 
@@ -173,7 +173,7 @@ describe("DraftCompleteNotice", () => {
     expect(await screen.findByRole("link", { name: "My Draft 1/2" })).toBeInTheDocument();
 
     pickMayor(true);
-    expect(await screen.findByRole("link", { name: "My Picks ✓" })).toBeInTheDocument();
+    expect(await screen.findByRole("link", { name: "My Draft ✓" })).toBeInTheDocument();
     expect(screen.getByRole("status")).toBeEmptyDOMElement();
     expect(JSON.parse(window.localStorage.getItem("voteapp_draft_complete_seen") ?? "[]")).toEqual(["2026-11-03"]);
 
@@ -211,7 +211,7 @@ describe("DraftCompleteNotice", () => {
         election_ids: ["e-1"],
       });
     });
-    expect(await screen.findByRole("link", { name: "My Picks ✓" })).toBeInTheDocument();
+    expect(await screen.findByRole("link", { name: "My Draft ✓" })).toBeInTheDocument();
     expect(screen.getByRole("status")).toBeEmptyDOMElement();
     // And the day's once-only notice was not consumed by it.
     expect(window.localStorage.getItem("voteapp_draft_complete_seen")).toBeNull();
@@ -256,7 +256,7 @@ describe("DraftCompleteNotice", () => {
     pickMayor(false);
     await waitFor(() => expect(screen.queryByText(notice)).not.toBeInTheDocument());
     pickMayor(true);
-    expect(await screen.findByRole("link", { name: "My Picks ✓" })).toBeInTheDocument();
+    expect(await screen.findByRole("link", { name: "My Draft ✓" })).toBeInTheDocument();
     expect(screen.queryByText(notice)).not.toBeInTheDocument();
   });
 
@@ -285,7 +285,7 @@ describe("DraftCompleteNotice", () => {
     pickMayor(false);
     await waitFor(() => expect(screen.queryByText(NOTICE_TEXT)).not.toBeInTheDocument());
     pickMayor(true);
-    expect(await screen.findByRole("link", { name: "My Picks ✓" })).toBeInTheDocument();
+    expect(await screen.findByRole("link", { name: "My Draft ✓" })).toBeInTheDocument();
     expect(screen.queryByText(NOTICE_TEXT)).not.toBeInTheDocument();
   });
 });
