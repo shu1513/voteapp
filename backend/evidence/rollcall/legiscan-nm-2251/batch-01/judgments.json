@@ -1,0 +1,302 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1632642,
+      "measure_id": "HB 4",
+      "vote_date": "2026-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4, which sends more of a tax on health insurance premiums to the state's health care affordability fund. That fund holds down premiums and other costs for people who buy coverage on New Mexico's exchange. In the version the House voted on, the fund's share rises from 55 percent to 80 percent in September 2027, then to 100 percent in September 2028. The rest had been going to the state's main account. The New Mexico House passed it 48-19. The Senate later moved 5 percent of the 2028 share to a behavioral health program fund, the House agreed, and it became law.",
+      "nay_description": "Voted against House Bill 4, which sends more of a tax on health insurance premiums to the state's health care affordability fund. That fund holds down premiums and other costs for people who buy coverage on New Mexico's exchange. In the version the House voted on, the fund's share rises from 55 percent to 80 percent in September 2027, then to 100 percent in September 2028. The rest had been going to the state's main account. The New Mexico House passed it 48-19. The Senate later moved 5 percent of the 2028 share to a behavioral health program fund, the House agreed, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1620250,
+      "measure_id": "HB 9",
+      "vote_date": "2026-01-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 9, the Immigrant Safety Act. No New Mexico public body may sign, renew or extend an agreement to hold people for federal civil immigration violations. That covers counties, cities, sheriff's offices and school districts. A body already in such an agreement must end it as soon as it can, and none may use public property to help hold people on those grounds. The New Mexico House passed it 40-29, and it became law.",
+      "nay_description": "Voted against House Bill 9, the Immigrant Safety Act. No New Mexico public body may sign, renew or extend an agreement to hold people for federal civil immigration violations. That covers counties, cities, sheriff's offices and school districts. A body already in such an agreement must end it as soon as it can, and none may use public property to help hold people on those grounds. The New Mexico House passed it 40-29, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1628713,
+      "measure_id": "HB 124",
+      "vote_date": "2026-02-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 124, which creates a New Americans Division inside the state Workforce Solutions Department. The division works with people living in New Mexico who are not United States citizens, or who were not citizens at birth. It must report each year on their numbers, their work and what they add to the state's economy. It must also study how refugee resettlement works in the state. The New Mexico House passed it 40-21, and it became law.",
+      "nay_description": "Voted against House Bill 124, which creates a New Americans Division inside the state Workforce Solutions Department. The division works with people living in New Mexico who are not United States citizens, or who were not citizens at birth. It must report each year on their numbers, their work and what they add to the state's economy. It must also study how refugee resettlement works in the state. The New Mexico House passed it 40-21, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1627425,
+      "measure_id": "HB 156",
+      "vote_date": "2026-02-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 156, which keeps the New Mexico Department of Health in charge of school vaccine rules. A law passed in the October 2025 special session would have handed that job back on July 1, 2026 to a federal advisory committee and the American Academy of Pediatrics. This act repeals that hand-back. The department's own recommendations decide which shots children need for child care and school. The New Mexico House passed it 51-14, and it became law.",
+      "nay_description": "Voted against House Bill 156, which keeps the New Mexico Department of Health in charge of school vaccine rules. A law passed in the October 2025 special session would have handed that job back on July 1, 2026 to a federal advisory committee and the American Academy of Pediatrics. This act repeals that hand-back. The department's own recommendations decide which shots children need for child care and school. The New Mexico House passed it 51-14, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1632501,
+      "measure_id": "HB 200",
+      "vote_date": "2026-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 200, which creates the New Homes for New Mexico program at the state Mortgage Finance Authority. The program lends money to first-time buyers toward a newly built starter home. A loan may not top 50 thousand dollars, or 75 thousand in Los Alamos, Santa Fe and Taos counties. A buyer must earn less than 120 percent of the area median income for a family of four, and must live in the home. The New Mexico House passed it 52-15, and it became law.",
+      "nay_description": "Voted against House Bill 200, which creates the New Homes for New Mexico program at the state Mortgage Finance Authority. The program lends money to first-time buyers toward a newly built starter home. A loan may not top 50 thousand dollars, or 75 thousand in Los Alamos, Santa Fe and Taos counties. A buyer must earn less than 120 percent of the area median income for a family of four, and must live in the home. The New Mexico House passed it 52-15, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1627420,
+      "measure_id": "HB 247",
+      "vote_date": "2026-02-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 247, which tightens the rules for capital outlay, the money the state hands out for building projects. A project may be given more time only once, never for more than two years, and only if at least a tenth of the original money has already been committed. Any new grant of 100 thousand dollars or more must appear on a published infrastructure plan first. Money left unspent goes back to a state reserve fund. The New Mexico House passed it 48-20, and it became law.",
+      "nay_description": "Voted against House Bill 247, which tightens the rules for capital outlay, the money the state hands out for building projects. A project may be given more time only once, never for more than two years, and only if at least a tenth of the original money has already been committed. Any new grant of 100 thousand dollars or more must appear on a published infrastructure plan first. Money left unspent goes back to a state reserve fund. The New Mexico House passed it 48-20, and it became law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1633948,
+      "measure_id": "HB 270",
+      "vote_date": "2026-02-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 270, which widens who must pay into apprentice and training programs on public building work. Road, bridge, utility and maintenance contracts had been left out, and the act brings them in. Where a trade has no approved apprentice program, the required payment is set at zero, so no employer pays into a program that does not exist. The New Mexico House passed it 41-25, and it became law.",
+      "nay_description": "Voted against House Bill 270, which widens who must pay into apprentice and training programs on public building work. Road, bridge, utility and maintenance contracts had been left out, and the act brings them in. Where a trade has no approved apprentice program, the required payment is set at zero, so no employer pays into a program that does not exist. The New Mexico House passed it 41-25, and it became law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1620240,
+      "measure_id": "SB 2",
+      "vote_date": "2026-01-30",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2, which pays for highway work by letting the state Transportation Commission borrow up to 1.5 billion dollars more. The state road fund pays that back. To feed the fund, the act raises the tax on heavy trucks by 35 percent, raises car registration fees by 25 percent, and adds a new fee on electric and plug-in hybrid cars. The highway department must give lawmakers a list of the projects the borrowing will pay for. The New Mexico House passed it 44-23, and it became law.",
+      "nay_description": "Voted against Senate Bill 2, which pays for highway work by letting the state Transportation Commission borrow up to 1.5 billion dollars more. The state road fund pays that back. To feed the fund, the act raises the tax on heavy trucks by 35 percent, raises car registration fees by 25 percent, and adds a new fee on electric and plug-in hybrid cars. The highway department must give lawmakers a list of the projects the borrowing will pay for. The New Mexico House passed it 44-23, and it became law.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1636452,
+      "measure_id": "SB 21",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 21, which gives people on Medicare a yearly chance to change their Medigap plan. Medigap is private insurance that pays costs Medicare leaves behind. Each year a policyholder aged 65 or over gets a 60-day window to switch to a plan worth the same or less, starting the first day of their birthday month. The insurer may not ask about their health, charge more for it, or make them wait for a condition they already had covered. The New Mexico House passed it 41-22, and it became law.",
+      "nay_description": "Voted against Senate Bill 21, which gives people on Medicare a yearly chance to change their Medigap plan. Medigap is private insurance that pays costs Medicare leaves behind. Each year a policyholder aged 65 or over gets a 60-day window to switch to a plan worth the same or less, starting the first day of their birthday month. The insurer may not ask about their health, charge more for it, or make them wait for a condition they already had covered. The New Mexico House passed it 41-22, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1634862,
+      "measure_id": "SB 30",
+      "vote_date": "2026-02-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 30, which repeals New Mexico's requirement that every abortion be reported to the state registrar. The old law made the hospital, the clinic or the doctor file a report within five days. Those reports left out the patient's name, and the doctor's name was not released. After this act no such report is filed at all. The New Mexico House passed it 39-27, and it became law.",
+      "nay_description": "Voted against Senate Bill 30, which repeals New Mexico's requirement that every abortion be reported to the state registrar. The old law made the hospital, the clinic or the doctor file a report within five days. Those reports left out the patient's name, and the doctor's name was not released. After this act no such report is filed at all. The New Mexico House passed it 39-27, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1636280,
+      "measure_id": "SB 40",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 40, the Driver Privacy and Safety Act, which sets rules for license plate cameras. These cameras read a passing car's plate and record the time and the place. An operator may not sell or share that data if they have reason to think it will be used to enforce immigration law. The same bar covers data used to go after health care the state protects, or to punish conduct the constitution protects. Sharing needs a written policy, and operators must report on how the cameras get used. The New Mexico House passed it 42-22, and it became law.",
+      "nay_description": "Voted against Senate Bill 40, the Driver Privacy and Safety Act, which sets rules for license plate cameras. These cameras read a passing car's plate and record the time and the place. An operator may not sell or share that data if they have reason to think it will be used to enforce immigration law. The same bar covers data used to go after health care the state protects, or to punish conduct the constitution protects. Sharing needs a written policy, and operators must report on how the cameras get used. The New Mexico House passed it 42-22, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1636446,
+      "measure_id": "SB 96",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 96, which makes it easier to run a child care home. Such a home now counts as a residence for local zoning. A city or county may not add rules or permits it does not ask of other homes nearby, and may not charge a fee or a tax for the privilege of running one. A homeowners association may not single them out either, though its usual rules on parking, noise and looks still apply. The New Mexico House passed it 41-23, and it became law.",
+      "nay_description": "Voted against Senate Bill 96, which makes it easier to run a child care home. Such a home now counts as a residence for local zoning. A city or county may not add rules or permits it does not ask of other homes nearby, and may not charge a fee or a tax for the privilege of running one. A homeowners association may not single them out either, though its usual rules on parking, noise and looks still apply. The New Mexico House passed it 41-23, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1638035,
+      "measure_id": "SB 111",
+      "vote_date": "2026-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 111, which adds four items to the driver records the state must keep private. They are a person's sex, gender identity, immigration status and national origin. The list already held a photograph, a Social Security number and a driver's license number. The Motor Vehicle Division may no longer hand the new four out. The New Mexico House passed it 37-24, and it became law.",
+      "nay_description": "Voted against Senate Bill 111, which adds four items to the driver records the state must keep private. They are a person's sex, gender identity, immigration status and national origin. The list already held a photograph, a Social Security number and a driver's license number. The Motor Vehicle Division may no longer hand the new four out. The New Mexico House passed it 37-24, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1637987,
+      "measure_id": "SB 152",
+      "vote_date": "2026-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 152, which creates a program to help low-income New Mexicans pay for phone and internet service. A household qualifies if it gets need-based help from the Health Care Authority, includes an at-risk student, or meets the rules of the federal Lifeline program. A state fund for rural phone service pays for it, capped at 10 million dollars the first year and 45 million after that. The act repeals the older law that covered phone service alone. The New Mexico House passed it 48-14, and it became law.",
+      "nay_description": "Voted against Senate Bill 152, which creates a program to help low-income New Mexicans pay for phone and internet service. A household qualifies if it gets need-based help from the Health Care Authority, includes an at-risk student, or meets the rules of the federal Lifeline program. A state fund for rural phone service pays for it, capped at 10 million dollars the first year and 45 million after that. The act repeals the older law that covered phone service alone. The New Mexico House passed it 48-14, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1636395,
+      "measure_id": "SB 241",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 241, which writes New Mexico's child care assistance program into law. The program helps families pay a child care provider. The act sets who qualifies and how providers are paid, with rates tied to staff roles and experience. It allows up to 700 million dollars more from the early childhood fund, and the department must report twice a year on the waiting list. The New Mexico House passed it 37-19, and it became law.",
+      "nay_description": "Voted against Senate Bill 241, which writes New Mexico's child care assistance program into law. The program helps families pay a child care provider. The act sets who qualifies and how providers are paid, with rates tied to staff roles and experience. It allows up to 700 million dollars more from the early childhood fund, and the department must report twice a year on the waiting list. The New Mexico House passed it 37-19, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NM",
+      "chamber": "house",
+      "session": "2251",
+      "roll": 1636283,
+      "measure_id": "SB 264",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 264, which bars anyone from bringing armed troops, or other armed people in the civil, military or naval service of the United States, to a polling place or within 50 feet of a ballot drop box. The ban runs from 28 days before an election through election day. The one exception is fighting off armed enemies of the United States. Breaking the rule, changing who may vote, or otherwise blocking a voter is a fourth-degree felony, and a court may fine each violation 5 thousand to 50 thousand dollars. The New Mexico House passed it 41-26, and it became law.",
+      "nay_description": "Voted against Senate Bill 264, which bars anyone from bringing armed troops, or other armed people in the civil, military or naval service of the United States, to a polling place or within 50 feet of a ballot drop box. The ban runs from 28 days before an election through election day. The one exception is fighting off armed enemies of the United States. Breaking the rule, changing who may vote, or otherwise blocking a voter is a fourth-degree felony, and a court may fine each violation 5 thousand to 50 thousand dollars. The New Mexico House passed it 41-26, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

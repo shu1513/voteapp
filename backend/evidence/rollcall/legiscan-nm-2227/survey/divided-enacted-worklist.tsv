@@ -1,0 +1,6 @@
+bill	chamber	roll	date	yea	nay	title	disposition	reason
+HB1	house	1603192	2025-10-01	43	24	General Appropriations	excluded	the special session's general appropriations act; no research area carries an honest direction on a vote to fund the government
+HB1	senate	1603480	2025-10-01	25	13	General Appropriations	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+HB2	house	1603193	2025-10-01	49	13	Health Care Coverage Changes	batch-01	imported
+SB3	house	1603536	2025-10-02	43	26	Immunization Rules & Recommendations	batch-01	imported
+SB3	senate	1603472	2025-10-01	26	13	Immunization Rules & Recommendations	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody

@@ -1,0 +1,47 @@
+bill	chamber	roll	date	yea	nay	title	disposition	reason
+HB124	house	1628713	2026-02-10	40	21	New Americans Division In Wsd	batch-01	imported
+HB124	senate	1638039	2026-02-18	22	12	New Americans Division In Wsd	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+HB156	house	1627425	2026-02-09	51	14	Repeal Special Session Vaccination Laws	batch-01	imported
+HB165	senate	1637755	2026-02-18	30	10	Payment Of Certain Irb Special Assessments	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+HB184	senate	1637975	2026-02-18	25	11	Investment Of Conservation & Legacy Funds	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+HB2	house	1623933	2026-02-04	55	15	General Appropriation Act Of 2026	excluded	the general appropriation act; no research area carries an honest direction on a vote to fund the government
+HB2	senate	1635087	2026-02-16	23	16	General Appropriation Act Of 2026	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+HB200	house	1632501	2026-02-12	52	15	New Homes For New Mexico Program	batch-01	imported
+HB200	senate	1639067	2026-02-19	22	13	New Homes For New Mexico Program	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+HB247	house	1627420	2026-02-09	48	20	Capital Outlay Changes	batch-01	imported
+HB253	senate	1637817	2026-02-18	26	15	Public Education Changes	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+HB270	house	1633948	2026-02-14	41	25	Contributions To Apprentice & Training Pgms.	batch-01	imported
+HB270	senate	1638046	2026-02-18	25	13	Contributions To Apprentice & Training Pgms.	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+HB332	house	1634863	2026-02-16	42	20	Capital Outlay Reauthorizations	excluded	reauthorizes 380 previously funded capital projects; appropriations housekeeping, same reason as House Bill 2
+HB332	senate	1637971	2026-02-18	24	14	Capital Outlay Reauthorizations	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+HB4	house	1632642	2026-02-12	48	19	Health Care Affordability Fund Distributions	batch-01	imported
+HB4	senate	1637878	2026-02-18	24	12	Health Care Affordability Fund Distributions	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+HB7	senate	1637968	2026-02-18	29	8	Apprenticeship Assistance Act Transfers	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+HB8	house	1625730	2026-02-06	45	23	Higher Ed. Major Projects Fund	dropped	creates a higher education major projects fund for university buildings, athletics and student housing; a capital funding vehicle, and the initial priorities are led by a stadium, so no research area carries an honest direction
+HB9	house	1620250	2026-01-30	40	29	Immigrant Safety Act	batch-01	imported
+HB9	senate	1622730	2026-02-03	24	15	Immigrant Safety Act	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+HJR5	house	1633579	2026-02-13	41	26	Legislative Compensation, Ca	dropped	a constitutional amendment on legislative pay, sent to the voters; a paid legislature reads either as reducing reliance on outside income or as lawmakers voting themselves a salary, and no research area settles it
+HJR5	senate	1637954	2026-02-17	23	19	Legislative Compensation, Ca	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+SB111	house	1638035	2026-02-18	37	24	Motor Vehicle Code "personal Info"	batch-01	imported
+SB111	senate	1633953	2026-02-14	26	16	Motor Vehicle Code "personal Info"	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+SB151	house	1638031	2026-02-18	42	19	Corporate Income Tax Changes	held	LEGISCAN TALLY IS WRONG. New Mexico's official roll call sheet RCS# 171 reads 43-19 with 6 excused and 2 absent; LegiScan stores 42-19 with 9 absent. LegiScan's own bill history agrees with the sheet at 43-19. The approval gate writes the stored tally into the record text, so this roll cannot be imported
+SB151	senate	1633974	2026-02-15	24	17	Corporate Income Tax Changes	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+SB152	house	1637987	2026-02-18	48	14	Low-income Telecomm. Assistance Program	batch-01	imported
+SB193	senate	1628714	2026-02-10	28	10	Acequia & Ditch Infrastructure Fund Transfer	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+SB2	house	1620240	2026-01-30	44	23	State Highway Project Bonds	batch-01	imported
+SB2	senate	1616794	2026-01-23	31	9	State Highway Project Bonds	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+SB21	house	1636452	2026-02-17	41	22	Medicare Supplement Open Enrollment	batch-01	imported
+SB241	house	1636395	2026-02-17	37	19	Child Care Assistance Program Act	batch-01	imported
+SB241	senate	1632420	2026-02-12	25	15	Child Care Assistance Program Act	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+SB264	house	1636283	2026-02-17	41	26	Public Peace, Health, Safety & Welfare	batch-01	imported
+SB264	senate	1633975	2026-02-15	26	16	Public Peace, Health, Safety & Welfare	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+SB30	house	1634862	2026-02-16	39	27	Reporting Of Induced Abortions	batch-01	imported
+SB30	senate	1628868	2026-02-10	24	15	Reporting Of Induced Abortions	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+SB38	senate	1625619	2026-02-05	23	15	Fees On Registered Pet Food	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+SB40	house	1636280	2026-02-17	42	22	Driver Privacy And Safety Act	batch-01	imported
+SB40	senate	1632874	2026-02-12	32	8	Driver Privacy And Safety Act	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+SB48	senate	1625852	2026-02-06	26	12	State Fairgrounds District Bonds	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+SB58	senate	1625794	2026-02-05	27	8	Extend Property Tax Exemption Period	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+SB73	senate	1633954	2026-02-14	25	16	Driver's Ed Requirements	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
+SB96	house	1636446	2026-02-17	41	23	Regulated Child Care Zoning Requirements	batch-01	imported
+SB96	senate	1631065	2026-02-11	25	13	Regulated Child Care Zoning Requirements	out_of_scope	New Mexico senators serve four-year terms and were elected in 2024, so no Senate seat is on the 2026 ballot and this roll fans out to nobody
