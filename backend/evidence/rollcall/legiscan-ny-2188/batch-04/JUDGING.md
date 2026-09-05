@@ -46,3 +46,17 @@ marked `{NEW ... NEW}`. The sponsor memo was not read.
 4 rolls approved, **106 records** (53 per Assembly roll), 0 errors. The Senate rolls write nothing
 because the crosswalk maps one senator and that seat did not vote. Both worklist rows now read
 `batch-04`. New York holds 1,243 records.
+
+## Import reports
+
+The importer writes the full report (candidate rows expanded) to the file and prints a compact form
+(candidate counts) to the console. The first commit of this batch pasted the console form over both
+files: `import-dry-run-report.json` was overwritten without truncation (139 compact lines followed by
+the tail of the full file, so it did not parse) and `import-report.json` lost its candidate rows,
+while the importer's own full import file had been renamed `import-rerun-report.json`.
+
+Fixed 2026-09-05 without touching the database: `import-report.json` is again the importer's full
+file for the 22:06:06 import; `import-dry-run-report.json` is the console form of the 22:06:04
+pre-import dry run (its full file cannot be regenerated once the rows exist, and the compact head
+is complete and unedited); `import-dry-run-rerun-report.json` (23:11) and `import-rerun-report.json`
+(23:12) are real second runs against the imported rows, both `unchanged: 106`.
