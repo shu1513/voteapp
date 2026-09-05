@@ -12,8 +12,8 @@ HB1010	S	1537226	2025-04-04	23-11	candidate:unbatched	passage			Prohibiting Pric
 HB1013	H	1564716	2025-05-02	43-19	candidate:unbatched	concurrence	1564715	1527468	Department of Corrections Visitation Rights
 HB1013	S	1564637	2025-05-02	22-12	candidate:unbatched	passage	1564472		Department of Corrections Visitation Rights
 HB1016	H		2025-03-17		superseded	the chamber's last floor vote was not divided			Occupational Therapist Prescribe Medical Equipment
-HB1018	H	1530295	2025-03-28	45-18	candidate:unbatched	concurrence	1530294	1491878	Vocational Rehabilitation Services
-HB1018	S	1525222	2025-03-24	21-12	candidate:unbatched	passage			Vocational Rehabilitation Services
+HB1018	H	1530295	2025-03-28	45-18	batch-02	concurrence	1530294	1491878	Vocational Rehabilitation Services
+HB1018	S	1525222	2025-03-24	21-12	batch-02	passage			Vocational Rehabilitation Services
 HB1019	H	1474859	2025-01-27	41-21	candidate:unbatched	passage			Third-Party Administration of Division of Housing Programs
 HB1019	S	1487373	2025-02-12	21-12	candidate:unbatched	passage			Third-Party Administration of Division of Housing Programs
 HB1023	H	1563875	2025-05-01	42-21	candidate:unbatched	concurrence	1563874	1483141	Local Government Review of Fencing Projects
@@ -47,8 +47,8 @@ HB1081	S	1502194	2025-02-28	20-9	candidate:unbatched	passage			Reporting Statist
 HB1084	H	1483110	2025-02-06	48-15	candidate:unbatched	passage			Remove Gendered Language from Title 35
 HB1090	H	1530160	2025-03-28	41-21	batch-01	concurrence	1530159	1504544	Protections Against Deceptive Pricing Practices
 HB1090	S	1527493	2025-03-26	22-12	batch-01	passage			Protections Against Deceptive Pricing Practices
-HB1093	H	1518362	2025-03-17	47-16	candidate:unbatched	concurrence	1518361	1492034	Limitations on Local Anti-Growth Land Use Policies
-HB1093	S	1517886	2025-03-14	21-13	candidate:unbatched	passage			Limitations on Local Anti-Growth Land Use Policies
+HB1093	H	1518362	2025-03-17	47-16	batch-02	concurrence	1518361	1492034	Limitations on Local Anti-Growth Land Use Policies
+HB1093	S	1517886	2025-03-14	21-13	batch-02	passage			Limitations on Local Anti-Growth Land Use Policies
 HB1094	H	1567155	2025-05-07	49-16	candidate:unbatched	concurrence	1567154	1518345	Pharmacy Benefit Manager Practices
 HB1096	H	1531351	2025-03-31	42-22	candidate:unbatched	passage			Automated Permits for Clean Energy Technology
 HB1096	S	1558802	2025-04-28	24-10	candidate:unbatched	passage			Automated Permits for Clean Energy Technology
@@ -62,8 +62,8 @@ HB1113	H	1545996	2025-04-11	41-21	candidate:unbatched	concurrence	1545995	150463
 HB1113	S	1537190	2025-04-04	24-11	candidate:unbatched	passage			Limit Turf in New Residential Development
 HB1114	H	1511449	2025-03-10	40-22	candidate:unbatched	concurrence	1511448	1491807	Defense Review of Tangible Object for Criminal Trial
 HB1114	S	1508566	2025-03-07	23-8	candidate:unbatched	passage			Defense Review of Tangible Object for Criminal Trial
-HB1117	H	1555083	2025-04-23	41-22	candidate:unbatched	concurrence	1555082	1527488	Vehicle Immobilization Company Regulation
-HB1117	S	1551530	2025-04-17	22-13	candidate:unbatched	passage			Vehicle Immobilization Company Regulation
+HB1117	H	1555083	2025-04-23	41-22	batch-02	concurrence	1555082	1527488	Vehicle Immobilization Company Regulation
+HB1117	S	1551530	2025-04-17	22-13	batch-02	passage			Vehicle Immobilization Company Regulation
 HB1124	H	1493967	2025-02-19	41-22	candidate:unbatched	passage			Universal Contracting Provision Requirements
 HB1129	H	1484597	2025-02-10	50-13	candidate:unbatched	passage			Department of Corrections Peer Behavioral Health Services Reentry Program
 HB1129	S	1502345	2025-02-28	23-6	candidate:unbatched	passage			Department of Corrections Peer Behavioral Health Services Reentry Program
@@ -87,8 +87,8 @@ HB1153	S	1564501	2025-05-02	25-9	candidate:unbatched	passage			Statewide Governm
 HB1154	H	1564040	2025-05-01	43-22	candidate:unbatched	conference_report	1564039	1512597	Communication Services People with Disabilities Enterprise
 HB1154	S	1560520	2025-04-29	20-12	candidate:unbatched	conference_report	1560519	1551073	Communication Services People with Disabilities Enterprise
 HB1159	H	1559089	2025-04-28	51-14	candidate:unbatched	passage			Child Support Commission Recommendations
-HB1161	H	1546331	2025-04-11	40-22	candidate:unbatched	concurrence	1546330	1505248	Labeling Gas-Fueled Stoves
-HB1161	S	1538101	2025-04-07	19-15	candidate:unbatched	passage			Labeling Gas-Fueled Stoves
+HB1161	H	1546331	2025-04-11	40-22	batch-02	concurrence	1546330	1505248	Labeling Gas-Fueled Stoves
+HB1161	S	1538101	2025-04-07	19-15	batch-02	passage			Labeling Gas-Fueled Stoves
 HB1165	H	1545935	2025-04-11	41-21	candidate:unbatched	concurrence	1545934	1517949	Geologic Storage Enterprise & Geothermal Resources
 HB1168	H	1546413	2025-04-11	41-21	candidate:unbatched	concurrence	1546412	1506114	Housing Protections for Victim-Survivors
 HB1168	S	1537175	2025-04-04	23-11	candidate:unbatched	passage			Housing Protections for Victim-Survivors
@@ -124,8 +124,8 @@ HB1215	H	1563990	2025-05-01	48-17	candidate:unbatched	concurrence	1563989	155264
 HB1217	H	1509024	2025-03-10	46-15	candidate:unbatched	passage			Funeral Services & Consumer Protections
 HB1224	H	1546073	2025-04-11	46-16	candidate:unbatched	concurrence	1546072	1522634	Revised Uniform Unclaimed Property Act Modifications
 HB1224	S	1537213	2025-04-04	25-10	candidate:unbatched	passage			Revised Uniform Unclaimed Property Act Modifications
-HB1225	H	1563889	2025-05-01	41-24	candidate:unbatched	concurrence	1563888	1532197	Freedom from Intimidation in Elections Act
-HB1225	S	1558839	2025-04-28	22-12	candidate:unbatched	passage			Freedom from Intimidation in Elections Act
+HB1225	H	1563889	2025-05-01	41-24	batch-02	concurrence	1563888	1532197	Freedom from Intimidation in Elections Act
+HB1225	S	1558839	2025-04-28	22-12	batch-02	passage			Freedom from Intimidation in Elections Act
 HB1234	H	1545953	2025-04-11	41-21	candidate:unbatched	concurrence	1545952	1518984	Utility Consumer Protection
 HB1234	S	1537220	2025-04-04	23-11	candidate:unbatched	passage			Utility Consumer Protection
 HB1236	H	1563937	2025-05-01	35-28	dropped	dropped: no research area fits a screening-report change	1563936	1527600	Residential Tenant Screening

@@ -1,0 +1,204 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1538101,
+   "measure_id": "HB 1161",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1161. The act sets a labeling rule for new gas stoves. A store must put a yellow label on the display model. In English and Spanish, it tells the buyer to understand the air quality effects of an indoor gas stove. The label carries a link or a scan code to a state web page on the health effects of those stoves. A store selling online must post the same wording before the sale. The state health department has to build and keep that web page. A store that breaks the rule commits a deceptive trade practice under Colorado's consumer protection law. The Colorado Senate passed it 19-15 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1161. The act sets a labeling rule for new gas stoves. A store must put a yellow label on the display model. In English and Spanish, it tells the buyer to understand the air quality effects of an indoor gas stove. The label carries a link or a scan code to a state web page on the health effects of those stoves. A store selling online must post the same wording before the sale. The state health department has to build and keep that web page. A store that breaks the rule commits a deceptive trade practice under Colorado's consumer protection law. The Colorado Senate passed it 19-15 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1546331,
+   "measure_id": "HB 1161",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1161 and pass it. The act sets a labeling rule for new gas stoves. A store must put a yellow label on the display model. In English and Spanish, it tells the buyer to understand the air quality effects of an indoor gas stove. The label carries a link or a scan code to a state web page on the health effects of those stoves. A store selling online must post the same wording before the sale. The state health department has to build and keep that web page. A store that breaks the rule commits a deceptive trade practice under Colorado's consumer protection law. The Colorado House voted 40-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1161. The act sets a labeling rule for new gas stoves. A store must put a yellow label on the display model. In English and Spanish, it tells the buyer to understand the air quality effects of an indoor gas stove. The label carries a link or a scan code to a state web page on the health effects of those stoves. A store selling online must post the same wording before the sale. The state health department has to build and keep that web page. A store that breaks the rule commits a deceptive trade practice under Colorado's consumer protection law. The Colorado House voted 40-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1546330
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1525222,
+   "measure_id": "HB 1018",
+   "vote_date": "2025-03-24",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1018. The act widens who can get state vocational rehabilitation services, which help people with disabilities find and keep work. It removes the rule that an applicant has to be in Colorado when applying. It also removes the screen that asked whether the state judged the person able to achieve rehabilitation. People no longer have to pay toward the cost based on a state test of what they can afford. Nor does a relative who claims them as a dependent. The state can weigh what a person can pay only when money runs short and it has to manage a waiting list. Before it does that, it has to ask people with disabilities, community groups and the public. The Colorado Senate passed it 21-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1018. The act widens who can get state vocational rehabilitation services, which help people with disabilities find and keep work. It removes the rule that an applicant has to be in Colorado when applying. It also removes the screen that asked whether the state judged the person able to achieve rehabilitation. People no longer have to pay toward the cost based on a state test of what they can afford. Nor does a relative who claims them as a dependent. The state can weigh what a person can pay only when money runs short and it has to manage a waiting list. Before it does that, it has to ask people with disabilities, community groups and the public. The Colorado Senate passed it 21-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1530295,
+   "measure_id": "HB 1018",
+   "vote_date": "2025-03-28",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1018 and pass it. The act widens who can get state vocational rehabilitation services, which help people with disabilities find and keep work. It removes the rule that an applicant has to be in Colorado when applying. It also removes the screen that asked whether the state judged the person able to achieve rehabilitation. People no longer have to pay toward the cost based on a state test of what they can afford. Nor does a relative who claims them as a dependent. The state can weigh what a person can pay only when money runs short and it has to manage a waiting list. Before it does that, it has to ask people with disabilities, community groups and the public. The Colorado House voted 45-18 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1018. The act widens who can get state vocational rehabilitation services, which help people with disabilities find and keep work. It removes the rule that an applicant has to be in Colorado when applying. It also removes the screen that asked whether the state judged the person able to achieve rehabilitation. People no longer have to pay toward the cost based on a state test of what they can afford. Nor does a relative who claims them as a dependent. The state can weigh what a person can pay only when money runs short and it has to manage a waiting list. Before it does that, it has to ask people with disabilities, community groups and the public. The Colorado House voted 45-18 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1530294
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1558839,
+   "measure_id": "HB 1225",
+   "vote_date": "2025-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1225. The act creates the Freedom from Intimidation in Elections Act. No one may threaten or scare a person for voting or trying to vote. The same goes for helping someone else vote, or for running an election. People who worked on past elections are covered too. Carrying a visible gun, real or fake, while watching or dealing with those activities counts as scaring people unless the person shows it was not. That rule does not cover on-duty police, or uniformed guards working under a contract at the site. A person who is harmed can sue, and so can an election official, the Secretary of State or the attorney general. A winner gets legal costs. Except where the claim is that someone tried to scare a person, the suit does not turn on proving they meant to. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1225. The act creates the Freedom from Intimidation in Elections Act. No one may threaten or scare a person for voting or trying to vote. The same goes for helping someone else vote, or for running an election. People who worked on past elections are covered too. Carrying a visible gun, real or fake, while watching or dealing with those activities counts as scaring people unless the person shows it was not. That rule does not cover on-duty police, or uniformed guards working under a contract at the site. A person who is harmed can sue, and so can an election official, the Secretary of State or the attorney general. A winner gets legal costs. Except where the claim is that someone tried to scare a person, the suit does not turn on proving they meant to. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1563889,
+   "measure_id": "HB 1225",
+   "vote_date": "2025-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1225 and pass it. The act creates the Freedom from Intimidation in Elections Act. No one may threaten or scare a person for voting or trying to vote. The same goes for helping someone else vote, or for running an election. People who worked on past elections are covered too. Carrying a visible gun, real or fake, while watching or dealing with those activities counts as scaring people unless the person shows it was not. That rule does not cover on-duty police, or uniformed guards working under a contract at the site. A person who is harmed can sue, and so can an election official, the Secretary of State or the attorney general. A winner gets legal costs. Except where the claim is that someone tried to scare a person, the suit does not turn on proving they meant to. The Colorado House voted 41-24 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1225. The act creates the Freedom from Intimidation in Elections Act. No one may threaten or scare a person for voting or trying to vote. The same goes for helping someone else vote, or for running an election. People who worked on past elections are covered too. Carrying a visible gun, real or fake, while watching or dealing with those activities counts as scaring people unless the person shows it was not. That rule does not cover on-duty police, or uniformed guards working under a contract at the site. A person who is harmed can sue, and so can an election official, the Secretary of State or the attorney general. A winner gets legal costs. Except where the claim is that someone tried to scare a person, the suit does not turn on proving they meant to. The Colorado House voted 41-24 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1563888
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1517886,
+   "measure_id": "HB 1093",
+   "vote_date": "2025-03-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1093. Colorado law already bars local rules that cap how many people or new homes a town allows each year. The act widens that ban. In urban areas a local rule may not cut the housing density or the housing uses allowed on land below what its zoning allowed on July 1, 2025. The ban reaches only rules that say so outright, and the act limits the older ban to rules that apply across the board. It can do that only by making room for the same amount somewhere else in town. Land holding or next to a wildlife crossing is left out. A town can also ask a court whether a land use measure put forward by voters is legal before it goes on the ballot. Land owners and the measure's backers can join that case, and the election clock stops while it runs. The Colorado Senate passed it 21-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1093. Colorado law already bars local rules that cap how many people or new homes a town allows each year. The act widens that ban. In urban areas a local rule may not cut the housing density or the housing uses allowed on land below what its zoning allowed on July 1, 2025. The ban reaches only rules that say so outright, and the act limits the older ban to rules that apply across the board. It can do that only by making room for the same amount somewhere else in town. Land holding or next to a wildlife crossing is left out. A town can also ask a court whether a land use measure put forward by voters is legal before it goes on the ballot. Land owners and the measure's backers can join that case, and the election clock stops while it runs. The Colorado Senate passed it 21-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1518362,
+   "measure_id": "HB 1093",
+   "vote_date": "2025-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1093 and pass it. Colorado law already bars local rules that cap how many people or new homes a town allows each year. The act widens that ban. In urban areas a local rule may not cut the housing density or the housing uses allowed on land below what its zoning allowed on July 1, 2025. The ban reaches only rules that say so outright, and the act limits the older ban to rules that apply across the board. It can do that only by making room for the same amount somewhere else in town. Land holding or next to a wildlife crossing is left out. A town can also ask a court whether a land use measure put forward by voters is legal before it goes on the ballot. Land owners and the measure's backers can join that case, and the election clock stops while it runs. The Colorado House voted 47-16 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1093. Colorado law already bars local rules that cap how many people or new homes a town allows each year. The act widens that ban. In urban areas a local rule may not cut the housing density or the housing uses allowed on land below what its zoning allowed on July 1, 2025. The ban reaches only rules that say so outright, and the act limits the older ban to rules that apply across the board. It can do that only by making room for the same amount somewhere else in town. Land holding or next to a wildlife crossing is left out. A town can also ask a court whether a land use measure put forward by voters is legal before it goes on the ballot. Land owners and the measure's backers can join that case, and the election clock stops while it runs. The Colorado House voted 47-16 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1518361
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1551530,
+   "measure_id": "HB 1117",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1117. The act regulates companies that boot vehicles. The state utilities commission can refuse, pause or cancel a company's permit when holding one is not in the public interest. Before booting, a company has to photograph the car and the reason for the boot. Not having those photos counts against the company later. A company has to show its name, permit number and phone number on its vehicles. It cannot boot a car another company already booted, and cannot patrol a lot hunting for parking violations. Booting on private property needs signs posted in English and Spanish, and notice to the driver when they park. In a parking space or shared lot the company or owner must leave a written warning on the windshield 24 hours ahead, unless the driver already got one for parking the same way. A company has to take cash or a major credit card and give an itemized bill. It has to free a car within 90 minutes in business hours, or 120 minutes outside them. It has to free the car at once if the driver pays at least $60 and signs a state form for the rest. Breaking these rules is a deceptive trade practice the attorney general or a district attorney can act on. The Colorado Senate passed it 22-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1117. The act regulates companies that boot vehicles. The state utilities commission can refuse, pause or cancel a company's permit when holding one is not in the public interest. Before booting, a company has to photograph the car and the reason for the boot. Not having those photos counts against the company later. A company has to show its name, permit number and phone number on its vehicles. It cannot boot a car another company already booted, and cannot patrol a lot hunting for parking violations. Booting on private property needs signs posted in English and Spanish, and notice to the driver when they park. In a parking space or shared lot the company or owner must leave a written warning on the windshield 24 hours ahead, unless the driver already got one for parking the same way. A company has to take cash or a major credit card and give an itemized bill. It has to free a car within 90 minutes in business hours, or 120 minutes outside them. It has to free the car at once if the driver pays at least $60 and signs a state form for the rest. Breaking these rules is a deceptive trade practice the attorney general or a district attorney can act on. The Colorado Senate passed it 22-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1555083,
+   "measure_id": "HB 1117",
+   "vote_date": "2025-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1117 and pass it. The act regulates companies that boot vehicles. The state utilities commission can refuse, pause or cancel a company's permit when holding one is not in the public interest. Before booting, a company has to photograph the car and the reason for the boot. Not having those photos counts against the company later. A company has to show its name, permit number and phone number on its vehicles. It cannot boot a car another company already booted, and cannot patrol a lot hunting for parking violations. Booting on private property needs signs posted in English and Spanish, and notice to the driver when they park. In a parking space or shared lot the company or owner must leave a written warning on the windshield 24 hours ahead, unless the driver already got one for parking the same way. A company has to take cash or a major credit card and give an itemized bill. It has to free a car within 90 minutes in business hours, or 120 minutes outside them. It has to free the car at once if the driver pays at least $60 and signs a state form for the rest. Breaking these rules is a deceptive trade practice the attorney general or a district attorney can act on. The Colorado House voted 41-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1117. The act regulates companies that boot vehicles. The state utilities commission can refuse, pause or cancel a company's permit when holding one is not in the public interest. Before booting, a company has to photograph the car and the reason for the boot. Not having those photos counts against the company later. A company has to show its name, permit number and phone number on its vehicles. It cannot boot a car another company already booted, and cannot patrol a lot hunting for parking violations. Booting on private property needs signs posted in English and Spanish, and notice to the driver when they park. In a parking space or shared lot the company or owner must leave a written warning on the windshield 24 hours ahead, unless the driver already got one for parking the same way. A company has to take cash or a major credit card and give an itemized bill. It has to free a car within 90 minutes in business hours, or 120 minutes outside them. It has to free the car at once if the driver pays at least $60 and signs a state form for the rest. Breaking these rules is a deceptive trade practice the attorney general or a district attorney can act on. The Colorado House voted 41-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1555082
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  }
+ ]
+}

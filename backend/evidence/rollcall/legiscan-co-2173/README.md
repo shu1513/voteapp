@@ -17,6 +17,7 @@ holds no Colorado roll-call records.**
 | `crosswalk-proposals-report.json` | the proposer's output and the validation counts (per-roll detail removed; the full report is 20+ MB) |
 | `survey/` | the description histogram the config was written from, and the divided-and-enacted worklist |
 | `batch-01/` | the first batch: plan, judging notes, judgments, the 13 roll evidence files and the import ledgers |
+| `batch-02/` | the second batch: five measures widening area coverage, with the same layout |
 
 The dataset itself and the 1,930 fetched roll evidence files live outside the
 repository at `/Users/shu/legiscan-data/co-2173{,-evidence}/`, following the
