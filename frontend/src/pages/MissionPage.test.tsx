@@ -99,10 +99,10 @@ describe("MissionPage", () => {
     // No inline payment forms anymore, and no member thanks for a non-member.
     await waitFor(() => expect(queryClient.getQueryState(["me", "membership"])?.status).toBe("success"));
     expect(screen.queryByRole("button", { name: "Support monthly" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Manage membership" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Manage membership" })).not.toBeInTheDocument();
   });
 
-  it("thanks an existing member and offers the portal", async () => {
+  it("thanks an existing member and links to the membership page", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/membership": { body: ACTIVE_MEMBER },
@@ -111,7 +111,7 @@ describe("MissionPage", () => {
     renderMission();
 
     expect(await screen.findByText("You are a supporting member. Thank you!")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Manage membership" })).toBeEnabled();
+    expect(screen.getByRole("link", { name: "Manage membership" })).toHaveAttribute("href", "/me/membership");
   });
 
   it("does not thank a member whose subscription is not active", async () => {
@@ -138,6 +138,6 @@ describe("MissionPage", () => {
 
     expect(await screen.findByRole("heading", { name: "Mission" })).toBeInTheDocument();
     await waitFor(() => expect(queryClient.getQueryState(["me", "membership"])?.status).toBe("success"));
-    expect(screen.queryByRole("button", { name: "Manage membership" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Manage membership" })).not.toBeInTheDocument();
   });
 });

@@ -355,7 +355,7 @@ describe("membership createPortalSession", () => {
     expect(await service.createPortalSession(USER_ID)).toEqual({ url: "https://portal.stripe.test/ps_1" });
     expect(stripe.billingPortal.sessions.create).toHaveBeenCalledWith({
       customer: STRIPE_CUSTOMER_ID,
-      return_url: "https://site.test/me/settings",
+      return_url: "https://site.test/me/membership",
     });
   });
 
@@ -367,7 +367,7 @@ describe("membership createPortalSession", () => {
     await service.createPortalSession(USER_ID, { flow: null });
     expect(stripe.billingPortal.sessions.create).toHaveBeenCalledWith({
       customer: STRIPE_CUSTOMER_ID,
-      return_url: "https://site.test/me/settings",
+      return_url: "https://site.test/me/membership",
     });
   });
 

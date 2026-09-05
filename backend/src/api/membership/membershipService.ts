@@ -307,10 +307,8 @@ function currentPeriodEndOf(subscription: Stripe.Subscription): Date | null {
 export function createMembershipService(options: MembershipServiceOptions): MembershipService {
   const { db, stripe } = options;
   const publicBaseUrl = options.publicBaseUrl.replace(/\/+$/, "");
-  const settingsUrl = `${publicBaseUrl}/me/settings`;
-  // The general portal returns to Settings (where shipped clients manage the
-  // plan); portal flows return to the membership page, which only the new
-  // page requests (docs/plans/membership-manage-page.md, PR 3).
+  // Every portal session returns to the membership page, where the plan is
+  // managed (docs/plans/membership-manage-page.md).
   const membershipPageUrl = `${publicBaseUrl}/me/membership`;
   // Checkout starts on the kind-specific support page, so it returns there.
   const termsUrl = `${publicBaseUrl}/terms`;
@@ -1172,7 +1170,7 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
         if (liveSubscriptionId) {
           throw new MembershipServiceError(
             "membership_exists",
-            "You already have a monthly membership. To change the amount, cancel it in Manage membership and subscribe again."
+            "You already have a monthly membership. Change the amount under Manage membership."
           );
         }
       }
@@ -1248,7 +1246,7 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
             }
           : {
               customer: customer.stripe_customer_id,
-              return_url: settingsUrl,
+              return_url: membershipPageUrl,
             }
       );
       return { url: session.url };

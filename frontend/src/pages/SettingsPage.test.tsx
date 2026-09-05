@@ -63,7 +63,49 @@ describe("SettingsPage", () => {
     expect(screen.getByText("My most important issues")).toBeInTheDocument();
   });
 
-  it("hides the support section when Stripe is not configured", async () => {
+  it("carries no support box of its own — membership management lives on /me/membership", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/me/membership": { body: { enabled: true, membership: null, total_net_cents: 0, payments: [] } },
+      "/api/research-areas": { body: { research_areas: [] } },
+      "/api/me/research-area-preferences": { body: { preferences: [] } },
+    });
+    renderSettings();
+
+    // Non-member: the Profile box invites, pointing at the member page.
+    expect(await screen.findByRole("link", { name: "Become an honorary member" })).toHaveAttribute("href", "/support/member");
+    expect(screen.queryByRole("heading", { name: "Support Elections Simplified" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Support monthly" })).not.toBeInTheDocument();
+    expect(screen.queryByText(/Thank you for being a supporting member/)).not.toBeInTheDocument();
+    // No payments, so no history to link.
+    expect(screen.queryByRole("link", { name: "Payment history" })).not.toBeInTheDocument();
+  });
+
+  it("links a lapsed supporter to their payment history next to the invitation", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/me/membership": {
+        body: {
+          enabled: true,
+          membership: null,
+          total_net_cents: 500,
+          payments: [
+            { amount_cents: 500, refunded_amount_cents: 0, kind: "one_time", currency: "usd", paid_at: "2026-07-01T12:00:00.000Z" },
+          ],
+        },
+      },
+      "/api/research-areas": { body: { research_areas: [] } },
+      "/api/me/research-area-preferences": { body: { preferences: [] } },
+    });
+    renderSettings();
+
+    expect(await screen.findByRole("link", { name: "Payment history" })).toHaveAttribute("href", "/me/membership");
+    expect(screen.getByRole("link", { name: "Become an honorary member" })).toHaveAttribute("href", "/support/member");
+  });
+
+  it("stays quiet when Stripe is not configured", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
@@ -74,30 +116,12 @@ describe("SettingsPage", () => {
     const { queryClient } = renderSettings();
 
     expect(await screen.findByRole("heading", { name: "Email notifications" })).toBeInTheDocument();
-    // The section also renders nothing while its request is pending, so the
-    // absence only means "hidden because disabled" once that query settled.
     await waitFor(() => expect(queryClient.getQueryState(["me", "membership"])?.status).toBe("success"));
-    expect(screen.queryByRole("heading", { name: "Support Elections Simplified" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Become an honorary member" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Manage membership" })).not.toBeInTheDocument();
   });
 
-  it("shows the support section to verified users when Stripe is configured", async () => {
-    stubApiRoutes({
-      "/api/me": { body: ME_VERIFIED },
-      "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
-      "/api/me/membership": { body: { enabled: true, membership: null, total_net_cents: 0, payments: [] } },
-      "/api/research-areas": { body: { research_areas: [] } },
-      "/api/me/research-area-preferences": { body: { preferences: [] } },
-    });
-    renderSettings();
-
-    expect(await screen.findByRole("heading", { name: "Support Elections Simplified" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Support monthly" })).toBeInTheDocument();
-    // Non-member: the Profile box invites, pointing at the mission page.
-    expect(screen.getByRole("link", { name: "Become an honorary member" })).toHaveAttribute("href", "/support/member");
-    expect(screen.queryByText(/Thank you for being a supporting member/)).not.toBeInTheDocument();
-  });
-
-  it("thanks a member in the Profile box and anchors to the support section", async () => {
+  it("thanks a member in the Profile box and links to the membership page", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
@@ -110,6 +134,7 @@ describe("SettingsPage", () => {
             cancel_at_period_end: false,
             current_period_end: "2026-09-15T12:00:00.000Z",
             started_at: "2026-08-15T12:00:00.000Z",
+            pending_amount_change: null,
           },
           total_net_cents: 500,
           payments: [],
@@ -121,13 +146,17 @@ describe("SettingsPage", () => {
     renderSettings();
 
     expect(await screen.findByText(/Thank you for being a supporting member/)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Manage membership" })).toHaveAttribute("href", "#support");
+    expect(screen.getByRole("link", { name: "Manage membership" })).toHaveAttribute("href", "/me/membership");
     expect(screen.queryByRole("link", { name: "Become an honorary member" })).not.toBeInTheDocument();
   });
 
-  it("stays quiet in the Profile box for a nonterminal but non-active subscription", async () => {
-    // The support section below carries the accurate pending copy; the
-    // profile line must neither thank nor invite (checkout would 409).
+  it.each([
+    ["incomplete", "Your membership is being set up.", "Manage membership"],
+    ["past_due", "Your last membership payment didn't go through.", "Fix payment"],
+    ["unpaid", "Your last membership payment didn't go through.", "Fix payment"],
+  ])("names a %s subscription in the Profile box and links to the membership page", async (state, text, label) => {
+    // Neither thanks nor invites (checkout would 409); the page behind the
+    // link carries the detail.
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
@@ -135,11 +164,12 @@ describe("SettingsPage", () => {
         body: {
           enabled: true,
           membership: {
-            stripe_status: "incomplete",
+            stripe_status: state,
             monthly_amount_cents: 500,
             cancel_at_period_end: false,
             current_period_end: null,
             started_at: "2026-08-15T12:00:00.000Z",
+            pending_amount_change: null,
           },
           total_net_cents: 0,
           payments: [],
@@ -150,7 +180,8 @@ describe("SettingsPage", () => {
     });
     renderSettings();
 
-    expect(await screen.findByText("Monthly membership pending: $5.00/month")).toBeInTheDocument();
+    expect(await screen.findByText(text)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: label })).toHaveAttribute("href", "/me/membership");
     expect(screen.queryByText(/Thank you for being a supporting member/)).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Become an honorary member" })).not.toBeInTheDocument();
   });

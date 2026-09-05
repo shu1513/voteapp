@@ -13,7 +13,7 @@ export type SesMembershipMailerOptions = {
   sesClient: Pick<SESv2Client, "send">;
   fromEmailAddress: string;
   replyToEmailAddress?: string;
-  /** Absolute URL of the settings page holding "Manage membership". */
+  /** Absolute URL of the Manage membership page (/me/membership). */
   manageMembershipUrl: string;
   /** Absolute URL of the Terms of Use. */
   termsUrl: string;
@@ -38,7 +38,7 @@ function buildTextBody(input: MembershipStartedEmailInput, manageMembershipUrl: 
     `Thank you for supporting ${APP_NAME}.\n\n` +
     `Your monthly membership is active: ${amount} will be charged to your payment method each month until you cancel. ` +
     `Your support funds the operation of the service; it is not a contribution to any candidate, campaign, committee, party, or charity, and it is not tax-deductible.\n\n` +
-    `Cancel anytime: open account settings and choose Manage membership.\n${manageMembershipUrl}\n\n` +
+    `Cancel anytime: open Manage membership.\n${manageMembershipUrl}\n\n` +
     `Terms of Use: ${termsUrl}\n\n` +
     `Questions? Just reply to this email.`
   );
@@ -53,7 +53,7 @@ function buildHtmlBody(input: MembershipStartedEmailInput, manageMembershipUrl: 
   <body>
     <p>Thank you for supporting ${escapeHtml(APP_NAME)}.</p>
     <p>Your monthly membership is active: <strong>${amount}</strong> will be charged to your payment method each month until you cancel. Your support funds the operation of the service; it is not a contribution to any candidate, campaign, committee, party, or charity, and it is not tax-deductible.</p>
-    <p>Cancel anytime: open <a href="${manageUrl}">account settings</a> and choose Manage membership.</p>
+    <p>Cancel anytime: open <a href="${manageUrl}">Manage membership</a>.</p>
     <p><a href="${terms}">Terms of Use</a></p>
     <p>Questions? Just reply to this email.</p>
   </body>
@@ -149,7 +149,7 @@ function changedTextBody(input: MembershipChangedEmailInput, manageMembershipUrl
       `You asked to change your monthly membership amount. Starting on ${formatDate(input.startsAt)}, ${amount} will be charged to your payment method each month until you cancel. ` +
       `Nothing is charged today. ` +
       `Your support funds the operation of the service; it is not a contribution to any candidate, campaign, committee, party, or charity, and it is not tax-deductible.\n\n` +
-      `Cancel anytime: open account settings and choose Manage membership.\n${manageMembershipUrl}\n\n` +
+      `Cancel anytime: open Manage membership.\n${manageMembershipUrl}\n\n` +
       `Terms of Use: ${termsUrl}\n\n` +
       `Questions? Just reply to this email.`
     );
@@ -158,7 +158,7 @@ function changedTextBody(input: MembershipChangedEmailInput, manageMembershipUrl
     const when = input.endsAt ? ` after ${formatDate(input.endsAt)}` : "";
     return (
       `Your monthly membership will not renew${when}. You will not be charged for another month after that.\n\n` +
-      `Changed your mind? Open account settings and choose Manage membership to keep your membership.\n${manageMembershipUrl}\n\n` +
+      `Changed your mind? Open Manage membership and choose Keep membership.\n${manageMembershipUrl}\n\n` +
       `Thank you for having supported ${APP_NAME}.\n\n` +
       `Questions? Just reply to this email.`
     );
@@ -167,7 +167,7 @@ function changedTextBody(input: MembershipChangedEmailInput, manageMembershipUrl
   const next = input.renewsAt ? ` on ${formatDate(input.renewsAt)} and` : "";
   return (
     `Welcome back. Your monthly membership continues: ${amount} will be charged to your payment method${next} each month until you cancel.\n\n` +
-    `Cancel anytime: open account settings and choose Manage membership.\n${manageMembershipUrl}\n\n` +
+    `Cancel anytime: open Manage membership.\n${manageMembershipUrl}\n\n` +
     `Terms of Use: ${termsUrl}\n\n` +
     `Questions? Just reply to this email.`
   );
@@ -178,14 +178,14 @@ function changedHtmlBody(input: MembershipChangedEmailInput, manageMembershipUrl
   const body =
     input.kind === "amount_notice"
       ? `<p>You asked to change your monthly membership amount. Starting on <strong>${escapeHtml(formatDate(input.startsAt))}</strong>, <strong>${escapeHtml(formatUsd(input.newAmountCents))}</strong> will be charged to your payment method each month until you cancel. Nothing is charged today. Your support funds the operation of the service; it is not a contribution to any candidate, campaign, committee, party, or charity, and it is not tax-deductible.</p>
-    <p>Cancel anytime: open <a href="${manageUrl}">account settings</a> and choose Manage membership.</p>
+    <p>Cancel anytime: open <a href="${manageUrl}">Manage membership</a>.</p>
     <p><a href="${escapeHtml(termsUrl)}">Terms of Use</a></p>`
       : input.kind === "canceled"
         ? `<p>Your monthly membership will not renew${input.endsAt ? ` after <strong>${escapeHtml(formatDate(input.endsAt))}</strong>` : ""}. You will not be charged for another month after that.</p>
-    <p>Changed your mind? Open <a href="${manageUrl}">account settings</a> and choose Manage membership to keep your membership.</p>
+    <p>Changed your mind? Open <a href="${manageUrl}">Manage membership</a> and choose Keep membership.</p>
     <p>Thank you for having supported ${escapeHtml(APP_NAME)}.</p>`
         : `<p>Welcome back. Your monthly membership continues: <strong>${escapeHtml(formatUsd(input.monthlyAmountCents))}</strong> will be charged to your payment method${input.renewsAt ? ` on ${escapeHtml(formatDate(input.renewsAt))} and` : ""} each month until you cancel.</p>
-    <p>Cancel anytime: open <a href="${manageUrl}">account settings</a> and choose Manage membership.</p>
+    <p>Cancel anytime: open <a href="${manageUrl}">Manage membership</a>.</p>
     <p><a href="${escapeHtml(termsUrl)}">Terms of Use</a></p>`;
   return `<!doctype html>
 <html lang="en">
