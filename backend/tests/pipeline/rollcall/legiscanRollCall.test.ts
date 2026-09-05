@@ -2018,14 +2018,14 @@ describe("getLegiscanStateConfig", () => {
     const config = LEGISCAN_STATE_CONFIGS.AZ!;
     const az = (desc: string, total = 60, chamber: "house" | "senate" = "house") =>
       classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
-    // Third reading is the only question Arizona prints on a passage vote,
-    // and the only one that ever carries a member list.
+    // Third reading is the only question Arizona prints on a passage vote.
     expect(az("House - Third Reading")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
     expect(az("Senate - Third Reading", 30, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
-    expect(az("Senate - Reconsider Third Reading", 30, "senate")).toMatchObject({
-      isFloorVote: true,
-      questionClass: "passage",
-    });
+    // Reconsider Third Reading is the motion to reopen a failed third
+    // reading (SB1126: failed 15-14, reconsider 18-11, then passed 16-11), a
+    // procedural vote that must never reach review as passage.
+    expect(az("Senate - Reconsider Third Reading", 30, "senate").reason).toBe("excluded_question");
+    expect(az("House - Reconsider Third Reading").reason).toBe("excluded_question");
     // Concurrence stays a kept question even though Arizona currently
     // publishes no members on one, so a future dataset that fills the voter
     // list queues these instead of dropping them silently.

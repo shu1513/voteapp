@@ -2828,10 +2828,23 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // + 30 Senators, plus one mid-session replacement). Feed health is the
   // cleanest tier: 0 file errors, 0 parse errors, 0 tally mismatches.
   //
-  // Arizona's vocabulary is the smallest of any state in this registry.
-  // Every roll call opens with the chamber and a dash, and the only floor
-  // question either chamber prints on a measure is `Third Reading`. There is
-  // no separate final-passage or conference wording at all.
+  // Arizona's recorded passage vocabulary is unusually small: the only floor
+  // question either chamber prints on a measure is `Third Reading`, with no
+  // separate final-passage or conference wording at all. The survey's 306
+  // distinct descriptions are otherwise committee actions (170), bare
+  // `Motion ...` sentences with no chamber prefix (90), and 46 chamber-dash
+  // strings that fold into nine families.
+  //
+  // ⚠ RECONSIDER THIRD READING IS NOT PASSAGE. `Senate - Reconsider Third
+  // Reading` is the motion to reconsider a third reading that just FAILED;
+  // the bill history prints it as `Senate motion to reconsider third
+  // reading`, and when the motion carries the bill goes back onto Third
+  // Reading for a fresh passage vote. SB1126 is the whole sequence: third
+  // reading failed 15-14, reconsider carried 18-11, third reading passed
+  // 16-11 five days later. SB1148, SB1198 and SB1713 follow the same shape.
+  // Only those four Senate rolls carry members; the other 16 Senate and all
+  // 42 House reconsider rolls arrive empty. Excluded by rule either way, so
+  // a procedural motion never enters review as a passage vote.
   //
   // ⚠ COMMITTEE OF THE WHOLE IS NOT PASSAGE. Arizona amends a bill in
   // Committee of the Whole and then passes it on third reading, so
@@ -2842,11 +2855,11 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // not depend on the feed staying empty.
   //
   // ⚠⚠ ARIZONA PUBLISHES NO MEMBER LIST FOR A CONCURRENCE VOTE. All 82
-  // `House - Concurrence` rolls, all 72 `Senate - Concurrence` rolls and all
-  // 42 `House - Reconsider Third Reading` rolls arrive with an empty voter
-  // list and a zero tally, so the fetcher skips every one as an unrecorded
-  // vote. They are still listed as kept questions rather than excluded ones,
-  // because they ARE floor votes on the measure: if a later Arizona dataset
+  // `House - Concurrence` rolls and all 72 `Senate - Concurrence` rolls
+  // arrive with an empty voter list and a zero tally, so the fetcher skips
+  // every one as an unrecorded vote. They are still listed as kept questions
+  // rather than excluded ones, because they ARE floor votes on the measure:
+  // if a later Arizona dataset
   // starts publishing their members, they should enter the queue rather than
   // be silently dropped by a rule written when the feed was thin. The
   // practical consequence for selection is large and belongs in every
@@ -2876,9 +2889,8 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     sessionId: 2155,
     chamberSizes: { house: 60, senate: 30 },
     keptQuestions: [
-      // The passage vote in both chambers, and the same question retaken.
+      // The passage vote in both chambers.
       { pattern: /^(?:house|senate) - third reading$/, questionClass: "passage" },
-      { pattern: /^(?:house|senate) - reconsider third reading$/, questionClass: "passage" },
       // The originating chamber accepting the other chamber's amendments.
       // Currently always unrecorded — see the note above.
       { pattern: /^(?:house|senate) - concurrence$/, questionClass: "concurrence" },
@@ -2886,6 +2898,8 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     excludedQuestions: [
       // Committee of the Whole: Arizona's amend-and-engross stage.
       /^(?:house|senate) - committee of the whole\b/,
+      // The motion to reconsider a failed third reading — see the note above.
+      /^(?:house|senate) - reconsider third reading$/,
       // Every floor amendment, point of order and failed-to-pass motion is
       // captioned with the member who moved it — `House - Representative
       // Chaplik to include the Chaplik #1 floor amendment`, `Senate -
