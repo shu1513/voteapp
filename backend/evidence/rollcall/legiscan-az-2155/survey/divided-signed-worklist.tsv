@@ -1,0 +1,185 @@
+bill	chapter	striker	title	origin	second_chamber_amended	chamber	roll	date	tally	divided_rolls	later_kept	version	disposition	reason
+HB2001	118	SE	Behavioral health; graduates; license exemption	H	yes	house	1491236	2025-02-17	36-23	1	1	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2001	118	SE	Behavioral health; graduates; license exemption	H	yes	senate	1539509	2025-04-08	19-9	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2009	78		Vehicle license tax; exemption; military	H	no	house	1500915	2025-02-26	46-12	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2015	261		EORP; CORP; funded ratio	H	no	senate	1595836	2025-06-27	21-8	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2054	222		DIFI; financial enterprises; insurance; compact	H	yes	house	1593082	2025-06-19	39-16	1	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2066	48		Child care facilities; program providers	H	no	house	1499058	2025-02-25	41-19	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2068	191	SE	Assistance animals; landlord tenant	H	yes	house	1567279	2025-05-07	39-19	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2068	191	SE	Assistance animals; landlord tenant	H	yes	senate	1566351	2025-05-06	21-7	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2074	129		School safety; proposals; assessments; plans	H	no	house	1478874	2025-02-03	35-24	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2074	129		School safety; proposals; assessments; plans	H	no	senate	1560390	2025-04-29	17-12	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2076	121		Life insurance; illustrations	H	yes	house	1559902	2025-04-29	41-14	1	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2104	122	SE	Emissions; voluntary vehicle repair; timeline	H	yes	house	1560292	2025-04-29	43-12	1	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2109	130		Forced organ harvesting; insurance; prohibition	H	no	house	1495087	2025-02-20	38-20	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2109	130		Forced organ harvesting; insurance; prohibition	H	no	senate	1560222	2025-04-29	18-11	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2110	41		Development; adaptive reuse; rezoning; prohibition	H	no	house	1494778	2025-02-20	42-16	1	0	enacted_text	batch-01	imported
+HB2111	123		License plates; special	H	yes	house	1559258	2025-04-28	32-23	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2112	193		Internet pornography; minors; age verification	H	yes	house	1567432	2025-05-07	35-23	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2112	193		Internet pornography; minors; age verification	H	yes	senate	1566539	2025-05-06	18-10	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2114	49		Sexual conduct; minor; classification; sentence	H	no	house	1487550	2025-02-12	39-20	1	0	enacted_text	batch-01	imported
+HB2114	49		Sexual conduct; minor; classification; sentence	H	no	senate	1534405	2025-04-02	17-13	1	0	enacted_text	batch-01	imported
+HB2119	144		Model city tax code; notice	H	yes	house	1503590	2025-03-03	34-24	1	1	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2145	43		Registered sanitarians; qualifications	H	no	senate	1533352	2025-04-01	18-11	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2166	51	SE	Use fuel dispenser labels; receipt	H	no	house	1500591	2025-02-26	40-18	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2173	25		Mental health inquiry; prohibition	H	no	house	1500460	2025-02-26	34-25	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2195	198		Digital advertising; content; children; penalty	H	no	senate	1568089	2025-05-07	16-9	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2201	167	SE	Wildfire mitigation planning; utilities; approval	H	yes	house	1565533	2025-05-06	41-15	3	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2201	167	SE	Wildfire mitigation planning; utilities; approval	H	yes	senate	1560670	2025-04-29	22-7	1	0	enacted_text	dropped	deferred to a later batch: needs a full read for a utility liability safe harbour before a stance is defensible
+HB2231	168		Advisory committee; subcommittee; exemption	H	yes	house	1566008	2025-05-06	39-16	1	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2291	45		Opioids; containers; labeling; requirements; repeal	H	no	house	1495180	2025-02-20	36-22	1	0	enacted_text	batch-01	imported
+HB2291	45		Opioids; containers; labeling; requirements; repeal	H	no	senate	1532796	2025-04-01	16-13	1	0	enacted_text	batch-01	imported
+HB2295	80	SE	Change of judge; impartiality; juveniles	H	no	senate	1549979	2025-04-16	20-9	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2313	249		Health boards; state agencies; continuations	H	yes	house	1594556	2025-06-24	44-12	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2322	46		Condominiums; commercial structures; residential structures	H	no	senate	1533171	2025-04-01	18-11	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2332	201		Postpartum health; education; advisory committee	H	yes	house	1567575	2025-05-07	44-13	1	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2342	81	SE	Blockchain technology; regulation; computational power	H	no	house	1503608	2025-03-03	39-19	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2342	81	SE	Blockchain technology; regulation; computational power	H	no	senate	1543981	2025-04-10	17-12	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2370	215		Entrance fee; refunds; time frame	H	yes	house	1492834	2025-02-18	47-13	1	1	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2374	224		Transnational repression; foreign adversaries	H	no	house	1500064	2025-02-26	35-25	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2374	224		Transnational repression; foreign adversaries	H	no	senate	1592838	2025-06-18	16-12	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2380	170		Rare disease advisory council	H	yes	house	1566122	2025-05-06	42-13	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2386	225		Pay parity; law enforcement; benchmarks	H	yes	senate	1592311	2025-06-18	22-6	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2391	147		JPs; constables; signatures	H	yes	house	1563739	2025-05-01	41-16	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2391	147		JPs; constables; signatures	H	yes	senate	1548685	2025-04-15	18-12	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2447	31		Self-certification program; administrative review	H	no	house	1499431	2025-02-25	38-22	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2447	31		Self-certification program; administrative review	H	no	senate	1527485	2025-03-26	19-8	2	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2451	127		Administrative hearings; change of judge	H	yes	senate	1548722	2025-04-15	24-6	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2484	53		School policies; internet; wireless devices	H	yes	house	1545323	2025-04-10	45-13	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2514	83		Notices; directory information; disclosure; consent	H	no	senate	1544413	2025-04-10	18-11	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2518	134		Employment; prohibitions; corporation commission	H	no	house	1517079	2025-03-13	21-35	1	1	enacted_text	dropped	superseded failed vote: the House third reading failed 21-35 and a later 51-2 vote passed the bill, so 30 members changed side
+HB2540	204		Statewide assessment; accommodations; written form	H	yes	house	1495032	2025-02-20	33-25	1	1	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2540	204		Statewide assessment; accommodations; written form	H	yes	senate	1566226	2025-05-06	18-10	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2583	206		Physical therapists; imaging; laboratory tests	H	no	house	1500492	2025-02-26	45-15	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2607	85		Fentanyl; motor vehicle; sentencing	H	no	house	1503490	2025-03-03	46-12	1	0	enacted_text	batch-01	imported
+HB2607	85		Fentanyl; motor vehicle; sentencing	H	no	senate	1549814	2025-04-16	17-13	1	0	enacted_text	batch-01	imported
+HB2611	172		Aggravated assault; accomplices; classification	H	yes	house	1565715	2025-05-06	35-19	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2611	172		Aggravated assault; accomplices; classification	H	yes	senate	1560913	2025-04-29	18-10	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2639	135		TPT; exemption; qualifying equipment; extension	H	no	house	1491101	2025-02-17	37-22	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2653	87		Victims; disclosure requirements; witnesses; names	H	no	senate	1550194	2025-04-16	22-7	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2678	174		Indistinguishable; visual depiction; definition.	H	yes	house	1565985	2025-05-06	44-11	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2679	207		Power; public utilities; UCC; securities	H	yes	house	1567291	2025-05-07	43-15	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2679	207		Power; public utilities; UCC; securities	H	yes	senate	1565566	2025-05-06	17-11	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2704	251		Tax; distribution; county stadium district	H	yes	house	1593937	2025-06-23	35-20	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2704	251		Tax; distribution; county stadium district	H	yes	senate	1593252	2025-06-19	19-11	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2727	149	SE	County water authority; Harquahala INA	H	no	house	1505388	2025-03-04	44-14	1	0	enacted_text	dropped	filter 5: local and technical, one county water authority, and forming it points no single way
+HB2728	209		DUI; alternative treatment	H	yes	house	1567444	2025-05-07	46-12	1	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2728	209		DUI; alternative treatment	H	yes	senate	1565726	2025-05-06	18-10	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2733	89		Unmanned aircraft; qualified immunity	H	no	house	1503304	2025-03-03	44-13	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2749	150		Unclaimed property; virtual currency; security	H	no	senate	1562172	2025-04-30	20-8	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2753	216		Groundwater replenishment; Pinal AMA	H	yes	house	1574610	2025-05-20	37-18	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2787	212		Ground ambulances; registration	H	yes	house	1503946	2025-03-03	37-21	1	1	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2852	125		Identification driver licenses; Native American	H	yes	house	1558944	2025-04-28	33-22	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+HB2880	152		Unauthorized encampments; higher education institutions	H	no	house	1503753	2025-03-03	41-17	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2880	152		Unauthorized encampments; higher education institutions	H	no	senate	1562091	2025-04-30	18-10	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+HB2928	217		Accessory dwelling units; requirements	H	yes	senate	1567388	2025-05-07	21-6	1	0	enacted_text	batch-01	imported
+SB1022	94		Small claims court; jurisdictional limit	S	yes	house	1551203	2025-04-17	32-23	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1033	176		Animal seizure; bond amount	S	no	house	1567347	2025-05-07	34-22	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1033	176		Animal seizure; bond amount	S	no	senate	1487435	2025-02-12	19-9	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1056	177		Liquified petroleum gas containers; penalties.	S	no	house	1567164	2025-05-07	35-23	2	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1060	14		Internal investigations; notice; confidentiality	S	no	house	1527145	2025-03-25	38-20	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1060	14		Internal investigations; notice; confidentiality	S	no	senate	1501530	2025-02-27	20-9	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1070	15		Tax deed land sales; procedures	S	no	house	1526536	2025-03-25	38-20	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1070	15		Tax deed land sales; procedures	S	no	senate	1500086	2025-02-26	17-12	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1074	178		Railroad grade crossing; on-track equipment	S	no	house	1565678	2025-05-06	43-11	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1082	253	SE	Land ownership; designated countries; prohibition	S	yes	house	1594551	2025-06-24	41-15	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1082	253	SE	Land ownership; designated countries; prohibition	S	yes	senate	1595846	2025-06-27	19-10	1	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1103	95		Penalty assessment; victims' rights enforcement	S	no	house	1558938	2025-04-28	39-17	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1107	136		Motorcycle safety fund continuation	S	no	house	1563120	2025-04-30	38-11	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1117	154	SE	Political subdivision entity; benefits	S	yes	house	1562645	2025-04-30	40-10	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1124	17		Dental board; oral preventive assistants	S	no	house	1526690	2025-03-25	38-20	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1144	155		Jail facilities excise tax; extension	S	no	house	1565103	2025-05-05	45-12	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1153	18		Write-in candidates; nomination paper filing	S	no	house	1525060	2025-03-24	41-16	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1159	38		Employment practices; wage claims	S	no	house	1528727	2025-03-27	42-15	1	0	enacted_text	batch-01	imported
+SB1198	255	SE	Animal cruelty; felony classification	S	yes	senate	1521381	2025-03-19	18-9	3	1	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1221	156		China; public funds; divestment	S	no	house	1564398	2025-05-01	40-18	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1231	39	SE	Training; newly elected constables	S	no	senate	1501713	2025-02-27	17-12	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1232	227	SE	Arrest warrant; issuance; affidavit	S	yes	house	1567311	2025-05-07	37-21	2	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1232	227	SE	Arrest warrant; issuance; affidavit	S	yes	senate	1592977	2025-06-19	19-11	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1247	228	SE	Tobacco use; sale; minimum age	S	yes	house	1584733	2025-06-04	39-13	1	0	enacted_text	batch-01	imported
+SB1247	228	SE	Tobacco use; sale; minimum age	S	yes	senate	1593226	2025-06-19	22-8	1	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1281	256		Adjutant general; duties	S	yes	house	1585236	2025-06-04	41-11	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1287	183		PSPRS; part-time employment	S	yes	house	1564945	2025-05-05	35-22	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1295	184		Fraudulent voice recordings	S	yes	house	1565057	2025-05-05	40-17	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1295	184		Fraudulent voice recordings	S	yes	senate	1567317	2025-05-07	20-6	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1307	185		Advanced air mobility infrastructure	S	yes	house	1563753	2025-05-01	44-12	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1308	66		Sober living homes	S	no	senate	1504554	2025-03-04	20-7	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1311	9		West valley charity specialty plates	S	no	house	1522068	2025-03-19	45-12	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1311	9		West valley charity specialty plates	S	no	senate	1500845	2025-02-26	22-7	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1316	98		Child fatality; maternal mortality	S	no	house	1558911	2025-04-28	42-14	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1319	157		Election officer certification training; yearly	S	no	house	1563975	2025-05-01	43-15	1	0	enacted_text	dropped	filter 3: election officer certificate expiry dates are administrative housekeeping with no direction
+SB1332	158		Driver licenses; reciprocity; foreign military	S	no	house	1564404	2025-05-01	42-13	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1333	67		Congregate care; dependent children; placement	S	yes	house	1541854	2025-04-09	44-11	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1346	159		Physical therapists; disability placards	S	no	house	1563723	2025-05-01	37-17	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1348	99		State fire marshal; phased permitting	S	yes	house	1551213	2025-04-16	45-13	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1351	186		Gift cards; theft; forgery	S	no	house	1567335	2025-05-07	33-25	1	0	enacted_text	batch-01	imported
+SB1351	186		Gift cards; theft; forgery	S	no	senate	1504424	2025-03-04	16-10	1	0	enacted_text	batch-01	imported
+SB1353	187		Municipal development; permits; review	S	yes	house	1567301	2025-05-07	44-14	1	0	enacted_text	batch-01	imported
+SB1353	187		Municipal development; permits; review	S	yes	senate	1519162	2025-03-17	17-10	1	1	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1378	103		Political signs; homeowners' associations	S	yes	house	1551353	2025-04-17	32-25	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1378	103		Political signs; homeowners' associations	S	yes	senate	1500266	2025-02-26	21-7	1	1	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1395	140	SE	Requirements; international medical graduates	S	no	house	1562224	2025-04-30	36-18	1	0	enacted_text	dropped	"filter 5: eases licensure for doctors trained at unapproved schools, and the objection is patient safety, which sits inside healthcare_affordability's own ""quality care"" wording"
+SB1395	140	SE	Requirements; international medical graduates	S	no	senate	1505398	2025-03-04	19-8	1	0	enacted_text	dropped	"filter 5: eases licensure for doctors trained at unapproved schools, and the objection is patient safety, which sits inside healthcare_affordability's own ""quality care"" wording"
+SB1405	229		Mental health transition program; extension	S	yes	house	1589481	2025-06-11	44-11	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1437	40		Mandatory reporting; school employees; investigations	S	yes	house	1520278	2025-03-18	38-20	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1437	40		Mandatory reporting; school employees; investigations	S	yes	senate	1534507	2025-04-02	22-8	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1461	70		Law enforcement officers; probation; termination	S	yes	house	1545093	2025-04-10	42-17	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1461	70		Law enforcement officers; probation; termination	S	yes	senate	1549192	2025-04-15	18-12	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1462	106		Computer-generated pictorial representations; unlawful disclosur	S	yes	house	1551093	2025-04-17	33-24	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1467	107		Liquor; consumption; watercraft	S	no	senate	1501554	2025-02-27	20-9	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1493	161		DCS; school visits; identification requirements	S	yes	senate	1566218	2025-05-06	17-11	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1496	257		Tax credit; qualifying charitable organizations	S	yes	house	1594579	2025-06-24	37-18	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1496	257		Tax credit; qualifying charitable organizations	S	yes	senate	1500939	2025-02-26	18-10	1	1	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1500	230	SE	Compensation; erroneous convictions	S	yes	senate	1595827	2025-06-27	16-13	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1517	221		Off-highway vehicles; weight	S	no	house	1584797	2025-06-04	41-11	2	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1517	221		Off-highway vehicles; weight	S	no	senate	1517575	2025-03-13	17-11	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1521	162	SE	Town of Wellton; expenditure limitation	S	yes	senate	1517593	2025-03-13	17-11	1	1	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1527	110		Occupational boards; renewal extension	S	no	house	1559093	2025-04-28	37-18	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1529	259		Municipal housing; preapproved design; annexation	S	yes	house	1595696	2025-06-26	44-12	1	0	enacted_text	batch-01	imported
+SB1537	260		Transitional housing; reentry programs; licensure	S	yes	house	1595751	2025-06-26	31-25	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1537	260		Transitional housing; reentry programs; licensure	S	yes	senate	1595881	2025-06-27	18-11	1	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1543	74	SE	Ancillary use; international headquarters campus	S	yes	house	1543980	2025-04-10	40-19	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1543	74	SE	Ancillary use; international headquarters campus	S	yes	senate	1548861	2025-04-15	17-13	1	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1551	73		Workers' compensation; disability; definitions	S	yes	house	1543628	2025-04-10	40-19	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1555	231	SE	Approved medication; rescheduling; controlled substance	S	yes	house	1592433	2025-06-18	40-19	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1590	142		Mental health; autism; insurance coverage	S	no	house	1562137	2025-04-30	43-12	1	0	enacted_text	batch-01	imported
+SB1611	252		Groundwater savings credit; ADWR	S	no	house	1593930	2025-06-23	35-20	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1624	189		Youth charity special plates	S	no	house	1566994	2025-05-06	33-21	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1624	189		Youth charity special plates	S	no	senate	1501424	2025-02-27	23-6	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1658	232	SE	Failure to treat; animal cruelty	S	yes	house	1589514	2025-06-12	34-18	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1658	232	SE	Failure to treat; animal cruelty	S	yes	senate	1517193	2025-03-13	17-10	1	1	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1661	190		Broadband service district authority; formation	S	yes	house	1551254	2025-04-17	19-39	1	1	enacted_text	dropped	superseded failed vote: the House third reading failed 19-39 and a later 57-0 vote passed the bill
+SB1700	76		County board of equalization; decisions	S	no	senate	1501708	2025-02-27	17-12	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1711	218		AHCCCS; obesity treatment; study committee	S	yes	house	1567098	2025-05-07	39-19	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1735	233		2025-2026; general appropriations act	S	yes	house	1595748	2025-06-26	40-16	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1735	233		2025-2026; general appropriations act	S	yes	senate	1595841	2025-06-27	21-8	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1736	234		2025-2026; amusements	S	no	house	1595756	2025-06-26	40-16	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1736	234		2025-2026; amusements	S	no	senate	1593193	2025-06-19	17-12	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1737	235		Capital outlay; 2025-2026; appropriations	S	yes	house	1595758	2025-06-26	40-16	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1737	235		Capital outlay; 2025-2026; appropriations	S	yes	senate	1596040	2025-06-27	21-8	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1738	236		2025-2026; commerce	S	yes	house	1595729	2025-06-26	40-16	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1738	236		2025-2026; commerce	S	yes	senate	1595875	2025-06-27	21-8	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1739	237		2025-2026; criminal justice	S	no	house	1595746	2025-06-26	40-16	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1739	237		2025-2026; criminal justice	S	no	senate	1593274	2025-06-19	17-13	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1740	238		2025-2026; environment	S	yes	house	1595727	2025-06-26	41-15	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1740	238		2025-2026; environment	S	yes	senate	1595854	2025-06-27	21-8	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1741	239		2025-2026; health care	S	yes	house	1595752	2025-06-26	43-13	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1741	239		2025-2026; health care	S	yes	senate	1595849	2025-06-27	21-8	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1742	240		2025-2026; higher education	S	yes	house	1595714	2025-06-26	42-14	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1742	240		2025-2026; higher education	S	yes	senate	1595871	2025-06-27	20-9	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1743	241		2025-2026; human services	S	yes	house	1595741	2025-06-26	42-14	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1743	241		2025-2026; human services	S	yes	senate	1595831	2025-06-27	21-8	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1744	242		2025-2026; K-12 education	S	yes	house	1595749	2025-06-26	42-14	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1744	242		2025-2026; K-12 education	S	yes	senate	1595839	2025-06-27	21-8	2	0	earlier_draft	not-selected	filter 4: this chamber voted an earlier draft; the other chamber amended the bill and Arizona publishes no member list for the concurrence vote
+SB1745	243		2025-2026; local government	S	no	house	1595722	2025-06-26	41-15	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1745	243		2025-2026; local government	S	no	senate	1592969	2025-06-19	17-13	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1746	244		Management; state properties; 2025-2026	S	no	house	1595669	2025-06-26	40-16	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1746	244		Management; state properties; 2025-2026	S	no	senate	1593202	2025-06-19	17-13	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1747	245		2025-2026; revenue	S	no	house	1595655	2025-06-26	40-16	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1747	245		2025-2026; revenue	S	no	senate	1592964	2025-06-19	17-13	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1748	246		2025-2026; state budget implementation	S	no	house	1595685	2025-06-26	40-16	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1748	246		2025-2026; state budget implementation	S	no	senate	1593220	2025-06-19	17-13	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1749	247		2025-2026; taxation; omnibus	S	no	house	1595753	2025-06-26	40-16	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1749	247		2025-2026; taxation; omnibus	S	no	senate	1593204	2025-06-19	17-13	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1750	248		Transportation; 2025-2026	S	no	house	1595757	2025-06-26	42-14	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read
+SB1750	248		Transportation; 2025-2026	S	no	senate	1593218	2025-06-19	17-13	1	0	enacted_text	candidate:batch-02	on the enacted text, not yet read

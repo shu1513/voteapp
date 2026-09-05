@@ -1,0 +1,4651 @@
+{
+  "runId": "rollcall-legiscan-fetch-az-20260903T013245Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "AZ",
+  "startedAt": "2026-09-03T01:32:45.836Z",
+  "finishedAt": "2026-09-03T01:32:47.077Z",
+  "datasetDir": "~/legiscan-data/az-2155",
+  "bills": 1854,
+  "votes": 6727,
+  "people": 91,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "House - Third Reading",
+      "count": 796,
+      "withoutMemberList": 9,
+      "minTotal": 0,
+      "maxTotal": 60,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "HR2003",
+        "HB2067",
+        "HB2069"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Third Reading",
+      "count": 771,
+      "withoutMemberList": 5,
+      "minTotal": 0,
+      "maxTotal": 30,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1015",
+        "SB1056",
+        "SB1081"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Rules Committee Action (C&P)",
+      "count": 739,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2020",
+        "HB2069",
+        "HB2045"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Rules Committee Action (PFC)",
+      "count": 703,
+      "withoutMemberList": 658,
+      "minTotal": 0,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1056",
+        "SB1028",
+        "SB1081"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Committee of the Whole (DPA)",
+      "count": 391,
+      "withoutMemberList": 391,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2074",
+        "HB2022",
+        "HB2081"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Committee of the Whole (DPA)",
+      "count": 308,
+      "withoutMemberList": 308,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1081",
+        "SB1102",
+        "SB1037"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Committee of the Whole (DP)",
+      "count": 185,
+      "withoutMemberList": 185,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1056",
+        "SB1013",
+        "SB1015"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Committee of the Whole (DP)",
+      "count": 176,
+      "withoutMemberList": 176,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2018",
+        "HB2046",
+        "HB2007"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Appropriations Committee Action (DP)",
+      "count": 119,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1034",
+        "SB1009",
+        "SB1047"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Judiciary and Elections Committee Action (DP)",
+      "count": 102,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1033",
+        "SB1022",
+        "SB1040"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Concurrence",
+      "count": 82,
+      "withoutMemberList": 82,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CM"
+      ],
+      "sampleBills": [
+        "HB2345",
+        "HB2390",
+        "HB2603"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Concurrence",
+      "count": 72,
+      "withoutMemberList": 72,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1437",
+        "SB1027",
+        "SB1333"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Natural Resources Committee Action (DP)",
+      "count": 72,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1083",
+        "SB1128",
+        "SB1134"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Committee of the Whole (RET ON CAL)",
+      "count": 70,
+      "withoutMemberList": 70,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2115",
+        "HB2703",
+        "HB2371"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Appropriations Committee Action (DP)",
+      "count": 67,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 19,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2018",
+        "HB2192",
+        "HB2177"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Finance Committee Action (DP)",
+      "count": 67,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1058",
+        "SCR1001",
+        "SB1070"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Public Safety Committee Action (DP)",
+      "count": 65,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1143",
+        "SB1027",
+        "SB1086"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Health & Human Services Committee Action (DP)",
+      "count": 64,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2179",
+        "HB2001",
+        "HB2027"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Government Committee Action (DP)",
+      "count": 62,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2008",
+        "HB2051",
+        "HB2023"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Health and Human Services Committee Action (DP)",
+      "count": 58,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1076",
+        "SB1132",
+        "SB1054"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Judiciary Committee Action (DP)",
+      "count": 56,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2024",
+        "HB2022",
+        "HB2043"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Federalism, Military Affairs & Elections Committee Action (DP)",
+      "count": 54,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2017",
+        "HB2045",
+        "HCR2002"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education Committee Action (DP)",
+      "count": 52,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1021",
+        "SB1028",
+        "SB1041"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education-Archived and Renamed Education and Transportation as of 04/01/2025 Committee Action (DP)",
+      "count": 52,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1504",
+        "HB2063",
+        "HB2167"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Natural Resources, Energy & Water Committee Action (DP)",
+      "count": 51,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "HCM2003",
+        "HCR2016",
+        "HB2086"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Committee of the Whole (RETAINED)",
+      "count": 51,
+      "withoutMemberList": 51,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1134",
+        "SB1091",
+        "SB1027"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Regulatory Affairs and Government Efficiency Committee Action (DP)",
+      "count": 45,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1056",
+        "SB1072",
+        "SB1108"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Reconsider Third Reading",
+      "count": 42,
+      "withoutMemberList": 42,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CM"
+      ],
+      "sampleBills": [
+        "HCM2003",
+        "HB2201",
+        "HB2437"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Education Committee Action (DP)",
+      "count": 41,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2067",
+        "HB2018",
+        "HB2069"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Ways & Means Committee Action (DP)",
+      "count": 41,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2155",
+        "HB2118",
+        "HB2077"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Commerce Committee Action (DP)",
+      "count": 37,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2033",
+        "HB2032",
+        "HB2054"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Government Committee Action (DP)",
+      "count": 37,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1015",
+        "SB1013",
+        "SB1100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Appropriations Committee Action (DPA)",
+      "count": 32,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2020",
+        "HB2192",
+        "HB2196"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Land, Agriculture & Rural Affairs Committee Action (DP)",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2090",
+        "HB2092",
+        "HB2091"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Public Safety & Law Enforcement Committee Action (DP)",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2221",
+        "HB2102",
+        "HB2123"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Transportation & Infrastructure Committee Action (DP)",
+      "count": 27,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2259",
+        "HB2009",
+        "HCM2006"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Commerce Committee Action (DPA)",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2076",
+        "HB2168",
+        "HB2322"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Education Committee Action (DPA)",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2074",
+        "HB2022",
+        "HB2020"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Judiciary and Elections Committee Action (DPA)",
+      "count": 23,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1011",
+        "SB1032",
+        "SB1244"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Appropriations Committee Action (DPA/SE)",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 18,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR2015",
+        "HB2385",
+        "HB2926"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Reconsider Third Reading",
+      "count": 20,
+      "withoutMemberList": 16,
+      "minTotal": 0,
+      "maxTotal": 30,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1583",
+        "SCR1032",
+        "SB1699"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Finance Committee Action (DPA)",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1049",
+        "SB1026",
+        "SB1120"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Military Affairs and Border Security Committee Action (DP)",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1268",
+        "SB1109",
+        "SB1281"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Rules Committee Action (DP/C&P)",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B",
+        "CR",
+        "M"
+      ],
+      "sampleBills": [
+        "HM2001",
+        "SB1736",
+        "SB1745"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Health and Human Services Committee Action (DPA)",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1081",
+        "SB1102",
+        "SB1124"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Regulatory Affairs and Government Efficiency Committee Action (DPA)",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1037",
+        "SB1353",
+        "SB1352"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Government Committee Action (DPA)",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2079",
+        "HB2062",
+        "HB2065"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Regulatory Oversight Committee Action (DP)",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2055",
+        "HB2197",
+        "HB2049"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Mr. Speaker, I move pursuant to Article IV, part 2, section 12 of the Constitution of Arizona and House Rule 8(A), an emergency is declared for Senate Bills 1735, 1736, 1737, 1738, 1739, 1740, 1741, 1742, 1743, 1744, 1745, 1746, 1747, 1748, 1749 an",
+      "count": 18,
+      "withoutMemberList": 18,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1746",
+        "SB1748",
+        "SB1738"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Judiciary Committee Action (DPA)",
+      "count": 17,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2115",
+        "HB2112",
+        "HB2207"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Government Committee Action (DPA)",
+      "count": 17,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1039",
+        "SCR1004",
+        "SB1101"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Health & Human Services Committee Action (DPA)",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2132",
+        "HB2182",
+        "HB2130"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Natural Resources, Energy & Water Committee Action (DPA)",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B",
+        "CM",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2084",
+        "HB2087",
+        "HB2127"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Majority Leader Shamp moved that a group motion be made for the vote on the final passage of the following measures and that the single vote on the group motion be assigned to each measure: House Bills 2947, 2948, 2949, 2950, 2951, 2952, 2953, 2954",
+      "count": 15,
+      "withoutMemberList": 15,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2955",
+        "HB2953",
+        "HB2954"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Federalism, Military Affairs & Elections Committee Action (DPA)",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2153",
+        "HB2030",
+        "HB2205"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Health & Human Services Committee Action (W/D)",
+      "count": 14,
+      "withoutMemberList": 14,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2449",
+        "HB2436",
+        "HB2350"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education Committee Action (DPA)",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1437",
+        "SB1225",
+        "SB1470"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education-Archived and Renamed Education and Transportation as of 04/01/2025 Committee Action (DPA)",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2677",
+        "SB1292",
+        "SB1225"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Judiciary and Elections Committee Action (HELD)",
+      "count": 14,
+      "withoutMemberList": 14,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1038",
+        "SB1375",
+        "SB1341"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Mr. Speaker, I move pursuant to Article IV, part 2, section 12 of the Constitution of Arizona and House Rule 8(A), an emergency is declared for House Bills 2962, 2963, 2964, 2965, 2966, 2967, 2968, 2969, 2970, 2971, 2972, 2973 and 2974 and not with",
+      "count": 13,
+      "withoutMemberList": 13,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2974",
+        "HB2971",
+        "HB2970"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Majority Leader Shamp moved that a group motion be made for the vote on the final passage of the following measures and that the single vote on the group motion be assigned to each measure: House Bills 2962, 2963, 2964, 2965, 2966, 2967, 2968, 2969",
+      "count": 13,
+      "withoutMemberList": 13,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2970",
+        "HB2968",
+        "HB2974"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Natural Resources Committee Action (DPA)",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1119",
+        "SB1113",
+        "SB1030"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Rules Committee Action (HELD)",
+      "count": 12,
+      "withoutMemberList": 12,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2048",
+        "HB2800",
+        "HB2869"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Public Safety Committee Action (DPA)",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CM"
+      ],
+      "sampleBills": [
+        "SB1059",
+        "SB1010",
+        "SCM1001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Natural Resources, Energy & Water Committee Action (DPA/SE)",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2274",
+        "HB2104",
+        "HB2106"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Public Safety & Law Enforcement Committee Action (W/D)",
+      "count": 11,
+      "withoutMemberList": 11,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2281",
+        "HB2553",
+        "HB2943"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Appropriations Committee Action (DPA)",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1285",
+        "SB1061",
+        "SB1297"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Public Safety Committee Action (HELD)",
+      "count": 11,
+      "withoutMemberList": 11,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1148",
+        "SB1144",
+        "SB1147"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Government Committee Action (W/D)",
+      "count": 10,
+      "withoutMemberList": 10,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2869",
+        "HB2191",
+        "SB1013"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education Committee Action (HELD)",
+      "count": 10,
+      "withoutMemberList": 10,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1213",
+        "SB1502",
+        "SB1493"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Government Committee Action (HELD)",
+      "count": 9,
+      "withoutMemberList": 9,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2319",
+        "HB2216",
+        "HB2147"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Commerce Committee Action (W/D)",
+      "count": 8,
+      "withoutMemberList": 8,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2003",
+        "HB2124",
+        "HB2789"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Education Committee Action (DPA/SE)",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2058",
+        "HB2185",
+        "HCR2047"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Federalism, Military Affairs & Elections Committee Action (HELD)",
+      "count": 8,
+      "withoutMemberList": 7,
+      "minTotal": 0,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2005",
+        "HB2227",
+        "HB2651"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Federalism, Military Affairs & Elections Committee Action (W/D)",
+      "count": 8,
+      "withoutMemberList": 7,
+      "minTotal": 0,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2843",
+        "HB2842",
+        "SB1463"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Judiciary Committee Action (W/D)",
+      "count": 8,
+      "withoutMemberList": 8,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2378",
+        "HB2229",
+        "HB2878"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Transportation & Infrastructure Committee Action (DPA/SE)",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2166",
+        "HB2234",
+        "HB2100"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Appropriations Committee Action (W/D)",
+      "count": 8,
+      "withoutMemberList": 8,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1103",
+        "SB1164",
+        "SB1213"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Appropriations Committee Action (HELD)",
+      "count": 7,
+      "withoutMemberList": 7,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2268",
+        "HB2939",
+        "HB2616"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Judiciary Committee Action (DPA/SE)",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2295",
+        "HB2040",
+        "SB1013"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Judiciary Committee Action (HELD)",
+      "count": 7,
+      "withoutMemberList": 7,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2340",
+        "HB2579",
+        "HB2178"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Public Safety & Law Enforcement Committee Action (DPA)",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2455",
+        "HB2730",
+        "HB2733"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Ways & Means Committee Action (DPA)",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2081",
+        "HB2515",
+        "HB2389"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Motion to Amend",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1742",
+        "SB1739"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education Committee Action (DPA/SE)",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1213",
+        "SB1454",
+        "SCR1015"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education-Archived and Renamed Education and Transportation as of 04/01/2025 Committee Action (DPA/SE)",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SCR1015",
+        "SCR1005",
+        "SB1508"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Government Committee Action (DPA/SE)",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1073",
+        "SB1088",
+        "SB1111"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Government Committee Action (HELD)",
+      "count": 7,
+      "withoutMemberList": 7,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1088",
+        "SB1185",
+        "SB1349"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Commerce Committee Action (DPA/SE)",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2328",
+        "HB2324",
+        "HB2654"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Education Committee Action (HELD)",
+      "count": 6,
+      "withoutMemberList": 6,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2029",
+        "HB2058",
+        "HB2063"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Federalism, Military Affairs & Elections Committee Action (FAILED)",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CM"
+      ],
+      "sampleBills": [
+        "HB2705",
+        "HB2844",
+        "HCM2013"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Government Committee Action (DPA/SE)",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2462",
+        "SB1048",
+        "SB1424"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Land, Agriculture & Rural Affairs Committee Action (DPA)",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2094",
+        "HB2603",
+        "HB2588"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Land, Agriculture & Rural Affairs Committee Action (DPA/SE)",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2201",
+        "SB1150",
+        "SB1706"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Transportation & Infrastructure Committee Action (DPA)",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2235",
+        "HB2696",
+        "HB2300"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Appropriations Committee Action (DPA/SE)",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1264",
+        "SB1261",
+        "SB1067"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Federalism Committee Action (DPA)",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1066",
+        "SB1218",
+        "SB1150"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Finance Committee Action (DPA/SE)",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1206",
+        "SB1145",
+        "SB1539"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Finance Committee Action (HELD)",
+      "count": 6,
+      "withoutMemberList": 6,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1371",
+        "SB1729",
+        "SB1471"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Judiciary and Elections Committee Action (DPA/SE)",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1048",
+        "SB1198",
+        "SB1279"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Judiciary and Elections Committee Action (W/D)",
+      "count": 6,
+      "withoutMemberList": 6,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1215",
+        "SB1234",
+        "SB1057"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Natural Resources Committee Action (DPA/SE)",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1699",
+        "SB1520",
+        "SB1236"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Regulatory Affairs and Government Efficiency Committee Action (DPA/SE)",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1182",
+        "SB1395",
+        "SB1237"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Commerce Committee Action (HELD)",
+      "count": 5,
+      "withoutMemberList": 5,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2124",
+        "HB2721",
+        "HB2095"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Health & Human Services Committee Action (DISC/HELD)",
+      "count": 5,
+      "withoutMemberList": 5,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2134",
+        "HB2181",
+        "HB2310"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Natural Resources, Energy & Water Committee Action (DISC/HELD)",
+      "count": 5,
+      "withoutMemberList": 5,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2549",
+        "HB2574",
+        "HB2414"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Public Safety & Law Enforcement Committee Action (DPA/SE)",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2330",
+        "HB2388",
+        "HB2689"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Science & Technology Committee Action (DP)",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2484",
+        "HB2943",
+        "HB2846"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Science & Technology Committee Action (DPA)",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2687",
+        "HB2145",
+        "HB2801"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education Committee Action (DISC/HELD)",
+      "count": 5,
+      "withoutMemberList": 5,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1502",
+        "SB1472",
+        "SB1528"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Health and Human Services Committee Action (HELD)",
+      "count": 5,
+      "withoutMemberList": 5,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1291",
+        "SB1345",
+        "SB1716"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Olson to include the Olson floor amendment",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1743",
+        "SB1735",
+        "SB1741"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Education Committee Action (W/D)",
+      "count": 4,
+      "withoutMemberList": 4,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2768",
+        "SB1233",
+        "SB1463"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Health & Human Services Committee Action (DPA/SE)",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2025",
+        "HB2176",
+        "HB2311"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Public Safety & Law Enforcement Committee Action (HELD)",
+      "count": 4,
+      "withoutMemberList": 4,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2733",
+        "HCR2045",
+        "HB2689"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Transportation & Infrastructure Committee Action (HELD)",
+      "count": 4,
+      "withoutMemberList": 4,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2409",
+        "HB2234",
+        "HB2453"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Appropriations Committee Action (HELD)",
+      "count": 4,
+      "withoutMemberList": 4,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1126",
+        "SB1288",
+        "SB1367"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Finance Committee Action (W/D)",
+      "count": 4,
+      "withoutMemberList": 4,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1365",
+        "SB1261",
+        "SCR1003"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Natural Resources Committee Action (HELD)",
+      "count": 4,
+      "withoutMemberList": 4,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1260",
+        "SB1304",
+        "HB2675"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Government Committee Action (FAILED)",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2317",
+        "HB2665",
+        "SB1649"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Health & Human Services Committee Action (HELD)",
+      "count": 3,
+      "withoutMemberList": 3,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2226",
+        "HB2346",
+        "SB1081"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Land, Agriculture & Rural Affairs Committee Action (W/D)",
+      "count": 3,
+      "withoutMemberList": 3,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2268",
+        "SB1241",
+        "SB1444"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Regulatory Oversight Committee Action (DPA)",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2056",
+        "HCR2038",
+        "HB2031"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Transportation & Infrastructure Committee Action (W/D)",
+      "count": 3,
+      "withoutMemberList": 3,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2698",
+        "HB2699",
+        "SB1129"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education Committee Action (W/D)",
+      "count": 3,
+      "withoutMemberList": 3,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2880",
+        "HB2434",
+        "HB2172"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education-Archived and Renamed Education and Transportation as of 04/01/2025 Committee Action (W/D)",
+      "count": 3,
+      "withoutMemberList": 3,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2434",
+        "HB2880",
+        "HB2172"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Federalism Committee Action (DP)",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1068",
+        "SB1498",
+        "HCR2049"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Health and Human Services Committee Action (DISC/ONLY)",
+      "count": 3,
+      "withoutMemberList": 3,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1720",
+        "SB1492",
+        "SB1570"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Health and Human Services Committee Action (DPA/SE)",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1291",
+        "HB2001",
+        "HB2434"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Health and Human Services Committee Action (W/D)",
+      "count": 3,
+      "withoutMemberList": 3,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1493",
+        "SB1445",
+        "HB2137"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Military Affairs and Border Security Committee Action (DPA)",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1294",
+        "SB1164",
+        "HB2099"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Public Safety Committee Action (DPA/SE)",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1057",
+        "SB1148",
+        "SB1231"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Marquez  to include the Marquez floor amendment",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1020",
+        "SB1705"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Appropriations Committee Action (FAILED)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2420",
+        "SB1125"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Appropriations Committee Action (W/D)",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2736",
+        "SB1264"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Education Committee Action (FAILED)",
+      "count": 2,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2058",
+        "SB1083"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Federalism, Military Affairs & Elections Committee Action (DISC/HELD)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1142",
+        "SB1063"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Federalism, Military Affairs & Elections Committee Action (DPA/SE)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2038",
+        "HB2037"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Land, Agriculture & Rural Affairs Committee Action (HELD)",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2224",
+        "SB1297"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Natural Resources, Energy & Water Committee Action (HELD)",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR2046",
+        "SB1444"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Natural Resources, Energy & Water Committee Action (W/D)",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1444",
+        "SB1571"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Public Safety & Law Enforcement Committee Action (FAILED)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 15,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1620",
+        "SB1369"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Regulatory Oversight Committee Action (HELD)",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2637",
+        "HB2656"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Ways & Means Committee Action (W/D)",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2926",
+        "SB1058"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion \r\nMotion by Representative Carbone that pursuant to House Rule 12(P), HB2296 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2296"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion If the Senate requests the House return SB1734 for the purpose of reconsideration, that the House accede to the Senate request to return SB1734 for the purpose of reconsideration.",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1734"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2223 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2223"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2518 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2518"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2883 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2883"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1051 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1051"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1295 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1295"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1424 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1424"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that the House request the Senate to return SB1129 for the purpose of reconsideration. Passed by vv",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1129"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Griffin that the House request the Senate to return SB1530 for the purpose of reconsideration. Passed by vv",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1530"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Mr. Speaker, I move that not withstanding House Rule 11(D) or any other House Rule, Senate Bills 1001, 1019, 1082 and 1496 be placed under the order of business, Third Reading of Bills, and be brought for Third Reading today. Passed by VV",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1001",
+        "SB1496"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Mr. Speaker, I move that not withstanding House Rule 11(D) or any other House Rule, Senate Bills 1001, 1019, 1082 and 1496 be placed under the order of business, Third Reading of Bills, and be brought for Third Reading today.Passed by VV",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1082",
+        "SB1019"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Mr. Speaker, I move that notwithstanding House Rule 11(D) or any other House Rule, House Bill 2946 and Senate Bill 1470 be placed under the order of business, Third Reading of Bills, and be brought for Third Reading today.",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1470",
+        "HB2946"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education-Archived and Renamed Education and Transportation as of 04/01/2025 Committee Action (DISC/HELD)",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1453",
+        "SB1528"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education-Archived as of 04/01/2025 Committee Action (DP)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "HB2867",
+        "SCR1032"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Federalism Committee Action (DPA/SE)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SCR1012",
+        "SB1278"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Judiciary and Elections Committee Action (FAILED)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2546",
+        "HB2680"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Natural Resources Committee Action (W/D)",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1088",
+        "SCR1006"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Rules Committee Action (HELD)",
+      "count": 2,
+      "withoutMemberList": 2,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1608",
+        "HB2175"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2703 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2703"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HCR2013 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR2013"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Motion Representative Kolodin  to show the bill do not pass - failed by s/v 7-42",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1332"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Austin to include the Austin flr amendment failed by RCV",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2111"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Chaplik to include the Chaplik #1  floor amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1742"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Chaplik to include the Chaplik #2  floor amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1742"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Chaplik to show the bill failed to pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1543"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Contreras P  to show the bill failed to pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2062"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Crews  to include the Crews floor amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1224"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Garcia motion to amend the additional COW report to include Garcia Floor amendment and exclude Kolodin SUB floor amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2703"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Garcia to include the Garcia SUB floor amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2703"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Gutierrez to include the Gutierrez floor amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1437"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Kolodin  to show the bill failed to pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1247"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Kolodin to include the Kolodin #1, #2 and #3 floor amendments",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1739"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Kolodin to include the Kolodin #1, #2, #3 and #4 floor amendments",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1735"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Marquez  to include the Marquez Floor Amendment and exclude the Carter N  Floor amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR2025"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Marquez  to show the bill failed to pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1269"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Marquez to exclude the Marshall flr amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1287"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House - Representative Sandoval  to show the bill failed to pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1441"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Education Committee Action (DISC/HELD)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1255"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Education Committee Action (DPA/SE ON RECON)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2058"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Federalism, Military Affairs & Elections Committee Action (DPA ON RECON)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2030"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Government Committee Action (DP ON RECON)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1649"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Government Committee Action (DPA ON RECON)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2113"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Health & Human Services Committee Action (DPA ON RECON)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2165"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Health & Human Services Committee Action (FAILED)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2165"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House International Trade Committee Action (DP)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2404"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House International Trade Committee Action (DPA/SE)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1543"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Judiciary Committee Action (DISC/HELD)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2229"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Judiciary Committee Action (FAILED)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1038"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Land, Agriculture & Rural Affairs Committee Action (FAILED)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "SCR1006"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Natural Resources, Energy & Water Committee Action (FAILED)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1128"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Public Safety & Law Enforcement Committee Action (DISC/HELD)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1714"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Regulatory Oversight Committee Action (W/D)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2164"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Rules Committee Action (PFC)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2169"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Science & Technology Committee Action (DP ON RECON)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1322"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Science & Technology Committee Action (FAILED)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1322"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Science & Technology Committee Action (HELD)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2668"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Science & Technology Committee Action (W/D)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2184"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Transportation & Infrastructure Committee Action (DISC/HELD)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2453"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Ways & Means Committee Action (DISC/HELD)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2517"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion \r\nMotion by Representative Carbone that pursuant to House Rule 12(P), HB2611 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2611"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion In response to a Chaplik motion to include the Chaplik Floor amendment and a ruling that the amendment was not germane, a motion was made to appeal the ruling of the Chair.  The motion to appeal failed.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1741"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2020 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2020"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2043 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2043"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2152 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2152"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2191 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2191"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2201 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2201"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2216 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2216"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2298 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2298"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2322 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2322"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2437 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2437"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2442 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2442"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2542 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2542"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2594 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2594"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2607 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2607"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2657 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2657"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2696 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2696"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2706 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2706"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2723 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2723"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2725 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed RCV 32-26-2.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2725"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2736 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2736"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2786 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2786"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HB2803 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2803"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HCR2021 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR2021"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HCR2025 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR2025"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), HCR2046 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR2046"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1022 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1022"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1036 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1036"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1053 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1053"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1109 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1109"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1156 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1156"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1157 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1157"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1198 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1198"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1224 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1224"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1281 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1281"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1299 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1299"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1307 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1307"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1350 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1350"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1373 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1373"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1405 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1405"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1440 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1440"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1461 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1461"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1500 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1500"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1529 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1529"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1621 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1621"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB1658 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1658"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone that pursuant to House Rule 12(P), SB2298 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2298"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone to rescind its actions on May 6, 2025, whereby it concurred in the Senate amendments to HB2448 and that the House accede to the Senate request to return HB2448 for the purpose of reconsideration. Passed by vv.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2448"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone to rescind its actions on May 7, 2025, whereby it concurred in the Senate amendments to HB2324 and that the House accede to the Senate request to return HB2324 for the purpose of reconsideration. Passed by VV",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2324"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Carbone, notwithstanding Rule 23(A) I move that the House reconsider its action of Wednesday, May 7, 2025, whereby on Third Reading of Bills it passed SB1129 and that the bill again, be placed under the order of business Th",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1129"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Kupper that pursuant to House Rule 12(P), SB1299 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1299"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Livingston that pursuant to House Rule 12(P), SB1247 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1247"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Livingston that pursuant to House Rule 12(P), SB1281 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1281"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Way that pursuant to House Rule 12(P), SB1182 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1182"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Way that pursuant to House Rule 12(P), SB1600 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1600"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Motion by Representative Willoughby that pursuant to House Rule 12(P), SB1332 be calendared for an Additional Committee of the Whole for purposes of further amending. Motion passed v/v.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1332"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Mr. Speaker, I move that the House rescind its action of Thursday, June 19, 2025 whereby the House passed HB2298 as amended in an ADDITIONAL Committee of the Whole and that HB2298 again be placed on an Active Calendar ADDITIONAL Committee of the Wh",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2298"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Mr. Speaker, I move that the House rescind its action of today, June 24, 2025 whereby the House passed SB1299 as amended in an ADDITIONAL Committee of the Whole and that SB1299 again be placed on an Active Calendar ADDITIONAL Committee of the Whole",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1299"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Should the ruling of the Chair be overturned that the Chaplik floor amendment is not germane",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1741"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion Without objection, notwithstanding House Rule 8(C) or any other House Rule, HR2006 has permission to be introduced, First and Second Readings of HR2006 will be waived and the measure will be placed on Third Reading of Bills today.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR2006"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion At the request of the House, Senate Bill 1129 was returned to the House of Representatives for the purpose of reconsideration.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1129"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion At the request of the House, Senate Bill 1530 was returned to the House of Representatives for the purpose of reconsideration.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1530"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion HB 2688 substituted for SB 1222. Motion carried.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2688"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion HB 2703 substituted for SB 1011. Motion carried.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2703"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion HB 2945 substituted for SB 1734. Motion carried.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2945"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Senator Kuby to show that HB 2062 failed to pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2062"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Senator Ortiz to exclude the Rogers flr amend and include the Fernandez flr amend",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1011"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Senator Payne moved that a portion of Senate Rule 13-A be suspended for the purpose of reconsideration of House Bill 2052 beyond the time period allowed for reconsideration. Motion carried.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2052"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Senator Shamp moved that the Senate request the House of Representatives return House Bill 2324, which was passed by the Senate and transmitted to the House of Representative on May 6, 2025 for the purpose of reconsideration. Motion carried.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2324"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Senator Shamp moved that the Senate request the House of Representatives return House Bill 2448, which was passed by the Senate and transmitted to the House of Representative on April 15, 2025 for the purpose of reconsideration. Motion carried.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2448"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Senator Shamp moved that the Senate request the House return SB 1734, which was passed by the Senate and transmitted to the House on April 23, 2025 for the purpose of reconsideration. Motion carried.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1734"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion Without objection, HB 2448 be returned to the House for the purpose of transmittal. Hearing no objection, so ordered.",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2448"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Senator Epstein to include the Epstein flr amend and exclude the Mesnard flr amend to HB 2867",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2867"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Senator Gowan to include the Payne floor amendment to SB 1735",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1735"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Senator Hoffman to include the Hoffman #1 floor amendment to SB 1735",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1735"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Senator Hoffman to include the Hoffman #2 floor amendment to SB 1735",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1735"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Senator Hoffman to include the Hoffman #3 floor amendment to SB 1735",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1735"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Senator Hoffman to include the Hoffman #4 floor amendment to SB 1735",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1735"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Senator Kuby to show that HB 2062 failed to pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2062"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Senator Miranda to show that HB 2099 failed to pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2099"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Senator Ortiz to exclude the Rogers flr amend and include the Fernandez flr amend",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1011"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Senator Sundareshan to include Miranda flr amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2074"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate - Senator Sundareshan to include the Hatathlie floor amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2165"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Appropriations Committee Action (DISC/HELD)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR2015"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Appropriations Committee Action (FAILED)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2814"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education Committee Action (FAILED)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2020"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education-Archived and Renamed Education and Transportation as of 04/01/2025 Committee Action (HELD)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "SCR1028"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Federalism Committee Action (W/D)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1109"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Finance Committee Action (DISC/ONLY)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1471"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Government Committee Action (DISC/HELD)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2113"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Government Committee Action (FAILED)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1185"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Government Committee Action (W/D)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2091"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Health and Human Services Committee Action (FAILED)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2785"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Judiciary and Elections Committee Action (DISC/HELD)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1341"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Military Affairs and Border Security Committee Action (HELD)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2687"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Public Safety Committee Action (FAILED)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1055"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Public Safety Committee Action (W/D)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2896"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Regulatory Affairs and Government Efficiency Committee Action (FAILED)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2433"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Regulatory Affairs and Government Efficiency Committee Action (HELD)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1008"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Regulatory Affairs and Government Efficiency Committee Action (W/D)",
+      "count": 1,
+      "withoutMemberList": 1,
+      "minTotal": 0,
+      "maxTotal": 0,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1510"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 1724,
+    "CM": 18,
+    "CR": 102,
+    "M": 1,
+    "R": 9
+  },
+  "sessionIds": {
+    "2155": 1854
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}
