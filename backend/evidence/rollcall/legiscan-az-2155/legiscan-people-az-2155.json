@@ -1,0 +1,6012 @@
+{
+  "jurisdiction": "AZ",
+  "sessionId": 2155,
+  "people": [
+    {
+      "people_id": 10680,
+      "person_hash": "gi15mkto",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Justin Olson",
+      "first_name": "Justin",
+      "middle_name": "",
+      "last_name": "Olson",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-010",
+      "ftm_eid": 6690603,
+      "votesmart_id": 123766,
+      "opensecrets_id": "",
+      "knowwho_pid": 241701,
+      "ballotpedia": "Justin_Olson",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3376",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2359",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/OLSON.jpg",
+          "ballotpedia": "https://ballotpedia.org/Justin_Olson",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/123766"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 113",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=129&amp;legislator=2359",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/justin.olson.779",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/justin-olson-3938585a/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 10696,
+      "person_hash": "p2utdp96",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Javan Mesnard",
+      "first_name": "Javan",
+      "middle_name": "D.",
+      "last_name": "Mesnard",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-013",
+      "ftm_eid": 6690618,
+      "votesmart_id": 123791,
+      "opensecrets_id": "",
+      "knowwho_pid": 293809,
+      "ballotpedia": "J.D._Mesnard",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4481",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2391",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/MESNARD.jpg",
+          "ballotpedia": "https://ballotpedia.org/J.D._Mesnard",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/123791"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 309",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=56&amp;legislator=2137",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/javanmesnard",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/javanmesnard/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 10699,
+      "person_hash": "00ilhkx8",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Lela Alston",
+      "first_name": "Lela",
+      "middle_name": "",
+      "last_name": "Alston",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-005",
+      "ftm_eid": 6412623,
+      "votesmart_id": 123722,
+      "opensecrets_id": "",
+      "knowwho_pid": 293799,
+      "ballotpedia": "Lela_Alston",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-5829",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2371",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/ALSTON.jpg",
+          "ballotpedia": "https://ballotpedia.org/Lela_Alston",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/123722"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 315",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=57&amp;legislator=2371",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/lela.alston.71",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 10704,
+      "person_hash": "6gxehb2d",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Sally Gonzales",
+      "first_name": "Sally",
+      "middle_name": "Ann",
+      "last_name": "Gonzales",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-020",
+      "ftm_eid": 12997768,
+      "votesmart_id": 12275,
+      "opensecrets_id": "",
+      "knowwho_pid": 192949,
+      "ballotpedia": "Sally_Ann_Gonzales",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3278",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2381",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/GONZALES.jpg",
+          "ballotpedia": "https://ballotpedia.org/Sally_Ann_Gonzales",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/12275"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 314",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/GonzalesSally",
+            "website": "https://www.azleg.gov/senate-member/?legislature=57&amp;legislator=2381",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/sally.gonzales1",
+            "instagram": "https://www.instagram.com/sally.gonzales1/",
+            "linkedin": "https://www.linkedin.com/in/sally-ann-gonzales-1452a532/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 10708,
+      "person_hash": "i0wzfopf",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Gail Griffin",
+      "first_name": "Gail",
+      "middle_name": "",
+      "last_name": "Griffin",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-019",
+      "ftm_eid": 12997808,
+      "votesmart_id": 12274,
+      "opensecrets_id": "",
+      "knowwho_pid": 192945,
+      "ballotpedia": "Gail_Griffin",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-5895",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2309",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/GRIFFIN.jpg",
+          "ballotpedia": "https://ballotpedia.org/Gail_Griffin",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/12274"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 225",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100057741564389",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2164",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://ammnre.arizona.edu/person/rep-gail-griffin",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 11744,
+      "person_hash": "k1eomfl0",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "David Farnsworth",
+      "first_name": "David",
+      "middle_name": "Christian",
+      "last_name": "Farnsworth",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-010",
+      "ftm_eid": 23319205,
+      "votesmart_id": 3056,
+      "opensecrets_id": "",
+      "knowwho_pid": 468293,
+      "ballotpedia": "David_Farnsworth",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3387",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2378",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/FARNSWORTH.jpg",
+          "ballotpedia": "https://ballotpedia.org/David_Farnsworth",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/3056"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 303",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=53&amp;legislator=1789",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/dave-farnsworth-2ba46198/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/DaveFarnsworth_",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 14554,
+      "person_hash": "416zgcsl",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Lupe Contreras",
+      "first_name": "Lupe",
+      "middle_name": "Chavira",
+      "last_name": "Contreras",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-022",
+      "ftm_eid": 12719919,
+      "votesmart_id": 141487,
+      "opensecrets_id": "",
+      "knowwho_pid": 668296,
+      "ballotpedia": "Lupe_Contreras",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-5284",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2301",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/CONTRERAS_L.gif",
+          "ballotpedia": "https://ballotpedia.org/Lupe_Contreras",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/141487"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 331",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2156",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/lupe.contreras.1804",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/SenContreras",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 14555,
+      "person_hash": "vyo4fuda",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Lydia Hernandez",
+      "first_name": "Lydia",
+      "middle_name": "",
+      "last_name": "Hernandez",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-024",
+      "ftm_eid": 12719943,
+      "votesmart_id": 123714,
+      "opensecrets_id": "",
+      "knowwho_pid": 423738,
+      "ballotpedia": "Lydia_Hernandez",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3553",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2314",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/HERNANDEZ_L.jpg",
+          "ballotpedia": "https://ballotpedia.org/Lydia_Hernandez",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/123714"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 334",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=128&amp;legislator=2314",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/lydia.hernandez.7545",
+            "instagram": "https://www.instagram.com/lydia.hernandez4az24/",
+            "linkedin": "https://www.linkedin.com/in/lydia-hernandez-3287491a2/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 14703,
+      "person_hash": "ctr9du18",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "David Livingston",
+      "first_name": "David",
+      "middle_name": "Alan",
+      "last_name": "Livingston",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-028",
+      "ftm_eid": 12719927,
+      "votesmart_id": 141496,
+      "opensecrets_id": "",
+      "knowwho_pid": 423719,
+      "ballotpedia": "David_Livingston",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4178",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2319",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/LIVINGSTON.jpg",
+          "ballotpedia": "https://ballotpedia.org/David_Livingston",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/141496"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 222",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2175",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/david.livingston.33",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/davidalivingston/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 14707,
+      "person_hash": "7b79xusd",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Warren Petersen",
+      "first_name": "Warren",
+      "middle_name": "H.",
+      "last_name": "Petersen",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-014",
+      "ftm_eid": 9691346,
+      "votesmart_id": 141381,
+      "opensecrets_id": "",
+      "knowwho_pid": 423641,
+      "ballotpedia": "Warren_Petersen",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4136",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2393",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/PETERSEN.jpg",
+          "ballotpedia": "https://ballotpedia.org/Warren_Petersen",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/141381"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 205",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=55&amp;legislator=1966",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/warrenpetersenfamily",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/channel/UCboD6lEFyU78v5ssl9bbdLA"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 14709,
+      "person_hash": "1zol0gzp",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Thomas Shope",
+      "first_name": "Thomas",
+      "middle_name": "R.",
+      "last_name": "Shope",
+      "suffix": "",
+      "nickname": "T.J.",
+      "district": "SD-016",
+      "ftm_eid": 12719897,
+      "votesmart_id": 141366,
+      "opensecrets_id": "",
+      "knowwho_pid": 423629,
+      "ballotpedia": "T.J._Shope",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3012",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2396",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/SHOPE.jpg",
+          "ballotpedia": "https://ballotpedia.org/T.J._Shope",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/141366"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 212",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=57&amp;legislator=2396",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=10039910",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/t-j-shope-76585a132/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/@tj-shope"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 15258,
+      "person_hash": "cckehia2",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Rosanna Gabaldon",
+      "first_name": "Rosanna",
+      "middle_name": "",
+      "last_name": "Gabaldon",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-021",
+      "ftm_eid": 12719881,
+      "votesmart_id": 141336,
+      "opensecrets_id": "",
+      "knowwho_pid": 423590,
+      "ballotpedia": "Rosanna_Gabaldon",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3424",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2380",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/GABALDÓN.jpg",
+          "ballotpedia": "https://ballotpedia.org/Rosanna_Gabaldon",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/141336"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 305",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=57&amp;legislator=2380",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/rosanna.rodriguezgabaldon",
+            "instagram": "https://www.instagram.com/rosanna_gabaldon/",
+            "linkedin": "https://www.linkedin.com/in/rosanna-gabaldon-a8563620/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 16506,
+      "person_hash": "1srgcgem",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Mark Finchem",
+      "first_name": "Mark",
+      "middle_name": "W.",
+      "last_name": "Finchem",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-001",
+      "ftm_eid": 15395133,
+      "votesmart_id": 153852,
+      "opensecrets_id": "",
+      "knowwho_pid": 498517,
+      "ballotpedia": "Mark_Finchem",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3631",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2372",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/FINCHEM.jpg",
+          "ballotpedia": "https://ballotpedia.org/Mark_Finchem",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/153852"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 304",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=57&amp;legislator=2372",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100075397778156",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/markfinchem/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 16648,
+      "person_hash": "83oil9q3",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Tony Rivero",
+      "first_name": "Tony",
+      "middle_name": "",
+      "last_name": "Rivero",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-027",
+      "ftm_eid": 24748398,
+      "votesmart_id": 129363,
+      "opensecrets_id": "",
+      "knowwho_pid": 500111,
+      "ballotpedia": "Tony_Rivero",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3528",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2368",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/RIVERO.jpg",
+          "ballotpedia": "https://ballotpedia.org/Tony_Rivero",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/129363"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 112",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=54&amp;session=128&amp;legislator=1870",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 16649,
+      "person_hash": "zqrtsxxg",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Jeff Weninger",
+      "first_name": "Jeff",
+      "middle_name": "",
+      "last_name": "Weninger",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-013",
+      "ftm_eid": 23317844,
+      "votesmart_id": 71915,
+      "opensecrets_id": "",
+      "knowwho_pid": 499849,
+      "ballotpedia": "Jeff_Weninger",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3392",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2361",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/WENINGER.jpg",
+          "ballotpedia": "https://ballotpedia.org/Jeff_Weninger",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/71915"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 316",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=55&amp;session=128&amp;legislator=2015",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jweninger2",
+            "instagram": "https://www.instagram.com/jweninger2/",
+            "linkedin": "https://www.linkedin.com/in/jeffweninger/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 16652,
+      "person_hash": "1wdoytpk",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Vince Leach",
+      "first_name": "Vince",
+      "middle_name": "",
+      "last_name": "Leach",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-017",
+      "ftm_eid": 8465439,
+      "votesmart_id": 153854,
+      "opensecrets_id": "",
+      "knowwho_pid": 499595,
+      "ballotpedia": "Vince_Leach",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3694",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2398",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/LEACH.jpg",
+          "ballotpedia": "https://ballotpedia.org/Vince_Leach",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/153854"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 303",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=55&amp;legislator=1965",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/vince.leach.3",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/vince-leach-9a07ab1a/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 18569,
+      "person_hash": "yjbr1xuh",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Denise Epstein",
+      "first_name": "Denise",
+      "middle_name": "",
+      "last_name": "Epstein",
+      "suffix": "",
+      "nickname": "Mitzi",
+      "district": "SD-012",
+      "ftm_eid": 8543206,
+      "votesmart_id": 153884,
+      "opensecrets_id": "",
+      "knowwho_pid": 499850,
+      "ballotpedia": "Mitzi_Epstein",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4870",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2377",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/EPSTEIN.jpg",
+          "ballotpedia": "https://ballotpedia.org/Mitzi_Epstein",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/153884"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 315",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=56&amp;legislator=2122",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/mitzi.epstein",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/mitziepstein/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 18663,
+      "person_hash": "qbqdm9iz",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Kevin Payne",
+      "first_name": "Kevin",
+      "middle_name": "",
+      "last_name": "Payne",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-027",
+      "ftm_eid": 16622819,
+      "votesmart_id": 171801,
+      "opensecrets_id": "",
+      "knowwho_pid": 584970,
+      "ballotpedia": "Kevin_Payne",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4854",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2387",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/PAYNE.jpg",
+          "ballotpedia": "https://ballotpedia.org/Kevin_Payne",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/171801"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 302",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=57&amp;legislator=2387",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/KevinPayne49",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19572,
+      "person_hash": "8x7vders",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Tim Dunn",
+      "first_name": "Timothy",
+      "middle_name": "M.",
+      "last_name": "Dunn",
+      "suffix": "",
+      "nickname": "Tim",
+      "district": "SD-025",
+      "ftm_eid": 8582459,
+      "votesmart_id": 178189,
+      "opensecrets_id": "",
+      "knowwho_pid": 655560,
+      "ballotpedia": "Tim_Dunn_(Arizona)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4139",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2388",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/DUNN.jpg",
+          "ballotpedia": "https://ballotpedia.org/Tim_Dunn_%28Arizona%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/178189"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 310",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=55&amp;session=125&amp;legislator=2031",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/tim.dunn.14418101",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20172,
+      "person_hash": "w5qennsr",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Walter Blackman",
+      "first_name": "Walter",
+      "middle_name": "",
+      "last_name": "Blackman",
+      "suffix": "",
+      "nickname": "Walt",
+      "district": "HD-007",
+      "ftm_eid": 45362040,
+      "votesmart_id": 184551,
+      "opensecrets_id": "",
+      "knowwho_pid": 668308,
+      "ballotpedia": "Walter_Blackman",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3244",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2356",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/BLACKMAN.jpg",
+          "ballotpedia": "https://ballotpedia.org/Walter_Blackman",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184551"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 224",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20249,
+      "person_hash": "5zh0k6y4",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Leo Biasiucci",
+      "first_name": "Leo",
+      "middle_name": "",
+      "last_name": "Biasiucci",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-030",
+      "ftm_eid": 40621888,
+      "votesmart_id": 171694,
+      "opensecrets_id": "",
+      "knowwho_pid": 585785,
+      "ballotpedia": "Leo_Biasiucci",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3018",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2294",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/BIASIUCCI.jpg",
+          "ballotpedia": "https://ballotpedia.org/Leo_Biasiucci",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/171694"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 110",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=54&amp;session=128&amp;legislator=1894",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/leobiasiucci",
+            "instagram": "https://www.instagram.com/leobiasiucci/",
+            "linkedin": "https://www.linkedin.com/in/leo4azhouse/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20571,
+      "person_hash": "nag5dtmc",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Alma Hernandez",
+      "first_name": "Alma",
+      "middle_name": "",
+      "last_name": "Hernandez",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-020",
+      "ftm_eid": 23282612,
+      "votesmart_id": 184546,
+      "opensecrets_id": "",
+      "knowwho_pid": 667957,
+      "ballotpedia": "Alma_Hernandez_(Arizona)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3136",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2312",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/HERNANDEZ_A.jpg",
+          "ballotpedia": "https://ballotpedia.org/Alma_Hernandez_%28Arizona%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184546"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 338",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2168",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/A.C.Hernan",
+            "instagram": "https://www.instagram.com/repahernandez/",
+            "linkedin": "https://www.linkedin.com/in/alma-hernandez-48139a188",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20688,
+      "person_hash": "kqcpc7yb",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Frank Carroll",
+      "first_name": "Frank",
+      "middle_name": "P.",
+      "last_name": "Carroll",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-028",
+      "ftm_eid": 45362121,
+      "votesmart_id": 184604,
+      "opensecrets_id": "",
+      "knowwho_pid": 667988,
+      "ballotpedia": "Frank_Carroll",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3249",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2375",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/CARROLL.jpg",
+          "ballotpedia": "https://ballotpedia.org/Frank_Carroll",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184604"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 212",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/RepFrankCarroll",
+            "website": "https://www.azleg.gov/senate-member/?legislature=56&amp;legislator=2120",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/frank-carroll-b1b2a821/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20749,
+      "person_hash": "jcn7y7ul",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Shawnna Bolick",
+      "first_name": "Shawnna",
+      "middle_name": "",
+      "last_name": "Bolick",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-002",
+      "ftm_eid": 6690566,
+      "votesmart_id": 123699,
+      "opensecrets_id": "",
+      "knowwho_pid": 499858,
+      "ballotpedia": "Shawnna_Bolick",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3314",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2400",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/BOLICK.jpg",
+          "ballotpedia": "https://ballotpedia.org/Shawnna_Bolick",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/123699"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 307",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/statesenatorshawnnabolick",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=55&amp;session=123&amp;legislator=2045",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/slmbolick1",
+            "instagram": "https://www.instagram.com/slmbolick/",
+            "linkedin": "https://www.linkedin.com/in/sbolick/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20754,
+      "person_hash": "66nj9w8k",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Myron Tsosie",
+      "first_name": "Myron",
+      "middle_name": "",
+      "last_name": "Tsosie",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-006",
+      "ftm_eid": 45362047,
+      "votesmart_id": 184557,
+      "opensecrets_id": "",
+      "knowwho_pid": 667239,
+      "ballotpedia": "Myron_Tsosie",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3157",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2341",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/TSOSIE.jpg",
+          "ballotpedia": "https://ballotpedia.org/Myron_Tsosie",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184557"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 339",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=127&amp;legislator=2204",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/myron_tsosie/",
+            "linkedin": "https://www.linkedin.com/in/myron-tsosie-1a240574/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21898,
+      "person_hash": "wa7d7rn6",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Joseph Chaplik",
+      "first_name": "Joseph",
+      "middle_name": "",
+      "last_name": "Chaplik",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-003",
+      "ftm_eid": 29102030,
+      "votesmart_id": 192551,
+      "opensecrets_id": "",
+      "knowwho_pid": 737910,
+      "ballotpedia": "Joseph_Chaplik",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3436",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2299",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/CHAPLIK.jpg",
+          "ballotpedia": "https://ballotpedia.org/Joseph_Chaplik",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/192551"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 312",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=55&amp;session=128&amp;legislator=2058",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/josephchaplik/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21899,
+      "person_hash": "bfz8sqqg",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Jake Hoffman",
+      "first_name": "Jake",
+      "middle_name": "",
+      "last_name": "Hoffman",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-015",
+      "ftm_eid": 45108367,
+      "votesmart_id": 192538,
+      "opensecrets_id": "",
+      "knowwho_pid": 737892,
+      "ballotpedia": "Jake_Hoffman_(Arizona)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3292",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2385",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/HOFFMAN.jpg",
+          "ballotpedia": "https://ballotpedia.org/Jake_Hoffman_%28Arizona%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/192538"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 306",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=56&amp;legislator=2130",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/jakemhoffman/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21902,
+      "person_hash": "kz2c17n7",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Beverly Pingerelli",
+      "first_name": "Beverly",
+      "middle_name": "",
+      "last_name": "Pingerelli",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-028",
+      "ftm_eid": 47233275,
+      "votesmart_id": 192549,
+      "opensecrets_id": "",
+      "knowwho_pid": 737906,
+      "ballotpedia": "Beverly_Pingerelli",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3396",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2333",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/PINGERELLI.jpg",
+          "ballotpedia": "https://ballotpedia.org/Beverly_Pingerelli",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/192549"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 131",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=55&amp;session=128&amp;legislator=2071",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/beverly.hawkinspingerelli",
+            "instagram": "https://www.instagram.com/beverlypingerelli26/",
+            "linkedin": "https://www.linkedin.com/in/beverly-pingerelli-a20a3318/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21903,
+      "person_hash": "sxmwupeu",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Wendy Rogers",
+      "first_name": "Wendy",
+      "middle_name": "",
+      "last_name": "Rogers",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-007",
+      "ftm_eid": 17657680,
+      "votesmart_id": 123618,
+      "opensecrets_id": "",
+      "knowwho_pid": 293784,
+      "ballotpedia": "Wendy_Rogers",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3042",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2394",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/ROGERS.jpg",
+          "ballotpedia": "https://ballotpedia.org/Wendy_Rogers",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/123618"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 304",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=57&amp;legislator=2394",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/ltcolwendy.rogers",
+            "instagram": "https://www.instagram.com/wendy_rogers343/",
+            "linkedin": "https://www.linkedin.com/in/wendyrogersaz/",
+            "tiktok": "https://www.tiktok.com/@wendyrogers_1",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 21904,
+      "person_hash": "q8q8gx7q",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Justin Wilmeth",
+      "first_name": "Justin",
+      "middle_name": "",
+      "last_name": "Wilmeth",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-002",
+      "ftm_eid": 46133238,
+      "votesmart_id": 192543,
+      "opensecrets_id": "",
+      "knowwho_pid": 737898,
+      "ballotpedia": "Justin_Wilmeth",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-5044",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2342",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/WILMETH.jpg",
+          "ballotpedia": "https://ballotpedia.org/Justin_Wilmeth",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/192543"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 111",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2205",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jcwilmeth",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/jcwilmeth/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/jcwilmeth",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22291,
+      "person_hash": "nrt13gkj",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Quang Nguyen",
+      "first_name": "Quang",
+      "middle_name": "H.",
+      "last_name": "Nguyen",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-001",
+      "ftm_eid": 49622954,
+      "votesmart_id": 192521,
+      "opensecrets_id": "",
+      "knowwho_pid": 737835,
+      "ballotpedia": "Quang_Nguyen",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3258",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2326",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/NGUYEN.jpg",
+          "ballotpedia": "https://ballotpedia.org/Quang_Nguyen",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/192521"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 226",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=55&amp;session=123&amp;legislator=2063",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100006592296276",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/quang-nguyen-20b72172/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22293,
+      "person_hash": "b0nb1b3z",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Stephanie Stahl Hamilton",
+      "first_name": "Stephanie",
+      "middle_name": "",
+      "last_name": "Stahl Hamilton",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-021",
+      "ftm_eid": 49622988,
+      "votesmart_id": 192535,
+      "opensecrets_id": "",
+      "knowwho_pid": 737858,
+      "ballotpedia": "Stephanie_Stahl_Hamilton",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3279",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2338",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/STAHL_HAMILTON.jpg",
+          "ballotpedia": "https://ballotpedia.org/Stephanie_Stahl_Hamilton",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/192535"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 333",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "https://www.tiktok.com/@stephaniehamilto61",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=128&amp;legislator=2199",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/stephanie.s.hamilton",
+            "instagram": "https://www.instagram.com/stephaniestahlhamilton/",
+            "linkedin": "https://www.linkedin.com/in/stephanie-stahl-hamilton-a59b48a/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23000,
+      "person_hash": "rv9jrvuk",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Lupe Diaz",
+      "first_name": "Lupe",
+      "middle_name": "",
+      "last_name": "Diaz",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-019",
+      "ftm_eid": 0,
+      "votesmart_id": 200710,
+      "opensecrets_id": "",
+      "knowwho_pid": 791761,
+      "ballotpedia": "Lupe_Diaz",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4852",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2304",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/DIAZ.jpg",
+          "ballotpedia": "https://ballotpedia.org/Lupe_Diaz",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/200710"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 302",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/LupeDiaz4AZ",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2159",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/lupe.diaz.35",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/lupediaz/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/GraceChapelBnsn",
+            "website": "",
+            "youtube": "https://www.youtube.com/channel/UCOEwdmaZzovHT2LW3M6yg7w"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23001,
+      "person_hash": "nt1sgqr1",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Teresa Martinez",
+      "first_name": "Teresa",
+      "middle_name": "",
+      "last_name": "Martinez",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-016",
+      "ftm_eid": 54453003,
+      "votesmart_id": 200411,
+      "opensecrets_id": "",
+      "knowwho_pid": 515739,
+      "ballotpedia": "Teresa_Martinez",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3158",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2323",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/MARTINEZ.jpg",
+          "ballotpedia": "https://ballotpedia.org/Teresa_Martinez",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/200411"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 129",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2181",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/teresa.martinez.75",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/teresa-martinez-65661216/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23022,
+      "person_hash": "4ngs3llm",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Sarah Liguori",
+      "first_name": "Sarah",
+      "middle_name": "",
+      "last_name": "Liguori",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-005",
+      "ftm_eid": 50604840,
+      "votesmart_id": 200339,
+      "opensecrets_id": "",
+      "knowwho_pid": 789707,
+      "ballotpedia": "Sarah_Liguori",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3264",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2347",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/LIGUORI.jpg",
+          "ballotpedia": "https://ballotpedia.org/Sarah_Liguori",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/200339"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 115",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2279",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100075825197556",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/sarah-liguori-b1aa58b/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23027,
+      "person_hash": "yq0rt7ut",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Theresa Hatathlie",
+      "first_name": "Theresa",
+      "middle_name": "",
+      "last_name": "Hatathlie",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-006",
+      "ftm_eid": 54453008,
+      "votesmart_id": 201402,
+      "opensecrets_id": "",
+      "knowwho_pid": 794943,
+      "ballotpedia": "Theresa_Hatathlie",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-5160",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2383",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/HATATHLIE.jpg",
+          "ballotpedia": "https://ballotpedia.org/Theresa_Hatathlie",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/201402"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 311",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=57&amp;legislator=2383",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/theresa.hatathlie",
+            "instagram": "https://www.instagram.com/thatathlie/",
+            "linkedin": "https://www.linkedin.com/in/theresa-hatathlie-8a7280119/",
+            "tiktok": "https://www.tiktok.com/@thatathlie",
+            "twitter": "https://www.twitter.com/theresahatathl2",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23038,
+      "person_hash": "mfumiy1z",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Brian Fernandez",
+      "first_name": "Brian",
+      "middle_name": "",
+      "last_name": "Fernandez",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-023",
+      "ftm_eid": 12719884,
+      "votesmart_id": 200733,
+      "opensecrets_id": "",
+      "knowwho_pid": 791873,
+      "ballotpedia": "Brian_Fernandez",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3098",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2379",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/FERNANDEZ.jpg",
+          "ballotpedia": "https://ballotpedia.org/Brian_Fernandez",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/200733"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 312",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=56&amp;legislator=2124",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/thebrianfernandez",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/briansfernandez/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23039,
+      "person_hash": "t5xkaamp",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Christopher Mathis",
+      "first_name": "Christopher",
+      "middle_name": "",
+      "last_name": "Mathis",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-018",
+      "ftm_eid": 24748365,
+      "votesmart_id": 200881,
+      "opensecrets_id": "",
+      "knowwho_pid": 792694,
+      "ballotpedia": "Christopher_Mathis",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3138",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2322",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/MATHIS.jpg",
+          "ballotpedia": "https://ballotpedia.org/Christopher_Mathis",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/200881"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 337",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2180",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/mathisforaz/",
+            "linkedin": "https://www.linkedin.com/in/christopher-mathis-65347812/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23050,
+      "person_hash": "i7pywanp",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Neal Carter",
+      "first_name": "Neal",
+      "middle_name": "",
+      "last_name": "Carter",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-015",
+      "ftm_eid": 0,
+      "votesmart_id": 192531,
+      "opensecrets_id": "",
+      "knowwho_pid": 737852,
+      "ballotpedia": "Neal_Carter",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-5761",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2297",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/CARTER_N.jpg",
+          "ballotpedia": "https://ballotpedia.org/Neal_Carter",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/192531"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 204",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=55&amp;session=128&amp;legislator=2098",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/nealcarterpodcast/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.nealkcarteresq.com/about/",
+            "youtube": "https://www.youtube.com/channel/UC4WuUI6-SjLlkH2-fQovTww/"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23641,
+      "person_hash": "wuhjcf77",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Selina Bliss",
+      "first_name": "Selina",
+      "middle_name": "",
+      "last_name": "Bliss",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-001",
+      "ftm_eid": 49649343,
+      "votesmart_id": 192519,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Selina_Bliss",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4018",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2296",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/BLISS.jpg",
+          "ballotpedia": "https://ballotpedia.org/Selina_Bliss",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/192519"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 306",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=129&amp;legislator=2296",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/selina.bliss.39",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/selina-bliss/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23642,
+      "person_hash": "c3bauwnm",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Janae Shamp",
+      "first_name": "Janae",
+      "middle_name": "",
+      "last_name": "Shamp",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-029",
+      "ftm_eid": 55437865,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Janae_Shamp",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3499",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2395",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/SHAMP.jpg",
+          "ballotpedia": "https://ballotpedia.org/Janae_Shamp",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 212",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=56&amp;legislator=2141",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/janaeshamp",
+            "instagram": "https://www.instagram.com/shamp_45/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23883,
+      "person_hash": "zl20vt3o",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Matt Gress",
+      "first_name": "Matt",
+      "middle_name": "",
+      "last_name": "Gress",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-004",
+      "ftm_eid": 55437885,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Matt_Gress",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4105",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2308",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/GRESS.jpg",
+          "ballotpedia": "https://ballotpedia.org/Matt_Gress",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 205",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=129&amp;legislator=2308",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/matthew.gress.5",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/mattgress",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/channel/UCQOy9vWTCMIPzliht5QGcUg"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24183,
+      "person_hash": "5ptjxpu8",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Eva Burch",
+      "first_name": "Eva",
+      "middle_name": "",
+      "last_name": "Burch",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-009",
+      "ftm_eid": 55437835,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Eva_Burch",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3374",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2374",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/BURCH.jpg",
+          "ballotpedia": "https://ballotpedia.org/Eva_Burch",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 314",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/eva.burch.31",
+            "instagram": "https://www.instagram.com/evaburchaz/",
+            "linkedin": "https://www.linkedin.com/in/eva-burch-74117a188/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24184,
+      "person_hash": "kew6jpf6",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "John Gillette",
+      "first_name": "John",
+      "middle_name": "",
+      "last_name": "Gillette",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-030",
+      "ftm_eid": 55437976,
+      "votesmart_id": 205641,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "John_Gillette",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4100",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2306",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/GILLETTE.jpg",
+          "ballotpedia": "https://ballotpedia.org/John_Gillette",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/205641"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 130",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/azrepgillette/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2161",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/john-gillette-2b7314237/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24229,
+      "person_hash": "f6hsbnx0",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Cesar Aguilar",
+      "first_name": "Cesar",
+      "middle_name": "",
+      "last_name": "Aguilar",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-026",
+      "ftm_eid": 55437963,
+      "votesmart_id": 205632,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Cesar_Aguilar_(Arizona)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3953",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2293",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/AGUILAR.jpg",
+          "ballotpedia": "https://ballotpedia.org/Cesar_Aguilar_%28Arizona%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/205632"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 122",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2146",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/cesar.aguilar.3152",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/aguilar4az/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24230,
+      "person_hash": "qiybjn48",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Lorena Austin",
+      "first_name": "Lorena",
+      "middle_name": "",
+      "last_name": "Austin",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-009",
+      "ftm_eid": 12252750,
+      "votesmart_id": 205584,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Lorena_Austin",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3968",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2343",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/AUSTIN.jpg",
+          "ballotpedia": "https://ballotpedia.org/Lorena_Austin",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/205584"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 124",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2206",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100078315878333",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/lorenaaustinaz/",
+            "tiktok": "https://www.tiktok.com/@lorenaaustinaz",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24232,
+      "person_hash": "hsd5kmp5",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Flavio Bravo",
+      "first_name": "Flavio",
+      "middle_name": "",
+      "last_name": "Bravo",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-026",
+      "ftm_eid": 54951599,
+      "votesmart_id": 205633,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Flavio_Bravo",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4033",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2399",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/BRAVO.jpg",
+          "ballotpedia": "https://ballotpedia.org/Flavio_Bravo",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/205633"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 213",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=56&amp;legislator=2271",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/flavio.g.bravo",
+            "instagram": "https://www.instagram.com/flaviogbravo/",
+            "linkedin": "https://www.linkedin.com/in/flaviogbravo/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24233,
+      "person_hash": "tk6x3o95",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Patricia Contreras",
+      "first_name": "Patricia",
+      "middle_name": "",
+      "last_name": "Contreras",
+      "suffix": "",
+      "nickname": "Patty",
+      "district": "HD-012",
+      "ftm_eid": 55437911,
+      "votesmart_id": 205595,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Patricia_Contreras",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4057",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2302",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/CONTRERAS_P.jpg",
+          "ballotpedia": "https://ballotpedia.org/Patricia_Contreras",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/205595"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 126",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2157",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/patty.contreras.80",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/patty-contreras-for-az/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24234,
+      "person_hash": "b21xd5h8",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Oscar De Los Santos",
+      "first_name": "Oscar",
+      "middle_name": "",
+      "last_name": "De Los Santos",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-011",
+      "ftm_eid": 44899603,
+      "votesmart_id": 205590,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Oscar_De_Los_Santos",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4098",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2303",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/DE_LOS_SANTOS.jpg",
+          "ballotpedia": "https://ballotpedia.org/Oscar_De_Los_Santos",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/205590"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 320",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2158",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/Oscarforaz",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24235,
+      "person_hash": "bmm0f5b6",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Nancy Gutierrez",
+      "first_name": "Nancy",
+      "middle_name": "",
+      "last_name": "Gutierrez",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-018",
+      "ftm_eid": 55437938,
+      "votesmart_id": 205615,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Nancy_Gutierrez",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4134",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2310",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/GUTIERREZ.jpg",
+          "ballotpedia": "https://ballotpedia.org/Nancy_Gutierrez",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/205615"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 330",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2165",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/nancy.b.gutierrez.3",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/nancy-gutierrez-0268253a/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/BlissinBalance",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24239,
+      "person_hash": "ksg5eho2",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Rachel Keshel",
+      "first_name": "Rachel",
+      "middle_name": "",
+      "last_name": "Keshel",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-017",
+      "ftm_eid": 55437931,
+      "votesmart_id": 205607,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Rachel_Keshel",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3558",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2317",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/KESHEL.jpg",
+          "ballotpedia": "https://ballotpedia.org/Rachel_Keshel",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/205607"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 303",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24240,
+      "person_hash": "hy5cnszs",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Alexander Kolodin",
+      "first_name": "Alexander",
+      "middle_name": "M.",
+      "last_name": "Kolodin",
+      "suffix": "",
+      "nickname": "Alex",
+      "district": "HD-003",
+      "ftm_eid": 46115848,
+      "votesmart_id": 192510,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Alexander_Kolodin",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3560",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2318",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/KOLODIN.jpg",
+          "ballotpedia": "https://ballotpedia.org/Alexander_Kolodin",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/192510"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 323",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2174",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/alex.kolodin.56",
+            "instagram": "https://www.instagram.com/realalexkolodin/",
+            "linkedin": "https://www.linkedin.com/in/alexander-kolodin-16535222/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24241,
+      "person_hash": "i2ot2mya",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Analise Ortiz",
+      "first_name": "Analise",
+      "middle_name": "",
+      "last_name": "Ortiz",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-024",
+      "ftm_eid": 55437959,
+      "votesmart_id": 205629,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Analise_Ortiz",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3633",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2384",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/ORTIZ.jpg",
+          "ballotpedia": "https://ballotpedia.org/Analise_Ortiz",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/205629"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 308",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "https://www.tiktok.com/@senanaliseortiz",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=127&amp;legislator=2178",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/analiseortizaz",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/analise-ortiz/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24242,
+      "person_hash": "obizxxfp",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Mariana Sandoval",
+      "first_name": "Mariana",
+      "middle_name": "",
+      "last_name": "Sandoval",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-023",
+      "ftm_eid": 44901929,
+      "votesmart_id": 192539,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Mariana_Sandoval",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3740",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2334",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/SANDOVAL.jpg",
+          "ballotpedia": "https://ballotpedia.org/Mariana_Sandoval",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/192539"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 326",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2194",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/Sandoval4AZ",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/sandovalforaz2023/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24246,
+      "person_hash": "xewqg8pr",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Anastasia Travers",
+      "first_name": "Anastasia",
+      "middle_name": "",
+      "last_name": "Travers",
+      "suffix": "",
+      "nickname": "Stacey",
+      "district": "HD-012",
+      "ftm_eid": 55437914,
+      "votesmart_id": 205596,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Anastasia_Travers",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3917",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2340",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/TRAVERS.jpg",
+          "ballotpedia": "https://ballotpedia.org/Anastasia_Travers",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/205596"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 322",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=127&amp;legislator=2203",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/StaceTravers",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/stacey-travers-446226229/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24247,
+      "person_hash": "ovahya35",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Seth Blattman",
+      "first_name": "Seth",
+      "middle_name": "",
+      "last_name": "Blattman",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-009",
+      "ftm_eid": 49622936,
+      "votesmart_id": 192511,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Seth_Blattman",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3996",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2295",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/BLATTMAN.jpg",
+          "ballotpedia": "https://ballotpedia.org/Seth_Blattman",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/192511"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 125",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2148",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/seth.blattman",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/sethblattman/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24248,
+      "person_hash": "iap1of6m",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Consuelo Hernandez",
+      "first_name": "Consuelo",
+      "middle_name": "",
+      "last_name": "Hernandez",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-021",
+      "ftm_eid": 55437947,
+      "votesmart_id": 205621,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Consuelo_Hernandez",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3523",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2313",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/HERNANDEZ_C.jpg",
+          "ballotpedia": "https://ballotpedia.org/Consuelo_Hernandez",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/205621"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 117",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/Hernandez4pima/about/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2169",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/consuelo.hernandez.77",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/consuelo-hernandez-7aa21a3b/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24251,
+      "person_hash": "gh36vofs",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Michele Pena",
+      "first_name": "Michele",
+      "middle_name": "",
+      "last_name": "Pena",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-023",
+      "ftm_eid": 56954604,
+      "votesmart_id": 210264,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Michele_Pena",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3696",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2331",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/PEÑA.jpg",
+          "ballotpedia": "https://ballotpedia.org/Michele_Pena",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/210264"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 341",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2189",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100017194599751",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24253,
+      "person_hash": "3j0lmh9q",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Priya Sundareshan",
+      "first_name": "Priya",
+      "middle_name": "",
+      "last_name": "Sundareshan",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-018",
+      "ftm_eid": 55437853,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Priya_Sundareshan",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3437",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2397",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/SUNDARESHAN.jpg",
+          "ballotpedia": "https://ballotpedia.org/Priya_Sundareshan",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 213",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=57&amp;legislator=2397",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/priyanka.sundareshan",
+            "instagram": "https://www.instagram.com/sundaresan.priya/",
+            "linkedin": "https://www.linkedin.com/in/priya-sundareshan-340b908/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/priasun",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24254,
+      "person_hash": "tyn524kf",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "David Marshall",
+      "first_name": "David",
+      "middle_name": "",
+      "last_name": "Marshall",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-007",
+      "ftm_eid": 55437895,
+      "votesmart_id": 205581,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "David_Marshall_(Arizona)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3579",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2321",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/MARSHALL.jpg",
+          "ballotpedia": "https://ballotpedia.org/David_Marshall_%28Arizona%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/205581"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 313",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=127&amp;legislator=2179",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/dave-marshall-41b92b89/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24370,
+      "person_hash": "ap3n54z9",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Michael Carbone",
+      "first_name": "Michael",
+      "middle_name": "",
+      "last_name": "Carbone",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-025",
+      "ftm_eid": 55437960,
+      "votesmart_id": 205630,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Michael_Carbone",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4038",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2298",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/CARBONE.jpg",
+          "ballotpedia": "https://ballotpedia.org/Michael_Carbone",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/205630"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 208",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2153",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100079817160405",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24497,
+      "person_hash": "drz35534",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Eva Diaz",
+      "first_name": "Eva",
+      "middle_name": "",
+      "last_name": "Diaz",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-022",
+      "ftm_eid": 56954593,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 821647,
+      "ballotpedia": "Eva_Diaz",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3473",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2376",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/DIAZ.jpg",
+          "ballotpedia": "https://ballotpedia.org/Eva_Diaz",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 313",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=56&amp;legislator=2121",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24498,
+      "person_hash": "v0sl3neh",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Mae Peshlakai",
+      "first_name": "Jamescita",
+      "middle_name": "",
+      "last_name": "Peshlakai",
+      "suffix": "",
+      "nickname": "Mae",
+      "district": "HD-006",
+      "ftm_eid": 55437891,
+      "votesmart_id": 141360,
+      "opensecrets_id": "",
+      "knowwho_pid": 808745,
+      "ballotpedia": "Mae_Peshlakai",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3708",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2332",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/PESHLAKAI.jpg",
+          "ballotpedia": "https://ballotpedia.org/Mae_Peshlakai",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/141360"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 116",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=127&amp;legislator=2190",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/maepeshlakai/",
+            "linkedin": "https://www.linkedin.com/in/jamescita-peshlakai-56949555/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/mae_peshlakai",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24939,
+      "person_hash": "pfppfr5u",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Julie Willoughby",
+      "first_name": "Julie",
+      "middle_name": "",
+      "last_name": "Willoughby",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-013",
+      "ftm_eid": 49746279,
+      "votesmart_id": 184592,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Julie_Willoughby",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4153",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2344",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/WILLOUGHBY.jpg",
+          "ballotpedia": "https://ballotpedia.org/Julie_Willoughby",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/184592"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 207",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2270",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/julie-willoughby-b3a6791a4/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24946,
+      "person_hash": "h5a9jqce",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Quanta Crews",
+      "first_name": "Quanta",
+      "middle_name": "",
+      "last_name": "Crews",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-026",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Quanta_Crews",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3256",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2345",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/CREWS.jpg",
+          "ballotpedia": "https://ballotpedia.org/Quanta_Crews",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 321",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/repquantacrews/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/RepQuantaCrews",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2272",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/quanta.crews",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/quantacrews/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/RevQMarie",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24950,
+      "person_hash": "xvkmss8v",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Betty Villegas",
+      "first_name": "Betty",
+      "middle_name": "J.",
+      "last_name": "Villegas",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-020",
+      "ftm_eid": 45361940,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Betty_Villegas",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3027",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2346",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/VILLEGAS.jpg",
+          "ballotpedia": "https://ballotpedia.org/Betty_Villegas",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 324",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/RepBettyVillegasAZ",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/BettyVillegasAZ",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=128&amp;legislator=2346",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/betty.villegas.96/",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/bettyvillegasaz/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/VillegasBettyJ",
+            "website": "",
+            "youtube": "https://www.youtube.com/@bjvillegas"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25172,
+      "person_hash": "6h4wfgx5",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Elda Luna-Najera",
+      "first_name": "Elda",
+      "middle_name": "",
+      "last_name": "Luna-Najera",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-022",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Elda_Luna-Nájera",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3881",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2349",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/LUNA-NÁJERA.jpg",
+          "ballotpedia": "https://ballotpedia.org/Elda_Luna-N%C3%A1jera",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 332",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=128&amp;legislator=2349",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/elda.lunanajera",
+            "instagram": "https://www.instagram.com/dr.elda.luna_najera/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/EldaLunaNajera",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25195,
+      "person_hash": "ue4k9gmv",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Junelle Cavero",
+      "first_name": "Junelle",
+      "middle_name": "",
+      "last_name": "Cavero",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-011",
+      "ftm_eid": 55437838,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Junelle_Cavero",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3285",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2351",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/CAVERO.jpg",
+          "ballotpedia": "https://ballotpedia.org/Junelle_Cavero",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 325",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2287",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/junellecavero",
+            "instagram": "https://www.instagram.com/junelle21/",
+            "linkedin": "https://www.linkedin.com/in/junellecavero/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/JunelleJunelle",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25436,
+      "person_hash": "eha8t5fv",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Anna Abeytia",
+      "first_name": "Anna",
+      "middle_name": "",
+      "last_name": "Abeytia",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-024",
+      "ftm_eid": 55437955,
+      "votesmart_id": 205626,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Anna_Abeytia",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3501",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2366",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/ABEYTIA.jpg",
+          "ballotpedia": "https://ballotpedia.org/Anna_Abeytia",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/205626"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 121",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=129&amp;legislator=2366",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=61556439137742",
+            "instagram": "https://www.instagram.com/sun_kissed_a.a/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25437,
+      "person_hash": "4qhk7agc",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Pamela Carter",
+      "first_name": "Pamela",
+      "middle_name": "",
+      "last_name": "Carter",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-004",
+      "ftm_eid": 59858002,
+      "votesmart_id": 216864,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Pamela_Carter",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3153",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2354",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/CARTER_P.jpg",
+          "ballotpedia": "https://ballotpedia.org/Pamela_Carter",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/216864"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 304",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=129&amp;legislator=2354",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/pamela.carter.73",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/pamela-carter-0713944b/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25438,
+      "person_hash": "yz2pll5o",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Janeen Connolly",
+      "first_name": "Janeen",
+      "middle_name": "",
+      "last_name": "Connolly",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-008",
+      "ftm_eid": 58204725,
+      "votesmart_id": 216874,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Janeen_Connolly",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3300",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2357",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/CONNOLLY.jpg",
+          "ballotpedia": "https://ballotpedia.org/Janeen_Connolly",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/216874"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 118",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=129&amp;legislator=2357",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/janeen.rohovit",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/janeen-connolly-formerly-rohovit-38963a213/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25439,
+      "person_hash": "g6vhjf8w",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Lisa Fink",
+      "first_name": "Lisa",
+      "middle_name": "",
+      "last_name": "Fink",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-027",
+      "ftm_eid": 59857975,
+      "votesmart_id": 216913,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Lisa_Fink",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3516",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2369",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/FINK.jpg",
+          "ballotpedia": "https://ballotpedia.org/Lisa_Fink",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/216913"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 345",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=129&amp;legislator=2369",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/lisa.fink.754",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25440,
+      "person_hash": "zx6c540v",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Brian Garcia",
+      "first_name": "Brian",
+      "middle_name": "",
+      "last_name": "Garcia",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-008",
+      "ftm_eid": 59857944,
+      "votesmart_id": 216876,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Brian_Garcia",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3329",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2358",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/GARCIA.jpg",
+          "ballotpedia": "https://ballotpedia.org/Brian_Garcia",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/216876"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 335",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=129&amp;legislator=2358",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/briangarciaaz/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25441,
+      "person_hash": "mge1oz50",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Ralph Heap",
+      "first_name": "Ralph",
+      "middle_name": "",
+      "last_name": "Heap",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-010",
+      "ftm_eid": 50602463,
+      "votesmart_id": 153821,
+      "opensecrets_id": "",
+      "knowwho_pid": 499837,
+      "ballotpedia": "Ralph_Heap",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3381",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2360",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/HEAP.jpg",
+          "ballotpedia": "https://ballotpedia.org/Ralph_Heap",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/153821"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 309",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=129&amp;legislator=2360",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/ralph.heap/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25442,
+      "person_hash": "9wbio8z2",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Nickolas Kupper",
+      "first_name": "Nickolas",
+      "middle_name": "",
+      "last_name": "Kupper",
+      "suffix": "",
+      "nickname": "Nick",
+      "district": "HD-025",
+      "ftm_eid": 59858094,
+      "votesmart_id": 216912,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Nick_Kupper",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3512",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2367",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/KUPPER.jpg",
+          "ballotpedia": "https://ballotpedia.org/Nick_Kupper",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/216912"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 318",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=129&amp;legislator=2367",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/realnickkupper",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/nick-kupper/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25443,
+      "person_hash": "1xtym7um",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Chris Lopez",
+      "first_name": "Chris",
+      "middle_name": "",
+      "last_name": "Lopez",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-016",
+      "ftm_eid": 6502244,
+      "votesmart_id": 216893,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Chris_Lopez_(Arizona)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3445",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2364",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/LOPEZ.jpg",
+          "ballotpedia": "https://ballotpedia.org/Chris_Lopez_%28Arizona%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/216893"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 310",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=128&amp;legislator=2364",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/LopezforAZ",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25444,
+      "person_hash": "51sbj9j7",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Aaron Marquez",
+      "first_name": "Aaron",
+      "middle_name": "",
+      "last_name": "Marquez",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-005",
+      "ftm_eid": 59858070,
+      "votesmart_id": 153823,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Aaron_Marquez",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3179",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2355",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/MÁRQUEZ.jpg",
+          "ballotpedia": "https://ballotpedia.org/Aaron_Marquez",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/153823"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 123",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=129&amp;legislator=2355",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/aaronmarquez/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25445,
+      "person_hash": "slzz0o19",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Khyl Powell",
+      "first_name": "Khyl",
+      "middle_name": "",
+      "last_name": "Powell",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-014",
+      "ftm_eid": 41769935,
+      "votesmart_id": 216888,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Khyl_Powell",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3415",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2362",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/POWELL.jpg",
+          "ballotpedia": "https://ballotpedia.org/Khyl_Powell",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/216888"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 342",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=128&amp;legislator=2362",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/khyl-powell-2bb84a11/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25446,
+      "person_hash": "yxzu6vbu",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Stephanie Simacek",
+      "first_name": "Stephanie",
+      "middle_name": "",
+      "last_name": "Simacek",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-002",
+      "ftm_eid": 59858136,
+      "votesmart_id": 216814,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Stephanie_Simacek",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3083",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2353",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/SIMACEK.jpg",
+          "ballotpedia": "https://ballotpedia.org/Stephanie_Simacek",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/216814"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 120",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=129&amp;legislator=2353",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25447,
+      "person_hash": "pbgh37he",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "James Taylor",
+      "first_name": "James",
+      "middle_name": "",
+      "last_name": "Taylor",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-029",
+      "ftm_eid": 60359248,
+      "votesmart_id": 219503,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "James_Taylor_(Arizona)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3564",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2370",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/TAYLOR.jpg",
+          "ballotpedia": "https://ballotpedia.org/James_Taylor_%28Arizona%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/219503"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 344",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=129&amp;legislator=2370",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25448,
+      "person_hash": "ov36rcm9",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Kevin Volk",
+      "first_name": "Kevin",
+      "middle_name": "",
+      "last_name": "Volk",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-017",
+      "ftm_eid": 59857974,
+      "votesmart_id": 216894,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Kevin_Volk",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3498",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2365",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/VOLK.jpg",
+          "ballotpedia": "https://ballotpedia.org/Kevin_Volk",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/216894"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 119",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=128&amp;legislator=2365",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/k.j.volk",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/kevinvolk/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25449,
+      "person_hash": "wapyapu3",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Michael Way",
+      "first_name": "Michael",
+      "middle_name": "",
+      "last_name": "Way",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-015",
+      "ftm_eid": 59857984,
+      "votesmart_id": 216890,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Michael_Way",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3433",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2363",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/WAY.jpg",
+          "ballotpedia": "https://ballotpedia.org/Michael_Way",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/216890"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 308",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=57&amp;session=128&amp;legislator=2363",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25450,
+      "person_hash": "lbedrxzb",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Hildy Angius",
+      "first_name": "Hildy",
+      "middle_name": "",
+      "last_name": "Angius",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-030",
+      "ftm_eid": 42115361,
+      "votesmart_id": 156980,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Hildy_Angius",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-5051",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2373",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/ANGIUS.jpg",
+          "ballotpedia": "https://ballotpedia.org/Hildy_Angius",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/156980"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 302",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=57&amp;legislator=2373",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/hildyl",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/hildy-angius-0b9a7a1a1/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25451,
+      "person_hash": "4k05dkh0",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Lauren Kuby",
+      "first_name": "Lauren",
+      "middle_name": "H.",
+      "last_name": "Kuby",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-008",
+      "ftm_eid": 8455851,
+      "votesmart_id": 156938,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Lauren_Kuby",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4124",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2390",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/KUBY.jpg",
+          "ballotpedia": "https://ballotpedia.org/Lauren_Kuby",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/156938"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 311",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=57&amp;legislator=2390",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/laurenkuby/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 25452,
+      "person_hash": "dr5qksmq",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Carine Werner",
+      "first_name": "Carine",
+      "middle_name": "",
+      "last_name": "Werner",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-004",
+      "ftm_eid": 59857863,
+      "votesmart_id": 216790,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Carine_Werner",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3673",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2389",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/WERNER.jpg",
+          "ballotpedia": "https://ballotpedia.org/Carine_Werner",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/216790"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 301",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=57&amp;legislator=2389",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/carinewerner/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26455,
+      "person_hash": "l297tcrt",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Kiana Sears",
+      "first_name": "Kiana",
+      "middle_name": "",
+      "last_name": "Sears",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-009",
+      "ftm_eid": 0,
+      "votesmart_id": 222460,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Kiana_Sears",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3374",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2415",
+          "biography": "",
+          "image": "",
+          "ballotpedia": "https://ballotpedia.org/Kiana_Sears",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/222460"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 314",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/kiana.storeysears",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/kiana-maria-sears/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://sears4mesaschoolscom.wordpress.com/",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 4230,
+      "person_hash": "c51ra3ja",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Steve Montenegro",
+      "first_name": "Steve",
+      "middle_name": "B.",
+      "last_name": "Montenegro",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-029",
+      "ftm_eid": 6676721,
+      "votesmart_id": 106507,
+      "opensecrets_id": "",
+      "knowwho_pid": 252127,
+      "ballotpedia": "Steve_B._Montenegro",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3635",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2325",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/MONTENEGRO.jpg",
+          "ballotpedia": "https://ballotpedia.org/Steve_B._Montenegro",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/106507"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 223",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2183",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/steve.b.montenegro",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/steve-montenegro-25576222/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/user/SteveBMontenegro"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 4233,
+      "person_hash": "ahn8t2a5",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "David Gowan",
+      "first_name": "David",
+      "middle_name": "",
+      "last_name": "Gowan",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-019",
+      "ftm_eid": 6662273,
+      "votesmart_id": 28241,
+      "opensecrets_id": "",
+      "knowwho_pid": 267669,
+      "ballotpedia": "David_Gowan",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-5154",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2382",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/GOWAN.jpg",
+          "ballotpedia": "https://ballotpedia.org/David_Gowan",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/28241"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 300",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/AZDavidGowan",
+            "website": "https://www.azleg.gov/senate-member/?legislature=54&amp;legislator=1930",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/dgowan",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/david-gowan-912b2518/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 4260,
+      "person_hash": "201wjcrv",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 1,
+      "role": "Rep",
+      "name": "Laurin Hendrix",
+      "first_name": "Laurin",
+      "middle_name": "",
+      "last_name": "Hendrix",
+      "suffix": "",
+      "nickname": "",
+      "district": "HD-014",
+      "ftm_eid": 12997918,
+      "votesmart_id": 106551,
+      "opensecrets_id": "",
+      "knowwho_pid": 267649,
+      "ballotpedia": "Laurin_Hendrix",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-4209",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2316",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/House/HENDRIX.jpg",
+          "ballotpedia": "https://ballotpedia.org/Laurin_Hendrix",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/106551"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 114",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=56&amp;session=128&amp;legislator=2172",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/laurin.hendrix.5",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/laurin-hendrix-8242166b/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 4262,
+      "person_hash": "dbmnjakz",
+      "party_id": "2",
+      "state_id": 3,
+      "party": "R",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "John Kavanagh",
+      "first_name": "John",
+      "middle_name": "",
+      "last_name": "Kavanagh",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-003",
+      "ftm_eid": 6671185,
+      "votesmart_id": 68209,
+      "opensecrets_id": "",
+      "knowwho_pid": 248845,
+      "ballotpedia": "John_Kavanagh",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-5170",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2386",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/KAVANAGH.jpg",
+          "ballotpedia": "https://ballotpedia.org/John_Kavanagh",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/68209"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 200",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/house-member/?legislature=50&amp;session=107&amp;legislator=1198",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/John.KavanaghAZ",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/john-kavanagh-4a9ba92a4/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/@johnkavanagh1349"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 4343,
+      "person_hash": "3qr3nrop",
+      "party_id": "1",
+      "state_id": 3,
+      "party": "D",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Catherine Miranda",
+      "first_name": "Catherine",
+      "middle_name": "H.",
+      "last_name": "Miranda",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-011",
+      "ftm_eid": 6507410,
+      "votesmart_id": 123736,
+      "opensecrets_id": "",
+      "knowwho_pid": 309013,
+      "ballotpedia": "Catherine_Miranda",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "602-926-3413",
+          "district_phone": "",
+          "email": "",
+          "webmail": "https://www.azleg.gov/emailazleg/?legislatorId=2392",
+          "biography": "",
+          "image": "https://www.azleg.gov/alisImages/MemberPhotos/57leg/Senate/MIRANDA.jpg",
+          "ballotpedia": "https://ballotpedia.org/Catherine_Miranda",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/123736"
+        },
+        "capitol_address": {
+          "address1": "1700 W Washington St",
+          "address2": "Room 313",
+          "city": "Phoenix",
+          "state": "AZ",
+          "zip": "85007"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://www.azleg.gov/senate-member/?legislature=53&amp;legislator=1800",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/MirandaforAZ",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/catherine-miranda-635ba6116/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/@MirandaForArizona"
+          }
+        }
+      }
+    }
+  ]
+}

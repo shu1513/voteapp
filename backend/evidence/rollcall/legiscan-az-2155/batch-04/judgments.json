@@ -1,0 +1,904 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1487074,
+      "measure_id": "HB 2088",
+      "vote_date": "2025-02-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2088, which would have let the state water director shrink a groundwater management area. These areas are the zones where Arizona limits how much groundwater may be pumped. The director could have removed land from one of the newer areas on deciding it no longer met the test for being included. The Arizona House passed it 32-26, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2088, which would have let the state water director shrink a groundwater management area. These areas are the zones where Arizona limits how much groundwater may be pumped. The director could have removed land from one of the newer areas on deciding it no longer met the test for being included. The Arizona House passed it 32-26, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1543086,
+      "measure_id": "HB 2088",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2088, which would have let the state water director shrink a groundwater management area. These areas are the zones where Arizona limits how much groundwater may be pumped. The director could have removed land from one of the newer areas on deciding it no longer met the test for being included. The Arizona Senate passed it 16-14, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2088, which would have let the state water director shrink a groundwater management area. These areas are the zones where Arizona limits how much groundwater may be pumped. The director could have removed land from one of the newer areas on deciding it no longer met the test for being included. The Arizona Senate passed it 16-14, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1487581,
+      "measure_id": "HB 2089",
+      "vote_date": "2025-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2089, which would have let voters end a groundwater management area. These areas are the zones where Arizona limits how much groundwater may be pumped. Ten percent of registered voters inside one of the newer areas could have petitioned to remove the designation, ten years after it was made. The water director would then have examined the basin before the question went to a vote. The Arizona House passed it 32-27, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2089, which would have let voters end a groundwater management area. These areas are the zones where Arizona limits how much groundwater may be pumped. Ten percent of registered voters inside one of the newer areas could have petitioned to remove the designation, ten years after it was made. The water director would then have examined the basin before the question went to a vote. The Arizona House passed it 32-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1541937,
+      "measure_id": "HB 2089",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2089, which would have let voters end a groundwater management area. These areas are the zones where Arizona limits how much groundwater may be pumped. Ten percent of registered voters inside one of the newer areas could have petitioned to remove the designation, ten years after it was made. The water director would then have examined the basin before the question went to a vote. The Arizona Senate passed it 16-14, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2089, which would have let voters end a groundwater management area. These areas are the zones where Arizona limits how much groundwater may be pumped. Ten percent of registered voters inside one of the newer areas could have petitioned to remove the designation, ten years after it was made. The water director would then have examined the basin before the question went to a vote. The Arizona Senate passed it 16-14, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1498712,
+      "measure_id": "HB 2121",
+      "vote_date": "2025-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2121, which would have made able-bodied adults under 60 join a work and training program to keep food assistance. The Department of Economic Security would have had to require it of everyone in that group who receives the benefit. People meeting the listed exemptions would have been excused. The Arizona House passed it 33-27, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2121, which would have made able-bodied adults under 60 join a work and training program to keep food assistance. The Department of Economic Security would have had to require it of everyone in that group who receives the benefit. People meeting the listed exemptions would have been excused. The Arizona House passed it 33-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1560325,
+      "measure_id": "HB 2121",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2121, which would have made able-bodied adults under 60 join a work and training program to keep food assistance. The Department of Economic Security would have had to require it of everyone in that group who receives the benefit. People meeting the listed exemptions would have been excused. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2121, which would have made able-bodied adults under 60 join a work and training program to keep food assistance. The Department of Economic Security would have had to require it of everyone in that group who receives the benefit. People meeting the listed exemptions would have been excused. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1499114,
+      "measure_id": "HB 2122",
+      "vote_date": "2025-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2122, which would have stopped Arizona easing the work rule attached to food assistance. The state could not have sought, accepted or renewed any waiver of the work requirement for able-bodied adults without dependants unless federal law required it or state law allowed it. It also could not have used the state's own option to exempt anyone. The Arizona House passed it 33-27, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2122, which would have stopped Arizona easing the work rule attached to food assistance. The state could not have sought, accepted or renewed any waiver of the work requirement for able-bodied adults without dependants unless federal law required it or state law allowed it. It also could not have used the state's own option to exempt anyone. The Arizona House passed it 33-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1560323,
+      "measure_id": "HB 2122",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2122, which would have stopped Arizona easing the work rule attached to food assistance. The state could not have sought, accepted or renewed any waiver of the work requirement for able-bodied adults without dependants unless federal law required it or state law allowed it. It also could not have used the state's own option to exempt anyone. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2122, which would have stopped Arizona easing the work rule attached to food assistance. The state could not have sought, accepted or renewed any waiver of the work requirement for able-bodied adults without dependants unless federal law required it or state law allowed it. It also could not have used the state's own option to exempt anyone. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1500479,
+      "measure_id": "HB 2165",
+      "vote_date": "2025-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2165, which would have tried to stop food assistance being spent on soda. The Department of Economic Security would have had to ask the federal government for permission to exclude it, and to keep asking every year until permission was granted. Soda was defined as a fizzy drink with more than one gram of added sugar or any artificial sweetener. The Arizona House passed it 32-27, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2165, which would have tried to stop food assistance being spent on soda. The Department of Economic Security would have had to ask the federal government for permission to exclude it, and to keep asking every year until permission was granted. Soda was defined as a fizzy drink with more than one gram of added sugar or any artificial sweetener. The Arizona House passed it 32-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1539396,
+      "measure_id": "HB 2165",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2165, which would have tried to stop food assistance being spent on soda. The Department of Economic Security would have had to ask the federal government for permission to exclude it, and to keep asking every year until permission was granted. Soda was defined as a fizzy drink with more than one gram of added sugar or any artificial sweetener. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2165, which would have tried to stop food assistance being spent on soda. The Department of Economic Security would have had to ask the federal government for permission to exclude it, and to keep asking every year until permission was granted. Soda was defined as a fizzy drink with more than one gram of added sugar or any artificial sweetener. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1548811,
+      "measure_id": "HB 2169",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2169, which would have opened up school board meetings. A board and its subcommittees would have had to meet in a public building inside the district. All meeting materials and minutes would have had to go online for the public. The bill also set rules a board must follow before approving out-of-state travel. The Arizona Senate passed it 17-13, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2169, which would have opened up school board meetings. A board and its subcommittees would have had to meet in a public building inside the district. All meeting materials and minutes would have had to go online for the public. The bill also set rules a board must follow before approving out-of-state travel. The Arizona Senate passed it 17-13, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1487906,
+      "measure_id": "HB 2202",
+      "vote_date": "2025-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2202, which would have let farmers move an old pumping right onto new ground. A grandfathered irrigation right lets land keep drawing groundwater because it was farmed before the area came under limits. Inside the newer management areas, the holder could have irrigated land never irrigated before, if it sits next to a farm unit that was, and if the total water drawn did not rise. The Arizona House passed it 32-27, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2202, which would have let farmers move an old pumping right onto new ground. A grandfathered irrigation right lets land keep drawing groundwater because it was farmed before the area came under limits. Inside the newer management areas, the holder could have irrigated land never irrigated before, if it sits next to a farm unit that was, and if the total water drawn did not rise. The Arizona House passed it 32-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1541785,
+      "measure_id": "HB 2202",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2202, which would have let farmers move an old pumping right onto new ground. A grandfathered irrigation right lets land keep drawing groundwater because it was farmed before the area came under limits. Inside the newer management areas, the holder could have irrigated land never irrigated before, if it sits next to a farm unit that was, and if the total water drawn did not rise. The Arizona Senate passed it 16-14, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2202, which would have let farmers move an old pumping right onto new ground. A grandfathered irrigation right lets land keep drawing groundwater because it was farmed before the area came under limits. Inside the newer management areas, the holder could have irrigated land never irrigated before, if it sits next to a farm unit that was, and if the total water drawn did not rise. The Arizona Senate passed it 16-14, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1543237,
+      "measure_id": "HB 2203",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2203, which would have widened the window used to work out how much groundwater a farm may keep pumping. When a new management area is declared, past use decides who keeps a right and how large it is. The bill would have counted more of the years before the declaration. The Arizona Senate passed it 16-14, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2203, which would have widened the window used to work out how much groundwater a farm may keep pumping. When a new management area is declared, past use decides who keeps a right and how large it is. The bill would have counted more of the years before the declaration. The Arizona Senate passed it 16-14, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1560244,
+      "measure_id": "HB 2221",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2221, which would have stopped cities cutting police budgets. A city could not have set a police budget below the previous year's. A city that did cut would have kept its state-shared money only in listed situations, such as having too little money, cutting every other department by as much or more, or having no population growth. The Arizona Senate passed it 16-13, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2221, which would have stopped cities cutting police budgets. A city could not have set a police budget below the previous year's. A city that did cut would have kept its state-shared money only in listed situations, such as having too little money, cutting every other department by as much or more, or having no population growth. The Arizona Senate passed it 16-13, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1560273,
+      "measure_id": "HB 2222",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2222, which would have required warning before a public body settles a case. The Attorney General would have had to send the proposed terms to the leaders of both chambers at least 30 days beforehand. Cities and counties would have had to send theirs to the Governor, both chambers and the Attorney General at least 90 days beforehand. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2222, which would have required warning before a public body settles a case. The Attorney General would have had to send the proposed terms to the leaders of both chambers at least 30 days beforehand. Cities and counties would have had to send theirs to the Governor, both chambers and the Attorney General at least 90 days beforehand. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1560471,
+      "measure_id": "HB 2233",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2233, which would have made the Corporation Commission lobby in the open. Before the commission, its staff or its lobbyists argued for or against a bill or a rule, the commission would have had to take a majority vote at a publicly noticed meeting and publish its position. The Attorney General could have investigated a failure to do so. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2233, which would have made the Corporation Commission lobby in the open. Before the commission, its staff or its lobbyists argued for or against a bill or a rule, the commission would have had to take a majority vote at a publicly noticed meeting and publish its position. The Attorney General could have investigated a failure to do so. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1491220,
+      "measure_id": "HB 2375",
+      "vote_date": "2025-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2375, which would have put a clock on summer requests to assess a child for a disability. Where a parent asked in writing between May 1 and August 15, the home school district would have had to start the evaluation, or refuse in writing, within 15 calendar days. The Arizona House passed it 33-26, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2375, which would have put a clock on summer requests to assess a child for a disability. Where a parent asked in writing between May 1 and August 15, the home school district would have had to start the evaluation, or refuse in writing, within 15 calendar days. The Arizona House passed it 33-26, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1548979,
+      "measure_id": "HB 2375",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2375, which would have put a clock on summer requests to assess a child for a disability. Where a parent asked in writing between May 1 and August 15, the home school district would have had to start the evaluation, or refuse in writing, within 15 calendar days. The Arizona Senate passed it 17-13, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2375, which would have put a clock on summer requests to assess a child for a disability. Where a parent asked in writing between May 1 and August 15, the home school district would have had to start the evaluation, or refuse in writing, within 15 calendar days. The Arizona Senate passed it 17-13, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1542303,
+      "measure_id": "HB 2449",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2449, which would have checked state health coverage against gambling records. The state health program would have had to share data with the revenue department each month to find members with lottery or gambling winnings of $3,000 or more. It set out how those findings would be reviewed against a member's eligibility. The Arizona Senate passed it 17-13, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2449, which would have checked state health coverage against gambling records. The state health program would have had to share data with the revenue department each month to find members with lottery or gambling winnings of $3,000 or more. It set out how those findings would be reviewed against a member's eligibility. The Arizona Senate passed it 17-13, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1495196,
+      "measure_id": "HB 2450",
+      "vote_date": "2025-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2450, which would have tied how long unemployment benefits last to the jobless rate. The schedule started at 12 weeks while unemployment is 5 percent or less. It rose in steps as the rate rose, reaching 24 weeks once unemployment passed 7.5 percent. The rate for the previous quarter would have set the length. The Arizona House passed it 32-26, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2450, which would have tied how long unemployment benefits last to the jobless rate. The schedule started at 12 weeks while unemployment is 5 percent or less. It rose in steps as the rate rose, reaching 24 weeks once unemployment passed 7.5 percent. The rate for the previous quarter would have set the length. The Arizona House passed it 32-26, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1560753,
+      "measure_id": "HB 2450",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2450, which would have tied how long unemployment benefits last to the jobless rate. The schedule started at 12 weeks while unemployment is 5 percent or less. It rose in steps as the rate rose, reaching 24 weeks once unemployment passed 7.5 percent. The rate for the previous quarter would have set the length. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2450, which would have tied how long unemployment benefits last to the jobless rate. The schedule started at 12 weeks while unemployment is 5 percent or less. It rose in steps as the rate rose, reaching 24 weeks once unemployment passed 7.5 percent. The rate for the previous quarter would have set the length. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1500404,
+      "measure_id": "HB 2527",
+      "vote_date": "2025-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2527, which would have made it harder to close a power plant. The Corporation Commission could not have approved retiring a generating plant unless a new plant of equal or greater output was already available. The commission would have had to favor sources that can be switched on to order, and to plan for at least 5 percent more of that kind of power between 2025 and 2030. The Arizona House passed it 33-27, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2527, which would have made it harder to close a power plant. The Corporation Commission could not have approved retiring a generating plant unless a new plant of equal or greater output was already available. The commission would have had to favor sources that can be switched on to order, and to plan for at least 5 percent more of that kind of power between 2025 and 2030. The Arizona House passed it 33-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1549778,
+      "measure_id": "HB 2527",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2527, which would have made it harder to close a power plant. The Corporation Commission could not have approved retiring a generating plant unless a new plant of equal or greater output was already available. The commission would have had to favor sources that can be switched on to order, and to plan for at least 5 percent more of that kind of power between 2025 and 2030. The Arizona Senate passed it 17-13, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2527, which would have made it harder to close a power plant. The Corporation Commission could not have approved retiring a generating plant unless a new plant of equal or greater output was already available. The commission would have had to favor sources that can be switched on to order, and to plan for at least 5 percent more of that kind of power between 2025 and 2030. The Arizona Senate passed it 17-13, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1560790,
+      "measure_id": "HB 2570",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2570, which would have created a way to cap new irrigation outside the existing groundwater zones. Half the irrigation users in a basin, together with a tenth of its registered voters, could have petitioned to have it named a temporary non-expansion area. The bill set out how such a designation would be made and how long it would run. The Arizona Senate passed it 16-12, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2570, which would have created a way to cap new irrigation outside the existing groundwater zones. Half the irrigation users in a basin, together with a tenth of its registered voters, could have petitioned to have it named a temporary non-expansion area. The bill set out how such a designation would be made and how long it would run. The Arizona Senate passed it 16-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1500664,
+      "measure_id": "HB 2573",
+      "vote_date": "2025-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2573, which would have moved wine grapes and crops grown without soil outside Arizona's irrigation limits. Water used on them would have counted as non-irrigation use in a groundwater management area. Growers could also have watered them using an old farm pumping right in the first management areas. The Arizona House passed it 33-27, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2573, which would have moved wine grapes and crops grown without soil outside Arizona's irrigation limits. Water used on them would have counted as non-irrigation use in a groundwater management area. Growers could also have watered them using an old farm pumping right in the first management areas. The Arizona House passed it 33-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1551152,
+      "measure_id": "HB 2573",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2573, which would have moved wine grapes and crops grown without soil outside Arizona's irrigation limits. Water used on them would have counted as non-irrigation use in a groundwater management area. Growers could also have watered them using an old farm pumping right in the first management areas. The Arizona Senate passed it 16-13, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2573, which would have moved wine grapes and crops grown without soil outside Arizona's irrigation limits. Water used on them would have counted as non-irrigation use in a groundwater management area. Growers could also have watered them using an old farm pumping right in the first management areas. The Arizona Senate passed it 16-13, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1513980,
+      "measure_id": "HB 2574",
+      "vote_date": "2025-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2574, which would have let counties approve small subdivisions without a water supply test. A county could have allowed splits of six to ten parcels where each is at least two acres. Those splits would not have been subject to the assured or adequate water supply rules that larger subdivisions must meet. The Arizona House passed it 31-26, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2574, which would have let counties approve small subdivisions without a water supply test. A county could have allowed splits of six to ten parcels where each is at least two acres. Those splits would not have been subject to the assured or adequate water supply rules that larger subdivisions must meet. The Arizona House passed it 31-26, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1549805,
+      "measure_id": "HB 2574",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2574, which would have let counties approve small subdivisions without a water supply test. A county could have allowed splits of six to ten parcels where each is at least two acres. Those splits would not have been subject to the assured or adequate water supply rules that larger subdivisions must meet. The Arizona Senate passed it 16-14, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2574, which would have let counties approve small subdivisions without a water supply test. A county could have allowed splits of six to ten parcels where each is at least two acres. Those splits would not have been subject to the assured or adequate water supply rules that larger subdivisions must meet. The Arizona Senate passed it 16-14, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1500433,
+      "measure_id": "HB 2788",
+      "vote_date": "2025-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2788, which would have made electricity companies show their long-term plan. An electric utility would have had to file a resource plan with the Corporation Commission for review and approval at least every three years. The plan would have had to project demand 15 years ahead under low, medium and high growth, and list every plant it relies on and every one due to retire. The Arizona House passed it 31-28, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2788, which would have made electricity companies show their long-term plan. An electric utility would have had to file a resource plan with the Corporation Commission for review and approval at least every three years. The plan would have had to project demand 15 years ahead under low, medium and high growth, and list every plant it relies on and every one due to retire. The Arizona House passed it 31-28, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1550078,
+      "measure_id": "HB 2788",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2788, which would have made electricity companies show their long-term plan. An electric utility would have had to file a resource plan with the Corporation Commission for review and approval at least every three years. The plan would have had to project demand 15 years ahead under low, medium and high growth, and list every plant it relies on and every one due to retire. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2788, which would have made electricity companies show their long-term plan. An electric utility would have had to file a resource plan with the Corporation Commission for review and approval at least every three years. The plan would have had to project demand 15 years ahead under low, medium and high growth, and list every plant it relies on and every one due to retire. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1566821,
+      "measure_id": "HB 2895",
+      "vote_date": "2025-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2895, which would have put a class of public contracts online. State bodies, cities, counties and school districts would have had to post a task order contract conspicuously on their website. Personal and proprietary details could have been blacked out, but not the total value of the contract or the name of the contractor. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "nay_description": "Voted against House Bill 2895, which would have put a class of public contracts online. State bodies, cities, counties and school districts would have had to post a task order contract conspicuously on their website. Personal and proprietary details could have been blacked out, but not the total value of the contract or the name of the contractor. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1594680,
+      "measure_id": "SB 1019",
+      "vote_date": "2025-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1019, which would have banned photo enforcement of traffic laws. No state agency or local authority could have used a camera system to identify someone breaking a traffic or speeding law. The bill repealed the existing sections that allow the practice. The Arizona House passed it 34-22, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1019, which would have banned photo enforcement of traffic laws. No state agency or local authority could have used a camera system to identify someone breaking a traffic or speeding law. The bill repealed the existing sections that allow the practice. The Arizona House passed it 34-22, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1495101,
+      "measure_id": "SB 1019",
+      "vote_date": "2025-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1019, which would have banned photo enforcement of traffic laws. No state agency or local authority could have used a camera system to identify someone breaking a traffic or speeding law. The bill repealed the existing sections that allow the practice. The Arizona Senate passed it 16-13, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1019, which would have banned photo enforcement of traffic laws. No state agency or local authority could have used a camera system to identify someone breaking a traffic or speeding law. The bill repealed the existing sections that allow the practice. The Arizona Senate passed it 16-13, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1563724,
+      "measure_id": "SB 1036",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1036, which would have let residents enforce the ban on public money being used to sway an election. That ban already applies to the state, local government, school districts and special taxing districts. Only the Attorney General and county attorneys can bring a case now. Any resident could have brought one in superior court. The Arizona House passed it 31-27, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1036, which would have let residents enforce the ban on public money being used to sway an election. That ban already applies to the state, local government, school districts and special taxing districts. Only the Attorney General and county attorneys can bring a case now. Any resident could have brought one in superior court. The Arizona House passed it 31-27, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1530896,
+      "measure_id": "SB 1071",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1071, which would have added checks to food assistance. The Department of Economic Security would have had to share data with the revenue department to find households with lottery or gambling winnings of $3,000 or more. It would have treated that data as confirmed on arrival. Households above the resource limit would have been referred on. The Arizona House passed it 31-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1071, which would have added checks to food assistance. The Department of Economic Security would have had to share data with the revenue department to find households with lottery or gambling winnings of $3,000 or more. It would have treated that data as confirmed on arrival. Households above the resource limit would have been referred on. The Arizona House passed it 31-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1549878,
+      "measure_id": "SB 1089",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1089, which would have made the transport department explain passing over the cheapest bid. Every three months the director would have had to report to the leaders of both chambers. The report would have had to list each construction contract where the lowest responsible bidder was not chosen, and say why. The Arizona House passed it 33-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1089, which would have made the transport department explain passing over the cheapest bid. Every three months the director would have had to report to the leaders of both chambers. The report would have had to list each construction contract where the lowest responsible bidder was not chosen, and say why. The Arizona House passed it 33-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1517526,
+      "measure_id": "SB 1089",
+      "vote_date": "2025-03-13",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1089, which would have made the transport department explain passing over the cheapest bid. Every three months the director would have had to report to the leaders of both chambers. The report would have had to list each construction contract where the lowest responsible bidder was not chosen, and say why. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1089, which would have made the transport department explain passing over the cheapest bid. Every three months the director would have had to report to the leaders of both chambers. The report would have had to list each construction contract where the lowest responsible bidder was not chosen, and say why. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1547246,
+      "measure_id": "SB 1296",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1296, which would have tightened what a person must do to keep unemployment benefits. A claimant would have had to take at least five job search actions each week and report them weekly. An existing requirement to search in a systematic way would have been removed. The department would also have cross-checked claims against other data. The Arizona House passed it 32-23, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1296, which would have tightened what a person must do to keep unemployment benefits. A claimant would have had to take at least five job search actions each week and report them weekly. An existing requirement to search in a systematic way would have been removed. The department would also have cross-checked claims against other data. The Arizona House passed it 32-23, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1565762,
+      "measure_id": "SB 1300",
+      "vote_date": "2025-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1300, which would have let Cochise County put groundwater limits for part of the San Simon valley to its voters. The area would have become an irrigation non-expansion area, which caps new irrigated acreage. Anyone drawing from a non-exempt well would have had to meter it and report the amount each year. The Arizona House passed it 31-23, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1300, which would have let Cochise County put groundwater limits for part of the San Simon valley to its voters. The area would have become an irrigation non-expansion area, which caps new irrigated acreage. Anyone drawing from a non-exempt well would have had to meter it and report the amount each year. The Arizona House passed it 31-23, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1565001,
+      "measure_id": "SB 1310",
+      "vote_date": "2025-05-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1310, which would have raised the penalty for filing a fake claim against someone's property. Knowingly filing a false document that claims an interest in, or a lien on, land or a building would have become a class 4 felony. It is a class 1 misdemeanor now. The Arizona House passed it 34-23, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1310, which would have raised the penalty for filing a fake claim against someone's property. Knowingly filing a false document that claims an interest in, or a lien on, land or a building would have become a class 4 felony. It is a class 1 misdemeanor now. The Arizona House passed it 34-23, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1500284,
+      "measure_id": "SB 1310",
+      "vote_date": "2025-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1310, which would have raised the penalty for filing a fake claim against someone's property. Knowingly filing a false document that claims an interest in, or a lien on, land or a building would have become a class 4 felony. It is a class 1 misdemeanor now. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1310, which would have raised the penalty for filing a fake claim against someone's property. Knowingly filing a false document that claims an interest in, or a lien on, land or a building would have become a class 4 felony. It is a class 1 misdemeanor now. The Arizona Senate passed it 17-12, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1531379,
+      "measure_id": "SB 1501",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1501, which would have required regular checks on the security of the electricity grid. The Corporation Commission would have had to run a grid security review at least every two years. Each investor-owned utility would have had to research and assess technology that can protect the grid or withstand an attack on it. The Arizona House passed it 31-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1501, which would have required regular checks on the security of the electricity grid. The Corporation Commission would have had to run a grid security review at least every two years. Each investor-owned utility would have had to research and assess technology that can protect the grid or withstand an attack on it. The Arizona House passed it 31-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1592452,
+      "measure_id": "SB 1514",
+      "vote_date": "2025-06-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1514, which would have made arbitration binding for some warehouse workers. A written agreement to arbitrate an employment dispute would have been valid and could not have been revoked, for workers whose main job is loading, unloading or handling goods at a warehouse. Their right to complain to the civil rights division would have remained. The Arizona House passed it 34-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1514, which would have made arbitration binding for some warehouse workers. A written agreement to arbitrate an employment dispute would have been valid and could not have been revoked, for workers whose main job is loading, unloading or handling goods at a warehouse. Their right to complain to the civil rights division would have remained. The Arizona House passed it 34-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1565513,
+      "measure_id": "SB 1518",
+      "vote_date": "2025-05-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1518, which would have made old groundwater pumping rights tradable. Inside the newer management areas, the holder of a grandfathered irrigation right could have sold, leased, used or transferred the right and the water that goes with it. A holder who had left some of the land unirrigated could have sold or leased that share too. The Arizona House passed it 32-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1518, which would have made old groundwater pumping rights tradable. Inside the newer management areas, the holder of a grandfathered irrigation right could have sold, leased, used or transferred the right and the water that goes with it. A holder who had left some of the land unirrigated could have sold or leased that share too. The Arizona House passed it 32-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1504506,
+      "measure_id": "SB 1518",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1518, which would have made old groundwater pumping rights tradable. Inside the newer management areas, the holder of a grandfathered irrigation right could have sold, leased, used or transferred the right and the water that goes with it. A holder who had left some of the land unirrigated could have sold or leased that share too. The Arizona Senate passed it 16-11, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1518, which would have made old groundwater pumping rights tradable. Inside the newer management areas, the holder of a grandfathered irrigation right could have sold, leased, used or transferred the right and the water that goes with it. A holder who had left some of the land unirrigated could have sold or leased that share too. The Arizona Senate passed it 16-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1549877,
+      "measure_id": "SB 1612",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1612, which would have opened up state health contracting. The state health program would have lost its exemption from Arizona's procurement rules. A company bidding for work would have had to disclose anything of value it, its officers or their family members had given over the past five years to the Governor, or to bodies the Governor controls such as a campaign committee. The Arizona House passed it 31-25, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1612, which would have opened up state health contracting. The state health program would have lost its exemption from Arizona's procurement rules. A company bidding for work would have had to disclose anything of value it, its officers or their family members had given over the past five years to the Governor, or to bodies the Governor controls such as a campaign committee. The Arizona House passed it 31-25, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1501740,
+      "measure_id": "SB 1612",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1612, which would have opened up state health contracting. The state health program would have lost its exemption from Arizona's procurement rules. A company bidding for work would have had to disclose anything of value it, its officers or their family members had given over the past five years to the Governor, or to bodies the Governor controls such as a campaign committee. The Arizona Senate passed it 18-11, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1612, which would have opened up state health contracting. The state health program would have lost its exemption from Arizona's procurement rules. A company bidding for work would have had to disclose anything of value it, its officers or their family members had given over the past five years to the Governor, or to bodies the Governor controls such as a campaign committee. The Arizona Senate passed it 18-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "house",
+      "session": "2155",
+      "roll": 1563788,
+      "measure_id": "SB 1725",
+      "vote_date": "2025-05-01",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1725, which would have cut the amount of fentanyl needed to trigger the toughest sentences. Arizona sets longer fixed prison terms where a sale involves a large quantity. The threshold would have dropped from 200 grams to 9 grams. The Arizona House passed it 31-26, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1725, which would have cut the amount of fentanyl needed to trigger the toughest sentences. Arizona sets longer fixed prison terms where a sale involves a large quantity. The threshold would have dropped from 200 grams to 9 grams. The Arizona House passed it 31-26, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AZ",
+      "chamber": "senate",
+      "session": "2155",
+      "roll": 1500244,
+      "measure_id": "SB 1725",
+      "vote_date": "2025-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1725, which would have cut the amount of fentanyl needed to trigger the toughest sentences. Arizona sets longer fixed prison terms where a sale involves a large quantity. The threshold would have dropped from 200 grams to 9 grams. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "nay_description": "Voted against Senate Bill 1725, which would have cut the amount of fentanyl needed to trigger the toughest sentences. Arizona sets longer fixed prison terms where a sale involves a large quantity. The threshold would have dropped from 200 grams to 9 grams. The Arizona Senate passed it 17-11, and the Governor vetoed it.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
