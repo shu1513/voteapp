@@ -1,0 +1,112 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1543820,
+   "measure_id": "HB 2311",
+   "vote_date": "2025-04-10",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "yea_description": "Voted for House Bill 2311, which protects religious belief in foster care and adoption decisions. The state agency for children and families may not run a policy that makes someone agree with a government position on sexual orientation or gender identity. That applies where the person holds a religious or moral belief against it. The agency may not turn down an otherwise eligible person for holding such a belief. It may not turn them down for planning to raise a child by it either. That covers placing a child, adoption, being named a guardian and getting a license. Someone shut out this way can sue the agency for damages and legal costs. The agency may still weigh the child's own beliefs and the birth family's, and its duty to act in the child's best interest is unchanged. The House voted 87-38 to override the governor's veto, and the bill became law.",
+   "nay_description": "Voted against House Bill 2311, which protects religious belief in foster care and adoption decisions. The state agency for children and families may not run a policy that makes someone agree with a government position on sexual orientation or gender identity. That applies where the person holds a religious or moral belief against it. The agency may not turn down an otherwise eligible person for holding such a belief. It may not turn them down for planning to raise a child by it either. That covers placing a child, adoption, being named a guardian and getting a license. Someone shut out this way can sue the agency for damages and legal costs. The agency may still weigh the child's own beliefs and the birth family's, and its duty to act in the child's best interest is unchanged. The House voted 87-38 to override the governor's veto, and the bill became law."
+  },
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1679897,
+   "measure_id": "HB 2333",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for House Bill 2333, which widens the right to speak on public college campuses. Outdoor areas of a campus become public forums. Set-aside free speech zones are banned. A college may still set rules on time, place and manner. Those rules must be written down, neutral about content, and leave room for gatherings that happen on the spot. Security fees for an event must follow published, neutral tests such as crowd size and location. Each college must publish its speech policies and train the staff who handle discipline. It must also report every disrupted event to the governor and legislature. Anyone whose speech rights are broken can sue for at least $500, plus $50 for each further day, with costs and legal fees. The bill also extends an existing protection for religious student groups to political and belief-based groups. The House voted 85-38 to override the governor's veto, and the bill became law.",
+   "nay_description": "Voted against House Bill 2333, which widens the right to speak on public college campuses. Outdoor areas of a campus become public forums. Set-aside free speech zones are banned. A college may still set rules on time, place and manner. Those rules must be written down, neutral about content, and leave room for gatherings that happen on the spot. Security fees for an event must follow published, neutral tests such as crowd size and location. Each college must publish its speech policies and train the staff who handle discipline. It must also report every disrupted event to the governor and legislature. Anyone whose speech rights are broken can sue for at least $500, plus $50 for each further day, with costs and legal fees. The bill also extends an existing protection for religious student groups to political and belief-based groups. The House voted 85-38 to override the governor's veto, and the bill became law."
+  },
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1679992,
+   "measure_id": "HB 2727",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "yea_description": "Voted for House Bill 2727, which makes it easier to sue over Kansas abortion consent rules. State law makes a doctor give a woman set information at least 24 hours before an abortion. Someone suing over a breach of those rules may now choose a fixed award of $5,000. They also get back what was paid for the abortion, plus legal fees. Choosing that route means skipping the panel of doctors that normally screens medical claims first. It also means giving up any larger award. A plaintiff who does not choose it stays under the old rules. The bill does not change what a doctor must tell a woman or who may perform an abortion. The House voted 87-36 to override the governor's veto, and the bill became law.",
+   "nay_description": "Voted against House Bill 2727, which makes it easier to sue over Kansas abortion consent rules. State law makes a doctor give a woman set information at least 24 hours before an abortion. Someone suing over a breach of those rules may now choose a fixed award of $5,000. They also get back what was paid for the abortion, plus legal fees. Choosing that route means skipping the panel of doctors that normally screens medical claims first. It also means giving up any larger award. A plaintiff who does not choose it stays under the old rules. The bill does not change what a doctor must tell a woman or who may perform an abortion. The House voted 87-36 to override the governor's veto, and the bill became law."
+  },
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1544195,
+   "measure_id": "SB 29",
+   "vote_date": "2025-04-10",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 29, which takes away the power of local health officials to stop public gatherings. County and joint boards of health, and local health officers, could bar gatherings when needed to control an infectious disease. Under the bill they may only recommend against them. Their other powers stay. They can still order someone to seek testing or treatment, and still order a person or a group into isolation or quarantine. The state health secretary's own authority is untouched. The House voted 86-38 to override the governor's veto, and the bill became law.",
+   "nay_description": "Voted against Senate Bill 29, which takes away the power of local health officials to stop public gatherings. County and joint boards of health, and local health officers, could bar gatherings when needed to control an infectious disease. Under the bill they may only recommend against them. Their other powers stay. They can still order someone to seek testing or treatment, and still order a person or a group into isolation or quarantine. The state health secretary's own authority is untouched. The House voted 86-38 to override the governor's veto, and the bill became law."
+  },
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1528112,
+   "measure_id": "SB 35",
+   "vote_date": "2025-03-26",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 35, which ends two statewide property taxes. One mill paid for buildings at the state universities and half a mill for buildings at state institutions. A mill is one dollar of tax for every thousand dollars a property is worth, so the cut is a dollar fifty per thousand. 2025 is the last year either is charged. Both building funds keep their money, which now comes out of the state general fund instead. That is $56 million a year for the universities and $25 million for the institutions, starting in July 2026 and rising each year. The Kansas House passed it 96-26. It became law.",
+   "nay_description": "Voted against Senate Bill 35, which ends two statewide property taxes. One mill paid for buildings at the state universities and half a mill for buildings at state institutions. A mill is one dollar of tax for every thousand dollars a property is worth, so the cut is a dollar fifty per thousand. 2025 is the last year either is charged. Both building funds keep their money, which now comes out of the state general fund instead. That is $56 million a year for the universities and $25 million for the institutions, starting in July 2026 and rising each year. The Kansas House passed it 96-26. It became law."
+  },
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1680330,
+   "measure_id": "SB 391",
+   "vote_date": "2026-04-10",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 391, which stops Kansas cities and counties passing four kinds of renting rule. They may no longer stop a landlord refusing a tenant because the rent would come from a housing voucher. They may no longer limit how a landlord screens tenants on credit, past evictions, damage or a criminal record. They may no longer cap security deposits. And they may no longer make a landlord give a tenant first refusal on a sale. Any local rule of those kinds passed before July 2026 is void. The House voted 85-38 to override the governor's veto, and the bill became law.",
+   "nay_description": "Voted against Senate Bill 391, which stops Kansas cities and counties passing four kinds of renting rule. They may no longer stop a landlord refusing a tenant because the rent would come from a housing voucher. They may no longer limit how a landlord screens tenants on credit, past evictions, damage or a criminal record. They may no longer cap security deposits. And they may no longer make a landlord give a tenant first refusal on a sale. Any local rule of those kinds passed before July 2026 is void. The House voted 85-38 to override the governor's veto, and the bill became law."
+  }
+ ]
+}
