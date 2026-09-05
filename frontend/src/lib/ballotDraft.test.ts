@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ApiError, apiRequest } from "@voteapp/api-client";
 import {
+  allRacesDecided,
   clearBallotDraft,
   draftChoicesByElectionId,
   draftPickCount,
@@ -194,6 +195,15 @@ describe("ballotDraft store", () => {
     // Election day itself still counts as upcoming, matching nearestDayPickProgress.
     expect(draftProgress(readBallotDraft(), "2026-11-03")).toMatchObject({ complete: true });
     expect(draftProgress(readBallotDraft(), "2026-11-04")).toBeNull();
+  });
+
+  it("calls a day finished only when every listed race is decided", () => {
+    pickJane();
+    const choices = draftChoicesByElectionId(readBallotDraft());
+    expect(allRacesDecided([{ id: "e1" }], choices)).toBe(true);
+    expect(allRacesDecided([{ id: "e1" }, { id: "e2" }], choices)).toBe(false);
+    expect(allRacesDecided([], choices)).toBe(false);
+    expect(allRacesDecided([{ id: "e1" }], undefined)).toBe(false);
   });
 
   it("targets the nearest upcoming day's races from a full election list", () => {

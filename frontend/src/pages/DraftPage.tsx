@@ -8,6 +8,7 @@ import { DraftMilestone } from "../components/DraftMilestone";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import type { CandidateNavState, ElectionNavState } from "../lib/detailNavContext";
 import {
+  allRacesDecided,
   draftChoicesByElectionId,
   draftPickCount,
   nearestUpcomingTarget,
@@ -151,6 +152,9 @@ export function DraftPage() {
   // list.
   const cardedIds = new Set([...byDate.values()].flat().map((election) => election.id));
   const extraRows = [...choices.values()].filter((choice) => !cardedIds.has(choice.election_id));
+  // Mirrors DraftMilestone's own render test (same helper), so the bottom
+  // CTA below can step aside exactly when the milestone shows.
+  const milestoneShown = ballot.isSuccess && dates.length > 0 && allRacesDecided(byDate.get(dates[0]) ?? [], choices);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -259,7 +263,10 @@ export function DraftPage() {
         </>
       )}
 
-      {pickCount > 0 ? (
+      {/* Hidden while the milestone above the toggle renders: it carries
+          this same link and hint, and two identical buttons on one short
+          page read as a mistake. */}
+      {pickCount > 0 && !milestoneShown ? (
         <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
           <Link
             to={`/register?next=${encodeURIComponent("/draft")}`}
