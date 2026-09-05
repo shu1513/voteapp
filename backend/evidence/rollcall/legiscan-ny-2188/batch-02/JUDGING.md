@@ -83,3 +83,14 @@ dry-run stamp `2026-09-05T04:20:07.933Z` matched zero rows; the real stamp is
 **A 10710 and A 10711 set the childhood vaccine schedule.** An earlier session marked them
 `deferred:user-direction` rather than judging them, and that decision is left standing. They need
 the user's direction before anyone writes a description for them.
+
+## Review revisions (2026-09-05)
+
+One description was corrected after PR review, re-judged, and re-imported (49 rows rewritten,
+re-run all 358 unchanged).
+
+- **S 8420** — the first draft made the expressive-works exemption blanket. Subdivision 4
+  exempts ads for films, television, streaming content and video games only where the
+  synthetic performer's use in the ad is consistent with its use in the work itself; a
+  synthetic performer built just for the ad is not exempt. The description now carries that
+  condition.

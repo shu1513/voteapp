@@ -69,3 +69,17 @@ vote row.**
 
 Predicted independently before touching the database: **209 records and 158 area tags**. Dry run
 209 insert, real run 209 insert with 0 errors, re-run all 209 unchanged.
+
+## Review revisions (2026-09-05)
+
+Two descriptions were corrected after PR review, re-judged, and re-imported (52 + 49 rows
+rewritten, re-run all 209 unchanged).
+
+- **S 4906** — the first draft applied the second-degree-assault condition to the whole right.
+  The new subdivision 6 gives any assault victim at a qualifying workplace the choice to give
+  their statement there; the Penal Law 120.05 condition gates only the officers' duty to tell
+  the victim about that choice. The description now keeps the right and the notice apart.
+- **S 6997** — the first draft promised a week to cure before any fine. Section 119-e(4)(b)(i)
+  lets the commission shorten or extend that week by the nature and severity of the violation,
+  and (4)(b)(ii)–(c) carve out one-touch make-ready violations, which draw a fine of up to
+  $20,000 with no cure period at all. The description now says both.
