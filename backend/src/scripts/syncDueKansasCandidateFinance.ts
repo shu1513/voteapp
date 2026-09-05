@@ -43,13 +43,19 @@ function readValueFlag(args: readonly string[], name: string): string | undefine
   return values[0];
 }
 
-function parsePositiveInteger(args: readonly string[], name: string): number | undefined {
+function parseNonNegativeInteger(args: readonly string[], name: string): number | undefined {
   const value = readValueFlag(args, name);
   if (value === undefined) return undefined;
-  if (!/^[1-9]\d*$/.test(value) || !Number.isSafeInteger(Number(value))) {
+  if (!/^\d+$/.test(value) || !Number.isSafeInteger(Number(value))) {
     throw new Error(`Invalid ${name} value: ${value}`);
   }
   return Number(value);
+}
+
+function parsePositiveInteger(args: readonly string[], name: string): number | undefined {
+  const value = parseNonNegativeInteger(args, name);
+  if (value === 0) throw new Error(`Invalid ${name} value: 0`);
+  return value;
 }
 
 export function parseSyncDueKansasCandidateFinanceScriptArgs(args: readonly string[]): SyncDueKansasCandidateFinanceScriptOptions {
@@ -58,7 +64,9 @@ export function parseSyncDueKansasCandidateFinanceScriptArgs(args: readonly stri
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),
     maxCandidates: parsePositiveInteger(args, "--max-candidates"),
-    staleAfterDays: parsePositiveInteger(args, "--stale-after-days"),
+    // 0 is a deliberate full resync (the North Dakota convention): every
+    // linked candidate in the window is due, whatever its last sync.
+    staleAfterDays: parseNonNegativeInteger(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveInteger(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveInteger(args, "--lookahead-days"),
   };

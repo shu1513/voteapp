@@ -26,4 +26,10 @@ describe("parseSyncDueKansasCandidateFinanceScriptArgs", () => {
     expect(() => parseSyncDueKansasCandidateFinanceScriptArgs(["--max-candidates="])).toThrow("Missing --max-candidates value");
     expect(() => parseSyncDueKansasCandidateFinanceScriptArgs(["--max-candidates=1", "--max-candidates=2"])).toThrow("at most once");
   });
+
+  it("takes --stale-after-days 0 as a deliberate full resync", () => {
+    expect(parseSyncDueKansasCandidateFinanceScriptArgs(["--stale-after-days=0"]).staleAfterDays).toBe(0);
+    expect(() => parseSyncDueKansasCandidateFinanceScriptArgs(["--stale-after-days=-1"])).toThrow("Invalid --stale-after-days value");
+    expect(() => parseSyncDueKansasCandidateFinanceScriptArgs(["--lookback-days=0"])).toThrow("Invalid --lookback-days value: 0");
+  });
 });

@@ -53,6 +53,11 @@ export type KansasOutsideRow = {
   periodDueKey: string;
   /** The statement's printed "Total this Period" (cumulative within the period). */
   statementTotalCents: number;
+  /**
+   * Transcriber-set identity shared by every page of a multi-page filing
+   * (KPDC scans one PDF per page); null when the file is a whole filing.
+   */
+  filingKey: string | null;
   rowIndex: number;
   rowDate: string | null;
   vendorName: string | null;
@@ -74,6 +79,7 @@ const SELECT_OUTSIDE_ROWS_SQL = `
     source_url,
     period_due_key,
     statement_total::text AS statement_total,
+    filing_key,
     row_index,
     row_date::text AS row_date,
     vendor_name,
@@ -106,6 +112,7 @@ export async function loadKansasOutsideRows(db: Queryable, electionYear: number)
       sourceUrl: String(row.source_url),
       periodDueKey: String(row.period_due_key),
       statementTotalCents: kansasNumericTextToCents(row.statement_total, `${label} statement_total`),
+      filingKey: row.filing_key === null || row.filing_key === undefined ? null : String(row.filing_key),
       rowIndex: Number(row.row_index),
       rowDate: row.row_date === null ? null : String(row.row_date),
       vendorName: row.vendor_name === null ? null : String(row.vendor_name),
@@ -168,11 +175,29 @@ function filerPeriodKey(row: Pick<KansasOutsideRow, "filerName" | "periodDueKey"
 }
 
 /**
- * The transcription checksum. For each filer and period: rows group into
- * statements by file; every row of a statement must carry one total and
- * one period; statements sorted by total ascending must see the running
- * sum of their rows equal each total. Returns one reason per failing
- * filer period, keyed by filerPeriodKey.
+ * The transcription checksum. For each filer and period, rows group into
+ * statements by file and every row of a statement must carry one total.
+ * Kansas filers then use "Total this Period" in one of two ways, and a
+ * period passes when EITHER reading reconciles (verified live on the 2026
+ * cycle):
+ *
+ *   * cumulative — each statement's total is the filer's period-to-date
+ *     figure, so statements ordered by total ascending must see the
+ *     running sum of transcribed rows equal every total (Kansas Comeback:
+ *     370,443.63 -> 378,943.63 -> 383,943.63);
+ *   * per filing — each total covers only its own filing, so the rows
+ *     carrying one total must sum to it (American Conservative Fund's
+ *     8/13 filing of $2,211.69 beside its 8/20 filing of $309,228.84).
+ *
+ * A filing that runs over several pages is scanned as one PDF per page and
+ * every page repeats the filing's total (the ACF 8/20 filing is five
+ * files). Which files are pages of one filing is the transcriber's call,
+ * recorded as a shared filing_key from what the pages show (signature date,
+ * filing stamp) — never inferred from a matching total, since two separate
+ * filings can print the same figure. Rows of one file must agree on their
+ * key and rows of one filing on their total. Returns one reason per failing
+ * filer period, keyed by filerPeriodKey; a period that fails both readings
+ * is quarantined and every candidate it names fails the outside leg closed.
  */
 export function reconcileKansasOutsideStatements(rows: readonly KansasOutsideRow[]): Map<string, string> {
   const byFilerPeriod = new Map<string, Map<string, KansasOutsideRow[]>>();
@@ -188,31 +213,53 @@ export function reconcileKansasOutsideStatements(rows: readonly KansasOutsideRow
   const reasons = new Map<string, string>();
   for (const [key, statements] of byFilerPeriod) {
     const label = labels.get(key)!;
-    const totals: { fileName: string; totalCents: number; rowsCents: number }[] = [];
+    // Filings: a file on its own, or every file sharing a transcriber-set key.
+    const filings = new Map<string, { fileNames: string[]; totalCents: number; rowsCents: number }>();
     let inconsistent: string | null = null;
     for (const [fileName, statementRows] of statements) {
       const totalCents = statementRows[0]!.statementTotalCents;
+      const filingKey = statementRows[0]!.filingKey;
       if (statementRows.some((row) => row.statementTotalCents !== totalCents)) {
         inconsistent = `${label}: ${fileName} rows disagree on Total this Period`;
         break;
       }
-      totals.push({ fileName, totalCents, rowsCents: statementRows.reduce((sum, row) => sum + row.amountCents, 0) });
+      if (statementRows.some((row) => row.filingKey !== filingKey)) {
+        inconsistent = `${label}: ${fileName} rows disagree on filing_key`;
+        break;
+      }
+      const filingId = filingKey === null ? `file:${fileName}` : `key:${filingKey}`;
+      const filing = filings.get(filingId) ?? { fileNames: [], totalCents, rowsCents: 0 };
+      if (filing.totalCents !== totalCents) {
+        inconsistent = `${label}: filing_key ${JSON.stringify(filingKey)} pages disagree on Total this Period`;
+        break;
+      }
+      filing.fileNames.push(fileName);
+      filing.rowsCents += statementRows.reduce((sum, row) => sum + row.amountCents, 0);
+      filings.set(filingId, filing);
     }
     if (inconsistent !== null) {
       reasons.set(key, inconsistent);
       continue;
     }
-    totals.sort((left, right) => left.totalCents - right.totalCents || left.fileName.localeCompare(right.fileName));
+    const ordered = [...filings.values()].sort(
+      (left, right) => left.totalCents - right.totalCents || left.fileNames[0]!.localeCompare(right.fileNames[0]!)
+    );
+
     let running = 0;
-    for (const statement of totals) {
-      running += statement.rowsCents;
-      if (running !== statement.totalCents) {
-        reasons.set(
-          key,
-          `${label}: running total ${running} != ${statement.fileName} Total this Period ${statement.totalCents}`
-        );
-        break;
+    let cumulative: string | null = null;
+    let perFiling: string | null = null;
+    for (const filing of ordered) {
+      const files = filing.fileNames.join(", ");
+      running += filing.rowsCents;
+      if (cumulative === null && running !== filing.totalCents) {
+        cumulative = `running total ${running} != ${files} Total this Period ${filing.totalCents}`;
       }
+      if (perFiling === null && filing.rowsCents !== filing.totalCents) {
+        perFiling = `${files} rows ${filing.rowsCents} != Total this Period ${filing.totalCents}`;
+      }
+    }
+    if (cumulative !== null && perFiling !== null) {
+      reasons.set(key, `${label}: ${perFiling} (read as one filing) and ${cumulative} (read as cumulative)`);
     }
   }
   return reasons;
