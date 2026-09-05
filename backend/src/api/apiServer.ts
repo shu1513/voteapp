@@ -24,6 +24,7 @@ import {
   parseMeTermsAcceptanceBodyValue,
   parseMeUpdateBodyValue,
   parseAutoPicksClearQuery,
+  containsNulCharacter,
 } from "./apiValidation.js";
 import type { AddressApiServerOptions } from "./addressApiTypes.js";
 import { mapErrorToResponse } from "./apiErrors.js";
@@ -576,7 +577,32 @@ function createJsonBodyParser() {
       );
       return;
     }
-    parseJson(request, response, next);
+    parseJson(request, response, (error?: unknown) => {
+      if (error !== undefined && error !== null) {
+        next(error);
+        return;
+      }
+      // Postgres rejects U+0000 in text and jsonb, so a NUL anywhere in the
+      // body would otherwise surface as a 500 at insert time. Every JSON
+      // route shares this parser, so reject it once here as a 400.
+      //
+      // body-parser invokes this callback from its stream handler, outside
+      // Express's try/catch around middleware, so a throw here would take
+      // the process down instead of becoming a 500. Route it to next().
+      try {
+        if (containsNulCharacter(request.body)) {
+          sendApiResponse(
+            response,
+            toErrorResponse(400, "invalid_request", "Request body must not contain NUL characters", getCorsHeaders(response))
+          );
+          return;
+        }
+      } catch (checkError) {
+        next(checkError);
+        return;
+      }
+      next();
+    });
   };
 }
 

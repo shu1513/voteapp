@@ -1282,8 +1282,46 @@ export function parseDistrictIds(url: URL): string[] {
 const MIN_CANDIDATE_SEARCH_QUERY_LENGTH = 2;
 const MAX_CANDIDATE_SEARCH_QUERY_LENGTH = 100;
 
+/**
+ * True when any string inside a parsed JSON value, member names included,
+ * contains U+0000. Postgres
+ * text columns reject NUL ("invalid byte sequence for encoding UTF8: 0x00"),
+ * so a NUL that slips past field validation surfaces as a 500 at insert
+ * time; callers reject it up front as a 400 instead.
+ *
+ * Iterative on purpose: JSON.parse accepts nesting thousands of levels deep
+ * within the body-size limit, and a recursive walk overflows the call stack
+ * on such a body.
+ */
+export function containsNulCharacter(value: unknown): boolean {
+  const pending: unknown[] = [value];
+  while (pending.length > 0) {
+    const current = pending.pop();
+    if (typeof current === "string") {
+      if (current.includes("\u0000")) {
+        return true;
+      }
+    } else if (Array.isArray(current)) {
+      for (const item of current) {
+        pending.push(item);
+      }
+    } else if (typeof current === "object" && current !== null) {
+      for (const [key, item] of Object.entries(current)) {
+        if (key.includes("\u0000")) {
+          return true;
+        }
+        pending.push(item);
+      }
+    }
+  }
+  return false;
+}
+
 export function parseCandidateSearchQuery(url: URL): string {
   const query = (url.searchParams.get("q") ?? "").trim();
+  if (containsNulCharacter(query)) {
+    throw new TypeError("Query parameter q must not contain NUL characters");
+  }
   if (query.length < MIN_CANDIDATE_SEARCH_QUERY_LENGTH) {
     throw new TypeError(`Query parameter q requires at least ${MIN_CANDIDATE_SEARCH_QUERY_LENGTH} characters`);
   }
