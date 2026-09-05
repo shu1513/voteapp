@@ -75,3 +75,4 @@ snapshot.
 | batch | measures | rolls | records |
 | --- | --- | --- | --- |
 | batch-01 | 9 | 16 | 1,367 |
+| batch-02 | 7 | 10 | 859 |
