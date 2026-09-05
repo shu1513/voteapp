@@ -82,3 +82,43 @@ export function readStrictPositiveIntegerFlag(argv: readonly string[], flagName:
   }
   return parsed;
 }
+
+/**
+ * readStrictFlagValue for a flag the script cannot run without. Throws
+ * `Missing required <flag>` when the flag is absent.
+ */
+export function readStrictRequiredFlagValue(argv: readonly string[], flagName: string): string {
+  const value = readStrictFlagValue(argv, flagName);
+  if (value === null) {
+    throw new Error(`Missing required ${flagName}`);
+  }
+  return value;
+}
+
+/**
+ * readStrictPositiveIntegerFlag for a flag the script cannot run without.
+ * Throws `Missing required <flag>` when the flag is absent.
+ */
+export function readStrictRequiredPositiveIntegerFlag(argv: readonly string[], flagName: string): number {
+  const value = readStrictPositiveIntegerFlag(argv, flagName);
+  if (value === undefined) {
+    throw new Error(`Missing required ${flagName}`);
+  }
+  return value;
+}
+
+/**
+ * Strict non-negative decimal reader over readStrictFlagValue: `0`, a
+ * positive integer without a leading zero, or either followed by a fraction
+ * (`12.5`). Returns undefined when the flag is absent.
+ */
+export function readStrictNonNegativeNumberFlag(argv: readonly string[], flagName: string): number | undefined {
+  const raw = readStrictFlagValue(argv, flagName);
+  if (raw === null) {
+    return undefined;
+  }
+  if (!/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(raw)) {
+    throw new Error(`Invalid ${flagName} value: ${raw}`);
+  }
+  return Number(raw);
+}

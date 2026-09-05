@@ -82,6 +82,17 @@ describe("probeMassachusettsCandidateFinance script", () => {
     );
   });
 
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() =>
+      parseProbeMassachusettsCandidateFinanceArgs([
+        "--candidate-name=Maura Healey",
+        "--year=2022",
+        "--office=Governor",
+        "--limit=9007199254740993",
+      ])
+    ).toThrow("Invalid --limit value: 9007199254740993");
+  });
+
   it("builds a no-write probe summary with direct occupations and outside industry backtrace", async () => {
     const args = parseProbeMassachusettsCandidateFinanceArgs([
       "--candidate-name=Maura Healey",

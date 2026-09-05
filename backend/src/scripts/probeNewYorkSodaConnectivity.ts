@@ -1,6 +1,7 @@
 import { pathToFileURL } from "node:url";
 
 import { loadProjectEnv } from "../config/env.js";
+import { readStrictFlagValue } from "../utils/cliFlags.js";
 
 // Phase 0 connectivity probe for New York campaign finance (plan-new-york-finance.md).
 //
@@ -98,36 +99,6 @@ class NewYorkSodaRequestError extends Error {
   }
 }
 
-function parseFlagValue(args: readonly string[], name: string): string | null {
-  const inlinePrefix = `${name}=`;
-  const values: string[] = [];
-
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index];
-    if (arg.startsWith(inlinePrefix)) {
-      const value = arg.slice(inlinePrefix.length).trim();
-      if (value.length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(value);
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--") || next.trim().length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(next.trim());
-      index += 1;
-    }
-  }
-
-  if (values.length > 1) {
-    throw new Error(`Provide ${name} at most once`);
-  }
-  return values[0] ?? null;
-}
-
 // This probe gates the New York build decision, so a typo like --yeer must
 // fail loudly instead of silently probing the defaults.
 function assertKnownFlags(args: readonly string[]): void {
@@ -153,7 +124,7 @@ function parseBoundedIntegerFlag(
   min: number,
   max: number
 ): number {
-  const raw = parseFlagValue(args, name);
+  const raw = readStrictFlagValue(args, name);
   if (raw === null) {
     return fallback;
   }
@@ -169,7 +140,7 @@ function parseBoundedIntegerFlag(
 
 export function parseProbeNewYorkSodaConnectivityArgs(args: readonly string[]): NewYorkSodaConnectivityProbeArgs {
   assertKnownFlags(args);
-  const knownIeFilerId = parseFlagValue(args, "--known-ie-filer-id") ?? DEFAULT_KNOWN_IE_FILER_ID;
+  const knownIeFilerId = readStrictFlagValue(args, "--known-ie-filer-id") ?? DEFAULT_KNOWN_IE_FILER_ID;
   if (!/^\d{1,12}$/.test(knownIeFilerId)) {
     throw new Error(`Invalid --known-ie-filer-id value: ${knownIeFilerId}`);
   }
@@ -180,7 +151,7 @@ export function parseProbeNewYorkSodaConnectivityArgs(args: readonly string[]): 
     timeoutMs: parseBoundedIntegerFlag(args, "--timeout-ms", DEFAULT_TIMEOUT_MS, 1, 600_000),
     maxAttempts: parseBoundedIntegerFlag(args, "--max-attempts", DEFAULT_MAX_ATTEMPTS, 1, 10),
     knownIeFilerId,
-    appToken: parseFlagValue(args, "--app-token") ?? (process.env.NEW_YORK_SODA_APP_TOKEN?.trim() || null),
+    appToken: readStrictFlagValue(args, "--app-token") ?? (process.env.NEW_YORK_SODA_APP_TOKEN?.trim() || null),
   };
 }
 

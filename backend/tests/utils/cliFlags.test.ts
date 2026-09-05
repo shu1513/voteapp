@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { readPositiveIntegerFlag, readStrictFlagValue, readStrictPositiveIntegerFlag } from "../../src/utils/cliFlags.js";
+import {
+  readPositiveIntegerFlag,
+  readStrictFlagValue,
+  readStrictNonNegativeNumberFlag,
+  readStrictPositiveIntegerFlag,
+  readStrictRequiredFlagValue,
+  readStrictRequiredPositiveIntegerFlag,
+} from "../../src/utils/cliFlags.js";
 
 describe("readStrictFlagValue", () => {
   it("reads the space and inline forms, trimmed", () => {
@@ -113,6 +120,66 @@ describe("readPositiveIntegerFlag", () => {
     );
     expect(() => readPositiveIntegerFlag(["--limit", "99999999999999999999"], "--limit", 7)).toThrow(
       "--limit must be a positive integer, got: 99999999999999999999"
+    );
+  });
+});
+
+describe("readStrictRequiredFlagValue", () => {
+  it("returns the value from either form", () => {
+    expect(readStrictRequiredFlagValue(["--office", "Governor"], "--office")).toBe("Governor");
+    expect(readStrictRequiredFlagValue(["--office=Governor"], "--office")).toBe("Governor");
+  });
+
+  it("throws when the flag is absent, and propagates the strict reader's errors", () => {
+    expect(() => readStrictRequiredFlagValue([], "--office")).toThrow("Missing required --office");
+    expect(() => readStrictRequiredFlagValue(["--office"], "--office")).toThrow("Missing --office value");
+    expect(() => readStrictRequiredFlagValue(["--office=A", "--office=B"], "--office")).toThrow(
+      "Provide --office at most once"
+    );
+  });
+});
+
+describe("readStrictRequiredPositiveIntegerFlag", () => {
+  it("returns the integer from either form", () => {
+    expect(readStrictRequiredPositiveIntegerFlag(["--year", "2026"], "--year")).toBe(2026);
+    expect(readStrictRequiredPositiveIntegerFlag(["--year=2026"], "--year")).toBe(2026);
+  });
+
+  it("throws when the flag is absent, invalid, or above Number.MAX_SAFE_INTEGER", () => {
+    expect(() => readStrictRequiredPositiveIntegerFlag([], "--year")).toThrow("Missing required --year");
+    expect(() => readStrictRequiredPositiveIntegerFlag(["--year=0"], "--year")).toThrow("Invalid --year value: 0");
+    expect(() => readStrictRequiredPositiveIntegerFlag(["--year=9007199254740993"], "--year")).toThrow(
+      "Invalid --year value: 9007199254740993"
+    );
+  });
+});
+
+describe("readStrictNonNegativeNumberFlag", () => {
+  it("parses zero, integers, and decimals from either form", () => {
+    expect(readStrictNonNegativeNumberFlag(["--min-amount", "0"], "--min-amount")).toBe(0);
+    expect(readStrictNonNegativeNumberFlag(["--min-amount=25000"], "--min-amount")).toBe(25000);
+    expect(readStrictNonNegativeNumberFlag(["--min-amount=12.5"], "--min-amount")).toBe(12.5);
+    expect(readStrictNonNegativeNumberFlag(["--min-amount=0.25"], "--min-amount")).toBe(0.25);
+  });
+
+  it("returns undefined when the flag is absent", () => {
+    expect(readStrictNonNegativeNumberFlag(["--other=1"], "--min-amount")).toBeUndefined();
+  });
+
+  it("rejects negatives, leading zeros, bare dots, exponents, and non-digits", () => {
+    for (const raw of ["-1", "05", "1.", ".5", "1e3", "abc", "$5", "1,000"]) {
+      expect(() => readStrictNonNegativeNumberFlag([`--min-amount=${raw}`], "--min-amount")).toThrow(
+        `Invalid --min-amount value: ${raw}`
+      );
+    }
+  });
+
+  it("propagates the strict reader's missing and duplicate errors", () => {
+    expect(() => readStrictNonNegativeNumberFlag(["--min-amount"], "--min-amount")).toThrow(
+      "Missing --min-amount value"
+    );
+    expect(() => readStrictNonNegativeNumberFlag(["--min-amount=1", "--min-amount=2"], "--min-amount")).toThrow(
+      "Provide --min-amount at most once"
     );
   });
 });

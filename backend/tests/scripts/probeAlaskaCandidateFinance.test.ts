@@ -140,6 +140,16 @@ describe("probeAlaskaCandidateFinance script", () => {
     });
   });
 
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() =>
+      parseProbeAlaskaCandidateFinanceArgs([
+        "--candidate-name=Jane Doe",
+        "--year=2026",
+        "--limit=9007199254740993",
+      ])
+    ).toThrow("Invalid --limit value: 9007199254740993");
+  });
+
   it("builds a no-write Alaska probe summary with occupations and outside industries", async () => {
     const args = parseProbeAlaskaCandidateFinanceArgs([
       "--candidate-name=Jane Doe",

@@ -28,6 +28,12 @@ import {
   type LouisianaOutsideSupportGroup,
   type LouisianaSupportOppose,
 } from "../pipeline/louisianaFinance/louisianaOutsideSupportAggregator.js";
+import {
+  readStrictFlagValue,
+  readStrictPositiveIntegerFlag,
+  readStrictRequiredFlagValue,
+  readStrictRequiredPositiveIntegerFlag,
+} from "../utils/cliFlags.js";
 
 type LouisianaFinanceProbeArgs = {
   candidateName: string;
@@ -168,76 +174,8 @@ const DEFAULT_LIMIT = 5;
 const DEFAULT_EXPECTED_TOLERANCE = 0.01;
 const INDUSTRY_SLUGS = new Set<string>(FINANCE_INDUSTRY_SLUGS);
 
-function parseFlagValue(args: readonly string[], name: string): string | null {
-  const inlinePrefix = `${name}=`;
-  const values: string[] = [];
-
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index];
-    if (arg.startsWith(inlinePrefix)) {
-      const value = arg.slice(inlinePrefix.length).trim();
-      if (value.length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(value);
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--") || next.trim().length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(next.trim());
-      index += 1;
-    }
-  }
-
-  if (values.length > 1) {
-    throw new Error(`Provide ${name} at most once`);
-  }
-  return values[0] ?? null;
-}
-
-function parseRequiredFlag(args: readonly string[], name: string): string {
-  const value = parseFlagValue(args, name);
-  if (!value) {
-    throw new Error(`Missing required ${name}`);
-  }
-  return value;
-}
-
-function parsePositiveIntegerFlag(args: readonly string[], name: string, fallback: number): number {
-  const raw = parseFlagValue(args, name);
-  if (raw === null) {
-    return fallback;
-  }
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
-function parseOptionalPositiveIntegerFlag(args: readonly string[], name: string): number | undefined {
-  const raw = parseFlagValue(args, name);
-  if (raw === null) {
-    return undefined;
-  }
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
-function parseRequiredPositiveIntegerFlag(args: readonly string[], name: string): number {
-  const raw = parseRequiredFlag(args, name);
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
 function parseOptionalAmountFlag(args: readonly string[], name: string): number | null {
-  const raw = parseFlagValue(args, name);
+  const raw = readStrictFlagValue(args, name);
   if (raw === null) {
     return null;
   }
@@ -249,7 +187,7 @@ function parseOptionalAmountFlag(args: readonly string[], name: string): number 
 }
 
 function parseNonNegativeNumberFlag(args: readonly string[], name: string, fallback: number): number {
-  const raw = parseFlagValue(args, name);
+  const raw = readStrictFlagValue(args, name);
   if (raw === null) {
     return fallback;
   }
@@ -278,25 +216,25 @@ function parseExpectedAmbiguousStatus(value: string | null): LouisianaFinancePro
 
 export function parseProbeLouisianaCandidateFinanceArgs(args: readonly string[]): LouisianaFinanceProbeArgs {
   return {
-    candidateName: parseRequiredFlag(args, "--candidate-name"),
-    electionYear: parseRequiredPositiveIntegerFlag(args, "--year"),
-    officeScope: parseOfficeScope(parseFlagValue(args, "--scope")),
-    officeName: parseRequiredFlag(args, "--office"),
-    district: parseFlagValue(args, "--district"),
-    limit: parsePositiveIntegerFlag(args, "--limit", DEFAULT_LIMIT),
-    cacheDir: parseFlagValue(args, "--cache-dir") ?? DEFAULT_LOUISIANA_CAMPAIGN_FINANCE_CACHE_DIR,
-    contributionCsvPath: parseFlagValue(args, "--contributions-csv"),
-    expenditureCsvPath: parseFlagValue(args, "--expenditures-csv"),
+    candidateName: readStrictRequiredFlagValue(args, "--candidate-name"),
+    electionYear: readStrictRequiredPositiveIntegerFlag(args, "--year"),
+    officeScope: parseOfficeScope(readStrictFlagValue(args, "--scope")),
+    officeName: readStrictRequiredFlagValue(args, "--office"),
+    district: readStrictFlagValue(args, "--district"),
+    limit: readStrictPositiveIntegerFlag(args, "--limit") ?? DEFAULT_LIMIT,
+    cacheDir: readStrictFlagValue(args, "--cache-dir") ?? DEFAULT_LOUISIANA_CAMPAIGN_FINANCE_CACHE_DIR,
+    contributionCsvPath: readStrictFlagValue(args, "--contributions-csv"),
+    expenditureCsvPath: readStrictFlagValue(args, "--expenditures-csv"),
     refreshCache: args.includes("--refresh-cache"),
     forceRefresh: args.includes("--force-refresh"),
-    startYear: parseOptionalPositiveIntegerFlag(args, "--start-year"),
-    endYear: parseOptionalPositiveIntegerFlag(args, "--end-year"),
+    startYear: readStrictPositiveIntegerFlag(args, "--start-year"),
+    endYear: readStrictPositiveIntegerFlag(args, "--end-year"),
     expectedDirectTotal: parseOptionalAmountFlag(args, "--expected-direct-total"),
     expectedOutsideSupportTotal: parseOptionalAmountFlag(args, "--expected-outside-support-total"),
-    pacFilerNumber: parseFlagValue(args, "--pac-filer-number"),
+    pacFilerNumber: readStrictFlagValue(args, "--pac-filer-number"),
     expectedPacReceiptsTotal: parseOptionalAmountFlag(args, "--expected-pac-receipts-total"),
-    ambiguousCandidateName: parseFlagValue(args, "--ambiguous-candidate-name"),
-    expectedAmbiguousStatus: parseExpectedAmbiguousStatus(parseFlagValue(args, "--expected-ambiguous-status")),
+    ambiguousCandidateName: readStrictFlagValue(args, "--ambiguous-candidate-name"),
+    expectedAmbiguousStatus: parseExpectedAmbiguousStatus(readStrictFlagValue(args, "--expected-ambiguous-status")),
     expectedTolerance: parseNonNegativeNumberFlag(args, "--expected-tolerance", DEFAULT_EXPECTED_TOLERANCE),
   };
 }

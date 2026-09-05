@@ -25,6 +25,13 @@ import {
   type IllinoisSbeExpenditureRecord,
   type IllinoisSbeSupportOppose,
 } from "../pipeline/illinoisFinance/illinoisSbeClient.js";
+import {
+  readStrictFlagValue,
+  readStrictNonNegativeNumberFlag,
+  readStrictPositiveIntegerFlag,
+  readStrictRequiredFlagValue,
+  readStrictRequiredPositiveIntegerFlag,
+} from "../utils/cliFlags.js";
 
 type IllinoisFinanceProbeArgs = {
   candidateName: string;
@@ -120,36 +127,6 @@ const DEFAULT_CLIENT: IllinoisFinanceProbeClient = {
   getIndependentExpenditures: fetchIllinoisSbeIndependentExpenditureRecords,
 };
 
-function parseFlagValue(args: readonly string[], name: string): string | null {
-  const inlinePrefix = `${name}=`;
-  const values: string[] = [];
-
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index];
-    if (arg.startsWith(inlinePrefix)) {
-      const value = arg.slice(inlinePrefix.length).trim();
-      if (value.length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(value);
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--") || next.trim().length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(next.trim());
-      index += 1;
-    }
-  }
-
-  if (values.length > 1) {
-    throw new Error(`Provide ${name} at most once`);
-  }
-  return values[0] ?? null;
-}
-
 function assertOnlyKnownValueFlags(args: readonly string[], knownFlags: readonly string[]): void {
   const known = new Set(knownFlags);
   for (let index = 0; index < args.length; index += 1) {
@@ -172,44 +149,6 @@ function assertOnlyKnownValueFlags(args: readonly string[], knownFlags: readonly
   }
 }
 
-function parseRequiredFlag(args: readonly string[], name: string): string {
-  const value = parseFlagValue(args, name);
-  if (!value) {
-    throw new Error(`Missing required ${name}`);
-  }
-  return value;
-}
-
-function parsePositiveIntegerFlag(args: readonly string[], name: string, fallback: number): number {
-  const raw = parseFlagValue(args, name);
-  if (raw === null) {
-    return fallback;
-  }
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
-function parseRequiredPositiveIntegerFlag(args: readonly string[], name: string): number {
-  const raw = parseRequiredFlag(args, name);
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
-function parseNonNegativeNumberFlag(args: readonly string[], name: string, fallback: number): number {
-  const raw = parseFlagValue(args, name);
-  if (raw === null) {
-    return fallback;
-  }
-  if (!/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
 function defaultFromDate(electionYear: number): string {
   return `1/1/${electionYear - 1}`;
 }
@@ -219,7 +158,7 @@ function defaultToDate(electionYear: number): string {
 }
 
 function parseDateFlag(args: readonly string[], name: string, fallback: string): string {
-  const raw = parseFlagValue(args, name);
+  const raw = readStrictFlagValue(args, name);
   const value = raw ?? fallback;
   if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(value)) {
     throw new Error(`Invalid ${name} value: ${value}; use m/d/yyyy`);
@@ -239,17 +178,17 @@ export function parseProbeIllinoisCandidateFinanceArgs(args: readonly string[]):
     "--min-industry-amount",
     "--timeout-ms",
   ]);
-  const electionYear = parseRequiredPositiveIntegerFlag(args, "--year");
+  const electionYear = readStrictRequiredPositiveIntegerFlag(args, "--year");
   return {
-    candidateName: parseRequiredFlag(args, "--candidate-name"),
+    candidateName: readStrictRequiredFlagValue(args, "--candidate-name"),
     electionYear,
-    officeName: parseRequiredFlag(args, "--office"),
+    officeName: readStrictRequiredFlagValue(args, "--office"),
     fromDate: parseDateFlag(args, "--from-date", defaultFromDate(electionYear)),
     toDate: parseDateFlag(args, "--to-date", defaultToDate(electionYear)),
-    limit: parsePositiveIntegerFlag(args, "--limit", DEFAULT_LIMIT),
-    funderLimit: parsePositiveIntegerFlag(args, "--funder-limit", DEFAULT_FUNDER_LIMIT),
-    minIndustryAmount: parseNonNegativeNumberFlag(args, "--min-industry-amount", DEFAULT_MIN_INDUSTRY_AMOUNT),
-    timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms", DEFAULT_TIMEOUT_MS),
+    limit: readStrictPositiveIntegerFlag(args, "--limit") ?? DEFAULT_LIMIT,
+    funderLimit: readStrictPositiveIntegerFlag(args, "--funder-limit") ?? DEFAULT_FUNDER_LIMIT,
+    minIndustryAmount: readStrictNonNegativeNumberFlag(args, "--min-industry-amount") ?? DEFAULT_MIN_INDUSTRY_AMOUNT,
+    timeoutMs: readStrictPositiveIntegerFlag(args, "--timeout-ms") ?? DEFAULT_TIMEOUT_MS,
   };
 }
 

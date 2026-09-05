@@ -16,6 +16,13 @@ import {
   type ArizonaSpotlightClientOptions,
   type ArizonaSpotlightIncomeTransaction,
 } from "../pipeline/arizonaFinance/arizonaSpotlightClient.js";
+import {
+  readStrictFlagValue,
+  readStrictNonNegativeNumberFlag,
+  readStrictPositiveIntegerFlag,
+  readStrictRequiredFlagValue,
+  readStrictRequiredPositiveIntegerFlag,
+} from "../utils/cliFlags.js";
 
 type ArizonaFinanceProbeArgs = {
   candidateName: string;
@@ -139,74 +146,6 @@ const DEFAULT_CLIENT: ArizonaFinanceProbeClient = {
   searchIndependentExpenditures: searchArizonaSpotlightIndependentExpenditures,
 };
 
-function parseFlagValue(args: readonly string[], name: string): string | null {
-  const inlinePrefix = `${name}=`;
-  const values: string[] = [];
-
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index];
-    if (arg.startsWith(inlinePrefix)) {
-      const value = arg.slice(inlinePrefix.length).trim();
-      if (value.length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(value);
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--") || next.trim().length === 0) {
-        throw new Error(`Missing ${name} value`);
-      }
-      values.push(next.trim());
-      index += 1;
-    }
-  }
-
-  if (values.length > 1) {
-    throw new Error(`Provide ${name} at most once`);
-  }
-  return values[0] ?? null;
-}
-
-function parseRequiredFlag(args: readonly string[], name: string): string {
-  const value = parseFlagValue(args, name);
-  if (!value) {
-    throw new Error(`Missing required ${name}`);
-  }
-  return value;
-}
-
-function parsePositiveIntegerFlag(args: readonly string[], name: string, fallback: number): number {
-  const raw = parseFlagValue(args, name);
-  if (raw === null) {
-    return fallback;
-  }
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
-function parseRequiredPositiveIntegerFlag(args: readonly string[], name: string): number {
-  const raw = parseRequiredFlag(args, name);
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
-function parseNonNegativeNumberFlag(args: readonly string[], name: string, fallback: number): number {
-  const raw = parseFlagValue(args, name);
-  if (raw === null) {
-    return fallback;
-  }
-  if (!/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(raw)) {
-    throw new Error(`Invalid ${name} value: ${raw}`);
-  }
-  return Number(raw);
-}
-
 function normalizeTextKey(value: string): string {
   return value
     .normalize("NFKD")
@@ -220,19 +159,19 @@ function normalizeTextKey(value: string): string {
 
 export function parseProbeArizonaCandidateFinanceArgs(args: readonly string[]): ArizonaFinanceProbeArgs {
   return {
-    candidateName: parseRequiredFlag(args, "--candidate-name"),
-    electionYear: parseRequiredPositiveIntegerFlag(args, "--year"),
-    officeName: parseRequiredFlag(args, "--office"),
-    committeeId: parseFlagValue(args, "--committee-id"),
-    candidateFilerId: parseFlagValue(args, "--candidate-filer-id"),
-    limit: parsePositiveIntegerFlag(args, "--limit", DEFAULT_LIMIT),
-    resolutionLimit: parsePositiveIntegerFlag(args, "--resolution-limit", DEFAULT_RESOLUTION_LIMIT),
-    incomeLimit: parsePositiveIntegerFlag(args, "--income-limit", DEFAULT_TRANSACTION_LIMIT),
-    independentExpenditureLimit: parsePositiveIntegerFlag(args, "--ie-limit", DEFAULT_TRANSACTION_LIMIT),
-    outsideIncomeLimit: parsePositiveIntegerFlag(args, "--outside-income-limit", DEFAULT_TRANSACTION_LIMIT),
-    outsideMaxGroups: parsePositiveIntegerFlag(args, "--outside-max-groups", DEFAULT_OUTSIDE_MAX_GROUPS),
-    minIndustryAmount: parseNonNegativeNumberFlag(args, "--min-industry-amount", DEFAULT_MIN_INDUSTRY_AMOUNT),
-    timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms", DEFAULT_TIMEOUT_MS),
+    candidateName: readStrictRequiredFlagValue(args, "--candidate-name"),
+    electionYear: readStrictRequiredPositiveIntegerFlag(args, "--year"),
+    officeName: readStrictRequiredFlagValue(args, "--office"),
+    committeeId: readStrictFlagValue(args, "--committee-id"),
+    candidateFilerId: readStrictFlagValue(args, "--candidate-filer-id"),
+    limit: readStrictPositiveIntegerFlag(args, "--limit") ?? DEFAULT_LIMIT,
+    resolutionLimit: readStrictPositiveIntegerFlag(args, "--resolution-limit") ?? DEFAULT_RESOLUTION_LIMIT,
+    incomeLimit: readStrictPositiveIntegerFlag(args, "--income-limit") ?? DEFAULT_TRANSACTION_LIMIT,
+    independentExpenditureLimit: readStrictPositiveIntegerFlag(args, "--ie-limit") ?? DEFAULT_TRANSACTION_LIMIT,
+    outsideIncomeLimit: readStrictPositiveIntegerFlag(args, "--outside-income-limit") ?? DEFAULT_TRANSACTION_LIMIT,
+    outsideMaxGroups: readStrictPositiveIntegerFlag(args, "--outside-max-groups") ?? DEFAULT_OUTSIDE_MAX_GROUPS,
+    minIndustryAmount: readStrictNonNegativeNumberFlag(args, "--min-industry-amount") ?? DEFAULT_MIN_INDUSTRY_AMOUNT,
+    timeoutMs: readStrictPositiveIntegerFlag(args, "--timeout-ms") ?? DEFAULT_TIMEOUT_MS,
   };
 }
 

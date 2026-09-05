@@ -202,6 +202,17 @@ describe("probeVermontCandidateFinance script", () => {
     );
   });
 
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() =>
+      parseProbeVermontCandidateFinanceArgs([
+        "--candidate-name=Jane Candidate",
+        "--year=2026",
+        "--office=Governor",
+        "--limit=9007199254740993",
+      ])
+    ).toThrow("Invalid --limit value: 9007199254740993");
+  });
+
   it("builds a no-write Vermont validation summary with CSV total comparisons", async () => {
     const args = parseProbeVermontCandidateFinanceArgs([
       "--candidate-name=Jane Candidate",

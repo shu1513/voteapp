@@ -282,4 +282,15 @@ describe("probeTennesseeCandidateFinance script", () => {
       parseProbeTennesseeCandidateFinanceArgs(["--candidate-name=Bill Lee", "--year=2022x", "--office=Governor"])
     ).toThrow("Invalid --year value");
   });
+
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() =>
+      parseProbeTennesseeCandidateFinanceArgs([
+        "--candidate-name=Bill Lee",
+        "--year=2022",
+        "--office=Governor",
+        "--limit=9007199254740993",
+      ])
+    ).toThrow("Invalid --limit value: 9007199254740993");
+  });
 });

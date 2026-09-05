@@ -298,4 +298,15 @@ describe("probeIllinoisCandidateFinance script", () => {
       parseProbeIllinoisCandidateFinanceArgs(["--candidate-name=Jane Doe", "--year=2022", "--office=Governor", "extra"])
     ).toThrow("Unexpected positional argument: extra");
   });
+
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() =>
+      parseProbeIllinoisCandidateFinanceArgs([
+        "--candidate-name=JB Pritzker",
+        "--year=2022",
+        "--office=Governor",
+        "--limit=9007199254740993",
+      ])
+    ).toThrow("Invalid --limit value: 9007199254740993");
+  });
 });
