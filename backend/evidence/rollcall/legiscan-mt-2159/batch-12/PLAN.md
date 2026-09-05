@@ -46,13 +46,13 @@ formal written appointment first, then spouse, adult child, parent and sibling,
 and only then the trusted person the patient named. The record says where in that
 order the new option sits.
 
-**HB 804** moves in two directions and the record says so. The threshold at which
-a group must report its lobbying rises from $2,150 to $3,000, which narrows who
-must report. But reports must now be filed electronically, and the monthly
-reporting trigger falls from $5,000 to $3,000, which widens what gets reported.
-It is judged "for" `anti_corruption` because two of the three changes increase
-disclosure and the threshold move tracks the inflation adjustment already in the
-statute.
+**HB 804** looks at first like a threshold rise, and the record says why it is
+not. The statute's printed figure moves from $2,150 to $3,000, but $2,150 was the
+2004 base; the commissioner's inflation rule had already set $3,000 for 2025-2026
+before the session. So who must report does not change. Reports must now be
+filed electronically, and the monthly reporting trigger falls from $5,000 to
+$3,000, which widens what gets reported. It is judged "for" `anti_corruption` on
+those two disclosure gains.
 
 ## Every roll was checked against Montana's own vote record
 

@@ -44,7 +44,10 @@ waiting periods, any provision limiting coverage, the basis or formula for
 payment, and the benefit schedule; a warning before purchase where a veterinary
 examination is required, including that the examination record may result in a
 pre-existing condition exclusion; and a 15-day right to return the policy with
-the full premium refunded within 30 days. Direction **for**
+the full premium refunded within 30 days. Review caught two limits the first
+description dropped: the return right exists only while no claim has been filed
+(33-1-1802(2)(a) as enrolled), and the 30-day refund clock runs from the insurer's
+receipt of the returned policy. The record now says both. Direction **for**
 `corporate_accountability`.
 
 ## HB 207 — candidate filing
@@ -92,7 +95,11 @@ reasonable therapeutic alternatives.
 
 The description says "most generic pills and inhalers" rather than "all generic
 drugs", because the exclusions for specialty-tier and controlled substances are
-real. Direction **for** `healthcare_affordability`.
+real. Review asked for the limits to be stated rather than implied, so the record
+now names the formulary condition (the rule reaches only drugs on the insurer's
+covered list), the controlled-substance and specialty-tier carve-outs on
+generics, and the non-specialty limit on asthma inhalers. Direction **for**
+`healthcare_affordability`.
 
 ## HB 476 — newborn safety devices
 
@@ -150,20 +157,26 @@ not infer a new filing burden beyond the nil report. Direction **for**
 
 ## HB 804 — lobbying threshold
 
-Chapter 535. Amends 5-7-112 and 5-7-208. Three changes, and they do not all point
-the same way.
+Chapter 535. Amends 5-7-112 and 5-7-208. Three changes.
 
-The payment threshold is struck at $2,150 and set at $3,000, with the year struck
-at 2004 and set at 2025. The inflation adjustment after each general election is
-kept. In 5-7-208 a principal must file "electronic reports" rather than "a
-report". And in both (2)(b) and (3)(b) the fixed "$5,000" monthly trigger is
-struck and replaced by "the amount specified under 5-7-112", which is $3,000 — a
-**lower** trigger, so more months must be reported.
+The statute's printed threshold is struck at $2,150 and set at $3,000, with the
+year struck at 2004 and set at 2025. **That figure was not new in practice.**
+5-7-112 already had the commissioner adjust the threshold by rule after each
+general election, and ARM 44.12.204 set it at $2,900 for 2023-2024 and, by MAR
+Notice 44-2-277 (certified 12 November 2024), at $3,000 for 2025-2026. The act
+writes the rule-adjusted figure into statute and keeps the inflation adjustment
+after each general election; it does not change who must report. An earlier
+draft of this note read the edit as a rise from $2,150 that narrowed reporting,
+and review corrected it.
+
+In 5-7-208 a principal must file "electronic reports" rather than "a report". And
+in both (2)(b) and (3)(b) the fixed "$5,000" monthly trigger is struck and
+replaced by "the amount specified under 5-7-112", which is $3,000 — a **lower**
+trigger, so more months must be reported.
 
 Judged **for** `anti_corruption`: electronic filing and the lower monthly trigger
-are concrete disclosure gains, and the threshold rise is the inflation catch-up
-the statute already contemplated, the previous figure having been set for 2004.
-The record states all three changes so a reader can weigh them.
+are concrete disclosure gains, and the threshold is unchanged in effect. The
+record states all three points so a reader can weigh them.
 
 ## HB 825 — trusted health decisionmaker
 
