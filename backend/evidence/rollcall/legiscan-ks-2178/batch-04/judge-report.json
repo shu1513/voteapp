@@ -1,0 +1,52 @@
+{
+  "judgmentsFile": "/Users/shu/voteApp/.claude/worktrees/focused-hofstadter-3ebce2/backend/evidence/rollcall/legiscan-ks-2178/batch-04/judgments.json",
+  "dryRun": false,
+  "judgments": 6,
+  "counts": {
+    "updated": 6
+  },
+  "rows": [
+    {
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1543820,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1679897,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1679992,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1544195,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1528112,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1680330,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    }
+  ]
+}
