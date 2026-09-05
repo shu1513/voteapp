@@ -35,9 +35,11 @@ function matchesImpact(election: ElectionSummary, threshold: VoteImpactThreshold
 }
 
 /**
- * Ballot filter derivation, shared by all four ballot surfaces (each
- * platform keeps its own UI in its BallotFiltersControl component; the
- * policy lives here once, like partyBucket, so web and mobile cannot drift).
+ * Ballot filter derivation, shared by the web and mobile ballot surfaces
+ * (the policy lives here once, like partyBucket, so the platforms cannot
+ * drift). Mobile keeps a BallotFiltersControl UI for the two filters; the
+ * web pages dropped theirs and pass the filters as off, using only the
+ * race-type tab.
  *
  * A race-type tab plus two filters, AND-ed into one visible list:
  * - Race-type tabs (All / offices / ballot measures): a view switch, not a

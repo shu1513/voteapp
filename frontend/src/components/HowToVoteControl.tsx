@@ -108,12 +108,11 @@ function StateResourcesSection({ state, showStateName }: { state: string; showSt
 
 /**
  * "How to vote in WA" disclosure for the elections list: official state links
- * for voting by mail first, then in person. Inline disclosure like
- * BallotFiltersControl — no portal or outside-click machinery — but the
- * trigger is deliberately NOT DisclosureTrigger: this is informational
- * content, not a list control, so it's styled as a quiet text link with an
- * info glyph instead of the bordered filter-button look (py-1.5 keeps it
- * level with the toolbar row it sits beside). Resources load lazily on first
+ * for voting by mail first, then in person. Inline disclosure — no portal or
+ * outside-click machinery. This is informational content, not a list
+ * control, so the trigger is a quiet text link with an info glyph rather
+ * than a bordered button (py-1.5 keeps it level with the toolbar row it
+ * sits beside). Resources load lazily on first
  * open; states normally holds one entry (a ballot's districts share a
  * state), but every distinct state gets its own section if not.
  */
