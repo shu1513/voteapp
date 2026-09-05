@@ -110,6 +110,47 @@ export async function setUserEmailPreferences(
   };
 }
 
+export const USER_EMAIL_PREFERENCE_COLUMNS = [
+  "email_digest",
+  "email_election_reminders",
+  "email_new_election_alerts",
+  "email_issue_updates",
+  "email_member_newsletter",
+] as const satisfies readonly (keyof UserEmailPreferences)[];
+
+/**
+ * Unsubscribe-page target: turns the named opt-ins off in one statement and
+ * leaves the rest untouched. Column names are checked against the known
+ * list before they reach SQL. Idempotent; unknown/deleted users report
+ * user_not_found; an empty list is a programming error.
+ */
+export async function disableUserEmailPreferences(
+  db: Queryable,
+  userId: string,
+  columns: readonly (keyof UserEmailPreferences)[]
+): Promise<void> {
+  const normalizedUserId = normalizeUserId(userId);
+  const unique = USER_EMAIL_PREFERENCE_COLUMNS.filter((column) => columns.includes(column));
+  if (unique.length === 0) {
+    throw new Error("disableUserEmailPreferences requires at least one known column");
+  }
+  const assignments = unique.map((column) => `${column} = false`).join(", ");
+
+  const result = await db.query(
+    `
+      UPDATE public.users
+      SET ${assignments}, updated_at = now()
+      WHERE id = $1::uuid
+        AND deleted_at IS NULL
+    `,
+    [normalizedUserId]
+  );
+
+  if ((result.rowCount ?? 0) === 0) {
+    throw new UserEmailPreferencesError("user_not_found", "User not found");
+  }
+}
+
 /**
  * One-click unsubscribe target: turns the digest off without touching the
  * other opt-ins. Idempotent; unknown/deleted users report user_not_found.
