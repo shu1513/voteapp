@@ -39,8 +39,18 @@ from that inspector. The operator must carry liability insurance of at least
 $500,000 for bodily injury or death of one person per occurrence and at least
 $1 million per occurrence. Passenger responsibilities are expanded.
 
+Scope: 27-1-742(1)(b) is reversed. The old text read "This definition applies
+to amusement rides that are set up and operate in any location in Montana for
+not more than 30 days" (the introduced bill left it untouched); the enrolled
+act strikes "applies" and inserts "does not apply", so rides in one place for
+30 days or less — a traveling carnival — now sit outside part 7 altogether.
+The description names the 30-day line and no longer uses fairground rides as
+its example.
+
 Direction **for** `corporate_accountability`: mandatory independent inspection
-and a floor on the operator's insurance.
+and a floor on the operator's insurance for every ride the act covers. The
+carve-out narrows who is covered, but it does not loosen any duty on those who
+are.
 
 ## SB 181 — Indian Education for All
 
@@ -71,11 +81,16 @@ Indian cultural integrity. Direction **for** `public_education_quality`.
 Chapter 381. Amends 13-13-114, 13-13-602 and 13-15-107. The marks show four
 changes, and they do not all run the same way.
 
-Tightening: identification must be "current, valid, and readable" (inserted); the
-words "including but not limited to a school district or postsecondary education
-photo identification" are struck from the second-tier photo option; and the
-declaration of reasonable impediment route into a provisional ballot is removed,
-as the enacted title states.
+Tightening: identification must be "current, valid, and readable" (inserted),
+and the declaration of reasonable impediment route into a provisional ballot is
+removed, as the enacted title states.
+
+Neutral: the words "including but not limited to a school district or
+postsecondary education photo identification" are struck from the second-tier
+photo option, but the option itself — "photo identification that shows the
+elector's name" paired with a name-and-address document — survives unchanged in
+13-13-114(1)(a)(ii)(B). Striking an example does not exclude it, so a school
+district card still qualifies there. The description says so.
 
 Loosening: a "student photo identification card issued by the Montana university
 system or a school that is a member of the national association of intercollegiate
@@ -83,11 +98,11 @@ athletics" is inserted into the **first** tier, where a student card previously
 sat lower and was described more broadly as from "a Montana college or
 university".
 
-Judged **for** `election_integrity` on the net: the readability standard, the
-removal of school district cards, and the loss of the impediment declaration all
-tighten proof of identity, and the student card change narrows which schools
-qualify even as it promotes the card. The description states both the promotion
-and the removals.
+Judged **for** `election_integrity` on the net: the readability standard and
+the loss of the impediment declaration both tighten proof of identity, and the
+student card change narrows which schools qualify even as it promotes the card.
+The description states the promotion, the survival of the back-up option, and
+the removal of the impediment route.
 
 ## SB 457 — legislative subpoenas
 
@@ -112,7 +127,17 @@ is publicly traded, more than a 1% interest" inserted. In (2)(e) the same
 substitution is made for real property other than a personal residence.
 
 So an official who previously had to list every holding now lists only those
-above the threshold. Direction **against** `anti_corruption`.
+above the threshold. Three things the description keeps straight: the filing
+cadence in (1)(a) is "prior to December 15 of each even-numbered year" for
+sitting officials (candidates within 5 days of filing, appointees on
+confirmation or assumption), not yearly; (2)(b) employing entities and (2)(d)
+officer or director posts are untouched and carry no ownership threshold; and a
+new (4) bars an individual from assuming or continuing in office until the
+statement is filed (old (4)-(5) renumbered (5)-(6)).
+
+Direction **against** `anti_corruption`: the thresholds are the operative
+change and they shrink what is disclosed. The new filing gate enforces a
+narrower statement; it does not widen it.
 
 ## SB 560 — nonprofit hospital community benefit
 
@@ -126,6 +151,12 @@ year's potential property tax liability the nonprofit hospital would have
 incurred". The revenue department supplies that figure. A hospital falling short
 pays a fee, and the proceeds fund a new critical access health care account for
 small rural hospitals.
+
+Timing: section 8 makes the act effective January 1, 2027, and section 9 applies
+the reporting duty (section 1) to critical access hospitals from that date but
+the benefit test, fee, account and related amendments (sections 2 through 6) to
+them only from January 1, 2031. The description carries both dates rather than
+presenting the scheme as already running.
 
 Direction **for** `corporate_accountability`.
 
