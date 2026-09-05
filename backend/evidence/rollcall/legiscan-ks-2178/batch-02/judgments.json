@@ -1,0 +1,130 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1527278,
+   "measure_id": "HB 2088",
+   "vote_date": "2025-03-26",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for House Bill 2088, which puts a clock on local building permits for houses. A city or county has 60 days to approve or deny a complete application and tell the applicant in writing. If it misses that deadline the permit is treated as approved. If the application is incomplete the local government has 15 days to say why and let the applicant fix it. It may not deny the permit using a rule it adopted after the application went in. The clock covers building permits for single-family homes, not zoning appeals. A local government cannot opt out, and a faster local rule still applies. The Kansas House passed it 83-40. It became law.",
+   "nay_description": "Voted against House Bill 2088, which puts a clock on local building permits for houses. A city or county has 60 days to approve or deny a complete application and tell the applicant in writing. If it misses that deadline the permit is treated as approved. If the application is incomplete the local government has 15 days to say why and let the applicant fix it. It may not deny the permit using a rule it adopted after the application went in. The clock covers building permits for single-family homes, not zoning appeals. A local government cannot opt out, and a faster local rule still applies. The Kansas House passed it 83-40. It became law."
+  },
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1490405,
+   "measure_id": "HB 2106",
+   "vote_date": "2025-02-14",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for House Bill 2106, which bars foreign money from campaigns over changes to the Kansas constitution. No one may take a contribution or spending from a foreign national for or against a constitutional amendment. That covers people who are not citizens or permanent residents. It also covers foreign governments, foreign parties, foreign companies, and US companies mostly owned abroad. Anyone filing a report must swear they took no foreign money, and get the same promise from each donor. A donor must also swear it has not taken more than $100,000 in foreign money in the past four years. The bill adds a report 15 days before the vote and another 15 days after. It reaches constitutional amendments only, not candidate elections or local ballot questions. The Kansas House passed it 94-25. It became law.",
+   "nay_description": "Voted against House Bill 2106, which bars foreign money from campaigns over changes to the Kansas constitution. No one may take a contribution or spending from a foreign national for or against a constitutional amendment. That covers people who are not citizens or permanent residents. It also covers foreign governments, foreign parties, foreign companies, and US companies mostly owned abroad. Anyone filing a report must swear they took no foreign money, and get the same promise from each donor. A donor must also swear it has not taken more than $100,000 in foreign money in the past four years. The bill adds a report 15 days before the vote and another 15 days after. It reaches constitutional amendments only, not candidate elections or local ballot questions. The Kansas House passed it 94-25. It became law."
+  },
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1543783,
+   "measure_id": "HB 2217",
+   "vote_date": "2025-04-10",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for House Bill 2217, which widens what the state inspector general may investigate. That office sits inside the attorney general's office and looks for fraud in public benefits. It could already cover Medicaid and children's health insurance. The bill adds cash assistance and food assistance to its reach. The office can subpoena records, put witnesses under oath and serve search warrants. It refers what it finds to prosecutors rather than charging anyone itself, and every audit is its own choice. The bill also drops one item from the office's yearly public report, the totals on provider billing and payments. It adds no money for the extra work. The House voted 87-38 to override the governor's veto, and the bill became law.",
+   "nay_description": "Voted against House Bill 2217, which widens what the state inspector general may investigate. That office sits inside the attorney general's office and looks for fraud in public benefits. It could already cover Medicaid and children's health insurance. The bill adds cash assistance and food assistance to its reach. The office can subpoena records, put witnesses under oath and serve search warrants. It refers what it finds to prosecutors rather than charging anyone itself, and every audit is its own choice. The bill also drops one item from the office's yearly public report, the totals on provider billing and payments. It adds no money for the extra work. The House voted 87-38 to override the governor's veto, and the bill became law."
+  },
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1525875,
+   "measure_id": "HB 2304",
+   "vote_date": "2025-03-25",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for House Bill 2304, which makes cities and counties report the tax breaks and subsidies they hand out. The state already ran a public list of the tax breaks it gives out itself. The bill adds local programs worth more than $50,000 a year, such as tax increment financing. Both the local government and the business getting the money have to report. Reporting becomes a condition of getting the money at all. The list has to be searchable by program, by county and by who got the money. Totals go to two legislative committees each January. The bill also widens one gap: deals signed before July 2025 whose contracts promise secrecy stay hidden. It sets no penalty for a local government that files nothing. The Kansas House passed it 88-37. It became law.",
+   "nay_description": "Voted against House Bill 2304, which makes cities and counties report the tax breaks and subsidies they hand out. The state already ran a public list of the tax breaks it gives out itself. The bill adds local programs worth more than $50,000 a year, such as tax increment financing. Both the local government and the business getting the money have to report. Reporting becomes a condition of getting the money at all. The list has to be searchable by program, by county and by who got the money. Totals go to two legislative committees each January. The bill also widens one gap: deals signed before July 2025 whose contracts promise secrecy stay hidden. It sets no penalty for a local government that files nothing. The Kansas House passed it 88-37. It became law."
+  },
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1679834,
+   "measure_id": "HB 2593",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for House Bill 2593, which makes local governments explain in public before hiring lawyers paid out of what they win. A contingent fee means the lawyer is paid a share of the result instead of an hourly rate. The city or county must put six things in the meeting notice. Those include why its own lawyers cannot do the work, and why an hourly contract is not possible. It must make written findings and approve the contract in an open meeting. The attorney general then has 45 days to approve or refuse, and silence counts as approval. The description of the legal matter sent to the attorney general is kept confidential. The whole section expires in July 2031. The House voted 85-38 to override the governor's veto, and the bill became law.",
+   "nay_description": "Voted against House Bill 2593, which makes local governments explain in public before hiring lawyers paid out of what they win. A contingent fee means the lawyer is paid a share of the result instead of an hourly rate. The city or county must put six things in the meeting notice. Those include why its own lawyers cannot do the work, and why an hourly contract is not possible. It must make written findings and approve the contract in an open meeting. The attorney general then has 45 days to approve or refuse, and silence counts as approval. The description of the legal matter sent to the attorney general is kept confidential. The whole section expires in July 2031. The House voted 85-38 to override the governor's veto, and the bill became law."
+  },
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1654275,
+   "measure_id": "SB 299",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 299, which opens the records of the commission that picks Kansas supreme court nominees. That commission screens applicants and sends names to the governor. Before this bill it could decide for itself which of its records to close. The bill removes that discretion and says no rule of the commission or of the supreme court may block disclosure. All its records become open, including the names and home cities of people nominated to the commission. Background check material and sensitive financial details about judicial applicants may still be kept closed. The Kansas House passed it 87-32. It became law.",
+   "nay_description": "Voted against Senate Bill 299, which opens the records of the commission that picks Kansas supreme court nominees. That commission screens applicants and sends names to the governor. Before this bill it could decide for itself which of its records to close. The bill removes that discretion and says no rule of the commission or of the supreme court may block disclosure. All its records become open, including the names and home cities of people nominated to the commission. Background check material and sensitive financial details about judicial applicants may still be kept closed. The Kansas House passed it 87-32. It became law."
+  },
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1680080,
+   "measure_id": "SB 375",
+   "vote_date": "2026-04-09",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 375, which makes firms that tell shareholders how to vote say what their advice rests on. These firms are paid to advise investors and pension funds on company shareholder votes. When one tells clients to vote against a company's managers, it must say what the advice rests on. It has to state whether a written financial analysis backs it up. It must tell its own clients, tell the board of the company involved, and post a notice on its home page. If there is an analysis, clients may ask for it and the company's board gets a copy. The bill bans no recommendation and requires no analysis to be done. Only the attorney general may enforce it, and an investor cannot sue. The House voted 87-36 to override the governor's veto, and the bill became law.",
+   "nay_description": "Voted against Senate Bill 375, which makes firms that tell shareholders how to vote say what their advice rests on. These firms are paid to advise investors and pension funds on company shareholder votes. When one tells clients to vote against a company's managers, it must say what the advice rests on. It has to state whether a written financial analysis backs it up. It must tell its own clients, tell the board of the company involved, and post a notice on its home page. If there is an analysis, clients may ask for it and the company's board gets a copy. The bill bans no recommendation and requires no analysis to be done. Only the attorney general may enforce it, and an investor cannot sue. The House voted 87-36 to override the governor's veto, and the bill became law."
+  }
+ ]
+}
