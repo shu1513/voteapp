@@ -53,6 +53,11 @@ export type KansasOutsideRow = {
   periodDueKey: string;
   /** The statement's printed "Total this Period" (cumulative within the period). */
   statementTotalCents: number;
+  /**
+   * Transcriber-set identity shared by every page of a multi-page filing
+   * (KPDC scans one PDF per page); null when the file is a whole filing.
+   */
+  filingKey: string | null;
   rowIndex: number;
   rowDate: string | null;
   vendorName: string | null;
@@ -74,6 +79,7 @@ const SELECT_OUTSIDE_ROWS_SQL = `
     source_url,
     period_due_key,
     statement_total::text AS statement_total,
+    filing_key,
     row_index,
     row_date::text AS row_date,
     vendor_name,
@@ -106,6 +112,7 @@ export async function loadKansasOutsideRows(db: Queryable, electionYear: number)
       sourceUrl: String(row.source_url),
       periodDueKey: String(row.period_due_key),
       statementTotalCents: kansasNumericTextToCents(row.statement_total, `${label} statement_total`),
+      filingKey: row.filing_key === null || row.filing_key === undefined ? null : String(row.filing_key),
       rowIndex: Number(row.row_index),
       rowDate: row.row_date === null ? null : String(row.row_date),
       vendorName: row.vendor_name === null ? null : String(row.vendor_name),
@@ -183,11 +190,14 @@ function filerPeriodKey(row: Pick<KansasOutsideRow, "filerName" | "periodDueKey"
  *     8/13 filing of $2,211.69 beside its 8/20 filing of $309,228.84).
  *
  * A filing that runs over several pages is scanned as one PDF per page and
- * every page repeats the filing's total, so files sharing a total are
- * summed together before either reading is applied (the ACF 8/20 filing is
- * five files). Returns one reason per failing filer period, keyed by
- * filerPeriodKey; a period that fails both readings is quarantined and
- * every candidate it names fails the outside leg closed.
+ * every page repeats the filing's total (the ACF 8/20 filing is five
+ * files). Which files are pages of one filing is the transcriber's call,
+ * recorded as a shared filing_key from what the pages show (signature date,
+ * filing stamp) — never inferred from a matching total, since two separate
+ * filings can print the same figure. Rows of one file must agree on their
+ * key and rows of one filing on their total. Returns one reason per failing
+ * filer period, keyed by filerPeriodKey; a period that fails both readings
+ * is quarantined and every candidate it names fails the outside leg closed.
  */
 export function reconcileKansasOutsideStatements(rows: readonly KansasOutsideRow[]): Map<string, string> {
   const byFilerPeriod = new Map<string, Map<string, KansasOutsideRow[]>>();
@@ -203,31 +213,37 @@ export function reconcileKansasOutsideStatements(rows: readonly KansasOutsideRow
   const reasons = new Map<string, string>();
   for (const [key, statements] of byFilerPeriod) {
     const label = labels.get(key)!;
-    const totals: { fileName: string; totalCents: number; rowsCents: number }[] = [];
+    // Filings: a file on its own, or every file sharing a transcriber-set key.
+    const filings = new Map<string, { fileNames: string[]; totalCents: number; rowsCents: number }>();
     let inconsistent: string | null = null;
     for (const [fileName, statementRows] of statements) {
       const totalCents = statementRows[0]!.statementTotalCents;
+      const filingKey = statementRows[0]!.filingKey;
       if (statementRows.some((row) => row.statementTotalCents !== totalCents)) {
         inconsistent = `${label}: ${fileName} rows disagree on Total this Period`;
         break;
       }
-      totals.push({ fileName, totalCents, rowsCents: statementRows.reduce((sum, row) => sum + row.amountCents, 0) });
+      if (statementRows.some((row) => row.filingKey !== filingKey)) {
+        inconsistent = `${label}: ${fileName} rows disagree on filing_key`;
+        break;
+      }
+      const filingId = filingKey === null ? `file:${fileName}` : `key:${filingKey}`;
+      const filing = filings.get(filingId) ?? { fileNames: [], totalCents, rowsCents: 0 };
+      if (filing.totalCents !== totalCents) {
+        inconsistent = `${label}: filing_key ${JSON.stringify(filingKey)} pages disagree on Total this Period`;
+        break;
+      }
+      filing.fileNames.push(fileName);
+      filing.rowsCents += statementRows.reduce((sum, row) => sum + row.amountCents, 0);
+      filings.set(filingId, filing);
     }
     if (inconsistent !== null) {
       reasons.set(key, inconsistent);
       continue;
     }
-    // Files sharing a total are pages of one filing: sum them first.
-    const filings = new Map<number, { fileNames: string[]; rowsCents: number }>();
-    for (const statement of totals) {
-      const filing = filings.get(statement.totalCents) ?? { fileNames: [], rowsCents: 0 };
-      filing.fileNames.push(statement.fileName);
-      filing.rowsCents += statement.rowsCents;
-      filings.set(statement.totalCents, filing);
-    }
-    const ordered = [...filings.entries()]
-      .map(([totalCents, filing]) => ({ totalCents, ...filing }))
-      .sort((left, right) => left.totalCents - right.totalCents);
+    const ordered = [...filings.values()].sort(
+      (left, right) => left.totalCents - right.totalCents || left.fileNames[0]!.localeCompare(right.fileNames[0]!)
+    );
 
     let running = 0;
     let cumulative: string | null = null;

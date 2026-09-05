@@ -222,6 +222,7 @@ function ieRow(
     filerName: "Example Fund",
     sourceUrl: `https://www.kansas.gov/ethics/CFAScanned/Others/2026ElecCycle/202607/${overrides.sourceFileName}`,
     periodDueKey: "202607",
+    filingKey: null,
     rowDate: "2026-07-01",
     vendorName: "Example Vendor LLC",
     targetCommitteeId: "7:85:HOLLOWAY:MARGARET",

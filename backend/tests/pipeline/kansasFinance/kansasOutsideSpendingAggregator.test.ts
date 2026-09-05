@@ -21,6 +21,7 @@ function row(
     filerName: "Example Comeback Fund",
     sourceUrl: `${TREE}/202607/${overrides.sourceFileName}`,
     periodDueKey: "202607",
+    filingKey: null,
     rowDate: "2026-06-01",
     vendorName: "Example Media Inc.",
     targetCommitteeId: TARGET,
@@ -71,13 +72,15 @@ describe("reconcileKansasOutsideStatements", () => {
   });
 
   // The American Conservative Fund shape: one filing scanned as a file per
-  // page, every page repeating the filing's own total, beside an earlier
-  // filing of the same period with its own smaller total.
+  // page (the transcriber ties the pages together with one filing_key),
+  // every page repeating the filing's own total, beside an earlier filing
+  // of the same period with its own smaller total.
+  const PAGES = "signed 2026-08-20";
   function perFiling(): KansasOutsideRow[] {
     const pages = [
-      row({ sourceFileName: "IE_XC_2610.pdf", rowIndex: 1, amountCents: 1_639_608, statementTotalCents: 3_092_288 }),
-      row({ sourceFileName: "IE_XC2_2610.pdf", rowIndex: 1, amountCents: 1_000_000, statementTotalCents: 3_092_288 }),
-      row({ sourceFileName: "IE_XC2_2610.pdf", rowIndex: 2, amountCents: 452_680, statementTotalCents: 3_092_288 }),
+      row({ sourceFileName: "IE_XC_2610.pdf", rowIndex: 1, amountCents: 1_639_608, statementTotalCents: 3_092_288, filingKey: PAGES }),
+      row({ sourceFileName: "IE_XC2_2610.pdf", rowIndex: 1, amountCents: 1_000_000, statementTotalCents: 3_092_288, filingKey: PAGES }),
+      row({ sourceFileName: "IE_XC2_2610.pdf", rowIndex: 2, amountCents: 452_680, statementTotalCents: 3_092_288, filingKey: PAGES }),
       row({ sourceFileName: "IE_XC3_2610.pdf", rowIndex: 1, amountCents: 221_169, statementTotalCents: 221_169 }),
     ];
     return pages.map((entry) => ({ ...entry, filerName: "Example Conservative Fund", periodDueKey: "202610" }));
@@ -93,6 +96,34 @@ describe("reconcileKansasOutsideStatements", () => {
     expect(reconcileKansasOutsideStatements(short).get("EXAMPLE CONSERVATIVE FUND|202610")).toBe(
       "Example Conservative Fund 202610: IE_XC_2610.pdf, IE_XC2_2610.pdf rows 2639608 != Total this Period 3092288 (read as one filing)" +
         " and running total 2860777 != IE_XC_2610.pdf, IE_XC2_2610.pdf Total this Period 3092288 (read as cumulative)"
+    );
+  });
+
+  it("never treats a matching total as proof that two files are one filing", () => {
+    // Two separate, complete $5,000 filings: both publish.
+    const twoComplete = [
+      row({ sourceFileName: "IE_XD_2607.pdf", rowIndex: 1, amountCents: 500_000, statementTotalCents: 500_000 }),
+      row({ sourceFileName: "IE_XD2_2607.pdf", rowIndex: 1, amountCents: 500_000, statementTotalCents: 500_000 }),
+    ];
+    expect(reconcileKansasOutsideStatements(twoComplete)).toEqual(new Map());
+    // Two separate $5,000 filings each missing half their rows: neither reconciles, even though together they would.
+    const twoHalves = twoComplete.map((entry) => ({ ...entry, amountCents: 250_000 }));
+    expect(reconcileKansasOutsideStatements(twoHalves).get("EXAMPLE COMEBACK FUND|202607")).toBe(
+      "Example Comeback Fund 202607: IE_XD_2607.pdf rows 250000 != Total this Period 500000 (read as one filing)" +
+        " and running total 250000 != IE_XD_2607.pdf Total this Period 500000 (read as cumulative)"
+    );
+    // The same two halves declared as pages of one filing reconcile — that is the transcriber's claim, made explicit.
+    expect(reconcileKansasOutsideStatements(twoHalves.map((entry) => ({ ...entry, filingKey: "signed 2026-07-20" })))).toEqual(new Map());
+  });
+
+  it("fails a filer period whose files disagree on their filing_key or whose pages disagree on the total", () => {
+    const splitFile = perFiling().map((entry) => (entry.sourceFileName === "IE_XC2_2610.pdf" && entry.rowIndex === 2 ? { ...entry, filingKey: null } : entry));
+    expect(reconcileKansasOutsideStatements(splitFile).get("EXAMPLE CONSERVATIVE FUND|202610")).toBe(
+      "Example Conservative Fund 202610: IE_XC2_2610.pdf rows disagree on filing_key"
+    );
+    const pageTotal = perFiling().map((entry) => (entry.sourceFileName === "IE_XC2_2610.pdf" ? { ...entry, statementTotalCents: 3_092_289 } : entry));
+    expect(reconcileKansasOutsideStatements(pageTotal).get("EXAMPLE CONSERVATIVE FUND|202610")).toBe(
+      'Example Conservative Fund 202610: filing_key "signed 2026-08-20" pages disagree on Total this Period'
     );
   });
 });
@@ -171,6 +202,7 @@ describe("loadKansasOutsideRows", () => {
     source_url: `${TREE}/202607/IE_EC2_2607.pdf`,
     period_due_key: "202607",
     statement_total: "378943.63",
+    filing_key: null,
     row_index: 1,
     row_date: "2026-07-02",
     vendor_name: "Example Media Inc.",
@@ -195,6 +227,7 @@ describe("loadKansasOutsideRows", () => {
       sourceUrl: `${TREE}/202607/IE_EC2_2607.pdf`,
       periodDueKey: "202607",
       statementTotalCents: 37_894_363,
+      filingKey: null,
       rowIndex: 1,
       rowDate: "2026-07-02",
       vendorName: "Example Media Inc.",
