@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router";
 import { formatElectionDate, isDecidedChoice } from "@voteapp/api-client";
 import type { ElectionChoice } from "@voteapp/api-client";
+import { allRacesDecided } from "../lib/ballotDraft";
 import { markDraftCompleteSeen } from "../lib/draftCompleteSeen";
 
 // The draft pages' finish line (docs/plans/draft-completion-moment.md,
@@ -27,13 +28,15 @@ export function DraftMilestone({
   date: string;
   elections: { id: string }[];
   choiceByElectionId: Map<string, ElectionChoice> | undefined;
-  /** Guest page: the milestone carries the same sign-up link as the page's
-   * bottom CTA, because "save this" is the next step for a finished draft. */
+  /** Guest page: the milestone carries the sign-up link (and the "lives
+   * only on this device" hint) because "save this" is the next step for a
+   * finished draft. The page hides its own bottom CTA while this renders —
+   * one button per page, never two identical ones. */
   signup: boolean;
 }) {
   const total = elections.length;
   const picked = elections.filter((election) => isDecidedChoice(choiceByElectionId?.get(election.id))).length;
-  const complete = total > 0 && picked === total;
+  const complete = allRacesDecided(elections, choiceByElectionId);
 
   useEffect(() => {
     if (complete) {
@@ -57,13 +60,14 @@ export function DraftMilestone({
         {picked} of {total} race{total === 1 ? "" : "s"} decided. Review your picks and make any changes.
       </p>
       {signup ? (
-        <p className="mt-2">
+        <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
           <Link
             to={`/register?next=${encodeURIComponent("/draft")}`}
             className="inline-block rounded-lg bg-rausch px-3 py-1.5 font-semibold text-white transition hover:bg-rausch-dark"
           >
             Sign up free to save your picks
           </Link>
+          <span className="text-xs">Your draft lives only on this device until you sign up.</span>
         </p>
       ) : null}
     </section>

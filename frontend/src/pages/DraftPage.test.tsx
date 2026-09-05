@@ -152,8 +152,11 @@ describe("DraftPage", () => {
     const milestone = await screen.findByRole("region", { name: "November 3, 2026 draft milestone" });
     expect(milestone).toHaveTextContent("Picks added for every race in your November 3, 2026 draft.");
     expect(milestone).toHaveTextContent("2 of 2 races decided.");
-    // The sign-up link rides the milestone AND stays at the bottom.
-    expect(screen.getAllByRole("link", { name: "Sign up free to save your picks" })).toHaveLength(2);
+    // ONE sign-up link on the page: the milestone's, with the device hint;
+    // the bottom CTA steps aside rather than repeat it.
+    expect(screen.getAllByRole("link", { name: "Sign up free to save your picks" })).toHaveLength(1);
+    expect(milestone).toContainElement(screen.getByRole("link", { name: "Sign up free to save your picks" }));
+    expect(milestone).toHaveTextContent("Your draft lives only on this device until you sign up.");
     // Reading it here counts as seeing the day: the header notice must not
     // fire for it later.
     expect(JSON.parse(window.localStorage.getItem("voteapp_draft_complete_seen") ?? "[]")).toEqual(["2026-11-03"]);
@@ -218,9 +221,9 @@ describe("DraftPage", () => {
     expect(String(ballotCalls[0][0])).toContain("sort=state_baseline");
     expect(String(ballotCalls[0][0])).toContain("followed_first=false");
     // The signup CTA survives the view switch — the sheet IS the pitch.
-    // Two of them here: this one-race draft is finished, so the milestone
-    // above the toggle carries the same link as the bottom CTA.
-    expect(screen.getAllByRole("link", { name: "Sign up free to save your picks" })).toHaveLength(2);
+    // Exactly one: this one-race draft is finished, so the milestone above
+    // the toggle carries the link and the bottom CTA steps aside.
+    expect(screen.getAllByRole("link", { name: "Sign up free to save your picks" })).toHaveLength(1);
   });
 
   it("lists picks made outside the stored ballot under Other saved picks", async () => {

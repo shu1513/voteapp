@@ -262,6 +262,18 @@ export function nearestUpcomingTarget(
   };
 }
 
+/** True when every listed race has a decided choice (and there is at least
+ * one race). The draft pages' "finished" test, shared by the milestone and
+ * by the page deciding whether its own sign-up CTA is redundant. */
+export function allRacesDecided(
+  elections: { id: string }[],
+  choiceByElectionId: Map<string, ElectionChoice> | undefined
+): boolean {
+  return (
+    elections.length > 0 && elections.every((election) => isDecidedChoice(choiceByElectionId?.get(election.id)))
+  );
+}
+
 /** Decided races in the draft, counted with or without a target — the
  * generic nav badge's number when no ballot context exists yet. */
 export function draftPickCount(draft: BallotDraft): number {
