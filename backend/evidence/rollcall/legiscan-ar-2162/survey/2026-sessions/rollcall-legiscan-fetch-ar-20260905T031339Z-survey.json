@@ -1,0 +1,163 @@
+{
+  "runId": "rollcall-legiscan-fetch-ar-20260905T031339Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "AR",
+  "startedAt": "2026-09-05T03:13:39.607Z",
+  "finishedAt": "2026-09-05T03:13:39.781Z",
+  "datasetDir": "~/legiscan-data/ar-2242",
+  "bills": 279,
+  "votes": 387,
+  "people": 137,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "Third Reading",
+      "count": 191,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1002",
+        "HB1001",
+        "HB1029"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Third Reading",
+      "count": 180,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HB1002",
+        "SR4",
+        "SB6"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "READ AND ADOPTED.",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR1005",
+        "HR1004",
+        "HR1006"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Read third time and failed of adoption.",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR10",
+        "SR8",
+        "SR7"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Read third time and failed to pass.",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR6",
+        "SR12",
+        "SR11"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "EMERGENCY CLAUSE ADOPTED",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Placed on second reading for the purpose of amendment.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1100"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Read and adopted and ordered transmitted to the Senate.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "JM"
+      ],
+      "sampleBills": [
+        "HCMR1001"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Returned by the Committee Do Pass",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 99,
+      "maxTotal": 99,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1060"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 180,
+    "JM": 1,
+    "M": 8,
+    "R": 90
+  },
+  "sessionIds": {
+    "2242": 279
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}
