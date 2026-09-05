@@ -13,6 +13,7 @@ import { listDueKansasCandidateFinanceSyncRows, type KansasCandidateFinanceDueRo
 import { syncKansasCandidateFinance, type KansasCandidateFinanceSyncResult } from "./kansasCandidateFinanceSync.js";
 import type { KansasCfrSessionOptions } from "./kansasCfrViewerClient.js";
 import { createKansasFilingPoolLoader } from "./kansasFilingSearch.js";
+import { createKansasOutsideRowLoader } from "./kansasOutsideSpendingAggregator.js";
 import { createKansasKpdcRowLoader } from "./kansasPaperInventory.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -92,6 +93,8 @@ export async function syncDueKansasCandidateFinance(
   const loadKpdcRows = createKansasKpdcRowLoader({
     onOrphanLinks: (treePath, count) => log(`Kansas finance sync: ${count} links in ${treePath} precede any candidate row`),
   });
+  // The transcribed IE rows of a cycle, read once for the whole batch.
+  const loadOutsideRows = createKansasOutsideRowLoader(input.db);
 
   const syncCandidate = input.syncCandidateFn ?? syncKansasCandidateFinance;
   const candidates: KansasCandidateFinanceBatchSyncResult["candidates"] = [];
@@ -118,6 +121,7 @@ export async function syncDueKansasCandidateFinance(
         sessionOptions: input.sessionOptions,
         loadFilingPool,
         loadKpdcRows,
+        loadOutsideRows,
       });
       succeeded += 1;
       candidates.push({ row, ok: true, result });
