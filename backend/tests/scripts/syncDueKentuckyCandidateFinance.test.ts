@@ -62,6 +62,12 @@ describe("syncDueKentuckyCandidateFinance script", () => {
     ).toThrow("Provide --max-candidates at most once");
   });
 
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() => parseSyncDueKentuckyCandidateFinanceScriptArgs(["--max-candidates=9007199254740993"])).toThrow(
+      "Invalid --max-candidates value: 9007199254740993"
+    );
+  });
+
   it("rejects unknown flags instead of silently ignoring typos", () => {
     expect(() => parseSyncDueKentuckyCandidateFinanceScriptArgs(["--dryrun"])).toThrow(
       "Unknown Kentucky candidate finance due sync flag: --dryrun"

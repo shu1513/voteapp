@@ -46,6 +46,12 @@ describe("syncDueMichiganCandidateFinance script", () => {
     );
   });
 
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() => parseSyncDueMichiganCandidateFinanceScriptArgs(["--max-candidates=9007199254740993"])).toThrow(
+      "Invalid --max-candidates value: 9007199254740993"
+    );
+  });
+
   it("rejects missing or duplicate option values", () => {
     expect(() => parseSyncDueMichiganCandidateFinanceScriptArgs(["--stale-after-days"])).toThrow(
       "Missing --stale-after-days value"

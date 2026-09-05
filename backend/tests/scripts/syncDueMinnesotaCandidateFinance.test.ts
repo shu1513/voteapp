@@ -60,6 +60,12 @@ describe("syncDueMinnesotaCandidateFinance script", () => {
     ).toThrow("Provide --raw-cache-dir at most once");
   });
 
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() => parseSyncDueMinnesotaCandidateFinanceScriptArgs(["--max-candidates=9007199254740993"])).toThrow(
+      "Invalid --max-candidates value: 9007199254740993"
+    );
+  });
+
   it("formats script output", () => {
     const output = toSyncDueMinnesotaCandidateFinanceScriptOutput({
       startedAt: new Date("2026-01-02T03:04:05.000Z"),
