@@ -141,7 +141,7 @@ export const ELECTION_RESULT_SCHEDULES_BY_STATE: Record<string, StateElectionRes
     schedule({
       state: "KS",
       electionNight: { localTime: "20:10", timeZone: "America/Chicago", notes: "8:10 p.m. Central / 7:10 p.m. Mountain statewide-safe instant." },
-      certified: certifiedFallback("America/Chicago", "State canvassing board meets by December 1; fallback first certified check uses E+45."),
+      certified: certifiedOffset(28, "America/Chicago", "State board of canvassers certifies by September 1 after an August primary and by December 1 after a November general; both are about E+28."),
     }),
     schedule({
       state: "KY",
