@@ -139,7 +139,81 @@ it row by row against the database. Results:
 
 The district's open elections deferral ("awaiting primary certification") is resolved.
 
+## Candidate records, 4 September 2026
+
+The records stage of the cascade for the same six contests. Records are candidate-wide, so the
+baseline audit first checked what each of the 15 linked candidates already had.
+
+Twelve of the fifteen already carried a finished, evidence-backed sweep from the primary-stage
+runs in July and August (a `candidate_record_sweep_confirmations` row plus a
+`last_records_searched_at` stamp), so they were left alone. The two running mates, KC Ohaebosim
+and Jeffrey Klemp, were swept on 19 August and were likewise left alone. Only the three
+minor-party nominees who entered at the general stage had no sweep at all.
+
+Per-candidate record counts, before and after this run:
+
+| Office | Candidate | Records before | Records after | Sweep |
+| --- | --- | ---: | ---: | --- |
+| Attorney General | Chris Mann | 6 | 6 | already complete, 2026-07-23 |
+| Attorney General | Kris Kobach | 17 | 17 | already complete, 2026-07-24 |
+| Commissioner of Insurance | Daniel Hawkins | 9 | 9 | already complete, 2026-07-23 |
+| Commissioner of Insurance | Dinah Sykes | 11 | 11 | already complete, 2026-07-23 |
+| Commissioner of Insurance | Ric Koehn | 0 | 3 | new, this run |
+| Governor | Cindy Holscher | 20 | 20 | already complete, 2026-07-23 |
+| Governor | Ty Masterson | 14 | 14 | already complete, 2026-07-23 |
+| Secretary of State | Jennifer Day | 6 | 6 | already complete, 2026-07-23 |
+| Secretary of State | Pat Proctor | 9 | 9 | already complete, 2026-07-29 |
+| Secretary of State | Scott E. Morgan | 0 | 2 | new, this run |
+| State Treasurer | Eric Lund | 0 | 2 | new, this run |
+| State Treasurer | Juan C. Luengo | 0 | 0 | already complete, 2026-07-23, confirmed `only_general_labels` |
+| State Treasurer | Steven Johnson | 17 | 17 | already complete, 2026-08-01 |
+| United States Senator | Adam Hamilton | 6 | 6 | already complete, 2026-07-23 |
+| United States Senator | Roger Marshall | 58 | 58 | already complete, 2026-08-01 |
+
+Seven records were written, all through `manual:candidate-records:write` with the per-question
+evidence ledger attached. Each write's insert/update split matched the prediction (3/0, 2/0,
+2/0).
+
+### Ric Koehn (Libertarian, Commissioner of Insurance)
+
+Routed never-held: no source shows him holding public office, and his 2024 Libertarian
+presidential elector nomination was a nomination, not service. Three treasurer roles, each
+pinned to him by the P.O. Box 468 Cimarron address, phone and email on the filing: the Bleeding
+Kansas Advocates PAC (medical marijuana advocacy, 2019-04-25), the Libertarian Party of Kansas
+(2024-07-29), and the Libertarian Porcupine Club of Kansas PAC (2026-01-09). All three are
+neutral background, so the write carries `candidate_records.only_general_labels`.
+
+### Scott E. Morgan (United Kansas, Secretary of State)
+
+Routed officeholder on his two Lawrence school board terms. Two records: his vote in the 6-1
+majority that closed Wakarusa Valley School over a budget shortfall (2011-03-28), labelled
+`government_efficiency: for`; and co-founding the Free State Party and becoming executive
+director of United Kansas after the April 2026 merger (2026-04-28). His Senate, Federal Election
+Commission and Hayden-administration staff roles are biography only - no accessible source
+carries a dated action from any of them.
+
+### Eric Lund (Libertarian, State Treasurer)
+
+Routed officeholder on his stored California park-district service. Two records, both party
+organisation roles: chairperson of the Libertarian Porcupine Club of Kansas PAC (2026-01-09) and
+secretary of the Libertarian Party of Kansas (reported after the 2026-04-25 state convention).
+Neutral only, so the write carries `candidate_records.only_general_labels`.
+
+### Records gap ledger
+
+| Item | Outcome |
+| --- | --- |
+| Ric Koehn, career phases as options trader and as accountant | confirmed_null (no employer, client, filing or dated action in accessible sources) |
+| Ric Koehn / Eric Lund / Scott E. Morgan, court and legal records | unresolved (Kansas case search is a login/JS portal; logged as an access gap, not as "no issues") |
+| Scott E. Morgan, Lawrence school board 1999-2003 votes | unresolved (no online minutes or vote-level coverage for that term) |
+| Scott E. Morgan, Morgan Quitno Press founding and 2007 sale | blocked_by_contract (no dated source both names him and carries the claim; Wikipedia's company page does not name him) |
+| Scott E. Morgan, 2007 criticism of his company's city crime rankings | unresolved (sources naming him - thecrimereport.org, contexts.org - fail TLS verification; the reachable Wikipedia page does not name him) |
+| Scott E. Morgan, Free State Party signature drive | unresolved (only www2.ljworld.com carries it and that host timed out for the validator) |
+| Eric Lund, Cordova Recreation and Park District board era | unresolved (his service predates the district's online archive; the county roster lists only current directors) |
+| Eric Lund, 2024 Miami County Clerk candidacy | blocked_by_contract (a prior candidacy is pure_candidacy; the one local article is region-blocked, so no canvass result was reachable) |
+| Endorsements, all three candidates | confirmed_null (no dated, cycle-pinned endorsement for any of them) |
+
 ## Not done here
 
-Candidate records, record area labels and campaign finance for these contests are later stages
-and were not part of this run.
+Campaign finance for these contests is a later stage and was not part of this run. Nothing on
+this page has been promoted to production.
