@@ -182,7 +182,7 @@ geographically while still remaining random. Section 1 takes effect October 1,
 2025; the rest on passage.
 
 Area `anti_corruption`, yes vote **for**. Random assignment closes off the choice
-of a favourable replacement, whether by the judge stepping aside or by a litigant
+of a favorable replacement, whether by the judge stepping aside or by a litigant
 angling for one. That is an ethics rule against steering public office to a
 chosen outcome, which is what the area's description covers. It was first
 tagged `impartiality`; see the note at the end of this file.
@@ -200,7 +200,7 @@ unchanged. Subsection (2) still opens by naming a candidate, a family member and
 a campaign worker or volunteer, with only "On election day, a" struck, so its
 narrow scope survives. Page 2 shows the act ends at Section 3 with no
 coordination instruction, an effective date of July 1, 2025, and a Section 2
-requiring the secretary of state to send a copy to every federally recognised
+requiring the secretary of state to send a copy to every federally recognized
 tribal government in Montana.
 
 Before, the ban applied on election day, inside a polling place or the building
@@ -272,7 +272,7 @@ office core sets and nowhere else. A legislator tagged with it gets a stance
 that no election-scoped view shows and no voter's ranking can weigh. So the
 label was not wrong about the bills; it was invisible.
 
-Both measures were re-read against the catalogue's policy areas. HB 711 is about
+Both measures were re-read against the catalog's policy areas. HB 711 is about
 who chairs the body that draws districts, which is election administration and
 public trust in it, so `election_integrity`. SB 41 removes the ability to steer a
 case to a chosen judge, which is an ethics rule against abuse of office, so

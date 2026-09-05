@@ -48,7 +48,7 @@ Senate district *n* contains House districts *2n-1* and *2n* — so a
 representative running for the Senate seat that contains their own House
 district reads as a seat change to the proposer. The other two, Amy Regier
 (House District 6, filed in Senate District 4) and George Nikolakakos (House
-District 22, filed in Senate District 12), are filings in a neighbouring Senate
+District 22, filed in Senate District 12), are filings in a neighboring Senate
 district; both names are unique on each side, so identity is not in doubt.
 
 ## 3. LegiScan's `party` field is wrong for six Montana members, and one identity is wrong outright

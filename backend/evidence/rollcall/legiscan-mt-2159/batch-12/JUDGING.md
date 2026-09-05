@@ -18,17 +18,17 @@ termination date". The termination date half is the substance.
 Section 2 repeals section 28 of Chapter 368, Laws of 2015; sections 38 and 48 of
 Chapter 415, Laws of 2019; section 17 of Chapter 456, Laws of 2019; and sections
 3 and 4 of Chapter 318, Laws of 2021. Those are the end dates carried by the HELP
-Act and its later extensions. The act writes no new end date, so the programme
+Act and its later extensions. The act writes no new end date, so the program
 continues with no expiry.
 
 The description states the effect in those terms — "it was written to end on a
-set date, and the act repeals those end dates, so the programme has no expiry" —
+set date, and the act repeals those end dates, so the program has no expiry" —
 rather than asserting a figure for how many people are covered, which the act
 does not contain.
 
 The workforce half runs the other way. In 39-71-103 the duty to "contract with
 one or more private nonprofit or for-profit entities to provide workforce
-development services" emphasising "high-demand occupations, particularly in the
+development services" emphasizing "high-demand occupations, particularly in the
 health care field and in short-term certification programs for entry-level
 cybersecurity analysts" is struck, and replaced with a duty to contact each
 participant subject to the community engagement requirements and help them
@@ -110,7 +110,7 @@ $160,000 general fund appropriation for the biennium beginning 1 July 2025, with
 a report due by 30 September 2027.
 
 **The act terminates on 30 June 2027**, and the record says so, because a reader
-should not be told a programme is permanent when it is not. Direction **for**
+should not be told a program is permanent when it is not. Direction **for**
 `social_programs_and_welfare`.
 
 ## HB 531 — judicial review of legislative rules

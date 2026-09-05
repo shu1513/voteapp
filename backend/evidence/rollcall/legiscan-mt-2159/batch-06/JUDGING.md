@@ -23,7 +23,7 @@ and the mill rate floats to hit it.
 Before the act, a local government putting a levy to voters could write the
 question either way: a dollar amount with an approximate mill figure, or a mill
 figure with an approximate dollar amount. The act deletes the second option. The
-binding number is now always the dollar amount, and the mill figure is labelled
+binding number is now always the dollar amount, and the mill figure is labeled
 approximate and is informational only. Because 15-10-425(3) already required the
 ballot to reflect the resolution, the ballot follows.
 
@@ -74,7 +74,7 @@ The page image shows subsection (2), which carries that rule, printed in **plain
 type with no underline**, so it is pre-existing law that the act merely reprints.
 Only (3) and (4) are underlined. The act's own title confirms it: the title
 names the athletics rule and the facilities rule and says nothing about names.
-The description was corrected before the batch was finalised, and 85 records were
+The description was corrected before the batch was finalized, and 85 records were
 rewritten. The lesson is that unmarked text can be mistaken for new law just as
 easily as struck text can be mistaken for live law.
 
@@ -160,7 +160,7 @@ information.
 Area `womens_reproductive_rights`, yes vote **against**. The reporting duty and
 its escalating fines fall only on facilities that provide abortions, and the
 statute is codified in Montana's abortion title rather than in general vital
-statistics law. The description states the mechanics without characterising them,
+statistics law. The description states the mechanics without characterizing them,
 so a reader can weigh the anonymity protection alongside the fines.
 
 ## Measures read and set aside

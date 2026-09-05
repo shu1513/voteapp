@@ -76,8 +76,8 @@ Three changes:
   the existing "shall take into account" list, so they are mandatory, not
   optional.
 
-**No dollar amount, deadline, hour count or list of offences changes.** The
-existing offence list in 46-9-109(2)(e) is reprinted unmarked, as is the
+**No dollar amount, deadline, hour count or list of offenses changes.** The
+existing offense list in 46-9-109(2)(e) is reprinted unmarked, as is the
 "financial ability of the accused" factor in 46-9-301(6). The only other strikes
 are the word "and" and renumbered subsection labels.
 
@@ -193,7 +193,7 @@ Nothing is struck except the word "such", replaced by "the". It reaches pending
 cases, because the trigger is the date of the jury demand.
 
 The House split 50-49, so the measure is plainly contested. But contested is not
-the same as directionally defensible. No area in the catalogue maps to court
+the same as directionally defensible. No area in the catalog maps to court
 procedure: `anti_corruption` is about abuse of public office, `government_efficiency`
 about service delivery, and `impartiality` and `legal_competence` are
 judicial-candidate areas that may never be used on a legislative record. Rather
@@ -231,7 +231,7 @@ not local opt-outs, and not the higher-potency allowance for registered
 cardholders. Effective 1 July 2026.
 
 A serving-size cap on one product type does not evidence a stance on any area in
-the catalogue.
+the catalog.
 
 ## Reading level
 

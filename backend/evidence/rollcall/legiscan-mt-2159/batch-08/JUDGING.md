@@ -327,11 +327,11 @@ defensible.
 Dropped under filter 5 as two-sided. The act exempts board-approved charter
 schools from the general school-opening requirements in Title 20, chapter 6,
 part 5, and lets a charter *district* draw first-year money on planned
-enrolment. It also denies a charter school run by a local school board any
+enrollment. It also denies a charter school run by a local school board any
 per-student money at all in its first year, and makes both kinds subject to
 clawback under 20-9-344 if the October headcount falls short. Several deadlines
 change from calendar days to business days, which lengthens them. The 70/20/40
-enrolment thresholds and the 80/80/100/140 funding percentages are unmarked and
+enrollment thresholds and the 80/80/100/140 funding percentages are unmarked and
 unchanged, and nothing changes how money reaches the districts charter schools
 draw students from.
 

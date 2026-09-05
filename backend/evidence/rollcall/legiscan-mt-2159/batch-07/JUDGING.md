@@ -301,7 +301,7 @@ connector "and", terminal punctuation, a cross-reference letter, and "upon"
 replaced by "on".
 
 **Why it is dropped.** It is an industry tax exemption, and no area in the
-catalogue maps to it with a direction that can be defended. `gun_control` is
+catalog maps to it with a direction that can be defended. `gun_control` is
 defined as regulating firearm access through background checks, licensing and
 safe storage, and the act touches none of that. `corporate_accountability` is
 about holding companies to account for legal compliance, consumer protection and
