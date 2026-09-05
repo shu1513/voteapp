@@ -813,7 +813,7 @@ describe("CandidatePage", () => {
 
     // Picked on arrival (account choices), so the actions render without a
     // click — the "where to next" links matter on a return visit too.
-    const link = await screen.findByRole("link", { name: "My Picks ✓" });
+    const link = await screen.findByRole("link", { name: "My Draft ✓" });
     expect(link).toHaveAttribute("href", "/me/picks");
   });
 

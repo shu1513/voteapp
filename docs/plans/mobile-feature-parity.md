@@ -171,7 +171,7 @@ Non-goals: no My Draft screen, no auto-pick, no sharing.
 ## Phase 3 — My Draft screen (one PR) — DONE (2026-08-28)
 
 Web vocabulary, not "My Picks": the surface is "My Draft n/m" until every
-race on the nearest election day is decided, then "My Picks ✓"
+race on the nearest election day is decided, then "My Draft ✓"
 (`usePickProgress.ts:17-23`).
 
 1. New route `mobile/src/app/my-draft.tsx` reached from the saved-ballot tab
