@@ -38,7 +38,8 @@ be read anyway:
 - **SB 430.** The summary says the measure "provides exceptions to this
   requirement" without saying what they are — an unexpanded pointer of exactly
   the kind the California campaign learned to resolve. The enrolled Act has
-  three: government taxes and fees, actual shipping cost, and a service fee
+  three: government taxes and fees, the actual cost of shipping or of
+  providing the service, and a service fee
   that varies by distance or by the buyer's own selections, which must be shown
   prominently before the buyer agrees. It also exempts financial institutions
   and mortgage lenders where listed federal disclosure laws apply, and
@@ -111,6 +112,11 @@ rounds, so sentence count was traded for completeness and reading level. Grade
 - `import-rerun-report.json` — the run that added SB 430 and HB 3187
   (111 inserts) and applied the plain-English rewrite to the first four
   measures (211 rewrites).
+- `import-rewrite-report.json` — the review-fix run: SB 243 now states
+  the two exemption conditions (agency authorization; the device is needed by
+  the owner's registered machine gun) instead of a blanket exemption, and
+  SB 430 names the cost of providing the service alongside shipping, per
+  §1(1)(b). 100 rewrites, 222 unchanged.
 
 Row counts after the batch: **322 live records, 61 candidates, 262 tags, 12
 approved rolls.** Production has zero Oregon roll-call records.
