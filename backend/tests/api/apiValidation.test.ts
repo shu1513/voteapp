@@ -805,6 +805,8 @@ describe("containsNulCharacter", () => {
     expect(containsNulCharacter("bad\u0000")).toBe(true);
     expect(containsNulCharacter({ a: ["ok", { b: "x\u0000y" }] })).toBe(true);
     expect(containsNulCharacter([1, [2, ["\u0000"]]])).toBe(true);
+    expect(containsNulCharacter({ ["k\u0000"]: "safe" })).toBe(true);
+    expect(containsNulCharacter({ outer: [{ ["\u0000"]: 1 }] })).toBe(true);
     expect(containsNulCharacter(null)).toBe(false);
     expect(containsNulCharacter(undefined)).toBe(false);
   });
