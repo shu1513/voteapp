@@ -119,7 +119,7 @@ records.**
 | batch-11 | 12 | 19 | 773 | environment, courts, contractors, workers' comp, drink-driving, judges |
 | **total** | **73** | **129** | **5,473** | 18 areas, 87 candidates, 3,282 tags |
 
-**296 divided-and-enacted rolls remain unworked, across 211 bills**, plus 58
+**238 divided-and-enacted rolls remain unworked, across 173 bills**, plus 58
 joint-resolution rolls excluded by rule. 90 rolls are marked
 `superseded:later-roll-used`, 110 are dropped under filter 5, one is dropped
 because its chamber's final vote was not divided, and seven are held on the
