@@ -267,7 +267,7 @@ describe("ElectionCard", () => {
     ]);
   });
 
-  it("shows every saved match even past the cap, with no unsaved areas beside them", () => {
+  it("caps saved matches at three by the user's ranking and counts the rest", () => {
     renderCard(
       electionSummary({
         research_areas: [
@@ -279,18 +279,18 @@ describe("ElectionCard", () => {
           area("a-6", "Foreign Trade", "foreign_trade"),
         ],
       }),
-      { "a-1": 1, "a-2": 2, "a-3": 3, "a-4": 4 }
+      // Ranked out of payload order: the user's rank picks which three show.
+      { "a-1": 3, "a-2": 1, "a-3": 4, "a-4": 2 }
     );
     const label = screen.getByText("Affects:");
     const chipTexts = Array.from(label.parentElement?.children ?? [])
       .map((chip) => chip.textContent)
       .filter((text) => text !== "Affects:");
     expect(chipTexts).toEqual([
-      "Civil Rights (saved)",
       "Gun Control (saved)",
-      "Immigration (saved)",
       "Housing Affordability (saved)",
-      "+2 more issues",
+      "Civil Rights (saved)",
+      "+3 more issues",
     ]);
   });
 

@@ -33,9 +33,9 @@ const RESULT_CHIP_CLASSES: Record<ResultChipTone, string> = {
 
 // Statewide races carry a dozen-plus research areas; rendering every one
 // buried the card's actual signal (title, candidates, vote power) under a
-// wall of identical chips. The card is a preview — saved-area matches all
-// show (they are the personal signal) and count against the cap, other areas
-// fill what room is left, and the election page carries the full set.
+// wall of identical chips. The card is a preview — saved-area matches lead
+// (they are the personal signal), the cap applies to the whole row, and the
+// election page carries the full set.
 const MAX_AREA_CHIPS = 3;
 
 // Research areas render as plain colored text, comma-separated — NOT boxed
@@ -301,10 +301,11 @@ function ElectionCard({
     election.research_areas,
     savedAreaWeights
   );
-  // Saved matches count against the cap: three saved issues leave no room
-  // for unsaved ones, and the overflow count absorbs the rest.
-  const visibleOtherAreas = otherAreas.slice(0, Math.max(0, MAX_AREA_CHIPS - savedAreas.length));
-  const hiddenAreaCount = otherAreas.length - visibleOtherAreas.length;
+  // One cap for the whole row: saved matches lead in the user's rank order and
+  // take the slots first, so the top three saved issues show and everything
+  // else — further saves included — folds into the overflow count.
+  const visibleAreas = [...savedAreas, ...otherAreas].slice(0, MAX_AREA_CHIPS);
+  const hiddenAreaCount = election.research_areas.length - visibleAreas.length;
   // The viewer's planned vote, shown only on upcoming races: a past
   // election's choice is history. Withdrawn picks stay visible with a flag —
   // a silent disappearance would read as data loss. Races WITHOUT a pick show
@@ -482,7 +483,7 @@ function ElectionCard({
           <span className="font-medium text-ink-soft">Affects:</span>{" "}
           {/* Comma separators live OUTSIDE the area spans as plain text
               nodes, so each span's text stays exactly the area name. */}
-          {[...savedAreas, ...visibleOtherAreas].map((area, index, all) => (
+          {visibleAreas.map((area, index, all) => (
             <Fragment key={area.id}>
               <span className={savedAreas.includes(area) ? SAVED_AREA_TEXT_CLASS : AREA_TEXT_CLASS}>
                 {area.name}
