@@ -22,7 +22,7 @@ HB2453	candidate		1548893	1587703	Relating to education; and declaring an emerge
 HB2508	drop:screened	directs a method for electronic student data; administrative		1595039	Relating to student data; and declaring an emergency.
 HB2511	drop:filter-5	widens the education workforce data the department collects; administrative	1505175	1566711	Relating to education workforce data.
 HB2514	drop:filter-5	raises an education service district bonding limit; fiscal capacity, no direction	1589685	1587791	Relating to education service district indebtedness.
-HB2530	candidate			1573092	Relating to school buses.
+HB2530	batch-07	judged and imported		1573092	Relating to school buses.
 HB2548	drop:screened	study only - directs PSU and LPRO to study farmworker labour standards and report	1595068	1595893	Relating to labor standards for agricultural workers; and declaring an emergency.
 HB2556	drop:screened	names PSU the state urban research university; designation only	1491906		Relating to Portland State University designation.
 HB2558	drop:screened	raises outfitter and guide fees and adds a registration; fee bill	1576416	1588732	Relating to activities regulated by the State Marine Board; and prescribing an effective date.
@@ -55,7 +55,7 @@ HB2964	batch-05	judged and imported	1548773		Relating to affordable housing; and
 HB2982	drop:screened	raises boat fees for an invasive species fund; fee bill		1589622	Relating to small watercraft.
 HB3003	drop:filter-5	adds data to a child welfare report and disaggregates it by race; reporting only	1526808		Relating to Department of Human Services annual child welfare reporting.
 HB3020	drop:filter-5	bans wagering on dog racing; no research area covers animal welfare		1560046	Relating to racing.
-HB3024	candidate		1504353	1589550	Relating to the reduction of unemployment benefits due to disqualification; and prescribing an effective date.
+HB3024	batch-07	judged and imported	1504353	1589550	Relating to the reduction of unemployment benefits due to disqualification; and prescribing an effective date.
 HB3025	candidate		1531186	1589489	Relating to the Oregon Opportunity Grant program.
 HB3026	drop:filter-5	higher education grab-bag: meetings, procurement, a scholarship program and three studies	1552497	1589658	Relating to the Higher Education Coordinating Commission; and declaring an emergency.
 HB3027	drop:screened	lets HECC seek a court order against career schools; enforcement plumbing		1578791	Relating to injunctions regarding career school regulatory violations.
@@ -137,10 +137,10 @@ SB98	drop:screened	assorted changes to court administration; housekeeping		15763
 SB141	candidate		1591106	1585461	Relating to education; and declaring an emergency.
 SB143	drop:screened	moves unemployment insurance tax money between UI funds; accounting	1591636		Relating to administration of public funds; and prescribing an effective date.
 SB147	drop:filter-5	renames the Elliott State Forest and moves it between boards; land governance, contested	1584932		Relating to the Elliott State Forest.
-SB150	candidate		1584102		Relating to compensation for services performed in connection with a claim for a veteran's benefit; and prescribing an effective date.
+SB150	batch-07	judged and imported	1584102		Relating to compensation for services performed in connection with a claim for a veteran's benefit; and prescribing an effective date.
 SB163	candidate			1595876	Relating to parentage; and prescribing an effective date.
 SB243	batch-01	judged and imported	1595256	1595872	Relating to firearms; and prescribing an effective date.
-SB295	candidate		1572193		Relating to pharmacy.
+SB295	batch-07	judged and imported	1572193		Relating to pharmacy.
 SB426	candidate		1580006	1581241	Relating to wages.
 SB430	batch-01	judged and imported	1581255	1583987	Relating to disclosures required in connection with online transactions.
 SB476	candidate		1595626	1595884	Relating to professional workforce; and declaring an emergency.
@@ -153,7 +153,7 @@ SB605	batch-01	judged and imported	1581306	1586668	Relating to medical debt repo
 SB610	drop:screened	changes duties around behavioural health resource networks; administrative	1581446	1572112	Relating to funding for substance use services.
 SB685	drop:filter-5	notice only when a gas utility blends more than 2.5 percent hydrogen; no duty beyond disclosure	1584087	1553705	Relating to hydrogen; and declaring an emergency.
 SB688	drop:screened	lets the PUC build a utility performance incentive framework; enabling only	1595579	1593954	Relating to performance-based regulation of electric utilities.
-SB726	candidate		1583050	1584598	Relating to landfill emissions monitoring; and prescribing an effective date.
+SB726	batch-07	judged and imported	1583050	1584598	Relating to landfill emissions monitoring; and prescribing an effective date.
 SB777	drop:filter-5	wolf depredation compensation rates; livestock loss against wolf recovery, contested direction	1583811		Relating to the depredation of livestock.
 SB789	drop:screened	lets the psychology board charge costs to a disciplined licensee; narrow		1587511	Relating to the Oregon Board of Psychology; and prescribing an effective date.
 SB793	drop:screened	sets fees and rates for easements on state submerged land; fee bill	1593111	1591925	Relating to easements on state land; and declaring an emergency.
@@ -161,7 +161,7 @@ SB805	drop:screened	shortens a TSPC complaint verification wait and adds civil p
 SB817	drop:screened	raises LUBA filing fees; fee bill	1571965		Relating to Land Use Board of Appeals fees.
 SB822	batch-05	judged and imported	1594358	1591085	Relating to provider networks.
 SB824	candidate		1595935	1595559	Relating to health insurance.
-SB827	candidate		1574023	1501258	Relating to the Oregon Solar and Storage Rebate Program.
+SB827	batch-07	judged and imported	1574023	1501258	Relating to the Oregon Solar and Storage Rebate Program.
 SB833	drop:screened	changes rules on soil amendments; narrow		1501602	Relating to soil-enhancing products.
 SB834	drop:screened	changes rules for mental health treatment facilities; narrow	1572178	1495244	Relating to facilities that provide mental health treatment.
 SB836	drop:screened	raises DOGAMI fees; fee bill	1594720	1591457	Relating to fees imposed by the State Department of Geology and Mineral Industries.
@@ -187,7 +187,7 @@ SB951	batch-04	judged and imported	1579955	1539698	Relating to the practice of h
 SB952	drop:filter-5	lets the Governor appoint a US Senator pending a special election; appointment against election is a contested structural question	1584127	1558808	Relating to vacancies in the United States Senate.
 SB968	drop:screened	sets how public employers recoup wages paid in error; narrow	1594456	1592314	Relating to deductions from employee wages.
 SB982	candidate		1578807		Relating to out-of-state residential placements of students; and declaring an emergency.
-SB1032	candidate			1555828	Relating to aerosol dusters that contain 1,1-Difluoroethane.
+SB1032	batch-07	judged and imported		1555828	Relating to aerosol dusters that contain 1,1-Difluoroethane.
 SB1051	drop:screened	gives the Governor the power to appoint the State Forester; appointment structure	1595540	1592274	Relating to the State Forester; and declaring an emergency.
 SB1098	batch-01	judged and imported	1587412	1530994	Relating to access to materials in schools; and declaring an emergency.
 SB1109	drop:filter-5	narrows which boards must record meetings; technical and arguably reduces transparency	1574618		Relating to education; and declaring an emergency.
