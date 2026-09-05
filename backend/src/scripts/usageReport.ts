@@ -197,7 +197,7 @@ async function main(): Promise<void> {
       ),
       per AS (
         SELECT v.page_view_id, v.route, v.race_type,
-          bool_or(e.name = 'section_exposed' AND e.props->>'section' IN ('candidates', 'summary')) AS saw_main,
+          bool_or(e.name = 'section_exposed' AND e.props->>'section' IN ('candidates', 'summary', 'measure_summary')) AS saw_main,
           bool_or(e.name = 'section_exposed' AND e.props->>'section' = 'measure_yes_no') AS saw_yes_no,
           bool_or(e.name = 'candidate_open') AS opened_candidate,
           bool_or(e.name = 'official_source_click') AS clicked_source,
@@ -222,12 +222,12 @@ async function main(): Promise<void> {
     printTable("Research → action (per detail page view)", research.rows);
 
     const picks = await pool.query<Row>(`
-      SELECT props->>'kind' AS kind, props->>'surface' AS surface, props->>'store' AS store,
-        props->>'change' AS change, props->>'outcome' AS outcome, count(*)::int AS results,
+      SELECT r.props->>'kind' AS kind, r.props->>'surface' AS surface, r.props->>'store' AS store,
+        r.props->>'change' AS change, r.props->>'outcome' AS outcome, count(*)::int AS results,
         round((percentile_cont(0.5) WITHIN GROUP (ORDER BY (a.props->>'ms_since_view')::int) / 1000.0)::numeric, 1) AS p50_s_since_view
       FROM usage.events r
       LEFT JOIN LATERAL (
-        SELECT props FROM usage.events a
+        SELECT a.props FROM usage.events a
         WHERE a.name = 'pick_attempt' AND a.page_view_id = r.page_view_id AND a.client_offset_ms <= r.client_offset_ms
         ORDER BY a.client_offset_ms DESC LIMIT 1
       ) a ON true

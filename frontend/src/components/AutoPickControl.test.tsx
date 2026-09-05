@@ -1,6 +1,7 @@
-import { screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { Link } from "react-router";
 import type { AutoPickElectionResult, Me } from "@voteapp/api-client";
 import { AutoPickControl } from "./AutoPickControl";
 import { apiError, stubApiRoutes } from "../test/mockApi";
@@ -160,6 +161,43 @@ describe("AutoPickControl", () => {
       election_ids: [ELECTION_ID],
       mode: "replace",
     });
+  });
+
+  // A run started on election A must not reach into election B's page:
+  // the control remounts per election, and the stale onPicked would clear
+  // B's party filter. The usage outcome still lands (tracked elsewhere).
+  it("drops the onPicked callback when the control unmounts before the engine answers", async () => {
+    let answer: (() => void) | null = null;
+    const held = new Promise<{ body: unknown }>((resolve) => {
+      answer = () => resolve({ body: { results: [pickedResult()] } });
+    });
+    stubApiRoutes({
+      "/api/me": { body: { user: SIGNED_IN } },
+      "/api/me/research-area-preferences": { body: THREE_PREFERENCES },
+      "/api/me/election-choices": { body: { choices: [] } },
+      "/api/me/auto-picks": () => held,
+    });
+    const onPicked = vi.fn();
+    renderRoutes([
+      {
+        path: "/",
+        element: (
+          <>
+            <AutoPickControl electionId={ELECTION_ID} seatsToFill={null} onPicked={onPicked} />
+            <Link to="/away">Away</Link>
+          </>
+        ),
+      },
+      { path: "/away", element: <p>Away page</p> },
+    ]);
+    await clickPickForMe();
+    await userEvent.click(screen.getByRole("link", { name: "Away" }));
+    await screen.findByText("Away page");
+    answer!();
+    await act(async () => {
+      await held;
+    });
+    expect(onPicked).not.toHaveBeenCalled();
   });
 
   it("flags the open seats when a multi-seat pick fills only some of them", async () => {

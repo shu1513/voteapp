@@ -75,17 +75,27 @@ export function AutoPickControl({ electionId, seatsToFill, compact = false, onPi
     }
     track("autopick_attempt", { ...usage, prompted_rank_issues: false });
     setPrompt(null);
-    // mutateAsync (not mutate + per-call callbacks): the usage outcome must
-    // land even if this control unmounts before the engine answers; the
-    // rejection is observed by the hook's own isError.
+    // UI work stays in the per-call onSuccess: react-query skips it once
+    // this control has unmounted, so a run started on election A can't
+    // clear election B's party filter through a stale onPicked. The usage
+    // outcome rides the promise instead — it must land even after unmount.
+    // The rejection is observed by the hook's own isError.
     const attribution = currentAttribution();
-    autoPick.mutateAsync({ election_ids: [electionId], mode: "replace" }).then(
+    const request = autoPick.mutateAsync(
+      { election_ids: [electionId], mode: "replace" },
+      {
+        onSuccess: (response) => {
+          const first = response.results[0] ?? null;
+          setResult(first);
+          if (first?.outcome === "picked") {
+            onPicked?.();
+          }
+        },
+      }
+    );
+    request.then(
       (response) => {
         const first = response.results[0] ?? null;
-        setResult(first);
-        if (first?.outcome === "picked") {
-          onPicked?.();
-        }
         track(
           "autopick_result",
           {
