@@ -186,6 +186,75 @@ async function main(): Promise<void> {
     `);
     printTable("Visible time by route", pageTime.rows);
 
+    // 4b. Research → action (PR 2): what a detail-page view leads to, split
+    //     office vs measure. Denominators are page views, not sessions.
+    const research = await pool.query<Row>(`
+      WITH views AS (
+        SELECT page_view_id, route, COALESCE(props->>'race_type', 'n/a') AS race_type
+        FROM usage.events
+        WHERE name = 'page_view' AND route IN ('election', 'candidate') AND page_view_id IS NOT NULL
+          AND received_at >= ${since}
+      ),
+      per AS (
+        SELECT v.page_view_id, v.route, v.race_type,
+          bool_or(e.name = 'section_exposed' AND e.props->>'section' IN ('candidates', 'summary')) AS saw_main,
+          bool_or(e.name = 'section_exposed' AND e.props->>'section' = 'measure_yes_no') AS saw_yes_no,
+          bool_or(e.name = 'candidate_open') AS opened_candidate,
+          bool_or(e.name = 'official_source_click') AS clicked_source,
+          bool_or(e.name = 'pick_attempt') AS pick_attempt,
+          bool_or(e.name = 'pick_result' AND e.props->>'outcome' IN ('saved', 'draft_memory')) AS pick_recorded,
+          bool_or(e.name = 'pick_result' AND e.props->>'outcome' = 'error') AS pick_error,
+          bool_or(e.name = 'address_nudge_click') AS nudge_click
+        FROM views v LEFT JOIN usage.events e ON e.page_view_id = v.page_view_id AND e.received_at >= ${since}
+        GROUP BY v.page_view_id, v.route, v.race_type
+      )
+      SELECT route, race_type, count(*)::int AS page_views,
+        count(*) FILTER (WHERE saw_main)::int AS saw_main_section,
+        count(*) FILTER (WHERE saw_yes_no)::int AS saw_yes_no,
+        count(*) FILTER (WHERE opened_candidate)::int AS opened_candidate,
+        count(*) FILTER (WHERE clicked_source)::int AS clicked_source,
+        count(*) FILTER (WHERE pick_attempt)::int AS pick_attempted,
+        count(*) FILTER (WHERE pick_recorded)::int AS pick_recorded,
+        count(*) FILTER (WHERE pick_error)::int AS pick_error,
+        count(*) FILTER (WHERE nudge_click)::int AS address_nudge_click
+      FROM per GROUP BY 1, 2 ORDER BY 3 DESC
+    `);
+    printTable("Research → action (per detail page view)", research.rows);
+
+    const picks = await pool.query<Row>(`
+      SELECT props->>'kind' AS kind, props->>'surface' AS surface, props->>'store' AS store,
+        props->>'change' AS change, props->>'outcome' AS outcome, count(*)::int AS results,
+        round((percentile_cont(0.5) WITHIN GROUP (ORDER BY (a.props->>'ms_since_view')::int) / 1000.0)::numeric, 1) AS p50_s_since_view
+      FROM usage.events r
+      LEFT JOIN LATERAL (
+        SELECT props FROM usage.events a
+        WHERE a.name = 'pick_attempt' AND a.page_view_id = r.page_view_id AND a.client_offset_ms <= r.client_offset_ms
+        ORDER BY a.client_offset_ms DESC LIMIT 1
+      ) a ON true
+      WHERE r.name = 'pick_result' AND r.received_at >= ${since}
+      GROUP BY 1, 2, 3, 4, 5 ORDER BY 6 DESC
+    `);
+    printTable("Pick results by surface", picks.rows);
+
+    const arrivals = await pool.query<Row>(`
+      SELECT route, props->>'arrival' AS arrival, count(*)::int AS page_views
+      FROM usage.events WHERE name = 'page_view' AND route IN ('election', 'candidate') AND received_at >= ${since}
+      GROUP BY 1, 2 ORDER BY 1, 3 DESC
+    `);
+    printTable("Detail-page arrivals", arrivals.rows);
+
+    // 5b. Guest retention (PR 2): draft review, sign-up prompts, auth,
+    //     handoff.
+    const retention = await pool.query<Row>(`
+      SELECT name, props->>'source' AS source, props->>'action' AS action, props->>'outcome' AS outcome,
+        props->>'store' AS store, count(*)::int AS events
+      FROM usage.events
+      WHERE name IN ('draft_review', 'signup_prompt', 'auth_result', 'handoff_result', 'welcome_result', 'draft_complete_notice', 'follow_result')
+        AND received_at >= ${since}
+      GROUP BY 1, 2, 3, 4, 5 ORDER BY 1, 6 DESC
+    `);
+    printTable("Guest retention, sign-up, follow", retention.rows);
+
     // 5. What breaks.
     const errors = await pool.query<Row>(`
       SELECT route, props->>'category' AS category, count(*)::int AS shown

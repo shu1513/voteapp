@@ -4,6 +4,7 @@ import { formatElectionDate, isDecidedChoice } from "@voteapp/api-client";
 import type { ElectionChoice } from "@voteapp/api-client";
 import { allRacesDecided } from "../lib/ballotDraft";
 import { markDraftCompleteSeen } from "../lib/draftCompleteSeen";
+import { track } from "../lib/usage";
 
 // The draft pages' finish line (docs/plans/draft-completion-moment.md,
 // section 2): a persistent milestone above the List / Ballot preview toggle
@@ -41,8 +42,11 @@ export function DraftMilestone({
   useEffect(() => {
     if (complete) {
       markDraftCompleteSeen(date);
+      if (signup) {
+        track("signup_prompt", { source: "milestone", action: "shown" });
+      }
     }
-  }, [complete, date]);
+  }, [complete, date, signup]);
 
   if (!complete) {
     return null;
@@ -63,6 +67,7 @@ export function DraftMilestone({
         <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
           <Link
             to={`/register?next=${encodeURIComponent("/draft")}`}
+            onClick={() => track("signup_prompt", { source: "milestone", action: "click" })}
             className="inline-block rounded-lg bg-rausch px-3 py-1.5 font-semibold text-white transition hover:bg-rausch-dark"
           >
             Sign up free to save your picks

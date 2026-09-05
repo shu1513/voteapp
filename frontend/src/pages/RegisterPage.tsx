@@ -11,6 +11,7 @@ import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { safeInternalPath } from "../lib/safeInternalPath";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { postLoginDestination } from "../lib/postLoginDestination";
+import { trackSettled } from "../lib/usage";
 
 export const meta: MetaFunction = () => [{ title: `Create your account · ${APP_NAME}` }];
 
@@ -41,8 +42,8 @@ export function RegisterPage() {
   const queryClient = useQueryClient();
 
   const register = useMutation({
-    mutationFn: () =>
-      apiRequest<{ status: string }>("/api/auth/register", {
+    mutationFn: () => {
+      const request = apiRequest<{ status: string }>("/api/auth/register", {
         method: "POST",
         body: {
           email: email.trim(),
@@ -52,7 +53,10 @@ export function RegisterPage() {
           accepted_terms_version: TERMS_VERSION,
           ...(firstName.trim() ? { first_name: firstName.trim() } : {}),
         },
-      }),
+      });
+      trackSettled(request, "auth_result", { action: "register", has_next: next !== null });
+      return request;
+    },
   });
 
   const resend = useMutation({
@@ -67,11 +71,14 @@ export function RegisterPage() {
   // account is created verified and logged in, so this follows the login
   // page's success path instead of the "check your email" screen.
   const googleSignup = useMutation({
-    mutationFn: (credential: string) =>
-      apiRequest<{ status: string }>("/api/auth/google", {
+    mutationFn: (credential: string) => {
+      const request = apiRequest<{ status: string }>("/api/auth/google", {
         method: "POST",
         body: { credential, intent: "signup", accepted_terms_version: TERMS_VERSION },
-      }),
+      });
+      trackSettled(request, "auth_result", { action: "google_signup", has_next: next !== null });
+      return request;
+    },
     onSuccess: async () => {
       purgeAccountScopedQueries(queryClient);
       await queryClient.invalidateQueries({ queryKey: ["me"] });

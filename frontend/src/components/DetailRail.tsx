@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { Link } from "react-router";
 import type { BackTo } from "../lib/detailNavContext";
+import { track } from "../lib/usage";
 
 /** One rail row: the sibling's detail path plus the label the list showed.
  * picked renders the green "decided" check before the label. */
@@ -98,6 +99,7 @@ export function DetailRail({
         state={backToState}
         aria-label={`Back to ${backTo.label}`}
         title={backTo.label}
+        onClick={() => track("detail_control", { control: "pager_back", value: "none" })}
         className="block truncate px-3 text-sm font-medium text-ink transition hover:text-rausch"
       >
         <span aria-hidden="true">← </span>
@@ -139,6 +141,7 @@ export function DetailRail({
                 to={entry.path}
                 state={siblingState}
                 title={entry.label}
+                onClick={() => track("detail_control", { control: "rail_item", value: "none" })}
                 className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-ink-soft transition hover:bg-surface hover:text-ink"
               >
                 {entry.picked ? <PickedCheck /> : null}

@@ -1,5 +1,7 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
+import { useEffect } from "react";
 import { Link, useLocation } from "react-router";
+import { track } from "../lib/usage";
 
 // Shared login/register prompt for logged-out visitors who click a
 // members-only control (follow, pick). The trigger button lives in the
@@ -15,10 +17,17 @@ type RegisterPromptDialogProps = {
   title: string;
   /** One-sentence pitch for signing up; rendered in the dialog's body row. */
   description: React.ReactNode;
+  /** Which members-only control opened it, for the signup_prompt usage event. */
+  source: "follow" | "pick";
 };
 
-export function RegisterPromptDialog({ open, onClose, title, description }: RegisterPromptDialogProps) {
+export function RegisterPromptDialog({ open, onClose, title, description, source }: RegisterPromptDialogProps) {
   const next = encodeURIComponent(useLocation().pathname);
+  useEffect(() => {
+    if (open) {
+      track("signup_prompt", { source, action: "shown" });
+    }
+  }, [open, source]);
 
   return (
     <Dialog open={open} onClose={onClose} className="relative z-50">
@@ -39,12 +48,14 @@ export function RegisterPromptDialog({ open, onClose, title, description }: Regi
           <div className="mt-4 flex items-center justify-end gap-3">
             <Link
               to={`/login?next=${next}`}
+              onClick={() => track("signup_prompt", { source, action: "click" })}
               className="text-sm text-ink-soft underline underline-offset-2 hover:text-ink"
             >
               Log in
             </Link>
             <Link
               to={`/register?next=${next}`}
+              onClick={() => track("signup_prompt", { source, action: "click" })}
               className="rounded-lg bg-rausch px-4 py-2 text-sm font-semibold text-white hover:bg-rausch-dark"
             >
               Sign up

@@ -9,6 +9,7 @@ import { toPreferenceInputs, type RankedResearchArea } from "../lib/rankedResear
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { markWelcomeSeen } from "../lib/welcomeSeen";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
+import { countBucket, track } from "../lib/usage";
 
 export const meta: MetaFunction = () => [{ title: `Welcome · ${APP_NAME}` }];
 
@@ -40,7 +41,8 @@ export function WelcomePage() {
         method: "PUT",
         body: { preferences: toPreferenceInputs(next) },
       }),
-    onSuccess: (saved) => {
+    onSuccess: (saved, next) => {
+      track("welcome_result", { action: "save", ranked_count_bucket: countBucket(next.length) });
       queryClient.setQueryData(["me", "research-area-preferences"], saved);
       // Saving completes the step just as firmly as skipping does: without
       // the flag, clearing every preference in settings later would make
@@ -110,6 +112,7 @@ export function WelcomePage() {
   }
 
   function skip() {
+    track("welcome_result", { action: "skip", ranked_count_bucket: countBucket(ranked.length) });
     if (me) {
       markWelcomeSeen(me.email);
     }

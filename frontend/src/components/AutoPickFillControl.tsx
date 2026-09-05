@@ -12,6 +12,7 @@ import {
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import type { AutoPickElectionResult, ElectionChoice, ElectionSummary } from "@voteapp/api-client";
+import { countBucket, currentAttribution, errorCategoryOf, track } from "../lib/usage";
 
 // Per-date auto-pick controls for the My Picks page
 // (docs/plans/auto-pick-by-issues.md): each election-date card (list view
@@ -60,15 +61,32 @@ export function AutoPickFillControl({
   const clear = useClearAutoPicks(onResults);
 
   function onFill() {
+    const usage = { scope: "date", races_bucket: countBucket(emptyElectionIds.length) };
     // Same rule as AutoPickControl: the issue-floor prompt only fires on a
     // LOADED list — on a failed fetch the backend's per-result
     // too_few_issues is the authority.
     if (!preferencesError && preferences.length < MIN_AUTO_PICK_ISSUES) {
+      track("autopick_attempt", { ...usage, prompted_rank_issues: true });
       setPrompt(true);
       return;
     }
+    track("autopick_attempt", { ...usage, prompted_rank_issues: false });
     setPrompt(false);
-    fill.mutate(emptyElectionIds);
+    // The hook's own onSuccess still delivers the results to the page; this
+    // chain only records the outcome, on the page the fill started from.
+    const attribution = currentAttribution();
+    fill.mutateAsync(emptyElectionIds).then(
+      (all) => {
+        const picked = all.filter((result) => result.outcome === "picked").length;
+        track(
+          "autopick_result",
+          { ...usage, outcome: picked === 0 ? "no_pick" : picked === all.length ? "picked" : "mixed" },
+          attribution
+        );
+      },
+      (error: unknown) =>
+        track("autopick_result", { ...usage, outcome: "error", error_category: errorCategoryOf(error) }, attribution)
+    );
   }
 
   if (emptyElectionIds.length === 0 && !clearable) {

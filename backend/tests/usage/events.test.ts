@@ -104,6 +104,63 @@ describe("parseUsageEvent", () => {
     expect(parseUsageEvent(event({ name: "ballot_result", props: { ...props, states: [] } }))).not.toBeNull();
   });
 
+  it("accepts detail-page content props on page_view and drops ids", () => {
+    const row = parseUsageEvent(
+      event({
+        route: "election",
+        props: {
+          arrival: "list",
+          race_type: "ballot_measure",
+          office_level: "county",
+          upcoming: true,
+          has_summary: true,
+          has_stance_tags: false,
+          has_official_url: true,
+          measure_tbd: false,
+          candidate_count_bucket: "0",
+          election_id: "e-1",
+        },
+      })
+    );
+    expect(row?.props).toEqual({
+      arrival: "list",
+      race_type: "ballot_measure",
+      office_level: "county",
+      upcoming: true,
+      has_summary: true,
+      has_stance_tags: false,
+      has_official_url: true,
+      measure_tbd: false,
+      candidate_count_bucket: "0",
+    });
+    expect(parseUsageEvent(event({ route: "election", props: { arrival: "rail" } }))).toBeNull();
+  });
+
+  it("validates the pick and follow outcome events", () => {
+    const pick = {
+      kind: "measure",
+      surface: "measure_card",
+      store: "draft",
+      change: "added",
+      outcome: "draft_memory",
+    };
+    expect(parseUsageEvent(event({ name: "pick_result", route: "election", props: pick }))?.props).toEqual(pick);
+    expect(parseUsageEvent(event({ name: "pick_result", route: "election", props: { ...pick, outcome: "yes" } }))).toBeNull();
+    expect(
+      parseUsageEvent(event({ name: "pick_result", route: "election", props: { ...pick, position: "yes" } }))?.props
+    ).toEqual(pick);
+    expect(
+      parseUsageEvent(
+        event({ name: "follow_result", route: "candidate", props: { change: "follow", outcome: "error", error_category: "server" } })
+      )?.props
+    ).toEqual({ change: "follow", outcome: "error", error_category: "server" });
+    expect(
+      parseUsageEvent(
+        event({ name: "autopick_result", route: "election", props: { scope: "election", outcome: "no_pick", races_bucket: "1-3", reason: "tie" } })
+      )?.props
+    ).toEqual({ scope: "election", outcome: "no_pick", races_bucket: "1-3", reason: "tie" });
+  });
+
   it("rejects unknown names, unknown routes, and raw paths in the route field", () => {
     expect(parseUsageEvent(event({ name: "click" }))).toBeNull();
     expect(parseUsageEvent(event({ route: "/picks/abc123" }))).toBeNull();
