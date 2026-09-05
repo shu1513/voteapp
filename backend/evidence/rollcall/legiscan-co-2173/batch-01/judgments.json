@@ -1,0 +1,262 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1525103,
+   "measure_id": "SB 3",
+   "vote_date": "2025-03-24",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 3. From August 1, 2026 it is a crime to make, sell, give away or buy most semiautomatic rifles and shotguns that take a detachable magazine. The ban also covers gas-operated semiautomatic handguns that take one. A person can still buy one after passing a firearms safety course and getting a card from the sheriff, which the sheriff can refuse or take back. Guns left out include .22 rimfire guns, guns loaded by hand, and guns with a built-in magazine that holds 15 rounds or fewer. The act also lists about 35 older models that are left out, and exempts police, the military, gunsmiths and museums. A first offense is a misdemeanor and a later one is a felony. A device that speeds up how fast a semiautomatic gun fires now counts as a dangerous weapon. The Colorado House passed it 36-28 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 3. From August 1, 2026 it is a crime to make, sell, give away or buy most semiautomatic rifles and shotguns that take a detachable magazine. The ban also covers gas-operated semiautomatic handguns that take one. A person can still buy one after passing a firearms safety course and getting a card from the sheriff, which the sheriff can refuse or take back. Guns left out include .22 rimfire guns, guns loaded by hand, and guns with a built-in magazine that holds 15 rounds or fewer. The act also lists about 35 older models that are left out, and exempts police, the military, gunsmiths and museums. A first offense is a misdemeanor and a later one is a felony. A device that speeds up how fast a semiautomatic gun fires now counts as a dangerous weapon. The Colorado House passed it 36-28 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1530411,
+   "measure_id": "SB 3",
+   "vote_date": "2025-03-28",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 3 and pass it. From August 1, 2026 it is a crime to make, sell, give away or buy most semiautomatic rifles and shotguns that take a detachable magazine. The ban also covers gas-operated semiautomatic handguns that take one. A person can still buy one after passing a firearms safety course and getting a card from the sheriff, which the sheriff can refuse or take back. Guns left out include .22 rimfire guns, guns loaded by hand, and guns with a built-in magazine that holds 15 rounds or fewer. The act also lists about 35 older models that are left out, and exempts police, the military, gunsmiths and museums. A first offense is a misdemeanor and a later one is a felony. A device that speeds up how fast a semiautomatic gun fires now counts as a dangerous weapon. The Colorado Senate voted 19-15 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 3. From August 1, 2026 it is a crime to make, sell, give away or buy most semiautomatic rifles and shotguns that take a detachable magazine. The ban also covers gas-operated semiautomatic handguns that take one. A person can still buy one after passing a firearms safety course and getting a card from the sheriff, which the sheriff can refuse or take back. Guns left out include .22 rimfire guns, guns loaded by hand, and guns with a built-in magazine that holds 15 rounds or fewer. The act also lists about 35 older models that are left out, and exempts police, the military, gunsmiths and museums. A first offense is a misdemeanor and a later one is a felony. A device that speeds up how fast a semiautomatic gun fires now counts as a dangerous weapon. The Colorado Senate voted 19-15 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": "against"
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1530410
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1525845,
+   "measure_id": "HB 1133",
+   "vote_date": "2025-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1133. The act sets rules for stores that sell ammunition. Ammunition must be kept where a customer cannot reach it without a worker's help. Stores cannot sell it to anyone under 21, and must check a government photo ID. People aged 18 to 20 can still buy it if they serve or served in the military, finished a hunter education course, are named as protected in a protection order, or are buying at a shooting range to use there. People born on or before January 28, 2007 are also exempt from the age limit, for both store sales and deliveries. Rimfire ammunition is not covered. Anyone delivering ammunition must check the recipient's age with a photo ID and get a signature. A first violation is a civil fine and a later one is a misdemeanor, and the rules start July 1, 2026. The Colorado Senate passed it 19-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1133. The act sets rules for stores that sell ammunition. Ammunition must be kept where a customer cannot reach it without a worker's help. Stores cannot sell it to anyone under 21, and must check a government photo ID. People aged 18 to 20 can still buy it if they serve or served in the military, finished a hunter education course, are named as protected in a protection order, or are buying at a shooting range to use there. People born on or before January 28, 2007 are also exempt from the age limit, for both store sales and deliveries. Rimfire ammunition is not covered. Anyone delivering ammunition must check the recipient's age with a photo ID and get a signature. A first violation is a civil fine and a later one is a misdemeanor, and the rules start July 1, 2026. The Colorado Senate passed it 19-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": "against"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1530223,
+   "measure_id": "HB 1133",
+   "vote_date": "2025-03-28",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1133 and pass it. The act sets rules for stores that sell ammunition. Ammunition must be kept where a customer cannot reach it without a worker's help. Stores cannot sell it to anyone under 21, and must check a government photo ID. People aged 18 to 20 can still buy it if they serve or served in the military, finished a hunter education course, are named as protected in a protection order, or are buying at a shooting range to use there. People born on or before January 28, 2007 are also exempt from the age limit, for both store sales and deliveries. Rimfire ammunition is not covered. Anyone delivering ammunition must check the recipient's age with a photo ID and get a signature. A first violation is a civil fine and a later one is a misdemeanor, and the rules start July 1, 2026. The Colorado House voted 38-25 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1133. The act sets rules for stores that sell ammunition. Ammunition must be kept where a customer cannot reach it without a worker's help. Stores cannot sell it to anyone under 21, and must check a government photo ID. People aged 18 to 20 can still buy it if they serve or served in the military, finished a hunter education course, are named as protected in a protection order, or are buying at a shooting range to use there. People born on or before January 28, 2007 are also exempt from the age limit, for both store sales and deliveries. Rimfire ammunition is not covered. Anyone delivering ammunition must check the recipient's age with a photo ID and get a signature. A first violation is a civil fine and a later one is a misdemeanor, and the rules start July 1, 2026. The Colorado House voted 38-25 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": "against"
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1530222
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1559065,
+   "measure_id": "SB 1",
+   "vote_date": "2025-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 1. The act creates the Colorado Voting Rights Act. A city or county may not act in a way that leaves voters of a racial, color or language minority group worse off in registering or voting. It may not run an election system that weakens those voters' power to elect who they want. It may not add voting rules based on gender identity, gender expression or sexual orientation, or because a person is held in a local jail. A person who is harmed, or the attorney general, can sue. A warning letter usually comes first, so the local government can fix the problem. The act also has nursing homes post voting information, bans campaigning within 100 feet of a ballot drop box, changes who runs a recount, and has some towns offer ballots in other languages from 2027. The Colorado House passed it 43-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 1. The act creates the Colorado Voting Rights Act. A city or county may not act in a way that leaves voters of a racial, color or language minority group worse off in registering or voting. It may not run an election system that weakens those voters' power to elect who they want. It may not add voting rules based on gender identity, gender expression or sexual orientation, or because a person is held in a local jail. A person who is harmed, or the attorney general, can sue. A warning letter usually comes first, so the local government can fix the problem. The act also has nursing homes post voting information, bans campaigning within 100 feet of a ballot drop box, changes who runs a recount, and has some towns offer ballots in other languages from 2027. The Colorado House passed it 43-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1560522,
+   "measure_id": "SB 1",
+   "vote_date": "2025-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 1 and pass it. The act creates the Colorado Voting Rights Act. A city or county may not act in a way that leaves voters of a racial, color or language minority group worse off in registering or voting. It may not run an election system that weakens those voters' power to elect who they want. It may not add voting rules based on gender identity, gender expression or sexual orientation, or because a person is held in a local jail. A person who is harmed, or the attorney general, can sue. A warning letter usually comes first, so the local government can fix the problem. The act also has nursing homes post voting information, bans campaigning within 100 feet of a ballot drop box, changes who runs a recount, and has some towns offer ballots in other languages from 2027. The Colorado Senate voted 20-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 1. The act creates the Colorado Voting Rights Act. A city or county may not act in a way that leaves voters of a racial, color or language minority group worse off in registering or voting. It may not run an election system that weakens those voters' power to elect who they want. It may not add voting rules based on gender identity, gender expression or sexual orientation, or because a person is held in a local jail. A person who is harmed, or the attorney general, can sue. A warning letter usually comes first, so the local government can fix the problem. The act also has nursing homes post voting information, bans campaigning within 100 feet of a ballot drop box, changes who runs a recount, and has some towns offer ballots in other languages from 2027. The Colorado Senate voted 20-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1560521
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1566391,
+   "measure_id": "HB 1312",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1312. The act is called the Kelly Loving Act. It counts the name a person chooses as part of gender expression under Colorado's law against discrimination. If a school has a policy about student names, that policy must cover every reason a student might use a name other than their legal one. A school dress code must let each student pick from any of its choices. A county clerk must issue a new marriage or civil union license after a name change, without marking it as changed. The act also ends the rule that a person could change the sex on a Colorado birth certificate only once. From October 1, 2026 that change can be made three times on a driver's license or state ID card. The Colorado Senate passed it 20-14 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1312. The act is called the Kelly Loving Act. It counts the name a person chooses as part of gender expression under Colorado's law against discrimination. If a school has a policy about student names, that policy must cover every reason a student might use a name other than their legal one. A school dress code must let each student pick from any of its choices. A county clerk must issue a new marriage or civil union license after a name change, without marking it as changed. The act also ends the rule that a person could change the sex on a Colorado birth certificate only once. From October 1, 2026 that change can be made three times on a driver's license or state ID card. The Colorado Senate passed it 20-14 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1566829,
+   "measure_id": "HB 1312",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1312 and pass it. The act is called the Kelly Loving Act. It counts the name a person chooses as part of gender expression under Colorado's law against discrimination. If a school has a policy about student names, that policy must cover every reason a student might use a name other than their legal one. A school dress code must let each student pick from any of its choices. A county clerk must issue a new marriage or civil union license after a name change, without marking it as changed. The act also ends the rule that a person could change the sex on a Colorado birth certificate only once. From October 1, 2026 that change can be made three times on a driver's license or state ID card. The Colorado House voted 40-24 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1312. The act is called the Kelly Loving Act. It counts the name a person chooses as part of gender expression under Colorado's law against discrimination. If a school has a policy about student names, that policy must cover every reason a student might use a name other than their legal one. A school dress code must let each student pick from any of its choices. A county clerk must issue a new marriage or civil union license after a name change, without marking it as changed. The act also ends the rule that a person could change the sex on a Colorado birth certificate only once. From October 1, 2026 that change can be made three times on a driver's license or state ID card. The Colorado House voted 40-24 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1566827
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1565803,
+   "measure_id": "HB 1249",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1249. The act tightens the rules on rental security deposits. A landlord must return the deposit within 30 days, or up to 60 days if the lease says so. When a tenant asks in writing, the landlord must hand over the photos, receipts or estimates behind any money kept. A landlord cannot keep money for normal wear and tear, or for damage that was there before the tenant moved in. A landlord also cannot charge to replace all the carpet or repaint the whole home unless the damage is severe. Either side can ask for a walk-through check before the tenant moves out. A landlord who keeps money wrongly owes three times that amount plus the tenant's legal costs, and must prove in court that the amount was fair. The tenant has to demand the money and give seven days' notice before suing. The Colorado Senate passed it 19-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1249. The act tightens the rules on rental security deposits. A landlord must return the deposit within 30 days, or up to 60 days if the lease says so. When a tenant asks in writing, the landlord must hand over the photos, receipts or estimates behind any money kept. A landlord cannot keep money for normal wear and tear, or for damage that was there before the tenant moved in. A landlord also cannot charge to replace all the carpet or repaint the whole home unless the damage is severe. Either side can ask for a walk-through check before the tenant moves out. A landlord who keeps money wrongly owes three times that amount plus the tenant's legal costs, and must prove in court that the amount was fair. The tenant has to demand the money and give seven days' notice before suing. The Colorado Senate passed it 19-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1567103,
+   "measure_id": "HB 1249",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1249 and pass it. The act tightens the rules on rental security deposits. A landlord must return the deposit within 30 days, or up to 60 days if the lease says so. When a tenant asks in writing, the landlord must hand over the photos, receipts or estimates behind any money kept. A landlord cannot keep money for normal wear and tear, or for damage that was there before the tenant moved in. A landlord also cannot charge to replace all the carpet or repaint the whole home unless the damage is severe. Either side can ask for a walk-through check before the tenant moves out. A landlord who keeps money wrongly owes three times that amount plus the tenant's legal costs, and must prove in court that the amount was fair. The tenant has to demand the money and give seven days' notice before suing. The Colorado House voted 34-31 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1249. The act tightens the rules on rental security deposits. A landlord must return the deposit within 30 days, or up to 60 days if the lease says so. When a tenant asks in writing, the landlord must hand over the photos, receipts or estimates behind any money kept. A landlord cannot keep money for normal wear and tear, or for damage that was there before the tenant moved in. A landlord also cannot charge to replace all the carpet or repaint the whole home unless the damage is severe. Either side can ask for a walk-through check before the tenant moves out. A landlord who keeps money wrongly owes three times that amount plus the tenant's legal costs, and must prove in court that the amount was fair. The tenant has to demand the money and give seven days' notice before suing. The Colorado House voted 34-31 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1567102
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1527493,
+   "measure_id": "HB 1090",
+   "vote_date": "2025-03-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1090. The act makes sellers show one total price that includes every fee a buyer must pay. That price must stand out more than any other price shown. Government charges and shipping do not have to be inside it. A restaurant or bar can instead state any required service charge and say how it is shared out, and delivery apps have their own rules. Landlords cannot charge tenants more for utilities than the utility bills them, beyond a markup the lease allows of up to 2% or $10 a month, not both. They also cannot charge for property taxes, shared area upkeep, or work a landlord already owes, or raise any fee other than utility costs by more than 2% during a lease of a year or less. Breaking these rules counts as a deceptive trade practice, which a buyer can sue over. A seller who keeps charging after a written demand owes the money back plus 18% yearly interest. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1090. The act makes sellers show one total price that includes every fee a buyer must pay. That price must stand out more than any other price shown. Government charges and shipping do not have to be inside it. A restaurant or bar can instead state any required service charge and say how it is shared out, and delivery apps have their own rules. Landlords cannot charge tenants more for utilities than the utility bills them, beyond a markup the lease allows of up to 2% or $10 a month, not both. They also cannot charge for property taxes, shared area upkeep, or work a landlord already owes, or raise any fee other than utility costs by more than 2% during a lease of a year or less. Breaking these rules counts as a deceptive trade practice, which a buyer can sue over. A seller who keeps charging after a written demand owes the money back plus 18% yearly interest. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1530160,
+   "measure_id": "HB 1090",
+   "vote_date": "2025-03-28",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1090 and pass it. The act makes sellers show one total price that includes every fee a buyer must pay. That price must stand out more than any other price shown. Government charges and shipping do not have to be inside it. A restaurant or bar can instead state any required service charge and say how it is shared out, and delivery apps have their own rules. Landlords cannot charge tenants more for utilities than the utility bills them, beyond a markup the lease allows of up to 2% or $10 a month, not both. They also cannot charge for property taxes, shared area upkeep, or work a landlord already owes, or raise any fee other than utility costs by more than 2% during a lease of a year or less. Breaking these rules counts as a deceptive trade practice, which a buyer can sue over. A seller who keeps charging after a written demand owes the money back plus 18% yearly interest. The Colorado House voted 41-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1090. The act makes sellers show one total price that includes every fee a buyer must pay. That price must stand out more than any other price shown. Government charges and shipping do not have to be inside it. A restaurant or bar can instead state any required service charge and say how it is shared out, and delivery apps have their own rules. Landlords cannot charge tenants more for utilities than the utility bills them, beyond a markup the lease allows of up to 2% or $10 a month, not both. They also cannot charge for property taxes, shared area upkeep, or work a landlord already owes, or raise any fee other than utility costs by more than 2% during a lease of a year or less. Breaking these rules counts as a deceptive trade practice, which a buyer can sue over. A seller who keeps charging after a written demand owes the money back plus 18% yearly interest. The Colorado House voted 41-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1530159
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1517036,
+   "measure_id": "SB 4",
+   "vote_date": "2025-03-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 4. The act sets rules for the fees child care programs charge families. A family that pays an application, deposit or wait list fee and is not enrolled within six months can ask in writing for the money back. The program keeps only a fair charge for the paperwork. A family that turns down a spot it was offered does not get the refund. A deposit that holds a spot must count toward tuition. Programs must give families the fee list and the refund rules when they join a wait list, sign up or enroll. A program found breaking the rules has 30 days to fix that before the state can act against its license. The Colorado House passed it 38-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 4. The act sets rules for the fees child care programs charge families. A family that pays an application, deposit or wait list fee and is not enrolled within six months can ask in writing for the money back. The program keeps only a fair charge for the paperwork. A family that turns down a spot it was offered does not get the refund. A deposit that holds a spot must count toward tuition. Programs must give families the fee list and the refund rules when they join a wait list, sign up or enroll. A program found breaking the rules has 30 days to fix that before the state can act against its license. The Colorado House passed it 38-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
