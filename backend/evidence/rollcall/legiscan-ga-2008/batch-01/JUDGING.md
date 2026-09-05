@@ -78,7 +78,9 @@ would misstate the record. Under the explicit-nay contract, no voters get no tag
   category code, bars sharing gun-related purchase records, and bars firearm
   registries.
 - **SB 351**, `data_privacy`, yea for. It requires a parent's express consent
-  before a social media platform may let a minor hold an account.
+  before a social media platform may let a child under 16 hold an account
+  (the Act's own definition of a minor; the under-18 definition elsewhere in
+  the bill belongs to the obscene-material section).
 - **HB 1015**, `personal_income_tax_reduction`, yea for. It cuts the individual
   rate. Follows the 2025-2026 precedent for HB 111 exactly.
 

@@ -173,8 +173,8 @@
    "measure_id": "SB 351",
    "vote_date": "2024-03-28",
    "review_status": "approved",
-   "yea_description": "Voted to pass SB 351. It bars social media companies from letting a minor hold an account without a parent's clear consent. It also makes public schools adopt social media policies and use internet filters, and it lets the state hold back school money when those filters fall short. The Georgia House passed it 120-45, and it became law.",
-   "nay_description": "Voted against SB 351. It bars social media companies from letting a minor hold an account without a parent's clear consent. It also makes public schools adopt social media policies and use internet filters, and it lets the state hold back school money when those filters fall short. The Georgia House passed it 120-45, and it became law.",
+   "yea_description": "Voted to pass SB 351. It bars social media companies from letting a child under 16 hold an account without a parent's clear consent. It also makes public schools adopt social media policies and use internet filters, and it lets the state hold back school money when those filters fall short. The Georgia House passed it 120-45, and it became law.",
+   "nay_description": "Voted against SB 351. It bars social media companies from letting a child under 16 hold an account without a parent's clear consent. It also makes public schools adopt social media policies and use internet filters, and it lets the state hold back school money when those filters fall short. The Georgia House passed it 120-45, and it became law.",
    "labels": [
     {
      "slug": "data_privacy",
