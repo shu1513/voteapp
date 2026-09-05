@@ -1,0 +1,148 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1566289,
+      "measure_id": "HB 3409",
+      "vote_date": "2025-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3409, which limits when a drug plan may force a clinic to tag a claim. Under a federal program called 340B, clinics that serve low-income patients buy medicines cheaply. Drug plans and the firms that run their drug benefits had been asking clinics to mark each such claim. They may now ask for that mark only in set cases. One is where the clinic already sends its data to a clearing house that meets the law's terms. Another is where the mark is needed to stop the same discount being given twice. The Oregon House passed it 32-18, and it became law.",
+      "nay_description": "Voted against House Bill 3409, which limits when a drug plan may force a clinic to tag a claim. Under a federal program called 340B, clinics that serve low-income patients buy medicines cheaply. Drug plans and the firms that run their drug benefits had been asking clinics to mark each such claim. They may now ask for that mark only in set cases. One is where the clinic already sends its data to a clearing house that meets the law's terms. Another is where the mark is needed to stop the same discount being given twice. The Oregon House passed it 32-18, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1586792,
+      "measure_id": "HB 3409",
+      "vote_date": "2025-06-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3409, which limits when a drug plan may force a clinic to tag a claim. Under a federal program called 340B, clinics that serve low-income patients buy medicines cheaply. Drug plans and the firms that run their drug benefits had been asking clinics to mark each such claim. They may now ask for that mark only in set cases. One is where the clinic already sends its data to a clearing house that meets the law's terms. Another is where the mark is needed to stop the same discount being given twice. The Oregon Senate passed it 18-12, and it became law.",
+      "nay_description": "Voted against House Bill 3409, which limits when a drug plan may force a clinic to tag a claim. Under a federal program called 340B, clinics that serve low-income patients buy medicines cheaply. Drug plans and the firms that run their drug benefits had been asking clinics to mark each such claim. They may now ask for that mark only in set cases. One is where the clinic already sends its data to a clearing house that meets the law's terms. Another is where the mark is needed to stop the same discount being given twice. The Oregon Senate passed it 18-12, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1595608,
+      "measure_id": "SB 1168",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1168, which bars paying home health and home hospice staff by the visit instead of by the hour. Oregon already barred this for nurses. The law now covers the wider staff who deliver those services. It also lists who is left out: home care workers, direct caregivers at in-home care agencies, doctors, nurse practitioners, psychiatrists, psychologists, volunteers, and anyone a union contract treats as a supervisor. The Oregon House passed it 38-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 1168, which bars paying home health and home hospice staff by the visit instead of by the hour. Oregon already barred this for nurses. The law now covers the wider staff who deliver those services. It also lists who is left out: home care workers, direct caregivers at in-home care agencies, doctors, nurse practitioners, psychiatrists, psychologists, volunteers, and anyone a union contract treats as a supervisor. The Oregon House passed it 38-12, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1593890,
+      "measure_id": "SB 1168",
+      "vote_date": "2025-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1168, which bars paying home health and home hospice staff by the visit instead of by the hour. Oregon already barred this for nurses. The law now covers the wider staff who deliver those services. It also lists who is left out: home care workers, direct caregivers at in-home care agencies, doctors, nurse practitioners, psychiatrists, psychologists, volunteers, and anyone a union contract treats as a supervisor. The Oregon Senate passed it 18-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 1168, which bars paying home health and home hospice staff by the visit instead of by the hour. Oregon already barred this for nurses. The law now covers the wider staff who deliver those services. It also lists who is left out: home care workers, direct caregivers at in-home care agencies, doctors, nurse practitioners, psychiatrists, psychologists, volunteers, and anyone a union contract treats as a supervisor. The Oregon Senate passed it 18-12, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1551435,
+      "measure_id": "HB 3521",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3521, which changes what happens to the deposit a renter pays to hold a home. If the applicant walks away after finding the place has serious habitability defects, the landlord may no longer keep the money. A landlord who must repay now has five business days rather than four. Missing that deadline, unless an act of God caused it, costs a penalty equal to the deposit or whatever the parties agreed, whichever is larger. It applies to deposits taken from January 1, 2026. The Oregon House passed it 33-18, and it became law.",
+      "nay_description": "Voted against House Bill 3521, which changes what happens to the deposit a renter pays to hold a home. If the applicant walks away after finding the place has serious habitability defects, the landlord may no longer keep the money. A landlord who must repay now has five business days rather than four. Missing that deadline, unless an act of God caused it, costs a penalty equal to the deposit or whatever the parties agreed, whichever is larger. It applies to deposits taken from January 1, 2026. The Oregon House passed it 33-18, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1589518,
+      "measure_id": "HB 3521",
+      "vote_date": "2025-06-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3521, which changes what happens to the deposit a renter pays to hold a home. If the applicant walks away after finding the place has serious habitability defects, the landlord may no longer keep the money. A landlord who must repay now has five business days rather than four. Missing that deadline, unless an act of God caused it, costs a penalty equal to the deposit or whatever the parties agreed, whichever is larger. It applies to deposits taken from January 1, 2026. The Oregon Senate passed it 20-8, and it became law.",
+      "nay_description": "Voted against House Bill 3521, which changes what happens to the deposit a renter pays to hold a home. If the applicant walks away after finding the place has serious habitability defects, the landlord may no longer keep the money. A landlord who must repay now has five business days rather than four. Missing that deadline, unless an act of God caused it, costs a penalty equal to the deposit or whatever the parties agreed, whichever is larger. It applies to deposits taken from January 1, 2026. The Oregon Senate passed it 20-8, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1547696,
+      "measure_id": "HB 3863",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3863, which opens standard power purchase terms to larger small generators. A federal law makes utilities buy power from small projects such as solar, wind or hydro. Oregon sets a size limit, and a project above it loses the standard rate and contract and has to bargain for its own. The state must now set that limit at 10 megawatts or higher. The Oregon House passed it 40-15, and it became law.",
+      "nay_description": "Voted against House Bill 3863, which opens standard power purchase terms to larger small generators. A federal law makes utilities buy power from small projects such as solar, wind or hydro. Oregon sets a size limit, and a project above it loses the standard rate and contract and has to bargain for its own. The state must now set that limit at 10 megawatts or higher. The Oregon House passed it 40-15, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1570876,
+      "measure_id": "HB 3863",
+      "vote_date": "2025-05-13",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3863, which opens standard power purchase terms to larger small generators. A federal law makes utilities buy power from small projects such as solar, wind or hydro. Oregon sets a size limit, and a project above it loses the standard rate and contract and has to bargain for its own. The state must now set that limit at 10 megawatts or higher. The Oregon Senate passed it 21-8, and it became law.",
+      "nay_description": "Voted against House Bill 3863, which opens standard power purchase terms to larger small generators. A federal law makes utilities buy power from small projects such as solar, wind or hydro. Oregon sets a size limit, and a project above it loses the standard rate and contract and has to bargain for its own. The state must now set that limit at 10 megawatts or higher. The Oregon Senate passed it 21-8, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
