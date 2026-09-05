@@ -1,0 +1,52 @@
+session	measure	chamber	roll	date	yea	nay	disposition	reason	title
+2151	HF1090	senate	1571343	2025-05-13	50	14	dropped	filter 5: renames a library construction grant program; outside the taxonomy and low salience	"Library construction grant program renamed as the ""Mary C. Murphy Library Construction Gra"
+2151	HF1143	senate	1573137	2025-05-18	44	23	dropped	appropriations: cancels a rail appropriation, cuts special education aid, appropriates $100,000,000; money only	Expiration of aid accounts modified, appropriations modified, and money appropriated.
+2151	HF2115	senate	1568035	2025-05-07	39	28	dropped	version: only divided roll predates the conference substitute; the Senate vote on the enacted text was 55-8, not divided	Human services policy bill.
+2151	HF2432	senate	1563389	2025-04-30	34	32	dropped	appropriations and multi-subject: 11 articles spanning judiciary, public safety, corrections, data practices, civil law	Judiciary, public safety, and corrections policy and finance bill.
+2151	HF2432	senate	1573013	2025-05-18	34	33	dropped	appropriations and multi-subject: 11 articles spanning judiciary, public safety, corrections, data practices, civil law	Judiciary, public safety, and corrections policy and finance bill.
+2151	HF2432	senate	1573014	2025-05-18	34	33	dropped	appropriations and multi-subject: 11 articles spanning judiciary, public safety, corrections, data practices, civil law	Judiciary, public safety, and corrections policy and finance bill.
+2151	HF2433	house	1572954	2025-05-16	93	41	dropped	version: enacted 2026-05-27 on a conference substitute; the 2025 roll is on text that never became law	Education finance bill.
+2151	HF2438	house	1560080	2025-04-28	85	49	dropped	version: enacted 2026-05-27 on a conference substitute; the 2025 rolls are on text that never became law	Taxation bill; financing and operation of state and local government provided.
+2151	HF2438	senate	1564463	2025-05-01	37	28	dropped	version: enacted 2026-05-27 on a conference substitute; the 2025 rolls are on text that never became law	Taxation bill; financing and operation of state and local government provided.
+2151	HF2446	senate	1563494	2025-04-30	43	23	dropped	version: only divided roll predates the conference substitute; the Senate vote on the enacted text was 58-8, not divided	Agriculture and broadband development policy and finance bill.
+2151	HF2563	senate	1570187	2025-05-12	41	26	dropped	appropriations: the Legacy funds appropriation bill	Legacy finance bill.
+2151	HF2563	senate	1573099	2025-05-18	37	30	dropped	appropriations: the Legacy funds appropriation bill	Legacy finance bill.
+2151	SF1750	senate	1567025	2025-05-06	44	22	dropped	version: enacted 2026-05-12 after a 2026 amendment; the 2025 roll is on superseded text	Common interest communities provisions modifications
+2151	SF1959	senate	1572995	2025-05-17	38	25	dropped	appropriations: veterans and military affairs budget with policy riders	Omnibus Veterans policy and appropriations
+2151	SF1959	senate	1572996	2025-05-17	38	25	dropped	appropriations: veterans and military affairs budget with policy riders	Omnibus Veterans policy and appropriations
+2151	SF2077	senate	1561669	2025-04-29	35	30	dropped	version: enacted 2026-05-27 on a conference substitute; the 2025 roll is on superseded text	Omnibus Outdoor Heritage Fund, Legacy and Lands bill
+2151	SF2200	house	1570373	2025-05-12	98	36	batch-01	imported; public safety and crime control, yea for, nay null	Restorative practices statements and documents inadmissibility in civil and criminal proce
+2151	SF2298	senate	1555282	2025-04-22	40	24	dropped	filter 5: supply-side bonds and homebuyer aid alongside a one-year delay of the 2024 tenant protections; counter-directional inside housing affordability	Omnibus Housing and Homelessness Prevention policy and appropriations
+2151	SF2298	senate	1572998	2025-05-17	36	31	dropped	filter 5: supply-side bonds and homebuyer aid alongside a one-year delay of the 2024 tenant protections; counter-directional inside housing affordability	Omnibus Housing and Homelessness Prevention policy and appropriations
+2151	SF2370	senate	1559654	2025-04-28	34	32	dropped	filter 5: 109 sections of cannabis licensing repair; no research area carries an honest direction	Omnibus Cannabis Policy Bill
+2151	SF2370	house	1565582	2025-05-05	82	50	dropped	filter 5: 109 sections of cannabis licensing repair; no research area carries an honest direction	Omnibus Cannabis Policy Bill
+2151	SF2370	house	1572964	2025-05-17	80	50	dropped	filter 5: 109 sections of cannabis licensing repair; no research area carries an honest direction	Omnibus Cannabis Policy Bill
+2151	SF2370	senate	1572994	2025-05-17	34	33	dropped	filter 5: 109 sections of cannabis licensing repair; no research area carries an honest direction	Omnibus Cannabis Policy Bill
+2151	SF3045	senate	1558736	2025-04-25	35	29	dropped	appropriations and multi-subject: state government biennial budget across 8 articles including elections and campaign finance	Omnibus State and Local Government and Elections policy and appropriations
+2151	SF3045	senate	1573969	2025-05-19	36	31	dropped	appropriations and multi-subject: state government biennial budget across 8 articles including elections and campaign finance	Omnibus State and Local Government and Elections policy and appropriations
+2151	SF856	senate	1568905	2025-05-08	19	45	dropped	version: enacted 2026-05-15 after a 2026 amendment; the 2025 roll is on superseded text	Office of the Inspector General creation and appropriation
+2217	HF1	senate	1587239	2025-06-09	48	16	batch-01	imported; immigration, yea against, nay for	Undocumented adult MinnesotaCare coverage repeal bill.
+2217	HF1	house	1588802	2025-06-09	68	65	batch-01	imported; immigration, yea against, nay for	Undocumented adult MinnesotaCare coverage repeal bill.
+2217	HF14	senate	1587281	2025-06-09	45	21	dropped	appropriations: transportation budget with electric vehicle taxes	Transportation finance and policy bill.
+2217	HF14	house	1588493	2025-06-09	78	55	dropped	appropriations: transportation budget with electric vehicle taxes	Transportation finance and policy bill.
+2217	HF16	senate	1587406	2025-06-09	40	26	dropped	filter 5: data center guardrails and fee traded against extending the sales tax exemption from 20 to 35 years; two directions in one act	Data center regulatory bill.
+2217	HF16	house	1588462	2025-06-09	85	43	dropped	filter 5: data center guardrails and fee traded against extending the sales tax exemption from 20 to 35 years; two directions in one act	Data center regulatory bill.
+2217	HF17	senate	1587441	2025-06-09	45	21	dropped	appropriations: general fund cash bonding	General fund cash bonding bill.
+2217	HF17	house	1588638	2025-06-09	96	34	dropped	appropriations: general fund cash bonding	General fund cash bonding bill.
+2217	HF18	senate	1587420	2025-06-09	50	17	dropped	appropriations: general obligation bonding	General obligation bonding bill.
+2217	HF2	senate	1587337	2025-06-09	34	33	dropped	appropriations: health and children biennial budget, 24 articles	Health/children and families finance bill.
+2217	HF2	house	1588434	2025-06-09	73	58	dropped	appropriations: health and children biennial budget, 24 articles	Health/children and families finance bill.
+2217	HF3	senate	1587564	2025-06-09	35	32	dropped	appropriations: human services biennial budget, 14 articles	Human services finance bill.
+2217	HF3	house	1588770	2025-06-09	96	37	dropped	appropriations: human services biennial budget, 14 articles	Human services finance bill.
+2217	HF4	senate	1587277	2025-06-09	48	18	dropped	appropriations: commerce budget with insurance and financial institution policy	Commerce finance and policy bill.
+2217	HF5	senate	1587330	2025-06-09	35	32	dropped	appropriations: K-12 education biennial budget, 13 articles	K12 education finance and policy bill.
+2217	HF5	house	1588442	2025-06-09	97	36	dropped	appropriations: K-12 education biennial budget, 13 articles	K12 education finance and policy bill.
+2217	HF9	senate	1587414	2025-06-09	31	34	dropped	appropriations: omnibus tax act, 11 articles	Tax finance and policy bill.
+2217	HF9	house	1588602	2025-06-09	93	39	dropped	appropriations: omnibus tax act, 11 articles	Tax finance and policy bill.
+2217	SF1	senate	1587237	2025-06-09	36	31	dropped	appropriations: higher education budget with policy	Omnibus Higher Education policy and appropriations
+2217	SF1	house	1588808	2025-06-09	95	36	dropped	appropriations: higher education budget with policy	Omnibus Higher Education policy and appropriations
+2217	SF17	senate	1587492	2025-06-09	40	27	dropped	appropriations: jobs, labor and economic development budget with policy	Omnibus Jobs, Labor Economic Development policy and appropriations
+2217	SF17	house	1588696	2025-06-09	96	37	dropped	appropriations: jobs, labor and economic development budget with policy	Omnibus Jobs, Labor Economic Development policy and appropriations
+2217	SF2	senate	1587233	2025-06-09	46	21	dropped	filter 5: two appropriations articles plus utility securitization, whose direction on household costs is contested	Omnibus Energy, Utilities, Environment and Climate policy and appropriations
+2217	SF2	house	1588466	2025-06-09	90	41	dropped	filter 5: two appropriations articles plus utility securitization, whose direction on household costs is contested	Omnibus Energy, Utilities, Environment and Climate policy and appropriations
+2217	SF3	senate	1587402	2025-06-09	38	29	dropped	appropriations: environment and natural resources appropriations	Omnibus Environment and Natural Resources appropriations

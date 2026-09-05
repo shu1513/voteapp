@@ -40,7 +40,11 @@ import type { AddressApiClientIpInput } from "./addressApiClientIp.js";
 import type { EmailUnsubscribePreference } from "./apiValidation.js";
 import type { AddressResolutionDiagnostics } from "./addressApiResponses.js";
 import type { StateVotingResourcesResult } from "./stateVotingResources.js";
-import type { MembershipCheckoutInput, MembershipStatusResult } from "./membership/membershipService.js";
+import type {
+  MembershipCheckoutInput,
+  MembershipPortalInput,
+  MembershipStatusResult,
+} from "./membership/membershipService.js";
 
 export type { ResearchAreaCatalogItem, ResearchAreaCatalogResult } from "../pipeline/users/userResearchAreaPreferences.js";
 export type { StateVotingResources, StateVotingResourcesResult } from "./stateVotingResources.js";
@@ -194,7 +198,13 @@ export type AddressApiServerOptions = {
   createAuthenticatedMembershipCheckout?: (userId: string, input: MembershipCheckoutInput) => Promise<{ url: string }>;
   /** POST /api/me/membership/portal — Stripe billing-portal session URL.
    * null = the user has no billing customer yet (404). */
-  createAuthenticatedMembershipPortal?: (userId: string) => Promise<{ url: string } | null>;
+  createAuthenticatedMembershipPortal?: (userId: string, input: MembershipPortalInput) => Promise<{ url: string } | null>;
+  /** POST /api/me/membership/cancel — period-end cancel of the live
+   * membership; answers the fresh status (docs/plans/membership-manage-page.md). */
+  cancelAuthenticatedMembership?: (userId: string) => Promise<MembershipStatusResult>;
+  /** POST /api/me/membership/resume — clears a scheduled cancel; answers
+   * the fresh status. */
+  resumeAuthenticatedMembership?: (userId: string) => Promise<MembershipStatusResult>;
   /** POST /api/stripe/webhook — signature-verified Stripe event intake.
    * "bad_signature" → 400; thrown errors → 5xx so Stripe redelivers. */
   handleStripeWebhookEvent?: (input: {

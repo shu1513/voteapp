@@ -86,12 +86,15 @@ export const ME_EMAIL_PREFERENCES_PATH = "/api/me/email-preferences";
 // Mobile device push-token registration (POST registers/refreshes, DELETE
 // revokes). Bearer-authed like every other /api/me route.
 export const ME_PUSH_TOKENS_PATH = "/api/me/push-tokens";
-// Support payments / membership (docs/plans/membership-contributions.md).
-// GET answers { enabled: false } when Stripe isn't configured; the two POSTs
-// 404 like the chatbot paths so the feature stays hidden.
+// Support payments / membership (docs/plans/membership-contributions.md,
+// docs/plans/membership-manage-page.md). GET answers { enabled: false } when
+// Stripe isn't configured; the POSTs 404 like the chatbot paths so the
+// feature stays hidden.
 export const ME_MEMBERSHIP_PATH = "/api/me/membership";
 export const ME_MEMBERSHIP_CHECKOUT_PATH = "/api/me/membership/checkout";
 export const ME_MEMBERSHIP_PORTAL_PATH = "/api/me/membership/portal";
+export const ME_MEMBERSHIP_CANCEL_PATH = "/api/me/membership/cancel";
+export const ME_MEMBERSHIP_RESUME_PATH = "/api/me/membership/resume";
 // Stripe webhook: signature-verified raw body, no session auth, exempt from
 // the per-IP rate limiter (Stripe's shared delivery IPs would 429).
 export const STRIPE_WEBHOOK_PATH = "/api/stripe/webhook";
@@ -795,6 +798,26 @@ export type MembershipCheckoutPayload = {
   kind: "one_time" | "monthly";
   amount_cents: number;
 };
+
+// Portal body: `{}` opens the general customer portal (what shipped clients
+// send); `flow` deep-links into one portal flow.
+export type MembershipPortalPayload = {
+  flow: "payment_method_update" | null;
+};
+
+export function parseMembershipPortalBodyValue(parsed: unknown): MembershipPortalPayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+  const flow = (parsed as Record<string, unknown>).flow;
+  if (flow === undefined || flow === null) {
+    return { flow: null };
+  }
+  if (flow !== "payment_method_update") {
+    throw new TypeError("Body field flow must be payment_method_update when present");
+  }
+  return { flow };
+}
 
 export function parseMembershipCheckoutBodyValue(parsed: unknown): MembershipCheckoutPayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {

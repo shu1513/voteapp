@@ -244,6 +244,97 @@ describe("POST /api/me/membership/portal", () => {
     });
     expect(found.statusCode).toBe(200);
     expect(found.body).toEqual({ url: "https://portal.stripe.test/ps_1" });
+    // `{}` (what shipped clients send) = the general portal.
+    expect(createAuthenticatedMembershipPortal).toHaveBeenLastCalledWith(USER_ID, { flow: null });
+  });
+
+  it("passes a portal flow through and rejects an unknown one with 400", async () => {
+    const createAuthenticatedMembershipPortal = vi.fn().mockResolvedValue({ url: "https://portal.stripe.test/ps_2" });
+    const app = createApiApp(authedOptions({ createAuthenticatedMembershipPortal }));
+
+    const flow = await invokeExpressApp(app, {
+      method: "POST",
+      path: "/api/me/membership/portal",
+      body: JSON.stringify({ flow: "payment_method_update" }),
+      headers: JSON_HEADERS,
+    });
+    expect(flow.statusCode).toBe(200);
+    expect(createAuthenticatedMembershipPortal).toHaveBeenCalledWith(USER_ID, { flow: "payment_method_update" });
+
+    const unknown = await invokeExpressApp(app, {
+      method: "POST",
+      path: "/api/me/membership/portal",
+      body: JSON.stringify({ flow: "subscription_cancel" }),
+      headers: JSON_HEADERS,
+    });
+    expect(unknown.statusCode).toBe(400);
+    expect(createAuthenticatedMembershipPortal).toHaveBeenCalledTimes(1);
+  });
+});
+
+// Manage-page actions (docs/plans/membership-manage-page.md).
+describe.each([
+  ["/api/me/membership/cancel", "cancelAuthenticatedMembership"],
+  ["/api/me/membership/resume", "resumeAuthenticatedMembership"],
+] as const)("POST %s", (path, optionName) => {
+  const STATUS = { enabled: true, membership: null, total_net_cents: 0, payments: [] };
+
+  it("404s when Stripe is not configured (feature hidden)", async () => {
+    const app = createApiApp(authedOptions());
+    const response = await invokeExpressApp(app, { method: "POST", path, body: "{}", headers: JSON_HEADERS });
+    expect(response.statusCode).toBe(404);
+  });
+
+  it("rejects non-POST methods once wired", async () => {
+    const app = createApiApp(authedOptions({ [optionName]: vi.fn() }));
+    const response = await invokeExpressApp(app, { method: "GET", path });
+    expect(response.statusCode).toBe(405);
+    expect(response.headers.allow).toBe("POST");
+  });
+
+  it("requires the application/json content type (blocks plain cross-site form POSTs)", async () => {
+    const action = vi.fn();
+    const app = createApiApp(authedOptions({ [optionName]: action }));
+    const response = await invokeExpressApp(app, {
+      method: "POST",
+      path,
+      body: "x=1",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+    });
+    expect(response.statusCode).toBe(415);
+    expect(action).not.toHaveBeenCalled();
+  });
+
+  it("requires a verified email", async () => {
+    const action = vi.fn();
+    const app = createApiApp(
+      authedOptions({ [optionName]: action, lookupAuthenticatedUserEmailVerified: async () => false })
+    );
+    const response = await invokeExpressApp(app, { method: "POST", path, body: "{}", headers: JSON_HEADERS });
+    expect(response.statusCode).toBe(403);
+    expect(action).not.toHaveBeenCalled();
+  });
+
+  it("answers the fresh membership status", async () => {
+    const action = vi.fn().mockResolvedValue(STATUS);
+    const app = createApiApp(authedOptions({ [optionName]: action }));
+    const response = await invokeExpressApp(app, { method: "POST", path, body: "{}", headers: JSON_HEADERS });
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual(STATUS);
+    expect(action).toHaveBeenCalledWith(USER_ID);
+  });
+
+  it.each([
+    ["no_membership", 404, "not_found"],
+    ["membership_pending", 409, "membership_pending"],
+    ["membership_conflict", 409, "membership_conflict"],
+    ["membership_update_failed", 503, "upstream_unavailable"],
+  ] as const)("maps a %s service error to %s", async (code, statusCode, responseCode) => {
+    const action = vi.fn().mockRejectedValue(new MembershipServiceError(code, "message"));
+    const app = createApiApp(authedOptions({ [optionName]: action }));
+    const response = await invokeExpressApp(app, { method: "POST", path, body: "{}", headers: JSON_HEADERS });
+    expect(response.statusCode).toBe(statusCode);
+    expect(response.body).toMatchObject({ error: { code: responseCode } });
   });
 });
 
