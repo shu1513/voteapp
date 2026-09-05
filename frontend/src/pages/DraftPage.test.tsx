@@ -5,6 +5,7 @@ import { DraftPage } from "./DraftPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { ballotSummary, electionSummary, ME_VERIFIED } from "../test/fixtures";
+import { readBallotDraft } from "../lib/ballotDraft";
 
 function renderDraft() {
   return renderRoutes(
@@ -95,6 +96,9 @@ describe("DraftPage", () => {
 
     expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Draft" })).toBeInTheDocument();
     expect(screen.getByText("1 of 2 races decided")).toBeInTheDocument();
+    // Not finished: no milestone, no seen marker.
+    expect(screen.queryByRole("region", { name: /draft milestone/ })).not.toBeInTheDocument();
+    expect(window.localStorage.getItem("voteapp_draft_complete_seen")).toBeNull();
     expect(screen.getByText("Jane Smith")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Mayor — no pick yet" })).toBeInTheDocument();
     // Account-only machinery stays off the guest page.
@@ -102,6 +106,65 @@ describe("DraftPage", () => {
     expect(screen.getByRole("link", { name: "Sign up free to save your picks" })).toBeInTheDocument();
     // Every draft pick is on a card — no leftover section.
     expect(screen.queryByText("Other saved picks")).not.toBeInTheDocument();
+  });
+
+  it("refreshes the draft's progress target from the loaded ballot, like /ballot does", async () => {
+    // A stale target (yesterday's snapshot: one race) with today's ballot
+    // showing two; without the refresh the header would keep counting to 1.
+    seedDraft({
+      district_ids: ["dddddddd-1111-4111-8111-111111111111"],
+      target: { election_date: "2026-11-03", election_ids: ["e-1"] },
+      choices: { "e-1": draftChoice() },
+    });
+    stubApiRoutes({
+      ...GUEST,
+      "/api/ballot": {
+        body: ballotSummary([
+          electionSummary({ id: "e-9", election_date: "2026-06-02", official_ballot_title: "Past primary" }),
+          electionSummary(),
+          electionSummary({ id: "e-2", official_ballot_title: "Mayor" }),
+        ]),
+      },
+    });
+    renderDraft();
+    expect(await screen.findByText("1 of 2 races decided")).toBeInTheDocument();
+    expect(readBallotDraft().target).toEqual({ election_date: "2026-11-03", election_ids: ["e-1", "e-2"] });
+    expect(readBallotDraft().district_ids).toEqual(["dddddddd-1111-4111-8111-111111111111"]);
+  });
+
+  it("shows the milestone with the sign-up link once every race has a pick, in both views", async () => {
+    seedDraft({
+      district_ids: ["dddddddd-1111-4111-8111-111111111111"],
+      target: { election_date: "2026-11-03", election_ids: ["e-1", "e-2"] },
+      choices: {
+        "e-1": draftChoice(),
+        "e-2": draftChoice({ election_id: "e-2", official_ballot_title: "Mayor" }),
+      },
+    });
+    stubApiRoutes({
+      ...GUEST,
+      "/api/ballot": {
+        body: ballotSummary([electionSummary(), electionSummary({ id: "e-2", official_ballot_title: "Mayor" })]),
+      },
+    });
+    renderDraft();
+
+    const milestone = await screen.findByRole("region", { name: "November 3, 2026 draft milestone" });
+    expect(milestone).toHaveTextContent("Picks added for every race in your November 3, 2026 draft.");
+    expect(milestone).toHaveTextContent("2 of 2 races decided.");
+    // The sign-up link rides the milestone AND stays at the bottom.
+    expect(screen.getAllByRole("link", { name: "Sign up free to save your picks" })).toHaveLength(2);
+    // Reading it here counts as seeing the day: the header notice must not
+    // fire for it later.
+    expect(JSON.parse(window.localStorage.getItem("voteapp_draft_complete_seen") ?? "[]")).toEqual(["2026-11-03"]);
+
+    // Same fake-timer-aware user-event setup as the ballot-view test below.
+    const user = (await import("@testing-library/user-event")).default.setup({
+      advanceTimers: vi.advanceTimersByTime,
+    });
+    await user.click(screen.getByRole("button", { name: "Ballot preview" }));
+    expect(await screen.findByRole("heading", { name: /Ballot preview — November 3, 2026/ })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "November 3, 2026 draft milestone" })).toBeInTheDocument();
   });
 
   it("gives guests the ballot view over the public preview endpoint", async () => {
@@ -155,7 +218,9 @@ describe("DraftPage", () => {
     expect(String(ballotCalls[0][0])).toContain("sort=state_baseline");
     expect(String(ballotCalls[0][0])).toContain("followed_first=false");
     // The signup CTA survives the view switch — the sheet IS the pitch.
-    expect(screen.getByRole("link", { name: "Sign up free to save your picks" })).toBeInTheDocument();
+    // Two of them here: this one-race draft is finished, so the milestone
+    // above the toggle carries the same link as the bottom CTA.
+    expect(screen.getAllByRole("link", { name: "Sign up free to save your picks" })).toHaveLength(2);
   });
 
   it("lists picks made outside the stored ballot under Other saved picks", async () => {

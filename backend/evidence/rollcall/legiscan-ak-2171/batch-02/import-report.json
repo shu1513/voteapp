@@ -1,0 +1,565 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-04T20:29:35.072Z",
+  "finishedAt": "2026-09-04T20:29:38.174Z",
+  "jurisdiction": "AK",
+  "sessionId": 2171,
+  "evidenceDir": "evidence/rollcall/legiscan-ak-2171/batch-02",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-ak-2171/crosswalk.json",
+  "crosswalkEntries": 62,
+  "peopleFile": "evidence/rollcall/legiscan-ak-2171/legiscan-people-ak-2171.json",
+  "peopleMembers": 62,
+  "files": 18,
+  "outcomes": {
+    "imported": 18
+  },
+  "actions": {
+    "insert": 65
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ak-house-2171-roll1546456.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1546456,
+      "outcome": "imported",
+      "legislativeVoteId": "fd6c06be-4261-497a-aa9f-fa4af5a94e3b",
+      "reviewStatus": "approved",
+      "bill": "HB69",
+      "voteDate": "2025-04-11",
+      "officialVoteDate": null,
+      "measureId": "HB 69",
+      "question": "House: Concur",
+      "originRunId": "rollcall:AK:house:2171:1546456:2026-09-04T20:29:35.072Z",
+      "members": 37,
+      "notVoting": 0,
+      "absent": 3,
+      "resolution": {
+        "unmatched_reviewed": 33,
+        "matched": 4
+      },
+      "actions": {
+        "insert": 4
+      },
+      "notified": 0,
+      "candidates": 4,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-house-2171-roll1567929.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1567929,
+      "outcome": "imported",
+      "legislativeVoteId": "60018cd1-e98e-475a-b686-5f4deb654926",
+      "reviewStatus": "approved",
+      "bill": "SB113",
+      "voteDate": "2025-05-07",
+      "officialVoteDate": null,
+      "measureId": "SB 113",
+      "question": "House: Third Reading Final Passage",
+      "originRunId": "rollcall:AK:house:2171:1567929:2026-09-04T20:29:35.072Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "insert": 5
+      },
+      "notified": 0,
+      "candidates": 5,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-house-2171-roll1692486.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1692486,
+      "outcome": "imported",
+      "legislativeVoteId": "0c102789-c286-4e96-9ea5-a6a12ce43574",
+      "reviewStatus": "approved",
+      "bill": "HB26",
+      "voteDate": "2026-05-01",
+      "officialVoteDate": null,
+      "measureId": "HB 26",
+      "question": "House: Concur",
+      "originRunId": "rollcall:AK:house:2171:1692486:2026-09-04T20:29:35.072Z",
+      "members": 36,
+      "notVoting": 0,
+      "absent": 4,
+      "resolution": {
+        "unmatched_reviewed": 31,
+        "matched": 5
+      },
+      "actions": {
+        "insert": 5
+      },
+      "notified": 0,
+      "candidates": 5,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-house-2171-roll1699131.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1699131,
+      "outcome": "imported",
+      "legislativeVoteId": "f204808f-a974-417f-ae82-c61c0fec5c36",
+      "reviewStatus": "approved",
+      "bill": "SB41",
+      "voteDate": "2026-05-14",
+      "officialVoteDate": null,
+      "measureId": "SB 41",
+      "question": "House: Third Reading Final Passage",
+      "originRunId": "rollcall:AK:house:2171:1699131:2026-09-04T20:29:35.072Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "insert": 5
+      },
+      "notified": 0,
+      "candidates": 5,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-house-2171-roll1699350.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1699350,
+      "outcome": "imported",
+      "legislativeVoteId": "5e172a92-9564-4c8e-9ac3-2f74d699a880",
+      "reviewStatus": "approved",
+      "bill": "HB10",
+      "voteDate": "2026-05-16",
+      "officialVoteDate": null,
+      "measureId": "HB 10",
+      "question": "House: Concur",
+      "originRunId": "rollcall:AK:house:2171:1699350:2026-09-04T20:29:35.072Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "insert": 5
+      },
+      "notified": 0,
+      "candidates": 5,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-house-2171-roll1699385.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1699385,
+      "outcome": "imported",
+      "legislativeVoteId": "7d863464-f605-4630-8c21-10e3b6308798",
+      "reviewStatus": "approved",
+      "bill": "HB52",
+      "voteDate": "2026-05-17",
+      "officialVoteDate": null,
+      "measureId": "HB 52",
+      "question": "House: Concur",
+      "originRunId": "rollcall:AK:house:2171:1699385:2026-09-04T20:29:35.072Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "insert": 5
+      },
+      "notified": 0,
+      "candidates": 5,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-house-2171-roll1699781.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1699781,
+      "outcome": "imported",
+      "legislativeVoteId": "0b38384f-25cd-4ed7-a271-797f536120a6",
+      "reviewStatus": "approved",
+      "bill": "SB21",
+      "voteDate": "2026-05-18",
+      "officialVoteDate": null,
+      "measureId": "SB 21",
+      "question": "House: Third Reading Final Passage",
+      "originRunId": "rollcall:AK:house:2171:1699781:2026-09-04T20:29:35.072Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "insert": 5
+      },
+      "notified": 0,
+      "candidates": 5,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-house-2171-roll1700368.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1700368,
+      "outcome": "imported",
+      "legislativeVoteId": "ed63f5f2-fcd1-4f19-b0b7-cfb3db03184f",
+      "reviewStatus": "approved",
+      "bill": "HB133",
+      "voteDate": "2026-05-19",
+      "officialVoteDate": null,
+      "measureId": "HB 133",
+      "question": "House: Concur",
+      "originRunId": "rollcall:AK:house:2171:1700368:2026-09-04T20:29:35.072Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "insert": 5
+      },
+      "notified": 0,
+      "candidates": 5,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ak-house-2171-roll1700401.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1700401,
+      "outcome": "imported",
+      "legislativeVoteId": "13ac99e3-03bf-4abc-b83b-229744511198",
+      "reviewStatus": "approved",
+      "bill": "SB24",
+      "voteDate": "2026-05-19",
+      "officialVoteDate": null,
+      "measureId": "SB 24",
+      "question": "House: Third Reading Final Passage",
+      "originRunId": "rollcall:AK:house:2171:1700401:2026-09-04T20:29:35.072Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "insert": 5
+      },
+      "notified": 0,
+      "candidates": 5,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ak-house-2171-roll1700405.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1700405,
+      "outcome": "imported",
+      "legislativeVoteId": "192ad3ee-896d-4fda-8640-636b8271a0d3",
+      "reviewStatus": "approved",
+      "bill": "HB25",
+      "voteDate": "2026-05-19",
+      "officialVoteDate": null,
+      "measureId": "HB 25",
+      "question": "House: Concur",
+      "originRunId": "rollcall:AK:house:2171:1700405:2026-09-04T20:29:35.072Z",
+      "members": 40,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 35,
+        "matched": 5
+      },
+      "actions": {
+        "insert": 5
+      },
+      "notified": 0,
+      "candidates": 5,
+      "error": null,
+      "related": 1
+    },
+    {
+      "file": "ls-ak-house-2171-roll1701685.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1701685,
+      "outcome": "imported",
+      "legislativeVoteId": "e28e3302-c0fb-4d6f-9f66-8135f1309c56",
+      "reviewStatus": "approved",
+      "bill": "SB258",
+      "voteDate": "2026-05-20",
+      "officialVoteDate": null,
+      "measureId": "SB 258",
+      "question": "House: Third Reading Final Passage",
+      "originRunId": "rollcall:AK:house:2171:1701685:2026-09-04T20:29:35.072Z",
+      "members": 39,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 34,
+        "matched": 5
+      },
+      "actions": {
+        "insert": 5
+      },
+      "notified": 0,
+      "candidates": 5,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-house-2171-roll1701704.json",
+      "state": "AK",
+      "chamber": "house",
+      "sessionId": 2171,
+      "roll": 1701704,
+      "outcome": "imported",
+      "legislativeVoteId": "d5f4eef4-ad03-4d25-9ff6-51bb0921e744",
+      "reviewStatus": "approved",
+      "bill": "HB280",
+      "voteDate": "2026-05-20",
+      "officialVoteDate": null,
+      "measureId": "HB 280",
+      "question": "House: Concur",
+      "originRunId": "rollcall:AK:house:2171:1701704:2026-09-04T20:29:35.072Z",
+      "members": 39,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 34,
+        "matched": 5
+      },
+      "actions": {
+        "insert": 5
+      },
+      "notified": 0,
+      "candidates": 5,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-senate-2171-roll1546119.json",
+      "state": "AK",
+      "chamber": "senate",
+      "sessionId": 2171,
+      "roll": 1546119,
+      "outcome": "imported",
+      "legislativeVoteId": "ef4f31e0-9685-47d1-84fa-aabc04d0fb04",
+      "reviewStatus": "approved",
+      "bill": "HB69",
+      "voteDate": "2025-04-11",
+      "officialVoteDate": null,
+      "measureId": "HB 69",
+      "question": "Senate: Third Reading - Final Passage",
+      "originRunId": "rollcall:AK:senate:2171:1546119:2026-09-04T20:29:35.072Z",
+      "members": 20,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 1
+      },
+      "actions": {
+        "insert": 1
+      },
+      "notified": 0,
+      "candidates": 1,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-senate-2171-roll1548818.json",
+      "state": "AK",
+      "chamber": "senate",
+      "sessionId": 2171,
+      "roll": 1548818,
+      "outcome": "imported",
+      "legislativeVoteId": "7bb5cb72-e7aa-4fda-a809-0a0145b4e86b",
+      "reviewStatus": "approved",
+      "bill": "SB113",
+      "voteDate": "2025-04-15",
+      "officialVoteDate": null,
+      "measureId": "SB 113",
+      "question": "Senate: Third Reading - Final Passage Effective Date(s)",
+      "originRunId": "rollcall:AK:senate:2171:1548818:2026-09-04T20:29:35.072Z",
+      "members": 20,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 1
+      },
+      "actions": {
+        "insert": 1
+      },
+      "notified": 0,
+      "candidates": 1,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-senate-2171-roll1691681.json",
+      "state": "AK",
+      "chamber": "senate",
+      "sessionId": 2171,
+      "roll": 1691681,
+      "outcome": "imported",
+      "legislativeVoteId": "7993f6b4-9d6f-4f64-b616-38c9522c3be4",
+      "reviewStatus": "approved",
+      "bill": "HB26",
+      "voteDate": "2026-04-29",
+      "officialVoteDate": null,
+      "measureId": "HB 26",
+      "question": "Senate: Third Reading - Final Passage",
+      "originRunId": "rollcall:AK:senate:2171:1691681:2026-09-04T20:29:35.072Z",
+      "members": 20,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 1
+      },
+      "actions": {
+        "insert": 1
+      },
+      "notified": 0,
+      "candidates": 1,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-senate-2171-roll1699364.json",
+      "state": "AK",
+      "chamber": "senate",
+      "sessionId": 2171,
+      "roll": 1699364,
+      "outcome": "imported",
+      "legislativeVoteId": "66e263a0-d428-4222-90a0-91f80cb4de1d",
+      "reviewStatus": "approved",
+      "bill": "HB133",
+      "voteDate": "2026-05-17",
+      "officialVoteDate": null,
+      "measureId": "HB 133",
+      "question": "Senate: Third Reading - Final Passage Effective Date(s)",
+      "originRunId": "rollcall:AK:senate:2171:1699364:2026-09-04T20:29:35.072Z",
+      "members": 20,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 1
+      },
+      "actions": {
+        "insert": 1
+      },
+      "notified": 0,
+      "candidates": 1,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-senate-2171-roll1699783.json",
+      "state": "AK",
+      "chamber": "senate",
+      "sessionId": 2171,
+      "roll": 1699783,
+      "outcome": "imported",
+      "legislativeVoteId": "41f4eb19-4cf5-45f4-b4ec-7c43a4965841",
+      "reviewStatus": "approved",
+      "bill": "HB25",
+      "voteDate": "2026-05-18",
+      "officialVoteDate": null,
+      "measureId": "HB 25",
+      "question": "Senate: Third Reading - Final Passage",
+      "originRunId": "rollcall:AK:senate:2171:1699783:2026-09-04T20:29:35.072Z",
+      "members": 20,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 1
+      },
+      "actions": {
+        "insert": 1
+      },
+      "notified": 0,
+      "candidates": 1,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ak-senate-2171-roll1701656.json",
+      "state": "AK",
+      "chamber": "senate",
+      "sessionId": 2171,
+      "roll": 1701656,
+      "outcome": "imported",
+      "legislativeVoteId": "1c0fe4fa-43fc-4098-afcd-a6e95483cf2e",
+      "reviewStatus": "approved",
+      "bill": "SB24",
+      "voteDate": "2026-05-20",
+      "officialVoteDate": null,
+      "measureId": "SB 24",
+      "question": "Senate: Shall the Senate Concur in the House Amendment(s) to CSSB 24(FIN) Effective Date(s)",
+      "originRunId": "rollcall:AK:senate:2171:1701656:2026-09-04T20:29:35.072Z",
+      "members": 20,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 19,
+        "matched": 1
+      },
+      "actions": {
+        "insert": 1
+      },
+      "notified": 0,
+      "candidates": 1,
+      "error": null,
+      "related": 0
+    }
+  ]
+}

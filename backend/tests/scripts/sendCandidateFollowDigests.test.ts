@@ -8,7 +8,11 @@ import {
   sendCandidateFollowDigests,
   withDigestRunLock,
 } from "../../src/scripts/sendCandidateFollowDigests.js";
-import { buildUnsubscribeUrlBuilderFromEnv } from "../../src/scripts/sendCandidateFollowDigests.js";
+import {
+  assertUnsubscribeLinksConfigured,
+  buildDigestMailerFromEnv,
+  buildUnsubscribeUrlBuilderFromEnv,
+} from "../../src/scripts/sendCandidateFollowDigests.js";
 import { verifyEmailUnsubscribeToken } from "../../src/pipeline/users/emailUnsubscribeToken.js";
 import type { CandidateFollowDigestEmailInput } from "../../src/pipeline/users/candidateFollowDigestMailer.js";
 
@@ -578,6 +582,36 @@ describe("unsubscribe URL wiring", () => {
     expect(mailer.sent[0].unsubscribeUrl).toBe(
       `https://api.example.com/api/email/unsubscribe?u=${USER_ALPHA}`
     );
+  });
+
+  it("SES mailer refuses to build without the unsubscribe pair; console mailer does not need it", () => {
+    const saved = { ...process.env };
+    try {
+      delete process.env.NOTIFICATIONS_UNSUBSCRIBE_URL;
+      delete process.env.NOTIFICATIONS_UNSUBSCRIBE_SECRET;
+      process.env.NOTIFICATIONS_MAILER = "ses";
+      process.env.AUTH_FROM_EMAIL = "contact@example.com";
+      process.env.AUTH_SES_REGION = "us-east-2";
+
+      expect(() => assertUnsubscribeLinksConfigured("SES digest mailer")).toThrow(
+        "SES digest mailer requires NOTIFICATIONS_UNSUBSCRIBE_URL and NOTIFICATIONS_UNSUBSCRIBE_SECRET"
+      );
+      expect(() => buildDigestMailerFromEnv()).toThrow("NOTIFICATIONS_UNSUBSCRIBE_SECRET");
+
+      process.env.NOTIFICATIONS_UNSUBSCRIBE_URL = "https://api.example.com/api/email/unsubscribe";
+      expect(() => buildDigestMailerFromEnv()).toThrow("NOTIFICATIONS_UNSUBSCRIBE_SECRET");
+
+      process.env.NOTIFICATIONS_UNSUBSCRIBE_SECRET = SECRET;
+      expect(buildDigestMailerFromEnv()).toHaveProperty("sendDigestEmail");
+
+      // Local console runs never reach an inbox, so they stay usable without it.
+      delete process.env.NOTIFICATIONS_UNSUBSCRIBE_URL;
+      delete process.env.NOTIFICATIONS_UNSUBSCRIBE_SECRET;
+      process.env.NOTIFICATIONS_MAILER = "console";
+      expect(buildDigestMailerFromEnv()).toHaveProperty("sendDigestEmail");
+    } finally {
+      process.env = saved;
+    }
   });
 
   it("buildUnsubscribeUrlBuilderFromEnv returns null unless both envs are set, else signs verifiable tokens", () => {

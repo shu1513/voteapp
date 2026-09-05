@@ -1,0 +1,126 @@
+{
+  "jurisdiction": "AK",
+  "sessionId": 2171,
+  "chamber": "senate",
+  "rollNumber": 1699364,
+  "bill": "HB133",
+  "measureId": "HB 133",
+  "machineUrl": "https://legiscan.com/AK/rollcall/HB133/id/1699364",
+  "fetchedAt": "2026-09-03T01:41:05.700Z",
+  "rollCall": {
+    "roll_call_id": 1699364,
+    "bill_id": 2005035,
+    "date": "2026-05-17",
+    "desc": "Senate: Third Reading - Final Passage Effective Date(s)",
+    "yea": 15,
+    "nay": 5,
+    "nv": 0,
+    "absent": 0,
+    "total": 20,
+    "passed": 1,
+    "chamber": "S",
+    "chamber_id": 14,
+    "votes": [
+      {
+        "people_id": 6052,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 6075,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 6083,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 6085,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 6089,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 6093,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 11358,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 16680,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 17255,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 18610,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 20962,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 20963,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21268,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 22728,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 22857,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 22859,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 24409,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 24544,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 24545,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 26355,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      }
+    ]
+  }
+}

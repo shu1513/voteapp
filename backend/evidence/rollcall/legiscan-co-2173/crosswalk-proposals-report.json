@@ -1,0 +1,1199 @@
+{
+ "importerVersion": "rollcall-legiscan-resolve-v1",
+ "startedAt": "2026-09-04T20:18:25.988Z",
+ "finishedAt": "2026-09-04T20:18:26.254Z",
+ "jurisdiction": "CO",
+ "sessionId": 2173,
+ "evidenceDir": "~/legiscan-data/co-2173-evidence",
+ "scopeFrom": "2026-11-01",
+ "peopleSource": "~/legiscan-data/co-2173-resolve/legiscan-people-co-2173.json",
+ "peopleMembers": 101,
+ "candidatePool": 119,
+ "crosswalkFile": "~/legiscan-data/co-crosswalk.json",
+ "crosswalkEntries": 101,
+ "crosswalkPeopleNotInSnapshot": [],
+ "proposals": [
+  {
+   "peopleId": 15133,
+   "rosterName": "Thomas Exum",
+   "rosterSeat": "house SD-011",
+   "candidateId": "2424b693-ca75-4089-968c-ae91874ed399",
+   "candidateName": "Thomas Exum Sr.",
+   "candidacy": "state_upper: State Senate District 11 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 19512,
+   "rosterName": "Dylan Roberts",
+   "rosterSeat": "house SD-008",
+   "candidateId": "491b4b94-5eba-4ee3-ae78-5d1b8a3a3c6f",
+   "candidateName": "Dylan Roberts",
+   "candidacy": "state_upper: State Senate District 8 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20024,
+   "rosterName": "Emily Sirota",
+   "rosterSeat": "house HD-009",
+   "candidateId": "ee418c3b-caad-4618-8626-2e3c7ca8f641",
+   "candidateName": "Emily Sirota",
+   "candidacy": "state_upper: State Senate District 32 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 20026,
+   "rosterName": "Rod Pelton",
+   "rosterSeat": "senate SD-035",
+   "candidateId": "873894d5-6d6c-489f-a221-4d7da8b77dcd",
+   "candidateName": "Rodney Pelton",
+   "candidacy": "state_upper: State Senate District 35 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20032,
+   "rosterName": "Tammy Story",
+   "rosterSeat": "house HD-025",
+   "candidateId": "e4a5adf9-38b6-4b6b-8e9e-dc5f0f632471",
+   "candidateName": "Tammy Story",
+   "candidacy": "state_lower: State House District 25 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20136,
+   "rosterName": "Kyle Mullica",
+   "rosterSeat": "house SD-024",
+   "candidateId": "479ccd00-cee6-4abc-9ab6-4bbb04a45836",
+   "candidateName": "Kyle Mullica",
+   "candidacy": "state_upper: State Senate District 24 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20137,
+   "rosterName": "Janice Rich",
+   "rosterSeat": "senate SD-007",
+   "candidateId": "3de30913-d867-4d0d-a9d5-2a059a4cad36",
+   "candidateName": "Janice Rich",
+   "candidacy": "state_upper: State Senate District 7 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20140,
+   "rosterName": "Tom Sullivan",
+   "rosterSeat": "senate SD-027",
+   "candidateId": "b1188f6c-92d1-4715-88a7-75b59e6f7bba",
+   "candidateName": "Tom Sullivan",
+   "candidacy": "state_upper: State Senate District 27 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20148,
+   "rosterName": "Monica Duran",
+   "rosterSeat": "house HD-023",
+   "candidateId": "8539e9f8-eed8-474d-9a1c-6cfd97a89b03",
+   "candidateName": "Monica Duran",
+   "candidacy": "state_upper: State Senate District 22 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 22220,
+   "rosterName": "Jennifer Bacon",
+   "rosterSeat": "house HD-007",
+   "candidateId": "cb4bc0e1-8bff-46f9-b772-fefe18d14471",
+   "candidateName": "Jennifer Bacon",
+   "candidacy": "state_lower: State House District 7 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22228,
+   "rosterName": "Karen McCormick",
+   "rosterSeat": "house HD-011",
+   "candidateId": "70e326d1-9b4e-4466-814a-744fafabf0dc",
+   "candidateName": "Karen McCormick",
+   "candidacy": "state_lower: State House District 11 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22231,
+   "rosterName": "Naquetta Ricks",
+   "rosterSeat": "house HD-040",
+   "candidateId": "fa19d869-ee4f-41a6-8808-b231bd563d84",
+   "candidateName": "Naquetta Ricks",
+   "candidacy": "state_lower: State House District 40 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22921,
+   "rosterName": "Andrew Boesenecker",
+   "rosterSeat": "house HD-053",
+   "candidateId": "8fc66435-655b-4a2c-88a1-6c8cfad40154",
+   "candidateName": "Andrew Boesenecker",
+   "candidacy": "state_lower: State House District 53 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23949,
+   "rosterName": "Bob Marshall",
+   "rosterSeat": "house HD-043",
+   "candidateId": "a851cfc1-dfd3-4644-92b4-866cd5e36cd1",
+   "candidateName": "Robert Marshall",
+   "candidacy": "state_lower: State House District 43 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23950,
+   "rosterName": "Brandi Bradley",
+   "rosterSeat": "house HD-039",
+   "candidateId": "9ec54b11-3dd1-4182-8a62-3821c779aa03",
+   "candidateName": "Brandi Bradley",
+   "candidacy": "state_lower: State House District 39 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23952,
+   "rosterName": "Elizabeth Velasco",
+   "rosterSeat": "house HD-057",
+   "candidateId": "1501e92e-1855-4ccf-b315-aa0df3d82e87",
+   "candidateName": "Elizabeth Velasco",
+   "candidacy": "state_lower: State House District 57 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23954,
+   "rosterName": "Javier Mabrey",
+   "rosterSeat": "house HD-001",
+   "candidateId": "215cb16b-4fad-448a-95fb-9fb2d971a2eb",
+   "candidateName": "Javier Mabrey",
+   "candidacy": "state_lower: State House District 1 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23955,
+   "rosterName": "Jenny Willford",
+   "rosterSeat": "house HD-034",
+   "candidateId": "639b0ca1-b0d6-4242-9b4a-d33066d1b3de",
+   "candidateName": "Jenny Willford",
+   "candidacy": "state_lower: State House District 34 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23956,
+   "rosterName": "Junie Joseph",
+   "rosterSeat": "house HD-010",
+   "candidateId": "e2e62385-3a8c-494c-9cf0-8cbad2ebc00e",
+   "candidateName": "Junie Joseph",
+   "candidacy": "state_lower: State House District 10 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23957,
+   "rosterName": "Ken Degraaf",
+   "rosterSeat": "house HD-022",
+   "candidateId": "df3848f8-91df-4c97-b135-76c999de48a1",
+   "candidateName": "Kenneth DeGraaf",
+   "candidacy": "state_lower: State House District 22 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23960,
+   "rosterName": "Meghan Lukens",
+   "rosterSeat": "house HD-026",
+   "candidateId": "133f485f-cf09-4bfc-a3b8-7b6493f51793",
+   "candidateName": "Meghan Lukens",
+   "candidacy": "state_lower: State House District 26 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23962,
+   "rosterName": "Rick Taggart",
+   "rosterSeat": "house HD-055",
+   "candidateId": "7b7b8951-4bc0-4fa9-8267-5af900c4a6c9",
+   "candidateName": "Rick Taggart",
+   "candidacy": "state_lower: State House District 55 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23967,
+   "rosterName": "Sheila Lieder",
+   "rosterSeat": "house HD-028",
+   "candidateId": "d5daa247-860a-4410-801d-3a7b45333369",
+   "candidateName": "Sheila Lieder",
+   "candidacy": "state_upper: State Senate District 20 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23968,
+   "rosterName": "Ty Winter",
+   "rosterSeat": "house HD-047",
+   "candidateId": "d752a592-9ec0-4549-bed2-7ec43bd3c700",
+   "candidateName": "Ty Winter",
+   "candidacy": "state_lower: State House District 47 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23969,
+   "rosterName": "William Lindstedt",
+   "rosterSeat": "house HD-033",
+   "candidateId": "48f87bc1-726a-4354-8b21-6278d0973d92",
+   "candidateName": "William Lindstedt",
+   "candidacy": "state_upper: State Senate District 25 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23970,
+   "rosterName": "Janice Marchman",
+   "rosterSeat": "senate SD-015",
+   "candidateId": "1d51e0ce-a6f8-438a-934b-4f003dfbd3eb",
+   "candidateName": "Janice Marchman",
+   "candidacy": "state_upper: State Senate District 15 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23972,
+   "rosterName": "Byron Pelton",
+   "rosterSeat": "senate SD-001",
+   "candidateId": "407ee51c-1f64-47e7-b65d-03c5b4b573c3",
+   "candidateName": "Byron Pelton",
+   "candidacy": "state_upper: State Senate District 1 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24384,
+   "rosterName": "Eliza Hamrick",
+   "rosterSeat": "house HD-061",
+   "candidateId": "bd810784-e61d-49ef-bc2b-ee504b3bb6b8",
+   "candidateName": "Eliza Hamrick",
+   "candidacy": "state_lower: State House District 61 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24385,
+   "rosterName": "Lorena Garcia",
+   "rosterSeat": "house HD-035",
+   "candidateId": "f4fbf049-7c71-45c8-9038-c8deba68bd61",
+   "candidateName": "Lorena Garcia",
+   "candidacy": "state_lower: State House District 35 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 24616,
+   "rosterName": "Tisha Mauro",
+   "rosterSeat": "house HD-046",
+   "candidateId": "baf68554-5831-4d0c-b6eb-0c914f504fc0",
+   "candidateName": "Tisha Mauro",
+   "candidacy": "state_lower: State House District 46 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25044,
+   "rosterName": "Chad Clifford",
+   "rosterSeat": "house HD-037",
+   "candidateId": "988a80c9-6e3a-4371-9120-7b8ea9e8287a",
+   "candidateName": "Chad Clifford",
+   "candidacy": "state_lower: State House District 37 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26051,
+   "rosterName": "Carlos Barron",
+   "rosterSeat": "house HD-048",
+   "candidateId": "07f131bc-9227-4be5-a986-fe724e92ca93",
+   "candidateName": "Carlos Barron",
+   "candidacy": "state_lower: State House District 48 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26052,
+   "rosterName": "Max Brooks",
+   "rosterSeat": "house HD-045",
+   "candidateId": "95947ff2-917f-4b14-9f76-11caebc42a26",
+   "candidateName": "Max Brooks",
+   "candidacy": "state_lower: State House District 45 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26053,
+   "rosterName": "Jarvis Caldwell",
+   "rosterSeat": "house HD-020",
+   "candidateId": "b06813c3-7e33-4e62-85c7-2248c19b953e",
+   "candidateName": "Jarvis Caldwell",
+   "candidacy": "state_lower: State House District 20 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26055,
+   "rosterName": "Michael Carter",
+   "rosterSeat": "house HD-036",
+   "candidateId": "abddf251-6761-41d6-8c78-b7b7799fbba5",
+   "candidateName": "Michael Carter",
+   "candidacy": "state_lower: State House District 36 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26056,
+   "rosterName": "Cecelia Espenoza",
+   "rosterSeat": "house HD-004",
+   "candidateId": "22142b14-45c5-43e9-ae2f-2de006ff2ca3",
+   "candidateName": "Cecelia Espenoza",
+   "candidacy": "state_lower: State House District 4 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26057,
+   "rosterName": "Lisa Feret",
+   "rosterSeat": "house HD-024",
+   "candidateId": "dd959ee0-e5e6-4a32-b07b-7097ca430f83",
+   "candidateName": "Lisa Feret",
+   "candidacy": "state_lower: State House District 24 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26058,
+   "rosterName": "Lindsay Gilchrist",
+   "rosterSeat": "house HD-008",
+   "candidateId": "5e60096b-7759-4266-84cc-d4a83b98c6ca",
+   "candidateName": "Lindsay Gilchrist",
+   "candidacy": "state_lower: State House District 8 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26059,
+   "rosterName": "Ryan Gonzalez",
+   "rosterSeat": "house HD-050",
+   "candidateId": "b1a6c0d2-469c-448f-a267-158ab3bd63a4",
+   "candidateName": "Ryan Gonzalez",
+   "candidacy": "state_lower: State House District 50 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26060,
+   "rosterName": "Dusty Johnson",
+   "rosterSeat": "house HD-063",
+   "candidateId": "4fb3c062-73c9-4531-964d-f7e834406e37",
+   "candidateName": "Dusty Johnson",
+   "candidacy": "state_lower: State House District 63 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26062,
+   "rosterName": "Amy Paschal",
+   "rosterSeat": "house HD-018",
+   "candidateId": "c6789d4e-a431-476c-b09c-6ab0bee6cc6e",
+   "candidateName": "Amy Paschal",
+   "candidacy": "state_lower: State House District 18 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26064,
+   "rosterName": "Chris Richardson",
+   "rosterSeat": "house HD-056",
+   "candidateId": "a3fc8e06-ccfe-436b-b478-baf05469d845",
+   "candidateName": "Chris Richardson",
+   "candidacy": "state_lower: State House District 56 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26065,
+   "rosterName": "Gretchen Rydin",
+   "rosterSeat": "house HD-038",
+   "candidateId": "1309afb2-2123-4421-a964-21027be9944b",
+   "candidateName": "Gretchen Rydin",
+   "candidacy": "state_lower: State House District 38 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26067,
+   "rosterName": "Lesley Smith",
+   "rosterSeat": "house HD-049",
+   "candidateId": "d176a1da-6fd0-41b1-a6b3-a7762c537a7f",
+   "candidateName": "Lesley Smith",
+   "candidacy": "state_lower: State House District 49 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26068,
+   "rosterName": "Rebekah Stewart",
+   "rosterSeat": "house HD-030",
+   "candidateId": "827d0d04-c704-4841-977a-f98f3f928f77",
+   "candidateName": "Rebekah Stewart",
+   "candidacy": "state_lower: State House District 30 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26069,
+   "rosterName": "Katie Stewart",
+   "rosterSeat": "house HD-059",
+   "candidateId": "c916cb0b-8882-4c56-8abe-93bbdad9b454",
+   "candidateName": "Katie Stewart",
+   "candidacy": "state_lower: State House District 59 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26070,
+   "rosterName": "Larry Suckla",
+   "rosterSeat": "house HD-058",
+   "candidateId": "112d7d46-331d-4135-a097-6b7ef492b76c",
+   "candidateName": "Larry Suckla",
+   "candidacy": "state_lower: State House District 58 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26071,
+   "rosterName": "Yara Zokaie",
+   "rosterSeat": "house HD-052",
+   "candidateId": "9abf8f0e-cb85-461f-ad2d-581128fe7f20",
+   "candidateName": "Yara Zokaie",
+   "candidacy": "state_lower: State House District 52 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26326,
+   "rosterName": "Matt Ball",
+   "rosterSeat": "senate SD-031",
+   "candidateId": "711a0e46-6fa5-4e1f-8aef-94bcc1974eea",
+   "candidateName": "Matt Ball",
+   "candidacy": "state_upper: State Senate District 31 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26327,
+   "rosterName": "John Carson",
+   "rosterSeat": "senate SD-030",
+   "candidateId": "f7029bf6-546b-4859-9f38-1d36ecc456d5",
+   "candidateName": "John Carson",
+   "candidacy": "state_upper: State Senate District 30 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 26447,
+   "rosterName": "Katie Wallace",
+   "rosterSeat": "senate SD-017",
+   "candidateId": "2d7353c0-947e-415b-b646-848159d8206a",
+   "candidateName": "Katie Wallace",
+   "candidacy": "state_upper: State Senate District 17 (2024); Colorado",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  }
+ ],
+ "unmatchedPeople": [
+  {
+   "peopleId": 16509,
+   "name": "Paul Lundeen",
+   "seat": "senate SD-009"
+  },
+  {
+   "peopleId": 16581,
+   "name": "Faith Winter",
+   "seat": "senate SD-025"
+  },
+  {
+   "peopleId": 16583,
+   "name": "Jessie Danielson",
+   "seat": "senate SD-022"
+  },
+  {
+   "peopleId": 18713,
+   "name": "Dafna Michaelson Jenet",
+   "seat": "senate SD-021"
+  },
+  {
+   "peopleId": 18723,
+   "name": "Michael Weissman",
+   "seat": "senate SD-028"
+  },
+  {
+   "peopleId": 18939,
+   "name": "James Coleman",
+   "seat": "senate SD-033"
+  },
+  {
+   "peopleId": 19048,
+   "name": "Jeff Bridges",
+   "seat": "house SD-026"
+  },
+  {
+   "peopleId": 19200,
+   "name": "Marc Catlin",
+   "seat": "senate SD-005"
+  },
+  {
+   "peopleId": 20025,
+   "name": "Julie McCluskie",
+   "seat": "house HD-013"
+  },
+  {
+   "peopleId": 20027,
+   "name": "Sonya Jaquez Lewis",
+   "seat": "senate SD-017"
+  },
+  {
+   "peopleId": 20029,
+   "name": "Julie Gonzales",
+   "seat": "senate SD-034"
+  },
+  {
+   "peopleId": 20031,
+   "name": "Robert Rodriguez",
+   "seat": "senate SD-032"
+  },
+  {
+   "peopleId": 20126,
+   "name": "Mark Baisley",
+   "seat": "house SD-004"
+  },
+  {
+   "peopleId": 20127,
+   "name": "Shannon Bird",
+   "seat": "house HD-029"
+  },
+  {
+   "peopleId": 20131,
+   "name": "Lisa Cutter",
+   "seat": "house SD-020"
+  },
+  {
+   "peopleId": 20138,
+   "name": "Marc Snyder",
+   "seat": "senate SD-012"
+  },
+  {
+   "peopleId": 20139,
+   "name": "Matt Soper",
+   "seat": "house HD-054"
+  },
+  {
+   "peopleId": 20142,
+   "name": "Brianna Titone",
+   "seat": "house HD-027"
+  },
+  {
+   "peopleId": 20143,
+   "name": "Alex Valdez",
+   "seat": "house HD-005"
+  },
+  {
+   "peopleId": 20159,
+   "name": "Cathy Kipp",
+   "seat": "house SD-014"
+  },
+  {
+   "peopleId": 20739,
+   "name": "Meg Froelich",
+   "seat": "house HD-003"
+  },
+  {
+   "peopleId": 21549,
+   "name": "Steven Woodrow",
+   "seat": "house HD-002"
+  },
+  {
+   "peopleId": 22219,
+   "name": "Judith Amabile",
+   "seat": "house SD-018"
+  },
+  {
+   "peopleId": 22222,
+   "name": "Mary Bradfield",
+   "seat": "house HD-021"
+  },
+  {
+   "peopleId": 22223,
+   "name": "Lindsey Daugherty",
+   "seat": "senate SD-019"
+  },
+  {
+   "peopleId": 22225,
+   "name": "Iman Jodeh",
+   "seat": "house SD-029"
+  },
+  {
+   "peopleId": 22226,
+   "name": "Stephanie Luck",
+   "seat": "house HD-060"
+  },
+  {
+   "peopleId": 22233,
+   "name": "Dan Woog",
+   "seat": "house HD-019"
+  },
+  {
+   "peopleId": 22456,
+   "name": "Barbara Kirkmeyer",
+   "seat": "senate SD-023"
+  },
+  {
+   "peopleId": 22457,
+   "name": "Cleave Simpson",
+   "seat": "senate SD-006"
+  },
+  {
+   "peopleId": 22458,
+   "name": "Chris Kolker",
+   "seat": "senate SD-016"
+  },
+  {
+   "peopleId": 23046,
+   "name": "Mandy Lindsay",
+   "seat": "house HD-042"
+  },
+  {
+   "peopleId": 23104,
+   "name": "Nick Hinrichsen",
+   "seat": "senate SD-003"
+  },
+  {
+   "peopleId": 23948,
+   "name": "Anthony Hartsook",
+   "seat": "house HD-044"
+  },
+  {
+   "peopleId": 23958,
+   "name": "Lisa Frizell",
+   "seat": "senate SD-002"
+  },
+  {
+   "peopleId": 23959,
+   "name": "Matthew Martinez",
+   "seat": "house HD-062"
+  },
+  {
+   "peopleId": 23961,
+   "name": "Regina English",
+   "seat": "house HD-017"
+  },
+  {
+   "peopleId": 23963,
+   "name": "Ron Weinberg",
+   "seat": "house HD-051"
+  },
+  {
+   "peopleId": 23964,
+   "name": "Rose Pugliese",
+   "seat": "house HD-014"
+  },
+  {
+   "peopleId": 23965,
+   "name": "Ryan Armagost",
+   "seat": "house HD-064"
+  },
+  {
+   "peopleId": 23996,
+   "name": "Scott Bottoms",
+   "seat": "house HD-015"
+  },
+  {
+   "peopleId": 24873,
+   "name": "Kyle Brown",
+   "seat": "house HD-012"
+  },
+  {
+   "peopleId": 24966,
+   "name": "Manny Rutinel",
+   "seat": "house HD-032"
+  },
+  {
+   "peopleId": 26054,
+   "name": "Sean Camacho",
+   "seat": "house HD-006"
+  },
+  {
+   "peopleId": 26061,
+   "name": "Rebecca Keltie",
+   "seat": "house HD-016"
+  },
+  {
+   "peopleId": 26063,
+   "name": "Jacque Phillips",
+   "seat": "house HD-031"
+  },
+  {
+   "peopleId": 26066,
+   "name": "Lori Garcia Sander",
+   "seat": "house HD-065"
+  },
+  {
+   "peopleId": 26072,
+   "name": "Scott Bright",
+   "seat": "senate SD-013"
+  },
+  {
+   "peopleId": 26391,
+   "name": "Jamie Jackson",
+   "seat": "house HD-041"
+  },
+  {
+   "peopleId": 3329,
+   "name": "Larry Liston",
+   "seat": "house SD-010"
+  }
+ ],
+ "unmatchedCandidates": [
+  {
+   "candidateId": "5dd6581a-89ab-4edd-adf7-4ff314a51580",
+   "name": "Aaron Gutierrez",
+   "scope": "state_upper",
+   "districtName": "State Senate District 3 (2024); Colorado"
+  },
+  {
+   "candidateId": "cff51594-e388-44c2-81cf-3417b8096532",
+   "name": "Adriana Cuva",
+   "scope": "state_lower",
+   "districtName": "State House District 18 (2024); Colorado"
+  },
+  {
+   "candidateId": "a76b9e36-ed3a-4a17-887c-7358c0d1b151",
+   "name": "Adrienne Benavidez",
+   "scope": "state_upper",
+   "districtName": "State Senate District 21 (2024); Colorado"
+  },
+  {
+   "candidateId": "fc1284ab-6dbf-4723-a1bf-12ac72bfcb79",
+   "name": "Alexis Hoffkling",
+   "scope": "state_lower",
+   "districtName": "State House District 23 (2024); Colorado"
+  },
+  {
+   "candidateId": "4961f8d1-7e1f-4051-a897-d2a1622c20df",
+   "name": "Brittni Packard",
+   "scope": "state_lower",
+   "districtName": "State House District 55 (2024); Colorado"
+  },
+  {
+   "candidateId": "c7827fb7-69d0-4cd5-b83e-7a3e94b15f69",
+   "name": "Carey Marin",
+   "scope": "state_lower",
+   "districtName": "State House District 2 (2024); Colorado"
+  },
+  {
+   "candidateId": "045569e6-e345-47ae-8c5c-582aaf157022",
+   "name": "Carolyn Barnes",
+   "scope": "state_lower",
+   "districtName": "State House District 8 (2024); Colorado"
+  },
+  {
+   "candidateId": "6e617f6d-5c54-4ad8-9d90-2898e8a4a786",
+   "name": "Christian Schilder",
+   "scope": "state_lower",
+   "districtName": "State House District 39 (2024); Colorado"
+  },
+  {
+   "candidateId": "c87c670e-b2f1-4b40-9ed2-de3d63d29e20",
+   "name": "Clinton Porter",
+   "scope": "state_lower",
+   "districtName": "State House District 40 (2024); Colorado"
+  },
+  {
+   "candidateId": "0bdcc7ef-c4ef-4fda-bfad-8661d0b74f02",
+   "name": "Corey Marshall",
+   "scope": "state_upper",
+   "districtName": "State Senate District 8 (2024); Colorado"
+  },
+  {
+   "candidateId": "6dc3fdb3-81b5-4255-8d1d-1c4648848776",
+   "name": "Craig Sullivan",
+   "scope": "state_lower",
+   "districtName": "State House District 34 (2024); Colorado"
+  },
+  {
+   "candidateId": "18a6e0c1-6fcd-43e6-b03b-f13b48b1c0fe",
+   "name": "Dana Charles",
+   "scope": "state_upper",
+   "districtName": "State Senate District 3 (2024); Colorado"
+  },
+  {
+   "candidateId": "296f31a5-9079-41d7-bbcd-09613c4ee76f",
+   "name": "Daniel Frick",
+   "scope": "state_lower",
+   "districtName": "State House District 53 (2024); Colorado"
+  },
+  {
+   "candidateId": "9388a53b-fe5e-46bf-b811-5a01833b0e00",
+   "name": "Danielle Lammon",
+   "scope": "state_upper",
+   "districtName": "State Senate District 27 (2024); Colorado"
+  },
+  {
+   "candidateId": "0fda927b-d815-4256-a273-685cd5cb5fe3",
+   "name": "Danielle Varda",
+   "scope": "state_lower",
+   "districtName": "State House District 27 (2024); Colorado"
+  },
+  {
+   "candidateId": "5a4fa8ed-3db1-4f5d-9b59-9d80a0283e95",
+   "name": "David Rein",
+   "scope": "state_lower",
+   "districtName": "State House District 28 (2024); Colorado"
+  },
+  {
+   "candidateId": "e3b68739-61bf-4d22-8604-a71d94bf638e",
+   "name": "Dez Packard",
+   "scope": "state_lower",
+   "districtName": "State House District 48 (2024); Colorado"
+  },
+  {
+   "candidateId": "a64f0e69-8e67-4a51-b8d7-776b1a95a79d",
+   "name": "Duane Gurule",
+   "scope": "state_upper",
+   "districtName": "State Senate District 35 (2024); Colorado"
+  },
+  {
+   "candidateId": "04072fe0-d422-48af-adb1-c46d6f296745",
+   "name": "Ellwood Ervin",
+   "scope": "state_lower",
+   "districtName": "State House District 4 (2024); Colorado"
+  },
+  {
+   "candidateId": "4bd397f7-be95-4302-998b-77b3b4a845e8",
+   "name": "Eric Bodenstab",
+   "scope": "state_lower",
+   "districtName": "State House District 27 (2024); Colorado"
+  },
+  {
+   "candidateId": "7b13f73d-c950-4ca5-b7c0-62ae56fe375d",
+   "name": "Frederick Alfred Jr.",
+   "scope": "state_upper",
+   "districtName": "State Senate District 21 (2024); Colorado"
+  },
+  {
+   "candidateId": "c285497d-f52b-47f8-aecd-4fe6ad465673",
+   "name": "Gena Ozols",
+   "scope": "state_lower",
+   "districtName": "State House District 3 (2024); Colorado"
+  },
+  {
+   "candidateId": "aeabc0f7-25ed-4439-aa12-7a8d7828b3c0",
+   "name": "Graciela Garcia Irlando",
+   "scope": "state_upper",
+   "districtName": "State Senate District 34 (2024); Colorado"
+  },
+  {
+   "candidateId": "a6a1e9a0-f3de-48d1-9ca3-337f58b465c9",
+   "name": "James Kellogg",
+   "scope": "state_lower",
+   "districtName": "State House District 26 (2024); Colorado"
+  },
+  {
+   "candidateId": "b6e4c63c-9667-44a0-ba05-29ea0c24700d",
+   "name": "Jamie Jeffery",
+   "scope": "state_upper",
+   "districtName": "State Senate District 1 (2024); Colorado"
+  },
+  {
+   "candidateId": "0f81a2b0-97a2-4f8a-a2fa-7905ae365644",
+   "name": "Jeff Livingston",
+   "scope": "state_lower",
+   "districtName": "State House District 15 (2024); Colorado"
+  },
+  {
+   "candidateId": "bbfa1694-a6b4-4fbb-8510-92c2d234ce7c",
+   "name": "Jill Thompson",
+   "scope": "state_lower",
+   "districtName": "State House District 37 (2024); Colorado"
+  },
+  {
+   "candidateId": "e2368f9a-f8e8-446c-9808-7cecbaee4fcb",
+   "name": "John George Daus",
+   "scope": "state_upper",
+   "districtName": "State Senate District 34 (2024); Colorado"
+  },
+  {
+   "candidateId": "8ab691f9-7753-45ae-9346-0bd6632972a1",
+   "name": "Johnnie Wesley Johnson",
+   "scope": "state_lower",
+   "districtName": "State House District 5 (2024); Colorado"
+  },
+  {
+   "candidateId": "3ef264e2-1bb7-4f36-9118-6d7362a73eba",
+   "name": "Jonathan Post",
+   "scope": "state_lower",
+   "districtName": "State House District 46 (2024); Colorado"
+  },
+  {
+   "candidateId": "a176f07c-2af4-41fc-9a61-a03faf82f32e",
+   "name": "Joseph Montoya",
+   "scope": "state_lower",
+   "districtName": "State House District 1 (2024); Colorado"
+  },
+  {
+   "candidateId": "f1567a94-6b7c-4075-a21e-0549f9dc6c3f",
+   "name": "Justin Kurth",
+   "scope": "state_upper",
+   "districtName": "State Senate District 4 (2024); Colorado"
+  },
+  {
+   "candidateId": "0cd771e0-7fdb-45df-855b-0a5f6b5a2857",
+   "name": "Justine Lauren Sandoval",
+   "scope": "state_lower",
+   "districtName": "State House District 5 (2024); Colorado"
+  },
+  {
+   "candidateId": "946871ca-fb3f-4de4-a885-3c0bd2ab656e",
+   "name": "Kevin Allen",
+   "scope": "state_upper",
+   "districtName": "State Senate District 24 (2024); Colorado"
+  },
+  {
+   "candidateId": "b1408f63-4df8-4dcd-ae99-abdeebad3b48",
+   "name": "Kevin Leung",
+   "scope": "state_upper",
+   "districtName": "State Senate District 30 (2024); Colorado"
+  },
+  {
+   "candidateId": "901d2bfb-587c-4f16-8ab7-1d48cc1d02d2",
+   "name": "Kristine Ireland",
+   "scope": "state_lower",
+   "districtName": "State House District 29 (2024); Colorado"
+  },
+  {
+   "candidateId": "bf2938ff-57f8-4e46-9374-909175a8ee79",
+   "name": "Kristopher Johnson",
+   "scope": "state_lower",
+   "districtName": "State House District 24 (2024); Colorado"
+  },
+  {
+   "candidateId": "b4595061-a6e6-4964-a40f-06d9a2681474",
+   "name": "Levon Stilson",
+   "scope": "state_upper",
+   "districtName": "State Senate District 11 (2024); Colorado"
+  },
+  {
+   "candidateId": "332db9e9-ae82-46db-9cba-f863d600c12e",
+   "name": "Lori Goldstein",
+   "scope": "state_lower",
+   "districtName": "State House District 29 (2024); Colorado"
+  },
+  {
+   "candidateId": "487dd12f-7aee-4218-b33b-80e3079efd64",
+   "name": "Lori Sander",
+   "scope": "state_lower",
+   "districtName": "State House District 65 (2024); Colorado"
+  },
+  {
+   "candidateId": "180754d8-5f3f-4413-ae8f-d6f40185dbd7",
+   "name": "Mark Herzfeld",
+   "scope": "state_lower",
+   "districtName": "State House District 25 (2024); Colorado"
+  },
+  {
+   "candidateId": "9c7f2b51-d637-417c-9cf5-987e2ac8f467",
+   "name": "Maureen Dower",
+   "scope": "state_lower",
+   "districtName": "State House District 64 (2024); Colorado"
+  },
+  {
+   "candidateId": "4874b923-5a91-4958-986a-53485529b244",
+   "name": "Michael Clarkson",
+   "scope": "state_lower",
+   "districtName": "State House District 45 (2024); Colorado"
+  },
+  {
+   "candidateId": "b3d883c9-faf1-4c82-9430-ba1274185d06",
+   "name": "Michael Frank DiManna",
+   "scope": "state_upper",
+   "districtName": "State Senate District 31 (2024); Colorado"
+  },
+  {
+   "candidateId": "6fcad87e-bcfd-4bd6-ace5-ab1e78df34d0",
+   "name": "Michael Pierson",
+   "scope": "state_lower",
+   "districtName": "State House District 22 (2024); Colorado"
+  },
+  {
+   "candidateId": "fe82f23c-ffc5-4f19-8123-c8de9431ea73",
+   "name": "Michael Sheperek",
+   "scope": "state_lower",
+   "districtName": "State House District 49 (2024); Colorado"
+  },
+  {
+   "candidateId": "afc1e5a2-e05e-45da-9f18-c1297ae0c8eb",
+   "name": "Naomi Riess",
+   "scope": "state_lower",
+   "districtName": "State House District 59 (2024); Colorado"
+  },
+  {
+   "candidateId": "3b4b9078-7957-42b0-b30c-02db22fda414",
+   "name": "Nate Marsh",
+   "scope": "state_lower",
+   "districtName": "State House District 43 (2024); Colorado"
+  },
+  {
+   "candidateId": "52132891-4446-4fe1-ae57-de0202ff3a8b",
+   "name": "Patricia Elaine Miller",
+   "scope": "state_upper",
+   "districtName": "State Senate District 17 (2024); Colorado"
+  },
+  {
+   "candidateId": "207b628a-286f-4460-b4ca-d214673d514d",
+   "name": "Paul Nelson",
+   "scope": "state_lower",
+   "districtName": "State House District 36 (2024); Colorado"
+  },
+  {
+   "candidateId": "c3afef84-3e98-48e0-b4ea-c3c249600553",
+   "name": "Pricella Tiegen",
+   "scope": "state_lower",
+   "districtName": "State House District 15 (2024); Colorado"
+  },
+  {
+   "candidateId": "576e26d4-bb22-4514-bec3-6736de90a5e6",
+   "name": "Rebecca Winegar",
+   "scope": "state_lower",
+   "districtName": "State House District 3 (2024); Colorado"
+  },
+  {
+   "candidateId": "8996e23e-300f-429f-bd8c-64c9996fa4ce",
+   "name": "Rich Guggenheim",
+   "scope": "state_upper",
+   "districtName": "State Senate District 25 (2024); Colorado"
+  },
+  {
+   "candidateId": "e257b7b8-69c5-4546-a859-95331b778aa5",
+   "name": "Rich Mancuso",
+   "scope": "state_upper",
+   "districtName": "State Senate District 20 (2024); Colorado"
+  },
+  {
+   "candidateId": "ef8dd7d4-038a-4ddc-a1c7-274b5694086b",
+   "name": "Rob Woodward",
+   "scope": "state_upper",
+   "districtName": "State Senate District 15 (2024); Colorado"
+  },
+  {
+   "candidateId": "6655177c-5fbe-48d2-981a-eb2ac420e36a",
+   "name": "Russell Andrews",
+   "scope": "state_lower",
+   "districtName": "State House District 57 (2024); Colorado"
+  },
+  {
+   "candidateId": "31ceb6e2-dfdd-40df-8c58-769e5215bb75",
+   "name": "Scott Baldermann",
+   "scope": "state_lower",
+   "districtName": "State House District 2 (2024); Colorado"
+  },
+  {
+   "candidateId": "3c9ef846-fd95-4b04-b2c7-f1246a9065e1",
+   "name": "Scott Shamblin",
+   "scope": "state_lower",
+   "districtName": "State House District 61 (2024); Colorado"
+  },
+  {
+   "candidateId": "69f0ce56-045e-479e-9878-e80a87433ce7",
+   "name": "Scott Slaugh",
+   "scope": "state_lower",
+   "districtName": "State House District 64 (2024); Colorado"
+  },
+  {
+   "candidateId": "ead585f5-232a-421b-8030-685395136eba",
+   "name": "Steve Harkess",
+   "scope": "state_upper",
+   "districtName": "State Senate District 22 (2024); Colorado"
+  },
+  {
+   "candidateId": "5e1a66cc-46e9-476c-8052-04d0e5057b38",
+   "name": "Susannah Smith",
+   "scope": "state_lower",
+   "districtName": "State House District 58 (2024); Colorado"
+  },
+  {
+   "candidateId": "ac7a8428-d789-4acc-b92a-a3b8b4435893",
+   "name": "Sydnnia Wulff",
+   "scope": "state_upper",
+   "districtName": "State Senate District 32 (2024); Colorado"
+  },
+  {
+   "candidateId": "06ddd41f-5f48-4b72-a4d5-1cce1b46f067",
+   "name": "Teddy Collins",
+   "scope": "state_upper",
+   "districtName": "State Senate District 4 (2024); Colorado"
+  },
+  {
+   "candidateId": "02ebce6f-234e-4544-8f96-93b982e6ce5f",
+   "name": "Terri Carver",
+   "scope": "state_upper",
+   "districtName": "State Senate District 9 (2024); Colorado"
+  },
+  {
+   "candidateId": "5dcdc57b-4ffe-4998-aecb-34743da28c3a",
+   "name": "Tommy Butler",
+   "scope": "state_lower",
+   "districtName": "State House District 50 (2024); Colorado"
+  },
+  {
+   "candidateId": "e6c2e542-254b-4fe7-9d4d-b43fd720ace6",
+   "name": "Vic Meyers",
+   "scope": "state_lower",
+   "districtName": "State House District 47 (2024); Colorado"
+  },
+  {
+   "candidateId": "5305ab6a-1967-4b72-96ea-fe882d8ac3c4",
+   "name": "William Delano Moses III",
+   "scope": "state_upper",
+   "districtName": "State Senate District 9 (2024); Colorado"
+  },
+  {
+   "candidateId": "be5b29c2-4cda-40a9-b26a-2e4a8907f86a",
+   "name": "William Switzer",
+   "scope": "state_lower",
+   "districtName": "State House District 30 (2024); Colorado"
+  }
+ ],
+ "files": 1930,
+ "fileErrors": 0,
+ "counts": {
+  "matched": 50725,
+  "unmatched_reviewed": 44718
+ },
+ "rollsSummary": {
+  "rolls": 1930,
+  "note": "per-roll detail omitted; the full report is 20+ MB"
+ }
+}

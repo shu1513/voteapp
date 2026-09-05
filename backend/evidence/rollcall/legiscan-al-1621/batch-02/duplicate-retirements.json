@@ -1,0 +1,14 @@
+[
+ {
+  "recordId": "10ab65f5-6581-49dd-9310-03c1776baa67",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1621 session batch-02 run: this hand-written record describes the same vote as HB 233 roll 850156 on 2019-04-23 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1621/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "97fdcf62-e5d2-40bd-a094-07eb50323c18",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1621 session batch-02 run: this hand-written record describes the same vote as HB 233 roll 850156 on 2019-04-23 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1621/batch-02/JUDGING.md."
+ },
+ {
+  "recordId": "0d1d05fa-9238-4572-a418-30f12cdeb0e3",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1621 session batch-02 run: this hand-written record describes the same vote as HB 233 roll 850156 on 2019-04-23 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1621/batch-02/JUDGING.md."
+ }
+]

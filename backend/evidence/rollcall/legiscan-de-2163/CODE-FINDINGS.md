@@ -47,7 +47,7 @@ member with raising penalties the act never touched.
 The engrossed print carries no synopsis at all, so the only safe reading is: take the
 synopsis from the introduced draft as an index, and write from the engrossed text.
 
-## 3. Two candidate rows for one senator defeat the crosswalk proposer
+## 3. Two candidate rows for one senator defeat the crosswalk proposer (since resolved)
 
 `proposeLegiscanCrosswalk` requires a match to be unique in both directions. Our
 roster holds two rows for **Gerald Hocker** in the same 2026 Senate District 20 race:
@@ -57,12 +57,15 @@ roster holds two rows for **Gerald Hocker** in the same 2026 Senate District 20 
 - `fe8a281c-7c2a-4f05-9892-d91671201409`, display name `Gerald W. Hocker`, created
   2026-08-27, with no records
 
-So an exact name match on both sides was declined and he needed a hand entry. The
-crosswalk maps the older row. The newer one is a roster defect, not a second
-candidacy, and is left alone here because merging roster rows is outside this
-campaign's scope. Maryland saw the same shape from a different cause (Nicholaus Kipke
-holding two candidacies) and Alabama from a third (Will Barfoot with a stale
-court-map row).
+So an exact name match on both sides was declined and he needed a hand entry.
+Maryland saw the same shape from a different cause (Nicholaus Kipke holding two
+candidacies) and Alabama from a third (Will Barfoot with a stale court-map row).
+
+**Resolved 2026-09-04.** The roster campaign merged the newer row into the older one
+and soft-deleted it, so the resolver now proposes this mapping on its own and the
+crosswalk records it as a plain proposal. Kept here because the failure mode is real
+and will recur in any state where a roster run creates a second row for a sitting
+member.
 
 ## 4. Delaware bill texts carry no dates
 
@@ -86,3 +89,27 @@ No code path reads `passed` for Delaware, and both batch-01 measures that carry 
 supermajority rule cleared it on their own numbers (SB 23: Senate 14 of 21, House 29 of
 41). Recorded so a later batch that reaches a failed supermajority vote knows not to
 trust the flag.
+
+## 6. A measure with no honest direction can no longer be recorded at all
+
+`parseRollCallLabels` rejects an empty `labels_json` outright — "labels_json is not a
+non-empty array" — so every judgment must carry at least one research area. The code
+does support non-stance areas: `NON_STANCE_RESEARCH_AREA_SLUGS` holds `general` and
+`integrity_and_ethics`, and a label of `{"slug":"general","yea":null,"nay":null}`
+tags both sides topically with no stance. That is how Ohio HB 116, Maine LD 613,
+Missouri SB 4 and several Alabama measures were recorded.
+
+The label rule adopted on 2026-09-02 closes that route: `general` is a judicial,
+non-selectable area whose tag is hidden from every legislative view and user ranking,
+and must never go on a roll-call record.
+
+Together those two facts mean **a divided, enacted, highly salient measure that no
+research area can honestly point a direction on cannot be recorded at all** — not with
+a stance, not without one. Delaware's HB 140, the End of Life Options Act, is the case
+in point: it drew the closest votes of the session (House 21-17, Senate 11-8) and is
+dropped for this reason and no other.
+
+This is a policy gap rather than a defect, and it is not Delaware's to settle. Two
+routes would close it: allow a roll-call record to carry no area at all, or define a
+visible non-stance area for votes worth recording that no area can score. Until then
+the campaign loses exactly the votes that divided a legislature most.

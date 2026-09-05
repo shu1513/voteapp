@@ -66,7 +66,9 @@ deploy needs beyond `git pull`. Database migrations are covered separately in
 - All senders emit RFC 8058 one-click List-Unsubscribe headers; the
   unsubscribe endpoint is served by the API server
   (`/api/email/unsubscribe`), so `NOTIFICATIONS_UNSUBSCRIBE_URL` for the
-  jobs below must be the PUBLIC API origin + that path.
+  jobs below must be the PUBLIC API origin + that path. SES senders refuse
+  to start when the URL/secret pair is missing (console mailers and dry
+  runs do not need it).
 
 ## Notification jobs (where workers run)
 

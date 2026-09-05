@@ -6,6 +6,7 @@ import type { AutoPickElectionResult, BallotSummary, ElectionChoice, ElectionSum
 import { AutoPickFillControl, reasonLabel } from "../components/AutoPickFillControl";
 import { RemoveStrandedPickButton } from "../components/ElectionChoiceControls";
 import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
+import { DraftMilestone } from "../components/DraftMilestone";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import type { CandidateNavState, ElectionNavState } from "../lib/detailNavContext";
 import { ShareButton } from "../components/ShareButton";
@@ -571,6 +572,7 @@ export function PicksPage() {
     byDate.set(election.election_date, group);
   }
   const dates = [...byDate.keys()].sort();
+  const nearestUpcomingDate = dates.find((date) => date >= today);
   const cardedElectionIds = new Set((ballot.data?.elections ?? []).map((election) => election.id));
 
   // Cards are meaningless without the choices: rendering them from an
@@ -621,6 +623,17 @@ export function PicksPage() {
         ) : null}
         {picksSettled ? (
           <>
+            {/* Above the toggle so both views carry it. Nearest UPCOMING
+                day, not dates[0]: cards keep just-finished days for a few
+                days, and a finished day has nothing left to celebrate. */}
+            {nearestUpcomingDate !== undefined ? (
+              <DraftMilestone
+                date={nearestUpcomingDate}
+                elections={byDate.get(nearestUpcomingDate) ?? []}
+                choiceByElectionId={choiceByElectionId}
+                signup={false}
+              />
+            ) : null}
             {dates.length > 0 ? (
               <div className="mt-4">
                 <BallotViewToggle view={view} onChange={setView} />

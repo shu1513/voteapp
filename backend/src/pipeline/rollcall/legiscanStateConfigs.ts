@@ -392,6 +392,75 @@ const ARKANSAS_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
   // note). They fall through to null and surface for a human.
 ];
 
+// Colorado, surveyed 2026-09-04 on session 2173 (2025 Regular Session:
+// 733 bills / 4,839 roll calls / 101 people).
+//
+// Colorado names the BODY in front of every question, and that one habit
+// separates floor from committee with no tally arithmetic: a floor roll
+// reads `House: <question>` or `Senate: <question>`, while a committee roll
+// spells the committee out (`House Appropriations: Adopt amendment J.001`,
+// `Senate Judiciary: Refer Senate Bill 25-086, as amended, ...`). All 2,880
+// committee rolls in the session carry a committee name, and no floor roll
+// does, so every pattern here anchors on the bare `house: ` / `senate: `
+// prefix. Kept descriptions carry no per-roll suffix, so they anchor at both
+// ends; the procedural ones that do carry a suffix (`Third Reading Amd
+// (l.047)`, `Third Reading Rerefer (bus)`) are excluded by their stem.
+//
+// Colorado votes TWICE when it accepts the other chamber's changes, and both
+// votes are real: `Senate Amendments Concur` (accept the changes) is followed
+// the same day by `Senate Amendments Repass` (pass the bill as amended), and
+// the two tallies differ (HB 25-1133: concur 43-20, repass 38-25). The same
+// pair follows a conference report (`Conference Committee Report Adopt` then
+// `... Repass`). Both are kept as concurrence/conference votes on the
+// measure; the REPASS is the chamber's final action on the enacted text, so
+// batch selection prefers it and acknowledges the same-day concur roll.
+//
+// Second reading happens in Committee of the Whole, where Colorado takes its
+// floor amendments — excluded, like the second readings Texas, California and
+// Montana exclude. `Third Reading Perm` is a procedural motion taken beside
+// passage (HB 25-1035 passed 40-24 and the Perm motion failed 21-43 minutes
+// later), never a vote on the bill.
+const COLORADO_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Passage: 509 House / 519 Senate.
+  { pattern: /^(?:house|senate): third reading bill$/, questionClass: "passage" },
+  // Repassage after concurring in the other chamber's amendments — the
+  // chamber's final vote on the text that became law (97 House / 79 Senate).
+  { pattern: /^(?:house: senate|senate: house) amendments repass$/, questionClass: "concurrence" },
+  // The concurrence vote itself (97 House / 76 Senate).
+  { pattern: /^(?:house: senate|senate: house) amendments concur$/, questionClass: "concurrence" },
+  // Conference reports: adopting the report (24 House, 26 Senate — the
+  // Senate spells it `Adopt Ccr`) and repassing the bill under it (25 / 26).
+  { pattern: /^(?:house|senate): conference committee report repass$/, questionClass: "conference_report" },
+  { pattern: /^house: conference committee report adopt$/, questionClass: "conference_report" },
+  { pattern: /^senate: conference committee report adopt ccr$/, questionClass: "conference_report" },
+  // The session's single override vote: the Senate overrode the veto of
+  // SB 25-086 29-6, and the House then laid the question over (`VETO Lo`,
+  // excluded below), so the veto stood.
+  { pattern: /^senate: veto consideration bill$/, questionClass: "veto_override" },
+];
+
+const COLORADO_EXCLUDED_QUESTIONS: readonly RegExp[] = [
+  // Second reading and its floor amendments (196 rolls).
+  /^(?:house|senate): committee of the whole/,
+  // Motions taken at third reading beside passage: floor amendments
+  // (`Amd`/`Amend`), the Perm motion, re-referral, laying over, the previous
+  // question (printed `Prev ?`) and reconsideration.
+  /^(?:house|senate): third reading (?:amd|amend|perm|rerefer|refer|lo|reconsideration|concurrent resolution)\b/,
+  // The previous question, which Colorado prints `Prev ?` — kept in its own
+  // pattern because a `\b` cannot follow the question mark.
+  /^(?:house|senate): (?:third reading|committee of the whole|senate amendments|house amendments) prev \?$/,
+  // Refusing to concur, and adhering to one's own position — the opposite of
+  // the kept concurrence votes, so they must be excluded first.
+  /^(?:house|senate): (?:senate|house) amendments (?:not concur|not cncr|adhere)/,
+  // Conference-report motions that are not the report itself: whether the
+  // report exceeds the conference's scope (`Byd Scp`), rejecting it, and
+  // appointing a second conference committee.
+  /^(?:house|senate): conference committee report (?:byd scp|reject|2nd committee)/,
+  // Resolutions, memorials and housekeeping calendars, plus the House's
+  // laid-over veto question.
+  /^(?:house|senate): (?:resolutions|misc|memorials|veto lo|consideration of)/,
+];
+
 // Oregon, surveyed 2026-09-04 on session 2191 (2025 Regular Session:
 // 3,466 bills / 3,565 roll calls / 115 people for 60 House + 30 Senate
 // seats, the extra names being mid-session replacements).
@@ -2910,6 +2979,106 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     chamberSizes: { house: 100, senate: 35 },
     keptQuestions: ARKANSAS_KEPT_QUESTIONS,
     excludedQuestions: ARKANSAS_EXCLUDED_QUESTIONS,
+  },
+
+  // Arizona Legislature, 2025 Regular Session (Fifty-seventh Legislature,
+  // First Regular Session). Vocabulary measured from the full dataset survey
+  // 2026-09-02: 1,854 bills, 6,727 roll calls, 91 people (60 Representatives
+  // + 30 Senators, plus one mid-session replacement). Feed health is the
+  // cleanest tier: 0 file errors, 0 parse errors, 0 tally mismatches.
+  //
+  // Arizona's recorded passage vocabulary is unusually small: the only floor
+  // question either chamber prints on a measure is `Third Reading`, with no
+  // separate final-passage or conference wording at all. The survey's 306
+  // distinct descriptions are otherwise committee actions (170), bare
+  // `Motion ...` sentences with no chamber prefix (90), and 46 chamber-dash
+  // strings that fold into nine families.
+  //
+  // ⚠ RECONSIDER THIRD READING IS NOT PASSAGE. `Senate - Reconsider Third
+  // Reading` is the motion to reconsider a third reading that just FAILED;
+  // the bill history prints it as `Senate motion to reconsider third
+  // reading`, and when the motion carries the bill goes back onto Third
+  // Reading for a fresh passage vote. SB1126 is the whole sequence: third
+  // reading failed 15-14, reconsider carried 18-11, third reading passed
+  // 16-11 five days later. SB1148, SB1198 and SB1713 follow the same shape.
+  // Only those four Senate rolls carry members; the other 16 Senate and all
+  // 42 House reconsider rolls arrive empty. Excluded by rule either way, so
+  // a procedural motion never enters review as a passage vote.
+  //
+  // ⚠ COMMITTEE OF THE WHOLE IS NOT PASSAGE. Arizona amends a bill in
+  // Committee of the Whole and then passes it on third reading, so
+  // `House - Committee of the Whole (DPA)` is the amend-and-engross stage
+  // (the same stage Texas, California, Missouri and Montana all exclude).
+  // Arizona never records members on those votes — all 1,181 of them carry
+  // an empty voter list — but they are excluded by rule so that intent does
+  // not depend on the feed staying empty.
+  //
+  // ⚠⚠ ARIZONA PUBLISHES NO MEMBER LIST FOR A CONCURRENCE VOTE. All 82
+  // `House - Concurrence` rolls and all 72 `Senate - Concurrence` rolls
+  // arrive with an empty voter list and a zero tally, so the fetcher skips
+  // every one as an unrecorded vote. They are still listed as kept questions
+  // rather than excluded ones, because they ARE floor votes on the measure:
+  // if a later Arizona dataset
+  // starts publishing their members, they should enter the queue rather than
+  // be silently dropped by a rule written when the feed was thin. The
+  // practical consequence for selection is large and belongs in every
+  // Arizona batch plan: when the second chamber amends a bill, the
+  // originating chamber's vote on the text that became law is unusable, so
+  // the only importable roll may be one taken on an earlier draft. Check
+  // what each chamber actually voted before judging.
+  //
+  // The floor-versus-committee tally cut separates the two chambers'
+  // committee work without naming a single committee: the largest committee
+  // roll is 21 of 60 seats in the House (35%) and 10 of 30 in the Senate
+  // (33%), both far under the 50% committee ceiling, while every kept-family
+  // roll that carries a member list clears the 60% floor threshold — zero
+  // exceptions in 6,727 rolls, so nothing is left surfaced.
+  //
+  // ⚠ CODE FINDING, recorded and NOT fixed: Arizona sends measures to the
+  // ballot as CONCURRENT RESOLUTIONS (HCR/SCR), which LegiScan types `CR`,
+  // and `LEGISCAN_KEPT_BILL_TYPES` drops that type before this config is
+  // read. That hides 48 divided floor votes on 36 concurrent resolutions,
+  // including referrals headed for the November 2026 ballot. The naive fix
+  // is wrong for the same reason it was wrong in Georgia: 102 of this
+  // session's measures are concurrent resolutions and many are ceremonial
+  // (`Law enforcement; first responders; honoring`), so keeping the type
+  // wholesale would queue commendations. See the campaign's CODE-FINDINGS.md.
+  AZ: {
+    jurisdiction: "AZ",
+    sessionId: 2155,
+    chamberSizes: { house: 60, senate: 30 },
+    keptQuestions: [
+      // The passage vote in both chambers.
+      { pattern: /^(?:house|senate) - third reading$/, questionClass: "passage" },
+      // The originating chamber accepting the other chamber's amendments.
+      // Currently always unrecorded — see the note above.
+      { pattern: /^(?:house|senate) - concurrence$/, questionClass: "concurrence" },
+    ],
+    excludedQuestions: [
+      // Committee of the Whole: Arizona's amend-and-engross stage.
+      /^(?:house|senate) - committee of the whole\b/,
+      // The motion to reconsider a failed third reading — see the note above.
+      /^(?:house|senate) - reconsider third reading$/,
+      // Every floor amendment, point of order and failed-to-pass motion is
+      // captioned with the member who moved it — `House - Representative
+      // Chaplik to include the Chaplik #1 floor amendment`, `Senate -
+      // Senator Hoffman to include the Hoffman #3 floor amendment`. Also
+      // covers `Senate - Motion to Amend` and `House - Motion
+      // Representative Kolodin to show the bill do not pass`.
+      /^(?:house|senate) - (?:representative|senator|motion)\b/,
+      // Procedural motions the clerk prints with a bare `Motion` prefix and
+      // no chamber: group motions for final passage, requests that the other
+      // chamber return a bill, rules suspensions, bill substitutions, and
+      // appeals from a ruling of the Chair.
+      /^motion\b/,
+    ],
+  },
+  CO: {
+    jurisdiction: "CO",
+    sessionId: 2173,
+    chamberSizes: { house: 65, senate: 35 },
+    keptQuestions: COLORADO_KEPT_QUESTIONS,
+    excludedQuestions: COLORADO_EXCLUDED_QUESTIONS,
   },
 
   // Oregon, 2025 Regular Session. Oregon meets every year, so the 2026
