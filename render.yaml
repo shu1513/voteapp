@@ -118,6 +118,13 @@ services:
         sync: false
       - key: STRIPE_MEMBERSHIP_PRODUCT_ID
         sync: false
+      # --- Usage analytics (docs/plans/usage-analytics.md) ----------------
+      # First-party intake for POST /api/usage/events. A write feature, so
+      # it is explicit here rather than defaulted on; the privacy policy
+      # 1.5 text (docs/legal/privacy-policy.md) ships in the same SSR
+      # build, and voteapp-ssr's VITE_USAGE_ANALYTICS_ENABLED mirrors it.
+      - key: USAGE_ANALYTICS_ENABLED
+        value: "true"
       # --- Chatbot "Ask" (free read side; docs/plans/chatbot-rag.md) ----
       # Retrieval-only until the dashboard-only LLM vars are set (see the
       # voteapp-embeddings comment). Host and port are split on purpose:
@@ -340,6 +347,14 @@ services:
           name: voteapp-api
           type: web
           envVarKey: CHATBOT_ENABLED
+      # Usage-analytics client flag, baked in at build time and mirrored
+      # from the API's intake flag so the two cannot drift (a mismatch is
+      # harmless: the client stops on the first 404).
+      - key: VITE_USAGE_ANALYTICS_ENABLED
+        fromService:
+          name: voteapp-api
+          type: web
+          envVarKey: USAGE_ANALYTICS_ENABLED
 
   # ------------------------------------------------------------- workers ----
   # One process runs all three notification scheduler workers and re-asserts

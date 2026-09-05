@@ -38,6 +38,7 @@ import {
   parseChatbotAskBodyValue,
   parseChatbotFeedbackBodyValue,
   CONTENT_REPORTS_PATH,
+  USAGE_EVENTS_PATH,
   CANDIDATE_DETAIL_PATH_PREFIX,
   CANDIDATE_SEARCH_PATH,
   ELECTION_DETAIL_PATH_PREFIX,
@@ -119,6 +120,7 @@ import {
 } from "./apiResponses.js";
 import { renderPickCardOgImage } from "./pickCardOgImage.js";
 import { CURRENT_TERMS_VERSION, isAcceptableTermsVersion } from "../constants/legal.js";
+import { parseUsageEventsBodyValue } from "../usage/events.js";
 
 type ApiResponseLocals = {
   clientIp?: string;
@@ -144,6 +146,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === CHATBOT_ASK_PATH ||
     pathname === CHATBOT_FEEDBACK_PATH ||
     pathname === CONTENT_REPORTS_PATH ||
+    pathname === USAGE_EVENTS_PATH ||
     pathname === AUTH_FORGOT_PASSWORD_PATH ||
     pathname === AUTH_GOOGLE_PATH ||
     pathname === AUTH_LOGIN_PATH ||
@@ -477,6 +480,9 @@ function createJsonBodyParser() {
           // a CORS preflight).
           request.path === CHATBOT_FEEDBACK_PATH ||
           request.path === CONTENT_REPORTS_PATH ||
+          // Requiring application/json keeps plain cross-site form POSTs
+          // from stuffing the analytics table (forms cannot send it).
+          request.path === USAGE_EVENTS_PATH ||
           request.path === ME_AUTO_PICKS_PATH ||
           request.path === ME_DISTRICTS_INITIALIZE_PATH ||
           request.path === AUTH_FORGOT_PASSWORD_PATH ||
@@ -750,6 +756,31 @@ async function dispatchApiRequest(
     const userId = await resolveAuthenticatedUserId(options, request);
     const report = await options.createContentReport({ ...payload, userId });
     sendApiResponse(response, toJsonResponse(201, { report }, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === USAGE_EVENTS_PATH) {
+    // Flag off → the endpoint does not exist, same posture as the chatbot.
+    if (!options.recordUsageEvents) {
+      sendApiResponse(response, toErrorResponse(404, "not_found", "Usage analytics is not enabled", corsHeaders));
+      return;
+    }
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/usage/events", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    // Anonymous by design: no session lookup, no user id anywhere near the
+    // rows. The insert is awaited so a failure surfaces as a 5xx the client
+    // can retry instead of a silent drop.
+    const { accepted, dropped } = parseUsageEventsBodyValue(request.body);
+    await options.recordUsageEvents(accepted, dropped);
+    sendApiResponse(response, toEmptyResponse(204, corsHeaders));
     return;
   }
 

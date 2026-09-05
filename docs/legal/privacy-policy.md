@@ -35,12 +35,20 @@ a Terms bump (payments section) — see terms-of-use.md.
 Operator change 2026-08-29 (1.3 → 1.4): operator named as Elections
 Simplified Inc., a Delaware corporation (previously impactperdollar).
 Ships with the Terms 1.4 bump — see terms-of-use.md.
+First-party usage analytics added 2026-09-04 (1.4 → 1.5,
+docs/plans/usage-analytics.md): this version must be LIVE before
+USAGE_ANALYTICS_ENABLED is ever set in production. The description matches
+backend/src/usage/events.ts and frontend/src/lib/usage.ts: per-tab session
+id in sessionStorage (no cookie, 30-minute idle rotation), route ids never
+paths, no user/address/district/candidate/election ids, 90-day purge, and
+the /privacy opt-out control. Like 1.2, a disclosure of a practice that
+identifies nobody — CURRENT_TERMS_VERSION stays 1.4.
 -->
 
 # Elections Simplified Privacy Policy
 
-**Last updated:** August 29, 2026
-**Version:** 1.4
+**Last updated:** September 4, 2026
+**Version:** 1.5
 
 This Privacy Policy describes how Elections Simplified Inc., a Delaware corporation and the operator of the Elections Simplified service ("Elections Simplified," "we," "us"), collects, uses, and shares information when you use the Elections Simplified website and services (the "Service").
 
@@ -62,7 +70,7 @@ This Privacy Policy describes how Elections Simplified Inc., a Delaware corporat
 
 **Technical information.** IP address, browser user agent, and request logs collected automatically for security, rate limiting, and abuse prevention. A session cookie (httpOnly) keeps you signed in. We do not use advertising or cross-site tracking cookies.
 
-**Usage analytics.** We may collect information about how the Service is used — such as pages viewed, features used, referring site, device and browser type, and approximate location derived from IP address — to understand usage and improve the Service. Analytics may use cookies or similar identifiers. Analytics data is not used to build advertising profiles, is not combined with your account's civic or political preferences (follows, research-area interests) for any third party's purposes, and is not shared with advertisers.
+**Usage analytics.** We collect information about how the Service is used so we can improve it: which kinds of pages are viewed (the page type, never the full web address), which site controls are used, how long a page stays visible, coarse device type (phone, tablet, or desktop), the general kind of site that referred you (a search engine, a social network, or none), the U.S. state and rough size of a ballot you looked at, and whether an action such as an address search succeeded or failed. This is collected by us, on our own infrastructure, with no third-party analytics service. It is tied to a random identifier that lives only in your browser tab, is not a cookie, resets after 30 minutes of inactivity, and is never linked to your account, your email, your address, the districts, candidates, or elections you looked at, or the choices you record. Analytics data is not used to build advertising profiles and is not shared with advertisers. You can turn it off for your browser (see Section 5).
 
 ## 2. How we use information
 
@@ -76,7 +84,7 @@ We share information only with the processors needed to run the Service:
 - **Google Places (autocomplete)** — receives the address text you type when address suggestions are enabled; requests are proxied through our servers so Google does not receive your IP address from your browser.
 - **Google (Sign in with Google)** — when you choose to sign in with Google, your browser interacts with Google directly to complete the sign-in (Google's own privacy policy applies to that interaction), and we receive the identity token described in Section 1. We send Google nothing about your activity in the Service.
 - **Amazon Web Services (SES)** — receives your email address to deliver account and notification emails.
-- **Analytics provider** — when analytics is enabled, receives the usage information described in Section 1 ("Usage analytics") to help us understand and improve how the Service is used. We configure analytics so that this data is not used for the provider's own advertising purposes, and we will name the provider here before or when analytics is enabled.
+- **Usage analytics** — the usage information described in Section 1 is collected and stored by us on the infrastructure providers listed below; no separate analytics company receives it.
 - **OpenAI (AI answers in Ask)** — when AI-generated answers are enabled for the Ask feature, receives the text of your chat question and the snippets of our own election data used to answer it, together with a pseudonymous account identifier (a cryptographic hash used only for abuse prevention — never your email address, name, or address). We send requests with storage disabled, and under OpenAI's API terms this content is not used to train OpenAI's models. AI answers are labeled as AI-generated in the Service.
 - **Stripe (support payments)** — if you choose to make a support payment, Stripe collects your card and billing details directly on its own payment pages (we never receive your card number) and processes the payment, any recurring membership billing, and any refund on our behalf. We receive the payment amount, status, and reference identifiers. Stripe also retains payment records under its own legal obligations; see Stripe's privacy policy at stripe.com/privacy.
 - **Sentry (error monitoring)** — when error monitoring is enabled, receives reports about application errors (error type, stack trace, browser and device type, and the page path with its query string removed) so we can find and fix failures. We configure these reports to exclude your IP address, email address, address text, and the contents of your requests.
@@ -88,11 +96,11 @@ We may also disclose information if we believe in good faith that disclosure is 
 
 ## 4. Retention and deletion
 
-Account data is kept while your account is active. If you delete your account, your account record and its associated data — email address, name, the Google account identifier if you signed in with Google, saved districts, follows, preferences, and notification history — are deleted immediately: sessions are destroyed, notification sending stops, and your email address is released for re-registration. Content reports you submitted while signed in are kept for moderation purposes with your account identifier and contact email removed. If you made support payments, any active membership is canceled when you delete your account, and the payment records described in Section 1 (amounts, dates, type, refund status, and Stripe reference identifiers) are retained for accounting, tax, and legal-compliance purposes with the link to your deleted account removed; Stripe separately retains its payment records under its own legal obligations. Residual records may persist in backups and security logs for a limited period before being purged. Cached address lookups expire automatically. Notification event records are pruned on a rolling schedule. Usage analytics data is kept only as long as needed for the improvement purposes described above.
+Account data is kept while your account is active. If you delete your account, your account record and its associated data — email address, name, the Google account identifier if you signed in with Google, saved districts, follows, preferences, and notification history — are deleted immediately: sessions are destroyed, notification sending stops, and your email address is released for re-registration. Content reports you submitted while signed in are kept for moderation purposes with your account identifier and contact email removed. If you made support payments, any active membership is canceled when you delete your account, and the payment records described in Section 1 (amounts, dates, type, refund status, and Stripe reference identifiers) are retained for accounting, tax, and legal-compliance purposes with the link to your deleted account removed; Stripe separately retains its payment records under its own legal obligations. Residual records may persist in backups and security logs for a limited period before being purged. Cached address lookups expire automatically. Notification event records are pruned on a rolling schedule. Usage analytics events are deleted 90 days after they are received; only aggregate statistics that identify no browser or session are kept longer.
 
 ## 5. Your choices
 
-You can view and update your name, email address, password, districts, follows, and email preferences in account settings; every notification email includes a working unsubscribe link; and you can delete your account entirely in settings. Where analytics uses optional cookies or identifiers, you can limit it through your browser's cookie controls, and we honor opt-out mechanisms where required by applicable law. For access or deletion requests you cannot complete in the app, or questions about this policy, contact contact@electionssimplified.com. Depending on where you live, you may have additional privacy rights (such as access, correction, deletion, or portability); we honor valid requests as required by applicable law.
+You can view and update your name, email address, password, districts, follows, and email preferences in account settings; every notification email includes a working unsubscribe link; and you can delete your account entirely in settings. You can turn usage analytics off for your browser with the control at the bottom of this page; the choice is remembered in your browser, and we honor opt-out mechanisms where required by applicable law. For access or deletion requests you cannot complete in the app, or questions about this policy, contact contact@electionssimplified.com. Depending on where you live, you may have additional privacy rights (such as access, correction, deletion, or portability); we honor valid requests as required by applicable law.
 
 ## 6. Security
 

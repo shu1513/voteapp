@@ -21,6 +21,7 @@ import { clearPendingDistrictIds, readPendingDistrictIds } from "../lib/pendingD
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { useHydrated } from "../lib/useHydrated";
+import { track, useTrackBallotResult } from "../lib/usage";
 
 type SavedBallot = BallotSummary & { matched_address?: string };
 
@@ -110,6 +111,7 @@ function BallotSortPreference({
           // the earlier write would win.
           disabled={saving}
           onChange={(event) => {
+            track("list_control", { control: "sort", value: event.target.value });
             // Choosing here clears the override (the explicit URL param
             // wins server-side, so left in place it would pin the list to
             // the old order and make this select a no-op) — but only AFTER
@@ -153,7 +155,10 @@ function FollowedFirstPreference() {
           type="checkbox"
           checked={current.followed_first}
           disabled={saving}
-          onChange={(event) => change({ followed_first: event.target.checked })}
+          onChange={(event) => {
+            track("list_control", { control: "followed_first", value: event.target.checked ? "on" : "off" });
+            change({ followed_first: event.target.checked });
+          }}
           className="h-4 w-4 accent-rausch"
         />
         Followed candidates first
@@ -302,6 +307,7 @@ export function SavedBallotPage() {
     enabled: verified && handoffState === "done",
     retry: false,
   });
+  useTrackBallotResult(ballot, { scope: "exact", partialBanner: false, ambiguousBanner: false });
 
   if (meError) {
     // /api/me failed for a non-auth reason (network, 5xx): without this the

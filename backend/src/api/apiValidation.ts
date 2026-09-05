@@ -46,6 +46,7 @@ export const CHATBOT_ASK_PATH = "/api/chatbot/ask";
 // Same CHATBOT_ENABLED wiring: 404 when unwired.
 export const CHATBOT_FEEDBACK_PATH = "/api/chatbot/feedback";
 export const CONTENT_REPORTS_PATH = "/api/content-reports";
+export const USAGE_EVENTS_PATH = "/api/usage/events";
 export const CANDIDATE_DETAIL_PATH_PREFIX = "/api/candidates/";
 // Shares the candidate-detail prefix, so the router must test this path
 // before isCandidateDetailPath (whose UUID parse would reject "search").

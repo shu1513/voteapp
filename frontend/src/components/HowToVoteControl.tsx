@@ -2,6 +2,7 @@ import { useId, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
 import type { StateVotingResources, StateVotingResourcesResult } from "@voteapp/api-client";
+import { track } from "../lib/usage";
 
 /** Display form of a link's destination so voters see where they're headed. */
 function linkHost(url: string): string | null {
@@ -12,7 +13,7 @@ function linkHost(url: string): string | null {
   }
 }
 
-function OfficialLink({ url, label }: { url: string; label: string }) {
+function OfficialLink({ url, label, kind }: { url: string; label: string; kind: "mail" | "polling" }) {
   const host = linkHost(url);
   return (
     <p className="text-sm">
@@ -20,6 +21,7 @@ function OfficialLink({ url, label }: { url: string; label: string }) {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => track("list_control", { control: "how_to_vote_link", value: kind })}
         className="font-medium text-ink underline underline-offset-2 hover:text-rausch"
       >
         {label}
@@ -59,7 +61,7 @@ function MailSection({ resources }: { resources: StateVotingResources }) {
         </p>
       ) : null}
       <div className="mt-1">
-        <OfficialLink url={mail_ballot_request_url} label={label} />
+        <OfficialLink url={mail_ballot_request_url} label={label} kind="mail" />
       </div>
       {mail_ballot_request_deadline_rule ? (
         <p className="mt-1 text-xs text-ink-soft">{mail_ballot_request_deadline_rule}</p>
@@ -97,7 +99,7 @@ function StateResourcesSection({ state, showStateName }: { state: string; showSt
       <div>
         <p className="text-xs font-medium uppercase tracking-wide text-ink-soft">Vote in person</p>
         <div className="mt-1">
-          <OfficialLink url={resources.polling_place_url} label="Find your polling place" />
+          <OfficialLink url={resources.polling_place_url} label="Find your polling place" kind="polling" />
         </div>
       </div>
     </div>
@@ -133,7 +135,10 @@ export function HowToVoteControl({ states }: { states: string[] }) {
       <button
         ref={triggerRef}
         type="button"
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+          track("list_control", { control: "how_to_vote", value: open ? "close" : "open" });
+          setOpen(!open);
+        }}
         aria-expanded={open}
         aria-controls={panelId}
         className={`flex items-center gap-1.5 py-1.5 text-sm underline-offset-2 transition hover:text-ink hover:underline ${

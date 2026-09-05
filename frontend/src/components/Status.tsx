@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { ApiError } from "@voteapp/api-client";
+import { errorCategoryOf, track } from "../lib/usage";
 
 export function LoadingNotice({ text = "Loading…" }: { text?: string }) {
   return <p className="py-8 text-center text-ink-soft">{text}</p>;
@@ -11,6 +13,10 @@ export function EmptyNotice({ text }: { text: string }) {
 /** Human copy for the API error envelope; special-cases the statuses the
  * anonymous flow can hit (422 bad address, 429 rate limit). */
 export function ErrorNotice({ error }: { error: unknown }) {
+  // Category only (never the message): which routes show which failures.
+  useEffect(() => {
+    track("error_shown", { category: errorCategoryOf(error) });
+  }, [error]);
   let message = "Something went wrong. Please try again.";
   if (error instanceof ApiError) {
     if (error.status === 422) {

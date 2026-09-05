@@ -155,8 +155,13 @@ const PINNED_DOCUMENTS = [
     // Required BEFORE STRIPE_SECRET_KEY in prod.
     // 1.3 → 1.4 (2026-08-29): operator named as Elections Simplified Inc., a
     // Delaware corporation. Ships with the Terms 1.4 bump.
-    version: "1.4",
-    sha256: "bf9f7f47b87d676282d19f65c525443dd39900e8ac0e0890ed20a2ac186f2098",
+    // 1.4 → 1.5 (2026-09-04): first-party usage analytics disclosure
+    // (docs/plans/usage-analytics.md): what is collected, no third party,
+    // per-tab identifier, 90-day retention, /privacy opt-out. Required
+    // BEFORE USAGE_ANALYTICS_ENABLED in prod. Like 1.2, a disclosure that
+    // identifies nobody — TERMS_VERSION stays 1.4, no re-acceptance.
+    version: "1.5",
+    sha256: "efa036c6eed3959c3fff82ab113412ab7f160d7ac0e3987528a5686bff799eff",
   },
   {
     filename: "disclaimer.md",

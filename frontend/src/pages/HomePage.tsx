@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { APP_NAME, apiRequest } from "@voteapp/api-client";
@@ -11,6 +11,7 @@ import { clearPendingDistrictIds, savePendingDistrictIds } from "../lib/pendingD
 import { useMe } from "@voteapp/api-client";
 import { TERMS_VERSION } from "@voteapp/api-client";
 import { hasCurrentTermsAcceptance, rememberTermsAcceptance } from "../lib/termsAcceptance";
+import { errorCategoryOf, track } from "../lib/usage";
 
 // Below Tailwind's sm breakpoint the landing swaps the autofocused cursor
 // for the in-box search glyph. matchMedia is absent in SSR and jsdom, where
@@ -54,6 +55,13 @@ export function HomePage() {
   // seeded from storage: remembering may decide whether the dialog opens, and
   // nothing more. A box that arrives pre-ticked shows assent nobody gave.
   const [accepted, setAccepted] = useState(false);
+  // Usage analytics bookkeeping (docs/plans/usage-analytics.md): first real
+  // input once per visit, whether the current value came from a suggestion,
+  // and how long the terms dialog stayed open. Refs — none of it renders.
+  const inputTracked = useRef(false);
+  const lastGranularity = useRef<"address" | "zip" | "region" | "unsupported" | null>(null);
+  const termsOpenedAt = useRef<number | null>(null);
+  const termsOpenMs = () => (termsOpenedAt.current === null ? 0 : Math.round(performance.now() - termsOpenedAt.current));
 
   // Returning verified users land on their saved ballot; ?new=1 is the
   // escape hatch for a one-off anonymous search.
@@ -125,35 +133,54 @@ export function HomePage() {
   }, []);
 
   const resolve = useMutation({
-    mutationFn: (input: {
+    mutationFn: async (input: {
       address: string;
       coordinates: AddressLocation | null;
       region: { state: string; locality: string | null } | null;
-    }) =>
-      // The accepted version rides along because the endpoint enforces the
-      // clickwrap too, refusing a search that carries no current acceptance.
-      // Nothing is stored server-side; the disabled button is a courtesy, and
-      // the endpoint is the actual gate. Coordinates (from the autocomplete
-      // selection, when present) let the backend resolve venue addresses the
-      // Census street data lacks.
-      apiRequest<AddressResolution>("/api/address/resolve", {
-        method: "POST",
-        body: {
-          address: input.address,
-          accepted_terms_version: TERMS_VERSION,
-          // Opt in to the ZIP/region partial-ballot paths: this page renders
-          // the partial banner and scope-aware errors, so a bare ZIP or a
-          // picked city gets a partial ballot here instead of a dead-end 422.
-          allow_partial: true,
-          ...(input.coordinates ? { coordinates: input.coordinates } : {}),
-          ...(input.region
-            ? {
-                region_state: input.region.state,
-                ...(input.region.locality ? { region_locality: input.region.locality } : {}),
-              }
-            : {}),
-        },
-      }),
+    }) => {
+      // The address_result usage event is recorded here, inside the mutation
+      // function, so it lands even if this page unmounts before the reply.
+      // It carries outcome and latency only — never the address.
+      const started = performance.now();
+      try {
+        // The accepted version rides along because the endpoint enforces the
+        // clickwrap too, refusing a search that carries no current acceptance.
+        // Nothing is stored server-side; the disabled button is a courtesy, and
+        // the endpoint is the actual gate. Coordinates (from the autocomplete
+        // selection, when present) let the backend resolve venue addresses the
+        // Census street data lacks.
+        const resolution = await apiRequest<AddressResolution>("/api/address/resolve", {
+          method: "POST",
+          body: {
+            address: input.address,
+            accepted_terms_version: TERMS_VERSION,
+            // Opt in to the ZIP/region partial-ballot paths: this page renders
+            // the partial banner and scope-aware errors, so a bare ZIP or a
+            // picked city gets a partial ballot here instead of a dead-end 422.
+            allow_partial: true,
+            ...(input.coordinates ? { coordinates: input.coordinates } : {}),
+            ...(input.region
+              ? {
+                  region_state: input.region.state,
+                  ...(input.region.locality ? { region_locality: input.region.locality } : {}),
+                }
+              : {}),
+          },
+        });
+        track("address_result", {
+          outcome: resolution.scope === "zip" || resolution.scope === "region" ? resolution.scope : "exact",
+          latency_ms: Math.round(performance.now() - started),
+        });
+        return resolution;
+      } catch (error) {
+        track("address_result", {
+          outcome: "error",
+          latency_ms: Math.round(performance.now() - started),
+          error_category: errorCategoryOf(error),
+        });
+        throw error;
+      }
+    },
     onSuccess: (resolution) => {
       // Stash for the anonymous-to-account handoff: if this visitor signs up,
       // these districts become their saved ballot once they verify. Save only
@@ -210,6 +237,8 @@ export function HomePage() {
     if (!canSearch) {
       return;
     }
+    // Form submit, not the button: Enter and the click are the same intent.
+    track("address_submit", { via_suggestion: lastGranularity.current !== null });
     // Storage is read here, in the handler, and never during render: reading
     // it while rendering would diverge from the server-rendered HTML.
     if (hasCurrentTermsAcceptance()) {
@@ -217,6 +246,8 @@ export function HomePage() {
       return;
     }
     setAccepted(false);
+    termsOpenedAt.current = performance.now();
+    track("terms_shown");
     setTermsOpen(true);
   }
 
@@ -224,6 +255,7 @@ export function HomePage() {
     if (!accepted || resolve.isPending) {
       return;
     }
+    track("terms_decision", { decision: "agree", open_ms: termsOpenMs() });
     // Recorded before the request, so a failed search does not re-ask for an
     // agreement the visitor already gave.
     rememberTermsAcceptance();
@@ -234,6 +266,7 @@ export function HomePage() {
     if (resolve.isPending) {
       return;
     }
+    track("terms_decision", { decision: "cancel", open_ms: termsOpenMs() });
     setTermsOpen(false);
     setAccepted(false);
     // The typed address is deliberately left alone — cancelling the terms is
@@ -293,6 +326,19 @@ export function HomePage() {
                 setAddressLocation(location ?? null);
                 setRegionSelection(granularity === "region" && region ? region : null);
                 setRegionUnsupported(granularity === "region" && !region);
+                if (granularity) {
+                  const picked = granularity === "region" && !region ? "unsupported" : granularity;
+                  lastGranularity.current = picked;
+                  track("address_suggestion", { granularity: picked });
+                } else {
+                  // Any edit is freehand again; the first 3+ characters mark
+                  // real input (the autocomplete threshold), once per visit.
+                  lastGranularity.current = null;
+                  if (!inputTracked.current && value.trim().length >= 3) {
+                    inputTracked.current = true;
+                    track("address_input");
+                  }
+                }
               }}
               onRetrievePendingChange={setRetrievePending}
               searchIconWhenIdle
@@ -318,7 +364,10 @@ export function HomePage() {
                 the full constant. */}
             <p className="mt-1 text-xs text-ink-soft">
               The address is only used to find voting districts. You can also search by ZIP or
-              city, with fewer local races. <FullAddressExplanation />
+              city, with fewer local races.{" "}
+              <FullAddressExplanation
+                onOpen={() => track("why_address_open", { after_input: address.trim().length > 0 })}
+              />
             </p>
           </div>
 

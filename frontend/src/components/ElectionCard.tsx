@@ -21,6 +21,7 @@ import {
 } from "@voteapp/api-client";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
+import { positionBucket, track } from "../lib/usage";
 
 // Same green/red as the election page's candidate result badges (and the
 // measure No chip's red) — one color language for "called" across surfaces.
@@ -155,6 +156,12 @@ export function ElectionList({
         ...(railSort ? { railSort } : {}),
       }
     : undefined;
+  // Displayed position (1-based, readable cards then the awaiting tail) for
+  // the election_open usage event — "which slot in THIS rendered list".
+  const positionById = new Map<string, number>();
+  for (const election of [...readable, ...awaitingCandidates]) {
+    positionById.set(election.id, positionById.size + 1);
+  }
   return (
     <div className="mt-4 space-y-6">
       {groups.map((group) => (
@@ -173,6 +180,7 @@ export function ElectionList({
                 savedAreaWeights={savedAreaWeights}
                 myChoice={choicesByElectionId?.get(election.id)}
                 navState={navState}
+                position={positionById.get(election.id) ?? 1}
               />
             ))}
           </div>
@@ -195,6 +203,7 @@ export function ElectionList({
                 savedAreaWeights={savedAreaWeights}
                 myChoice={choicesByElectionId?.get(election.id)}
                 navState={navState}
+                position={positionById.get(election.id) ?? 1}
                 showDate
               />
             ))}
@@ -218,6 +227,7 @@ function ElectionCard({
   savedAreaWeights,
   myChoice,
   navState,
+  position,
   showDate = false,
 }: {
   election: ElectionSummary;
@@ -227,6 +237,8 @@ function ElectionCard({
   /** ElectionList's nav context (back destination + contest order),
    * delivered to the election page via the card link's router state. */
   navState?: ElectionNavState;
+  /** 1-based slot in the rendered list, for the election_open usage event. */
+  position: number;
   /**
    * The "Elections awaiting candidate information" section spans dates under
    * one heading, so its cards must say their own date; everywhere else the
@@ -270,6 +282,14 @@ function ElectionCard({
     <Link
       to={`/elections/${election.id}`}
       state={navState}
+      onClick={() =>
+        track("election_open", {
+          race_type: election.race_type === "ballot_measure" ? "ballot_measure" : "office",
+          vote_power: election.vote_power.label,
+          position_bucket: positionBucket(position),
+          awaiting: isAwaitingCandidates(election),
+        })
+      }
       // Faint tint at rest; on hover the border goes brand and the title
       // takes the link color (via group-hover below). The old cue — gray bg
       // one step grayer — was under 2% lightness and read as nothing.

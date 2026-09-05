@@ -5,6 +5,7 @@ import disclaimerMarkdown from "../../../docs/legal/disclaimer.md?raw";
 import termsMarkdown from "../../../docs/legal/terms-of-use.md?raw";
 import privacyMarkdown from "../../../docs/legal/privacy-policy.md?raw";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
+import { UsageAnalyticsChoice } from "../components/UsageAnalyticsChoice";
 
 /** ReactMarkdown escapes raw HTML, so the maintainer-only <!-- --> comments
  * at the top of each document would render as visible text; strip them. */
@@ -31,6 +32,9 @@ export function LegalDocumentPage({ document }: LegalDocumentPageProps) {
   return (
     <article className="text-body mx-auto max-w-3xl px-4 py-8 [&_h1]:text-title [&_h1]:font-bold [&_h2]:mt-6 [&_h2]:text-heading [&_h2]:font-semibold [&_p]:mt-2 [&_p]:leading-relaxed [&_li]:mt-1 [&_ul]:list-disc [&_ul]:pl-6 [&_a]:text-rausch-dark [&_a]:underline">
       <ReactMarkdown>{DOCUMENTS[document]}</ReactMarkdown>
+      {/* The control the policy's Section 5 points at; lives with the
+          policy so the choice is one scroll away from the disclosure. */}
+      {document === "privacy" ? <UsageAnalyticsChoice /> : null}
     </article>
   );
 }

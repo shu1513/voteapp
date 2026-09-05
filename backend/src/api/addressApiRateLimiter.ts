@@ -1,5 +1,5 @@
 import type { AddressApiRateLimitInput, AddressApiRateLimitResult } from "./addressApiTypes.js";
-import { ADDRESS_AUTOCOMPLETE_PATH, ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH } from "./apiValidation.js";
+import { ADDRESS_AUTOCOMPLETE_PATH, ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH, USAGE_EVENTS_PATH } from "./apiValidation.js";
 import { createInMemoryKeyedRateLimiter } from "./inMemoryRateLimiter.js";
 
 export const DEFAULT_ADDRESS_API_RATE_LIMIT_WINDOW_MS = 60_000;
@@ -34,11 +34,19 @@ export function createInMemoryAddressApiRateLimiter(
     // billable Google calls is too; if the autocomplete bucket runs dry the
     // client swallows the 429s and the form still submits typed text.
     // The space separator cannot collide with an IP (v4 or v6).
+    //
+    // Usage-analytics flushes get their own bucket for the same reason in
+    // the other direction: background beacons must never eat the budget of
+    // the requests a visitor is waiting on, and a burst of page traffic must
+    // not silently drop analytics.
     (input) => {
       const clientIp = input.clientIp || "unknown";
       const isAutocomplete =
         input.pathname === ADDRESS_AUTOCOMPLETE_PATH || input.pathname === ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH;
-      return isAutocomplete ? `${clientIp} autocomplete` : clientIp;
+      if (isAutocomplete) {
+        return `${clientIp} autocomplete`;
+      }
+      return input.pathname === USAGE_EVENTS_PATH ? `${clientIp} usage` : clientIp;
     }
   ) as InMemoryAddressApiRateLimiter;
 }
