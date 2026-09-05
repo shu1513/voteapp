@@ -23,8 +23,8 @@ import { RegisterPromptDialog } from "./RegisterPromptDialog";
 // port); this file keeps the web widgets.
 //
 // Below the issue floor the button explains what to do instead of calling
-// the API. Guests get a teaser pill in the button's place — "See which
-// candidate best matches your values" — that opens the shared log in /
+// the API. Guests get a teaser pill in the button's place — "Which
+// candidate best matches your values?" — that opens the shared log in /
 // sign up dialog (same as the follow button), with this page as the
 // post-auth return path: issue preferences are account-only, and the
 // question is the pitch for an account. Plain words on purpose: a first
@@ -79,8 +79,8 @@ export function AutoPickControl({
   // match.
   if (me === null) {
     const question = measure
-      ? "See whether this measure matches your values"
-      : "See which candidate best matches your values";
+      ? "Does this measure match your values?"
+      : "Which candidate best matches your values?";
     return (
       <>
         <button
