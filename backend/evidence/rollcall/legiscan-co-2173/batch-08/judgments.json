@@ -1,0 +1,264 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1561764,
+   "measure_id": "HB 1149",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1149. The act adds Black history and culture to what Colorado schools teach. The State Board of Education has to build standards for it at the next review of state standards. A 17-member advisory committee of teachers, scholars and community members guides the work, unpaid. Schools then have to teach the content those standards set. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1149. The act adds Black history and culture to what Colorado schools teach. The State Board of Education has to build standards for it at the next review of state standards. A 17-member advisory committee of teachers, scholars and community members guides the work, unpaid. Schools then have to teach the content those standards set. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1563883,
+   "measure_id": "HB 1149",
+   "vote_date": "2025-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1149 and pass it. The act adds Black history and culture to what Colorado schools teach. The State Board of Education has to build standards for it at the next review of state standards. A 17-member advisory committee of teachers, scholars and community members guides the work, unpaid. Schools then have to teach the content those standards set. The Colorado House voted 45-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1149. The act adds Black history and culture to what Colorado schools teach. The State Board of Education has to build standards for it at the next review of state standards. A 17-member advisory committee of teachers, scholars and community members guides the work, unpaid. Schools then have to teach the content those standards set. The Colorado House voted 45-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1563882
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1546930,
+   "measure_id": "HB 1248",
+   "vote_date": "2025-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1248. The act gives public schools their own rules on restraint and seclusion. They had been under the general state law that covers other agencies. Restraint means holding a student still; seclusion means shutting a student alone in a room. The act bars using them except in the narrow cases it names. A seclusion room cannot be a storage space or another room not meant for it. Schools have to follow set steps when a student has to be moved. The Colorado Senate passed it 23-10 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1248. The act gives public schools their own rules on restraint and seclusion. They had been under the general state law that covers other agencies. Restraint means holding a student still; seclusion means shutting a student alone in a room. The act bars using them except in the narrow cases it names. A seclusion room cannot be a storage space or another room not meant for it. Schools have to follow set steps when a student has to be moved. The Colorado Senate passed it 23-10 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1549464,
+   "measure_id": "HB 1248",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1248 and pass it. The act gives public schools their own rules on restraint and seclusion. They had been under the general state law that covers other agencies. Restraint means holding a student still; seclusion means shutting a student alone in a room. The act bars using them except in the narrow cases it names. A seclusion room cannot be a storage space or another room not meant for it. Schools have to follow set steps when a student has to be moved. The Colorado House voted 41-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1248. The act gives public schools their own rules on restraint and seclusion. They had been under the general state law that covers other agencies. Restraint means holding a student still; seclusion means shutting a student alone in a room. The act bars using them except in the narrow cases it names. A seclusion room cannot be a storage space or another room not meant for it. Schools have to follow set steps when a student has to be moved. The Colorado House voted 41-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1549463
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1512507,
+   "measure_id": "SB 154",
+   "vote_date": "2025-03-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 154. The act changes how someone qualifies to teach in Colorado. The State Board of Education sets the coursework standards for a teaching license area. A candidate can now meet them in more than one way. A college taking part in the teacher recruitment program has to charge no more than the community college tuition rate. The Colorado Senate passed it 25-9 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 154. The act changes how someone qualifies to teach in Colorado. The State Board of Education sets the coursework standards for a teaching license area. A candidate can now meet them in more than one way. A college taking part in the teacher recruitment program has to charge no more than the community college tuition rate. The Colorado Senate passed it 25-9 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1551710,
+   "measure_id": "SB 154",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 154. The act changes how someone qualifies to teach in Colorado. The State Board of Education sets the coursework standards for a teaching license area. A candidate can now meet them in more than one way. A college taking part in the teacher recruitment program has to charge no more than the community college tuition rate. The Colorado House passed it 45-18 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 154. The act changes how someone qualifies to teach in Colorado. The State Board of Education sets the coursework standards for a teaching license area. A candidate can now meet them in more than one way. A college taking part in the teacher recruitment program has to charge no more than the community college tuition rate. The Colorado House passed it 45-18 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1566530,
+   "measure_id": "HB 1192",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1192. Colorado students already build an individual career and academic plan at school. From the 2027-28 school year that plan has to include practice filling in a student aid application. That is the federal FAFSA form or the state equivalent. A student can decline, and school staff can waive it when it is not workable for that student. Schools can fold the practice into a course they already teach. The Colorado Senate passed it 26-9 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1192. Colorado students already build an individual career and academic plan at school. From the 2027-28 school year that plan has to include practice filling in a student aid application. That is the federal FAFSA form or the state equivalent. A student can decline, and school staff can waive it when it is not workable for that student. Schools can fold the practice into a course they already teach. The Colorado Senate passed it 26-9 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564771,
+   "measure_id": "SB 276",
+   "vote_date": "2025-05-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 276. The act limits how Colorado governments deal with federal immigration enforcement. From July 1, 2025, public schools, colleges, child care centers, health sites and libraries cannot ask where a person was born. They also cannot ask a person's immigration status. They can ask when a law requires it, when the job needs it, or to check if someone qualifies for a funded program. Once bond is processed, a jail cannot keep holding someone at the request of immigration agents. Doing so counts as a new arrest with no warrant. An officer cannot ask a member of the public to help make such an arrest. Probation and pretrial staff cannot hand personal details to federal immigration agents. Another state's troops cannot enter Colorado without the governor saying yes, unless federal orders send them. The Colorado House passed it 42-21 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 276. The act limits how Colorado governments deal with federal immigration enforcement. From July 1, 2025, public schools, colleges, child care centers, health sites and libraries cannot ask where a person was born. They also cannot ask a person's immigration status. They can ask when a law requires it, when the job needs it, or to check if someone qualifies for a funded program. Once bond is processed, a jail cannot keep holding someone at the request of immigration agents. Doing so counts as a new arrest with no warrant. An officer cannot ask a member of the public to help make such an arrest. Probation and pretrial staff cannot hand personal details to federal immigration agents. Another state's troops cannot enter Colorado without the governor saying yes, unless federal orders send them. The Colorado House passed it 42-21 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1564966,
+   "measure_id": "SB 276",
+   "vote_date": "2025-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 276 and pass it. The act limits how Colorado governments deal with federal immigration enforcement. From July 1, 2025, public schools, colleges, child care centers, health sites and libraries cannot ask where a person was born. They also cannot ask a person's immigration status. They can ask when a law requires it, when the job needs it, or to check if someone qualifies for a funded program. Once bond is processed, a jail cannot keep holding someone at the request of immigration agents. Doing so counts as a new arrest with no warrant. An officer cannot ask a member of the public to help make such an arrest. Probation and pretrial staff cannot hand personal details to federal immigration agents. Another state's troops cannot enter Colorado without the governor saying yes, unless federal orders send them. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 276. The act limits how Colorado governments deal with federal immigration enforcement. From July 1, 2025, public schools, colleges, child care centers, health sites and libraries cannot ask where a person was born. They also cannot ask a person's immigration status. They can ask when a law requires it, when the job needs it, or to check if someone qualifies for a funded program. Once bond is processed, a jail cannot keep holding someone at the request of immigration agents. Doing so counts as a new arrest with no warrant. An officer cannot ask a member of the public to help make such an arrest. Probation and pretrial staff cannot hand personal details to federal immigration agents. Another state's troops cannot enter Colorado without the governor saying yes, unless federal orders send them. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1564965
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1531317,
+   "measure_id": "HB 1244",
+   "vote_date": "2025-03-31",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1244. Colorado runs a grant program paying community organizations to help migrants find state services. The act widens who those grants can serve. It drops the rule that a migrant must have arrived within the past year. The services cover guiding people to state help in their own language. The Colorado House passed it 41-23 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1244. Colorado runs a grant program paying community organizations to help migrants find state services. The act widens who those grants can serve. It drops the rule that a migrant must have arrived within the past year. The services cover guiding people to state help in their own language. The Colorado House passed it 41-23 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1555632,
+   "measure_id": "HB 1244",
+   "vote_date": "2025-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1244. Colorado runs a grant program paying community organizations to help migrants find state services. The act widens who those grants can serve. It drops the rule that a migrant must have arrived within the past year. The services cover guiding people to state help in their own language. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1244. Colorado runs a grant program paying community organizations to help migrants find state services. The act widens who those grants can serve. It drops the rule that a migrant must have arrived within the past year. The services cover guiding people to state help in their own language. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1562305,
+   "measure_id": "SB 8",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 8. Colorado's Necessary Document Program helps people get papers such as a birth certificate or a state identity card. From July 1, 2027 the health department can no longer hire an outside vendor to run it. A person who qualifies can get those documents at no cost at taking-part agencies. The health department and the revenue department have to work together to make that happen. The Colorado House passed it 43-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 8. Colorado's Necessary Document Program helps people get papers such as a birth certificate or a state identity card. From July 1, 2027 the health department can no longer hire an outside vendor to run it. A person who qualifies can get those documents at no cost at taking-part agencies. The health department and the revenue department have to work together to make that happen. The Colorado House passed it 43-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1564343,
+   "measure_id": "SB 8",
+   "vote_date": "2025-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 8 and pass it. Colorado's Necessary Document Program helps people get papers such as a birth certificate or a state identity card. From July 1, 2027 the health department can no longer hire an outside vendor to run it. A person who qualifies can get those documents at no cost at taking-part agencies. The health department and the revenue department have to work together to make that happen. The Colorado Senate voted 21-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 8. Colorado's Necessary Document Program helps people get papers such as a birth certificate or a state identity card. From July 1, 2027 the health department can no longer hire an outside vendor to run it. A person who qualifies can get those documents at no cost at taking-part agencies. The health department and the revenue department have to work together to make that happen. The Colorado Senate voted 21-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1564342
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  }
+ ]
+}

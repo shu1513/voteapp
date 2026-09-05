@@ -1,0 +1,770 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1565928,
+   "measure_id": "HB 1001",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1001. The act strengthens how Colorado enforces wage and hour law. An employer now includes anyone who owns or controls at least a quarter of a company. A minority owner who hands day-to-day control to someone else is not covered. The act limits what an employer can take out of a worker's pay. It also stops the state waiving a penalty when the employer is a repeat offender. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1001. The act strengthens how Colorado enforces wage and hour law. An employer now includes anyone who owns or controls at least a quarter of a company. A minority owner who hands day-to-day control to someone else is not covered. The act limits what an employer can take out of a worker's pay. It also stops the state waiving a penalty when the employer is a repeat offender. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1567166,
+   "measure_id": "HB 1001",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1001 and pass it. The act strengthens how Colorado enforces wage and hour law. An employer now includes anyone who owns or controls at least a quarter of a company. A minority owner who hands day-to-day control to someone else is not covered. The act limits what an employer can take out of a worker's pay. It also stops the state waiving a penalty when the employer is a repeat offender. The Colorado House voted 41-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1001. The act strengthens how Colorado enforces wage and hour law. An employer now includes anyone who owns or controls at least a quarter of a company. A minority owner who hands day-to-day control to someone else is not covered. The act limits what an employer can take out of a worker's pay. It also stops the state waiving a penalty when the employer is a repeat offender. The Colorado House voted 41-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1567165
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1537226,
+   "measure_id": "HB 1010",
+   "vote_date": "2025-04-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1010. The act lets the governor declare an emergency when a market or trade disruption hits necessities. During such an emergency, raising a price too far counts as price gouging. The act sets the threshold as a rise of more than a stated share above the earlier price. A seller is not gouging if it can show the higher price reflects its own increased costs. Price gouging is an unfair or unconscionable act under consumer protection law. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1010. The act lets the governor declare an emergency when a market or trade disruption hits necessities. During such an emergency, raising a price too far counts as price gouging. The act sets the threshold as a rise of more than a stated share above the earlier price. A seller is not gouging if it can show the higher price reflects its own increased costs. Price gouging is an unfair or unconscionable act under consumer protection law. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1545947,
+   "measure_id": "HB 1010",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1010 and pass it. The act lets the governor declare an emergency when a market or trade disruption hits necessities. During such an emergency, raising a price too far counts as price gouging. The act sets the threshold as a rise of more than a stated share above the earlier price. A seller is not gouging if it can show the higher price reflects its own increased costs. Price gouging is an unfair or unconscionable act under consumer protection law. The Colorado House voted 38-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1010. The act lets the governor declare an emergency when a market or trade disruption hits necessities. During such an emergency, raising a price too far counts as price gouging. The act sets the threshold as a rise of more than a stated share above the earlier price. A seller is not gouging if it can show the higher price reflects its own increased costs. Price gouging is an unfair or unconscionable act under consumer protection law. The Colorado House voted 38-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1545946
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1499745,
+   "measure_id": "HB 1030",
+   "vote_date": "2025-02-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1030. Building codes set how accessible a building has to be for disabled people. From January 1, 2026, a code adopted or changed by a city, county or state board has to meet the national accessibility standards. It has to use one of the two most recent versions of those standards. A local code that is already equivalent still counts. The Colorado Senate passed it 20-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1030. Building codes set how accessible a building has to be for disabled people. From January 1, 2026, a code adopted or changed by a city, county or state board has to meet the national accessibility standards. It has to use one of the two most recent versions of those standards. A local code that is already equivalent still counts. The Colorado Senate passed it 20-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1502603,
+   "measure_id": "HB 1030",
+   "vote_date": "2025-02-28",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1030 and pass it. Building codes set how accessible a building has to be for disabled people. From January 1, 2026, a code adopted or changed by a city, county or state board has to meet the national accessibility standards. It has to use one of the two most recent versions of those standards. A local code that is already equivalent still counts. The Colorado House voted 39-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1030. Building codes set how accessible a building has to be for disabled people. From January 1, 2026, a code adopted or changed by a city, county or state board has to meet the national accessibility standards. It has to use one of the two most recent versions of those standards. A local code that is already equivalent still counts. The Colorado House voted 39-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1502602
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564035,
+   "measure_id": "HB 1097",
+   "vote_date": "2025-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1097 and pass it. The act covers children who have to move between foster or kinship placements. A county caseworker has to write an individual transition plan before the move, except in an emergency. The plan has to put the child's mental, emotional and physical needs first. The caseworker has to seek the views of the child and the people caring for them. The Colorado House voted 44-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1097. The act covers children who have to move between foster or kinship placements. A county caseworker has to write an individual transition plan before the move, except in an emergency. The plan has to put the child's mental, emotional and physical needs first. The caseworker has to seek the views of the child and the people caring for them. The Colorado House voted 44-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1564034
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564721,
+   "measure_id": "HB 1098",
+   "vote_date": "2025-05-02",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1098 and pass it. The act sets up an automated system to tell people about protection orders that protect them. The criminal justice division builds it, subject to money being available. It tells a protected person and their family the date of an order and what it covers. The information has to be given out in the ways the act sets. The Colorado House voted 43-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1098. The act sets up an automated system to tell people about protection orders that protect them. The criminal justice division builds it, subject to money being available. It tells a protected person and their family the date of an order and what it covers. The information has to be given out in the ways the act sets. The Colorado House voted 43-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1564720
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1504240,
+   "measure_id": "HB 1132",
+   "vote_date": "2025-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1132. The act replaces the state's veterans mental health program with a military family behavioral health grant program. It pays health professionals who treat veterans and their families. It also covers care that goes alongside mental health treatment, such as acupuncture and massage. The military and veterans affairs division runs the reimbursements. The Colorado House passed it 41-20 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1132. The act replaces the state's veterans mental health program with a military family behavioral health grant program. It pays health professionals who treat veterans and their families. It also covers care that goes alongside mental health treatment, such as acupuncture and massage. The military and veterans affairs division runs the reimbursements. The Colorado House passed it 41-20 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1537421,
+   "measure_id": "HB 1132",
+   "vote_date": "2025-04-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1132. The act replaces the state's veterans mental health program with a military family behavioral health grant program. It pays health professionals who treat veterans and their families. It also covers care that goes alongside mental health treatment, such as acupuncture and massage. The military and veterans affairs division runs the reimbursements. The Colorado Senate passed it 27-7 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1132. The act replaces the state's veterans mental health program with a military family behavioral health grant program. It pays health professionals who treat veterans and their families. It also covers care that goes alongside mental health treatment, such as acupuncture and massage. The military and veterans affairs division runs the reimbursements. The Colorado Senate passed it 27-7 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1560520,
+   "measure_id": "HB 1154",
+   "vote_date": "2025-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the conference committee's report on House Bill 1154 and pass it. The act reorganizes state services for people who are blind, deaf, hard of hearing or deafblind. It also covers people who cannot read standard print. It folds existing programs into a single state enterprise. The enterprise runs the services and has its own funding, so it is not paid for out of general taxes. The old commission's name in statute is replaced by the enterprise. The Colorado Senate voted 20-12 to adopt that report and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against adopting the conference committee's report on House Bill 1154. The act reorganizes state services for people who are blind, deaf, hard of hearing or deafblind. It also covers people who cannot read standard print. It folds existing programs into a single state enterprise. The enterprise runs the services and has its own funding, so it is not paid for out of general taxes. The old commission's name in statute is replaced by the enterprise. The Colorado Senate voted 20-12 to adopt that report and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1560519
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564040,
+   "measure_id": "HB 1154",
+   "vote_date": "2025-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the conference committee's report on House Bill 1154 and pass it. The act reorganizes state services for people who are blind, deaf, hard of hearing or deafblind. It also covers people who cannot read standard print. It folds existing programs into a single state enterprise. The enterprise runs the services and has its own funding, so it is not paid for out of general taxes. The old commission's name in statute is replaced by the enterprise. The Colorado House voted 43-22 to adopt that report and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against adopting the conference committee's report on House Bill 1154. The act reorganizes state services for people who are blind, deaf, hard of hearing or deafblind. It also covers people who cannot read standard print. It folds existing programs into a single state enterprise. The enterprise runs the services and has its own funding, so it is not paid for out of general taxes. The old commission's name in statute is replaced by the enterprise. The Colorado House voted 43-22 to adopt that report and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1564039
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1559089,
+   "measure_id": "HB 1159",
+   "vote_date": "2025-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1159. The act carries out what Colorado's child support commission recommended. The low-income adjustment now follows the state minimum wage instead of a fixed monthly figure. A parent with little income keeps enough to support themselves before support is figured. The act also changes when a court has to use potential income rather than actual earnings. The Colorado House passed it 51-14 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1159. The act carries out what Colorado's child support commission recommended. The low-income adjustment now follows the state minimum wage instead of a fixed monthly figure. A parent with little income keeps enough to support themselves before support is figured. The act also changes when a court has to use potential income rather than actual earnings. The Colorado House passed it 51-14 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1537175,
+   "measure_id": "HB 1168",
+   "vote_date": "2025-04-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1168. The act widens housing protections for survivors of domestic violence, stalking or sexual assault. A tenant cannot be evicted for a lease breach caused by that abuse. A lease cannot contain terms that punish a survivor for it. When either side tells the court, the court has to lift an eviction order that rests on such a breach. A survivor can arrange to pay what is owed on terms they set within limits the act provides. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1168. The act widens housing protections for survivors of domestic violence, stalking or sexual assault. A tenant cannot be evicted for a lease breach caused by that abuse. A lease cannot contain terms that punish a survivor for it. When either side tells the court, the court has to lift an eviction order that rests on such a breach. A survivor can arrange to pay what is owed on terms they set within limits the act provides. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1546413,
+   "measure_id": "HB 1168",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1168 and pass it. The act widens housing protections for survivors of domestic violence, stalking or sexual assault. A tenant cannot be evicted for a lease breach caused by that abuse. A lease cannot contain terms that punish a survivor for it. When either side tells the court, the court has to lift an eviction order that rests on such a breach. A survivor can arrange to pay what is owed on terms they set within limits the act provides. The Colorado House voted 41-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1168. The act widens housing protections for survivors of domestic violence, stalking or sexual assault. A tenant cannot be evicted for a lease breach caused by that abuse. A lease cannot contain terms that punish a survivor for it. When either side tells the court, the court has to lift an eviction order that rests on such a breach. A survivor can arrange to pay what is owed on terms they set within limits the act provides. The Colorado House voted 41-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1546412
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1551668,
+   "measure_id": "HB 1188",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1188. The act rewrites Colorado's rules on reporting child abuse and neglect. A report cannot rest on a family being poor, unhoused, disabled, or on their race or ethnicity. A person who has to report cannot pass that duty to someone else. Organizations have to set protocols that follow state law, and cannot discourage staff from reporting. The Colorado House passed it 43-19 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1188. The act rewrites Colorado's rules on reporting child abuse and neglect. A report cannot rest on a family being poor, unhoused, disabled, or on their race or ethnicity. A person who has to report cannot pass that duty to someone else. Organizations have to set protocols that follow state law, and cannot discourage staff from reporting. The Colorado House passed it 43-19 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1565158,
+   "measure_id": "HB 1188",
+   "vote_date": "2025-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1188. The act rewrites Colorado's rules on reporting child abuse and neglect. A report cannot rest on a family being poor, unhoused, disabled, or on their race or ethnicity. A person who has to report cannot pass that duty to someone else. Organizations have to set protocols that follow state law, and cannot discourage staff from reporting. The Colorado Senate passed it 27-8 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1188. The act rewrites Colorado's rules on reporting child abuse and neglect. A report cannot rest on a family being poor, unhoused, disabled, or on their race or ethnicity. A person who has to report cannot pass that duty to someone else. Organizations have to set protocols that follow state law, and cannot discourage staff from reporting. The Colorado Senate passed it 27-8 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1509027,
+   "measure_id": "HB 1197",
+   "vote_date": "2025-03-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1197. The act sets rules for selling electric bicycles. A bike that can switch between classes has to be labeled to say so. Sellers cannot offer bikes that fail the labeling and equipment rules. The rules cover shops and online sales into the state. The Colorado House passed it 46-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1197. The act sets rules for selling electric bicycles. A bike that can switch between classes has to be labeled to say so. Sellers cannot offer bikes that fail the labeling and equipment rules. The rules cover shops and online sales into the state. The Colorado House passed it 46-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1548927,
+   "measure_id": "HB 1197",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1197. The act sets rules for selling electric bicycles. A bike that can switch between classes has to be labeled to say so. Sellers cannot offer bikes that fail the labeling and equipment rules. The rules cover shops and online sales into the state. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1197. The act sets rules for selling electric bicycles. A bike that can switch between classes has to be labeled to say so. Sellers cannot offer bikes that fail the labeling and equipment rules. The rules cover shops and online sales into the state. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1537220,
+   "measure_id": "HB 1234",
+   "vote_date": "2025-04-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1234. The act protects people applying for help with utility bills. The state cannot make an applicant give a social security number. It cannot share an applicant's information beyond what running the program needs. When paperwork is missing, the state has to give the applicant a chance to fix it rather than deny the claim outright. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1234. The act protects people applying for help with utility bills. The state cannot make an applicant give a social security number. It cannot share an applicant's information beyond what running the program needs. When paperwork is missing, the state has to give the applicant a chance to fix it rather than deny the claim outright. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1545953,
+   "measure_id": "HB 1234",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1234 and pass it. The act protects people applying for help with utility bills. The state cannot make an applicant give a social security number. It cannot share an applicant's information beyond what running the program needs. When paperwork is missing, the state has to give the applicant a chance to fix it rather than deny the claim outright. The Colorado House voted 41-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1234. The act protects people applying for help with utility bills. The state cannot make an applicant give a social security number. It cannot share an applicant's information beyond what running the program needs. When paperwork is missing, the state has to give the applicant a chance to fix it rather than deny the claim outright. The Colorado House voted 41-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1545952
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1567595,
+   "measure_id": "HB 1295",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1295 and pass it. A food truck has to get a fire safety permit from each local government it works in. The act makes a local government accept a permit issued elsewhere in Colorado when the conditions it names are met. The state fire prevention division has to write fire safety standards for local governments to use. Operators can show their permit through reasonable electronic means. The Colorado House voted 48-16 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1295. A food truck has to get a fire safety permit from each local government it works in. The act makes a local government accept a permit issued elsewhere in Colorado when the conditions it names are met. The state fire prevention division has to write fire safety standards for local governments to use. Operators can show their permit through reasonable electronic means. The Colorado House voted 48-16 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1567594
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564734,
+   "measure_id": "HB 1319",
+   "vote_date": "2025-05-02",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1319 and pass it. The act changes how a vacancy on a county board is filled in counties of at least 50,000 people. Today a party vacancy committee picks a replacement who serves until the next general election. Under the act, a vacancy that falls in a set window goes to a vacancy election in the following odd year. The state has to certify the ballot content for it, and committee meetings have to be watchable live. The Colorado House voted 47-14 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1319. The act changes how a vacancy on a county board is filled in counties of at least 50,000 people. Today a party vacancy committee picks a replacement who serves until the next general election. Under the act, a vacancy that falls in a set window goes to a vacancy election in the following odd year. The state has to certify the ballot content for it, and committee meetings have to be watchable live. The Colorado House voted 47-14 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1564733
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564737,
+   "measure_id": "HB 1327",
+   "vote_date": "2025-05-02",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1327 and pass it. The act changes how a statewide ballot measure gets its title. Proponents cannot flood the title board with repeat drafts on the same subject. The title has to carry a description of the measure's fiscal impact, so voters see the cost on the ballot. The act also fixes when the title board has to meet. The Colorado House voted 42-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1327. The act changes how a statewide ballot measure gets its title. Proponents cannot flood the title board with repeat drafts on the same subject. The title has to carry a description of the measure's fiscal impact, so voters see the cost on the ballot. The act also fixes when the title board has to meet. The Colorado House voted 42-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1564736
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1564498,
+   "measure_id": "HB 1327",
+   "vote_date": "2025-05-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1327. The act changes how a statewide ballot measure gets its title. Proponents cannot flood the title board with repeat drafts on the same subject. The title has to carry a description of the measure's fiscal impact, so voters see the cost on the ballot. The act also fixes when the title board has to meet. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1327. The act changes how a statewide ballot measure gets its title. Proponents cannot flood the title board with repeat drafts on the same subject. The title has to carry a description of the measure's fiscal impact, so voters see the cost on the ballot. The act also fixes when the title board has to meet. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1558912,
+   "measure_id": "HB 1328",
+   "vote_date": "2025-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1328. Direct care workers help people with daily living at home or in care settings. The act carries out what the state board for that workforce recommended. The board has to look into health benefits for those workers, what they would cost, and how to pay for them. By January 1, 2026 the state has to run a website telling direct care workers their rights and what help exists. The Colorado House passed it 43-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1328. Direct care workers help people with daily living at home or in care settings. The act carries out what the state board for that workforce recommended. The board has to look into health benefits for those workers, what they would cost, and how to pay for them. By January 1, 2026 the state has to run a website telling direct care workers their rights and what help exists. The Colorado House passed it 43-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1566779,
+   "measure_id": "HB 1328",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1328. Direct care workers help people with daily living at home or in care settings. The act carries out what the state board for that workforce recommended. The board has to look into health benefits for those workers, what they would cost, and how to pay for them. By January 1, 2026 the state has to run a website telling direct care workers their rights and what help exists. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1328. Direct care workers help people with daily living at home or in care settings. The act carries out what the state board for that workforce recommended. The board has to look into health benefits for those workers, what they would cost, and how to pay for them. By January 1, 2026 the state has to run a website telling direct care workers their rights and what help exists. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1547365,
+   "measure_id": "SB 31",
+   "vote_date": "2025-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 31. The act changes how emergency alerts reach people. From July 1, 2027 an alerting authority has to send alerts in the minority languages spoken widely in the area. Alerts still have to go out as fast as possible and follow federal rules. State grants can help counties and towns cover the cost. The Colorado House passed it 47-17 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 31. The act changes how emergency alerts reach people. From July 1, 2027 an alerting authority has to send alerts in the minority languages spoken widely in the area. Alerts still have to go out as fast as possible and follow federal rules. State grants can help counties and towns cover the cost. The Colorado House passed it 47-17 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1547492,
+   "measure_id": "SB 63",
+   "vote_date": "2025-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 63. The act tells school districts and charter schools how to decide what is in a school library. Each has to adopt a written policy for choosing, keeping and displaying library material. Each also has to adopt a written policy for reconsidering material someone objects to. The policies have to protect against harassment and discrimination. The Colorado House passed it 42-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 63. The act tells school districts and charter schools how to decide what is in a school library. Each has to adopt a written policy for choosing, keeping and displaying library material. Each also has to adopt a written policy for reconsidering material someone objects to. The policies have to protect against harassment and discrimination. The Colorado House passed it 42-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1549756,
+   "measure_id": "SB 63",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 63 and pass it. The act tells school districts and charter schools how to decide what is in a school library. Each has to adopt a written policy for choosing, keeping and displaying library material. Each also has to adopt a written policy for reconsidering material someone objects to. The policies have to protect against harassment and discrimination. The Colorado Senate voted 21-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 63. The act tells school districts and charter schools how to decide what is in a school library. Each has to adopt a written policy for choosing, keeping and displaying library material. Each also has to adopt a written policy for reconsidering material someone objects to. The policies have to protect against harassment and discrimination. The Colorado Senate voted 21-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1549755
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1558162,
+   "measure_id": "SB 144",
+   "vote_date": "2025-04-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 144. Colorado's paid family and medical leave program lets workers take paid time off for family or health reasons. A parent whose newborn is in intensive care can now take up to 12 more weeks of leave. The premium that funds the program is set at 0.88 percent of wages. The director then sets the rate each year, keeping the fund solvent and the rate steady. The Colorado House passed it 42-21 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 144. Colorado's paid family and medical leave program lets workers take paid time off for family or health reasons. A parent whose newborn is in intensive care can now take up to 12 more weeks of leave. The premium that funds the program is set at 0.88 percent of wages. The director then sets the rate each year, keeping the fund solvent and the rate steady. The Colorado House passed it 42-21 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1558838,
+   "measure_id": "SB 144",
+   "vote_date": "2025-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 144 and pass it. Colorado's paid family and medical leave program lets workers take paid time off for family or health reasons. A parent whose newborn is in intensive care can now take up to 12 more weeks of leave. The premium that funds the program is set at 0.88 percent of wages. The director then sets the rate each year, keeping the fund solvent and the rate steady. The Colorado Senate voted 21-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 144. Colorado's paid family and medical leave program lets workers take paid time off for family or health reasons. A parent whose newborn is in intensive care can now take up to 12 more weeks of leave. The premium that funds the program is set at 0.88 percent of wages. The director then sets the rate each year, keeping the fund solvent and the rate steady. The Colorado Senate voted 21-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1558837
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564572,
+   "measure_id": "SB 167",
+   "vote_date": "2025-05-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 167. The act changes how the state invests two public funds. One is the permanent fund that helps pay for schools. Investment goals now include helping Colorado communities as well as protecting the money. Some of the people overseeing the investments must know community investing. The Colorado House passed it 45-19 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 167. The act changes how the state invests two public funds. One is the permanent fund that helps pay for schools. Investment goals now include helping Colorado communities as well as protecting the money. Some of the people overseeing the investments must know community investing. The Colorado House passed it 45-19 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1565380,
+   "measure_id": "SB 167",
+   "vote_date": "2025-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 167 and pass it. The act changes how the state invests two public funds. One is the permanent fund that helps pay for schools. Investment goals now include helping Colorado communities as well as protecting the money. Some of the people overseeing the investments must know community investing. The Colorado Senate voted 24-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 167. The act changes how the state invests two public funds. One is the permanent fund that helps pay for schools. Investment goals now include helping Colorado communities as well as protecting the money. Some of the people overseeing the investments must know community investing. The Colorado Senate voted 24-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1565379
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1543309,
+   "measure_id": "SB 208",
+   "vote_date": "2025-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 208. Colorado had promised to make prison phone calls free to prisoners and their families by July 1, 2025. The act delays that by a year. The prison system covers 75 percent of the cost through June 2026, and all of it from July 1, 2026. Video calls, email and messaging are not covered either way. The Colorado House passed it 42-21 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 208. Colorado had promised to make prison phone calls free to prisoners and their families by July 1, 2025. The act delays that by a year. The prison system covers 75 percent of the cost through June 2026, and all of it from July 1, 2026. Video calls, email and messaging are not covered either way. The Colorado House passed it 42-21 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1555594,
+   "measure_id": "SB 226",
+   "vote_date": "2025-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the conference committee's report on Senate Bill 226 and pass it. Colorado runs a program giving chiropractic care, massage therapy and acupuncture to people with spinal cord and similar injuries. It serves people receiving home and community-based services who are over 18. The act keeps the program running past the date it was due to end. The Colorado House voted 50-15 to adopt that report and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against adopting the conference committee's report on Senate Bill 226. Colorado runs a program giving chiropractic care, massage therapy and acupuncture to people with spinal cord and similar injuries. It serves people receiving home and community-based services who are over 18. The act keeps the program running past the date it was due to end. The Colorado House voted 50-15 to adopt that report and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1555593
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1565874,
+   "measure_id": "SB 288",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 288. The act creates the Preventing Unauthorized Disclosure of Intimate Digital Depictions Act. Someone shown in an intimate image, including one made or altered by computer, can sue the person who shared it or threatened to. The act also updates the crimes of posting a private image and exploiting a child. The Colorado House passed it 43-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 288. The act creates the Preventing Unauthorized Disclosure of Intimate Digital Depictions Act. Someone shown in an intimate image, including one made or altered by computer, can sue the person who shared it or threatened to. The act also updates the crimes of posting a private image and exploiting a child. The Colorado House passed it 43-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1562216,
+   "measure_id": "SB 313",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 313. Proposition 123 sends state money to affordable housing. The act tightens how that money can be used. The housing division and the local government division each spend from the fund only for the purposes the act names. Money not spent stays in the fund rather than going elsewhere. The Colorado Senate passed it 28-7 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 313. Proposition 123 sends state money to affordable housing. The act tightens how that money can be used. The housing division and the local government division each spend from the fund only for the purposes the act names. Money not spent stays in the fund rather than going elsewhere. The Colorado Senate passed it 28-7 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564674,
+   "measure_id": "SB 313",
+   "vote_date": "2025-05-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 313. Proposition 123 sends state money to affordable housing. The act tightens how that money can be used. The housing division and the local government division each spend from the fund only for the purposes the act names. Money not spent stays in the fund rather than going elsewhere. The Colorado House passed it 43-21 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 313. Proposition 123 sends state money to affordable housing. The act tightens how that money can be used. The housing division and the local government division each spend from the fund only for the purposes the act names. Money not spent stays in the fund rather than going elsewhere. The Colorado House passed it 43-21 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,330 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1486352,
+   "measure_id": "SB 62",
+   "vote_date": "2025-02-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 62. A city court can no longer make failing to show up in court a crime of its own. That holds even in home rule cities, which usually set their own court rules. The ban covers any other name a city gives the same thing. A judge can still issue a bench warrant when someone misses a court date. The Colorado Senate passed it 21-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 62. A city court can no longer make failing to show up in court a crime of its own. That holds even in home rule cities, which usually set their own court rules. The ban covers any other name a city gives the same thing. A judge can still issue a bench warrant when someone misses a court date. The Colorado Senate passed it 21-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1485854
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1534051,
+   "measure_id": "SB 62",
+   "vote_date": "2025-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 62. A city court can no longer make failing to show up in court a crime of its own. That holds even in home rule cities, which usually set their own court rules. The ban covers any other name a city gives the same thing. A judge can still issue a bench warrant when someone misses a court date. The Colorado House passed it 40-21 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 62. A city court can no longer make failing to show up in court a crime of its own. That holds even in home rule cities, which usually set their own court rules. The ban covers any other name a city gives the same thing. A judge can still issue a bench warrant when someone misses a court date. The Colorado House passed it 40-21 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1531313,
+   "measure_id": "HB 1294",
+   "vote_date": "2025-03-31",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1294. Colorado bars courts from charging most costs and fees to people who broke the law as juveniles. It also bars charging their parent or guardian. That protection was set to expire on June 30, 2025. The act repeals the expiry date, so the protection stays in place. The Colorado House passed it 41-23 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1294. Colorado bars courts from charging most costs and fees to people who broke the law as juveniles. It also bars charging their parent or guardian. That protection was set to expire on June 30, 2025. The act repeals the expiry date, so the protection stays in place. The Colorado House passed it 41-23 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1555619,
+   "measure_id": "HB 1294",
+   "vote_date": "2025-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1294. Colorado bars courts from charging most costs and fees to people who broke the law as juveniles. It also bars charging their parent or guardian. That protection was set to expire on June 30, 2025. The act repeals the expiry date, so the protection stays in place. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1294. Colorado bars courts from charging most costs and fees to people who broke the law as juveniles. It also bars charging their parent or guardian. That protection was set to expire on June 30, 2025. The act repeals the expiry date, so the protection stays in place. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1548151,
+   "measure_id": "HB 1049",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1049. A person in custody already has the right to talk to their lawyer. The act says they also have the right to hear from that lawyer, including a lawyer the court appointed. That covers meetings at the jail or prison, phone calls, and video calls where they exist. A staff member working for the lawyer can take part, and police can check that person is authorized first. The talks stay private. The Colorado House passed it 44-17 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1049. A person in custody already has the right to talk to their lawyer. The act says they also have the right to hear from that lawyer, including a lawyer the court appointed. That covers meetings at the jail or prison, phone calls, and video calls where they exist. A staff member working for the lawyer can take part, and police can check that person is authorized first. The talks stay private. The Colorado House passed it 44-17 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1558825,
+   "measure_id": "HB 1049",
+   "vote_date": "2025-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1049. A person in custody already has the right to talk to their lawyer. The act says they also have the right to hear from that lawyer, including a lawyer the court appointed. That covers meetings at the jail or prison, phone calls, and video calls where they exist. A staff member working for the lawyer can take part, and police can check that person is authorized first. The talks stay private. The Colorado Senate passed it 26-8 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1049. A person in custody already has the right to talk to their lawyer. The act says they also have the right to hear from that lawyer, including a lawyer the court appointed. That covers meetings at the jail or prison, phone calls, and video calls where they exist. A staff member working for the lawyer can take part, and police can check that person is authorized first. The talks stay private. The Colorado Senate passed it 26-8 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1564716,
+   "measure_id": "HB 1013",
+   "vote_date": "2025-05-02",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1013 and pass it. The act gives people held in state prisons a right to social visits. Visits include in-person contact and non-contact visits, family time, phone calls and video calls. Visits from a lawyer or a health worker are not counted as social visits. The prison cannot take visits away because a person is in restrictive housing or has lost privileges. It also cannot turn away a visitor when the person agrees to the visit and both follow prison rules. The act does allow limits, such as capping contact visits for someone in restrictive housing at 30 days in a row. The Colorado House voted 43-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1013. The act gives people held in state prisons a right to social visits. Visits include in-person contact and non-contact visits, family time, phone calls and video calls. Visits from a lawyer or a health worker are not counted as social visits. The prison cannot take visits away because a person is in restrictive housing or has lost privileges. It also cannot turn away a visitor when the person agrees to the visit and both follow prison rules. The act does allow limits, such as capping contact visits for someone in restrictive housing at 30 days in a row. The Colorado House voted 43-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1564715
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1564472,
+   "measure_id": "HB 1013",
+   "vote_date": "2025-05-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1013. The act gives people held in state prisons a right to social visits. Visits include in-person contact and non-contact visits, family time, phone calls and video calls. Visits from a lawyer or a health worker are not counted as social visits. The prison cannot take visits away because a person is in restrictive housing or has lost privileges. It also cannot turn away a visitor when the person agrees to the visit and both follow prison rules. The act does allow limits, such as capping contact visits for someone in restrictive housing at 30 days in a row. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1013. The act gives people held in state prisons a right to social visits. Visits include in-person contact and non-contact visits, family time, phone calls and video calls. Visits from a lawyer or a health worker are not counted as social visits. The prison cannot take visits away because a person is in restrictive housing or has lost privileges. It also cannot turn away a visitor when the person agrees to the visit and both follow prison rules. The act does allow limits, such as capping contact visits for someone in restrictive housing at 30 days in a row. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1508566,
+   "measure_id": "HB 1114",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1114. The defense in a criminal case gets the right to look at physical evidence the police hold. Police have to allow it as soon as they can, and at least 35 days before trial. A police officer stays present to record who handled the evidence. While inspecting it, the defense must be able to talk privately and take private notes. Material showing the sexual exploitation of a child is left out. The Colorado Senate passed it 23-8 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1114. The defense in a criminal case gets the right to look at physical evidence the police hold. Police have to allow it as soon as they can, and at least 35 days before trial. A police officer stays present to record who handled the evidence. While inspecting it, the defense must be able to talk privately and take private notes. Material showing the sexual exploitation of a child is left out. The Colorado Senate passed it 23-8 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1511449,
+   "measure_id": "HB 1114",
+   "vote_date": "2025-03-10",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1114 and pass it. The defense in a criminal case gets the right to look at physical evidence the police hold. Police have to allow it as soon as they can, and at least 35 days before trial. A police officer stays present to record who handled the evidence. While inspecting it, the defense must be able to talk privately and take private notes. Material showing the sexual exploitation of a child is left out. The Colorado House voted 40-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1114. The defense in a criminal case gets the right to look at physical evidence the police hold. Police have to allow it as soon as they can, and at least 35 days before trial. A police officer stays present to record who handled the evidence. While inspecting it, the defense must be able to talk privately and take private notes. Material showing the sexual exploitation of a child is left out. The Colorado House voted 40-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1511448
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1505977,
+   "measure_id": "HB 1148",
+   "vote_date": "2025-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1148. The act reworks the protection orders a court issues against someone facing criminal charges. The order has to be on a standard form that names the people, animals and places it covers. The protected people get a copy. Breaking such an order is already a crime, and the act adds a new way to break one. That is drinking alcohol or using controlled substances when the order forbids it. A court can change or lift an order in the cases the act sets out. The Colorado House passed it 39-23 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1148. The act reworks the protection orders a court issues against someone facing criminal charges. The order has to be on a standard form that names the people, animals and places it covers. The protected people get a copy. Breaking such an order is already a crime, and the act adds a new way to break one. That is drinking alcohol or using controlled substances when the order forbids it. A court can change or lift an order in the cases the act sets out. The Colorado House passed it 39-23 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1537236,
+   "measure_id": "HB 1148",
+   "vote_date": "2025-04-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1148. The act reworks the protection orders a court issues against someone facing criminal charges. The order has to be on a standard form that names the people, animals and places it covers. The protected people get a copy. Breaking such an order is already a crime, and the act adds a new way to break one. That is drinking alcohol or using controlled substances when the order forbids it. A court can change or lift an order in the cases the act sets out. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1148. The act reworks the protection orders a court issues against someone facing criminal charges. The order has to be on a standard form that names the people, animals and places it covers. The protected people get a copy. Breaking such an order is already a crime, and the act adds a new way to break one. That is drinking alcohol or using controlled substances when the order forbids it. A court can change or lift an order in the cases the act sets out. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1555591,
+   "measure_id": "HB 1290",
+   "vote_date": "2025-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1290 and pass it. The act adds transit workers to Colorado's harassment law. Wrongly getting in the way of a transit worker doing their job now counts as harassment. Transit workers include bus and train operators, ticket inspectors, conductors and station staff. They also include the people who maintain, repair, test and clean vehicles and stations, whether they work for a public agency or a private company. Those workers get the rights the Victim Rights Act gives. The Regional Transportation District can also draw on a state fund for officer training. The Colorado House voted 37-27 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1290. The act adds transit workers to Colorado's harassment law. Wrongly getting in the way of a transit worker doing their job now counts as harassment. Transit workers include bus and train operators, ticket inspectors, conductors and station staff. They also include the people who maintain, repair, test and clean vehicles and stations, whether they work for a public agency or a private company. Those workers get the rights the Victim Rights Act gives. The Regional Transportation District can also draw on a state fund for officer training. The Colorado House voted 37-27 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1555590
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1562203,
+   "measure_id": "SB 190",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 190. The act changes how people leave custody. A sheriff can let someone who has posted bail stay in jail overnight so staff can link them to services. More people can help an inmate seek special needs parole, including a public defender liaison. When a licensed provider records that an inmate has a serious impairment or severe memory and thinking problems, the prison has to refer them to the parole board. The prison cannot set that referral aside, and the provider is not liable for the finding. The act also tightens bail paperwork, so whoever pays gets the bond papers, a written notice and the next court date. The Colorado House passed it 44-21 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 190. The act changes how people leave custody. A sheriff can let someone who has posted bail stay in jail overnight so staff can link them to services. More people can help an inmate seek special needs parole, including a public defender liaison. When a licensed provider records that an inmate has a serious impairment or severe memory and thinking problems, the prison has to refer them to the parole board. The prison cannot set that referral aside, and the provider is not liable for the finding. The act also tightens bail paperwork, so whoever pays gets the bond papers, a written notice and the next court date. The Colorado House passed it 44-21 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1564419,
+   "measure_id": "SB 190",
+   "vote_date": "2025-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 190 and pass it. The act changes how people leave custody. A sheriff can let someone who has posted bail stay in jail overnight so staff can link them to services. More people can help an inmate seek special needs parole, including a public defender liaison. When a licensed provider records that an inmate has a serious impairment or severe memory and thinking problems, the prison has to refer them to the parole board. The prison cannot set that referral aside, and the provider is not liable for the finding. The act also tightens bail paperwork, so whoever pays gets the bond papers, a written notice and the next court date. The Colorado Senate voted 21-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 190. The act changes how people leave custody. A sheriff can let someone who has posted bail stay in jail overnight so staff can link them to services. More people can help an inmate seek special needs parole, including a public defender liaison. When a licensed provider records that an inmate has a serious impairment or severe memory and thinking problems, the prison has to refer them to the parole board. The prison cannot set that referral aside, and the provider is not liable for the finding. The act also tightens bail paperwork, so whoever pays gets the bond papers, a written notice and the next court date. The Colorado Senate voted 21-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1564418
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1555497,
+   "measure_id": "SB 70",
+   "vote_date": "2025-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 70. An online marketplace has to alert police when it knows, or should know, that a seller is offering stolen goods to a buyer in Colorado. It does not have to report if police already told it about that seller and those goods. The marketplace has to set up a way for shoppers to report suspicious activity by phone or online. It also has to have a way to spot organized retail crime. Breaking these rules counts as a deceptive trade practice. The Colorado House passed it 48-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 70. An online marketplace has to alert police when it knows, or should know, that a seller is offering stolen goods to a buyer in Colorado. It does not have to report if police already told it about that seller and those goods. The marketplace has to set up a way for shoppers to report suspicious activity by phone or online. It also has to have a way to spot organized retail crime. Breaking these rules counts as a deceptive trade practice. The Colorado House passed it 48-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1562250,
+   "measure_id": "HB 1062",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1062. Stealing a firearm is now a class 6 felony, whatever the gun is worth. Before the act, the charge turned on the value of what was taken, so a cheap gun could be a minor offense. The act puts $324,225 into the trial courts to handle the extra cases. The Colorado Senate passed it 28-7 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1062. Stealing a firearm is now a class 6 felony, whatever the gun is worth. Before the act, the charge turned on the value of what was taken, so a cheap gun could be a minor offense. The act puts $324,225 into the trial courts to handle the extra cases. The Colorado Senate passed it 28-7 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
