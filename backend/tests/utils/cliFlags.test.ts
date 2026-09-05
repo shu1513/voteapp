@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { readStrictFlagValue, readStrictPositiveIntegerFlag } from "../../src/utils/cliFlags.js";
+import { readPositiveIntegerFlag, readStrictFlagValue, readStrictPositiveIntegerFlag } from "../../src/utils/cliFlags.js";
 
 describe("readStrictFlagValue", () => {
   it("reads the space and inline forms, trimmed", () => {
@@ -83,6 +83,36 @@ describe("readStrictPositiveIntegerFlag", () => {
     );
     expect(() => readStrictPositiveIntegerFlag(["--max-candidates=1", "--max-candidates=2"], "--max-candidates")).toThrow(
       "Provide --max-candidates at most once"
+    );
+  });
+});
+
+describe("readPositiveIntegerFlag", () => {
+  it("parses a positive integer from either form and falls back when absent", () => {
+    expect(readPositiveIntegerFlag(["--limit", "42"], "--limit", 7)).toBe(42);
+    expect(readPositiveIntegerFlag(["--limit=42"], "--limit", 7)).toBe(42);
+    expect(readPositiveIntegerFlag(["--other=1"], "--limit", 7)).toBe(7);
+    expect(readPositiveIntegerFlag(["--limit=9007199254740991"], "--limit", 7)).toBe(Number.MAX_SAFE_INTEGER);
+  });
+
+  it("rejects a flag given without a value", () => {
+    expect(() => readPositiveIntegerFlag(["--limit"], "--limit", 7)).toThrow("--limit requires a value");
+  });
+
+  it("rejects zero, negatives, leading zeros, decimals, and non-digits", () => {
+    for (const raw of ["0", "-1", "05", "1.5", "1e3", "abc", "12abc"]) {
+      expect(() => readPositiveIntegerFlag([`--limit=${raw}`], "--limit", 7)).toThrow(
+        `--limit must be a positive integer, got: ${raw}`
+      );
+    }
+  });
+
+  it("rejects digit-only values above Number.MAX_SAFE_INTEGER instead of rounding them", () => {
+    expect(() => readPositiveIntegerFlag(["--limit=9007199254740993"], "--limit", 7)).toThrow(
+      "--limit must be a positive integer, got: 9007199254740993"
+    );
+    expect(() => readPositiveIntegerFlag(["--limit", "99999999999999999999"], "--limit", 7)).toThrow(
+      "--limit must be a positive integer, got: 99999999999999999999"
     );
   });
 });
