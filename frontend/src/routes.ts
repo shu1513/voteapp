@@ -29,6 +29,7 @@ export default [
     route("me/picks", "pages/PicksPage.tsx"),
     route("me/follows", "pages/FollowsPage.tsx"),
     route("me/settings", "pages/SettingsPage.tsx"),
+    route("me/membership", "pages/MembershipPage.tsx"),
     // Public tokenized share page — the token is the authorization.
     route("picks/:token", "pages/PublicPickCardPage.tsx"),
     route("*", "pages/NotFoundPage.tsx"),

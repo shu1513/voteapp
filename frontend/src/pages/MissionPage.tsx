@@ -2,7 +2,7 @@ import type { MetaFunction } from "react-router";
 import { Link } from "react-router";
 import { APP_NAME, useMe } from "@voteapp/api-client";
 import { EmailPreferenceToggles } from "../components/EmailPreferenceToggles";
-import { MembershipThanks } from "../components/MembershipSection";
+import { MembershipThanks } from "../components/SupportCheckout";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { pageMeta } from "../lib/pageMeta";
 
@@ -19,8 +19,8 @@ const ctaClass =
 // Public mission page: the pitch reads without an account. Payment moved to
 // the kind-specific pages /support/member and /support/once; the buttons here
 // just link there, so guests can click too and those pages handle auth gating.
-// An existing member sees a compact thanks + portal button at the bottom
-// (MembershipThanks); full management detail stays on Settings.
+// An existing member sees a compact thanks + Manage membership link at the
+// bottom (MembershipThanks); management lives on /me/membership.
 export default function MissionPage() {
   const { me } = useMe();
 
