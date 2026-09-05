@@ -812,7 +812,7 @@ export function ElectionPage() {
                 survives rail walks). */}
             {data.race_type === "ballot_measure" && showChoiceControls ? (
               <div className="mt-3">
-                <AutoPickControl key={data.id} electionId={data.id} seatsToFill={null} compact />
+                <AutoPickControl key={data.id} electionId={data.id} seatsToFill={null} compact measure />
               </div>
             ) : null}
             {/* No inline Yes/No here: the sticky card at the page's end is

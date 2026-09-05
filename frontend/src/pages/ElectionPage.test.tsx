@@ -839,9 +839,10 @@ describe("ElectionPage", () => {
     // mid-page buttons are gone).
     const yes = await screen.findByRole("button", { name: "Yes" });
     expect(screen.getAllByRole("button", { name: "Yes" })).toHaveLength(1);
-    // Auto-pick is account-only and hides entirely from guests — no button
-    // anywhere on the page for this anonymous session.
+    // Auto-pick is account-only: guests get the sign-up teaser in its
+    // place (measure wording), never the button itself.
     expect(screen.queryByRole("button", { name: "Auto-pick by my issues" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Does this measure match your values?" })).toBeInTheDocument();
     // Nothing to confirm before the pick.
     expect(screen.queryByRole("link", { name: /My Draft/ })).not.toBeInTheDocument();
     await userEvent.setup().click(yes);

@@ -12,6 +12,7 @@ import {
 } from "@voteapp/api-client";
 import type { AutoPickCandidateReport, AutoPickElectionResult } from "@voteapp/api-client";
 import { currentAttribution, errorCategoryOf, track } from "../lib/usage";
+import { RegisterPromptDialog } from "./RegisterPromptDialog";
 
 // "Pick by my issues": one button that runs the auto-pick engine for this election
 // (POST /api/me/auto-picks, mode replace) and opens a "Why this pick" panel
@@ -22,9 +23,12 @@ import { currentAttribution, errorCategoryOf, track } from "../lib/usage";
 // port); this file keeps the web widgets.
 //
 // Below the issue floor the button explains what to do instead of calling
-// the API. Guests see nothing at all — issue preferences are account-only,
-// and a control a new visitor can't use is pure noise on an already-dense
-// election page.
+// the API. Guests get a teaser pill in the button's place — "Which
+// candidate best matches your values?" — that opens the shared log in /
+// sign up dialog (same as the follow button), with this page as the
+// post-auth return path: issue preferences are account-only, and the
+// question is the pitch for an account. Plain words on purpose: a first
+// visit has no idea the app keeps "my issues".
 export { MIN_AUTO_PICK_ISSUES };
 
 type AutoPickControlProps = {
@@ -36,29 +40,71 @@ type AutoPickControlProps = {
   /** Smaller pill (measure section's mid-page placement) — the Yes/No pair
    * on the sticky card stays the page's loud control. */
   compact?: boolean;
+  /** Ballot measure: the guest teaser asks about "this measure", not a
+   * candidate. */
+  measure?: boolean;
   /** Fires after a run that made a pick. The engine scores the whole
    * roster, not the party-filtered view the button sits under — the page
    * uses this to clear its filter so the picked card is never hidden. */
   onPicked?: () => void;
 };
 
-export function AutoPickControl({ electionId, seatsToFill, compact = false, onPicked }: AutoPickControlProps) {
+export function AutoPickControl({
+  electionId,
+  seatsToFill,
+  compact = false,
+  measure = false,
+  onPicked,
+}: AutoPickControlProps) {
   const { me } = useMe();
   const { preferences, isLoading: preferencesLoading, isError: preferencesError } = useMyResearchAreas();
   const autoPick = useAutoPick();
   const saving = useElectionChoiceSaving();
   const [prompt, setPrompt] = useState<"rank_issues" | null>(null);
   const [result, setResult] = useState<AutoPickElectionResult | null>(null);
+  const [teaserOpen, setTeaserOpen] = useState(false);
 
   const areaNames = new Map(preferences.map((preference) => [preference.research_area_id, preference.name]));
   const areaName = (researchAreaId: string) => areaNames.get(researchAreaId) ?? "one of your issues";
 
-  // Signed-out (null) and still-resolving (undefined) sessions render
-  // nothing: guests can't rank issues, so the button would only add clutter
-  // for brand-new visitors, and rendering during the resolve would flash it
-  // at them. Signed-in users get it once the session loads.
-  if (me == null) {
+  // Still-resolving (undefined) sessions render nothing, so neither the
+  // button nor the teaser flashes at a user who is about to be signed in.
+  if (me === undefined) {
     return null;
+  }
+  // Signed-out: the teaser instead of the button, styled exactly like it
+  // (same orange pill, same size) so it reads as the one action here. The
+  // click opens the shared dialog (the dialog owns the signup_prompt usage
+  // events), which explains the two-step deal: pick issues, then see the
+  // match.
+  if (me === null) {
+    const question = measure
+      ? "Does this measure match your values?"
+      : "Which candidate best matches your values?";
+    return (
+      <>
+        <button
+          type="button"
+          onClick={() => setTeaserOpen(true)}
+          className={`rounded-full border border-autopick-border bg-autopick font-semibold text-autopick-ink transition hover:bg-autopick-dark ${
+            compact ? "px-2.5 py-1 text-xs" : "px-3 py-1.5 text-sm"
+          }`}
+        >
+          {question}
+        </button>
+        <RegisterPromptDialog
+          open={teaserOpen}
+          onClose={() => setTeaserOpen(false)}
+          source="autopick"
+          title={question}
+          description={
+            measure
+              ? "Sign up to pick the issues you care about, and see whether this measure matches what you believe. Signing up is free."
+              : "Sign up to pick the issues you care about, and see which candidate best matches what you believe. Signing up is free."
+          }
+        />
+      </>
+    );
   }
 
   function onClick() {
