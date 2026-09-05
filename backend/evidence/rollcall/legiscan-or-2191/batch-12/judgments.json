@@ -1,0 +1,94 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1501276,
+      "measure_id": "HB 2010",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2010, which keeps two health care funding charges alive for six more years, to the end of 2032. One is a two percent charge on health insurance premiums, the other a matching charge on managed care plans. Both pay for the Oregon Reinsurance Program, which covers part of the cost of the most expensive claims so that premiums on the individual market stay lower. Without this they would have ended in 2026. The law also lets insurers count what they cede to that program as reinsurance credit. The Oregon House passed it 40-15, and it became law.",
+      "nay_description": "Voted against House Bill 2010, which keeps two health care funding charges alive for six more years, to the end of 2032. One is a two percent charge on health insurance premiums, the other a matching charge on managed care plans. Both pay for the Oregon Reinsurance Program, which covers part of the cost of the most expensive claims so that premiums on the individual market stay lower. Without this they would have ended in 2026. The law also lets insurers count what they cede to that program as reinsurance credit. The Oregon House passed it 40-15, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1531186,
+      "measure_id": "HB 3025",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3025, which changes how Oregon works out the size of its main college grant for students with financial need. The old law split the cost of education three ways between the student's family, the federal government and the state, and that formula is gone. The higher education commission now sets each award on how much the student is enrolled for and an analysis of their need. It may also give the grant to students in programs that do not lead to a degree. The Oregon House passed it 34-22, and it became law.",
+      "nay_description": "Voted against House Bill 3025, which changes how Oregon works out the size of its main college grant for students with financial need. The old law split the cost of education three ways between the student's family, the federal government and the state, and that formula is gone. The higher education commission now sets each award on how much the student is enrolled for and an analysis of their need. It may also give the grant to students in programs that do not lead to a degree. The Oregon House passed it 34-22, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1589489,
+      "measure_id": "HB 3025",
+      "vote_date": "2025-06-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3025, which changes how Oregon works out the size of its main college grant for students with financial need. The old law split the cost of education three ways between the student's family, the federal government and the state, and that formula is gone. The higher education commission now sets each award on how much the student is enrolled for and an analysis of their need. It may also give the grant to students in programs that do not lead to a degree. The Oregon Senate passed it 18-10, and it became law.",
+      "nay_description": "Voted against House Bill 3025, which changes how Oregon works out the size of its main college grant for students with financial need. The old law split the cost of education three ways between the student's family, the federal government and the state, and that formula is gone. The higher education commission now sets each award on how much the student is enrolled for and an analysis of their need. It may also give the grant to students in programs that do not lead to a degree. The Oregon Senate passed it 18-10, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1591106,
+      "measure_id": "SB 141",
+      "vote_date": "2025-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 141, which builds a common yardstick for how Oregon school districts are doing. The State Board of Education must set statewide targets, and the education department must then set targets for groups of similar districts and growth targets for each one. Districts that take state school money must measure their results against them, overall and for particular groups of students. Two new measures join the list: how many eighth graders are proficient in math, and how regularly the youngest children attend. The Oregon House passed it 39-15, and it became law.",
+      "nay_description": "Voted against Senate Bill 141, which builds a common yardstick for how Oregon school districts are doing. The State Board of Education must set statewide targets, and the education department must then set targets for groups of similar districts and growth targets for each one. Districts that take state school money must measure their results against them, overall and for particular groups of students. Two new measures join the list: how many eighth graders are proficient in math, and how regularly the youngest children attend. The Oregon House passed it 39-15, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1585461,
+      "measure_id": "SB 141",
+      "vote_date": "2025-06-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 141, which builds a common yardstick for how Oregon school districts are doing. The State Board of Education must set statewide targets, and the education department must then set targets for groups of similar districts and growth targets for each one. Districts that take state school money must measure their results against them, overall and for particular groups of students. Two new measures join the list: how many eighth graders are proficient in math, and how regularly the youngest children attend. The Oregon Senate passed it 18-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 141, which builds a common yardstick for how Oregon school districts are doing. The State Board of Education must set statewide targets, and the education department must then set targets for groups of similar districts and growth targets for each one. Districts that take state school money must measure their results against them, overall and for particular groups of students. Two new measures join the list: how many eighth graders are proficient in math, and how regularly the youngest children attend. The Oregon Senate passed it 18-11, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

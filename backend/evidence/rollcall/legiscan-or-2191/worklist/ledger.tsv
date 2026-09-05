@@ -1,6 +1,6 @@
 bill	disposition	reason	house_roll	senate_roll	title
 HB2005	drop:filter-5	civil commitment standards, fitness to proceed and facility siting in one bill; widening involuntary treatment is a contested direction, not a settled one	1595861	1595586	Relating to behavioral health; and declaring an emergency.
-HB2010	candidate		1501276		Relating to funding to improve access to health care; and prescribing an effective date.
+HB2010	batch-12	judged and imported	1501276		Relating to funding to improve access to health care; and prescribing an effective date.
 HB2015	drop:screened	directs OHA rulemaking and a study of residential mental health settings; study-led		1594018	Relating to behavioral health; and declaring an emergency.
 HB2016	drop:screened	removes licensing-board discipline records from public sources after three or five years; reads as privacy and as reduced transparency	1551686	1589510	Relating to discipline imposed by the Oregon Board of Licensed Professional Counselors and Therapists.
 HB2024	drop:filter-5	behavioral health workforce grants with a $45 million appropriation; appropriation-led		1594403	Relating to the behavioral health workforce; and declaring an emergency.
@@ -18,7 +18,7 @@ HB2351	drop:screened	changes how a business reports benefit-program data; admini
 HB2356	drop:screened	adds land inside Metro urban growth boundary to the Metro district; local boundary mechanics	1494947	1584727	Relating to a metropolitan service district boundaries.
 HB2370	drop:screened	raises the PUC fee on public utilities to cover commission costs; fee bill	1585498	1591122	Relating to fees imposed by the Public Utility Commission; and declaring an emergency.
 HB2385	batch-03	judged and imported	1583099	1580317	Relating to restrictions on 340B covered entities; and prescribing an effective date.
-HB2453	candidate		1548893	1587703	Relating to education; and declaring an emergency.
+HB2453	drop:filter-5	strips the school equity committee of its duty to advise the board, but also lets the superintendent act on its recommendations without board approval; the two pull opposite ways	1548893	1587703	Relating to education; and declaring an emergency.
 HB2508	drop:screened	directs a method for electronic student data; administrative		1595039	Relating to student data; and declaring an emergency.
 HB2511	drop:filter-5	widens the education workforce data the department collects; administrative	1505175	1566711	Relating to education workforce data.
 HB2514	drop:filter-5	raises an education service district bonding limit; fiscal capacity, no direction	1589685	1587791	Relating to education service district indebtedness.
@@ -46,7 +46,7 @@ HB2808	drop:screened	raises well fees; fee bill	1593927	1594991	Relating to fees
 HB2809	drop:screened	raises the pesticide registration fee cap; fee bill	1585485	1591128	Relating to pesticide registration fees; and prescribing an effective date.
 HB2819	drop:screened	House roll superseded by a 43-5 concurrence; fire-protection citations, narrow	1519580		Relating to fire protection enforcement procedures.
 HB2900	drop:screened	changes the definition of contract teacher; narrow	1548890	1587690	Relating to teachers.
-HB2931	candidate		1567343	1576144	Relating to the interstate bridge replacement program.
+HB2931	batch-11	judged and imported	1567343	1576144	Relating to the interstate bridge replacement program.
 HB2932	drop:screened	lets a public official be paid for teaching at certain schools; narrow	1547201		Relating to exceptions to prohibited use of official position or office.
 HB2933	drop:screened	approves Criminal Justice Commission rule changes; ratification	1495078	1570627	Relating to the Oregon Criminal Justice Commission.
 HB2944	drop:filter-5	penalties under the public employee collective bargaining act; labor relations, no area fits	1578774	1575042	Relating to penalties for failure to comply with certain requirements under the laws governing public employee collective bargaining.
@@ -56,7 +56,7 @@ HB2982	drop:screened	raises boat fees for an invasive species fund; fee bill		15
 HB3003	drop:filter-5	adds data to a child welfare report and disaggregates it by race; reporting only	1526808		Relating to Department of Human Services annual child welfare reporting.
 HB3020	drop:filter-5	bans wagering on dog racing; no research area covers animal welfare		1560046	Relating to racing.
 HB3024	batch-07	judged and imported	1504353	1589550	Relating to the reduction of unemployment benefits due to disqualification; and prescribing an effective date.
-HB3025	candidate		1531186	1589489	Relating to the Oregon Opportunity Grant program.
+HB3025	batch-12	judged and imported	1531186	1589489	Relating to the Oregon Opportunity Grant program.
 HB3026	drop:filter-5	higher education grab-bag: meetings, procurement, a scholarship program and three studies	1552497	1589658	Relating to the Higher Education Coordinating Commission; and declaring an emergency.
 HB3027	drop:screened	lets HECC seek a court order against career schools; enforcement plumbing		1578791	Relating to injunctions regarding career school regulatory violations.
 HB3028	drop:screened	lets HECC set application review fees by rule; fee bill	1508072	1589543	Relating to degree authorization by the Higher Education Coordinating Commission.
@@ -65,21 +65,21 @@ HB3038	drop:screened	House roll superseded by a 33-7 concurrence; omnibus educat
 HB3041	drop:screened	changes the type of law providing for an educator council; structural	1499116	1560495	Relating to the Educator Advancement Council; and prescribing an effective date.
 HB3045	drop:screened	lets the pharmacy board require an examination of a licensee under investigation; narrow	1518993	1591076	Relating to the State Board of Pharmacy; and prescribing an effective date.
 HB3054	batch-02	judged and imported	1549926	1589837	Relating to residential tenancies for a space in a facility; and declaring an emergency.
-HB3069	candidate		1595533	1594228	Relating to public safety; and declaring an emergency.
+HB3069	batch-11	judged and imported	1595533	1594228	Relating to public safety; and declaring an emergency.
 HB3144	batch-05	judged and imported		1578792	Relating to dwellings.
 HB3148	batch-08	judged and imported	1594164		Relating to the availability of residential telecommunication services for low-income customers; and declaring an emergency.
 HB3167	drop:filter-5	its only divided House roll is superseded by a 37-3 concurrence and the Senate never divided; attributing the superseded vote is the federal roll-160 retraction shape	1552514		Relating to regulating sales of admission tickets to entertainment events.
 HB3179	batch-08	judged and imported		1594492	Relating to public utilities; and declaring an emergency.
 HB3187	batch-01	judged and imported	1549674	1570360	Relating to age-based employment discrimination; and prescribing an effective date.
 HB3194	drop:filter-5	landowner liability for farmworker camps; farm labour housing enforcement, and no research area covers labour or worker-protection questions, the same gap that dropped HB 2688 and HB 2944	1593104	1595282	Relating to farmworker camps.
-HB3233	candidate		1549709	1560449	Relating to rail; and prescribing an effective date.
-HB3336	candidate		1590932		Relating to electric transmission systems; and prescribing an effective date.
+HB3233	batch-11	judged and imported	1549709	1560449	Relating to rail; and prescribing an effective date.
+HB3336	batch-11	judged and imported	1590932		Relating to electric transmission systems; and prescribing an effective date.
 HB3342	drop:filter-5	water rights application processing, notice and deadlines; administrative	1581100	1579065	Relating to water; and prescribing an effective date.
 HB3365	batch-04	judged and imported	1591480	1589737	Relating to climate change instruction in public schools.
 HB3372	drop:filter-5	expands exempt well use to commercial gardens while adding a daily cap where none existed; runs both ways	1581167		Relating to exempt uses of water.
 HB3378	drop:filter-5	requires a non-app key and working locks; tenant habitability with no supply or cost effect, the Maryland HB 767 precedent	1514355	1570174	Relating to tenant dwelling access to dwelling unit.
 HB3409	batch-10	judged and imported	1566289	1586792	Relating to health care; and prescribing an effective date.
-HB3410	candidate		1594348		Relating to health care; and declaring an emergency.
+HB3410	batch-11	judged and imported	1594348		Relating to health care; and declaring an emergency.
 HB3521	batch-10	judged and imported	1551435	1589518	Relating to residential tenancy hold deposits.
 HB3525	batch-03	judged and imported	1595907	1595528	Relating to exempt wells that supply ground water for domestic purposes.
 HB3544	drop:screened	creates a standard contested-case process for water use; procedural	1596058		Relating to water.
@@ -134,16 +134,16 @@ SB91	batch-03	judged and imported	1564954		Relating to firefighting foam.
 SB95	drop:screened	adds circuit court judgeships; capacity, no area carries a direction	1595648	1594109	Relating to judicial positions; and declaring an emergency.
 SB97	drop:screened	changes funding for family law services; appropriative in substance	1574417	1513111	Relating to funding for services in domestic relations cases; and declaring an emergency.
 SB98	drop:screened	assorted changes to court administration; housekeeping		1576329	Relating to court processes; and declaring an emergency.
-SB141	candidate		1591106	1585461	Relating to education; and declaring an emergency.
+SB141	batch-12	judged and imported	1591106	1585461	Relating to education; and declaring an emergency.
 SB143	drop:screened	moves unemployment insurance tax money between UI funds; accounting	1591636		Relating to administration of public funds; and prescribing an effective date.
 SB147	drop:filter-5	renames the Elliott State Forest and moves it between boards; land governance, contested	1584932		Relating to the Elliott State Forest.
 SB150	batch-07	judged and imported	1584102		Relating to compensation for services performed in connection with a claim for a veteran's benefit; and prescribing an effective date.
-SB163	candidate			1595876	Relating to parentage; and prescribing an effective date.
+SB163	drop:filter-5	adopts the Uniform Parentage Act and rewrites parentage presumptions, assisted reproduction, surrogacy, child support, adoption and intestate succession together; a technical omnibus with no single direction		1595876	Relating to parentage; and prescribing an effective date.
 SB243	batch-01	judged and imported	1595256	1595872	Relating to firearms; and prescribing an effective date.
 SB295	batch-07	judged and imported	1572193		Relating to pharmacy.
 SB426	batch-09	judged and imported	1580006	1581241	Relating to wages.
 SB430	batch-01	judged and imported	1581255	1583987	Relating to disclosures required in connection with online transactions.
-SB476	candidate		1595626	1595884	Relating to professional workforce; and declaring an emergency.
+SB476	batch-11	judged and imported	1595626	1595884	Relating to professional workforce; and declaring an emergency.
 SB537	batch-09	judged and imported	1595462	1593990	Relating to violence in health care settings.
 SB551	batch-02	judged and imported	1575305	1579005	Relating to plastic waste.
 SB558	drop:filter-5	lets marijuana licensees share samples at trade events; narrow industry rule	1573386	1551803	Relating to cannabis market growth; and prescribing an effective date.
@@ -160,7 +160,7 @@ SB793	drop:screened	sets fees and rates for easements on state submerged land; f
 SB805	drop:screened	shortens a TSPC complaint verification wait and adds civil penalties; narrow		1572184	Relating to complaints filed with the Teacher Standards and Practices Commission.
 SB817	drop:screened	raises LUBA filing fees; fee bill	1571965		Relating to Land Use Board of Appeals fees.
 SB822	batch-05	judged and imported	1594358	1591085	Relating to provider networks.
-SB824	candidate		1595935	1595559	Relating to health insurance.
+SB824	batch-11	judged and imported	1595935	1595559	Relating to health insurance.
 SB827	batch-07	judged and imported	1574023	1501258	Relating to the Oregon Solar and Storage Rebate Program.
 SB833	drop:screened	changes rules on soil amendments; narrow		1501602	Relating to soil-enhancing products.
 SB834	drop:screened	changes rules for mental health treatment facilities; narrow	1572178	1495244	Relating to facilities that provide mental health treatment.

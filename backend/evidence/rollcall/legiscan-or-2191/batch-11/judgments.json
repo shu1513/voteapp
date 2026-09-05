@@ -1,0 +1,220 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1567343,
+      "measure_id": "HB 2931",
+      "vote_date": "2025-05-07",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2931, which updates the law for replacing the Interstate 5 bridge between Oregon and Washington. It rewrites the legal description of the work to match what is now being built. It also lets the state transport board sign deals with Washington or its agent. Oregon's share of the tolls may be spent only on what the state constitution allows road money to be spent on. Tolls must stay high enough to pay off the bonds raised for the work. The Oregon House passed it 31-24, and it became law.",
+      "nay_description": "Voted against House Bill 2931, which updates the law for replacing the Interstate 5 bridge between Oregon and Washington. It rewrites the legal description of the work to match what is now being built. It also lets the state transport board sign deals with Washington or its agent. Oregon's share of the tolls may be spent only on what the state constitution allows road money to be spent on. Tolls must stay high enough to pay off the bonds raised for the work. The Oregon House passed it 31-24, and it became law.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1576144,
+      "measure_id": "HB 2931",
+      "vote_date": "2025-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2931, which updates the law for replacing the Interstate 5 bridge between Oregon and Washington. It rewrites the legal description of the work to match what is now being built. It also lets the state transport board sign deals with Washington or its agent. Oregon's share of the tolls may be spent only on what the state constitution allows road money to be spent on. Tolls must stay high enough to pay off the bonds raised for the work. The Oregon Senate passed it 17-12, and it became law.",
+      "nay_description": "Voted against House Bill 2931, which updates the law for replacing the Interstate 5 bridge between Oregon and Washington. It rewrites the legal description of the work to match what is now being built. It also lets the state transport board sign deals with Washington or its agent. Oregon's share of the tolls may be spent only on what the state constitution allows road money to be spent on. Tolls must stay high enough to pay off the bonds raised for the work. The Oregon Senate passed it 17-12, and it became law.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1549709,
+      "measure_id": "HB 3233",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3233, which pushes Oregon to plan passenger rail with its neighbors and report on how it runs. The transportation department must work with Washington State and British Columbia on a shared approach to the rail corridor they share. The state rail plan must now include ways to add capacity, plans to upgrade track and related works, and a summary of federal grant bids made, won and lost. Every quarter the department must tell the Legislature how many people rode and how often trains ran on time. The Oregon House passed it 44-12, and it became law.",
+      "nay_description": "Voted against House Bill 3233, which pushes Oregon to plan passenger rail with its neighbors and report on how it runs. The transportation department must work with Washington State and British Columbia on a shared approach to the rail corridor they share. The state rail plan must now include ways to add capacity, plans to upgrade track and related works, and a summary of federal grant bids made, won and lost. Every quarter the department must tell the Legislature how many people rode and how often trains ran on time. The Oregon House passed it 44-12, and it became law.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1560449,
+      "measure_id": "HB 3233",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3233, which pushes Oregon to plan passenger rail with its neighbors and report on how it runs. The transportation department must work with Washington State and British Columbia on a shared approach to the rail corridor they share. The state rail plan must now include ways to add capacity, plans to upgrade track and related works, and a summary of federal grant bids made, won and lost. Every quarter the department must tell the Legislature how many people rode and how often trains ran on time. The Oregon Senate passed it 16-12, and it became law.",
+      "nay_description": "Voted against House Bill 3233, which pushes Oregon to plan passenger rail with its neighbors and report on how it runs. The transportation department must work with Washington State and British Columbia on a shared approach to the rail corridor they share. The state rail plan must now include ways to add capacity, plans to upgrade track and related works, and a summary of federal grant bids made, won and lost. Every quarter the department must tell the Legislature how many people rode and how often trains ran on time. The Oregon Senate passed it 16-12, and it became law.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1590932,
+      "measure_id": "HB 3336",
+      "vote_date": "2025-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3336, which makes big power companies show whether cheaper fixes could carry more power before they build new lines. The rule covers a company that sells more than two million megawatt hours a year. When it files a grid plan, it must weigh the cost and timing of options that squeeze more out of the lines it has. One is restringing a line with wire that carries at least 75 percent more power. The company must also file a plan for using such tools where they pay off. The Oregon House agreed to the Senate's changes 41-12, and it became law.",
+      "nay_description": "Voted against House Bill 3336, which makes big power companies show whether cheaper fixes could carry more power before they build new lines. The rule covers a company that sells more than two million megawatt hours a year. When it files a grid plan, it must weigh the cost and timing of options that squeeze more out of the lines it has. One is restringing a line with wire that carries at least 75 percent more power. The company must also file a plan for using such tools where they pay off. The Oregon House agreed to the Senate's changes 41-12, and it became law.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1595626,
+      "measure_id": "SB 476",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 476, which helps people trained abroad get licensed to work in Oregon. Every state licensing board must train the staff who deal with these applicants. The state's immigrant and refugee office approves that training. The law also creates a starter license for doctors trained abroad. To get one, a doctor needs a degree and training much like an Oregon doctor's, plus a pass from the national body for foreign medical graduates. The Oregon House passed it 33-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 476, which helps people trained abroad get licensed to work in Oregon. Every state licensing board must train the staff who deal with these applicants. The state's immigrant and refugee office approves that training. The law also creates a starter license for doctors trained abroad. To get one, a doctor needs a degree and training much like an Oregon doctor's, plus a pass from the national body for foreign medical graduates. The Oregon House passed it 33-11, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1595884,
+      "measure_id": "SB 476",
+      "vote_date": "2025-06-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 476, which helps people trained abroad get licensed to work in Oregon. Every state licensing board must train the staff who deal with these applicants. The state's immigrant and refugee office approves that training. The law also creates a starter license for doctors trained abroad. To get one, a doctor needs a degree and training much like an Oregon doctor's, plus a pass from the national body for foreign medical graduates. The Oregon Senate agreed to the House's changes 19-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 476, which helps people trained abroad get licensed to work in Oregon. Every state licensing board must train the staff who deal with these applicants. The state's immigrant and refugee office approves that training. The law also creates a starter license for doctors trained abroad. To get one, a doctor needs a degree and training much like an Oregon doctor's, plus a pass from the national body for foreign medical graduates. The Oregon Senate agreed to the House's changes 19-10, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1595533,
+      "measure_id": "HB 3069",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3069, which pulls Oregon's county public safety grants together into one program run by the Criminal Justice Commission. The stated goal is to reduce how many people get caught up in the criminal justice system. The program takes in the Justice Reinvestment grants, which date from 2013, and a new treatment court grant program, and hands the money to counties. It also makes parts of the 2013 law permanent. The Oregon House agreed to the Senate's changes 32-11, and it became law.",
+      "nay_description": "Voted against House Bill 3069, which pulls Oregon's county public safety grants together into one program run by the Criminal Justice Commission. The stated goal is to reduce how many people get caught up in the criminal justice system. The program takes in the Justice Reinvestment grants, which date from 2013, and a new treatment court grant program, and hands the money to counties. It also makes parts of the 2013 law permanent. The Oregon House agreed to the Senate's changes 32-11, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1594228,
+      "measure_id": "HB 3069",
+      "vote_date": "2025-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3069, which pulls Oregon's county public safety grants together into one program run by the Criminal Justice Commission. The stated goal is to reduce how many people get caught up in the criminal justice system. The program takes in the Justice Reinvestment grants, which date from 2013, and a new treatment court grant program, and hands the money to counties. It also makes parts of the 2013 law permanent. The Oregon Senate passed it 20-9, and it became law.",
+      "nay_description": "Voted against House Bill 3069, which pulls Oregon's county public safety grants together into one program run by the Criminal Justice Commission. The stated goal is to reduce how many people get caught up in the criminal justice system. The program takes in the Justice Reinvestment grants, which date from 2013, and a new treatment court grant program, and hands the money to counties. It also makes parts of the 2013 law permanent. The Oregon Senate passed it 20-9, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1595935,
+      "measure_id": "SB 824",
+      "vote_date": "2025-06-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 824, which makes health insurers report how they treat mental health claims next to medical ones. Each year they must tell the state how many claims of each kind they denied, how many denials were appealed, and how those appeals came out. They must also report what share of claims went to providers inside their network, and what they pay for an office visit by provider type and region, set against the Medicare rate. The Oregon House passed it 38-13, and it became law.",
+      "nay_description": "Voted against Senate Bill 824, which makes health insurers report how they treat mental health claims next to medical ones. Each year they must tell the state how many claims of each kind they denied, how many denials were appealed, and how those appeals came out. They must also report what share of claims went to providers inside their network, and what they pay for an office visit by provider type and region, set against the Medicare rate. The Oregon House passed it 38-13, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1595559,
+      "measure_id": "SB 824",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 824, which makes health insurers report how they treat mental health claims next to medical ones. Each year they must tell the state how many claims of each kind they denied, how many denials were appealed, and how those appeals came out. They must also report what share of claims went to providers inside their network, and what they pay for an office visit by provider type and region, set against the Medicare rate. The Oregon Senate passed it 19-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 824, which makes health insurers report how they treat mental health claims next to medical ones. Each year they must tell the state how many claims of each kind they denied, how many denials were appealed, and how those appeals came out. They must also report what share of claims went to providers inside their network, and what they pay for an office visit by provider type and region, set against the Medicare rate. The Oregon Senate passed it 19-10, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1594348,
+      "measure_id": "HB 3410",
+      "vote_date": "2025-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3410, which closes gaps in Senate Bill 951, the law passed the same session that stops outside investors running medical practices. The ban on owning most of a practice now reaches contractors of a management company, not just its shareholders, directors, officers and staff. It also bites even where one of those people would otherwise qualify for an exemption. The changes take hold only if Senate Bill 951 becomes law, which it did. The Oregon House agreed to the Senate's changes 38-13, and it became law.",
+      "nay_description": "Voted against House Bill 3410, which closes gaps in Senate Bill 951, the law passed the same session that stops outside investors running medical practices. The ban on owning most of a practice now reaches contractors of a management company, not just its shareholders, directors, officers and staff. It also bites even where one of those people would otherwise qualify for an exemption. The changes take hold only if Senate Bill 951 becomes law, which it did. The Oregon House agreed to the Senate's changes 38-13, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
