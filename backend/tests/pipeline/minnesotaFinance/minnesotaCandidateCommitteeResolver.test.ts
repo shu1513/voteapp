@@ -341,6 +341,82 @@ describe("Minnesota candidate committee resolver", () => {
     ).toMatchObject({ status: "ambiguous", reason: "multiple_matching_committees" });
   });
 
+  it("anchors a parenthetical nickname to the surname instead of keying on it alone", () => {
+    const keys = normalizeMinnesotaCandidateNameKeys("Joseph (Joe) Staloch");
+    expect(keys).toContain("JOE STALOCH");
+    expect(keys).not.toContain("JOE");
+    // A comma-form committee name anchors to the same surname.
+    expect(normalizeMinnesotaCandidateNameKeys("Staloch, Joseph (Joe)")).toContain("JOE STALOCH");
+  });
+
+  it("does not report two different Joes as ambiguous", () => {
+    // Real committee names. Before the surname anchor, both rows produced the
+    // bare key "JOE", so a candidate carrying the same nickname matched both.
+    expect(
+      resolveMinnesotaCandidateCommittee({
+        candidateName: "Joseph (Joe) Staloch",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "55A",
+        electionYear: 2026,
+        candidateRows: [
+          {
+            "Recipient reg num": "19103",
+            Recipient: "Staloch, Joseph (Joe) House Committee",
+            "Recipient type": "PCC",
+            Year: "2025",
+          },
+          {
+            "Recipient reg num": "17167",
+            Recipient: "McDonald, Joseph (Joe) House Committee",
+            "Recipient type": "PCC",
+            Year: "2025",
+          },
+        ],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "19103" });
+  });
+
+  it("does not hand one Joe the other Joe's committee when only that one has rows", () => {
+    expect(
+      resolveMinnesotaCandidateCommittee({
+        candidateName: "Joseph (Joe) Staloch",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "55A",
+        electionYear: 2026,
+        candidateRows: [
+          {
+            "Recipient reg num": "17167",
+            Recipient: "McDonald, Joseph (Joe) House Committee",
+            "Recipient type": "PCC",
+            Year: "2025",
+          },
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("lets a ballot nickname match the committee's parenthetical working name", () => {
+    expect(
+      resolveMinnesotaCandidateCommittee({
+        candidateName: "Joe Staloch",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "55A",
+        electionYear: 2026,
+        candidateRows: [
+          {
+            "Recipient reg num": "19103",
+            Recipient: "Staloch, Joseph (Joe) House Committee",
+            "Recipient type": "PCC",
+            Year: "2025",
+          },
+        ],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "19103" });
+  });
+
   it("requires legislative districts for state senate and house candidates", () => {
     expect(
       resolveMinnesotaCandidateCommittee({
