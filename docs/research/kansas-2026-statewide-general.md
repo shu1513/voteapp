@@ -112,8 +112,9 @@ it row by row against the database. Results:
   State's "Web Address" column is empty for both Eric Lund and Ric Koehn, and neither has a site
   listed on the Libertarian Party of Kansas candidate pages. Both stay confirmed nulls.
 - Ric Koehn's `has_held_public_office` stays `null`. No cited source carries his office history.
-  He served as a Libertarian presidential elector in 2024, which is a party role rather than an
-  elected or appointed public office, so it does not settle the question either way.
+  He was nominated as a Libertarian presidential elector in 2024 but was not elected (Kansas
+  chose the Republican slate), so that nomination is not office-holding and does not settle the
+  question either way.
 
 ## Excluded, with reasons
 
