@@ -83,12 +83,16 @@ application, and within 30 days the developer pays "a property tax prepayment
 equal to five times the amount of property taxes and assessments due on the
 property in the most recent property tax year", payable to the county treasurer
 and distributed to the same funds in the same ratio as ordinary property tax.
+Subsection (3) adds "a fee of 5%" on top of the prepayment.
 
-The record says the exemption ends early on certain events rather than listing
-them, and does not claim a fixed five-year length: the "five" in the act is the
-multiplier on the prepayment, not a term of years. The bill's short title says
-"5 year", which is exactly the kind of thing that would have produced a wrong
-description if the title had been trusted.
+The exemption is capped: subsection (4)(a) grants it "for a period not to exceed
+5 years". It ends sooner on each lot at the start of the tax year after "a
+habitable residential structure has been constructed on the lot" (4)(b), and for
+the whole subdivision on 31 December of the year at least 95% of the lots have a
+habitable home (5). The record carries the 5% fee, the five-year cap and both
+early-end events. (An earlier draft of this note wrongly read the "five" as only
+the prepayment multiplier and the "5 year" in the short title as untrustworthy;
+review against the enrolled text corrected that.)
 
 ## SB 532 — accessory dwelling units
 
@@ -116,8 +120,14 @@ presence or their agent's.
 
 Subsection (3) preserves any implied licence the agent has "as a member of the
 public to access the areas of real property generally open to the public, such as
-sidewalks, front pathways, or the front door of a house", and the record includes
-that limit. Direction **for** `civil_rights`.
+sidewalks, front pathways, or the front door of a house". Two further carve-outs
+narrow the bill: subsection (5) excludes "condominiums where there are common
+elements that must be accessed by entering the unit and for which the declaration
+of covenants or bylaws set forth the terms of accessing the unit", and subsection
+(6) excludes "easements of record that specifically benefit the homeowners'
+association". The record carries all three limits so a condominium owner or an
+owner whose lot carries an association easement is not told they can refuse entry
+the act does not let them refuse. Direction **for** `civil_rights`.
 
 ## The two drops
 
