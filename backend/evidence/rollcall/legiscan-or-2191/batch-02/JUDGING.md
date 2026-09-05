@@ -71,10 +71,10 @@ matching the statute's "electronic benefits transfer card issued by the
 Department of Human Services".
 
 Reading level measured, not eyeballed. First drafts scored Flesch-Kincaid
-grade 12.1 to 13.6 and were rewritten before importing: **median 9.5, worst
-10.4, longest sentence 37 words, lint 0 warnings.**
+grade 12.1 to 13.6 and were rewritten before importing: **median 9.3, worst
+10.6, longest sentence 37 words, lint 0 warnings.**
 
-⚠ **HB 2138 sits at 10.2 and that is close to its floor.** Getting lower means
+⚠ **HB 2138 sits at 10.6 after the review fixes below (10.2 before) and that is close to its floor.** Getting lower means
 dropping either the housing types the Act names, the twelve-unit limit on the
 traffic exemption, or the 2027 date on the covenant rules. Those are the
 limits that make the description true, so the grade was traded for them.
@@ -96,3 +96,25 @@ for the same reason batch-01 did.
 
 Oregon after this batch: **543 live records, 61 candidates, 433 tags, 20
 approved rolls.** Production has zero Oregon roll-call records.
+
+## Review fixes (2026-09-05)
+
+Three PR-review findings were checked against the enrolled Acts and all
+three held. Each fix was made in `or_measures_b2.py`, rebuilt into
+`judgments.json`, re-applied with `rollcall:judge`, and re-imported for real
+(`import-rerun-report.json`: 161 `rewrite`, 60 `unchanged` on HB 3054, 0
+notifications). Record counts did not move.
+
+- **HB 2138** overstated the mandate. ORS 197A.420 (2)-(3) keeps the tiers:
+  cities of 25,000 or more and Metro cities of 1,000 or more must allow all
+  middle housing; other cities of 2,500 or more need only allow duplexes; and
+  "zoned for residential use" now requires land inside an urban growth
+  boundary. The description names the tiers and the boundary. The
+  traffic-study ban in (6)(b) also stops at lots created by a non-middle-housing
+  land division within the previous five years, so that carve-out is stated.
+- **SB 551** said stores "must" give recycled paper bags free to WIC and
+  benefits-card shoppers. ORS 459A.757 (2) says a store "may". Fixed.
+- **HB 2586** left out the residence limit. ORS 352.287 (5) and 353.123
+  (1)(c) require that the student has not previously established residence
+  in another state. One sentence added.
+
