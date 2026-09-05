@@ -176,7 +176,7 @@ Hand-verified from each module's writer/loader/due-list files. Legend: **W** = w
 | newHampshire | 4,056 | `nh_` 5 | W | L | bespoke — **stays** (general-stage shape plus a `candidateNames[]` spelling list that `chooseSyncCandidateName` verifies against the linked filer; one-state, load-bearing) | 1/1/0 | floor 2016, M+, `cfs_registration` supersession | `linkIdentityColumn: filing_entity_id`, `industry`+`contribution_size`, donor-only |
 | delaware | 3,896 | `de_` 5 | W | L | **D\*** | 1/1/0 | floor 2026, `cfrs_portal` supersession, M+ | defaults |
 | nevada | 1,879 | `nv_` 5 | W | L | — (import-style) | 0/0/0 | floor 2004, M+, `aurora_search` supersession | `linkIdentityColumn: filer_key`, `industry`+`contribution_size`, donor-only |
-| montana | 5,070 | `mt_` 5 | W | L | **D\*** (Phase 2b pilot) | 1/1/1 | floor 2024, pairing, `cers_portal` supersession, M+ | donor-only |
+| montana | 5,070 | `mt_` 5 | W | L | D (`electionStage: "general"`, `selectElectionDate`, `linkColumns` +`link_source`; Phase 2b pilot, migrated 2026-09-04) | 1/1/1 | floor 2024, pairing, `cers_portal` supersession, M+ | donor-only |
 | arkansas | 3,373 | `ar_` 5 | W | L | D | 1/1/0 | floor 2026, signed cash, M+ | `linkIdentityColumn: filing_entity_id` |
 | westVirginia | 3,805 | `wv_` 5 | W | L | D | 1/1/0 | floor 2026, M+, `cfrs_registry` supersession | `occupation`+`industry`+`contribution_size` |
 | idaho | 3,819 | `id_` 5 | W | L | **D\*** (`registration_guid`/`filer_name`) | 1/1/0 | floor 2026, signed cash, M+ | `linkIdentityColumn: registration_guid`, `contribution_size` only, donor-only |
@@ -188,4 +188,4 @@ Hand-verified from each module's writer/loader/due-list files. Legend: **W** = w
 | denver (city) | 3,018 | city | bespoke | L | D | 1/1/0 | — | — |
 | phoenix, sanDiegoCity, sanJose, sanFrancisco (cities) | 4,491 / 3,446 / 3,101 / 4,065 | city | bespoke | bespoke | bespoke | 1/1/0 · 1/1/0 · 1/1/0 · 1/1/1 | — | — |
 
-Phase 2b cohort (D\*, six states): montana (pilot) → missouri, delaware → idaho, southCarolina, alabama. newHampshire is excluded (see its row). Normalized WHERE/JOIN/ORDER clauses of all seven files, newHampshire included, are identical — the exclusion is about its projection, not its predicates.
+Phase 2b cohort (D\*, six states): **montana migrated (pilot)** → missouri, delaware → idaho, southCarolina, alabama. newHampshire is excluded (see its row). Normalized WHERE/JOIN/ORDER clauses of all seven files, newHampshire included, are identical — the exclusion is about its projection, not its predicates.
