@@ -1242,6 +1242,7 @@ describe("getLegiscanStateConfig", () => {
       "DE",
       "AR",
       "AZ",
+      "CO",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -1272,6 +1273,7 @@ describe("getLegiscanStateConfig", () => {
       "DE",
       "AR",
       "AZ",
+      "CO",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
@@ -1311,6 +1313,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("DE").sessionId).toBe(2163);
     expect(getLegiscanStateConfig("AR").sessionId).toBe(2162);
     expect(getLegiscanStateConfig("AZ").sessionId).toBe(2155);
+    expect(getLegiscanStateConfig("CO").sessionId).toBe(2173);
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("WY")).toThrow("no LegiScan state config for WY");
   });
@@ -1507,6 +1510,70 @@ describe("getLegiscanStateConfig", () => {
     // Senate amendment #1).
     expect(ar("Returned to the Senate as passed.", 100).isFloorVote).toBeNull();
     expect(ar("Placed on second reading for the purpose of amendment.", 100).isFloorVote).toBeNull();
+  });
+
+  it("classifies Colorado's real desc vocabulary as surveyed", () => {
+    const config = LEGISCAN_STATE_CONFIGS.CO!;
+    const co = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+      classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+    // Passage, the largest family in both chambers (509 House / 519 Senate).
+    expect(co("House: Third Reading Bill", 65)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(co("Senate: Third Reading Bill", 35, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // Colorado votes twice when it takes the other chamber's amendments, and
+    // the tallies differ (HB 25-1133: concur 43-20, then repass 38-25).
+    expect(co("House: Senate Amendments Concur", 65)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+    expect(co("House: Senate Amendments Repass", 65)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+    expect(co("Senate: House Amendments Repass", 35, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+    // Conference reports, and the Senate's own spelling of adoption.
+    expect(co("House: Conference Committee Report Adopt", 65).questionClass).toBe("conference_report");
+    expect(co("Senate: Conference Committee Report Adopt Ccr", 35, "senate").questionClass).toBe("conference_report");
+    expect(co("Senate: Conference Committee Report Repass", 35, "senate").questionClass).toBe("conference_report");
+    // The session's only override vote (SB 25-086, Senate 29-6).
+    expect(co("Senate: Veto Consideration Bill", 35, "senate").questionClass).toBe("veto_override");
+    // Refusing to concur and adhering are the opposite of concurrence, and
+    // must not match the kept concurrence patterns.
+    expect(co("Senate: House Amendments Not Concur Appt Cc", 35, "senate").isFloorVote).toBe(false);
+    expect(co("House: Senate Amendments Not Cncr", 65).isFloorVote).toBe(false);
+    expect(co("House: Senate Amendments Adhere", 65).isFloorVote).toBe(false);
+    // Second reading happens in Committee of the Whole, where Colorado takes
+    // its floor amendments.
+    expect(co("House: Committee of the Whole Amd (h.001)", 65).isFloorVote).toBe(false);
+    expect(co("Senate: Committee of the Whole Cow * (s.001)", 35, "senate").isFloorVote).toBe(false);
+    // Motions taken at third reading beside passage. `Perm` is a motion, not
+    // the bill: HB 25-1035 passed 40-24 and its Perm motion failed 21-43.
+    expect(co("House: Third Reading Perm", 65).isFloorVote).toBe(false);
+    expect(co("House: Third Reading Amd (l.047)", 65).isFloorVote).toBe(false);
+    expect(co("Senate: Third Reading Amend (l.008)", 35, "senate").isFloorVote).toBe(false);
+    expect(co("House: Third Reading Rerefer (bus)", 65).isFloorVote).toBe(false);
+    expect(co("House: Third Reading Prev ?", 65).isFloorVote).toBe(false);
+    // Conference-report motions that are not the report itself.
+    expect(co("House: Conference Committee Report Byd Scp", 65).isFloorVote).toBe(false);
+    expect(co("House: Conference Committee Report Reject", 65).isFloorVote).toBe(false);
+    // Resolutions, memorials and the House's laid-over veto question.
+    expect(co("Senate: Consideration of Resolutions Resolution", 35, "senate").isFloorVote).toBe(false);
+    expect(co("House: RESOLUTIONS Res", 65).isFloorVote).toBe(false);
+    expect(co("House: VETO Lo", 65).isFloorVote).toBe(false);
+    // Colorado names the committee in front of a committee roll, so the
+    // committee rolls never reach these patterns and the tally cut rejects
+    // them on their own.
+    expect(co("House Appropriations: Adopt amendment J.001", 11).isFloorVote).toBe(false);
+    expect(co("Senate Judiciary: Refer Senate Bill 25-086, as amended, to the Committee of the Whole", 7, "senate")
+      .isFloorVote).toBe(false);
+    // A floor spelling this session never printed surfaces for a human
+    // instead of being guessed.
+    expect(co("House: Third Reading Final Passage", 65).isFloorVote).toBeNull();
   });
 
   it("classifies Missouri's real desc vocabulary as surveyed", () => {
