@@ -160,6 +160,24 @@ describe("track", () => {
     expect(second.events[0]!.session_id).not.toBe(recent.id);
   });
 
+  it("keeps an opt-out for the tab even when localStorage refuses the write", async () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    const fetchMock = stubFetch();
+    const setItem = vi.spyOn(Storage.prototype, "setItem").mockImplementation((key: string) => {
+      if (key === "voteapp_usage_optout") throw new Error("quota");
+    });
+    try {
+      setUsageOptOut(true);
+      expect(isUsageOptedOut()).toBe(true);
+      track("address_input");
+      flushUsageEventsForTests();
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      expect(fetchMock).not.toHaveBeenCalled();
+    } finally {
+      setItem.mockRestore();
+    }
+  });
+
   it("never throws when sessionStorage is unavailable", () => {
     vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
     const fetchMock = stubFetch();

@@ -4,8 +4,11 @@ Status: PR 1 (collector + search-to-ballot events + report + policy 1.5 +
 opt-out) implemented 2026-09-04 on branch `claude/caveman-ultra-45d7b8`;
 migration 272 applied locally, verified end to end in the browser. PR 2
 (research and pick flows) and PR 3 (follow, chat, share) not started.
-Production still needs: privacy policy 1.5 live, then `USAGE_ANALYTICS_ENABLED`
-via render.yaml (already set there for the next blueprint sync).
+Production still needs: privacy policy 1.5 live, migration 272 applied,
+`API_DATABASE_URL` confirmed on the API service (the anonymous intake should
+write as `voteapp_api`, not the owner — docs/postgres-api-role.md), then
+`USAGE_ANALYTICS_ENABLED` via render.yaml (already set there for the next
+blueprint sync).
 
 ## Idea
 

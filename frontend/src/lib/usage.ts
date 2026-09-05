@@ -160,7 +160,12 @@ function isEnabled(): boolean {
   return !isUsageOptedOut();
 }
 
+// The choice made in THIS tab wins over storage: if localStorage refuses the
+// write (private mode, quota), an opt-out must still hold for the tab's life.
+let optOutThisTab: boolean | null = null;
+
 export function isUsageOptedOut(): boolean {
+  if (optOutThisTab !== null) return optOutThisTab;
   try {
     return window.localStorage.getItem(OPTOUT_KEY) === "1";
   } catch {
@@ -170,6 +175,10 @@ export function isUsageOptedOut(): boolean {
 
 /** The /privacy control. Opting out also drops anything not yet sent. */
 export function setUsageOptOut(optedOut: boolean): void {
+  optOutThisTab = optedOut;
+  if (optedOut) {
+    queue = [];
+  }
   try {
     if (optedOut) {
       window.localStorage.setItem(OPTOUT_KEY, "1");
@@ -177,10 +186,7 @@ export function setUsageOptOut(optedOut: boolean): void {
       window.localStorage.removeItem(OPTOUT_KEY);
     }
   } catch {
-    // Storage blocked: nothing to remember, and the module stays inert anyway.
-  }
-  if (optedOut) {
-    queue = [];
+    // Storage blocked: the in-memory choice above still governs this tab.
   }
 }
 
@@ -539,6 +545,7 @@ export function resetUsageForTests(): void {
   queue = [];
   inFlight = false;
   serverDisabled = false;
+  optOutThisTab = null;
   currentRoute = "other";
   desired = null;
   view = null;

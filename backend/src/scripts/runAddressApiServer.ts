@@ -362,8 +362,14 @@ async function main(): Promise<void> {
   // user cap + answer cache); the ask wiring further down reuses this value.
   const chatbotConfig = readChatbotConfigFromEnv();
   const chatbotNeedsRedis = chatbotConfig.enabled && chatbotConfig.llm !== null;
+  // Usage analytics (docs/plans/usage-analytics.md): a write feature, default
+  // off, enabled explicitly per environment once the privacy policy text is
+  // live. Read here because its 90-day retention is Redis-elected — a
+  // deployment where analytics is the only Redis consumer must still get a
+  // client, or stored events would silently outlive the promise.
+  const usageAnalyticsEnabled = readBooleanEnv("USAGE_ANALYTICS_ENABLED", false);
   const redis =
-    addressCacheEnabled || authConfigured || autoDistrictResearchNeedsRedis || chatbotNeedsRedis
+    addressCacheEnabled || authConfigured || autoDistrictResearchNeedsRedis || chatbotNeedsRedis || usageAnalyticsEnabled
       ? createClient({ url: readEnv("REDIS_URL", "redis://localhost:6379") })
       : null;
   const buildAddressResolverOptions = () => ({
@@ -709,11 +715,8 @@ async function main(): Promise<void> {
   };
   runRetention();
   setInterval(runRetention, 3_600_000).unref();
-  // Write feature, default off: enabled explicitly per environment
-  // (docs/plans/usage-analytics.md — the privacy policy text must be live
-  // first). Off → POST /api/usage/events is a 404 and the frontend module is
-  // inert via its own VITE_USAGE_ANALYTICS_ENABLED flag.
-  const usageAnalyticsEnabled = readBooleanEnv("USAGE_ANALYTICS_ENABLED", false);
+  // Off → POST /api/usage/events is a 404 and the frontend module is inert
+  // via its own VITE_USAGE_ANALYTICS_ENABLED flag.
   if (usageAnalyticsEnabled) {
     console.log("usage analytics intake enabled (POST /api/usage/events)");
   }
