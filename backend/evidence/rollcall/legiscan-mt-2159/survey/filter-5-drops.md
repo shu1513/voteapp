@@ -603,7 +603,7 @@ after-the-fact risk policy duty on AI-controlled infrastructure. **SB 426** adop
 the 2022 Uniform Commercial Code amendments and, in the same act, writes central
 bank digital currency out of the definition of money.
 
-### Cuts both ways (7 measures)
+### Cuts both ways (8 measures)
 
 **SB 430** makes the state hospital a placement of last resort and opens
 community placements, and in the same act shields the hospital from contempt when
@@ -628,3 +628,13 @@ changes, grant criteria, one profession's assistance programme, and one county's
 conditional appropriation. **SB 56** is also the measure whose section 1 was
 voided by HB 924's coordination instruction; its three surviving sections add
 supplemental employer retirement contributions for three uniformed systems.
+
+## Correction — SB 117, dropped after import
+
+**SB 117** was imported in batch 19 and has been withdrawn under filter 5; its
+74 records are retired. It raises the inflation allowance in the 15-10-420
+maximum-mill formula and, in the same subsection, leaves part of newly taxable
+value in the base that was wholly excluded before. The first raises the
+permitted levy and the second lowers it, and the act does not say which wins.
+The batch-19 records had read the second change as a gain. Full note in
+`../batch-19/PLAN.md`.

@@ -448,7 +448,7 @@ SB 105	B	senate	2025-04-04	1537120	36	13	batch-05	Generally revise election laws
 SB 110	B	senate	2025-02-10	1485531	33	16	batch-13	Revise laws relating to amusement rides and safety
 SB 113	B	house	2025-03-21	1524060	76	21	batch-18	Revise exemptions related to tow truck lien law
 SB 116	B	house	2025-04-28	1558991	58	41	dropped:housekeeping	Revise the Montana heritage preservation and development commission membership
-SB 117	B	house	2025-04-16	1550344	67	31	batch-19	Revise government entity limitations on property tax increases
+SB 117	B	house	2025-04-16	1550344	67	31	dropped:filter-5	Revise government entity limitations on property tax increases
 SB 132	B	senate	2025-02-07	1484302	37	12	dropped:housekeeping	Generally revise minor in possession laws
 SB 133	B	house	2025-04-11	1546389	54	45	batch-14	Revise impact fee laws
 SB 133	B	senate	2025-02-07	1484106	32	17	superseded:later-roll-used	Revise impact fee laws

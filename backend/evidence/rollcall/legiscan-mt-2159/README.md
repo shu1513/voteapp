@@ -124,16 +124,18 @@ records.**
 | batch-16 | 12 | 17 | 633 | children, schools, responders, brownfields, wildlife |
 | batch-17 | 24 | 35 | 1,210 | courts, civil rights, nuisance, flags, health boards |
 | batch-18 | 22 | 29 | 1,149 | health, courts, schools, marijuana, consumer |
-| batch-19 | 6 | 9 | 354 | courts, property tax, hemp, human remains |
-| **total** | **171** | **265** | **10,793** | 19 areas, 87 candidates, 6,555 tags |
+| batch-19 | 5 | 8 | 280 | courts, hemp, human remains |
+| **total** | **170** | **264** | **10,719** | 19 areas, 87 candidates, 6,505 tags |
 
 85 further records were imported and then retired: every operative section of
 SB 172 was voided by HB 162's coordination instructions, so SB 172 changed no
-law. See `batch-14/PLAN.md`.
+law. See `batch-14/PLAN.md`. A further 74 SB 117 records were retired after
+batch 19: the act raises one levy limit and lowers another in the same
+provision, so it has no single direction. See `batch-19/PLAN.md`.
 
 **The survey queue is complete. Every one of the 633 divided-and-enacted roll
-calls carries a disposition and none is unworked.** 265 rolls across 171
-measures were imported. 192 rolls are dropped under filter 5, 90 are superseded
+calls carries a disposition and none is unworked.** 264 rolls across 170
+measures were imported. 193 rolls are dropped under filter 5, 90 are superseded
 by a later roll on the same measure, 58 are joint resolutions that never became
 law, 18 are housekeeping, seven are held on the LegiScan vote defect, two were
 voided by another act's coordination instruction, and one chamber's final vote

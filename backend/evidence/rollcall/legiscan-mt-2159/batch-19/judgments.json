@@ -40,24 +40,6 @@
    "jurisdiction": "MT",
    "chamber": "house",
    "session": "2159",
-   "roll": 1550344,
-   "measure_id": "SB 117",
-   "vote_date": "2025-04-16",
-   "review_status": "approved",
-   "yea_description": "Voted for Senate Bill 117, which lets Montana local governments collect more property tax. Each year a city or county may raise its levy by a share of inflation. That share used to be half the average rate over the past 3 years; the act makes it the full rate, capped at 4 percent. Newly built property used to be left out of the calculation entirely. Now 25 percent of the value of new homes and business premises stays in the base, so the levy captures part of it. A local government may also set up a reserve account for the case where a very large taxpayer leaves or shrinks. The Montana House passed it 67-31, and it became law.",
-   "nay_description": "Voted against Senate Bill 117, which lets Montana local governments collect more property tax. Each year a city or county may raise its levy by a share of inflation. That share used to be half the average rate over the past 3 years; the act makes it the full rate, capped at 4 percent. Newly built property used to be left out of the calculation entirely. Now 25 percent of the value of new homes and business premises stays in the base, so the levy captures part of it. A local government may also set up a reserve account for the case where a very large taxpayer leaves or shrinks. The Montana House passed it 67-31, and it became law.",
-   "labels": [
-    {
-     "slug": "government_spending_reduction",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "house",
-   "session": "2159",
    "roll": 1543333,
    "measure_id": "SB 154",
    "vote_date": "2025-04-10",
