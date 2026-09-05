@@ -75,7 +75,7 @@ HB3194	candidate		1593104	1595282	Relating to farmworker camps.
 HB3233	candidate		1549709	1560449	Relating to rail; and prescribing an effective date.
 HB3336	candidate		1590932		Relating to electric transmission systems; and prescribing an effective date.
 HB3342	drop:filter-5	water rights application processing, notice and deadlines; administrative	1581100	1579065	Relating to water; and prescribing an effective date.
-HB3365	candidate		1591480	1589737	Relating to climate change instruction in public schools.
+HB3365	batch-04	judged and imported	1591480	1589737	Relating to climate change instruction in public schools.
 HB3372	drop:filter-5	expands exempt well use to commercial gardens while adding a daily cap where none existed; runs both ways	1581167		Relating to exempt uses of water.
 HB3378	drop:filter-5	requires a non-app key and working locks; tenant habitability with no supply or cost effect, the Maryland HB 767 precedent	1514355	1570174	Relating to tenant dwelling access to dwelling unit.
 HB3409	candidate		1566289	1586792	Relating to health care; and prescribing an effective date.
@@ -182,8 +182,8 @@ SB872	drop:screened	modifies State Marine Board laws; narrow		1544980	Relating t
 SB904	drop:screened	lets school districts seek an exemption from self-insurance proof; narrow	1573112		Relating to self-insured employers.
 SB906	batch-03	House only; the Senate roll is held, LegiScan puts Girod on the wrong side	1574179	1543833	Relating to transparency concerning employer deductions from wages.
 SB914	drop:screened	requires a problem-gambling helpline number on lottery billboards; narrow	1573206		Relating to problem gambling.
-SB916	candidate		1590864	1590862	Relating to unemployment insurance benefits for employees unemployed due to a labor dispute.
-SB951	candidate		1579955	1539698	Relating to the practice of health care; and declaring an emergency.
+SB916	batch-04	judged and imported	1590864	1590862	Relating to unemployment insurance benefits for employees unemployed due to a labor dispute.
+SB951	batch-04	judged and imported	1579955	1539698	Relating to the practice of health care; and declaring an emergency.
 SB952	drop:filter-5	lets the Governor appoint a US Senator pending a special election; appointment against election is a contested structural question	1584127	1558808	Relating to vacancies in the United States Senate.
 SB968	drop:screened	sets how public employers recoup wages paid in error; narrow	1594456	1592314	Relating to deductions from employee wages.
 SB982	candidate		1578807		Relating to out-of-state residential placements of students; and declaring an emergency.
@@ -192,7 +192,7 @@ SB1051	drop:screened	gives the Governor the power to appoint the State Forester;
 SB1098	batch-01	judged and imported	1587412	1530994	Relating to access to materials in schools; and declaring an emergency.
 SB1109	drop:filter-5	narrows which boards must record meetings; technical and arguably reduces transparency	1574618		Relating to education; and declaring an emergency.
 SB1125	drop:filter-5	its only divided Senate roll is superseded by a 27-2 concurrence		1536250	Relating to unmanned aircraft systems.
-SB1154	candidate		1595898	1591482	Relating to ground water.
+SB1154	batch-04	judged and imported	1595898	1591482	Relating to ground water.
 SB1168	candidate		1595608	1593890	Relating to per-visit compensation for home health care entities.
 SB1173	candidate		1595933		Relating to product liability civil actions; and prescribing an effective date.
 SB1175	drop:screened	creates a task force on barriers to jury service; study body only	1571595		Relating to a task force on removing barriers to jury service; and prescribing an effective date.
