@@ -164,7 +164,7 @@ The factory itself has a dedicated config-option test file (`tests/pipeline/fina
 
 ## Post-pause-point modules (added 2026-09-04, plan v3 addendum)
 
-Hand-verified from each module's writer/loader/due-list files. Legend: **W** = writer-factory wrapper, **L** = shared-loader wrapper, **D** = due-list builder config, **D\*** = bespoke due list that is the builder + `election_stage='general'` (Phase 2b cohort), **AL/BS/SCH** = auto-link / batchSync / scheduler file present. Writer options listed only where set.
+Hand-verified from each module's writer/loader/due-list files. Legend: **W** = writer-factory wrapper, **L** = shared-loader wrapper, **D** = due-list builder config, **D\*** = bespoke due list that is the builder + `election_stage='general'` (Phase 2b cohort, six states), **AL/BS/SCH** = auto-link / batchSync / scheduler file present. Writer options listed only where set.
 
 | Module | Lines | Tables | W | L | D | AL/BS/SCH | Writer options | Loader options |
 |---|---|---|---|---|---|---|---|---|
@@ -173,7 +173,7 @@ Hand-verified from each module's writer/loader/due-list files. Legend: **W** = w
 | georgia | 4,569 | `ga_` 5 | W | L | D | 1/1/1 | floor 2026, signed cash, pairing, `peachfile_api` supersession | donor-only evidence |
 | rhodeIsland | 4,251 | `ri_` 5 | W | L | — (import-style) | 1/0/0 | floor 2026, signed cash, pairing, `erts_portal` supersession | donor-only, `contribution_size` only |
 | missouri | 4,702 | `mo_` 5 | W | L | **D\*** | 1/1/1 | floor 2024, pairing, `mec_portal` supersession, M+ | donor-only, PAC action label |
-| newHampshire | 4,056 | `nh_` 5 | W | L | **D\*** (+ two candidate-name columns, `filing_entity_id`/`filer_name`) | 1/1/0 | floor 2016, M+, `cfs_registration` supersession | `linkIdentityColumn: filing_entity_id`, `industry`+`contribution_size`, donor-only |
+| newHampshire | 4,056 | `nh_` 5 | W | L | bespoke — **stays** (general-stage shape plus a `candidateNames[]` spelling list that `chooseSyncCandidateName` verifies against the linked filer; one-state, load-bearing) | 1/1/0 | floor 2016, M+, `cfs_registration` supersession | `linkIdentityColumn: filing_entity_id`, `industry`+`contribution_size`, donor-only |
 | delaware | 3,896 | `de_` 5 | W | L | **D\*** | 1/1/0 | floor 2026, `cfrs_portal` supersession, M+ | defaults |
 | nevada | 1,879 | `nv_` 5 | W | L | — (import-style) | 0/0/0 | floor 2004, M+, `aurora_search` supersession | `linkIdentityColumn: filer_key`, `industry`+`contribution_size`, donor-only |
 | montana | 5,070 | `mt_` 5 | W | L | **D\*** (Phase 2b pilot) | 1/1/1 | floor 2024, pairing, `cers_portal` supersession, M+ | donor-only |
@@ -188,4 +188,4 @@ Hand-verified from each module's writer/loader/due-list files. Legend: **W** = w
 | denver (city) | 3,018 | city | bespoke | L | D | 1/1/0 | — | — |
 | phoenix, sanDiegoCity, sanJose, sanFrancisco (cities) | 4,491 / 3,446 / 3,101 / 4,065 | city | bespoke | bespoke | bespoke | 1/1/0 (SF has a scheduler) | — | — |
 
-Phase 2b cohort (D\*): montana → missouri, delaware → idaho, southCarolina, alabama → newHampshire (decision pending on its two candidate-name columns). Normalized WHERE/JOIN/ORDER clauses of all seven are identical.
+Phase 2b cohort (D\*, six states): montana (pilot) → missouri, delaware → idaho, southCarolina, alabama. newHampshire is excluded (see its row). Normalized WHERE/JOIN/ORDER clauses of all seven files, newHampshire included, are identical — the exclusion is about its projection, not its predicates.
