@@ -10,6 +10,7 @@ import type { KansasCandidateLedgerResult, KansasCandidateReport } from "../../.
 import type { KansasReportCover, KansasScheduleARow, KansasScheduleBRow } from "../../../src/pipeline/kansasFinance/kansasCfrViewerParsers.js";
 import type { KansasDirectFinance } from "../../../src/pipeline/kansasFinance/kansasDirectContributionAggregator.js";
 import { kansasCfrOfficeForRace } from "../../../src/pipeline/kansasFinance/kansasFinanceEligibleOffices.js";
+import type { KansasOutsideRow } from "../../../src/pipeline/kansasFinance/kansasOutsideSpendingAggregator.js";
 import type { KansasPaperCoverOverride } from "../../../src/pipeline/kansasFinance/kansasPaperCoverOverrides.js";
 import {
   buildKansasReportLedger,
@@ -207,8 +208,27 @@ function baseInput(db: { query: unknown; connect: unknown }, ledger: KansasCandi
       now: NOW,
       loadFilingPool: loadFilingPool as never,
       loadKpdcRows: loadKpdcRows as never,
+      loadOutsideRows: vi.fn(async () => []),
       buildLedger: buildLedger as never,
     },
+  };
+}
+
+/** A transcribed IE row against the test candidate (synthetic filer and vendor). */
+function ieRow(
+  overrides: Partial<KansasOutsideRow> & Pick<KansasOutsideRow, "sourceFileName" | "rowIndex" | "amountCents" | "statementTotalCents">
+): KansasOutsideRow {
+  return {
+    filerName: "Example Fund",
+    sourceUrl: `https://www.kansas.gov/ethics/CFAScanned/Others/2026ElecCycle/202607/${overrides.sourceFileName}`,
+    periodDueKey: "202607",
+    rowDate: "2026-07-01",
+    vendorName: "Example Vendor LLC",
+    targetCommitteeId: "7:85:HOLLOWAY:MARGARET",
+    namedCommitteeIds: [],
+    targetAsFiled: "KS HD 85 Margaret Holloway",
+    supportOppose: "oppose",
+    ...overrides,
   };
 }
 
@@ -238,8 +258,10 @@ describe("syncKansasCandidateFinance", () => {
       coverage: { contributionCents: 38_000, occupationCoveredCents: 38_000, unitemizedCents: 5_000, nonContributionReceiptCents: 100_000 },
       breakdownCounts: { occupation: 2, contribution_size: 2 },
       diagnostics: [],
+      outside: { status: "none_found" },
       summaryWritten: true,
       directBreakdownsWritten: 4,
+      outsideGroupsWritten: 0,
     });
 
     const linkInsert = client.query.mock.calls.find(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_links"));
@@ -268,7 +290,85 @@ describe("syncKansasCandidateFinance", () => {
       ["contribution_size", "$1-$99", 30],
       ["contribution_size", "$100-$249", 350],
     ]);
-    expect(client.query.mock.calls.some(([sql]) => String(sql).includes("ks_candidate_finance_outside_groups"))).toBe(false);
+    // No outside rows: null totals (never $0) and the stale-group clear, but no group insert.
+    expect(client.query.mock.calls.some(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_outside_groups"))).toBe(false);
+    expect(client.query.mock.calls.some(([sql]) => String(sql).includes("DELETE FROM public.ks_candidate_finance_outside_groups"))).toBe(true);
+  });
+
+  it("writes outside totals and one group per filer and direction from the transcribed IE rows naming the recipe", async () => {
+    const { db, client } = writingDb();
+    const { input } = baseInput(db, resolved(filedReports()));
+    const rows: KansasOutsideRow[] = [
+      ieRow({ sourceFileName: "IE_EX1_2607.pdf", rowIndex: 1, amountCents: 6_000, statementTotalCents: 10_000 }),
+      // A shared row naming two OTHER candidates: it feeds the filer's checksum, not this candidate.
+      ieRow({ sourceFileName: "IE_EX1_2607.pdf", rowIndex: 2, amountCents: 4_000, statementTotalCents: 10_000, targetCommitteeId: null, supportOppose: null, namedCommitteeIds: ["7:2:MUIR:DANIEL", "7:3:EXAMPLE:CHRIS"], targetAsFiled: "KS HD 2 Daniel Muir; KS HD 3 Chris Example" }),
+      ieRow({ sourceFileName: "IE_OF_2607.pdf", rowIndex: 1, amountCents: 25_000, statementTotalCents: 25_000, filerName: "Other Fund", supportOppose: "support", targetCommitteeId: " 7:85:holloway:margaret " }),
+      ieRow({ sourceFileName: "IE_ZZ_2607.pdf", rowIndex: 1, amountCents: 99_900, statementTotalCents: 99_900, filerName: "Unrelated Fund", targetCommitteeId: "7:2:MUIR:DANIEL" }),
+    ];
+    const loadOutsideRows = vi.fn(async () => rows);
+
+    const result = await syncKansasCandidateFinance({ ...input, loadOutsideRows });
+
+    expect(loadOutsideRows).toHaveBeenCalledWith(2026);
+    expect(result).toMatchObject({
+      status: "synced",
+      totalReceipts: 1400,
+      outside: { status: "ok", supportTotal: 250, opposeTotal: 60, groupCount: 2, statementCount: 2 },
+      outsideGroupsWritten: 2,
+    });
+    const summaryInsert = client.query.mock.calls.find(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_summaries"));
+    expect(summaryInsert?.[1]).toEqual([LINK_ID, 2026, 1400, 430, 510, 890, 250, 60, KANSAS_CFR_LINK_SOURCE_URL, NOW.toISOString()]);
+    const groupInserts = client.query.mock.calls
+      .filter(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_outside_groups"))
+      .map(([, params]) => params as unknown[]);
+    expect(groupInserts).toHaveLength(2);
+    expect(groupInserts[0]).toEqual(expect.arrayContaining(["IE:EXAMPLE FUND", "Example Fund", "oppose", 60]));
+    expect(groupInserts[1]).toEqual(expect.arrayContaining(["IE:OTHER FUND", "Other Fund", "support", 250]));
+  });
+
+  it("reports a filer period that fails its checksum and writes null outside totals, without failing the candidate", async () => {
+    const { db, client } = writingDb();
+    const { input } = baseInput(db, resolved(filedReports()));
+    const loadOutsideRows = vi.fn(async () => [ieRow({ sourceFileName: "IE_EX1_2607.pdf", rowIndex: 1, amountCents: 6_000, statementTotalCents: 10_000 })]);
+
+    const result = await syncKansasCandidateFinance({ ...input, loadOutsideRows });
+
+    expect(result).toMatchObject({
+      status: "synced",
+      totalReceipts: 1400,
+      outside: { status: "unpublishable", reasons: ["Example Fund 202607: running total 6000 != IE_EX1_2607.pdf Total this Period 10000"] },
+      summaryWritten: true,
+      outsideGroupsWritten: 0,
+    });
+    const summaryInsert = client.query.mock.calls.find(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_summaries"));
+    expect(summaryInsert?.[1]?.slice(6, 8)).toEqual([null, null]);
+    expect(client.query.mock.calls.some(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_outside_groups"))).toBe(false);
+  });
+
+  it("publishes nothing for a candidate named by shared spending with no per-candidate amount", async () => {
+    const { db, client } = writingDb();
+    const { input } = baseInput(db, resolved(filedReports()));
+    const loadOutsideRows = vi.fn(async () => [
+      ieRow({ sourceFileName: "IE_EX1_2607.pdf", rowIndex: 1, amountCents: 6_000, statementTotalCents: 10_000 }),
+      ieRow({ sourceFileName: "IE_EX1_2607.pdf", rowIndex: 2, amountCents: 4_000, statementTotalCents: 10_000, targetCommitteeId: null, supportOppose: null, namedCommitteeIds: ["7:85:HOLLOWAY:MARGARET", "7:2:MUIR:DANIEL"], targetAsFiled: "KS HD 85 Margaret Holloway; KS HD 2 Daniel Muir" }),
+    ]);
+    const result = await syncKansasCandidateFinance({ ...input, loadOutsideRows });
+    expect(result).toMatchObject({
+      status: "synced",
+      outside: { status: "partial_unallocated", reasons: ["IE_EX1_2607.pdf row 2: 4000 cents across 2 candidates with no per-candidate amount"] },
+      outsideGroupsWritten: 0,
+    });
+    const summaryInsert = client.query.mock.calls.find(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_summaries"));
+    expect(summaryInsert?.[1]?.slice(6, 8)).toEqual([null, null]);
+    expect(client.query.mock.calls.some(([sql]) => String(sql).includes("INSERT INTO public.ks_candidate_finance_outside_groups"))).toBe(false);
+  });
+
+  it("does not read the outside rows for a candidate whose direct leg fails closed", async () => {
+    const { db } = writingDb();
+    const { input } = baseInput(db, resolved(filedReports(), { complete: false }));
+    const loadOutsideRows = vi.fn(async () => []);
+    await expect(syncKansasCandidateFinance({ ...input, loadOutsideRows })).rejects.toThrow("unpublishable");
+    expect(loadOutsideRows).not.toHaveBeenCalled();
   });
 
   it("writes null figures (never $0) when every period is affidavit-exempt", async () => {

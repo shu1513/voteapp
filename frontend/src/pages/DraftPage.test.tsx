@@ -5,6 +5,7 @@ import { DraftPage } from "./DraftPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { ballotSummary, electionSummary, ME_VERIFIED } from "../test/fixtures";
+import { readBallotDraft } from "../lib/ballotDraft";
 
 function renderDraft() {
   return renderRoutes(
@@ -102,6 +103,30 @@ describe("DraftPage", () => {
     expect(screen.getByRole("link", { name: "Sign up free to save your picks" })).toBeInTheDocument();
     // Every draft pick is on a card — no leftover section.
     expect(screen.queryByText("Other saved picks")).not.toBeInTheDocument();
+  });
+
+  it("refreshes the draft's progress target from the loaded ballot, like /ballot does", async () => {
+    // A stale target (yesterday's snapshot: one race) with today's ballot
+    // showing two; without the refresh the header would keep counting to 1.
+    seedDraft({
+      district_ids: ["dddddddd-1111-4111-8111-111111111111"],
+      target: { election_date: "2026-11-03", election_ids: ["e-1"] },
+      choices: { "e-1": draftChoice() },
+    });
+    stubApiRoutes({
+      ...GUEST,
+      "/api/ballot": {
+        body: ballotSummary([
+          electionSummary({ id: "e-9", election_date: "2026-06-02", official_ballot_title: "Past primary" }),
+          electionSummary(),
+          electionSummary({ id: "e-2", official_ballot_title: "Mayor" }),
+        ]),
+      },
+    });
+    renderDraft();
+    expect(await screen.findByText("1 of 2 races decided")).toBeInTheDocument();
+    expect(readBallotDraft().target).toEqual({ election_date: "2026-11-03", election_ids: ["e-1", "e-2"] });
+    expect(readBallotDraft().district_ids).toEqual(["dddddddd-1111-4111-8111-111111111111"]);
   });
 
   it("gives guests the ballot view over the public preview endpoint", async () => {

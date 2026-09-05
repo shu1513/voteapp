@@ -83,7 +83,7 @@ describe("upsertKansasFinanceLink", () => {
 });
 
 describe("replaceKansasCandidateFinanceSnapshot", () => {
-  it("writes link, summary and breakdowns in one transaction, leaving outside columns alone", async () => {
+  it("writes link, summary and breakdowns in one transaction, leaving outside groups alone when none are passed", async () => {
     const client = {
       query: vi.fn((sql: unknown) =>
         String(sql).includes("INSERT INTO public.ks_candidate_finance_links")
