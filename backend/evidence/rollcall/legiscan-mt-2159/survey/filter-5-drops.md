@@ -485,3 +485,10 @@ tokens to be certified. The certification duty would read "for"
 `corporate_accountability`; the central bank digital currency prohibition is a
 position on federal monetary policy that no research area covers. One act, two
 subjects, no single direction.
+
+## Batch 16
+
+**HB 352** establishes a guidelines review committee for the Montana child
+support guidelines, with associated duties and reporting. The guidelines
+themselves are unchanged. It alters who reviews a rule rather than the rule, and
+no research area carries a position on the composition of a review committee.
