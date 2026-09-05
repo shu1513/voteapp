@@ -79,14 +79,16 @@ export function AutoPickControl({
   if (me === undefined) {
     return null;
   }
-  // Signed-out: the teaser instead of the button. Text link, not the teal
-  // pill — teal means "runs the engine now", and this only leads to sign-up.
+  // Signed-out: the teaser instead of the button. Text link, not the
+  // orange pill — orange means "runs the engine now", and this only leads
+  // to sign-up. Brand red, semibold: the same color as every sign-up
+  // button, so it reads as "account" and still pops off the grey page.
   if (me === null) {
     return (
       <Link
         to={`/register?next=${encodeURIComponent(pathname)}`}
         onClick={() => track("signup_prompt", { source: "autopick", action: "click" })}
-        className={`inline-block font-medium text-ink-mid underline decoration-dotted underline-offset-2 hover:text-ink ${
+        className={`inline-block font-semibold text-rausch-deep underline decoration-dotted underline-offset-2 hover:text-rausch-dark ${
           compact ? "text-xs" : "text-sm"
         }`}
       >
