@@ -94,12 +94,19 @@ function pickedResult(overrides: Partial<AutoPickElectionResult> = {}): AutoPick
   };
 }
 
-function renderControl(seatsToFill: number | null = null) {
-  return renderRoutes([
-    { path: "/", element: <AutoPickControl electionId={ELECTION_ID} seatsToFill={seatsToFill} /> },
-    { path: "/login", element: <p>Login page</p> },
-    { path: "/me/settings", element: <p>Settings page</p> },
-  ]);
+function renderControl(seatsToFill: number | null = null, measure = false) {
+  return renderRoutes(
+    [
+      {
+        path: "/elections/:id",
+        element: <AutoPickControl electionId={ELECTION_ID} seatsToFill={seatsToFill} measure={measure} />,
+      },
+      { path: "/register", element: <p>Register page</p> },
+      { path: "/login", element: <p>Login page</p> },
+      { path: "/me/settings", element: <p>Settings page</p> },
+    ],
+    `/elections/${ELECTION_ID}`
+  );
 }
 
 /** The button disables while the preferences load; click only once ready. */
@@ -110,14 +117,25 @@ async function clickPickForMe() {
 }
 
 describe("AutoPickControl", () => {
-  // Progressive disclosure for brand-new visitors: an account-only control
-  // renders nothing at all for guests (and while the session is resolving,
-  // so it never flashes at them).
-  it("renders nothing for guests", () => {
+  // Guests get the pitch instead of the button: a plain-words question
+  // linking to sign-up, with this page as the post-auth return path so the
+  // visitor lands back on the race. The teal button itself never renders
+  // for them (issue preferences are account-only).
+  it("shows guests a sign-up teaser in the button's place", () => {
     mockMe = null;
     stubApiRoutes({});
     renderControl();
     expect(screen.queryByRole("button", { name: "Auto-pick by my issues" })).not.toBeInTheDocument();
+    const teaser = screen.getByRole("link", { name: "Which candidate best matches your values?" });
+    expect(teaser).toHaveAttribute("href", `/register?next=${encodeURIComponent(`/elections/${ELECTION_ID}`)}`);
+  });
+
+  it("asks about the measure, not a candidate, on a ballot measure", () => {
+    mockMe = null;
+    stubApiRoutes({});
+    renderControl(null, true);
+    expect(screen.getByRole("link", { name: "Does this measure match your values?" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /Which candidate/ })).not.toBeInTheDocument();
   });
 
   it("renders nothing while the session is still resolving", () => {
@@ -125,6 +143,7 @@ describe("AutoPickControl", () => {
     stubApiRoutes({});
     renderControl();
     expect(screen.queryByRole("button", { name: "Auto-pick by my issues" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /your values/ })).not.toBeInTheDocument();
   });
 
   it("prompts for more ranked issues below the floor, linking to the issue editor", async () => {

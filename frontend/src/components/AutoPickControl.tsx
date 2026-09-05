@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router";
 import {
   ApiError,
   joinNames,
@@ -22,9 +22,12 @@ import { currentAttribution, errorCategoryOf, track } from "../lib/usage";
 // port); this file keeps the web widgets.
 //
 // Below the issue floor the button explains what to do instead of calling
-// the API. Guests see nothing at all — issue preferences are account-only,
-// and a control a new visitor can't use is pure noise on an already-dense
-// election page.
+// the API. Guests get a one-line teaser in the button's place — "Which
+// candidate best matches your values?" — linking to sign-up (the register
+// page offers log in for existing accounts) with this page as the return
+// path: issue preferences are account-only, and the question is the pitch
+// for an account. Plain words on purpose: a first visit has no idea the
+// app keeps "my issues".
 export { MIN_AUTO_PICK_ISSUES };
 
 type AutoPickControlProps = {
@@ -36,14 +39,24 @@ type AutoPickControlProps = {
   /** Smaller pill (measure section's mid-page placement) — the Yes/No pair
    * on the sticky card stays the page's loud control. */
   compact?: boolean;
+  /** Ballot measure: the guest teaser asks about "this measure", not a
+   * candidate. */
+  measure?: boolean;
   /** Fires after a run that made a pick. The engine scores the whole
    * roster, not the party-filtered view the button sits under — the page
    * uses this to clear its filter so the picked card is never hidden. */
   onPicked?: () => void;
 };
 
-export function AutoPickControl({ electionId, seatsToFill, compact = false, onPicked }: AutoPickControlProps) {
+export function AutoPickControl({
+  electionId,
+  seatsToFill,
+  compact = false,
+  measure = false,
+  onPicked,
+}: AutoPickControlProps) {
   const { me } = useMe();
+  const { pathname } = useLocation();
   const { preferences, isLoading: preferencesLoading, isError: preferencesError } = useMyResearchAreas();
   const autoPick = useAutoPick();
   const saving = useElectionChoiceSaving();
@@ -53,12 +66,33 @@ export function AutoPickControl({ electionId, seatsToFill, compact = false, onPi
   const areaNames = new Map(preferences.map((preference) => [preference.research_area_id, preference.name]));
   const areaName = (researchAreaId: string) => areaNames.get(researchAreaId) ?? "one of your issues";
 
-  // Signed-out (null) and still-resolving (undefined) sessions render
-  // nothing: guests can't rank issues, so the button would only add clutter
-  // for brand-new visitors, and rendering during the resolve would flash it
-  // at them. Signed-in users get it once the session loads.
-  if (me == null) {
+  // Usage: the guest teaser counts as a sign-up prompt shown once per mount.
+  const isGuest = me === null;
+  useEffect(() => {
+    if (isGuest) {
+      track("signup_prompt", { source: "autopick", action: "shown" });
+    }
+  }, [isGuest]);
+
+  // Still-resolving (undefined) sessions render nothing, so neither the
+  // button nor the teaser flashes at a user who is about to be signed in.
+  if (me === undefined) {
     return null;
+  }
+  // Signed-out: the teaser instead of the button. Text link, not the teal
+  // pill — teal means "runs the engine now", and this only leads to sign-up.
+  if (me === null) {
+    return (
+      <Link
+        to={`/register?next=${encodeURIComponent(pathname)}`}
+        onClick={() => track("signup_prompt", { source: "autopick", action: "click" })}
+        className={`inline-block font-medium text-ink-mid underline decoration-dotted underline-offset-2 hover:text-ink ${
+          compact ? "text-xs" : "text-sm"
+        }`}
+      >
+        {measure ? "Does this measure match your values?" : "Which candidate best matches your values?"}
+      </Link>
+    );
   }
 
   function onClick() {

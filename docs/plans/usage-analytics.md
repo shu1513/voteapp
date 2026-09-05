@@ -210,7 +210,7 @@ page: `summary`, `stance`, `finance`, `track_record`, `pick_card`.
 | name | trigger | props |
 |---|---|---|
 | `draft_review` | `/draft` or `/me/picks` settled with ≥ 1 pick, once per payload | `pick_count_bucket`, `view` (`list\|ballot`), `store` (`account\|draft`) |
-| `signup_prompt` | register/login prompt shown, and its link clicked | `source` (`follow\|pick\|draft\|milestone\|picks_wall\|chat`), `action` (`shown\|click`) |
+| `signup_prompt` | register/login prompt shown, and its link clicked | `source` (`follow\|pick\|draft\|milestone\|picks_wall\|chat\|autopick`), `action` (`shown\|click`) |
 | `auth_result` | login / register / google / logout settled (from inside `mutationFn`) | `action` (`login\|register\|google_login\|google_signup\|logout`), `outcome` (`ok\|error`), `error_category?`, `has_next` |
 | `welcome_result` | `WelcomePage` | `action` (`save\|skip`), `ranked_count_bucket` |
 | `handoff_result` | `SavedBallotPage` districts initialize | `outcome` (`done\|failed\|rejected`) |
