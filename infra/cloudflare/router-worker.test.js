@@ -400,11 +400,11 @@ describe("security headers", () => {
     "x-frame-options": "DENY",
     "referrer-policy": "strict-origin-when-cross-origin",
     "permissions-policy": "camera=(), microphone=(), geolocation=()",
-    "content-security-policy-report-only":
-      "default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client; " +
+    "content-security-policy":
+      "default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client https://static.cloudflareinsights.com; " +
       "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; " +
       "img-src 'self' data:; font-src 'self'; " +
-      "connect-src 'self' https://*.sentry.io https://accounts.google.com/gsi/; " +
+      "connect-src 'self' https://*.sentry.io https://accounts.google.com/gsi/ https://cloudflareinsights.com; " +
       "frame-src https://accounts.google.com/gsi/; " +
       "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
   };
@@ -474,6 +474,37 @@ describe("security headers", () => {
       const response = await worker.fetch(new Request(`https://electionssimplified.com${path}`), ENV);
       assert.equal(response.headers.get("referrer-policy"), "strict-origin-when-cross-origin", path);
     }
+  });
+
+  it("withSecurityHeaders enforces the CSP rather than only reporting it", () => {
+    const stamped = withSecurityHeaders(new Response("ok"));
+    const csp = stamped.headers.get("content-security-policy");
+
+    assert.ok(csp, "Content-Security-Policy header must be set");
+    assert.equal(stamped.headers.get("content-security-policy-report-only"), null);
+    // The allowances the live pages depend on: SSR hydration inline
+    // scripts, Google Sign-In, and Sentry error reporting.
+    assert.match(csp, /script-src 'self' 'unsafe-inline' https:\/\/accounts\.google\.com\/gsi\/client/);
+    assert.match(csp, /connect-src 'self' https:\/\/\*\.sentry\.io https:\/\/accounts\.google\.com\/gsi\//);
+    assert.match(csp, /frame-ancestors 'none'/);
+    // Cloudflare Web Analytics beacon, injected by the zone into every page.
+    assert.match(csp, /script-src [^;]*https:\/\/static\.cloudflareinsights\.com/);
+    assert.match(csp, /connect-src [^;]*https:\/\/cloudflareinsights\.com/);
+  });
+
+  it("withSecurityHeaders keeps an upstream CSP and appends the site-wide one instead of replacing it", () => {
+    const upstreamCsp = "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'";
+    const stamped = withSecurityHeaders(
+      new Response("<!doctype html>", { headers: { "content-security-policy": upstreamCsp, "x-frame-options": "SAMEORIGIN" } }),
+      "/api/email/unsubscribe"
+    );
+
+    // Headers.get joins repeated headers with ", "; browsers enforce each
+    // policy independently, so the stricter upstream one still applies.
+    const csp = stamped.headers.get("content-security-policy");
+    assert.ok(csp.startsWith(upstreamCsp + ", default-src 'self';"), csp);
+    // Every other baseline header is still overwritten by the edge value.
+    assert.equal(stamped.headers.get("x-frame-options"), "DENY");
   });
 
   it("withSecurityHeaders copies immutable-header responses instead of mutating", () => {

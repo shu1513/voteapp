@@ -57,10 +57,10 @@ export const CLIENT_IP_HEADER = "X-Voteapp-Client-IP";
 // CSP ships Report-Only first: violations surface in the browser console
 // without ever blocking a resource. There is deliberately no report-uri
 // yet, so "observation" means the operator browsing the site with devtools
-// open — adequate at this traffic level; when a Sentry DSN goes live, add
-// its security-report endpoint as report-uri to collect real-traffic
-// violations before promoting to enforcing Content-Security-Policy.
-// Inventory behind the policy (2026-07): every loaded resource is
+// open — adequate at this traffic level. Enforced since 2026-09-05 (see
+// SECURITY_HEADERS); when a Sentry DSN goes live, add its security-report
+// endpoint as report-uri so real-traffic violations become visible.
+// Inventory behind the policy (2026-07, re-verified 2026-09-05): every loaded resource is
 // same-origin (no fonts/analytics/CDN; external URLs in the app are plain
 // hyperlinks). connect-src allows *.sentry.io because the frontend ships
 // dark Sentry support (VITE_SENTRY_DSN, errorMonitoring.ts) — enforcing
@@ -74,11 +74,15 @@ export const CLIENT_IP_HEADER = "X-Voteapp-Client-IP";
 // The accounts.google.com sources are Sign in with Google (GIS): the button
 // script, its styles, the credential iframe, and its status requests —
 // Google's documented CSP set for the web sign-in flow.
+// The cloudflareinsights.com sources are Cloudflare Web Analytics: the zone
+// setting injects beacon.min.js from static.cloudflareinsights.com into
+// every HTML response and the beacon posts to cloudflareinsights.com;
+// enforcing without them silently ended analytics collection (2026-09-05).
 const CSP_POLICY =
-  "default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client; " +
+  "default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client https://static.cloudflareinsights.com; " +
   "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; " +
   "img-src 'self' data:; font-src 'self'; " +
-  "connect-src 'self' https://*.sentry.io https://accounts.google.com/gsi/; " +
+  "connect-src 'self' https://*.sentry.io https://accounts.google.com/gsi/ https://cloudflareinsights.com; " +
   "frame-src https://accounts.google.com/gsi/; " +
   "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";
 
@@ -88,7 +92,12 @@ const SECURITY_HEADERS = {
   "X-Frame-Options": "DENY",
   "Referrer-Policy": "strict-origin-when-cross-origin",
   "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
-  "Content-Security-Policy-Report-Only": CSP_POLICY,
+  // Enforcing since 2026-09-05. The Report-Only phase never had a report-uri
+  // (the report-to header on responses is Cloudflare NEL, not CSP), so it
+  // collected nothing; the resource inventory above was re-verified by hand
+  // instead: no <img>, @font-face, iframe, or form action reaches a host
+  // outside 'self' plus the Google GIS and Sentry allowances.
+  "Content-Security-Policy": CSP_POLICY,
 };
 
 // Pages whose URLs carry single-use auth tokens in the query string
@@ -110,11 +119,24 @@ export function referrerPolicyForPath(pathname) {
   return NO_REFERRER_PATHS.has(normalized) ? "no-referrer" : SECURITY_HEADERS["Referrer-Policy"];
 }
 
-/** Copies the response (upstream headers are immutable) and stamps the set. */
+/**
+ * Copies the response (upstream headers are immutable) and stamps the set.
+ *
+ * Content-Security-Policy is APPENDED when the upstream already sent one:
+ * browsers enforce every CSP header on a response, so the stricter upstream
+ * policy keeps applying and the site-wide one adds to it. Today that is the
+ * API's unsubscribe page (default-src 'none' on a token-bearing URL) —
+ * overwriting it would re-allow inline scripts there. Every other header
+ * is overwritten so the edge stays authoritative.
+ */
 export function withSecurityHeaders(response, pathname = "") {
   const wrapped = new Response(response.body, response);
   for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
-    wrapped.headers.set(name, value);
+    if (name === "Content-Security-Policy" && wrapped.headers.has(name)) {
+      wrapped.headers.append(name, value);
+    } else {
+      wrapped.headers.set(name, value);
+    }
   }
   wrapped.headers.set("Referrer-Policy", referrerPolicyForPath(pathname));
   return wrapped;
