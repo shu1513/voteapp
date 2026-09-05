@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router";
 import type {
   BallotRaceType,
@@ -57,6 +57,46 @@ export const SAVED_AREA_TEXT_CLASS = "font-semibold text-green-900";
 // sinks these races to the end of the payload.
 function isAwaitingCandidates(election: ElectionSummary): boolean {
   return election.race_type !== "ballot_measure" && election.candidate_count === 0 && !election.has_results;
+}
+
+/**
+ * A ballot is built from district rows, and the county row carries every
+ * seat attached to it — so a ward- or precinct-level seat reaches every
+ * county resident, including those who cannot vote in it. The address lookup
+ * has no ward/precinct membership, so the list names the seats' area and
+ * admits it cannot match them, once per run of such seats rather than on
+ * every card. Runs are consecutive (presentational, never reordering) and
+ * break when the parent district changes. Understated ("may not"): in
+ * several states the seat is a residency district voted countywide.
+ */
+function splitSeatRuns(elections: ElectionSummary[]): { district: string | null; elections: ElectionSummary[] }[] {
+  const runs: { district: string | null; elections: ElectionSummary[] }[] = [];
+  for (const election of elections) {
+    const district = election.sub_district_seat ? formatDistrictName(election.district.name) : null;
+    const lastRun = runs[runs.length - 1];
+    if (lastRun && lastRun.district === district) {
+      lastRun.elections.push(election);
+    } else {
+      runs.push({ district, elections: [election] });
+    }
+  }
+  return runs;
+}
+
+function SeatRun({ district, children }: { district: string | null; children: ReactNode }) {
+  if (district === null) {
+    return <>{children}</>;
+  }
+  // Note hugs its cards (tighter gap inside than the list's own spacing) so
+  // it reads as belonging to the run below, not to the card above.
+  return (
+    <div>
+      <p className="mb-1.5 text-sm text-ink-soft">
+        These seats each cover part of {district} — one may not cover your address.
+      </p>
+      <div className="space-y-3">{children}</div>
+    </div>
+  );
 }
 
 /**
@@ -173,15 +213,19 @@ export function ElectionList({
               visual hierarchy. */}
           <h2 className="text-heading font-bold text-ink">Elections on {formatElectionDate(group.date)}</h2>
           <div className="mt-2 space-y-3">
-            {group.elections.map((election) => (
-              <ElectionCard
-                key={election.id}
-                election={election}
-                savedAreaWeights={savedAreaWeights}
-                myChoice={choicesByElectionId?.get(election.id)}
-                navState={navState}
-                position={positionById.get(election.id) ?? 1}
-              />
+            {splitSeatRuns(group.elections).map((run) => (
+              <SeatRun key={run.elections[0].id} district={run.district}>
+                {run.elections.map((election) => (
+                  <ElectionCard
+                    key={election.id}
+                    election={election}
+                    savedAreaWeights={savedAreaWeights}
+                    myChoice={choicesByElectionId?.get(election.id)}
+                    navState={navState}
+                    position={positionById.get(election.id) ?? 1}
+                  />
+                ))}
+              </SeatRun>
             ))}
           </div>
         </section>
@@ -196,16 +240,20 @@ export function ElectionList({
               "Elections on {date}" headings above it. */}
           <h2 className="text-heading font-bold text-ink">Elections awaiting candidate information</h2>
           <div className="mt-2 space-y-3">
-            {awaitingCandidates.map((election) => (
-              <ElectionCard
-                key={election.id}
-                election={election}
-                savedAreaWeights={savedAreaWeights}
-                myChoice={choicesByElectionId?.get(election.id)}
-                navState={navState}
-                position={positionById.get(election.id) ?? 1}
-                showDate
-              />
+            {splitSeatRuns(awaitingCandidates).map((run) => (
+              <SeatRun key={run.elections[0].id} district={run.district}>
+                {run.elections.map((election) => (
+                  <ElectionCard
+                    key={election.id}
+                    election={election}
+                    savedAreaWeights={savedAreaWeights}
+                    myChoice={choicesByElectionId?.get(election.id)}
+                    navState={navState}
+                    position={positionById.get(election.id) ?? 1}
+                    showDate
+                  />
+                ))}
+              </SeatRun>
             ))}
           </div>
         </section>
@@ -334,20 +382,6 @@ function ElectionCard({
         {formatDistrictName(election.district.name)}
         {showDate ? <> · {formatElectionDate(election.election_date)}</> : null}
       </p>
-      {/* A ballot is built from district rows, and the county row carries every
-          seat attached to it — so a ward- or district-level seat reaches every
-          county resident, including those who cannot vote in it. The address
-          lookup has no ward/precinct membership, so the honest move is to name
-          the seat's own area and admit we cannot match it, rather than imply
-          the ballot was filtered. Deliberately understated ("may not"): in
-          several states the seat is a residency district voted countywide, so
-          the reader may well be eligible. */}
-      {election.sub_district_seat ? (
-        <p className="mt-1 text-xs text-ink-soft">
-          <span className="rounded bg-surface px-1.5 py-0.5 font-medium">{election.sub_district_seat}</span>{" "}
-          <span>— may not cover your address</span>
-        </p>
-      ) : null}
       {hasSignalChips ? (
         <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
           {choiceLabel ? (

@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import { ElectionList } from "./ElectionCard";
 import { renderRoutes } from "../test/render";
-import { electionSummary, VOTE_POWER } from "../test/fixtures";
+import { DISTRICT, electionSummary, VOTE_POWER } from "../test/fixtures";
 import { buildResearchAreaWeights } from "@voteapp/api-client";
 import type { ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 
@@ -748,25 +748,45 @@ describe("ElectionCard result chip", () => {
     expect(screen.getByText("Result: Won")).toBeInTheDocument();
   });
 
-  it("flags a seat whose electorate is smaller than the district row", () => {
-    renderCard(
-      electionSummary({
-        official_ballot_title: "Justice of the Peace Justice of the Peace Ward 3",
-        sub_district_seat: "Ward 3",
-      })
+  it("flags a run of seats smaller than the district row with one note, not one per card", () => {
+    const seat = (id: string, title: string, seat: string, district = DISTRICT) =>
+      electionSummary({ id, official_ballot_title: title, sub_district_seat: seat, district });
+    const county = { ...DISTRICT, id: "d-county", district_type: "county", name: "Travis County, Texas" };
+    renderRoutes(
+      [
+        {
+          path: "/",
+          element: (
+            <ElectionList
+              elections={[
+                electionSummary({ id: "e-plain" }),
+                seat("e-1", "Justice of the Peace Ward 3", "Ward 3"),
+                seat("e-2", "Justice of the Peace Ward 5", "Ward 5"),
+                seat("e-3", "County Commissioner, Precinct 2", "Precinct 2", county),
+              ]}
+            />
+          ),
+        },
+      ],
+      "/"
     );
-    expect(screen.getByText("Ward 3")).toBeInTheDocument();
     // The wording must not promise a filter the address lookup cannot do.
-    expect(screen.getByText("— may not cover your address")).toBeInTheDocument();
+    const notes = screen.getAllByText(/may not cover your address/);
+    expect(notes).toHaveLength(2);
+    expect(notes[0]).toHaveTextContent("These seats each cover part of Alaska");
+    expect(notes[1]).toHaveTextContent("These seats each cover part of Travis County");
+    // The seat name still reads from the title; the card carries no line of its own.
+    expect(screen.getByText("Justice of the Peace Ward 3")).toBeInTheDocument();
+    expect(screen.queryByText("Ward 3")).not.toBeInTheDocument();
   });
 
   it("leaves ordinary races unflagged, including on a backend that predates the field", () => {
     renderCard(electionSummary({ sub_district_seat: null }));
-    expect(screen.queryByText("— may not cover your address")).not.toBeInTheDocument();
+    expect(screen.queryByText(/may not cover your address/)).not.toBeInTheDocument();
 
     // Deploy skew: a backend that predates the field omits it entirely.
     renderCard(electionSummary({ id: "e-2" }));
-    expect(screen.queryByText("— may not cover your address")).not.toBeInTheDocument();
+    expect(screen.queryByText(/may not cover your address/)).not.toBeInTheDocument();
   });
 
   it("shows the current-cycle rating chip instead of the historic one when both arrive", () => {
