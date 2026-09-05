@@ -1,9 +1,5 @@
-import { Queue, Worker, type JobsOptions, type Processor } from "bullmq";
-import type { ConnectionOptions } from "bullmq";
-import { toConnectionOptions } from "../utils/redisConnection.js";
-import { Pool } from "pg";
+import type { Queue, Worker } from "bullmq";
 
-import { getPipelineEnv } from "../config/env.js";
 import {
   isVirginiaCampaignFinanceEnabled,
   isVirginiaCampaignFinanceSyncEnabled,
@@ -12,21 +8,17 @@ import {
   syncDueVirginiaCandidateFinance,
   type VirginiaCandidateFinanceBatchSyncResult,
 } from "../pipeline/virginiaFinance/virginiaCandidateFinanceBatchSync.js";
+import {
+  createStateCandidateFinanceSyncScheduler,
+  type StateCandidateFinanceSyncEnqueueOptions,
+  type StateCandidateFinanceSyncJobData,
+} from "./stateCandidateFinanceSyncScheduler.js";
 
 export const VIRGINIA_CANDIDATE_FINANCE_SYNC_JOB_NAME = "virginia_candidate_finance_sync_due";
 export const VIRGINIA_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID =
   "virginia_candidate_finance_sync_daily";
 
-export type VirginiaCandidateFinanceSyncJobData = {
-  dryRun?: boolean;
-  force?: boolean;
-  maxCandidates?: number;
-  staleAfterDays?: number;
-  electionLookbackDays?: number;
-  electionLookaheadDays?: number;
-  triggeredBy?: "daily" | "manual" | "unknown";
-  requestedAt?: string;
-};
+export type VirginiaCandidateFinanceSyncJobData = StateCandidateFinanceSyncJobData;
 
 export type VirginiaCandidateFinanceSyncJobResult = VirginiaCandidateFinanceBatchSyncResult & {
   enabled: boolean;
@@ -34,242 +26,41 @@ export type VirginiaCandidateFinanceSyncJobResult = VirginiaCandidateFinanceBatc
   triggeredBy: NonNullable<VirginiaCandidateFinanceSyncJobData["triggeredBy"]>;
 };
 
-export type VirginiaCandidateFinanceSyncEnqueueOptions = {
-  jobId?: string;
-};
+export type VirginiaCandidateFinanceSyncEnqueueOptions = StateCandidateFinanceSyncEnqueueOptions;
 
-type VirginiaCandidateFinanceSyncSchedulerRuntimeConfig = {
-  queueName: string;
-  dailyCron: string;
-  dailyTz: string;
-};
+const scheduler = createStateCandidateFinanceSyncScheduler({
+  stateLabel: "Virginia",
+  jobName: VIRGINIA_CANDIDATE_FINANCE_SYNC_JOB_NAME,
+  dailySchedulerId: VIRGINIA_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID,
+  defaultQueueName: "virginia_candidate_finance_sync_maintenance",
+  linkedElectionJobIdPrefix: "virginia-candidate-finance-linked-election-sync-",
+  envPrefix: "VIRGINIA_CAMPAIGN_FINANCE_SYNC",
+  defaultDailyCron: "25 9 * * *",
+  isEnabled: isVirginiaCampaignFinanceEnabled,
+  isSyncEnabled: isVirginiaCampaignFinanceSyncEnabled,
+  syncDue: syncDueVirginiaCandidateFinance,
+});
 
-const DISABLED_RESULT_DEFAULT_MAX_CANDIDATES = 0;
-const DISABLED_RESULT_DEFAULT_STALE_AFTER_DAYS = 0;
+export const createVirginiaCandidateFinanceSyncSchedulerQueue: () => Queue<VirginiaCandidateFinanceSyncJobData> =
+  scheduler.createQueue;
 
-function readSchedulerRuntimeConfig(): VirginiaCandidateFinanceSyncSchedulerRuntimeConfig {
-  return {
-    queueName:
-      process.env.VIRGINIA_CAMPAIGN_FINANCE_SYNC_SCHEDULER_QUEUE?.trim() ||
-      "virginia_candidate_finance_sync_maintenance",
-    dailyCron: process.env.VIRGINIA_CAMPAIGN_FINANCE_SYNC_DAILY_CRON?.trim() || "25 9 * * *",
-    dailyTz: process.env.VIRGINIA_CAMPAIGN_FINANCE_SYNC_DAILY_TZ?.trim() || "UTC",
-  };
-}
+export const buildVirginiaCandidateFinanceLinkedElectionSyncJobId: (now?: Date) => string =
+  scheduler.buildLinkedElectionSyncJobId;
 
-function assertPositiveInteger(value: number | undefined, label: string): void {
-  // isSafeInteger, not isInteger: Number("9007199254740993") silently rounds
-  // to 2^53 and still passes isInteger.
-  if (value !== undefined && (!Number.isSafeInteger(value) || value <= 0)) {
-    throw new Error(`Invalid Virginia finance sync scheduler ${label}: ${value}`);
-  }
-}
+export const upsertRecurringVirginiaCandidateFinanceSyncJobs: (
+  jobData?: VirginiaCandidateFinanceSyncJobData
+) => Promise<void> = scheduler.upsertRecurringJobs;
 
-function getQueueConnection(): ConnectionOptions {
-  const env = getPipelineEnv();
-  return toConnectionOptions(env.REDIS_URL);
-}
+export const enqueueManualVirginiaCandidateFinanceSyncJob: (
+  jobData?: VirginiaCandidateFinanceSyncJobData,
+  options?: VirginiaCandidateFinanceSyncEnqueueOptions
+) => Promise<string> = scheduler.enqueueManualJob;
 
-function getQueueName(): string {
-  return readSchedulerRuntimeConfig().queueName;
-}
+export const runVirginiaCandidateFinanceSyncJob: (
+  data?: VirginiaCandidateFinanceSyncJobData
+) => Promise<VirginiaCandidateFinanceSyncJobResult> = scheduler.runJob;
 
-function defaultJobOptions(): JobsOptions {
-  return {
-    removeOnComplete: 1000,
-    removeOnFail: 1000,
-  };
-}
-
-function normalizeOptionalJobId(value: string | undefined): string | undefined {
-  const trimmed = value?.trim();
-  if (!trimmed) {
-    return undefined;
-  }
-  if (trimmed.includes(":")) {
-    throw new Error("Virginia finance sync scheduler jobId must not contain ':'");
-  }
-  return trimmed;
-}
-
-function jobOptionsWithId(jobId: string | undefined): JobsOptions {
-  const normalizedJobId = normalizeOptionalJobId(jobId);
-  return normalizedJobId ? { ...defaultJobOptions(), jobId: normalizedJobId } : defaultJobOptions();
-}
-
-function assertValidJobOptions(data: VirginiaCandidateFinanceSyncJobData): void {
-  assertPositiveInteger(data.maxCandidates, "maxCandidates");
-  assertPositiveInteger(data.staleAfterDays, "staleAfterDays");
-  assertPositiveInteger(data.electionLookbackDays, "electionLookbackDays");
-  assertPositiveInteger(data.electionLookaheadDays, "electionLookaheadDays");
-}
-
-export function createVirginiaCandidateFinanceSyncSchedulerQueue(): Queue<VirginiaCandidateFinanceSyncJobData> {
-  return new Queue<VirginiaCandidateFinanceSyncJobData>(getQueueName(), {
-    connection: getQueueConnection(),
-    defaultJobOptions: defaultJobOptions(),
-  });
-}
-
-export function buildVirginiaCandidateFinanceLinkedElectionSyncJobId(now = new Date()): string {
-  if (!(now instanceof Date) || Number.isNaN(now.getTime())) {
-    throw new Error("Invalid Virginia finance linked-election sync job date");
-  }
-  return `virginia-candidate-finance-linked-election-sync-${now.toISOString().slice(0, 10)}`;
-}
-
-export async function upsertRecurringVirginiaCandidateFinanceSyncJobs(
-  jobData: VirginiaCandidateFinanceSyncJobData = {}
-): Promise<void> {
-  assertValidJobOptions(jobData);
-  if (!isVirginiaCampaignFinanceEnabled()) {
-    const queue = createVirginiaCandidateFinanceSyncSchedulerQueue();
-    try {
-      await queue.removeJobScheduler(VIRGINIA_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID);
-    } finally {
-      await queue.close();
-    }
-    return;
-  }
-
-  const config = readSchedulerRuntimeConfig();
-  const queue = createVirginiaCandidateFinanceSyncSchedulerQueue();
-
-  try {
-    await queue.upsertJobScheduler(
-      VIRGINIA_CANDIDATE_FINANCE_SYNC_DAILY_SCHEDULER_ID,
-      {
-        pattern: config.dailyCron,
-        tz: config.dailyTz,
-      },
-      {
-        name: VIRGINIA_CANDIDATE_FINANCE_SYNC_JOB_NAME,
-        data: {
-          dryRun: Boolean(jobData.dryRun),
-          force: Boolean(jobData.force),
-          maxCandidates: jobData.maxCandidates,
-          staleAfterDays: jobData.staleAfterDays,
-          electionLookbackDays: jobData.electionLookbackDays,
-          electionLookaheadDays: jobData.electionLookaheadDays,
-          triggeredBy: "daily",
-        },
-        opts: defaultJobOptions(),
-      }
-    );
-  } finally {
-    await queue.close();
-  }
-}
-
-export async function enqueueManualVirginiaCandidateFinanceSyncJob(
-  jobData: VirginiaCandidateFinanceSyncJobData = {},
-  options: VirginiaCandidateFinanceSyncEnqueueOptions = {}
-): Promise<string> {
-  assertValidJobOptions(jobData);
-  if (!isVirginiaCampaignFinanceSyncEnabled(Boolean(jobData.force))) {
-    return "disabled";
-  }
-
-  const queue = createVirginiaCandidateFinanceSyncSchedulerQueue();
-
-  try {
-    const job = await queue.add(
-      VIRGINIA_CANDIDATE_FINANCE_SYNC_JOB_NAME,
-      {
-        dryRun: Boolean(jobData.dryRun),
-        force: Boolean(jobData.force),
-        maxCandidates: jobData.maxCandidates,
-        staleAfterDays: jobData.staleAfterDays,
-        electionLookbackDays: jobData.electionLookbackDays,
-        electionLookaheadDays: jobData.electionLookaheadDays,
-        triggeredBy: "manual",
-        requestedAt: new Date().toISOString(),
-      },
-      jobOptionsWithId(options.jobId)
-    );
-    return job.id ?? "unknown";
-  } finally {
-    await queue.close();
-  }
-}
-
-export async function runVirginiaCandidateFinanceSyncJob(
-  data: VirginiaCandidateFinanceSyncJobData = {}
-): Promise<VirginiaCandidateFinanceSyncJobResult> {
-  assertValidJobOptions(data);
-  const force = Boolean(data.force);
-  const dryRun = Boolean(data.dryRun);
-  const triggeredBy = data.triggeredBy ?? "unknown";
-  const now = new Date();
-  const enabled = isVirginiaCampaignFinanceSyncEnabled(force);
-
-  if (!data.triggeredBy) {
-    console.warn("Virginia finance sync job missing triggeredBy; recording as unknown");
-  }
-
-  if (!enabled) {
-    return {
-      enabled: false,
-      force,
-      triggeredBy,
-      dryRun,
-      now: now.toISOString(),
-      staleAfterDays: data.staleAfterDays ?? DISABLED_RESULT_DEFAULT_STALE_AFTER_DAYS,
-      maxCandidates: data.maxCandidates ?? DISABLED_RESULT_DEFAULT_MAX_CANDIDATES,
-      dueCandidateCount: 0,
-      selectedCandidateCount: 0,
-      syncedCandidateCount: 0,
-      failedCandidateCount: 0,
-      autoLinkAttemptedCount: 0,
-      autoLinkLinkedCount: 0,
-      results: [],
-    };
-  }
-
-  const env = getPipelineEnv();
-  const pool = new Pool({ connectionString: env.DATABASE_URL });
-  try {
-    const result = await syncDueVirginiaCandidateFinance({
-      db: pool,
-      now,
-      dryRun,
-      maxCandidates: data.maxCandidates,
-      staleAfterDays: data.staleAfterDays,
-      electionLookbackDays: data.electionLookbackDays,
-      electionLookaheadDays: data.electionLookaheadDays,
-    });
-
-    return {
-      enabled: true,
-      force,
-      triggeredBy,
-      ...result,
-    };
-  } finally {
-    await pool.end();
-  }
-}
-
-export function createVirginiaCandidateFinanceSyncSchedulerWorker(): Worker<
+export const createVirginiaCandidateFinanceSyncSchedulerWorker: () => Worker<
   VirginiaCandidateFinanceSyncJobData,
   VirginiaCandidateFinanceSyncJobResult
-> {
-  const connection = getQueueConnection();
-  const queueName = getQueueName();
-
-  const processor: Processor<
-    VirginiaCandidateFinanceSyncJobData,
-    VirginiaCandidateFinanceSyncJobResult
-  > = async (job) => {
-    return runVirginiaCandidateFinanceSyncJob(job.data ?? {});
-  };
-
-  return new Worker<VirginiaCandidateFinanceSyncJobData, VirginiaCandidateFinanceSyncJobResult>(
-    queueName,
-    processor,
-    {
-      connection,
-      concurrency: 1,
-    }
-  );
-}
+> = scheduler.createWorker;
