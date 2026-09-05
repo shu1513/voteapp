@@ -713,6 +713,33 @@ describe("ChatWidget", () => {
     ]);
   });
 
+  it("counts a reopen after a mid-session 401 as the register wall it shows", async () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    resetUsageForTests();
+    sessionStorage.clear();
+    const user = userEvent.setup();
+    const fetchMock = stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/chatbot/ask": apiError(401, "unauthorized", "Session expired"),
+      "/api/usage/events": { status: 204, body: null },
+    });
+    renderRoutes([{ path: "*", element: <ChatWidget /> }], "/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByRole("link", { name: "Sign up" });
+    await user.click(screen.getByRole("button", { name: "Minimize Ask" }));
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    expect(await screen.findByRole("link", { name: "Sign up" })).toBeInTheDocument();
+
+    flushUsageEventsForTests();
+    await waitFor(() => expect(usageEvents(fetchMock).filter((event) => event.name === "chat_open")).toHaveLength(2));
+    expect(usageEvents(fetchMock).filter((event) => event.name === "chat_open").map((event) => event.props.wall)).toEqual([
+      "none",
+      "register",
+    ]);
+  });
+
   it("shows no thumbs when the answer carries no feedback token", async () => {
     const user = userEvent.setup();
     renderWidgetAt("/ballot");

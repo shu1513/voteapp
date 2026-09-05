@@ -447,26 +447,6 @@ function ChatWidgetSession() {
     sendQuestion(question, "typed");
   }
 
-  if (!open) {
-    return (
-      <button
-        type="button"
-        ref={launcherRef}
-        onClick={() => {
-          track("chat_open", {
-            context_kind: context?.kind ?? "none",
-            wall: !me ? "register" : !me.email_verified ? "verify" : "none",
-          });
-          setOpen(true);
-        }}
-        aria-label="Open Ask"
-        className="chat-launcher fixed bottom-4 right-4 z-30 rounded-full border border-line bg-white px-4 py-3 text-sm font-semibold text-ink shadow-lg transition hover:bg-surface"
-      >
-        Ask
-      </button>
-    );
-  }
-
   const accessKind = !me ? "register" : !me.email_verified ? "verify" : null;
   // A mid-session 401/403 (expired session, un-verified elsewhere) gets the
   // same walls as the client-side check.
@@ -476,7 +456,28 @@ function ChatWidgetSession() {
       : ask.error instanceof ApiError && ask.error.status === 403
         ? "verify"
         : null;
+  // The one wall the panel will show — rendering and the chat_open event
+  // read the same value, so a reopen after a mid-session 401 is counted
+  // as the register wall it displays.
+  const wall = accessKind ?? errorAccessKind;
   const notAvailable = ask.error instanceof ApiError && ask.error.status === 404;
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        ref={launcherRef}
+        onClick={() => {
+          track("chat_open", { context_kind: context?.kind ?? "none", wall: wall ?? "none" });
+          setOpen(true);
+        }}
+        aria-label="Open Ask"
+        className="chat-launcher fixed bottom-4 right-4 z-30 rounded-full border border-line bg-white px-4 py-3 text-sm font-semibold text-ink shadow-lg transition hover:bg-surface"
+      >
+        Ask
+      </button>
+    );
+  }
 
   return (
     <div
@@ -536,8 +537,8 @@ function ChatWidgetSession() {
         </div>
       </div>
 
-      {accessKind ?? errorAccessKind ? (
-        <AccessPrompt kind={(accessKind ?? errorAccessKind) as "register" | "verify"} />
+      {wall ? (
+        <AccessPrompt kind={wall} />
       ) : (
         <>
           <div ref={transcriptRef} className="min-h-[8rem] flex-1 overflow-y-auto px-3 py-3">
