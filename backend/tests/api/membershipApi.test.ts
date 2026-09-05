@@ -338,6 +338,78 @@ describe.each([
   });
 });
 
+describe("POST /api/me/membership/amount", () => {
+  const path = "/api/me/membership/amount";
+  const STATUS = { enabled: true, membership: null, total_net_cents: 0, payments: [] };
+  const post = (app: Express, body: string, headers: Record<string, string> = JSON_HEADERS) =>
+    invokeExpressApp(app, { method: "POST", path, body, headers });
+
+  it("404s when Stripe is not configured (feature hidden)", async () => {
+    const response = await post(createApiApp(authedOptions()), JSON.stringify({ amount_cents: 2000 }));
+    expect(response.statusCode).toBe(404);
+  });
+
+  it("rejects non-POST methods once wired", async () => {
+    const app = createApiApp(authedOptions({ changeAuthenticatedMembershipAmount: vi.fn() }));
+    const response = await invokeExpressApp(app, { method: "GET", path });
+    expect(response.statusCode).toBe(405);
+    expect(response.headers.allow).toBe("POST");
+  });
+
+  it("requires the application/json content type (blocks plain cross-site form POSTs)", async () => {
+    const action = vi.fn();
+    const app = createApiApp(authedOptions({ changeAuthenticatedMembershipAmount: action }));
+    const response = await post(app, "amount_cents=2000", { "content-type": "application/x-www-form-urlencoded" });
+    expect(response.statusCode).toBe(415);
+    expect(action).not.toHaveBeenCalled();
+  });
+
+  it("requires a verified email", async () => {
+    const action = vi.fn();
+    const app = createApiApp(
+      authedOptions({ changeAuthenticatedMembershipAmount: action, lookupAuthenticatedUserEmailVerified: async () => false })
+    );
+    const response = await post(app, JSON.stringify({ amount_cents: 2000 }));
+    expect(response.statusCode).toBe(403);
+    expect(action).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["missing", {}],
+    ["non-integer", { amount_cents: 20.5 }],
+    ["a string", { amount_cents: "2000" }],
+    ["below $5", { amount_cents: 499 }],
+    ["above $1,000", { amount_cents: 100_001 }],
+  ])("400s an amount that is %s", async (_name, body) => {
+    const action = vi.fn();
+    const app = createApiApp(authedOptions({ changeAuthenticatedMembershipAmount: action }));
+    const response = await post(app, JSON.stringify(body));
+    expect(response.statusCode).toBe(400);
+    expect(action).not.toHaveBeenCalled();
+  });
+
+  it("passes the amount through and answers the fresh membership status", async () => {
+    const action = vi.fn().mockResolvedValue(STATUS);
+    const app = createApiApp(authedOptions({ changeAuthenticatedMembershipAmount: action }));
+    const response = await post(app, JSON.stringify({ amount_cents: 2000 }));
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual(STATUS);
+    expect(action).toHaveBeenCalledWith(USER_ID, { amount_cents: 2000 });
+  });
+
+  it.each([
+    ["no_membership", 404, "not_found"],
+    ["membership_pending", 409, "membership_pending"],
+    ["membership_conflict", 409, "membership_conflict"],
+  ] as const)("maps a %s service error to %s", async (code, statusCode, responseCode) => {
+    const action = vi.fn().mockRejectedValue(new MembershipServiceError(code, "message"));
+    const app = createApiApp(authedOptions({ changeAuthenticatedMembershipAmount: action }));
+    const response = await post(app, JSON.stringify({ amount_cents: 2000 }));
+    expect(response.statusCode).toBe(statusCode);
+    expect(response.body).toMatchObject({ error: { code: responseCode } });
+  });
+});
+
 describe("POST /api/stripe/webhook", () => {
   it("404s when Stripe is not configured", async () => {
     const app = createApiApp({ resolveAddress });

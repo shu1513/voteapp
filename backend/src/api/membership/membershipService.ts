@@ -24,14 +24,31 @@ export type MembershipCheckoutInput = {
   amount_cents: number;
 };
 
+export type MembershipAmountInput = {
+  amount_cents: number;
+};
+
 export type MembershipStatusResult = {
   enabled: true;
   membership: {
     stripe_status: string;
+    /** What the current billing period costs. While an applied amount
+     * change waits for its renewal, Stripe already carries the new price but
+     * this stays the old one — the member has not been charged it yet. */
     monthly_amount_cents: number;
     cancel_at_period_end: boolean;
     current_period_end: string | null;
     started_at: string;
+    /** A requested amount change that has not billed yet
+     * (docs/plans/membership-manage-page.md). `applied` = the Stripe price
+     * is already swapped and the notice sent, so `starts_at` is firm;
+     * otherwise `starts_at` is the projected renewal (null when the period
+     * end is unknown). */
+    pending_amount_change: {
+      new_amount_cents: number;
+      starts_at: string | null;
+      applied: boolean;
+    } | null;
   } | null;
   total_net_cents: number;
   payments: {
@@ -48,12 +65,16 @@ export type MembershipStartedEmailInput = {
   monthlyAmountCents: number;
 };
 
-/** Courtesy confirmations for member-initiated changes
- * (docs/plans/membership-manage-page.md). Best-effort: a failed send logs
- * and never fails the action, unlike the §17602 start acknowledgment. */
+/** Emails for member-initiated changes (docs/plans/membership-manage-page.md).
+ * `canceled` / `resumed` are courtesy confirmations: best-effort, a failed
+ * send logs and never fails the action. `amount_notice` is the CA BPC
+ * §17602(g)(2) advance notice of a fee change, sent 7–30 days before the
+ * first charge at the new amount: a failed send stays unstamped and every
+ * subscription webhook poke retries it, like the start acknowledgment. */
 export type MembershipChangedEmailInput =
   | { kind: "canceled"; email: string; endsAt: Date | null }
-  | { kind: "resumed"; email: string; monthlyAmountCents: number; renewsAt: Date | null };
+  | { kind: "resumed"; email: string; monthlyAmountCents: number; renewsAt: Date | null }
+  | { kind: "amount_notice"; email: string; newAmountCents: number; startsAt: Date };
 
 export type MembershipPortalInput = {
   flow: "payment_method_update" | null;
@@ -103,7 +124,9 @@ export type MembershipServiceOptions = {
    * pokes once a sender exists. A configured sender that THROWS fails the
    * webhook retryably so Stripe redelivers. */
   sendMembershipStartedEmail: ((input: MembershipStartedEmailInput) => Promise<void>) | null;
-  /** Cancel / resume confirmations. null = sending disabled. */
+  /** Cancel / resume confirmations and the amount-change notice. null =
+   * sending disabled (the notice then stays unstamped and logged, like the
+   * start acknowledgment). */
   sendMembershipChangedEmail: ((input: MembershipChangedEmailInput) => Promise<void>) | null;
 };
 
@@ -152,6 +175,13 @@ export type MembershipService = {
    * sync + return). Throws no_membership / membership_conflict /
    * membership_update_failed. Returns the fresh status. */
   resumeMembership(userId: string): Promise<MembershipStatusResult>;
+  /** Records a request to bill a new monthly amount from a future renewal
+   * and applies it right away when the §17602(g)(2) notice window allows
+   * (set-this-state: the current amount withdraws a pending request; a
+   * repeat of a pending request is a no-op). Nothing is charged today.
+   * Throws no_membership / membership_pending / membership_conflict.
+   * Returns the fresh status. */
+  changeMonthlyAmount(userId: string, input: MembershipAmountInput): Promise<MembershipStatusResult>;
   handleWebhookEvent(input: { rawBody: Buffer; signatureHeader: string | null }): Promise<"ok" | "bad_signature">;
   /** Pushes the user's current account email onto their Stripe customer, so
    * Checkout prefills and Stripe receipts follow an email change. Called
@@ -194,6 +224,65 @@ function idOf(value: string | { id: string } | null | undefined): string | null 
 
 function isTerminalStatus(status: string): boolean {
   return (TERMINAL_SUBSCRIPTION_STATUSES as readonly string[]).includes(status);
+}
+
+/** Member treatment: the subscription renews and can be re-priced. */
+function isBillableStatus(status: string): boolean {
+  return status === "active" || status === "past_due";
+}
+
+/** A subscription object with the instant its state was known to be current
+ * at Stripe: a retrieve's START (the state is at least that fresh), a
+ * mutation's RETURN (Stripe had applied it by then). billing_subscriptions
+ * .stripe_synced_at keeps the latest such instant, and every writer skips a
+ * write carrying an older one — so a webhook poke that read Stripe before a
+ * manage-page mutation can no longer overwrite the mutation's result. A poke
+ * that read between a mutation's apply and its return loses to the mutation
+ * with an equal-or-newer state; the mutation's own webhook re-syncs. */
+type FetchedSubscription = { subscription: Stripe.Subscription; syncedAt: Date };
+
+// CA BPC §17602(g)(2): notice of a fee change no less than 7 and no more
+// than 30 days before it takes effect. The price swap and the notice happen
+// together, so the swap itself waits for this window before a renewal
+// (docs/plans/membership-manage-page.md, "Apply-if-due").
+const NOTICE_WINDOW_MIN_DAYS = 7;
+const NOTICE_WINDOW_MAX_DAYS = 30;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+function daysUntil(instant: Date, now: Date): number {
+  return (instant.getTime() - now.getTime()) / DAY_MS;
+}
+
+function isInNoticeWindow(periodEnd: Date | null, now: Date): boolean {
+  if (!periodEnd) {
+    return false;
+  }
+  const days = daysUntil(periodEnd, now);
+  return days >= NOTICE_WINDOW_MIN_DAYS && days <= NOTICE_WINDOW_MAX_DAYS;
+}
+
+/** The month after `periodEnd` on the subscription's anchor day, clamped to
+ * the shorter month the way Stripe clamps (anchor 31 → Feb 28 → Mar 31, never
+ * Mar 28 or Mar 3). The anchor is `started_at`'s day: Checkout subscriptions
+ * bill from their start instant. UTC, like Stripe's epochs. */
+function nextRenewalAfter(periodEnd: Date, anchorDay: number): Date {
+  const next = new Date(periodEnd.getTime());
+  next.setUTCDate(1);
+  next.setUTCMonth(next.getUTCMonth() + 1);
+  const lastDay = new Date(Date.UTC(next.getUTCFullYear(), next.getUTCMonth() + 1, 0)).getUTCDate();
+  next.setUTCDate(Math.min(anchorDay, lastDay));
+  return next;
+}
+
+/** The renewal a still-unapplied change would first bill: this period's end
+ * while the notice can still go out 7 days ahead of it, else the renewal
+ * after (the post-renewal poke or `invoice.upcoming` applies it then). A
+ * projection for display; the firm date is recorded with the notice. */
+function projectedAmountStart(periodEnd: Date | null, anchorDay: number, now: Date): Date | null {
+  if (!periodEnd) {
+    return null;
+  }
+  return daysUntil(periodEnd, now) >= NOTICE_WINDOW_MIN_DAYS ? periodEnd : nextRenewalAfter(periodEnd, anchorDay);
 }
 
 /** "Will end without renewing." Current API versions express a period-end
@@ -304,17 +393,32 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
     return result.rows[0]?.stripe_subscription_id ?? null;
   }
 
+  async function retrieveSubscription(subscriptionId: string): Promise<FetchedSubscription> {
+    const syncedAt = new Date();
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    return { subscription, syncedAt };
+  }
+
+  async function updateSubscription(
+    subscriptionId: string,
+    params: Stripe.SubscriptionUpdateParams
+  ): Promise<FetchedSubscription> {
+    const subscription = await stripe.subscriptions.update(subscriptionId, params);
+    return { subscription, syncedAt: new Date() };
+  }
+
   /** Cancel that treats "already canceled" as success: retrying a cancel must
    * never fail, or the deletion precondition would wedge on a subscription a
    * previous attempt (or the portal) already ended. */
-  async function cancelSubscriptionSafely(subscriptionId: string): Promise<Stripe.Subscription> {
+  async function cancelSubscriptionSafely(subscriptionId: string): Promise<FetchedSubscription> {
     try {
-      return await stripe.subscriptions.cancel(subscriptionId);
+      const subscription = await stripe.subscriptions.cancel(subscriptionId);
+      return { subscription, syncedAt: new Date() };
     } catch (error) {
       // Stripe rejects canceling an already-canceled subscription; confirm
       // via a retrieve instead of matching error strings.
-      const current = await stripe.subscriptions.retrieve(subscriptionId).catch(() => null);
-      if (current && isTerminalStatus(current.status)) {
+      const current = await retrieveSubscription(subscriptionId).catch(() => null);
+      if (current && isTerminalStatus(current.subscription.status)) {
         return current;
       }
       throw error;
@@ -341,7 +445,7 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
    * checkouts always set unit_amount ≥ the minimum, so that is a foreign or
    * hand-made subscription the schema CHECK would reject anyway. */
   async function upsertSubscriptionRow(
-    subscription: Stripe.Subscription,
+    { subscription, syncedAt }: FetchedSubscription,
     customer: BillingCustomerRow,
     checkoutSessionId: string | null
   ): Promise<{ monthlyAmountCents: number; acknowledgmentPending: boolean } | null> {
@@ -357,9 +461,9 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
         INSERT INTO public.billing_subscriptions (
           stripe_subscription_id, billing_customer_id, stripe_checkout_session_id,
           monthly_amount_cents, stripe_status, cancel_at_period_end,
-          current_period_end, started_at, canceled_at
+          current_period_end, started_at, canceled_at, stripe_synced_at
         )
-        VALUES ($1, $2::uuid, $3, $4, $5, $6, $7, $8, $9)
+        VALUES ($1, $2::uuid, $3, $4, $5, $6, $7, $8, $9, $10)
         ON CONFLICT (stripe_subscription_id) DO UPDATE SET
           monthly_amount_cents = EXCLUDED.monthly_amount_cents,
           stripe_status = EXCLUDED.stripe_status,
@@ -372,7 +476,13 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
             public.billing_subscriptions.stripe_checkout_session_id,
             EXCLUDED.stripe_checkout_session_id
           ),
+          stripe_synced_at = EXCLUDED.stripe_synced_at,
           updated_at = now()
+        -- Stale-write guard (see FetchedSubscription): a row already carrying
+        -- a newer Stripe instant keeps it. NULL = written before the column
+        -- existed.
+        WHERE public.billing_subscriptions.stripe_synced_at IS NULL
+           OR public.billing_subscriptions.stripe_synced_at <= EXCLUDED.stripe_synced_at
         RETURNING acknowledgment_sent_at
       `,
       [
@@ -385,28 +495,34 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
         currentPeriodEndOf(subscription),
         epochToDate(subscription.start_date),
         subscription.canceled_at ? epochToDate(subscription.canceled_at) : null,
+        syncedAt,
       ]
     );
-    return { monthlyAmountCents, acknowledgmentPending: upserted.rows[0]?.acknowledgment_sent_at === null };
+    if (!upserted.rows[0]) {
+      // A newer write already landed; nothing to acknowledge from this one.
+      console.log(`[membership] subscription ${subscription.id}: skipped a stale write (row is newer than ${syncedAt.toISOString()})`);
+      return { monthlyAmountCents, acknowledgmentPending: false };
+    }
+    return { monthlyAmountCents, acknowledgmentPending: upserted.rows[0].acknowledgment_sent_at === null };
   }
 
   /** The poke pattern: whatever subscription event arrived, fetch the current
    * subscription from Stripe and write that. Returns nothing; all failures
    * throw (→ 5xx → Stripe retries) except permanent mismatches, which log. */
   async function syncSubscription(subscriptionId: string, checkoutSessionId: string | null): Promise<void> {
-    let subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    let fetched = await retrieveSubscription(subscriptionId);
     // Ownership check before anything mutates: only subscriptions on OUR
     // membership Product are recorded or auto-canceled. The account is
     // single-product today, but this keeps the guards below provably scoped
     // if a dashboard experiment or second product ever appears.
-    const subscriptionProductId = idOf(subscription.items?.data?.[0]?.price?.product ?? null);
+    const subscriptionProductId = idOf(fetched.subscription.items?.data?.[0]?.price?.product ?? null);
     if (subscriptionProductId !== options.membershipProductId) {
       console.error(
         `[membership] subscription ${subscriptionId} is for product ${subscriptionProductId ?? "<none>"}, not the membership product; ignoring`
       );
       return;
     }
-    const stripeCustomerId = idOf(subscription.customer);
+    const stripeCustomerId = idOf(fetched.subscription.customer);
     const customer = stripeCustomerId ? await findBillingCustomerByStripeId(stripeCustomerId) : null;
     if (!customer) {
       // Not one of ours (the customer row is created before any checkout
@@ -418,7 +534,7 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
       return;
     }
 
-    if (!isTerminalStatus(subscription.status)) {
+    if (!isTerminalStatus(fetched.subscription.status)) {
       // Deleted-account guard: a checkout tab completed after the account was
       // hard-deleted. Cancel at Stripe immediately — nobody owns this
       // membership any more.
@@ -428,7 +544,7 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
         console.error(
           `[membership] subscription ${subscriptionId} arrived for deleted-account billing customer ${customer.id}; canceling — refund any first charge manually`
         );
-        subscription = await cancelSubscriptionSafely(subscriptionId);
+        fetched = await cancelSubscriptionSafely(subscriptionId);
       } else {
         // Duplicate-subscription guard: the customer already has a different
         // live subscription (concurrent checkout tabs). Cancel the newcomer;
@@ -441,65 +557,270 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
           console.error(
             `[membership] billing customer ${customer.id} already has live subscription ${otherLiveId}; canceling newly arrived ${subscriptionId} — refund its first charge manually`
           );
-          subscription = await cancelSubscriptionSafely(subscriptionId);
+          fetched = await cancelSubscriptionSafely(subscriptionId);
         }
       }
     }
 
-    const upserted = await upsertSubscriptionRow(subscription, customer, checkoutSessionId);
+    const upserted = await upsertSubscriptionRow(fetched, customer, checkoutSessionId);
     if (!upserted) {
       return;
     }
-    const monthlyAmountCents = upserted.monthlyAmountCents;
 
     // §17602 post-purchase acknowledgment: once, when the subscription is
-    // live and unacknowledged. A failed send leaves the column NULL and 5xxes
-    // (see the catch below), so both Stripe's redelivery of this event and
-    // any later subscription poke retry it.
-    const acknowledgmentUserId =
-      (subscription.status === "active" || subscription.status === "past_due") && upserted.acknowledgmentPending
-        ? customer.user_id
-        : null;
-    if (acknowledgmentUserId !== null) {
-      if (!options.sendMembershipStartedEmail) {
+    // live and unacknowledged.
+    if (isBillableStatus(fetched.subscription.status) && upserted.acknowledgmentPending && customer.user_id !== null) {
+      await sendStartAcknowledgment(subscriptionId, customer.user_id, upserted.monthlyAmountCents);
+    }
+    // Every poke is also the timing signal for a requested amount change
+    // (docs/plans/membership-manage-page.md, "Apply-if-due").
+    await applyDueAmountChange(fetched, customer);
+  }
+
+  /** A failed send leaves acknowledgment_sent_at NULL and 5xxes (see the
+   * catch below), so both Stripe's redelivery of this event and any later
+   * subscription poke retry it. */
+  async function sendStartAcknowledgment(subscriptionId: string, userId: string, monthlyAmountCents: number): Promise<void> {
+    if (!options.sendMembershipStartedEmail) {
+      console.warn(
+        `[membership] no acknowledgment email sender configured; subscription ${subscriptionId} stays unacknowledged`
+      );
+      return;
+    }
+    try {
+      const email = await lookupActiveUserEmail(userId);
+      if (!email) {
+        return;
+      }
+      await options.sendMembershipStartedEmail({ email, monthlyAmountCents });
+      await db.query(
+        `
+          UPDATE public.billing_subscriptions
+          SET acknowledgment_sent_at = now()
+          WHERE stripe_subscription_id = $1
+            AND acknowledgment_sent_at IS NULL
+        `,
+        [subscriptionId]
+      );
+    } catch (error) {
+      // A failed send must not be swallowed with a 200: the checkout burst's
+      // other pokes land within seconds of this one, so a mailer outage
+      // spanning the burst would leave this LEGALLY REQUIRED (§17602) notice
+      // unsent until some later subscription event — possibly next month's
+      // renewal. 5xx instead, so Stripe redelivers THIS event with backoff
+      // for days; the upsert before it is idempotent under the retry. A send
+      // that succeeded but failed to stamp re-sends on retry — a rare
+      // duplicate acknowledgment beats a lost one.
+      console.warn(
+        `[membership] acknowledgment email for subscription ${subscriptionId} failed; asking Stripe to redeliver:`,
+        error instanceof Error ? error.message : String(error)
+      );
+      throw new MembershipWebhookRetryError(
+        `acknowledgment email for subscription ${subscriptionId} failed`
+      );
+    }
+  }
+
+  // Amount changes (docs/plans/membership-manage-page.md). One row per
+  // request in billing_subscription_amount_changes; "unbilled" = not yet in
+  // effect (unapplied, or applied and waiting for its renewal).
+
+  type AmountChangeRow = {
+    id: string;
+    previous_amount_cents: number;
+    new_amount_cents: number;
+    requested_at: Date;
+    applied_at: Date | null;
+    effective_at: Date | null;
+    notice_sent_at: Date | null;
+    superseded_at: Date | null;
+  };
+
+  /** Unbilled rows plus applied-but-superseded ones still ahead of their
+   * renewal (a change replaced inside the window), oldest request first.
+   * Superseded rows that never applied are history and stay out. */
+  async function listUnbilledAmountChanges(subscriptionId: string): Promise<AmountChangeRow[]> {
+    const result = await db.query<AmountChangeRow>(
+      `
+        SELECT id::text AS id, previous_amount_cents, new_amount_cents, requested_at,
+               applied_at, effective_at, notice_sent_at, superseded_at
+        FROM public.billing_subscription_amount_changes
+        WHERE stripe_subscription_id = $1
+          AND (applied_at IS NULL OR effective_at > now())
+          AND (superseded_at IS NULL OR applied_at IS NOT NULL)
+        ORDER BY requested_at ASC
+      `,
+      [subscriptionId]
+    );
+    return result.rows;
+  }
+
+  /** What the current billing period costs: the price the FIRST applied
+   * (unbilled) swap replaced, else the row's amount. Stripe's own price
+   * already reads as the new amount once a swap is applied. */
+  function currentPeriodAmount(changes: AmountChangeRow[], rowAmountCents: number): number {
+    const firstApplied = [...changes]
+      .filter((change) => change.applied_at !== null)
+      .sort((a, b) => (a.applied_at as Date).getTime() - (b.applied_at as Date).getTime())[0];
+    return firstApplied ? firstApplied.previous_amount_cents : rowAmountCents;
+  }
+
+  function latestOpenAmountChange(changes: AmountChangeRow[]): AmountChangeRow | null {
+    const open = changes.filter((change) => change.superseded_at === null);
+    return open[open.length - 1] ?? null;
+  }
+
+  async function supersedeAmountChanges(subscriptionId: string, scope: "unapplied" | "unbilled"): Promise<void> {
+    await db.query(
+      `
+        UPDATE public.billing_subscription_amount_changes
+        SET superseded_at = now()
+        WHERE stripe_subscription_id = $1
+          AND superseded_at IS NULL
+          AND ${scope === "unapplied" ? "applied_at IS NULL" : "(applied_at IS NULL OR effective_at > now())"}
+      `,
+      [subscriptionId]
+    );
+  }
+
+  /** The same ad-hoc-price mechanism Checkout uses; no proration in either
+   * direction, and the billing-cycle anchor is untouched, so the renewal at
+   * current_period_end is the first invoice at the new amount. */
+  async function swapSubscriptionPrice(
+    subscriptionId: string,
+    itemId: string,
+    amountCents: number
+  ): Promise<FetchedSubscription> {
+    return updateSubscription(subscriptionId, {
+      items: [
+        {
+          id: itemId,
+          price_data: {
+            currency: "usd",
+            product: options.membershipProductId,
+            unit_amount: amountCents,
+            recurring: { interval: "month" },
+          },
+        },
+      ],
+      proration_behavior: "none",
+    });
+  }
+
+  /** The latest open (un-superseded, unbilled) change. Runs on every
+   * subscription poke and after every request. NOTICE FIRST, then the swap:
+   * the §17602(g)(2) notice is the legal requirement, so the Stripe price
+   * never moves until a notice naming this renewal has actually gone out —
+   * a mail outage leaves the price alone and the request pending, never a
+   * changed price with a late notice. A failed send throws
+   * MembershipWebhookRetryError so the webhook 5xxes and Stripe redelivers.
+   * Once applied, each poke also reconciles Stripe's price to the noticed
+   * amount, so a slower, older swap landing after a newer one is repaired
+   * by its own webhook. */
+  async function applyDueAmountChange(fetched: FetchedSubscription, customer: BillingCustomerRow): Promise<void> {
+    const { subscription } = fetched;
+    const change = latestOpenAmountChange(await listUnbilledAmountChanges(subscription.id));
+    if (!change) {
+      return;
+    }
+    if (isTerminalStatus(subscription.status)) {
+      // Nothing will bill again; the row stays as the record of the request.
+      await db.query(
+        `
+          UPDATE public.billing_subscription_amount_changes
+          SET superseded_at = now()
+          WHERE id = $1::uuid AND superseded_at IS NULL
+        `,
+        [change.id]
+      );
+      return;
+    }
+    // A scheduled cancel leaves the request parked: resume brings it back
+    // into play, and a canceled member must not be re-priced.
+    if (!isBillableStatus(subscription.status) || isScheduledToCancel(subscription)) {
+      return;
+    }
+    const item = subscription.items?.data?.[0];
+    if (!item?.id) {
+      console.error(`[membership] subscription ${subscription.id} has no item to re-price; leaving the amount change alone`);
+      return;
+    }
+
+    if (change.applied_at !== null) {
+      // Reconcile: the member was noticed for this amount, so it is what the
+      // renewal must bill. Drift here means an older swap (a poke that read
+      // the previous request before it was replaced) landed after this one.
+      if (item.price?.unit_amount !== change.new_amount_cents) {
+        console.error(
+          `[membership] subscription ${subscription.id} bills ${item.price?.unit_amount ?? "<none>"} but the noticed amount is ${change.new_amount_cents}; restoring`
+        );
+        const restored = await swapSubscriptionPrice(subscription.id, item.id, change.new_amount_cents);
+        await upsertSubscriptionRow(restored, customer, null);
+      }
+      return;
+    }
+
+    const periodEnd = currentPeriodEndOf(subscription);
+    if (!periodEnd || !isInNoticeWindow(periodEnd, new Date())) {
+      return;
+    }
+    // The notice names the renewal it precedes. One already sent for THIS
+    // renewal (the swap failed after it) is not repeated; one sent for an
+    // earlier renewal that has since passed is stale and goes out again.
+    if (change.notice_sent_at === null || change.effective_at?.getTime() !== periodEnd.getTime()) {
+      if (customer.user_id === null) {
+        // Deleted account: nobody to notice, so nothing may change.
+        return;
+      }
+      if (!options.sendMembershipChangedEmail) {
         console.warn(
-          `[membership] no acknowledgment email sender configured; subscription ${subscriptionId} stays unacknowledged`
+          `[membership] no email sender configured; amount change for subscription ${subscription.id} stays pending unnoticed`
         );
         return;
       }
       try {
-        const email = await lookupActiveUserEmail(acknowledgmentUserId);
+        const email = await lookupActiveUserEmail(customer.user_id);
         if (!email) {
           return;
         }
-        await options.sendMembershipStartedEmail({ email, monthlyAmountCents });
+        await options.sendMembershipChangedEmail({
+          kind: "amount_notice",
+          email,
+          newAmountCents: change.new_amount_cents,
+          startsAt: periodEnd,
+        });
         await db.query(
           `
-            UPDATE public.billing_subscriptions
-            SET acknowledgment_sent_at = now()
-            WHERE stripe_subscription_id = $1
-              AND acknowledgment_sent_at IS NULL
+            UPDATE public.billing_subscription_amount_changes
+            SET notice_sent_at = now(), effective_at = $2
+            WHERE id = $1::uuid AND applied_at IS NULL
           `,
-          [subscriptionId]
+          [change.id, periodEnd]
         );
       } catch (error) {
-        // A failed send must not be swallowed with a 200: the checkout burst's
-        // other pokes land within seconds of this one, so a mailer outage
-        // spanning the burst would leave this LEGALLY REQUIRED (§17602) notice
-        // unsent until some later subscription event — possibly next month's
-        // renewal. 5xx instead, so Stripe redelivers THIS event with backoff
-        // for days; the upsert above is idempotent under the retry. A send
-        // that succeeded but failed to stamp re-sends on retry — a rare
-        // duplicate acknowledgment beats a lost one.
+        // Same reasoning as the start acknowledgment: the notice is the legal
+        // requirement, so a failed send must keep retrying, not 200. Nothing
+        // has changed at Stripe.
         console.warn(
-          `[membership] acknowledgment email for subscription ${subscriptionId} failed; asking Stripe to redeliver:`,
+          `[membership] amount-change notice for subscription ${subscription.id} failed; asking Stripe to redeliver:`,
           error instanceof Error ? error.message : String(error)
         );
-        throw new MembershipWebhookRetryError(
-          `acknowledgment email for subscription ${subscriptionId} failed`
-        );
+        throw new MembershipWebhookRetryError(`amount-change notice for subscription ${subscription.id} failed`);
       }
     }
+
+    const updated = await swapSubscriptionPrice(subscription.id, item.id, change.new_amount_cents);
+    // A request replaced while this swap was in flight stays unapplied
+    // history; the reconcile above puts Stripe back on the replacement.
+    await db.query(
+      `
+        UPDATE public.billing_subscription_amount_changes
+        SET applied_at = now()
+        WHERE id = $1::uuid AND applied_at IS NULL AND superseded_at IS NULL
+      `,
+      [change.id]
+    );
+    await upsertSubscriptionRow(updated, customer, null);
   }
 
   async function handleCheckoutSessionCompleted(event: Stripe.Event): Promise<void> {
@@ -671,6 +992,21 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
     }
   }
 
+  /** Apply-if-due from a member's HTTP request. A failed NOTICE means
+   * nothing changed at Stripe and the request is recorded as pending, which
+   * is what the answered status says; the next subscription poke retries
+   * it, so the member is not shown an error for a saved request. */
+  async function applyDueAmountChangeLogged(fetched: FetchedSubscription, customer: BillingCustomerRow): Promise<void> {
+    try {
+      await applyDueAmountChange(fetched, customer);
+    } catch (error) {
+      if (!(error instanceof MembershipWebhookRetryError)) {
+        throw error;
+      }
+      console.warn(`[membership] ${error.message}; the request stays pending for the next subscription poke`);
+    }
+  }
+
   async function sendChangedEmailBestEffort(input: MembershipChangedEmailInput): Promise<void> {
     if (!options.sendMembershipChangedEmail) {
       return;
@@ -693,13 +1029,14 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
    * membership. */
   async function loadOwnedLiveSubscription(
     userId: string
-  ): Promise<{ customer: BillingCustomerRow; subscription: Stripe.Subscription }> {
+  ): Promise<{ customer: BillingCustomerRow; fetched: FetchedSubscription }> {
     const customer = await findBillingCustomerByUserId(userId);
     const liveSubscriptionId = customer ? await findLiveSubscriptionId(customer.id) : null;
     if (!customer || !liveSubscriptionId) {
       throw new MembershipServiceError("no_membership", "You don't have a monthly membership.");
     }
-    const subscription = await stripe.subscriptions.retrieve(liveSubscriptionId);
+    const fetched = await retrieveSubscription(liveSubscriptionId);
+    const { subscription } = fetched;
     const productId = idOf(subscription.items?.data?.[0]?.price?.product ?? null);
     const stripeCustomerId = idOf(subscription.customer);
     if (productId !== options.membershipProductId || stripeCustomerId !== customer.stripe_customer_id) {
@@ -712,10 +1049,10 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
       );
     }
     if (isTerminalStatus(subscription.status)) {
-      await upsertSubscriptionRow(subscription, customer, null);
+      await upsertSubscriptionRow(fetched, customer, null);
       throw new MembershipServiceError("no_membership", "You don't have a monthly membership.");
     }
-    return { customer, subscription };
+    return { customer, fetched };
   }
 
   const service: MembershipService = {
@@ -725,6 +1062,7 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
         return { enabled: true, membership: null, total_net_cents: 0, payments: [] };
       }
       const subscriptionResult = await db.query<{
+        stripe_subscription_id: string;
         stripe_status: string;
         monthly_amount_cents: number;
         cancel_at_period_end: boolean;
@@ -733,7 +1071,7 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
       }>(
         `
           SELECT stripe_status, monthly_amount_cents, cancel_at_period_end,
-                 current_period_end, started_at
+                 current_period_end, started_at, stripe_subscription_id
           FROM public.billing_subscriptions
           WHERE billing_customer_id = $1::uuid
             AND stripe_status NOT IN ('canceled', 'incomplete_expired')
@@ -766,17 +1104,36 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
         [customer.id]
       );
       const subscription = subscriptionResult.rows[0] ?? null;
+      const changes = subscription ? await listUnbilledAmountChanges(subscription.stripe_subscription_id) : [];
+      const periodAmountCents = subscription ? currentPeriodAmount(changes, subscription.monthly_amount_cents) : 0;
+      const pendingChange = latestOpenAmountChange(changes);
+      const pendingStartsAt =
+        pendingChange && subscription
+          ? pendingChange.applied_at
+            ? pendingChange.effective_at
+            : projectedAmountStart(subscription.current_period_end, subscription.started_at.getUTCDate(), new Date())
+          : null;
       return {
         enabled: true,
         membership: subscription
           ? {
               stripe_status: subscription.stripe_status,
-              monthly_amount_cents: subscription.monthly_amount_cents,
+              monthly_amount_cents: periodAmountCents,
               cancel_at_period_end: subscription.cancel_at_period_end,
               current_period_end: subscription.current_period_end
                 ? toIsoString(subscription.current_period_end)
                 : null,
               started_at: toIsoString(subscription.started_at),
+              // A request back to this period's amount (reverting an applied
+              // change inside the window) leaves nothing to announce.
+              pending_amount_change:
+                pendingChange && pendingChange.new_amount_cents !== periodAmountCents
+                  ? {
+                      new_amount_cents: pendingChange.new_amount_cents,
+                      starts_at: pendingStartsAt ? toIsoString(pendingStartsAt) : null,
+                      applied: pendingChange.applied_at !== null,
+                    }
+                  : null,
             }
           : null,
         total_net_cents: totalResult.rows[0]?.total_net_cents ?? 0,
@@ -898,7 +1255,8 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
     },
 
     async cancelMembership(userId) {
-      const { customer, subscription } = await loadOwnedLiveSubscription(userId);
+      const { customer, fetched } = await loadOwnedLiveSubscription(userId);
+      const { subscription } = fetched;
       if (subscription.status === "incomplete") {
         // A seconds-wide race by design (cards-only Checkout confirms the
         // payment before the session completes) that auto-expires in 23h;
@@ -911,22 +1269,22 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
       if (isScheduledToCancel(subscription)) {
         // Already in the requested state (a portal cancel, or a retry after a
         // lost response): record it — no second mutation, no second email.
-        await upsertSubscriptionRow(subscription, customer, null);
+        await upsertSubscriptionRow(fetched, customer, null);
         return service.getMembership(userId);
       }
-      const updated = await stripe.subscriptions.update(subscription.id, { cancel_at_period_end: true });
+      const updated = await updateSubscription(subscription.id, { cancel_at_period_end: true });
       await upsertSubscriptionRow(updated, customer, null);
       const email = await lookupActiveUserEmail(userId);
       if (email) {
-        await sendChangedEmailBestEffort({ kind: "canceled", email, endsAt: currentPeriodEndOf(updated) });
+        await sendChangedEmailBestEffort({ kind: "canceled", email, endsAt: currentPeriodEndOf(updated.subscription) });
       }
       return service.getMembership(userId);
     },
 
     async resumeMembership(userId) {
-      const { customer, subscription } = await loadOwnedLiveSubscription(userId);
-      if (!isScheduledToCancel(subscription)) {
-        await upsertSubscriptionRow(subscription, customer, null);
+      const { customer, fetched } = await loadOwnedLiveSubscription(userId);
+      if (!isScheduledToCancel(fetched.subscription)) {
+        await upsertSubscriptionRow(fetched, customer, null);
         return service.getMembership(userId);
       }
       // Clear whichever form the schedule took (see isScheduledToCancel): the
@@ -934,16 +1292,16 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
       // period-end cancel, including the portal's — then the legacy boolean
       // if it is still set. Verify on the returned object; never report a
       // resume Stripe did not perform.
-      let updated = subscription;
-      if (updated.cancel_at != null) {
-        updated = await stripe.subscriptions.update(updated.id, { cancel_at: "" });
+      let updated = fetched;
+      if (updated.subscription.cancel_at != null) {
+        updated = await updateSubscription(updated.subscription.id, { cancel_at: "" });
       }
-      if (updated.cancel_at_period_end === true) {
-        updated = await stripe.subscriptions.update(updated.id, { cancel_at_period_end: false });
+      if (updated.subscription.cancel_at_period_end === true) {
+        updated = await updateSubscription(updated.subscription.id, { cancel_at_period_end: false });
       }
-      if (isScheduledToCancel(updated)) {
+      if (isScheduledToCancel(updated.subscription)) {
         console.error(
-          `[membership] subscription ${updated.id} still scheduled to cancel after clearing (cancel_at ${updated.cancel_at ?? "null"}, cancel_at_period_end ${updated.cancel_at_period_end})`
+          `[membership] subscription ${updated.subscription.id} still scheduled to cancel after clearing (cancel_at ${updated.subscription.cancel_at ?? "null"}, cancel_at_period_end ${updated.subscription.cancel_at_period_end})`
         );
         throw new MembershipServiceError(
           "membership_update_failed",
@@ -957,9 +1315,96 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
           kind: "resumed",
           email,
           monthlyAmountCents: row.monthlyAmountCents,
-          renewsAt: currentPeriodEndOf(updated),
+          renewsAt: currentPeriodEndOf(updated.subscription),
         });
       }
+      // A parked amount change comes back into play with the membership.
+      await applyDueAmountChangeLogged(updated, customer);
+      return service.getMembership(userId);
+    },
+
+    async changeMonthlyAmount(userId, input) {
+      // Same defense-in-depth as checkout: last stop before Stripe.
+      if (
+        !Number.isInteger(input.amount_cents) ||
+        input.amount_cents < MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS ||
+        input.amount_cents > MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS
+      ) {
+        throw new TypeError(
+          `amount_cents must be an integer between ${MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS} and ${MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS}`
+        );
+      }
+      const { customer, fetched } = await loadOwnedLiveSubscription(userId);
+      const { subscription } = fetched;
+      if (subscription.status === "incomplete") {
+        throw new MembershipServiceError(
+          "membership_pending",
+          "Your first payment is still being confirmed. Try again in a moment."
+        );
+      }
+      if (!isBillableStatus(subscription.status)) {
+        throw new MembershipServiceError(
+          "membership_pending",
+          "Your last payment didn't go through. Update your payment method first, then change the amount."
+        );
+      }
+      if (isScheduledToCancel(subscription)) {
+        throw new MembershipServiceError(
+          "membership_pending",
+          "Your membership is set to end. Choose Keep membership first, then change the amount."
+        );
+      }
+      // Our checkouts create exactly one monthly USD item; anything else is
+      // not a subscription this code knows how to re-price.
+      const item = subscription.items?.data?.[0];
+      if (
+        subscription.items?.data?.length !== 1 ||
+        !item?.id ||
+        item.price?.currency !== "usd" ||
+        item.price?.recurring?.interval !== "month" ||
+        typeof item.price?.unit_amount !== "number"
+      ) {
+        console.error(`[membership] subscription ${subscription.id} for user ${userId} is not a single monthly USD item; refusing to re-price it`);
+        throw new MembershipServiceError(
+          "membership_conflict",
+          "Your membership record doesn't match our payment processor. Contact us and we'll sort it out."
+        );
+      }
+      const stripeAmountCents = item.price.unit_amount;
+      await upsertSubscriptionRow(fetched, customer, null);
+
+      const unbilled = latestOpenAmountChange(await listUnbilledAmountChanges(subscription.id));
+      if (input.amount_cents === stripeAmountCents) {
+        // Re-saving what Stripe already bills withdraws a pending request;
+        // with an applied one this IS the requested amount — nothing to do.
+        if (unbilled && unbilled.applied_at === null) {
+          await supersedeAmountChanges(subscription.id, "unapplied");
+        }
+      } else {
+        if (unbilled && unbilled.applied_at !== null && !isInNoticeWindow(currentPeriodEndOf(subscription), new Date())) {
+          // The applied change bills at the coming renewal and there is no
+          // longer time to notice a replacement 7 days ahead of it.
+          throw new MembershipServiceError(
+            "membership_pending",
+            `Your new amount of ${formatUsd(unbilled.new_amount_cents)} is already set for your next renewal. You can change it again after that renewal.`
+          );
+        }
+        await supersedeAmountChanges(subscription.id, "unbilled");
+        // ON CONFLICT: two concurrent requests both superseded and both
+        // insert; the loser's row is dropped and the answer below shows the
+        // winner's request.
+        await db.query(
+          `
+            INSERT INTO public.billing_subscription_amount_changes (
+              stripe_subscription_id, previous_amount_cents, new_amount_cents
+            )
+            VALUES ($1, $2, $3)
+            ON CONFLICT (stripe_subscription_id) WHERE applied_at IS NULL AND superseded_at IS NULL DO NOTHING
+          `,
+          [subscription.id, stripeAmountCents, input.amount_cents]
+        );
+      }
+      await applyDueAmountChangeLogged(fetched, customer);
       return service.getMembership(userId);
     },
 
@@ -996,9 +1441,23 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
         case "charge.refunded":
           await handleChargeRefunded(event);
           break;
+        case "invoice.upcoming": {
+          // Fires N days before a renewal (Billing settings → "Upcoming
+          // renewal events", set to 14): the timing poke that applies a
+          // requested amount change inside the §17602(g)(2) window. The
+          // preview invoice has no id; the subscription rides on `parent`.
+          const invoice = event.data.object as Stripe.Invoice;
+          const subscriptionId = idOf(invoice.parent?.subscription_details?.subscription ?? null);
+          if (!subscriptionId) {
+            console.log(`[membership] invoice.upcoming without a subscription; ignoring`);
+            break;
+          }
+          await syncSubscription(subscriptionId, null);
+          break;
+        }
         default:
-          // The endpoint subscribes to exactly six event types; anything else
-          // is a configuration drift worth a log line, not an error.
+          // The endpoint subscribes to exactly seven event types; anything
+          // else is a configuration drift worth a log line, not an error.
           console.log(`[membership] ignoring webhook event type ${event.type}`);
       }
       return "ok";
