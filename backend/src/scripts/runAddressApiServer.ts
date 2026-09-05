@@ -101,16 +101,13 @@ import {
 } from "../pipeline/users/userResearchAreaPreferences.js";
 import { getUserBallotPreferences, setUserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 import {
-  disableUserEmailDigest,
-  disableUserEmailElectionReminders,
-  disableUserEmailIssueUpdates,
-  disableUserEmailMemberNewsletter,
-  disableUserEmailNewElectionAlerts,
+  disableUserEmailPreferences,
   getUserEmailPreferences,
   setUserEmailPreferences,
   UserEmailPreferencesError,
 } from "../pipeline/users/userEmailPreferences.js";
 import { registerUserPushToken, revokeUserPushToken } from "../pipeline/users/userPushTokens.js";
+import { EMAIL_UNSUBSCRIBE_PREFERENCE_COLUMNS, type EmailUnsubscribePreference } from "../api/apiValidation.js";
 import { verifyEmailUnsubscribeToken } from "../pipeline/users/emailUnsubscribeToken.js";
 import { acceptUserTerms, getUserIdentity, setUserFirstName } from "../pipeline/users/userIdentity.js";
 import { createCachedSiteSitemap } from "../pipeline/sitemap/siteSitemap.js";
@@ -752,6 +749,8 @@ async function main(): Promise<void> {
     resolveClientIp: createTrustedClientIpResolver(trustedClientIpHeader, edgeSharedSecret),
     resolveAuthenticatedUserId,
     getSitemapXml,
+    // Unsubscribe pages link back to /me/settings on the public site.
+    ...(siteOrigin ?? authPublicBaseUrl ? { publicSiteOrigin: siteOrigin ?? authPublicBaseUrl ?? undefined } : {}),
     createContentReport: (input) => createContentReport(pool, input),
     ...(usageAnalyticsEnabled
       ? {
@@ -831,7 +830,7 @@ async function main(): Promise<void> {
           unsubscribeFromEmailNotifications: async (
             token: string,
             mode: "confirm" | "execute",
-            preference: "digest" | "new_election_alerts" | "election_reminders" | "issue_updates" | "member_newsletter"
+            preferences: readonly EmailUnsubscribePreference[]
           ) => {
             const userId = verifyEmailUnsubscribeToken(token, unsubscribeSecret);
             if (!userId) {
@@ -841,17 +840,11 @@ async function main(): Promise<void> {
               return "ok" as const;
             }
             try {
-              if (preference === "new_election_alerts") {
-                await disableUserEmailNewElectionAlerts(pool, userId);
-              } else if (preference === "election_reminders") {
-                await disableUserEmailElectionReminders(pool, userId);
-              } else if (preference === "issue_updates") {
-                await disableUserEmailIssueUpdates(pool, userId);
-              } else if (preference === "member_newsletter") {
-                await disableUserEmailMemberNewsletter(pool, userId);
-              } else {
-                await disableUserEmailDigest(pool, userId);
-              }
+              await disableUserEmailPreferences(
+                pool,
+                userId,
+                preferences.map((preference) => EMAIL_UNSUBSCRIBE_PREFERENCE_COLUMNS[preference])
+              );
             } catch (error) {
               // A valid token for a since-deleted account still reports
               // success so the page does not leak account state.

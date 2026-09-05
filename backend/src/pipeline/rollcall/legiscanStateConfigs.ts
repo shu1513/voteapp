@@ -2821,6 +2821,99 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     keptQuestions: ARKANSAS_KEPT_QUESTIONS,
     excludedQuestions: ARKANSAS_EXCLUDED_QUESTIONS,
   },
+
+  // Arizona Legislature, 2025 Regular Session (Fifty-seventh Legislature,
+  // First Regular Session). Vocabulary measured from the full dataset survey
+  // 2026-09-02: 1,854 bills, 6,727 roll calls, 91 people (60 Representatives
+  // + 30 Senators, plus one mid-session replacement). Feed health is the
+  // cleanest tier: 0 file errors, 0 parse errors, 0 tally mismatches.
+  //
+  // Arizona's recorded passage vocabulary is unusually small: the only floor
+  // question either chamber prints on a measure is `Third Reading`, with no
+  // separate final-passage or conference wording at all. The survey's 306
+  // distinct descriptions are otherwise committee actions (170), bare
+  // `Motion ...` sentences with no chamber prefix (90), and 46 chamber-dash
+  // strings that fold into nine families.
+  //
+  // ⚠ RECONSIDER THIRD READING IS NOT PASSAGE. `Senate - Reconsider Third
+  // Reading` is the motion to reconsider a third reading that just FAILED;
+  // the bill history prints it as `Senate motion to reconsider third
+  // reading`, and when the motion carries the bill goes back onto Third
+  // Reading for a fresh passage vote. SB1126 is the whole sequence: third
+  // reading failed 15-14, reconsider carried 18-11, third reading passed
+  // 16-11 five days later. SB1148, SB1198 and SB1713 follow the same shape.
+  // Only those four Senate rolls carry members; the other 16 Senate and all
+  // 42 House reconsider rolls arrive empty. Excluded by rule either way, so
+  // a procedural motion never enters review as a passage vote.
+  //
+  // ⚠ COMMITTEE OF THE WHOLE IS NOT PASSAGE. Arizona amends a bill in
+  // Committee of the Whole and then passes it on third reading, so
+  // `House - Committee of the Whole (DPA)` is the amend-and-engross stage
+  // (the same stage Texas, California, Missouri and Montana all exclude).
+  // Arizona never records members on those votes — all 1,181 of them carry
+  // an empty voter list — but they are excluded by rule so that intent does
+  // not depend on the feed staying empty.
+  //
+  // ⚠⚠ ARIZONA PUBLISHES NO MEMBER LIST FOR A CONCURRENCE VOTE. All 82
+  // `House - Concurrence` rolls and all 72 `Senate - Concurrence` rolls
+  // arrive with an empty voter list and a zero tally, so the fetcher skips
+  // every one as an unrecorded vote. They are still listed as kept questions
+  // rather than excluded ones, because they ARE floor votes on the measure:
+  // if a later Arizona dataset
+  // starts publishing their members, they should enter the queue rather than
+  // be silently dropped by a rule written when the feed was thin. The
+  // practical consequence for selection is large and belongs in every
+  // Arizona batch plan: when the second chamber amends a bill, the
+  // originating chamber's vote on the text that became law is unusable, so
+  // the only importable roll may be one taken on an earlier draft. Check
+  // what each chamber actually voted before judging.
+  //
+  // The floor-versus-committee tally cut separates the two chambers'
+  // committee work without naming a single committee: the largest committee
+  // roll is 21 of 60 seats in the House (35%) and 10 of 30 in the Senate
+  // (33%), both far under the 50% committee ceiling, while every kept-family
+  // roll that carries a member list clears the 60% floor threshold — zero
+  // exceptions in 6,727 rolls, so nothing is left surfaced.
+  //
+  // ⚠ CODE FINDING, recorded and NOT fixed: Arizona sends measures to the
+  // ballot as CONCURRENT RESOLUTIONS (HCR/SCR), which LegiScan types `CR`,
+  // and `LEGISCAN_KEPT_BILL_TYPES` drops that type before this config is
+  // read. That hides 48 divided floor votes on 36 concurrent resolutions,
+  // including referrals headed for the November 2026 ballot. The naive fix
+  // is wrong for the same reason it was wrong in Georgia: 102 of this
+  // session's measures are concurrent resolutions and many are ceremonial
+  // (`Law enforcement; first responders; honoring`), so keeping the type
+  // wholesale would queue commendations. See the campaign's CODE-FINDINGS.md.
+  AZ: {
+    jurisdiction: "AZ",
+    sessionId: 2155,
+    chamberSizes: { house: 60, senate: 30 },
+    keptQuestions: [
+      // The passage vote in both chambers.
+      { pattern: /^(?:house|senate) - third reading$/, questionClass: "passage" },
+      // The originating chamber accepting the other chamber's amendments.
+      // Currently always unrecorded — see the note above.
+      { pattern: /^(?:house|senate) - concurrence$/, questionClass: "concurrence" },
+    ],
+    excludedQuestions: [
+      // Committee of the Whole: Arizona's amend-and-engross stage.
+      /^(?:house|senate) - committee of the whole\b/,
+      // The motion to reconsider a failed third reading — see the note above.
+      /^(?:house|senate) - reconsider third reading$/,
+      // Every floor amendment, point of order and failed-to-pass motion is
+      // captioned with the member who moved it — `House - Representative
+      // Chaplik to include the Chaplik #1 floor amendment`, `Senate -
+      // Senator Hoffman to include the Hoffman #3 floor amendment`. Also
+      // covers `Senate - Motion to Amend` and `House - Motion
+      // Representative Kolodin to show the bill do not pass`.
+      /^(?:house|senate) - (?:representative|senator|motion)\b/,
+      // Procedural motions the clerk prints with a bare `Motion` prefix and
+      // no chamber: group motions for final passage, requests that the other
+      // chamber return a bill, rules suspensions, bill substitutions, and
+      // appeals from a ruling of the Chair.
+      /^motion\b/,
+    ],
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);

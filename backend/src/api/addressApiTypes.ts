@@ -210,21 +210,28 @@ export type AddressApiServerOptions = {
    * Signed-token email unsubscribe (no session). mode "confirm" only
    * verifies the token (GET renders a confirmation form and must not mutate:
    * mail scanners and prefetchers GET every link in email bodies); mode
-   * "execute" turns the given preference off. The preference names which
-   * opt-in the link disables ("digest" = candidate-follow digest,
-   * "new_election_alerts" = district new-election alerts,
+   * "execute" turns the given preferences off. The preferences name which
+   * opt-ins to disable ("digest" = candidate-follow digest and result
+   * alerts, "new_election_alerts" = district new-election alerts,
    * "election_reminders" = day-before election reminders,
-   * "issue_updates" = operator-sent issue broadcasts); it rides the URL
+   * "issue_updates" = operator-sent issue broadcasts, "member_newsletter" =
+   * member newsletters); they ride the URL and the confirmation form
    * unsigned, which is safe because the link holder is the inbox owner and
-   * can only turn preferences OFF. Returns "ok" or "invalid_token"; a valid
-   * token for a since-deleted user reports "ok" so the page does not leak
-   * account state.
+   * can only turn preferences OFF. Never called with an empty list. Returns
+   * "ok" or "invalid_token"; a valid token for a since-deleted user reports
+   * "ok" so the page does not leak account state.
    */
   unsubscribeFromEmailNotifications?: (
     token: string,
     mode: "confirm" | "execute",
-    preference: EmailUnsubscribePreference
+    preferences: readonly EmailUnsubscribePreference[]
   ) => Promise<"ok" | "invalid_token">;
+  /**
+   * Public site origin (e.g. https://electionssimplified.com) used to link
+   * the unsubscribe pages to /me/settings. Omit to render the pages without
+   * a settings link.
+   */
+  publicSiteOrigin?: string;
   listAuthenticatedResearchAreaPreferences?: (userId: string) => Promise<AuthenticatedResearchAreaPreferencesResult>;
   replaceAuthenticatedResearchAreaPreferences?: (
     userId: string,

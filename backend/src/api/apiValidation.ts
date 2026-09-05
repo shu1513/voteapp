@@ -103,15 +103,66 @@ export const EMAIL_UNSUBSCRIBE_PATH = "/api/email/unsubscribe";
 export const EMAIL_UNSUBSCRIBE_PREFERENCES = ["digest", "new_election_alerts", "election_reminders", "issue_updates", "member_newsletter"] as const;
 export type EmailUnsubscribePreference = (typeof EMAIL_UNSUBSCRIBE_PREFERENCES)[number];
 
-/** Missing param defaults to digest; an unrecognized value is null (400). */
-export function parseEmailUnsubscribePreference(raw: string | null): EmailUnsubscribePreference | null {
-  if (raw === null || raw.trim() === "") {
-    return "digest";
+/** Which public.users column each unsubscribe preference turns off. */
+export const EMAIL_UNSUBSCRIBE_PREFERENCE_COLUMNS = {
+  digest: "email_digest",
+  new_election_alerts: "email_new_election_alerts",
+  election_reminders: "email_election_reminders",
+  issue_updates: "email_issue_updates",
+  member_newsletter: "email_member_newsletter",
+} as const satisfies Record<EmailUnsubscribePreference, string>;
+export type EmailUnsubscribePreferenceColumn =
+  (typeof EMAIL_UNSUBSCRIBE_PREFERENCE_COLUMNS)[EmailUnsubscribePreference];
+
+/**
+ * Parses pref values from the link query or the confirmation form. Blank
+ * values are ignored, "all" expands to every opt-in, duplicates collapse, and
+ * the result keeps canonical order. Returns [] when nothing usable was given
+ * (callers decide the default) and null when any value is unrecognized: a
+ * mangled link must 400 rather than flip a different opt-in than the email
+ * advertised.
+ */
+export function parseEmailUnsubscribePreferences(
+  rawValues: readonly string[]
+): readonly EmailUnsubscribePreference[] | null {
+  const selected = new Set<EmailUnsubscribePreference>();
+  for (const rawValue of rawValues) {
+    const normalized = rawValue.trim();
+    if (normalized === "") {
+      continue;
+    }
+    if (normalized === "all") {
+      for (const preference of EMAIL_UNSUBSCRIBE_PREFERENCES) {
+        selected.add(preference);
+      }
+      continue;
+    }
+    if (!(EMAIL_UNSUBSCRIBE_PREFERENCES as readonly string[]).includes(normalized)) {
+      return null;
+    }
+    selected.add(normalized as EmailUnsubscribePreference);
   }
-  const normalized = raw.trim();
-  return (EMAIL_UNSUBSCRIBE_PREFERENCES as readonly string[]).includes(normalized)
-    ? (normalized as EmailUnsubscribePreference)
-    : null;
+  return EMAIL_UNSUBSCRIBE_PREFERENCES.filter((preference) => selected.has(preference));
+}
+
+/**
+ * Reads the confirmation form's urlencoded body. `isForm` is true only when
+ * the body carries the form marker (form=1) the page renders; RFC 8058
+ * one-click POSTs (body "List-Unsubscribe=One-Click") and bodiless POSTs
+ * report false so they unsubscribe exactly what the link advertised.
+ */
+export function parseEmailUnsubscribeFormBody(body: unknown): { isForm: boolean; preferenceValues: string[] } {
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return { isForm: false, preferenceValues: [] };
+  }
+  const record = body as Record<string, unknown>;
+  const raw = record.pref;
+  const preferenceValues = Array.isArray(raw)
+    ? raw.filter((value): value is string => typeof value === "string")
+    : typeof raw === "string"
+      ? [raw]
+      : [];
+  return { isForm: record.form === "1", preferenceValues };
 }
 export const RESEARCH_AREAS_PATH = "/api/research-areas";
 export const STATE_RESOURCES_PATH = "/api/state-resources";
