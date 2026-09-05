@@ -1,6 +1,6 @@
-# Finance module consolidation plan (v2)
+# Finance module consolidation plan (v3)
 
-Date: 2026-08-01. Scope: `backend/src/pipeline/*Finance` (34 modules, ~140k lines) plus the shared `backend/src/pipeline/finance/` module. v2 incorporates a second review pass; every claim below was verified against the code in this worktree.
+Date: 2026-08-01 (v2); v3 addendum 2026-09-04 at the end. Scope (v2): `backend/src/pipeline/*Finance` (34 modules, ~140k lines) plus the shared `backend/src/pipeline/finance/` module. v2 incorporates a second review pass; every claim below was verified against the code in this worktree.
 
 ## Background
 
@@ -137,6 +137,7 @@ Rules for any new state, whenever it's added:
 - **Canonical schema first** — 5 standard tables, `committee_id`/`committee_name` identity, standard summary columns, no extra link columns unless the source data truly cannot fit. Schema drift is what created the 34-way mess this plan is unwinding.
 - Writer = factory wrapper from day one (arizona/oregon pattern); due-list = builder config from day one. Zero migration debt.
 - If added **before** Phase 3: copy the loader and auto-link from a migrated sibling (texas/illinois pattern) and write the loader characterization test up front, so the state sweeps into Phase 3/4 cohorts cheaply instead of joining the untested backlog.
+- **Reuse gate (v3, 2026-09-04)**: reuse an existing shared component when its contract fits; prefer a small adapter for local differences; extend the shared component when a concrete cohort benefits without complicating existing callers; otherwise keep the bespoke implementation and say why in the file header — naming the delta AND why the shared piece was not extended. Two consumers are evidence, not a license to generalize; one local difference is not a reason to keep a whole copied file.
 - A product deadline may pull a state in earlier than this pause point — that's fine under the rules above. Never add a state as a bespoke 4–5k-line copy.
 
 Ohio (the first pause-point state, `ohio_plan.md`, PRs 1–8 + live run, 2026-08) hardened these into rules — each one bought with a real failure or a real discovery:
@@ -198,3 +199,85 @@ Line-deletion estimate (~40k) is provisional and NOT the success criterion. Succ
 - Every migration PR: wrapper keeps exported names/types; per-state tests unmodified (plus new characterization tests where coverage was missing); `npm run typecheck` + `npm test` green; the state's matrix row cited in the PR body with any deltas listed.
 - Factory/descriptor changes land in their own PR before any state migrates onto them.
 - A state's extra feature is either promoted into the factory behind config (default = current shared behavior) or the state stays unmigrated. No silent losses, no one-state meta-features.
+
+---
+
+## v3 addendum — 2026-09-04 re-audit after the pause point
+
+Hands-on re-count of this worktree at `fc2deb359` (Read/Grep/Bash only), then a second review pass whose claims were re-verified line by line. Counts below name their file sets so they can be re-run.
+
+### Inventory (reproducible)
+
+- `backend/src/pipeline/*Finance/` = **57 dirs, 227k lines** — 50 states/DC, 6 cities (austin, denver, phoenix, sanDiegoCity, sanJose, sanFrancisco; houston is a Texas wrapper), and **`efileCalFinance`, a shared vendor client/parser used by sanJose + sanDiegoCity (5 imports each) — not a source**. Eight glue roles (Writer/Loader/DueList/BatchSync/AutoLink/Sync/EligibleOffices/index) = 96k lines; clients/parsers/resolvers/aggregators = 131k.
+- `src/scripts/` matching `finance` = 271 files, 41k lines. `src/scheduler/` matching `finance` = 45 files = **41 `*CandidateFinanceSyncScheduler.ts` + 3 raw-data-refresh schedulers (CA/IN/PA) + the federal `candidateFinanceSyncScheduler.ts`**; none of the 2026-08/09 states except ohio/northCarolina/georgia/missouri/montana/southCarolina have a scheduler.
+- Tests: 832 finance test files, 190k lines (62% of all backend test lines; 1,202 files / 305k total). 63 scheduler tests.
+- `ballotLookup.ts` loader registry: **55 entries, 47 distinct state codes** (AZ/CA/CO/TX carry city entries too). `featureFlags.ts`: 879 lines; 56 `is<X>CampaignFinanceEnabled`, 53 `…SyncEnabled(force)`, 28 raw-refresh gates whose env keys use source prefixes (`OHIO_SOS_`, `MARYLAND_CFS_`, `COLORADO_TRACER_`…), so they are pairs plus assorted thirds, not 54 uniform trios.
+- Sixteen states landed after the Ohio pause point (ohio, northCarolina, georgia, rhodeIsland, missouri, newHampshire, delaware, nevada, montana, arkansas, westVirginia, idaho, northDakota, kansas, alabama, southCarolina). Rows: matrix "Post-pause-point modules".
+
+### Corrections to v2 text (the factories moved on; the prose did not)
+
+- Writer factory now has `allowNegativeCashOnHand`, custom `directCategoryTypes`, same-identity `M` built in and `manualLinkProtection` (`M+`), `supersededLinkSource`, `normalizeCommitteeId`, both identity-column descriptors. v2's "the factory rejects negative amounts everywhere" and the matrix's "still missing: signed-amount fields" are stale — only caller-transaction mode and optional tables remain unbuilt.
+- Identity examples in v2 "Evidence" are wrong on three states (verified at the writers' `ON CONFLICT`): hawaii's link key is `(candidate_id, election_id, committee_id)` with `election_period` an extra column; wisconsin's key is `(candidate_id, election_id, entity_id)` (`assigned_committee_id` is extra); vermont's key is `(candidate_id, election_id, filer_registration_guid)` (numeric `entity_id` is extra). Conflict keys, not extra columns, decide factory eligibility.
+- Shared loader already selects and routes `industry` direct breakdowns (`SUPPORTED_DIRECT_CATEGORY_TYPES`; westVirginia/newHampshire/nevada use it), plus funding columns and coverage notes — v2/Phase 3's "industry routing must land first" is stale.
+- Similarity percentages in v2 are **historical (2026-08-01)**: they prove duplication existed; they do not decide migration eligibility today.
+
+### What held
+
+- Every post-pause state is a writer-factory wrapper and (except kansas — no loader by design until statewide rosters exist) a shared-loader wrapper. Zero writer/loader debt for new states. Houston runs the factory; austin/denver reuse the shared loader + due-list builder — "cities stay custom" means "preserve different contracts", not a blanket exclusion.
+- Frontend is source-agnostic. Adding a state touches 8 backend files outside its dir plus `.env`/`render.yaml`.
+
+### What broke (verified file sets)
+
+1. **Schedulers — never in the plan.** The 41 sync schedulers copy `assertPositiveInteger`, `readSchedulerRuntimeConfig`, `getQueueConnection`, `defaultJobOptions` (41× each). After replacing the state name and cron default, **washington, hawaii, wisconsin, virginia, massachusetts are identical (0 diff lines, 275 lines each)**; ohio differs in 123 lines (gates the recurring job on the master flag, not the sync gate), vermont in 164, georgia adds `maxPasses`, southCarolina gates on `isSouthCarolinaCampaignFinanceSyncEnabled(force)`. Disabled-result shapes, reserved-job-id checks and payload fields also vary.
+2. **Scripts — plan said "separate effort"; never started.** `readValueFlag` copied 42×, `parsePositiveInteger` 164×. Behavior is NOT uniform: `syncDueTexasCandidateFinance` accepts `9007199254740993` and silently rounds (regex only), `syncDueWestVirginiaCandidateFinance` rejects it (`Number.isSafeInteger`); Texas due rejects a duplicated flag, Texas trigger takes the first value. `utils/cliFlags.ts` (`readPositiveIntegerFlag`, 18 users), `financeCliFlagGuard.ts` and `missouriCandidateFinanceCli.ts` already exist as partial shared pieces.
+3. **Auto-link (Phase 4) never started.** 50 files, **all** contain a missing-links query (the 6 city files + losAngeles write it in compact form my first clause regex missed). Normalized WHERE/JOIN/ORDER clauses cluster into two big families (23–24 and 11 files, depending on which clauses are compared) plus singletons. Membership and the normalization script get published in the Phase 4 builder PR, not assumed here.
+4. **BatchSync.** 54 files; 53 share the outer `for (const row of due.rows)` loop, but the loop *bodies* differ materially: montana runs per-year outside sweeps with partial progress, idaho shares whole-dataset reads and stores a run artifact, newHampshire memoizes API calls, re-resolves candidate spellings and treats "nothing written" as failure. Identical `for` loops are weak evidence for identical orchestration.
+5. **Due list — the reuse rule was skipped 7×.** missouri, newHampshire, delaware, montana, alabama, idaho, southCarolina each carry a bespoke due list whose normalized WHERE/JOIN/ORDER clauses are **identical** (0 differing lines vs montana). Deltas vs the builder: `AND election.election_stage = 'general'` (all 7); `election.election_date::text AS election_date` (6 — alabama instead selects `election.official_ballot_title AS ballot_title`); state link columns via the existing `linkColumns` mechanism; per-state mappers (alabama's parses the stored committee id via `parseStoredInternalCommitteeId`; newHampshire's emits a `candidateNames[]` list of spellings that `chooseSyncCandidateName` tries in order and verifies against the linked filer — required, test-covered).
+6. **featureFlags.ts** — pairs are uniform (`enabled` + `syncEnabled(force)` with `force` never bypassing the master flag); the third gate is not.
+7. `type Queryable` copied 281×; `ConnectableQueryable` 98× in **three non-equivalent shapes** (`{connect: () => Promise<PoolClient>}`, `Pick<Pool, "connect">`, optional `connect?`).
+8. Sync bodies (53 files) are per-source; only one operation recurs verbatim: `enrichOutsideGroupIndustryBreakdowns` (17 copies — classify all donors → rebuild industries → cap display rows). The capped-donor bug (PRs #548/#550) lived in exactly that copy set. Texas and Maryland differ in duplicate normalization, `minIndustryAmount`, and null `contributorCount` merging — pin before extracting.
+
+### Phases (v3) — recommended order: 2b → 8 pilot → 4 builder → 9 → 10 (independent, small)
+
+Each substantial shared-behavior change is its own PR. A small backward-compatible option and its one pilot may ship together when the option has its own tests.
+
+#### Phase 2b — general-stage due-list cohort (6 states now; newHampshire stays bespoke)
+
+Builder additions, defaults unchanged (existing configs emit byte-identical SQL): `electionStage?: "general"` (validated literal interpolated like `state`, matching the cluster's SQL; no new bind parameter), and an explicit, closed projection set — `selectElectionDate?: boolean`, `selectBallotTitle?: boolean`. No open-ended "any election column" API. Cohort: montana (pilot; canonical link columns) → missouri, delaware → idaho (`registration_guid`/`filer_name`), southCarolina (`candidate_filer_id`/`candidate_filer_name`), alabama (`fcpa_committee_number` + ballot title, mapper unchanged). newHampshire keeps its file: its extra candidate-name projection is one-state and load-bearing. Parity = run old and new query functions against the local Postgres on the live link rows and compare row sets + `totalDueRows` (the real-data recipe from Phase 3), plus params/mapping on recording mocks; whitespace-normalized text alone is not accepted (optional `AS`, aliases, implicit `ASC`, `SELECT *` all differ).
+
+#### Phase 8 — scheduler factory (pilot cohort = the five identical files)
+
+`createStateFinanceSyncScheduler(config)` reproducing exactly washington/hawaii/wisconsin/virginia/massachusetts (each has 6 behavioral tests; ohio has 1 that only checks unsafe integers). Config: names, env prefix, cron default, flag functions, `syncDue`; state exports keep their names/types; queue names, scheduler ids, payloads, gating and `queue.close()` cleanup preserved explicitly. Exceptional behavior (ohio master-flag gate, georgia `maxPasses`, vermont) stays in state wrappers/callbacks rather than factory options; those states migrate only if a wrapper stays thin. Line savings are an estimate until the pilot lands.
+
+#### Phase 4 — missing-links query builder; loop runner conditional
+
+Builder for the missing-links query only (candidate elections + `NOT EXISTS` against the links table — it needs no link-identity projection, and it deliberately uses different name/office/district/date expressions from the due list, so it does **not** share a module with the due-list builder; share only demonstrated predicates such as the stage filter and office-key match). Wave 1 = the largest normalized family; the PR publishes the family membership and the normalization script. Extract a failure-isolated loop runner only if several wrappers become materially simpler; preserve per-state statuses, injected dependencies, registry caching, caps and error reporting.
+
+#### Phase 9 — shared CLI primitives (by behavior cohort, not a blind sweep)
+
+Extend `utils/cliFlags.ts` / add `scripts/financeCliArgs.ts`: strict value reading (duplicates rejected), safe-integer parsing (unsafe rejected). Adopting them where a script today silently rounds or takes the first duplicate is an explicit behavior fix, listed per script in the PR — no compatibility switches to preserve the unsafe paths. Option assembly stays local per script.
+
+#### Phase 10 — flag helpers (small)
+
+`defineStateFinanceFlagPair(prefix)` for the uniform enabled/sync pair (reads env at call time, `force` never bypasses the master flag, short-circuit + invalid-value errors kept); third gates take their existing explicit env key. No unused raw-refresh functions are generated.
+
+#### Deferred / not promised
+
+- Phase 6 full batch runner: stays deferred; Phase 4 alone is not justification (see finding 4).
+- Alias sweep (`Queryable`): opportunistic when touching a file; no standalone PR.
+- Writer Phase 5: reassess small cohorts against today's factory before proposing options; bespoke writers whose persistence semantics differ (alaska delete-when-absent, michigan loan column) stay. No general extra-column framework.
+- Phase 3 loaders: reopen with current capabilities. newYork is NOT yet a safe swap: its direct query caps every category at 5 rows including `contribution_size`; the shared loader exempts size buckets (`rn <= 5 OR category_type = 'contribution_size'`), so newYork/louisiana can drop the 6th bucket today. louisiana's `BEGIN READ ONLY` wrapper can own the transaction and hand the client to the shared loader (Read Committed gives no cross-query snapshot anyway — preserve, don't reinterpret).
+- Narrow extraction of `enrichOutsideGroupIndustryBreakdowns` after pinning the Texas/Maryland differences.
+
+### Known-defect follow-ups (so "preserve behavior" does not mean "keep bugs")
+
+- Texas/Houston writers run `outsideGroupValidation` "none" with the cascade-FK stale-group window (Phase 1 note).
+- newYork/louisiana loaders cap `contribution_size` at 5 (6-bucket scheme) — decide fix or accept, per state.
+
+### Verification rule (replaces "per-state tests untouched")
+
+Behavioral assertions are preserved; implementation-text changes (SQL wording, error nouns) are listed and justified in the PR. The characterization harness is mock-based (it pins mapped fixtures, query order, params, referenced columns — it never executes SQL), so any changed SQL shape also gets a database-backed old-vs-new comparison on local Postgres. Per cohort add focused cases for: missing/null/zero/empty collections; multiple committees; all six size buckets; window boundaries, stage filter, ordering, limit; manual-link protection and rollback; scheduler gates, payloads, cleanup. No combinatorial suite over every config.
+
+### New-state rules — edits
+
+"Sync reads cache only" applies to artifact-based sources (newHampshire and idaho have intentional live-API paths). "Five standard tables" = preferred schema, never a reason to fabricate or misrepresent missing coverage. Do not delay a new state for unfinished consolidation phases when existing components already fit. Kansas (no loader) and rhodeIsland/nevada (import-style, no batchSync/due list) are deliberate.
