@@ -1,0 +1,42 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2143",
+      "roll": 1555035,
+      "measure_id": "HB 1680",
+      "vote_date": "2025-04-23",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1680, which tightens voter sign-up rules and adds regular election checks. Someone who signs up using an ID number from a temporary license or card must now prove citizenship. The state sends a notice. The sign-up is refused if no proof arrives within 30 days. A post office box or rented mailbox may no longer be given as a home address. Outside groups may not print details onto sign-up forms before mailing them. The secretary of state may now check how any primary or general election was run. Before, a check needed an inquiry or a recount. The secretary picks the counties and must consult experts and county staff. The check must be done by a set date. Every county must give the state the name and contact details of its computer support firm. Someone holding a candidate petition they believe is badly false must hand it to the county election board within ten days. Money given through a payment app now counts as a donation. It must be reported at its full value, before the app's fee. The state election commission loses its power to issue guidance letters. Every letter it issued before July 2025 is void. The Indiana House adopted the final version 65-25, and it became law.",
+      "nay_description": "Voted against House Bill 1680, which tightens voter sign-up rules and adds regular election checks. Someone who signs up using an ID number from a temporary license or card must now prove citizenship. The state sends a notice. The sign-up is refused if no proof arrives within 30 days. A post office box or rented mailbox may no longer be given as a home address. Outside groups may not print details onto sign-up forms before mailing them. The secretary of state may now check how any primary or general election was run. Before, a check needed an inquiry or a recount. The secretary picks the counties and must consult experts and county staff. The check must be done by a set date. Every county must give the state the name and contact details of its computer support firm. Someone holding a candidate petition they believe is badly false must hand it to the county election board within ten days. Money given through a payment app now counts as a donation. It must be reported at its full value, before the app's fee. The state election commission loses its power to issue guidance letters. Every letter it issued before July 2025 is void. The Indiana House adopted the final version 65-25, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Adoption of the conference committee report, which is the enacted text. The House's own third reading of 2025-02-11 is NOT used: it predates both the Senate's work and the conference committee. Member list verified name by name against official roll-call PDF HB1680.523_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2143",
+      "roll": 1555540,
+      "measure_id": "HB 1680",
+      "vote_date": "2025-04-23",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1680, which tightens voter sign-up rules and adds regular election checks. Someone who signs up using an ID number from a temporary license or card must now prove citizenship. The state sends a notice. The sign-up is refused if no proof arrives within 30 days. A post office box or rented mailbox may no longer be given as a home address. Outside groups may not print details onto sign-up forms before mailing them. The secretary of state may now check how any primary or general election was run. Before, a check needed an inquiry or a recount. The secretary picks the counties and must consult experts and county staff. The check must be done by a set date. Every county must give the state the name and contact details of its computer support firm. Someone holding a candidate petition they believe is badly false must hand it to the county election board within ten days. Money given through a payment app now counts as a donation. It must be reported at its full value, before the app's fee. The state election commission loses its power to issue guidance letters. Every letter it issued before July 2025 is void. The Indiana Senate adopted the final version 36-9, and it became law.",
+      "nay_description": "Voted against House Bill 1680, which tightens voter sign-up rules and adds regular election checks. Someone who signs up using an ID number from a temporary license or card must now prove citizenship. The state sends a notice. The sign-up is refused if no proof arrives within 30 days. A post office box or rented mailbox may no longer be given as a home address. Outside groups may not print details onto sign-up forms before mailing them. The secretary of state may now check how any primary or general election was run. Before, a check needed an inquiry or a recount. The secretary picks the counties and must consult experts and county staff. The check must be done by a set date. Every county must give the state the name and contact details of its computer support firm. Someone holding a candidate petition they believe is badly false must hand it to the county election board within ten days. Money given through a payment app now counts as a donation. It must be reported at its full value, before the app's fee. The state election commission loses its power to issue guidance letters. Every letter it issued before July 2025 is void. The Indiana Senate adopted the final version 36-9, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Adoption of the conference committee report, which is the enacted text. The Senate's own third reading of 2025-04-10 was 34-8 and is not divided; it is also on a text the conference committee then changed, at 0.70 similarity across 33 differing runs. Member list verified name by name against official roll-call PDF HB1680.501_S.pdf."
+    }
+  ]
+}

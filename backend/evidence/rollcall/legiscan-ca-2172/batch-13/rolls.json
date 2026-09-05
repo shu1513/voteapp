@@ -1,0 +1,324 @@
+{
+ "rolls": [
+  {
+   "measure": "AB 1376",
+   "status": "chaptered",
+   "chamber": "house",
+   "roll": 1602122,
+   "date": "2025-09-13",
+   "yea": 48,
+   "nay": 21,
+   "title": "Wards: probation."
+  },
+  {
+   "measure": "AB 1376",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1602121,
+   "date": "2025-09-12",
+   "yea": 24,
+   "nay": 10,
+   "title": "Wards: probation."
+  },
+  {
+   "measure": "AB 1441",
+   "status": "chaptered",
+   "chamber": "house",
+   "roll": 1602050,
+   "date": "2025-09-13",
+   "yea": 59,
+   "nay": 19,
+   "title": "County of Merced Citizens Redistricting Commission."
+  },
+  {
+   "measure": "AB 1441",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1601955,
+   "date": "2025-09-11",
+   "yea": 28,
+   "nay": 10,
+   "title": "County of Merced Citizens Redistricting Commission."
+  },
+  {
+   "measure": "AB 1930",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726572,
+   "date": "2026-08-27",
+   "yea": 60,
+   "nay": 17,
+   "title": "Abortion or gender-affirming health care services: subpoenas, discovery requests, or other requests for information."
+  },
+  {
+   "measure": "AB 1930",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726303,
+   "date": "2026-08-26",
+   "yea": 29,
+   "nay": 10,
+   "title": "Abortion or gender-affirming health care services: subpoenas, discovery requests, or other requests for information."
+  },
+  {
+   "measure": "AB 1973",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1725887,
+   "date": "2026-08-25",
+   "yea": 59,
+   "nay": 17,
+   "title": "Abortion: authorized procedures."
+  },
+  {
+   "measure": "AB 1973",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725886,
+   "date": "2026-08-25",
+   "yea": 29,
+   "nay": 10,
+   "title": "Abortion: authorized procedures."
+  },
+  {
+   "measure": "AB 2122",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1701532,
+   "date": "2026-05-22",
+   "yea": 55,
+   "nay": 18,
+   "title": "Infractions: warrants and penalties."
+  },
+  {
+   "measure": "AB 2122",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726191,
+   "date": "2026-08-26",
+   "yea": 26,
+   "nay": 11,
+   "title": "Infractions: warrants and penalties."
+  },
+  {
+   "measure": "AB 2227",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726799,
+   "date": "2026-08-28",
+   "yea": 51,
+   "nay": 18,
+   "title": "Farm labor contractors: surety bonds."
+  },
+  {
+   "measure": "AB 2227",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726726,
+   "date": "2026-08-27",
+   "yea": 28,
+   "nay": 10,
+   "title": "Farm labor contractors: surety bonds."
+  },
+  {
+   "measure": "AB 2318",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726793,
+   "date": "2026-08-28",
+   "yea": 52,
+   "nay": 18,
+   "title": "Law enforcement: facilitating medical care."
+  },
+  {
+   "measure": "AB 2318",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726491,
+   "date": "2026-08-27",
+   "yea": 26,
+   "nay": 10,
+   "title": "Law enforcement: facilitating medical care."
+  },
+  {
+   "measure": "AB 2393",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1702508,
+   "date": "2026-05-27",
+   "yea": 61,
+   "nay": 17,
+   "title": "False imprisonment: false arrest: remedies."
+  },
+  {
+   "measure": "AB 2393",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726076,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 10,
+   "title": "False imprisonment: false arrest: remedies."
+  },
+  {
+   "measure": "AB 2428",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1702008,
+   "date": "2026-05-26",
+   "yea": 56,
+   "nay": 18,
+   "title": "Criminal fees."
+  },
+  {
+   "measure": "AB 2428",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726269,
+   "date": "2026-08-26",
+   "yea": 29,
+   "nay": 11,
+   "title": "Criminal fees."
+  },
+  {
+   "measure": "AB 2448",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1696694,
+   "date": "2026-05-11",
+   "yea": 55,
+   "nay": 16,
+   "title": "Medical information: confidentiality."
+  },
+  {
+   "measure": "AB 2448",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726347,
+   "date": "2026-08-26",
+   "yea": 30,
+   "nay": 9,
+   "title": "Medical information: confidentiality."
+  },
+  {
+   "measure": "AB 2465",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726207,
+   "date": "2026-08-26",
+   "yea": 58,
+   "nay": 19,
+   "title": "State government: benefits."
+  },
+  {
+   "measure": "AB 2465",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725997,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 10,
+   "title": "State government: benefits."
+  },
+  {
+   "measure": "AB 7",
+   "status": "vetoed",
+   "chamber": "house",
+   "roll": 1602364,
+   "date": "2025-09-12",
+   "yea": 55,
+   "nay": 18,
+   "title": "Postsecondary education: admissions preference: descendants of slavery."
+  },
+  {
+   "measure": "AB 7",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601673,
+   "date": "2025-09-09",
+   "yea": 30,
+   "nay": 10,
+   "title": "Postsecondary education: admissions preference: descendants of slavery."
+  },
+  {
+   "measure": "AB 742",
+   "status": "vetoed",
+   "chamber": "house",
+   "roll": 1602529,
+   "date": "2025-09-10",
+   "yea": 59,
+   "nay": 16,
+   "title": "Department of Consumer Affairs: licensing: applicants who are descendants of slaves."
+  },
+  {
+   "measure": "AB 742",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601483,
+   "date": "2025-09-09",
+   "yea": 30,
+   "nay": 9,
+   "title": "Department of Consumer Affairs: licensing: applicants who are descendants of slaves."
+  },
+  {
+   "measure": "AB 762",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726189,
+   "date": "2026-08-26",
+   "yea": 47,
+   "nay": 16,
+   "title": "Disposable, battery-embedded vapor inhalation device: prohibition and penalties."
+  },
+  {
+   "measure": "AB 762",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1725926,
+   "date": "2026-08-25",
+   "yea": 30,
+   "nay": 10,
+   "title": "Disposable, battery-embedded vapor inhalation device: prohibition and penalties."
+  },
+  {
+   "measure": "AB 766",
+   "status": "vetoed",
+   "chamber": "house",
+   "roll": 1602543,
+   "date": "2025-09-11",
+   "yea": 60,
+   "nay": 18,
+   "title": "State agencies and departments: strategic plans: diversity, equity, and inclusion."
+  },
+  {
+   "measure": "AB 766",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601719,
+   "date": "2025-09-10",
+   "yea": 30,
+   "nay": 9,
+   "title": "State agencies and departments: strategic plans: diversity, equity, and inclusion."
+  },
+  {
+   "measure": "AB 93",
+   "status": "vetoed",
+   "chamber": "house",
+   "roll": 1602492,
+   "date": "2025-09-11",
+   "yea": 59,
+   "nay": 16,
+   "title": "Water resources: data centers."
+  },
+  {
+   "measure": "AB 93",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601751,
+   "date": "2025-09-10",
+   "yea": 30,
+   "nay": 10,
+   "title": "Water resources: data centers."
+  }
+ ]
+}

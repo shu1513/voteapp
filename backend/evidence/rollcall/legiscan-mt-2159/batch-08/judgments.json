@@ -1,0 +1,148 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1553264,
+   "measure_id": "HB 55",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 55, which changes how Montana reviews a power company's long-range plan for meeting future demand. The company must now hold four public meetings before filing instead of two, and must summarize the comments it gets and answer the substantive ones in the plan. The Public Service Commission must finish its review within 120 days. When a company runs a bidding round to buy or build new power, the commission now picks the outside expert who oversees that bidding, instead of the company picking one. That expert's closing report goes into the public record and into later rate cases. The act gives the commission $200,000 for the work. The Montana House passed it 63-35, and it became law.",
+   "nay_description": "Voted against House Bill 55, which changes how Montana reviews a power company's long-range plan for meeting future demand. The company must now hold four public meetings before filing instead of two, and must summarize the comments it gets and answer the substantive ones in the plan. The Public Service Commission must finish its review within 120 days. When a company runs a bidding round to buy or build new power, the commission now picks the outside expert who oversees that bidding, instead of the company picking one. That expert's closing report goes into the public record and into later rate cases. The act gives the commission $200,000 for the work. The Montana House passed it 63-35, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1548543,
+   "measure_id": "HB 56",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 56, which puts a new state fee on private ground ambulance companies. The fee is 5.75% of what they collect for emergency runs. The money goes to a state account that pays the state's own costs first, then raises Medicaid rates for ambulance trips, up to what commercial insurance pays. Air-only, tribal and city-owned ambulance services do not pay it. The law starts only if the federal government approves it, and it ends on June 30, 2033. The Montana Senate passed it 29-20, and it became law.",
+   "nay_description": "Voted against House Bill 56, which puts a new state fee on private ground ambulance companies. The fee is 5.75% of what they collect for emergency runs. The money goes to a state account that pays the state's own costs first, then raises Medicaid rates for ambulance trips, up to what commercial insurance pays. Air-only, tribal and city-owned ambulance services do not pay it. The law starts only if the federal government approves it, and it ends on June 30, 2033. The Montana Senate passed it 29-20, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546150,
+   "measure_id": "HB 259",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 259, which changes how Montana manages gray wolves. The Fish and Wildlife Commission must now set different rules in different parts of the state, with the loosest harvest rules where wolves are most numerous. Before, it could do that but did not have to. The act also lets the commission allow infrared scopes and thermal imagery scopes for hunting wolves on private land at night. Artificial light and night vision scopes were already allowed. The rule that the wolf population stay at or above 15 breeding pairs does not change. The Montana House passed it 56-43, and it became law.",
+   "nay_description": "Voted against House Bill 259, which changes how Montana manages gray wolves. The Fish and Wildlife Commission must now set different rules in different parts of the state, with the loosest harvest rules where wolves are most numerous. Before, it could do that but did not have to. The act also lets the commission allow infrared scopes and thermal imagery scopes for hunting wolves on private land at night. Artificial light and night vision scopes were already allowed. The rule that the wolf population stay at or above 15 breeding pairs does not change. The Montana House passed it 56-43, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1531438,
+   "measure_id": "HB 259",
+   "vote_date": "2025-03-31",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 259, which changes how Montana manages gray wolves. The Fish and Wildlife Commission must now set different rules in different parts of the state, with the loosest harvest rules where wolves are most numerous. Before, it could do that but did not have to. The act also lets the commission allow infrared scopes and thermal imagery scopes for hunting wolves on private land at night. Artificial light and night vision scopes were already allowed. The rule that the wolf population stay at or above 15 breeding pairs does not change. The Montana Senate passed it 32-18, and it became law.",
+   "nay_description": "Voted against House Bill 259, which changes how Montana manages gray wolves. The Fish and Wildlife Commission must now set different rules in different parts of the state, with the loosest harvest rules where wolves are most numerous. Before, it could do that but did not have to. The act also lets the commission allow infrared scopes and thermal imagery scopes for hunting wolves on private land at night. Artificial light and night vision scopes were already allowed. The rule that the wolf population stay at or above 15 breeding pairs does not change. The Montana Senate passed it 32-18, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1508574,
+   "measure_id": "HB 587",
+   "vote_date": "2025-03-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 587, which raises the bar for proving a coal mine has harmed water. The legal test is called material damage. Before, going over a state water quality limit counted as harm on its own, even if no one's water use suffered. Now the harm must be measured with confidence, and must block a use of water outside the mine's permit area that the state already lists. The act also names two new kinds of harm: damage to farming on the flat land along a stream, and sinking ground from mining below that hurts land or buildings. The change reaches back to permit fights and court cases that were still open when it was signed. The Montana House passed it 55-44, and it became law.",
+   "nay_description": "Voted against House Bill 587, which raises the bar for proving a coal mine has harmed water. The legal test is called material damage. Before, going over a state water quality limit counted as harm on its own, even if no one's water use suffered. Now the harm must be measured with confidence, and must block a use of water outside the mine's permit area that the state already lists. The act also names two new kinds of harm: damage to farming on the flat land along a stream, and sinking ground from mining below that hurts land or buildings. The change reaches back to permit fights and court cases that were still open when it was signed. The Montana House passed it 55-44, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1549929,
+   "measure_id": "HB 587",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 587, which raises the bar for proving a coal mine has harmed water. The legal test is called material damage. Before, going over a state water quality limit counted as harm on its own, even if no one's water use suffered. Now the harm must be measured with confidence, and must block a use of water outside the mine's permit area that the state already lists. The act also names two new kinds of harm: damage to farming on the flat land along a stream, and sinking ground from mining below that hurts land or buildings. The change reaches back to permit fights and court cases that were still open when it was signed. The Montana Senate passed it 32-18, and it became law.",
+   "nay_description": "Voted against House Bill 587, which raises the bar for proving a coal mine has harmed water. The legal test is called material damage. Before, going over a state water quality limit counted as harm on its own, even if no one's water use suffered. Now the harm must be measured with confidence, and must block a use of water outside the mine's permit area that the state already lists. The act also names two new kinds of harm: damage to farming on the flat land along a stream, and sinking ground from mining below that hurts land or buildings. The change reaches back to permit fights and court cases that were still open when it was signed. The Montana Senate passed it 32-18, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1552294,
+   "measure_id": "HB 736",
+   "vote_date": "2025-04-18",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 736, which is about nitrogen and phosphorus in Montana's rivers and lakes. A plant that holds a state discharge permit may now meet its limits by counting verified cuts made somewhere else in the same small drainage area, or one next to it. A cut at another pipe counts in full. A cut to runoff counts at 80 percent if it is upstream and 50 percent if it is downstream, so more must be cut than is added. The state checks the numbers and must publish standard ways to measure runoff cuts. No water quality standard changes, and the law has no end date. The Montana House passed it 69-30, and it became law.",
+   "nay_description": "Voted against House Bill 736, which is about nitrogen and phosphorus in Montana's rivers and lakes. A plant that holds a state discharge permit may now meet its limits by counting verified cuts made somewhere else in the same small drainage area, or one next to it. A cut at another pipe counts in full. A cut to runoff counts at 80 percent if it is upstream and 50 percent if it is downstream, so more must be cut than is added. The state checks the numbers and must publish standard ways to measure runoff cuts. No water quality standard changes, and the law has no end date. The Montana House passed it 69-30, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546443,
+   "measure_id": "SB 520",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 520, which changes how Montana leases state land for mining. That land earns money for schools and other public uses. A mining lease must now run at least 10 years, and keeps running as long as the mine sells minerals at a profit. Leases for sand, gravel and like minerals used to be capped at 10 years. If a court order or an added agency review holds up a lease or permit, the lease term stretches by that same amount of time. The state must also keep a company's private geology data out of public view for at least 5 years after the lease ends, instead of deciding case by case. The Montana House backed the Senate bill 61-38, and it became law.",
+   "nay_description": "Voted against Senate Bill 520, which changes how Montana leases state land for mining. That land earns money for schools and other public uses. A mining lease must now run at least 10 years, and keeps running as long as the mine sells minerals at a profit. Leases for sand, gravel and like minerals used to be capped at 10 years. If a court order or an added agency review holds up a lease or permit, the lease term stretches by that same amount of time. The state must also keep a company's private geology data out of public view for at least 5 years after the lease ends, instead of deciding case by case. The Montana House backed the Senate bill 61-38, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

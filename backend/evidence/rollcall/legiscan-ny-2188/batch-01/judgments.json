@@ -1,0 +1,400 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "NY",
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1587201,
+      "measure_id": "S 1985",
+      "vote_date": "2025-06-09",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1985-A, which changes what police must do about guns when they answer a family violence call. Before, an officer had to take guns only from a person who was arrested for the offense or suspected of it. Now an officer must also take a gun found in plain sight or in a lawful search in two more cases. The first is when the victim answers yes to the threat or danger questions on the state's domestic incident report form. The second is when a responding officer reasonably believes taking the gun is needed to protect someone or to prevent more violence. The officer also takes the person's gun license, and the wait before a gun can be given back rises from 48 hours to 120 hours. the New York State Senate passed it 43-19, and it became law.",
+      "nay_description": "Voted against Senate Bill 1985-A, which changes what police must do about guns when they answer a family violence call. Before, an officer had to take guns only from a person who was arrested for the offense or suspected of it. Now an officer must also take a gun found in plain sight or in a lawful search in two more cases. The first is when the victim answers yes to the threat or danger questions on the state's domestic incident report form. The second is when a responding officer reasonably believes taking the gun is needed to protect someone or to prevent more violence. The officer also takes the person's gun license, and the wait before a gun can be given back rises from 48 hours to 120 hours. the New York State Senate passed it 43-19, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1589390,
+      "measure_id": "S 1985",
+      "vote_date": "2025-06-11",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1985-A, which changes what police must do about guns when they answer a family violence call. Before, an officer had to take guns only from a person who was arrested for the offense or suspected of it. Now an officer must also take a gun found in plain sight or in a lawful search in two more cases. The first is when the victim answers yes to the threat or danger questions on the state's domestic incident report form. The second is when a responding officer reasonably believes taking the gun is needed to protect someone or to prevent more violence. The officer also takes the person's gun license, and the wait before a gun can be given back rises from 48 hours to 120 hours. the New York State Assembly passed it 93-46, and it became law.",
+      "nay_description": "Voted against Senate Bill 1985-A, which changes what police must do about guns when they answer a family violence call. Before, an officer had to take guns only from a person who was arrested for the offense or suspected of it. Now an officer must also take a gun found in plain sight or in a lawful search in two more cases. The first is when the victim answers yes to the threat or danger questions on the state's domestic incident report form. The second is when a responding officer reasonably believes taking the gun is needed to protect someone or to prevent more violence. The officer also takes the person's gun license, and the wait before a gun can be given back rises from 48 hours to 120 hours. the New York State Assembly passed it 93-46, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1478939,
+      "measure_id": "S 743",
+      "vote_date": "2025-02-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 743, which spells out that the warning gun dealers must give buyers covers rifles and shotguns, not only handguns. The warning says a gun in the home raises the risk of suicide. It also names the risk of death during a family fight and of accidental death. Dealers must post it in the store and hand a copy to each buyer, and licensing officers must give one to each new license holder. A dealer who fails to post or hand out the warning commits a violation. The penalty is up to 15 days in jail or a fine of up to $1,000, and each day counts on its own. The law also drops the old line telling local police to enforce the rule. the New York State Senate passed it 43-20, and it became law.",
+      "nay_description": "Voted against Senate Bill 743, which spells out that the warning gun dealers must give buyers covers rifles and shotguns, not only handguns. The warning says a gun in the home raises the risk of suicide. It also names the risk of death during a family fight and of accidental death. Dealers must post it in the store and hand a copy to each buyer, and licensing officers must give one to each new license holder. A dealer who fails to post or hand out the warning commits a violation. The penalty is up to 15 days in jail or a fine of up to $1,000, and each day counts on its own. The law also drops the old line telling local police to enforce the rule. the New York State Senate passed it 43-20, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1522762,
+      "measure_id": "S 743",
+      "vote_date": "2025-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 743, which spells out that the warning gun dealers must give buyers covers rifles and shotguns, not only handguns. The warning says a gun in the home raises the risk of suicide. It also names the risk of death during a family fight and of accidental death. Dealers must post it in the store and hand a copy to each buyer, and licensing officers must give one to each new license holder. A dealer who fails to post or hand out the warning commits a violation. The penalty is up to 15 days in jail or a fine of up to $1,000, and each day counts on its own. The law also drops the old line telling local police to enforce the rule. the New York State Assembly passed it 98-50, and it became law.",
+      "nay_description": "Voted against Senate Bill 743, which spells out that the warning gun dealers must give buyers covers rifles and shotguns, not only handguns. The warning says a gun in the home raises the risk of suicide. It also names the risk of death during a family fight and of accidental death. Dealers must post it in the store and hand a copy to each buyer, and licensing officers must give one to each new license holder. A dealer who fails to post or hand out the warning commits a violation. The penalty is up to 15 days in jail or a fine of up to $1,000, and each day counts on its own. The law also drops the old line telling local police to enforce the rule. the New York State Assembly passed it 98-50, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1478985,
+      "measure_id": "S 744",
+      "vote_date": "2025-02-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 744, which adds pistol converters to the state's legal list of rapid-fire modification devices. A pistol converter is a small part that makes a handgun fire many rounds with one pull of the trigger. The list already covered bump stocks, trigger cranks, binary triggers and burst triggers, so the change brings converters under the same penal law rules. It takes effect together with a 2024 law on pistol converters. the New York State Senate passed it 50-13, and it became law.",
+      "nay_description": "Voted against Senate Bill 744, which adds pistol converters to the state's legal list of rapid-fire modification devices. A pistol converter is a small part that makes a handgun fire many rounds with one pull of the trigger. The list already covered bump stocks, trigger cranks, binary triggers and burst triggers, so the change brings converters under the same penal law rules. It takes effect together with a 2024 law on pistol converters. the New York State Senate passed it 50-13, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1523103,
+      "measure_id": "S 744",
+      "vote_date": "2025-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 744, which adds pistol converters to the state's legal list of rapid-fire modification devices. A pistol converter is a small part that makes a handgun fire many rounds with one pull of the trigger. The list already covered bump stocks, trigger cranks, binary triggers and burst triggers, so the change brings converters under the same penal law rules. It takes effect together with a 2024 law on pistol converters. the New York State Assembly passed it 100-48, and it became law.",
+      "nay_description": "Voted against Senate Bill 744, which adds pistol converters to the state's legal list of rapid-fire modification devices. A pistol converter is a small part that makes a handgun fire many rounds with one pull of the trigger. The list already covered bump stocks, trigger cranks, binary triggers and burst triggers, so the change brings converters under the same penal law rules. It takes effect together with a 2024 law on pistol converters. the New York State Assembly passed it 100-48, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1586620,
+      "measure_id": "A 4040",
+      "vote_date": "2025-06-06",
+      "review_status": "approved",
+      "yea_description": "Voted for Assembly Bill 4040-A, which changes how someone proves housing discrimination under the state human rights law. A person can now win by showing what a rule or practice does, even with no proof that anyone meant to discriminate. That counts when the practice shuts out a protected group in practice, or keeps neighborhoods segregated. The practice can still be legal if the owner proves it is needed for a real and lawful business reason. Even then, the person who complained can still win by proving that another practice with less harm would serve that same reason. The law spells out who has to prove what at each step. the New York State Assembly passed it 95-46, and it became law.",
+      "nay_description": "Voted against Assembly Bill 4040-A, which changes how someone proves housing discrimination under the state human rights law. A person can now win by showing what a rule or practice does, even with no proof that anyone meant to discriminate. That counts when the practice shuts out a protected group in practice, or keeps neighborhoods segregated. The practice can still be legal if the owner proves it is needed for a real and lawful business reason. Even then, the person who complained can still win by proving that another practice with less harm would serve that same reason. The law spells out who has to prove what at each step. the New York State Assembly passed it 95-46, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1589169,
+      "measure_id": "A 4040",
+      "vote_date": "2025-06-11",
+      "review_status": "approved",
+      "yea_description": "Voted for Assembly Bill 4040-A, which changes how someone proves housing discrimination under the state human rights law. A person can now win by showing what a rule or practice does, even with no proof that anyone meant to discriminate. That counts when the practice shuts out a protected group in practice, or keeps neighborhoods segregated. The practice can still be legal if the owner proves it is needed for a real and lawful business reason. Even then, the person who complained can still win by proving that another practice with less harm would serve that same reason. The law spells out who has to prove what at each step. the New York State Senate passed it 39-20, and it became law.",
+      "nay_description": "Voted against Assembly Bill 4040-A, which changes how someone proves housing discrimination under the state human rights law. A person can now win by showing what a rule or practice does, even with no proof that anyone meant to discriminate. That counts when the practice shuts out a protected group in practice, or keeps neighborhoods segregated. The practice can still be legal if the owner proves it is needed for a real and lawful business reason. Even then, the person who complained can still win by proving that another practice with less harm would serve that same reason. The law spells out who has to prove what at each step. the New York State Senate passed it 39-20, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1472643,
+      "measure_id": "S 36",
+      "vote_date": "2025-01-21",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 36-A, which lets the prescription label for the abortion medications mifepristone and misoprostol name a health care practice instead of a person. At the prescriber's request, the pharmacy label may carry the name of the prescribing practice in place of the prescriber's own name. When a doctor or other clinician hands the drugs directly to their own patient, that label may carry the name of the dispensing practice in place of the clinician's own name. Generic versions of both drugs are covered too. the New York State Senate passed it 39-20, and it became law.",
+      "nay_description": "Voted against Senate Bill 36-A, which lets the prescription label for the abortion medications mifepristone and misoprostol name a health care practice instead of a person. At the prescriber's request, the pharmacy label may carry the name of the prescribing practice in place of the prescriber's own name. When a doctor or other clinician hands the drugs directly to their own patient, that label may carry the name of the dispensing practice in place of the clinician's own name. Generic versions of both drugs are covered too. the New York State Senate passed it 39-20, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1473444,
+      "measure_id": "S 36",
+      "vote_date": "2025-01-22",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 36-A, which lets the prescription label for the abortion medications mifepristone and misoprostol name a health care practice instead of a person. At the prescriber's request, the pharmacy label may carry the name of the prescribing practice in place of the prescriber's own name. When a doctor or other clinician hands the drugs directly to their own patient, that label may carry the name of the dispensing practice in place of the clinician's own name. Generic versions of both drugs are covered too. the New York State Assembly passed it 95-42, and it became law.",
+      "nay_description": "Voted against Senate Bill 36-A, which lets the prescription label for the abortion medications mifepristone and misoprostol name a health care practice instead of a person. At the prescriber's request, the pharmacy label may carry the name of the prescribing practice in place of the prescriber's own name. When a doctor or other clinician hands the drugs directly to their own patient, that label may carry the name of the dispensing practice in place of the clinician's own name. Generic versions of both drugs are covered too. the New York State Assembly passed it 95-42, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1536066,
+      "measure_id": "S 3072",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 3072, which bars employers from using a person's credit record to decide who gets hired, how much they are paid, or how they are treated at work. Unions and job agencies are covered too, and doing it counts as illegal discrimination. State and city agencies also may not use a credit record to decide on a license or permit. Credit record here means a credit report or score, or details the employer gets from the person about accounts, missed payments, debts in collection, bankruptcies, judgments or liens. The ban has eight exceptions. They cover jobs where another law requires the check, police and law enforcement jobs, bonded jobs, and jobs needing a security clearance. They also cover most jobs with regular access to trade secrets, jobs that can sign for $10,000 or more of other people's money, and jobs that can change computer security systems. Local laws that protect workers more than this one still apply. the New York State Senate passed it 40-20, and it became law.",
+      "nay_description": "Voted against Senate Bill 3072, which bars employers from using a person's credit record to decide who gets hired, how much they are paid, or how they are treated at work. Unions and job agencies are covered too, and doing it counts as illegal discrimination. State and city agencies also may not use a credit record to decide on a license or permit. Credit record here means a credit report or score, or details the employer gets from the person about accounts, missed payments, debts in collection, bankruptcies, judgments or liens. The ban has eight exceptions. They cover jobs where another law requires the check, police and law enforcement jobs, bonded jobs, and jobs needing a security clearance. They also cover most jobs with regular access to trade secrets, jobs that can sign for $10,000 or more of other people's money, and jobs that can change computer security systems. Local laws that protect workers more than this one still apply. the New York State Senate passed it 40-20, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1581084,
+      "measure_id": "S 3072",
+      "vote_date": "2025-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 3072, which bars employers from using a person's credit record to decide who gets hired, how much they are paid, or how they are treated at work. Unions and job agencies are covered too, and doing it counts as illegal discrimination. State and city agencies also may not use a credit record to decide on a license or permit. Credit record here means a credit report or score, or details the employer gets from the person about accounts, missed payments, debts in collection, bankruptcies, judgments or liens. The ban has eight exceptions. They cover jobs where another law requires the check, police and law enforcement jobs, bonded jobs, and jobs needing a security clearance. They also cover most jobs with regular access to trade secrets, jobs that can sign for $10,000 or more of other people's money, and jobs that can change computer security systems. Local laws that protect workers more than this one still apply. the New York State Assembly passed it 98-46, and it became law.",
+      "nay_description": "Voted against Senate Bill 3072, which bars employers from using a person's credit record to decide who gets hired, how much they are paid, or how they are treated at work. Unions and job agencies are covered too, and doing it counts as illegal discrimination. State and city agencies also may not use a credit record to decide on a license or permit. Credit record here means a credit report or score, or details the employer gets from the person about accounts, missed payments, debts in collection, bankruptcies, judgments or liens. The ban has eight exceptions. They cover jobs where another law requires the check, police and law enforcement jobs, bonded jobs, and jobs needing a security clearance. They also cover most jobs with regular access to trade secrets, jobs that can sign for $10,000 or more of other people's money, and jobs that can change computer security systems. Local laws that protect workers more than this one still apply. the New York State Assembly passed it 98-46, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1590432,
+      "measure_id": "S 8416",
+      "vote_date": "2025-06-13",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 8416, known as the FAIR Business Practices Act. The old law banned only business acts that deceive people. This law also bans acts that are unfair or abusive. An act is unfair when it does real harm that people cannot easily avoid, and the harm is not worth the benefit. An act is abusive when it blocks someone from understanding a term of a deal, or takes unfair advantage of their confusion, weak position, or trust. The attorney general can sue over these acts even when the target is a business rather than a shopper, and even when the company sits outside New York. People suing on their own can still sue only over acts that deceive. A company that follows federal trade rules has a full defense. the New York State Senate passed it 37-22, and it became law.",
+      "nay_description": "Voted against Senate Bill 8416, known as the FAIR Business Practices Act. The old law banned only business acts that deceive people. This law also bans acts that are unfair or abusive. An act is unfair when it does real harm that people cannot easily avoid, and the harm is not worth the benefit. An act is abusive when it blocks someone from understanding a term of a deal, or takes unfair advantage of their confusion, weak position, or trust. The attorney general can sue over these acts even when the target is a business rather than a shopper, and even when the company sits outside New York. People suing on their own can still sue only over acts that deceive. A company that follows federal trade rules has a full defense. the New York State Senate passed it 37-22, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1592400,
+      "measure_id": "S 8416",
+      "vote_date": "2025-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 8416, known as the FAIR Business Practices Act. The old law banned only business acts that deceive people. This law also bans acts that are unfair or abusive. An act is unfair when it does real harm that people cannot easily avoid, and the harm is not worth the benefit. An act is abusive when it blocks someone from understanding a term of a deal, or takes unfair advantage of their confusion, weak position, or trust. The attorney general can sue over these acts even when the target is a business rather than a shopper, and even when the company sits outside New York. People suing on their own can still sue only over acts that deceive. A company that follows federal trade rules has a full defense. the New York State Assembly passed it 91-50, and it became law.",
+      "nay_description": "Voted against Senate Bill 8416, known as the FAIR Business Practices Act. The old law banned only business acts that deceive people. This law also bans acts that are unfair or abusive. An act is unfair when it does real harm that people cannot easily avoid, and the harm is not worth the benefit. An act is abusive when it blocks someone from understanding a term of a deal, or takes unfair advantage of their confusion, weak position, or trust. The attorney general can sue over these acts even when the target is a business rather than a shopper, and even when the company sits outside New York. People suing on their own can still sue only over acts that deceive. A company that follows federal trade rules has a full defense. the New York State Assembly passed it 91-50, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1587039,
+      "measure_id": "S 7882",
+      "vote_date": "2025-06-09",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 7882, which bans landlords from setting rents with software that pools private data from rival landlords. It is now against the law to run or sell a service that does all three of these things. The service gathers rents, empty units or lease dates from two or more unrelated landlords, crunches that data, and then suggests prices or lease terms. It is also against the law for a landlord to use those suggestions to set rents or lease terms, knowingly or with reckless disregard. Software that sets rent or income limits under rent regulation or a government affordable housing program is not covered. the New York State Senate passed it 40-22, and it became law.",
+      "nay_description": "Voted against Senate Bill 7882, which bans landlords from setting rents with software that pools private data from rival landlords. It is now against the law to run or sell a service that does all three of these things. The service gathers rents, empty units or lease dates from two or more unrelated landlords, crunches that data, and then suggests prices or lease terms. It is also against the law for a landlord to use those suggestions to set rents or lease terms, knowingly or with reckless disregard. Software that sets rent or income limits under rent regulation or a government affordable housing program is not covered. the New York State Senate passed it 40-22, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1588646,
+      "measure_id": "S 7882",
+      "vote_date": "2025-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 7882, which bans landlords from setting rents with software that pools private data from rival landlords. It is now against the law to run or sell a service that does all three of these things. The service gathers rents, empty units or lease dates from two or more unrelated landlords, crunches that data, and then suggests prices or lease terms. It is also against the law for a landlord to use those suggestions to set rents or lease terms, knowingly or with reckless disregard. Software that sets rent or income limits under rent regulation or a government affordable housing program is not covered. the New York State Assembly passed it 95-51, and it became law.",
+      "nay_description": "Voted against Senate Bill 7882, which bans landlords from setting rents with software that pools private data from rival landlords. It is now against the law to run or sell a service that does all three of these things. The service gathers rents, empty units or lease dates from two or more unrelated landlords, crunches that data, and then suggests prices or lease terms. It is also against the law for a landlord to use those suggestions to set rents or lease terms, knowingly or with reckless disregard. Software that sets rent or income limits under rent regulation or a government affordable housing program is not covered. the New York State Assembly passed it 95-51, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1560492,
+      "measure_id": "S 952",
+      "vote_date": "2025-04-29",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 952-B, which rewrites the rules for security deposits on rent stabilized apartments. These are apartments where state law limits the rent, in New York City and in other covered areas. A deposit may not be more than one month's rent. The whole deposit must come back when the tenant moves out. The landlord may keep money only for listed costs: unpaid rent, unpaid utility bills owed to the landlord, damage worse than normal wear and tear, or moving and storing what the tenant left. The landlord must offer to walk through the apartment with the tenant before move-in and again before move-out. The landlord must send a list of what was kept, plus the rest of the money, within 14 days, or lose the right to keep any of it. If there is a fight over the amount, the landlord has to show it was fair, and a landlord who breaks the rules on purpose can owe twice the deposit. the New York State Senate passed it 38-23, and it became law.",
+      "nay_description": "Voted against Senate Bill 952-B, which rewrites the rules for security deposits on rent stabilized apartments. These are apartments where state law limits the rent, in New York City and in other covered areas. A deposit may not be more than one month's rent. The whole deposit must come back when the tenant moves out. The landlord may keep money only for listed costs: unpaid rent, unpaid utility bills owed to the landlord, damage worse than normal wear and tear, or moving and storing what the tenant left. The landlord must offer to walk through the apartment with the tenant before move-in and again before move-out. The landlord must send a list of what was kept, plus the rest of the money, within 14 days, or lose the right to keep any of it. If there is a fight over the amount, the landlord has to show it was fair, and a landlord who breaks the rules on purpose can owe twice the deposit. the New York State Senate passed it 38-23, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1579566,
+      "measure_id": "S 952",
+      "vote_date": "2025-05-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 952-B, which rewrites the rules for security deposits on rent stabilized apartments. These are apartments where state law limits the rent, in New York City and in other covered areas. A deposit may not be more than one month's rent. The whole deposit must come back when the tenant moves out. The landlord may keep money only for listed costs: unpaid rent, unpaid utility bills owed to the landlord, damage worse than normal wear and tear, or moving and storing what the tenant left. The landlord must offer to walk through the apartment with the tenant before move-in and again before move-out. The landlord must send a list of what was kept, plus the rest of the money, within 14 days, or lose the right to keep any of it. If there is a fight over the amount, the landlord has to show it was fair, and a landlord who breaks the rules on purpose can owe twice the deposit. the New York State Assembly passed it 95-50, and it became law.",
+      "nay_description": "Voted against Senate Bill 952-B, which rewrites the rules for security deposits on rent stabilized apartments. These are apartments where state law limits the rent, in New York City and in other covered areas. A deposit may not be more than one month's rent. The whole deposit must come back when the tenant moves out. The landlord may keep money only for listed costs: unpaid rent, unpaid utility bills owed to the landlord, damage worse than normal wear and tear, or moving and storing what the tenant left. The landlord must offer to walk through the apartment with the tenant before move-in and again before move-out. The landlord must send a list of what was kept, plus the rest of the money, within 14 days, or lose the right to keep any of it. If there is a fight over the amount, the landlord has to show it was fair, and a landlord who breaks the rules on purpose can owe twice the deposit. the New York State Assembly passed it 95-50, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1485432,
+      "measure_id": "S 801",
+      "vote_date": "2025-02-10",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 801, which puts electric car charging into New York's building code. Any code the state adopts after December 31, 2026 must make a new building that adds its own parking include charging stations and wiring ready for more. Buildings that already stand are not covered. For a single home or a two-family home, the state board may ask for the wiring alone. The board sets how many spaces and how much charging power, requires signs, and must excuse affordable housing projects and sites where charging will not work. the New York State Senate passed it 44-17, and it became law.",
+      "nay_description": "Voted against Senate Bill 801, which puts electric car charging into New York's building code. Any code the state adopts after December 31, 2026 must make a new building that adds its own parking include charging stations and wiring ready for more. Buildings that already stand are not covered. For a single home or a two-family home, the state board may ask for the wiring alone. The board sets how many spaces and how much charging power, requires signs, and must excuse affordable housing projects and sites where charging will not work. the New York State Senate passed it 44-17, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1516803,
+      "measure_id": "S 801",
+      "vote_date": "2025-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 801, which puts electric car charging into New York's building code. Any code the state adopts after December 31, 2026 must make a new building that adds its own parking include charging stations and wiring ready for more. Buildings that already stand are not covered. For a single home or a two-family home, the state board may ask for the wiring alone. The board sets how many spaces and how much charging power, requires signs, and must excuse affordable housing projects and sites where charging will not work. the New York State Assembly passed it 88-57, and it became law.",
+      "nay_description": "Voted against Senate Bill 801, which puts electric car charging into New York's building code. Any code the state adopts after December 31, 2026 must make a new building that adds its own parking include charging stations and wiring ready for more. Buildings that already stand are not covered. For a single home or a two-family home, the state board may ask for the wiring alone. The board sets how many spaces and how much charging power, requires signs, and must excuse affordable housing projects and sites where charging will not work. the New York State Assembly passed it 88-57, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "senate",
+      "session": "2188",
+      "roll": 1590434,
+      "measure_id": "S 8417",
+      "vote_date": "2025-06-12",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 8417, which ends the cost break for extending a gas line to a building that does not have gas. Under the old rule a utility had to supply gas or electricity, and the state public service commission could make the customer pay only for the part of the line beyond 100 feet. Now a utility must still connect a building that asks for gas, but the commission has to make that customer pay the material and installation costs of the pipe. The old 100 foot cost sharing rule stays in place for electric service. the New York State Senate passed it 34-25, and it became law.",
+      "nay_description": "Voted against Senate Bill 8417, which ends the cost break for extending a gas line to a building that does not have gas. Under the old rule a utility had to supply gas or electricity, and the state public service commission could make the customer pay only for the part of the line beyond 100 feet. Now a utility must still connect a building that asks for gas, but the commission has to make that customer pay the material and installation costs of the pipe. The old 100 foot cost sharing rule stays in place for electric service. the New York State Senate passed it 34-25, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NY",
+      "chamber": "house",
+      "session": "2188",
+      "roll": 1592323,
+      "measure_id": "S 8417",
+      "vote_date": "2025-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 8417, which ends the cost break for extending a gas line to a building that does not have gas. Under the old rule a utility had to supply gas or electricity, and the state public service commission could make the customer pay only for the part of the line beyond 100 feet. Now a utility must still connect a building that asks for gas, but the commission has to make that customer pay the material and installation costs of the pipe. The old 100 foot cost sharing rule stays in place for electric service. the New York State Assembly passed it 83-62, and it became law.",
+      "nay_description": "Voted against Senate Bill 8417, which ends the cost break for extending a gas line to a building that does not have gas. Under the old rule a utility had to supply gas or electricity, and the state public service commission could make the customer pay only for the part of the line beyond 100 feet. Now a utility must still connect a building that asks for gas, but the commission has to make that customer pay the material and installation costs of the pipe. The old 100 foot cost sharing rule stays in place for electric service. the New York State Assembly passed it 83-62, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

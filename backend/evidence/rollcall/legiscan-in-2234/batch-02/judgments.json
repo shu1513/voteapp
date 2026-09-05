@@ -1,0 +1,223 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2234",
+      "roll": 1645121,
+      "measure_id": "SB 78",
+      "vote_date": "2026-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 78, which tightens Indiana's school phone rules. Schools already had to bar student phone use during class. Now the ban must cover the whole school day. Each school district and charter school must pick one of two policies. Either students may not bring a device to school at all, or devices must be stored away, switched off and out of reach all day. Smartwatches now count. Teacher-led classroom use must be on a device the school supplies. A student may still use their own device under a special education plan, a disability plan, or a doctor's order. Use for language translation is allowed. A superintendent may allow use during an emergency. The Indiana Senate agreed to the final version 36-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 78, which tightens Indiana's school phone rules. Schools already had to bar student phone use during class. Now the ban must cover the whole school day. Each school district and charter school must pick one of two policies. Either students may not bring a device to school at all, or devices must be stored away, switched off and out of reach all day. Smartwatches now count. Teacher-led classroom use must be on a device the school supplies. A student may still use their own device under a special education plan, a disability plan, or a doctor's order. Use for language translation is allowed. A superintendent may allow use during an emergency. The Indiana Senate agreed to the final version 36-12, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "The Senate's agreement to the House amendments, which is its final action and the enacted text. The Senate's own third reading of 2026-01-20 is superseded: the House rewrote the bill after it, and word-level comparison found the storage-policy choice, the smartwatch definition and the audio-recorder carve-out all added later. Member list verified name by name against official roll-call PDF SB0078.291_S.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1638743,
+      "measure_id": "HB 1355",
+      "vote_date": "2026-02-19",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1355, which changes how the state reviews large livestock farms. A farm may now ask for a meeting before it applies. The state must review the designs and hold that meeting within 30 days. It must then decide within 90 days. If it misses that deadline it must refund the fee without being asked. The state may no longer require design changes to a farm whose design meets the law and is signed off by a licensed engineer. It may not apply liquid-manure design rules to farms that store solid manure on straw or dry bedding. It may not require changes to an already approved building as part of a new application. The law also adds duties. A solid-manure farm must control runoff. Anyone who builds an earth wall around manure storage must plant it or otherwise stop erosion. They must keep it clear for inspection and keep trees and shrubs at least 16 feet from its inner face. The Indiana House agreed to the final version 73-22, and it became law.",
+      "nay_description": "Voted against House Bill 1355, which changes how the state reviews large livestock farms. A farm may now ask for a meeting before it applies. The state must review the designs and hold that meeting within 30 days. It must then decide within 90 days. If it misses that deadline it must refund the fee without being asked. The state may no longer require design changes to a farm whose design meets the law and is signed off by a licensed engineer. It may not apply liquid-manure design rules to farms that store solid manure on straw or dry bedding. It may not require changes to an already approved building as part of a new application. The law also adds duties. A solid-manure farm must control runoff. Anyone who builds an earth wall around manure storage must plant it or otherwise stop erosion. They must keep it clear for inspection and keep trees and shrubs at least 16 feet from its inner face. The Indiana House agreed to the final version 73-22, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "The House's agreement to the Senate amendments, which is the enacted text. The House's own third reading of 2026-01-28 is superseded; word-level comparison shows the Senate reworked it. Member list verified name by name against official roll-call PDF HB1355.299_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2234",
+      "roll": 1642595,
+      "measure_id": "HB 1424",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1424, which lets small food producers sell without a license or inspection. A home producer or small farm with up to $1.5 million in yearly sales is now exempt from Indiana's food business rules. State and local health offices may not add any license, permit or other rule beyond what federal law requires. They may sell meat, baked goods, sweets, produce, sweeteners and fruit spreads straight to buyers. Sales must be at their own property or a farmers market. State rules on holding food at a safe temperature no longer apply to them. Some duties stay. Meat must be butchered and labeled under state meat law and kept cold. Labels must name the seller, give the address, and list what is in the food and any allergens. Labels must also say the seller is exempt from licensing and checks. Health offices may still look into a report of food poisoning. Shipping needs a food handler's card, and shipping outside Indiana is banned. The Indiana Senate passed the bill 38-10, and it became law.",
+      "nay_description": "Voted against House Bill 1424, which lets small food producers sell without a license or inspection. A home producer or small farm with up to $1.5 million in yearly sales is now exempt from Indiana's food business rules. State and local health offices may not add any license, permit or other rule beyond what federal law requires. They may sell meat, baked goods, sweets, produce, sweeteners and fruit spreads straight to buyers. Sales must be at their own property or a farmers market. State rules on holding food at a safe temperature no longer apply to them. Some duties stay. Meat must be butchered and labeled under state meat law and kept cold. Labels must name the seller, give the address, and list what is in the food and any allergens. Labels must also say the seller is exempt from licensing and checks. Health offices may still look into a report of food poisoning. Shipping needs a food handler's card, and shipping outside Indiana is banned. The Indiana Senate passed the bill 38-10, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "Third reading. Word-level comparison of the Senate committee text against the enrolled act found no operative difference. The House's own third reading of 2026-01-22 is NOT used: the Senate rewrote the bill after it. Member list verified name by name against official roll-call PDF HB1424.263_S.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1643905,
+      "measure_id": "HB 1273",
+      "vote_date": "2026-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1273, which sets rules for firms that advise large investors how to vote their shares. The rules apply only when the firm advises voting against company management. If the firm has no written financial study behind that advice, it must say so to the client and to the company. It must also say so on its own website home page for as long as it serves that client. If it does have a study, it must tell the client and hand it over on request. A firm that advises voting with management has no duty at all. Breaking the rule counts as a deceptive act under Indiana's consumer sales law. A client, the company, or any of its shareholders may sue for a court order. Banks acting as trustees and small charities are exempt. The Indiana House agreed to the final version 72-20, and it became law.",
+      "nay_description": "Voted against House Bill 1273, which sets rules for firms that advise large investors how to vote their shares. The rules apply only when the firm advises voting against company management. If the firm has no written financial study behind that advice, it must say so to the client and to the company. It must also say so on its own website home page for as long as it serves that client. If it does have a study, it must tell the client and hand it over on request. A firm that advises voting with management has no duty at all. Breaking the rule counts as a deceptive act under Indiana's consumer sales law. A client, the company, or any of its shareholders may sue for a court order. Banks acting as trustees and small charities are exempt. The Indiana House agreed to the final version 72-20, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "The House's agreement to the Senate amendments, which is the enacted text. The House's own third reading of 2026-01-20 is a version trap and is NOT used: the enrolled act exempts banks acting as trustees and small charities, and neither exemption was in the text the House passed. Member list verified name by name against official roll-call PDF HB1273.368_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1631741,
+      "measure_id": "SB 76",
+      "vote_date": "2026-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 76, which makes local governments in Indiana help enforce federal immigration law. A jail holding someone under a federal hold must follow the request. It must tell the person, note it in the file, and tell the judge who sets bail. The attorney general may sue a local government that limits enforcement. A court may order up to $10,000 for each knowing breach. A court must now block any proved breach, not just a deliberate one. Employers may not knowingly hire or keep a worker who has no right to work. They may lose their business licenses if they do. The state must report each year how many non-citizens get public aid and what it costs. From 2027 hospitals must report what proof of identity Medicaid patients showed. The law also lets a jailed person object by claiming mistaken identity or United States citizenship. The jail must then check with the federal officer. An employer who checked work rights with due care has not broken the law. The Indiana House passed the bill 61-28, and it became law.",
+      "nay_description": "Voted against Senate Bill 76, which makes local governments in Indiana help enforce federal immigration law. A jail holding someone under a federal hold must follow the request. It must tell the person, note it in the file, and tell the judge who sets bail. The attorney general may sue a local government that limits enforcement. A court may order up to $10,000 for each knowing breach. A court must now block any proved breach, not just a deliberate one. Employers may not knowingly hire or keep a worker who has no right to work. They may lose their business licenses if they do. The state must report each year how many non-citizens get public aid and what it costs. From 2027 hospitals must report what proof of identity Medicaid patients showed. The law also lets a jailed person object by claiming mistaken identity or United States citizenship. The jail must then check with the federal officer. An employer who checked work rights with due care has not broken the law. The Indiana House passed the bill 61-28, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "Third reading. Word-level comparison of the House-engrossed text against the enrolled act found no difference at all, so this roll is the enacted text. Member list verified name by name against official roll-call PDF SB0076.240_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2234",
+      "roll": 1645175,
+      "measure_id": "SB 76",
+      "vote_date": "2026-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 76, which makes local governments in Indiana help enforce federal immigration law. A jail holding someone under a federal hold must follow the request. It must tell the person, note it in the file, and tell the judge who sets bail. The attorney general may sue a local government that limits enforcement. A court may order up to $10,000 for each knowing breach. A court must now block any proved breach, not just a deliberate one. Employers may not knowingly hire or keep a worker who has no right to work. They may lose their business licenses if they do. The state must report each year how many non-citizens get public aid and what it costs. From 2027 hospitals must report what proof of identity Medicaid patients showed. The law also lets a jailed person object by claiming mistaken identity or United States citizenship. The jail must then check with the federal officer. An employer who checked work rights with due care has not broken the law. The Indiana Senate agreed to the final version 37-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 76, which makes local governments in Indiana help enforce federal immigration law. A jail holding someone under a federal hold must follow the request. It must tell the person, note it in the file, and tell the judge who sets bail. The attorney general may sue a local government that limits enforcement. A court may order up to $10,000 for each knowing breach. A court must now block any proved breach, not just a deliberate one. Employers may not knowingly hire or keep a worker who has no right to work. They may lose their business licenses if they do. The state must report each year how many non-citizens get public aid and what it costs. From 2027 hospitals must report what proof of identity Medicaid patients showed. The law also lets a jailed person object by claiming mistaken identity or United States citizenship. The jail must then check with the federal officer. An employer who checked work rights with due care has not broken the law. The Indiana Senate agreed to the final version 37-11, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "The Senate's agreement to the House amendments, which is its final action and the enacted text. The Senate's own third reading of 2026-01-27 was on a materially different bill: it carried a governor's funding cutoff instead of the civil penalty, an affirmative defence for trained officers, and a per-person immigration status report. Member list verified name by name against official roll-call PDF SB0076.271_S.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1637695,
+      "measure_id": "HB 1150",
+      "vote_date": "2026-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1150, which limits what homeowners groups and local governments may regulate. A homeowners group runs a housing subdivision and enforces its rules. Such a group may not stop a member flying the United States or Indiana flag. It may still set fair rules on flagpole size, materials and upkeep. It may not run a camera that reads license plates. It may allow one on its land only if police put it there and the group cannot see the data. It may not treat cars or outdoor machines differently based on the fuel they run on. Counties and cities may no longer make building owners or utility firms report how much energy or water is used. The same fuel rule now covers local rules on cars, machines and outdoor cooking gear. The Indiana House agreed to the final version 72-19, and it became law.",
+      "nay_description": "Voted against House Bill 1150, which limits what homeowners groups and local governments may regulate. A homeowners group runs a housing subdivision and enforces its rules. Such a group may not stop a member flying the United States or Indiana flag. It may still set fair rules on flagpole size, materials and upkeep. It may not run a camera that reads license plates. It may allow one on its land only if police put it there and the group cannot see the data. It may not treat cars or outdoor machines differently based on the fuel they run on. Counties and cities may no longer make building owners or utility firms report how much energy or water is used. The same fuel rule now covers local rules on cars, machines and outdoor cooking gear. The Indiana House agreed to the final version 72-19, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "The House's agreement to the Senate amendments, which is the enacted text. The House's own third reading of 2026-01-20 is a version trap and is NOT used: both the flag chapter and the license plate reader chapter were added after it. Member list verified name by name against official roll-call PDF HB1150.275_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2234",
+      "roll": 1632010,
+      "measure_id": "HB 1150",
+      "vote_date": "2026-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1150, which limits what homeowners groups and local governments may regulate. A homeowners group runs a housing subdivision and enforces its rules. Such a group may not stop a member flying the United States or Indiana flag. It may still set fair rules on flagpole size, materials and upkeep. It may not run a camera that reads license plates. It may allow one on its land only if police put it there and the group cannot see the data. It may not treat cars or outdoor machines differently based on the fuel they run on. Counties and cities may no longer make building owners or utility firms report how much energy or water is used. The same fuel rule now covers local rules on cars, machines and outdoor cooking gear. The Indiana Senate passed the bill 37-10, and it became law.",
+      "nay_description": "Voted against House Bill 1150, which limits what homeowners groups and local governments may regulate. A homeowners group runs a housing subdivision and enforces its rules. Such a group may not stop a member flying the United States or Indiana flag. It may still set fair rules on flagpole size, materials and upkeep. It may not run a camera that reads license plates. It may allow one on its land only if police put it there and the group cannot see the data. It may not treat cars or outdoor machines differently based on the fuel they run on. Counties and cities may no longer make building owners or utility firms report how much energy or water is used. The same fuel rule now covers local rules on cars, machines and outdoor cooking gear. The Indiana Senate passed the bill 37-10, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "note": "Third reading. Word-level comparison of the Senate-engrossed text against the enrolled act found no operative difference. Member list verified name by name against official roll-call PDF HB1150.158_S.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "house",
+      "session": "2234",
+      "roll": 1648201,
+      "measure_id": "HB 1368",
+      "vote_date": "2026-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1368, which rebuilds Indiana's rules for storing carbon dioxide underground. The aim is to let the state take over permits from the federal government. A permit form grows from 8 items to 28. It must now include maps of known faults in the rock. It must list every well that reaches the storage layer. It must give baseline chemistry for every drinking water source nearby. A public hearing is required. Notice must be mailed to every land, mineral and pore space owner within half a mile. The state must answer every serious comment in writing. Before granting a permit the state must find three things. The project will not harm surface water or aquifers. It will not endanger health or the environment. And it is in the public interest. Injection pressure is capped at 90 percent of the pressure that would crack the rock. Watching must go on for at least 50 years after injection stops. The state may not write off an aquifer as a drinking water source. Fines rise, now run per day, and a knowing breach becomes a Class A misdemeanor. Two changes cut the other way. The old rule that the gas be more than 90 percent carbon dioxide is repealed. Coal is dropped from the resources whose rights outrank carbon storage. The Indiana House agreed to the final version 57-40, and it became law.",
+      "nay_description": "Voted against House Bill 1368, which rebuilds Indiana's rules for storing carbon dioxide underground. The aim is to let the state take over permits from the federal government. A permit form grows from 8 items to 28. It must now include maps of known faults in the rock. It must list every well that reaches the storage layer. It must give baseline chemistry for every drinking water source nearby. A public hearing is required. Notice must be mailed to every land, mineral and pore space owner within half a mile. The state must answer every serious comment in writing. Before granting a permit the state must find three things. The project will not harm surface water or aquifers. It will not endanger health or the environment. And it is in the public interest. Injection pressure is capped at 90 percent of the pressure that would crack the rock. Watching must go on for at least 50 years after injection stops. The state may not write off an aquifer as a drinking water source. Fines rise, now run per day, and a knowing breach becomes a Class A misdemeanor. Two changes cut the other way. The old rule that the gas be more than 90 percent carbon dioxide is repealed. Coal is dropped from the resources whose rights outrank carbon storage. The Indiana House agreed to the final version 57-40, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "The House's agreement to the Senate amendments, which is the enacted text. The House's own third reading of 2026-01-28 is NOT used, for two independent reasons: it is a version trap, because that text let the state switch off its duty to protect drinking water sources wherever an aquifer exemption applied and required no federal concurrence on a depth waiver; and its member list disagrees with the journal. Member list on THIS roll verified name by name against official roll-call PDF HB1368.420_H.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2234",
+      "roll": 1642619,
+      "measure_id": "HB 1368",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1368, which rebuilds Indiana's rules for storing carbon dioxide underground. The aim is to let the state take over permits from the federal government. A permit form grows from 8 items to 28. It must now include maps of known faults in the rock. It must list every well that reaches the storage layer. It must give baseline chemistry for every drinking water source nearby. A public hearing is required. Notice must be mailed to every land, mineral and pore space owner within half a mile. The state must answer every serious comment in writing. Before granting a permit the state must find three things. The project will not harm surface water or aquifers. It will not endanger health or the environment. And it is in the public interest. Injection pressure is capped at 90 percent of the pressure that would crack the rock. Watching must go on for at least 50 years after injection stops. The state may not write off an aquifer as a drinking water source. Fines rise, now run per day, and a knowing breach becomes a Class A misdemeanor. Two changes cut the other way. The old rule that the gas be more than 90 percent carbon dioxide is repealed. Coal is dropped from the resources whose rights outrank carbon storage. The Indiana Senate passed the bill 29-19, and it became law.",
+      "nay_description": "Voted against House Bill 1368, which rebuilds Indiana's rules for storing carbon dioxide underground. The aim is to let the state take over permits from the federal government. A permit form grows from 8 items to 28. It must now include maps of known faults in the rock. It must list every well that reaches the storage layer. It must give baseline chemistry for every drinking water source nearby. A public hearing is required. Notice must be mailed to every land, mineral and pore space owner within half a mile. The state must answer every serious comment in writing. Before granting a permit the state must find three things. The project will not harm surface water or aquifers. It will not endanger health or the environment. And it is in the public interest. Injection pressure is capped at 90 percent of the pressure that would crack the rock. Watching must go on for at least 50 years after injection stops. The state may not write off an aquifer as a drinking water source. Fines rise, now run per day, and a knowing breach becomes a Class A misdemeanor. Two changes cut the other way. The old rule that the gas be more than 90 percent carbon dioxide is repealed. Coal is dropped from the resources whose rights outrank carbon storage. The Indiana Senate passed the bill 29-19, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "Third reading. Word-level comparison of the Senate-engrossed text against the enrolled act found a single difference, a full stop in a section number, so this roll is the enacted text. Member list verified name by name against official roll-call PDF HB1368.259_S.pdf."
+    },
+    {
+      "jurisdiction": "IN",
+      "chamber": "senate",
+      "session": "2234",
+      "roll": 1647209,
+      "measure_id": "SB 270",
+      "vote_date": "2026-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 270, which forces many Indiana townships to merge or close. A township is the smallest unit of local government. It runs poor relief, some fire service and cemeteries. The state will give each township points for things like giving no aid, missing reports, rolling over a budget, or having a tiny budget. Four points or more makes a township a target. A township that lies mostly inside a city is closed on January 1 2029. The city then takes over its work and taxes its old area. Every other target township must merge with a neighbor. The county executive decides which ones. Elections for those township offices end after 2028. Debt cannot be pushed onto taxpayers who did not owe it. The merged unit's tax levy is capped at what the parts levied before. The state's scoring cannot be appealed. There is no public vote anywhere in the process. The law also repeals the power to undo a merger later. The Indiana Senate agreed to the final version 34-15, and it became law.",
+      "nay_description": "Voted against Senate Bill 270, which forces many Indiana townships to merge or close. A township is the smallest unit of local government. It runs poor relief, some fire service and cemeteries. The state will give each township points for things like giving no aid, missing reports, rolling over a budget, or having a tiny budget. Four points or more makes a township a target. A township that lies mostly inside a city is closed on January 1 2029. The city then takes over its work and taxes its old area. Every other target township must merge with a neighbor. The county executive decides which ones. Elections for those township offices end after 2028. Debt cannot be pushed onto taxpayers who did not owe it. The merged unit's tax levy is capped at what the parts levied before. The state's scoring cannot be appealed. There is no public vote anywhere in the process. The law also repeals the power to undo a merger later. The Indiana Senate agreed to the final version 34-15, and it became law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "note": "The Senate's agreement to the House amendments. Word-level comparison of the House-engrossed text against the enrolled act found no operative difference across 9,992 tokens, so this roll is the enacted text. The House's own third reading of 2026-02-24 is NOT used: its member list disagrees with the journal, which leaves this measure one usable roll. Member list on THIS roll verified name by name against official roll-call PDF SB0270.301_S.pdf."
+    }
+  ]
+}

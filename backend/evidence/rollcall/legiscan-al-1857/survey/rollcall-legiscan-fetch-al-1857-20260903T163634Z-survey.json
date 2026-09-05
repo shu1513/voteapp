@@ -1,0 +1,768 @@
+{
+  "runId": "rollcall-legiscan-fetch-al-1857-20260903T163634Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "AL-1857",
+  "startedAt": "2026-09-03T16:36:34.736Z",
+  "finishedAt": "2026-09-03T16:36:34.776Z",
+  "datasetDir": "~/legiscan-data/al-1857",
+  "bills": 74,
+  "votes": 54,
+  "people": 139,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "Cosponsors Added",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR18",
+        "HR16"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Jones (M) motion to Accede Roll Call 25",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Jones (M) motion to Concur In and Adopt Roll Call 27",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Jones (M) motion to Table Roll Call 18",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Ledbetter motion to Previous Question Roll Call 12",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR12"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Ledbetter motion to Previous Question Roll Call 19",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Ledbetter motion to Previous Question Roll Call 8",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Marques motion to Accede Roll Call 24 House appoints Marques, Lee and England",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB15"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Marques motion to Concur In and Adopt Roll Call 26",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB15"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Adopt Jones (M) substitute Roll Call 20",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Adopt Roll Call 22",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB15"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Adopt Roll Call 9",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 10",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 11",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 16",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 17",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 21",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 23",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB15"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 4",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Pringle motion to Table Roll Call 1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Pringle motion to Table Roll Call 2",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Pringle motion to Table Roll Call 3",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Pringle motion to Table Roll Call 5",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Pringle motion to Table Roll Call 6",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Pringle motion to Table Roll Call 7",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Shedd motion to Previous Question Roll Call 13",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 103,
+      "maxTotal": 103,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR16"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Coleman-Madison motion to Adopt Roll Call 21",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB15"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Elliott motion to Concur In and Adopt Roll Call 43",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Elliott motion to Non Concur and Appoint Conference Committee Roll Call 41 P&PO appoints Reed, Beasley and Elliott",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Hatcher motion to Adopt Roll Call 32",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "McClendon motion to Table Roll Call 29",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "McClendon motion to Table Roll Call 30",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Adopt Roll Call 17",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 10",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 11",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB3"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 15",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB14"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 18",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 22",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB15"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 25",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB16"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 26",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB17"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 27",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB18"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 28",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 34",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 35",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion to Read a Third Time and Pass Roll Call 9",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Orr motion to Adopt Roll Call 19",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB15"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Orr motion to Concur In and Adopt Roll Call 42",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB15"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Orr motion to Non Concur and Appoint Conference Committee Roll Call 40 P&PO appoints Orr, Singleton and Scofield",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB15"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Singleton motion to Adopt Roll Call 20",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB15"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Singleton motion to Adopt Roll Call 31",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Waggoner motion to Adopt Roll Call 12",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR6"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Waggoner motion to Adopt Roll Call 33",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Waggoner motion to Rules Committee to Cease Debate Roll Call 16",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB9"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 28,
+    "JR": 17,
+    "R": 29
+  },
+  "sessionIds": {
+    "1857": 74
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

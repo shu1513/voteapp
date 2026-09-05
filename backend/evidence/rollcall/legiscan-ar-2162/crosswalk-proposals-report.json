@@ -1,0 +1,1573 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-09-03T01:40:02.762Z",
+  "finishedAt": "2026-09-03T01:40:03.890Z",
+  "jurisdiction": "AR",
+  "sessionId": 2162,
+  "evidenceDir": "~/legiscan-data/ar-2162-evidence",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "~/legiscan-data/ar-2162",
+  "peopleMembers": 135,
+  "candidatePool": 160,
+  "crosswalkFile": "~/legiscan-data/ar-work/crosswalk.json",
+  "crosswalkEntries": 135,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 11360,
+      "rosterName": "Mark Perry",
+      "rosterSeat": "house HD-066",
+      "candidateId": "2236d4e0-16bb-43fc-aa73-e3fdfed57afa",
+      "candidateName": "Mark Perry",
+      "candidacy": "state_lower: State House District 66 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12101,
+      "rosterName": "Missy Irvin",
+      "rosterSeat": "senate SD-024",
+      "candidateId": "8edefe9d-a82e-4e4e-84fb-5f777aecf072",
+      "candidateName": "Missy Irvin",
+      "candidacy": "state_upper: State Senate District 24 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12159,
+      "rosterName": "Bryan King",
+      "rosterSeat": "senate SD-028",
+      "candidateId": "7972517d-b7e8-4031-a96a-dd4d39908517",
+      "candidateName": "Bryan King",
+      "candidacy": "state_upper: State Senate District 28 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12719,
+      "rosterName": "Bruce Cozart",
+      "rosterSeat": "house HD-091",
+      "candidateId": "97b1e882-d097-44f4-ad12-2ecdb9941cdb",
+      "candidateName": "Bruce Cozart",
+      "candidacy": "state_lower: State House District 91 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14938,
+      "rosterName": "David Whitaker",
+      "rosterSeat": "house HD-022",
+      "candidateId": "0e77c732-576a-4f52-977d-29326d3bd6df",
+      "candidateName": "David Whitaker",
+      "candidacy": "state_lower: State House District 22 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14948,
+      "rosterName": "Mike Holcomb",
+      "rosterSeat": "house HD-093",
+      "candidateId": "a60a31fa-0d52-441b-9224-f2ca296dd6bf",
+      "candidateName": "Mike Holcomb",
+      "candidacy": "state_lower: State House District 93 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14955,
+      "rosterName": "Mark McElroy",
+      "rosterSeat": "house HD-062",
+      "candidateId": "00ffb7aa-a623-4565-8938-5b40476807b9",
+      "candidateName": "Mark McElroy",
+      "candidacy": "state_lower: State House District 62 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14965,
+      "rosterName": "Richard Womack",
+      "rosterSeat": "house HD-090",
+      "candidateId": "b801c478-62e5-42c5-9120-ae421bbfa81b",
+      "candidateName": "Richard Womack",
+      "candidacy": "state_lower: State House District 90 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14966,
+      "rosterName": "Alan Clark",
+      "rosterSeat": "senate SD-007",
+      "candidateId": "54155825-c27a-4b9a-8d44-590bddb03cba",
+      "candidateName": "Alan Clark",
+      "candidacy": "state_upper: State Senate District 7 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14968,
+      "rosterName": "Ronald Caldwell",
+      "rosterSeat": "senate SD-010",
+      "candidateId": "f435dbe4-58aa-49e9-9afc-f9b40f728f37",
+      "candidateName": "Ronald Caldwell",
+      "candidacy": "state_upper: State Senate District 10 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16335,
+      "rosterName": "Jack Ladyman",
+      "rosterSeat": "house HD-032",
+      "candidateId": "941e7615-1179-4b50-8a8f-0f276e02f5a7",
+      "candidateName": "Jack Ladyman",
+      "candidacy": "state_lower: State House District 32 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16336,
+      "rosterName": "Robin Lundstrum",
+      "rosterSeat": "house HD-018",
+      "candidateId": "bfae41d0-c891-4292-9872-03647a242bcf",
+      "candidateName": "Robin Lundstrum",
+      "candidacy": "state_lower: State House District 18 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16338,
+      "rosterName": "Dwight Tosh",
+      "rosterSeat": "house HD-038",
+      "candidateId": "7c741a6a-3c3e-4d53-9852-f37682d70a6a",
+      "candidateName": "Dwight Tosh",
+      "candidacy": "state_lower: State House District 38 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16898,
+      "rosterName": "Rick Beck",
+      "rosterSeat": "house HD-043",
+      "candidateId": "facc6725-e5b8-4e01-b029-d5ac96bd5664",
+      "candidateName": "Rick Beck",
+      "candidacy": "state_lower: State House District 43 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16900,
+      "rosterName": "Mary Bentley",
+      "rosterSeat": "house HD-054",
+      "candidateId": "4ccdcc4f-e9a9-4319-83a3-7975f768642d",
+      "candidateName": "Mary Bentley",
+      "candidacy": "state_lower: State House District 54 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16902,
+      "rosterName": "Justin Boyd",
+      "rosterSeat": "senate SD-027",
+      "candidateId": "7d06a303-0673-48ff-b867-0789df506e7e",
+      "candidateName": "Justin Boyd",
+      "candidacy": "state_upper: State Senate District 27 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16907,
+      "rosterName": "Les Eaves",
+      "rosterSeat": "house HD-058",
+      "candidateId": "dbd89055-6eea-430f-9326-1219a27d93d8",
+      "candidateName": "Les Eaves",
+      "candidacy": "state_lower: State House District 58 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16909,
+      "rosterName": "Justin Gonzales",
+      "rosterSeat": "house HD-089",
+      "candidateId": "2f17e969-adee-4bb9-ba0d-119d75dfd91d",
+      "candidateName": "Justin Gonzales",
+      "candidacy": "state_lower: State House District 89 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16912,
+      "rosterName": "Ken Ferguson",
+      "rosterSeat": "house HD-064",
+      "candidateId": "519d7e73-da03-4bb8-b997-e25ebcf7b658",
+      "candidateName": "Ken Ferguson",
+      "candidacy": "state_lower: State House District 64 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16924,
+      "rosterName": "Clarke Tucker",
+      "rosterSeat": "senate SD-014",
+      "candidateId": "06ec88dd-1a5a-4ac8-8f68-53a1d9ca09d7",
+      "candidateName": "Clarke Tucker",
+      "candidacy": "state_upper: State Senate District 14 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16926,
+      "rosterName": "Deann Vaught",
+      "rosterSeat": "house HD-087",
+      "candidateId": "8efd8099-4685-48d9-acef-7d2c86f00667",
+      "candidateName": "DeAnn Vaught",
+      "candidacy": "state_lower: State House District 87 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17040,
+      "rosterName": "Karilyn Brown",
+      "rosterSeat": "house HD-067",
+      "candidateId": "44208755-3bd3-4685-b1e9-87fff33ef3ab",
+      "candidateName": "Karilyn Brown",
+      "candidacy": "state_lower: State House District 67 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18006,
+      "rosterName": "Sonia Eubanks Barker",
+      "rosterSeat": "house HD-096",
+      "candidateId": "74819494-6a9c-4f7f-a460-f8c8e1eb58a4",
+      "candidateName": "Sonia Eubanks Barker",
+      "candidacy": "state_lower: State House District 96 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18014,
+      "rosterName": "Roger Lynch",
+      "rosterSeat": "house HD-060",
+      "candidateId": "289490be-22c7-4726-b6fb-443b8278d593",
+      "candidateName": "Roger Lynch",
+      "candidacy": "state_lower: State House District 60 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18015,
+      "rosterName": "John Maddox",
+      "rosterSeat": "house HD-086",
+      "candidateId": "a1fa4754-a334-4cc6-a904-0fcc77a559ac",
+      "candidateName": "John Maddox",
+      "candidacy": "state_lower: State House District 86 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18016,
+      "rosterName": "Aaron Pilkington",
+      "rosterSeat": "house HD-045",
+      "candidateId": "843b61c7-e6b0-43be-be4c-9276fc2eef43",
+      "candidateName": "Aaron Pilkington",
+      "candidacy": "state_lower: State House District 45 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18017,
+      "rosterName": "Johnny Rye",
+      "rosterSeat": "house HD-036",
+      "candidateId": "da232294-8abd-4419-bb5b-e4768e4f5ba4",
+      "candidateName": "Johnny Rye",
+      "candidacy": "state_lower: State House District 36 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18018,
+      "rosterName": "Les Warren",
+      "rosterSeat": "house HD-084",
+      "candidateId": "6f75d78a-d7d5-488e-8c08-56d5f6af12c7",
+      "candidateName": "Les Warren",
+      "candidacy": "state_lower: State House District 84 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18683,
+      "rosterName": "Carol Dalby",
+      "rosterSeat": "house HD-100",
+      "candidateId": "db303475-9edc-43bd-818b-0cc7c39073bf",
+      "candidateName": "Carol Dalby",
+      "candidacy": "state_lower: State House District 100 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18684,
+      "rosterName": "Steve Hollowell",
+      "rosterSeat": "house HD-037",
+      "candidateId": "75580f89-eae6-4129-bb0c-18fc325a4199",
+      "candidateName": "Steve Hollowell",
+      "candidacy": "state_lower: State House District 37 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18685,
+      "rosterName": "Clint Penzo",
+      "rosterSeat": "senate SD-031",
+      "candidateId": "7d2f9fd9-045e-4769-96b9-df67e00f3da9",
+      "candidateName": "Clint Penzo",
+      "candidacy": "state_upper: State Senate District 31 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19943,
+      "rosterName": "Brian Evans",
+      "rosterSeat": "house HD-068",
+      "candidateId": "54931df8-4ce7-4bfe-96e3-21e124d9ef11",
+      "candidateName": "Brian Evans",
+      "candidacy": "state_lower: State House District 68 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20405,
+      "rosterName": "Ricky Hill",
+      "rosterSeat": "senate SD-011",
+      "candidateId": "fdcbfe45-a953-4fcb-a505-f6e2f3200068",
+      "candidateName": "Ricky Hill",
+      "candidacy": "state_upper: State Senate District 11 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20742,
+      "rosterName": "Lee Johnson",
+      "rosterSeat": "house HD-047",
+      "candidateId": "f1a23925-3fe4-4444-a74e-1a12fac9bb49",
+      "candidateName": "Lee Johnson",
+      "candidacy": "state_lower: State House District 47 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20762,
+      "rosterName": "Andrew Collins",
+      "rosterSeat": "house HD-073",
+      "candidateId": "a26d6751-9a16-4ceb-a982-60217ad1cda1",
+      "candidateName": "Andrew Collins",
+      "candidacy": "state_lower: State House District 73 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20765,
+      "rosterName": "Cameron Cooper",
+      "rosterSeat": "house HD-057",
+      "candidateId": "354e2767-892a-4ded-8672-c747dca12d54",
+      "candidateName": "Cameron Cooper",
+      "candidacy": "state_lower: State House District 57 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20768,
+      "rosterName": "Nicole Clowney",
+      "rosterSeat": "house HD-021",
+      "candidateId": "08e9dcbb-a303-446c-8043-f8d15e362b34",
+      "candidateName": "Nicole Clowney",
+      "candidacy": "state_lower: State House District 21 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20769,
+      "rosterName": "Cindy Crawford",
+      "rosterSeat": "house HD-051",
+      "candidateId": "6b635af9-28e5-4fda-953a-6c5abc48697d",
+      "candidateName": "Cindy Crawford",
+      "candidacy": "state_lower: State House District 51 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20770,
+      "rosterName": "Denise Garner",
+      "rosterSeat": "house HD-020",
+      "candidateId": "ee3c68b2-0246-4b30-a970-5ede24313236",
+      "candidateName": "Denise Garner",
+      "candidacy": "state_upper: State Senate District 30 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 20776,
+      "rosterName": "Tippi McCullough",
+      "rosterSeat": "house HD-074",
+      "candidateId": "7235630a-a617-470b-8133-2e21016d2fb6",
+      "candidateName": "Tippi McCullough",
+      "candidacy": "state_lower: State House District 74 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20779,
+      "rosterName": "Jay Richardson",
+      "rosterSeat": "house HD-049",
+      "candidateId": "507730d8-7c2c-4e3f-aee0-2eb2e6c7c4d7",
+      "candidateName": "Jay Richardson",
+      "candidacy": "state_lower: State House District 49 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20783,
+      "rosterName": "Jim Wooten",
+      "rosterSeat": "house HD-059",
+      "candidateId": "a15c28a2-f341-4a13-93f9-c56f9ca0096f",
+      "candidateName": "Jim Wooten",
+      "candidacy": "state_lower: State House District 59 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21594,
+      "rosterName": "Denise Ennett",
+      "rosterSeat": "house HD-080",
+      "candidateId": "0d054f6f-30d9-4c4e-935f-3822ce5844b6",
+      "candidateName": "Denise Ennett",
+      "candidacy": "state_lower: State House District 80 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21628,
+      "rosterName": "Richard McGrew",
+      "rosterSeat": "house HD-085",
+      "candidateId": "f74d9eae-a43f-449e-9e27-7935d2ad0a81",
+      "candidateName": "Richard McGrew",
+      "candidacy": "state_lower: State House District 85 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21629,
+      "rosterName": "Joy Springer",
+      "rosterSeat": "house HD-076",
+      "candidateId": "de2e6b6b-0f3d-46ff-b98a-273d61ee2076",
+      "candidateName": "Joy C. Springer",
+      "candidacy": "state_lower: State House District 76 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21766,
+      "rosterName": "Howard Beaty",
+      "rosterSeat": "house HD-095",
+      "candidateId": "94def1c3-8362-4c14-8510-940f523ffeb1",
+      "candidateName": "Howard Beaty",
+      "candidacy": "state_lower: State House District 95 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21767,
+      "rosterName": "Tony Furman",
+      "rosterSeat": "house HD-082",
+      "candidateId": "d43b6eca-7914-4284-b728-f09acdce794a",
+      "candidateName": "Tony Furman",
+      "candidacy": "state_lower: State House District 82 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21768,
+      "rosterName": "Kendon Underwood",
+      "rosterSeat": "house HD-016",
+      "candidateId": "58d0d9bb-3938-4be3-8f78-2fa7bed338a2",
+      "candidateName": "Kendon Underwood",
+      "candidacy": "state_lower: State House District 16 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21894,
+      "rosterName": "David Ray",
+      "rosterSeat": "house HD-069",
+      "candidateId": "d5d5685b-ff99-4782-8055-2a51d6437c6f",
+      "candidateName": "David Ray",
+      "candidacy": "state_lower: State House District 69 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22170,
+      "rosterName": "John Carr",
+      "rosterSeat": "house HD-015",
+      "candidateId": "c68490b2-0be2-44ef-9aa5-bd0acd5cf99b",
+      "candidateName": "John Carr",
+      "candidacy": "state_lower: State House District 15 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22171,
+      "rosterName": "Rick McClure",
+      "rosterSeat": "house HD-029",
+      "candidateId": "8a4cdab1-bcff-4603-b917-b42912cb9c35",
+      "candidateName": "Rick McClure",
+      "candidacy": "state_lower: State House District 29 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22172,
+      "rosterName": "Joshua Bryant",
+      "rosterSeat": "senate SD-032",
+      "candidateId": "ad2bc126-a87f-48b2-a620-f9c774d80fba",
+      "candidateName": "Joshua Bryant",
+      "candidacy": "state_upper: State Senate District 32 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22202,
+      "rosterName": "Keith Brooks",
+      "rosterSeat": "house HD-078",
+      "candidateId": "3eb3ac5e-1565-43f3-9465-961222197714",
+      "candidateName": "Keith Brooks",
+      "candidacy": "state_lower: State House District 78 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22204,
+      "rosterName": "Ashley Hudson",
+      "rosterSeat": "house HD-075",
+      "candidateId": "e1d547ca-866e-4ec4-b297-630f06e51f06",
+      "candidateName": "Ashley Hudson",
+      "candidacy": "state_lower: State House District 75 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22205,
+      "rosterName": "Jon Milligan",
+      "rosterSeat": "house HD-033",
+      "candidateId": "62c33522-d4dd-4124-b7f5-b0ecccdd8564",
+      "candidateName": "Jon Milligan",
+      "candidacy": "state_lower: State House District 33 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23377,
+      "rosterName": "RJ Hawk",
+      "rosterSeat": "house HD-081",
+      "candidateId": "155ca8dd-d43c-4d18-84b9-57d7a8a0920d",
+      "candidateName": "RJ Hawk",
+      "candidacy": "state_lower: State House District 81 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23640,
+      "rosterName": "Wade Andrews",
+      "rosterSeat": "house HD-098",
+      "candidateId": "2be169e2-2ff1-4923-b720-22c97eeccbbb",
+      "candidateName": "Wade Andrews",
+      "candidacy": "state_lower: State House District 98 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23884,
+      "rosterName": "Rebecca Burkes",
+      "rosterSeat": "house HD-011",
+      "candidateId": "e0847cd6-06a2-44c6-8df3-778c8ba76b14",
+      "candidateName": "Rebecca Burkes",
+      "candidacy": "state_lower: State House District 11 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23886,
+      "rosterName": "Hope Duke",
+      "rosterSeat": "house HD-012",
+      "candidateId": "22ec75c3-1cf1-4df7-be7e-f85b1e5a8c9f",
+      "candidateName": "Hope Hendren Duke",
+      "candidacy": "state_lower: State House District 12 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23887,
+      "rosterName": "Zack Gramlich",
+      "rosterSeat": "house HD-050",
+      "candidateId": "15707b3f-a3af-48fa-86ef-a9cbebe471c2",
+      "candidateName": "Zack Gramlich",
+      "candidacy": "state_lower: State House District 50 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23888,
+      "rosterName": "Mindy McAlindon",
+      "rosterSeat": "house HD-010",
+      "candidateId": "5843ac62-f68b-4fc7-92d5-9111c4702042",
+      "candidateName": "Mindy McAlindon",
+      "candidacy": "state_lower: State House District 10 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23947,
+      "rosterName": "Matt Duffield",
+      "rosterSeat": "house HD-053",
+      "candidateId": "4f2bb8f3-5783-4ac3-b068-24b0857b77a1",
+      "candidateName": "Matt Duffield",
+      "candidacy": "state_lower: State House District 53 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23981,
+      "rosterName": "Stetson Painter",
+      "rosterSeat": "house HD-003",
+      "candidateId": "90c7b3b6-d107-4682-91fe-b19e55f7d4d0",
+      "candidateName": "Stetson Painter",
+      "candidacy": "state_lower: State House District 3 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23985,
+      "rosterName": "Steve Unger",
+      "rosterSeat": "house HD-019",
+      "candidateId": "e3876bf0-528f-46ac-b9c3-d8abcbb3ab4b",
+      "candidateName": "Steven Unger",
+      "candidacy": "state_lower: State House District 19 (2024); Arkansas",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24170,
+      "rosterName": "Brandon Achor",
+      "rosterSeat": "house HD-071",
+      "candidateId": "a4ae215b-f28e-4928-8056-d0868dc3affb",
+      "candidateName": "Brandon Achor",
+      "candidacy": "state_upper: State Senate District 13 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 24171,
+      "rosterName": "Jeremiah Moore",
+      "rosterSeat": "house HD-061",
+      "candidateId": "0faaceae-8163-477a-80a8-360e2bd9b551",
+      "candidateName": "Jeremiah Moore",
+      "candidacy": "state_lower: State House District 61 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24172,
+      "rosterName": "Joey Carr",
+      "rosterSeat": "house HD-034",
+      "candidateId": "f1e88e8f-c796-4dee-8e85-0a591a78b021",
+      "candidateName": "Joey Carr",
+      "candidacy": "state_lower: State House District 34 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24173,
+      "rosterName": "Matt Brown",
+      "rosterSeat": "house HD-055",
+      "candidateId": "fa5a1b18-3137-4a83-802a-60bd2d6d902f",
+      "candidateName": "Matt Brown",
+      "candidacy": "state_lower: State House District 55 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24174,
+      "rosterName": "Shad Pearce",
+      "rosterSeat": "house HD-040",
+      "candidateId": "1298cd56-fc8b-4cd4-9142-296d6fd9a7b3",
+      "candidateName": "Shad Pearce",
+      "candidacy": "state_lower: State House District 40 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24175,
+      "rosterName": "Chad Puryear",
+      "rosterSeat": "house HD-025",
+      "candidateId": "679dcdaf-a2fa-4460-8a22-4f9af8bbcce2",
+      "candidateName": "Chad Puryear",
+      "candidacy": "state_lower: State House District 25 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24176,
+      "rosterName": "Ryan Rose",
+      "rosterSeat": "house HD-048",
+      "candidateId": "1275a371-33ed-47cc-9698-f7b2b1cca3f9",
+      "candidateName": "Ryan Rose",
+      "candidacy": "state_lower: State House District 48 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24177,
+      "rosterName": "Bart Schulz",
+      "rosterSeat": "house HD-028",
+      "candidateId": "07e649dd-86fc-4611-85a1-ddac037a9d2b",
+      "candidateName": "Bart Schulz",
+      "candidacy": "state_lower: State House District 28 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24178,
+      "rosterName": "Trey Steimel",
+      "rosterSeat": "house HD-002",
+      "candidateId": "58a7c364-0835-489c-a0a3-4da3a924f860",
+      "candidateName": "Trey Steimel",
+      "candidacy": "state_lower: State House District 2 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24179,
+      "rosterName": "Tara Shephard",
+      "rosterSeat": "house HD-079",
+      "candidateId": "5ce9f867-805e-4a63-b952-ff1a0d73b214",
+      "candidateName": "Tara Shephard",
+      "candidacy": "state_upper: State Senate District 15 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 24180,
+      "rosterName": "Jeremy Wooldridge",
+      "rosterSeat": "house HD-001",
+      "candidateId": "578310c9-0f1b-4354-92f8-7be0f9561436",
+      "candidateName": "Jeremy Wooldridge",
+      "candidacy": "state_upper: State Senate District 21 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 24181,
+      "rosterName": "Kendra Moore",
+      "rosterSeat": "house HD-023",
+      "candidateId": "793997fd-c52b-43de-9c18-54374ebd2f88",
+      "candidateName": "Kendra Moore",
+      "candidacy": "state_lower: State House District 23 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24308,
+      "rosterName": "Tyler Dees",
+      "rosterSeat": "senate SD-035",
+      "candidateId": "07f5616a-a3a2-4413-965d-e9a0d949630e",
+      "candidateName": "Tyler Dees",
+      "candidacy": "state_upper: State Senate District 35 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24309,
+      "rosterName": "Matt Stone",
+      "rosterSeat": "senate SD-002",
+      "candidateId": "48fd1ba0-223e-4d83-aa4a-7f3bb0fcce18",
+      "candidateName": "Matt Stone",
+      "candidacy": "state_upper: State Senate District 2 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24372,
+      "rosterName": "Brit McKenzie",
+      "rosterSeat": "house HD-007",
+      "candidateId": "03a4c781-af52-4dc4-ad20-61533ee263ed",
+      "candidateName": "Brit McKenzie",
+      "candidacy": "state_lower: State House District 7 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24615,
+      "rosterName": "Steven Walker",
+      "rosterSeat": "house HD-027",
+      "candidateId": "bb0d53c9-5fa2-46bf-a56d-33b0387847ec",
+      "candidateName": "Steven Walker",
+      "candidacy": "state_lower: State House District 27 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25482,
+      "rosterName": "Glenn Barnes",
+      "rosterSeat": "house HD-065",
+      "candidateId": "17a4865b-c754-4b29-8f13-c2f5dd4a2c20",
+      "candidateName": "Glenn Barnes",
+      "candidacy": "state_lower: State House District 65 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25483,
+      "rosterName": "Lincoln Barnett",
+      "rosterSeat": "house HD-063",
+      "candidateId": "58da696c-0edd-40e6-8ce4-ccac25f5c22c",
+      "candidateName": "Lincoln Barnett",
+      "candidacy": "state_lower: State House District 63 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25484,
+      "rosterName": "Alyssa Brown",
+      "rosterSeat": "house HD-041",
+      "candidateId": "19392081-c5ff-4449-97cf-4f5a60c7d7a4",
+      "candidateName": "Alyssa Brown",
+      "candidacy": "state_lower: State House District 41 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25485,
+      "rosterName": "Nick Burkes",
+      "rosterSeat": "house HD-014",
+      "candidateId": "6af4bba3-1c2e-4906-a343-ec0a5208b5ae",
+      "candidateName": "Nick Burkes",
+      "candidacy": "state_lower: State House District 14 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25486,
+      "rosterName": "Paul Childress",
+      "rosterSeat": "house HD-083",
+      "candidateId": "f3d1cba1-919d-4bf8-a79a-b412619b054d",
+      "candidateName": "Paul Childress",
+      "candidacy": "state_lower: State House District 83 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25487,
+      "rosterName": "James Eaton",
+      "rosterSeat": "house HD-026",
+      "candidateId": "00b38d4b-1ea1-45ef-a0d6-c17b511d1d65",
+      "candidateName": "James Eaton",
+      "candidacy": "state_lower: State House District 26 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25489,
+      "rosterName": "Dolly Henley",
+      "rosterSeat": "house HD-088",
+      "candidateId": "78a3f287-1776-4811-9caf-c7e127c56cc7",
+      "candidateName": "Dolly Henley",
+      "candidacy": "state_lower: State House District 88 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25490,
+      "rosterName": "Jessie McGruder",
+      "rosterSeat": "house HD-035",
+      "candidateId": "812178cf-99e3-4a19-bf78-c9b4c1eb5423",
+      "candidateName": "Jessie McGruder",
+      "candidacy": "state_upper: State Senate District 9 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": false
+    },
+    {
+      "peopleId": 25491,
+      "rosterName": "Jason Nazarenko",
+      "rosterSeat": "house HD-004",
+      "candidateId": "e878ef2f-a753-4421-8bf0-b727aab54c9a",
+      "candidateName": "Jason Nazarenko",
+      "candidacy": "state_lower: State House District 4 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25492,
+      "rosterName": "Randy Torres",
+      "rosterSeat": "house HD-017",
+      "candidateId": "b6559fa4-ae5d-4522-8441-1a61e851ceb7",
+      "candidateName": "Randy Torres",
+      "candidacy": "state_lower: State House District 17 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25493,
+      "rosterName": "Diana Gonzales Worthen",
+      "rosterSeat": "house HD-009",
+      "candidateId": "c44f910b-ae44-4d65-afd0-06adcb7bb24c",
+      "candidateName": "Diana Gonzales Worthen",
+      "candidacy": "state_lower: State House District 9 (2024); Arkansas",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 10657,
+      "name": "Jane English",
+      "seat": "senate SD-013"
+    },
+    {
+      "peopleId": 10661,
+      "name": "Fred Allen",
+      "seat": "house HD-077"
+    },
+    {
+      "peopleId": 10662,
+      "name": "Lane Jean",
+      "seat": "house HD-099"
+    },
+    {
+      "peopleId": 10667,
+      "name": "Stephen Meeks",
+      "seat": "house HD-042"
+    },
+    {
+      "peopleId": 11831,
+      "name": "Jonathan Dismang",
+      "seat": "senate SD-018"
+    },
+    {
+      "peopleId": 11991,
+      "name": "Greg Leding",
+      "seat": "senate SD-030"
+    },
+    {
+      "peopleId": 12108,
+      "name": "Jon Eubanks",
+      "seat": "house HD-046"
+    },
+    {
+      "peopleId": 12110,
+      "name": "Matthew Shepherd",
+      "seat": "house HD-097"
+    },
+    {
+      "peopleId": 12186,
+      "name": "Kim Hammer",
+      "seat": "senate SD-016"
+    },
+    {
+      "peopleId": 12236,
+      "name": "Stephanie Flowers",
+      "seat": "senate SD-008"
+    },
+    {
+      "peopleId": 12464,
+      "name": "Frederick Love",
+      "seat": "senate SD-015"
+    },
+    {
+      "peopleId": 12468,
+      "name": "Terry Rice",
+      "seat": "senate SD-005"
+    },
+    {
+      "peopleId": 12470,
+      "name": "Reginald Murdock",
+      "seat": "senate SD-009"
+    },
+    {
+      "peopleId": 12483,
+      "name": "Gary Stubblefield",
+      "seat": "senate SD-026"
+    },
+    {
+      "peopleId": 12578,
+      "name": "Jeff Wardlaw",
+      "seat": "house HD-094"
+    },
+    {
+      "peopleId": 14940,
+      "name": "Jim Dotson",
+      "seat": "senate SD-034"
+    },
+    {
+      "peopleId": 14954,
+      "name": "Stephen Magie",
+      "seat": "house HD-056"
+    },
+    {
+      "peopleId": 14959,
+      "name": "John Payton",
+      "seat": "senate SD-022"
+    },
+    {
+      "peopleId": 14972,
+      "name": "Bart Hester",
+      "seat": "senate SD-033"
+    },
+    {
+      "peopleId": 14973,
+      "name": "Jimmy Hickey",
+      "seat": "senate SD-004"
+    },
+    {
+      "peopleId": 16337,
+      "name": "Dan Sullivan",
+      "seat": "senate SD-020"
+    },
+    {
+      "peopleId": 16339,
+      "name": "David Wallace",
+      "seat": "senate SD-019"
+    },
+    {
+      "peopleId": 16381,
+      "name": "Blake Johnson",
+      "seat": "senate SD-021"
+    },
+    {
+      "peopleId": 16911,
+      "name": "Julie Mayberry",
+      "seat": "house HD-092"
+    },
+    {
+      "peopleId": 16916,
+      "name": "Ron Mcnair",
+      "seat": "house HD-005"
+    },
+    {
+      "peopleId": 16919,
+      "name": "Marcus Richmond",
+      "seat": "house HD-052"
+    },
+    {
+      "peopleId": 16963,
+      "name": "Scott Flippo",
+      "seat": "senate SD-023"
+    },
+    {
+      "peopleId": 18008,
+      "name": "Frances Cavenaugh",
+      "seat": "house HD-030"
+    },
+    {
+      "peopleId": 18012,
+      "name": "Jimmie Gazaway",
+      "seat": "house HD-031"
+    },
+    {
+      "peopleId": 18020,
+      "name": "Carlton Wing",
+      "seat": "house HD-070"
+    },
+    {
+      "peopleId": 18025,
+      "name": "Austin Mccollum",
+      "seat": "house HD-008"
+    },
+    {
+      "peopleId": 20017,
+      "name": "Mark Johnson",
+      "seat": "senate SD-017"
+    },
+    {
+      "peopleId": 20763,
+      "name": "Stan Berry",
+      "seat": "house HD-044"
+    },
+    {
+      "peopleId": 20764,
+      "name": "Harlan Breaux",
+      "seat": "house HD-006"
+    },
+    {
+      "peopleId": 20781,
+      "name": "Jamie Scott",
+      "seat": "senate SD-012"
+    },
+    {
+      "peopleId": 20838,
+      "name": "Breanne Davis",
+      "seat": "senate SD-025"
+    },
+    {
+      "peopleId": 21699,
+      "name": "Ben Gilmore",
+      "seat": "senate SD-001"
+    },
+    {
+      "peopleId": 23201,
+      "name": "Matt McKee",
+      "seat": "senate SD-006"
+    },
+    {
+      "peopleId": 23293,
+      "name": "Jim Petty",
+      "seat": "senate SD-029"
+    },
+    {
+      "peopleId": 23946,
+      "name": "Steve Crowell",
+      "seat": "senate SD-003"
+    },
+    {
+      "peopleId": 23990,
+      "name": "Wayne Long",
+      "seat": "house HD-039"
+    },
+    {
+      "peopleId": 23991,
+      "name": "Scott Richardson",
+      "seat": "house HD-013"
+    },
+    {
+      "peopleId": 25488,
+      "name": "Brad Hall",
+      "seat": "house HD-024"
+    },
+    {
+      "peopleId": 8622,
+      "name": "Tracy Steele",
+      "seat": "house HD-072"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "252852c6-0e9a-4c96-963e-eae6d8f1d56d",
+      "name": "Alex Holladay",
+      "scope": "state_lower",
+      "districtName": "State House District 70 (2024); Arkansas"
+    },
+    {
+      "candidateId": "9b39c2ae-fe91-499a-adac-4e80229c0269",
+      "name": "Allison Sweatman",
+      "scope": "state_upper",
+      "districtName": "State Senate District 13 (2024); Arkansas"
+    },
+    {
+      "candidateId": "c74df8fb-8db1-45ad-b418-9fa678fb77b8",
+      "name": "Andrew Eberly",
+      "scope": "state_lower",
+      "districtName": "State House District 67 (2024); Arkansas"
+    },
+    {
+      "candidateId": "a3016d55-6dcd-4285-8f29-16d04d65864a",
+      "name": "Audrey Willis",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); Arkansas"
+    },
+    {
+      "candidateId": "7619c875-ee65-4714-a303-625554075c2a",
+      "name": "Beth Anne Rankin",
+      "scope": "state_lower",
+      "districtName": "State House District 99 (2024); Arkansas"
+    },
+    {
+      "candidateId": "e88232ea-9f74-407a-ae33-fa27238d7ec2",
+      "name": "Beverly Coleman-Keown",
+      "scope": "state_lower",
+      "districtName": "State House District 60 (2024); Arkansas"
+    },
+    {
+      "candidateId": "4e628184-0a7d-4eee-8098-a66048a2c79d",
+      "name": "Bill Teeter",
+      "scope": "state_lower",
+      "districtName": "State House District 44 (2024); Arkansas"
+    },
+    {
+      "candidateId": "71d4fc9b-a958-462a-ba82-fb000bffe39d",
+      "name": "Brent Montgomery",
+      "scope": "state_lower",
+      "districtName": "State House District 52 (2024); Arkansas"
+    },
+    {
+      "candidateId": "7229be1a-d550-4b49-bd57-6a8a0eb0af53",
+      "name": "Brian Armas",
+      "scope": "state_lower",
+      "districtName": "State House District 8 (2024); Arkansas"
+    },
+    {
+      "candidateId": "17ce2822-b8cd-46b9-a59a-30da5d642a9a",
+      "name": "Bryan Renshaw",
+      "scope": "state_lower",
+      "districtName": "State House District 70 (2024); Arkansas"
+    },
+    {
+      "candidateId": "94770179-1a54-4c5d-b844-11698ba41439",
+      "name": "Calvin Thomason",
+      "scope": "state_lower",
+      "districtName": "State House District 100 (2024); Arkansas"
+    },
+    {
+      "candidateId": "19ccb3be-ba12-4ec6-9e71-f1c5cdbb41db",
+      "name": "Carrie Huddleston",
+      "scope": "state_lower",
+      "districtName": "State House District 3 (2024); Arkansas"
+    },
+    {
+      "candidateId": "d7ba1c1a-0fd7-4f2a-8f70-01a7472257cf",
+      "name": "Cassandra Green",
+      "scope": "state_lower",
+      "districtName": "State House District 71 (2024); Arkansas"
+    },
+    {
+      "candidateId": "ee2a3a12-0b6f-4f99-8a58-1f837634f00f",
+      "name": "Charlene Fite",
+      "scope": "state_lower",
+      "districtName": "State House District 24 (2024); Arkansas"
+    },
+    {
+      "candidateId": "1f01c813-cd51-4687-8262-65f8b9231cab",
+      "name": "Cody Rogers",
+      "scope": "state_lower",
+      "districtName": "State House District 6 (2024); Arkansas"
+    },
+    {
+      "candidateId": "46d1b357-4b65-4d53-aec6-126882520025",
+      "name": "Courtney King",
+      "scope": "state_lower",
+      "districtName": "State House District 25 (2024); Arkansas"
+    },
+    {
+      "candidateId": "26d90bc0-e227-4dd0-8e71-003336de5c4a",
+      "name": "Cynthia Nations",
+      "scope": "state_lower",
+      "districtName": "State House District 55 (2024); Arkansas"
+    },
+    {
+      "candidateId": "156a12d5-33a1-47cd-8fd6-096f2e1b5b5a",
+      "name": "Daniel Holtmeyer",
+      "scope": "state_lower",
+      "districtName": "State House District 15 (2024); Arkansas"
+    },
+    {
+      "candidateId": "bed9fe57-0787-41af-bd19-a285de083961",
+      "name": "Daniel Stuckey",
+      "scope": "state_lower",
+      "districtName": "State House District 80 (2024); Arkansas"
+    },
+    {
+      "candidateId": "2785ac71-f714-4048-bde7-a78d9d5c4bce",
+      "name": "Dawn Creekmore",
+      "scope": "state_lower",
+      "districtName": "State House District 92 (2024); Arkansas"
+    },
+    {
+      "candidateId": "c7562070-09a9-4a64-a90e-ba70b08c3a35",
+      "name": "Dean Hunter",
+      "scope": "state_lower",
+      "districtName": "State House District 69 (2024); Arkansas"
+    },
+    {
+      "candidateId": "608123a2-c62e-434a-b801-463a24afe41f",
+      "name": "Debra Hobbs",
+      "scope": "state_lower",
+      "districtName": "State House District 45 (2024); Arkansas"
+    },
+    {
+      "candidateId": "7b29c314-24de-45af-845e-f415879d09db",
+      "name": "Deonna Morgan",
+      "scope": "state_lower",
+      "districtName": "State House District 29 (2024); Arkansas"
+    },
+    {
+      "candidateId": "2197c060-2c44-4a74-b98f-f0ef67623087",
+      "name": "Dexter Miller",
+      "scope": "state_lower",
+      "districtName": "State House District 62 (2024); Arkansas"
+    },
+    {
+      "candidateId": "849159fe-915c-446d-9b81-23e313c926b2",
+      "name": "Doug Corbitt",
+      "scope": "state_lower",
+      "districtName": "State House District 54 (2024); Arkansas"
+    },
+    {
+      "candidateId": "245821d9-66e8-4f4d-a817-1b47dfa4c485",
+      "name": "Eduardo Guzman",
+      "scope": "state_upper",
+      "districtName": "State Senate District 27 (2024); Arkansas"
+    },
+    {
+      "candidateId": "07dd9ce4-4720-422b-ac2f-d1f117b1d6e0",
+      "name": "Erika Askeland",
+      "scope": "state_lower",
+      "districtName": "State House District 32 (2024); Arkansas"
+    },
+    {
+      "candidateId": "ef96c477-eccc-4edb-a581-a6b83f634130",
+      "name": "Garrett Sheeks",
+      "scope": "state_lower",
+      "districtName": "State House District 61 (2024); Arkansas"
+    },
+    {
+      "candidateId": "d133b6cc-34cf-4529-beaa-a6440d371b23",
+      "name": "Gina Thomas-Littlejohn",
+      "scope": "state_lower",
+      "districtName": "State House District 81 (2024); Arkansas"
+    },
+    {
+      "candidateId": "38f35610-8dc4-4503-9434-aeb4ae202dd4",
+      "name": "Hunter Jackson",
+      "scope": "state_lower",
+      "districtName": "State House District 48 (2024); Arkansas"
+    },
+    {
+      "candidateId": "a19009a8-7324-48cb-a703-09568c3ffe6c",
+      "name": "Hunter Sadler",
+      "scope": "state_lower",
+      "districtName": "State House District 75 (2024); Arkansas"
+    },
+    {
+      "candidateId": "3a7f55ce-5977-48ba-8890-a7d6461e2341",
+      "name": "Isbac Ceja",
+      "scope": "state_lower",
+      "districtName": "State House District 76 (2024); Arkansas"
+    },
+    {
+      "candidateId": "2791e395-7446-4c4e-96d1-cc14e13c398b",
+      "name": "Jacob Allen",
+      "scope": "state_lower",
+      "districtName": "State House District 10 (2024); Arkansas"
+    },
+    {
+      "candidateId": "0d9a58cd-96c5-43ac-8423-aac55a287151",
+      "name": "Jamie Atkinson",
+      "scope": "state_lower",
+      "districtName": "State House District 19 (2024); Arkansas"
+    },
+    {
+      "candidateId": "29215355-6be5-40dc-961c-938355107641",
+      "name": "Jane-Ellen Udouj-Kutchka",
+      "scope": "state_lower",
+      "districtName": "State House District 51 (2024); Arkansas"
+    },
+    {
+      "candidateId": "bb29cc21-c11f-41da-b586-14abb23e8140",
+      "name": "Jennifer Lewter",
+      "scope": "state_lower",
+      "districtName": "State House District 53 (2024); Arkansas"
+    },
+    {
+      "candidateId": "598860ab-b82a-45f1-9e48-d45525e986f5",
+      "name": "Jeremy Riddle",
+      "scope": "state_lower",
+      "districtName": "State House District 42 (2024); Arkansas"
+    },
+    {
+      "candidateId": "ae074666-b334-46b8-a77c-f783b11a0fe0",
+      "name": "Jim Andrews",
+      "scope": "state_lower",
+      "districtName": "State House District 97 (2024); Arkansas"
+    },
+    {
+      "candidateId": "fca88fd3-1386-4539-a073-898790dd47c0",
+      "name": "Jimmy Gazaway",
+      "scope": "state_lower",
+      "districtName": "State House District 31 (2024); Arkansas"
+    },
+    {
+      "candidateId": "1385d678-05c5-46ed-ada7-a518992671f6",
+      "name": "Jocelyn Fry",
+      "scope": "state_lower",
+      "districtName": "State House District 58 (2024); Arkansas"
+    },
+    {
+      "candidateId": "552af230-3978-4b5c-86d1-2371423576d6",
+      "name": "John Day",
+      "scope": "state_lower",
+      "districtName": "State House District 94 (2024); Arkansas"
+    },
+    {
+      "candidateId": "1ce7f02f-fa79-4394-9a6b-df0dad4ec2fe",
+      "name": "Josh Longmire",
+      "scope": "state_lower",
+      "districtName": "State House District 30 (2024); Arkansas"
+    },
+    {
+      "candidateId": "39e73e39-acf7-43f8-a4a0-d74c9254eb27",
+      "name": "Joshua Irby",
+      "scope": "state_upper",
+      "districtName": "State Senate District 16 (2024); Arkansas"
+    },
+    {
+      "candidateId": "8e1d2d89-be7a-41b9-9a42-8fbd9bb41ff5",
+      "name": "Kenny Phillips",
+      "scope": "state_upper",
+      "districtName": "State Senate District 9 (2024); Arkansas"
+    },
+    {
+      "candidateId": "c36a7f9a-e8f8-4185-922a-bd926991d2d2",
+      "name": "Laura Marsh",
+      "scope": "state_lower",
+      "districtName": "State House District 23 (2024); Arkansas"
+    },
+    {
+      "candidateId": "6f36c1e3-6b68-475f-b1b9-810f2425f600",
+      "name": "Letisha Hinds",
+      "scope": "state_lower",
+      "districtName": "State House District 16 (2024); Arkansas"
+    },
+    {
+      "candidateId": "4b1ce21b-efda-4a65-9ccd-829cd1dd8cca",
+      "name": "Mark Brannan",
+      "scope": "state_lower",
+      "districtName": "State House District 56 (2024); Arkansas"
+    },
+    {
+      "candidateId": "a8880feb-2ced-4a86-bf46-aae1002f314d",
+      "name": "Mark Nichols",
+      "scope": "state_lower",
+      "districtName": "State House District 1 (2024); Arkansas"
+    },
+    {
+      "candidateId": "55871312-b170-4e40-9c92-fb25a6b7a57e",
+      "name": "Matthew Goff",
+      "scope": "state_lower",
+      "districtName": "State House District 9 (2024); Arkansas"
+    },
+    {
+      "candidateId": "52cb8dee-9e06-4b7a-8a6d-73bbaf21af06",
+      "name": "Max Deitchler",
+      "scope": "state_lower",
+      "districtName": "State House District 20 (2024); Arkansas"
+    },
+    {
+      "candidateId": "40845451-36ca-4935-8dea-cc31bd72bb46",
+      "name": "Michael Mason",
+      "scope": "state_lower",
+      "districtName": "State House District 79 (2024); Arkansas"
+    },
+    {
+      "candidateId": "be0427f4-1bf5-4a48-8b75-2d1cbe2a99f5",
+      "name": "Michael Middlebrook",
+      "scope": "state_lower",
+      "districtName": "State House District 34 (2024); Arkansas"
+    },
+    {
+      "candidateId": "0ca2c18a-93ea-476e-bba0-e0c9c47131b5",
+      "name": "Mike Bishop",
+      "scope": "state_lower",
+      "districtName": "State House District 5 (2024); Arkansas"
+    },
+    {
+      "candidateId": "8eef52eb-a371-44e5-b85d-416cd389d7f8",
+      "name": "Mitchell Smith",
+      "scope": "state_lower",
+      "districtName": "State House District 13 (2024); Arkansas"
+    },
+    {
+      "candidateId": "2814c2d7-3e01-40d2-93cd-90370f5c488d",
+      "name": "Quendy Gibbins Medlin",
+      "scope": "state_lower",
+      "districtName": "State House District 60 (2024); Arkansas"
+    },
+    {
+      "candidateId": "5e38b222-e535-48bc-b647-e16145afdc44",
+      "name": "Rey Hernandez",
+      "scope": "state_lower",
+      "districtName": "State House District 11 (2024); Arkansas"
+    },
+    {
+      "candidateId": "4ede3f90-9421-40ca-86db-33eb0ae6f33e",
+      "name": "Robert Thorne Jr.",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); Arkansas"
+    },
+    {
+      "candidateId": "5bbf0f43-7f01-489a-8e61-54cc102f6162",
+      "name": "Rodney Wright",
+      "scope": "state_upper",
+      "districtName": "State Senate District 16 (2024); Arkansas"
+    },
+    {
+      "candidateId": "3d714c71-e2ca-4bf8-b138-e0bacae373ec",
+      "name": "Ryan Intchauspe",
+      "scope": "state_lower",
+      "districtName": "State House District 24 (2024); Arkansas"
+    },
+    {
+      "candidateId": "557dc495-7bf7-42c9-8d4e-e0bedc6e3dbf",
+      "name": "Scott Richardson",
+      "scope": "state_lower",
+      "districtName": "State House District 13 (2024); Arkansas"
+    },
+    {
+      "candidateId": "9561c639-260e-4b17-9659-273e626831eb",
+      "name": "Shamal Carter",
+      "scope": "state_lower",
+      "districtName": "State House District 36 (2024); Arkansas"
+    },
+    {
+      "candidateId": "0c57f33c-fdb3-4a22-816d-8d2311ab8861",
+      "name": "Stephen Bright",
+      "scope": "state_lower",
+      "districtName": "State House District 71 (2024); Arkansas"
+    },
+    {
+      "candidateId": "e852e57f-8d95-40ac-bba7-b23466e06645",
+      "name": "Steve Magie",
+      "scope": "state_lower",
+      "districtName": "State House District 56 (2024); Arkansas"
+    },
+    {
+      "candidateId": "3004119c-b380-4420-a723-6f67a110974a",
+      "name": "Steven Person",
+      "scope": "state_lower",
+      "districtName": "State House District 77 (2024); Arkansas"
+    },
+    {
+      "candidateId": "9ff3b2ae-cb90-4891-84ab-476f1bdaa8cf",
+      "name": "Talesha Dokes",
+      "scope": "state_lower",
+      "districtName": "State House District 72 (2024); Arkansas"
+    },
+    {
+      "candidateId": "ec30555f-e13f-486f-98bf-b16220edd648",
+      "name": "Timothy Heron Jr.",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); Arkansas"
+    },
+    {
+      "candidateId": "69737bc7-5ea9-4fa3-91c8-ced2f1608389",
+      "name": "Tonya Fletcher",
+      "scope": "state_lower",
+      "districtName": "State House District 46 (2024); Arkansas"
+    },
+    {
+      "candidateId": "ba02c031-1773-4189-85e3-4ea8d5129be1",
+      "name": "Wayne Long",
+      "scope": "state_lower",
+      "districtName": "State House District 39 (2024); Arkansas"
+    },
+    {
+      "candidateId": "097162b9-9310-45fc-af83-40ea3f1e8499",
+      "name": "Wendy Peer",
+      "scope": "state_lower",
+      "districtName": "State House District 50 (2024); Arkansas"
+    }
+  ],
+  "files": 2489,
+  "fileErrors": 0,
+  "counts": {
+    "unmatched_reviewed": 44532,
+    "matched": 113692
+  },
+  "rolls": [],
+  "note": "Per-roll resolution rows were removed before committing: the full report is 22 MB. It covered all 2,489 stored rolls, with the totals kept in the counts field above, no_crosswalk 0 and out_of_scope 0."
+}

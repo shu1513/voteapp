@@ -132,3 +132,78 @@ the enrolled text for "Coordination instruction". If one exists, look up whether
 the named bill was signed. If it was, work out what survives before writing a
 description that says "and it became law".
 
+
+## 6a. Not a code defect: a stale short title
+
+LegiScan's short title for HB 329 is "Make the Montana ammunition act
+permanent". The enrolled act terminates on 31 December 2035. The title reflects
+the bill as introduced, not as enacted, and a conference committee changed it.
+Read the enrolled title, never the tracker's label.
+
+## 7. A real defect: LegiScan's Montana feed can record a member's vote wrongly
+
+Found in batch-07 while checking which text the House had voted on for SB 542.
+**Corrected after review**: the first write-up of this finding paired LegiScan
+rolls with Montana votes by date and nearest tally, and two of its three
+headline examples were the wrong motion. The corrected method and numbers are
+in `survey/legiscan-vote-audit.md`.
+
+Montana publishes its own roll calls member by member:
+
+    https://api.legmt.gov/bills/v1/votes/findByBillId?billId=<id>
+
+The `id` is the `id` field of the bill record already used for chapter numbers.
+Each vote carries a `legislatorVotes` array of legislator ids and vote types,
+which resolve against `/Users/shu/legiscan-data/mt-legmt-legislators.json`.
+
+The case that started it, confirmed against the correctly paired vote:
+
+| Roll | Chamber, date | LegiScan | Montana | Member |
+| --- | --- | --- | --- | --- |
+| 1556679 (SB 542) | house 2025-04-24 | 73-26 | 72-27 | Amy Regier, shown yes, voted no |
+
+That roll is a chamber's last kept floor vote, and Amy Regier is in the
+crosswalk, so importing it as LegiScan has it would have published a record
+saying a named person voted for a bill she voted against.
+
+**How far it goes.** All 1,826 stored floor rolls on the 335 worklist bills were
+compared member by member, after pairing each LegiScan roll with the Montana
+vote it agrees with best (neither the motion name nor the tally nor the order
+taken is a reliable join; the members are). In short:
+
+- **None of the 81 rolls this campaign had imported when the audit ran
+  disagrees.** Every one paired, and every one matches. No Montana record is
+  wrong. Batches 08 and 09 added 16 more rolls, each checked the same way at
+  import and each agreeing exactly, so all 97 imported rolls stand checked.
+- **20 rolls have a member's vote flipped**, yes for no or no for yes. In
+  nineteen it is one member; HB 2's House third reading of 2025-04-07 has
+  three. Every flip moves the tally: no paired roll has a matching tally with a
+  member on the wrong side.
+- **23 rolls show an excused or absent member as voting**, almost always as a
+  no. All are second readings. This looks like how the feed handles an excused
+  member rather than a stray error, and it would give such a member a "voted
+  against" record for a vote they did not cast.
+- 46 rolls could not be paired because Montana and LegiScan record different
+  numbers of votes that day — all second-reading amendment votes on HB 2 and
+  HB 291.
+- Eight flipped rolls are a chamber's last kept floor vote, so they are rolls
+  this campaign would otherwise select: SB 542 1556679, HB 15 1481075, HB 76
+  1558903, HB 284 1551835, HB 636 1508554, HB 888 1558107, SB 243 1546282 and
+  SB 342 1546349. Seven are marked `held:legiscan-vote-defect` in the worklist;
+  HB 636's never entered it because 84-15 is not divided.
+
+**Tooling.** `/Users/shu/legiscan-data/mt_verify.py` compares any bill's stored
+LegiScan rolls against Montana's own record, member by member, and
+`mt_prefetch.py` warms a local cache of the official records with eight threads.
+Both live outside the repository, like the other Montana helpers.
+
+**What the pipeline does right.** The importer verifies the SHA-256 of each roll
+call payload against the value approved at fetch time, and separately checks the
+evidence file's tally against the approved row. Those guards make a hand
+correction impossible, which is correct: they exist to stop unreviewed editing of
+source data.
+
+**What is missing.** There is no supported way to record that an upstream source
+is wrong about a named member and to import the corrected roll. Until there is,
+an affected roll can only be held. Building that path is a code change and
+belongs in its own review.

@@ -160,7 +160,7 @@ services:
       - key: ARIZONA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: ARKANSAS_CAMPAIGN_FINANCE_ENABLED
-        value: "false"
+        value: "true"
       - key: AUSTIN_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: CALIFORNIA_CAMPAIGN_FINANCE_ENABLED
@@ -186,7 +186,7 @@ services:
       - key: HOUSTON_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: IDAHO_CAMPAIGN_FINANCE_ENABLED
-        value: "false"
+        value: "true"
       - key: ILLINOIS_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: INDIANA_CAMPAIGN_FINANCE_ENABLED
@@ -225,6 +225,8 @@ services:
         value: "true"
       - key: NORTH_CAROLINA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: NORTH_DAKOTA_CAMPAIGN_FINANCE_ENABLED
+        value: "true"
       - key: OHIO_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: OKLAHOMA_CAMPAIGN_FINANCE_ENABLED
@@ -258,7 +260,7 @@ services:
       - key: WASHINGTON_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: WEST_VIRGINIA_CAMPAIGN_FINANCE_ENABLED
-        value: "false"
+        value: "true"
       - key: WISCONSIN_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - fromGroup: voteapp-shared

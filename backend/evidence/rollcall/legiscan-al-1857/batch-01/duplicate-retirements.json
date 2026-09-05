@@ -1,0 +1,38 @@
+[
+ {
+  "recordId": "3bcc8bb9-e354-4910-8888-1cf0f9f1626f",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1857 session batch-01 run: this hand-written record describes the same vote as HB 2 roll 1111175 on 2021-11-01 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1857/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "09be18c0-a302-45ff-a48f-15ff60096021",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1857 session batch-01 run: this hand-written record describes the same vote as HB 1 roll 1111185 on 2021-11-01 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1857/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "01ed226c-b0ff-408d-a33d-302182ce764b",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1857 session batch-01 run: this hand-written record describes the same vote as HB 1 roll 1111185 on 2021-11-01 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1857/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "4d7e07f3-5ac8-43f3-af05-9880d7d273c7",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1857 session batch-01 run: this hand-written record describes the same vote as HB 2 roll 1111175 on 2021-11-01 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1857/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "ed6fefa3-e7de-4a3e-8eb4-1130b8b91fec",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1857 session batch-01 run: this hand-written record describes the same vote as HB 2 roll 1111175 on 2021-11-01 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1857/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "16d37eb4-60e0-4d92-b3c8-f9c7d82f26e1",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1857 session batch-01 run: this hand-written record describes the same vote as HB 1 roll 1111185 on 2021-11-01 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1857/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "430d57ac-c5db-4e45-9f58-a33a2d5e3946",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1857 session batch-01 run: this hand-written record describes the same vote as SB 9 roll 1115544 on 2021-11-04 for Chip Brown, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1857/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "a21fe54e-63dc-4a88-9f48-89d53a9ab361",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1857 session batch-01 run: this hand-written record describes the same vote as SB 9 roll 1115544 on 2021-11-04 for Margie Wilcox, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1857/batch-01/JUDGING.md."
+ },
+ {
+  "recordId": "e98859f8-6caa-4057-9365-304a0ccd810c",
+  "reason": "Duplicate of the canonical roll-call record imported by the Alabama 1857 session batch-01 run: this hand-written record describes the same vote as SB 9 roll 1115544 on 2021-11-04 for Shane Stringer, and the batch writes one canonical record per member from the official member list. See backend/evidence/rollcall/legiscan-al-1857/batch-01/JUDGING.md."
+ }
+]

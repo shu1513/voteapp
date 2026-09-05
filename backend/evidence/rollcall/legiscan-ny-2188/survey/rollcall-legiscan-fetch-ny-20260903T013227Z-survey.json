@@ -1,0 +1,3402 @@
+{
+  "runId": "rollcall-legiscan-fetch-ny-20260903T013227Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "NY",
+  "startedAt": "2026-09-03T01:32:27.123Z",
+  "finishedAt": "2026-09-03T01:32:34.348Z",
+  "datasetDir": "~/legiscan-data/ny-2188",
+  "bills": 25313,
+  "votes": 14737,
+  "people": 221,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "senate",
+      "desc": "Senate Floor Vote - Final Passage",
+      "count": 3614,
+      "withoutMemberList": 0,
+      "minTotal": 61,
+      "maxTotal": 63,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00569",
+        "S01356",
+        "S01036"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Floor Vote - Final Passage",
+      "count": 1856,
+      "withoutMemberList": 0,
+      "minTotal": 148,
+      "maxTotal": 150,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "A00420",
+        "A00693",
+        "A01020"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Rules Committee: Favorable",
+      "count": 1537,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 31,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "A00693",
+        "C00009",
+        "A00596"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Ways And Means Committee: Favorable refer to committee Rules",
+      "count": 1100,
+      "withoutMemberList": 0,
+      "minTotal": 34,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00420",
+        "A00418",
+        "A01474"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Rules Committee Vote",
+      "count": 879,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00569",
+        "S01356",
+        "S01036"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Health Committee Vote",
+      "count": 241,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00135",
+        "S00371",
+        "S00598"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Finance Committee Vote",
+      "count": 229,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 22,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00487",
+        "S05442",
+        "S00172"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Codes Committee: Favorable refer to committee Rules",
+      "count": 225,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 22,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00920",
+        "A00441",
+        "A00913"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Investigations And Government Operations Committee Vote",
+      "count": 183,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00625",
+        "S00052",
+        "S03274"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Environmental Conservation Committee Vote",
+      "count": 178,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S01733",
+        "S01609",
+        "S03972"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Civil Service And Pensions Committee Vote",
+      "count": 164,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S03557",
+        "S01011",
+        "S01724"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Housing, Construction And Community Development Committee Vote",
+      "count": 153,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S02721",
+        "S00072",
+        "S00912"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Energy And Telecommunications Committee Vote",
+      "count": 142,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S01896",
+        "S01847",
+        "S02182"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Judiciary Committee Vote",
+      "count": 133,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S01849",
+        "S00450",
+        "S00951"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Codes Committee Vote",
+      "count": 124,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S01472",
+        "S00524",
+        "S03693"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Transportation Committee Vote",
+      "count": 121,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S01186",
+        "S03335",
+        "S01284"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Codes Committee: Favorable",
+      "count": 110,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 22,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00356",
+        "A02565",
+        "A01118"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Labor Committee Vote",
+      "count": 108,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00172",
+        "S00381",
+        "S02225"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Local Government Committee Vote",
+      "count": 108,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00900",
+        "S01678",
+        "S04483"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Crime Victims, Crime And Correction Committee Vote",
+      "count": 98,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00856",
+        "S00863",
+        "S00395"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Codes Committee: Favorable refer to committee Ways and Means",
+      "count": 88,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 22,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01474",
+        "A01809",
+        "A01191"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Health Committee: Favorable refer to committee Ways and Means",
+      "count": 82,
+      "withoutMemberList": 0,
+      "minTotal": 25,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00957",
+        "A02581",
+        "A01691"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Insurance Committee Vote",
+      "count": 81,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00661",
+        "S00438",
+        "S05326"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Consumer Affairs And Protection Committee: Favorable refer to committee Codes",
+      "count": 76,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00428",
+        "A00441",
+        "A00923"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Higher Education Committee Vote",
+      "count": 75,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00027",
+        "S00078",
+        "S03779"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Consumer Protection Committee Vote",
+      "count": 74,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S01353",
+        "S04391",
+        "S03876"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Education Committee Vote",
+      "count": 74,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 15,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00528",
+        "S02657",
+        "S00519"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Codes Committee: Held for Consideration",
+      "count": 73,
+      "withoutMemberList": 0,
+      "minTotal": 22,
+      "maxTotal": 22,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01480",
+        "A03299",
+        "A02262"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Ways And Means Committee: Favorable",
+      "count": 69,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05833",
+        "A06707",
+        "A02124"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Corporations, Authorities And Commissions Committee Vote",
+      "count": 66,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S04204",
+        "S04232",
+        "S02324"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Local Governments Committee: Favorable refer to committee Ways and Means",
+      "count": 62,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04729",
+        "A02124",
+        "A06763"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Governmental Employees Committee: Favorable refer to committee Ways and Means",
+      "count": 59,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03549",
+        "A01396",
+        "A02535"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Veterans, Homeland Security And Military Affairs Committee Vote",
+      "count": 59,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S02069",
+        "S04358",
+        "S02607"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Health Committee: Favorable refer to committee Rules",
+      "count": 58,
+      "withoutMemberList": 0,
+      "minTotal": 25,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01472",
+        "A00924",
+        "A01025"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Real Property Taxation Committee: Favorable refer to committee Ways and Means",
+      "count": 57,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00416",
+        "A02436",
+        "A00415"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Agriculture Committee Vote",
+      "count": 57,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00397",
+        "S01529",
+        "S00592"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Aging Committee Vote",
+      "count": 54,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00118",
+        "S01457",
+        "S01201"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Cities 1 Committee Vote",
+      "count": 52,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00419",
+        "S00127",
+        "S01539"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Social Services Committee Vote",
+      "count": 48,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S01127",
+        "S00246",
+        "S00182"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Alcoholism And Substance Use Disorders Committee Vote",
+      "count": 47,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S02446",
+        "S00489",
+        "S01812"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Governmental Operations Committee: Favorable refer to committee Ways and Means",
+      "count": 45,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00032",
+        "A02237",
+        "A02212"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Elections Committee Vote",
+      "count": 44,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00559",
+        "S00417",
+        "S02543"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Insurance Committee: Favorable refer to committee Rules",
+      "count": 42,
+      "withoutMemberList": 0,
+      "minTotal": 25,
+      "maxTotal": 25,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00443",
+        "A02443",
+        "A00430"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Environmental Conservation Committee: Favorable refer to committee Rules",
+      "count": 41,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01680",
+        "A01679",
+        "A06195"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Budget And Revenue Committee Vote",
+      "count": 41,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S02390",
+        "S03340",
+        "S02082"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Internet And Technology Committee Vote",
+      "count": 40,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S01139",
+        "S01961",
+        "S02152"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Procurement And Contracts Committee Vote",
+      "count": 39,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S06020",
+        "S03336",
+        "S02075"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Women's Issues Committee Vote",
+      "count": 39,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00520",
+        "S03576",
+        "S02058"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Children And Families Committee Vote",
+      "count": 37,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00550",
+        "S01926",
+        "S00179"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Commerce, Economic Development And Small Business Committee Vote",
+      "count": 37,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00339",
+        "S02384",
+        "S01052"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Labor Committee: Favorable refer to committee Codes",
+      "count": 34,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01678",
+        "A02249",
+        "A02749"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Transportation Committee: Favorable refer to committee Ways and Means",
+      "count": 34,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01077",
+        "A01807",
+        "A00324"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Environmental Conservation Committee: Favorable refer to committee Codes",
+      "count": 33,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01474",
+        "A01802",
+        "A02054"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Governmental Operations Committee: Favorable refer to committee Rules",
+      "count": 33,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "A00693",
+        "C00009",
+        "A00596"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Banks Committee Vote",
+      "count": 32,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S02327",
+        "S01991",
+        "S02027"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Governmental Operations Committee: Held for Consideration",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02411",
+        "A07611",
+        "A02335"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Judiciary Committee: Favorable refer to committee Rules",
+      "count": 31,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02056",
+        "A02057",
+        "A06250"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Ways And Means Committee: Held for Consideration",
+      "count": 29,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05530",
+        "A03221",
+        "A07417"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Cultural Affairs, Tourism, Parks And Recreation Committee Vote",
+      "count": 29,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S03161",
+        "S01057",
+        "S01071"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Disabilities Committee Vote",
+      "count": 28,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S04835",
+        "S04871",
+        "S04907"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Health Committee: Favorable",
+      "count": 27,
+      "withoutMemberList": 0,
+      "minTotal": 25,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00565",
+        "A02027",
+        "A02168"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Insurance Committee: Favorable",
+      "count": 27,
+      "withoutMemberList": 0,
+      "minTotal": 24,
+      "maxTotal": 25,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03028",
+        "A01572",
+        "A03319"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Housing Committee: Favorable refer to committee Codes",
+      "count": 25,
+      "withoutMemberList": 0,
+      "minTotal": 28,
+      "maxTotal": 28,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02287",
+        "A01506",
+        "A03125"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Education Committee: Held for Consideration",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04758",
+        "A02697",
+        "A00945"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Health Committee: Favorable refer to committee Codes",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 25,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01118",
+        "A00077",
+        "A01985"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Higher Education Committee: Favorable refer to committee Rules",
+      "count": 24,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "A01470",
+        "A02145",
+        "A05285"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Environmental Conservation Committee: Favorable",
+      "count": 23,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03682",
+        "A01179",
+        "A01388"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Higher Education Committee: Favorable refer to committee Ways and Means",
+      "count": 23,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05685",
+        "A07427",
+        "A05448"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Social Services Committee: Favorable refer to committee Ways and Means",
+      "count": 23,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02544",
+        "A02500",
+        "A00677"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Transportation Committee: Held for Consideration",
+      "count": 23,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02370",
+        "A01528",
+        "A00371"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Corporations, Authorities And Commissions Committee: Favorable refer to committee Ways and Means",
+      "count": 22,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00034",
+        "A03224",
+        "A07039"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Veterans' Affairs Committee: Favorable refer to committee Ways and Means",
+      "count": 22,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A06264",
+        "A06579",
+        "A06538"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Economic Development Committee: Favorable refer to committee Ways and Means",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00418",
+        "A03760",
+        "A06952"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Energy Committee: Favorable refer to committee Rules",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02579",
+        "A01469",
+        "A06762"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Racing, Gaming And Wagering Committee Vote",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S02616",
+        "S02613",
+        "S02618"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Governmental Operations Committee: Favorable refer to committee Codes",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04200",
+        "A01410",
+        "A01053"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Mental Health Committee: Favorable refer to committee Ways and Means",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05563",
+        "A00988",
+        "A05570"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Transportation Committee: Favorable refer to committee Codes",
+      "count": 20,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02193",
+        "A01673",
+        "A04016"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Corporations, Authorities And Commissions Committee: Favorable",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02430",
+        "A02431",
+        "A02447"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Correction Committee: Favorable refer to committee Ways and Means",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03102",
+        "A04503",
+        "A01325"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Housing Committee: Favorable refer to committee Ways and Means",
+      "count": 19,
+      "withoutMemberList": 0,
+      "minTotal": 27,
+      "maxTotal": 28,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00420",
+        "A01704",
+        "A05686"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Aging Committee: Favorable refer to committee Ways and Means",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03604",
+        "A03602",
+        "A08090"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Judiciary Committee: Favorable refer to committee Codes",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A06423",
+        "A03470",
+        "A00174"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Labor Committee: Favorable refer to committee Ways and Means",
+      "count": 18,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02747",
+        "A02748",
+        "A04728"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Alcoholism And Drug Abuse Committee: Favorable refer to committee Ways and Means",
+      "count": 17,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01269",
+        "A00265",
+        "A00521"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Environmental Conservation Committee: Favorable refer to committee Ways and Means",
+      "count": 17,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03398",
+        "A01314",
+        "A01819"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Labor Committee: Favorable refer to committee Rules",
+      "count": 17,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02433",
+        "A02434",
+        "A01677"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Children And Families Committee: Favorable refer to committee Ways and Means",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00744",
+        "A01242",
+        "A01382"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Cities Committee: Favorable refer to committee Ways and Means",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A06953",
+        "A02693",
+        "A05298"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Education Committee: Favorable refer to committee Ways and Means",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05302",
+        "A05403",
+        "A07385"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Energy Committee: Favorable refer to committee Ways and Means",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00982",
+        "A00541",
+        "A00349"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Environmental Conservation Committee: Held for Consideration",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05476",
+        "A04692",
+        "A05395"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Judiciary Committee: Favorable",
+      "count": 16,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01656",
+        "A01219",
+        "A03392"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Banks Committee: Favorable refer to committee Codes",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04810",
+        "A04327",
+        "A06766"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Energy Committee: Favorable",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01012",
+        "A04712",
+        "A07633"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Governmental Employees Committee: Held for Consideration",
+      "count": 15,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03673",
+        "A02368",
+        "A00130"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Agriculture Committee: Favorable refer to committee Codes",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01672",
+        "A01966",
+        "A02019"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Corporations, Authorities And Commissions Committee: Favorable refer to committee Codes",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00589",
+        "A00173",
+        "A01441"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Governmental Operations Committee: Favorable",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00805",
+        "A00029",
+        "A02573"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Ethics And Internal Governance Committee Vote",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S00374",
+        "S03741",
+        "S02224"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Libraries Committee Vote",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S05988",
+        "S05494",
+        "S03154"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate New York City Education Committee Vote",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S06719",
+        "S06032",
+        "S00082"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Consumer Affairs And Protection Committee: Favorable refer to committee Rules",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00439",
+        "A00843",
+        "A00440"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Energy Committee: Held for Consideration",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02553",
+        "A06152",
+        "A04702"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly People With Disabilities Committee: Favorable refer to committee Ways and Means",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00226",
+        "A00033",
+        "A00999"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Mental Health Committee Vote",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S03670",
+        "S01727",
+        "S05407"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Banks Committee: Favorable refer to committee Rules",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00431",
+        "A00421",
+        "A00424"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Children And Families Committee: Favorable refer to committee Rules",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00922",
+        "A00917",
+        "A01018"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Health Committee: Held for Consideration",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02699",
+        "A06163",
+        "A09384"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Local Governments Committee: Favorable refer to committee Rules",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03923",
+        "A01473",
+        "A01098"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Science And Technology Committee: Favorable refer to committee Codes",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02141",
+        "A06540",
+        "A00391"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Tourism, Arts And Sports Development Committee: Favorable refer to committee Ways and Means",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04632",
+        "A06639",
+        "A07280"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Children And Families Committee: Favorable refer to committee Codes",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04045",
+        "A02620",
+        "A04003"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Corporations, Authorities And Commissions Committee: Held for Consideration",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04804",
+        "A06088",
+        "A05784"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Election Law Committee: Favorable refer to committee Rules",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00438",
+        "A01014",
+        "A01015"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Higher Education Committee: Held for Consideration",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02376",
+        "A04566",
+        "A04809"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Racing And Wagering Committee: Favorable refer to committee Ways and Means",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03680",
+        "A06655",
+        "A06457"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Corporations, Authorities And Commissions Committee: Favorable refer to committee Rules",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02746",
+        "A08116",
+        "A07377"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Governmental Employees Committee: Favorable refer to committee Rules",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A06624",
+        "A06609",
+        "A00789"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Judiciary Committee: Held for Consideration",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00314",
+        "A00048",
+        "A01596"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Labor Committee: Favorable",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04727",
+        "A02725",
+        "A04938"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Local Governments Committee: Held for Consideration",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00139",
+        "A03778",
+        "A02408"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Housing Committee: Favorable",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 27,
+      "maxTotal": 28,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00056",
+        "A01867",
+        "A00189"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Insurance Committee: Favorable refer to committee Codes",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 24,
+      "maxTotal": 25,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02495",
+        "A01450",
+        "A01067"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Insurance Committee: Favorable refer to committee Ways and Means",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 25,
+      "maxTotal": 25,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00182",
+        "A05113",
+        "A03919"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Transportation Committee: Favorable",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00593",
+        "A00468",
+        "A01892"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Transportation Committee: Favorable refer to committee Rules",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01440",
+        "A05306",
+        "A08017"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Veterans' Affairs Committee: Favorable",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04751",
+        "A08089",
+        "A04649"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Agriculture Committee: Favorable refer to committee Ways and Means",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03599",
+        "A02185",
+        "A07964"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Correction Committee: Favorable refer to committee Rules",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01675",
+        "A02250",
+        "A01676"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Correction Committee: Held for Consideration",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03217",
+        "A04228",
+        "A04441"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Election Law Committee: Favorable",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05834",
+        "A01241",
+        "A06138"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Governmental Employees Committee: Favorable",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00779",
+        "A02123",
+        "A04850"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Higher Education Committee: Favorable refer to committee Codes",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00098",
+        "A04872",
+        "A03882"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Judiciary Committee: Favorable refer to committee Ways and Means",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03441",
+        "A04630",
+        "A03669"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Veterans' Affairs Committee: Favorable refer to committee Rules",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02435",
+        "A02058",
+        "A07627"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Correction Committee: Favorable",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04159",
+        "A02119",
+        "A00206"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Economic Development Committee: Favorable refer to committee Codes",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03343",
+        "A07040",
+        "A01916"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Economic Development Committee: Favorable refer to committee Rules",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A08411",
+        "A07301",
+        "A06691"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Economic Development Committee: Held for Consideration",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05960",
+        "A01913",
+        "A01909"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Higher Education Committee: Favorable",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03267",
+        "A02278",
+        "A07442"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Local Governments Committee: Favorable refer to committee Codes",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A06918",
+        "A06097",
+        "A00331"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Racing And Wagering Committee: Favorable",
+      "count": 7,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03681",
+        "A00382",
+        "A09113"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Agriculture Committee: Held for Consideration",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02026",
+        "A03633",
+        "A03823"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Correction Committee: Favorable refer to committee Codes",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00514",
+        "A00127",
+        "A09516"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Election Law Committee: Favorable refer to committee Ways and Means",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01993",
+        "A01416",
+        "A01228"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Election Law Committee: Held for Consideration",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01927",
+        "A05204",
+        "A05263"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Housing Committee: Favorable refer to committee Rules",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 28,
+      "maxTotal": 28,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00429",
+        "A02619",
+        "A03121"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Social Services Committee: Favorable refer to committee Rules",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00919",
+        "A00918",
+        "A08432"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Tourism, Arts And Sports Development Committee: Favorable",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01914",
+        "A07279",
+        "A06634"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Agriculture Committee: Favorable refer to committee Rules",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00417",
+        "A00414",
+        "A00442"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Banks Committee: Favorable refer to committee Ways and Means",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03279",
+        "A05167",
+        "A08665"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Children And Families Committee: Favorable",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00612",
+        "A05893",
+        "A09280"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Economic Development Committee: Favorable",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 26,
+      "maxTotal": 26,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03922",
+        "A05405",
+        "A10137"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Election Law Committee: Favorable refer to committee Codes",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03415",
+        "A03929",
+        "A04423"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Local Governments Committee: Favorable",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 20,
+      "maxTotal": 20,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A06769",
+        "A07411",
+        "A10201"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Mental Health Committee: Favorable",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05546",
+        "A03733",
+        "A08424"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Racing And Wagering Committee: Favorable refer to committee Codes",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04279",
+        "A06745",
+        "A07475"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Real Property Taxation Committee: Held for Consideration",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 10,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03252",
+        "A10839",
+        "A01951"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Science And Technology Committee: Favorable refer to committee Rules",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00433",
+        "A00426",
+        "A06578"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Small Business Committee: Favorable refer to committee Ways and Means",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A08474",
+        "A04107",
+        "A02055"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Veterans' Affairs Committee: Held for Consideration",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05943",
+        "A04799",
+        "A04767"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Consumer Affairs And Protection Committee: Favorable",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00563",
+        "A03369",
+        "A08771"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Consumer Affairs And Protection Committee: Held for Consideration",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03946",
+        "A09091",
+        "A07184"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Education Committee: Favorable",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04382",
+        "A10079",
+        "A04384"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Insurance Committee: Held for Consideration",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 25,
+      "maxTotal": 25,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A07305",
+        "A09254",
+        "A09367"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Libraries And Education Technology Committee: Favorable refer to committee Ways and Means",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05835",
+        "A07568",
+        "A05525"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Mental Health Committee: Favorable refer to committee Rules",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A08424",
+        "A09600",
+        "A08751"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Tourism, Arts And Sports Development Committee: Favorable refer to committee Rules",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00435",
+        "A07601",
+        "A09517"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Tourism, Arts And Sports Development Committee: Held for Consideration",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04489",
+        "A04344",
+        "A09052"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Aging Committee: Favorable refer to committee Rules",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A01099",
+        "A09484",
+        "A03601"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Agriculture Committee: Favorable",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 23,
+      "maxTotal": 23,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A08130",
+        "A06825",
+        "A10703"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Children And Families Committee: Held for Consideration",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04534",
+        "A06533",
+        "A10520"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Cities Committee: Favorable refer to committee Rules",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03665",
+        "A09505",
+        "A07587"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Education Committee: Favorable refer to committee Codes",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A08204",
+        "A08814",
+        "A00323"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Education Committee: Favorable refer to committee Rules",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00752",
+        "A05301",
+        "A00129"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Energy Committee: Favorable refer to committee Codes",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03875",
+        "A00836",
+        "A09640"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Governmental Employees Committee: Favorable refer to committee Codes",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03838",
+        "A03295",
+        "A10835"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly People With Disabilities Committee: Favorable refer to committee Rules",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A07363",
+        "A09572",
+        "A10322"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Social Services Committee: Favorable",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02332",
+        "A02538",
+        "A02425"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Social Services Committee: Held for Consideration",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05417",
+        "A08197",
+        "A04365"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Cities 2 Committee Vote",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "S07157",
+        "S05403",
+        "S09839"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Aging Committee: Held for Consideration",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05803",
+        "A06496"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Alcoholism And Drug Abuse Committee: Favorable",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A02398",
+        "A02300"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Banks Committee: Favorable",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A08067",
+        "A03304"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Banks Committee: Held for Consideration",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A07020",
+        "A00148"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Education Committee: Favorable refer to committee Higher Education",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "C00151",
+        "C00978"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Education Committee: Favorable refer to committee Ways and Means Correction Date:04/29/2025",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A06486",
+        "A02318"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Science And Technology Committee: Favorable refer to committee Ways and Means",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A06347",
+        "A06301"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Tourism, Arts And Sports Development Committee: Favorable refer to committee Codes",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 21,
+      "maxTotal": 21,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A09006",
+        "A07326"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Aging Committee: Favorable",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A08113"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Alcoholism And Drug Abuse Committee: Favorable refer to committee Rules",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05840"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Alcoholism And Drug Abuse Committee: Held for Consideration",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 14,
+      "maxTotal": 14,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A06513"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Cities Committee: Favorable",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A07992"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Cities Committee: Favorable refer to committee Codes",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A09058"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Cities Committee: Held for Consideration",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A06909"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Consumer Affairs And Protection Committee: Favorable refer to committee Ways and Means",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 16,
+      "maxTotal": 16,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A09274"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Education Committee: Favorable Correction Date:04/29/2025",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04683"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Education Committee: Favorable refer to committee Rules Correction Date:04/29/2025",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 31,
+      "maxTotal": 31,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A07212"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Housing Committee: Held for Consideration",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 28,
+      "maxTotal": 28,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A09019"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Labor Committee: Held for Consideration",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 29,
+      "maxTotal": 29,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05983"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Libraries And Education Technology Committee: Favorable refer to committee Codes",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A07353"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Libraries And Education Technology Committee: Favorable refer to committee Rules",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A08786"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Libraries And Education Technology Committee: Held for Consideration",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A06961"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Mental Health Committee: Favorable refer to committee Codes",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05545"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Mental Health Committee: Favorable refer to committee Judiciary",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00279"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Mental Health Committee: Held for Consideration",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 13,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A05408"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly People With Disabilities Committee: Favorable refer to committee Codes",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A10139"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly People With Disabilities Committee: Held for Consideration",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A04494"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Science And Technology Committee: Favorable",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 9,
+      "maxTotal": 9,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03361"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Small Business Committee: Favorable refer to committee Rules",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00432"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Small Business Committee: Held for Consideration",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 17,
+      "maxTotal": 17,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A00981"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Social Services Committee: Favorable refer to committee Codes",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 18,
+      "maxTotal": 18,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A03093"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Assembly Veterans' Affairs Committee: Favorable refer to committee Codes",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 19,
+      "maxTotal": 19,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "A08476"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 21398,
+    "CR": 11,
+    "R": 3904
+  },
+  "sessionIds": {
+    "2188": 25313
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": [
+    {
+      "file": "NY/2025-2026_General_Assembly/vote/1473007.json",
+      "error": "LegiScan roll call 1473007: yea says 35 but the member list holds 36"
+    }
+  ]
+}

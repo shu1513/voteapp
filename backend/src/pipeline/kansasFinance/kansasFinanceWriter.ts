@@ -5,9 +5,13 @@
 // "<officeCode>:<district>:<SURNAME>:<FIRST>" built by the resolver;
 // committee_name is the most frequent filed display name.
 //
-// Outside totals use preserveWhenNull (the Montana rule): Phase 5's IE sweep
-// owns them, and a direct-only sync passing null must not erase a good
-// outside snapshot.
+// Every summary column is "replace": one sync owns both legs (direct from
+// the viewer, outside from the transcribed IE rows of migration 271), and
+// the outside source is a local table that is never unavailable, so what a
+// sync writes is exactly what the evidence proves — null when a candidate
+// has no outside rows ("none found" is not $0). The Montana preserveWhenNull
+// rule exists for a separately fetched outside sweep that can be missing;
+// Kansas has no such leg.
 
 import type { Pool, PoolClient } from "pg";
 
@@ -15,6 +19,8 @@ import {
   createStandardStateFinanceSnapshotWriter,
   type StandardStateFinanceLinkInput,
   type StandardStateFinanceLinkStatus,
+  type StandardStateFinanceSnapshotInput,
+  type StandardStateFinanceSnapshotWriteResult,
 } from "../finance/standardStateFinanceSnapshotWriter.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -25,6 +31,11 @@ export type KansasFinanceLinkSource = "manual" | "cfr_viewer";
 export type KansasFinanceLinkInput = Omit<StandardStateFinanceLinkInput, "linkSource"> & {
   linkSource?: KansasFinanceLinkSource;
 };
+
+export type KansasFinanceSnapshotInput = Omit<StandardStateFinanceSnapshotInput, "link"> & {
+  link: KansasFinanceLinkInput;
+};
+export type KansasFinanceSnapshotWriteResult = StandardStateFinanceSnapshotWriteResult;
 
 export const KANSAS_FILER_KEY_PATTERN = /^[0-9]+:[0-9]*:[A-Z0-9][A-Z0-9 ]*:[A-Z0-9][A-Z0-9 ]*$/;
 
@@ -92,8 +103,8 @@ const writer = createStandardStateFinanceSnapshotWriter({
     direct_contribution_total: "replace",
     total_disbursements: "replace",
     cash_on_hand: "replace",
-    outside_support_total: "preserveWhenNull",
-    outside_oppose_total: "preserveWhenNull",
+    outside_support_total: "replace",
+    outside_oppose_total: "replace",
     source_url: "replace",
   },
   outsideGroupValidation: "pairing",
@@ -118,6 +129,20 @@ export async function upsertKansasFinanceLink(input: {
 }): Promise<{ linkId: string }> {
   return writer.upsertLink({
     db: input.db,
+    link: { ...input.link, committeeId: normalizeKansasFilerKey(input.link.committeeId) },
+  });
+}
+
+/**
+ * Link + summary + direct breakdowns + outside groups in one transaction.
+ * The sync passes both legs every time; an empty outside-group list clears
+ * stale groups, and undefined would leave them alone.
+ */
+export async function replaceKansasCandidateFinanceSnapshot(
+  input: KansasFinanceSnapshotInput
+): Promise<KansasFinanceSnapshotWriteResult> {
+  return writer.replaceSnapshot({
+    ...input,
     link: { ...input.link, committeeId: normalizeKansasFilerKey(input.link.committeeId) },
   });
 }

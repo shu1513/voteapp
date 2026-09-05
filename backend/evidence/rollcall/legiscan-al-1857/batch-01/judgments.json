@@ -1,0 +1,172 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1857",
+      "roll": 1111185,
+      "measure_id": "HB 1",
+      "vote_date": "2021-11-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1, which redrew Alabama's seven districts for the U.S. House using the 2020 census. The map itself is not printed in the law; it is adopted by name from the legislative reapportionment committee, and where the map and the written block list disagree the map wins. The law states no standard for how the lines were drawn, and a federal court later held this map likely broke the Voting Rights Act, so the Legislature redrew it in 2023. The House passed it 65-38 and it became law.",
+      "nay_description": "Voted against passing House Bill 1, which redrew Alabama's seven districts for the U.S. House using the 2020 census. The map itself is not printed in the law; it is adopted by name from the legislative reapportionment committee, and where the map and the written block list disagree the map wins. The law states no standard for how the lines were drawn, and a federal court later held this map likely broke the Voting Rights Act, so the Legislature redrew it in 2023. The House passed it 65-38 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1857",
+      "roll": 1115467,
+      "measure_id": "HB 1",
+      "vote_date": "2021-11-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1, which redrew Alabama's seven districts for the U.S. House using the 2020 census. The map itself is not printed in the law; it is adopted by name from the legislative reapportionment committee, and where the map and the written block list disagree the map wins. The law states no standard for how the lines were drawn, and a federal court later held this map likely broke the Voting Rights Act, so the Legislature redrew it in 2023. The Senate passed it 22-7 and it became law.",
+      "nay_description": "Voted against passing House Bill 1, which redrew Alabama's seven districts for the U.S. House using the 2020 census. The map itself is not printed in the law; it is adopted by name from the legislative reapportionment committee, and where the map and the written block list disagree the map wins. The law states no standard for how the lines were drawn, and a federal court later held this map likely broke the Voting Rights Act, so the Legislature redrew it in 2023. The Senate passed it 22-7 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1857",
+      "roll": 1111175,
+      "measure_id": "HB 2",
+      "vote_date": "2021-11-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2, which redrew the 105 districts of the Alabama House of Representatives using the 2020 census. The map itself is not printed in the law; it is adopted by name from the legislative reapportionment committee, and where the map and the written block list disagree the map wins. The law states no standard for how the lines were drawn. The House passed it 68-35 and it became law.",
+      "nay_description": "Voted against passing House Bill 2, which redrew the 105 districts of the Alabama House of Representatives using the 2020 census. The map itself is not printed in the law; it is adopted by name from the legislative reapportionment committee, and where the map and the written block list disagree the map wins. The law states no standard for how the lines were drawn. The House passed it 68-35 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1857",
+      "roll": 1115491,
+      "measure_id": "HB 2",
+      "vote_date": "2021-11-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2, which redrew the 105 districts of the Alabama House of Representatives using the 2020 census. The map itself is not printed in the law; it is adopted by name from the legislative reapportionment committee, and where the map and the written block list disagree the map wins. The law states no standard for how the lines were drawn. The Senate passed it 25-7 and it became law.",
+      "nay_description": "Voted against passing House Bill 2, which redrew the 105 districts of the Alabama House of Representatives using the 2020 census. The map itself is not printed in the law; it is adopted by name from the legislative reapportionment committee, and where the map and the written block list disagree the map wins. The law states no standard for how the lines were drawn. The Senate passed it 25-7 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1857",
+      "roll": 1111153,
+      "measure_id": "SB 1",
+      "vote_date": "2021-11-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1, which redrew the 35 districts of the Alabama Senate using the 2020 census. The map itself is not printed in the law; it is adopted by name from the legislative reapportionment committee, and where the map and the written block list disagree the map wins. The law states no standard for how the lines were drawn. The Senate passed it 25-7 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 1, which redrew the 35 districts of the Alabama Senate using the 2020 census. The map itself is not printed in the law; it is adopted by name from the legislative reapportionment committee, and where the map and the written block list disagree the map wins. The law states no standard for how the lines were drawn. The Senate passed it 25-7 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1857",
+      "roll": 1115492,
+      "measure_id": "SB 1",
+      "vote_date": "2021-11-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1, which redrew the 35 districts of the Alabama Senate using the 2020 census. The map itself is not printed in the law; it is adopted by name from the legislative reapportionment committee, and where the map and the written block list disagree the map wins. The law states no standard for how the lines were drawn. The House passed it 76-26 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 1, which redrew the 35 districts of the Alabama Senate using the 2020 census. The map itself is not printed in the law; it is adopted by name from the legislative reapportionment committee, and where the map and the written block list disagree the map wins. The law states no standard for how the lines were drawn. The House passed it 76-26 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1857",
+      "roll": 1115493,
+      "measure_id": "SB 2",
+      "vote_date": "2021-11-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 2, which redrew the eight districts of the State Board of Education using the 2020 census. The map itself is not printed in the law; it is adopted by name from the legislative reapportionment committee, and where the map and the written block list disagree the map wins. The law states no standard for how the lines were drawn. The House passed it 76-26 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 2, which redrew the eight districts of the State Board of Education using the 2020 census. The map itself is not printed in the law; it is adopted by name from the legislative reapportionment committee, and where the map and the written block list disagree the map wins. The law states no standard for how the lines were drawn. The House passed it 76-26 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1857",
+      "roll": 1115542,
+      "measure_id": "SB 15",
+      "vote_date": "2021-11-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 15, which requires a parent's written consent before a minor may get a COVID-19 vaccine. Alabama law otherwise lets someone 14 or older agree to their own medical treatment, and this Act overrides that for this vaccine. Schools and colleges may not ask a minor student about their vaccination status without the parent's written consent, and the Attorney General may sue to stop violations. The House passed it 59-19 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 15, which requires a parent's written consent before a minor may get a COVID-19 vaccine. Alabama law otherwise lets someone 14 or older agree to their own medical treatment, and this Act overrides that for this vaccine. Schools and colleges may not ask a minor student about their vaccination status without the parent's written consent, and the Attorney General may sue to stop violations. The House passed it 59-19 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1115532
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1857",
+      "roll": 1115544,
+      "measure_id": "SB 9",
+      "vote_date": "2021-11-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 9, which requires employers who mandate COVID-19 vaccination to let workers claim an exemption. A worker fills in a form printed in the law, checking a medical reason or a religious one, and submitting it creates a presumption that the exemption applies. A denied worker can appeal to an administrative judge, keeps full pay while the appeal runs, and cannot be fired for refusing the vaccine during that time. The House passed it 75-27 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 9, which requires employers who mandate COVID-19 vaccination to let workers claim an exemption. A worker fills in a form printed in the law, checking a medical reason or a religious one, and submitting it creates a presumption that the exemption applies. A denied worker can appeal to an administrative judge, keeps full pay while the appeal runs, and cannot be fired for refusing the vaccine during that time. The House passed it 75-27 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1115535
+      ]
+    }
+  ]
+}

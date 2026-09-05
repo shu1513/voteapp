@@ -1,0 +1,544 @@
+{
+  "runId": "rollcall-legiscan-fetch-ar-20260903T013136Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "AR",
+  "startedAt": "2026-09-03T01:31:36.465Z",
+  "finishedAt": "2026-09-03T01:31:37.311Z",
+  "datasetDir": "~/legiscan-data/ar-2162",
+  "bills": 1928,
+  "votes": 2501,
+  "people": 138,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "senate",
+      "desc": "Third Reading",
+      "count": 1190,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "SB1",
+        "SB68",
+        "SB53"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Third Reading",
+      "count": 1131,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1002",
+        "HB1080",
+        "HB1056"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Senate amendment # 1 read and concurred in.",
+      "count": 109,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1056",
+        "HB1220",
+        "HB1145"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Senate amendment # 2 read and concurred in.",
+      "count": 12,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1049",
+        "HB1479",
+        "HB1245"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "EMERGENCY CLAUSE ADOPTED",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1002",
+        "HB1001",
+        "SB210"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "EMERGENCY CLAUSE ADOPTED",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB211",
+        "SB210",
+        "SB209"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Emergency Clause Failed of Adoption",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB209",
+        "SB210",
+        "HB1713"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Read and adopted and ordered transmitted to the Senate.",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "CR",
+        "JR"
+      ],
+      "sampleBills": [
+        "HCR1006",
+        "HJR1018",
+        "SJR11"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "READ AND ADOPTED.",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR1001",
+        "HR1007",
+        "HR1034"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Upon Motion, Reconsideraton of the Emergency Clause Passed",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB210",
+        "SB209",
+        "HB1713"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Read and Failed of Adoption",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR1012",
+        "HR1119"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Senate amendment # 3 read and concurred in.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1245",
+        "HB1717"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Emergency Clause failed of adoption.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB210",
+        "SB209"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Roll Call Requested. Five Hands were seen. Motion failed.",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1633",
+        "HB1946"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to remove SB117 from Public Health Committee Failed",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB117"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Motion to Rerefer back to Committee Failed of Adoption",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1180"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Placed on second reading for the purpose of amendment.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1049"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Re-referred to the Committee on PUBLIC HEALTH, WELFARE AND LABOR COMMITTEE- HOUSE",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1677"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Return from Governor's office as requested",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1102"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Returned to the Senate as passed.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB450"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Senate Amendment #1 read and concurred in and the Emergency Clause",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1797"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Senate Amendment #1 read and concurred in, and the Emergency Clause",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1681"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Senate Amendment #2 read and concurred in and the Emergency Clause",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1797"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "The vote by which HB1365 Passed was expunged.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1365"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "The vote by which HCR1006 Passed was expunged.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR1006"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "The vote by which SB443 Failed to Pass was expunged.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB443"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Upon Motion, Reconsideraton Failed to Pass - 2/20/2025 11:25:16 AM",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR1010"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Upon Motion, Reconsideraton Failed to Pass - 4/1/2025 3:45:18 PM",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR1004"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Upon Motion, Reconsideraton Passed - 3/4/2025 2:14:27 PM",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1510"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Upon sounding of the ballot, the HJR failded of adoption",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 100,
+      "maxTotal": 100,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "HJR1004"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Read third time and failed to pass.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB166"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Returned to the House as concurred in.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR1006"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Roll Call Requested. Five Hands were seen.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB106"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Roll Call Requested. Five Hands were Seen. Motion Carried.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB2"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Roll Call Requested. Five Hands were seen. The motion failed.",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1180"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 1652,
+    "CR": 19,
+    "JR": 44,
+    "M": 18,
+    "R": 195
+  },
+  "sessionIds": {
+    "2162": 1928
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

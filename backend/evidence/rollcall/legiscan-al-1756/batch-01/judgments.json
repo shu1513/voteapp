@@ -1,0 +1,346 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1756",
+      "roll": 1060108,
+      "measure_id": "HB 116",
+      "vote_date": "2021-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 116, the Alabama Voter Confidence Act, which allowed one trial audit of the 2022 general election. The Secretary of State could check up to three counties that asked to take part, looking at one polling place and two races in each. A circuit judge had to approve first and could stop it, and the results had to be posted publicly and reported to the Governor and Legislature. The Senate passed it 21-6 and it became law.",
+      "nay_description": "Voted against passing House Bill 116, the Alabama Voter Confidence Act, which allowed one trial audit of the 2022 general election. The Secretary of State could check up to three counties that asked to take part, looking at one polling place and two races in each. A circuit judge had to approve first and could stop it, and the results had to be posted publicly and reported to the Governor and Legislature. The Senate passed it 21-6 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1071741
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1756",
+      "roll": 1060614,
+      "measure_id": "HB 154",
+      "vote_date": "2021-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 154, which requires every Alabama campaign finance report to be filed electronically with the Secretary of State. The filings go into a searchable public database. The old exemption letting small campaigns raising $5,000 or less file on paper is removed, and fines for late or missing reports are now issued by the Secretary of State rather than local officials. The Senate passed it 17-12 and it became law.",
+      "nay_description": "Voted against passing House Bill 154, which requires every Alabama campaign finance report to be filed electronically with the Secretary of State. The filings go into a searchable public database. The old exemption letting small campaigns raising $5,000 or less file on paper is removed, and fines for late or missing reports are now issued by the Secretary of State rather than local officials. The Senate passed it 17-12 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1031588,
+      "measure_id": "HB 285",
+      "vote_date": "2021-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 285, which banned curbside voting in Alabama. No voting machine may be set up or used except inside an enclosed building that has been named as a voting place. Poll workers may not carry a ballot in or out except when moving ballots before or after the election, and counties must now provide as many machines as are needed rather than merely being allowed to. The House passed it 74-25 and it became law.",
+      "nay_description": "Voted against passing House Bill 285, which banned curbside voting in Alabama. No voting machine may be set up or used except inside an enclosed building that has been named as a voting place. Poll workers may not carry a ballot in or out except when moving ballots before or after the election, and counties must now provide as many machines as are needed rather than merely being allowed to. The House passed it 74-25 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1046381,
+      "measure_id": "HB 388",
+      "vote_date": "2021-04-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 388, which asked voters to require a waiting period before new election rules take effect. Any law about how a general election is run, passed in the same year as that election, could not take effect less than six months before it. Because it changes the constitution it took effect only if voters approved it. The House passed it 75-24 and it went to the voters.",
+      "nay_description": "Voted against passing House Bill 388, which asked voters to require a waiting period before new election rules take effect. Any law about how a general election is run, passed in the same year as that election, could not take effect less than six months before it. Because it changes the constitution it took effect only if voters approved it. The House passed it 75-24 over these votes and it went to the voters.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1019608,
+      "measure_id": "HB 385",
+      "vote_date": "2021-03-02",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 385, which rewrote what Alabama schools must teach in sex education. It deleted the requirement that classes teach that homosexuality is not acceptable to the general public and that homosexual conduct is a crime under state law. It also changed several standards from ones schools should meet to ones they must meet, including that material be age appropriate and medically accurate. The House passed it 69-30 and it became law.",
+      "nay_description": "Voted against passing House Bill 385, which rewrote what Alabama schools must teach in sex education. It deleted the requirement that classes teach that homosexuality is not acceptable to the general public and that homosexual conduct is a crime under state law. It also changed several standards from ones schools should meet to ones they must meet, including that material be age appropriate and medically accurate. The House passed it 69-30 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1756",
+      "roll": 1057884,
+      "measure_id": "HB 385",
+      "vote_date": "2021-04-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 385, which rewrote what Alabama schools must teach in sex education. It deleted the requirement that classes teach that homosexuality is not acceptable to the general public and that homosexual conduct is a crime under state law. It also changed several standards from ones schools should meet to ones they must meet, including that material be age appropriate and medically accurate. The Senate passed it 18-6 and it became law.",
+      "nay_description": "Voted against passing House Bill 385, which rewrote what Alabama schools must teach in sex education. It deleted the requirement that classes teach that homosexuality is not acceptable to the general public and that homosexual conduct is a crime under state law. It also changed several standards from ones schools should meet to ones they must meet, including that material be age appropriate and medically accurate. The Senate passed it 18-6 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1031172,
+      "measure_id": "HB 391",
+      "vote_date": "2021-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 391, which barred transgender girls from girls' school sports. A public school may not take part in an event run by an association that lets anyone play on a team of the opposite sex from the one on their original birth certificate. A girl may join a boys' team where no girls' team exists in that sport, but a boy may never join a girls' team. The House passed it 74-19 and it became law.",
+      "nay_description": "Voted against passing House Bill 391, which barred transgender girls from girls' school sports. A public school may not take part in an event run by an association that lets anyone play on a team of the opposite sex from the one on their original birth certificate. A girl may join a boys' team where no girls' team exists in that sport, but a boy may never join a girls' team. The House passed it 74-19 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1054119
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1073639,
+      "measure_id": "HB 273",
+      "vote_date": "2021-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 273, which raised the age to buy or use tobacco and vaping products from 19 to 21. It bans advertising vapes as a way to quit smoking or as safer than cigarettes, and bans packaging that uses candy or cartoon imagery aimed at children. Makers of vape liquid must register with the state and prove they filed with federal regulators, and selling an unregistered product costs $1,000 a day. The House passed it 58-25 and it became law.",
+      "nay_description": "Voted against passing House Bill 273, which raised the age to buy or use tobacco and vaping products from 19 to 21. It bans advertising vapes as a way to quit smoking or as safer than cigarettes, and bans packaging that uses candy or cartoon imagery aimed at children. Makers of vape liquid must register with the state and prove they filed with federal regulators, and selling an unregistered product costs $1,000 a day. The House passed it 58-25 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1061266,
+      "measure_id": "HB 631",
+      "vote_date": "2021-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 631, which set up state grants to look after Alabama's reservoirs, paid for by boat owners. Every registered vessel pays an extra $5 a year into a new fund. Local bodies that already have a reservoir plan can apply for money to control invasive water plants and animals, clear storm debris from navigable water, and put up navigation signs, and must match half the grant themselves. The House passed it 77-20 and it became law.",
+      "nay_description": "Voted against passing House Bill 631, which set up state grants to look after Alabama's reservoirs, paid for by boat owners. Every registered vessel pays an extra $5 a year into a new fund. Local bodies that already have a reservoir plan can apply for money to control invasive water plants and animals, clear storm debris from navigable water, and put up navigation signs, and must match half the grant themselves. The House passed it 77-20 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1073670
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1019613,
+      "measure_id": "HB 103",
+      "vote_date": "2021-03-02",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 103, which said businesses and religious institutions may stay open during a state of emergency. The right applies only to emergencies caused by disease or a biological attack, not to storms or floods, and it is conditional: they must follow all safety precautions issued by the Governor or by state or local agencies. The law also says the State House may not be closed to the public while the Legislature is sitting. The House passed it 75-22 and it became law.",
+      "nay_description": "Voted against passing House Bill 103, which said businesses and religious institutions may stay open during a state of emergency. The right applies only to emergencies caused by disease or a biological attack, not to storms or floods, and it is conditional: they must follow all safety precautions issued by the Governor or by state or local agencies. The law also says the State House may not be closed to the public while the Legislature is sitting. The House passed it 75-22 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1043040
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1756",
+      "roll": 1057454,
+      "measure_id": "HB 123",
+      "vote_date": "2021-04-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 123, which let more people keep their details off the public voter list. Someone who signs a statement that they are a prosecutor, a judge, a legislator, a law enforcement officer, or the spouse of one may have everything but their name withheld. The two existing grounds, for victims of domestic violence, remain, and lists given to state and federal agencies are not affected. The Senate passed it 18-10 and it became law.",
+      "nay_description": "Voted against passing House Bill 123, which let more people keep their details off the public voter list. Someone who signs a statement that they are a prosecutor, a judge, a legislator, a law enforcement officer, or the spouse of one may have everything but their name withheld. The two existing grounds, for victims of domestic violence, remain, and lists given to state and federal agencies are not affected. The Senate passed it 18-10 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1026862,
+      "measure_id": "HB 246",
+      "vote_date": "2021-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 246, which let Alabama schools teach yoga again after a long ban, under tight conditions. Lessons are limited to poses, exercises and stretching, all poses must have English names, and chanting, mantras, guided imagery and the greeting namaste are all forbidden. Taking part is optional, and a parent must sign a form that includes the sentence that yoga is part of the Hindu religion. The House passed it 73-25 and it became law.",
+      "nay_description": "Voted against passing House Bill 246, which let Alabama schools teach yoga again after a long ban, under tight conditions. Lessons are limited to poses, exercises and stretching, all poses must have English names, and chanting, mantras, guided imagery and the greeting namaste are all forbidden. Taking part is optional, and a parent must sign a form that includes the sentence that yoga is part of the Hindu religion. The House passed it 73-25 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1078512
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1756",
+      "roll": 1074303,
+      "measure_id": "HB 246",
+      "vote_date": "2021-05-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 246, which let Alabama schools teach yoga again after a long ban, under tight conditions. Lessons are limited to poses, exercises and stretching, all poses must have English names, and chanting, mantras, guided imagery and the greeting namaste are all forbidden. Taking part is optional, and a parent must sign a form that includes the sentence that yoga is part of the Hindu religion. The Senate passed it 23-7 and it became law.",
+      "nay_description": "Voted against passing House Bill 246, which let Alabama schools teach yoga again after a long ban, under tight conditions. Lessons are limited to poses, exercises and stretching, all poses must have English names, and chanting, mantras, guided imagery and the greeting namaste are all forbidden. Taking part is optional, and a parent must sign a form that includes the sentence that yoga is part of the Hindu religion. The Senate passed it 23-7 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1024976,
+      "measure_id": "HB 404",
+      "vote_date": "2021-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 404, which let college athletes in Alabama be paid for the use of their name, image or likeness. Pay must reflect market value, cannot be tied to how well the athlete plays or to choosing a particular college, and cannot come from the college or its boosters. Colleges may block deals in areas such as tobacco, alcohol, drugs, adult entertainment and gambling. The House passed it 63-31 and it became law.",
+      "nay_description": "Voted against passing House Bill 404, which let college athletes in Alabama be paid for the use of their name, image or likeness. Pay must reflect market value, cannot be tied to how well the athlete plays or to choosing a particular college, and cannot come from the college or its boosters. Colleges may block deals in areas such as tobacco, alcohol, drugs, adult entertainment and gambling. The House passed it 63-31 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1053993
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1051692,
+      "measure_id": "SB 107",
+      "vote_date": "2021-04-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 107, which cut back the power Alabama cities hold just outside their limits. A city's police jurisdiction is frozen at its January 2021 boundary, and most city rules now apply only inside the city itself. The planning jurisdiction shrinks to a mile and a half from 2023, and a city may give up its police jurisdiction in half-mile steps. The House passed it 61-28 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 107, which cut back the power Alabama cities hold just outside their limits. A city's police jurisdiction is frozen at its January 2021 boundary, and most city rules now apply only inside the city itself. The planning jurisdiction shrinks to a mile and a half from 2023, and a city may give up its police jurisdiction in half-mile steps. The House passed it 61-28 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1052093,
+      "measure_id": "SB 117",
+      "vote_date": "2021-04-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 117, which let people clear old convictions from their record for the first time. A misdemeanor can be cleared three years after conviction, and a felony only after a pardon restoring civil rights. Violent offenses, sex offenses and serious traffic offenses are excluded, the filing fee rose from $300 to $500, and a cleared record can still be used against someone in a criminal trial. The House passed it 57-38 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 117, which let people clear old convictions from their record for the first time. A misdemeanor can be cleared three years after conviction, and a felony only after a pardon restoring civil rights. Violent offenses, sex offenses and serious traffic offenses are excluded, the filing fee rose from $300 to $500, and a cleared record can still be used against someone in a criminal trial. The House passed it 57-38 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1048304,
+      "measure_id": "SB 308",
+      "vote_date": "2021-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 308, which rewrote how Alabama sheriffs issue concealed carry permits. A sheriff must now approve an application unless one of eleven listed reasons applies, replacing the older test of whether the sheriff suspected the person might misuse a weapon. The law adds lifetime permits, waives fees for service members and police, and orders a new statewide database of people barred from having guns. The House passed it 69-18 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 308, which rewrote how Alabama sheriffs issue concealed carry permits. A sheriff must now approve an application unless one of eleven listed reasons applies, replacing the older test of whether the sheriff suspected the person might misuse a weapon. The law adds lifetime permits, waives fees for service members and police, and orders a new statewide database of people barred from having guns. The House passed it 69-18 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1756",
+      "roll": 1078918,
+      "measure_id": "SB 323",
+      "vote_date": "2021-05-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 323, which let prisoners earn time off a sentence by finishing education programs. The credit is capped at 12 months for any one stretch in prison, and it comes on top of existing good behavior credit. Prisoners under a death or life sentence, and those convicted of the most serious violent or sex offenses, are excluded, and no court may review how the department runs the scheme. The House passed it 67-29 and it became law.",
+      "nay_description": "Voted against passing Senate Bill 323, which let prisoners earn time off a sentence by finishing education programs. The credit is capped at 12 months for any one stretch in prison, and it comes on top of existing good behavior credit. Prisoners under a death or life sentence, and those convicted of the most serious violent or sex offenses, are excluded, and no court may review how the department runs the scheme. The House passed it 67-29 over these votes and it became law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

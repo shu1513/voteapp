@@ -1,0 +1,64 @@
+{
+ "rolls": [
+  {
+   "measure": "SB 177",
+   "status": "chaptered",
+   "chamber": "house",
+   "roll": 1712345,
+   "date": "2026-06-29",
+   "yea": 57,
+   "nay": 18,
+   "title": "Medi-Cal: Fair Share from Big Corporations Act."
+  },
+  {
+   "measure": "SB 177",
+   "status": "chaptered",
+   "chamber": "senate",
+   "roll": 1712344,
+   "date": "2026-06-29",
+   "yea": 29,
+   "nay": 9,
+   "title": "Medi-Cal: Fair Share from Big Corporations Act."
+  },
+  {
+   "measure": "SB 327",
+   "status": "enrolled",
+   "chamber": "house",
+   "roll": 1726657,
+   "date": "2026-08-27",
+   "yea": 46,
+   "nay": 18,
+   "title": "Public utilities: review of accounts: electrical and gas corporations: rates: political influence activities."
+  },
+  {
+   "measure": "SB 327",
+   "status": "enrolled",
+   "chamber": "senate",
+   "roll": 1726850,
+   "date": "2026-08-28",
+   "yea": 30,
+   "nay": 10,
+   "title": "Public utilities: review of accounts: electrical and gas corporations: rates: political influence activities."
+  },
+  {
+   "measure": "SB 36",
+   "status": "vetoed",
+   "chamber": "house",
+   "roll": 1601572,
+   "date": "2025-09-09",
+   "yea": 60,
+   "nay": 17,
+   "title": "Price gouging: state of emergency."
+  },
+  {
+   "measure": "SB 36",
+   "status": "vetoed",
+   "chamber": "senate",
+   "roll": 1601914,
+   "date": "2025-09-11",
+   "yea": 30,
+   "nay": 8,
+   "title": "Price gouging: state of emergency."
+  }
+ ]
+}

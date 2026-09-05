@@ -1,0 +1,882 @@
+{
+ "HB12": {
+  "roll": 1499308,
+  "official": {
+   "date": "2025-02-25",
+   "rcs": 102,
+   "measure": "HB 12",
+   "question": "FINAL PASSAGE",
+   "yea": 41,
+   "nay": 27,
+   "pnv": 0,
+   "excused": 1,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-02-25",
+   "yea": 41,
+   "nay": 27,
+   "nv": 0,
+   "absent": 1
+  },
+  "ok": true
+ },
+ "HB128": {
+  "roll": 1503058,
+  "official": {
+   "date": "2025-03-01",
+   "rcs": 132,
+   "measure": "HB 128/aaa",
+   "question": "FINAL PASSAGE",
+   "yea": 43,
+   "nay": 22,
+   "pnv": 0,
+   "excused": 3,
+   "absent": 2
+  },
+  "legiscan": {
+   "date": "2025-03-01",
+   "yea": 43,
+   "nay": 22,
+   "nv": 0,
+   "absent": 5
+  },
+  "ok": true
+ },
+ "HB2": {
+  "roll": 1497872,
+  "official": {
+   "date": "2025-02-24",
+   "rcs": 96,
+   "measure": "HAFC/HB 2,& 3",
+   "question": "FINAL PASSAGE",
+   "yea": 50,
+   "nay": 18,
+   "pnv": 0,
+   "excused": 1,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-02-24",
+   "yea": 50,
+   "nay": 18,
+   "nv": 0,
+   "absent": 1
+  },
+  "ok": true
+ },
+ "HB295": {
+  "roll": 1515651,
+  "official": {
+   "date": "2025-03-11",
+   "rcs": 237,
+   "measure": "HB 295",
+   "question": "FINAL PASSAGE",
+   "yea": 38,
+   "nay": 27,
+   "pnv": 0,
+   "excused": 4,
+   "absent": 1
+  },
+  "legiscan": {
+   "date": "2025-03-11",
+   "yea": 38,
+   "nay": 27,
+   "nv": 0,
+   "absent": 5
+  },
+  "ok": true
+ },
+ "HB450": {
+  "roll": 1522265,
+  "official": {
+   "date": "2025-03-19",
+   "rcs": 337,
+   "measure": "HTRC/HB 450/ec",
+   "question": "F I N A L P A S S A G E without emergency clause",
+   "yea": 41,
+   "nay": 25,
+   "pnv": 0,
+   "excused": 4,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-19",
+   "yea": 41,
+   "nay": 25,
+   "nv": 0,
+   "absent": 4
+  },
+  "ok": true
+ },
+ "HB493": {
+  "roll": 1523893,
+  "official": {
+   "date": "2025-03-20",
+   "rcs": 365,
+   "measure": "HAFC/HB 493",
+   "question": "FINAL PASSAGE",
+   "yea": 51,
+   "nay": 13,
+   "pnv": 0,
+   "excused": 6,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-20",
+   "yea": 51,
+   "nay": 13,
+   "nv": 0,
+   "absent": 6
+  },
+  "ok": true
+ },
+ "HB586": {
+  "roll": 1519227,
+  "official": {
+   "date": "2025-03-17",
+   "rcs": 307,
+   "measure": "HJC/HB 586",
+   "question": "FINAL PASSAGE",
+   "yea": 41,
+   "nay": 26,
+   "pnv": 0,
+   "excused": 3,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-17",
+   "yea": 41,
+   "nay": 26,
+   "nv": 0,
+   "absent": 3
+  },
+  "ok": true
+ },
+ "HB6": {
+  "roll": 1492677,
+  "official": {
+   "date": "2025-02-17",
+   "rcs": 61,
+   "measure": "HB 6",
+   "question": "FINAL PASSAGE",
+   "yea": 41,
+   "nay": 26,
+   "pnv": 0,
+   "excused": 2,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-02-17",
+   "yea": 41,
+   "nay": 26,
+   "nv": 0,
+   "absent": 2
+  },
+  "ok": true
+ },
+ "HB66": {
+  "roll": 1493841,
+  "official": {
+   "date": "2025-02-19",
+   "rcs": 71,
+   "measure": "HJC/HB 66",
+   "question": "FINAL PASSAGE",
+   "yea": 36,
+   "nay": 22,
+   "pnv": 0,
+   "excused": 1,
+   "absent": 10
+  },
+  "legiscan": {
+   "date": "2025-02-19",
+   "yea": 36,
+   "nay": 22,
+   "nv": 0,
+   "absent": 11
+  },
+  "ok": true
+ },
+ "HB78": {
+  "roll": 1518278,
+  "official": {
+   "date": "2025-03-15",
+   "rcs": 299,
+   "measure": "HJC/HJC/HB 78",
+   "question": "FINAL PASSAGE",
+   "yea": 36,
+   "nay": 28,
+   "pnv": 0,
+   "excused": 6,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-15",
+   "yea": 36,
+   "nay": 28,
+   "nv": 0,
+   "absent": 6
+  },
+  "ok": true
+ },
+ "HB8": {
+  "roll": 1490733,
+  "official": {
+   "date": "2025-02-15",
+   "rcs": 52,
+   "measure": "HJC/HB 8",
+   "question": "FINAL PASSAGE",
+   "yea": 48,
+   "nay": 20,
+   "pnv": 0,
+   "excused": 1,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-02-15",
+   "yea": 48,
+   "nay": 20,
+   "nv": 0,
+   "absent": 1
+  },
+  "ok": true
+ },
+ "HB89": {
+  "roll": 1503003,
+  "official": {
+   "date": "2025-03-01",
+   "rcs": 135,
+   "measure": "HB 89",
+   "question": "FINAL PASSAGE",
+   "yea": 40,
+   "nay": 25,
+   "pnv": 0,
+   "excused": 5,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-01",
+   "yea": 40,
+   "nay": 25,
+   "nv": 0,
+   "absent": 5
+  },
+  "ok": true
+ },
+ "HB91": {
+  "roll": 1499171,
+  "official": {
+   "date": "2025-02-25",
+   "rcs": 104,
+   "measure": "HB 91/a",
+   "question": "FINAL PASSAGE",
+   "yea": 42,
+   "nay": 25,
+   "pnv": 0,
+   "excused": 1,
+   "absent": 1
+  },
+  "legiscan": {
+   "date": "2025-02-25",
+   "yea": 42,
+   "nay": 25,
+   "nv": 0,
+   "absent": 2
+  },
+  "ok": true
+ },
+ "SB1": {
+  "roll": 1496721,
+  "official": {
+   "date": "2025-02-21",
+   "rcs": 83,
+   "measure": "SB 1/a",
+   "question": "FINAL PASSAGE",
+   "yea": 46,
+   "nay": 19,
+   "pnv": 0,
+   "excused": 3,
+   "absent": 1
+  },
+  "legiscan": {
+   "date": "2025-02-21",
+   "yea": 46,
+   "nay": 19,
+   "nv": 0,
+   "absent": 4
+  },
+  "ok": true
+ },
+ "SB113": {
+  "roll": 1523983,
+  "official": {
+   "date": "2025-03-20",
+   "rcs": 359,
+   "measure": "SB 113/a",
+   "question": "FINAL PASSAGE",
+   "yea": 50,
+   "nay": 14,
+   "pnv": 0,
+   "excused": 5,
+   "absent": 1
+  },
+  "legiscan": {
+   "date": "2025-03-20",
+   "yea": 50,
+   "nay": 14,
+   "nv": 0,
+   "absent": 6
+  },
+  "ok": true
+ },
+ "SB120": {
+  "roll": 1524430,
+  "official": {
+   "date": "2025-03-21",
+   "rcs": 403,
+   "measure": "SHPAC/SB 120/a",
+   "question": "FINAL PASSAGE",
+   "yea": 46,
+   "nay": 17,
+   "pnv": 0,
+   "excused": 5,
+   "absent": 2
+  },
+  "legiscan": {
+   "date": "2025-03-21",
+   "yea": 46,
+   "nay": 17,
+   "nv": 0,
+   "absent": 7
+  },
+  "ok": true
+ },
+ "SB124": {
+  "roll": 1522178,
+  "official": {
+   "date": "2025-03-19",
+   "rcs": 346,
+   "measure": "SB 124/a",
+   "question": "FINAL PASSAGE",
+   "yea": 40,
+   "nay": 23,
+   "pnv": 0,
+   "excused": 7,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-19",
+   "yea": 40,
+   "nay": 23,
+   "nv": 0,
+   "absent": 7
+  },
+  "ok": true
+ },
+ "SB127": {
+  "roll": 1523936,
+  "official": {
+   "date": "2025-03-20",
+   "rcs": 357,
+   "measure": "SB 127/a",
+   "question": "FINAL PASSAGE",
+   "yea": 46,
+   "nay": 19,
+   "pnv": 0,
+   "excused": 5,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-20",
+   "yea": 46,
+   "nay": 19,
+   "nv": 0,
+   "absent": 5
+  },
+  "ok": true
+ },
+ "SB16": {
+  "roll": 1524320,
+  "official": {
+   "date": "2025-03-21",
+   "rcs": 384,
+   "measure": "SB 16/aa",
+   "question": "FINAL PASSAGE",
+   "yea": 36,
+   "nay": 33,
+   "pnv": 0,
+   "excused": 1,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-21",
+   "yea": 36,
+   "nay": 33,
+   "nv": 0,
+   "absent": 1
+  },
+  "ok": true
+ },
+ "SB21": {
+  "roll": 1521928,
+  "official": {
+   "date": "2025-03-19",
+   "rcs": 334,
+   "measure": "SJC/SB 21&22/a",
+   "question": "FINAL PASSAGE",
+   "yea": 43,
+   "nay": 25,
+   "pnv": 0,
+   "excused": 2,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-19",
+   "yea": 43,
+   "nay": 25,
+   "nv": 0,
+   "absent": 2
+  },
+  "ok": true
+ },
+ "SB23": {
+  "roll": 1523849,
+  "official": {
+   "date": "2025-03-20",
+   "rcs": 355,
+   "measure": "SFC/SB 23",
+   "question": "FINAL PASSAGE",
+   "yea": 37,
+   "nay": 31,
+   "pnv": 0,
+   "excused": 2,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-20",
+   "yea": 37,
+   "nay": 31,
+   "nv": 0,
+   "absent": 2
+  },
+  "ok": true
+ },
+ "SB267": {
+  "roll": 1523871,
+  "official": {
+   "date": "2025-03-20",
+   "rcs": 363,
+   "measure": "SJC/SB 267",
+   "question": "FINAL PASSAGE",
+   "yea": 42,
+   "nay": 21,
+   "pnv": 0,
+   "excused": 7,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-20",
+   "yea": 42,
+   "nay": 21,
+   "nv": 0,
+   "absent": 7
+  },
+  "ok": true
+ },
+ "SB290": {
+  "roll": 1524382,
+  "official": {
+   "date": "2025-03-21",
+   "rcs": 398,
+   "measure": "SB 290/a",
+   "question": "FINAL PASSAGE",
+   "yea": 42,
+   "nay": 21,
+   "pnv": 0,
+   "excused": 7,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-21",
+   "yea": 42,
+   "nay": 21,
+   "nv": 0,
+   "absent": 7
+  },
+  "ok": true
+ },
+ "SB3": {
+  "roll": 1496261,
+  "official": {
+   "date": "2025-02-20",
+   "rcs": 78,
+   "measure": "SFC/SB 3/a/ec",
+   "question": "F I N A L P A S S A G E without emergency clause",
+   "yea": 44,
+   "nay": 23,
+   "pnv": 0,
+   "excused": 0,
+   "absent": 2
+  },
+  "legiscan": {
+   "date": "2025-02-20",
+   "yea": 42,
+   "nay": 23,
+   "nv": 0,
+   "absent": 4
+  },
+  "ok": false
+ },
+ "SB36": {
+  "roll": 1520184,
+  "official": {
+   "date": "2025-03-18",
+   "rcs": 321,
+   "measure": "SB 36/aa",
+   "question": "FINAL PASSAGE",
+   "yea": 42,
+   "nay": 23,
+   "pnv": 0,
+   "excused": 4,
+   "absent": 1
+  },
+  "legiscan": {
+   "date": "2025-03-18",
+   "yea": 42,
+   "nay": 23,
+   "nv": 0,
+   "absent": 5
+  },
+  "ok": true
+ },
+ "SB364": {
+  "roll": 1524440,
+  "official": {
+   "date": "2025-03-21",
+   "rcs": 396,
+   "measure": "SB 364",
+   "question": "FINAL PASSAGE",
+   "yea": 38,
+   "nay": 20,
+   "pnv": 0,
+   "excused": 6,
+   "absent": 6
+  },
+  "legiscan": {
+   "date": "2025-03-21",
+   "yea": 38,
+   "nay": 20,
+   "nv": 0,
+   "absent": 12
+  },
+  "ok": true
+ },
+ "SB37": {
+  "roll": 1523940,
+  "official": {
+   "date": "2025-03-20",
+   "rcs": 356,
+   "measure": "SB 37/a",
+   "question": "FINAL PASSAGE",
+   "yea": 42,
+   "nay": 20,
+   "pnv": 0,
+   "excused": 6,
+   "absent": 2
+  },
+  "legiscan": {
+   "date": "2025-03-20",
+   "yea": 42,
+   "nay": 20,
+   "nv": 0,
+   "absent": 8
+  },
+  "ok": true
+ },
+ "SB376": {
+  "roll": 1524394,
+  "official": {
+   "date": "2025-03-21",
+   "rcs": 374,
+   "measure": "SFC/SB 376",
+   "question": "FINAL PASSAGE",
+   "yea": 52,
+   "nay": 13,
+   "pnv": 0,
+   "excused": 4,
+   "absent": 1
+  },
+  "legiscan": {
+   "date": "2025-03-21",
+   "yea": 52,
+   "nay": 13,
+   "nv": 0,
+   "absent": 5
+  },
+  "ok": true
+ },
+ "SB45": {
+  "roll": 1524422,
+  "official": {
+   "date": "2025-03-21",
+   "rcs": 385,
+   "measure": "SB 45/a",
+   "question": "FINAL PASSAGE",
+   "yea": 55,
+   "nay": 14,
+   "pnv": 0,
+   "excused": 1,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-21",
+   "yea": 55,
+   "nay": 14,
+   "nv": 0,
+   "absent": 1
+  },
+  "ok": true
+ },
+ "SB48": {
+  "roll": 1522144,
+  "official": {
+   "date": "2025-03-19",
+   "rcs": 342,
+   "measure": "SB 48/aa",
+   "question": "FINAL PASSAGE",
+   "yea": 39,
+   "nay": 26,
+   "pnv": 0,
+   "excused": 5,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-19",
+   "yea": 39,
+   "nay": 26,
+   "nv": 0,
+   "absent": 5
+  },
+  "ok": true
+ },
+ "SB481": {
+  "roll": 1524436,
+  "official": {
+   "date": "2025-03-21",
+   "rcs": 414,
+   "measure": "STBTC/SB 481/a",
+   "question": "FINAL PASSAGE",
+   "yea": 39,
+   "nay": 26,
+   "pnv": 0,
+   "excused": 5,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-21",
+   "yea": 39,
+   "nay": 26,
+   "nv": 0,
+   "absent": 5
+  },
+  "ok": true
+ },
+ "SB5": {
+  "roll": 1516594,
+  "official": {
+   "date": "2025-03-12",
+   "rcs": 251,
+   "measure": "SB 5/aaaaa",
+   "question": "FINAL PASSAGE",
+   "yea": 42,
+   "nay": 26,
+   "pnv": 0,
+   "excused": 0,
+   "absent": 2
+  },
+  "legiscan": {
+   "date": "2025-03-12",
+   "yea": 42,
+   "nay": 26,
+   "nv": 0,
+   "absent": 2
+  },
+  "ok": true
+ },
+ "SB535": {
+  "roll": 1524365,
+  "official": {
+   "date": "2025-03-21",
+   "rcs": 415,
+   "measure": "SFC/SB 535/aa",
+   "question": "FINAL PASSAGE",
+   "yea": 40,
+   "nay": 23,
+   "pnv": 0,
+   "excused": 7,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-21",
+   "yea": 40,
+   "nay": 23,
+   "nv": 0,
+   "absent": 7
+  },
+  "ok": true
+ },
+ "SB57": {
+  "roll": 1520145,
+  "official": {
+   "date": "2025-03-18",
+   "rcs": 319,
+   "measure": "SB 57",
+   "question": "FINAL PASSAGE",
+   "yea": 42,
+   "nay": 25,
+   "pnv": 0,
+   "excused": 3,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-18",
+   "yea": 42,
+   "nay": 25,
+   "nv": 0,
+   "absent": 3
+  },
+  "ok": true
+ },
+ "SB59": {
+  "roll": 1524366,
+  "official": {
+   "date": "2025-03-21",
+   "rcs": 406,
+   "measure": "STBTC/SB 59",
+   "question": "FINAL PASSAGE",
+   "yea": 34,
+   "nay": 27,
+   "pnv": 0,
+   "excused": 7,
+   "absent": 2
+  },
+  "legiscan": {
+   "date": "2025-03-21",
+   "yea": 34,
+   "nay": 27,
+   "nv": 0,
+   "absent": 9
+  },
+  "ok": true
+ },
+ "SB7": {
+  "roll": 1520401,
+  "official": {
+   "date": "2025-03-18",
+   "rcs": 331,
+   "measure": "SB 7",
+   "question": "FINAL PASSAGE",
+   "yea": 46,
+   "nay": 18,
+   "pnv": 0,
+   "excused": 5,
+   "absent": 1
+  },
+  "legiscan": {
+   "date": "2025-03-18",
+   "yea": 46,
+   "nay": 18,
+   "nv": 0,
+   "absent": 6
+  },
+  "ok": true
+ },
+ "SB73": {
+  "roll": 1519064,
+  "official": {
+   "date": "2025-03-17",
+   "rcs": 305,
+   "measure": "SB 73",
+   "question": "FINAL PASSAGE",
+   "yea": 39,
+   "nay": 27,
+   "pnv": 0,
+   "excused": 4,
+   "absent": 0
+  },
+  "legiscan": {
+   "date": "2025-03-17",
+   "yea": 39,
+   "nay": 27,
+   "nv": 0,
+   "absent": 4
+  },
+  "ok": true
+ },
+ "SB83": {
+  "roll": 1523816,
+  "official": {
+   "date": "2025-03-20",
+   "rcs": 350,
+   "measure": "SB 83/a",
+   "question": "FINAL PASSAGE",
+   "yea": 31,
+   "nay": 25,
+   "pnv": 0,
+   "excused": 9,
+   "absent": 5
+  },
+  "legiscan": {
+   "date": "2025-03-20",
+   "yea": 31,
+   "nay": 25,
+   "nv": 0,
+   "absent": 14
+  },
+  "ok": true
+ },
+ "SB88": {
+  "roll": 1524409,
+  "official": {
+   "date": "2025-03-21",
+   "rcs": 383,
+   "measure": "SB 88/aaa",
+   "question": "FINAL PASSAGE",
+   "yea": 52,
+   "nay": 13,
+   "pnv": 0,
+   "excused": 4,
+   "absent": 1
+  },
+  "legiscan": {
+   "date": "2025-03-21",
+   "yea": 52,
+   "nay": 13,
+   "nv": 0,
+   "absent": 5
+  },
+  "ok": true
+ },
+ "SB9": {
+  "roll": 1524388,
+  "official": {
+   "date": "2025-03-21",
+   "rcs": 401,
+   "measure": "SB 9/a",
+   "question": "FINAL PASSAGE",
+   "yea": 45,
+   "nay": 15,
+   "pnv": 0,
+   "excused": 6,
+   "absent": 4
+  },
+  "legiscan": {
+   "date": "2025-03-21",
+   "yea": 45,
+   "nay": 15,
+   "nv": 0,
+   "absent": 10
+  },
+  "ok": true
+ }
+}
