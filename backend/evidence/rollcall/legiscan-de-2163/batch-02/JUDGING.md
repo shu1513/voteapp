@@ -99,3 +99,30 @@ Maine's LD 613, Missouri's SB 4 and several Alabama measures were all recorded u
 old route and could not be today.
 
 **Production holds no Delaware roll-call records.** Everything here is on local `voteapp`.
+
+## Review corrections, 2026-09-04 — three descriptions re-checked against enacted text
+
+PR review flagged three descriptions as overstating the acts. Each was read again against
+the official text and all three held up, so the sentences were tightened:
+
+- **HB 62.** The 8 a.m. to 4 p.m., Monday through Thursday shut-off window is not an
+  absolute ban with one safety exception. The adopted House Amendment 1 also lets a
+  utility cut service outside those hours "unless such utility provides facilities for
+  payment and restoration of services at all times during such period." The December 21
+  to January 1 ban keeps only the safety exception, so the two limits are now stated
+  separately.
+- **SB 13** (Senate Substitute 1). Full assistance is for "medically necessary hospital
+  services," not all hospital care; "hospital" excludes exclusively psychiatric,
+  rehabilitative, and long-term acute care hospitals; and the hardship policy may carry an
+  income ceiling, "but the ceiling may not be lower than 500% of the federal poverty
+  level." All three qualifications added; "every hospital" dropped.
+- **SB 326**, § 207(b). The Commission "shall provide for management audits ... at least
+  once every five years unless the Commission finds that a specific management audit is
+  unnecessary," and only "may require" an independent firm. "Must happen" became "must
+  order ... unless they find a particular review unnecessary," with the outside firm as an
+  option.
+
+Re-run: judge **3 updated**, import (`import-rerun-report.json`) **59 rewrite, 240
+unchanged, 0 notified** (HB 62 20, SB 13 19, SB 326 20 — records rewritten in place, ids
+and tags kept), convergence dry run (`import-dry-run-rerun-report.json`) **299 unchanged**.
+Still 645 records / 29 candidates. Plain-language lint clean on all six sentences.
