@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest, formatElectionDate, useMe } from "@voteapp/api-client";
@@ -6,7 +6,13 @@ import type { BallotSummary, ElectionChoice, ElectionSummary } from "@voteapp/ap
 import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import type { CandidateNavState, ElectionNavState } from "../lib/detailNavContext";
-import { draftChoicesByElectionId, draftPickCount, useBallotDraft } from "../lib/ballotDraft";
+import {
+  draftChoicesByElectionId,
+  draftPickCount,
+  nearestUpcomingTarget,
+  setDraftBallotContext,
+  useBallotDraft,
+} from "../lib/ballotDraft";
 import { PickDateCard } from "./PicksPage";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
@@ -96,6 +102,21 @@ export function DraftPage() {
       ),
     enabled: me === null && districtIds.length > 0,
   });
+
+  // Same refresh BallotPage does on every successful load: the draft's
+  // progress denominator (the header counter's target day) is a snapshot,
+  // and this page is the other place a guest loads a full election list —
+  // without it a guest who never revisits /ballot keeps a stale target.
+  // District ids are the draft's own, so only the target changes; the
+  // effect keys on the joined ids, not the array identity.
+  const ballotElections = ballot.data?.elections;
+  useEffect(() => {
+    if (me !== null || !ballotElections) {
+      return;
+    }
+    setDraftBallotContext(districtIds, nearestUpcomingTarget(ballotElections, usLatestLocalDate()));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [me, ballotElections, districtIds.join(",")]);
 
   // No-flash rule: nothing until the session state is known.
   if (me === undefined) {

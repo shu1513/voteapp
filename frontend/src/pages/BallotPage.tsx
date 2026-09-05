@@ -7,7 +7,6 @@ import {
   PUBLIC_BALLOT_SORTS,
   type BallotSort,
   type BallotSummary,
-  type ElectionSummary,
 } from "@voteapp/api-client";
 import { ElectionList } from "../components/ElectionCard";
 import { BallotFiltersControl } from "../components/BallotFiltersControl";
@@ -20,34 +19,17 @@ import {
   useElectionChoices,
   useMyResearchAreas,
 } from "@voteapp/api-client";
-import { draftChoicesByElectionId, setDraftBallotContext, useBallotDraft } from "../lib/ballotDraft";
+import {
+  draftChoicesByElectionId,
+  nearestUpcomingTarget,
+  setDraftBallotContext,
+  useBallotDraft,
+} from "../lib/ballotDraft";
 import { useBallotFilterParams } from "../lib/useBallotFilterParams";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { useHydrated } from "../lib/useHydrated";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
-
-// The draft's progress denominator: the nearest upcoming election day's
-// races (all of them, matching PickDateCard's "N of M races decided" count).
-// Computed from the FULL payload, not the filtered view — hiding races with
-// a filter must not shrink the goal.
-function nearestUpcomingTarget(
-  elections: ElectionSummary[]
-): { election_date: string; election_ids: string[] } | null {
-  const today = usLatestLocalDate();
-  const upcoming = elections.filter((election) => election.election_date >= today);
-  if (upcoming.length === 0) {
-    return null;
-  }
-  const date = upcoming.reduce(
-    (min, election) => (election.election_date < min ? election.election_date : min),
-    upcoming[0].election_date
-  );
-  return {
-    election_date: date,
-    election_ids: upcoming.filter((election) => election.election_date === date).map((election) => election.id),
-  };
-}
 
 // The anonymous endpoint can honor these server-side. my_areas is offered on
 // top of them to signed-in visitors with saved research areas, honored by a
@@ -149,7 +131,7 @@ export function BallotPage() {
     if (!isGuest || !ballotElections) {
       return;
     }
-    setDraftBallotContext(districtIds, nearestUpcomingTarget(ballotElections));
+    setDraftBallotContext(districtIds, nearestUpcomingTarget(ballotElections, usLatestLocalDate()));
     // districtIds is rebuilt each render; its joined string is the stable key.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGuest, ballotElections, districtIds.join(",")]);
