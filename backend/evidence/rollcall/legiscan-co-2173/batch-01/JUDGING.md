@@ -145,3 +145,28 @@ the money and give seven days' notice before suing (HB 25-1249); and that the
 excluded charges are government charges generally, not only taxes (HB 25-1090).
 This is the failure shape earlier states hit repeatedly: simplification is where
 precision dies.
+
+## Review corrections, 2026-09-04 — two more qualifiers restored
+
+PR review flagged two descriptions as overstating their acts. Both were re-read
+against the signed act and both held up:
+
+- **HB 25-1133.** The description listed four exceptions for 18-to-20-year-olds
+  and said delivery recipients must be 21, but the act carries a fifth,
+  time-limited exception for both sales (p. 2) and deliveries (p. 5): a person
+  "born on or before January 28, 2007", repealed January 28, 2028 — the day the
+  youngest such person turns 21. It is the act's phase-in, so a 20-year-old in
+  2026 is not barred as the old text implied. Added as one sentence; the delivery
+  sentence now says the deliverer checks age with a photo ID rather than
+  restating 21.
+- **HB 25-1090.** "Cannot charge more for utilities than the utility bills them"
+  omitted the cross-reference to 38-12-801 (3)(a)(VI) (p. 8, p. 10): a lease may
+  carry a markup of up to 2% of the bill or up to $10 a month, "but not both".
+  And the 2% cap on fee increases during a lease of a year or less applies
+  "except for the cost of utilities". Both exceptions added.
+
+Re-run: judge **4 updated**, import (`import-rerun-report.json`) **100 rewrite,
+243 unchanged, 0 notified** (HB 25-1133 House 39, Senate 11; HB 25-1090 House
+39, Senate 11 — rewritten in place, ids and tags kept), convergence dry run
+(`import-dry-run-rerun-report.json`) **343 unchanged**. Still 343 records / 52
+candidates. Longest sentence still 40 words.
