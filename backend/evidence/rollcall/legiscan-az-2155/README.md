@@ -11,6 +11,7 @@ no Arizona roll-call records.** No AI provider call is involved anywhere in this
 - `survey/` — the measured description histogram, and the fully dispositioned worklist of
   every divided vote on a bill the Governor signed.
 - `batch-01/` — 11 measures, 15 rolls, the judgments, the roll evidence, and the import ledgers.
+- `batch-02/` — 21 measures, 26 rolls, which closes the divided-and-signed pool.
 - `CODE-FINDINGS.md` — feed and pipeline findings recorded but not fixed.
 
 ## The feed
@@ -117,12 +118,38 @@ Arizona's published record is the best of any state in this campaign.
 header and the bill page both print `old subject (NOW: new subject)`. Batch-01's SB 1247 is one,
 and its description says so. Never judge an Arizona measure from its short title.
 
-## Status
+## Status — the divided-and-signed pool is closed
 
-Batch-01 imported on the local database: **11 measures / 15 rolls / 408 records / 54 candidates
-/ 286 tags**, no errors, nothing notified. 54 is every candidate the crosswalk maps — Arizona's
-Speaker votes, so there is no Texas or Georgia style shortfall. Production is untouched.
+**Arizona holds 1,090 live records across 54 candidates and 741 tags on the local database.**
+54 is every candidate the crosswalk maps — Arizona's Speaker votes, so there is no Texas or
+Georgia style shortfall. **Production is untouched.**
 
-Every one of the 184 rows in `survey/divided-signed-worklist.tsv` carries a disposition:
-15 imported, 49 not selected because the chamber voted an earlier draft, 7 dropped with a
-written reason, and 113 rows on 93 measures left as batch-02 candidates.
+| batch | measures | rolls | records |
+| --- | --- | --- | --- |
+| batch-01 | 11 | 15 | 408 |
+| batch-02 | 21 | 26 | 682 |
+
+**Every one of the 184 rows in `survey/divided-signed-worklist.tsv` carries a disposition and
+none is open**: 41 imported, 49 not selected because that chamber voted an earlier draft, and
+94 dropped with a written reason. The 77 measures that reached a full read were each read
+through their enacted-stage staff analysis before being kept or dropped.
+
+**Nine research areas are covered across twelve area-and-direction pairs**, with both
+directions present in `civil_rights`, `environment_and_public_health` and
+`public_safety_and_crime_control`. Counted from the tag table, not from memory.
+
+## What is left in Arizona
+
+1. **Promotion to production**, which holds no Arizona records. The two duplicate retirements in
+   `batch-02/duplicate-retirements.json` must be re-run there.
+2. **374 divided roll calls on 174 vetoed measures** — a scope no Arizona batch has touched. In
+   a state with a Republican legislature and a Democratic governor this is where the parties
+   actually differ, and Pennsylvania's batch-02 established how to word a measure that did not
+   become law.
+3. **48 divided votes on 36 ballot referrals**, unreachable until the concurrent-resolution gap
+   in `CODE-FINDINGS.md` finding 1 is addressed.
+4. **The 2026 session, LegiScan 2235**, untouched. It needs an `AZ-2235` registry key only,
+   following the MO-2226 precedent, with no code change.
+5. Optionally, widening scope to the July primary (`--scope-from 2026-07-01`), which would add
+   about 14 sitting representatives to the House fan-out; a re-import picks them up
+   idempotently.
