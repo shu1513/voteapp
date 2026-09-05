@@ -118,3 +118,8 @@ failure shape this campaign keeps hitting:
   **across the board**.
 - HB 25-1117: the **24-hour written windshield warning** before booting in a
   parking space or shared lot had been compressed away entirely.
+  Review of the pull request then caught the restored sentence overstating
+  it: `40-10.1-805(3)(d)` waives the warning for a repeat of the same
+  violation and for fire zones, blocked driveways, disabled spaces, a
+  resident's assigned space and residents-only lots. The four descriptions
+  now name those cases; the 51 records were rewritten in place.
