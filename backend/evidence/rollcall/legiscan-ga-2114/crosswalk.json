@@ -1,0 +1,1186 @@
+{
+ "source": "legiscan",
+ "jurisdiction": "GA",
+ "entries": [
+  {
+   "people_id": 1782,
+   "candidate_id": "628eae8d-858c-45dd-aef3-37b097758d92",
+   "note": null
+  },
+  {
+   "people_id": 1795,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Roger Bruce (HD-061)"
+  },
+  {
+   "people_id": 1797,
+   "candidate_id": "8432baf6-98c2-48b4-92cb-b2ae2ef13c77",
+   "note": null
+  },
+  {
+   "people_id": 1799,
+   "candidate_id": "e924410c-8e33-4520-9940-737b47c8557f",
+   "note": null
+  },
+  {
+   "people_id": 1801,
+   "candidate_id": "b6a7abfb-7954-491e-b910-be78d927a914",
+   "note": null
+  },
+  {
+   "people_id": 1807,
+   "candidate_id": "c51a4d44-afd5-4d1b-8a15-417e382b8dea",
+   "note": null
+  },
+  {
+   "people_id": 1813,
+   "candidate_id": "5d46c96c-6e5c-4271-a2a9-6292ad0aeed7",
+   "note": null
+  },
+  {
+   "people_id": 1820,
+   "candidate_id": "ec3c47bc-e723-4806-ab53-40b591ceddba",
+   "note": null
+  },
+  {
+   "people_id": 1826,
+   "candidate_id": "5c3b164b-d06e-4c32-8bd8-51c148f13fd4",
+   "note": null
+  },
+  {
+   "people_id": 1836,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Gloria Frazier (HD-126)"
+  },
+  {
+   "people_id": 1844,
+   "candidate_id": "0f8335b3-b751-4c0d-901e-2e5fd858e556",
+   "note": null
+  },
+  {
+   "people_id": 1859,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Penny Houston (HD-170)"
+  },
+  {
+   "people_id": 1862,
+   "candidate_id": "012533fb-d4d6-4aa3-a94b-1567219fa05e",
+   "note": null
+  },
+  {
+   "people_id": 1863,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-128 has other candidates on file"
+  },
+  {
+   "people_id": 1869,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-47 has other candidates on file"
+  },
+  {
+   "people_id": 1870,
+   "candidate_id": "f03ea1cc-ae78-4b89-9e58-39a9444132eb",
+   "note": null
+  },
+  {
+   "people_id": 1876,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for David Knight (HD-134)"
+  },
+  {
+   "people_id": 1884,
+   "candidate_id": "9dfe44f9-fce4-4140-b0e3-a55e625de50b",
+   "note": null
+  },
+  {
+   "people_id": 1890,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Pedro Marin (HD-096)"
+  },
+  {
+   "people_id": 1891,
+   "candidate_id": "5bec5c2a-57b3-4f5e-a0f7-afcf1193105b",
+   "note": null
+  },
+  {
+   "people_id": 1900,
+   "candidate_id": "b42b2061-1864-48a5-88fd-4af04b259f12",
+   "note": null
+  },
+  {
+   "people_id": 1908,
+   "candidate_id": "8ef66804-9435-4973-ae4f-72dd6bd38a3a",
+   "note": null
+  },
+  {
+   "people_id": 1910,
+   "candidate_id": "bf45c9a1-3c85-4ef6-a680-03179c495cfa",
+   "note": "LegiScan working name 'Butch' vs legal name 'Larry'; same seat HD-158, same party (R), candidate holds the office and chairs rules"
+  },
+  {
+   "people_id": 1911,
+   "candidate_id": "ce32c129-906c-4931-8e51-2c9358a08520",
+   "note": null
+  },
+  {
+   "people_id": 1914,
+   "candidate_id": "f3db1332-8827-4c10-b35f-2dbaed9e398e",
+   "note": null
+  },
+  {
+   "people_id": 1931,
+   "candidate_id": "20082a2a-a202-4e4f-8af2-19cd3b4b16c5",
+   "note": null
+  },
+  {
+   "people_id": 1941,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-70 has other candidates on file"
+  },
+  {
+   "people_id": 1942,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Richard Smith (HD-139)"
+  },
+  {
+   "people_id": 1947,
+   "candidate_id": "0b9bd1da-7ca5-4636-9ecb-79ed98edaee8",
+   "note": null
+  },
+  {
+   "people_id": 1958,
+   "candidate_id": "9b18ac07-00ac-469e-8860-9fe4a44c08ab",
+   "note": null
+  },
+  {
+   "people_id": 1969,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Gloria Butler (SD-055)"
+  },
+  {
+   "people_id": 1974,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; senate-46 has other candidates on file"
+  },
+  {
+   "people_id": 1982,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; senate-15 has other candidates on file"
+  },
+  {
+   "people_id": 1984,
+   "candidate_id": "3f9c75ca-d982-4f00-8db0-7c3c611d444e",
+   "note": null
+  },
+  {
+   "people_id": 1993,
+   "candidate_id": "5bb0d24e-f5f1-4514-b844-56e66dfb8a2c",
+   "note": null
+  },
+  {
+   "people_id": 1995,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; senate-10 has other candidates on file"
+  },
+  {
+   "people_id": 1999,
+   "candidate_id": "93df8a10-227a-494f-99f4-7a8e7a3b366e",
+   "note": null
+  },
+  {
+   "people_id": 2006,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Valencia Seay (SD-034)"
+  },
+  {
+   "people_id": 2008,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; senate-12 has other candidates on file"
+  },
+  {
+   "people_id": 2011,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Doug Stoner (HD-040)"
+  },
+  {
+   "people_id": 2013,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Horacena Tate (SD-038)"
+  },
+  {
+   "people_id": 11777,
+   "candidate_id": "4cb6a084-9a5e-421a-9772-5a468c1f22fc",
+   "note": "snapshot first_name is the legal 'Hugh' (Bruce lives in the nickname field, which the proposer does not read), so no first/last match; same seat HD-112, same party (R), candidate holds the office"
+  },
+  {
+   "people_id": 11778,
+   "candidate_id": "7a69c28c-3d41-480c-af00-86455629dedb",
+   "note": null
+  },
+  {
+   "people_id": 11785,
+   "candidate_id": "91f33fcf-bff5-47f7-81f5-8a39f6c26dbb",
+   "note": null
+  },
+  {
+   "people_id": 11786,
+   "candidate_id": "1e399553-8fbe-46f5-9f2e-cde3467475d7",
+   "note": null
+  },
+  {
+   "people_id": 11788,
+   "candidate_id": "372cae41-3416-4785-a2b2-aabca0550da5",
+   "note": null
+  },
+  {
+   "people_id": 11792,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; senate-51 has other candidates on file"
+  },
+  {
+   "people_id": 11925,
+   "candidate_id": "8fd2b631-b600-4b7a-9a5b-5b39f5e2ba73",
+   "note": null
+  },
+  {
+   "people_id": 11926,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; senate-44 has other candidates on file"
+  },
+  {
+   "people_id": 11927,
+   "candidate_id": "ab43f4fc-6a52-49e9-b633-2ddf03ad9560",
+   "note": null
+  },
+  {
+   "people_id": 12039,
+   "candidate_id": "004f83e7-7f84-4eff-a620-6991b3a3a9f3",
+   "note": null
+  },
+  {
+   "people_id": 12040,
+   "candidate_id": "31d4581a-3010-422a-a906-5ebd4b127e50",
+   "note": "LegiScan name 'James Hatchett' (James Matthew Hatchett) vs working name 'Matt'; same seat HD-155, same party (R), candidate holds the office and chairs appropriations"
+  },
+  {
+   "people_id": 12041,
+   "candidate_id": "1f212612-bc0e-4eb4-9f3e-da743adaf916",
+   "note": null
+  },
+  {
+   "people_id": 12043,
+   "candidate_id": "ec1f2d28-74f9-4d88-ba75-57c318e763c7",
+   "note": null
+  },
+  {
+   "people_id": 12120,
+   "candidate_id": "fc6eb005-9f36-40d5-be85-d8319051b194",
+   "note": null
+  },
+  {
+   "people_id": 12192,
+   "candidate_id": "adc1958c-cce5-421f-8a39-f03cacdeea2d",
+   "note": null
+  },
+  {
+   "people_id": 12194,
+   "candidate_id": "0b9d4d2f-9155-4834-ba17-c5b82e7cdf94",
+   "note": null
+  },
+  {
+   "people_id": 12477,
+   "candidate_id": "e7257eaa-3a73-489c-aadc-27f48c1f31b0",
+   "note": null
+  },
+  {
+   "people_id": 13757,
+   "candidate_id": "07a9d555-10ff-4ccf-937f-9ef3b3f91546",
+   "note": null
+  },
+  {
+   "people_id": 13778,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for James Beverly (HD-143)"
+  },
+  {
+   "people_id": 13779,
+   "candidate_id": "6ebaef69-5ec4-4598-8cc5-1690c0b96d7d",
+   "note": null
+  },
+  {
+   "people_id": 13780,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-31 has other candidates on file"
+  },
+  {
+   "people_id": 15155,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; senate-21 has other candidates on file"
+  },
+  {
+   "people_id": 15156,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Michael Dugan (SD-030)"
+  },
+  {
+   "people_id": 15161,
+   "candidate_id": "e0adffa7-6df9-4426-8f68-c1208b464a4b",
+   "note": null
+  },
+  {
+   "people_id": 15167,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Barry Fleming (HD-125)"
+  },
+  {
+   "people_id": 15168,
+   "candidate_id": "cf3ca907-49fc-4daf-93d6-65dd3aa98d16",
+   "note": null
+  },
+  {
+   "people_id": 15169,
+   "candidate_id": "1f59783d-26eb-4246-b0a3-5da5363736e5",
+   "note": "sitting senator (SD-042) running STATEWIDE for Attorney General; candidate row's current_office says 'Georgia State Senator, District 42'"
+  },
+  {
+   "people_id": 15175,
+   "candidate_id": "201432fc-d16b-43c6-925a-14ccb52126cb",
+   "note": null
+  },
+  {
+   "people_id": 15176,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-177 has other candidates on file"
+  },
+  {
+   "people_id": 15177,
+   "candidate_id": "47fe544d-4c60-4348-8062-b1a5766cf162",
+   "note": null
+  },
+  {
+   "people_id": 15185,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-94 has other candidates on file"
+  },
+  {
+   "people_id": 15187,
+   "candidate_id": "41bf5257-18ae-442a-b3e6-5a5b75b2259a",
+   "note": null
+  },
+  {
+   "people_id": 15191,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-23 has other candidates on file"
+  },
+  {
+   "people_id": 15194,
+   "candidate_id": "041e2717-7540-4222-b901-04d3c5f0c0e4",
+   "note": null
+  },
+  {
+   "people_id": 15195,
+   "candidate_id": "9550664b-53a2-4dca-b1c2-de5237dad3b1",
+   "note": null
+  },
+  {
+   "people_id": 15198,
+   "candidate_id": "5c74e8f6-f5af-43e3-80d8-f677f55b5825",
+   "note": null
+  },
+  {
+   "people_id": 15199,
+   "candidate_id": "d09f0bba-c40c-4d0e-ba59-38c85917fbab",
+   "note": null
+  },
+  {
+   "people_id": 15201,
+   "candidate_id": "8a5d4e6d-4e34-4c0f-8691-38124467e197",
+   "note": null
+  },
+  {
+   "people_id": 15202,
+   "candidate_id": "e0b12207-0d76-4dd0-9e95-30e25e3b95e0",
+   "note": null
+  },
+  {
+   "people_id": 16153,
+   "candidate_id": "f10c58c1-bbed-4cb9-834d-5027bb698155",
+   "note": null
+  },
+  {
+   "people_id": 16154,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-109 has other candidates on file"
+  },
+  {
+   "people_id": 16155,
+   "candidate_id": "1097240f-7179-4005-bf77-4c0b21a63edc",
+   "note": null
+  },
+  {
+   "people_id": 16222,
+   "candidate_id": "6ee9b10f-6bb3-4bab-840a-05a79b6557c6",
+   "note": null
+  },
+  {
+   "people_id": 16721,
+   "candidate_id": "a620286e-00a1-4aa0-a6ca-81c40b589199",
+   "note": null
+  },
+  {
+   "people_id": 16725,
+   "candidate_id": "35510be8-f0e5-41b0-98ed-43dbc285e278",
+   "note": null
+  },
+  {
+   "people_id": 16729,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-157 has other candidates on file"
+  },
+  {
+   "people_id": 16730,
+   "candidate_id": "1a28933d-c5c4-4342-b05a-157867b68061",
+   "note": null
+  },
+  {
+   "people_id": 16731,
+   "candidate_id": "96abc127-047b-4fc4-ab8e-0f980163e524",
+   "note": null
+  },
+  {
+   "people_id": 16732,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; senate-18 has other candidates on file"
+  },
+  {
+   "people_id": 16735,
+   "candidate_id": "a9add994-5a18-4f19-a0c5-e5dfee89291a",
+   "note": null
+  },
+  {
+   "people_id": 17397,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-100 has other candidates on file"
+  },
+  {
+   "people_id": 17556,
+   "candidate_id": "75bb6175-c9a0-4251-8d3a-ef7eded1891b",
+   "note": null
+  },
+  {
+   "people_id": 17797,
+   "candidate_id": "b50add51-76ab-4880-a3ee-d7ed4e7122df",
+   "note": null
+  },
+  {
+   "people_id": 17798,
+   "candidate_id": "57486682-a29a-43a8-bb6f-a8cf1e79a950",
+   "note": null
+  },
+  {
+   "people_id": 17800,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Jodi Lott (HD-131)"
+  },
+  {
+   "people_id": 17802,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Clay Pirkle (HD-169)"
+  },
+  {
+   "people_id": 17843,
+   "candidate_id": "af285cd5-259f-4e58-9bb3-32b2f3e35b87",
+   "note": null
+  },
+  {
+   "people_id": 17915,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-58 has other candidates on file"
+  },
+  {
+   "people_id": 18706,
+   "candidate_id": "4123b635-5874-4ade-810c-be9a7f43d542",
+   "note": null
+  },
+  {
+   "people_id": 18707,
+   "candidate_id": "69b8b247-3fc2-4406-9cf3-ab112818f1c6",
+   "note": null
+  },
+  {
+   "people_id": 18708,
+   "candidate_id": "5f558da7-504c-4c7c-be93-23c2b15e8597",
+   "note": null
+  },
+  {
+   "people_id": 18709,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; senate-19 has other candidates on file"
+  },
+  {
+   "people_id": 18875,
+   "candidate_id": "cc8a0cfa-7dc9-43ad-9174-9800a8570b40",
+   "note": null
+  },
+  {
+   "people_id": 18879,
+   "candidate_id": "c4213c78-49e1-484b-8c1d-ad1462069022",
+   "note": null
+  },
+  {
+   "people_id": 18880,
+   "candidate_id": "38d29955-63eb-400a-a98e-1d77600d67cf",
+   "note": null
+  },
+  {
+   "people_id": 18881,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for J Collins (HD-071)"
+  },
+  {
+   "people_id": 18883,
+   "candidate_id": "2bea4ece-5d2d-4064-887a-78ec36c09975",
+   "note": null
+  },
+  {
+   "people_id": 18884,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-162 has other candidates on file"
+  },
+  {
+   "people_id": 18887,
+   "candidate_id": "b3e66036-2068-4730-bb28-2410e8450e2f",
+   "note": null
+  },
+  {
+   "people_id": 18889,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-68 has other candidates on file"
+  },
+  {
+   "people_id": 18890,
+   "candidate_id": "c7e87e5a-e217-4566-b7e3-c2d2e7f52762",
+   "note": null
+  },
+  {
+   "people_id": 18895,
+   "candidate_id": "a908a75d-40d6-48a2-96dd-20338d31bc42",
+   "note": null
+  },
+  {
+   "people_id": 18896,
+   "candidate_id": "37c37d67-08b5-40ad-8d5a-66dec98a9631",
+   "note": null
+  },
+  {
+   "people_id": 18898,
+   "candidate_id": "98d175a4-72be-4258-8ada-64114ded864a",
+   "note": null
+  },
+  {
+   "people_id": 18899,
+   "candidate_id": "f0beb55c-8088-41f4-ab5e-34d832c673e8",
+   "note": null
+  },
+  {
+   "people_id": 19105,
+   "candidate_id": "c03dbfb3-40d2-4dcc-8c59-ce4b87437a54",
+   "note": null
+  },
+  {
+   "people_id": 19497,
+   "candidate_id": "eb499e48-473b-49f9-a16c-21e8f3bee19c",
+   "note": null
+  },
+  {
+   "people_id": 19498,
+   "candidate_id": "c4c03ce7-4e8d-494a-9382-84f6c1366d51",
+   "note": null
+  },
+  {
+   "people_id": 19514,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Teri Anulewicz (HD-042)"
+  },
+  {
+   "people_id": 19524,
+   "candidate_id": "99b853ba-0ae5-49b9-a92c-dc2192c7d935",
+   "note": null
+  },
+  {
+   "people_id": 19584,
+   "candidate_id": "3c3f5934-c492-4c79-a558-8d9d3ed7785f",
+   "note": null
+  },
+  {
+   "people_id": 20734,
+   "candidate_id": "19c435a8-c1d1-4fbe-8be8-2fffa643934e",
+   "note": "sitting senator (SD-027) running STATEWIDE for Lieutenant Governor; candidate row's current_office says 'Georgia State Senator, District 27'"
+  },
+  {
+   "people_id": 20735,
+   "candidate_id": "dbd26188-8615-4254-9bc1-032517f12761",
+   "note": null
+  },
+  {
+   "people_id": 20737,
+   "candidate_id": "b135007f-905b-4c6d-86bc-7eeb3ac3040c",
+   "note": null
+  },
+  {
+   "people_id": 20738,
+   "candidate_id": "4784c588-8963-4a71-9185-d6ed78835a44",
+   "note": null
+  },
+  {
+   "people_id": 20841,
+   "candidate_id": "d7a722ef-c2f8-442b-b2f1-7c8277b5b8c6",
+   "note": null
+  },
+  {
+   "people_id": 20842,
+   "candidate_id": "179bd2a1-bfec-4e79-b80a-6a406f9374aa",
+   "note": "sitting senator (SD-014) running STATEWIDE for Lieutenant Governor; candidate row's current_office says 'Georgia State Senator, District 14'"
+  },
+  {
+   "people_id": 20844,
+   "candidate_id": "4c7ec7bf-7f10-4210-96d5-c4b56d354283",
+   "note": null
+  },
+  {
+   "people_id": 20968,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-108 has other candidates on file"
+  },
+  {
+   "people_id": 20969,
+   "candidate_id": "955e84b6-52e4-4800-938e-fbb1f1afb457",
+   "note": null
+  },
+  {
+   "people_id": 20970,
+   "candidate_id": "face7459-ca0f-47c7-b95e-5fb6db166208",
+   "note": null
+  },
+  {
+   "people_id": 20971,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Becky Evans (HD-089)"
+  },
+  {
+   "people_id": 20972,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-120 has other candidates on file"
+  },
+  {
+   "people_id": 20973,
+   "candidate_id": "89bcf79c-ae7b-43a7-9b90-dc352b69986f",
+   "note": null
+  },
+  {
+   "people_id": 20974,
+   "candidate_id": "6a80e588-a068-4bd0-9a24-5cc08d24a8a3",
+   "note": null
+  },
+  {
+   "people_id": 20975,
+   "candidate_id": "3c43ef19-563a-459a-a177-7b7cfef78551",
+   "note": null
+  },
+  {
+   "people_id": 20977,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-106 has other candidates on file"
+  },
+  {
+   "people_id": 20979,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Gregg Kennard (HD-101)"
+  },
+  {
+   "people_id": 20980,
+   "candidate_id": "ddd0dd4f-32aa-4c20-b1c4-58bf1cc13a31",
+   "note": null
+  },
+  {
+   "people_id": 20982,
+   "candidate_id": "ac2952e1-ad4d-4bd4-a6d5-aa9420546c3e",
+   "note": null
+  },
+  {
+   "people_id": 20983,
+   "candidate_id": "82a0ad3c-a4a3-4cdc-99f3-a67ae752f361",
+   "note": null
+  },
+  {
+   "people_id": 20985,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; senate-53 has other candidates on file"
+  },
+  {
+   "people_id": 20987,
+   "candidate_id": "0a966b03-7cf7-447f-9d24-3f8a1112d328",
+   "note": null
+  },
+  {
+   "people_id": 20988,
+   "candidate_id": "d930dee7-c02d-42df-94af-c220c31f3efd",
+   "note": null
+  },
+  {
+   "people_id": 20989,
+   "candidate_id": "16f15d9f-090b-453f-b20f-4a3e0874753b",
+   "note": null
+  },
+  {
+   "people_id": 20990,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-121 has other candidates on file"
+  },
+  {
+   "people_id": 20992,
+   "candidate_id": "821d8447-07fa-4704-98a1-4506bbe4e522",
+   "note": null
+  },
+  {
+   "people_id": 20993,
+   "candidate_id": "4589f246-8f81-47ec-9e98-36cf4ae692fb",
+   "note": null
+  },
+  {
+   "people_id": 21114,
+   "candidate_id": "7a3f48b9-396a-428d-b380-a04d5e00a0b3",
+   "note": null
+  },
+  {
+   "people_id": 21240,
+   "candidate_id": "ffe84d2f-9333-4126-bb39-fb52fd9f211d",
+   "note": null
+  },
+  {
+   "people_id": 21333,
+   "candidate_id": "0b027a13-1590-4f87-82a0-5b131169cef2",
+   "note": null
+  },
+  {
+   "people_id": 21417,
+   "candidate_id": "83a5ff40-00ac-4eaf-bb74-2d23f9d47075",
+   "note": null
+  },
+  {
+   "people_id": 21611,
+   "candidate_id": "ed561191-a61f-4f04-abe8-1d2bda4becc0",
+   "note": null
+  },
+  {
+   "people_id": 21619,
+   "candidate_id": "b84f5566-44c2-42c8-9ec2-5cee8b43beaf",
+   "note": null
+  },
+  {
+   "people_id": 22295,
+   "candidate_id": "ea67436b-5323-4451-be72-febabb9ac4cd",
+   "note": null
+  },
+  {
+   "people_id": 22296,
+   "candidate_id": "c19ccf2d-fffc-416b-9270-7d1a347d98ec",
+   "note": null
+  },
+  {
+   "people_id": 22297,
+   "candidate_id": "803d7551-3b66-474c-a726-41d5f4cf463e",
+   "note": null
+  },
+  {
+   "people_id": 22298,
+   "candidate_id": "ced23c7f-7967-4e2f-8ca4-32da12322d78",
+   "note": null
+  },
+  {
+   "people_id": 22299,
+   "candidate_id": "0fcfceaf-9361-45a9-9afb-4b793f4f84fb",
+   "note": null
+  },
+  {
+   "people_id": 22300,
+   "candidate_id": "fc2ff322-bb8a-41fc-af3c-827b520ad669",
+   "note": null
+  },
+  {
+   "people_id": 22301,
+   "candidate_id": "ae86e333-5426-406a-956a-6be0ae1674a3",
+   "note": null
+  },
+  {
+   "people_id": 22302,
+   "candidate_id": "144d7fbb-b7f5-4aef-944e-fe44533b2ebd",
+   "note": null
+  },
+  {
+   "people_id": 22303,
+   "candidate_id": "d6ed3305-aea1-45b4-ab49-a233e5e3a478",
+   "note": null
+  },
+  {
+   "people_id": 22305,
+   "candidate_id": "6c3ede43-5fe2-4cff-ad1a-f726729b205f",
+   "note": null
+  },
+  {
+   "people_id": 22325,
+   "candidate_id": "dab64126-de0e-41ca-8317-c4eaaed6654f",
+   "note": null
+  },
+  {
+   "people_id": 22326,
+   "candidate_id": "cf8ae44a-1086-4857-a3a2-472484099251",
+   "note": null
+  },
+  {
+   "people_id": 22327,
+   "candidate_id": "17a523f4-12e5-45d7-be70-5073fb5c7da4",
+   "note": null
+  },
+  {
+   "people_id": 22328,
+   "candidate_id": "0479e6bb-6489-40f1-96ee-45b7d784ffde",
+   "note": null
+  },
+  {
+   "people_id": 22329,
+   "candidate_id": "227f6420-0e8b-4072-9c48-c4c71d278fb6",
+   "note": "LegiScan first_name 'Homer' vs working name 'Buddy'; same seat HD-167, same party (R), candidate holds the office"
+  },
+  {
+   "people_id": 22330,
+   "candidate_id": "eb9f1088-7420-489f-a9dd-8801c19e6f02",
+   "note": null
+  },
+  {
+   "people_id": 22331,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-113 has other candidates on file"
+  },
+  {
+   "people_id": 22332,
+   "candidate_id": "095bf8a0-1e46-4043-9e2b-0c7467de9f87",
+   "note": null
+  },
+  {
+   "people_id": 22333,
+   "candidate_id": "5f519ac6-41c1-4c5e-9aac-b149b9c645d8",
+   "note": null
+  },
+  {
+   "people_id": 22334,
+   "candidate_id": "9d52e6ed-47ca-423f-8ef2-b6e4bf0dcbc0",
+   "note": null
+  },
+  {
+   "people_id": 22335,
+   "candidate_id": "bfab7ec3-2123-4560-ad8a-0bbb17962d5e",
+   "note": null
+  },
+  {
+   "people_id": 22337,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Mesha Mainor (HD-056)"
+  },
+  {
+   "people_id": 22338,
+   "candidate_id": "3ebac5af-1e8e-40eb-a0d1-47346765cedd",
+   "note": null
+  },
+  {
+   "people_id": 22339,
+   "candidate_id": "f4d6665a-ca09-4362-897e-e408884e4eae",
+   "note": null
+  },
+  {
+   "people_id": 22342,
+   "candidate_id": "67a33845-2d43-4780-879a-f3e05e302a13",
+   "note": null
+  },
+  {
+   "people_id": 22343,
+   "candidate_id": "cf1df18c-3f91-484d-a31b-c4c88a74fdc5",
+   "note": null
+  },
+  {
+   "people_id": 22344,
+   "candidate_id": "4def5ee4-9913-4f18-8dfd-37420f77c965",
+   "note": null
+  },
+  {
+   "people_id": 22345,
+   "candidate_id": "556aae84-0e56-43a3-934b-f86b4bbda1d5",
+   "note": null
+  },
+  {
+   "people_id": 22346,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Mandisha Thomas (HD-065)"
+  },
+  {
+   "people_id": 22347,
+   "candidate_id": "cee83702-2bfd-4f2b-a601-cecbe463d532",
+   "note": "sitting house HD-009 member running for a different seat (state_upper: State Senate District 51 (2024)); identity confirmed by party and profile"
+  },
+  {
+   "people_id": 22900,
+   "candidate_id": "1200ef81-cdb3-4788-abd2-0c591a756636",
+   "note": null
+  },
+  {
+   "people_id": 22970,
+   "candidate_id": "bc7f7013-46c3-4bd4-b238-cc236f06f81e",
+   "note": null
+  },
+  {
+   "people_id": 22971,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; house-165 has other candidates on file"
+  },
+  {
+   "people_id": 22972,
+   "candidate_id": "3c718aaf-c7fe-4f3f-8933-167c194df8ed",
+   "note": null
+  },
+  {
+   "people_id": 23944,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Shelly Echols (SD-049)"
+  },
+  {
+   "people_id": 23945,
+   "candidate_id": "7aaae09e-4386-45ec-bf54-755e36b9c0cd",
+   "note": null
+  },
+  {
+   "people_id": 23973,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; senate-35 has other candidates on file"
+  },
+  {
+   "people_id": 23974,
+   "candidate_id": "8db8b578-96ca-4482-ab8b-577daa40eacc",
+   "note": null
+  },
+  {
+   "people_id": 24402,
+   "candidate_id": "9d3a8648-9472-4806-8238-d8f6bdb859e0",
+   "note": null
+  },
+  {
+   "people_id": 24403,
+   "candidate_id": "d26ab7ce-9db7-4e41-8918-6679845dec3e",
+   "note": null
+  },
+  {
+   "people_id": 24404,
+   "candidate_id": "4ca5ca00-5c99-4d7a-ad87-80e29e17f2da",
+   "note": null
+  },
+  {
+   "people_id": 24405,
+   "candidate_id": "5df18933-efb0-4a67-9350-fa07c59e496c",
+   "note": null
+  },
+  {
+   "people_id": 24419,
+   "candidate_id": "f62a434d-c924-4149-8621-fb1125a171d7",
+   "note": null
+  },
+  {
+   "people_id": 24420,
+   "candidate_id": "ed512cb3-22c4-4378-b445-f4379079dc11",
+   "note": null
+  },
+  {
+   "people_id": 24421,
+   "candidate_id": "b5296a7e-e3e7-49f2-b922-cebc921acfd9",
+   "note": null
+  },
+  {
+   "people_id": 24422,
+   "candidate_id": "58aca65a-97ef-4694-aa4d-51cac44c7760",
+   "note": null
+  },
+  {
+   "people_id": 24423,
+   "candidate_id": "6c3fbf59-2dc3-44e1-abfc-592bd23cb9c4",
+   "note": null
+  },
+  {
+   "people_id": 24424,
+   "candidate_id": "f8116fcc-acbc-493a-b1fd-22d84deedb55",
+   "note": null
+  },
+  {
+   "people_id": 24425,
+   "candidate_id": "eb1f8381-6c8b-45a6-b5cc-245a4d34ce85",
+   "note": null
+  },
+  {
+   "people_id": 24426,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Lauren Daniel (HD-117)"
+  },
+  {
+   "people_id": 24427,
+   "candidate_id": "fe919880-ebec-424c-9f7e-8520a4ffe482",
+   "note": "sitting house HD-090 member running for a different seat (state_upper: State Senate District 44 (2024)); identity confirmed by party and profile"
+  },
+  {
+   "people_id": 24428,
+   "candidate_id": "f2b0473e-57e0-488d-9a0b-485c0556b7b6",
+   "note": "sitting representative (HD-114) running STATEWIDE for Secretary of State; same party (R) — outside the state-legislative proposal pool by design"
+  },
+  {
+   "people_id": 24429,
+   "candidate_id": "f6c10a85-2f08-41e4-9e81-e1f1c65f9a53",
+   "note": null
+  },
+  {
+   "people_id": 24430,
+   "candidate_id": null,
+   "note": "same member under an earlier name: LegiScan prints Lynn Gladney in the 2023-2024 and 2023 special sessions and Lynn Heffner in 2025-2026, same people id and same House district 130"
+  },
+  {
+   "people_id": 24431,
+   "candidate_id": "afa68d56-05a7-40fe-87c0-1883cf933e9a",
+   "note": null
+  },
+  {
+   "people_id": 24432,
+   "candidate_id": "4b9dc557-5e56-4a36-9ded-07c3c5e7d4fb",
+   "note": null
+  },
+  {
+   "people_id": 24433,
+   "candidate_id": "8dd766b8-738e-45ae-9ff7-a26603b5a629",
+   "note": null
+  },
+  {
+   "people_id": 24434,
+   "candidate_id": "7b5e231f-d5f6-4377-8f31-c2b819c774a2",
+   "note": null
+  },
+  {
+   "people_id": 24435,
+   "candidate_id": "3d82995b-88ab-4c47-b0f3-63d7207c7f7d",
+   "note": null
+  },
+  {
+   "people_id": 24436,
+   "candidate_id": "d1028879-2883-4ba6-ade9-18027d1c8494",
+   "note": null
+  },
+  {
+   "people_id": 24437,
+   "candidate_id": "b82988ad-31d3-42c0-8eec-23a68dbbba9b",
+   "note": null
+  },
+  {
+   "people_id": 24438,
+   "candidate_id": "db0b2689-94ec-4b62-8010-2078b79ab955",
+   "note": "sitting representative (HD-062) running STATEWIDE for Attorney General; same party (D) — outside the state-legislative proposal pool by design"
+  },
+  {
+   "people_id": 24439,
+   "candidate_id": "fdb6eb68-74f9-4f21-b256-d0aa2cc2c94f",
+   "note": "accepted resolver proposal, seat agrees: Farooq Mughal (House 105)"
+  },
+  {
+   "people_id": 24441,
+   "candidate_id": "0afad274-0b6c-4c8c-93a6-857d2a3b7f65",
+   "note": null
+  },
+  {
+   "people_id": 24442,
+   "candidate_id": "09989cc8-c41b-4078-bb8d-62fd94795a49",
+   "note": null
+  },
+  {
+   "people_id": 24443,
+   "candidate_id": "6b0b0574-ffc4-45f9-9717-8ffa1c4f32ff",
+   "note": null
+  },
+  {
+   "people_id": 24444,
+   "candidate_id": "6560c737-fbe7-4817-8fdc-856b9b9def90",
+   "note": "snapshot first_name is the legal 'Tremaine' (Teddy is the nickname) AND the seat changed: sitting representative (HD-140) running for State Senate District 15, the open seat of retiring Sen. Ed Harbison; same party (D)"
+  },
+  {
+   "people_id": 24445,
+   "candidate_id": "555dc4a1-000f-4f9c-8f87-c8d1c53fb778",
+   "note": null
+  },
+  {
+   "people_id": 24446,
+   "candidate_id": "fd6f2fdd-4d85-4f38-a3f3-8d436d4007f8",
+   "note": null
+  },
+  {
+   "people_id": 24447,
+   "candidate_id": "b434e58f-ed8b-467d-a589-fb8bdd26d2b4",
+   "note": "sitting house HD-097 member running for a different seat (state_upper: State Senate District 7 (2024)); identity confirmed by party and profile"
+  },
+  {
+   "people_id": 24448,
+   "candidate_id": "19dd014c-b0fa-40ec-9a86-a059669990a9",
+   "note": null
+  },
+  {
+   "people_id": 24449,
+   "candidate_id": "78e638a1-fbee-4bb7-a80d-c5fa50770b19",
+   "note": null
+  },
+  {
+   "people_id": 24450,
+   "candidate_id": "8fcbb2de-a423-422c-970c-aafd27cff764",
+   "note": null
+  },
+  {
+   "people_id": 24451,
+   "candidate_id": null,
+   "note": "no Nov-2026 Georgia candidate row for Kenneth Vance (HD-133)"
+  },
+  {
+   "people_id": 24452,
+   "candidate_id": "a1c95373-ce34-4779-9cd8-2d537db50da1",
+   "note": null
+  },
+  {
+   "people_id": 24453,
+   "candidate_id": "0fce0c1c-5abd-45e3-83ff-a8fa4e16e767",
+   "note": null
+  },
+  {
+   "people_id": 24875,
+   "candidate_id": "9a3b68ec-d06f-4805-bdca-a19475b28485",
+   "note": null
+  },
+  {
+   "people_id": 24876,
+   "candidate_id": "5918787c-5a78-478b-bf6d-67bae8cd1517",
+   "note": null
+  },
+  {
+   "people_id": 24911,
+   "candidate_id": "943a5983-1788-4d77-bc2c-f0e536b93462",
+   "note": null
+  },
+  {
+   "people_id": 24929,
+   "candidate_id": "d2dce545-3f38-4ab2-8d76-62bdffbf60b1",
+   "note": null
+  },
+  {
+   "people_id": 24985,
+   "candidate_id": null,
+   "note": "no Nov-2026 candidacy on file; senate-7 has other candidates on file"
+  }
+ ]
+}

@@ -1,0 +1,177 @@
+roll	bill	bt	ch	date	q	y	n	nv	ab	status	status_date	hist_ok	desc	title
+1269555	HB101	B	house	2023-03-06	passage	102	73	2	2	2	2023-03-06	True	Passage	Income tax; change certain definitions
+1412627	HB1015	B	senate	2024-03-20	passage	40	12	2	2	4	2024-04-18	True	Passage	Income tax; reduce rate of tax
+1397045	HB1018	B	house	2024-02-27	passage	106	60	4	8	4	2024-04-22	True	Passage	Georgia Firearms Industry Nondiscrimination Act; enact
+1416002	HB1018	B	senate	2024-03-26	passage	33	19	2	2	4	2024-04-22	True	Passage	Georgia Firearms Industry Nondiscrimination Act; enact
+1412659	HB1023	B	senate	2024-03-20	passage	34	17	1	4	4	2024-04-18	True	Passage	Income tax; match tax rate imposed on corporations to that imposed on individual taxpayers
+1413896	HB1053	B	senate	2024-03-21	passage	38	11	2	5	4	2024-05-06	True	Passage	State government; prohibit governmental agencies from using central bank digital currency as payment
+1417417	HB1073	B	senate	2024-03-28	passage	42	12	1	1	4	2024-05-06	True	Passage By Substitute	Local government; zoning; repeal additional hearing and notice provisions regarding halfway houses, drug rehab
+1395371	HB1100	B	house	2024-02-26	passage	99	68	4	7	4	2024-04-22	True	Passage	Revenue, Department of; authorize use of electronic notifications and communications to motor vehicle owners; 
+1416045	HB1104	B	senate	2024-03-26	passage	33	21	0	2	2	2024-02-29	True	Passage By Substitute	Quality Basic Education Act; address mental health risks for student athletes
+1400226	HB1105	B	house	2024-02-29	passage	97	74	1	6	4	2024-05-01	True	Passage	Georgia Criminal Alien Track and Report Act of 2024; enact
+1417511	HB1105	B	house	2024-03-28	concurrence	99	75	1	4	4	2024-05-01	True	Agree To Senate Substitute	Georgia Criminal Alien Track and Report Act of 2024; enact
+1413965	HB1105	B	senate	2024-03-21	passage	34	19	0	3	4	2024-05-01	True	Passage By Substitute	Georgia Criminal Alien Track and Report Act of 2024; enact
+1412693	HB1114	B	senate	2024-03-20	passage	28	22	2	4	4	2024-04-22	True	Passage	Data Analysis for Tort Reform Act; enact
+1416001	HB1114	B	senate	2024-03-26	passage	38	16	0	2	4	2024-04-22	True	Passage	Data Analysis for Tort Reform Act; enact
+1417361	HB1122	B	senate	2024-03-28	concurrence	35	19	0	2	4	2024-04-23	True	Agree To House Amendment To Senate Substitute	Education; provide for funding requirements to apply to local agencies; charter schools; provisions
+1400122	HB1146	B	house	2024-02-29	passage	105	58	4	11	4	2024-05-06	True	Passage	Natural Resources, Department of; EPD to issue water permits to private companies in areas where no public ser
+1417435	HB1146	B	senate	2024-03-28	passage	32	22	1	1	4	2024-05-06	True	Passage	Natural Resources, Department of; EPD to issue water permits to private companies in areas where no public ser
+1400180	HB1149	B	house	2024-02-29	passage	100	62	4	12	4	2024-05-06	True	Passage	Local government; require local constitutional officers to annually report audits of discretionary funds to th
+1417527	HB1170	B	senate	2024-03-28	passage	32	19	4	1	2	2024-02-22	True	Passage By Substitute	Public Health, Department of; require certain state government buildings, courthouses, and university building
+1395406	HB1172	B	house	2024-02-26	passage	107	60	4	7	4	2024-05-06	True	Passage	Water rights; public trust doctrine; remove references
+1416065	HB1172	B	senate	2024-03-26	passage	34	18	1	3	4	2024-05-06	True	Passage	Water rights; public trust doctrine; remove references
+1400158	HB1180	B	house	2024-02-29	passage	131	34	6	7	2	2024-02-29	True	Passage	Income tax credit; film, gaming, video, or digital production; revise a definition
+1397037	HB1182	B	house	2024-02-27	passage	104	61	9	4	2	2024-02-27	True	Passage	Income tax; low-income housing tax credits; revise
+1397057	HB1192	B	house	2024-02-27	passage	96	71	4	7	5	2024-05-07	True	Passage	Sales and use tax; certain high-technology data center equipment; prohibit issuance of new certificates of exe
+1409638	HB1192	B	senate	2024-03-14	passage	29	22	0	5	5	2024-05-07	True	Passage	Sales and use tax; certain high-technology data center equipment; prohibit issuance of new certificates of exe
+1417444	HB1207	B	house	2024-03-28	concurrence	100	75	1	3	4	2024-05-06	True	Agree To Senate Substitute	Elections; proofing of ballots by local superintendents in certain races; provide
+1416027	HB1207	B	senate	2024-03-26	passage	33	20	0	3	4	2024-05-06	True	Passage By Substitute	Elections; proofing of ballots by local superintendents in certain races; provide
+1417487	HB1253	B	senate	2024-03-28	passage	32	22	0	2	2	2024-02-29	True	Passage By Substitute	Community Affairs, Department of; revise composition of governing council for regional commissions
+1413980	HB1312	B	house	2024-03-21	concurrence	93	66	4	16	4	2024-04-18	True	Agree To Senate Substitute	Agriculture, Department of; regulation and taxation of electricity used as motor fuel and electric vehicle cha
+1413871	HB1339	B	house	2024-03-21	concurrence	95	68	2	14	4	2024-04-19	True	Agree To Senate Sub As Am	Health; certificate of need; revise
+1409609	HB1339	B	senate	2024-03-14	passage	43	11	0	2	4	2024-04-19	True	Passage By Substitute	Health; certificate of need; revise
+1413872	HB1339	B	senate	2024-03-21	concurrence	34	17	1	4	4	2024-04-19	True	Agree To House Amendment To Senate Substitute	Health; certificate of need; revise
+1417482	HB1409	B	senate	2024-03-28	passage	40	14	1	1	4	2024-05-06	True	Passage By Substitute	Torts; mental health care providers; limit liability under certain circumstances
+1269564	HB189	B	house	2023-03-06	passage	93	81	2	3	4	2023-05-03	True	Passage	Highways, bridges, and ferries; allowable variance for weight limitations upon a vehicle or load; provide for
+1288682	HB189	B	house	2023-03-30	conference_report	95	75	3	6	4	2023-05-03	False	Adopt Ccr	Highways, bridges, and ferries; allowable variance for weight limitations upon a vehicle or load; provide for
+1291156	HB189	B	senate	2023-03-30	conference_report	37	16	2	1	4	2023-05-03	False	Adopt Conference Committee Report	Highways, bridges, and ferries; allowable variance for weight limitations upon a vehicle or load; provide for
+1288586	HB193	B	senate	2023-03-29	concurrence	40	12	1	3	5	2023-05-05	True	Agree To House Amendment To Senate Amendment	Local government; increase dollar values of certain public works construction contracts exempt from bidding re
+1288616	HB196	B	senate	2023-03-29	concurrence	28	26	0	2	2	2023-03-06	True	Agree To House Amendment To Senate Substitute	Georgia Access to Medical Cannabis Commission; subject to Administrative Procedure Act and laws governing open
+1269566	HB206	B	house	2023-03-06	passage	134	38	4	3	4	2024-04-25	True	Passage	Local government; creation of Commercial Property Assessed Conservation, Energy, and Resiliency Development Au
+1415951	HB206	B	house	2024-03-26	concurrence	72	91	7	9	4	2024-04-25	True	Agree To Senate Substitute	Local government; creation of Commercial Property Assessed Conservation, Energy, and Resiliency Development Au
+1286001	HB230	B	senate	2023-03-27	passage	43	11	0	2	4	2023-04-24	True	Passage By Substitute	Revenue and taxation; qualified consolidated government special purpose local option sales tax; provide
+1269569	HB231	B	house	2023-03-06	passage	98	75	1	5	2	2023-03-06	True	Passage	Prosecuting Attorneys Oversight Commission; create
+1417495	HB282	B	senate	2024-03-28	passage	33	22	0	1	2	2024-02-15	True	Passage By Substitute	Quality Basic Education Act; minimum course study in career readiness education for students in grades six thr
+1413989	HB301	B	senate	2024-03-21	passage	33	18	1	4	2	2023-02-28	True	Passage By Substitute	Motor vehicles and traffic; revise amount of civil monetary penalty for violations of improperly passing a sch
+1269577	HB353	B	house	2023-03-06	passage	127	46	3	3	4	2024-05-06	True	Passage	Georgia Lottery for Education Act; administrative procedures regarding coin operated amusement machines shall 
+1416055	HB353	B	senate	2024-03-26	concurrence	27	26	0	3	4	2024-05-06	True	Agree To House Amendment To Senate Substitute As Amended By Amendment #1	Georgia Lottery for Education Act; administrative procedures regarding coin operated amusement machines shall 
+1416057	HB353	B	senate	2024-03-26	concurrence	29	24	0	3	4	2024-05-06	True	Agree To House Amendment To Senate Substitute As Amended By Amendment #1	Georgia Lottery for Education Act; administrative procedures regarding coin operated amusement machines shall 
+1288486	HB374	B	house	2023-03-29	concurrence	101	66	5	7	4	2023-05-02	True	Agree To Senate Substitute	Local government; municipal deannexation; repeal certain provisions
+1288485	HB374	B	senate	2023-03-29	passage	32	20	3	1	4	2023-05-02	True	Passage By Substitute	Local government; municipal deannexation; repeal certain provisions
+1417358	HB409	B	house	2024-03-28	concurrence	93	78	1	7	4	2024-04-23	True	Agree To Senate Substitute	Local government; authorize local authorities to dispose of real property in the same manner as county governi
+1260669	HB422	B	house	2023-02-23	passage	96	68	8	6	4	2023-04-25	True	Passage	Ware County; board of elections and registration; appointment of members; revise provisions
+1266232	HB422	B	senate	2023-03-01	passage	29	21	4	2	4	2023-04-25	True	Passage	Ware County; board of elections and registration; appointment of members; revise provisions
+1417500	HB429	B	senate	2024-03-28	concurrence	31	20	2	3	1	2023-02-15	False	Agree To House Substitute As Amended By Amendment #2	Georgia Comprehensive Solid Waste Management Act; prohibit permitting of new municipal solid waste landfills l
+1395444	HB481	B	house	2024-02-26	passage	114	51	6	7	4	2024-05-06	True	Passage	Public Retirement Systems Investment Authority Law; provide for a fiduciary duty
+1266384	HB500	B	house	2023-03-01	passage	100	69	5	4	4	2024-05-02	True	Passage	Crimes and offenses; offense of arson of law enforcement vehicle; provide
+1417370	HB500	B	senate	2024-03-28	passage	36	18	1	1	4	2024-05-02	True	Passage	Crimes and offenses; offense of arson of law enforcement vehicle; provide
+1266375	HB505	B	house	2023-03-01	passage	98	73	3	4	2	2023-03-01	True	Passage	Crimes and offenses; riot; provide for a felony penalty
+1269592	HB514	B	house	2023-03-06	passage	127	43	5	4	2	2023-03-06	True	Passage	Housing Regulation Transparency Act; enact
+1288722	HB514	B	senate	2023-03-29	passage	42	12	0	2	2	2023-03-06	True	Passage By Substitute	Housing Regulation Transparency Act; enact
+1417524	HB514	B	senate	2024-03-28	conference_report	12	40	3	1	2	2023-03-06	True	Adopt Conference Committee Report #2	Housing Regulation Transparency Act; enact
+1264525	HB518	B	house	2023-02-28	passage	105	64	2	7	2	2023-02-28	True	Passage	Labor and industrial relations; employment security; change certain provisions
+1274574	HB540	B	house	2023-03-13	passage	97	68	6	7	4	2023-05-01	True	Passage	Wilkes County; board of elections and registration; create
+1269599	HB557	B	house	2023-03-06	passage	136	38	2	3	4	2024-04-22	True	Passage	Professions and businesses; authority to certain nurses and physician assistants to prescribe Schedule II cont
+1380401	HB557	B	house	2024-02-08	conference_report	132	35	2	9	4	2024-04-22	True	Adopt Ccr	Professions and businesses; authority to certain nurses and physician assistants to prescribe Schedule II cont
+1382331	HB576	B	house	2024-02-12	passage	98	71	5	4	2	2024-02-12	True	Passage	Health; prohibit certain health care providers and facilities from discriminating against potential organ tran
+1274564	HB642	B	house	2023-03-13	passage	97	70	4	7	4	2023-05-01	True	Passage	Cherokee County; Board of Elections and Registration; establish
+1274534	HB644	B	house	2023-03-13	passage	97	71	3	7	4	2023-05-01	True	Passage	Cherokee County; Board of Elections; abolition on a date certain; provide
+1264541	HB73	B	house	2023-02-28	passage	125	44	6	3	2	2023-02-28	True	Passage	Public utilities; written disclosure statement with any agreement for sale or financing of distributed energy 
+1395308	HB808	B	house	2024-02-26	passage	125	42	3	8	4	2024-05-06	True	Passage	Ad valorem tax; increase a statewide exemption for tangible personal property
+1412657	HB808	B	senate	2024-03-20	passage	33	18	1	4	4	2024-05-06	True	Passage	Ad valorem tax; increase a statewide exemption for tangible personal property
+1264578	HB84	B	house	2023-02-28	passage	101	68	4	5	2	2023-02-28	True	Passage	Commerce and trade; provide for commercial financing disclosures
+1371279	HB881	B	house	2024-01-29	passage	95	75	3	6	2	2024-01-29	True	Passage	Prosecuting Attorneys Qualifications Commission; standards of conduct and rules; provisions
+1417554	HB905	B	house	2024-03-28	concurrence	83	89	2	5	2	2024-02-01	True	Agree To Senate Substitute	Zoning procedures; provisions authorizing administrative officers to exercise zoning powers; repeal
+1417552	HB905	B	house	2024-03-28	concurrence	84	86	2	7	2	2024-02-01	True	Agree To Senate Substitute	Zoning procedures; provisions authorizing administrative officers to exercise zoning powers; repeal
+1417551	HB905	B	senate	2024-03-28	passage	35	20	0	1	2	2024-02-01	True	Passage By Substitute	Zoning procedures; provisions authorizing administrative officers to exercise zoning powers; repeal
+1383862	HB925	B	house	2024-02-13	passage	112	50	4	12	2	2024-02-13	True	Passage	Protecting Religious Assembly in States of Emergency (PRAISE) Act; enact
+1283436	SB1	B	house	2023-03-23	passage	99	69	1	9	4	2023-05-02	True	Passage	State Government; automatic repealer on the prohibition on state and local governments from requiring proof of
+1245350	SB1	B	senate	2023-02-07	passage	31	21	0	4	4	2023-05-02	True	Passage By Substitute	State Government; automatic repealer on the prohibition on state and local governments from requiring proof of
+1267697	SB114	B	senate	2023-03-02	passage	23	33	0	0	1	2023-02-07	True	Passage By Substitute	City of Buckhead City; incorporate
+1288773	SB115	B	house	2023-03-29	passage	93	75	6	5	4	2023-05-01	True	Passage	Georgia National Guard; the adjutant general to be the official sponsor of the state sponsored life insurance 
+1288582	SB13	B	senate	2023-03-29	concurrence	37	14	2	3	2	2023-02-21	True	Agree To House Substitute As Amended	Public Sales; tax levies and executions; authorize online
+1267726	SB132	B	senate	2023-03-02	passage	35	20	1	0	2	2023-03-02	True	Passage As Amended	Agriculture; the acquisition of possessory interest in certain land by certain nonresident aliens; prohibit
+1288513	SB133	B	house	2023-03-29	passage	102	69	3	5	4	2023-05-02	True	Passage	Juvenile Code; a uniform process to assume custody of children as a result of disposition orders; create
+1269510	SB137	B	senate	2023-03-06	passage	43	12	1	0	2	2023-03-06	True	Passage	Tuition Equalization Grants at Private Colleges and Universities; definition of approved school; revise
+1277752	SB140	B	house	2023-03-16	passage	96	75	2	5	4	2023-03-23	True	Passage	Hospitals; the treatment of gender dysphoria in minors performed in hospitals and other licensed healthcare fa
+1269410	SB140	B	senate	2023-03-06	passage	33	22	1	0	4	2023-03-23	True	Passage By Substitute	Hospitals; the treatment of gender dysphoria in minors performed in hospitals and other licensed healthcare fa
+1280757	SB140	B	senate	2023-03-21	concurrence	31	21	0	4	4	2023-03-23	True	Agree To House Substitute	Hospitals; the treatment of gender dysphoria in minors performed in hospitals and other licensed healthcare fa
+1286165	SB145	B	house	2023-03-27	passage	103	67	2	7	2	2023-02-27	True	Passage	"Landscape Equipment and Agricultural Fairness (LEAF) Act"; enact
+1263040	SB145	B	senate	2023-02-27	passage	37	16	2	1	2	2023-02-27	True	Passage As Amended	"Landscape Equipment and Agricultural Fairness (LEAF) Act"; enact
+1397148	SB147	B	senate	2024-02-27	passage	38	14	1	3	2	2024-02-27	True	Passage By Substitute	"Boundless Opportunities for Georgia Students Act"; enact
+1269285	SB155	B	senate	2023-03-06	passage	41	14	1	0	4	2023-04-26	True	Passage By Substitute	Dangerous Instrumentalities and Practices; provisions relating to harming a law enforcement animal; revise
+1288639	SB155	B	senate	2023-03-29	concurrence	43	12	0	1	4	2023-04-26	True	Agree To House Substitute	Dangerous Instrumentalities and Practices; provisions relating to harming a law enforcement animal; revise
+1286168	SB159	B	house	2023-03-27	passage	103	72	3	1	4	2024-05-01	True	Passage	Correctional Institutions of States and Counties; wireless communications and stand-alone electronic devices b
+1263265	SB159	B	senate	2023-02-27	passage	34	20	1	1	4	2024-05-01	True	Passage By Substitute	Correctional Institutions of States and Counties; wireless communications and stand-alone electronic devices b
+1286169	SB160	B	house	2023-03-27	passage	97	68	7	7	4	2023-05-01	True	Passage	Employment Security; provisions
+1269539	SB160	B	senate	2023-03-06	passage	34	21	1	0	4	2023-05-01	True	Passage As Amended	Employment Security; provisions
+1400086	SB180	B	senate	2024-02-29	passage	33	19	1	3	2	2024-02-29	True	Passage	"Georgia Religious Freedom Restoration Act"; enact
+1417382	SB189	B	house	2024-03-28	passage	101	73	3	2	4	2024-05-06	True	Passage	Elections; text portions of ballots shall be counted for vote tabulation and recounts purposes; provide
+1377779	SB189	B	senate	2024-02-06	passage	31	22	0	2	4	2024-05-06	True	Passage By Substitute	Elections; text portions of ballots shall be counted for vote tabulation and recounts purposes; provide
+1417864	SB189	B	senate	2024-03-29	concurrence	33	22	0	1	4	2024-05-06	False	Agree To House Substitute	Elections; text portions of ballots shall be counted for vote tabulation and recounts purposes; provide
+1264680	SB19	B	senate	2023-02-28	passage	34	19	1	2	4	2024-05-06	True	Passage By Substitute	Courts; collection of passport application and processing fees by clerks of superior courts and probate court 
+1267750	SB196	B	senate	2023-03-02	passage	24	30	2	0	1	2023-02-15	True	Passage By Substitute	Safety Belts; failure to wear safety restraints for children as admissible evidence in civil actions; provide
+1387202	SB212	B	senate	2024-02-16	passage	35	12	2	6	4	2024-05-06	True	Passage By Substitute	Probate Court Judges; relating to elections; end activities and duties
+1416012	SB212	B	senate	2024-03-26	concurrence	35	18	1	2	4	2024-05-06	True	Agree To House Substitute	Probate Court Judges; relating to elections; end activities and duties
+1286176	SB217	B	house	2023-03-27	passage	110	59	3	7	2	2023-03-06	True	Passage	"Eliminating Ghost Plates Act"; enact
+1257839	SB22	B	senate	2023-02-21	passage	29	26	0	1	2	2023-02-21	True	Passage By Substitute	Hemp Farming; relating to offenses against public health and morals; the purchase of, sale of, and the offerin
+1286179	SB222	B	house	2023-03-27	passage	100	69	2	8	4	2023-05-03	True	Passage	Primaries and Elections; all costs and expenses relating to election administration are paid for with lawfully
+1286178	SB222	B	house	2023-03-27	concurrence	100	70	2	7	4	2023-05-03	True	Agree To Committee Report	Primaries and Elections; all costs and expenses relating to election administration are paid for with lawfully
+1267755	SB222	B	senate	2023-03-02	passage	33	23	0	0	4	2023-05-03	True	Passage By Substitute	Primaries and Elections; all costs and expenses relating to election administration are paid for with lawfully
+1288706	SB222	B	senate	2023-03-29	concurrence	32	21	2	1	4	2023-05-03	True	Agree To House Substitute	Primaries and Elections; all costs and expenses relating to election administration are paid for with lawfully
+1274476	SB23	B	house	2023-03-13	passage	108	61	4	5	5	2023-05-05	True	Passage	O.C.G.A.; various titles; revise a committee name; relating to inactive boards, panels, authorities, centers, 
+1275837	SB231	B	house	2023-03-14	passage	99	70	3	6	4	2023-04-19	True	Passage	Richmond County and the City of Augusta; mayor shall be a full voting member of the commission; provide
+1269527	SB231	B	senate	2023-03-06	passage	32	22	0	2	4	2023-04-19	True	Passage	Richmond County and the City of Augusta; mayor shall be a full voting member of the commission; provide
+1288646	SB233	B	house	2023-03-29	passage	85	89	1	4	4	2024-04-23	True	Passage	'The Georgia Promise Scholarship Act'; establishment of promise scholarship accounts
+1409623	SB233	B	house	2024-03-14	passage	91	82	2	3	4	2024-04-23	True	Passage	'The Georgia Promise Scholarship Act'; establishment of promise scholarship accounts
+1269309	SB233	B	senate	2023-03-06	passage	33	23	0	0	4	2024-04-23	True	Passage By Substitute	'The Georgia Promise Scholarship Act'; establishment of promise scholarship accounts
+1412712	SB233	B	senate	2024-03-20	concurrence	33	21	1	1	4	2024-04-23	True	Agree To House Substitute	'The Georgia Promise Scholarship Act'; establishment of promise scholarship accounts
+1417538	SB240	B	senate	2024-03-28	conference_report	26	26	2	2	2	2023-03-06	True	Adopt Conference Committee Report	Retirement and Pensions; the minimum and maximum allowable benefit multiplier for current and future retirees;
+1269350	SB254	B	senate	2023-03-06	passage	30	24	2	0	2	2023-03-06	True	Passage By Substitute	Selling and other Trade Practices; requirements for earned wage access services; provide
+1413986	SB293	B	house	2024-03-21	passage	120	37	4	18	4	2024-04-19	True	Passage	County Boards of Health; operational policies and procedures of the Department of Public Health apply to local
+1397099	SB293	B	senate	2024-02-27	passage	37	15	0	4	4	2024-04-19	True	Passage By Substitute	County Boards of Health; operational policies and procedures of the Department of Public Health apply to local
+1269395	SB31	B	senate	2023-03-06	passage	35	20	1	0	2	2023-03-06	True	Passage By Substitute	Prosecuting Attorneys; the reimbursement of expenses incurred by the Attorney General in prosecuting a crimina
+1403767	SB332	B	house	2024-03-05	passage	97	73	3	5	4	2024-03-13	True	Passage	Prosecuting Attorneys Qualifications Commission; promulgate standards of conduct and rules for the commission'
+1377788	SB332	B	senate	2024-02-06	passage	29	22	1	3	4	2024-03-13	True	Passage By Substitute	Prosecuting Attorneys Qualifications Commission; promulgate standards of conduct and rules for the commission'
+1380229	SB333	B	house	2024-02-08	passage	101	63	4	10	4	2024-02-13	True	Passage	City of Mulberry; incorporate
+1374410	SB333	B	senate	2024-02-01	passage	30	18	2	5	4	2024-02-13	True	Passage By Substitute	City of Mulberry; incorporate
+1368907	SB338	B	senate	2024-01-24	passage	32	19	0	4	4	2024-01-30	True	Passage	Board of Education of Cobb County; education districts; change the description
+1377737	SB344	B	senate	2024-02-06	passage	30	22	0	3	4	2024-05-06	True	Passage By Substitute	Sales and Use Taxes; firearms, ammunition, gun safes, and related accessories during an 11 day period each yea
+1417436	SB351	B	house	2024-03-28	passage	120	45	9	5	4	2024-04-23	True	Passage	"Protecting Georgia's Children on Social Media Act of 2024"; enact
+1416020	SB354	B	house	2024-03-26	passage	96	76	1	6	4	2024-05-02	True	Passage	Cosmetologists and Barbers; persons performing certain limited responsibilities; exempt from licensure
+1371229	SB354	B	senate	2024-01-29	passage	38	15	0	2	4	2024-05-02	True	Passage	Cosmetologists and Barbers; persons performing certain limited responsibilities; exempt from licensure
+1417445	SB354	B	senate	2024-03-28	concurrence	40	11	3	2	4	2024-05-02	True	Agree To House Substitute	Cosmetologists and Barbers; persons performing certain limited responsibilities; exempt from licensure
+1370027	SB355	B	senate	2024-01-26	passage	31	19	0	5	2	2024-01-26	True	Passage	Elections and Primaries; use of ranked-choice voting; prohibit
+1370030	SB358	B	senate	2024-01-26	passage	30	19	0	6	2	2024-01-26	True	Passage By Substitute	State Election Board; remove the Secretary of State; authorize the board to investigate
+1245255	SB36	B	senate	2023-02-07	passage	33	16	3	4	2	2023-02-07	True	Passage By Substitute	Pimping and Pandering; penalty provisions; increase
+1412720	SB362	B	house	2024-03-20	passage	96	78	1	4	4	2024-04-22	True	Passage	State Government; employee representation by a labor organization for employers to receive certain economic de
+1380351	SB362	B	senate	2024-02-08	passage	31	23	0	1	4	2024-04-22	True	Passage	State Government; employee representation by a labor organization for employers to receive certain economic de
+1418321	SB37	B	house	2024-03-29	concurrence	99	58	17	5	4	2024-05-01	False	Agree To Senate Amendment	Sheriffs; qualification requirements for the office of sheriff; revise
+1413974	SB374	B	house	2024-03-21	passage	59	96	5	19	2	2024-02-20	True	Passage	"Professional Engineers and Land Surveyors Act of 2021"; land surveyor interns and professional land surveyors
+1374318	SB386	B	senate	2024-02-01	passage	35	15	1	4	2	2024-02-01	True	Passage By Substitute	State Government; regulation and taxation of sports betting in this state; authorize and provide
+1400145	SB390	B	senate	2024-02-29	passage	33	20	2	1	2	2024-02-29	True	Passage By Substitute	To amend Titles 20, 36, 43, and 50, related to libraries, education, governmental entities, professions and bu
+1397782	SB402	B	senate	2024-02-27	passage	35	17	1	3	2	2024-02-27	True	Passage	Instruction Permits; restrictions upon the operation of Class C motor vehicles by Class D license holders with
+1400092	SB414	B	senate	2024-02-29	passage	33	22	0	1	4	2024-05-06	True	Passage By Substitute	"Personal Privacy Protection Act"; enact
+1417439	SB414	B	senate	2024-03-28	concurrence	33	21	1	1	4	2024-05-06	True	Agree To House Substitute	"Personal Privacy Protection Act"; enact
+1413998	SB420	B	house	2024-03-21	passage	97	67	4	11	4	2024-04-30	True	Passage	Agriculture; acquisition of possessory interest in certain land by certain foreign persons and entities; prohi
+1400073	SB420	B	senate	2024-02-29	passage	41	11	2	2	4	2024-04-30	True	Passage By Substitute	Agriculture; acquisition of possessory interest in certain land by certain foreign persons and entities; prohi
+1415971	SB420	B	senate	2024-03-26	concurrence	41	11	1	3	4	2024-04-30	True	Agree To House Substitute	Agriculture; acquisition of possessory interest in certain land by certain foreign persons and entities; prohi
+1395457	SB429	B	senate	2024-02-26	passage	40	13	1	2	2	2024-02-26	True	Passage As Amended	"Small Business Protection Act of 2024"; enact
+1418550	SB429	B	senate	2024-03-28	concurrence	31	20	2	3	2	2024-02-26	True	Agree To House Substitute As Amended By Amendment #2	"Small Business Protection Act of 2024"; enact
+1279364	SB44	B	house	2023-03-20	passage	99	74	2	3	4	2023-04-26	True	Passage	Street Gang Terrorism and Prevention Act; mandatory minimum penalties for violations; provide
+1249797	SB44	B	senate	2023-02-13	passage	31	22	0	3	4	2023-04-26	True	Passage By Substitute	Street Gang Terrorism and Prevention Act; mandatory minimum penalties for violations; provide
+1288670	SB44	B	senate	2023-03-29	concurrence	30	20	3	3	4	2023-04-26	True	Agree To House Substitute	Street Gang Terrorism and Prevention Act; mandatory minimum penalties for violations; provide
+1400299	SB460	B	senate	2024-02-29	passage	40	11	4	1	2	2024-02-29	True	Passage As Amended	Advanced Practice Registered Nurses and Physician Assistants; number that a physician can authorize and superv
+1397076	SB473	B	senate	2024-02-27	passage	37	15	0	4	2	2024-02-27	True	Passage By Substitute	"Georgia Consumer Privacy Protection Act"; consumer personal data in this state; protect the privacy
+1417478	SB479	B	house	2024-03-28	concurrence	117	50	4	8	2	2024-02-29	True	Agree To Senate Am As Am	Secondary Metals Recyclers; applicability of the definition of the term "used, detached catalytic converters" 
+1415927	SB502	B	house	2024-03-26	passage	103	64	5	7	2	2024-02-29	True	Passage	Department of Administrative Services; state agencies from contracting for advertising or marketing services w
+1400076	SB502	B	senate	2024-02-29	passage	34	19	2	1	2	2024-02-29	True	Passage By Substitute	Department of Administrative Services; state agencies from contracting for advertising or marketing services w
+1417509	SB502	B	senate	2024-03-28	concurrence	34	12	9	1	2	2024-02-29	True	Agree To House Substitute As Amended	Department of Administrative Services; state agencies from contracting for advertising or marketing services w
+1400229	SB507	B	senate	2024-02-29	passage	34	19	2	1	2	2024-02-29	True	Passage	Special License Plates; "America First" specialty license plate; establish
+1400098	SB517	B	senate	2024-02-29	passage	34	17	2	3	4	2024-05-02	True	Passage	Criminal Prosecutions; immunity from certain criminal prosecutions against law enforcement officers whose thre
+1267578	SB57	B	senate	2023-03-02	passage	19	37	0	0	1	2023-01-31	True	Passage By Substitute	'Georgia Sports Betting Integrity Act'; regulation and taxation of sports betting in this state; authorize and
+1286191	SB62	B	house	2023-03-27	concurrence	100	76	1	2	4	2023-05-03	True	Agree To Committee Report	Counties and Municipal Corporations; certain local ordinances or policies relating to public camping or sleepi
+1286192	SB62	B	house	2023-03-27	passage	99	76	2	2	4	2023-05-03	True	Passage	Counties and Municipal Corporations; certain local ordinances or policies relating to public camping or sleepi
+1285837	SB62	B	senate	2023-03-27	concurrence	36	20	0	0	4	2023-05-03	True	Agree To House Substitute	Counties and Municipal Corporations; certain local ordinances or policies relating to public camping or sleepi
+1285836	SB62	B	senate	2023-03-27	concurrence	22	32	2	0	4	2023-05-03	True	Agree To House Substitute As Amended	Counties and Municipal Corporations; certain local ordinances or policies relating to public camping or sleepi
+1288622	SB63	B	house	2023-03-29	passage	95	81	1	2	4	2024-05-01	True	Passage	Bonds and Recognizances; setting of bonds and schedules of bails; provide
+1377795	SB63	B	house	2024-02-06	conference_report	97	69	3	9	4	2024-05-01	True	Adopt Ccr	Bonds and Recognizances; setting of bonds and schedules of bails; provide
+1260666	SB63	B	senate	2023-02-23	passage	31	23	1	1	4	2024-05-01	True	Passage By Substitute	Bonds and Recognizances; setting of bonds and schedules of bails; provide
+1374259	SB63	B	senate	2024-02-01	conference_report	30	17	3	5	4	2024-05-01	True	Adopt Conference Committee Report	Bonds and Recognizances; setting of bonds and schedules of bails; provide
+1251094	SB65	B	senate	2023-02-14	passage	32	19	0	5	4	2023-05-02	True	Passage	Commissioner of Insurance; general provisions; establishing an advisory committee; provisions; authorize
+1251406	SB69	B	senate	2023-02-14	passage	32	20	0	4	2	2023-02-14	True	Passage	Honorable Clarence Thomas; placement of a monument in his honor within the capitol building or grounds; provid
+1285903	SB74	B	senate	2023-03-27	concurrence	44	12	0	0	4	2023-05-01	True	Agree To House Substitute	Commerce and Trade, Courts, and Torts; the disclosure of the nature and practices of businesses that provide l
+1286194	SB92	B	house	2023-03-27	passage	97	77	1	4	4	2023-05-05	True	Passage	Prosecuting Attorneys Oversight Commission; create
+1267603	SB92	B	senate	2023-03-02	passage	32	24	0	0	4	2023-05-05	True	Passage By Substitute	Prosecuting Attorneys Oversight Commission; create
+1285929	SB92	B	senate	2023-03-27	concurrence	32	24	0	0	4	2023-05-05	True	Agree To House Substitute	Prosecuting Attorneys Oversight Commission; create
+1263085	SB99	B	senate	2023-02-27	passage	42	13	0	1	2	2023-02-27	True	Passage By Substitute	Certificate of Need Requirements; exemption for acute care hospitals established in rural counties that meet c

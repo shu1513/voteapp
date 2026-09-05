@@ -1,0 +1,43 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2268",
+   "roll": 1711338,
+   "measure_id": "SB 3",
+   "vote_date": "2026-06-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 3EX as rewritten in the House. It sets up a nine-member committee to design a new statewide voting system that uses hand-marked paper ballots, and it bars the current Secretary of State from helping choose or buy that system. It also orders a hand recount when a close statewide race is decided by half a point or less, and the state pays counties back. The Georgia House passed it 94-79, and it became law.",
+   "nay_description": "Voted against Senate Bill 3EX as rewritten in the House. It sets up a nine-member committee to design a new statewide voting system that uses hand-marked paper ballots, and it bars the current Secretary of State from helping choose or buy that system. It also orders a hand recount when a close statewide race is decided by half a point or less, and the state pays counties back. The Georgia House passed it 94-79, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2268",
+   "roll": 1711341,
+   "measure_id": "SB 3",
+   "vote_date": "2026-06-23",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House rewrite of Senate Bill 3EX. It sets up a nine-member committee to design a new statewide voting system that uses hand-marked paper ballots, and it bars the current Secretary of State from helping choose or buy that system. It also orders a hand recount when a close statewide race is decided by half a point or less, and the state pays counties back. The Georgia Senate agreed 36-16, and it became law.",
+   "nay_description": "Voted against the House rewrite of Senate Bill 3EX. It sets up a nine-member committee to design a new statewide voting system that uses hand-marked paper ballots, and it bars the current Secretary of State from helping choose or buy that system. It also orders a hand recount when a close statewide race is decided by half a point or less, and the state pays counties back. The Georgia Senate agreed 36-16, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1711340
+   ]
+  }
+ ]
+}

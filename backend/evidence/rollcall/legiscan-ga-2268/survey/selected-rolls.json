@@ -1,0 +1,32 @@
+[
+ {
+  "bill": "SB3",
+  "chamber": "house",
+  "roll": 1711338,
+  "date": "2026-06-23",
+  "q": "passage",
+  "desc": "Passage",
+  "y": 94,
+  "n": 79,
+  "status": 4,
+  "bid": 2154026,
+  "title": "Election Equipment Specifications and Standards Committee; establish",
+  "later_rolls": 0,
+  "later_desc": []
+ },
+ {
+  "bill": "SB3",
+  "chamber": "senate",
+  "roll": 1711341,
+  "date": "2026-06-23",
+  "q": "concurrence",
+  "desc": "Agree To House Substitute",
+  "y": 36,
+  "n": 16,
+  "status": 4,
+  "bid": 2154026,
+  "title": "Election Equipment Specifications and Standards Committee; establish",
+  "later_rolls": 0,
+  "later_desc": []
+ }
+]

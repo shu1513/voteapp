@@ -1284,10 +1284,69 @@ describe("Minnesota's measured desc vocabulary", () => {
   });
 });
 
+describe("Georgia's vocabulary across its four registered sessions", () => {
+  const config = LEGISCAN_STATE_CONFIGS["GA-2008"]!;
+  const ga = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+
+  it("is the same object for all four sessions", () => {
+    for (const key of ["GA", "GA-2114", "GA-2268"]) {
+      expect(LEGISCAN_STATE_CONFIGS[key]!.keptQuestions).toBe(config.keptQuestions);
+      expect(LEGISCAN_STATE_CONFIGS[key]!.excludedQuestions).toBe(config.excludedQuestions);
+    }
+  });
+
+  it("keeps a chamber backing down and taking the other's text", () => {
+    // `Recede From Senate's Disagreement And Agree To House Substitute` is a
+    // final action, and the `^agree to ` rule misses it because the phrase is
+    // not at the start.
+    expect(ga("Recede From Senate's Disagreement And Agree To House Substitute: Senate Vote #401", 56, "senate"))
+      .toMatchObject({ isFloorVote: true, questionClass: "concurrence" });
+  });
+
+  it("excludes a bare Recede, which states no question", () => {
+    // HR 1022 and HB 52 each carry `Recede: House Vote #870`. Nothing in that
+    // desc says what was agreed, so it cannot be judged.
+    expect(ga("Recede: House Vote #870", 180)).toMatchObject({ isFloorVote: false, questionClass: null });
+  });
+
+  it("excludes the procedural families the older sessions add", () => {
+    for (const desc of [
+      "Recommit To Rules",
+      "Insist On Senate Substitute",
+      "Disagree To House Amendment To Senate Substitute",
+      "Remove From Table",
+      "Remove From Local Cal/vote Separately: House Vote #612",
+      "Suspend The Rules",
+      "Adopt Committee Sub",
+      "Hbs 710, 713, 730, 736",
+    ]) {
+      expect(ga(desc, 180)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+
+  it("still keeps the passage and concurrence spellings the 2025 session established", () => {
+    for (const desc of ["Passage: House Vote #804", "Passage By Substitute", "Passage As Amended"]) {
+      expect(ga(desc, 180)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    }
+    expect(ga("Agree To Senate Substitute", 180)).toMatchObject({ questionClass: "concurrence" });
+    expect(ga("Adopt Conference Committee Report", 180)).toMatchObject({ questionClass: "conference_report" });
+  });
+
+  it("still excludes the en-bloc local calendars, which are one vote over many bills", () => {
+    for (const desc of ["Local Calendar", "Local Consent Calendar", "Supplemental Local Calendar"]) {
+      expect(ga(desc, 180)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+});
+
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
     expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual([
       "GA",
+      "GA-2008",
+      "GA-2114",
+      "GA-2268",
       "CT",
       "IL",
       "TN",
@@ -1368,6 +1427,9 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
     expect(getLegiscanStateConfig("GA").sessionId).toBe(2167);
+    expect(getLegiscanStateConfig("GA-2008")).toMatchObject({ jurisdiction: "GA", sessionId: 2008 });
+    expect(getLegiscanStateConfig("GA-2114")).toMatchObject({ jurisdiction: "GA", sessionId: 2114 });
+    expect(getLegiscanStateConfig("GA-2268")).toMatchObject({ jurisdiction: "GA", sessionId: 2268 });
     expect(getLegiscanStateConfig("IL").sessionId).toBe(2176);
     expect(getLegiscanStateConfig("FL").sessionId).toBe(2135);
     expect(getLegiscanStateConfig("CA").sessionId).toBe(2172);

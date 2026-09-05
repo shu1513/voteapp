@@ -1,0 +1,115 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2114",
+   "roll": 1358055,
+   "measure_id": "HB 1",
+   "vote_date": "2023-12-01",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1EX, a new map of Georgia's state House districts. It replaced the map drawn in 2021, which a federal court ruled broke federal voting rights law, and it applies only if the 2021 map cannot lawfully be used. Sitting representatives keep their seats until the next regular election. The Georgia House passed it 101-77, and it became law.",
+   "nay_description": "Voted against House Bill 1EX, a new map of Georgia's state House districts. It replaced the map drawn in 2021, which a federal court ruled broke federal voting rights law, and it applies only if the 2021 map cannot lawfully be used. Sitting representatives keep their seats until the next regular election. The Georgia House passed it 101-77, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2114",
+   "roll": 1361975,
+   "measure_id": "HB 1",
+   "vote_date": "2023-12-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1EX, a new map of Georgia's state House districts. It replaced the map drawn in 2021, which a federal court ruled broke federal voting rights law, and it applies only if the 2021 map cannot lawfully be used. Sitting representatives keep their seats until the next regular election. The Georgia Senate passed it 32-21, and it became law.",
+   "nay_description": "Voted against House Bill 1EX, a new map of Georgia's state House districts. It replaced the map drawn in 2021, which a federal court ruled broke federal voting rights law, and it applies only if the 2021 map cannot lawfully be used. Sitting representatives keep their seats until the next regular election. The Georgia Senate passed it 32-21, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2114",
+   "roll": 1358054,
+   "measure_id": "SB 1",
+   "vote_date": "2023-12-01",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 1EX, a new map of Georgia's state Senate districts. It replaced the map drawn in 2021, which a federal court ruled broke federal voting rights law, and it applies only if the 2021 map cannot lawfully be used. Sitting senators keep their seats until the next regular election. The Georgia Senate passed it 32-23, and it became law.",
+   "nay_description": "Voted against Senate Bill 1EX, a new map of Georgia's state Senate districts. It replaced the map drawn in 2021, which a federal court ruled broke federal voting rights law, and it applies only if the 2021 map cannot lawfully be used. Sitting senators keep their seats until the next regular election. The Georgia Senate passed it 32-23, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2114",
+   "roll": 1361973,
+   "measure_id": "SB 1",
+   "vote_date": "2023-12-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 1EX, a new map of Georgia's state Senate districts. It replaced the map drawn in 2021, which a federal court ruled broke federal voting rights law, and it applies only if the 2021 map cannot lawfully be used. Sitting senators keep their seats until the next regular election. The Georgia House passed it 98-71, and it became law.",
+   "nay_description": "Voted against Senate Bill 1EX, a new map of Georgia's state Senate districts. It replaced the map drawn in 2021, which a federal court ruled broke federal voting rights law, and it applies only if the 2021 map cannot lawfully be used. Sitting senators keep their seats until the next regular election. The Georgia House passed it 98-71, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2114",
+   "roll": 1361977,
+   "measure_id": "SB 3",
+   "vote_date": "2023-12-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 3EX, a new map of Georgia's congressional districts. It replaced the map drawn in 2021, which a federal court ruled broke federal voting rights law, and it applies only if the 2021 map cannot lawfully be used. Sitting members of Congress keep their seats until the next regular election. The Georgia Senate passed it 32-22, and it became law.",
+   "nay_description": "Voted against Senate Bill 3EX, a new map of Georgia's congressional districts. It replaced the map drawn in 2021, which a federal court ruled broke federal voting rights law, and it applies only if the 2021 map cannot lawfully be used. Sitting members of Congress keep their seats until the next regular election. The Georgia Senate passed it 32-22, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2114",
+   "roll": 1362081,
+   "measure_id": "SB 3",
+   "vote_date": "2023-12-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 3EX, a new map of Georgia's congressional districts. It replaced the map drawn in 2021, which a federal court ruled broke federal voting rights law, and it applies only if the 2021 map cannot lawfully be used. Sitting members of Congress keep their seats until the next regular election. The Georgia House passed it 98-71, and it became law.",
+   "nay_description": "Voted against Senate Bill 3EX, a new map of Georgia's congressional districts. It replaced the map drawn in 2021, which a federal court ruled broke federal voting rights law, and it applies only if the 2021 map cannot lawfully be used. Sitting members of Congress keep their seats until the next regular election. The Georgia House passed it 98-71, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1362080
+   ]
+  }
+ ]
+}

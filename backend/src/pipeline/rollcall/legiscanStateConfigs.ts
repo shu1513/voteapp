@@ -600,6 +600,66 @@ const OREGON_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
   /^house withdraw from committee$/,
 ];
 
+// Georgia's floor-question vocabulary, shared by the 2023-2024 and 2025-2026
+// regular sessions and the 2023 and 2026 special sessions. All four were
+// surveyed separately and print the same families.
+//
+// Georgia stamps EVERY desc with a chamber vote number (`Passage: House Vote
+// #804`), so every pattern tolerates a trailing ` : <chamber> vote #<n>`.
+const GEORGIA_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+    {
+      pattern: /^passage(?: by substitute)?(?: as amended)?(?:\s*:?\s*(?:house|senate) vote ?#\d+)?$/,
+      questionClass: "passage",
+    },
+    { pattern: /^agree to /, questionClass: "concurrence" },
+    // `Recede From Senate's Disagreement And Agree To House Substitute` —
+    // one chamber backing down and taking the other's text. A final action,
+    // not a procedural step, so it is a concurrence. The bare `Recede`
+    // desc, which states no question, is excluded below.
+    { pattern: /\brecede from\b.*\band agree to\b/, questionClass: "concurrence" },
+    { pattern: /^adopt (?:conference committee report|conference comm\.? report|ccr)/, questionClass: "conference_report" },
+];
+const GEORGIA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+    // `Motion To Table`, `Motion To Engross`, `Motion For The Previous
+    // Question`, `Motion To Withdraw And Commit`, `Motion To Adjourn` —
+    // scheduling and debate motions. Engrossment motions also name a
+    // whole calendar of bills in the desc.
+    /^motion /,
+    // Floor amendment votes: `Adoption Of Amendment #1 By The Senator
+    // From The 38th` and its `Adoption Of The Amendment … As Amended`
+    // spelling. Deliberately NOT matching `adoption of constitutional
+    // amendment`, which is a final question (currently unreachable, see
+    // the resolution note above).
+    /^adoption of amend/,
+    /^adoption of the amendment/,
+    /^reconsider/,
+    /\brecon\b/,
+    // En-bloc local and study-committee calendars (one roll, many bills).
+    /local consent calendar/,
+    /local calendar/,
+    /consent calendar/,
+    /uncontested house resolutions/,
+    /^immediately transmit/,
+    /^table(?:\s*:?\s*(?:house|senate) vote ?#\d+)?$/,
+    /shall the ruling of the chair/,
+    /^point of order/,
+    // Procedural families that appear in the 2023-2024 and 2026 sessions.
+    // Every one of these is a step in moving a bill about rather than a
+    // question on its merits: sending it back to committee, refusing the
+    // other chamber's text, backing down without saying what is agreed,
+    // pulling it off a calendar, suspending the rules, taking a committee
+    // substitute, and the en-bloc engrossment descs that just list bill
+    // numbers (`Hbs 710, 713, 730, 736`).
+    /^recommit/,
+    /^insist on /,
+    /^disagree to /,
+    /^recede(?:\s*:?\s*(?:house|senate) vote ?#\d+)?$/,
+    /^remove from /,
+    /^suspend the rules/,
+    /^adopt committee sub/,
+    /^h[bjr]s? \d/,
+];
+
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
   // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
   // die 2026-04-03). Vocabulary measured from the full dataset survey
@@ -639,39 +699,56 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     jurisdiction: "GA",
     sessionId: 2167,
     chamberSizes: { house: 180, senate: 56 },
-    keptQuestions: [
-      {
-        pattern: /^passage(?: by substitute)?(?: as amended)?(?:\s*:?\s*(?:house|senate) vote ?#\d+)?$/,
-        questionClass: "passage",
-      },
-      { pattern: /^agree to /, questionClass: "concurrence" },
-      { pattern: /^adopt (?:conference committee report|conference comm\.? report|ccr)/, questionClass: "conference_report" },
-    ],
-    excludedQuestions: [
-      // `Motion To Table`, `Motion To Engross`, `Motion For The Previous
-      // Question`, `Motion To Withdraw And Commit`, `Motion To Adjourn` —
-      // scheduling and debate motions. Engrossment motions also name a
-      // whole calendar of bills in the desc.
-      /^motion /,
-      // Floor amendment votes: `Adoption Of Amendment #1 By The Senator
-      // From The 38th` and its `Adoption Of The Amendment … As Amended`
-      // spelling. Deliberately NOT matching `adoption of constitutional
-      // amendment`, which is a final question (currently unreachable, see
-      // the resolution note above).
-      /^adoption of amend/,
-      /^adoption of the amendment/,
-      /^reconsider/,
-      /\brecon\b/,
-      // En-bloc local and study-committee calendars (one roll, many bills).
-      /local consent calendar/,
-      /local calendar/,
-      /consent calendar/,
-      /uncontested house resolutions/,
-      /^immediately transmit/,
-      /^table(?:\s*:?\s*(?:house|senate) vote ?#\d+)?$/,
-      /shall the ruling of the chair/,
-      /^point of order/,
-    ],
+    keptQuestions: GEORGIA_KEPT_QUESTIONS,
+    excludedQuestions: GEORGIA_EXCLUDED_QUESTIONS,
+  },
+
+  // Georgia General Assembly, 2023-2024 Regular Session (both years). The
+  // previous two-year term: Georgia elects its whole legislature every two
+  // years, and 181 of this session's 241 members are on the November 2026
+  // ballot, which is 75 percent. Surveyed 2026-09-04: 4,723 bills, 2,348 roll
+  // calls, 241 people. It classifies with the shared Georgia vocabulary above
+  // and leaves NOTHING unmatched on a kept instrument type.
+  //
+  // 1,274 kept floor votes, 176 divided, 115 of those on measures that became
+  // law across 61 measures. That is the largest divided-and-enacted pool of
+  // any session in this campaign so far.
+  "GA-2008": {
+    jurisdiction: "GA",
+    sessionId: 2008,
+    chamberSizes: { house: 180, senate: 56 },
+    keptQuestions: GEORGIA_KEPT_QUESTIONS,
+    excludedQuestions: GEORGIA_EXCLUDED_QUESTIONS,
+  },
+
+  // Georgia General Assembly, 2023 Special Session (November and December
+  // 2023), called to redraw the state's legislative and congressional maps
+  // after a federal court found the 2021 maps unlawful. 67 bills, 33 roll
+  // calls, 236 people, 179 of them on the November 2026 ballot.
+  //
+  // Only 7 kept floor votes, but every one of them is divided AND on a
+  // measure that became law: the House, Senate and congressional remaps.
+  "GA-2114": {
+    jurisdiction: "GA",
+    sessionId: 2114,
+    chamberSizes: { house: 180, senate: 56 },
+    keptQuestions: GEORGIA_KEPT_QUESTIONS,
+    excludedQuestions: GEORGIA_EXCLUDED_QUESTIONS,
+  },
+
+  // Georgia General Assembly, 2026 Special Session. 176 bills but 280 roll
+  // calls, and 236 of those are the local consent calendar, which is one vote
+  // covering many local bills and is excluded. 234 people, 208 of them on the
+  // November 2026 ballot, the highest crosswalk reach of any Georgia session.
+  //
+  // 9 kept floor votes, all 9 divided, 4 of them on the one measure that
+  // became law.
+  "GA-2268": {
+    jurisdiction: "GA",
+    sessionId: 2268,
+    chamberSizes: { house: 180, senate: 56 },
+    keptQuestions: GEORGIA_KEPT_QUESTIONS,
+    excludedQuestions: GEORGIA_EXCLUDED_QUESTIONS,
   },
   // Illinois 104th General Assembly (2025-2026, both years in one dataset).
   // Vocabulary measured from the full dataset survey 2026-08-26: 12,073 bills,
