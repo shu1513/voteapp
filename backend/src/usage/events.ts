@@ -296,7 +296,11 @@ export function parseUsageEventsBodyValue(parsed: unknown): ParsedUsageEvents {
   return { accepted, dropped };
 }
 
-/** One bounded multi-row insert; duplicates (client retries) are no-ops. */
+/** One bounded multi-row insert; duplicates (client retries) are no-ops.
+ * Untargeted ON CONFLICT on purpose: naming the arbiter column (`ON CONFLICT
+ * (event_id)`) makes Postgres require SELECT on it, which the INSERT-only API
+ * role does not have (42501 verified). The primary key is the table's only
+ * unique constraint, so the two forms mean the same thing. */
 export async function insertUsageEvents(db: Pool, rows: readonly UsageEventRow[]): Promise<void> {
   if (rows.length === 0) {
     return;
@@ -307,7 +311,7 @@ export async function insertUsageEvents(db: Pool, rows: readonly UsageEventRow[]
       SELECT * FROM unnest(
         $1::uuid[], $2::uuid[], $3::uuid[], $4::text[], $5::text[], $6::integer[], $7::smallint[], $8::jsonb[]
       )
-      ON CONFLICT (event_id) DO NOTHING
+      ON CONFLICT DO NOTHING
     `,
     [
       rows.map((row) => row.eventId),

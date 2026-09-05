@@ -134,8 +134,10 @@ client clock.
 Grants (guarded by the `pg_roles` check from migration 234): `USAGE` on
 the schema and `INSERT` on `usage.events` to `voteapp_api`. No SELECT, no
 UPDATE, no sequences. The insert is a plain multi-row `INSERT … ON
-CONFLICT (event_id) DO NOTHING`, which needs only INSERT. Test it under
-`voteapp_api`, not the owner role.
+CONFLICT DO NOTHING` — untargeted, because naming the arbiter column
+(`ON CONFLICT (event_id)`) makes Postgres demand SELECT on it (42501 under
+an INSERT-only role, verified). Test it under an INSERT-only role, not the
+owner.
 
 Purge: `usage.purge_events()` — `DELETE FROM usage.events WHERE
 received_at < now() - interval '90 days'`, `SECURITY DEFINER`, `SET

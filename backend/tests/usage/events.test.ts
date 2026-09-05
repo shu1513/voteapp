@@ -156,7 +156,10 @@ describe("insertUsageEvents", () => {
     }).accepted;
     await insertUsageEvents(pool, rows);
     expect(calls).toHaveLength(1);
-    expect(calls[0]!.text).toContain("ON CONFLICT (event_id) DO NOTHING");
+    // Untargeted: a named arbiter column would need SELECT, which the
+    // INSERT-only API role lacks (see insertUsageEvents).
+    expect(calls[0]!.text).toContain("ON CONFLICT DO NOTHING");
+    expect(calls[0]!.text).not.toContain("ON CONFLICT (");
     expect(calls[0]!.values).toEqual([
       [EVENT_ID, PAGE_VIEW_ID],
       [SESSION_ID, SESSION_ID],

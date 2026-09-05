@@ -145,7 +145,12 @@ let inFlight = false;
 // A 404 means the server has the feature off: stop sending for this tab.
 let serverDisabled = false;
 let currentRoute: UsageRoute = "other";
-let view: { id: string; visibleMs: number; visibleSince: number | null } | null = null;
+// The page the app is rendering right now, stamped by useUsageTracking
+// DURING render (parents render before children, but child effects run
+// before parent effects — so a child's track() on mount would otherwise
+// see the previous page). track() syncs the page view from it lazily.
+let desired: { route: UsageRoute; key: string } | null = null;
+let view: { id: string; key: string; visibleMs: number; visibleSince: number | null } | null = null;
 
 function isEnabled(): boolean {
   if (typeof window === "undefined" || typeof navigator === "undefined") return false;
@@ -210,7 +215,9 @@ function ensureSession(now: number): StoredSession | null {
     }
     session = { id: crypto.randomUUID(), started_at: now, last_active_at: now };
     window.sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
-    queue.push(buildEvent(session, "session_start", sessionStartProps(), now));
+    queue.push(
+      buildEvent(session, "session_start", sessionStartProps(), now, { route: currentRoute, pageViewId: view?.id ?? null })
+    );
     return session;
   } catch {
     return null;
@@ -264,32 +271,64 @@ function sessionStartProps(): Props {
   };
 }
 
-function buildEvent(live: StoredSession, name: string, props: Props, now: number): UsageEvent {
+function buildEvent(
+  live: StoredSession,
+  name: string,
+  props: Props,
+  now: number,
+  attribution: { route: UsageRoute; pageViewId: string | null }
+): UsageEvent {
   return {
     event_id: crypto.randomUUID(),
     session_id: live.id,
-    page_view_id: view?.id ?? null,
+    page_view_id: attribution.pageViewId,
     name,
-    route: currentRoute,
+    route: attribution.route,
     client_offset_ms: Math.min(Math.max(0, Math.round(now - live.started_at)), MAX_CLIENT_OFFSET_MS),
     props,
   };
+}
+
+/** Queues one event; callers have already checked isEnabled(). */
+function enqueue(name: string, props: Props, attribution = { route: currentRoute, pageViewId: view?.id ?? null }): void {
+  const now = Date.now();
+  const live = ensureSession(now);
+  if (!live) return;
+  queue.push(buildEvent(live, name, props, now, attribution));
+  if (queue.length > MAX_QUEUE) {
+    queue.splice(0, queue.length - MAX_QUEUE);
+  }
+  if (queue.length >= FLUSH_AT_EVENTS) {
+    flush("fetch");
+  }
+}
+
+/** Starts a page view for the rendered page when it changed: closes the old
+ * view (final page_time, attributed to it) and emits page_view for the new
+ * one. Idempotent, so both track() and the route effect may call it. */
+function syncPageView(): void {
+  if (!desired || (view && view.key === desired.key)) return;
+  const previous = view;
+  const previousRoute = currentRoute;
+  if (previous) {
+    accumulateVisible(performance.now());
+  }
+  const visible = typeof document !== "undefined" && document.visibilityState === "visible";
+  currentRoute = desired.route;
+  view = { id: crypto.randomUUID(), key: desired.key, visibleMs: 0, visibleSince: visible ? performance.now() : null };
+  if (previous) {
+    // The closing view's final time, attributed to the page it measured.
+    enqueue("page_time", { visible_ms: Math.round(previous.visibleMs) }, { route: previousRoute, pageViewId: previous.id });
+  }
+  enqueue("page_view", {});
 }
 
 /** Records one catalog event. Safe to call from anywhere; never throws. */
 export function track(name: string, props: Props = {}): void {
   try {
     if (!isEnabled()) return;
-    const now = Date.now();
-    const live = ensureSession(now);
-    if (!live) return;
-    queue.push(buildEvent(live, name, props, now));
-    if (queue.length > MAX_QUEUE) {
-      queue.splice(0, queue.length - MAX_QUEUE);
-    }
-    if (queue.length >= FLUSH_AT_EVENTS) {
-      flush("fetch");
-    }
+    syncPageView();
+    enqueue(name, props);
   } catch {
     // Analytics must never surface as an app error.
   }
@@ -316,7 +355,13 @@ function requeueOnce(batch: UsageEvent[]): void {
 }
 
 function flush(mode: "fetch" | "beacon"): void {
-  if (queue.length === 0 || serverDisabled) return;
+  // Consent is re-checked at send time: a batch re-queued by a failed
+  // request after an opt-out must never leave the browser.
+  if (!isEnabled()) {
+    queue = [];
+    return;
+  }
+  if (queue.length === 0) return;
   if (mode === "beacon") {
     // Queued-not-confirmed by design: this is the page-hide path where a
     // fetch would be cancelled. Drain everything; no retry is possible.
@@ -370,19 +415,9 @@ function accumulateVisible(now: number): void {
 /** Cumulative foreground time for the current view. Reports keep the max per
  * page_view_id, so repeated checkpoints are harmless. */
 function checkpointPageTime(): void {
-  if (!view) return;
+  if (!view || !isEnabled()) return;
   accumulateVisible(performance.now());
-  track("page_time", { visible_ms: Math.round(view.visibleMs) });
-}
-
-function startPageView(route: UsageRoute): void {
-  if (view) {
-    checkpointPageTime();
-  }
-  currentRoute = route;
-  const visible = typeof document !== "undefined" && document.visibilityState === "visible";
-  view = { id: crypto.randomUUID(), visibleMs: 0, visibleSince: visible ? performance.now() : null };
-  track("page_view");
+  enqueue("page_time", { visible_ms: Math.round(view.visibleMs) }, { route: currentRoute, pageViewId: view.id });
 }
 
 function onVisibilityChange(): void {
@@ -413,13 +448,17 @@ export function useUsageTracking(): void {
   const location = useLocation();
   const matches = useMatches();
   const { me } = useMe();
-  const routeRef = useRef<UsageRoute>("other");
-  routeRef.current = routeForMatchId(matches[matches.length - 1]?.id);
+  // Render-phase stamp (idempotent module write, no React state): children
+  // rendering under this layout, and their mount effects, already see the
+  // page they belong to.
+  if (typeof window !== "undefined") {
+    desired = { route: routeForMatchId(matches[matches.length - 1]?.id), key: location.pathname };
+  }
   const lastAuth = useRef<"guest" | "signed_in" | null>(null);
 
   useEffect(() => {
     if (!isEnabled()) return;
-    startPageView(routeRef.current);
+    syncPageView();
   }, [location.pathname]);
 
   useEffect(() => {
@@ -431,7 +470,10 @@ export function useUsageTracking(): void {
   }, [me]);
 
   useEffect(() => {
-    if (!isEnabled()) return;
+    // Build flag only: the runtime checks (opt-out, storage, server 404)
+    // live in track()/flush(), so opting back in on /privacy takes effect
+    // without a reload while an opted-out tab pays only for idle timers.
+    if (import.meta.env.VITE_USAGE_ANALYTICS_ENABLED !== "true") return;
     document.addEventListener("visibilitychange", onVisibilityChange);
     window.addEventListener("pagehide", onPageHide);
     const flushTimer = window.setInterval(() => flush("fetch"), FLUSH_INTERVAL_MS);
@@ -498,6 +540,7 @@ export function resetUsageForTests(): void {
   inFlight = false;
   serverDisabled = false;
   currentRoute = "other";
+  desired = null;
   view = null;
   try {
     window.sessionStorage.removeItem(SESSION_KEY);

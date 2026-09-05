@@ -105,6 +105,25 @@ describe("track", () => {
     expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 
+  it("never resends a batch that failed in flight after the visitor opted out", async () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    let release!: (value: { ok: boolean; status: number; headers: Headers; json: () => Promise<unknown> }) => void;
+    const fetchMock = vi.fn(() => new Promise<{ ok: boolean; status: number; headers: Headers; json: () => Promise<unknown> }>((resolve) => {
+      release = resolve;
+    }));
+    vi.stubGlobal("fetch", fetchMock);
+    track("address_input");
+    flushUsageEventsForTests();
+    expect(fetchMock).toHaveBeenCalledOnce();
+    // Opt out while the request is in flight, then let it fail.
+    setUsageOptOut(true);
+    release({ ok: false, status: 503, headers: new Headers(), json: async () => ({}) });
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    flushUsageEventsForTests();
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    expect(fetchMock).toHaveBeenCalledOnce();
+  });
+
   it("honors the /privacy opt-out and drops anything queued", () => {
     vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
     const fetchMock = stubFetch();
