@@ -1,0 +1,529 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1549880,
+   "measure_id": "HB 147",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 147, which helps a homeowner argue that a neighbourhood rule has been dropped. Many housing estates carry recorded rules, and a homeowners' association enforces them. The act says that for a homeowner's defence, enforcing a rule means the association applied it evenly and consistently to every property it covers, for at least 2 years. So an association that has let a rule slide, or applied it to some homes and not others, is on weaker ground when it tries to enforce it. The Montana Senate passed it 34-16, and it became law.",
+   "nay_description": "Voted against House Bill 147, which helps a homeowner argue that a neighbourhood rule has been dropped. Many housing estates carry recorded rules, and a homeowners' association enforces them. The act says that for a homeowner's defence, enforcing a rule means the association applied it evenly and consistently to every property it covers, for at least 2 years. So an association that has let a rule slide, or applied it to some homes and not others, is on weaker ground when it tries to enforce it. The Montana Senate passed it 34-16, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1555843,
+   "measure_id": "HB 372",
+   "vote_date": "2025-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 372, which raises Montana hunting licence prices and puts more of the money into bird habitat. A resident upland game bird licence rises from $7.50 to $10, and the non-resident one from $110 to $127. The non-resident big game combination rises from $981 to $1,312. The slice of each licence set aside for the upland game bird habitat programme also rises, for example from $2 to $4.50 on a resident bird licence. Discounted licences, such as those for young, older and disabled hunters, no longer feed that habitat programme. The Montana Senate passed it 31-19, and it became law.",
+   "nay_description": "Voted against House Bill 372, which raises Montana hunting licence prices and puts more of the money into bird habitat. A resident upland game bird licence rises from $7.50 to $10, and the non-resident one from $110 to $127. The non-resident big game combination rises from $981 to $1,312. The slice of each licence set aside for the upland game bird habitat programme also rises, for example from $2 to $4.50 on a resident bird licence. Discounted licences, such as those for young, older and disabled hunters, no longer feed that habitat programme. The Montana Senate passed it 31-19, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1557114,
+   "measure_id": "HB 421",
+   "vote_date": "2025-04-24",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 421, which raises the fee landowners pay for wildfire protection. The state natural resources department charges owners of forest land for fire protection. The flat charge per landowner rises from a cap of $50 to a cap of $58.70. The extra charge for land above 20 acres rises from 30 cents to 49 cents an acre each year, a rise of about two-thirds. The first 20 acres remain free of the per-acre charge. The Montana Senate passed it 37-13, and it became law.",
+   "nay_description": "Voted against House Bill 421, which raises the fee landowners pay for wildfire protection. The state natural resources department charges owners of forest land for fire protection. The flat charge per landowner rises from a cap of $50 to a cap of $58.70. The extra charge for land above 20 acres rises from 30 cents to 49 cents an acre each year, a rise of about two-thirds. The first 20 acres remain free of the per-acre charge. The Montana Senate passed it 37-13, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1545902,
+   "measure_id": "HB 764",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 764, which changes how Montana towns run and leave public transport districts. A county commission may now start creating or enlarging a district by its own resolution, with a map and a public hearing, instead of waiting for a residents' petition. An area that has had no service within one and a half miles for the last 5 years may leave the district if 51 percent of its voters sign a petition, and it escapes the district's existing debts. A town bus service may also run beyond the usual 8-mile limit if outside money pays for it. The Montana Senate passed it 34-14, and it became law.",
+   "nay_description": "Voted against House Bill 764, which changes how Montana towns run and leave public transport districts. A county commission may now start creating or enlarging a district by its own resolution, with a map and a public hearing, instead of waiting for a residents' petition. An area that has had no service within one and a half miles for the last 5 years may leave the district if 51 percent of its voters sign a petition, and it escapes the district's existing debts. A town bus service may also run beyond the usual 8-mile limit if outside money pays for it. The Montana Senate passed it 34-14, and it became law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1559583,
+   "measure_id": "HB 853",
+   "vote_date": "2025-04-24",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 853, which raises the licence fees for places that serve food or lodging and widens who must hold one. A small food business goes from $85 to $150 a year, a large one from $115 to $275, and a wholesale food business from $115 to $225. A small hotel or motel goes from $40 to $100, and a small campground from $40 to $80. Pools and spas are split into seasonal and year-round rates. The act also removes hotels and motels from the list of places excluded from the retail food rules, so they now need a food licence and inspection. The Montana Senate passed it 29-21, and it became law.",
+   "nay_description": "Voted against House Bill 853, which raises the licence fees for places that serve food or lodging and widens who must hold one. A small food business goes from $85 to $150 a year, a large one from $115 to $275, and a wholesale food business from $115 to $225. A small hotel or motel goes from $40 to $100, and a small campground from $40 to $80. Pools and spas are split into seasonal and year-round rates. The act also removes hotels and motels from the list of places excluded from the retail food rules, so they now need a food licence and inspection. The Montana Senate passed it 29-21, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1558095,
+   "measure_id": "HB 932",
+   "vote_date": "2025-04-25",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 932, which sends marijuana tax money to wildlife habitat. The 20 percent that went to the state wildlife department now goes to a new habitat account. That money is split three ways: 75 percent to caring for land and wildlife, 20 percent to habitat work and 5 percent to wildlife crossings. The share for the state addiction recovery fund changes from a fixed cap of $6 million to 11 percent. The advisory council is rebuilt to seat a wildlife scientist, a tribal member, a farmer or rancher, a conservation group member and a weed control member. The Montana Senate passed it 38-11, and it became law.",
+   "nay_description": "Voted against House Bill 932, which sends marijuana tax money to wildlife habitat. The 20 percent that went to the state wildlife department now goes to a new habitat account. That money is split three ways: 75 percent to caring for land and wildlife, 20 percent to habitat work and 5 percent to wildlife crossings. The share for the state addiction recovery fund changes from a fixed cap of $6 million to 11 percent. The advisory council is rebuilt to seat a wildlife scientist, a tribal member, a farmer or rancher, a conservation group member and a weed control member. The Montana Senate passed it 38-11, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1551760,
+   "measure_id": "SB 74",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 74, which cuts the tax on discounted marijuana and changes how sellers are licensed. Montana taxes marijuana on its retail price. The act changes that price from the one set before any discount to the one after the discount, so tax is charged on what the customer actually pays. It also charges a maker's licence fee on a company's total output rather than on each of its facilities. Complaints to the state marijuana hotline may now be made anonymously, but those complaints become confidential and are not released to the public. The Montana House passed it 70-28, and it became law.",
+   "nay_description": "Voted against Senate Bill 74, which cuts the tax on discounted marijuana and changes how sellers are licensed. Montana taxes marijuana on its retail price. The act changes that price from the one set before any discount to the one after the discount, so tax is charged on what the customer actually pays. It also charges a maker's licence fee on a company's total output rather than on each of its facilities. Complaints to the state marijuana hotline may now be made anonymously, but those complaints become confidential and are not released to the public. The Montana House passed it 70-28, and it became law.",
+   "labels": [
+    {
+     "slug": "government_spending_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1528983,
+   "measure_id": "SB 74",
+   "vote_date": "2025-03-27",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 74, which cuts the tax on discounted marijuana and changes how sellers are licensed. Montana taxes marijuana on its retail price. The act changes that price from the one set before any discount to the one after the discount, so tax is charged on what the customer actually pays. It also charges a maker's licence fee on a company's total output rather than on each of its facilities. Complaints to the state marijuana hotline may now be made anonymously, but those complaints become confidential and are not released to the public. The Montana Senate passed it 38-12, and it became law.",
+   "nay_description": "Voted against Senate Bill 74, which cuts the tax on discounted marijuana and changes how sellers are licensed. Montana taxes marijuana on its retail price. The act changes that price from the one set before any discount to the one after the discount, so tax is charged on what the customer actually pays. It also charges a maker's licence fee on a company's total output rather than on each of its facilities. Complaints to the state marijuana hotline may now be made anonymously, but those complaints become confidential and are not released to the public. The Montana Senate passed it 38-12, and it became law.",
+   "labels": [
+    {
+     "slug": "government_spending_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1524060,
+   "measure_id": "SB 113",
+   "vote_date": "2025-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 113, which narrows what you may take from a towed vehicle without paying first. A tow firm may hold your belongings until its bill is paid, and a list of items was protected from that hold. The act limits that whole list to vehicles belonging to people who are uninsured or underinsured, or where a towing insurance claim was not filed or cannot be checked. Each protected item also shrinks. Only original licences, identity papers and records are covered, so copies are not. Bags and other containers holding those papers lose their protection, leaving only a wallet or purse. The Montana House passed it 76-21, and it became law.",
+   "nay_description": "Voted against Senate Bill 113, which narrows what you may take from a towed vehicle without paying first. A tow firm may hold your belongings until its bill is paid, and a list of items was protected from that hold. The act limits that whole list to vehicles belonging to people who are uninsured or underinsured, or where a towing insurance claim was not filed or cannot be checked. Each protected item also shrinks. Only original licences, identity papers and records are covered, so copies are not. Bags and other containers holding those papers lose their protection, leaving only a wallet or purse. The Montana House passed it 76-21, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1530366,
+   "measure_id": "SB 143",
+   "vote_date": "2025-03-28",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 143, which shortens the time you have to sue. A statute of limitations is the deadline for bringing a case to court. The deadline for suing on a written contract falls from 8 years to 6 years. The deadline for suing over faulty building work or land surveying falls from 10 years to 6 years. Where an injury appears late, the window that used to run into the tenth year after the work finished now runs only into the sixth. The act applies to cases filed on or after 1 October 2025. The Montana House passed it 58-41, and it became law.",
+   "nay_description": "Voted against Senate Bill 143, which shortens the time you have to sue. A statute of limitations is the deadline for bringing a case to court. The deadline for suing on a written contract falls from 8 years to 6 years. The deadline for suing over faulty building work or land surveying falls from 10 years to 6 years. Where an injury appears late, the window that used to run into the tenth year after the work finished now runs only into the sixth. The act applies to cases filed on or after 1 October 2025. The Montana House passed it 58-41, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1541949,
+   "measure_id": "SB 149",
+   "vote_date": "2025-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 149, which makes it harder to prove the need for an emotional support animal. A landlord may ask a tenant for backing information. What that information must hold is now set by law, not left open. The health worker who confirms the need must hold a Montana licence. That worker must also have decided themselves that the animal gives the support. On a mobile home lot, handing over the papers does not force the landlord to let the animal in, so long as other laws are met. Service animals are not affected. The Montana House passed it 62-35, and it became law.",
+   "nay_description": "Voted against Senate Bill 149, which makes it harder to prove the need for an emotional support animal. A landlord may ask a tenant for backing information. What that information must hold is now set by law, not left open. The health worker who confirms the need must hold a Montana licence. That worker must also have decided themselves that the animal gives the support. On a mobile home lot, handing over the papers does not force the landlord to let the animal in, so long as other laws are met. Service animals are not affected. The Montana House passed it 62-35, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1546668,
+   "measure_id": "SB 149",
+   "vote_date": "2025-04-12",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 149, which makes it harder to prove the need for an emotional support animal. A landlord may ask a tenant for backing information. What that information must hold is now set by law, not left open. The health worker who confirms the need must hold a Montana licence. That worker must also have decided themselves that the animal gives the support. On a mobile home lot, handing over the papers does not force the landlord to let the animal in, so long as other laws are met. Service animals are not affected. The Montana Senate passed it 40-10, and it became law.",
+   "nay_description": "Voted against Senate Bill 149, which makes it harder to prove the need for an emotional support animal. A landlord may ask a tenant for backing information. What that information must hold is now set by law, not left open. The health worker who confirms the need must hold a Montana licence. That worker must also have decided themselves that the animal gives the support. On a mobile home lot, handing over the papers does not force the landlord to let the animal in, so long as other laws are met. Service animals are not affected. The Montana Senate passed it 40-10, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546375,
+   "measure_id": "SB 194",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 194, which moves appeals over public assistance to the department that made the decision. Someone refused food assistance, cash help or Medicaid could appeal to the Board of Public Assistance, a separate body that decided such cases. The act abolishes that board and sends appeals to the health department instead. The board keeps running until it finishes the appeals already filed with it. The act applies to appeals filed from the day it took effect. The Montana House passed it 56-43, and it became law.",
+   "nay_description": "Voted against Senate Bill 194, which moves appeals over public assistance to the department that made the decision. Someone refused food assistance, cash help or Medicaid could appeal to the Board of Public Assistance, a separate body that decided such cases. The act abolishes that board and sends appeals to the health department instead. The board keeps running until it finishes the appeals already filed with it. The act applies to appeals filed from the day it took effect. The Montana House passed it 56-43, and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546384,
+   "measure_id": "SB 218",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 218, which lets someone sue a clinician over gender dysphoria treatment they had as a child. The treatments covered are listed surgeries, hormones and puberty blockers. The person must show the clinician fell below the accepted medical standard of care, proved by expert evidence. The claim may be brought within 2 years of discovering the harm, and the clock does not even start until the person turns 23. It is paused further where the clinician concealed things or applied pressure. Treatment for a child born with a medically verifiable disorder of sex development is excluded. The Montana House passed it 55-44, and it became law.",
+   "nay_description": "Voted against Senate Bill 218, which lets someone sue a clinician over gender dysphoria treatment they had as a child. The treatments covered are listed surgeries, hormones and puberty blockers. The person must show the clinician fell below the accepted medical standard of care, proved by expert evidence. The claim may be brought within 2 years of discovering the harm, and the clock does not even start until the person turns 23. It is paused further where the clinician concealed things or applied pressure. Treatment for a child born with a medically verifiable disorder of sex development is excluded. The Montana House passed it 55-44, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1560193,
+   "measure_id": "SB 218",
+   "vote_date": "2025-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 218, which lets someone sue a clinician over gender dysphoria treatment they had as a child. The treatments covered are listed surgeries, hormones and puberty blockers. The person must show the clinician fell below the accepted medical standard of care, proved by expert evidence. The claim may be brought within 2 years of discovering the harm, and the clock does not even start until the person turns 23. It is paused further where the clinician concealed things or applied pressure. Treatment for a child born with a medically verifiable disorder of sex development is excluded. The Montana Senate passed it 31-19, and it became law.",
+   "nay_description": "Voted against Senate Bill 218, which lets someone sue a clinician over gender dysphoria treatment they had as a child. The treatments covered are listed surgeries, hormones and puberty blockers. The person must show the clinician fell below the accepted medical standard of care, proved by expert evidence. The claim may be brought within 2 years of discovering the harm, and the clock does not even start until the person turns 23. It is paused further where the clinician concealed things or applied pressure. Treatment for a child born with a medically verifiable disorder of sex development is excluded. The Montana Senate passed it 31-19, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1529989,
+   "measure_id": "SB 249",
+   "vote_date": "2025-03-28",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 249, which lets carers speak in every child abuse and neglect case. When a court decides whether a child has been abused or neglected, it hears evidence about who has been caring for the child. That duty used to apply only where the state alleged the parents had abandoned the child. The act extends it to every such case. The court must hear from people such as foster parents and relatives about how far they have cared for, raised or supported the child, and about the circumstances in which the child came to be with them. The Montana House passed it 61-38, and it became law.",
+   "nay_description": "Voted against Senate Bill 249, which lets carers speak in every child abuse and neglect case. When a court decides whether a child has been abused or neglected, it hears evidence about who has been caring for the child. That duty used to apply only where the state alleged the parents had abandoned the child. The act extends it to every such case. The court must hear from people such as foster parents and relatives about how far they have cared for, raised or supported the child, and about the circumstances in which the child came to be with them. The Montana House passed it 61-38, and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1557445,
+   "measure_id": "SB 253",
+   "vote_date": "2025-04-24",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 253, which makes charities that hand out private school scholarships get state approval. These bodies collect donations that earn a tax credit and pay out scholarships. They used to only give notice that they intended to operate. Now they must apply to the revenue department for certification, which lasts at most 2 tax years. The department must decide within 60 days and must refuse an organisation that has not followed the rules, with 30 days to put things right and no appeal from a final refusal. Each organisation must publish where its money went and may not steer scholarships to a single school. The Montana House passed it 57-43, and it became law.",
+   "nay_description": "Voted against Senate Bill 253, which makes charities that hand out private school scholarships get state approval. These bodies collect donations that earn a tax credit and pay out scholarships. They used to only give notice that they intended to operate. Now they must apply to the revenue department for certification, which lasts at most 2 tax years. The department must decide within 60 days and must refuse an organisation that has not followed the rules, with 30 days to put things right and no appeal from a final refusal. Each organisation must publish where its money went and may not steer scholarships to a single school. The Montana House passed it 57-43, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546451,
+   "measure_id": "SB 278",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 278, which creates a school job for guiding pupils toward college and work. The job is called an advanced opportunity facilitator. That person links a pupil and their family with colleges, employers, trade bodies and local groups. A school gets state money to help pupils take up these chances. It may now use what is left of that money, after paying pupils' own costs, to pay the new post. The school also draws the state teacher payment for the person, as it would for a teacher. The Montana House passed it 75-24, and it became law.",
+   "nay_description": "Voted against Senate Bill 278, which creates a school job for guiding pupils toward college and work. The job is called an advanced opportunity facilitator. That person links a pupil and their family with colleges, employers, trade bodies and local groups. A school gets state money to help pupils take up these chances. It may now use what is left of that money, after paying pupils' own costs, to pay the new post. The school also draws the state teacher payment for the person, as it would for a teacher. The Montana House passed it 75-24, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1551891,
+   "measure_id": "SB 278",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 278, which creates a school job for guiding pupils toward college and work. The job is called an advanced opportunity facilitator. That person links a pupil and their family with colleges, employers, trade bodies and local groups. A school gets state money to help pupils take up these chances. It may now use what is left of that money, after paying pupils' own costs, to pay the new post. The school also draws the state teacher payment for the person, as it would for a teacher. The Montana Senate passed it 36-14, and it became law.",
+   "nay_description": "Voted against Senate Bill 278, which creates a school job for guiding pupils toward college and work. The job is called an advanced opportunity facilitator. That person links a pupil and their family with colleges, employers, trade bodies and local groups. A school gets state money to help pupils take up these chances. It may now use what is left of that money, after paying pupils' own costs, to pay the new post. The school also draws the state teacher payment for the person, as it would for a teacher. The Montana Senate passed it 36-14, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1505816,
+   "measure_id": "SB 310",
+   "vote_date": "2025-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 310, which changes how Montana pays for trails. The trail grant programme is renamed the trail stewardship grant programme, and the money is now split by law: 40 percent to motorised projects, 40 percent to non-motorised projects and 20 percent to projects serving both. Unused money in one share may be moved to another. Grants may pay for more things than before, including safety and ethics education, condition surveys, and buying and maintaining equipment. Up to 75 percent of a grant may be paid at the time it is awarded, with the last 25 percent released once the first part is spent and reported. The Montana Senate passed it 32-17, and it became law.",
+   "nay_description": "Voted against Senate Bill 310, which changes how Montana pays for trails. The trail grant programme is renamed the trail stewardship grant programme, and the money is now split by law: 40 percent to motorised projects, 40 percent to non-motorised projects and 20 percent to projects serving both. Unused money in one share may be moved to another. Grants may pay for more things than before, including safety and ethics education, condition surveys, and buying and maintaining equipment. Up to 75 percent of a grant may be paid at the time it is awarded, with the last 25 percent released once the first part is spent and reported. The Montana Senate passed it 32-17, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546310,
+   "measure_id": "SB 390",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 390, which brings vaping under Montana's indoor smoking ban. The Clean Indoor Air Act bars smoking in enclosed public places such as restaurants, shops, offices and health care buildings. The act adds a meaning for an electronic smoking device, covering an e-cigarette, a dab rig or a vape pen. It then rewrites the meaning of smoking to include inhaling and exhaling from such a device. So vaping is now treated the same as lighting a cigarette everywhere that law reaches. The Montana House passed it 64-35, and it became law.",
+   "nay_description": "Voted against Senate Bill 390, which brings vaping under Montana's indoor smoking ban. The Clean Indoor Air Act bars smoking in enclosed public places such as restaurants, shops, offices and health care buildings. The act adds a meaning for an electronic smoking device, covering an e-cigarette, a dab rig or a vape pen. It then rewrites the meaning of smoking to include inhaling and exhaling from such a device. So vaping is now treated the same as lighting a cigarette everywhere that law reaches. The Montana House passed it 64-35, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1549344,
+   "measure_id": "SB 390",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 390, which brings vaping under Montana's indoor smoking ban. The Clean Indoor Air Act bars smoking in enclosed public places such as restaurants, shops, offices and health care buildings. The act adds a meaning for an electronic smoking device, covering an e-cigarette, a dab rig or a vape pen. It then rewrites the meaning of smoking to include inhaling and exhaling from such a device. So vaping is now treated the same as lighting a cigarette everywhere that law reaches. The Montana Senate passed it 34-16, and it became law.",
+   "nay_description": "Voted against Senate Bill 390, which brings vaping under Montana's indoor smoking ban. The Clean Indoor Air Act bars smoking in enclosed public places such as restaurants, shops, offices and health care buildings. The act adds a meaning for an electronic smoking device, covering an e-cigarette, a dab rig or a vape pen. It then rewrites the meaning of smoking to include inhaling and exhaling from such a device. So vaping is now treated the same as lighting a cigarette everywhere that law reaches. The Montana Senate passed it 34-16, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1524172,
+   "measure_id": "SB 471",
+   "vote_date": "2025-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 471, which creates an offence of endangering people at a pedestrian crossing. Some crossings have a light a walker presses that starts flashing to show they are there. Under the act a driver approaching such a light with a walker present must give way, stopping if needed, and stay stopped until the person has crossed. A first offence carries a fine of $25 to $100. Where the flashing light was on, the fine rises to $75 to $149 for a first offence. A driver who damages the crossing light must pay to repair it. The Montana Senate passed it 34-16, and it became law.",
+   "nay_description": "Voted against Senate Bill 471, which creates an offence of endangering people at a pedestrian crossing. Some crossings have a light a walker presses that starts flashing to show they are there. Under the act a driver approaching such a light with a walker present must give way, stopping if needed, and stay stopped until the person has crossed. A first offence carries a fine of $25 to $100. Where the flashing light was on, the fine rises to $75 to $149 for a first offence. A driver who damages the crossing light must pay to repair it. The Montana Senate passed it 34-16, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1507960,
+   "measure_id": "SB 495",
+   "vote_date": "2025-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 495, which abolishes the board that oversaw Montana's tobacco prevention spending. Money from the tobacco settlement funds programmes to stop people smoking and to treat the diseases it causes. A tobacco prevention advisory board reviewed how that money was used. The act repeals the board and removes the line that let the legislature fund it. The underlying programmes and the shares of settlement money that pay for them are unchanged. The Montana Senate passed it 39-10, and it became law.",
+   "nay_description": "Voted against Senate Bill 495, which abolishes the board that oversaw Montana's tobacco prevention spending. Money from the tobacco settlement funds programmes to stop people smoking and to treat the diseases it causes. A tobacco prevention advisory board reviewed how that money was used. The act repeals the board and removes the line that let the legislature fund it. The underlying programmes and the shares of settlement money that pay for them are unchanged. The Montana Senate passed it 39-10, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1546324,
+   "measure_id": "SB 508",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 508, which sets a zero tolerance rule for THC in drivers under 21. THC is the main active substance in marijuana. An adult driver breaks the law at 5 nanograms per millilitre of blood. For a driver under 21, the act makes any amount at all the offence. The test excludes inactive breakdown products, which can linger long after any effect has passed. This matches how Montana already treats alcohol for that age group, where the limit is far below the adult one. The Montana House passed it 62-37, and it became law.",
+   "nay_description": "Voted against Senate Bill 508, which sets a zero tolerance rule for THC in drivers under 21. THC is the main active substance in marijuana. An adult driver breaks the law at 5 nanograms per millilitre of blood. For a driver under 21, the act makes any amount at all the offence. The test excludes inactive breakdown products, which can linger long after any effect has passed. This matches how Montana already treats alcohol for that age group, where the limit is far below the adult one. The Montana House passed it 62-37, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1558165,
+   "measure_id": "SB 535",
+   "vote_date": "2025-04-25",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 535, which creates a licensed industry of experimental treatment centres in Montana. A centre must hold a state licence, costing $10,000 to apply and $5,000 a year. The act also widens what counts as an experimental treatment. It used to mean something still in an approved federal trial; it may now instead have a safety record shown by documented clinical evidence. Consent may be a recording rather than a signed form, and two warnings are deleted, including the one about unexpected or worse symptoms. Direct agreements between a centre and a patient are placed outside insurance law. The Montana House passed it 49-48, and it became law.",
+   "nay_description": "Voted against Senate Bill 535, which creates a licensed industry of experimental treatment centres in Montana. A centre must hold a state licence, costing $10,000 to apply and $5,000 a year. The act also widens what counts as an experimental treatment. It used to mean something still in an approved federal trial; it may now instead have a safety record shown by documented clinical evidence. Consent may be a recording rather than a signed form, and two warnings are deleted, including the one about unexpected or worse symptoms. Direct agreements between a centre and a patient are placed outside insurance law. The Montana House passed it 49-48, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1558163
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1559961,
+   "measure_id": "SB 535",
+   "vote_date": "2025-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 535, which creates a licensed industry of experimental treatment centres in Montana. A centre must hold a state licence, costing $10,000 to apply and $5,000 a year. The act also widens what counts as an experimental treatment. It used to mean something still in an approved federal trial; it may now instead have a safety record shown by documented clinical evidence. Consent may be a recording rather than a signed form, and two warnings are deleted, including the one about unexpected or worse symptoms. Direct agreements between a centre and a patient are placed outside insurance law. The Montana Senate passed it 29-21, and it became law.",
+   "nay_description": "Voted against Senate Bill 535, which creates a licensed industry of experimental treatment centres in Montana. A centre must hold a state licence, costing $10,000 to apply and $5,000 a year. The act also widens what counts as an experimental treatment. It used to mean something still in an approved federal trial; it may now instead have a safety record shown by documented clinical evidence. Consent may be a recording rather than a signed form, and two warnings are deleted, including the one about unexpected or worse symptoms. Direct agreements between a centre and a patient are placed outside insurance law. The Montana Senate passed it 29-21, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "house",
+   "session": "2159",
+   "roll": 1558071,
+   "measure_id": "SB 553",
+   "vote_date": "2025-04-25",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 553, which stops airline travel credits expiring. A travel credit is money an airline gives you toward a future flight. Under the act it stays valid until it is used and never runs out. Its value belongs to whoever holds it, not the airline, and it survives the airline going bust. No fee may reduce it, including a charge for leaving it unused. If a credit was worth more than $5 and less than $5 is left, the holder may ask for the rest in cash. This reaches back to credits issued from January 2025. The Montana House passed it 62-38, and it became law.",
+   "nay_description": "Voted against Senate Bill 553, which stops airline travel credits expiring. A travel credit is money an airline gives you toward a future flight. Under the act it stays valid until it is used and never runs out. Its value belongs to whoever holds it, not the airline, and it survives the airline going bust. No fee may reduce it, including a charge for leaving it unused. If a credit was worth more than $5 and less than $5 is left, the holder may ask for the rest in cash. This reaches back to credits issued from January 2025. The Montana House passed it 62-38, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MT",
+   "chamber": "senate",
+   "session": "2159",
+   "roll": 1560858,
+   "measure_id": "SB 553",
+   "vote_date": "2025-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 553, which stops airline travel credits expiring. A travel credit is money an airline gives you toward a future flight. Under the act it stays valid until it is used and never runs out. Its value belongs to whoever holds it, not the airline, and it survives the airline going bust. No fee may reduce it, including a charge for leaving it unused. If a credit was worth more than $5 and less than $5 is left, the holder may ask for the rest in cash. This reaches back to credits issued from January 2025. The Montana Senate passed it 30-20, and it became law.",
+   "nay_description": "Voted against Senate Bill 553, which stops airline travel credits expiring. A travel credit is money an airline gives you toward a future flight. Under the act it stays valid until it is used and never runs out. Its value belongs to whoever holds it, not the airline, and it survives the airline going bust. No fee may reduce it, including a charge for leaving it unused. If a credit was worth more than $5 and less than $5 is left, the holder may ask for the rest in cash. This reaches back to credits issued from January 2025. The Montana Senate passed it 30-20, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

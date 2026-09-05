@@ -96,7 +96,7 @@ repository at `/Users/shu/legiscan-data/mt_doc.py` and `mt_diff.py`.
   `divided-enacted-worklist.tsv` (one row per divided-and-enacted roll with its
   disposition), and `filter-5-drops.md` (why each dropped measure was dropped
   after a full read)
-- `batch-01/` through `batch-17/` — each holds `PLAN.md`, `JUDGING.md`,
+- `batch-01/` through `batch-18/` — each holds `PLAN.md`, `JUDGING.md`,
   `judgments.json`, the roll evidence files, and the import ledgers
 
 ## Status
@@ -123,13 +123,14 @@ records.**
 | batch-15 | 7 | 10 | 433 | tax credits, bonding, broadband, litigation funding |
 | batch-16 | 12 | 17 | 633 | children, schools, responders, brownfields, wildlife |
 | batch-17 | 24 | 35 | 1,210 | courts, civil rights, nuisance, flags, health boards |
-| **total** | **143** | **227** | **9,290** | 18 areas, 87 candidates, 5,625 tags |
+| batch-18 | 22 | 29 | 1,149 | health, courts, schools, marijuana, consumer |
+| **total** | **165** | **256** | **10,439** | 18 areas, 87 candidates, 6,350 tags |
 
 85 further records were imported and then retired: every operative section of
 SB 172 was voided by HB 162's coordination instructions, so SB 172 changed no
 law. See `batch-14/PLAN.md`.
 
-**109 divided-and-enacted rolls remain unworked, across 81 bills.** The 58
+**80 divided-and-enacted rolls remain unworked, across 59 bills.** The 58
 joint-resolution rolls that used to be listed here separately are now disposed:
 a Montana joint resolution never becomes law, so all of them fail filter 2 and
 are marked `dropped:filter-2-not-law`. 90 rolls are marked
