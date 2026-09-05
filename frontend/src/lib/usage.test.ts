@@ -12,6 +12,7 @@ import {
   resetUsageForTests,
   routeForMatchId,
   setUsageOptOut,
+  chatSourceBucket,
   sourceLinkProps,
   track,
   trackSettled,
@@ -287,6 +288,12 @@ describe("helpers", () => {
     );
     expect(candidate).toEqual({ arrival: "deep", has_summary: true, record_count_bucket: "1-3", upcoming: true, has_finance: false });
     expect(pageViewProps("home", { anything: 1 }, null)).toEqual({});
+  });
+
+  it("folds chat card source types to a short list, unknown to other", () => {
+    expect(chatSourceBucket("candidate_profile")).toBe("candidate");
+    expect(chatSourceBucket("official_state_resource")).toBe("official");
+    expect(chatSourceBucket("brand_new_type")).toBe("other");
   });
 
   it("flags .gov hosts and PDFs for source clicks without keeping the URL", () => {

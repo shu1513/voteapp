@@ -310,6 +310,42 @@ const CATALOG: Record<string, { required: Record<string, PropRule>; optional?: R
     required: { change: oneOf("follow", "unfollow"), outcome: oneOf("ok", "error") },
     optional: { error_category: oneOf("address", "not_found", "rate_limited", "server", "network", "other") },
   },
+  // Chat (PR 3): the widget's question text stays in chatbot.questions with
+  // no join key — these carry only how the chat was entered and what kind
+  // of answer came back.
+  chat_open: {
+    required: { context_kind: oneOf("candidate", "election", "none"), wall: oneOf("none", "register", "verify") },
+  },
+  chat_ask: {
+    required: {
+      entry: oneOf("typed", "starter", "followup"),
+      context_kind: oneOf("candidate", "election", "none"),
+      first_turn: bool,
+      outcome: oneOf("ok", "error"),
+    },
+    optional: {
+      answer: oneOf("template", "retrieval", "clarify", "refuse_no_data", "refuse_policy", "other"),
+      result_count_bucket: oneOf(...COUNT_BUCKETS),
+      ai_generated: bool,
+      error_category: oneOf("address", "not_found", "rate_limited", "server", "network", "other"),
+    },
+  },
+  chat_result_click: {
+    required: {
+      source: oneOf("candidate", "record", "finance", "election", "measure", "official", "source", "page", "other"),
+      position_bucket: oneOf("1-3", "4-10", "11+"),
+    },
+  },
+  chat_feedback: {
+    required: { verdict: oneOf("up", "down"), outcome: oneOf("ok", "error") },
+    optional: { error_category: oneOf("address", "not_found", "rate_limited", "server", "network", "other") },
+  },
+  // Support (PR 3): the Checkout session request settled — not proof of
+  // payment, and never an amount.
+  checkout_start: {
+    required: { kind: oneOf("monthly", "one_time"), outcome: oneOf("ok", "error") },
+    optional: { error_category: oneOf("address", "not_found", "rate_limited", "server", "network", "other") },
+  },
 };
 
 export const USAGE_EVENT_NAMES: readonly string[] = Object.keys(CATALOG);
