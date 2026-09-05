@@ -42,6 +42,15 @@ and the programme's termination date is extended. The record says the end date i
 pushed back rather than removed, because the act extends rather than repeals it —
 the distinction that SB 333 in batch-15 turned on.
 
+Review fix (2026-09-05): the first description said colleges and universities may
+"now receive grants under it, not just school districts", which kept districts as
+independent recipients. The enrolled text strikes "eligible school districts" from
+20-4-601(3)(a) and replaces it with "eligible postsecondary institutions, in
+partnership with at least one eligible school district"; (2)(d) is rewritten the
+same way. Both chamber descriptions now say programme grants go to colleges and
+universities that partner with at least one eligible school district, instead of
+to the districts themselves. 85 records rewritten in place.
+
 ## HB 573 — transformational learning
 
 Chapter 462. Moves the existing programme's termination up by one year and
@@ -74,6 +83,15 @@ required pursuant to this section must be reduced by 2%."
 
 The record states the 2 percent and explains what an entitlement share is.
 Direction **for** `social_programs_and_welfare`.
+
+Review fix (2026-09-05): the first description made the 2 percent cut sound
+automatic after any missed report. New 41-3-210(5) requires the attorney general
+to notify the county attorney and county commissioners within 10 days of the
+missed deadline, and the cut is reported only if the county attorney does not
+provide the information within 30 days of that notice; 41-3-210(6)(b) is the
+yearly August 15 report to the revenue department naming counties that had not
+complied by July 1. Both chamber descriptions now carry the notice and 30-day
+cure step. 86 records rewritten in place.
 
 ## HB 655 — religious belief in adoption and fostering
 

@@ -1,310 +1,310 @@
 {
- "judgments": [
-  {
-   "jurisdiction": "MT",
-   "chamber": "senate",
-   "session": "2159",
-   "roll": 1532853,
-   "measure_id": "HB 128",
-   "vote_date": "2025-04-01",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 128, which stops an employer sacking someone for volunteering as an emergency responder. That covers joining a volunteer fire service or a volunteer emergency unit. The protection starts once the worker has finished any probation period. The worker must tell the employer in writing that they volunteer, within 30 days of joining, of being hired, or of the act starting. A worker sacked for this reason may sue the employer for wrongful dismissal. The Montana Senate passed it 35-15, and it became law.",
-   "nay_description": "Voted against House Bill 128, which stops an employer sacking someone for volunteering as an emergency responder. That covers joining a volunteer fire service or a volunteer emergency unit. The protection starts once the worker has finished any probation period. The worker must tell the employer in writing that they volunteer, within 30 days of joining, of being hired, or of the act starting. A worker sacked for this reason may sue the employer for wrongful dismissal. The Montana Senate passed it 35-15, and it became law.",
-   "labels": [
+  "judgments": [
     {
-     "slug": "corporate_accountability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "senate",
-   "session": "2159",
-   "roll": 1557141,
-   "measure_id": "HB 129",
-   "vote_date": "2025-04-24",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 129, which cuts the state income tax bill of volunteer emergency responders. A qualified volunteer firefighter or volunteer emergency care provider may subtract an extra $3,000 from the income Montana taxes. To qualify, the person must have been an unpaid active member of the same unit for the whole calendar year. They must also have completed the required training, which is at least 30 hours for a firefighter. The $3,000 figure rises each year in line with inflation. The Montana Senate passed it 32-18, and it became law.",
-   "nay_description": "Voted against House Bill 129, which cuts the state income tax bill of volunteer emergency responders. A qualified volunteer firefighter or volunteer emergency care provider may subtract an extra $3,000 from the income Montana taxes. To qualify, the person must have been an unpaid active member of the same unit for the whole calendar year. They must also have completed the required training, which is at least 30 hours for a firefighter. The $3,000 figure rises each year in line with inflation. The Montana Senate passed it 32-18, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1532853,
+      "measure_id": "HB 128",
+      "vote_date": "2025-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 128, which stops an employer sacking someone for volunteering as an emergency responder. That covers joining a volunteer fire service or a volunteer emergency unit. The protection starts once the worker has finished any probation period. The worker must tell the employer in writing that they volunteer, within 30 days of joining, of being hired, or of the act starting. A worker sacked for this reason may sue the employer for wrongful dismissal. The Montana Senate passed it 35-15, and it became law.",
+      "nay_description": "Voted against House Bill 128, which stops an employer sacking someone for volunteering as an emergency responder. That covers joining a volunteer fire service or a volunteer emergency unit. The protection starts once the worker has finished any probation period. The worker must tell the employer in writing that they volunteer, within 30 days of joining, of being hired, or of the act starting. A worker sacked for this reason may sue the employer for wrongful dismissal. The Montana Senate passed it 35-15, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "personal_income_tax_reduction",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "house",
-   "session": "2159",
-   "roll": 1537646,
-   "measure_id": "HB 499",
-   "vote_date": "2025-04-05",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 499, which widens Montana's grow your own grant programme, which helps people train as teachers in their own communities. Colleges and universities may now receive grants under it, not just school districts. The rule about earning college credits while still at high school is relaxed. The higher education commissioner no longer has to turn a grant into a loan when a recipient does not meet the conditions. The programme was due to end, and the act pushes that date back. The Montana House passed it 62-36, and it became law.",
-   "nay_description": "Voted against House Bill 499, which widens Montana's grow your own grant programme, which helps people train as teachers in their own communities. Colleges and universities may now receive grants under it, not just school districts. The rule about earning college credits while still at high school is relaxed. The higher education commissioner no longer has to turn a grant into a loan when a recipient does not meet the conditions. The programme was due to end, and the act pushes that date back. The Montana House passed it 62-36, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1557141,
+      "measure_id": "HB 129",
+      "vote_date": "2025-04-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 129, which cuts the state income tax bill of volunteer emergency responders. A qualified volunteer firefighter or volunteer emergency care provider may subtract an extra $3,000 from the income Montana taxes. To qualify, the person must have been an unpaid active member of the same unit for the whole calendar year. They must also have completed the required training, which is at least 30 hours for a firefighter. The $3,000 figure rises each year in line with inflation. The Montana Senate passed it 32-18, and it became law.",
+      "nay_description": "Voted against House Bill 129, which cuts the state income tax bill of volunteer emergency responders. A qualified volunteer firefighter or volunteer emergency care provider may subtract an extra $3,000 from the income Montana taxes. To qualify, the person must have been an unpaid active member of the same unit for the whole calendar year. They must also have completed the required training, which is at least 30 hours for a firefighter. The $3,000 figure rises each year in line with inflation. The Montana Senate passed it 32-18, and it became law.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "public_education_quality",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "senate",
-   "session": "2159",
-   "roll": 1553710,
-   "measure_id": "HB 499",
-   "vote_date": "2025-04-22",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 499, which widens Montana's grow your own grant programme, which helps people train as teachers in their own communities. Colleges and universities may now receive grants under it, not just school districts. The rule about earning college credits while still at high school is relaxed. The higher education commissioner no longer has to turn a grant into a loan when a recipient does not meet the conditions. The programme was due to end, and the act pushes that date back. The Montana Senate passed it 29-21, and it became law.",
-   "nay_description": "Voted against House Bill 499, which widens Montana's grow your own grant programme, which helps people train as teachers in their own communities. Colleges and universities may now receive grants under it, not just school districts. The rule about earning college credits while still at high school is relaxed. The higher education commissioner no longer has to turn a grant into a loan when a recipient does not meet the conditions. The programme was due to end, and the act pushes that date back. The Montana Senate passed it 29-21, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1537646,
+      "measure_id": "HB 499",
+      "vote_date": "2025-04-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 499, which widens Montana's grow your own grant programme, which helps people train as teachers in their own communities. Programme grants now go to colleges and universities that partner with at least one eligible school district, instead of to the school districts themselves. The rule about earning college credits while still at high school is relaxed. The higher education commissioner no longer has to turn a grant into a loan when a recipient does not meet the conditions. The programme was due to end, and the act pushes that date back. The Montana House passed it 62-36, and it became law.",
+      "nay_description": "Voted against House Bill 499, which widens Montana's grow your own grant programme, which helps people train as teachers in their own communities. Programme grants now go to colleges and universities that partner with at least one eligible school district, instead of to the school districts themselves. The rule about earning college credits while still at high school is relaxed. The higher education commissioner no longer has to turn a grant into a loan when a recipient does not meet the conditions. The programme was due to end, and the act pushes that date back. The Montana House passed it 62-36, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "public_education_quality",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "senate",
-   "session": "2159",
-   "roll": 1548715,
-   "measure_id": "HB 573",
-   "vote_date": "2025-04-15",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 573, which replaces one school grant scheme with another. Transformational learning grants pay schools to try new ways of teaching. The act ends the existing grant programme a year earlier than planned. In its place it sets up a phase two programme, and sets out how the schools superintendent and the Board of Public Education must run it. Schools applying must meet the requirements the act lays down. The Montana Senate passed it 30-20, and it became law.",
-   "nay_description": "Voted against House Bill 573, which replaces one school grant scheme with another. Transformational learning grants pay schools to try new ways of teaching. The act ends the existing grant programme a year earlier than planned. In its place it sets up a phase two programme, and sets out how the schools superintendent and the Board of Public Education must run it. Schools applying must meet the requirements the act lays down. The Montana Senate passed it 30-20, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1553710,
+      "measure_id": "HB 499",
+      "vote_date": "2025-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 499, which widens Montana's grow your own grant programme, which helps people train as teachers in their own communities. Programme grants now go to colleges and universities that partner with at least one eligible school district, instead of to the school districts themselves. The rule about earning college credits while still at high school is relaxed. The higher education commissioner no longer has to turn a grant into a loan when a recipient does not meet the conditions. The programme was due to end, and the act pushes that date back. The Montana Senate passed it 29-21, and it became law.",
+      "nay_description": "Voted against House Bill 499, which widens Montana's grow your own grant programme, which helps people train as teachers in their own communities. Programme grants now go to colleges and universities that partner with at least one eligible school district, instead of to the school districts themselves. The rule about earning college credits while still at high school is relaxed. The higher education commissioner no longer has to turn a grant into a loan when a recipient does not meet the conditions. The programme was due to end, and the act pushes that date back. The Montana Senate passed it 29-21, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "public_education_quality",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "house",
-   "session": "2159",
-   "roll": 1551665,
-   "measure_id": "HB 586",
-   "vote_date": "2025-04-17",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 586, which changes when a child must ride in a car seat or booster seat. The rule now turns on the child's age rather than the older test alone. The act sets out what counts as a child safety restraint system and what counts as a booster seat. It also lists the vehicles and situations that do not have to comply. A driver carrying a child who is not properly restrained is breaking the law. The Montana House passed it 73-26, and it became law.",
-   "nay_description": "Voted against House Bill 586, which changes when a child must ride in a car seat or booster seat. The rule now turns on the child's age rather than the older test alone. The act sets out what counts as a child safety restraint system and what counts as a booster seat. It also lists the vehicles and situations that do not have to comply. A driver carrying a child who is not properly restrained is breaking the law. The Montana House passed it 73-26, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1548715,
+      "measure_id": "HB 573",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 573, which replaces one school grant scheme with another. Transformational learning grants pay schools to try new ways of teaching. The act ends the existing grant programme a year earlier than planned. In its place it sets up a phase two programme, and sets out how the schools superintendent and the Board of Public Education must run it. Schools applying must meet the requirements the act lays down. The Montana Senate passed it 30-20, and it became law.",
+      "nay_description": "Voted against House Bill 573, which replaces one school grant scheme with another. Transformational learning grants pay schools to try new ways of teaching. The act ends the existing grant programme a year earlier than planned. In its place it sets up a phase two programme, and sets out how the schools superintendent and the Board of Public Education must run it. Schools applying must meet the requirements the act lays down. The Montana Senate passed it 30-20, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "public_safety_and_crime_control",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "senate",
-   "session": "2159",
-   "roll": 1536708,
-   "measure_id": "HB 586",
-   "vote_date": "2025-04-03",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 586, which changes when a child must ride in a car seat or booster seat. The rule now turns on the child's age rather than the older test alone. The act sets out what counts as a child safety restraint system and what counts as a booster seat. It also lists the vehicles and situations that do not have to comply. A driver carrying a child who is not properly restrained is breaking the law. The Montana Senate passed it 30-20, and it became law.",
-   "nay_description": "Voted against House Bill 586, which changes when a child must ride in a car seat or booster seat. The rule now turns on the child's age rather than the older test alone. The act sets out what counts as a child safety restraint system and what counts as a booster seat. It also lists the vehicles and situations that do not have to comply. A driver carrying a child who is not properly restrained is breaking the law. The Montana Senate passed it 30-20, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1551665,
+      "measure_id": "HB 586",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 586, which changes when a child must ride in a car seat or booster seat. The rule now turns on the child's age rather than the older test alone. The act sets out what counts as a child safety restraint system and what counts as a booster seat. It also lists the vehicles and situations that do not have to comply. A driver carrying a child who is not properly restrained is breaking the law. The Montana House passed it 73-26, and it became law.",
+      "nay_description": "Voted against House Bill 586, which changes when a child must ride in a car seat or booster seat. The rule now turns on the child's age rather than the older test alone. The act sets out what counts as a child safety restraint system and what counts as a booster seat. It also lists the vehicles and situations that do not have to comply. A driver carrying a child who is not properly restrained is breaking the law. The Montana House passed it 73-26, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "public_safety_and_crime_control",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "house",
-   "session": "2159",
-   "roll": 1507045,
-   "measure_id": "HB 625",
-   "vote_date": "2025-03-06",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 625, which docks a county's state money if it does not report child abuse cases. County attorneys must report certain information about child abuse and neglect cases to the attorney general. If a county attorney fails to do so, the attorney general must tell the county and then report the failure to the revenue department. The revenue department must then cut the county's entitlement share payment by 2 percent. The entitlement share is the yearly payment counties receive from the state. The Montana House passed it 63-36, and it became law.",
-   "nay_description": "Voted against House Bill 625, which docks a county's state money if it does not report child abuse cases. County attorneys must report certain information about child abuse and neglect cases to the attorney general. If a county attorney fails to do so, the attorney general must tell the county and then report the failure to the revenue department. The revenue department must then cut the county's entitlement share payment by 2 percent. The entitlement share is the yearly payment counties receive from the state. The Montana House passed it 63-36, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1536708,
+      "measure_id": "HB 586",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 586, which changes when a child must ride in a car seat or booster seat. The rule now turns on the child's age rather than the older test alone. The act sets out what counts as a child safety restraint system and what counts as a booster seat. It also lists the vehicles and situations that do not have to comply. A driver carrying a child who is not properly restrained is breaking the law. The Montana Senate passed it 30-20, and it became law.",
+      "nay_description": "Voted against House Bill 586, which changes when a child must ride in a car seat or booster seat. The rule now turns on the child's age rather than the older test alone. The act sets out what counts as a child safety restraint system and what counts as a booster seat. It also lists the vehicles and situations that do not have to comply. A driver carrying a child who is not properly restrained is breaking the law. The Montana Senate passed it 30-20, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "social_programs_and_welfare",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "senate",
-   "session": "2159",
-   "roll": 1549184,
-   "measure_id": "HB 625",
-   "vote_date": "2025-04-15",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 625, which docks a county's state money if it does not report child abuse cases. County attorneys must report certain information about child abuse and neglect cases to the attorney general. If a county attorney fails to do so, the attorney general must tell the county and then report the failure to the revenue department. The revenue department must then cut the county's entitlement share payment by 2 percent. The entitlement share is the yearly payment counties receive from the state. The Montana Senate passed it 30-20, and it became law.",
-   "nay_description": "Voted against House Bill 625, which docks a county's state money if it does not report child abuse cases. County attorneys must report certain information about child abuse and neglect cases to the attorney general. If a county attorney fails to do so, the attorney general must tell the county and then report the failure to the revenue department. The revenue department must then cut the county's entitlement share payment by 2 percent. The entitlement share is the yearly payment counties receive from the state. The Montana Senate passed it 30-20, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1507045,
+      "measure_id": "HB 625",
+      "vote_date": "2025-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 625, which docks a county's state money if it does not report child abuse cases. County attorneys must report certain information about child abuse and neglect cases to the attorney general. If a county attorney misses a reporting deadline, the attorney general must notify the county within 10 days, and the county attorney then has 30 days to send the missing information. If the county still has not complied, the attorney general names it in a yearly report to the revenue department, which must then cut the county's entitlement share payment by 2 percent. The entitlement share is the yearly payment counties receive from the state. The Montana House passed it 63-36, and it became law.",
+      "nay_description": "Voted against House Bill 625, which docks a county's state money if it does not report child abuse cases. County attorneys must report certain information about child abuse and neglect cases to the attorney general. If a county attorney misses a reporting deadline, the attorney general must notify the county within 10 days, and the county attorney then has 30 days to send the missing information. If the county still has not complied, the attorney general names it in a yearly report to the revenue department, which must then cut the county's entitlement share payment by 2 percent. The entitlement share is the yearly payment counties receive from the state. The Montana House passed it 63-36, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "social_programs_and_welfare",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "house",
-   "session": "2159",
-   "roll": 1508732,
-   "measure_id": "HB 655",
-   "vote_date": "2025-03-07",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 655, which protects adoption and foster care providers who act on religious belief. The state may not act against a provider because it gave, or refused to give, a service in line with its sincerely held religious belief, or because of policies it keeps on that basis. The state also may not act against a foster or adoptive parent because of how their religious belief shapes the way they raise a child. The state may still take religion into account to place a child with a family of the same faith. A person may sue the state, or raise the act as a defence. The Montana House passed it 59-40, and it became law.",
-   "nay_description": "Voted against House Bill 655, which protects adoption and foster care providers who act on religious belief. The state may not act against a provider because it gave, or refused to give, a service in line with its sincerely held religious belief, or because of policies it keeps on that basis. The state also may not act against a foster or adoptive parent because of how their religious belief shapes the way they raise a child. The state may still take religion into account to place a child with a family of the same faith. A person may sue the state, or raise the act as a defence. The Montana House passed it 59-40, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1549184,
+      "measure_id": "HB 625",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 625, which docks a county's state money if it does not report child abuse cases. County attorneys must report certain information about child abuse and neglect cases to the attorney general. If a county attorney misses a reporting deadline, the attorney general must notify the county within 10 days, and the county attorney then has 30 days to send the missing information. If the county still has not complied, the attorney general names it in a yearly report to the revenue department, which must then cut the county's entitlement share payment by 2 percent. The entitlement share is the yearly payment counties receive from the state. The Montana Senate passed it 30-20, and it became law.",
+      "nay_description": "Voted against House Bill 625, which docks a county's state money if it does not report child abuse cases. County attorneys must report certain information about child abuse and neglect cases to the attorney general. If a county attorney misses a reporting deadline, the attorney general must notify the county within 10 days, and the county attorney then has 30 days to send the missing information. If the county still has not complied, the attorney general names it in a yearly report to the revenue department, which must then cut the county's entitlement share payment by 2 percent. The entitlement share is the yearly payment counties receive from the state. The Montana Senate passed it 30-20, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "senate",
-   "session": "2159",
-   "roll": 1548839,
-   "measure_id": "HB 655",
-   "vote_date": "2025-04-08",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 655, which protects adoption and foster care providers who act on religious belief. The state may not act against a provider because it gave, or refused to give, a service in line with its sincerely held religious belief, or because of policies it keeps on that basis. The state also may not act against a foster or adoptive parent because of how their religious belief shapes the way they raise a child. The state may still take religion into account to place a child with a family of the same faith. A person may sue the state, or raise the act as a defence. The Montana Senate passed it 29-19, and it became law.",
-   "nay_description": "Voted against House Bill 655, which protects adoption and foster care providers who act on religious belief. The state may not act against a provider because it gave, or refused to give, a service in line with its sincerely held religious belief, or because of policies it keeps on that basis. The state also may not act against a foster or adoptive parent because of how their religious belief shapes the way they raise a child. The state may still take religion into account to place a child with a family of the same faith. A person may sue the state, or raise the act as a defence. The Montana Senate passed it 29-19, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1508732,
+      "measure_id": "HB 655",
+      "vote_date": "2025-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 655, which protects adoption and foster care providers who act on religious belief. The state may not act against a provider because it gave, or refused to give, a service in line with its sincerely held religious belief, or because of policies it keeps on that basis. The state also may not act against a foster or adoptive parent because of how their religious belief shapes the way they raise a child. The state may still take religion into account to place a child with a family of the same faith. A person may sue the state, or raise the act as a defence. The Montana House passed it 59-40, and it became law.",
+      "nay_description": "Voted against House Bill 655, which protects adoption and foster care providers who act on religious belief. The state may not act against a provider because it gave, or refused to give, a service in line with its sincerely held religious belief, or because of policies it keeps on that basis. The state also may not act against a foster or adoptive parent because of how their religious belief shapes the way they raise a child. The state may still take religion into account to place a child with a family of the same faith. A person may sue the state, or raise the act as a defence. The Montana House passed it 59-40, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "senate",
-   "session": "2159",
-   "roll": 1578754,
-   "measure_id": "HB 669",
-   "vote_date": "2025-04-23",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 669, which sorts out schooling for children in hospital for serious emotional problems. These children stay in a treatment facility inside Montana while they receive care. The act clarifies how the tuition owed for teaching them is worked out. It also clarifies what rules the schools superintendent may write for these programmes. The superintendent contracts with the facility to provide the education, and the act sets out how that funding works. The Montana Senate passed it 33-17, and it became law.",
-   "nay_description": "Voted against House Bill 669, which sorts out schooling for children in hospital for serious emotional problems. These children stay in a treatment facility inside Montana while they receive care. The act clarifies how the tuition owed for teaching them is worked out. It also clarifies what rules the schools superintendent may write for these programmes. The superintendent contracts with the facility to provide the education, and the act sets out how that funding works. The Montana Senate passed it 33-17, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1548839,
+      "measure_id": "HB 655",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 655, which protects adoption and foster care providers who act on religious belief. The state may not act against a provider because it gave, or refused to give, a service in line with its sincerely held religious belief, or because of policies it keeps on that basis. The state also may not act against a foster or adoptive parent because of how their religious belief shapes the way they raise a child. The state may still take religion into account to place a child with a family of the same faith. A person may sue the state, or raise the act as a defence. The Montana Senate passed it 29-19, and it became law.",
+      "nay_description": "Voted against House Bill 655, which protects adoption and foster care providers who act on religious belief. The state may not act against a provider because it gave, or refused to give, a service in line with its sincerely held religious belief, or because of policies it keeps on that basis. The state also may not act against a foster or adoptive parent because of how their religious belief shapes the way they raise a child. The state may still take religion into account to place a child with a family of the same faith. A person may sue the state, or raise the act as a defence. The Montana Senate passed it 29-19, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "public_education_quality",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "house",
-   "session": "2159",
-   "roll": 1508810,
-   "measure_id": "HB 694",
-   "vote_date": "2025-03-07",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 694, which discourages placing a Montana child with a family abroad. When the state places a child in foster care or for adoption, it follows an order of preference. Extended family, including close family friends, comes first, then people from the child's own community. The act adds that placing a child outside the United States is disfavoured. Children covered by the federal or Montana Indian Child Welfare Act are not subject to that rule. The act also rewrites the policy statement at the head of the child abuse and neglect law. The Montana House passed it 57-42, and it became law.",
-   "nay_description": "Voted against House Bill 694, which discourages placing a Montana child with a family abroad. When the state places a child in foster care or for adoption, it follows an order of preference. Extended family, including close family friends, comes first, then people from the child's own community. The act adds that placing a child outside the United States is disfavoured. Children covered by the federal or Montana Indian Child Welfare Act are not subject to that rule. The act also rewrites the policy statement at the head of the child abuse and neglect law. The Montana House passed it 57-42, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1578754,
+      "measure_id": "HB 669",
+      "vote_date": "2025-04-23",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 669, which sorts out schooling for children in hospital for serious emotional problems. These children stay in a treatment facility inside Montana while they receive care. The act clarifies how the tuition owed for teaching them is worked out. It also clarifies what rules the schools superintendent may write for these programmes. The superintendent contracts with the facility to provide the education, and the act sets out how that funding works. The Montana Senate passed it 33-17, and it became law.",
+      "nay_description": "Voted against House Bill 669, which sorts out schooling for children in hospital for serious emotional problems. These children stay in a treatment facility inside Montana while they receive care. The act clarifies how the tuition owed for teaching them is worked out. It also clarifies what rules the schools superintendent may write for these programmes. The superintendent contracts with the facility to provide the education, and the act sets out how that funding works. The Montana Senate passed it 33-17, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "senate",
-   "session": "2159",
-   "roll": 1545064,
-   "measure_id": "HB 694",
-   "vote_date": "2025-04-10",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 694, which discourages placing a Montana child with a family abroad. When the state places a child in foster care or for adoption, it follows an order of preference. Extended family, including close family friends, comes first, then people from the child's own community. The act adds that placing a child outside the United States is disfavoured. Children covered by the federal or Montana Indian Child Welfare Act are not subject to that rule. The act also rewrites the policy statement at the head of the child abuse and neglect law. The Montana Senate passed it 30-18, and it became law.",
-   "nay_description": "Voted against House Bill 694, which discourages placing a Montana child with a family abroad. When the state places a child in foster care or for adoption, it follows an order of preference. Extended family, including close family friends, comes first, then people from the child's own community. The act adds that placing a child outside the United States is disfavoured. Children covered by the federal or Montana Indian Child Welfare Act are not subject to that rule. The act also rewrites the policy statement at the head of the child abuse and neglect law. The Montana Senate passed it 30-18, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1508810,
+      "measure_id": "HB 694",
+      "vote_date": "2025-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 694, which discourages placing a Montana child with a family abroad. When the state places a child in foster care or for adoption, it follows an order of preference. Extended family, including close family friends, comes first, then people from the child's own community. The act adds that placing a child outside the United States is disfavoured. Children covered by the federal or Montana Indian Child Welfare Act are not subject to that rule. The act also rewrites the policy statement at the head of the child abuse and neglect law. The Montana House passed it 57-42, and it became law.",
+      "nay_description": "Voted against House Bill 694, which discourages placing a Montana child with a family abroad. When the state places a child in foster care or for adoption, it follows an order of preference. Extended family, including close family friends, comes first, then people from the child's own community. The act adds that placing a child outside the United States is disfavoured. Children covered by the federal or Montana Indian Child Welfare Act are not subject to that rule. The act also rewrites the policy statement at the head of the child abuse and neglect law. The Montana House passed it 57-42, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "house",
-   "session": "2159",
-   "roll": 1530181,
-   "measure_id": "HB 808",
-   "vote_date": "2025-03-28",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 808, which sets up a state programme to clean up contaminated land. A brownfield is land that is hard to reuse because pollution is present or suspected. The act creates the Montana Brownfields Revitalization Act and a fund to pay for the work. It sets rules for deciding which sites qualify and whether cleaning them up makes sense. It replaces the older law, which covered only petroleum pollution, so the programme now reaches contamination of other kinds. Money is transferred from the general fund and the spending is authorised in the act itself. The Montana House passed it 60-39, and it became law.",
-   "nay_description": "Voted against House Bill 808, which sets up a state programme to clean up contaminated land. A brownfield is land that is hard to reuse because pollution is present or suspected. The act creates the Montana Brownfields Revitalization Act and a fund to pay for the work. It sets rules for deciding which sites qualify and whether cleaning them up makes sense. It replaces the older law, which covered only petroleum pollution, so the programme now reaches contamination of other kinds. Money is transferred from the general fund and the spending is authorised in the act itself. The Montana House passed it 60-39, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1545064,
+      "measure_id": "HB 694",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 694, which discourages placing a Montana child with a family abroad. When the state places a child in foster care or for adoption, it follows an order of preference. Extended family, including close family friends, comes first, then people from the child's own community. The act adds that placing a child outside the United States is disfavoured. Children covered by the federal or Montana Indian Child Welfare Act are not subject to that rule. The act also rewrites the policy statement at the head of the child abuse and neglect law. The Montana Senate passed it 30-18, and it became law.",
+      "nay_description": "Voted against House Bill 694, which discourages placing a Montana child with a family abroad. When the state places a child in foster care or for adoption, it follows an order of preference. Extended family, including close family friends, comes first, then people from the child's own community. The act adds that placing a child outside the United States is disfavoured. Children covered by the federal or Montana Indian Child Welfare Act are not subject to that rule. The act also rewrites the policy statement at the head of the child abuse and neglect law. The Montana Senate passed it 30-18, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "senate",
-   "session": "2159",
-   "roll": 1551687,
-   "measure_id": "HB 855",
-   "vote_date": "2025-04-17",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 855, which pays for wildlife crossings over and under Montana highways. These are bridges and tunnels that let animals cross without meeting traffic. The act sets up an account for the money and lets the state wildlife department create a special number plate to raise it. A driver choosing that plate donates $20 when it is first issued and $20 at each yearly renewal. The money is passed to the transport department for qualifying crossing projects, and the act authorises that spending directly. The Montana Senate passed it 38-12, and it became law.",
-   "nay_description": "Voted against House Bill 855, which pays for wildlife crossings over and under Montana highways. These are bridges and tunnels that let animals cross without meeting traffic. The act sets up an account for the money and lets the state wildlife department create a special number plate to raise it. A driver choosing that plate donates $20 when it is first issued and $20 at each yearly renewal. The money is passed to the transport department for qualifying crossing projects, and the act authorises that spending directly. The Montana Senate passed it 38-12, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1530181,
+      "measure_id": "HB 808",
+      "vote_date": "2025-03-28",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 808, which sets up a state programme to clean up contaminated land. A brownfield is land that is hard to reuse because pollution is present or suspected. The act creates the Montana Brownfields Revitalization Act and a fund to pay for the work. It sets rules for deciding which sites qualify and whether cleaning them up makes sense. It replaces the older law, which covered only petroleum pollution, so the programme now reaches contamination of other kinds. Money is transferred from the general fund and the spending is authorised in the act itself. The Montana House passed it 60-39, and it became law.",
+      "nay_description": "Voted against House Bill 808, which sets up a state programme to clean up contaminated land. A brownfield is land that is hard to reuse because pollution is present or suspected. The act creates the Montana Brownfields Revitalization Act and a fund to pay for the work. It sets rules for deciding which sites qualify and whether cleaning them up makes sense. It replaces the older law, which covered only petroleum pollution, so the programme now reaches contamination of other kinds. Money is transferred from the general fund and the spending is authorised in the act itself. The Montana House passed it 60-39, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MT",
-   "chamber": "house",
-   "session": "2159",
-   "roll": 1537648,
-   "measure_id": "HB 869",
-   "vote_date": "2025-04-05",
-   "review_status": "approved",
-   "yea_description": "Voted for House Bill 869, which prepares Montana schools for a young athlete's heart stopping during sport. The schools superintendent must produce guidance on cardiac arrest. Coaches must be trained on it and must hold information meetings. A coach, trainer or official may take a young athlete out of play if they show warning signs, and that athlete may not return until a medical professional clears them. The act confirms that buying a defibrillator counts as school safety spending, and creates a grant scheme that pays schools back for the cost. The Montana House passed it 75-23, and it became law.",
-   "nay_description": "Voted against House Bill 869, which prepares Montana schools for a young athlete's heart stopping during sport. The schools superintendent must produce guidance on cardiac arrest. Coaches must be trained on it and must hold information meetings. A coach, trainer or official may take a young athlete out of play if they show warning signs, and that athlete may not return until a medical professional clears them. The act confirms that buying a defibrillator counts as school safety spending, and creates a grant scheme that pays schools back for the cost. The Montana House passed it 75-23, and it became law.",
-   "labels": [
+      "jurisdiction": "MT",
+      "chamber": "senate",
+      "session": "2159",
+      "roll": 1551687,
+      "measure_id": "HB 855",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 855, which pays for wildlife crossings over and under Montana highways. These are bridges and tunnels that let animals cross without meeting traffic. The act sets up an account for the money and lets the state wildlife department create a special number plate to raise it. A driver choosing that plate donates $20 when it is first issued and $20 at each yearly renewal. The money is passed to the transport department for qualifying crossing projects, and the act authorises that spending directly. The Montana Senate passed it 38-12, and it became law.",
+      "nay_description": "Voted against House Bill 855, which pays for wildlife crossings over and under Montana highways. These are bridges and tunnels that let animals cross without meeting traffic. The act sets up an account for the money and lets the state wildlife department create a special number plate to raise it. A driver choosing that plate donates $20 when it is first issued and $20 at each yearly renewal. The money is passed to the transport department for qualifying crossing projects, and the act authorises that spending directly. The Montana Senate passed it 38-12, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for",
-     "nay": null
+      "jurisdiction": "MT",
+      "chamber": "house",
+      "session": "2159",
+      "roll": 1537648,
+      "measure_id": "HB 869",
+      "vote_date": "2025-04-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 869, which prepares Montana schools for a young athlete's heart stopping during sport. The schools superintendent must produce guidance on cardiac arrest. Coaches must be trained on it and must hold information meetings. A coach, trainer or official may take a young athlete out of play if they show warning signs, and that athlete may not return until a medical professional clears them. The act confirms that buying a defibrillator counts as school safety spending, and creates a grant scheme that pays schools back for the cost. The Montana House passed it 75-23, and it became law.",
+      "nay_description": "Voted against House Bill 869, which prepares Montana schools for a young athlete's heart stopping during sport. The schools superintendent must produce guidance on cardiac arrest. Coaches must be trained on it and must hold information meetings. A coach, trainer or official may take a young athlete out of play if they show warning signs, and that athlete may not return until a medical professional clears them. The act confirms that buying a defibrillator counts as school safety spending, and creates a grant scheme that pays schools back for the cost. The Montana House passed it 75-23, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
     }
-   ]
-  }
- ]
+  ]
 }
