@@ -39,10 +39,12 @@ export type LegiscanStateConfig = {
   // kept). Checked before keptQuestions.
   excludedQuestions: readonly RegExp[];
   // Roll calls the survey proved WRONG (LegiScan's tally or member list
-  // disagrees with the state's own record), keyed by roll_call_id with the
-  // reason. Stored and surfaced (is_floor_vote null) but never queued, so
-  // they cannot be approved by mistake. Remove an entry only after the
-  // roll has been re-verified against the state's record.
+  // disagrees with the state's own record) or whose caption hides a
+  // procedural motion the state's bill history names (Minnesota's
+  // bill-number captions), keyed by roll_call_id with the reason. Stored
+  // and surfaced (is_floor_vote null) but never queued, so they cannot be
+  // approved by mistake. Remove an entry only after the roll has been
+  // re-verified against the state's record.
   heldRollCallIds?: Readonly<Record<number, string>>;
 };
 
@@ -459,6 +461,53 @@ const COLORADO_EXCLUDED_QUESTIONS: readonly RegExp[] = [
   // Resolutions, memorials and housekeeping calendars, plus the House's
   // laid-over veto question.
   /^(?:house|senate): (?:resolutions|misc|memorials|veto lo|consideration of)/,
+];
+
+// Minnesota's floor-question vocabulary, shared by the 94th Legislature's
+// regular session and the 2025 First Special Session below. Both were
+// surveyed separately and print the same families, so they share one
+// definition rather than two copies that could drift apart.
+const MINNESOTA_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // The House names its own passage question, with or without ` , as
+  // amended`. This is the only House caption that says what it is.
+  { pattern: /^house: passage(?:, as amended)?$/, questionClass: "passage" },
+  // The Senate's passage question.
+  { pattern: /^senate: third reading passed(?: as amended)?$/, questionClass: "passage" },
+  // The Senate re-passing its own bill after the House amended it, or after
+  // a conference. Minnesota takes this vote separately from the vote
+  // adopting the conference report.
+  { pattern: /^senate: third reading repassed$/, questionClass: "concurrence" },
+  { pattern: /^senate: senate adopted cc report and repassed bill$/, questionClass: "conference_report" },
+  // ⚠ The House caption that is only a bill number. See the long note on
+  // the MN entry below: this one pattern covers repassage, conference
+  // report adoption, passage off the table, and several motions, so the
+  // question must be read from the bill history at selection time.
+  { pattern: /^house: [hs]\.f\. no\. \d+$/, questionClass: "passage" },
+];
+const MINNESOTA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // Floor amendments, under every spelling Minnesota prints: `Koznick -
+  // Amendment - H0014A7`, `Stephenson - Amendment to Amendment - H0014A6`,
+  // `Koznick - Amendment as amended - H0014A5`, `Altendorf - Amendment,
+  // first portion - H0021A6`, and one caption whose author field holds a
+  // number (`67 - Amendment to Zeleznikar Amendment - Nays`).
+  / - amendment\b/,
+  // Motions to reconsider, under the three spellings in the data.
+  /\bmotion to reconsider\b/,
+  /^senate: reconsidered an amendment$/,
+  // Re-referral to committee, and the Senate's several withdraw-and-refer
+  // motions.
+  /\bre-referral\b/,
+  /^senate: withdrawn and re-referred to/,
+  /^senate: motion did not prevail/,
+  // Table motions.
+  /^senate: (?:laid on table|taken from table)$/,
+  // An appeal of the presiding officer's ruling, which Minnesota prints as
+  // a question about the chair, sometimes inside quotation marks.
+  /^house: "?shall the decision of /,
+  // The Senate's scheduling motion for taking a bill up out of order. It
+  // needs a two-thirds vote, so it divides often, but it is not a vote on
+  // the bill.
+  /^senate: urgency declared rules suspended$/,
 ];
 
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
@@ -2989,6 +3038,99 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     chamberSizes: { house: 65, senate: 35 },
     keptQuestions: COLORADO_KEPT_QUESTIONS,
     excludedQuestions: COLORADO_EXCLUDED_QUESTIONS,
+  },
+
+
+  // Minnesota Legislature, 94th (2025-2026 regular) and the 2025 First
+  // Special Session. Vocabulary measured from the full survey of BOTH
+  // datasets on 2026-09-03: 40 description families over 327 roll calls,
+  // every one of which matches a rule below except a single blank House
+  // description (see the note at the end). Feed health is the cleanest
+  // tier: no committee votes at all (every tally is whole-chamber, 107-134
+  // in the House and 54-67 in the Senate), no summary-only rolls, no tally
+  // mismatches, no parse errors.
+  //
+  // ⚠⚠ THE MINNESOTA HOUSE OFTEN PRINTS THE BILL NUMBER WHERE OTHER STATES
+  // PRINT THE QUESTION. 43 House rolls read exactly `House: H.F. NO. 2115`
+  // or `House: S.F. NO. 2370`, and that one caption covers at least six
+  // different questions: repassage after the Senate amended the bill,
+  // adoption of a conference committee report, passage after a motion to
+  // take the bill from the table, a motion to suspend the rules, a motion
+  // to place a bill on the calendar, and a FAILED motion to adopt a
+  // conference report. The caption is kept because most of these rolls are
+  // the chamber's real vote on the measure, but WHICH question a given roll
+  // asked can only be read off that bill's own history for that date and
+  // chamber. Never describe one of these rolls from the caption. Florida's
+  // and Connecticut's feeds have the same shape.
+  //
+  // That history match was done for every DIVIDED bill-number roll in the
+  // regular session (15 rolls, 9 bills, revisor.mn.gov bill status pages,
+  // 2026-09-04). Eight are the chamber's vote on the measure (passage or
+  // repassage on a conference report; HF 2115's failed conference-report
+  // adoption is a vote on the measure too and is left alone). Seven are
+  // procedural motions, and those are pinned in `heldRollCallIds` below so
+  // the caption rule cannot queue them. Two of the seven are also wrong in
+  // the feed: LegiScan prints `passed: 1` on a rules-suspension motion that
+  // won a majority but not the two thirds it needed, so `result` says
+  // Passed where Minnesota says the motion did not prevail. The unanimous
+  // bill-number rolls were not matched: they can never be selected. Redo
+  // the match for any new bill-number roll a later dataset adds.
+  //
+  // ⚠ FEED GAP, LARGE: this dataset was cut 2026-08-16 and its bill
+  // histories carry 11,889 actions from 2026, including 292 that record a
+  // bill passing a chamber — but the dataset holds NO roll call dated after
+  // 2025-05-19. The entire 2026 regular session's floor votes are missing
+  // from LegiScan. Only the 2025 regular session and the June 2025 special
+  // session can be imported from this feed.
+  //
+  // Minnesota proposes constitutional amendments as ordinary bills, so no
+  // resolution type needs keeping. Senate resolutions (types R and CR) are
+  // the only things the Senate votes with `Senate: Adopted`, and those types
+  // are rejected before a description is ever classified.
+  //
+  // ONE ROLL IS LEFT UNMATCHED ON PURPOSE: roll 1556487 on HF 2431 has the
+  // description `House:` and nothing after it. Its history line says the
+  // House passed the bill 132-0, but no pattern can recover a question from
+  // an empty string, and inventing one would mislabel the next empty
+  // description too. It surfaces for review instead, which costs nothing —
+  // a 132-0 vote is not divided and could never be selected.
+  MN: {
+    jurisdiction: "MN",
+    sessionId: 2151,
+    chamberSizes: { house: 134, senate: 67 },
+    keptQuestions: MINNESOTA_KEPT_QUESTIONS,
+    excludedQuestions: MINNESOTA_EXCLUDED_QUESTIONS,
+    // The divided bill-number-caption rolls whose bill history names a
+    // procedural motion (see the note above). Value = what Minnesota's
+    // history says the roll was.
+    heldRollCallIds: {
+      1545590: "HF 20 House 2025-04-10: motion to take from table, did not prevail 67-67",
+      1571834: "HF 3023 House 2025-05-14: motion to suspend rules, did not prevail 70-63 (90 needed); LegiScan says passed",
+      1573116: "HF 3023 House 2025-05-18: motion to take from the table the motion to place on the calendar, did not prevail 67-67",
+      1573117: "HF 3023 House 2025-05-18: motion to take from the table the motion to place on the calendar, did not prevail 67-67",
+      1573118: "HF 3023 House 2025-05-18: motion to take from the table the motion to place on the calendar, did not prevail 67-67",
+      1574181: "SF 856 House 2025-05-19: motion to lay on the table, did not prevail 65-68",
+      1574182: "SF 856 House 2025-05-19: motion to suspend rules, did not prevail 70-63 (two thirds needed); LegiScan says passed",
+    },
+  },
+
+  // Minnesota's 2025 First Special Session (June 9 2025), which passed the
+  // budget the tied House and one-seat Senate could not finish in the
+  // regular session. A separate LegiScan session, so it needs its own key;
+  // it shares the vocabulary above, which was surveyed against it too. Its
+  // one new description, `Senate: Urgency declared rules suspended`, is a
+  // scheduling motion and is excluded.
+  //
+  // It is the more valuable of the two Minnesota sessions: 50 roll calls
+  // hold 25 divided votes on measures that became law, spread over 14
+  // measures, and 11 of those rolls are House votes — where the regular
+  // session yields only 5 House rolls out of 26.
+  "MN-2217": {
+    jurisdiction: "MN",
+    sessionId: 2217,
+    chamberSizes: { house: 134, senate: 67 },
+    keptQuestions: MINNESOTA_KEPT_QUESTIONS,
+    excludedQuestions: MINNESOTA_EXCLUDED_QUESTIONS,
   },
 };
 

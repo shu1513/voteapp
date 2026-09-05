@@ -1,0 +1,92 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-05T01:37:12.556Z",
+  "finishedAt": "2026-09-05T01:37:13.606Z",
+  "jurisdiction": "MN",
+  "sessionId": 2151,
+  "evidenceDir": "evidence/rollcall/legiscan-mn-2151/batch-01",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-mn-2151/crosswalk.json",
+  "crosswalkEntries": 206,
+  "peopleFile": "evidence/rollcall/legiscan-mn-2151/legiscan-people-mn-2151.json",
+  "peopleMembers": 206,
+  "files": 1,
+  "outcomes": {
+    "imported": 1
+  },
+  "actions": {
+    "rewrite": 3
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-mn-house-2151-roll1570373.json",
+      "state": "MN",
+      "chamber": "house",
+      "sessionId": 2151,
+      "roll": 1570373,
+      "outcome": "imported",
+      "legislativeVoteId": "118ef463-c22d-4a8b-82cc-50caa5073d18",
+      "reviewStatus": "approved",
+      "bill": "SF2200",
+      "voteDate": "2025-05-12",
+      "officialVoteDate": null,
+      "measureId": "SF 2200",
+      "question": "House: Passage",
+      "originRunId": "rollcall:MN:house:2151:1570373:2026-09-05T01:37:12.556Z",
+      "members": 134,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "unmatched_reviewed": 126,
+        "matched": 3,
+        "out_of_scope": 5
+      },
+      "actions": {
+        "rewrite": 3
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "e539007b-603c-4124-bcaa-c720defd5593",
+          "candidateName": "Mike Freiberg",
+          "peopleId": 14366,
+          "memberName": "Mike Freiberg",
+          "side": "yea",
+          "action": "rewrite",
+          "recordId": "9af80b9a-5bb2-40ff-b073-826c45e87d8a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b8df344b-dd5c-41ae-82c3-387042f80d2f",
+          "candidateName": "Samantha Sencer-Mura",
+          "peopleId": 23674,
+          "memberName": "Samantha Sencer-Mura",
+          "side": "yea",
+          "action": "rewrite",
+          "recordId": "6bde19b4-c4ec-4a37-af4b-649c7459c9fd",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "c8dcb996-0e27-47a4-953a-6b79040e7d3a",
+          "candidateName": "Ben Bakeberg",
+          "peopleId": 23677,
+          "memberName": "Ben Bakeberg",
+          "side": "yea",
+          "action": "rewrite",
+          "recordId": "09959442-0f02-4912-833d-d3b084e5e1f4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    }
+  ]
+}

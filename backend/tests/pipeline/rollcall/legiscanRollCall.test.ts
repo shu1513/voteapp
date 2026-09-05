@@ -1199,6 +1199,91 @@ describe("Delaware's measured desc vocabulary", () => {
   });
 });
 
+describe("Minnesota's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.MN!;
+  const mn = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
+    classifyLegiscanRollCall({ desc, total, chamber, billType, config });
+
+  it("keeps the two chambers' named passage questions", () => {
+    expect(mn("House: Passage", 134)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(mn("House: Passage, as amended", 133)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(mn("Senate: Third reading Passed", 67, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    expect(mn("Senate: Third reading Passed as amended", 65, "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+  });
+
+  it("keeps the Senate's two second-look questions apart", () => {
+    expect(mn("Senate: Third Reading Repassed", 67, "senate").questionClass).toBe("concurrence");
+    expect(mn("Senate: Senate adopted CC report and repassed bill", 67, "senate").questionClass).toBe(
+      "conference_report"
+    );
+  });
+
+  it("keeps the House caption that is only a bill number, in both bill prefixes", () => {
+    // ⚠ This caption does not say what the question was. Roll 1574164 under
+    // it is HF 2115's repassage after conference (124-10); roll 1573202,
+    // same caption and same bill, is the FAILED motion to adopt that same
+    // conference report (67-67). Only the bill history separates them.
+    expect(mn("House: H.F. NO. 2115", 134)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(mn("House: S.F. NO. 2370", 130)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+  });
+
+  it("excludes each surveyed procedural family", () => {
+    for (const [desc, total, chamber] of [
+      ["House: Koznick - Amendment to Amendment - H0014A8", 134, "house"],
+      ["House: Koznick - Amendment as amended - H0014A5", 134, "house"],
+      ["House: Altendorf - Amendment, first portion - H0021A6", 133, "house"],
+      ["House: 67 - Amendment to Zeleznikar Amendment - Nays", 134, "house"],
+      ["House: Niska motion - Motion to Reconsider", 133, "house"],
+      ["House: Motion to Reconsider", 132, "house"],
+      ["House: Klevorn motion Re-Referral", 133, "house"],
+      ["House: Shall the decision of the Speaker stand as the judgment of the House?", 133, "house"],
+      ['House: "Shall the decision of Speaker pro tempore Olson stand as the judgment of the House?"', 133, "house"],
+      ["Senate: Laid on table", 67, "senate"],
+      ["Senate: Taken from table", 61, "senate"],
+      ["Senate: Reconsidered an amendment", 66, "senate"],
+      ["Senate: Withdrawn and re-referred to", 61, "senate"],
+      ["Senate: Motion did not prevail to take from the table", 66, "senate"],
+      // The special session's one new caption: a two-thirds scheduling
+      // motion, not a vote on the bill.
+      ["Senate: Urgency declared rules suspended", 67, "senate"],
+    ] as const) {
+      expect(mn(desc, total, chamber)).toMatchObject({ isFloorVote: false, questionClass: null });
+    }
+  });
+
+  it("holds the bill-number rolls whose history names a procedural motion", () => {
+    // Roll 1574182 on SF 856 wears the same caption as a repassage, but the
+    // House history says it was a motion to suspend the rules that fell
+    // short of two thirds — and LegiScan still prints `passed: 1` on it.
+    expect(
+      classifyLegiscanRollCall({
+        desc: "House: S.F. NO. 856",
+        total: 133,
+        chamber: "house",
+        billType: "B",
+        config,
+        rollCallId: 1574182,
+      })
+    ).toMatchObject({ isFloorVote: null, questionClass: null, reason: expect.stringMatching(/^held:SF 856/) });
+    // The same caption under an unheld id still classifies as before.
+    expect(
+      classifyLegiscanRollCall({ desc: "House: S.F. NO. 856", total: 133, chamber: "house", billType: "B", config, rollCallId: 1 })
+    ).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+  });
+
+  it("surfaces the one blank House description rather than guessing at it", () => {
+    // Roll 1556487 on HF 2431. The history says the House passed the bill
+    // 132-0, but the description is the bare word `House:`.
+    expect(mn("House:", 132)).toMatchObject({ isFloorVote: null });
+  });
+});
+
 describe("getLegiscanStateConfig", () => {
   it("serves only surveyed states; an unsurveyed state is refused by name", () => {
     expect(Object.keys(LEGISCAN_STATE_CONFIGS)).toEqual([
@@ -1243,6 +1328,8 @@ describe("getLegiscanStateConfig", () => {
       "AR",
       "AZ",
       "CO",
+      "MN",
+      "MN-2217",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -1274,6 +1361,7 @@ describe("getLegiscanStateConfig", () => {
       "AR",
       "AZ",
       "CO",
+      "MN",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
@@ -1314,6 +1402,8 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("AR").sessionId).toBe(2162);
     expect(getLegiscanStateConfig("AZ").sessionId).toBe(2155);
     expect(getLegiscanStateConfig("CO").sessionId).toBe(2173);
+    expect(getLegiscanStateConfig("MN").sessionId).toBe(2151);
+    expect(getLegiscanStateConfig("MN-2217")).toMatchObject({ jurisdiction: "MN", sessionId: 2217 });
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
     expect(() => getLegiscanStateConfig("WY")).toThrow("no LegiScan state config for WY");
   });

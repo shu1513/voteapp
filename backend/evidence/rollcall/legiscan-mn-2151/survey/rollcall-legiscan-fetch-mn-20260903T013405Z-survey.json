@@ -1,0 +1,1447 @@
+{
+  "runId": "rollcall-legiscan-fetch-mn-20260903T013405Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "MN",
+  "startedAt": "2026-09-03T01:34:05.385Z",
+  "finishedAt": "2026-09-03T01:34:07.247Z",
+  "datasetDir": "~/legiscan-data/mn-2151",
+  "bills": 10590,
+  "votes": 277,
+  "people": 206,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "House: Passage",
+      "count": 67,
+      "withoutMemberList": 0,
+      "minTotal": 107,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF20",
+        "HF12",
+        "HF13"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third reading Passed as amended",
+      "count": 29,
+      "withoutMemberList": 0,
+      "minTotal": 54,
+      "maxTotal": 67,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF334",
+        "SF1552",
+        "SF1360"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Passage, as amended",
+      "count": 26,
+      "withoutMemberList": 0,
+      "minTotal": 127,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF14",
+        "HF289",
+        "HF21"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third reading Passed",
+      "count": 26,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 67,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF202",
+        "SF571",
+        "SF1075"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Third Reading Repassed",
+      "count": 11,
+      "withoutMemberList": 0,
+      "minTotal": 62,
+      "maxTotal": 67,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2216",
+        "SF571",
+        "HF2130"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Adopted",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 63,
+      "maxTotal": 66,
+      "billTypes": [
+        "CR",
+        "R"
+      ],
+      "sampleBills": [
+        "SR1",
+        "SR8",
+        "SR4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 3023",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 132,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF3023"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Niska motion - Motion to Reconsider",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 132,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF21",
+        "HF13",
+        "HF3"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Laid on table",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 58,
+      "maxTotal": 67,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SR15",
+        "HF2563",
+        "HF2442"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 2115",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2115"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Niska motion Motion to Reconsider",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF14",
+        "HF12"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: S.F. NO. 856",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF856"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Shall the decision of Speaker pro tempore Olson stand as the judgment of the House?",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2432"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Senate adopted CC report and repassed bill",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 63,
+      "maxTotal": 67,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF1959",
+        "HF2432"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Taken from table",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 61,
+      "maxTotal": 67,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "SR15",
+        "HF2563"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House:",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 132,
+      "maxTotal": 132,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2431"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: \"Shall the decision of Speaker pro tempore Olson stand as the judgment of the House?\"",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2435"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: \"Shall the decision of the Speaker stand as the judgment of the House?\"",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: 67 - Amendment to Zeleznikar Amendment - Nays",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2435"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Altendorf - Amendment, first portion - H0021A6",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF21"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Altendorf - Amendment, second portion - H0021A6",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF21"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Bahner - Amendment - H2464A6",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2464"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Bakeberg - Amendment - S1740A3",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF1740"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Bakeberg - Amendment - S1740A4",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF1740"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Baker - Amendment - S1832A14",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF1832"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Baker - Amendment H2434A17 - H2434A17",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2434"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Bierman - Amendment - H0025A8",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF25"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Bierman - Amendment - H2464A13",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2464"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Coulter - Amendment - H2431A10",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2431"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Coulter - Amendment - H2435A8",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2435"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Davis - Amendment - S3045A10",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF3045"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Duran - Amendment to Amendment - S1959A7",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF1959"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Franson - Amendment - H2434A12",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2434"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Gillman - Amendment H2434A13 - H2434A13",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2434"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Gomez - Amendment - H0004A4",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Gomez - Amendment - H0004A5",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Gomez - Amendment - H0025A7",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF25"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Greenman - Amendment - S1832A12",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF1832"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Greenman - Amendment - S1959A4",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF1959"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Greenman - Amendment - S3045A18",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF3045"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 1014",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 131,
+      "maxTotal": 131,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF1014"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 1058",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF1058"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 1143",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 131,
+      "maxTotal": 131,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF1143"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 124",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF124"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 1290",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 131,
+      "maxTotal": 131,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF1290"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 1355",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 130,
+      "maxTotal": 130,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF1355"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 20",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF20"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 2130",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 131,
+      "maxTotal": 131,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2130"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 2432",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2432"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 2433",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2433"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 2446",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2446"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 2563",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2563"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: H.F. NO. 3228",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF3228"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Hanson, J. - Amendment - S1832A1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 132,
+      "maxTotal": 132,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF1832"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Her - Amendment - H0025A5",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF25"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Howard - Amendment - H0004A6",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Huot - Amendment - H2435A20",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 132,
+      "maxTotal": 132,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2435"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Johnson, W. - Amendment - H0004A3",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Jones - Amendment - H2438A38",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2438"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Jordan - Amendment - H0012DE11",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF12"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Klevorn motion Re-Referral",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 132,
+      "maxTotal": 132,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF20"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Koegel motion Re-Referral",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF14"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Koznick - Amendment as amended - H0014A5",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF14"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Koznick - Amendment to Amendment - H0014A7",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF14"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Koznick - Amendment to Amendment - H0014A8",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF14"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Kraft - Amendment - H2438A22",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2438"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Kraft - Amendment - H2438A26",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2438"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Liebling - Amendment - H2435A13",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 124,
+      "maxTotal": 124,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2435"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Liebling motion Re-Referral",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF12"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Motion to Reconsider",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 132,
+      "maxTotal": 132,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF20"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Noor - Amendment - H0004A8",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Pinto - Amendment - H2435A11",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2435"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Pursell - Amendment - H0025A9",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF25"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Reyer - Amendment - H0025A6",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF25"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Reyer - Amendment to Reyer Amendment - H0025A10",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF25"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Robbins - Amendment - H0021A1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF21"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Rymer - Amendment - H2432A15",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2432"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: S.F. NO. 1740",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF1740"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: S.F. NO. 1959",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 130,
+      "maxTotal": 130,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF1959"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: S.F. NO. 2298",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2298"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: S.F. NO. 2370",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 130,
+      "maxTotal": 130,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2370"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: S.F. NO. 2884",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2884"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: S.F. NO. 3045",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF3045"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Schultz - Amendment - H2431A9",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2431"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Schultz - Amendment S3045A17 - S3045A17",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 132,
+      "maxTotal": 132,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF3045"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Shall the decision of the Speaker stand as the judgment of the House?",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF21"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Stephenson - Amendment - H0014A6",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF14"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Stephenson - Amendment to Amendment - H0014A6",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 133,
+      "maxTotal": 133,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF14"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Stephenson Re-Referral",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 132,
+      "maxTotal": 132,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF20"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: West - Amendment - H2435A12",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2435"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Youakim - Amendment - S1740A1",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 130,
+      "maxTotal": 130,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF1740"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Zeleznikar - Amendment - H2434A7",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2434"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House: Zeleznikar - Amendment - H2435A9",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 134,
+      "maxTotal": 134,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2435"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Adopted as amended",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR15"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Motion did not prevail",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 67,
+      "maxTotal": 67,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF1750"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Motion did not prevail to take from the table",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 66,
+      "maxTotal": 66,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2442"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Motion did not prevail to withdraw and be placed on General Orders",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 67,
+      "maxTotal": 67,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF916"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Motion did not prevail to withdraw from committee and re-refer to the committee on Commerce and Consumer Protection",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 65,
+      "maxTotal": 65,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF3414"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Reconsidered an amendment",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 66,
+      "maxTotal": 66,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HF2442"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate: Withdrawn and re-referred to",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 61,
+      "maxTotal": 61,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SF2300"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "CR": 9,
+    "B": 10472,
+    "R": 109
+  },
+  "sessionIds": {
+    "2151": 10590
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}
