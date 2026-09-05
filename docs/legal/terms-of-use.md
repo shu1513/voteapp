@@ -139,7 +139,7 @@ If any provision of these Terms is held unenforceable, the remainder stays in ef
 
 **14.2 Billing.** Payments are processed by Stripe, and you must provide accurate payment information. A monthly membership charges the amount you selected (at or above the posted minimum) to your payment method each month, starting when you subscribe and continuing until canceled. Amounts are in U.S. dollars and exclude any taxes that may apply. We may change posted minimums prospectively; your existing membership amount does not change unless you change it.
 
-**14.3 Cancellation.** You can cancel your membership at any time from account settings (via the Stripe billing portal). Cancellation takes effect at the end of the current billing period; you will not be charged again after cancellation, and no partial-month refund is owed. Deleting your account cancels any active membership immediately. If a recurring charge fails, we may treat the membership as lapsed after Stripe's retries are exhausted.
+**14.3 Cancellation.** You can cancel your membership at any time from account settings under Manage membership. Cancellation takes effect at the end of the current billing period; you will not be charged again after cancellation, and no partial-month refund is owed. Deleting your account cancels any active membership immediately. If a recurring charge fails, we may treat the membership as lapsed after Stripe's retries are exhausted.
 
 **14.4 Refunds.** Except where required by law, payments are non-refundable; we may issue refunds in our discretion (for example, for duplicate or mistaken charges). Contact contact@electionssimplified.com for billing questions.
 

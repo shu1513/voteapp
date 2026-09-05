@@ -64,14 +64,17 @@ import {
   ME_DISTRICTS_INITIALIZE_PATH,
   ME_DISTRICTS_PATH,
   ME_EMAIL_PREFERENCES_PATH,
+  ME_MEMBERSHIP_CANCEL_PATH,
   ME_MEMBERSHIP_CHECKOUT_PATH,
   ME_MEMBERSHIP_PATH,
   ME_MEMBERSHIP_PORTAL_PATH,
+  ME_MEMBERSHIP_RESUME_PATH,
   ME_PUSH_TOKENS_PATH,
   ME_RESEARCH_AREA_PREFERENCES_PATH,
   ME_TERMS_ACCEPTANCE_PATH,
   STRIPE_WEBHOOK_PATH,
   parseMembershipCheckoutBodyValue,
+  parseMembershipPortalBodyValue,
   parseAuthenticatedAddressBodyValue,
   parsePublicAddressResolveBodyValue,
   parseAutocompleteRetrieveBodyValue,
@@ -173,6 +176,8 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ME_MEMBERSHIP_PATH ||
     pathname === ME_MEMBERSHIP_CHECKOUT_PATH ||
     pathname === ME_MEMBERSHIP_PORTAL_PATH ||
+    pathname === ME_MEMBERSHIP_CANCEL_PATH ||
+    pathname === ME_MEMBERSHIP_RESUME_PATH ||
     pathname === STRIPE_WEBHOOK_PATH ||
     pathname === ME_PUSH_TOKENS_PATH ||
     pathname === ME_RESEARCH_AREA_PREFERENCES_PATH ||
@@ -499,9 +504,12 @@ function createJsonBodyParser() {
           request.path === ME_EMAIL_PATH ||
           request.path === ME_PASSWORD_PATH ||
           // Requiring application/json blocks plain cross-site form POSTs
-          // from starting a checkout or portal session with ambient cookies.
+          // from starting a checkout or portal session, or canceling a
+          // membership, with ambient cookies.
           request.path === ME_MEMBERSHIP_CHECKOUT_PATH ||
           request.path === ME_MEMBERSHIP_PORTAL_PATH ||
+          request.path === ME_MEMBERSHIP_CANCEL_PATH ||
+          request.path === ME_MEMBERSHIP_RESUME_PATH ||
           request.path === ME_PUSH_TOKENS_PATH ||
           request.path === ME_PICK_CARD_SHARES_PATH ||
           request.path === ME_TERMS_ACCEPTANCE_PATH)) ||
@@ -1893,11 +1901,45 @@ async function dispatchApiRequest(
       return;
     }
 
-    const result = await options.createAuthenticatedMembershipPortal(userId);
+    const payload = parseMembershipPortalBodyValue(request.body);
+    const result = await options.createAuthenticatedMembershipPortal(userId, payload);
     if (!result) {
       sendApiResponse(response, toErrorResponse(404, "not_found", "No billing account", corsHeaders));
       return;
     }
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_MEMBERSHIP_CANCEL_PATH || url.pathname === ME_MEMBERSHIP_RESUME_PATH) {
+    // Manage-page actions (docs/plans/membership-manage-page.md). Same
+    // isolation contract as checkout/portal: unwired → 404. Both answer the
+    // fresh membership status so the client replaces its cache in one step.
+    const action =
+      url.pathname === ME_MEMBERSHIP_CANCEL_PATH
+        ? options.cancelAuthenticatedMembership
+        : options.resumeAuthenticatedMembership;
+    if (!action) {
+      sendApiResponse(response, toErrorResponse(404, "not_found", "Not found", corsHeaders));
+      return;
+    }
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", `Use POST ${url.pathname}`, {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+
+    const userId = await requireVerifiedAuthenticatedUser(options, request, response);
+    if (!userId) {
+      return;
+    }
+
+    const result = await action(userId);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
     return;
   }

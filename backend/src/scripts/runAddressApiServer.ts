@@ -114,7 +114,9 @@ import { acceptUserTerms, getUserIdentity, setUserFirstName } from "../pipeline/
 import { createCachedSiteSitemap } from "../pipeline/sitemap/siteSitemap.js";
 import { createMembershipService, type MembershipService } from "../api/membership/membershipService.js";
 import {
+  createConsoleMembershipChangedSender,
   createConsoleMembershipStartedSender,
+  createSesMembershipChangedSender,
   createSesMembershipStartedSender,
 } from "../api/membership/membershipMailer.js";
 
@@ -502,17 +504,29 @@ async function main(): Promise<void> {
     // first subscription — so a Stripe-on/mailer-off process fails at boot
     // like any other partial membership config, instead of quietly starting
     // billing it can't acknowledge.
+    const membershipSesMailerOptions =
+      authFromEmailAddress && authSesRegion
+        ? {
+            sesClient: new SESv2Client({ region: authSesRegion }),
+            fromEmailAddress: authFromEmailAddress,
+            ...(authReplyToEmailAddress ? { replyToEmailAddress: authReplyToEmailAddress } : {}),
+            manageMembershipUrl,
+            termsUrl: membershipTermsUrl,
+          }
+        : null;
     const sendMembershipStartedEmail =
       authMailerKind === "console"
         ? createConsoleMembershipStartedSender({ manageMembershipUrl, termsUrl: membershipTermsUrl })
-        : authFromEmailAddress && authSesRegion
-          ? createSesMembershipStartedSender({
-              sesClient: new SESv2Client({ region: authSesRegion }),
-              fromEmailAddress: authFromEmailAddress,
-              ...(authReplyToEmailAddress ? { replyToEmailAddress: authReplyToEmailAddress } : {}),
-              manageMembershipUrl,
-              termsUrl: membershipTermsUrl,
-            })
+        : membershipSesMailerOptions
+          ? createSesMembershipStartedSender(membershipSesMailerOptions)
+          : null;
+    // Cancel / resume confirmations ride the same config; they are courtesy
+    // notices (best-effort in the service), so they never gate boot.
+    const sendMembershipChangedEmail =
+      authMailerKind === "console"
+        ? createConsoleMembershipChangedSender({ manageMembershipUrl, termsUrl: membershipTermsUrl })
+        : membershipSesMailerOptions
+          ? createSesMembershipChangedSender(membershipSesMailerOptions)
           : null;
     if (!sendMembershipStartedEmail) {
       throw new Error(
@@ -533,6 +547,7 @@ async function main(): Promise<void> {
       membershipProductId: stripeMembershipProductId,
       publicBaseUrl: membershipPublicBaseUrl,
       sendMembershipStartedEmail,
+      sendMembershipChangedEmail,
     });
     console.log("membership support payments enabled (stripe)");
   }
@@ -793,7 +808,10 @@ async function main(): Promise<void> {
           getAuthenticatedMembership: (userId: string) => membershipService.getMembership(userId),
           createAuthenticatedMembershipCheckout: (userId: string, input: { kind: "one_time" | "monthly"; amount_cents: number }) =>
             membershipService.createCheckoutSession(userId, input),
-          createAuthenticatedMembershipPortal: (userId: string) => membershipService.createPortalSession(userId),
+          createAuthenticatedMembershipPortal: (userId: string, input: { flow: "payment_method_update" | null }) =>
+            membershipService.createPortalSession(userId, input),
+          cancelAuthenticatedMembership: (userId: string) => membershipService.cancelMembership(userId),
+          resumeAuthenticatedMembership: (userId: string) => membershipService.resumeMembership(userId),
           handleStripeWebhookEvent: (input: { rawBody: Buffer; signatureHeader: string | null }) =>
             membershipService.handleWebhookEvent(input),
         }

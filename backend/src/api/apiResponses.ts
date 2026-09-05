@@ -13,6 +13,11 @@ export type ApiErrorCode =
   // Monthly checkout attempted while a live membership exists: the frontend
   // points at Manage membership instead of a generic error.
   | "membership_exists"
+  // Manage-page actions (docs/plans/membership-manage-page.md): a cancel
+  // while the first payment is still confirming, or a subscription that no
+  // longer matches our records. Both 409.
+  | "membership_pending"
+  | "membership_conflict"
   | "address_not_found"
   // ZIP partial-ballot failures (docs/plans/partial-address-scope.md): each
   // needs different client copy, so they are not folded into

@@ -138,8 +138,12 @@ const PINNED_DOCUMENTS = [
     // Party-identity change is material — bundle bumps to 1.4,
     // GRACE_TERMS_VERSIONS ships ["1.3", "1.2"] (the 1.3 rollout was only a
     // day old), signed-in users re-accept once.
+    // 1.4 wording fix (2026-09-04, docs/plans/membership-manage-page.md):
+    // 14.3 cancellation path "(via the Stripe billing portal)" → "under
+    // Manage membership" — navigation wording only, no change in rights, so
+    // the hash is re-pinned WITHOUT a version bump or re-acceptance.
     version: "1.4",
-    sha256: "82f7321b2b2d4856e0a5e41b0dab39813e4fd763c596f2fec4a1b6ae70cc1fc5",
+    sha256: "5a2132a0be1fc34abf442d8ac714cb29179a35b147275518e06520f2168a93f7",
   },
   {
     filename: "privacy-policy.md",
