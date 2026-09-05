@@ -9,8 +9,8 @@ HB1009	H	1518393	2025-03-17	43-20	candidate:reading	clears triage; act being rea
 HB1009	S	1513369	2025-03-11	23-11	candidate:reading	clears triage; act being read			Vegetative Fuel Mitigation
 HB1010	H	1545947	2025-04-11	38-23	candidate:reading	clears triage; act being read	1545946	1509204	Prohibiting Price Gouging in Sales of Necessities
 HB1010	S	1537226	2025-04-04	23-11	candidate:reading	clears triage; act being read			Prohibiting Price Gouging in Sales of Necessities
-HB1013	H	1564716	2025-05-02	43-19	candidate:reading	clears triage; act being read	1564715	1527468	Department of Corrections Visitation Rights
-HB1013	S	1564637	2025-05-02	22-12	candidate:reading	clears triage; act being read	1564472		Department of Corrections Visitation Rights
+HB1013	H	1564716	2025-05-02	43-19	batch-05	imported in batch-05	1564715	1527468	Department of Corrections Visitation Rights
+HB1013	S	1564637	2025-05-02	22-12	batch-05	imported in batch-05	1564472		Department of Corrections Visitation Rights
 HB1016	H		2025-03-17		superseded	the chamber's last floor vote was not divided			Occupational Therapist Prescribe Medical Equipment
 HB1018	H	1530295	2025-03-28	45-18	batch-02	concurrence	1530294	1491878	Vocational Rehabilitation Services
 HB1018	S	1525222	2025-03-24	21-12	batch-02	passage			Vocational Rehabilitation Services
@@ -20,8 +20,8 @@ HB1023	H	1563875	2025-05-01	42-21	dropped	narrow property or permitting mechanic
 HB1023	S	1555128	2025-04-23	25-10	dropped	narrow property or permitting mechanics with no policy direction			Local Government Review of Fencing Projects
 HB1025	H	1479436	2025-02-04	44-18	dropped	administrative mechanics: who administers or receives an existing program			Stockpile of Essential Materials Distribution
 HB1025	S	1515816	2025-03-12	22-12	dropped	administrative mechanics: who administers or receives an existing program			Stockpile of Essential Materials Distribution
-HB1027	H	1518380	2025-03-17	43-20	dropped	mixes several subjects and includes immunization changes; the campaign escalates vaccine-adjacent directions rather than	1518379	1484107	Update Disease Control Statutes
-HB1027	S	1517868	2025-03-14	23-11	dropped	mixes several subjects and includes immunization changes; the campaign escalates vaccine-adjacent directions rather than			Update Disease Control Statutes
+HB1027	H	1518380	2025-03-17	43-20	dropped	mixes several subjects and includes immunization changes; the campaign escalates vaccine-adjacent directions rather than assuming	1518379	1484107	Update Disease Control Statutes
+HB1027	S	1517868	2025-03-14	23-11	dropped	mixes several subjects and includes immunization changes; the campaign escalates vaccine-adjacent directions rather than assuming			Update Disease Control Statutes
 HB1029	H	1509166	2025-03-10	40-22	dropped	narrow property or permitting mechanics with no policy direction	1509165	1474683	Municipal Authority over Certain Land
 HB1029	S	1508635	2025-03-07	19-12	dropped	narrow property or permitting mechanics with no policy direction			Municipal Authority over Certain Land
 HB1030	H	1502603	2025-02-28	39-21	candidate:reading	clears triage; act being read	1502602	1480644	Accessibility Standards in Building Codes
@@ -30,15 +30,15 @@ HB1035	H	1518364	2025-03-17	43-20	dropped	administrative mechanics: who administ
 HB1035	S	1509109	2025-03-10	27-7	dropped	administrative mechanics: who administers or receives an existing program			Collaborative Management Program Updates
 HB1039	H	1552485	2025-04-21	41-22	dropped	vehicle noise equipment; no research area covers it			Commercial Vehicle Muffler Requirements
 HB1040	H	1498650	2025-02-25	43-18	dropped	whether counting nuclear power as clean energy helps or hurts the climate goal is itself the contested question			Adding Nuclear Energy as a Clean Energy Resource
-HB1043	H	1549467	2025-04-15	41-23	candidate:reading	clears triage; act being read	1549466	1501332	Owner Equity Protection in Homeowners' Association Foreclosure Sales
-HB1043	S	1541387	2025-04-09	23-11	candidate:reading	clears triage; act being read	1541386	1520975	Owner Equity Protection in Homeowners' Association Foreclosure Sales
-HB1049	H	1548151	2025-04-15	44-17	candidate:reading	clears triage; act being read			Communication Rights for Persons in Custody
-HB1049	S	1558825	2025-04-28	26-8	candidate:reading	clears triage; act being read			Communication Rights for Persons in Custody
+HB1043	H	1549467	2025-04-15	41-23	batch-06	imported in batch-06	1549466	1501332	Owner Equity Protection in Homeowners' Association Foreclosure Sales
+HB1043	S	1541387	2025-04-09	23-11	batch-06	imported in batch-06	1541386	1520975	Owner Equity Protection in Homeowners' Association Foreclosure Sales
+HB1049	H	1548151	2025-04-15	44-17	batch-05	imported in batch-05			Communication Rights for Persons in Custody
+HB1049	S	1558825	2025-04-28	26-8	batch-05	imported in batch-05			Communication Rights for Persons in Custody
 HB1056	H	1549431	2025-04-15	41-23	dropped	deemed-approved deadlines for telecom siting run two ways: faster deployment against local control	1549430	1501023	Local Government Permitting Wireless Telecommunications Facilities
 HB1058	S	1492203	2025-02-18	23-11	dropped	procedural updates to insanity-defence evaluations; no direction			Not Guilty by Reason of Insanity Defense
 HB1060	H	1502287	2025-02-28	38-23	dropped	narrow property or permitting mechanics with no policy direction			Electronic Fence Detection Systems
 HB1060	S	1537184	2025-04-04	21-14	dropped	narrow property or permitting mechanics with no policy direction			Electronic Fence Detection Systems
-HB1062	S	1562250	2025-04-30	28-7	candidate:reading	clears triage; act being read			Penalty for Theft of Firearms
+HB1062	S	1562250	2025-04-30	28-7	batch-05	imported in batch-05			Penalty for Theft of Firearms
 HB1063	H	1473462	2025-01-23	46-16	dropped	drug scheduling for an FDA-approved product; no area carries an honest direction			FDA-Approved Crystalline Polymorph Psilocybin Use
 HB1063	S	1515898	2025-03-12	25-9	dropped	drug scheduling for an FDA-approved product; no area carries an honest direction			FDA-Approved Crystalline Polymorph Psilocybin Use
 HB1080	S	1548660	2025-04-15	25-9	dropped	no research area fits: an economic development tax credit			Wireless Telephone Infrastructure Deployment Incentives
@@ -60,8 +60,8 @@ HB1109	H	1508794	2025-03-07	38-26	batch-04	imported in batch-04			Gender Identit
 HB1109	S	1527582	2025-03-26	22-12	batch-04	imported in batch-04			Gender Identity Certificate of Death
 HB1113	H	1545996	2025-04-11	41-21	candidate:reading	clears triage; act being read	1545995	1504630	Limit Turf in New Residential Development
 HB1113	S	1537190	2025-04-04	24-11	candidate:reading	clears triage; act being read			Limit Turf in New Residential Development
-HB1114	H	1511449	2025-03-10	40-22	candidate:reading	clears triage; act being read	1511448	1491807	Defense Review of Tangible Object for Criminal Trial
-HB1114	S	1508566	2025-03-07	23-8	candidate:reading	clears triage; act being read			Defense Review of Tangible Object for Criminal Trial
+HB1114	H	1511449	2025-03-10	40-22	batch-05	imported in batch-05	1511448	1491807	Defense Review of Tangible Object for Criminal Trial
+HB1114	S	1508566	2025-03-07	23-8	batch-05	imported in batch-05			Defense Review of Tangible Object for Criminal Trial
 HB1117	H	1555083	2025-04-23	41-22	batch-02	concurrence	1555082	1527488	Vehicle Immobilization Company Regulation
 HB1117	S	1551530	2025-04-17	22-13	batch-02	passage			Vehicle Immobilization Company Regulation
 HB1124	H	1493967	2025-02-19	41-22	dropped	administrative or advisory only: a contracting template, an advisory body, a working group, a renaming or an assessment			Universal Contracting Provision Requirements
@@ -74,12 +74,12 @@ HB1132	S	1537421	2025-04-04	27-7	candidate:reading	clears triage; act being read
 HB1133	H	1530223	2025-03-28	38-25	batch-01	concurrence	1530222	1498808	Requirements for Sale of Firearms Ammunition
 HB1133	S	1525845	2025-03-25	19-16	batch-01	passage			Requirements for Sale of Firearms Ammunition
 HB1135	H	1546003	2025-04-11	46-16	dropped	requires a phone policy without saying what it must contain, so the vote carries no direction	1546002	1498658	Communication Devices in Schools
-HB1136	H	1563934	2025-05-01	42-21	candidate:reading	clears triage; act being read	1563933	1534097	Peace Officer Conduct Database
-HB1136	S	1555107	2025-04-23	28-7	candidate:reading	clears triage; act being read			Peace Officer Conduct Database
+HB1136	H	1563934	2025-05-01	42-21	dropped	strengthens the peace officer conduct database and adds an appeal, but in the same act turns revocation and suspension for civil l	1563933	1534097	Peace Officer Conduct Database
+HB1136	S	1555107	2025-04-23	28-7	dropped	strengthens the peace officer conduct database and adds an appeal, but in the same act turns revocation and suspension for civil l			Peace Officer Conduct Database
 HB1137	H	1530157	2025-03-28	41-22	dropped	no research area covers the subject	1530156	1491928	Adopt a Shelter Pet Account Community Cats
 HB1137	S	1527449	2025-03-26	25-9	dropped	no research area covers the subject			Adopt a Shelter Pet Account Community Cats
-HB1148	H	1505977	2025-03-05	39-23	candidate:reading	clears triage; act being read			Criminal Protection Order & Protection Order Violation
-HB1148	S	1537236	2025-04-04	22-12	candidate:reading	clears triage; act being read			Criminal Protection Order & Protection Order Violation
+HB1148	H	1505977	2025-03-05	39-23	batch-05	imported in batch-05			Criminal Protection Order & Protection Order Violation
+HB1148	S	1537236	2025-04-04	22-12	batch-05	imported in batch-05			Criminal Protection Order & Protection Order Violation
 HB1149	H	1563883	2025-05-01	45-20	candidate:reading	clears triage; act being read	1563882	1549868	Comprehensive Black History & Culture Education in K-12
 HB1149	S	1561764	2025-04-30	24-11	candidate:reading	clears triage; act being read			Comprehensive Black History & Culture Education in K-12
 HB1153	H	1555641	2025-04-23	42-22	dropped	administrative or advisory only: a contracting template, an advisory body, a working group, a renaming or an assessment			Statewide Government Language Access Assessment
@@ -92,8 +92,8 @@ HB1161	S	1538101	2025-04-07	19-15	batch-02	passage			Labeling Gas-Fueled Stoves
 HB1165	H	1545935	2025-04-11	41-21	dropped	whether funding geologic carbon storage helps or delays the climate goal is the contested question itself	1545934	1517949	Geologic Storage Enterprise & Geothermal Resources
 HB1168	H	1546413	2025-04-11	41-21	candidate:reading	clears triage; act being read	1546412	1506114	Housing Protections for Victim-Survivors
 HB1168	S	1537175	2025-04-04	23-11	candidate:reading	clears triage; act being read			Housing Protections for Victim-Survivors
-HB1171	H	1552510	2025-04-21	36-27	candidate:reading	clears triage; act being read			Possession of Weapon by Previous Offender Crimes
-HB1171	S	1567600	2025-05-07	26-9	candidate:reading	clears triage; act being read	1567599	1565949	Possession of Weapon by Previous Offender Crimes
+HB1171	H	1552510	2025-04-21	36-27	dropped	adds first-degree motor vehicle theft to the firearm ban for previous offenders and, in the same section, creates a mandatory path			Possession of Weapon by Previous Offender Crimes
+HB1171	S	1567600	2025-05-07	26-9	dropped	adds first-degree motor vehicle theft to the firearm ban for previous offenders and, in the same section, creates a mandatory path	1567599	1565949	Possession of Weapon by Previous Offender Crimes
 HB1172	H	1502279	2025-02-28	38-22	dropped	a secure fence at a youth psychiatric facility reads as both safety and confinement			Secure Fence Around Youth Psychiatric Facility
 HB1173	S	1524521	2025-03-21	22-12	dropped	administrative or advisory only: a contracting template, an advisory body, a working group, a renaming or an assessment			Advisory Board Serving Office of School Safety
 HB1179	H	1505736	2025-03-05	40-22	candidate:reading	clears triage; act being read			Auto Insurance Coverage Child Restraint System
@@ -115,11 +115,11 @@ HB1205	H	1530286	2025-03-28	48-15	dropped	grants the FAIR plan association immun
 HB1205	S	1525982	2025-03-25	28-7	dropped	grants the FAIR plan association immunity while preserving contract claims; the act runs both ways			Implement Fair Access to Insurance Requirements Plans
 HB1207	H	1564012	2025-05-01	40-23	dropped	pet ownership rules in insurance and subsidised housing; no research area fits the subject	1564011	1532261	Pet Ownership Residential Housing Structures
 HB1207	S	1556576	2025-04-24	22-13	dropped	pet ownership rules in insurance and subsidised housing; no research area fits the subject			Pet Ownership Residential Housing Structures
-HB1208	H	1520882	2025-03-19	44-20	dropped	lets a local government raise its tip offset, which cuts the employer-paid wage while widening local choice; no labour a			Local Governments Tip Offsets for Tipped Employees
-HB1208	S	1548670	2025-04-15	21-13	dropped	lets a local government raise its tip offset, which cuts the employer-paid wage while widening local choice; no labour a			Local Governments Tip Offsets for Tipped Employees
+HB1208	H	1520882	2025-03-19	44-20	dropped	lets a local government raise its tip offset, which cuts the employer-paid wage while widening local choice; no labour area exists			Local Governments Tip Offsets for Tipped Employees
+HB1208	S	1548670	2025-04-15	21-13	dropped	lets a local government raise its tip offset, which cuts the employer-paid wage while widening local choice; no labour area exists			Local Governments Tip Offsets for Tipped Employees
 HB1209	H	1568244	2025-05-07	42-23	dropped	marijuana regulation; no area carries an honest direction and no-stance records are no longer allowed	1568243	1522553	Marijuana Regulation Streamline
 HB1209	S	1566734	2025-05-06	18-16	dropped	marijuana regulation; no area carries an honest direction and no-stance records are no longer allowed	1566733	1558129	Marijuana Regulation Streamline
-HB1211	H	1549388	2025-04-15	44-20	candidate:reading	clears triage; act being read	1549387	1518367	Tap Fees Imposed by Special Districts
+HB1211	H	1549388	2025-04-15	44-20	batch-06	imported in batch-06	1549387	1518367	Tap Fees Imposed by Special Districts
 HB1215	H	1563990	2025-05-01	48-17	dropped	fiscal or technical mechanics with no policy direction	1563989	1552644	Redistribution of Lottery Fund
 HB1217	H	1509024	2025-03-10	46-15	candidate:reading	clears triage; act being read			Funeral Services & Consumer Protections
 HB1224	H	1546073	2025-04-11	46-16	dropped	fiscal or technical mechanics with no policy direction	1546072	1522634	Revised Uniform Unclaimed Property Act Modifications
@@ -130,12 +130,12 @@ HB1234	H	1545953	2025-04-11	41-21	candidate:reading	clears triage; act being rea
 HB1234	S	1537220	2025-04-04	23-11	candidate:reading	clears triage; act being read			Utility Consumer Protection
 HB1236	H	1563937	2025-05-01	35-28	dropped	dropped: no research area fits a screening-report change	1563936	1527600	Residential Tenant Screening
 HB1236	S	1555219	2025-04-23	20-15	dropped	dropped: no research area fits a screening-report change	1555218		Residential Tenant Screening
-HB1238	H	1530219	2025-03-28	35-28	candidate:reading	clears triage; act being read	1530218	1517953	Gun Show Requirements
-HB1238	S	1525950	2025-03-25	22-13	candidate:reading	clears triage; act being read			Gun Show Requirements
+HB1238	H	1530219	2025-03-28	35-28	batch-06	imported in batch-06	1530218	1517953	Gun Show Requirements
+HB1238	S	1525950	2025-03-25	22-13	batch-06	imported in batch-06			Gun Show Requirements
 HB1239	H	1564031	2025-05-01	40-23	batch-04	imported in batch-04	1564030	1531319	Colorado Anti-Discrimination Act
 HB1239	S	1558154	2025-04-25	23-12	batch-04	imported in batch-04			Colorado Anti-Discrimination Act
-HB1240	H	1545977	2025-04-11	39-22	candidate:reading	clears triage; act being read	1545976	1512590	Protections for Tenants with Housing Subsidies
-HB1240	S	1539636	2025-04-08	22-12	candidate:reading	clears triage; act being read			Protections for Tenants with Housing Subsidies
+HB1240	H	1545977	2025-04-11	39-22	batch-06	imported in batch-06	1545976	1512590	Protections for Tenants with Housing Subsidies
+HB1240	S	1539636	2025-04-08	22-12	batch-06	imported in batch-06			Protections for Tenants with Housing Subsidies
 HB1244	H	1531317	2025-03-31	41-23	candidate:reading	clears triage; act being read			Welcome, Reception, & Integration Grant Program
 HB1244	S	1555632	2025-04-23	23-12	candidate:reading	clears triage; act being read			Welcome, Reception, & Integration Grant Program
 HB1245	H	1527498	2025-03-26	43-22	dropped	fiscal or technical mechanics with no policy direction			Heating Ventilation & Air Conditioning Improvement Projects in Schools
@@ -146,16 +146,16 @@ HB1248	H	1549464	2025-04-15	41-23	candidate:reading	clears triage; act being rea
 HB1248	S	1546930	2025-04-14	23-10	candidate:reading	clears triage; act being read			Protect Students from Restraint & Seclusion Act
 HB1249	H	1567103	2025-05-07	34-31	batch-01	concurrence	1567102	1558985	Tenant Security Deposit Protections
 HB1249	S	1565803	2025-05-06	19-16	batch-01	passage			Tenant Security Deposit Protections
-HB1250	H	1520970	2025-03-19	43-21	candidate:reading	clears triage; act being read			Gun Violence Prevention & Parents of Students
-HB1250	S	1560159	2025-04-29	21-11	candidate:reading	clears triage; act being read			Gun Violence Prevention & Parents of Students
+HB1250	H	1520970	2025-03-19	43-21	batch-06	imported in batch-06			Gun Violence Prevention & Parents of Students
+HB1250	S	1560159	2025-04-29	21-11	batch-06	imported in batch-06			Gun Violence Prevention & Parents of Students
 HB1259	H	1567105	2025-05-07	42-22	batch-04	imported in batch-04	1567104	1552690	In Vitro Fertilization Protection & Gamete Donation Requirements
 HB1259	S	1565866	2025-05-06	28-7	batch-04	imported in batch-04			In Vitro Fertilization Protection & Gamete Donation Requirements
 HB1267	H	1567171	2025-05-07	41-23	candidate:reading	clears triage; act being read	1567170	1552487	Support for Statewide Energy Strategies
 HB1267	S	1566577	2025-05-06	23-12	candidate:reading	clears triage; act being read			Support for Statewide Energy Strategies
 HB1269	H	1567609	2025-05-07	42-23	candidate:reading	clears triage; act being read	1567608	1555673	Building Decarbonization Measures
 HB1269	S	1567096	2025-05-07	24-11	candidate:reading	clears triage; act being read		1566020	Building Decarbonization Measures
-HB1273	H	1592149	2025-05-07	43-22	candidate:reading	clears triage; act being read	1592148	1592136	Residential Building Stair Modernization
-HB1273	S	1592147	2025-05-06	27-8	candidate:reading	clears triage; act being read	1592146	1592143	Residential Building Stair Modernization
+HB1273	H	1592149	2025-05-07	43-22	batch-06	imported in batch-06	1592148	1592136	Residential Building Stair Modernization
+HB1273	S	1592147	2025-05-06	27-8	batch-06	imported in batch-06	1592146	1592143	Residential Building Stair Modernization
 HB1274	H	1567142	2025-05-07	42-22	dropped	its effect turned on two November 2025 ballot measures, so any description would have expired with that election	1567141	1552512	Healthy School Meals for All Program
 HB1274	S	1566479	2025-05-06	24-11	dropped	its effect turned on two November 2025 ballot measures, so any description would have expired with that election			Healthy School Meals for All Program
 HB1278	H	1559002	2025-04-28	51-13	dropped	an accountability redesign that loosens some measures and tightens others			Education Accountability System
@@ -165,11 +165,11 @@ HB1280	H	1517083	2025-03-13	41-19	dropped	adds a reporting duty or a deadline to
 HB1280	S	1537384	2025-04-04	23-11	dropped	adds a reporting duty or a deadline to rules already required			Advanced Leak Detection Technology Rules
 HB1284	H	1552566	2025-04-21	41-21	dropped	apprenticeship regulation; the research areas carry no labour area			Regulating Apprentices in Licensed Trades
 HB1285	H		2025-04-11		superseded	the chamber's last floor vote was not divided			Veterinary Workforce Requirements
-HB1290	H	1555591	2025-04-23	37-27	candidate:reading	clears triage; act being read	1555590	1526146	Transit Worker Assault & Funding for Training
+HB1290	H	1555591	2025-04-23	37-27	batch-05	imported in batch-05	1555590	1526146	Transit Worker Assault & Funding for Training
 HB1292	H	1567132	2025-05-07	46-18	candidate:reading	clears triage; act being read	1567131	1562249	Transmission Lines in State Highway Rights-of-Way
 HB1292	S	1566448	2025-05-06	23-12	candidate:reading	clears triage; act being read			Transmission Lines in State Highway Rights-of-Way
-HB1294	H	1531313	2025-03-31	41-23	candidate:reading	clears triage; act being read			Court Costs Assessed to Juveniles
-HB1294	S	1555619	2025-04-23	24-11	candidate:reading	clears triage; act being read			Court Costs Assessed to Juveniles
+HB1294	H	1531313	2025-03-31	41-23	batch-05	imported in batch-05			Court Costs Assessed to Juveniles
+HB1294	S	1555619	2025-04-23	24-11	batch-05	imported in batch-05			Court Costs Assessed to Juveniles
 HB1295	H	1567595	2025-05-07	48-16	candidate:reading	clears triage; act being read	1567594	1559032	Food Truck Operations
 HB1296	H	1567080	2025-05-07	40-24	dropped	tax expenditure or fiscal mechanics with no policy direction	1567079	1559153	Tax Expenditure Adjustment
 HB1296	S	1565867	2025-05-06	23-12	dropped	tax expenditure or fiscal mechanics with no policy direction			Tax Expenditure Adjustment
@@ -203,14 +203,14 @@ HB1333	H	1557985	2025-04-25	43-20	dropped	housekeeping: who may administer an oa
 HB1333	S	1566771	2025-05-06	24-11	dropped	housekeeping: who may administer an oath, a renamed office, a staffing classification			Legislative Human Resources Division
 SB001	H	1559065	2025-04-28	43-22	batch-01	passage			Colorado Voting Rights Act
 SB001	S	1560522	2025-04-29	20-12	batch-01	concurrence	1560521	1531117;1531118	Colorado Voting Rights Act
-SB002	H	1552501	2025-04-21	40-23	candidate:reading	clears triage; act being read			Regional Building Codes for Factory-Built Structures
-SB002	S	1555157	2025-04-23	24-11	candidate:reading	clears triage; act being read		1531128;1554139;1554140	Regional Building Codes for Factory-Built Structures
+SB002	H	1552501	2025-04-21	40-23	batch-06	imported in batch-06			Regional Building Codes for Factory-Built Structures
+SB002	S	1555157	2025-04-23	24-11	batch-06	imported in batch-06		1531128;1554139;1554140	Regional Building Codes for Factory-Built Structures
 SB003	H	1525103	2025-03-24	36-28	batch-01	passage			Semiautomatic Firearms & Rapid-Fire Devices
 SB003	S	1530411	2025-03-28	19-15	batch-01	concurrence	1530410	1491894	Semiautomatic Firearms & Rapid-Fire Devices
 SB004	H	1517036	2025-03-13	38-22	batch-01	passage			Regulating Child Care Center Fees
-SB004	S	1519357	2025-03-18	21-12	dropped	the Senate side of a measure already imported from its House roll: Colorado's own history records one concurrence event		1494573;1495896;1518522;1518523	Regulating Child Care Center Fees
-SB006	H	1545911	2025-04-11	42-20	candidate:reading	clears triage; act being read			Investment Authority of State Treasurer for Affordable Housing
-SB006	S	1549765	2025-04-16	21-11	candidate:reading	clears triage; act being read	1549764	1480652	Investment Authority of State Treasurer for Affordable Housing
+SB004	S	1519357	2025-03-18	21-12	dropped	the Senate side of a measure already imported from its House roll: Colorado's own history records one concurrence event while the		1494573;1495896;1518522;1518523	Regulating Child Care Center Fees
+SB006	H	1545911	2025-04-11	42-20	batch-06	imported in batch-06			Investment Authority of State Treasurer for Affordable Housing
+SB006	S	1549765	2025-04-16	21-11	batch-06	imported in batch-06	1549764	1480652	Investment Authority of State Treasurer for Affordable Housing
 SB007	H	1567628	2025-05-07	44-21	candidate:reading	clears triage; act being read			Increase Prescribed Burns
 SB007	S	1567630	2025-05-07	24-11	candidate:reading	clears triage; act being read	1567629	1561768	Increase Prescribed Burns
 SB008	H	1562305	2025-04-30	43-22	candidate:reading	clears triage; act being read			Adjust Necessary Document Program
@@ -218,8 +218,8 @@ SB008	S	1564343	2025-05-01	21-11	candidate:reading	clears triage; act being read
 SB014	H	1526132	2025-03-25	45-14	batch-04	imported in batch-04			Protecting the Freedom to Marry
 SB017	H	1565067	2025-05-05	42-22	dropped	the program is codified but implementation beyond today's scale is conditional on future funding			Measures to Support Early Childhood Health
 SB017	S	1561856	2025-04-30	25-10	dropped	the program is codified but implementation beyond today's scale is conditional on future funding			Measures to Support Early Childhood Health
-SB020	H	1557953	2025-04-25	40-23	candidate:reading	clears triage; act being read			Tenant and Landlord Law Enforcement
-SB020	S	1558834	2025-04-28	20-13	candidate:reading	clears triage; act being read	1558833	1531146	Tenant and Landlord Law Enforcement
+SB020	H	1557953	2025-04-25	40-23	batch-06	imported in batch-06			Tenant and Landlord Law Enforcement
+SB020	S	1558834	2025-04-28	20-13	batch-06	imported in batch-06	1558833	1531146	Tenant and Landlord Law Enforcement
 SB024	S	1499792	2025-02-26	26-7	dropped	adds judgeships subject to available appropriations; a staffing and funding decision			Judicial Officers
 SB026	H	1564533	2025-05-02	42-22	dropped	tax expenditure or fiscal mechanics with no policy direction			Adjusting Certain Tax Expenditures
 SB027	H	1565128	2025-05-05	43-21	dropped	creates a work group or study only			Trauma-Informed School Safety Practices
@@ -227,8 +227,8 @@ SB027	S	1566596	2025-05-06	23-12	dropped	creates a work group or study only	1566
 SB030	H	1563487	2025-05-01	40-23	dropped	dropped: the enacted act requires inventories and reports, not targets			Increase Transportation Mode Choice Reduce Emissions
 SB030	S	1553398	2025-04-22	22-13	dropped	dropped: the enacted act requires inventories and reports, not targets			Increase Transportation Mode Choice Reduce Emissions
 SB031	H	1547365	2025-04-14	47-17	candidate:reading	clears triage; act being read			Single Point of Contact Wireless Services
-SB034	H	1565116	2025-05-05	36-28	candidate:reading	clears triage; act being read			Voluntary Do-Not-Sell Firearms Waiver
-SB034	S	1551029	2025-04-17	23-12	candidate:reading	clears triage; act being read			Voluntary Do-Not-Sell Firearms Waiver
+SB034	H	1565116	2025-05-05	36-28	batch-06	imported in batch-06			Voluntary Do-Not-Sell Firearms Waiver
+SB034	S	1551029	2025-04-17	23-12	batch-06	imported in batch-06			Voluntary Do-Not-Sell Firearms Waiver
 SB041	H	1558987	2025-04-28	47-18	dropped	procedural changes across competency evaluations, certification and bail notice that do not resolve into one direction			Competency in Criminal Justice System Services & Bail
 SB041	S	1560546	2025-04-29	20-12	dropped	procedural changes across competency evaluations, certification and bail notice that do not resolve into one direction	1560545	1530877	Competency in Criminal Justice System Services & Bail
 SB045	H	1555525	2025-04-23	39-25	dropped	commissions a report on model single-payer legislation; a study, not a change in law			Health-Care Payment System Analysis
@@ -245,11 +245,11 @@ SB055	H	1551025	2025-04-17	41-22	dropped	adds advisory members or a grant-seekin
 SB055	S	1552641	2025-04-21	23-12	dropped	adds advisory members or a grant-seeking duty; no change in what the law requires of anyone	1552640	1480549	Youth Involvement in Environmental Justice
 SB059	H	1530814	2025-03-31	41-23	dropped	adds advisory members or a grant-seeking duty; no change in what the law requires of anyone			Supports for State Response to Mass Shootings
 SB059	S	1487303	2025-02-12	24-9	dropped	adds advisory members or a grant-seeking duty; no change in what the law requires of anyone			Supports for State Response to Mass Shootings
-SB062	H	1534051	2025-04-02	40-21	candidate:reading	clears triage; act being read			Failure to Appear Charges in Municipal Court
-SB062	S	1486352	2025-02-11	21-11	candidate:reading	clears triage; act being read	1485854		Failure to Appear Charges in Municipal Court
+SB062	H	1534051	2025-04-02	40-21	batch-05	imported in batch-05			Failure to Appear Charges in Municipal Court
+SB062	S	1486352	2025-02-11	21-11	batch-05	imported in batch-05	1485854		Failure to Appear Charges in Municipal Court
 SB063	H	1547492	2025-04-14	42-22	candidate:reading	clears triage; act being read			Library Resource Decision Standards for Public Schools
 SB063	S	1549756	2025-04-16	21-11	candidate:reading	clears triage; act being read	1549755	1493027	Library Resource Decision Standards for Public Schools
-SB070	H	1555497	2025-04-23	48-16	candidate:reading	clears triage; act being read			Online Marketplaces & Third-Party Sellers
+SB070	H	1555497	2025-04-23	48-16	batch-05	imported in batch-05			Online Marketplaces & Third-Party Sellers
 SB072	H	1567648	2025-05-07	47-18	candidate:reading	clears triage; act being read			Regulation of Kratom
 SB072	S	1567650	2025-05-07	27-8	candidate:reading	clears triage; act being read	1567649	1558806	Regulation of Kratom
 SB079	H	1557957	2025-04-25	48-14	candidate:reading	clears triage; act being read			Colorado Vending of Digital Assets Act
@@ -303,8 +303,8 @@ SB154	H	1551710	2025-04-17	45-18	candidate:reading	clears triage; act being read
 SB154	S	1512507	2025-03-11	25-9	candidate:reading	clears triage; act being read			Access to Educator Pathways
 SB155	H	1567617	2025-05-07	42-22	dropped	creates an advisory council; no change in what the law requires	1567616	1563517	Legislation Inside Advisory Council
 SB155	S	1567621	2025-05-07	22-13	dropped	creates an advisory council; no change in what the law requires	1567618;1567619;1567620	1552478	Legislation Inside Advisory Council
-SB158	H	1563463	2025-05-01	39-24	candidate:reading	clears triage; act being read			State Agency Procurement & Disposal Certain Items
-SB158	S	1564732	2025-05-02	22-13	candidate:reading	clears triage; act being read	1564731	1551497;1551498	State Agency Procurement & Disposal Certain Items
+SB158	H	1563463	2025-05-01	39-24	batch-06	imported in batch-06			State Agency Procurement & Disposal Certain Items
+SB158	S	1564732	2025-05-02	22-13	batch-06	imported in batch-06	1564731	1551497;1551498	State Agency Procurement & Disposal Certain Items
 SB161	H	1567674	2025-05-07	43-22	candidate:reading	clears triage; act being read	1567671	1564547	Transit Reform
 SB161	S	1567982	2025-05-07	23-12	candidate:reading	clears triage; act being read	1567981	1553404	Transit Reform
 SB162	H	1564681	2025-05-02	44-19	candidate:reading	clears triage; act being read			Railroad Safety Requirements
@@ -314,8 +314,8 @@ SB163	S	1566680	2025-05-06	23-12	candidate:reading	clears triage; act being read
 SB167	H	1564572	2025-05-02	45-19	candidate:reading	clears triage; act being read			Invest State Funds to Benefit Communities
 SB167	S	1565380	2025-05-05	24-11	candidate:reading	clears triage; act being read	1565379	1551317	Invest State Funds to Benefit Communities
 SB169	H	1561728	2025-04-30	44-21	dropped	the restaurant meals programme depends on federal approval and available appropriations			Restaurant Meals Program
-SB173	H	1559010	2025-04-28	40-24	dropped	reclassifying revenue under the taxpayer bill of rights trades refunds against public spending; the direction is the con			Revenue Classification Taxpayers Bill of Rights
-SB173	S	1560638	2025-04-29	20-12	dropped	reclassifying revenue under the taxpayer bill of rights trades refunds against public spending; the direction is the con	1560637	1520741	Revenue Classification Taxpayers Bill of Rights
+SB173	H	1559010	2025-04-28	40-24	dropped	reclassifying revenue under the taxpayer bill of rights trades refunds against public spending; the direction is the contested que			Revenue Classification Taxpayers Bill of Rights
+SB173	S	1560638	2025-04-29	20-12	dropped	reclassifying revenue under the taxpayer bill of rights trades refunds against public spending; the direction is the contested que	1560637	1520741	Revenue Classification Taxpayers Bill of Rights
 SB174	H	1552645	2025-04-21	50-13	dropped	annual housekeeping: rule continuation, uniform-law alignment, or a sunset continuation			Sunset Outfitters & Guides
 SB175	H	1558328	2025-04-25	40-22	dropped	annual housekeeping: rule continuation, uniform-law alignment, or a sunset continuation			Sunset Bill Towing Task Force
 SB175	S	1530815	2025-03-31	23-11	dropped	annual housekeeping: rule continuation, uniform-law alignment, or a sunset continuation			Sunset Bill Towing Task Force
@@ -335,15 +335,15 @@ SB186	H	1564615	2025-05-02	43-21	dropped	a sunset continuation of an existing pr
 SB186	S	1566639	2025-05-06	23-12	dropped	a sunset continuation of an existing programme or board	1566638	1551605	Sunset Workers' Compensation Providers Accreditation Program
 SB188	H	1527998	2025-03-26	42-23	dropped	an appropriation, transfer or fund mechanic; funding decisions carry no honest direction			Fiscal Year 2025-26 Legislative Appropriation Bill
 SB188	S	1530290	2025-03-28	18-16	dropped	an appropriation, transfer or fund mechanic; funding decisions carry no honest direction	1530289	1516076	Fiscal Year 2025-26 Legislative Appropriation Bill
-SB190	H	1562203	2025-04-30	44-21	candidate:reading	clears triage; act being read			Offender Release from Custody
-SB190	S	1564419	2025-05-01	21-11	candidate:reading	clears triage; act being read	1564418	1532515	Offender Release from Custody
+SB190	H	1562203	2025-04-30	44-21	batch-05	imported in batch-05			Offender Release from Custody
+SB190	S	1564419	2025-05-01	21-11	batch-05	imported in batch-05	1564418	1532515	Offender Release from Custody
 SB192	H	1562561	2025-04-30	51-14	dropped	a sunset continuation of an existing programme or board			Sunset Community Health Service Agency
 SB192	S	1551588	2025-04-17	26-9	dropped	a sunset continuation of an existing programme or board			Sunset Community Health Service Agency
 SB194	S	1551509	2025-04-17	28-7	dropped	a sunset continuation of an existing programme or board	1551508		Sunset Dental Practice Act
 SB196	H	1557969	2025-04-25	40-22	batch-03	imported in batch-03			Insurance Coverage Preventive Health-Care Services
 SB196	S	1539473	2025-04-08	23-11	batch-03	imported in batch-03			Insurance Coverage Preventive Health-Care Services
-SB205	H	1558242	2025-04-25	36-27	candidate:reading	clears triage; act being read			Firearm Serial Number Check Request Procedure
-SB205	S	1558907	2025-04-28	22-11	candidate:reading	clears triage; act being read	1558906	1539519	Firearm Serial Number Check Request Procedure
+SB205	H	1558242	2025-04-25	36-27	batch-06	imported in batch-06			Firearm Serial Number Check Request Procedure
+SB205	S	1558907	2025-04-28	22-11	batch-06	imported in batch-06	1558906	1539519	Firearm Serial Number Check Request Procedure
 SB206	H	1552720	2025-04-21	43-21	dropped	an appropriation, transfer or fund mechanic; funding decisions carry no honest direction	1552719	1544502	2025-26 Long Appropriations Bill
 SB206	S	1552722	2025-04-21	24-11	dropped	an appropriation, transfer or fund mechanic; funding decisions carry no honest direction	1552721	1536025	2025-26 Long Appropriations Bill
 SB208	H	1543309	2025-04-10	42-21	candidate:reading	clears triage; act being read			Department of Corrections Inmate Phone Costs
