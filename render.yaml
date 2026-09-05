@@ -186,7 +186,7 @@ services:
       - key: HOUSTON_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: IDAHO_CAMPAIGN_FINANCE_ENABLED
-        value: "false"
+        value: "true"
       - key: ILLINOIS_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: INDIANA_CAMPAIGN_FINANCE_ENABLED
@@ -224,6 +224,8 @@ services:
       - key: NEW_YORK_CITY_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: NORTH_CAROLINA_CAMPAIGN_FINANCE_ENABLED
+        value: "true"
+      - key: NORTH_DAKOTA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: OHIO_CAMPAIGN_FINANCE_ENABLED
         value: "true"

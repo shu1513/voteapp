@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChatWidget } from "./components/chatbot/ChatWidget";
+import { DraftCompleteNotice } from "./components/DraftCompleteNotice";
 import { RouteError } from "./components/RouteError";
 import { TermsRenewalGate } from "./components/TermsRenewalGate";
 import { APP_NAME, VERIFY_WITH_OFFICIALS_NOTE, apiRequest, purgeAccountScopedQueries, useMe } from "@voteapp/api-client";
@@ -281,6 +282,10 @@ export function App() {
             <AccountNav />
           </nav>
         </div>
+        {/* Second header row, empty until the draft's last race gets a pick
+            (docs/plans/draft-completion-moment.md). In flow on purpose: it
+            pushes the page down rather than covering the pick card. */}
+        <DraftCompleteNotice />
       </header>
       <main id="main" ref={mainRef} tabIndex={-1} className="outline-none">
         <Outlet />
