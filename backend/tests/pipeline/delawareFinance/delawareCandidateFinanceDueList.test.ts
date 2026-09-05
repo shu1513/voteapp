@@ -44,9 +44,13 @@ describe("listDueDelawareCandidateFinanceSyncRows", () => {
       lastSyncedAt: null,
     });
     const sql = String(db.query.mock.calls[0]?.[0]);
-    expect(sql).toContain("FROM public.de_candidate_finance_links link");
-    expect(sql).toContain("summary.last_synced_at IS NULL OR summary.last_synced_at <");
-    expect(sql).toContain("district_row.state='DE'");
+    // Builder wording (the bespoke query omitted AS/spaces and aliased districts
+    // as district_row); same tables and predicates.
+    expect(sql).toContain("FROM public.de_candidate_finance_links AS link");
+    expect(sql).toContain("summary.last_synced_at IS NULL");
+    expect(sql).toContain("OR summary.last_synced_at < ($1::timestamptz - make_interval(days => $2::int))");
+    expect(sql).toContain("election.election_stage = 'general'");
+    expect(sql).toContain("district.state = 'DE'");
     expect(db.query.mock.calls[0]?.[1]?.[5]).toEqual([...DELAWARE_FINANCE_ELIGIBLE_OFFICE_KEYS]);
   });
 });
