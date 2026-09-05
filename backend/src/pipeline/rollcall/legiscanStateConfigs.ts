@@ -109,6 +109,11 @@ const MISSOURI_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
 // while 2025's `SBIR: Passed by House of Origin` is a Budget Isolation
 // Resolution. Never reuse one session's patterns on another without
 // surveying it first.
+const NEW_MEXICO_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  { pattern: /^house final passage$/, questionClass: "passage" },
+  { pattern: /^senate final passage$/, questionClass: "passage" },
+];
+
 const ALABAMA_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
   // Conference-report votes. Listed first so the concurrence rule below
   // cannot claim them.
@@ -2717,10 +2722,43 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     jurisdiction: "NM",
     sessionId: 2187,
     chamberSizes: { house: 70, senate: 42 },
-    keptQuestions: [
-      { pattern: /^house final passage$/, questionClass: "passage" },
-      { pattern: /^senate final passage$/, questionClass: "passage" },
-    ],
+    keptQuestions: NEW_MEXICO_KEPT_QUESTIONS,
+    excludedQuestions: [],
+  },
+  // New Mexico Legislature, 2026 Regular Session (the 30-day even-year
+  // session). Registered under `NM-2251` because the plain `NM` key is
+  // already taken by the 2025 regular session above; both share this
+  // state's one vocabulary definition.
+  // Vocabulary measured from the full dataset survey 2026-09-05: 812 bills,
+  // 256 roll calls, 112 people (70 House + 42 Senate seats).
+  //
+  // The survey found THE SAME TWO DESCRIPTIONS AND NOTHING ELSE:
+  // `House Final Passage` (148) and `Senate Final Passage` (108). No
+  // committee votes, no parse errors, no roll missing its member list. The
+  // tallies are tighter than 2025's: every House roll totals exactly 70 and
+  // every Senate roll exactly 42, where the 2025 session had House rolls of
+  // 69. The final-passage-only hazard carries over unchanged, so every
+  // selected roll still needs its own version check against nmlegis.gov.
+  "NM-2251": {
+    jurisdiction: "NM",
+    sessionId: 2251,
+    chamberSizes: { house: 70, senate: 42 },
+    keptQuestions: NEW_MEXICO_KEPT_QUESTIONS,
+    excludedQuestions: [],
+  },
+  // New Mexico Legislature, 2025 1st Special Session (October 2025).
+  // Vocabulary measured from the full dataset survey 2026-09-05: 11 bills,
+  // 10 roll calls, 112 people. Five `House Final Passage` and five
+  // `Senate Final Passage`, all on plain bills, no parse errors.
+  //
+  // The 2025 2nd Special Session (LegiScan 2232) is deliberately NOT
+  // registered: it holds 2 bills and 2 roll calls, and neither roll is
+  // divided, so it can never produce a record.
+  "NM-2227": {
+    jurisdiction: "NM",
+    sessionId: 2227,
+    chamberSizes: { house: 70, senate: 42 },
+    keptQuestions: NEW_MEXICO_KEPT_QUESTIONS,
     excludedQuestions: [],
   },
   // Kansas Legislature, 2025-2026 Regular Session. Kansas files both years
