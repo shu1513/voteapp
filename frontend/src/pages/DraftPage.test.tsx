@@ -150,8 +150,8 @@ describe("DraftPage", () => {
     renderDraft();
 
     const milestone = await screen.findByRole("region", { name: "November 3, 2026 draft milestone" });
-    expect(milestone).toHaveTextContent("Picks added for every race in your November 3, 2026 draft.");
-    expect(milestone).toHaveTextContent("2 of 2 races decided.");
+    expect(milestone).toHaveTextContent("You have completed your November 3, 2026 draft.");
+    expect(milestone).not.toHaveTextContent(/decided/);
     // ONE sign-up link on the page: the milestone's, with the device hint;
     // the bottom CTA steps aside rather than repeat it.
     expect(screen.getAllByRole("link", { name: "Sign up free to save your picks" })).toHaveLength(1);

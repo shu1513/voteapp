@@ -79,8 +79,8 @@ describe("PicksPage", () => {
     renderPicks();
 
     const milestone = await screen.findByRole("region", { name: "November 3, 2026 draft milestone" });
-    expect(milestone).toHaveTextContent("Picks added for every race in your November 3, 2026 draft.");
-    expect(milestone).toHaveTextContent("2 of 2 races decided.");
+    expect(milestone).toHaveTextContent("You have completed your November 3, 2026 draft.");
+    expect(milestone).not.toHaveTextContent(/decided/);
     expect(screen.queryByRole("link", { name: /Sign up/ })).not.toBeInTheDocument();
     expect(JSON.parse(window.localStorage.getItem("voteapp_draft_complete_seen") ?? "[]")).toEqual(["2026-11-03"]);
   });

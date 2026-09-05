@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router";
-import { formatElectionDate, isDecidedChoice } from "@voteapp/api-client";
+import { formatElectionDate } from "@voteapp/api-client";
 import type { ElectionChoice } from "@voteapp/api-client";
 import { allRacesDecided } from "../lib/ballotDraft";
 import { markDraftCompleteSeen } from "../lib/draftCompleteSeen";
@@ -11,12 +11,11 @@ import { track } from "../lib/usage";
 // once every race on the nearest upcoming election day has a pick. The
 // header notice (DraftCompleteNotice) is the one-time announcement; this is
 // where it points, so it stays as long as the picks do. Same counting rule
-// as the date card's "N of M races decided" line (isDecidedChoice) and the
-// same claim — "picks added for every race", never "complete": one pick
-// decides a multi-seat race, a withdrawn pick still counts, and a partial
-// (ZIP/city) ballot reaches 100% too. Rendering it marks the day as seen
-// so the header notice never fires for a day the user has already read
-// about here.
+// as the date card's "N of M races decided" line (allRacesDecided /
+// isDecidedChoice) and the same one-line wording as the notice — "You have
+// completed your {day} draft." (owner's call; the card's count line right
+// below it is the only hedge). Rendering it marks the day as seen so the
+// header notice never fires for a day the user has already read about here.
 
 export function DraftMilestone({
   date,
@@ -35,8 +34,6 @@ export function DraftMilestone({
    * one button per page, never two identical ones. */
   signup: boolean;
 }) {
-  const total = elections.length;
-  const picked = elections.filter((election) => isDecidedChoice(choiceByElectionId?.get(election.id))).length;
   const complete = allRacesDecided(elections, choiceByElectionId);
 
   useEffect(() => {
@@ -58,10 +55,7 @@ export function DraftMilestone({
     >
       <p className="font-semibold">
         <span aria-hidden="true">✓ </span>
-        Picks added for every race in your {formatElectionDate(date)} draft.
-      </p>
-      <p className="mt-0.5 text-xs">
-        {picked} of {total} race{total === 1 ? "" : "s"} decided. Review your picks and make any changes.
+        You have completed your {formatElectionDate(date)} draft.
       </p>
       {signup ? (
         <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">

@@ -50,9 +50,15 @@ and city searches produce partial ballots that can reach 100%. So "your
 ballot is complete" and "you're done" promise more than the data
 establishes. We keep the counting rule and say only what it establishes:
 
-- Headline: "Picks added for every race in your November 3, 2026 draft"
-- Body: "13 of 13 races decided. Review your picks and make any changes."
+- Headline: "You have completed your November 3, 2026 draft."
 - Action: "Review my picks"
+
+Owner decision 2026-09-04, after seeing it live: the earlier hedged copy
+("Picks added for every race…", "13 of 13 races decided. Review your picks
+and make any changes.") was replaced by the one sentence above. "Completed"
+therefore leans on the counting rule described here; the date card's own
+"N of M races decided" line, directly under the milestone, is the only
+remaining hedge.
 
 No mention of sharing in the notice: guests cannot share until they have
 an account, and signed-in users find Share on the date card already.
@@ -168,7 +174,7 @@ card's count line), and renders nothing unless every race is decided:
   list. On `/me/picks` that is not always `dates[0]` because just-finished
   dates stay carded for a few days.
 - Render when that date's decided count equals its race count: check icon,
-  "Picks added for every race in your November 3, 2026 draft", and the
+  "You have completed your November 3, 2026 draft.", and the
   "13 of 13 races decided" line.
 - Guest: a "Sign up free to save your picks" link (same wording and
   target, `/register?next=/draft`, as the existing bottom CTA, which
