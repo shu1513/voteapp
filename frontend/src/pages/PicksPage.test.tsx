@@ -65,6 +65,55 @@ afterEach(() => {
 });
 
 describe("PicksPage", () => {
+  it("shows the milestone, without a sign-up link, once every race on the nearest day has a pick", async () => {
+    window.localStorage.clear();
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/election-choices": {
+          body: {
+            choices: [electionChoice(), electionChoice({ election_id: "e-2", official_ballot_title: "Mayor" })],
+          },
+        },
+      })
+    );
+    renderPicks();
+
+    const milestone = await screen.findByRole("region", { name: "November 3, 2026 draft milestone" });
+    expect(milestone).toHaveTextContent("Picks added for every race in your November 3, 2026 draft.");
+    expect(milestone).toHaveTextContent("2 of 2 races decided.");
+    expect(screen.queryByRole("link", { name: /Sign up/ })).not.toBeInTheDocument();
+    expect(JSON.parse(window.localStorage.getItem("voteapp_draft_complete_seen") ?? "[]")).toEqual(["2026-11-03"]);
+  });
+
+  it("judges the nearest UPCOMING day, skipping a just-finished day still carded", async () => {
+    window.localStorage.clear();
+    stubApiRoutes(
+      verifiedRoutes({
+        // A finished July race (no pick) still rides the ballot; November is
+        // the nearest upcoming day and it is fully decided.
+        "/api/me/ballot": {
+          body: ballotSummary([
+            electionSummary({ id: "e-july", election_date: "2026-07-28", official_ballot_title: "Special" }),
+            electionSummary(),
+          ]),
+        },
+      })
+    );
+    renderPicks();
+
+    expect(await screen.findByRole("region", { name: "November 3, 2026 draft milestone" })).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: /July 28, 2026 draft milestone/ })).not.toBeInTheDocument();
+  });
+
+  it("shows no milestone while a race on the nearest day is still open", async () => {
+    window.localStorage.clear();
+    stubApiRoutes(verifiedRoutes());
+    renderPicks();
+    expect(await screen.findByText("1 of 2 races decided")).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: /draft milestone/ })).not.toBeInTheDocument();
+    expect(window.localStorage.getItem("voteapp_draft_complete_seen")).toBeNull();
+  });
+
   it("asks logged-out visitors to log in", async () => {
     stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
     renderPicks();
@@ -766,7 +815,9 @@ describe("PicksPage", () => {
     );
     renderPicks();
 
-    await screen.findByText(/2 of 2 race/);
+    // The card's own count line (the finished-draft milestone above the
+    // toggle repeats the count in a longer sentence).
+    await screen.findByText("2 of 2 races decided");
     expect(screen.queryByText("Auto")).toBeNull();
     expect(screen.queryByRole("button", { name: /Auto-fill empty picks/ })).toBeNull();
     expect(screen.queryByRole("button", { name: "Clear auto picks" })).toBeNull();

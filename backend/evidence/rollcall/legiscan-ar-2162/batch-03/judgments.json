@@ -1,0 +1,220 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1540985,
+      "measure_id": "HB 1424",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1424. Arkansas Medicaid and private health plans must now cover care for illnesses caused by severe obesity. The act sets who counts, using body mass index: 40 or higher, or 35 or higher with a linked illness such as high blood pressure, sleep apnea or diabetes. Plans must cover four named weight-loss surgeries, plus counseling and care before and after. The act does not make plans cover weight-loss drugs. A doctor must write an order saying the care is needed. The patient must confirm they joined a weight loss program and had checks first. Insurers may ask for up to three months of preparation. Surgery is covered only for patients aged eighteen and over. The rule for private plans started on January 1, 2026. The Arkansas Senate passed it 23-6 and it became Act 628 of 2025.",
+      "nay_description": "Voted against passing House Bill 1424. Arkansas Medicaid and private health plans must now cover care for illnesses caused by severe obesity. The act sets who counts, using body mass index: 40 or higher, or 35 or higher with a linked illness such as high blood pressure, sleep apnea or diabetes. Plans must cover four named weight-loss surgeries, plus counseling and care before and after. The act does not make plans cover weight-loss drugs. A doctor must write an order saying the care is needed. The patient must confirm they joined a weight loss program and had checks first. Insurers may ask for up to three months of preparation. Surgery is covered only for patients aged eighteen and over. The rule for private plans started on January 1, 2026. The Arkansas Senate passed it 23-6 and it became Act 628 of 2025.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1538672,
+      "measure_id": "HB 1965",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1965. It sets up a state program to help food shops open or grow where fresh food is hard to buy. The Arkansas Economic Development Commission runs it and may award grants, loans or both. Money can pay for building or fixing up a grocery store, for farmers' markets, food cooperatives, mobile markets and delivery, and for equipment, staff training and start-up stock. To apply, a shop must serve an underserved area, show it is committed to selling fresh produce, and take both food stamp and WIC benefits. Restaurants cannot apply. The act sets aside no money of its own, and the program runs only so far as funds are available. The Arkansas House passed it 58-28 and it became Act 870 of 2025.",
+      "nay_description": "Voted against passing House Bill 1965. It sets up a state program to help food shops open or grow where fresh food is hard to buy. The Arkansas Economic Development Commission runs it and may award grants, loans or both. Money can pay for building or fixing up a grocery store, for farmers' markets, food cooperatives, mobile markets and delivery, and for equipment, staff training and start-up stock. To apply, a shop must serve an underserved area, show it is committed to selling fresh produce, and take both food stamp and WIC benefits. Restaurants cannot apply. The act sets aside no money of its own, and the program runs only so far as funds are available. The Arkansas House passed it 58-28 and it became Act 870 of 2025.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1547326,
+      "measure_id": "HB 1965",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1965. It sets up a state program to help food shops open or grow where fresh food is hard to buy. The Arkansas Economic Development Commission runs it and may award grants, loans or both. Money can pay for building or fixing up a grocery store, for farmers' markets, food cooperatives, mobile markets and delivery, and for equipment, staff training and start-up stock. To apply, a shop must serve an underserved area, show it is committed to selling fresh produce, and take both food stamp and WIC benefits. Restaurants cannot apply. The act sets aside no money of its own, and the program runs only so far as funds are available. The Arkansas Senate passed it 22-10 and it became Act 870 of 2025.",
+      "nay_description": "Voted against passing House Bill 1965. It sets up a state program to help food shops open or grow where fresh food is hard to buy. The Arkansas Economic Development Commission runs it and may award grants, loans or both. Money can pay for building or fixing up a grocery store, for farmers' markets, food cooperatives, mobile markets and delivery, and for equipment, staff training and start-up stock. To apply, a shop must serve an underserved area, show it is committed to selling fresh produce, and take both food stamp and WIC benefits. Restaurants cannot apply. The act sets aside no money of its own, and the program runs only so far as funds are available. The Arkansas Senate passed it 22-10 and it became Act 870 of 2025.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1548554,
+      "measure_id": "HB 1683",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1683. Arkansas state and local government may not buy an electric vehicle, or a part for one, unless the maker gives a sworn statement that no forced labor was used. The statement must reach back through every part and through the mining of the materials. A maker that knowingly lies faces a penalty of ten thousand dollars for each false statement, or half the purchase price, whichever is more. A government body that knowingly breaks the rule pays the state ten thousand dollars for each false statement, or the full purchase price, whichever is more. A staff member who does so owes five thousand dollars personally, as does each board member who voted yes. The rule reaches only contracts signed, changed or renewed after the act took effect. The Arkansas Senate passed it 19-9 and it became Act 924 of 2025.",
+      "nay_description": "Voted against passing House Bill 1683. Arkansas state and local government may not buy an electric vehicle, or a part for one, unless the maker gives a sworn statement that no forced labor was used. The statement must reach back through every part and through the mining of the materials. A maker that knowingly lies faces a penalty of ten thousand dollars for each false statement, or half the purchase price, whichever is more. A government body that knowingly breaks the rule pays the state ten thousand dollars for each false statement, or the full purchase price, whichever is more. A staff member who does so owes five thousand dollars personally, as does each board member who voted yes. The rule reaches only contracts signed, changed or renewed after the act took effect. The Arkansas Senate passed it 19-9 and it became Act 924 of 2025.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1550569,
+      "measure_id": "SB 491",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 491. A company that contracts with the state employee benefits office must now agree to have its data checked by an outside audit. The office may not sign with a company that refuses. Its director must build that audit process and may ask any company to go through it. A company found to have handed the state wrong data pays five hundred dollars for a first offense and a thousand for each one after, and can lose its license to operate in Arkansas. The act sets no requirement that the company knew the data was wrong. Lawmakers said accurate data matters because it is used to price the cost of bills. The Arkansas Senate passed it 19-7 and it became Act 956 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 491. A company that contracts with the state employee benefits office must now agree to have its data checked by an outside audit. The office may not sign with a company that refuses. Its director must build that audit process and may ask any company to go through it. A company found to have handed the state wrong data pays five hundred dollars for a first offense and a thousand for each one after, and can lose its license to operate in Arkansas. The act sets no requirement that the company knew the data was wrong. Lawmakers said accurate data matters because it is used to price the cost of bills. The Arkansas Senate passed it 19-7 and it became Act 956 of 2025.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1547704,
+      "measure_id": "SB 364",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 364. A contractor who worked without the license Arkansas requires may now sue the customer for the value of that work. Before, the law barred such a claim outright, which was the strongest consequence of working unlicensed. The contractor must first pay any fines the licensing board charged, and must apply to the board for a license. The act asks only that the contractor apply, not that the board say yes. A contractor still cannot sue to enforce the contract itself. The Arkansas House passed it 66-23 and it became Act 750 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 364. A contractor who worked without the license Arkansas requires may now sue the customer for the value of that work. Before, the law barred such a claim outright, which was the strongest consequence of working unlicensed. The contractor must first pay any fines the licensing board charged, and must apply to the board for a license. The act asks only that the contractor apply, not that the board say yes. A contractor still cannot sue to enforce the contract itself. The Arkansas House passed it 66-23 and it became Act 750 of 2025.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1516062,
+      "measure_id": "SB 307",
+      "vote_date": "2025-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 307. The Generating Arkansas Jobs Act lets power and gas companies charge customers for big new plants and lines while they are still being built. Customers now pay a profit on that work before it serves anyone. The state can order refunds later if it finds the spending was wasteful. The act puts the Public Service Commission on tight clocks. If it misses one, the company's filing takes effect on its own. The act also ends an eight percent cap on how fast wholesale power cooperatives may raise rates. It cuts back who may take part in hearings on big projects, and drops the rule that put the papers in local libraries. Wind projects built in Arkansas cannot be charged for this way. The Arkansas Senate passed it 23-9 and it became Act 373 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 307. The Generating Arkansas Jobs Act lets power and gas companies charge customers for big new plants and lines while they are still being built. Customers now pay a profit on that work before it serves anyone. The state can order refunds later if it finds the spending was wasteful. The act puts the Public Service Commission on tight clocks. If it misses one, the company's filing takes effect on its own. The act also ends an eight percent cap on how fast wholesale power cooperatives may raise rates. It cuts back who may take part in hearings on big projects, and drops the rule that put the papers in local libraries. Wind projects built in Arkansas cannot be charged for this way. The Arkansas Senate passed it 23-9 and it became Act 373 of 2025.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1508182,
+      "measure_id": "HB 1503",
+      "vote_date": "2025-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1503. Arkansas cities and towns must now allow at least one accessory dwelling unit on a lot that has a single-family house. An accessory dwelling unit is a smaller separate home on the same lot. It must be approved without a public hearing or a special permit. A separate or attached unit may not be larger than seventy-five percent of the house or a thousand square feet, whichever is smaller. Cities may not demand extra parking, matching exterior design, that an owner live on site, or separate water and sewer. Impact fees are capped at two hundred fifty dollars and the review fee at the same amount. Cities may still regulate short-term rentals. The Arkansas House passed it 67-19 and it became Act 313 of 2025.",
+      "nay_description": "Voted against passing House Bill 1503. Arkansas cities and towns must now allow at least one accessory dwelling unit on a lot that has a single-family house. An accessory dwelling unit is a smaller separate home on the same lot. It must be approved without a public hearing or a special permit. A separate or attached unit may not be larger than seventy-five percent of the house or a thousand square feet, whichever is smaller. Cities may not demand extra parking, matching exterior design, that an owner live on site, or separate water and sewer. Impact fees are capped at two hundred fifty dollars and the review fee at the same amount. Cities may still regulate short-term rentals. The Arkansas House passed it 67-19 and it became Act 313 of 2025.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1516066,
+      "measure_id": "SB 366",
+      "vote_date": "2025-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 366. It creates a state program that pays grants to strengthen homes against wind and hail damage, using a national building standard. Only a detached single-family home that the owner lives in and holds a homestead exemption on can qualify; mobile homes and condominiums cannot. The owner must pay for a certified inspector out of pocket, get bids from three certified builders, and hold wind insurance. Grant money goes straight to the builder once the work passes. Insurers must give a premium discount on a home that meets the standard where the discount can be justified by the figures, from July 2026. The papers a homeowner files are secret and cannot be used in a private lawsuit. The Arkansas Senate passed it 18-9 and it became Act 427 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 366. It creates a state program that pays grants to strengthen homes against wind and hail damage, using a national building standard. Only a detached single-family home that the owner lives in and holds a homestead exemption on can qualify; mobile homes and condominiums cannot. The owner must pay for a certified inspector out of pocket, get bids from three certified builders, and hold wind insurance. Grant money goes straight to the builder once the work passes. Insurers must give a premium discount on a home that meets the standard where the discount can be justified by the figures, from July 2026. The papers a homeowner files are secret and cannot be used in a private lawsuit. The Arkansas Senate passed it 18-9 and it became Act 427 of 2025.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1533254,
+      "measure_id": "SB 366",
+      "vote_date": "2025-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 366. It creates a state program that pays grants to strengthen homes against wind and hail damage, using a national building standard. Only a detached single-family home that the owner lives in and holds a homestead exemption on can qualify; mobile homes and condominiums cannot. The owner must pay for a certified inspector out of pocket, get bids from three certified builders, and hold wind insurance. Grant money goes straight to the builder once the work passes. Insurers must give a premium discount on a home that meets the standard where the discount can be justified by the figures, from July 2026. The papers a homeowner files are secret and cannot be used in a private lawsuit. The Arkansas House passed it 56-25 and it became Act 427 of 2025.",
+      "nay_description": "Voted against passing Senate Bill 366. It creates a state program that pays grants to strengthen homes against wind and hail damage, using a national building standard. Only a detached single-family home that the owner lives in and holds a homestead exemption on can qualify; mobile homes and condominiums cannot. The owner must pay for a certified inspector out of pocket, get bids from three certified builders, and hold wind insurance. Grant money goes straight to the builder once the work passes. Insurers must give a premium discount on a home that meets the standard where the discount can be justified by the figures, from July 2026. The papers a homeowner files are secret and cannot be used in a private lawsuit. The Arkansas House passed it 56-25 and it became Act 427 of 2025.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "house",
+      "session": "2162",
+      "roll": 1539730,
+      "measure_id": "HB 1627",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1627. Arkansas property tax bills must now tell the taxpayer about the tax relief older and disabled homeowners can claim. That relief freezes the value a home is taxed on, and comes with the homestead credit in the state constitution. The notice has to be in bold or highlighted on the bill, or sent as an insert with it. It must spell out who qualifies. The act does not change who is eligible, how much relief they get, or how to apply. It sets no penalty for a county that leaves the notice off. The Arkansas House passed it 58-17 and it became Act 877 of 2025.",
+      "nay_description": "Voted against passing House Bill 1627. Arkansas property tax bills must now tell the taxpayer about the tax relief older and disabled homeowners can claim. That relief freezes the value a home is taxed on, and comes with the homestead credit in the state constitution. The notice has to be in bold or highlighted on the bill, or sent as an insert with it. It must spell out who qualifies. The act does not change who is eligible, how much relief they get, or how to apply. It sets no penalty for a county that leaves the notice off. The Arkansas House passed it 58-17 and it became Act 877 of 2025.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AR",
+      "chamber": "senate",
+      "session": "2162",
+      "roll": 1543195,
+      "measure_id": "HB 1752",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1752. Money in certain savings accounts is now out of reach when someone loses a court case over a debt. The protection covers health savings accounts, college savings plans, disability savings programs, Coverdell education accounts and inherited retirement accounts. What decides it is the tax treatment: the account is covered if federal tax on it is waived or put off until the money is paid out. There is no dollar cap and no listed exception. Retirement and pension plans were already protected and stay so. The Arkansas Senate passed it 18-14 and it became Act 681 of 2025.",
+      "nay_description": "Voted against passing House Bill 1752. Money in certain savings accounts is now out of reach when someone loses a court case over a debt. The protection covers health savings accounts, college savings plans, disability savings programs, Coverdell education accounts and inherited retirement accounts. What decides it is the tax treatment: the account is covered if federal tax on it is waived or put off until the money is paid out. There is no dollar cap and no listed exception. Retirement and pension plans were already protected and stay so. The Arkansas Senate passed it 18-14 and it became Act 681 of 2025.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

@@ -5,7 +5,7 @@ import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
-import { buildUnsubscribeUrlBuilderFromEnv } from "./sendCandidateFollowDigests.js";
+import { assertUnsubscribeLinksConfigured, buildUnsubscribeUrlBuilderFromEnv } from "./sendCandidateFollowDigests.js";
 import {
   DEFAULT_BROADCAST_MAX_USERS,
   sendIssueBroadcast,
@@ -122,6 +122,7 @@ export function buildBroadcastMailerFromEnv(allowConsole: boolean): IssueBroadca
       "SES broadcast mailer requires AUTH_FROM_EMAIL and AUTH_SES_REGION/AWS_REGION (or set NOTIFICATIONS_MAILER=console)"
     );
   }
+  assertUnsubscribeLinksConfigured("SES broadcast mailer");
   const replyToEmailAddress = readOptionalEnv("AUTH_REPLY_TO_EMAIL");
   return createSesIssueBroadcastMailer({
     sesClient: new SESv2Client({ region: sesRegion }),

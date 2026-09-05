@@ -119,14 +119,34 @@ and Maine's "render the page" rule, and Montana's renumbering tell.
 
 ## Layout
 
-- `survey/` — the desc histogram, both fetch reports, and the dispositioned worklist.
+- `survey/` — the desc histogram, both fetch reports, the dispositioned worklist, and
+  `DISPOSITIONS.md`, which accounts for every gated measure in the session.
 - `crosswalk.json`, `legiscan-people-ar-2162.json`, `crosswalk-proposals-report.json`.
-- `batch-01/` — PLAN.md, JUDGING.md, judgments.json, the roll evidence files and the
-  import ledgers.
+- `tools/ar_text.py` — the strikethrough reader described above, and `tools/READER-BRIEF.md`,
+  the instructions every act reader worked from.
+- `batch-01/` through `batch-04/` — PLAN.md, JUDGING.md, judgments.json, the roll evidence
+  files and the import ledgers. Batches 02, 03 and 04 were one run and share a JUDGING.md.
 
 The dataset and the full 2,489-file evidence directory live outside the repository at
 `/Users/shu/legiscan-data/ar-2162` and `ar-2162-evidence`, following the precedent set for
 Texas; only the curated subset is committed.
+
+## The session is finished
+
+All 131 divided-and-enacted roll calls are dispositioned, and nothing is left open:
+
+| Outcome | Rolls |
+| --- | --- |
+| Judged and imported (batches 01-04) | 61 |
+| Dropped after the act was read in full | 42 |
+| Superseded by a later vote in the same chamber | 28 |
+
+**Arkansas holds 2,708 records across 96 candidates and 2,131 tags, on 49 measures. Production
+holds none.** 96 is every member the crosswalk maps, because Arkansas's Speaker votes.
+
+Two records carry an expiry. SJR 11 and SJR 15 are on the November 2026 ballot, and their
+descriptions are written in the conditional. **Both must be revisited once Arkansas votes**, the
+rule Missouri's HJR 3 established.
 
 ## Sessions not yet worked
 

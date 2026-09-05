@@ -4,7 +4,7 @@ import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
-import { buildUnsubscribeUrlBuilderFromEnv } from "./sendCandidateFollowDigests.js";
+import { assertUnsubscribeLinksConfigured, buildUnsubscribeUrlBuilderFromEnv } from "./sendCandidateFollowDigests.js";
 import { US_LATEST_LOCAL_DATE_SQL } from "../utils/usLocalDate.js";
 import {
   createConsoleElectionReminderMailer,
@@ -318,6 +318,7 @@ export function buildReminderMailerFromEnv(): ElectionReminderMailer {
       "SES reminder mailer requires AUTH_FROM_EMAIL and AUTH_SES_REGION/AWS_REGION (or set NOTIFICATIONS_MAILER=console)"
     );
   }
+  assertUnsubscribeLinksConfigured("SES reminder mailer");
   const replyToEmailAddress = readOptionalEnv("AUTH_REPLY_TO_EMAIL");
   return createSesElectionReminderMailer({
     sesClient: new SESv2Client({ region: sesRegion }),

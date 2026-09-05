@@ -5,7 +5,7 @@ import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
-import { buildUnsubscribeUrlBuilderFromEnv } from "./sendCandidateFollowDigests.js";
+import { assertUnsubscribeLinksConfigured, buildUnsubscribeUrlBuilderFromEnv } from "./sendCandidateFollowDigests.js";
 import {
   DEFAULT_NEWSLETTER_MAX_USERS,
   sendMemberNewsletter,
@@ -127,6 +127,7 @@ export function buildNewsletterMailerFromEnv(allowConsole: boolean): MemberNewsl
       "SES newsletter mailer requires AUTH_FROM_EMAIL and AUTH_SES_REGION/AWS_REGION (or set NOTIFICATIONS_MAILER=console)"
     );
   }
+  assertUnsubscribeLinksConfigured("SES newsletter mailer");
   const replyToEmailAddress = readOptionalEnv("AUTH_REPLY_TO_EMAIL");
   return createSesMemberNewsletterMailer({
     sesClient: new SESv2Client({ region: sesRegion }),

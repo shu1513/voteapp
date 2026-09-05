@@ -1,0 +1,328 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1594247,
+      "measure_id": "HB 36",
+      "vote_date": "2025-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 36, which lines up Delaware's smaller anti-discrimination rules with its big ones. Delaware bans discrimination in public places, in housing, and at work. But many smaller rules named only a short list of grounds. Each of those rules now also covers every ground the matching big law covers. The act adds gender identity to the stated purpose of the Fair Housing Act. It also brings banks and other firms licensed under Delaware's banking law under the public places rule. The Delaware Senate passed it 15-6, and it became law.",
+      "nay_description": "Voted against House Bill 36, which lines up Delaware's smaller anti-discrimination rules with its big ones. Delaware bans discrimination in public places, in housing, and at work. But many smaller rules named only a short list of grounds. Each of those rules now also covers every ground the matching big law covers. The act adds gender identity to the stated purpose of the Fair Housing Act. It also brings banks and other firms licensed under Delaware's banking law under the public places rule. The Delaware Senate passed it 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1591731,
+      "measure_id": "HB 48",
+      "vote_date": "2025-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 48, which tightens the rules on parking spaces for people with disabilities. A new or repainted space needs a permit, and the county or town must check that it meets the federal standard. It can check by visiting the site or by reviewing papers and photos. Spaces that still fall short five years after the act starts break the law, though the owner gets 90 days to fix a problem before any fine. The fine for parking in one without the right plate or placard rises from $200 to $250. A repeat offense now brings a $500 fine or community service in place of jail, and a missing sign is no longer a defense if the space is otherwise clearly marked. The Delaware House passed it 27-7, and it became law.",
+      "nay_description": "Voted against House Bill 48, which tightens the rules on parking spaces for people with disabilities. A new or repainted space needs a permit, and the county or town must check that it meets the federal standard. It can check by visiting the site or by reviewing papers and photos. Spaces that still fall short five years after the act starts break the law, though the owner gets 90 days to fix a problem before any fine. The fine for parking in one without the right plate or placard rises from $200 to $250. A repeat offense now brings a $500 fine or community service in place of jail, and a missing sign is no longer a defense if the space is otherwise clearly marked. The Delaware House passed it 27-7, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1551826,
+      "measure_id": "HB 56",
+      "vote_date": "2025-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 56, which makes health plans cover surgery to remove excess skin. Loose skin and the fat under it can cause rashes and infections and make moving hard, often after a large weight loss. Individual, group, and blanket health plans, the state worker plan, and Medicaid must now cover that surgery when a doctor finds it needed. Insurers may still apply a deductible, a share of the cost, charge limits, and network rules. So the surgery is covered, but not always free. The rule reaches policies issued or renewed after December 31, 2026. The Delaware House passed it 29-8, and it became law.",
+      "nay_description": "Voted against House Bill 56, which makes health plans cover surgery to remove excess skin. Loose skin and the fat under it can cause rashes and infections and make moving hard, often after a large weight loss. Individual, group, and blanket health plans, the state worker plan, and Medicaid must now cover that surgery when a doctor finds it needed. Insurers may still apply a deductible, a share of the cost, charge limits, and network rules. So the surgery is covered, but not always free. The rule reaches policies issued or renewed after December 31, 2026. The Delaware House passed it 29-8, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1540030,
+      "measure_id": "HB 62",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 62, which limits when a utility can shut off service to a home. Unless there is a safety emergency, a utility may not cut service from December 21 to January 1. Outside 8 a.m. to 4 p.m., Monday through Thursday, it may cut service only in a safety emergency or if it keeps a way to pay and get reconnected open the whole time. Gas and electric service may not be cut on a day the 8 a.m. temperature is 35 degrees or below, and electric service may not be cut when the heat index is forecast to reach 95. Cutting service for an unpaid bill in the heating or cooling season needs 14 days written notice, plus attempts to reach the customer and a pointer to help paying. The same rules are written into the law for town-owned electric companies, and the act starts 90 days after it became law. The Delaware House passed it 28-12, and it became law.",
+      "nay_description": "Voted against House Bill 62, which limits when a utility can shut off service to a home. Unless there is a safety emergency, a utility may not cut service from December 21 to January 1. Outside 8 a.m. to 4 p.m., Monday through Thursday, it may cut service only in a safety emergency or if it keeps a way to pay and get reconnected open the whole time. Gas and electric service may not be cut on a day the 8 a.m. temperature is 35 degrees or below, and electric service may not be cut when the heat index is forecast to reach 95. Cutting service for an unpaid bill in the heating or cooling season needs 14 days written notice, plus attempts to reach the customer and a pointer to help paying. The same rules are written into the law for town-owned electric companies, and the act starts 90 days after it became law. The Delaware House passed it 28-12, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1529458,
+      "measure_id": "HB 67",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 67, which sets rules for towing a car without the owner's say-so. Before towing, the company must check that a sign is posted and photograph the parked car. From a lot open to the public it also needs written permission for that exact car. Towing a car under 5,000 pounds from a private lot now costs the driver no more than $250. Storage is capped at $50 a day and after-hours pickup at $50. A driver who gets back before the car leaves can stop the tow for no more than half the tow fee, and nobody may be charged to take belongings out of a stored car during business hours. Breaking these rules counts as consumer fraud, and the driver gets their money back plus damages. The Delaware House passed it 23-14, and it became law.",
+      "nay_description": "Voted against House Bill 67, which sets rules for towing a car without the owner's say-so. Before towing, the company must check that a sign is posted and photograph the parked car. From a lot open to the public it also needs written permission for that exact car. Towing a car under 5,000 pounds from a private lot now costs the driver no more than $250. Storage is capped at $50 a day and after-hours pickup at $50. A driver who gets back before the car leaves can stop the tow for no more than half the tow fee, and nobody may be charged to take belongings out of a stored car during business hours. Breaking these rules counts as consumer fraud, and the driver gets their money back plus damages. The Delaware House passed it 23-14, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1596475,
+      "measure_id": "HB 91",
+      "vote_date": "2025-06-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 91, which makes school breakfast free for every student at schools that serve it. A public school taking part in the federal School Breakfast Program must offer breakfast free to any student, whatever the family earns. The state pays the school the gap between what the federal program already covers and the federal free rate, for one breakfast per student per meal service. Schools already running four named federal programs that make meals free are left out, and the act does not change who gets free lunch. It starts on July 1, 2026. The Delaware Senate passed it 16-5, and it became law.",
+      "nay_description": "Voted against House Bill 91, which makes school breakfast free for every student at schools that serve it. A public school taking part in the federal School Breakfast Program must offer breakfast free to any student, whatever the family earns. The state pays the school the gap between what the federal program already covers and the federal free rate, for one breakfast per student per meal service. Schools already running four named federal programs that make meals free are left out, and the act does not change who gets free lunch. It starts on July 1, 2026. The Delaware Senate passed it 16-5, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1684633,
+      "measure_id": "HB 151",
+      "vote_date": "2026-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 151, which bars Delaware from paying private firms to lock people up. The state and local governments may not sign a deal to hold someone in a jail or detention center run even partly by a business. They may not pay for such a place, help fund one, take payments tied to one, or offer any money to build or run one. Places the government runs itself may still hire firms for things like health care, food, teaching, and repairs. Several kinds of treatment and youth homes are left out, and one of those exceptions ends on February 1, 2028. The Delaware House passed it 28-13, and it became law.",
+      "nay_description": "Voted against House Bill 151, which bars Delaware from paying private firms to lock people up. The state and local governments may not sign a deal to hold someone in a jail or detention center run even partly by a business. They may not pay for such a place, help fund one, take payments tied to one, or offer any money to build or run one. Places the government runs itself may still hire firms for things like health care, food, teaching, and repairs. Several kinds of treatment and youth homes are left out, and one of those exceptions ends on February 1, 2028. The Delaware House passed it 28-13, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1591853,
+      "measure_id": "HB 153",
+      "vote_date": "2025-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 153, which ends what is often called a citizen's arrest in Delaware. Arresting or holding someone is now barred for anyone a statute does not specifically give that power. The one exception is helping a peace officer who asks for help, or who is unable to act. The act also repeals two old rules about people arrested by private detectives, including the fine that went with them. The Delaware House passed it 24-12, and it became law.",
+      "nay_description": "Voted against House Bill 153, which ends what is often called a citizen's arrest in Delaware. Arresting or holding someone is now barred for anyone a statute does not specifically give that power. The one exception is helping a peace officer who asks for help, or who is unable to act. The act also repeals two old rules about people arrested by private detectives, including the fine that went with them. The Delaware House passed it 24-12, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1594411,
+      "measure_id": "HB 182",
+      "vote_date": "2025-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 182, which stops Delaware police doing federal immigration work. A listed police agency may not sign, change, renew, or extend a deal to take on federal civil immigration powers. Those deals are made under section 287(g) of federal immigration law. An agency may not agree to hold people who are in federal immigration custody either. Any agency with such a deal must use its exit clause to end it. Police may still act on valid court warrants and orders, and still share criminal records where federal rules require it. The Delaware House passed it 28-12, and it became law.",
+      "nay_description": "Voted against House Bill 182, which stops Delaware police doing federal immigration work. A listed police agency may not sign, change, renew, or extend a deal to take on federal civil immigration powers. Those deals are made under section 287(g) of federal immigration law. An agency may not agree to hold people who are in federal immigration custody either. Any agency with such a deal must use its exit clause to end it. Police may still act on valid court warrants and orders, and still share criminal records where federal rules require it. The Delaware House passed it 28-12, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1684642,
+      "measure_id": "HB 269",
+      "vote_date": "2026-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 269, which sets one standard for hooking home power systems to the grid. Joining rooftop solar or a similar system to the utility grid is called interconnection. Power suppliers used to treat a national model set of rules as a guide. They must now adopt that model, within 12 months of each new version. Any departure from it must be approved by the utility's regulator at a public hearing. Regulators may set and enforce deadlines for handling requests, and utilities may charge customers what it costs them to comply. The Delaware Senate passed it 15-5, and it became law.",
+      "nay_description": "Voted against House Bill 269, which sets one standard for hooking home power systems to the grid. Joining rooftop solar or a similar system to the utility grid is called interconnection. Power suppliers used to treat a national model set of rules as a guide. They must now adopt that model, within 12 months of each new version. Any departure from it must be approved by the utility's regulator at a public hearing. Regulators may set and enforce deadlines for handling requests, and utilities may charge customers what it costs them to comply. The Delaware Senate passed it 15-5, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1697128,
+      "measure_id": "HB 348",
+      "vote_date": "2026-05-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 348, which lifts the limits on Delaware's electric car rebates. The law used to cap the rebate at $2,500 for an all-electric car and $1,000 for a plug-in hybrid. It also barred any car priced above $50,000. All three limits are gone. The state environment agency now sets the amounts, based on the money it has and on market conditions, and may pay more to households with lower incomes. Businesses, charities, schools, and government bodies can now qualify, and the two-rebate lifetime limit now binds only Delaware residents. The agency can still decide which cars are too costly to qualify. The Delaware House passed it 26-13, and it became law.",
+      "nay_description": "Voted against House Bill 348, which lifts the limits on Delaware's electric car rebates. The law used to cap the rebate at $2,500 for an all-electric car and $1,000 for a plug-in hybrid. It also barred any car priced above $50,000. All three limits are gone. The state environment agency now sets the amounts, based on the money it has and on market conditions, and may pay more to households with lower incomes. Businesses, charities, schools, and government bodies can now qualify, and the two-rebate lifetime limit now binds only Delaware residents. The agency can still decide which cars are too costly to qualify. The Delaware House passed it 26-13, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1711062,
+      "measure_id": "HB 348",
+      "vote_date": "2026-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 348, which lifts the limits on Delaware's electric car rebates. The law used to cap the rebate at $2,500 for an all-electric car and $1,000 for a plug-in hybrid. It also barred any car priced above $50,000. All three limits are gone. The state environment agency now sets the amounts, based on the money it has and on market conditions, and may pay more to households with lower incomes. Businesses, charities, schools, and government bodies can now qualify, and the two-rebate lifetime limit now binds only Delaware residents. The agency can still decide which cars are too costly to qualify. The Delaware Senate passed it 16-5, and it became law.",
+      "nay_description": "Voted against House Bill 348, which lifts the limits on Delaware's electric car rebates. The law used to cap the rebate at $2,500 for an all-electric car and $1,000 for a plug-in hybrid. It also barred any car priced above $50,000. All three limits are gone. The state environment agency now sets the amounts, based on the money it has and on market conditions, and may pay more to households with lower incomes. Businesses, charities, schools, and government bodies can now qualify, and the two-rebate lifetime limit now binds only Delaware residents. The agency can still decide which cars are too costly to qualify. The Delaware Senate passed it 16-5, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1708935,
+      "measure_id": "HB 423",
+      "vote_date": "2026-06-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 423, which signs new state workers up to save for retirement by default. A new worker who does not opt out is enrolled in the state's 457(b) plan, which works much like a 401(k). The share of pay taken out is set by the plan board, at no less than 3% and no more than 15%, and goes into a fund matched to the worker's age. Workers must be told first how to opt out, change the amount, pick another fund, and get their money back. Money normally starts coming out about 90 days after hire. Workers under a union contract are left out unless that contract says otherwise, and the act waits until the state says its payroll system is ready. The Delaware House passed it 32-8, and it became law.",
+      "nay_description": "Voted against House Bill 423, which signs new state workers up to save for retirement by default. A new worker who does not opt out is enrolled in the state's 457(b) plan, which works much like a 401(k). The share of pay taken out is set by the plan board, at no less than 3% and no more than 15%, and goes into a fund matched to the worker's age. Workers must be told first how to opt out, change the amount, pick another fund, and get their money back. Money normally starts coming out about 90 days after hire. Workers under a union contract are left out unless that contract says otherwise, and the act waits until the state says its payroll system is ready. The Delaware House passed it 32-8, and it became law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1711096,
+      "measure_id": "SB 13",
+      "vote_date": "2026-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 13, which sets a floor for hospital financial help in Delaware. It covers general hospitals, not psychiatric, rehabilitation, or long-term acute care hospitals. A Delaware resident earning at or below three times the federal poverty level pays nothing for medically necessary hospital care. Between three and three and a half times, the bill is cut by at least 75%, and between that and four times, by at least 50%. Hospitals must also have a hardship policy cutting the bill at least in half when hospital costs reach a tenth of household income. A hospital may set an income limit on that policy, but not below five times the poverty level. While an application is pending, the hospital may not send the debt to collections, report it to a credit agency, or sue. The money rules start on January 1, 2027. The Delaware House passed it 27-13, and it became law.",
+      "nay_description": "Voted against Senate Bill 13, which sets a floor for hospital financial help in Delaware. It covers general hospitals, not psychiatric, rehabilitation, or long-term acute care hospitals. A Delaware resident earning at or below three times the federal poverty level pays nothing for medically necessary hospital care. Between three and three and a half times, the bill is cut by at least 75%, and between that and four times, by at least 50%. Hospitals must also have a hardship policy cutting the bill at least in half when hospital costs reach a tenth of household income. A hospital may set an income limit on that policy, but not below five times the poverty level. While an application is pending, the hospital may not send the debt to collections, report it to a credit agency, or sue. The money rules start on January 1, 2027. The Delaware House passed it 27-13, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1595211,
+      "measure_id": "SB 60",
+      "vote_date": "2025-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 60, which stops utilities billing customers for lobbying and politics. A utility may not charge customers, in any rate or fee, for what it spends on lobbying or on dues used for lobbying. The same goes for gifts to candidates and campaign groups, for money given to charity, and for ads meant to build the brand, sway public opinion, or win good will. Utilities may still charge for ads the law requires, and for ads about low-income rates, saving energy, outages, safety, and jobs. A limit on utility building costs was in the bill as introduced but was taken out before it passed. The Delaware House passed it 29-9, and it became law.",
+      "nay_description": "Voted against Senate Bill 60, which stops utilities billing customers for lobbying and politics. A utility may not charge customers, in any rate or fee, for what it spends on lobbying or on dues used for lobbying. The same goes for gifts to candidates and campaign groups, for money given to charity, and for ads meant to build the brand, sway public opinion, or win good will. Utilities may still charge for ads the law requires, and for ads about low-income rates, saving energy, outages, safety, and jobs. A limit on utility building costs was in the bill as introduced but was taken out before it passed. The Delaware House passed it 29-9, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1698221,
+      "measure_id": "SB 201",
+      "vote_date": "2026-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 201, which regulates people who flip home purchase contracts. In this business, called wholesaling, someone signs a contract to buy a house and then sells that contract to another buyer for a fee, never owning the house. Doing this as a business now counts as real estate work and needs a license from the state. A homeowner selling into such a deal may cancel for 21 days, cannot be made to give up that right, and must get plain written warnings in English, Spanish, and Haitian Creole. The act also doubles the payout cap from the fund that repays people cheated in a real estate deal, from $25,000 to $50,000. The Delaware House passed it 26-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 201, which regulates people who flip home purchase contracts. In this business, called wholesaling, someone signs a contract to buy a house and then sells that contract to another buyer for a fee, never owning the house. Doing this as a business now counts as real estate work and needs a license from the state. A homeowner selling into such a deal may cancel for 21 days, cannot be made to give up that right, and must get plain written warnings in English, Spanish, and Haitian Creole. The act also doubles the payout cap from the fund that repays people cheated in a real estate deal, from $25,000 to $50,000. The Delaware House passed it 26-10, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1694203,
+      "measure_id": "SB 250",
+      "vote_date": "2026-05-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 250, which rewrites who counts as a child's parent in Delaware. The old law set out separate mother and father roles. The new one is written for any individual, so a same-sex couple's child stands the same as any other. A child has the same rights whatever the parents' marital status, age, gender, gender identity, or sexual orientation. A spouse is treated as a parent of a child born during the marriage. A parent through assisted reproduction who is not the genetic parent can sign the same simple form as anyone else. A court may name more than two parents where naming fewer would harm the child, and a person born from a donated egg or sperm may learn the donor's name at 18. It starts 180 days after it became law. The Delaware House passed it 26-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 250, which rewrites who counts as a child's parent in Delaware. The old law set out separate mother and father roles. The new one is written for any individual, so a same-sex couple's child stands the same as any other. A child has the same rights whatever the parents' marital status, age, gender, gender identity, or sexual orientation. A spouse is treated as a parent of a child born during the marriage. A parent through assisted reproduction who is not the genetic parent can sign the same simple form as anyone else. A court may name more than two parents where naming fewer would harm the child, and a person born from a donated egg or sperm may learn the donor's name at 18. It starts 180 days after it became law. The Delaware House passed it 26-10, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1712798,
+      "measure_id": "SB 326",
+      "vote_date": "2026-06-30",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 326, which tightens oversight of Delaware's power and gas companies. State regulators must order a review of how well each regulated electric company is run at least every five years, unless they find a particular review unnecessary, and they may bring in an outside firm to do it. Customers may not be billed for that review. Each company must file and publish a table listing every rate and extra charge on a bill. While a rate case is still being decided, a company may collect only half the raise it asked for, and three quarters of it after 12 months. Bigger companies may not bill customers for rate-case lawyers and experts beyond what the state's own side spends. There is also a limit on how much building work customers can be charged for, which the Commission can lift. The Delaware House passed it 30-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 326, which tightens oversight of Delaware's power and gas companies. State regulators must order a review of how well each regulated electric company is run at least every five years, unless they find a particular review unnecessary, and they may bring in an outside firm to do it. Customers may not be billed for that review. Each company must file and publish a table listing every rate and extra charge on a bill. While a rate case is still being decided, a company may collect only half the raise it asked for, and three quarters of it after 12 months. Bigger companies may not bill customers for rate-case lawyers and experts beyond what the state's own side spends. There is also a limit on how much building work customers can be charged for, which the Commission can lift. The Delaware House passed it 30-11, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

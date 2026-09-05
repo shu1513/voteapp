@@ -2,8 +2,8 @@
   "importerVersion": "rollcall-legiscan-import-v1",
   "dryRun": false,
   "skipExisting": false,
-  "startedAt": "2026-09-03T02:04:47.645Z",
-  "finishedAt": "2026-09-03T02:04:52.381Z",
+  "startedAt": "2026-09-04T20:10:15.071Z",
+  "finishedAt": "2026-09-04T20:10:19.649Z",
   "jurisdiction": "DE",
   "sessionId": 2163,
   "evidenceDir": "evidence/rollcall/legiscan-de-2163/batch-01",
@@ -17,7 +17,9 @@
     "imported": 25
   },
   "actions": {
-    "unchanged": 177
+    "unchanged": 144,
+    "insert": 169,
+    "refresh": 33
   },
   "notified": 0,
   "rolls": [
@@ -35,16 +37,17 @@
       "officialVoteDate": null,
       "measureId": "HB 119",
       "question": "House Third Reading",
-      "originRunId": "rollcall:DE:house:2163:1576658:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:house:2163:1576658:2026-09-04T20:10:15.071Z",
       "members": 37,
       "notVoting": 0,
       "absent": 4,
       "resolution": {
-        "unmatched_reviewed": 32,
-        "matched": 5
+        "unmatched_reviewed": 20,
+        "matched": 17
       },
       "actions": {
-        "unchanged": 5
+        "unchanged": 5,
+        "insert": 12
       },
       "notified": 0,
       "candidates": [
@@ -56,6 +59,42 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "2e503614-b2e6-418b-8d1a-c3872416a5b2",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d76e9281-151b-4ed0-a5b0-d09e38157901",
+          "candidateName": "Jeffrey N. Spiegelman",
+          "peopleId": 14549,
+          "memberName": "Jeffrey Spiegelman",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "feaf80f7-cdae-4318-9b44-988dcef5aa7a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "da5c572f-f5d0-4ee7-a26b-a7c60f828a4a",
+          "candidateName": "Sean M. Lynn",
+          "peopleId": 16446,
+          "memberName": "Sean Lynn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "8d44e4d7-9e26-4731-9af1-93ec9d9a997a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97048b8b-b447-457a-a5f4-a9060e5613f2",
+          "candidateName": "Kendra Johnson",
+          "peopleId": 19897,
+          "memberName": "Kendra Johnson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "98461c1c-a297-4630-8130-f425b36b42de",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -73,6 +112,66 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "7c490ebc-f3f3-4abe-8499-5f62c21a7d7a",
+          "candidateName": "William Bush",
+          "peopleId": 20204,
+          "memberName": "William Bush",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "12c2c729-189c-4bc5-bd11-8ff48f7a8d7d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "62e0492a-a618-4dc3-ab23-7fa79756fb92",
+          "candidateName": "Larry Lambert",
+          "peopleId": 21729,
+          "memberName": "Larry Lambert",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "5e48f39d-75ae-403b-a50b-2d761b2edc2f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "75eb10f4-6323-4a19-ae9f-93dbbe55ab59",
+          "candidateName": "Madinah Wilson-Anton",
+          "peopleId": 21732,
+          "memberName": "Madinah Wilson-Anton",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "5df9d560-6aad-4ea5-8944-1148a68b9acb",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b1f24df7-4bfc-48e9-a550-808a4fb2d33d",
+          "candidateName": "DeShanna U. Neal",
+          "peopleId": 23365,
+          "memberName": "DeShanna Neal",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "52c0a101-e447-4180-9085-83f5b3d7b055",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "264e8797-b579-40ab-8147-41503a58b7ec",
+          "candidateName": "Cyndie Romer",
+          "peopleId": 23367,
+          "memberName": "Cyndie Romer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "9e56ba87-5803-4019-b0ed-614d21797412",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "57111112-6d1b-4f2c-ae50-4ffe0089f326",
           "candidateName": "Melanie Ross Levin",
           "peopleId": 25514,
@@ -80,6 +179,18 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "e11a3466-ece0-4676-a22c-7a5e29b71e9f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "19bd580e-d344-44cc-baf5-e51cad23b7d2",
+          "candidateName": "Frank Burns",
+          "peopleId": 25517,
+          "memberName": "Frank Burns",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "f197aa67-7cbd-4b7a-864e-ced5609bfc67",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -97,6 +208,30 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "17d86bdd-fe8c-4bd6-a71c-1ee9e207d822",
+          "candidateName": "Daniel B. Short",
+          "peopleId": 4428,
+          "memberName": "Daniel Short",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "e21e25d1-4fd1-4a92-bcf0-cff58bd5b92d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "94edb4f6-0974-4abb-8c31-6bd62f701ffa",
+          "candidateName": "Timothy Dale Dukes",
+          "peopleId": 14543,
+          "memberName": "Timothy Dukes",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "321bfdac-4da2-4254-a271-a09aef87b7c7",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "0efa825e-9db4-48b0-9971-0c1a9e47dff3",
           "candidateName": "Lyndon D. Yearick",
           "peopleId": 16772,
@@ -104,6 +239,18 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "b7939a66-535b-47ca-b9b3-5eab672f1f1b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0661328b-39bd-421d-98d5-85901ad7cf34",
+          "candidateName": "Valerie Jones Giltner",
+          "peopleId": 25026,
+          "memberName": "Valerie Jones Giltner",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "40fcd3ea-b05e-4ecc-a3ab-b2f625a2c59d",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -125,16 +272,17 @@
       "officialVoteDate": null,
       "measureId": "HB 105",
       "question": "House Third Reading",
-      "originRunId": "rollcall:DE:house:2163:1587790:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:house:2163:1587790:2026-09-04T20:10:15.071Z",
       "members": 40,
       "notVoting": 0,
       "absent": 1,
       "resolution": {
-        "unmatched_reviewed": 35,
-        "matched": 5
+        "unmatched_reviewed": 20,
+        "matched": 20
       },
       "actions": {
-        "unchanged": 5
+        "unchanged": 5,
+        "insert": 15
       },
       "notified": 0,
       "candidates": [
@@ -146,6 +294,54 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "07cc5a51-5cf2-4fdd-98d5-a6b9a2bf819c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "94edb4f6-0974-4abb-8c31-6bd62f701ffa",
+          "candidateName": "Timothy Dale Dukes",
+          "peopleId": 14543,
+          "memberName": "Timothy Dukes",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0aee7a57-264a-4cf2-bc58-ac755588305a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d76e9281-151b-4ed0-a5b0-d09e38157901",
+          "candidateName": "Jeffrey N. Spiegelman",
+          "peopleId": 14549,
+          "memberName": "Jeffrey Spiegelman",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e4fab165-dea8-4ec5-812a-2914c4d048c3",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "da5c572f-f5d0-4ee7-a26b-a7c60f828a4a",
+          "candidateName": "Sean M. Lynn",
+          "peopleId": 16446,
+          "memberName": "Sean Lynn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "60a6e8cb-c309-4c55-86d6-0134ee7c8fcb",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97048b8b-b447-457a-a5f4-a9060e5613f2",
+          "candidateName": "Kendra Johnson",
+          "peopleId": 19897,
+          "memberName": "Kendra Johnson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "03f35868-5f9f-481b-8006-619af5e0e51f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -163,6 +359,78 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "7c490ebc-f3f3-4abe-8499-5f62c21a7d7a",
+          "candidateName": "William Bush",
+          "peopleId": 20204,
+          "memberName": "William Bush",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "2ebe0a51-ef8b-49bd-88b7-1ccfd4ccd152",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "62e0492a-a618-4dc3-ab23-7fa79756fb92",
+          "candidateName": "Larry Lambert",
+          "peopleId": 21729,
+          "memberName": "Larry Lambert",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "132fcb38-b415-4ee0-a58f-ad8969cb3c5c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "75eb10f4-6323-4a19-ae9f-93dbbe55ab59",
+          "candidateName": "Madinah Wilson-Anton",
+          "peopleId": 21732,
+          "memberName": "Madinah Wilson-Anton",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "4a9b5556-6044-41be-b15b-6441413171b3",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b1f24df7-4bfc-48e9-a550-808a4fb2d33d",
+          "candidateName": "DeShanna U. Neal",
+          "peopleId": 23365,
+          "memberName": "DeShanna Neal",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e925a2b4-0308-4879-92e9-3eae6dc20652",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "aa06426a-90a3-43e9-9add-e36a9008c927",
+          "candidateName": "Sophie Phillips",
+          "peopleId": 23366,
+          "memberName": "Sophie Phillips",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0bed1306-c7ce-48aa-9bd5-f0272f5c05ed",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "264e8797-b579-40ab-8147-41503a58b7ec",
+          "candidateName": "Cyndie Romer",
+          "peopleId": 23367,
+          "memberName": "Cyndie Romer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "8f540d03-7a28-4ee4-9509-1f615fb966f9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "57111112-6d1b-4f2c-ae50-4ffe0089f326",
           "candidateName": "Melanie Ross Levin",
           "peopleId": 25514,
@@ -170,6 +438,30 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "b79e7ac3-0fb0-4711-9528-2e3a3c4144c3",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "e46f13ec-71c5-455f-a1b5-a0130c57b7b1",
+          "candidateName": "Kamela T. Smith",
+          "peopleId": 25516,
+          "memberName": "Kamela Smith",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "2ffa2fe2-92ff-49ab-90f3-45b2ce4e9840",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "19bd580e-d344-44cc-baf5-e51cad23b7d2",
+          "candidateName": "Frank Burns",
+          "peopleId": 25517,
+          "memberName": "Frank Burns",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "d2088eb2-3fe0-4378-8cf3-c6ec9286419b",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -187,6 +479,18 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "17d86bdd-fe8c-4bd6-a71c-1ee9e207d822",
+          "candidateName": "Daniel B. Short",
+          "peopleId": 4428,
+          "memberName": "Daniel Short",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "223e1a0b-d7b4-4d8a-9f74-97e3aff59c16",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "0efa825e-9db4-48b0-9971-0c1a9e47dff3",
           "candidateName": "Lyndon D. Yearick",
           "peopleId": 16772,
@@ -194,6 +498,30 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "da9f0d3b-6418-49d9-82e7-d68ef764ebb0",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a0d42a34-6316-4002-bf8b-785fa801c2da",
+          "candidateName": "Jesse R. Vanderwende",
+          "peopleId": 19904,
+          "memberName": "Jesse Vanderwende",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "0f89dd48-c02c-49e5-b928-796b9756aae6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0661328b-39bd-421d-98d5-85901ad7cf34",
+          "candidateName": "Valerie Jones Giltner",
+          "peopleId": 25026,
+          "memberName": "Valerie Jones Giltner",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "3fa339a0-2e34-49d2-8f9a-eb0a96cc4fe7",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -215,16 +543,17 @@
       "officialVoteDate": null,
       "measureId": "HB 205",
       "question": "House Third Reading",
-      "originRunId": "rollcall:DE:house:2163:1591662:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:house:2163:1591662:2026-09-04T20:10:15.071Z",
       "members": 40,
       "notVoting": 0,
       "absent": 1,
       "resolution": {
-        "unmatched_reviewed": 35,
-        "matched": 5
+        "unmatched_reviewed": 20,
+        "matched": 20
       },
       "actions": {
-        "unchanged": 5
+        "unchanged": 5,
+        "insert": 15
       },
       "notified": 0,
       "candidates": [
@@ -236,6 +565,42 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "d4355cd9-6f6e-4c2f-a22a-cc8210d14c2a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d76e9281-151b-4ed0-a5b0-d09e38157901",
+          "candidateName": "Jeffrey N. Spiegelman",
+          "peopleId": 14549,
+          "memberName": "Jeffrey Spiegelman",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "b014c7da-6559-4591-9e59-7a157b978070",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "da5c572f-f5d0-4ee7-a26b-a7c60f828a4a",
+          "candidateName": "Sean M. Lynn",
+          "peopleId": 16446,
+          "memberName": "Sean Lynn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "316788f0-6361-41ef-a34a-37dc38bf3114",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97048b8b-b447-457a-a5f4-a9060e5613f2",
+          "candidateName": "Kendra Johnson",
+          "peopleId": 19897,
+          "memberName": "Kendra Johnson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "3e2a35eb-29b9-4816-9557-f88f67e46351",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -253,6 +618,78 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "7c490ebc-f3f3-4abe-8499-5f62c21a7d7a",
+          "candidateName": "William Bush",
+          "peopleId": 20204,
+          "memberName": "William Bush",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "595616fc-3f65-41ef-a611-8421b1c68ef6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "62e0492a-a618-4dc3-ab23-7fa79756fb92",
+          "candidateName": "Larry Lambert",
+          "peopleId": 21729,
+          "memberName": "Larry Lambert",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "b5249751-8e08-4a45-b992-a121516d438d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "75eb10f4-6323-4a19-ae9f-93dbbe55ab59",
+          "candidateName": "Madinah Wilson-Anton",
+          "peopleId": 21732,
+          "memberName": "Madinah Wilson-Anton",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "9bb1fddd-ae36-4df1-8de9-5f3b55e1b692",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b1f24df7-4bfc-48e9-a550-808a4fb2d33d",
+          "candidateName": "DeShanna U. Neal",
+          "peopleId": 23365,
+          "memberName": "DeShanna Neal",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "20ebc716-1858-4c21-96e1-6aeae5a15585",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "aa06426a-90a3-43e9-9add-e36a9008c927",
+          "candidateName": "Sophie Phillips",
+          "peopleId": 23366,
+          "memberName": "Sophie Phillips",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "876b9b5f-86b5-49a0-b1ef-79a5c32f20c2",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "264e8797-b579-40ab-8147-41503a58b7ec",
+          "candidateName": "Cyndie Romer",
+          "peopleId": 23367,
+          "memberName": "Cyndie Romer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "95e7a43f-c300-46dd-8c4c-b751ed131aff",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "57111112-6d1b-4f2c-ae50-4ffe0089f326",
           "candidateName": "Melanie Ross Levin",
           "peopleId": 25514,
@@ -260,6 +697,30 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "c7e28c55-2597-42a5-959c-0c630e996424",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "e46f13ec-71c5-455f-a1b5-a0130c57b7b1",
+          "candidateName": "Kamela T. Smith",
+          "peopleId": 25516,
+          "memberName": "Kamela Smith",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "23065ec9-e7de-446c-bda7-7646682f6f89",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "19bd580e-d344-44cc-baf5-e51cad23b7d2",
+          "candidateName": "Frank Burns",
+          "peopleId": 25517,
+          "memberName": "Frank Burns",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "9c03fa15-dc74-4384-9b25-ab989182fc8c",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -277,6 +738,30 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "17d86bdd-fe8c-4bd6-a71c-1ee9e207d822",
+          "candidateName": "Daniel B. Short",
+          "peopleId": 4428,
+          "memberName": "Daniel Short",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "cd5368d1-3dfe-48d2-93a6-f46fb422c28b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "94edb4f6-0974-4abb-8c31-6bd62f701ffa",
+          "candidateName": "Timothy Dale Dukes",
+          "peopleId": 14543,
+          "memberName": "Timothy Dukes",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "142cf8cc-3c6e-4e7b-a627-a38d6a98acd1",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "0efa825e-9db4-48b0-9971-0c1a9e47dff3",
           "candidateName": "Lyndon D. Yearick",
           "peopleId": 16772,
@@ -284,6 +769,30 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "746fac65-8082-47d3-b089-ece5a824a0a5",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a0d42a34-6316-4002-bf8b-785fa801c2da",
+          "candidateName": "Jesse R. Vanderwende",
+          "peopleId": 19904,
+          "memberName": "Jesse Vanderwende",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "206c6212-a393-4aa3-94e5-db5d8955e34e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0661328b-39bd-421d-98d5-85901ad7cf34",
+          "candidateName": "Valerie Jones Giltner",
+          "peopleId": 25026,
+          "memberName": "Valerie Jones Giltner",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "1d006107-0cb6-41b5-8162-f1973335a698",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -305,16 +814,17 @@
       "officialVoteDate": null,
       "measureId": "HB 37",
       "question": "House Third Reading",
-      "originRunId": "rollcall:DE:house:2163:1591788:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:house:2163:1591788:2026-09-04T20:10:15.071Z",
       "members": 38,
       "notVoting": 0,
       "absent": 3,
       "resolution": {
-        "unmatched_reviewed": 33,
-        "matched": 5
+        "unmatched_reviewed": 19,
+        "matched": 19
       },
       "actions": {
-        "unchanged": 5
+        "refresh": 5,
+        "insert": 14
       },
       "notified": 0,
       "candidates": [
@@ -324,8 +834,32 @@
           "peopleId": 10565,
           "memberName": "Edward Osienski",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "988a70dd-2537-47db-ada9-9a1363458608",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "da5c572f-f5d0-4ee7-a26b-a7c60f828a4a",
+          "candidateName": "Sean M. Lynn",
+          "peopleId": 16446,
+          "memberName": "Sean Lynn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "dda2be70-4acc-4dfd-ab68-c934b89487f7",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97048b8b-b447-457a-a5f4-a9060e5613f2",
+          "candidateName": "Kendra Johnson",
+          "peopleId": 19897,
+          "memberName": "Kendra Johnson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "47083c43-8a5b-45c5-b614-17f45b20b871",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -336,8 +870,80 @@
           "peopleId": 19900,
           "memberName": "Melissa Minor-Brown",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "561f2a70-fde2-48d0-92ac-93267db5a8b1",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "7c490ebc-f3f3-4abe-8499-5f62c21a7d7a",
+          "candidateName": "William Bush",
+          "peopleId": 20204,
+          "memberName": "William Bush",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "1ea4baac-536f-4f99-8944-8b16723a3e8d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "62e0492a-a618-4dc3-ab23-7fa79756fb92",
+          "candidateName": "Larry Lambert",
+          "peopleId": 21729,
+          "memberName": "Larry Lambert",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "dc4ec31f-829b-4974-8b62-d118bcf26003",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "75eb10f4-6323-4a19-ae9f-93dbbe55ab59",
+          "candidateName": "Madinah Wilson-Anton",
+          "peopleId": 21732,
+          "memberName": "Madinah Wilson-Anton",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "ecd76db0-8408-41dc-9d8b-3157e146d9b3",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b1f24df7-4bfc-48e9-a550-808a4fb2d33d",
+          "candidateName": "DeShanna U. Neal",
+          "peopleId": 23365,
+          "memberName": "DeShanna Neal",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "27e73578-6a35-49c8-be28-b32e36bdf61c",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "aa06426a-90a3-43e9-9add-e36a9008c927",
+          "candidateName": "Sophie Phillips",
+          "peopleId": 23366,
+          "memberName": "Sophie Phillips",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "fdc6c454-3274-4fca-804d-1ca23dd699f3",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "264e8797-b579-40ab-8147-41503a58b7ec",
+          "candidateName": "Cyndie Romer",
+          "peopleId": 23367,
+          "memberName": "Cyndie Romer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "34d945b0-37c5-4bd3-b265-3ffa403224aa",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -348,8 +954,32 @@
           "peopleId": 25514,
           "memberName": "Melanie Ross Levin",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "c64cb5dd-0ecc-4910-aa66-01726c743141",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "e46f13ec-71c5-455f-a1b5-a0130c57b7b1",
+          "candidateName": "Kamela T. Smith",
+          "peopleId": 25516,
+          "memberName": "Kamela Smith",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "2217734f-a72b-4277-ba8a-a985841eff81",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "19bd580e-d344-44cc-baf5-e51cad23b7d2",
+          "candidateName": "Frank Burns",
+          "peopleId": 25517,
+          "memberName": "Frank Burns",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "bdc7257b-4145-44a4-b61c-7f1837833efd",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -360,8 +990,32 @@
           "peopleId": 25518,
           "memberName": "Mara Gorman",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "e51a0e5d-9875-4fa5-9dea-d1d0c79bb206",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "94edb4f6-0974-4abb-8c31-6bd62f701ffa",
+          "candidateName": "Timothy Dale Dukes",
+          "peopleId": 14543,
+          "memberName": "Timothy Dukes",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "47089f3c-d3e9-432a-88cd-802e5b5a903e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d76e9281-151b-4ed0-a5b0-d09e38157901",
+          "candidateName": "Jeffrey N. Spiegelman",
+          "peopleId": 14549,
+          "memberName": "Jeffrey Spiegelman",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "abc91154-70b1-4947-8e5b-4289f4b2d5e6",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -372,8 +1026,32 @@
           "peopleId": 16772,
           "memberName": "Lyndon Yearick",
           "side": "nay",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "208c0bac-4497-46a0-8446-06c4faed8759",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a0d42a34-6316-4002-bf8b-785fa801c2da",
+          "candidateName": "Jesse R. Vanderwende",
+          "peopleId": 19904,
+          "memberName": "Jesse Vanderwende",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "33e7df7e-4b21-4d04-89f0-faf1b646c16d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0661328b-39bd-421d-98d5-85901ad7cf34",
+          "candidateName": "Valerie Jones Giltner",
+          "peopleId": 25026,
+          "memberName": "Valerie Jones Giltner",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "26ba30bf-f370-4a9f-be0a-f9f0ef250d44",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -395,16 +1073,17 @@
       "officialVoteDate": null,
       "measureId": "HB 210",
       "question": "House Third Reading",
-      "originRunId": "rollcall:DE:house:2163:1594471:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:house:2163:1594471:2026-09-04T20:10:15.071Z",
       "members": 40,
       "notVoting": 0,
       "absent": 0,
       "resolution": {
-        "unmatched_reviewed": 35,
-        "matched": 5
+        "unmatched_reviewed": 20,
+        "matched": 20
       },
       "actions": {
-        "unchanged": 5
+        "unchanged": 5,
+        "insert": 15
       },
       "notified": 0,
       "candidates": [
@@ -416,6 +1095,30 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "2ddf71c1-7b40-4933-9ed1-2e1fbd2ae2a9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "da5c572f-f5d0-4ee7-a26b-a7c60f828a4a",
+          "candidateName": "Sean M. Lynn",
+          "peopleId": 16446,
+          "memberName": "Sean Lynn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "c02ad94e-61f1-4bf2-aa38-b36cd63b274a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97048b8b-b447-457a-a5f4-a9060e5613f2",
+          "candidateName": "Kendra Johnson",
+          "peopleId": 19897,
+          "memberName": "Kendra Johnson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0438c925-2d5c-4042-b840-d9514a5648c1",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -433,6 +1136,78 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "7c490ebc-f3f3-4abe-8499-5f62c21a7d7a",
+          "candidateName": "William Bush",
+          "peopleId": 20204,
+          "memberName": "William Bush",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "fa7d7a10-af94-45b6-9a5d-2013a6a2d58d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "62e0492a-a618-4dc3-ab23-7fa79756fb92",
+          "candidateName": "Larry Lambert",
+          "peopleId": 21729,
+          "memberName": "Larry Lambert",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "017b8406-dcad-46ce-a75d-149b51a23a4d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "75eb10f4-6323-4a19-ae9f-93dbbe55ab59",
+          "candidateName": "Madinah Wilson-Anton",
+          "peopleId": 21732,
+          "memberName": "Madinah Wilson-Anton",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "6fd82d60-0bbc-42f9-8a1a-bff60b8a8594",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b1f24df7-4bfc-48e9-a550-808a4fb2d33d",
+          "candidateName": "DeShanna U. Neal",
+          "peopleId": 23365,
+          "memberName": "DeShanna Neal",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "4c85317b-4ba5-46fd-9258-31d9ae035b2d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "aa06426a-90a3-43e9-9add-e36a9008c927",
+          "candidateName": "Sophie Phillips",
+          "peopleId": 23366,
+          "memberName": "Sophie Phillips",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "ad83cd55-6f35-4cbc-94e8-d6dd056a1ad7",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "264e8797-b579-40ab-8147-41503a58b7ec",
+          "candidateName": "Cyndie Romer",
+          "peopleId": 23367,
+          "memberName": "Cyndie Romer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "6d5fa867-268f-44c9-b35f-c603762974df",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "57111112-6d1b-4f2c-ae50-4ffe0089f326",
           "candidateName": "Melanie Ross Levin",
           "peopleId": 25514,
@@ -440,6 +1215,30 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "e4bea63c-a555-41e0-9681-dddbaec72211",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "e46f13ec-71c5-455f-a1b5-a0130c57b7b1",
+          "candidateName": "Kamela T. Smith",
+          "peopleId": 25516,
+          "memberName": "Kamela Smith",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "fb2a1ec5-80e5-4a55-9f58-2dd1e5351f94",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "19bd580e-d344-44cc-baf5-e51cad23b7d2",
+          "candidateName": "Frank Burns",
+          "peopleId": 25517,
+          "memberName": "Frank Burns",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "4beb9d86-3748-4d57-9032-1cc71dbfb126",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -457,6 +1256,42 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "17d86bdd-fe8c-4bd6-a71c-1ee9e207d822",
+          "candidateName": "Daniel B. Short",
+          "peopleId": 4428,
+          "memberName": "Daniel Short",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "01b8bfd8-b377-4f77-a463-472f0a6030fd",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "94edb4f6-0974-4abb-8c31-6bd62f701ffa",
+          "candidateName": "Timothy Dale Dukes",
+          "peopleId": 14543,
+          "memberName": "Timothy Dukes",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "5a1f64ee-1e4a-4c0a-8279-d0ff9a935e61",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d76e9281-151b-4ed0-a5b0-d09e38157901",
+          "candidateName": "Jeffrey N. Spiegelman",
+          "peopleId": 14549,
+          "memberName": "Jeffrey Spiegelman",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "95b38b62-d56e-4601-9ef8-514cdf9599a2",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "0efa825e-9db4-48b0-9971-0c1a9e47dff3",
           "candidateName": "Lyndon D. Yearick",
           "peopleId": 16772,
@@ -464,6 +1299,30 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "e4cd1b2d-c4dd-44a3-8f30-c09ce9fafb57",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a0d42a34-6316-4002-bf8b-785fa801c2da",
+          "candidateName": "Jesse R. Vanderwende",
+          "peopleId": 19904,
+          "memberName": "Jesse Vanderwende",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "ed0b3e2c-46cf-4f7b-9964-169463f0d80f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0661328b-39bd-421d-98d5-85901ad7cf34",
+          "candidateName": "Valerie Jones Giltner",
+          "peopleId": 25026,
+          "memberName": "Valerie Jones Giltner",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "5342a4cf-20c0-4dcd-aadc-a301193d9f39",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -485,16 +1344,17 @@
       "officialVoteDate": null,
       "measureId": "HB 50",
       "question": "House Third Reading",
-      "originRunId": "rollcall:DE:house:2163:1595667:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:house:2163:1595667:2026-09-04T20:10:15.071Z",
       "members": 40,
       "notVoting": 0,
       "absent": 0,
       "resolution": {
-        "unmatched_reviewed": 35,
-        "matched": 5
+        "unmatched_reviewed": 20,
+        "matched": 20
       },
       "actions": {
-        "unchanged": 5
+        "unchanged": 5,
+        "insert": 15
       },
       "notified": 0,
       "candidates": [
@@ -506,6 +1366,30 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "41dde840-a87d-4d88-94db-c3d33e2ab259",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "da5c572f-f5d0-4ee7-a26b-a7c60f828a4a",
+          "candidateName": "Sean M. Lynn",
+          "peopleId": 16446,
+          "memberName": "Sean Lynn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "b175b093-95ba-4ced-abd5-4ac0148ceb34",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97048b8b-b447-457a-a5f4-a9060e5613f2",
+          "candidateName": "Kendra Johnson",
+          "peopleId": 19897,
+          "memberName": "Kendra Johnson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "a53b011d-735c-47e0-a646-327bf509a9c8",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -523,6 +1407,78 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "7c490ebc-f3f3-4abe-8499-5f62c21a7d7a",
+          "candidateName": "William Bush",
+          "peopleId": 20204,
+          "memberName": "William Bush",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "03540f10-e080-40a9-8939-3b5ac1155502",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "62e0492a-a618-4dc3-ab23-7fa79756fb92",
+          "candidateName": "Larry Lambert",
+          "peopleId": 21729,
+          "memberName": "Larry Lambert",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "bb146a08-c843-437c-b7ad-64fa910e02e9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "75eb10f4-6323-4a19-ae9f-93dbbe55ab59",
+          "candidateName": "Madinah Wilson-Anton",
+          "peopleId": 21732,
+          "memberName": "Madinah Wilson-Anton",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "fe6175a1-f1a4-42b0-a4e8-fe0c443ad7e0",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b1f24df7-4bfc-48e9-a550-808a4fb2d33d",
+          "candidateName": "DeShanna U. Neal",
+          "peopleId": 23365,
+          "memberName": "DeShanna Neal",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "2e0bb9ef-973f-4c96-aa55-e73eb06c8e22",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "aa06426a-90a3-43e9-9add-e36a9008c927",
+          "candidateName": "Sophie Phillips",
+          "peopleId": 23366,
+          "memberName": "Sophie Phillips",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "9ca8f370-f465-483d-a1a9-47925b4a4bad",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "264e8797-b579-40ab-8147-41503a58b7ec",
+          "candidateName": "Cyndie Romer",
+          "peopleId": 23367,
+          "memberName": "Cyndie Romer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "11d53f7a-5444-4aa8-8994-68c266ecf8cc",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "57111112-6d1b-4f2c-ae50-4ffe0089f326",
           "candidateName": "Melanie Ross Levin",
           "peopleId": 25514,
@@ -530,6 +1486,30 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "a5d05066-c314-4512-b966-6c4e84645c99",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "e46f13ec-71c5-455f-a1b5-a0130c57b7b1",
+          "candidateName": "Kamela T. Smith",
+          "peopleId": 25516,
+          "memberName": "Kamela Smith",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "97812960-7db3-4ed5-9829-7958b0ab7bb3",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "19bd580e-d344-44cc-baf5-e51cad23b7d2",
+          "candidateName": "Frank Burns",
+          "peopleId": 25517,
+          "memberName": "Frank Burns",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "d01eafef-743f-454e-91f2-aa300a18ce3e",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -547,6 +1527,42 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "17d86bdd-fe8c-4bd6-a71c-1ee9e207d822",
+          "candidateName": "Daniel B. Short",
+          "peopleId": 4428,
+          "memberName": "Daniel Short",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "c000f19a-93d8-46d0-b8fc-d9f848c026ce",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "94edb4f6-0974-4abb-8c31-6bd62f701ffa",
+          "candidateName": "Timothy Dale Dukes",
+          "peopleId": 14543,
+          "memberName": "Timothy Dukes",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "ce3bdcbc-f2c8-48c8-9e2a-4fd90918a568",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d76e9281-151b-4ed0-a5b0-d09e38157901",
+          "candidateName": "Jeffrey N. Spiegelman",
+          "peopleId": 14549,
+          "memberName": "Jeffrey Spiegelman",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "9f0a2885-24b4-43da-b9f0-63af66d5d500",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "0efa825e-9db4-48b0-9971-0c1a9e47dff3",
           "candidateName": "Lyndon D. Yearick",
           "peopleId": 16772,
@@ -554,6 +1570,30 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "c3287aff-e467-4962-834c-acdcb418a693",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a0d42a34-6316-4002-bf8b-785fa801c2da",
+          "candidateName": "Jesse R. Vanderwende",
+          "peopleId": 19904,
+          "memberName": "Jesse Vanderwende",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "216036f9-da80-48be-b45d-30078ca28640",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0661328b-39bd-421d-98d5-85901ad7cf34",
+          "candidateName": "Valerie Jones Giltner",
+          "peopleId": 25026,
+          "memberName": "Valerie Jones Giltner",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "a7c8b17f-d4b3-49db-83db-9f20a8e85375",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -575,16 +1615,17 @@
       "officialVoteDate": null,
       "measureId": "HB 116",
       "question": "House Third Reading",
-      "originRunId": "rollcall:DE:house:2163:1596577:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:house:2163:1596577:2026-09-04T20:10:15.071Z",
       "members": 40,
       "notVoting": 0,
       "absent": 0,
       "resolution": {
-        "unmatched_reviewed": 35,
-        "matched": 5
+        "unmatched_reviewed": 20,
+        "matched": 20
       },
       "actions": {
-        "unchanged": 5
+        "unchanged": 5,
+        "insert": 15
       },
       "notified": 0,
       "candidates": [
@@ -596,6 +1637,30 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "0b789b2c-ed52-4db6-b84e-154f39902287",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "da5c572f-f5d0-4ee7-a26b-a7c60f828a4a",
+          "candidateName": "Sean M. Lynn",
+          "peopleId": 16446,
+          "memberName": "Sean Lynn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "beedc5b8-f42a-46a5-b368-3c7a05000031",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97048b8b-b447-457a-a5f4-a9060e5613f2",
+          "candidateName": "Kendra Johnson",
+          "peopleId": 19897,
+          "memberName": "Kendra Johnson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "5493258d-e7ae-46f7-a198-65d315a1fda8",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -613,6 +1678,78 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "7c490ebc-f3f3-4abe-8499-5f62c21a7d7a",
+          "candidateName": "William Bush",
+          "peopleId": 20204,
+          "memberName": "William Bush",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "77cf304a-c32b-42fa-9599-9a377a3c184b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "62e0492a-a618-4dc3-ab23-7fa79756fb92",
+          "candidateName": "Larry Lambert",
+          "peopleId": 21729,
+          "memberName": "Larry Lambert",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "8d05edbe-9f83-4cc4-9646-cb5936eb4feb",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "75eb10f4-6323-4a19-ae9f-93dbbe55ab59",
+          "candidateName": "Madinah Wilson-Anton",
+          "peopleId": 21732,
+          "memberName": "Madinah Wilson-Anton",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "1fd544db-2bf2-4ddc-9885-b4f2e26c15c2",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b1f24df7-4bfc-48e9-a550-808a4fb2d33d",
+          "candidateName": "DeShanna U. Neal",
+          "peopleId": 23365,
+          "memberName": "DeShanna Neal",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "8a83b31f-e449-4248-9c91-d61461d683a1",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "aa06426a-90a3-43e9-9add-e36a9008c927",
+          "candidateName": "Sophie Phillips",
+          "peopleId": 23366,
+          "memberName": "Sophie Phillips",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "cd27394f-03d2-49b5-a679-1b9b679d944e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "264e8797-b579-40ab-8147-41503a58b7ec",
+          "candidateName": "Cyndie Romer",
+          "peopleId": 23367,
+          "memberName": "Cyndie Romer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "cfb4232d-28fe-417a-afc1-443000fa49fe",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "57111112-6d1b-4f2c-ae50-4ffe0089f326",
           "candidateName": "Melanie Ross Levin",
           "peopleId": 25514,
@@ -620,6 +1757,30 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "2fd99779-e762-4e3d-8331-207eca6cc7d9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "e46f13ec-71c5-455f-a1b5-a0130c57b7b1",
+          "candidateName": "Kamela T. Smith",
+          "peopleId": 25516,
+          "memberName": "Kamela Smith",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "1ffc338e-110a-472e-91f6-0722e23d5529",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "19bd580e-d344-44cc-baf5-e51cad23b7d2",
+          "candidateName": "Frank Burns",
+          "peopleId": 25517,
+          "memberName": "Frank Burns",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "9c03a9a1-ac41-4ffc-8d33-e2012ad4187f",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -637,6 +1798,42 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "17d86bdd-fe8c-4bd6-a71c-1ee9e207d822",
+          "candidateName": "Daniel B. Short",
+          "peopleId": 4428,
+          "memberName": "Daniel Short",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "34ecb293-2d65-400e-b7d8-23992ed6c717",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "94edb4f6-0974-4abb-8c31-6bd62f701ffa",
+          "candidateName": "Timothy Dale Dukes",
+          "peopleId": 14543,
+          "memberName": "Timothy Dukes",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "c571e017-6ba0-4181-a4c5-be10d83355e7",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d76e9281-151b-4ed0-a5b0-d09e38157901",
+          "candidateName": "Jeffrey N. Spiegelman",
+          "peopleId": 14549,
+          "memberName": "Jeffrey Spiegelman",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "05b48ca8-6434-4942-b202-42518400676f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "0efa825e-9db4-48b0-9971-0c1a9e47dff3",
           "candidateName": "Lyndon D. Yearick",
           "peopleId": 16772,
@@ -644,6 +1841,30 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "17efe81e-166a-4de7-bc02-a14a80e38bd7",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a0d42a34-6316-4002-bf8b-785fa801c2da",
+          "candidateName": "Jesse R. Vanderwende",
+          "peopleId": 19904,
+          "memberName": "Jesse Vanderwende",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "68b93cb6-4379-41a7-837f-993f9c0dbfe9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0661328b-39bd-421d-98d5-85901ad7cf34",
+          "candidateName": "Valerie Jones Giltner",
+          "peopleId": 25026,
+          "memberName": "Valerie Jones Giltner",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "33286387-cc8f-4f18-8e11-6848146b50cf",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -665,16 +1886,17 @@
       "officialVoteDate": null,
       "measureId": "HB 70",
       "question": "House Third Reading",
-      "originRunId": "rollcall:DE:house:2163:1596724:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:house:2163:1596724:2026-09-04T20:10:15.071Z",
       "members": 37,
       "notVoting": 2,
       "absent": 1,
       "resolution": {
-        "unmatched_reviewed": 32,
-        "matched": 5
+        "unmatched_reviewed": 19,
+        "matched": 18
       },
       "actions": {
-        "unchanged": 5
+        "unchanged": 5,
+        "insert": 13
       },
       "notified": 0,
       "candidates": [
@@ -686,6 +1908,18 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "2207e74b-b58e-4d3a-a3e3-7b6b07664c2d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97048b8b-b447-457a-a5f4-a9060e5613f2",
+          "candidateName": "Kendra Johnson",
+          "peopleId": 19897,
+          "memberName": "Kendra Johnson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "4111cbb0-e9f3-4d09-b8cb-691e84e798a7",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -703,6 +1937,78 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "7c490ebc-f3f3-4abe-8499-5f62c21a7d7a",
+          "candidateName": "William Bush",
+          "peopleId": 20204,
+          "memberName": "William Bush",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "cccf0476-c29c-46a5-bef0-37633999b23e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "62e0492a-a618-4dc3-ab23-7fa79756fb92",
+          "candidateName": "Larry Lambert",
+          "peopleId": 21729,
+          "memberName": "Larry Lambert",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "067564cc-39d9-42ee-9c8c-2bae2db1d3e3",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "75eb10f4-6323-4a19-ae9f-93dbbe55ab59",
+          "candidateName": "Madinah Wilson-Anton",
+          "peopleId": 21732,
+          "memberName": "Madinah Wilson-Anton",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "bd476a37-a4ec-42ff-bbc9-143326afae17",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b1f24df7-4bfc-48e9-a550-808a4fb2d33d",
+          "candidateName": "DeShanna U. Neal",
+          "peopleId": 23365,
+          "memberName": "DeShanna Neal",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "b3ed5083-7ff6-4690-97a4-dfda1a2900da",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "aa06426a-90a3-43e9-9add-e36a9008c927",
+          "candidateName": "Sophie Phillips",
+          "peopleId": 23366,
+          "memberName": "Sophie Phillips",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0626e62f-bb5c-4346-8308-18b5d86bf271",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "264e8797-b579-40ab-8147-41503a58b7ec",
+          "candidateName": "Cyndie Romer",
+          "peopleId": 23367,
+          "memberName": "Cyndie Romer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "32e65caa-1d9e-43b6-8cee-707693ac9b49",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "57111112-6d1b-4f2c-ae50-4ffe0089f326",
           "candidateName": "Melanie Ross Levin",
           "peopleId": 25514,
@@ -710,6 +2016,30 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "136c0810-ecc8-41f1-aa70-68852802b252",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "e46f13ec-71c5-455f-a1b5-a0130c57b7b1",
+          "candidateName": "Kamela T. Smith",
+          "peopleId": 25516,
+          "memberName": "Kamela Smith",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "f7169222-233d-4258-b3a3-338f6df28b96",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "19bd580e-d344-44cc-baf5-e51cad23b7d2",
+          "candidateName": "Frank Burns",
+          "peopleId": 25517,
+          "memberName": "Frank Burns",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "bef491d6-09a7-463f-8d20-9aa27b2decb6",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -727,6 +2057,30 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "17d86bdd-fe8c-4bd6-a71c-1ee9e207d822",
+          "candidateName": "Daniel B. Short",
+          "peopleId": 4428,
+          "memberName": "Daniel Short",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "849d7c63-a611-4158-af9a-4f7c1ba521e3",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d76e9281-151b-4ed0-a5b0-d09e38157901",
+          "candidateName": "Jeffrey N. Spiegelman",
+          "peopleId": 14549,
+          "memberName": "Jeffrey Spiegelman",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "59b331c3-56d8-4513-82c3-542c464f9c5a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "0efa825e-9db4-48b0-9971-0c1a9e47dff3",
           "candidateName": "Lyndon D. Yearick",
           "peopleId": 16772,
@@ -734,6 +2088,30 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "1264ed73-562e-450d-b038-293e07009f70",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a0d42a34-6316-4002-bf8b-785fa801c2da",
+          "candidateName": "Jesse R. Vanderwende",
+          "peopleId": 19904,
+          "memberName": "Jesse Vanderwende",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "216c2541-899c-40c7-98cc-8a0a583d3749",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0661328b-39bd-421d-98d5-85901ad7cf34",
+          "candidateName": "Valerie Jones Giltner",
+          "peopleId": 25026,
+          "memberName": "Valerie Jones Giltner",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "04f2dd1e-1377-4aaa-bf3b-a1e0794f23e1",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -755,16 +2133,17 @@
       "officialVoteDate": null,
       "measureId": "HB 344",
       "question": "House Third Reading",
-      "originRunId": "rollcall:DE:house:2163:1708611:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:house:2163:1708611:2026-09-04T20:10:15.071Z",
       "members": 38,
       "notVoting": 1,
       "absent": 2,
       "resolution": {
-        "unmatched_reviewed": 33,
-        "matched": 5
+        "unmatched_reviewed": 19,
+        "matched": 19
       },
       "actions": {
-        "unchanged": 5
+        "unchanged": 5,
+        "insert": 14
       },
       "notified": 0,
       "candidates": [
@@ -776,6 +2155,30 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "5d22313f-2896-4018-84fc-1813adbaf716",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "da5c572f-f5d0-4ee7-a26b-a7c60f828a4a",
+          "candidateName": "Sean M. Lynn",
+          "peopleId": 16446,
+          "memberName": "Sean Lynn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "cb7b2557-a59b-4a70-8097-ca1d6361720f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97048b8b-b447-457a-a5f4-a9060e5613f2",
+          "candidateName": "Kendra Johnson",
+          "peopleId": 19897,
+          "memberName": "Kendra Johnson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "8e42731d-64ca-47ef-bfc2-23d85cbe0334",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -793,6 +2196,66 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "7c490ebc-f3f3-4abe-8499-5f62c21a7d7a",
+          "candidateName": "William Bush",
+          "peopleId": 20204,
+          "memberName": "William Bush",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "d045d548-e90c-4bbc-841f-b186ddeb96d2",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "62e0492a-a618-4dc3-ab23-7fa79756fb92",
+          "candidateName": "Larry Lambert",
+          "peopleId": 21729,
+          "memberName": "Larry Lambert",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "c92602ce-31b2-4f1e-8080-f3410e9013f3",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "75eb10f4-6323-4a19-ae9f-93dbbe55ab59",
+          "candidateName": "Madinah Wilson-Anton",
+          "peopleId": 21732,
+          "memberName": "Madinah Wilson-Anton",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "aeb985d3-fe3d-47d1-959a-292ad66f1902",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "aa06426a-90a3-43e9-9add-e36a9008c927",
+          "candidateName": "Sophie Phillips",
+          "peopleId": 23366,
+          "memberName": "Sophie Phillips",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "bd77fa4e-1e91-49fc-a7be-b4ed9d084638",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "264e8797-b579-40ab-8147-41503a58b7ec",
+          "candidateName": "Cyndie Romer",
+          "peopleId": 23367,
+          "memberName": "Cyndie Romer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "f96cfcea-4e24-4750-9062-17281b7d4595",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "57111112-6d1b-4f2c-ae50-4ffe0089f326",
           "candidateName": "Melanie Ross Levin",
           "peopleId": 25514,
@@ -800,6 +2263,30 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "4d9c0dfe-a851-4238-a7bd-91b49e9cb4cd",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "e46f13ec-71c5-455f-a1b5-a0130c57b7b1",
+          "candidateName": "Kamela T. Smith",
+          "peopleId": 25516,
+          "memberName": "Kamela Smith",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "9b34b0ed-2536-4496-aefe-f5371bf79d21",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "19bd580e-d344-44cc-baf5-e51cad23b7d2",
+          "candidateName": "Frank Burns",
+          "peopleId": 25517,
+          "memberName": "Frank Burns",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "2c742793-b415-4f32-b806-d67aab33f7a9",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -817,6 +2304,42 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "17d86bdd-fe8c-4bd6-a71c-1ee9e207d822",
+          "candidateName": "Daniel B. Short",
+          "peopleId": 4428,
+          "memberName": "Daniel Short",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "ad4a5b41-4cd5-416b-be1f-323fa58e5327",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "94edb4f6-0974-4abb-8c31-6bd62f701ffa",
+          "candidateName": "Timothy Dale Dukes",
+          "peopleId": 14543,
+          "memberName": "Timothy Dukes",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "2ad3b8aa-141d-4ee9-bb52-4c030547c929",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d76e9281-151b-4ed0-a5b0-d09e38157901",
+          "candidateName": "Jeffrey N. Spiegelman",
+          "peopleId": 14549,
+          "memberName": "Jeffrey Spiegelman",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "96ad774c-9fb3-4e88-a6e6-ba26d8afa111",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "0efa825e-9db4-48b0-9971-0c1a9e47dff3",
           "candidateName": "Lyndon D. Yearick",
           "peopleId": 16772,
@@ -824,6 +2347,30 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "30b7b4f3-7164-4f4a-be6d-d72c7bc13dd1",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a0d42a34-6316-4002-bf8b-785fa801c2da",
+          "candidateName": "Jesse R. Vanderwende",
+          "peopleId": 19904,
+          "memberName": "Jesse Vanderwende",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "8e02136f-0bc5-4ed0-87f4-172ff035969b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0661328b-39bd-421d-98d5-85901ad7cf34",
+          "candidateName": "Valerie Jones Giltner",
+          "peopleId": 25026,
+          "memberName": "Valerie Jones Giltner",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "aa44d27f-d4fb-41e5-b016-366f889ff0cc",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -845,27 +2392,64 @@
       "officialVoteDate": null,
       "measureId": "HB 444",
       "question": "House Third Reading",
-      "originRunId": "rollcall:DE:house:2163:1710338:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:house:2163:1710338:2026-09-04T20:10:15.071Z",
       "members": 40,
       "notVoting": 0,
       "absent": 1,
       "resolution": {
-        "unmatched_reviewed": 35,
-        "matched": 5
+        "unmatched_reviewed": 21,
+        "matched": 19
       },
       "actions": {
-        "unchanged": 5
+        "insert": 14,
+        "refresh": 5
       },
       "notified": 0,
       "candidates": [
+        {
+          "candidateId": "17d86bdd-fe8c-4bd6-a71c-1ee9e207d822",
+          "candidateName": "Daniel B. Short",
+          "peopleId": 4428,
+          "memberName": "Daniel Short",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "c43bc385-abef-4007-9550-f47f932a9e31",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
         {
           "candidateId": "b5405364-fe04-443f-9eba-1ce456936a79",
           "candidateName": "Ed Osienski",
           "peopleId": 10565,
           "memberName": "Edward Osienski",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "8bfefc5d-09a5-43f8-8c34-2f511bcac0a2",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "da5c572f-f5d0-4ee7-a26b-a7c60f828a4a",
+          "candidateName": "Sean M. Lynn",
+          "peopleId": 16446,
+          "memberName": "Sean Lynn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "dd2aec6e-31db-467a-b60c-0ff0a550b503",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97048b8b-b447-457a-a5f4-a9060e5613f2",
+          "candidateName": "Kendra Johnson",
+          "peopleId": 19897,
+          "memberName": "Kendra Johnson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e2a5c86e-f43b-4c56-9eaa-bfe5f33a750c",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -876,8 +2460,80 @@
           "peopleId": 19900,
           "memberName": "Melissa Minor-Brown",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "a0e071b0-d851-487c-9ed9-7d473edef91f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "7c490ebc-f3f3-4abe-8499-5f62c21a7d7a",
+          "candidateName": "William Bush",
+          "peopleId": 20204,
+          "memberName": "William Bush",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "4f3194b8-e7fe-4b49-814e-7513d065bf78",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "62e0492a-a618-4dc3-ab23-7fa79756fb92",
+          "candidateName": "Larry Lambert",
+          "peopleId": 21729,
+          "memberName": "Larry Lambert",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0c644b12-962b-48cc-b2af-0be6f4c41a1b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "75eb10f4-6323-4a19-ae9f-93dbbe55ab59",
+          "candidateName": "Madinah Wilson-Anton",
+          "peopleId": 21732,
+          "memberName": "Madinah Wilson-Anton",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "e1bee05d-9226-4664-9c6f-cdc67e98f623",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b1f24df7-4bfc-48e9-a550-808a4fb2d33d",
+          "candidateName": "DeShanna U. Neal",
+          "peopleId": 23365,
+          "memberName": "DeShanna Neal",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "8e95c686-1046-43d3-98e3-a6791a55dd6b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "aa06426a-90a3-43e9-9add-e36a9008c927",
+          "candidateName": "Sophie Phillips",
+          "peopleId": 23366,
+          "memberName": "Sophie Phillips",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "340b666e-9e6f-45ce-891d-f6133db185e2",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "264e8797-b579-40ab-8147-41503a58b7ec",
+          "candidateName": "Cyndie Romer",
+          "peopleId": 23367,
+          "memberName": "Cyndie Romer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "5d9c83c0-dfcd-4fdc-8806-01c180236187",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -888,8 +2544,20 @@
           "peopleId": 25514,
           "memberName": "Melanie Ross Levin",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "6ac1c8b5-d569-4e5e-b984-d0d8cddd8ffe",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "e46f13ec-71c5-455f-a1b5-a0130c57b7b1",
+          "candidateName": "Kamela T. Smith",
+          "peopleId": 25516,
+          "memberName": "Kamela Smith",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "42f0c40a-b775-4e30-a6f2-83f1e646d15e",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -900,8 +2568,32 @@
           "peopleId": 25518,
           "memberName": "Mara Gorman",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "b977e435-170b-4d21-ba92-560caf0e0a72",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "94edb4f6-0974-4abb-8c31-6bd62f701ffa",
+          "candidateName": "Timothy Dale Dukes",
+          "peopleId": 14543,
+          "memberName": "Timothy Dukes",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "1c6c0d6e-6ff6-47b1-a02a-e65e74c45e3d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d76e9281-151b-4ed0-a5b0-d09e38157901",
+          "candidateName": "Jeffrey N. Spiegelman",
+          "peopleId": 14549,
+          "memberName": "Jeffrey Spiegelman",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "dc336cf0-2808-4e6b-bad8-ec5134d2cef7",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -912,8 +2604,32 @@
           "peopleId": 16772,
           "memberName": "Lyndon Yearick",
           "side": "nay",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "8440439b-f31d-4a5b-a734-0269a4e61a8e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a0d42a34-6316-4002-bf8b-785fa801c2da",
+          "candidateName": "Jesse R. Vanderwende",
+          "peopleId": 19904,
+          "memberName": "Jesse Vanderwende",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "367214ef-ff2c-4955-98d8-80d1513d31f6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0661328b-39bd-421d-98d5-85901ad7cf34",
+          "candidateName": "Valerie Jones Giltner",
+          "peopleId": 25026,
+          "memberName": "Valerie Jones Giltner",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "1685ea11-ecc9-47db-b156-8b60cd91b661",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -935,16 +2651,17 @@
       "officialVoteDate": null,
       "measureId": "SB 23",
       "question": "House Third Reading",
-      "originRunId": "rollcall:DE:house:2163:1711037:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:house:2163:1711037:2026-09-04T20:10:15.071Z",
       "members": 40,
       "notVoting": 1,
       "absent": 0,
       "resolution": {
-        "unmatched_reviewed": 35,
-        "matched": 5
+        "unmatched_reviewed": 20,
+        "matched": 20
       },
       "actions": {
-        "unchanged": 5
+        "unchanged": 5,
+        "insert": 15
       },
       "notified": 0,
       "candidates": [
@@ -956,6 +2673,30 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "94234271-1e50-41d8-afe8-fb1d05d3b670",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d76e9281-151b-4ed0-a5b0-d09e38157901",
+          "candidateName": "Jeffrey N. Spiegelman",
+          "peopleId": 14549,
+          "memberName": "Jeffrey Spiegelman",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0aee40da-5fe2-454b-a1e8-5e402214cf49",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "da5c572f-f5d0-4ee7-a26b-a7c60f828a4a",
+          "candidateName": "Sean M. Lynn",
+          "peopleId": 16446,
+          "memberName": "Sean Lynn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0472915d-8263-4fd3-b615-1eb91f5cc709",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -973,6 +2714,18 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "97048b8b-b447-457a-a5f4-a9060e5613f2",
+          "candidateName": "Kendra Johnson",
+          "peopleId": 19897,
+          "memberName": "Kendra Johnson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "d3e2c092-8b67-4787-8597-bebddb6b7252",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "3c1df4d4-4222-4447-af00-c6b02c43f5ac",
           "candidateName": "Melissa Minor Brown",
           "peopleId": 19900,
@@ -980,6 +2733,78 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "b257084f-96b7-4224-845d-d15628bafd5d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "7c490ebc-f3f3-4abe-8499-5f62c21a7d7a",
+          "candidateName": "William Bush",
+          "peopleId": 20204,
+          "memberName": "William Bush",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "5f4d74b6-b350-4b71-93b2-ebb089bf3489",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "62e0492a-a618-4dc3-ab23-7fa79756fb92",
+          "candidateName": "Larry Lambert",
+          "peopleId": 21729,
+          "memberName": "Larry Lambert",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "6386014f-d7ef-4ba2-9ce5-c5e82faa34d5",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "75eb10f4-6323-4a19-ae9f-93dbbe55ab59",
+          "candidateName": "Madinah Wilson-Anton",
+          "peopleId": 21732,
+          "memberName": "Madinah Wilson-Anton",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "6e6c0001-7c40-4ac8-aa21-161d720ddaec",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "b1f24df7-4bfc-48e9-a550-808a4fb2d33d",
+          "candidateName": "DeShanna U. Neal",
+          "peopleId": 23365,
+          "memberName": "DeShanna Neal",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "896cbc93-b05d-4c02-ac35-8c533aab999a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "aa06426a-90a3-43e9-9add-e36a9008c927",
+          "candidateName": "Sophie Phillips",
+          "peopleId": 23366,
+          "memberName": "Sophie Phillips",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "fd5f4fbb-ee23-4f18-9125-a0741eda7182",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "264e8797-b579-40ab-8147-41503a58b7ec",
+          "candidateName": "Cyndie Romer",
+          "peopleId": 23367,
+          "memberName": "Cyndie Romer",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "68c4daf9-229a-4eac-9998-ff84b782f2f9",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -997,6 +2822,30 @@
           "relatedRecordIds": []
         },
         {
+          "candidateId": "e46f13ec-71c5-455f-a1b5-a0130c57b7b1",
+          "candidateName": "Kamela T. Smith",
+          "peopleId": 25516,
+          "memberName": "Kamela Smith",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "ec7bff7f-5aee-4d87-9c63-3a82a2e36fc9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "19bd580e-d344-44cc-baf5-e51cad23b7d2",
+          "candidateName": "Frank Burns",
+          "peopleId": 25517,
+          "memberName": "Frank Burns",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "d6bd654d-16fb-4aac-ba09-a125092574f6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
           "candidateId": "dd437a5b-8b8f-4790-84cd-f28fe24d88bf",
           "candidateName": "Mara Gorman",
           "peopleId": 25518,
@@ -1004,6 +2853,54 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "1ef0c5d1-ec11-4f4e-986a-24bdc90d006e",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "17d86bdd-fe8c-4bd6-a71c-1ee9e207d822",
+          "candidateName": "Daniel B. Short",
+          "peopleId": 4428,
+          "memberName": "Daniel Short",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "b4903f1f-8668-49d6-b69a-7faf4eac3f41",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "94edb4f6-0974-4abb-8c31-6bd62f701ffa",
+          "candidateName": "Timothy Dale Dukes",
+          "peopleId": 14543,
+          "memberName": "Timothy Dukes",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "f78bc643-e2ee-49c3-83f3-5ae24fa1f608",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a0d42a34-6316-4002-bf8b-785fa801c2da",
+          "candidateName": "Jesse R. Vanderwende",
+          "peopleId": 19904,
+          "memberName": "Jesse Vanderwende",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "048db74d-d00d-4900-a85b-f83c567d9077",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0661328b-39bd-421d-98d5-85901ad7cf34",
+          "candidateName": "Valerie Jones Giltner",
+          "peopleId": 25026,
+          "memberName": "Valerie Jones Giltner",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "320527c9-b199-44ce-be29-100d4c65df75",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1025,16 +2922,17 @@
       "officialVoteDate": null,
       "measureId": "HB 427",
       "question": "House Third Reading",
-      "originRunId": "rollcall:DE:house:2163:1711047:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:house:2163:1711047:2026-09-04T20:10:15.071Z",
       "members": 37,
       "notVoting": 2,
       "absent": 2,
       "resolution": {
-        "unmatched_reviewed": 32,
-        "matched": 5
+        "unmatched_reviewed": 20,
+        "matched": 17
       },
       "actions": {
-        "unchanged": 5
+        "refresh": 5,
+        "insert": 12
       },
       "notified": 0,
       "candidates": [
@@ -1044,8 +2942,44 @@
           "peopleId": 10565,
           "memberName": "Edward Osienski",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "35e92e87-8809-48b5-bbc4-d35f8cee2d85",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "94edb4f6-0974-4abb-8c31-6bd62f701ffa",
+          "candidateName": "Timothy Dale Dukes",
+          "peopleId": 14543,
+          "memberName": "Timothy Dukes",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0b7bc517-0a8c-4279-b048-2850db2997a4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d76e9281-151b-4ed0-a5b0-d09e38157901",
+          "candidateName": "Jeffrey N. Spiegelman",
+          "peopleId": 14549,
+          "memberName": "Jeffrey Spiegelman",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "20205bd7-9f29-4b99-843c-09ac4590872b",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "da5c572f-f5d0-4ee7-a26b-a7c60f828a4a",
+          "candidateName": "Sean M. Lynn",
+          "peopleId": 16446,
+          "memberName": "Sean Lynn",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "350d22cf-29d1-4955-9e5b-626ae1d967a4",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1056,8 +2990,20 @@
           "peopleId": 16772,
           "memberName": "Lyndon Yearick",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "290dd275-8e4d-459d-bb57-2aeec62168a6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97048b8b-b447-457a-a5f4-a9060e5613f2",
+          "candidateName": "Kendra Johnson",
+          "peopleId": 19897,
+          "memberName": "Kendra Johnson",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "65b7d215-8461-4570-80d9-65bfac3e0d23",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1068,8 +3014,44 @@
           "peopleId": 19900,
           "memberName": "Melissa Minor-Brown",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "0a2d1699-9739-4a78-a593-ccaee4f4e993",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a0d42a34-6316-4002-bf8b-785fa801c2da",
+          "candidateName": "Jesse R. Vanderwende",
+          "peopleId": 19904,
+          "memberName": "Jesse Vanderwende",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "87f45c7d-9d71-404b-a3ef-47754f9d4bb0",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "7c490ebc-f3f3-4abe-8499-5f62c21a7d7a",
+          "candidateName": "William Bush",
+          "peopleId": 20204,
+          "memberName": "William Bush",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "c800559b-f223-4e43-88c3-83a8a68fd0f1",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "0661328b-39bd-421d-98d5-85901ad7cf34",
+          "candidateName": "Valerie Jones Giltner",
+          "peopleId": 25026,
+          "memberName": "Valerie Jones Giltner",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "678708eb-c3f8-48c6-90de-ae4c2ef31b65",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1080,8 +3062,68 @@
           "peopleId": 25514,
           "memberName": "Melanie Ross Levin",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "8cb85e49-4124-4e5d-834b-48bca6349d81",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "62e0492a-a618-4dc3-ab23-7fa79756fb92",
+          "candidateName": "Larry Lambert",
+          "peopleId": 21729,
+          "memberName": "Larry Lambert",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "0b33fe0c-d760-4e81-8d96-ae9b803f7771",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "aa06426a-90a3-43e9-9add-e36a9008c927",
+          "candidateName": "Sophie Phillips",
+          "peopleId": 23366,
+          "memberName": "Sophie Phillips",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "97325ee9-f1dc-487b-ac08-9208e2b1672d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "264e8797-b579-40ab-8147-41503a58b7ec",
+          "candidateName": "Cyndie Romer",
+          "peopleId": 23367,
+          "memberName": "Cyndie Romer",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "2c4b668d-710d-4f61-bcc3-994208c65a07",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "e46f13ec-71c5-455f-a1b5-a0130c57b7b1",
+          "candidateName": "Kamela T. Smith",
+          "peopleId": 25516,
+          "memberName": "Kamela Smith",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "dd70b09a-04d6-4949-bbc7-d6c5b0554fa6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "19bd580e-d344-44cc-baf5-e51cad23b7d2",
+          "candidateName": "Frank Burns",
+          "peopleId": 25517,
+          "memberName": "Frank Burns",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "3b1ac093-bb4b-4dfb-ac82-3d6ec711d313",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1092,7 +3134,7 @@
           "peopleId": 25518,
           "memberName": "Mara Gorman",
           "side": "nay",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "463c7c96-2121-4918-96d4-b79738176a71",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -1115,7 +3157,7 @@
       "officialVoteDate": null,
       "measureId": "SB 82",
       "question": "Senate Third Reading",
-      "originRunId": "rollcall:DE:senate:2163:1572073:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:senate:2163:1572073:2026-09-04T20:10:15.071Z",
       "members": 21,
       "notVoting": 0,
       "absent": 0,
@@ -1253,7 +3295,7 @@
       "officialVoteDate": null,
       "measureId": "HB 154",
       "question": "Senate Third Reading",
-      "originRunId": "rollcall:DE:senate:2163:1594969:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:senate:2163:1594969:2026-09-04T20:10:15.071Z",
       "members": 21,
       "notVoting": 0,
       "absent": 0,
@@ -1391,7 +3433,7 @@
       "officialVoteDate": null,
       "measureId": "HB 116",
       "question": "Senate Third Reading",
-      "originRunId": "rollcall:DE:senate:2163:1595515:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:senate:2163:1595515:2026-09-04T20:10:15.071Z",
       "members": 21,
       "notVoting": 0,
       "absent": 0,
@@ -1529,7 +3571,7 @@
       "officialVoteDate": null,
       "measureId": "HB 205",
       "question": "Senate Third Reading",
-      "originRunId": "rollcall:DE:senate:2163:1596566:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:senate:2163:1596566:2026-09-04T20:10:15.071Z",
       "members": 21,
       "notVoting": 0,
       "absent": 0,
@@ -1667,7 +3709,7 @@
       "officialVoteDate": null,
       "measureId": "HB 105",
       "question": "Senate Third Reading",
-      "originRunId": "rollcall:DE:senate:2163:1596588:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:senate:2163:1596588:2026-09-04T20:10:15.071Z",
       "members": 20,
       "notVoting": 0,
       "absent": 1,
@@ -1805,7 +3847,7 @@
       "officialVoteDate": null,
       "measureId": "HB 70",
       "question": "Senate Third Reading",
-      "originRunId": "rollcall:DE:senate:2163:1596723:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:senate:2163:1596723:2026-09-04T20:10:15.071Z",
       "members": 21,
       "notVoting": 0,
       "absent": 0,
@@ -1943,7 +3985,7 @@
       "officialVoteDate": null,
       "measureId": "HB 37",
       "question": "Senate Third Reading",
-      "originRunId": "rollcall:DE:senate:2163:1596866:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:senate:2163:1596866:2026-09-04T20:10:15.071Z",
       "members": 21,
       "notVoting": 0,
       "absent": 0,
@@ -1952,7 +3994,7 @@
         "matched": 9
       },
       "actions": {
-        "unchanged": 9
+        "refresh": 9
       },
       "notified": 0,
       "candidates": [
@@ -1962,7 +4004,7 @@
           "peopleId": 14552,
           "memberName": "Nicole Poore",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "f81d6fbf-a944-4284-90a0-552ac98a4465",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -1974,7 +4016,7 @@
           "peopleId": 18423,
           "memberName": "Jack Walsh",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "fffb8365-7ecc-4b62-90a1-c0ceda09be92",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -1986,7 +4028,7 @@
           "peopleId": 19901,
           "memberName": "Raymond Seigfried",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "94255809-38e4-4f65-a1d9-c57dbdf5d638",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -1998,7 +4040,7 @@
           "peopleId": 21734,
           "memberName": "Spiros Mantzavinos",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "0e06c5f2-3883-46b5-89de-71948775d155",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2010,7 +4052,7 @@
           "peopleId": 21735,
           "memberName": "Marie Pinkney",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "b481eeb5-1f14-41b1-95f9-f7f1e95a35eb",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2022,7 +4064,7 @@
           "peopleId": 23369,
           "memberName": "Kyra Hoffner",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "6284d0fd-682b-4609-b66b-8dd22281efb0",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2034,7 +4076,7 @@
           "peopleId": 26416,
           "memberName": "Daniel Cruce",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "8ab820d3-f250-463e-bc04-ff4138ad8eea",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2046,7 +4088,7 @@
           "peopleId": 4460,
           "memberName": "Gerald Hocker",
           "side": "nay",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "8ba3f255-10b2-4393-851c-4d04b6a1bc74",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2058,7 +4100,7 @@
           "peopleId": 14551,
           "memberName": "Brian Pettyjohn",
           "side": "nay",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "db0ac871-e15e-4571-b366-2061ffc6dd90",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2081,7 +4123,7 @@
       "officialVoteDate": null,
       "measureId": "HB 50",
       "question": "Senate Third Reading",
-      "originRunId": "rollcall:DE:senate:2163:1596903:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:senate:2163:1596903:2026-09-04T20:10:15.071Z",
       "members": 21,
       "notVoting": 0,
       "absent": 0,
@@ -2219,7 +4261,7 @@
       "officialVoteDate": null,
       "measureId": "HB 119",
       "question": "Senate Third Reading",
-      "originRunId": "rollcall:DE:senate:2163:1596946:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:senate:2163:1596946:2026-09-04T20:10:15.071Z",
       "members": 20,
       "notVoting": 0,
       "absent": 1,
@@ -2357,7 +4399,7 @@
       "officialVoteDate": null,
       "measureId": "HB 210",
       "question": "Senate Third Reading",
-      "originRunId": "rollcall:DE:senate:2163:1597096:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:senate:2163:1597096:2026-09-04T20:10:15.071Z",
       "members": 21,
       "notVoting": 0,
       "absent": 0,
@@ -2495,7 +4537,7 @@
       "officialVoteDate": null,
       "measureId": "SB 23",
       "question": "Senate Third Reading",
-      "originRunId": "rollcall:DE:senate:2163:1708718:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:senate:2163:1708718:2026-09-04T20:10:15.071Z",
       "members": 20,
       "notVoting": 0,
       "absent": 1,
@@ -2633,7 +4675,7 @@
       "officialVoteDate": null,
       "measureId": "HB 344",
       "question": "Senate Third Reading",
-      "originRunId": "rollcall:DE:senate:2163:1713289:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:senate:2163:1713289:2026-09-04T20:10:15.071Z",
       "members": 21,
       "notVoting": 0,
       "absent": 0,
@@ -2771,7 +4813,7 @@
       "officialVoteDate": null,
       "measureId": "HB 427",
       "question": "Senate Third Reading",
-      "originRunId": "rollcall:DE:senate:2163:1713376:2026-09-03T02:04:47.645Z",
+      "originRunId": "rollcall:DE:senate:2163:1713376:2026-09-04T20:10:15.071Z",
       "members": 20,
       "notVoting": 0,
       "absent": 1,
@@ -2780,7 +4822,7 @@
         "matched": 9
       },
       "actions": {
-        "unchanged": 9
+        "refresh": 9
       },
       "notified": 0,
       "candidates": [
@@ -2790,7 +4832,7 @@
           "peopleId": 4460,
           "memberName": "Gerald Hocker",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "169438bb-8dea-4a9e-ab9a-034008e77db1",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2802,7 +4844,7 @@
           "peopleId": 14551,
           "memberName": "Brian Pettyjohn",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "3d2a21c2-acaf-47d2-92dc-4a2460df34a5",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2814,7 +4856,7 @@
           "peopleId": 14552,
           "memberName": "Nicole Poore",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "654ba0fe-fb9e-4719-9fe7-c418c9b0d30f",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2826,7 +4868,7 @@
           "peopleId": 18423,
           "memberName": "Jack Walsh",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "88548be3-62f9-4e93-a1be-c3c19141a4e1",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2838,7 +4880,7 @@
           "peopleId": 21734,
           "memberName": "Spiros Mantzavinos",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "89946da1-7293-49f1-9415-059ed4ec667a",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2850,7 +4892,7 @@
           "peopleId": 23369,
           "memberName": "Kyra Hoffner",
           "side": "yea",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "bd3f7220-7b83-4fef-b5c9-cd75ea3ca78b",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2862,7 +4904,7 @@
           "peopleId": 19901,
           "memberName": "Raymond Seigfried",
           "side": "nay",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "c1e640d2-8321-41b1-b467-0c0aff71a7ca",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2874,7 +4916,7 @@
           "peopleId": 21735,
           "memberName": "Marie Pinkney",
           "side": "nay",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "790d9b06-2a35-48cf-9a74-74c0fce3465e",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -2886,7 +4928,7 @@
           "peopleId": 26416,
           "memberName": "Daniel Cruce",
           "side": "nay",
-          "action": "unchanged",
+          "action": "refresh",
           "recordId": "83eefecf-93b5-4f65-a47d-aba8561fe182",
           "ambiguousRecordIds": [],
           "notified": false,

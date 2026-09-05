@@ -1,0 +1,130 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1621",
+      "roll": 850156,
+      "measure_id": "HB 233",
+      "vote_date": "2019-04-23",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 233, which would have changed how Alabama finds voters who may have moved. The Secretary of State would draw on postal, law enforcement and photo identification records, and county boards would have 90 days to flag those voters. A flagged voter who did not respond and did not vote through the next two federal elections would be removed, though they could still vote a provisional ballot. The House passed it 70-26, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 233, which would have changed how Alabama finds voters who may have moved. The Secretary of State would draw on postal, law enforcement and photo identification records, and county boards would have 90 days to flag those voters. A flagged voter who did not respond and did not vote through the next two federal elections would be removed, though they could still vote a provisional ballot. The House passed it 70-26, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1621",
+      "roll": 875886,
+      "measure_id": "HB 423",
+      "vote_date": "2019-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 423, which would have made kindergarten compulsory in Alabama. A child who turns five by September 1 would have had to enroll rather than merely being entitled to a place. A child turning five between September and December could start early where space allowed and the local board had set readiness rules. The Senate vote was 13-18 and the bill failed.",
+      "nay_description": "Voted against passing House Bill 423, which would have made kindergarten compulsory in Alabama. A child who turns five by September 1 would have had to enroll rather than merely being entitled to a place. A child turning five between September and December could start early where space allowed and the local board had set readiness rules. The Senate vote was 13-18 and the bill failed.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1621",
+      "roll": 868739,
+      "measure_id": "HB 491",
+      "vote_date": "2019-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 491, called Gianna's Law, which would have required doctors to try to save a child born alive after an abortion. A physician at an abortion clinic would have owed such a child the same care as any other newborn of the same stage, and failing to do so would have been a Class B felony carrying at least 20 years and a $100,000 fine. The pregnant woman could not be held liable. The House passed it 66-18, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 491, called Gianna's Law, which would have required doctors to try to save a child born alive after an abortion. A physician at an abortion clinic would have owed such a child the same care as any other newborn of the same stage, and failing to do so would have been a Class B felony carrying at least 20 years and a $100,000 fine. The pregnant woman could not be held liable. The House passed it 66-18, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1621",
+      "roll": 826324,
+      "measure_id": "SB 119",
+      "vote_date": "2019-03-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 119, which would have ended Common Core in Alabama schools. It would have terminated every program tied to those standards, including the Alabama College and Career Ready Standards, and required the state board to adopt replacements for math and English by the 2021 school year. It also barred joining any group that gives up control over Alabama education. The Senate passed it 23-7, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing Senate Bill 119, which would have ended Common Core in Alabama schools. It would have terminated every program tied to those standards, including the Alabama College and Career Ready Standards, and required the state board to adopt replacements for math and English by the 2021 school year. It also barred joining any group that gives up control over Alabama education. The Senate passed it 23-7, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1621",
+      "roll": 826377,
+      "measure_id": "SB 22",
+      "vote_date": "2019-03-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 22, which would have let taxpayers send part of a state refund to We Build The Wall, a private group raising money for a barrier on the southern border. It added that group to the list of charities on the state income tax form. A recipient that raises less than $7,500 a year over three years is dropped from the form. The Senate passed it 23-6, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing Senate Bill 22, which would have let taxpayers send part of a state refund to We Build The Wall, a private group raising money for a barrier on the southern border. It added that group to the list of charities on the state income tax form. A recipient that raises less than $7,500 a year over three years is dropped from the form. The Senate passed it 23-6, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1621",
+      "roll": 852080,
+      "measure_id": "SB 220",
+      "vote_date": "2019-04-25",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 220, which would have asked voters to allow a state lottery. Games would have been limited to paper tickets and drawn numbers, and the amendment wrote an unusually detailed ban on video lottery terminals and casino-style machines into the constitution itself. Proceeds would first repay past transfers out of the Alabama Trust Fund. The Senate passed it 21-12, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing Senate Bill 220, which would have asked voters to allow a state lottery. Games would have been limited to paper tickets and drawn numbers, and the amendment wrote an unusually detailed ban on video lottery terminals and casino-style machines into the constitution itself. Proceeds would first repay past transfers out of the Alabama Trust Fund. The Senate passed it 21-12, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1621",
+      "roll": 835992,
+      "measure_id": "SB 222",
+      "vote_date": "2019-04-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 222, which would have ended the election of county school superintendents. From 2023 a county board would appoint its superintendent as terms ended or seats fell vacant. No sitting elected superintendent would have been removed, and a board could keep one on by contract without running an open search. The Senate passed it 19-10, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing Senate Bill 222, which would have ended the election of county school superintendents. From 2023 a county board would appoint its superintendent as terms ended or seats fell vacant. No sitting elected superintendent would have been removed, and a board could keep one on by contract without running an open search. The Senate passed it 19-10, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

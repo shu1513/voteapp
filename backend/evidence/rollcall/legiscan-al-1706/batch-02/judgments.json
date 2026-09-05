@@ -1,0 +1,40 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "AL",
+      "chamber": "house",
+      "session": "1706",
+      "roll": 947969,
+      "measure_id": "HB 34",
+      "vote_date": "2020-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 34, which would have changed what happens to a car when police stop an unlicensed driver. Someone who never obtained a license would have been removed from the vehicle alongside those already covered, but impounding the car would have become optional rather than required. Police could use a wheel clamp instead of towing, capped at $65 a day, and a driver could ask a court to make the agency pay the towing bill. The House passed it 61-32, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing House Bill 34, which would have changed what happens to a car when police stop an unlicensed driver. Someone who never obtained a license would have been removed from the vehicle alongside those already covered, but impounding the car would have become optional rather than required. Police could use a wheel clamp instead of towing, capped at $65 a day, and a driver could ask a court to make the agency pay the towing bill. The House passed it 61-32, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "AL",
+      "chamber": "senate",
+      "session": "1706",
+      "roll": 950624,
+      "measure_id": "SB 165",
+      "vote_date": "2020-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 165, the Compassion Act, which would have created a medical cannabis program in Alabama. Patients with one of 16 listed conditions could buy limited doses in tablet, capsule, cream or patch form after other treatment had failed. Raw plant, anything smoked or vaped and edibles were excluded, and the number of grower, processor and dispensary licenses was capped. The Senate passed it 22-11, but the other chamber never voted on it and the bill died when the session ended.",
+      "nay_description": "Voted against passing Senate Bill 165, the Compassion Act, which would have created a medical cannabis program in Alabama. Patients with one of 16 listed conditions could buy limited doses in tablet, capsule, cream or patch form after other treatment had failed. Raw plant, anything smoked or vaped and edibles were excluded, and the number of grower, processor and dispensary licenses was capped. The Senate passed it 22-11, but the other chamber never voted on it and the bill died when the session ended.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
