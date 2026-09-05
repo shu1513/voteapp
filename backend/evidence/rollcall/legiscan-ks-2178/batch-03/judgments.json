@@ -1,0 +1,40 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1671987,
+   "measure_id": "HB 2635",
+   "vote_date": "2026-03-27",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "yea_description": "Voted for House Bill 2635, which stops state and local government making pregnancy centers take part in abortion. A pregnancy center here is a private nonprofit that does not perform abortions or refer for them, and that promotes childbirth and other options. No state agency, city or county may make one perform an abortion or hand out abortion drugs. None may make it refer a woman for either, or push her toward them. None may make it post signs or ads about where to get an abortion. None may stop it offering pregnancy and parenting help, or supplies such as diapers and formula, because it does not refer for abortion. None may make it hire someone who will not sign up to its mission. A center can sue over a breach and win its legal costs. The bill puts no new duty on the centers and gives them no money. It changes nothing about who may get an abortion. The House voted 87-35 to override the governor's veto, and the bill became law.",
+   "nay_description": "Voted against House Bill 2635, which stops state and local government making pregnancy centers take part in abortion. A pregnancy center here is a private nonprofit that does not perform abortions or refer for them, and that promotes childbirth and other options. No state agency, city or county may make one perform an abortion or hand out abortion drugs. None may make it refer a woman for either, or push her toward them. None may make it post signs or ads about where to get an abortion. None may stop it offering pregnancy and parenting help, or supplies such as diapers and formula, because it does not refer for abortion. None may make it hire someone who will not sign up to its mission. A center can sue over a breach and win its legal costs. The bill puts no new duty on the centers and gives them no money. It changes nothing about who may get an abortion. The House voted 87-35 to override the governor's veto, and the bill became law."
+  },
+  {
+   "jurisdiction": "KS",
+   "chamber": "house",
+   "session": "2178",
+   "roll": 1523393,
+   "measure_id": "SB 137",
+   "vote_date": "2025-03-20",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 137, which lets police sell guns they have seized instead of destroying them. When a court forfeits a firearm, the seizing agency decides what happens to it. It could already destroy the gun, keep it for official use, trade it to another agency, or send it to the state bureau of investigation. The bill adds a fifth choice: selling or handing it to a licensed federal gun dealer. The gun cannot go to an ordinary buyer, only to a dealer holding a federal license. Destroying it stays on the list, and the choice still rests with the agency alone. Any money from a sale runs through the same rules that already cover other forfeited property. The Kansas House passed it 90-28. It became law.",
+   "nay_description": "Voted against Senate Bill 137, which lets police sell guns they have seized instead of destroying them. When a court forfeits a firearm, the seizing agency decides what happens to it. It could already destroy the gun, keep it for official use, trade it to another agency, or send it to the state bureau of investigation. The bill adds a fifth choice: selling or handing it to a licensed federal gun dealer. The gun cannot go to an ordinary buyer, only to a dealer holding a federal license. Destroying it stays on the list, and the choice still rests with the agency alone. Any money from a sale runs through the same rules that already cover other forfeited property. The Kansas House passed it 90-28. It became law."
+  }
+ ]
+}

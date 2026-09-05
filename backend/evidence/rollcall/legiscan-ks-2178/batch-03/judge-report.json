@@ -1,0 +1,24 @@
+{
+  "judgmentsFile": "/Users/shu/voteApp/.claude/worktrees/focused-hofstadter-3ebce2/backend/evidence/rollcall/legiscan-ks-2178/batch-03/judgments.json",
+  "dryRun": false,
+  "judgments": 2,
+  "counts": {
+    "updated": 2
+  },
+  "rows": [
+    {
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1671987,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    },
+    {
+      "chamber": "house",
+      "session": "2178",
+      "roll": 1523393,
+      "reviewStatus": "approved",
+      "outcome": "updated"
+    }
+  ]
+}
