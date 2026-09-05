@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { MembershipSection } from "./MembershipSection";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
+import { flushUsageEventsForTests, resetUsageForTests } from "../lib/usage";
 
 vi.mock("../lib/externalNavigation", () => ({ navigateExternal: vi.fn() }));
 import { navigateExternal } from "../lib/externalNavigation";
@@ -125,6 +126,38 @@ describe("MembershipSection", () => {
     // Both buttons stay locked until the browser actually leaves the page.
     expect(screen.getByRole("button", { name: "Support monthly" })).toBeDisabled();
     expect(screen.getByRole("button", { name: "Support once" })).toBeDisabled();
+  });
+
+  // Usage analytics (docs/plans/usage-analytics.md PR 3): the Checkout
+  // request is counted by kind and outcome — never the amount.
+  it("records checkout_start by kind without the amount", async () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    resetUsageForTests();
+    sessionStorage.clear();
+    const user = userEvent.setup();
+    const fetchMock = stubApiRoutes({
+      "/api/me/membership": { body: NOT_MEMBER },
+      "/api/me/membership/checkout": apiError(409, "membership_exists", "You already have an active membership"),
+      "/api/usage/events": { status: 204, body: null },
+    });
+    renderSection();
+    const input = await screen.findByLabelText(/Become a supporting member/);
+    await user.clear(input);
+    await user.type(input, "12");
+    await user.click(screen.getByRole("button", { name: "Support monthly" }));
+    await screen.findByText(/already have an active membership/);
+
+    flushUsageEventsForTests();
+    await waitFor(() => expect(fetchMock.mock.calls.some((call) => String(call[0]).endsWith("/api/usage/events"))).toBe(true));
+    const usageCall = fetchMock.mock.calls.find((call) => String(call[0]).endsWith("/api/usage/events"))!;
+    const { events } = JSON.parse((usageCall[1] as RequestInit).body as string) as {
+      events: { name: string; props: Record<string, unknown> }[];
+    };
+    expect(events.filter((event) => event.name === "checkout_start").map((event) => event.props)).toEqual([
+      { kind: "monthly", outcome: "error", error_category: "other" },
+    ]);
+    expect(JSON.stringify(events)).not.toContain("1200");
+    vi.unstubAllEnvs();
   });
 
   it("surfaces a checkout rejection (e.g. already a member) without redirecting", async () => {

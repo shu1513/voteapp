@@ -146,6 +146,34 @@ export function sourceLinkProps(url: string): { gov: boolean; pdf: boolean } {
   return { gov, pdf: /\.pdf($|[?#])/i.test(url) };
 }
 
+export type ChatSource = "candidate" | "record" | "finance" | "election" | "measure" | "official" | "source" | "page" | "other";
+
+/** chat_result_click's source: the server's card source_type folded to a
+ * short list; anything new the server invents lands in "other" rather
+ * than dropping the event. */
+export function chatSourceBucket(sourceType: string): ChatSource {
+  switch (sourceType) {
+    case "candidate_profile":
+      return "candidate";
+    case "candidate_record":
+      return "record";
+    case "finance_summary":
+      return "finance";
+    case "election":
+      return "election";
+    case "ballot_measure":
+      return "measure";
+    case "official_state_resource":
+      return "official";
+    case "source_link":
+      return "source";
+    case "page":
+      return "page";
+    default:
+      return "other";
+  }
+}
+
 type Arrival = "list" | "roster" | "candidate" | "draft" | "picks" | "share" | "deep";
 
 /** How a detail page was reached, from the validated nav state's back

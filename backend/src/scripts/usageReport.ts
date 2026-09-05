@@ -255,6 +255,26 @@ async function main(): Promise<void> {
     `);
     printTable("Guest retention, sign-up, follow", retention.rows);
 
+    // 6. Chat and support (PR 3): opens by wall, asks by entry and answer
+    //    kind, card clicks by source, feedback verdicts; Checkout requests
+    //    by kind and outcome.
+    const chat = await pool.query<Row>(`
+      SELECT name, props->>'wall' AS wall, props->>'entry' AS entry, props->>'answer' AS answer,
+        props->>'result_count_bucket' AS results, props->>'source' AS source, props->>'verdict' AS verdict,
+        props->>'outcome' AS outcome, count(*)::int AS events
+      FROM usage.events
+      WHERE name IN ('chat_open', 'chat_ask', 'chat_result_click', 'chat_feedback') AND received_at >= ${since}
+      GROUP BY 1, 2, 3, 4, 5, 6, 7, 8 ORDER BY 1, 9 DESC
+    `);
+    printTable("Chat", chat.rows);
+
+    const checkout = await pool.query<Row>(`
+      SELECT route, props->>'kind' AS kind, props->>'outcome' AS outcome, count(*)::int AS requests
+      FROM usage.events WHERE name = 'checkout_start' AND received_at >= ${since}
+      GROUP BY 1, 2, 3 ORDER BY 4 DESC
+    `);
+    printTable("Checkout requests", checkout.rows);
+
     // 5. What breaks.
     const errors = await pool.query<Row>(`
       SELECT route, props->>'category' AS category, count(*)::int AS shown

@@ -5,6 +5,7 @@ import { apiRequest, APP_NAME } from "@voteapp/api-client";
 import type { MembershipKind, MembershipMembership, MembershipPayment, MembershipStatus } from "@voteapp/api-client";
 import { ErrorNotice } from "./Status";
 import { navigateExternal } from "../lib/externalNavigation";
+import { trackSettled } from "../lib/usage";
 
 // Membership payments through Stripe Checkout (full-page redirect, no Stripe
 // SDK here). Three surfaces share the pieces in this file:
@@ -189,11 +190,16 @@ function useMembershipStatus() {
 
 function useCheckoutMutation() {
   return useMutation({
-    mutationFn: (input: { kind: MembershipKind; amountCents: number }) =>
-      apiRequest<{ url: string }>("/api/me/membership/checkout", {
+    mutationFn: (input: { kind: MembershipKind; amountCents: number }) => {
+      const request = apiRequest<{ url: string }>("/api/me/membership/checkout", {
         method: "POST",
         body: { kind: input.kind, amount_cents: input.amountCents },
-      }),
+      });
+      // Usage: a Checkout session was requested (not proof of payment);
+      // the kind only, never the amount.
+      trackSettled(request, "checkout_start", { kind: input.kind });
+      return request;
+    },
     onSuccess: (response) => {
       navigateExternal(response.url);
     },
