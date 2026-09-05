@@ -189,7 +189,11 @@ card's count line), and renders nothing unless every race is decided:
   tracked, so the box stays for that visit and is gone on the next mount.
   Rendering it marks both that scope and `voteapp_draft_complete_seen`
   (the notice's), so the header notice never fires for a day read about
-  here. Mobile does the same with AsyncStorage. No timers: content that
+  here. Mobile does the same with AsyncStorage, per focus rather than per
+  mount (My Draft stays mounted under the screens it pushes): the marker is
+  re-read on each focus, and the box shows and marks only while focused,
+  so a last pick made on the election screen above still earns the box on
+  the way back. No timers: content that
   vanishes on its own is worse for screen readers than a box that simply
   does not return.
 
