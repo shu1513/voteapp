@@ -4329,7 +4329,12 @@ describe("email preferences and unsubscribe endpoints", () => {
     // Confirmation form, not a completed unsubscribe.
     expect(String(response.rawBody)).toContain("<form method=\"post\"");
     expect(String(response.rawBody)).not.toContain("You have been unsubscribed");
-    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "confirm", "digest");
+    // The advertised opt-in is pre-checked; the others are offered unchecked.
+    expect(String(response.rawBody)).toContain('name="pref" value="digest" checked');
+    expect(String(response.rawBody)).toContain('name="pref" value="election_reminders">');
+    expect(String(response.rawBody)).toContain('name="pref" value="all">');
+    expect(String(response.headers["content-security-policy"])).toContain("default-src 'none'");
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "confirm", ["digest"]);
   });
 
   it("POST (RFC 8058 one-click and the confirmation form) performs the unsubscribe", async () => {
@@ -4343,7 +4348,7 @@ describe("email preferences and unsubscribe endpoints", () => {
     expect(response.statusCode).toBe(200);
     expect(String(response.rawBody)).toContain("You have been unsubscribed");
     expect(String(response.rawBody)).toContain("candidate update digest emails");
-    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "execute", "digest");
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "execute", ["digest"]);
   });
 
   it("scopes the unsubscribe to new-election alerts via the pref param", async () => {
@@ -4355,10 +4360,11 @@ describe("email preferences and unsubscribe endpoints", () => {
       path: "/api/email/unsubscribe?token=v1.abc.def&pref=new_election_alerts",
     });
     expect(confirm.statusCode).toBe(200);
-    expect(String(confirm.rawBody)).toContain("new election alert emails");
-    // The confirmation form must POST back with the same scope.
-    expect(String(confirm.rawBody)).toContain("pref=new_election_alerts");
-    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "confirm", "new_election_alerts");
+    expect(String(confirm.rawBody)).toContain("New elections in your districts");
+    // The confirmation form pre-checks the same scope.
+    expect(String(confirm.rawBody)).toContain('name="pref" value="new_election_alerts" checked');
+    expect(String(confirm.rawBody)).not.toContain('value="digest" checked');
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "confirm", ["new_election_alerts"]);
 
     const execute = await invokeExpressApp(app, {
       method: "POST",
@@ -4366,11 +4372,9 @@ describe("email preferences and unsubscribe endpoints", () => {
     });
     expect(execute.statusCode).toBe(200);
     expect(String(execute.rawBody)).toContain("unsubscribed from new election alert emails");
-    expect(unsubscribeFromEmailNotifications).toHaveBeenLastCalledWith(
-      "v1.abc.def",
-      "execute",
-      "new_election_alerts"
-    );
+    expect(unsubscribeFromEmailNotifications).toHaveBeenLastCalledWith("v1.abc.def", "execute", [
+      "new_election_alerts",
+    ]);
   });
 
   it("scopes the unsubscribe to election reminders via the pref param", async () => {
@@ -4382,10 +4386,11 @@ describe("email preferences and unsubscribe endpoints", () => {
       path: "/api/email/unsubscribe?token=v1.abc.def&pref=election_reminders",
     });
     expect(confirm.statusCode).toBe(200);
-    expect(String(confirm.rawBody)).toContain("election reminder emails");
-    // The confirmation form must POST back with the same scope.
-    expect(String(confirm.rawBody)).toContain("pref=election_reminders");
-    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "confirm", "election_reminders");
+    expect(String(confirm.rawBody)).toContain("Election-day reminder");
+    // The confirmation form pre-checks the same scope.
+    expect(String(confirm.rawBody)).toContain('name="pref" value="election_reminders" checked');
+    expect(String(confirm.rawBody)).not.toContain('value="digest" checked');
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "confirm", ["election_reminders"]);
 
     const execute = await invokeExpressApp(app, {
       method: "POST",
@@ -4393,11 +4398,9 @@ describe("email preferences and unsubscribe endpoints", () => {
     });
     expect(execute.statusCode).toBe(200);
     expect(String(execute.rawBody)).toContain("unsubscribed from election reminder emails");
-    expect(unsubscribeFromEmailNotifications).toHaveBeenLastCalledWith(
-      "v1.abc.def",
-      "execute",
-      "election_reminders"
-    );
+    expect(unsubscribeFromEmailNotifications).toHaveBeenLastCalledWith("v1.abc.def", "execute", [
+      "election_reminders",
+    ]);
   });
 
   it("scopes the unsubscribe to issue updates via the pref param", async () => {
@@ -4409,10 +4412,11 @@ describe("email preferences and unsubscribe endpoints", () => {
       path: "/api/email/unsubscribe?token=v1.abc.def&pref=issue_updates",
     });
     expect(confirm.statusCode).toBe(200);
-    expect(String(confirm.rawBody)).toContain("emails about your saved issues");
-    // The confirmation form must POST back with the same scope.
-    expect(String(confirm.rawBody)).toContain("pref=issue_updates");
-    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "confirm", "issue_updates");
+    expect(String(confirm.rawBody)).toContain("Updates about the issues you saved");
+    // The confirmation form pre-checks the same scope.
+    expect(String(confirm.rawBody)).toContain('name="pref" value="issue_updates" checked');
+    expect(String(confirm.rawBody)).not.toContain('value="digest" checked');
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "confirm", ["issue_updates"]);
 
     const execute = await invokeExpressApp(app, {
       method: "POST",
@@ -4420,7 +4424,131 @@ describe("email preferences and unsubscribe endpoints", () => {
     });
     expect(execute.statusCode).toBe(200);
     expect(String(execute.rawBody)).toContain("unsubscribed from emails about your saved issues");
-    expect(unsubscribeFromEmailNotifications).toHaveBeenLastCalledWith("v1.abc.def", "execute", "issue_updates");
+    expect(unsubscribeFromEmailNotifications).toHaveBeenLastCalledWith("v1.abc.def", "execute", ["issue_updates"]);
+  });
+
+  it("confirmation form POST unsubscribes exactly the checked opt-ins", async () => {
+    const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("ok");
+
+    const response = await invokeExpressApp(createApiApp({ unsubscribeFromEmailNotifications }), {
+      method: "POST",
+      path: "/api/email/unsubscribe?token=v1.abc.def&pref=digest",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: "form=1&pref=election_reminders&pref=member_newsletter",
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(String(response.rawBody)).toContain(
+      "unsubscribed from election reminder emails and member newsletter emails"
+    );
+    // The link's own opt-in was unchecked, so it stays on.
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "execute", [
+      "election_reminders",
+      "member_newsletter",
+    ]);
+  });
+
+  it("confirmation form 'all' expands to every opt-in", async () => {
+    const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("ok");
+
+    const response = await invokeExpressApp(createApiApp({ unsubscribeFromEmailNotifications }), {
+      method: "POST",
+      path: "/api/email/unsubscribe?token=v1.abc.def",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: "form=1&pref=digest&pref=all",
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(String(response.rawBody)).toContain("unsubscribed from all Elections Simplified notification emails");
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "execute", [
+      "digest",
+      "new_election_alerts",
+      "election_reminders",
+      "issue_updates",
+      "member_newsletter",
+    ]);
+  });
+
+  it("confirmation form with nothing checked changes nothing and asks again with the same scope", async () => {
+    const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("ok");
+    const app = createApiApp({ unsubscribeFromEmailNotifications });
+
+    // Drive the real chain: the retry POST goes to whatever action the
+    // rendered form carries, not to a hand-built URL.
+    const confirm = await invokeExpressApp(app, {
+      method: "GET",
+      path: "/api/email/unsubscribe?token=v1.abc.def&pref=member_newsletter",
+    });
+    const action = String(confirm.rawBody).match(/<form method="post" action="([^"]+)"/)?.[1]?.replace(/&amp;/g, "&");
+    expect(action).toBe("/api/email/unsubscribe?token=v1.abc.def&pref=member_newsletter");
+
+    const response = await invokeExpressApp(app, {
+      method: "POST",
+      path: action ?? "",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: "form=1",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(String(response.rawBody)).toContain("Choose at least one kind of email");
+    expect(String(response.rawBody)).toContain("<form method=\"post\"");
+    expect(String(response.rawBody)).not.toContain("You have been unsubscribed");
+    // The retry page pre-checks the link's own opt-in, not the digest default.
+    expect(String(response.rawBody)).toContain('value="member_newsletter" checked');
+    expect(String(response.rawBody)).not.toContain('value="digest" checked');
+    // Only token checks ran; nothing was executed.
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledTimes(2);
+    expect(unsubscribeFromEmailNotifications).toHaveBeenLastCalledWith("v1.abc.def", "confirm", ["member_newsletter"]);
+  });
+
+  it("confirmation form rejects an unrecognized checkbox value", async () => {
+    const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("ok");
+
+    const response = await invokeExpressApp(createApiApp({ unsubscribeFromEmailNotifications }), {
+      method: "POST",
+      path: "/api/email/unsubscribe?token=v1.abc.def",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: "form=1&pref=digest&pref=everything",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(unsubscribeFromEmailNotifications).not.toHaveBeenCalled();
+  });
+
+  it("RFC 8058 one-click POST bodies keep the link's own scope", async () => {
+    const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("ok");
+
+    const response = await invokeExpressApp(createApiApp({ unsubscribeFromEmailNotifications }), {
+      method: "POST",
+      path: "/api/email/unsubscribe?token=v1.abc.def&pref=member_newsletter",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: "List-Unsubscribe=One-Click",
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(unsubscribeFromEmailNotifications).toHaveBeenCalledWith("v1.abc.def", "execute", ["member_newsletter"]);
+  });
+
+  it("links the pages to /me/settings when the public site origin is configured", async () => {
+    const unsubscribeFromEmailNotifications = vi.fn().mockResolvedValue("ok");
+    const app = createApiApp({ unsubscribeFromEmailNotifications, publicSiteOrigin: "https://example.com/" });
+
+    const confirm = await invokeExpressApp(app, {
+      method: "GET",
+      path: "/api/email/unsubscribe?token=v1.abc.def",
+    });
+    // The page URL carries the token; the same-origin settings link must not
+    // forward it as Referer.
+    expect(String(confirm.rawBody)).toContain(
+      'href="https://example.com/me/settings" referrerpolicy="no-referrer"'
+    );
+
+    const withoutOrigin = await invokeExpressApp(createApiApp({ unsubscribeFromEmailNotifications }), {
+      method: "GET",
+      path: "/api/email/unsubscribe?token=v1.abc.def",
+    });
+    expect(String(withoutOrigin.rawBody)).not.toContain("href=");
+    expect(String(withoutOrigin.rawBody)).toContain("account settings");
   });
 
   it("rejects an unrecognized pref value instead of flipping a different opt-in", async () => {
