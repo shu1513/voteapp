@@ -63,7 +63,7 @@ paid.
 
 Chapter 644. Section 1 states the purpose as protecting "the public health,
 safety, and welfare of the public through the regulation of construction
-contractors", and sections 1 to 8 build a licensing programme with licensing
+contractors", and sections 1 to 8 build a licensing program with licensing
 standards, unprofessional-conduct grounds, fines and penalties.
 
 The fee change was checked against the marks rather than assumed. In 39-9-206 the
@@ -71,7 +71,7 @@ words "construction contractors and h" are struck from "shall charge fees to
 construction contractors and home inspectors", and the whole $70 cap — both the
 initial and the renewal figure — is struck. What remains of that section covers
 home inspectors only. Contractor license fees are set by the department under
-section 1 and must cover the full cost of the programme.
+section 1 and must cover the full cost of the program.
 
 So the accurate statement is that the $70 cap is deleted and replaced by
 department-set fees, not that fees were merely raised. Direction **for**
@@ -127,17 +127,17 @@ what a patient may argue.
 
 ## HB 344 — drugged driving
 
-Chapter 264. Adds 61-8-1002(1)(f). A driver commits the offence if, "without a
+Chapter 264. Adds 61-8-1002(1)(f). A driver commits the offense if, "without a
 valid prescription", a blood test shows an amount at or above a listed figure.
 
-The table was read off the enrolled text rather than summarised: amphetamine 20,
+The table was read off the enrolled text rather than summarized: amphetamine 20,
 cocaine 20, cocaine metabolite 20, heroin 1, morphine 20, 6-monoacetyl morphine
 1, lysergic acid diethylamide 0.1, methamphetamine 20, phencyclidine 5, fentanyl
-0.5 — nine listed substances carrying ten limits, all in nanograms per millilitre,
+0.5 — nine listed substances carrying ten limits, all in nanograms per milliliter,
 because the heroin metabolite entry splits in two. The description says "nine
 substances with ten blood limits" for that reason.
 
-Reaching the limit is the offence, so impairment need not be separately proved.
+Reaching the limit is the offense, so impairment need not be separately proved.
 Direction **for** `public_safety_and_crime_control` as a **detection** standard;
 see the note below on why that direction is available here and not for a
 sentencing bill.
@@ -221,7 +221,7 @@ enforcement and removes a class of work from review.
 
 ## Why seven crime bills were dropped
 
-Stated in full in `../survey/filter-5-drops.md`, and summarised here because it
+Stated in full in `../survey/filter-5-drops.md`, and summarized here because it
 governs the two bills that were kept.
 
 The `public_safety_and_crime_control` area is not an axis where harsher is always

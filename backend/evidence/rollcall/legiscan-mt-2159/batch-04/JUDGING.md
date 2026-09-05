@@ -51,7 +51,7 @@ act's core interpretive mandate and it is deleted.
 Other deletions confirmed on the page images: the opening recital in
 75-1-102(1) about the legislature's obligations under Article II section 3 (the
 right to a clean and healthful environment) and Article IX; 75-1-201(1)(b)(vi),
-the duty to recognise long-range impacts and support programs that anticipate
+the duty to recognize long-range impacts and support programs that anticipate
 and prevent environmental decline; 75-1-201(1)(b)(iv)(E), the analysis of
 short-term use against long-term productivity; and 75-1-104(3). Two places
 change "consult with and **obtain** the comments" to "consult with and
@@ -97,7 +97,7 @@ A public school may not discipline a student for declining to state their
 pronouns, or for declining to address a person by a name, pronoun or title that
 does not match that person's sex. Employees of public schools and the state get
 the same protection against adverse employment action, and the state may not
-penalise any person on those grounds. A person harmed may sue for an injunction,
+penalize any person on those grounds. A person harmed may sue for an injunction,
 money damages and attorney fees, within two years.
 
 Area `civil_rights`, yes vote **against**. The act removes a school's ability to
@@ -109,7 +109,7 @@ protections as `civil_rights` against — Texas SB 12, Pennsylvania SB 9 and SB
 This one has a genuine second reading, since the act is framed as protecting
 speech. It is recorded here rather than hidden: the reason the against
 direction wins is that the protected conduct is defined entirely by refusal to
-recognise a person's gender identity, and the remedy runs only in that
+recognize a person's gender identity, and the remedy runs only in that
 direction.
 
 ## HB 471 — parent permission for identity instruction
@@ -148,7 +148,7 @@ malpractice deadline. No "not" was struck anywhere. 2-18-704(17), 53-4-1005(6)
 and 53-6-101(14) are wholly new insertions.
 
 The act does two things, and does not do a third that its title might suggest.
-It bans nothing. There is no crime, no licence sanction and no funding cutoff
+It bans nothing. There is no crime, no license sanction and no funding cutoff
 anywhere in the text.
 
 1. **Lawsuit deadline.** A person injured by gender transition treatment
@@ -240,20 +240,20 @@ Area `anti_corruption`, yes vote **for**. Both halves tighten: one class of
 giver is barred outright, and the remaining class can no longer be used to give
 past a personal limit.
 
-## SB 91 — citizenship mark on licences and ID cards
+## SB 91 — citizenship mark on licenses and ID cards
 
 Chapter 551. 6 pages, amends 61-5-111 and 61-12-501. The only artefact is a
 struck period replaced by "; and" where a new clause was appended; both readings
 give the same result, so no render was needed.
 
-From January 1, 2026, a driver's licence or state identification card issued to
+From January 1, 2026, a driver's license or state identification card issued to
 a United States citizen must display an image of an eagle signifying citizen
 status. Cards issued to people who are not citizens carry no such mark, so the
 card itself reveals citizenship. Section 5 limits the rule to cards issued on or
 after that date, so cards already in wallets are unaffected.
 
 Area `immigration`, yes vote **against**, on the precedent of Tennessee HB 749,
-which concerned licence markings that distinguish people not lawfully present.
+which concerned license markings that distinguish people not lawfully present.
 
 ## Reading level
 

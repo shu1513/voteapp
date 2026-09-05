@@ -67,9 +67,9 @@ on its Senate roll alone.
 Chapter 633. Amends 37-43-301, 37-43-302, 37-43-306 and 37-43-309.
 
 The individual licensee bond rises from **$4,000 to $25,000** — a sixfold
-increase, appearing twice for the two licence categories — and the firm blanket
+increase, appearing twice for the two license categories — and the firm blanket
 bond from **$10,000 to $25,000**. Abandoning or decommissioning a well is added
-to the activities requiring a licence. The rule that the licensed contractor must
+to the activities requiring a license. The rule that the licensed contractor must
 personally be the individual who contracts on behalf of a firm is struck.
 
 The complaint rule changes materially. Old text let licensees "respond to
@@ -112,14 +112,14 @@ Area `housing_affordability`, yes vote **for**, on near-exact precedent — the
 corpus already scores a bill limiting rental application charges to the actual
 cost of processing the same way.
 
-## HB 338 — early help widened to maths
+## HB 338 — early help widened to math
 
 Chapter 439. Amends eight sections; only about 101 marks across 26 pages, so
 most of the text is reprinted unchanged.
 
 "Literacy" is struck repeatedly and "numeracy", "or math" and "and math"
-inserted, extending the targeted early intervention programme from reading to
-reading and maths. Singular "an evaluation methodology" becomes plural, so the
+inserted, extending the targeted early intervention program from reading to
+reading and math. Singular "an evaluation methodology" becomes plural, so the
 board of public education may approve more than one screening tool. Two
 restrictions are struck: **"in April, May, or June"**, the window in which the
 evaluation could be given, and **"for the subsequent school year"**, which had
@@ -127,10 +127,10 @@ limited an eligible child's help to the next year alone.
 
 **No funding rule changes.** The $1,000 per child annual cap appears in two
 places and carries no mark, as do the age and grade tests. That cap binds only
-the home-based programme (20-7-1803(6)(b)(iv) and 20-7-1804(2)); the classroom
-and jumpstart programmes are funded through enrolment counts under 20-9-311, so
+the home-based program (20-7-1803(6)(b)(iv) and 20-7-1804(2)); the classroom
+and jumpstart programs are funded through enrollment counts under 20-9-311, so
 their cost moves with the number of eligible children. The description names
-the home-based cap and draws no conclusion about the programme as a whole.
+the home-based cap and draws no conclusion about the program as a whole.
 
 Area `public_education_quality`, yes vote **for**.
 
@@ -242,7 +242,7 @@ direction.
 **HB 24** was dropped for a different reason: the direction could not be
 established. Behind a "clarify" title it deletes the half-time/full-time
 kindergarten designation and two rules that gave districts extra funded student
-count for opening or expanding a kindergarten programme. Whether that reduces
+count for opening or expanding a kindergarten program. Whether that reduces
 kindergarten funding or merely removes provisions another 2025 act made redundant
 is not determinable from the enrolled text, and guessing is exactly the failure
 this campaign guards against.
@@ -258,7 +258,7 @@ and deterrence and this is state disaster response.
 
 **SB 33** moves permitting and inspection of state-agency buildings from local
 governments to the state, leaving locals a comment right. Who holds the authority
-is the whole of it, and that is not a direction in any catalogue area.
+is the whole of it, and that is not a direction in any catalog area.
 
 ## Reading level
 
