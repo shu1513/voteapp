@@ -46,8 +46,10 @@ which text the House vote endorsed.
   - **House Bill 4.** The Senate Finance Committee carved five percent of the health insurance
     premium surtax to the behavioral health program fund from September 2028, leaving the health
     care affordability fund 95 percent where the House had voted 100. The measure's core, moving the
-    surtax away from the state's main account and into health care, is unchanged. The record states
-    the enacted split.
+    surtax away from the state's main account and into health care, is unchanged. The record first
+    stated the enacted split; review pointed out that this credits or blames representatives for a
+    provision absent from their recorded vote, so it now describes the House version (100 percent
+    from September 2028) and then the Senate's change in its own sentence.
   - **House Bill 247.** The Senate Finance Committee struck the House committee amendment and added
     account freezing plus an annual report to the Legislature. That sharpens the same direction. The
     record describes only the reauthorization limits, the infrastructure-plan requirement and the
@@ -77,3 +79,9 @@ Area tags were predicted before checking: **711 expected, 711 written**.
 
 - Run stamp: `rollcall:NM:house:2251:<roll>:2026-09-05T03:26:00.560Z`, one stamp for the batch.
 - 16 files, 16 imported, 0 errors, 63 candidates, 0 notifications.
+
+**Review rewrite** (`import-rerun-report.json`): two descriptions changed after PR review and were
+re-judged and re-imported. House Bill 4 now describes the text the House voted on, not the enacted
+split (see Version check). Senate Bill 264 keeps Section 3(A)(1)'s qualification: the armed people it
+bars from polling places are those "in the civil, military or naval service of the United States",
+not any armed person. Import: 122 `rewrite` (60 + 62), 816 `unchanged`, 0 inserts, 0 errors.
