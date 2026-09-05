@@ -1,0 +1,274 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1564954,
+      "measure_id": "SB 91",
+      "vote_date": "2025-05-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 91, which bars fire departments, and their employees and volunteers, from using firefighting foam that contains PFAS, the long-lasting chemicals often called forever chemicals. The ban covers foam with a deliberately added PFAS compound used to control or put out fire. It does not apply where the Federal Aviation Administration or another federal law requires that foam. The ban starts on July 1, 2026. The Oregon House passed it 39-14, and it became law.",
+      "nay_description": "Voted against Senate Bill 91, which bars fire departments, and their employees and volunteers, from using firefighting foam that contains PFAS, the long-lasting chemicals often called forever chemicals. The ban covers foam with a deliberately added PFAS compound used to control or put out fire. It does not apply where the Federal Aviation Administration or another federal law requires that foam. The ban starts on July 1, 2026. The Oregon House passed it 39-14, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1583099,
+      "measure_id": "HB 2385",
+      "vote_date": "2025-06-02",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2385, which stops drug makers from blocking the discount drug program that lets clinics and hospitals serving low-income patients buy medicines cheaply. A maker, or anyone acting for one, may not deny, restrict or otherwise interfere with a pharmacy under contract with such a clinic getting, receiving or handing out those drugs. It also may not demand claims or utilization review data as a condition of doing so. Both bans lift only if the federal health department requires otherwise. The State Board of Pharmacy may fine a maker up to $5,000 a day for each violation. The Oregon House agreed to the Senate's changes 35-20, and it became law.",
+      "nay_description": "Voted against House Bill 2385, which stops drug makers from blocking the discount drug program that lets clinics and hospitals serving low-income patients buy medicines cheaply. A maker, or anyone acting for one, may not deny, restrict or otherwise interfere with a pharmacy under contract with such a clinic getting, receiving or handing out those drugs. It also may not demand claims or utilization review data as a condition of doing so. Both bans lift only if the federal health department requires otherwise. The State Board of Pharmacy may fine a maker up to $5,000 a day for each violation. The Oregon House agreed to the Senate's changes 35-20, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1580317,
+      "measure_id": "HB 2385",
+      "vote_date": "2025-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2385, which stops drug makers from blocking the discount drug program that lets clinics and hospitals serving low-income patients buy medicines cheaply. A maker, or anyone acting for one, may not deny, restrict or otherwise interfere with a pharmacy under contract with such a clinic getting, receiving or handing out those drugs. It also may not demand claims or utilization review data as a condition of doing so. Both bans lift only if the federal health department requires otherwise. The State Board of Pharmacy may fine a maker up to $5,000 a day for each violation. The Oregon Senate passed it 17-13, and it became law.",
+      "nay_description": "Voted against House Bill 2385, which stops drug makers from blocking the discount drug program that lets clinics and hospitals serving low-income patients buy medicines cheaply. A maker, or anyone acting for one, may not deny, restrict or otherwise interfere with a pharmacy under contract with such a clinic getting, receiving or handing out those drugs. It also may not demand claims or utilization review data as a condition of doing so. Both bans lift only if the federal health department requires otherwise. The State Board of Pharmacy may fine a maker up to $5,000 a day for each violation. The Oregon Senate passed it 17-13, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1540033,
+      "measure_id": "HB 2563",
+      "vote_date": "2025-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2563, which gives home and other personal insurance customers the right to ask in writing why their premium rose at renewal. The insurer must reply within 20 days, in plain words, naming the factors that mattered most, up to four of them. Renewal offers and the first bill after renewal must say clearly that the customer can ask. The right does not reach new policies, health, life, disability or long-term care cover, umbrella policies, boats and recreational vehicles, or changes the customer made. Insurers need not reveal credit scoring models, eligibility rules or trade secrets. It starts on September 1, 2026. The Oregon House passed it 33-22, and it became law.",
+      "nay_description": "Voted against House Bill 2563, which gives home and other personal insurance customers the right to ask in writing why their premium rose at renewal. The insurer must reply within 20 days, in plain words, naming the factors that mattered most, up to four of them. Renewal offers and the first bill after renewal must say clearly that the customer can ask. The right does not reach new policies, health, life, disability or long-term care cover, umbrella policies, boats and recreational vehicles, or changes the customer made. Insurers need not reveal credit scoring models, eligibility rules or trade secrets. It starts on September 1, 2026. The Oregon House passed it 33-22, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1587494,
+      "measure_id": "HB 2563",
+      "vote_date": "2025-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2563, which gives home and other personal insurance customers the right to ask in writing why their premium rose at renewal. The insurer must reply within 20 days, in plain words, naming the factors that mattered most, up to four of them. Renewal offers and the first bill after renewal must say clearly that the customer can ask. The right does not reach new policies, health, life, disability or long-term care cover, umbrella policies, boats and recreational vehicles, or changes the customer made. Insurers need not reveal credit scoring models, eligibility rules or trade secrets. It starts on September 1, 2026. The Oregon Senate passed it 21-8, and it became law.",
+      "nay_description": "Voted against House Bill 2563, which gives home and other personal insurance customers the right to ask in writing why their premium rose at renewal. The insurer must reply within 20 days, in plain words, naming the factors that mattered most, up to four of them. Renewal offers and the first bill after renewal must say clearly that the customer can ask. The right does not reach new policies, health, life, disability or long-term care cover, umbrella policies, boats and recreational vehicles, or changes the customer made. Insurers need not reveal credit scoring models, eligibility rules or trade secrets. It starts on September 1, 2026. The Oregon Senate passed it 21-8, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1588995,
+      "measure_id": "HB 2957",
+      "vote_date": "2025-06-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 2957, which makes it an unlawful employment practice for an employer to sign a worker up to an agreement that shortens the deadline for bringing a claim the state labor bureau can enforce. Such deals had let employers cut the time a worker has to sue for discrimination or unpaid wages. The law also fixes when the bureau must send a worker the notice that lets them sue, and how long they then have. If the bureau finds strong evidence of a violation, or never investigated, the worker gets 90 days or whatever is left of the ordinary deadline, whichever is longer. If it finds no strong evidence, the worker may get up to a year. The Oregon Senate passed it 16-6, and it became law.",
+      "nay_description": "Voted against House Bill 2957, which makes it an unlawful employment practice for an employer to sign a worker up to an agreement that shortens the deadline for bringing a claim the state labor bureau can enforce. Such deals had let employers cut the time a worker has to sue for discrimination or unpaid wages. The law also fixes when the bureau must send a worker the notice that lets them sue, and how long they then have. If the bureau finds strong evidence of a violation, or never investigated, the worker gets 90 days or whatever is left of the ordinary deadline, whichever is longer. If it finds no strong evidence, the worker may get up to a year. The Oregon Senate passed it 16-6, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1595907,
+      "measure_id": "HB 3525",
+      "vote_date": "2025-06-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3525, which makes landlords test the drinking water when a rental home draws it from a small private well and sits inside a state ground water management area. Testing covers arsenic, coliform bacteria, lead and nitrates, once a year, plus an arsenic test within 30 days of a new well. A clean result against federal limits buys four years before the next test. The landlord takes the sample from the main drinking tap. That job may be handed to the tenant only by a written agreement made in good faith. The landlord must also tell the lab the test is required by this law, so the results reach the Oregon Health Authority. The Oregon House agreed to the Senate's changes 36-14, and it became law.",
+      "nay_description": "Voted against House Bill 3525, which makes landlords test the drinking water when a rental home draws it from a small private well and sits inside a state ground water management area. Testing covers arsenic, coliform bacteria, lead and nitrates, once a year, plus an arsenic test within 30 days of a new well. A clean result against federal limits buys four years before the next test. The landlord takes the sample from the main drinking tap. That job may be handed to the tenant only by a written agreement made in good faith. The landlord must also tell the lab the test is required by this law, so the results reach the Oregon Health Authority. The Oregon House agreed to the Senate's changes 36-14, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1595528,
+      "measure_id": "HB 3525",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3525, which makes landlords test the drinking water when a rental home draws it from a small private well and sits inside a state ground water management area. Testing covers arsenic, coliform bacteria, lead and nitrates, once a year, plus an arsenic test within 30 days of a new well. A clean result against federal limits buys four years before the next test. The landlord takes the sample from the main drinking tap. That job may be handed to the tenant only by a written agreement made in good faith. The landlord must also tell the lab the test is required by this law, so the results reach the Oregon Health Authority. The Oregon Senate passed it 23-6, and it became law.",
+      "nay_description": "Voted against House Bill 3525, which makes landlords test the drinking water when a rental home draws it from a small private well and sits inside a state ground water management area. Testing covers arsenic, coliform bacteria, lead and nitrates, once a year, plus an arsenic test within 30 days of a new well. A clean result against federal limits buys four years before the next test. The landlord takes the sample from the main drinking tap. That job may be handed to the tenant only by a written agreement made in good faith. The landlord must also tell the lab the test is required by this law, so the results reach the Oregon Health Authority. The Oregon Senate passed it 23-6, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1593994,
+      "measure_id": "HB 3644",
+      "vote_date": "2025-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3644, which sets up a statewide shelter program run by the state housing department, meant to cut the number of people sleeping outside and move them into stable housing. The state is split into regions, each with a coordinator, a local government or nonprofit that writes an assessment and a plan, hands out the money and reports every year. Funding runs through agreements of five to six years, which the department may renew. At least 70 percent of each region's shelter money must go to shelters that run on low-barrier terms, meaning they turn away as few people as possible. The Oregon House passed it 33-11, and it became law.",
+      "nay_description": "Voted against House Bill 3644, which sets up a statewide shelter program run by the state housing department, meant to cut the number of people sleeping outside and move them into stable housing. The state is split into regions, each with a coordinator, a local government or nonprofit that writes an assessment and a plan, hands out the money and reports every year. Funding runs through agreements of five to six years, which the department may renew. At least 70 percent of each region's shelter money must go to shelters that run on low-barrier terms, meaning they turn away as few people as possible. The Oregon House passed it 33-11, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1595480,
+      "measure_id": "HB 3644",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3644, which sets up a statewide shelter program run by the state housing department, meant to cut the number of people sleeping outside and move them into stable housing. The state is split into regions, each with a coordinator, a local government or nonprofit that writes an assessment and a plan, hands out the money and reports every year. Funding runs through agreements of five to six years, which the department may renew. At least 70 percent of each region's shelter money must go to shelters that run on low-barrier terms, meaning they turn away as few people as possible. The Oregon Senate passed it 19-10, and it became law.",
+      "nay_description": "Voted against House Bill 3644, which sets up a statewide shelter program run by the state housing department, meant to cut the number of people sleeping outside and move them into stable housing. The state is split into regions, each with a coordinator, a local government or nonprofit that writes an assessment and a plan, hands out the money and reports every year. Funding runs through agreements of five to six years, which the department may renew. At least 70 percent of each region's shelter money must go to shelters that run on low-barrier terms, meaning they turn away as few people as possible. The Oregon Senate passed it 19-10, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1585424,
+      "measure_id": "HB 3546",
+      "vote_date": "2025-06-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3546, which makes the Public Utility Commission put very large power users, mostly data centers, in a rate class of their own. The rule covers a site that can draw 20 megawatts or more and mainly does data hosting. That class must be charged what it costs to serve it, or those costs can be billed straight to the customer. The price plan must also limit the risk that other customers pay costs they did not cause. Power companies must sign deals of ten years or more with these customers, and each deal must set a minimum the customer will pay. The Oregon House agreed to the Senate's changes 37-17, and it became law.",
+      "nay_description": "Voted against House Bill 3546, which makes the Public Utility Commission put very large power users, mostly data centers, in a rate class of their own. The rule covers a site that can draw 20 megawatts or more and mainly does data hosting. That class must be charged what it costs to serve it, or those costs can be billed straight to the customer. The price plan must also limit the risk that other customers pay costs they did not cause. Power companies must sign deals of ten years or more with these customers, and each deal must set a minimum the customer will pay. The Oregon House agreed to the Senate's changes 37-17, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1584043,
+      "measure_id": "HB 3546",
+      "vote_date": "2025-06-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3546, which makes the Public Utility Commission put very large power users, mostly data centers, in a rate class of their own. The rule covers a site that can draw 20 megawatts or more and mainly does data hosting. That class must be charged what it costs to serve it, or those costs can be billed straight to the customer. The price plan must also limit the risk that other customers pay costs they did not cause. Power companies must sign deals of ten years or more with these customers, and each deal must set a minimum the customer will pay. The Oregon Senate passed it 18-12, and it became law.",
+      "nay_description": "Voted against House Bill 3546, which makes the Public Utility Commission put very large power users, mostly data centers, in a rate class of their own. The rule covers a site that can draw 20 megawatts or more and mainly does data hosting. That class must be charged what it costs to serve it, or those costs can be billed straight to the customer. The price plan must also limit the risk that other customers pay costs they did not cause. Power companies must sign deals of ten years or more with these customers, and each deal must set a minimum the customer will pay. The Oregon Senate passed it 18-12, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1594190,
+      "measure_id": "HB 3792",
+      "vote_date": "2025-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3792, which doubles the money collected from electric company customers for the fund that helps low-income households pay their power bills, from at least $20 million a year to at least $40 million. Every two years the Public Utility Commission must look again at how much help people need and may raise both the total and the rates charged. If it raises the total by more than 2.5 percent it must report to the Legislature within 30 days. The law also lifts the ceiling on what any one customer site can be charged for this, from $500 to $1,000 a month. The Oregon House passed it 38-13, and it became law.",
+      "nay_description": "Voted against House Bill 3792, which doubles the money collected from electric company customers for the fund that helps low-income households pay their power bills, from at least $20 million a year to at least $40 million. Every two years the Public Utility Commission must look again at how much help people need and may raise both the total and the rates charged. If it raises the total by more than 2.5 percent it must report to the Legislature within 30 days. The law also lifts the ceiling on what any one customer site can be charged for this, from $500 to $1,000 a month. The Oregon House passed it 38-13, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1595500,
+      "measure_id": "HB 3792",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3792, which doubles the money collected from electric company customers for the fund that helps low-income households pay their power bills, from at least $20 million a year to at least $40 million. Every two years the Public Utility Commission must look again at how much help people need and may raise both the total and the rates charged. If it raises the total by more than 2.5 percent it must report to the Legislature within 30 days. The law also lifts the ceiling on what any one customer site can be charged for this, from $500 to $1,000 a month. The Oregon Senate passed it 22-7, and it became law.",
+      "nay_description": "Voted against House Bill 3792, which doubles the money collected from electric company customers for the fund that helps low-income households pay their power bills, from at least $20 million a year to at least $40 million. Every two years the Public Utility Commission must look again at how much help people need and may raise both the total and the rates charged. If it raises the total by more than 2.5 percent it must report to the Legislature within 30 days. The law also lifts the ceiling on what any one customer site can be charged for this, from $500 to $1,000 a month. The Oregon Senate passed it 22-7, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1574179,
+      "measure_id": "SB 906",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 906, which makes employers give every new hire a written guide to the pay and deductions on a pay stub. It must set out the pay period and each kind of pay the job may carry, such as hourly, salary, shift differentials, piece rate and commission. It must also list every deduction, what each is for, any allowance counted toward the minimum wage, and what each payroll code means. Employers may post it or share a link instead of handing it over, and must update it each January. The labor bureau must publish a model in English and Spanish, and may fine an employer $500. The Oregon House passed it 35-17, and it became law.",
+      "nay_description": "Voted against Senate Bill 906, which makes employers give every new hire a written guide to the pay and deductions on a pay stub. It must set out the pay period and each kind of pay the job may carry, such as hourly, salary, shift differentials, piece rate and commission. It must also list every deduction, what each is for, any allowance counted toward the minimum wage, and what each payroll code means. Employers may post it or share a link instead of handing it over, and must update it each January. The labor bureau must publish a model in English and Spanish, and may fine an employer $500. The Oregon House passed it 35-17, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
