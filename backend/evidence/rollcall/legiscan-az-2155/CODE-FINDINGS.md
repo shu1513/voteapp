@@ -94,3 +94,41 @@ The only signal was the seat disagreement, which in Arizona is also produced by 
 chamber switch (finding 4), so the two cannot be told apart mechanically. The suggested fix
 recorded in Connecticut and Pennsylvania — read `name` and `nickname` as well — would have
 matched the right person here, and is worth re-measuring across the committed states.
+
+## 6. LegiScan's `passed` flag does not know Arizona needs a majority of the whole chamber
+
+Arizona passes a bill on a majority of the seats, not of the votes cast: 31 of 60 in the House
+and 16 of 30 in the Senate. LegiScan sets `passed` from a bare comparison of yeas to nays, so a
+vote that Arizona's own history records as FAILED can arrive with `passed = 1`.
+
+Measured across the session: **25 third-reading roll calls carry `passed = 1` while falling
+short of a constitutional majority**, 16 in the Senate and 9 in the House, and every one is
+recorded FAILED in the bill history. Examples: SB 1583 at 15-14, HB 2552 at 30-28, SB 1001's
+first House vote at 29-26.
+
+This is the same defect class recorded in Montana (two-thirds votes on constitutional
+amendments) and Indiana (`Concurrence defeated`). It is a property of the feed, not something a
+description pattern can fix, so nothing here changes it.
+
+**None of the 149 roll calls approved across the four Arizona batches is affected, and the
+reason is structural rather than luck.** Selection always takes the *last* divided roll call in
+a chamber. A failed third reading in Arizona is followed either by a reconsidered vote that
+passes — in which case the later roll is the one selected — or by the bill dying, in which case
+it never enters a signed or vetoed pool at all. The check was still run explicitly over every
+selected roll and over both worklists, and came back clean.
+
+**A selection rule for any future Arizona session: do not rely on `passed`. Compare the yea
+count to the chamber's seat majority.**
+
+## 7. Arizona publishes documents whose filenames contain a space
+
+At least two staff analyses are published under a name with a literal space before the
+extension, for example `H.HB2576_020525_VETOED .DOCX.htm`. `curl` will not fetch that
+unescaped, and the failure presents as a missing document rather than an error.
+
+This cost a real decision. HB 2112's analysis failed to download during batch-02, the measure
+was dropped on reasoning alone, and the recorded reason turned out to be wrong on its own terms
+once the document was read — the act answers the privacy objection internally. The outcome did
+not change, but the stated grounds did, and they have been corrected on the worklist.
+
+`az_docs.py` now percent-encodes spaces before fetching.

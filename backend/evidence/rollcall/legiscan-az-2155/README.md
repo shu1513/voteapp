@@ -12,6 +12,8 @@ no Arizona roll-call records.** No AI provider call is involved anywhere in this
   every divided vote on a bill the Governor signed.
 - `batch-01/` — 11 measures, 15 rolls, the judgments, the roll evidence, and the import ledgers.
 - `batch-02/` — 21 measures, 26 rolls, which closes the divided-and-signed pool.
+- `batch-03/` and `batch-04/` — the vetoed scope, 64 measures over 108 rolls, which closes the
+  session.
 - `CODE-FINDINGS.md` — feed and pipeline findings recorded but not fixed.
 
 ## The feed
@@ -118,36 +120,53 @@ Arizona's published record is the best of any state in this campaign.
 header and the bill page both print `old subject (NOW: new subject)`. Batch-01's SB 1247 is one,
 and its description says so. Never judge an Arizona measure from its short title.
 
-## Status — the divided-and-signed pool is closed
+## Status — the 2025 session is closed
 
-**Arizona holds 1,090 live records across 54 candidates and 741 tags on the local database.**
+**Arizona holds 3,847 live records across 54 candidates and 2,373 tags on the local database.**
 54 is every candidate the crosswalk maps — Arizona's Speaker votes, so there is no Texas or
 Georgia style shortfall. **Production is untouched.**
 
-| batch | measures | rolls | records |
-| --- | --- | --- | --- |
-| batch-01 | 11 | 15 | 408 |
-| batch-02 | 21 | 26 | 682 |
+| batch | scope | measures | rolls | records |
+| --- | --- | --- | --- | --- |
+| batch-01 | signed | 11 | 15 | 408 |
+| batch-02 | signed | 21 | 26 | 682 |
+| batch-03 | vetoed | 32 | 58 | 1,463 |
+| batch-04 | vetoed | 32 | 50 | 1,294 |
 
-**Every one of the 184 rows in `survey/divided-signed-worklist.tsv` carries a disposition and
-none is open**: 41 imported, 49 not selected because that chamber voted an earlier draft, and
-94 dropped with a written reason. The 77 measures that reached a full read were each read
-through their enacted-stage staff analysis before being kept or dropped.
+**Every divided roll call on a measure that was signed or vetoed now carries a disposition, and
+none is open.**
 
-**Nine research areas are covered across twelve area-and-direction pairs**, with both
-directions present in `civil_rights`, `environment_and_public_health` and
-`public_safety_and_crime_control`. Counted from the tag table, not from memory.
+- `survey/divided-signed-worklist.tsv` — 184 rows: 41 imported, 49 not selected because that
+  chamber voted an earlier draft, 94 dropped with a written reason.
+- `survey/divided-vetoed-worklist.tsv` — 328 rows: 108 imported, 41 not selected, 171 dropped,
+  8 deferred as direction calls.
+
+**Fourteen research areas are covered across twenty-one area-and-direction pairs**, with both
+directions present in `civil_rights`, `corporate_accountability`, `election_integrity`,
+`environment_and_public_health`, `public_safety_and_crime_control`, `social_programs_and_welfare`
+and — across the two scopes — the elections pair. Counted from the tag table, not from memory.
+
+### Why the vetoed scope mattered here
+
+Arizona has a Republican legislature and a Democratic governor. Under the divided-and-enacted
+gate alone, the session reads as bipartisan housekeeping: the enacted batches produced housing,
+health-coverage and criminal-law measures, and not one measure on immigration, firearms or
+diversity policy. The vetoed pool is where the parties differ, and it supplied `gun_control`,
+`immigration` and `anti_corruption` — three areas Arizona would otherwise have no coverage in at
+all — plus eleven civil rights measures and the whole groundwater fight.
 
 ## What is left in Arizona
 
-1. **Promotion to production**, which holds no Arizona records. The two duplicate retirements in
-   `batch-02/duplicate-retirements.json` must be re-run there.
-2. **374 divided roll calls on 174 vetoed measures** — a scope no Arizona batch has touched. In
-   a state with a Republican legislature and a Democratic governor this is where the parties
-   actually differ, and Pennsylvania's batch-02 established how to word a measure that did not
-   become law.
-3. **48 divided votes on 36 ballot referrals**, unreachable until the concurrent-resolution gap
-   in `CODE-FINDINGS.md` finding 1 is addressed.
+1. **Promotion to production**, which holds no Arizona records. Three duplicate-retirement files
+   must be re-run there: `batch-02/`, `batch-03/` and `batch-04/duplicate-retirements.json`.
+2. **Four vaccine-adjacent direction calls**, deferred rather than dropped, marked
+   `deferred:direction-call` on the vetoed worklist: HB 2012, HB 2058, HB 2063 and HB 2257. The
+   standing instruction after the Florida fluoride decision is to escalate a contested-evidence
+   direction rather than assume one.
+3. **48 divided votes on 36 ballot referrals**, unreachable while concurrent resolutions are
+   dropped by measure type — `CODE-FINDINGS.md` finding 1. This is the largest remaining gap,
+   and in a state where the legislature routes around a veto by going to the voters, it is not a
+   small one.
 4. **The 2026 session, LegiScan 2235**, untouched. It needs an `AZ-2235` registry key only,
    following the MO-2226 precedent, with no code change.
 5. Optionally, widening scope to the July primary (`--scope-from 2026-07-01`), which would add
