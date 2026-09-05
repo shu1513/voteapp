@@ -809,6 +809,15 @@ describe("containsNulCharacter", () => {
     expect(containsNulCharacter(undefined)).toBe(false);
   });
 
+  it("walks deeply nested bodies without overflowing the call stack", async () => {
+    const { containsNulCharacter } = await import("../../src/api/apiValidation.js");
+    const depth = 100_000;
+    const deepArrays: unknown = JSON.parse("[".repeat(depth) + "]".repeat(depth));
+    expect(containsNulCharacter(deepArrays)).toBe(false);
+    const deepObjects: unknown = JSON.parse('{"a":'.repeat(depth) + '"x\\u0000"' + "}".repeat(depth));
+    expect(containsNulCharacter(deepObjects)).toBe(true);
+  });
+
   it("makes the candidate search query reject NUL before the ILIKE query", async () => {
     const { parseCandidateSearchQuery } = await import("../../src/api/apiValidation.js");
     expect(() => parseCandidateSearchQuery(new URL("http://x/api/candidates/search?q=hil%00ar"))).toThrow(
