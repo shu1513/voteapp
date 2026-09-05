@@ -4,6 +4,7 @@ import {
   createMembershipService,
   MembershipServiceError,
   MembershipWebhookRetryError,
+  type MembershipChangedEmailInput,
   type MembershipStripeClient,
 } from "../../src/api/membership/membershipService.js";
 
@@ -55,7 +56,11 @@ function createStripeMock(overrides: Record<string, unknown> = {}): MembershipSt
   checkout: { sessions: { create: ReturnType<typeof vi.fn> } };
   billingPortal: { sessions: { create: ReturnType<typeof vi.fn> } };
   customers: { create: ReturnType<typeof vi.fn>; update: ReturnType<typeof vi.fn> };
-  subscriptions: { retrieve: ReturnType<typeof vi.fn>; cancel: ReturnType<typeof vi.fn> };
+  subscriptions: {
+    retrieve: ReturnType<typeof vi.fn>;
+    update: ReturnType<typeof vi.fn>;
+    cancel: ReturnType<typeof vi.fn>;
+  };
   invoicePayments: { list: ReturnType<typeof vi.fn> };
   webhooks: { constructEvent: ReturnType<typeof vi.fn> };
 } {
@@ -70,6 +75,7 @@ function createStripeMock(overrides: Record<string, unknown> = {}): MembershipSt
     },
     subscriptions: {
       retrieve: vi.fn(async () => stripeSubscription()),
+      update: vi.fn(async () => stripeSubscription()),
       cancel: vi.fn(async () => stripeSubscription({ status: "canceled", canceled_at: 1_755_900_000 })),
     },
     invoicePayments: { list: vi.fn(async () => ({ data: [] })) },
@@ -82,6 +88,7 @@ function createService(input: {
   db: { query: ReturnType<typeof vi.fn> };
   stripe: MembershipStripeClient;
   sendMembershipStartedEmail?: ((i: { email: string; monthlyAmountCents: number }) => Promise<void>) | null;
+  sendMembershipChangedEmail?: ((i: MembershipChangedEmailInput) => Promise<void>) | null;
 }) {
   return createMembershipService({
     db: input.db as never,
@@ -90,6 +97,7 @@ function createService(input: {
     membershipProductId: "prod_test",
     publicBaseUrl: "https://site.test",
     sendMembershipStartedEmail: input.sendMembershipStartedEmail ?? null,
+    sendMembershipChangedEmail: input.sendMembershipChangedEmail ?? null,
   });
 }
 
@@ -336,6 +344,271 @@ describe("membership createPortalSession", () => {
       customer: STRIPE_CUSTOMER_ID,
       return_url: "https://site.test/me/settings",
     });
+  });
+
+  it("opens the general portal for an explicit { flow: null } (what shipped clients send)", async () => {
+    const db = createRoutedDb([["FROM public.billing_customers", () => ({ rows: [customerRow()] })]]);
+    const stripe = createStripeMock();
+    const service = createService({ db, stripe });
+
+    await service.createPortalSession(USER_ID, { flow: null });
+    expect(stripe.billingPortal.sessions.create).toHaveBeenCalledWith({
+      customer: STRIPE_CUSTOMER_ID,
+      return_url: "https://site.test/me/settings",
+    });
+  });
+
+  it("deep-links into the payment-method flow and returns to the membership page", async () => {
+    const db = createRoutedDb([["FROM public.billing_customers", () => ({ rows: [customerRow()] })]]);
+    const stripe = createStripeMock();
+    const service = createService({ db, stripe });
+
+    await service.createPortalSession(USER_ID, { flow: "payment_method_update" });
+    expect(stripe.billingPortal.sessions.create).toHaveBeenCalledWith({
+      customer: STRIPE_CUSTOMER_ID,
+      return_url: "https://site.test/me/membership",
+      flow_data: {
+        type: "payment_method_update",
+        after_completion: { type: "redirect", redirect: { return_url: "https://site.test/me/membership" } },
+      },
+    });
+  });
+});
+
+// Manage-page actions (docs/plans/membership-manage-page.md).
+const PERIOD_END_EPOCH = 1_757_600_000;
+
+/** Routes for the manage path: customer + live row lookups, the pure upsert,
+ * the email lookup, and the getMembership read that answers the action. */
+const manageRoutes = (opts: { noCustomer?: boolean; noLive?: boolean; acknowledgmentSentAt?: Date | null } = {}): DbRoute[] => [
+  ["FROM public.billing_customers", () => ({ rows: opts.noCustomer ? [] : [customerRow()] })],
+  ["SELECT stripe_subscription_id", () => ({ rows: opts.noLive ? [] : [{ stripe_subscription_id: "sub_1" }] })],
+  [
+    "INSERT INTO public.billing_subscriptions",
+    () => ({ rows: [{ acknowledgment_sent_at: opts.acknowledgmentSentAt === undefined ? new Date() : opts.acknowledgmentSentAt }] }),
+  ],
+  ["SELECT email", () => ({ rows: [{ email: "user@example.com" }] })],
+  [
+    "SELECT stripe_status",
+    () => ({
+      rows: [
+        {
+          stripe_status: "active",
+          monthly_amount_cents: 700,
+          cancel_at_period_end: true,
+          current_period_end: new Date(PERIOD_END_EPOCH * 1000),
+          started_at: new Date(1_755_000_000 * 1000),
+        },
+      ],
+    }),
+  ],
+  ["SUM(amount_cents - refunded_amount_cents)", () => ({ rows: [{ total_net_cents: 0 }] })],
+  ["FROM public.billing_payments", () => ({ rows: [] })],
+];
+
+function upsertParams(db: { query: ReturnType<typeof vi.fn> }): unknown[] | undefined {
+  return db.query.mock.calls.find((call) => String(call[0]).includes("INSERT INTO public.billing_subscriptions"))?.[1] as
+    | unknown[]
+    | undefined;
+}
+
+describe("membership cancelMembership", () => {
+  it("throws no_membership without a billing customer or live subscription", async () => {
+    const stripe = createStripeMock();
+    const noCustomer = createService({ db: createRoutedDb(manageRoutes({ noCustomer: true })), stripe });
+    await expect(noCustomer.cancelMembership(USER_ID)).rejects.toMatchObject({ code: "no_membership" });
+
+    const noLive = createService({ db: createRoutedDb(manageRoutes({ noLive: true })), stripe });
+    await expect(noLive.cancelMembership(USER_ID)).rejects.toMatchObject({ code: "no_membership" });
+    expect(stripe.subscriptions.retrieve).not.toHaveBeenCalled();
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+  });
+
+  it("schedules a period-end cancel at Stripe, records the returned state, emails, and answers the fresh status", async () => {
+    const db = createRoutedDb(manageRoutes());
+    const stripe = createStripeMock();
+    // Stripe answers the update with the scheduled cancel in its current
+    // representation (cancel_at, boolean still false).
+    stripe.subscriptions.update.mockResolvedValue(stripeSubscription({ cancel_at: PERIOD_END_EPOCH }));
+    const sendMembershipChangedEmail = vi.fn(async () => {});
+    const service = createService({ db, stripe, sendMembershipChangedEmail });
+
+    const result = await service.cancelMembership(USER_ID);
+
+    expect(stripe.subscriptions.retrieve).toHaveBeenCalledWith("sub_1");
+    expect(stripe.subscriptions.update).toHaveBeenCalledWith("sub_1", { cancel_at_period_end: true });
+    expect(upsertParams(db)?.[5]).toBe(true);
+    expect(sendMembershipChangedEmail).toHaveBeenCalledWith({
+      kind: "canceled",
+      email: "user@example.com",
+      endsAt: new Date(PERIOD_END_EPOCH * 1000),
+    });
+    expect(result.membership).toMatchObject({ cancel_at_period_end: true });
+  });
+
+  it("is a no-op when already scheduled to cancel (portal cancel, or a retry after a lost response)", async () => {
+    const db = createRoutedDb(manageRoutes());
+    const stripe = createStripeMock();
+    stripe.subscriptions.retrieve.mockResolvedValue(stripeSubscription({ cancel_at: PERIOD_END_EPOCH }));
+    const sendMembershipChangedEmail = vi.fn(async () => {});
+    const service = createService({ db, stripe, sendMembershipChangedEmail });
+
+    await expect(service.cancelMembership(USER_ID)).resolves.toMatchObject({ enabled: true });
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+    expect(sendMembershipChangedEmail).not.toHaveBeenCalled();
+    // The row still catches up with what Stripe has.
+    expect(upsertParams(db)?.[5]).toBe(true);
+  });
+
+  it("refuses while the first payment is still confirming", async () => {
+    const db = createRoutedDb(manageRoutes());
+    const stripe = createStripeMock();
+    stripe.subscriptions.retrieve.mockResolvedValue(stripeSubscription({ status: "incomplete" }));
+    const service = createService({ db, stripe });
+
+    await expect(service.cancelMembership(USER_ID)).rejects.toMatchObject({ code: "membership_pending" });
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+  });
+
+  it("refuses a subscription that no longer matches our records (product or customer)", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      for (const overrides of [{ items: { data: [{ price: { unit_amount: 700, product: "prod_other" } }] } }, { customer: "cus_other" }]) {
+        const db = createRoutedDb(manageRoutes());
+        const stripe = createStripeMock();
+        stripe.subscriptions.retrieve.mockResolvedValue(stripeSubscription(overrides));
+        const service = createService({ db, stripe });
+
+        await expect(service.cancelMembership(USER_ID)).rejects.toMatchObject({ code: "membership_conflict" });
+        expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+        expect(upsertParams(db)).toBeUndefined();
+      }
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("records a subscription found already terminal and reports no membership", async () => {
+    const db = createRoutedDb(manageRoutes());
+    const stripe = createStripeMock();
+    stripe.subscriptions.retrieve.mockResolvedValue(stripeSubscription({ status: "canceled", canceled_at: 1_755_900_000 }));
+    const service = createService({ db, stripe });
+
+    await expect(service.cancelMembership(USER_ID)).rejects.toMatchObject({ code: "no_membership" });
+    expect(upsertParams(db)?.[4]).toBe("canceled");
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+  });
+
+  it("still succeeds when the confirmation email fails, and never sends the §17602 start acknowledgment", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      // acknowledgment_sent_at NULL: the webhook path would send the start
+      // acknowledgment here; the manage path must not.
+      const db = createRoutedDb(manageRoutes({ acknowledgmentSentAt: null }));
+      const stripe = createStripeMock();
+      stripe.subscriptions.update.mockResolvedValue(stripeSubscription({ cancel_at: PERIOD_END_EPOCH }));
+      const sendMembershipStartedEmail = vi.fn(async () => {});
+      const sendMembershipChangedEmail = vi.fn(async () => {
+        throw new Error("SES down");
+      });
+      const service = createService({ db, stripe, sendMembershipStartedEmail, sendMembershipChangedEmail });
+
+      await expect(service.cancelMembership(USER_ID)).resolves.toMatchObject({ enabled: true });
+      expect(stripe.subscriptions.update).toHaveBeenCalledTimes(1);
+      expect(sendMembershipStartedEmail).not.toHaveBeenCalled();
+      expect(warnSpy).toHaveBeenCalled();
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+});
+
+describe("membership resumeMembership", () => {
+  it("clears a scheduled cancel_at (how current API versions store a period-end cancel), verifies, emails", async () => {
+    const db = createRoutedDb(manageRoutes());
+    const stripe = createStripeMock();
+    stripe.subscriptions.retrieve.mockResolvedValue(stripeSubscription({ cancel_at: PERIOD_END_EPOCH }));
+    stripe.subscriptions.update.mockResolvedValue(stripeSubscription());
+    const sendMembershipChangedEmail = vi.fn(async () => {});
+    const service = createService({ db, stripe, sendMembershipChangedEmail });
+
+    await expect(service.resumeMembership(USER_ID)).resolves.toMatchObject({ enabled: true });
+    expect(stripe.subscriptions.update).toHaveBeenCalledTimes(1);
+    expect(stripe.subscriptions.update).toHaveBeenCalledWith("sub_1", { cancel_at: "" });
+    expect(upsertParams(db)?.[5]).toBe(false);
+    expect(sendMembershipChangedEmail).toHaveBeenCalledWith({
+      kind: "resumed",
+      email: "user@example.com",
+      monthlyAmountCents: 700,
+      renewsAt: new Date(PERIOD_END_EPOCH * 1000),
+    });
+  });
+
+  it("clears the legacy cancel_at_period_end boolean", async () => {
+    const db = createRoutedDb(manageRoutes());
+    const stripe = createStripeMock();
+    stripe.subscriptions.retrieve.mockResolvedValue(stripeSubscription({ cancel_at_period_end: true }));
+    const service = createService({ db, stripe });
+
+    await service.resumeMembership(USER_ID);
+    expect(stripe.subscriptions.update).toHaveBeenCalledTimes(1);
+    expect(stripe.subscriptions.update).toHaveBeenCalledWith("sub_1", { cancel_at_period_end: false });
+  });
+
+  it("clears both forms when both are set, cancel_at first", async () => {
+    const db = createRoutedDb(manageRoutes());
+    const stripe = createStripeMock();
+    stripe.subscriptions.retrieve.mockResolvedValue(
+      stripeSubscription({ cancel_at: PERIOD_END_EPOCH, cancel_at_period_end: true })
+    );
+    stripe.subscriptions.update
+      .mockResolvedValueOnce(stripeSubscription({ cancel_at_period_end: true }))
+      .mockResolvedValueOnce(stripeSubscription());
+    const service = createService({ db, stripe });
+
+    await service.resumeMembership(USER_ID);
+    expect(stripe.subscriptions.update.mock.calls).toEqual([
+      ["sub_1", { cancel_at: "" }],
+      ["sub_1", { cancel_at_period_end: false }],
+    ]);
+    expect(upsertParams(db)?.[5]).toBe(false);
+  });
+
+  it("fails without recording or emailing when Stripe still reports a scheduled cancel after clearing", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const db = createRoutedDb(manageRoutes());
+      const stripe = createStripeMock();
+      stripe.subscriptions.retrieve.mockResolvedValue(stripeSubscription({ cancel_at: PERIOD_END_EPOCH }));
+      stripe.subscriptions.update.mockResolvedValue(stripeSubscription({ cancel_at: PERIOD_END_EPOCH }));
+      const sendMembershipChangedEmail = vi.fn(async () => {});
+      const service = createService({ db, stripe, sendMembershipChangedEmail });
+
+      await expect(service.resumeMembership(USER_ID)).rejects.toMatchObject({ code: "membership_update_failed" });
+      expect(upsertParams(db)).toBeUndefined();
+      expect(sendMembershipChangedEmail).not.toHaveBeenCalled();
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("is a no-op when not scheduled to cancel (retry after a lost response)", async () => {
+    const db = createRoutedDb(manageRoutes());
+    const stripe = createStripeMock();
+    const sendMembershipChangedEmail = vi.fn(async () => {});
+    const service = createService({ db, stripe, sendMembershipChangedEmail });
+
+    await expect(service.resumeMembership(USER_ID)).resolves.toMatchObject({ enabled: true });
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
+    expect(sendMembershipChangedEmail).not.toHaveBeenCalled();
+    expect(upsertParams(db)?.[5]).toBe(false);
+  });
+
+  it("throws no_membership without a live subscription", async () => {
+    const stripe = createStripeMock();
+    const service = createService({ db: createRoutedDb(manageRoutes({ noLive: true })), stripe });
+    await expect(service.resumeMembership(USER_ID)).rejects.toMatchObject({ code: "no_membership" });
+    expect(stripe.subscriptions.update).not.toHaveBeenCalled();
   });
 });
 

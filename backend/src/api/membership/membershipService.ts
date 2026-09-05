@@ -48,6 +48,17 @@ export type MembershipStartedEmailInput = {
   monthlyAmountCents: number;
 };
 
+/** Courtesy confirmations for member-initiated changes
+ * (docs/plans/membership-manage-page.md). Best-effort: a failed send logs
+ * and never fails the action, unlike the §17602 start acknowledgment. */
+export type MembershipChangedEmailInput =
+  | { kind: "canceled"; email: string; endsAt: Date | null }
+  | { kind: "resumed"; email: string; monthlyAmountCents: number; renewsAt: Date | null };
+
+export type MembershipPortalInput = {
+  flow: "payment_method_update" | null;
+};
+
 /** The slice of the Stripe SDK the service uses; injected so tests run
  * without network. The real `Stripe` instance satisfies it structurally. */
 export type MembershipStripeClient = {
@@ -67,6 +78,7 @@ export type MembershipStripeClient = {
   };
   subscriptions: {
     retrieve(id: string): Promise<Stripe.Subscription>;
+    update(id: string, params: Stripe.SubscriptionUpdateParams): Promise<Stripe.Subscription>;
     cancel(id: string): Promise<Stripe.Subscription>;
   };
   invoicePayments: {
@@ -91,11 +103,22 @@ export type MembershipServiceOptions = {
    * pokes once a sender exists. A configured sender that THROWS fails the
    * webhook retryably so Stripe redelivers. */
   sendMembershipStartedEmail: ((input: MembershipStartedEmailInput) => Promise<void>) | null;
+  /** Cancel / resume confirmations. null = sending disabled. */
+  sendMembershipChangedEmail: ((input: MembershipChangedEmailInput) => Promise<void>) | null;
 };
 
 export class MembershipServiceError extends Error {
   constructor(
-    readonly code: "membership_exists" | "no_billing_account" | "user_not_found" | "subscription_cancel_failed",
+    readonly code:
+      | "membership_exists"
+      | "no_billing_account"
+      | "user_not_found"
+      | "subscription_cancel_failed"
+      // Manage-page actions (docs/plans/membership-manage-page.md):
+      | "no_membership"
+      | "membership_pending"
+      | "membership_conflict"
+      | "membership_update_failed",
     message: string
   ) {
     super(message);
@@ -117,8 +140,18 @@ export class MembershipWebhookRetryError extends Error {
 export type MembershipService = {
   getMembership(userId: string): Promise<MembershipStatusResult>;
   createCheckoutSession(userId: string, input: MembershipCheckoutInput): Promise<{ url: string }>;
-  /** null = the user has no billing customer yet (404). */
-  createPortalSession(userId: string): Promise<{ url: string } | null>;
+  /** null = the user has no billing customer yet (404). `flow` deep-links
+   * into one portal flow and returns to the membership page; without it the
+   * general portal opens and returns to Settings. */
+  createPortalSession(userId: string, input?: MembershipPortalInput): Promise<{ url: string } | null>;
+  /** Period-end cancel of the live subscription (set-this-state: already
+   * canceling → sync + return). Throws no_membership / membership_pending /
+   * membership_conflict. Returns the fresh status. */
+  cancelMembership(userId: string): Promise<MembershipStatusResult>;
+  /** Clears a scheduled period-end cancel (set-this-state: not canceling →
+   * sync + return). Throws no_membership / membership_conflict /
+   * membership_update_failed. Returns the fresh status. */
+  resumeMembership(userId: string): Promise<MembershipStatusResult>;
   handleWebhookEvent(input: { rawBody: Buffer; signatureHeader: string | null }): Promise<"ok" | "bad_signature">;
   /** Pushes the user's current account email onto their Stripe customer, so
    * Checkout prefills and Stripe receipts follow an email change. Called
@@ -163,13 +196,34 @@ function isTerminalStatus(status: string): boolean {
   return (TERMINAL_SUBSCRIPTION_STATUSES as readonly string[]).includes(status);
 }
 
+/** "Will end without renewing." Current API versions express a period-end
+ * cancel as a scheduled `cancel_at` (= the period end) with
+ * `cancel_at_period_end` still false; older clients set the boolean. Known
+ * tradeoff: a dashboard operator could schedule cancel_at at some OTHER
+ * date, and the settings page would still caption the end as the period
+ * boundary — accepted, because nothing in the product sets such a date, and
+ * the tempting `cancel_at === current_period_end` refinement fails the other
+ * way (a second of drift shows a canceled member as renewing). */
+function isScheduledToCancel(subscription: Stripe.Subscription): boolean {
+  return subscription.cancel_at_period_end === true || subscription.cancel_at != null;
+}
+
+/** API versions 2025-03-31+ carry the billing period on the item, not the
+ * subscription. */
+function currentPeriodEndOf(subscription: Stripe.Subscription): Date | null {
+  const epoch = subscription.items?.data?.[0]?.current_period_end;
+  return epoch ? epochToDate(epoch) : null;
+}
+
 export function createMembershipService(options: MembershipServiceOptions): MembershipService {
   const { db, stripe } = options;
   const publicBaseUrl = options.publicBaseUrl.replace(/\/+$/, "");
   const settingsUrl = `${publicBaseUrl}/me/settings`;
-  // Checkout starts on the kind-specific support page, so it returns there
-  // too; the portal still returns to Settings, where the full section manages
-  // the plan.
+  // The general portal returns to Settings (where shipped clients manage the
+  // plan); portal flows return to the membership page, which only the new
+  // page requests (docs/plans/membership-manage-page.md, PR 3).
+  const membershipPageUrl = `${publicBaseUrl}/me/membership`;
+  // Checkout starts on the kind-specific support page, so it returns there.
   const termsUrl = `${publicBaseUrl}/terms`;
 
   async function findBillingCustomerByUserId(userId: string): Promise<BillingCustomerRow | null> {
@@ -280,6 +334,62 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
     return result.rows[0]?.email ?? null;
   }
 
+  /** Writes a subscription's current state to billing_subscriptions. Pure —
+   * no Stripe call, no email — so the webhook poke and the manage-page
+   * actions share one writer, and a mail failure can never be reported as
+   * a failed action. Returns null (logged) for an unusable amount: our
+   * checkouts always set unit_amount ≥ the minimum, so that is a foreign or
+   * hand-made subscription the schema CHECK would reject anyway. */
+  async function upsertSubscriptionRow(
+    subscription: Stripe.Subscription,
+    customer: BillingCustomerRow,
+    checkoutSessionId: string | null
+  ): Promise<{ monthlyAmountCents: number; acknowledgmentPending: boolean } | null> {
+    const monthlyAmountCents = subscription.items?.data?.[0]?.price?.unit_amount ?? null;
+    if (monthlyAmountCents === null || monthlyAmountCents < MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS) {
+      console.error(
+        `[membership] subscription ${subscription.id} has unusable amount ${monthlyAmountCents ?? "<none>"}; not recording`
+      );
+      return null;
+    }
+    const upserted = await db.query<{ acknowledgment_sent_at: Date | null }>(
+      `
+        INSERT INTO public.billing_subscriptions (
+          stripe_subscription_id, billing_customer_id, stripe_checkout_session_id,
+          monthly_amount_cents, stripe_status, cancel_at_period_end,
+          current_period_end, started_at, canceled_at
+        )
+        VALUES ($1, $2::uuid, $3, $4, $5, $6, $7, $8, $9)
+        ON CONFLICT (stripe_subscription_id) DO UPDATE SET
+          monthly_amount_cents = EXCLUDED.monthly_amount_cents,
+          stripe_status = EXCLUDED.stripe_status,
+          cancel_at_period_end = EXCLUDED.cancel_at_period_end,
+          current_period_end = EXCLUDED.current_period_end,
+          canceled_at = EXCLUDED.canceled_at,
+          -- Consent evidence is append-only: never overwrite a stored session
+          -- pointer with NULL from a later poke.
+          stripe_checkout_session_id = COALESCE(
+            public.billing_subscriptions.stripe_checkout_session_id,
+            EXCLUDED.stripe_checkout_session_id
+          ),
+          updated_at = now()
+        RETURNING acknowledgment_sent_at
+      `,
+      [
+        subscription.id,
+        customer.id,
+        checkoutSessionId,
+        monthlyAmountCents,
+        subscription.status,
+        isScheduledToCancel(subscription),
+        currentPeriodEndOf(subscription),
+        epochToDate(subscription.start_date),
+        subscription.canceled_at ? epochToDate(subscription.canceled_at) : null,
+      ]
+    );
+    return { monthlyAmountCents, acknowledgmentPending: upserted.rows[0]?.acknowledgment_sent_at === null };
+  }
+
   /** The poke pattern: whatever subscription event arrived, fetch the current
    * subscription from Stripe and write that. Returns nothing; all failures
    * throw (→ 5xx → Stripe retries) except permanent mismatches, which log. */
@@ -336,73 +446,18 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
       }
     }
 
-    const item = subscription.items?.data?.[0];
-    const monthlyAmountCents = item?.price?.unit_amount ?? null;
-    if (monthlyAmountCents === null || monthlyAmountCents < MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS) {
-      // Our checkouts always set unit_amount ≥ the minimum, so this is a
-      // foreign or hand-made subscription; the schema CHECK would reject it.
-      console.error(
-        `[membership] subscription ${subscriptionId} has unusable amount ${monthlyAmountCents ?? "<none>"}; not recording`
-      );
+    const upserted = await upsertSubscriptionRow(subscription, customer, checkoutSessionId);
+    if (!upserted) {
       return;
     }
-    // API versions 2025-03-31+ carry the billing period on the item, not the
-    // subscription.
-    const currentPeriodEnd = item?.current_period_end ? epochToDate(item.current_period_end) : null;
-    // A period-end cancel from the customer portal arrives on current API
-    // versions as a scheduled `cancel_at` (= the period end) with
-    // `cancel_at_period_end` still false; older clients set the boolean.
-    // Either means "will end without renewing". Known tradeoff: a dashboard
-    // operator could schedule cancel_at at some OTHER date, and the settings
-    // page would still caption the end as the period boundary — accepted,
-    // because nothing in the product sets such a date, and the tempting
-    // `cancel_at === current_period_end` refinement fails the other way
-    // (a second of drift shows a canceled member as renewing).
-    const cancelAtPeriodEnd = subscription.cancel_at_period_end === true || subscription.cancel_at != null;
-
-    const upserted = await db.query<{ acknowledgment_sent_at: Date | null }>(
-      `
-        INSERT INTO public.billing_subscriptions (
-          stripe_subscription_id, billing_customer_id, stripe_checkout_session_id,
-          monthly_amount_cents, stripe_status, cancel_at_period_end,
-          current_period_end, started_at, canceled_at
-        )
-        VALUES ($1, $2::uuid, $3, $4, $5, $6, $7, $8, $9)
-        ON CONFLICT (stripe_subscription_id) DO UPDATE SET
-          monthly_amount_cents = EXCLUDED.monthly_amount_cents,
-          stripe_status = EXCLUDED.stripe_status,
-          cancel_at_period_end = EXCLUDED.cancel_at_period_end,
-          current_period_end = EXCLUDED.current_period_end,
-          canceled_at = EXCLUDED.canceled_at,
-          -- Consent evidence is append-only: never overwrite a stored session
-          -- pointer with NULL from a later poke.
-          stripe_checkout_session_id = COALESCE(
-            public.billing_subscriptions.stripe_checkout_session_id,
-            EXCLUDED.stripe_checkout_session_id
-          ),
-          updated_at = now()
-        RETURNING acknowledgment_sent_at
-      `,
-      [
-        subscriptionId,
-        customer.id,
-        checkoutSessionId,
-        monthlyAmountCents,
-        subscription.status,
-        cancelAtPeriodEnd,
-        currentPeriodEnd,
-        epochToDate(subscription.start_date),
-        subscription.canceled_at ? epochToDate(subscription.canceled_at) : null,
-      ]
-    );
+    const monthlyAmountCents = upserted.monthlyAmountCents;
 
     // §17602 post-purchase acknowledgment: once, when the subscription is
     // live and unacknowledged. A failed send leaves the column NULL and 5xxes
     // (see the catch below), so both Stripe's redelivery of this event and
     // any later subscription poke retry it.
     const acknowledgmentUserId =
-      (subscription.status === "active" || subscription.status === "past_due") &&
-      upserted.rows[0]?.acknowledgment_sent_at === null
+      (subscription.status === "active" || subscription.status === "past_due") && upserted.acknowledgmentPending
         ? customer.user_id
         : null;
     if (acknowledgmentUserId !== null) {
@@ -616,7 +671,54 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
     }
   }
 
-  return {
+  async function sendChangedEmailBestEffort(input: MembershipChangedEmailInput): Promise<void> {
+    if (!options.sendMembershipChangedEmail) {
+      return;
+    }
+    try {
+      await options.sendMembershipChangedEmail(input);
+    } catch (error) {
+      // The action already happened at Stripe and in our row; a lost
+      // courtesy email must not turn that into an error for the member.
+      console.warn(
+        `[membership] ${input.kind} confirmation email failed:`,
+        error instanceof Error ? error.message : String(error)
+      );
+    }
+  }
+
+  /** The member's live subscription, fetched fresh from Stripe and checked
+   * against our records before any manage-page mutation. A terminal state
+   * found here (canceled between reads) is recorded, then reported as no
+   * membership. */
+  async function loadOwnedLiveSubscription(
+    userId: string
+  ): Promise<{ customer: BillingCustomerRow; subscription: Stripe.Subscription }> {
+    const customer = await findBillingCustomerByUserId(userId);
+    const liveSubscriptionId = customer ? await findLiveSubscriptionId(customer.id) : null;
+    if (!customer || !liveSubscriptionId) {
+      throw new MembershipServiceError("no_membership", "You don't have a monthly membership.");
+    }
+    const subscription = await stripe.subscriptions.retrieve(liveSubscriptionId);
+    const productId = idOf(subscription.items?.data?.[0]?.price?.product ?? null);
+    const stripeCustomerId = idOf(subscription.customer);
+    if (productId !== options.membershipProductId || stripeCustomerId !== customer.stripe_customer_id) {
+      console.error(
+        `[membership] subscription ${liveSubscriptionId} for user ${userId} does not match our records (product ${productId ?? "<none>"}, customer ${stripeCustomerId ?? "<none>"}); refusing to change it`
+      );
+      throw new MembershipServiceError(
+        "membership_conflict",
+        "Your membership record doesn't match our payment processor. Contact us and we'll sort it out."
+      );
+    }
+    if (isTerminalStatus(subscription.status)) {
+      await upsertSubscriptionRow(subscription, customer, null);
+      throw new MembershipServiceError("no_membership", "You don't have a monthly membership.");
+    }
+    return { customer, subscription };
+  }
+
+  const service: MembershipService = {
     async getMembership(userId) {
       const customer = await findBillingCustomerByUserId(userId);
       if (!customer) {
@@ -770,16 +872,95 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
       return { url: session.url };
     },
 
-    async createPortalSession(userId) {
+    async createPortalSession(userId, input) {
       const customer = await findBillingCustomerByUserId(userId);
       if (!customer) {
         return null;
       }
-      const session = await stripe.billingPortal.sessions.create({
-        customer: customer.stripe_customer_id,
-        return_url: settingsUrl,
-      });
+      const session = await stripe.billingPortal.sessions.create(
+        input?.flow === "payment_method_update"
+          ? {
+              customer: customer.stripe_customer_id,
+              return_url: membershipPageUrl,
+              flow_data: {
+                type: "payment_method_update",
+                // Without after_completion the flow ends on Stripe's own
+                // confirmation page instead of coming back to us.
+                after_completion: { type: "redirect", redirect: { return_url: membershipPageUrl } },
+              },
+            }
+          : {
+              customer: customer.stripe_customer_id,
+              return_url: settingsUrl,
+            }
+      );
       return { url: session.url };
+    },
+
+    async cancelMembership(userId) {
+      const { customer, subscription } = await loadOwnedLiveSubscription(userId);
+      if (subscription.status === "incomplete") {
+        // A seconds-wide race by design (cards-only Checkout confirms the
+        // payment before the session completes) that auto-expires in 23h;
+        // an immediate cancel racing the activation would eat a paid month.
+        throw new MembershipServiceError(
+          "membership_pending",
+          "Your first payment is still being confirmed. Try again in a moment."
+        );
+      }
+      if (isScheduledToCancel(subscription)) {
+        // Already in the requested state (a portal cancel, or a retry after a
+        // lost response): record it — no second mutation, no second email.
+        await upsertSubscriptionRow(subscription, customer, null);
+        return service.getMembership(userId);
+      }
+      const updated = await stripe.subscriptions.update(subscription.id, { cancel_at_period_end: true });
+      await upsertSubscriptionRow(updated, customer, null);
+      const email = await lookupActiveUserEmail(userId);
+      if (email) {
+        await sendChangedEmailBestEffort({ kind: "canceled", email, endsAt: currentPeriodEndOf(updated) });
+      }
+      return service.getMembership(userId);
+    },
+
+    async resumeMembership(userId) {
+      const { customer, subscription } = await loadOwnedLiveSubscription(userId);
+      if (!isScheduledToCancel(subscription)) {
+        await upsertSubscriptionRow(subscription, customer, null);
+        return service.getMembership(userId);
+      }
+      // Clear whichever form the schedule took (see isScheduledToCancel): the
+      // scheduled cancel_at first — how current API versions store a
+      // period-end cancel, including the portal's — then the legacy boolean
+      // if it is still set. Verify on the returned object; never report a
+      // resume Stripe did not perform.
+      let updated = subscription;
+      if (updated.cancel_at != null) {
+        updated = await stripe.subscriptions.update(updated.id, { cancel_at: "" });
+      }
+      if (updated.cancel_at_period_end === true) {
+        updated = await stripe.subscriptions.update(updated.id, { cancel_at_period_end: false });
+      }
+      if (isScheduledToCancel(updated)) {
+        console.error(
+          `[membership] subscription ${updated.id} still scheduled to cancel after clearing (cancel_at ${updated.cancel_at ?? "null"}, cancel_at_period_end ${updated.cancel_at_period_end})`
+        );
+        throw new MembershipServiceError(
+          "membership_update_failed",
+          "We couldn't resume your membership just now. Try again in a few minutes."
+        );
+      }
+      const row = await upsertSubscriptionRow(updated, customer, null);
+      const email = await lookupActiveUserEmail(userId);
+      if (email && row) {
+        await sendChangedEmailBestEffort({
+          kind: "resumed",
+          email,
+          monthlyAmountCents: row.monthlyAmountCents,
+          renewsAt: currentPeriodEndOf(updated),
+        });
+      }
+      return service.getMembership(userId);
     },
 
     async handleWebhookEvent({ rawBody, signatureHeader }) {
@@ -866,4 +1047,5 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
       return true;
     },
   };
+  return service;
 }

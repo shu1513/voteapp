@@ -191,6 +191,12 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
     if (error.code === "membership_exists") {
       return { statusCode: 409, code: "membership_exists", message: error.message };
     }
+    if (error.code === "no_membership") {
+      return { statusCode: 404, code: "not_found", message: error.message };
+    }
+    if (error.code === "membership_pending" || error.code === "membership_conflict") {
+      return { statusCode: 409, code: error.code, message: error.message };
+    }
     if (error.code === "no_billing_account") {
       return { statusCode: 404, code: "not_found", message: error.message };
     }
