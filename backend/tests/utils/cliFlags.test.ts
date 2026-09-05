@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   readPositiveIntegerFlag,
   readStrictFlagValue,
+  readStrictFlagValues,
   readStrictNonNegativeNumberFlag,
   readStrictPositiveIntegerFlag,
   readStrictRequiredFlagValue,
@@ -49,6 +50,27 @@ describe("readStrictFlagValue", () => {
   it("consumes the space-form value so it is not re-read as a flag", () => {
     // The value "--cache-dir" is consumed by --label; only the later real flag counts.
     expect(readStrictFlagValue(["--label", "x", "--cache-dir", "y"], "--cache-dir")).toBe("y");
+  });
+});
+
+describe("readStrictFlagValues", () => {
+  it("returns every occurrence in argv order, trimmed, from either form", () => {
+    expect(readStrictFlagValues(["--year=2024", "--year", " 2026 ", "--other=1", "--year=2022"], "--year")).toEqual([
+      "2024",
+      "2026",
+      "2022",
+    ]);
+  });
+
+  it("returns an empty list when the flag is absent", () => {
+    expect(readStrictFlagValues(["--other=1"], "--year")).toEqual([]);
+  });
+
+  it("rejects any occurrence given without a value", () => {
+    expect(() => readStrictFlagValues(["--year=2024", "--year"], "--year")).toThrow("Missing --year value");
+    expect(() => readStrictFlagValues(["--year="], "--year")).toThrow("Missing --year value");
+    expect(() => readStrictFlagValues(["--year", "--other"], "--year")).toThrow("Missing --year value");
+    expect(() => readStrictFlagValues(["--year", " "], "--year")).toThrow("Missing --year value");
   });
 });
 

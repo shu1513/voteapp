@@ -26,13 +26,13 @@ export function readPositiveIntegerFlag(argv: readonly string[], flagName: strin
 }
 
 /**
- * Strict value reader shared by the finance CLIs. Accepts `--flag value` and
- * `--flag=value`, trims the value, and throws on a flag given without a value
- * (missing, empty, or followed by another `--` token) and on a flag given
- * more than once, instead of silently taking the first occurrence. Returns
- * null when the flag is absent.
+ * Strict multi-value reader shared by the finance CLIs. Accepts `--flag value`
+ * and `--flag=value`, trims each value, and throws on a flag given without a
+ * value (missing, empty, or followed by another `--` token). Returns every
+ * occurrence in argv order, so repeatable flags read all of them; single-value
+ * flags go through readStrictFlagValue.
  */
-export function readStrictFlagValue(argv: readonly string[], flagName: string): string | null {
+export function readStrictFlagValues(argv: readonly string[], flagName: string): string[] {
   const inlinePrefix = `${flagName}=`;
   const values: string[] = [];
 
@@ -56,6 +56,16 @@ export function readStrictFlagValue(argv: readonly string[], flagName: string): 
     }
   }
 
+  return values;
+}
+
+/**
+ * Strict single-value reader over readStrictFlagValues: throws on a flag
+ * given more than once instead of silently taking the first occurrence.
+ * Returns null when the flag is absent.
+ */
+export function readStrictFlagValue(argv: readonly string[], flagName: string): string | null {
+  const values = readStrictFlagValues(argv, flagName);
   if (values.length > 1) {
     throw new Error(`Provide ${flagName} at most once`);
   }

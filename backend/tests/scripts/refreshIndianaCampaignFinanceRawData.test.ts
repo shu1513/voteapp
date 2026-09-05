@@ -26,7 +26,7 @@ describe("refreshIndianaCampaignFinanceRawData script", () => {
   it("rejects invalid flags", () => {
     expect(() => parseArgs(["--year=20x6"])).toThrow("Invalid --year value");
     expect(() => parseArgs(["--artifact-kind=unknown"])).toThrow("Invalid Indiana campaign finance artifact kind");
-    expect(() => parseArgs(["--cache-dir", "   "])).toThrow("Missing value for --cache-dir");
+    expect(() => parseArgs(["--cache-dir", "   "])).toThrow("Missing --cache-dir value");
     expect(() => parseArgs(["--url=http://example.test/file.zip"])).toThrow("Only https is allowed");
     expect(() => parseArgs(["--year=2026", "--year=2027"])).toThrow("Provide --year at most once");
     expect(() => parseArgs(["--year=2026", "--bogus"])).toThrow("Unknown Indiana campaign finance flag: --bogus");

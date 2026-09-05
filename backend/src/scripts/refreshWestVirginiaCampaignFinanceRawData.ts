@@ -29,6 +29,7 @@ import {
   westVirginiaScheduleYearsForElection,
 } from "../pipeline/westVirginiaFinance/westVirginiaReportingCycleWindows.js";
 import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
+import { readStrictFlagValues } from "../utils/cliFlags.js";
 
 export type RefreshWestVirginiaCampaignFinanceRawDataScriptOptions = {
   /** Candidate election years to refresh, deduped, in argument order. */
@@ -44,23 +45,8 @@ export type RefreshWestVirginiaCampaignFinanceRawDataScriptOptions = {
 const BOOLEAN_FLAGS = new Set(["--force", "--accept-empty"]);
 const VALUE_FLAGS = new Set(["--election-year", "--cache-dir", "--timeout-ms"]);
 
-function readValueFlags(args: readonly string[], name: string): string[] {
-  const values: string[] = [];
-  const prefix = `${name}=`;
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index]!;
-    if (arg.startsWith(prefix)) {
-      values.push(arg.slice(prefix.length).trim());
-    } else if (arg === name) {
-      values.push(args[index + 1]!.trim());
-      index += 1;
-    }
-  }
-  return values;
-}
-
 function readValueFlag(args: readonly string[], name: string): string | undefined {
-  const values = readValueFlags(args, name);
+  const values = readStrictFlagValues(args, name);
   if (values.length > 1) throw new Error(`Provide ${name} at most once`);
   return values[0];
 }
@@ -76,7 +62,7 @@ export function parseRefreshWestVirginiaCampaignFinanceRawDataScriptArgs(
   args: readonly string[]
 ): RefreshWestVirginiaCampaignFinanceRawDataScriptOptions {
   assertKnownCliFlags(args, "West Virginia CFRS raw data refresh", BOOLEAN_FLAGS, VALUE_FLAGS);
-  const electionYears = [...new Set(readValueFlags(args, "--election-year").map(parseElectionYear))];
+  const electionYears = [...new Set(readStrictFlagValues(args, "--election-year").map(parseElectionYear))];
   if (electionYears.length === 0) {
     electionYears.push(normalizeWestVirginiaArtifactYear(new Date().getUTCFullYear()));
   }

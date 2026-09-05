@@ -67,6 +67,10 @@ describe("refreshCaliforniaCampaignFinanceRawData script", () => {
     );
   });
 
+  it("rejects an empty inline value instead of reading it as an empty string", () => {
+    expect(() => parseRefreshCaliforniaCampaignFinanceRawDataScriptArgs(["--url="])).toThrow("Missing --url value");
+  });
+
   it("downloads a changed artifact into the cache and writes metadata", async () => {
     const cacheDir = await createTempDir();
     const zip = Buffer.from("fake zip");

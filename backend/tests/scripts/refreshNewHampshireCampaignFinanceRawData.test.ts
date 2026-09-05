@@ -39,4 +39,9 @@ describe("refreshNewHampshireCampaignFinanceRawData script", () => {
     );
     expect(() => parseArgs(["--force=true"])).toThrow("Boolean flag does not accept a value");
   });
+
+  it("rejects a flag given without a value instead of crashing on the missing token", () => {
+    expect(() => parseArgs(["--cache-dir"])).toThrow("Missing --cache-dir value");
+    expect(() => parseArgs(["--cache-dir", "--dry-run"])).toThrow("Missing --cache-dir value");
+  });
 });

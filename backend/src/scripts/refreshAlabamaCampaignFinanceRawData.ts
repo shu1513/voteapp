@@ -15,6 +15,7 @@ import {
   type AlabamaFcpaClientOptions,
 } from "../pipeline/alabamaFinance/alabamaFcpaClient.js";
 import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
+import { readStrictFlagValues } from "../utils/cliFlags.js";
 
 export type RefreshAlabamaCampaignFinanceRawDataScriptOptions = {
   /** Transaction-date years to refresh, deduped, in argument order. */
@@ -35,23 +36,8 @@ export type RefreshAlabamaCampaignFinanceRawDataScriptOptions = {
 const BOOLEAN_FLAGS = new Set(["--force", "--accept-empty"]);
 const VALUE_FLAGS = new Set(["--year", "--artifact-kind", "--cache-dir", "--timeout-ms"]);
 
-function readValueFlags(args: readonly string[], name: string): string[] {
-  const values: string[] = [];
-  const prefix = `${name}=`;
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index]!;
-    if (arg.startsWith(prefix)) {
-      values.push(arg.slice(prefix.length).trim());
-    } else if (arg === name) {
-      values.push(args[index + 1]!.trim());
-      index += 1;
-    }
-  }
-  return values;
-}
-
 function readValueFlag(args: readonly string[], name: string): string | undefined {
-  const values = readValueFlags(args, name);
+  const values = readStrictFlagValues(args, name);
   if (values.length > 1) throw new Error(`Provide ${name} at most once`);
   return values[0];
 }
@@ -70,7 +56,7 @@ export function parseRefreshAlabamaCampaignFinanceRawDataScriptArgs(
   // The bucket window spans transaction-date years (2024 rows live in the
   // 2024 file even for 2025-registered committees), so --year repeats to
   // refresh a whole window off one catalog read.
-  const yearValues = readValueFlags(args, "--year");
+  const yearValues = readStrictFlagValues(args, "--year");
   const years = [...new Set(yearValues.map(parseYear))];
   if (years.length === 0) {
     years.push(normalizeAlabamaExtractYear(new Date().getUTCFullYear()));

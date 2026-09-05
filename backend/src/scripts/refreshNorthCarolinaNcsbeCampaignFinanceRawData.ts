@@ -22,6 +22,7 @@ import {
   type NcsbeTransport,
 } from "../pipeline/northCarolinaFinance/northCarolinaNcsbeClient.js";
 import { NORTH_CAROLINA_SBOEID_PATTERN } from "../pipeline/northCarolinaFinance/northCarolinaNcsbeParsers.js";
+import { readStrictFlagValues } from "../utils/cliFlags.js";
 
 // Downloads one cycle of NCSBE campaign-finance artifacts into the local
 // cache (north_carolina_plan.md PR 4): per-committee document inventories and
@@ -77,7 +78,7 @@ function assertKnownRefreshScriptArgs(args: readonly string[]): void {
     }
     if (valueFlagNames.includes(name)) {
       if (arg === name) {
-        // The next token is this flag's value; readValueFlags validates it.
+        // The next token is this flag's value; readStrictFlagValues validates it.
         index += 1;
       }
       continue;
@@ -86,33 +87,8 @@ function assertKnownRefreshScriptArgs(args: readonly string[]): void {
   }
 }
 
-function readValueFlags(args: readonly string[], name: string): string[] {
-  const values: string[] = [];
-  const inlinePrefix = `${name}=`;
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index]!;
-    if (arg.startsWith(inlinePrefix)) {
-      const value = arg.slice(inlinePrefix.length).trim();
-      if (value.length === 0) {
-        throw new Error(`Missing value for ${name}`);
-      }
-      values.push(value);
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--") || next.trim().length === 0) {
-        throw new Error(`Missing value for ${name}`);
-      }
-      values.push(next.trim());
-      index += 1;
-    }
-  }
-  return values;
-}
-
 function readValueFlag(args: readonly string[], name: string): string | undefined {
-  const values = readValueFlags(args, name);
+  const values = readStrictFlagValues(args, name);
   if (values.length > 1) {
     throw new Error(`Provide ${name} at most once`);
   }
@@ -149,8 +125,8 @@ export function parseRefreshNorthCarolinaNcsbeRawDataScriptArgs(
   args: readonly string[]
 ): RefreshNorthCarolinaNcsbeRawDataScriptOptions {
   assertKnownRefreshScriptArgs(args);
-  const cycleYearValues = readValueFlags(args, "--cycle-year");
-  const yearValues = readValueFlags(args, "--year");
+  const cycleYearValues = readStrictFlagValues(args, "--cycle-year");
+  const yearValues = readStrictFlagValues(args, "--year");
   if (cycleYearValues.length > 0 && yearValues.length > 0) {
     throw new Error("Provide --cycle-year or --year, not both");
   }
@@ -164,7 +140,7 @@ export function parseRefreshNorthCarolinaNcsbeRawDataScriptArgs(
     DEFAULT_NCSBE_CACHE_DIR
   ).trim();
 
-  const committees = readValueFlags(args, "--committee").map(parseNcsbeCommitteeArg);
+  const committees = readStrictFlagValues(args, "--committee").map(parseNcsbeCommitteeArg);
   const seen = new Set<string>();
   for (const committee of committees) {
     if (seen.has(committee.sboeId)) {

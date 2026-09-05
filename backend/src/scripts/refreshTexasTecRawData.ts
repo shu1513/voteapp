@@ -11,6 +11,7 @@ import {
   refreshTexasTecCsvDatabaseArtifactCache,
 } from "../pipeline/texasFinance/texasTecCsvDatabaseArtifactCache.js";
 import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
+import { readStrictFlagValues } from "../utils/cliFlags.js";
 
 export { DEFAULT_TEXAS_TEC_CSV_DATABASE_CACHE_DIR };
 
@@ -21,35 +22,8 @@ export type RefreshTexasTecRawDataScriptOptions = {
   timeoutMs: number;
 };
 
-function readValueFlags(args: readonly string[], name: string): string[] {
-  const values: string[] = [];
-  const inlinePrefix = `${name}=`;
-
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index];
-    if (arg.startsWith(inlinePrefix)) {
-      const value = arg.slice(inlinePrefix.length).trim();
-      if (value.length === 0) {
-        throw new Error(`Missing value for ${name}`);
-      }
-      values.push(value);
-      continue;
-    }
-    if (arg === name) {
-      const next = args[index + 1];
-      if (!next || next.startsWith("--") || next.trim().length === 0) {
-        throw new Error(`Missing value for ${name}`);
-      }
-      values.push(next.trim());
-      index += 1;
-    }
-  }
-
-  return values;
-}
-
 function readValueFlag(args: readonly string[], name: string): string | undefined {
-  const values = readValueFlags(args, name);
+  const values = readStrictFlagValues(args, name);
   if (values.length > 1) {
     throw new Error(`Provide ${name} at most once`);
   }
