@@ -256,8 +256,8 @@ Full sync across scope; spot-audit 10 candidates cent-exact against covers; veri
 ### Phase 7 — flags, labels, prod (per new-state checklist)
 
 - Flags: code defaults false in `backend/src/config/featureFlags.ts`; document BOTH `KANSAS_CAMPAIGN_FINANCE_ENABLED` and `KANSAS_CAMPAIGN_FINANCE_SYNC_ENABLED` (`=false`) in the tracked `backend/.env.example` (alphabetical, next to the other state finance flags), set them `=true` in the operator's local untracked `backend/.env`, read flag to `render.yaml`.
-- Source label: new source in `backend/src/pipeline/address/ballotLookupFinanceShared.ts` AND `KANSAS_SOS: "Kansas Secretary of State / KPDC"` in `FINANCE_SOURCE_LABELS` (`packages/api-client/src/format.ts`, keeping key style consistent with `MISSOURI_MEC`/`OHIO_SOS`) plus the `financeSourceLabel` test in `format.test.ts`.
-- Loader registered in the ballot-lookup finance dispatch alongside the other states; typecheck + vitest green in backend and frontend/api-client.
+- Source label — DONE 2026-09-05: `KANSAS_SOS` in `backend/src/pipeline/address/ballotLookupFinanceShared.ts`, label `"Kansas Secretary of State"` in `FINANCE_SOURCE_LABELS` (`packages/api-client/src/format.ts`; the sibling `OHIO_SOS`/`MISSISSIPPI_SOS` form, no acronym on screen) and the viewer entry page in `FINANCE_SOURCE_HOME_URLS` (`packages/api-client/src/finance.ts`; the viewer has no per-report deep links), each with its test.
+- Loader — DONE 2026-09-05: `kansasBallotLookupFinanceLoader.ts` (standard loader over the `ks_*` tables, gated by `KANSAS_CAMPAIGN_FINANCE_ENABLED`, direct + outside coverage notes) registered as `KS` in the ballot-lookup finance dispatch.
 - Prod: apply migration, promote data per finance sync runbook; Render deploys are manual (POST full SHA).
 
 ## Fail-closed rules
