@@ -86,12 +86,14 @@ stored roll returned `no_crosswalk` 0 and 0 file errors in both sessions.
 134 House districts (253 candidates) and all 67 Senate districts (134 candidates), so the resolver
 was re-run and the crosswalk went from 48 mapped to 164. The 116 additions break down as:
 
-- **161 proposals, every one reviewed by hand and accepted.** 157 agree on the seat outright.
-  Four are sitting representatives moving up to the Senate district their own House district nests
-  inside, which is mechanical corroboration in Minnesota: Mike Freiberg (HD-043B to SD-043),
-  Ben Bakeberg (HD-054B to SD-054), Steven Jacob (HD-020B to SD-020) and Mike Wiener (HD-005B to
-  SD-005). Four matched on a weaker first-name prefix but on the same seat and were accepted:
-  Ronald/Ron Latz, Joshua/Josh Heintzeman, Cal/Calvin Bahr and Pete/Peter Johnson.
+- **161 proposals, every one reviewed by hand and accepted.** 154 agree on the seat outright.
+  The other seven are sitting representatives moving up to the Senate district their own House
+  district nests inside, which is mechanical corroboration in Minnesota: Mike Wiener (HD-005B to
+  SD-005), Bernie Perryman (HD-014A to SD-014), Steven Jacob (HD-020B to SD-020), Tom Dippel
+  (HD-041B to SD-041), Mike Freiberg (HD-043B to SD-043), Liz Reyer (HD-052A to SD-052) and
+  Ben Bakeberg (HD-054B to SD-054). Four of the 161 matched on a weaker first-name prefix but on
+  the same seat and were accepted: Ronald/Ron Latz, Joshua/Josh Heintzeman, Cal/Calvin Bahr and
+  Pete/Peter Johnson.
 - **2 more hand-added members of the nickname class**, alongside Scott Dibble below. LegiScan
   carries the legal first name and the ballot carries the working name, and the proposer reads
   neither: **Alicia Kozlowski, House District 8B**, who appears on the 2026 ballot as Liish
