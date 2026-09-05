@@ -39,10 +39,12 @@ export type LegiscanStateConfig = {
   // kept). Checked before keptQuestions.
   excludedQuestions: readonly RegExp[];
   // Roll calls the survey proved WRONG (LegiScan's tally or member list
-  // disagrees with the state's own record), keyed by roll_call_id with the
-  // reason. Stored and surfaced (is_floor_vote null) but never queued, so
-  // they cannot be approved by mistake. Remove an entry only after the
-  // roll has been re-verified against the state's record.
+  // disagrees with the state's own record) or whose caption hides a
+  // procedural motion the state's bill history names (Minnesota's
+  // bill-number captions), keyed by roll_call_id with the reason. Stored
+  // and surfaced (is_floor_vote null) but never queued, so they cannot be
+  // approved by mistake. Remove an entry only after the roll has been
+  // re-verified against the state's record.
   heldRollCallIds?: Readonly<Record<number, string>>;
 };
 
@@ -2984,6 +2986,19 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // chamber. Never describe one of these rolls from the caption. Florida's
   // and Connecticut's feeds have the same shape.
   //
+  // That history match was done for every DIVIDED bill-number roll in the
+  // regular session (15 rolls, 9 bills, revisor.mn.gov bill status pages,
+  // 2026-09-04). Eight are the chamber's vote on the measure (passage or
+  // repassage on a conference report; HF 2115's failed conference-report
+  // adoption is a vote on the measure too and is left alone). Seven are
+  // procedural motions, and those are pinned in `heldRollCallIds` below so
+  // the caption rule cannot queue them. Two of the seven are also wrong in
+  // the feed: LegiScan prints `passed: 1` on a rules-suspension motion that
+  // won a majority but not the two thirds it needed, so `result` says
+  // Passed where Minnesota says the motion did not prevail. The unanimous
+  // bill-number rolls were not matched: they can never be selected. Redo
+  // the match for any new bill-number roll a later dataset adds.
+  //
   // ⚠ FEED GAP, LARGE: this dataset was cut 2026-08-16 and its bill
   // histories carry 11,889 actions from 2026, including 292 that record a
   // bill passing a chamber — but the dataset holds NO roll call dated after
@@ -3008,6 +3023,18 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     chamberSizes: { house: 134, senate: 67 },
     keptQuestions: MINNESOTA_KEPT_QUESTIONS,
     excludedQuestions: MINNESOTA_EXCLUDED_QUESTIONS,
+    // The divided bill-number-caption rolls whose bill history names a
+    // procedural motion (see the note above). Value = what Minnesota's
+    // history says the roll was.
+    heldRollCallIds: {
+      1545590: "HF 20 House 2025-04-10: motion to take from table, did not prevail 67-67",
+      1571834: "HF 3023 House 2025-05-14: motion to suspend rules, did not prevail 70-63 (90 needed); LegiScan says passed",
+      1573116: "HF 3023 House 2025-05-18: motion to take from the table the motion to place on the calendar, did not prevail 67-67",
+      1573117: "HF 3023 House 2025-05-18: motion to take from the table the motion to place on the calendar, did not prevail 67-67",
+      1573118: "HF 3023 House 2025-05-18: motion to take from the table the motion to place on the calendar, did not prevail 67-67",
+      1574181: "SF 856 House 2025-05-19: motion to lay on the table, did not prevail 65-68",
+      1574182: "SF 856 House 2025-05-19: motion to suspend rules, did not prevail 70-63 (two thirds needed); LegiScan says passed",
+    },
   },
 
   // Minnesota's 2025 First Special Session (June 9 2025), which passed the

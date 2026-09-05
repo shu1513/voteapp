@@ -16,7 +16,7 @@ the two are told apart by the session number in each evidence file name.
 | Bills | 10,590 | 48 |
 | Roll calls | 277 | 50 |
 | Stored rows | 260 | 49 |
-| Kept floor votes | 186 | 31 |
+| Kept floor votes | 181 (186 before the seven holds below) | 31 |
 | Divided and enacted | 26 rolls / 16 measures | 25 rolls / 14 measures |
 | House share of that pool | 5 rolls | 11 rolls |
 
@@ -47,6 +47,30 @@ HF 2115 is the clean example. Roll 1573202 and roll 1574164 wear the identical c
 first is the failed motion to adopt the conference report (67-67) and the second is the
 repassage that made it law (124-10). Only that bill's own history, read for that date and that
 chamber, separates them. **Never write a description of one of these rolls from its caption.**
+
+Every divided bill-number roll in the regular session was matched to its bill history on
+revisor.mn.gov (15 rolls over 9 bills, 2026-09-04). Eight are the chamber's vote on the measure.
+Seven are procedural motions, and those seven are pinned in the config's `heldRollCallIds`, so
+the fetch stores them with `is_floor_vote` null and nothing can queue or approve them:
+
+| roll | bill | date | tally | what the history says |
+|---|---|---|---|---|
+| 1545590 | HF 20 | 2025-04-10 | 67-67 | motion to take from table, did not prevail |
+| 1571834 | HF 3023 | 2025-05-14 | 70-63 | motion to suspend rules, did not prevail (90 needed); **LegiScan prints `passed: 1`** |
+| 1573116 | HF 3023 | 2025-05-18 | 67-67 | motion to take from the table the motion to place on the calendar, did not prevail |
+| 1573117 | HF 3023 | 2025-05-18 | 67-67 | same motion, second attempt |
+| 1573118 | HF 3023 | 2025-05-18 | 67-67 | same motion, third attempt |
+| 1574181 | SF 856 | 2025-05-19 | 65-68 | motion to lay on the table, did not prevail |
+| 1574182 | SF 856 | 2025-05-19 | 70-63 | motion to suspend rules, did not prevail (two thirds needed); **LegiScan prints `passed: 1`** |
+
+Five of the seven are stored rows; the fetch had already collapsed 1573117 and 1573118 as
+identity duplicates of 1573116 (same tally, same member list), so they were never stored. The
+re-fetch that applied the holds is run `rollcall-legiscan-fetch-mn-20260905T013455Z` (5 rows
+updated, 255 unchanged; 181 kept floor votes, 6 surfaced: the five holds and the blank
+description below).
+
+The unanimous bill-number rolls were not matched because they can never be selected. A later
+dataset that adds bill-number rolls needs the same match before any of them is judged.
 
 One roll is deliberately left unmatched: roll 1556487 on HF 2431 has the description `House:`
 and nothing more. The history says the House passed the bill 132-0. No pattern can recover a

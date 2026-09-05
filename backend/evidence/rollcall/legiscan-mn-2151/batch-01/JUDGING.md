@@ -59,9 +59,13 @@ Three sections, all read:
    are the subject of a maltreatment report under section 626.557 or chapter 260E; disclosure a
    participant reasonably believed necessary to prevent reasonably certain death, great bodily
    harm, or commission of a crime; and evidence of professional misconduct by a participant
-   acting under a professional or occupational license. Two savings clauses follow: a court that
-   ordered participation may be told whether the person took part, and evidence otherwise
-   admissible does not become inadmissible because it was discussed in a restorative practice.
+   acting under a professional or occupational license. Two savings clauses follow, paragraphs
+   (c) and (d): a court that ordered participation may be told whether the person took part, and
+   evidence otherwise admissible or discoverable does not become protected because it was
+   discussed or used in a restorative practice. **Both are in the description**, in one sentence,
+   because without them the shield reads as absolute: a reader could conclude that bringing
+   existing evidence into a meeting hides it from court, which is the opposite of what
+   paragraph (d) says.
 
 **Label: `public_safety_and_crime_control`, yea "for", nay null.** The area covers "prevention
 ... and justice system performance", and protecting the confidentiality of a court-connected
@@ -81,9 +85,11 @@ this measure is house-only by the gate, not by choice.
   Flesch-Kincaid 8.7 and 8.9 for HF 1, 9.9 for SF 2200. SF 2200 sits higher because "restorative
   justice", "criminal" and "professional" cannot be replaced without losing the statute's terms;
   its meaning is glossed in a following sentence instead.
-- **Sentence count**: HF 1 is 4 sentences, SF 2200 is 6. SF 2200 exceeds the 2-4 guidance
-  deliberately — it names three statutory exceptions, and dropping them is the omission defect
-  that forced correction rounds in Maryland, Pennsylvania and Connecticut.
+- **Sentence count**: HF 1 is 4 sentences, SF 2200 is 7. SF 2200 exceeds the 2-4 guidance
+  deliberately — it names three statutory exceptions and the two savings clauses, and dropping
+  them is the omission defect that forced correction rounds in Maryland, Pennsylvania and
+  Connecticut. The savings-clause sentence was added after review; it left the reading grade
+  where it was (9.8 by the same heuristic, before and after).
 - Body and tail joined **with a period**; the builder asserts `", The "` appears in no
   description.
 - American spelling checked over the descriptions and these notes.
@@ -97,13 +103,18 @@ Two runs, one per session, because the importer selects evidence by session id.
 
 | run | ledger | rolls | records | stamp |
 |---|---|---|---|---|
-| regular session 2151 | `import-2151-report.json` | 1 | 3 | 2026-09-04T20:22:26.399Z |
+| regular session 2151 | `import-2151-report.json` | 1 | 3 | 2026-09-05T01:37:12.556Z (re-run; first import 2026-09-04T20:22:26.399Z) |
 | special session 2217 | `import-2217-report.json` | 2 | 25 | 2026-09-04T20:22:27.242Z |
 
 Reconciled three ways: the dry run planned 3 and 25; the real runs imported 3 and 25; the
 database holds **28 live records across 25 candidates with 28 tags**. Both convergence dry runs
 report every record unchanged (`import-2151-convergence-report.json`,
 `import-2217-convergence-report.json`). 0 errors, 0 notified, 0 related flags, 0 ambiguous.
+
+After the SF 2200 descriptions gained the savings-clause sentence, session 2151 was re-judged
+(`rollcall:judge`, roll 1570373 `updated`) and re-imported: the run rewrote the 3 SF 2200 records
+(`rewrite: 3`) and a fresh convergence dry run again reports all 3 unchanged. Session 2217 was not
+touched.
 
 Tag arithmetic checks out per roll: HF 1's senate roll tagged all 22 mapped members (12 yea
 voters "against", 10 nay voters "for") because its nay side is stated; HF 1's house roll tagged

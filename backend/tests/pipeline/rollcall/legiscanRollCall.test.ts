@@ -1257,6 +1257,26 @@ describe("Minnesota's measured desc vocabulary", () => {
     }
   });
 
+  it("holds the bill-number rolls whose history names a procedural motion", () => {
+    // Roll 1574182 on SF 856 wears the same caption as a repassage, but the
+    // House history says it was a motion to suspend the rules that fell
+    // short of two thirds — and LegiScan still prints `passed: 1` on it.
+    expect(
+      classifyLegiscanRollCall({
+        desc: "House: S.F. NO. 856",
+        total: 133,
+        chamber: "house",
+        billType: "B",
+        config,
+        rollCallId: 1574182,
+      })
+    ).toMatchObject({ isFloorVote: null, questionClass: null, reason: expect.stringMatching(/^held:SF 856/) });
+    // The same caption under an unheld id still classifies as before.
+    expect(
+      classifyLegiscanRollCall({ desc: "House: S.F. NO. 856", total: 133, chamber: "house", billType: "B", config, rollCallId: 1 })
+    ).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+  });
+
   it("surfaces the one blank House description rather than guessing at it", () => {
     // Roll 1556487 on HF 2431. The history says the House passed the bill
     // 132-0, but the description is the bare word `House:`.

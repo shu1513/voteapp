@@ -2,8 +2,8 @@
   "importerVersion": "rollcall-legiscan-import-v1",
   "dryRun": false,
   "skipExisting": false,
-  "startedAt": "2026-09-04T20:22:26.399Z",
-  "finishedAt": "2026-09-04T20:22:26.768Z",
+  "startedAt": "2026-09-05T01:37:12.556Z",
+  "finishedAt": "2026-09-05T01:37:13.606Z",
   "jurisdiction": "MN",
   "sessionId": 2151,
   "evidenceDir": "evidence/rollcall/legiscan-mn-2151/batch-01",
@@ -17,7 +17,7 @@
     "imported": 1
   },
   "actions": {
-    "insert": 3
+    "rewrite": 3
   },
   "notified": 0,
   "rolls": [
@@ -35,7 +35,7 @@
       "officialVoteDate": null,
       "measureId": "SF 2200",
       "question": "House: Passage",
-      "originRunId": "rollcall:MN:house:2151:1570373:2026-09-04T20:22:26.399Z",
+      "originRunId": "rollcall:MN:house:2151:1570373:2026-09-05T01:37:12.556Z",
       "members": 134,
       "notVoting": 0,
       "absent": 0,
@@ -45,7 +45,7 @@
         "out_of_scope": 5
       },
       "actions": {
-        "insert": 3
+        "rewrite": 3
       },
       "notified": 0,
       "candidates": [
@@ -55,7 +55,7 @@
           "peopleId": 14366,
           "memberName": "Mike Freiberg",
           "side": "yea",
-          "action": "insert",
+          "action": "rewrite",
           "recordId": "9af80b9a-5bb2-40ff-b073-826c45e87d8a",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -67,7 +67,7 @@
           "peopleId": 23674,
           "memberName": "Samantha Sencer-Mura",
           "side": "yea",
-          "action": "insert",
+          "action": "rewrite",
           "recordId": "6bde19b4-c4ec-4a37-af4b-649c7459c9fd",
           "ambiguousRecordIds": [],
           "notified": false,
@@ -79,7 +79,7 @@
           "peopleId": 23677,
           "memberName": "Ben Bakeberg",
           "side": "yea",
-          "action": "insert",
+          "action": "rewrite",
           "recordId": "09959442-0f02-4912-833d-d3b084e5e1f4",
           "ambiguousRecordIds": [],
           "notified": false,
