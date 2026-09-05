@@ -1,1038 +1,1038 @@
 {
- "source": "legiscan",
- "jurisdiction": "MN",
- "session_id": 2151,
- "note": "people_id -> VoteApp candidate id for the Minnesota 94th Legislature. One file serves both Minnesota sessions in scope (the 2025-2026 regular session, LegiScan 2151, and the 2025 First Special Session, LegiScan 2217) because LegiScan people_ids are stable across sessions. Mapped entries are the proposer's 47 matches, each checked by hand, plus one member the proposer cannot reach. Minnesota nests House districts nnA and nnB inside Senate district nn, which is how every sitting representative running for the Senate was corroborated. Every unmapped entry carries the reason it is null. The proposals were run with --scope-from 2026-08-01 so that members whose only stored 2026 contest is the August 11 primary are reviewed here rather than left unexamined; whether they receive records is the importer's --scope-from decision, not this file's.",
- "entries": [
-  {
-   "people_id": 6301,
-   "candidate_id": "fb5339d7-7977-488d-a88c-63d2025f5500",
-   "note": "Erin Murphy, SD-064 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Erin Murphy / Erin Murphy)"
-  },
-  {
-   "people_id": 6306,
-   "candidate_id": "9c8a2557-7409-48ec-9f10-68983c7985bd",
-   "note": "Bobby Champion, SD-059 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Bobby Champion / Bobby Joe Champion)"
-  },
-  {
-   "people_id": 6307,
-   "candidate_id": null,
-   "note": "Rick Hansen, HD-053B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 6321,
-   "candidate_id": null,
-   "note": "Leon Lillie, HD-044B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 6344,
-   "candidate_id": null,
-   "note": "Melissa Hortman, HD-034B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 6367,
-   "candidate_id": null,
-   "note": "Tina Liebling, HD-024B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 6374,
-   "candidate_id": null,
-   "note": "Paul Torkelson, HD-015B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 6381,
-   "candidate_id": null,
-   "note": "Paul H. Anderson, HD-012A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 6384,
-   "candidate_id": null,
-   "note": "Steve Drazkowski, SD-020 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 6387,
-   "candidate_id": null,
-   "note": "Bruce Anderson, SD-029 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 6392,
-   "candidate_id": null,
-   "note": "Gregory Davids, HD-026B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 6403,
-   "candidate_id": "4bb24bc6-687b-40ed-8243-340c352d0868",
-   "note": "Torrey Westrom, SD-012 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Torrey Westrom / Torrey Westrom)"
-  },
-  {
-   "people_id": 6407,
-   "candidate_id": null,
-   "note": "Peggy Scott, HD-031B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 6408,
-   "candidate_id": "db0d6537-89f3-4cc1-8855-4f12f4404fad",
-   "note": "Jim Abeler, SD-035 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Jim Abeler / Jim Abeler)"
-  },
-  {
-   "people_id": 6430,
-   "candidate_id": null,
-   "note": "Ann Rest, SD-043 in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 6436,
-   "candidate_id": "0e379f23-a922-46b8-97e4-cc643642af9a",
-   "note": "David Dibble, SD-061 in the 94th Legislature; hand-added: LegiScan stores the legal first name (`David`) in `first_name` and the working name `Scott` in `nickname`, which the proposer reads neither of; seat SD-061 agrees with the candidate's Senate District 61 row"
-  },
-  {
-   "people_id": 6439,
-   "candidate_id": null,
-   "note": "Ronald Latz, SD-046 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 6444,
-   "candidate_id": "ee0da28d-3e4b-4574-b848-ade38728d8fc",
-   "note": "John Marty, SD-040 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (John Marty / John Marty)"
-  },
-  {
-   "people_id": 6447,
-   "candidate_id": null,
-   "note": "James Carlson, SD-052 in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 6458,
-   "candidate_id": null,
-   "note": "Warren Limmer, SD-037 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 6483,
-   "candidate_id": null,
-   "note": "Sandra Pappas, SD-065 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 10511,
-   "candidate_id": null,
-   "note": "Duane Quam, HD-024A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 10515,
-   "candidate_id": null,
-   "note": "Chris Swedzinski, HD-015A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 10520,
-   "candidate_id": null,
-   "note": "Mary Franson, HD-012B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 10522,
-   "candidate_id": "267ea9e6-5fed-46f2-a05b-ac2a3126f034",
-   "note": "Glenn Gruenhagen, SD-017 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Glenn Gruenhagen / Glenn Gruenhagen)"
-  },
-  {
-   "people_id": 10524,
-   "candidate_id": null,
-   "note": "Tim O'Driscoll, HD-013B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 10860,
-   "candidate_id": null,
-   "note": "Joe McDonald, HD-029A in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 10861,
-   "candidate_id": null,
-   "note": "Joe Schomacker, HD-021A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 10866,
-   "candidate_id": "95e238cf-4eff-4736-8d48-502587235b01",
-   "note": "John Hoffman, SD-034 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (John Hoffman / John Hoffman)"
-  },
-  {
-   "people_id": 10869,
-   "candidate_id": null,
-   "note": "Gary Dahms, SD-015 in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 10870,
-   "candidate_id": null,
-   "note": "Carla Nelson, SD-024 in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 10874,
-   "candidate_id": null,
-   "note": "Jeremy Miller, SD-026 in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 14365,
-   "candidate_id": null,
-   "note": "Peter Fischer, HD-044A in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 14366,
-   "candidate_id": "e539007b-603c-4124-bcaa-c720defd5593",
-   "note": "Mike Freiberg, HD-043B in the 94th Legislature; sitting representative running in Senate District 43, which contains House District 43B; name matched first_and_last (Mike Freiberg / Mike Freiberg)"
-  },
-  {
-   "people_id": 14838,
-   "candidate_id": null,
-   "note": "Jeff Howe, SD-013 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 14839,
-   "candidate_id": null,
-   "note": "Ron Kresha, HD-010A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 15070,
-   "candidate_id": "7bf255d0-aaad-4634-b911-ca916ea03f27",
-   "note": "Karin Housley, SD-033 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Karin Housley / Karin Housley)"
-  },
-  {
-   "people_id": 15072,
-   "candidate_id": null,
-   "note": "Eric Pratt, SD-054 in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 15367,
-   "candidate_id": "ac63a977-5461-417f-b756-09a5e804794f",
-   "note": "Steve Green, SD-002 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Steve Green / Steve Green)"
-  },
-  {
-   "people_id": 15369,
-   "candidate_id": "60c9f515-01b9-48f4-b84e-e14417422c9a",
-   "note": "Foung Hawj, SD-067 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Foung Hawj / Foung Hawj)"
-  },
-  {
-   "people_id": 15371,
-   "candidate_id": null,
-   "note": "Bill Weber, SD-021 in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 15436,
-   "candidate_id": null,
-   "note": "Melissa Wiklund, SD-051 in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 15471,
-   "candidate_id": null,
-   "note": "Marion Rarick, HD-029B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 16544,
-   "candidate_id": null,
-   "note": "Jeff Backer, HD-009A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 16545,
-   "candidate_id": null,
-   "note": "Dave Baker, HD-016B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 16546,
-   "candidate_id": null,
-   "note": "Peggy Bennett, HD-023A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 16548,
-   "candidate_id": "59bd4c8d-bbd8-44c9-8c15-c57d6774be4b",
-   "note": "Joshua Heintzeman, HD-006B in the 94th Legislature; same seat, written differently by the two sources; name matched first_prefix (Joshua Heintzeman / Josh Heintzeman)"
-  },
-  {
-   "people_id": 16550,
-   "candidate_id": null,
-   "note": "Jon Koznick, HD-057A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 16553,
-   "candidate_id": null,
-   "note": "Jim Nash, HD-048A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 16555,
-   "candidate_id": "a8807927-ddf5-4b6c-bb93-3e6d913c0f56",
-   "note": "Jason Rarick, SD-011 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Jason Rarick / Jason Rarick)"
-  },
-  {
-   "people_id": 16700,
-   "candidate_id": "4e407146-7866-484a-b055-e87731712132",
-   "note": "Eric Lucero, SD-030 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Eric Lucero / Eric Lucero)"
-  },
-  {
-   "people_id": 16705,
-   "candidate_id": null,
-   "note": "Cheryl Youakim, HD-046B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 17034,
-   "candidate_id": null,
-   "note": "Dave Pinto, HD-064B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 18340,
-   "candidate_id": null,
-   "note": "Steve Cwodzinski, SD-049 in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 18341,
-   "candidate_id": null,
-   "note": "Rich Draheim, SD-022 in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 18342,
-   "candidate_id": null,
-   "note": "Justin Eichorn, SD-006 in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 18343,
-   "candidate_id": "7e3edd87-ad41-4f35-968a-24e29280554d",
-   "note": "Nick Frentz, SD-018 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Nick Frentz / Nick Frentz)"
-  },
-  {
-   "people_id": 18345,
-   "candidate_id": null,
-   "note": "Matt Klein, SD-053 in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 18346,
-   "candidate_id": "97820d36-80d8-4177-a2dd-82e2ee835efd",
-   "note": "Mark Koran, SD-028 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Mark Koran / Mark Koran)"
-  },
-  {
-   "people_id": 18347,
-   "candidate_id": "c51a575f-c3d6-45ec-863b-650a1c7ac26c",
-   "note": "Andrew Lang, SD-016 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Andrew Lang / Andrew Lang)"
-  },
-  {
-   "people_id": 18349,
-   "candidate_id": "b46915a9-15db-4dbd-84d3-4b14c8d3899f",
-   "note": "Andrew Mathews, SD-027 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Andrew Mathews / Andrew Mathews)"
-  },
-  {
-   "people_id": 18351,
-   "candidate_id": null,
-   "note": "Paul Utke, SD-005 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 18352,
-   "candidate_id": null,
-   "note": "John Jasinski, SD-019 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 18397,
-   "candidate_id": "4e7a08bd-d8d6-4067-816a-f2c825b15d98",
-   "note": "Mary Kunesh-Podein, SD-039 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Mary Kunesh-Podein / Mary Kunesh-Podein)"
-  },
-  {
-   "people_id": 18398,
-   "candidate_id": null,
-   "note": "Fue Lee, HD-059A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 18399,
-   "candidate_id": null,
-   "note": "Erin Maye Quade, SD-056 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 18507,
-   "candidate_id": "20b5a21b-0e6e-4897-8b64-58dd817591c3",
-   "note": "Cal Bahr, SD-031 in the 94th Legislature; seat agrees with the candidate row; name matched first_prefix (Cal Bahr / Calvin Bahr)"
-  },
-  {
-   "people_id": 18510,
-   "candidate_id": null,
-   "note": "Erin Koegel, HD-039A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 18560,
-   "candidate_id": null,
-   "note": "Matt Bliss, HD-002B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 18564,
-   "candidate_id": null,
-   "note": "Nolan West, HD-032A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 19400,
-   "candidate_id": "056a5e6a-b598-426a-822c-f19007c494d5",
-   "note": "Mark Johnson, SD-001 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Mark Johnson / Mark Johnson)"
-  },
-  {
-   "people_id": 20437,
-   "candidate_id": null,
-   "note": "Patty Acomb, HD-045B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 20438,
-   "candidate_id": null,
-   "note": "Kristin Bahner, HD-037B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 20443,
-   "candidate_id": null,
-   "note": "Steve Elkins, HD-050B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 20444,
-   "candidate_id": null,
-   "note": "Aisha Gomez, HD-062A in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 20446,
-   "candidate_id": null,
-   "note": "Kaohly Her, HD-064A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 20447,
-   "candidate_id": null,
-   "note": "Michael Howard, HD-051A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 20448,
-   "candidate_id": null,
-   "note": "John Huot, HD-056B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 20449,
-   "candidate_id": null,
-   "note": "Ginny Klevorn, HD-042B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 20450,
-   "candidate_id": null,
-   "note": "Carlie Kotyza-Witthuhn, HD-049B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 20453,
-   "candidate_id": null,
-   "note": "Jamie Long, HD-061B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 20454,
-   "candidate_id": null,
-   "note": "Alice Mann, SD-050 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 20455,
-   "candidate_id": null,
-   "note": "Kelly Moller, HD-040A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 20457,
-   "candidate_id": null,
-   "note": "Mohamud Noor, HD-060B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 20460,
-   "candidate_id": null,
-   "note": "Zack Stephenson, HD-035A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 20461,
-   "candidate_id": null,
-   "note": "Brad Tabke, HD-054A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 20462,
-   "candidate_id": null,
-   "note": "Samantha Vang, HD-038B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 20464,
-   "candidate_id": null,
-   "note": "Dan Wolgamott, HD-014B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 20465,
-   "candidate_id": null,
-   "note": "Jay Xiong, HD-067B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 20466,
-   "candidate_id": null,
-   "note": "Tou Xiong, SD-044 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 20621,
-   "candidate_id": null,
-   "note": "Robert Bierman, HD-056A in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 20623,
-   "candidate_id": null,
-   "note": "Shane Mekeland, HD-027A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 20897,
-   "candidate_id": null,
-   "note": "Lisa Demuth, HD-013A in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 21063,
-   "candidate_id": null,
-   "note": "Kristin Robbins, HD-037A in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 21346,
-   "candidate_id": null,
-   "note": "Nathan Nelson, HD-011B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 21605,
-   "candidate_id": null,
-   "note": "Sydney Jordan, HD-060A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 21606,
-   "candidate_id": null,
-   "note": "Paul Novotny, HD-030B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 22139,
-   "candidate_id": null,
-   "note": "Esther Agbaje, HD-059B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 22140,
-   "candidate_id": "6f9be086-b462-48e8-8143-8286cacb21d0",
-   "note": "Liz Boldon, SD-025 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Liz Boldon / Liz Boldon)"
-  },
-  {
-   "people_id": 22141,
-   "candidate_id": "8120ac72-63da-4ba9-a239-7afa7fc90b25",
-   "note": "Julia Coleman, SD-048 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Julia Coleman / Julia Coleman)"
-  },
-  {
-   "people_id": 22142,
-   "candidate_id": null,
-   "note": "Cedrick Frazier, HD-043A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 22143,
-   "candidate_id": null,
-   "note": "Emma Greenman, HD-063B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 22144,
-   "candidate_id": null,
-   "note": "Heather Keeler, HD-004A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 22145,
-   "candidate_id": null,
-   "note": "Bjorn Olson, HD-022A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 22209,
-   "candidate_id": "23e1df82-60e7-4692-b60d-6a1dcc21563a",
-   "note": "Zach Duckworth, SD-057 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Zach Duckworth / Zach Duckworth)"
-  },
-  {
-   "people_id": 22210,
-   "candidate_id": "6df7346a-83f2-4868-b6e4-79435ee073aa",
-   "note": "Jen McEwen, SD-008 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Jen McEwen / Jen McEwen)"
-  },
-  {
-   "people_id": 22211,
-   "candidate_id": "41283066-3fb7-4b33-8c93-b49385638223",
-   "note": "Aric Putnam, SD-014 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Aric Putnam / Aric Putnam)"
-  },
-  {
-   "people_id": 22267,
-   "candidate_id": null,
-   "note": "Kaela Berg, HD-055B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 22268,
-   "candidate_id": null,
-   "note": "Jessica Hanson, HD-055A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 22269,
-   "candidate_id": null,
-   "note": "Athena Hollins, HD-066B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 22270,
-   "candidate_id": null,
-   "note": "Spencer Igo, HD-007A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 22272,
-   "candidate_id": "d6630004-3453-4827-9a9f-29e464adb553",
-   "note": "Liz Reyer, HD-052A in the 94th Legislature; sitting representative running in Senate District 52, which contains House District 52A; name matched first_and_last (Liz Reyer / Liz Reyer)"
-  },
-  {
-   "people_id": 22442,
-   "candidate_id": null,
-   "note": "Gene Dornink, SD-023 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 22443,
-   "candidate_id": null,
-   "note": "Omar Fateh, SD-062 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 22444,
-   "candidate_id": "d53fc5fe-13f1-42ae-bbdc-245872f5ff96",
-   "note": "Ann Johnson Stewart, SD-045 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Ann Johnson Stewart / Ann Johnson Stewart)"
-  },
-  {
-   "people_id": 22445,
-   "candidate_id": "165f18f1-5c73-4a84-b2a2-0e804dfd5004",
-   "note": "Lindsey Port, SD-055 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Lindsey Port / Lindsey Port)"
-  },
-  {
-   "people_id": 22498,
-   "candidate_id": null,
-   "note": "John Burkel, HD-001A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 22499,
-   "candidate_id": null,
-   "note": "Sandra Feist, HD-039B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 22575,
-   "candidate_id": null,
-   "note": "Patricia Mueller, HD-023B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 22651,
-   "candidate_id": null,
-   "note": "Luke Frederick, HD-018B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 22653,
-   "candidate_id": "d66accfa-beab-4f37-9c25-fe287db246cb",
-   "note": "Jordan Rasmusson, SD-009 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Jordan Rasmusson / Jordan Rasmusson)"
-  },
-  {
-   "people_id": 23575,
-   "candidate_id": "48b05c06-361e-44d9-8d28-b35162c82d69",
-   "note": "Heather Gustafson, SD-036 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Heather Gustafson / Heather Gustafson)"
-  },
-  {
-   "people_id": 23576,
-   "candidate_id": "5efca3e0-9042-453b-8676-2c1529b2994b",
-   "note": "Grant Hauschild, SD-003 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Grant Hauschild / Grant Hauschild)"
-  },
-  {
-   "people_id": 23577,
-   "candidate_id": "277bf112-1e21-46ee-b74c-d61837e47974",
-   "note": "Rob Kupec, SD-004 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Rob Kupec / Rob Kupec)"
-  },
-  {
-   "people_id": 23578,
-   "candidate_id": "7a7400a6-e4c2-445a-860f-31c38d758c92",
-   "note": "Zaynab Mohamed, SD-063 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Zaynab Mohamed / Zaynab Mohamed)"
-  },
-  {
-   "people_id": 23579,
-   "candidate_id": "daddbcd8-345c-4eb7-bb69-f7a265679b81",
-   "note": "Clare Oumou Verbeten, SD-066 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Clare Oumou Verbeten / Clare Oumou Verbeten)"
-  },
-  {
-   "people_id": 23580,
-   "candidate_id": null,
-   "note": "Susan Pha, SD-038 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 23581,
-   "candidate_id": "97feef8f-fcf9-4030-83b8-2936cf096209",
-   "note": "Judy Seeberger, SD-041 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Judy Seeberger / Judy Seeberger)"
-  },
-  {
-   "people_id": 23582,
-   "candidate_id": "20df7241-1405-459b-a74a-e34e22147aab",
-   "note": "Bonnie Westlin, SD-042 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Bonnie Westlin / Bonnie Westlin)"
-  },
-  {
-   "people_id": 23654,
-   "candidate_id": null,
-   "note": "Ned Carroll, HD-042A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23655,
-   "candidate_id": null,
-   "note": "Ethan Cha, HD-047B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23656,
-   "candidate_id": null,
-   "note": "Mary Clardy, HD-053A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23657,
-   "candidate_id": null,
-   "note": "Nathan Coulter, HD-051B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23658,
-   "candidate_id": null,
-   "note": "Brion Curran, HD-036B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23659,
-   "candidate_id": null,
-   "note": "Ben Davis, HD-006A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23660,
-   "candidate_id": "1560a767-1147-4a1e-8701-07b2869a19ae",
-   "note": "Robert Farnsworth, SD-007 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Robert Farnsworth / Robert Farnsworth)"
-  },
-  {
-   "people_id": 23661,
-   "candidate_id": null,
-   "note": "Leigh Finke, HD-066A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23662,
-   "candidate_id": "e18c507e-b573-48ea-97f6-14161a358d81",
-   "note": "Amanda Hemmingsen-Jaeger, SD-047 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Amanda Hemmingsen-Jaeger / Amanda Hemmingsen-Jaeger)"
-  },
-  {
-   "people_id": 23663,
-   "candidate_id": null,
-   "note": "Kim Hicks, HD-025A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23664,
-   "candidate_id": null,
-   "note": "Josiah Hill, HD-033B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23665,
-   "candidate_id": null,
-   "note": "Samakab Hussein, HD-065A in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 23666,
-   "candidate_id": null,
-   "note": "Alicia Kozlowski, HD-008B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23667,
-   "candidate_id": null,
-   "note": "Larry Kraft, HD-046A in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 23668,
-   "candidate_id": null,
-   "note": "Liz Lee, HD-067A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23669,
-   "candidate_id": null,
-   "note": "Nicole Mitchell, SD-047 in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23670,
-   "candidate_id": null,
-   "note": "Matt Norris, HD-032B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23671,
-   "candidate_id": null,
-   "note": "Maria Perez-Vega, HD-065B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 23672,
-   "candidate_id": null,
-   "note": "Kristi Pursell, HD-058A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23673,
-   "candidate_id": null,
-   "note": "Lucille Rehm, HD-048B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23674,
-   "candidate_id": "b8df344b-dd5c-41ae-82c3-387042f80d2f",
-   "note": "Samantha Sencer-Mura, HD-063A in the 94th Legislature; same seat, written differently by the two sources; name matched first_and_last (Samantha Sencer-Mura / Samantha Sencer-Mura)"
-  },
-  {
-   "people_id": 23675,
-   "candidate_id": null,
-   "note": "Roger Skraba, HD-003A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23676,
-   "candidate_id": null,
-   "note": "Andrew Smith, HD-025B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23677,
-   "candidate_id": "c8dcb996-0e27-47a4-953a-6b79040e7d3a",
-   "note": "Ben Bakeberg, HD-054B in the 94th Legislature; sitting representative running in Senate District 54, which contains House District 54B; name matched first_and_last (Ben Bakeberg / Ben Bakeberg)"
-  },
-  {
-   "people_id": 23678,
-   "candidate_id": null,
-   "note": "Jeff Dotseth, HD-011A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23679,
-   "candidate_id": null,
-   "note": "Dawn Gillman, HD-017A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23680,
-   "candidate_id": null,
-   "note": "Harry Niska, HD-031A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23681,
-   "candidate_id": "d0e37d57-cc1f-4fb6-b3bc-858b0687ab1b",
-   "note": "Bernie Perryman, HD-014A in the 94th Legislature; sitting representative running in Senate District 14, which contains House District 14A; name matched first_and_last (Bernie Perryman / Bernie Perryman)"
-  },
-  {
-   "people_id": 23682,
-   "candidate_id": null,
-   "note": "Natalie Zeleznikar, HD-003B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23686,
-   "candidate_id": null,
-   "note": "Steven Jacob, HD-020B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 23741,
-   "candidate_id": null,
-   "note": "Elliott Engen, HD-036A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23742,
-   "candidate_id": null,
-   "note": "Patti Anderson, HD-033A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23755,
-   "candidate_id": "47fbfd78-aae8-476d-ae35-a5d83e2de67f",
-   "note": "Bill Lieske, SD-058 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Bill Lieske / Bill Lieske)"
-  },
-  {
-   "people_id": 23756,
-   "candidate_id": null,
-   "note": "Nathan Wesenberg, SD-010 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 23808,
-   "candidate_id": "93eb3392-a587-4f72-a256-c3f2c97b3489",
-   "note": "Michael Kreun, SD-032 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Michael Kreun / Michael Kreun)"
-  },
-  {
-   "people_id": 23858,
-   "candidate_id": null,
-   "note": "Bobbie Harder, HD-017B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23860,
-   "candidate_id": null,
-   "note": "Jim Joy, HD-004B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23861,
-   "candidate_id": null,
-   "note": "Krista Knudsen, HD-005A in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 23862,
-   "candidate_id": null,
-   "note": "Andrew Myers, HD-045A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23863,
-   "candidate_id": null,
-   "note": "Danny Nadeau, HD-034A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23864,
-   "candidate_id": null,
-   "note": "Mike Wiener, HD-005B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 23865,
-   "candidate_id": null,
-   "note": "Jeff Witte, HD-057B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23892,
-   "candidate_id": null,
-   "note": "Pam Altendorf, HD-020A in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 23893,
-   "candidate_id": null,
-   "note": "Marj Fogelman, HD-021B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 23894,
-   "candidate_id": null,
-   "note": "Walter Hudson, HD-030A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 24680,
-   "candidate_id": null,
-   "note": "Tom Murphy, HD-009B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 24681,
-   "candidate_id": null,
-   "note": "Isaac Schultz, HD-010B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 25139,
-   "candidate_id": null,
-   "note": "Bianca Virnig, HD-052B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 25190,
-   "candidate_id": null,
-   "note": "Bryan Lawrence, HD-027B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26170,
-   "candidate_id": null,
-   "note": "Keith Allen, HD-019A in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 26171,
-   "candidate_id": "6eb1b774-adca-45aa-8831-7c30f28be64f",
-   "note": "Tom Dippel, HD-041B in the 94th Legislature; sitting representative running in Senate District 41, which contains House District 41B; name matched first_and_last (Tom Dippel / Tom Dippel)"
-  },
-  {
-   "people_id": 26172,
-   "candidate_id": null,
-   "note": "Bidal Duran, HD-002A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26173,
-   "candidate_id": null,
-   "note": "Alex Falconer, HD-049A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26174,
-   "candidate_id": null,
-   "note": "Steve Gander, HD-001B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26175,
-   "candidate_id": null,
-   "note": "Jimmy Gordon, HD-028A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26176,
-   "candidate_id": null,
-   "note": "Julie Greene, HD-050A in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 26177,
-   "candidate_id": null,
-   "note": "Huldah Momanyi-Hiltsley, HD-038A in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 26178,
-   "candidate_id": null,
-   "note": "Pete Johnson, HD-008A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26179,
-   "candidate_id": null,
-   "note": "Wayne Johnson, HD-041A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26180,
-   "candidate_id": null,
-   "note": "Katie Jones, HD-061A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26181,
-   "candidate_id": null,
-   "note": "Anquam Mahamoud, HD-062B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 26182,
-   "candidate_id": null,
-   "note": "Kari Rehrauer, HD-035B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26183,
-   "candidate_id": null,
-   "note": "Aaron Repinski, HD-026A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26184,
-   "candidate_id": null,
-   "note": "Drew Roach, HD-058B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26185,
-   "candidate_id": null,
-   "note": "Max Rymer, HD-028B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26186,
-   "candidate_id": null,
-   "note": "Erica Schwartz, HD-018A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26187,
-   "candidate_id": null,
-   "note": "Thomas Sexton, HD-019B in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 26188,
-   "candidate_id": null,
-   "note": "Terry Stier, HD-022B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26189,
-   "candidate_id": null,
-   "note": "Scott Van Binsbergen, HD-016A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26190,
-   "candidate_id": null,
-   "note": "Cal Warwas, HD-007B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26404,
-   "candidate_id": "e476c3da-82b0-4b14-a56f-17f20bcd5e2d",
-   "note": "Doron Clark, SD-060 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Doron Clark / Doron Clark)"
-  },
-  {
-   "people_id": 26439,
-   "candidate_id": null,
-   "note": "David Gottfried, HD-040B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26466,
-   "candidate_id": "e1ad473b-8aed-4e6b-9729-31f57a4a687f",
-   "note": "Keri Heintzeman, SD-006 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Keri Heintzeman / Keri Heintzeman)"
-  },
-  {
-   "people_id": 26538,
-   "candidate_id": null,
-   "note": "Xp Lee, HD-034B in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26539,
-   "candidate_id": null,
-   "note": "Michael Holmstrom, SD-029 in the 94th Legislature; no 2026 candidacy in our roster; the seat itself has no candidate rows yet"
-  },
-  {
-   "people_id": 26627,
-   "candidate_id": null,
-   "note": "Shelley Buck, HD-047A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  },
-  {
-   "people_id": 26628,
-   "candidate_id": null,
-   "note": "Meg Luger-Nikolai, HD-064A in the 94th Legislature; no 2026 candidacy under this name; the seat is on our roster but this member is not among its candidates"
-  }
- ]
+  "source": "legiscan",
+  "jurisdiction": "MN",
+  "session_id": 2151,
+  "note": "people_id -> VoteApp candidate id for the Minnesota 94th Legislature. One file serves both Minnesota sessions in scope (the 2025-2026 regular session, LegiScan 2151, and the 2025 First Special Session, LegiScan 2217) because LegiScan people_ids are stable across sessions. Mapped entries are the proposer's 47 matches, each checked by hand, plus one member the proposer cannot reach. Minnesota nests House districts nnA and nnB inside Senate district nn, which is how every sitting representative running for the Senate was corroborated. Every unmapped entry carries the reason it is null. Refreshed 2026-09-05 after the full House and Senate November 2026 roster campaign: the resolver was re-run at --scope-from 2026-08-01 and all 161 proposals were reviewed by hand. Every proposal's seat agrees with the LegiScan district, either the same seat or a sitting representative moving up to the Senate district their House district nests inside. Four matches were weaker name variants on the same seat and were accepted: Ronald/Ron Latz, Joshua/Josh Heintzeman, Cal/Calvin Bahr and Pete/Peter Johnson. Two members the proposer cannot reach were added by hand because LegiScan holds the legal first name while the ballot carries the working name: Alicia/Liish Kozlowski (HD-008B) and Andrew/Andy Smith (HD-025B). Six surname collisions on other seats were rejected on the seat: Carla Nelson, Tou Xiong, Nicole Mitchell, Patti Anderson, Bruce Anderson and James Carlson. Every unmapped entry carries the reason it is null.",
+  "entries": [
+    {
+      "people_id": 6301,
+      "candidate_id": "fb5339d7-7977-488d-a88c-63d2025f5500",
+      "note": "Erin Murphy, SD-064 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Erin Murphy / Erin Murphy)"
+    },
+    {
+      "people_id": 6306,
+      "candidate_id": "9c8a2557-7409-48ec-9f10-68983c7985bd",
+      "note": "Bobby Champion, SD-059 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Bobby Champion / Bobby Joe Champion)"
+    },
+    {
+      "people_id": 6307,
+      "candidate_id": "a8d23aed-7fc8-4e7e-a1d1-1fcc60db4db8",
+      "note": "Rick Hansen, HD-053B in the 94th Legislature; matched to Rick Hansen on state_lower: State House District 53B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 6321,
+      "candidate_id": "cf7e7123-4c27-498d-bbd7-0700c17b0838",
+      "note": "Leon Lillie, HD-044B in the 94th Legislature; matched to Leon M. Lillie on state_lower: State House District 44B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 6344,
+      "candidate_id": null,
+      "note": "Melissa Hortman, HD-034B in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 6367,
+      "candidate_id": "c4a7d715-4474-4cff-8831-e3fdce627953",
+      "note": "Tina Liebling, HD-024B in the 94th Legislature; matched to Tina Liebling on state_lower: State House District 24B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 6374,
+      "candidate_id": null,
+      "note": "Paul Torkelson, HD-015B in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 6381,
+      "candidate_id": "a24fe205-729d-45ad-bff7-f7fc17b7eab7",
+      "note": "Paul H. Anderson, HD-012A in the 94th Legislature; matched to Paul H. Anderson on state_lower: State House District 12A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 6384,
+      "candidate_id": null,
+      "note": "Steve Drazkowski, SD-020 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 6387,
+      "candidate_id": null,
+      "note": "Bruce Anderson, SD-029 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 6392,
+      "candidate_id": "02118de9-e45f-46eb-974c-ec22d2833878",
+      "note": "Gregory Davids, HD-026B in the 94th Legislature; matched to Gregory M. Davids on state_lower: State House District 26B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 6403,
+      "candidate_id": "4bb24bc6-687b-40ed-8243-340c352d0868",
+      "note": "Torrey Westrom, SD-012 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Torrey Westrom / Torrey Westrom)"
+    },
+    {
+      "people_id": 6407,
+      "candidate_id": "7342db0f-a23e-4fbd-8886-abbd317b87ec",
+      "note": "Peggy Scott, HD-031B in the 94th Legislature; matched to Peggy Scott on state_lower: State House District 31B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 6408,
+      "candidate_id": "db0d6537-89f3-4cc1-8855-4f12f4404fad",
+      "note": "Jim Abeler, SD-035 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Jim Abeler / Jim Abeler)"
+    },
+    {
+      "people_id": 6430,
+      "candidate_id": null,
+      "note": "Ann Rest, SD-043 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 6436,
+      "candidate_id": "0e379f23-a922-46b8-97e4-cc643642af9a",
+      "note": "David Dibble, SD-061 in the 94th Legislature; hand-added: LegiScan stores the legal first name (`David`) in `first_name` and the working name `Scott` in `nickname`, which the proposer reads neither of; seat SD-061 agrees with the candidate's Senate District 61 row"
+    },
+    {
+      "people_id": 6439,
+      "candidate_id": "fc3b9d36-88f2-4950-860b-45fb501b2e92",
+      "note": "Ronald Latz, SD-046 in the 94th Legislature; matched to Ron Latz on state_upper: State Senate District 46 (2024); Minnesota; seat agrees; name matched first_prefix"
+    },
+    {
+      "people_id": 6444,
+      "candidate_id": "ee0da28d-3e4b-4574-b848-ade38728d8fc",
+      "note": "John Marty, SD-040 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (John Marty / John Marty)"
+    },
+    {
+      "people_id": 6447,
+      "candidate_id": null,
+      "note": "James Carlson, SD-052 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 6458,
+      "candidate_id": null,
+      "note": "Warren Limmer, SD-037 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 6483,
+      "candidate_id": null,
+      "note": "Sandra Pappas, SD-065 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 10511,
+      "candidate_id": "3a187a82-db11-40aa-bfcb-90ec5666f596",
+      "note": "Duane Quam, HD-024A in the 94th Legislature; matched to Duane Quam on state_lower: State House District 24A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 10515,
+      "candidate_id": null,
+      "note": "Chris Swedzinski, HD-015A in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 10520,
+      "candidate_id": "1835e25f-24ea-4abf-8cc6-fedac7060bb0",
+      "note": "Mary Franson, HD-012B in the 94th Legislature; matched to Mary Franson on state_lower: State House District 12B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 10522,
+      "candidate_id": "267ea9e6-5fed-46f2-a05b-ac2a3126f034",
+      "note": "Glenn Gruenhagen, SD-017 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Glenn Gruenhagen / Glenn Gruenhagen)"
+    },
+    {
+      "people_id": 10524,
+      "candidate_id": null,
+      "note": "Tim O'Driscoll, HD-013B in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 10860,
+      "candidate_id": "c3acbd96-85e5-44c6-96ba-de23e514b7bb",
+      "note": "Joe McDonald, HD-029A in the 94th Legislature; matched to Joe McDonald on state_lower: State House District 29A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 10861,
+      "candidate_id": null,
+      "note": "Joe Schomacker, HD-021A in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 10866,
+      "candidate_id": "95e238cf-4eff-4736-8d48-502587235b01",
+      "note": "John Hoffman, SD-034 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (John Hoffman / John Hoffman)"
+    },
+    {
+      "people_id": 10869,
+      "candidate_id": null,
+      "note": "Gary Dahms, SD-015 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 10870,
+      "candidate_id": null,
+      "note": "Carla Nelson, SD-024 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 10874,
+      "candidate_id": null,
+      "note": "Jeremy Miller, SD-026 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 14365,
+      "candidate_id": "7eb7e679-8f0d-480d-92e8-a989ad670326",
+      "note": "Peter Fischer, HD-044A in the 94th Legislature; matched to Peter M Fischer on state_lower: State House District 44A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 14366,
+      "candidate_id": "e539007b-603c-4124-bcaa-c720defd5593",
+      "note": "Mike Freiberg, HD-043B in the 94th Legislature; sitting representative running in Senate District 43, which contains House District 43B; name matched first_and_last (Mike Freiberg / Mike Freiberg)"
+    },
+    {
+      "people_id": 14838,
+      "candidate_id": null,
+      "note": "Jeff Howe, SD-013 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 14839,
+      "candidate_id": null,
+      "note": "Ron Kresha, HD-010A in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 15070,
+      "candidate_id": "7bf255d0-aaad-4634-b911-ca916ea03f27",
+      "note": "Karin Housley, SD-033 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Karin Housley / Karin Housley)"
+    },
+    {
+      "people_id": 15072,
+      "candidate_id": null,
+      "note": "Eric Pratt, SD-054 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 15367,
+      "candidate_id": "ac63a977-5461-417f-b756-09a5e804794f",
+      "note": "Steve Green, SD-002 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Steve Green / Steve Green)"
+    },
+    {
+      "people_id": 15369,
+      "candidate_id": "60c9f515-01b9-48f4-b84e-e14417422c9a",
+      "note": "Foung Hawj, SD-067 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Foung Hawj / Foung Hawj)"
+    },
+    {
+      "people_id": 15371,
+      "candidate_id": null,
+      "note": "Bill Weber, SD-021 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 15436,
+      "candidate_id": null,
+      "note": "Melissa Wiklund, SD-051 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 15471,
+      "candidate_id": "c5560765-2e58-41cd-95fd-928eaffc536a",
+      "note": "Marion Rarick, HD-029B in the 94th Legislature; matched to Marion (O'Neill) Rarick on state_lower: State House District 29B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 16544,
+      "candidate_id": "469ca122-9739-4368-90ad-c468bc72c675",
+      "note": "Jeff Backer, HD-009A in the 94th Legislature; matched to Jeff Backer on state_lower: State House District 9A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 16545,
+      "candidate_id": "bf0fa0c9-fc87-4162-94fd-b99df0f3ccf4",
+      "note": "Dave Baker, HD-016B in the 94th Legislature; matched to Dave Baker on state_lower: State House District 16B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 16546,
+      "candidate_id": null,
+      "note": "Peggy Bennett, HD-023A in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 16548,
+      "candidate_id": "59bd4c8d-bbd8-44c9-8c15-c57d6774be4b",
+      "note": "Joshua Heintzeman, HD-006B in the 94th Legislature; same seat, written differently by the two sources; name matched first_prefix (Joshua Heintzeman / Josh Heintzeman)"
+    },
+    {
+      "people_id": 16550,
+      "candidate_id": "4cb1b2e8-b5ed-425e-8ae2-238756ab336d",
+      "note": "Jon Koznick, HD-057A in the 94th Legislature; matched to Jon Koznick on state_lower: State House District 57A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 16553,
+      "candidate_id": "945dce5d-3ff2-4d3d-9ac8-e31cfbebf1cb",
+      "note": "Jim Nash, HD-048A in the 94th Legislature; matched to Jim Nash on state_lower: State House District 48A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 16555,
+      "candidate_id": "a8807927-ddf5-4b6c-bb93-3e6d913c0f56",
+      "note": "Jason Rarick, SD-011 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Jason Rarick / Jason Rarick)"
+    },
+    {
+      "people_id": 16700,
+      "candidate_id": "4e407146-7866-484a-b055-e87731712132",
+      "note": "Eric Lucero, SD-030 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Eric Lucero / Eric Lucero)"
+    },
+    {
+      "people_id": 16705,
+      "candidate_id": "eb835e9e-7034-4aed-963e-73d7fdbc3deb",
+      "note": "Cheryl Youakim, HD-046B in the 94th Legislature; matched to Cheryl Youakim on state_lower: State House District 46B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 17034,
+      "candidate_id": "d0cd51d2-d5ae-4fbe-adc9-01be523099ea",
+      "note": "Dave Pinto, HD-064B in the 94th Legislature; matched to Dave Pinto on state_lower: State House District 64B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 18340,
+      "candidate_id": null,
+      "note": "Steve Cwodzinski, SD-049 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 18341,
+      "candidate_id": null,
+      "note": "Rich Draheim, SD-022 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 18342,
+      "candidate_id": null,
+      "note": "Justin Eichorn, SD-006 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 18343,
+      "candidate_id": "7e3edd87-ad41-4f35-968a-24e29280554d",
+      "note": "Nick Frentz, SD-018 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Nick Frentz / Nick Frentz)"
+    },
+    {
+      "people_id": 18345,
+      "candidate_id": null,
+      "note": "Matt Klein, SD-053 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 18346,
+      "candidate_id": "97820d36-80d8-4177-a2dd-82e2ee835efd",
+      "note": "Mark Koran, SD-028 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Mark Koran / Mark Koran)"
+    },
+    {
+      "people_id": 18347,
+      "candidate_id": "c51a575f-c3d6-45ec-863b-650a1c7ac26c",
+      "note": "Andrew Lang, SD-016 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Andrew Lang / Andrew Lang)"
+    },
+    {
+      "people_id": 18349,
+      "candidate_id": "b46915a9-15db-4dbd-84d3-4b14c8d3899f",
+      "note": "Andrew Mathews, SD-027 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Andrew Mathews / Andrew Mathews)"
+    },
+    {
+      "people_id": 18351,
+      "candidate_id": null,
+      "note": "Paul Utke, SD-005 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 18352,
+      "candidate_id": "c1716bc7-5347-4366-96e5-034fd38092e3",
+      "note": "John Jasinski, SD-019 in the 94th Legislature; matched to John R. Jasinski on state_upper: State Senate District 19 (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 18397,
+      "candidate_id": "4e7a08bd-d8d6-4067-816a-f2c825b15d98",
+      "note": "Mary Kunesh-Podein, SD-039 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Mary Kunesh-Podein / Mary Kunesh-Podein)"
+    },
+    {
+      "people_id": 18398,
+      "candidate_id": "e7898ee3-4b39-4f20-b381-5bd15f0c4684",
+      "note": "Fue Lee, HD-059A in the 94th Legislature; matched to Fue Lee on state_lower: State House District 59A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 18399,
+      "candidate_id": "d820d94a-8a54-4133-8782-c09029efbe1d",
+      "note": "Erin Maye Quade, SD-056 in the 94th Legislature; matched to Erin Maye Quade on state_upper: State Senate District 56 (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 18507,
+      "candidate_id": "20b5a21b-0e6e-4897-8b64-58dd817591c3",
+      "note": "Cal Bahr, SD-031 in the 94th Legislature; seat agrees with the candidate row; name matched first_prefix (Cal Bahr / Calvin Bahr)"
+    },
+    {
+      "people_id": 18510,
+      "candidate_id": null,
+      "note": "Erin Koegel, HD-039A in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 18560,
+      "candidate_id": "6be4a741-8c56-4d57-ac80-c402a8ec3a9a",
+      "note": "Matt Bliss, HD-002B in the 94th Legislature; matched to Matt Bliss on state_lower: State House District 2B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 18564,
+      "candidate_id": "c2e8c6d4-978b-40a0-b196-f28d51fbe74a",
+      "note": "Nolan West, HD-032A in the 94th Legislature; matched to Nolan West on state_lower: State House District 32A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 19400,
+      "candidate_id": "056a5e6a-b598-426a-822c-f19007c494d5",
+      "note": "Mark Johnson, SD-001 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Mark Johnson / Mark Johnson)"
+    },
+    {
+      "people_id": 20437,
+      "candidate_id": "b39b3588-055c-438d-a594-4e155f3b1959",
+      "note": "Patty Acomb, HD-045B in the 94th Legislature; matched to Patty Acomb on state_lower: State House District 45B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20438,
+      "candidate_id": "e130fa3a-7acc-40c9-97f5-8ca022fa51e2",
+      "note": "Kristin Bahner, HD-037B in the 94th Legislature; matched to Kristin Bahner on state_lower: State House District 37B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20443,
+      "candidate_id": "27b72616-a696-44bb-b6fd-498c9c71d6c8",
+      "note": "Steve Elkins, HD-050B in the 94th Legislature; matched to Steve Elkins on state_lower: State House District 50B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20444,
+      "candidate_id": "83b24c29-2b2c-42b6-b161-9251b191d818",
+      "note": "Aisha Gomez, HD-062A in the 94th Legislature; matched to Aisha Gomez on state_lower: State House District 62A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20446,
+      "candidate_id": null,
+      "note": "Kaohly Her, HD-064A in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 20447,
+      "candidate_id": "1307732a-0e4d-4084-8649-44166a8db49b",
+      "note": "Michael Howard, HD-051A in the 94th Legislature; matched to Michael Howard on state_lower: State House District 51A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20448,
+      "candidate_id": "75171b1a-daae-4782-a674-89280bdc8b7a",
+      "note": "John Huot, HD-056B in the 94th Legislature; matched to John Huot on state_lower: State House District 56B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20449,
+      "candidate_id": "5e97e4dd-1bac-4b1c-a8d3-da87f140cc90",
+      "note": "Ginny Klevorn, HD-042B in the 94th Legislature; matched to Ginny Klevorn on state_lower: State House District 42B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20450,
+      "candidate_id": "f853361d-1f9b-47d0-b371-60e0713e1945",
+      "note": "Carlie Kotyza-Witthuhn, HD-049B in the 94th Legislature; matched to Carlie Kotyza-Witthuhn on state_lower: State House District 49B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20453,
+      "candidate_id": "64b1186f-9656-41e5-8a19-f96e3d757ed5",
+      "note": "Jamie Long, HD-061B in the 94th Legislature; matched to Jamie Long on state_lower: State House District 61B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20454,
+      "candidate_id": null,
+      "note": "Alice Mann, SD-050 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 20455,
+      "candidate_id": null,
+      "note": "Kelly Moller, HD-040A in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 20457,
+      "candidate_id": "35c0d1d0-452f-44af-9c2c-8a88ed3db8b0",
+      "note": "Mohamud Noor, HD-060B in the 94th Legislature; matched to Mohamud Noor on state_lower: State House District 60B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20460,
+      "candidate_id": "77863501-edff-469a-81a5-151c5e33e1be",
+      "note": "Zack Stephenson, HD-035A in the 94th Legislature; matched to Zack Stephenson on state_lower: State House District 35A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20461,
+      "candidate_id": "7fbccc85-c92d-4c43-867a-133e0e2abb9e",
+      "note": "Brad Tabke, HD-054A in the 94th Legislature; matched to Brad Tabke on state_lower: State House District 54A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20462,
+      "candidate_id": "2ddf178c-1416-4227-8f4b-a5ca31a3eac2",
+      "note": "Samantha Vang, HD-038B in the 94th Legislature; matched to Samantha Vang on state_lower: State House District 38B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20464,
+      "candidate_id": null,
+      "note": "Dan Wolgamott, HD-014B in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 20465,
+      "candidate_id": "74fd4da9-3e45-4760-b793-c60617e1361c",
+      "note": "Jay Xiong, HD-067B in the 94th Legislature; matched to Jay Xiong on state_lower: State House District 67B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20466,
+      "candidate_id": null,
+      "note": "Tou Xiong, SD-044 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 20621,
+      "candidate_id": "47681f47-cb33-4122-939a-8b8a02f459b0",
+      "note": "Robert Bierman, HD-056A in the 94th Legislature; matched to Robert Bierman on state_lower: State House District 56A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20623,
+      "candidate_id": "d1e43770-cbe5-4f7a-a69b-f5f70f38a3ca",
+      "note": "Shane Mekeland, HD-027A in the 94th Legislature; matched to Shane Mekeland on state_lower: State House District 27A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 20897,
+      "candidate_id": null,
+      "note": "Lisa Demuth, HD-013A in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 21063,
+      "candidate_id": null,
+      "note": "Kristin Robbins, HD-037A in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 21346,
+      "candidate_id": "e5c81e2d-8a9a-4a80-8e99-96266dc293b1",
+      "note": "Nathan Nelson, HD-011B in the 94th Legislature; matched to Nathan Nelson on state_lower: State House District 11B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 21605,
+      "candidate_id": "ce14aed1-ae79-439c-83cf-6c41dac2ee2d",
+      "note": "Sydney Jordan, HD-060A in the 94th Legislature; matched to Sydney Jordan on state_lower: State House District 60A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 21606,
+      "candidate_id": null,
+      "note": "Paul Novotny, HD-030B in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 22139,
+      "candidate_id": "abadfbf4-02f0-44cc-8366-ff2b98fe06f9",
+      "note": "Esther Agbaje, HD-059B in the 94th Legislature; matched to Esther Agbaje on state_lower: State House District 59B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 22140,
+      "candidate_id": "6f9be086-b462-48e8-8143-8286cacb21d0",
+      "note": "Liz Boldon, SD-025 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Liz Boldon / Liz Boldon)"
+    },
+    {
+      "people_id": 22141,
+      "candidate_id": "8120ac72-63da-4ba9-a239-7afa7fc90b25",
+      "note": "Julia Coleman, SD-048 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Julia Coleman / Julia Coleman)"
+    },
+    {
+      "people_id": 22142,
+      "candidate_id": null,
+      "note": "Cedrick Frazier, HD-043A in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 22143,
+      "candidate_id": "e1841183-9b1d-4d5c-8ec8-0ccc802fb7e9",
+      "note": "Emma Greenman, HD-063B in the 94th Legislature; matched to Emma Greenman on state_lower: State House District 63B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 22144,
+      "candidate_id": null,
+      "note": "Heather Keeler, HD-004A in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 22145,
+      "candidate_id": "f3510bf6-d346-4e3e-9174-08578208b354",
+      "note": "Bjorn Olson, HD-022A in the 94th Legislature; matched to Bjorn Olson on state_lower: State House District 22A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 22209,
+      "candidate_id": "23e1df82-60e7-4692-b60d-6a1dcc21563a",
+      "note": "Zach Duckworth, SD-057 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Zach Duckworth / Zach Duckworth)"
+    },
+    {
+      "people_id": 22210,
+      "candidate_id": "6df7346a-83f2-4868-b6e4-79435ee073aa",
+      "note": "Jen McEwen, SD-008 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Jen McEwen / Jen McEwen)"
+    },
+    {
+      "people_id": 22211,
+      "candidate_id": "41283066-3fb7-4b33-8c93-b49385638223",
+      "note": "Aric Putnam, SD-014 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Aric Putnam / Aric Putnam)"
+    },
+    {
+      "people_id": 22267,
+      "candidate_id": null,
+      "note": "Kaela Berg, HD-055B in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 22268,
+      "candidate_id": "059a1ecf-bfde-4e26-a4c8-927fc2116a79",
+      "note": "Jessica Hanson, HD-055A in the 94th Legislature; matched to Jessica Hanson on state_lower: State House District 55A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 22269,
+      "candidate_id": "8cd4f8ff-91bb-4216-afcd-5a00d059f50e",
+      "note": "Athena Hollins, HD-066B in the 94th Legislature; matched to Athena Hollins on state_lower: State House District 66B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 22270,
+      "candidate_id": "5d62d83c-d858-49de-b357-561f6c345ba3",
+      "note": "Spencer Igo, HD-007A in the 94th Legislature; matched to Spencer Igo on state_lower: State House District 7A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 22272,
+      "candidate_id": "d6630004-3453-4827-9a9f-29e464adb553",
+      "note": "Liz Reyer, HD-052A in the 94th Legislature; sitting representative running in Senate District 52, which contains House District 52A; name matched first_and_last (Liz Reyer / Liz Reyer)"
+    },
+    {
+      "people_id": 22442,
+      "candidate_id": "2c0310c9-76e8-40c8-8462-9aec7d4cefff",
+      "note": "Gene Dornink, SD-023 in the 94th Legislature; matched to Gene Dornink on state_upper: State Senate District 23 (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 22443,
+      "candidate_id": "4dceeee9-a13d-4175-a748-204c0a830a6d",
+      "note": "Omar Fateh, SD-062 in the 94th Legislature; matched to Omar Fateh on state_upper: State Senate District 62 (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 22444,
+      "candidate_id": "d53fc5fe-13f1-42ae-bbdc-245872f5ff96",
+      "note": "Ann Johnson Stewart, SD-045 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Ann Johnson Stewart / Ann Johnson Stewart)"
+    },
+    {
+      "people_id": 22445,
+      "candidate_id": "165f18f1-5c73-4a84-b2a2-0e804dfd5004",
+      "note": "Lindsey Port, SD-055 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Lindsey Port / Lindsey Port)"
+    },
+    {
+      "people_id": 22498,
+      "candidate_id": "ae74cd9b-757b-4e8b-ba5b-b607d2a9e74b",
+      "note": "John Burkel, HD-001A in the 94th Legislature; matched to John Burkel on state_lower: State House District 1A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 22499,
+      "candidate_id": null,
+      "note": "Sandra Feist, HD-039B in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 22575,
+      "candidate_id": "d2f9fe8c-4311-458e-bda0-3c68f3f79d70",
+      "note": "Patricia Mueller, HD-023B in the 94th Legislature; matched to Patricia Mueller on state_lower: State House District 23B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 22651,
+      "candidate_id": "0067d2ab-5514-46eb-ae68-c4165da174cb",
+      "note": "Luke Frederick, HD-018B in the 94th Legislature; matched to Luke Frederick on state_lower: State House District 18B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 22653,
+      "candidate_id": "d66accfa-beab-4f37-9c25-fe287db246cb",
+      "note": "Jordan Rasmusson, SD-009 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Jordan Rasmusson / Jordan Rasmusson)"
+    },
+    {
+      "people_id": 23575,
+      "candidate_id": "48b05c06-361e-44d9-8d28-b35162c82d69",
+      "note": "Heather Gustafson, SD-036 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Heather Gustafson / Heather Gustafson)"
+    },
+    {
+      "people_id": 23576,
+      "candidate_id": "5efca3e0-9042-453b-8676-2c1529b2994b",
+      "note": "Grant Hauschild, SD-003 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Grant Hauschild / Grant Hauschild)"
+    },
+    {
+      "people_id": 23577,
+      "candidate_id": "277bf112-1e21-46ee-b74c-d61837e47974",
+      "note": "Rob Kupec, SD-004 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Rob Kupec / Rob Kupec)"
+    },
+    {
+      "people_id": 23578,
+      "candidate_id": "7a7400a6-e4c2-445a-860f-31c38d758c92",
+      "note": "Zaynab Mohamed, SD-063 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Zaynab Mohamed / Zaynab Mohamed)"
+    },
+    {
+      "people_id": 23579,
+      "candidate_id": "daddbcd8-345c-4eb7-bb69-f7a265679b81",
+      "note": "Clare Oumou Verbeten, SD-066 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Clare Oumou Verbeten / Clare Oumou Verbeten)"
+    },
+    {
+      "people_id": 23580,
+      "candidate_id": "b7b7919f-20d1-4c2a-a39a-8737769af783",
+      "note": "Susan Pha, SD-038 in the 94th Legislature; matched to Susan Pha on state_upper: State Senate District 38 (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23581,
+      "candidate_id": "97feef8f-fcf9-4030-83b8-2936cf096209",
+      "note": "Judy Seeberger, SD-041 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Judy Seeberger / Judy Seeberger)"
+    },
+    {
+      "people_id": 23582,
+      "candidate_id": "20df7241-1405-459b-a74a-e34e22147aab",
+      "note": "Bonnie Westlin, SD-042 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Bonnie Westlin / Bonnie Westlin)"
+    },
+    {
+      "people_id": 23654,
+      "candidate_id": "11644222-7a7b-4be1-8d76-16c356661733",
+      "note": "Ned Carroll, HD-042A in the 94th Legislature; matched to Ned Carroll on state_lower: State House District 42A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23655,
+      "candidate_id": "d3344625-08a4-41e7-ae3d-01499f3960e5",
+      "note": "Ethan Cha, HD-047B in the 94th Legislature; matched to Ethan Cha on state_lower: State House District 47B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23656,
+      "candidate_id": "f4badb2e-f9a8-4809-b477-013c4b5cba7e",
+      "note": "Mary Clardy, HD-053A in the 94th Legislature; matched to Mary Frances Clardy on state_lower: State House District 53A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23657,
+      "candidate_id": "c53d073e-2a28-4bc0-8bcc-d13a70115516",
+      "note": "Nathan Coulter, HD-051B in the 94th Legislature; matched to Nathan Coulter on state_lower: State House District 51B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23658,
+      "candidate_id": "01f88a2f-684c-4d6b-b534-5e0182dfa918",
+      "note": "Brion Curran, HD-036B in the 94th Legislature; matched to Brion Curran on state_lower: State House District 36B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23659,
+      "candidate_id": "1277c3d6-82fc-4ca4-a738-3109fff13676",
+      "note": "Ben Davis, HD-006A in the 94th Legislature; matched to Ben Davis on state_lower: State House District 6A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23660,
+      "candidate_id": "1560a767-1147-4a1e-8701-07b2869a19ae",
+      "note": "Robert Farnsworth, SD-007 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Robert Farnsworth / Robert Farnsworth)"
+    },
+    {
+      "people_id": 23661,
+      "candidate_id": "f39d49f1-5ea0-44a4-bdea-cbbbda1bc10c",
+      "note": "Leigh Finke, HD-066A in the 94th Legislature; matched to Leigh Finke on state_lower: State House District 66A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23662,
+      "candidate_id": "e18c507e-b573-48ea-97f6-14161a358d81",
+      "note": "Amanda Hemmingsen-Jaeger, SD-047 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Amanda Hemmingsen-Jaeger / Amanda Hemmingsen-Jaeger)"
+    },
+    {
+      "people_id": 23663,
+      "candidate_id": "06d3ae61-18f2-4097-885c-929a32d6deef",
+      "note": "Kim Hicks, HD-025A in the 94th Legislature; matched to Kim Hicks on state_lower: State House District 25A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23664,
+      "candidate_id": "5e6ccc6c-72b2-4088-a3e6-3ce937c3cd8d",
+      "note": "Josiah Hill, HD-033B in the 94th Legislature; matched to Josiah Hill on state_lower: State House District 33B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23665,
+      "candidate_id": "d27f5f38-cfd7-4a92-ae5c-e94fb44a696f",
+      "note": "Samakab Hussein, HD-065A in the 94th Legislature; matched to Samakab Hussein on state_lower: State House District 65A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23666,
+      "candidate_id": "7f864714-b6ee-42da-85f6-c18b8447eff3",
+      "note": "Alicia Kozlowski, HD-008B in the 94th Legislature; her 2026 ballot name is Liish Kozlowski on the same seat, so the proposer never saw the match (the nickname class). Hand-added after review."
+    },
+    {
+      "people_id": 23667,
+      "candidate_id": "2e0d193d-b8dd-4b4b-b672-a3cc0a13d9ee",
+      "note": "Larry Kraft, HD-046A in the 94th Legislature; matched to Larry Kraft on state_lower: State House District 46A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23668,
+      "candidate_id": "dd05b90a-a68e-42ee-8ac1-8f5722106440",
+      "note": "Liz Lee, HD-067A in the 94th Legislature; matched to Liz Lee on state_lower: State House District 67A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23669,
+      "candidate_id": null,
+      "note": "Nicole Mitchell, SD-047 in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 23670,
+      "candidate_id": "3f07ac5d-da73-4b7d-8d10-b17d2221c297",
+      "note": "Matt Norris, HD-032B in the 94th Legislature; matched to Matt Norris on state_lower: State House District 32B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23671,
+      "candidate_id": null,
+      "note": "Maria Perez-Vega, HD-065B in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 23672,
+      "candidate_id": "3655d3fc-b16d-4854-8cec-daa23164487a",
+      "note": "Kristi Pursell, HD-058A in the 94th Legislature; matched to Kristi Pursell on state_lower: State House District 58A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23673,
+      "candidate_id": "3ad127f8-c27f-4af9-bc21-af7d314b9173",
+      "note": "Lucille Rehm, HD-048B in the 94th Legislature; matched to Lucille \"Lucy\" Rehm on state_lower: State House District 48B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23674,
+      "candidate_id": "b8df344b-dd5c-41ae-82c3-387042f80d2f",
+      "note": "Samantha Sencer-Mura, HD-063A in the 94th Legislature; same seat, written differently by the two sources; name matched first_and_last (Samantha Sencer-Mura / Samantha Sencer-Mura)"
+    },
+    {
+      "people_id": 23675,
+      "candidate_id": "88f707e8-88a6-4ff4-9983-89134dc55632",
+      "note": "Roger Skraba, HD-003A in the 94th Legislature; matched to Roger J. Skraba on state_lower: State House District 3A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23676,
+      "candidate_id": "4bb47780-201e-46a2-9b9c-3f60dccb98c8",
+      "note": "Andrew Smith, HD-025B in the 94th Legislature; his 2026 ballot name is Andy Smith on the same seat, so the proposer never saw the match (the nickname class). Hand-added after review."
+    },
+    {
+      "people_id": 23677,
+      "candidate_id": "c8dcb996-0e27-47a4-953a-6b79040e7d3a",
+      "note": "Ben Bakeberg, HD-054B in the 94th Legislature; sitting representative running in Senate District 54, which contains House District 54B; name matched first_and_last (Ben Bakeberg / Ben Bakeberg)"
+    },
+    {
+      "people_id": 23678,
+      "candidate_id": "6ed0d19f-424b-41df-b2f7-4c16eced61b3",
+      "note": "Jeff Dotseth, HD-011A in the 94th Legislature; matched to Jeff Dotseth on state_lower: State House District 11A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23679,
+      "candidate_id": "18404d75-f4f4-44e0-af91-cf86c9069e37",
+      "note": "Dawn Gillman, HD-017A in the 94th Legislature; matched to Dawn Gillman on state_lower: State House District 17A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23680,
+      "candidate_id": "28000890-7af1-4156-9e02-5c769b830247",
+      "note": "Harry Niska, HD-031A in the 94th Legislature; matched to Harry Niska on state_lower: State House District 31A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23681,
+      "candidate_id": "d0e37d57-cc1f-4fb6-b3bc-858b0687ab1b",
+      "note": "Bernie Perryman, HD-014A in the 94th Legislature; sitting representative running in Senate District 14, which contains House District 14A; name matched first_and_last (Bernie Perryman / Bernie Perryman)"
+    },
+    {
+      "people_id": 23682,
+      "candidate_id": "61864881-fb0d-400f-a888-a8fc1f4715f7",
+      "note": "Natalie Zeleznikar, HD-003B in the 94th Legislature; matched to Natalie Zeleznikar on state_lower: State House District 3B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23686,
+      "candidate_id": "21981c6e-80e1-4048-ba4a-74fd745dc7f8",
+      "note": "Steven Jacob, HD-020B in the 94th Legislature; matched to Steven E Jacob on state_upper: State Senate District 20 (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23741,
+      "candidate_id": null,
+      "note": "Elliott Engen, HD-036A in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 23742,
+      "candidate_id": null,
+      "note": "Patti Anderson, HD-033A in the 94th Legislature; not a candidate on the November 3 2026 ballot for that seat and not found on any other 2026 seat; checked by hand against the Secretary of State general-election roster"
+    },
+    {
+      "people_id": 23755,
+      "candidate_id": "47fbfd78-aae8-476d-ae35-a5d83e2de67f",
+      "note": "Bill Lieske, SD-058 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Bill Lieske / Bill Lieske)"
+    },
+    {
+      "people_id": 23756,
+      "candidate_id": "14415842-c06a-45f0-82ce-f8f7b81db075",
+      "note": "Nathan Wesenberg, SD-010 in the 94th Legislature; matched to Nathan Wesenberg on state_upper: State Senate District 10 (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23808,
+      "candidate_id": "93eb3392-a587-4f72-a256-c3f2c97b3489",
+      "note": "Michael Kreun, SD-032 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Michael Kreun / Michael Kreun)"
+    },
+    {
+      "people_id": 23858,
+      "candidate_id": "d0b0fefa-f682-464e-a853-c14281bbd961",
+      "note": "Bobbie Harder, HD-017B in the 94th Legislature; matched to Bobbie Harder on state_lower: State House District 17B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23860,
+      "candidate_id": "e08f0c6a-282b-49e4-9b30-36d7b556359d",
+      "note": "Jim Joy, HD-004B in the 94th Legislature; matched to Jim Joy on state_lower: State House District 4B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23861,
+      "candidate_id": "97085ebd-0a35-4705-a73b-2135d28a878c",
+      "note": "Krista Knudsen, HD-005A in the 94th Legislature; matched to Krista Knudsen on state_lower: State House District 5A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23862,
+      "candidate_id": "33710970-f1bb-472c-bfec-3fb0fe2a9a46",
+      "note": "Andrew Myers, HD-045A in the 94th Legislature; matched to Andrew Myers on state_lower: State House District 45A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23863,
+      "candidate_id": "44ab1a59-bea1-4121-8693-b4b514cab34c",
+      "note": "Danny Nadeau, HD-034A in the 94th Legislature; matched to Danny Nadeau on state_lower: State House District 34A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23864,
+      "candidate_id": "00cbef00-589d-42e0-8ddb-f2f60b67f766",
+      "note": "Mike Wiener, HD-005B in the 94th Legislature; matched to Mike Wiener on state_upper: State Senate District 5 (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23865,
+      "candidate_id": "06a41c9a-c278-4790-b64d-b9d8e2990cdb",
+      "note": "Jeff Witte, HD-057B in the 94th Legislature; matched to Jeff Witte on state_lower: State House District 57B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23892,
+      "candidate_id": "ee2b116b-83c2-4baa-b06a-e289c015f198",
+      "note": "Pam Altendorf, HD-020A in the 94th Legislature; matched to Pam Altendorf on state_lower: State House District 20A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23893,
+      "candidate_id": "2c7140bf-8e4e-4588-8067-1e400e0ded59",
+      "note": "Marj Fogelman, HD-021B in the 94th Legislature; matched to Marj J Fogelman on state_lower: State House District 21B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 23894,
+      "candidate_id": "aa010d17-dac5-4721-b5f8-32b61843ddb5",
+      "note": "Walter Hudson, HD-030A in the 94th Legislature; matched to Walter Hudson on state_lower: State House District 30A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 24680,
+      "candidate_id": "c4c986b3-288d-40e5-8fe3-d7137c93e89c",
+      "note": "Tom Murphy, HD-009B in the 94th Legislature; matched to Tom Murphy on state_lower: State House District 9B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 24681,
+      "candidate_id": "b278e060-416c-4fc5-a02f-52d1c9d57227",
+      "note": "Isaac Schultz, HD-010B in the 94th Legislature; matched to Isaac Schultz on state_lower: State House District 10B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 25139,
+      "candidate_id": "32f4dc34-4a2d-4635-886b-2ded1b52c665",
+      "note": "Bianca Virnig, HD-052B in the 94th Legislature; matched to Bianca Virnig on state_lower: State House District 52B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 25190,
+      "candidate_id": "97c1015e-82f5-4a8c-8641-53fadde5e800",
+      "note": "Bryan Lawrence, HD-027B in the 94th Legislature; matched to Bryan Lawrence on state_lower: State House District 27B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26170,
+      "candidate_id": "83081936-2118-4e77-acf6-231d88ce4cbb",
+      "note": "Keith Allen, HD-019A in the 94th Legislature; matched to Keith Allen on state_lower: State House District 19A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26171,
+      "candidate_id": "6eb1b774-adca-45aa-8831-7c30f28be64f",
+      "note": "Tom Dippel, HD-041B in the 94th Legislature; sitting representative running in Senate District 41, which contains House District 41B; name matched first_and_last (Tom Dippel / Tom Dippel)"
+    },
+    {
+      "people_id": 26172,
+      "candidate_id": "d1a3a46b-ecd1-459e-b3ae-9e5cd553230f",
+      "note": "Bidal Duran, HD-002A in the 94th Legislature; matched to Bidal Duran Jr on state_lower: State House District 2A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26173,
+      "candidate_id": "4cfeb950-a9df-4a45-babb-9b20227165fa",
+      "note": "Alex Falconer, HD-049A in the 94th Legislature; matched to Alex Falconer on state_lower: State House District 49A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26174,
+      "candidate_id": "79567ece-43c9-4390-b1a4-8d6770736dca",
+      "note": "Steve Gander, HD-001B in the 94th Legislature; matched to Steve Gander on state_lower: State House District 1B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26175,
+      "candidate_id": "c6435b81-448c-4f1d-afb0-e63f15cf5469",
+      "note": "Jimmy Gordon, HD-028A in the 94th Legislature; matched to James \"Jimmy\" Gordon on state_lower: State House District 28A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26176,
+      "candidate_id": "c563002e-7ad1-4fea-9b01-20e873f0bf5a",
+      "note": "Julie Greene, HD-050A in the 94th Legislature; matched to Julie Greene on state_lower: State House District 50A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26177,
+      "candidate_id": "5ce53e74-de6b-4184-8876-5caca3269880",
+      "note": "Huldah Momanyi-Hiltsley, HD-038A in the 94th Legislature; matched to Huldah Momanyi-Hiltsley on state_lower: State House District 38A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26178,
+      "candidate_id": "daa7c9f2-9e8a-4120-8474-218920af1ee5",
+      "note": "Pete Johnson, HD-008A in the 94th Legislature; matched to Peter Johnson on state_lower: State House District 8A (2024); Minnesota; seat agrees; name matched first_prefix"
+    },
+    {
+      "people_id": 26179,
+      "candidate_id": "41708ada-f984-4ede-b79e-18c90a7ffaba",
+      "note": "Wayne Johnson, HD-041A in the 94th Legislature; matched to Wayne A Johnson on state_lower: State House District 41A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26180,
+      "candidate_id": "45681da6-b679-4a82-9bae-3da26d97c516",
+      "note": "Katie Jones, HD-061A in the 94th Legislature; matched to Katie Jones on state_lower: State House District 61A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26181,
+      "candidate_id": "10c0c2fc-021f-4e1c-aff8-042d39cbb81e",
+      "note": "Anquam Mahamoud, HD-062B in the 94th Legislature; matched to Anquam Mahamoud on state_lower: State House District 62B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26182,
+      "candidate_id": "95dff6a3-e1da-4a68-a12f-c7e8b506a0ec",
+      "note": "Kari Rehrauer, HD-035B in the 94th Legislature; matched to Kari Rehrauer on state_lower: State House District 35B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26183,
+      "candidate_id": "9827f2f7-b9d3-429d-a873-b1512a01740d",
+      "note": "Aaron Repinski, HD-026A in the 94th Legislature; matched to Aaron Repinski on state_lower: State House District 26A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26184,
+      "candidate_id": "24946910-4cc0-440e-b49a-4e34dd5e4738",
+      "note": "Drew Roach, HD-058B in the 94th Legislature; matched to Drew Roach on state_lower: State House District 58B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26185,
+      "candidate_id": "56bfcb01-b842-436f-bcb2-9af4a6389536",
+      "note": "Max Rymer, HD-028B in the 94th Legislature; matched to Max Rymer on state_lower: State House District 28B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26186,
+      "candidate_id": "0a75b6ce-a1e5-4572-a61c-c4ae1a34c083",
+      "note": "Erica Schwartz, HD-018A in the 94th Legislature; matched to Erica Schwartz on state_lower: State House District 18A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26187,
+      "candidate_id": "67fbe683-cce7-4550-888f-78e70d53aed9",
+      "note": "Thomas Sexton, HD-019B in the 94th Legislature; matched to Thomas J. Sexton on state_lower: State House District 19B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26188,
+      "candidate_id": "57cf8ff0-ff83-4cf4-b489-712ef62f0145",
+      "note": "Terry Stier, HD-022B in the 94th Legislature; matched to Terry Matthew Stier on state_lower: State House District 22B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26189,
+      "candidate_id": "eff3070f-2b19-48fe-96cc-da2d9e436062",
+      "note": "Scott Van Binsbergen, HD-016A in the 94th Legislature; matched to Scott Van Binsbergen on state_lower: State House District 16A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26190,
+      "candidate_id": "b4a3de9f-b6a9-4b23-8b00-8344f2ae11e7",
+      "note": "Cal Warwas, HD-007B in the 94th Legislature; matched to Cal Warwas on state_lower: State House District 7B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26404,
+      "candidate_id": "e476c3da-82b0-4b14-a56f-17f20bcd5e2d",
+      "note": "Doron Clark, SD-060 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Doron Clark / Doron Clark)"
+    },
+    {
+      "people_id": 26439,
+      "candidate_id": "46ba35ae-d49b-4be8-8e09-b53c1fe8b9ef",
+      "note": "David Gottfried, HD-040B in the 94th Legislature; matched to David Gottfried on state_lower: State House District 40B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26466,
+      "candidate_id": "e1ad473b-8aed-4e6b-9729-31f57a4a687f",
+      "note": "Keri Heintzeman, SD-006 in the 94th Legislature; seat agrees with the candidate row; name matched first_and_last (Keri Heintzeman / Keri Heintzeman)"
+    },
+    {
+      "people_id": 26538,
+      "candidate_id": "dc3b91ad-9114-4d30-a97e-e4baf93c8b4c",
+      "note": "Xp Lee, HD-034B in the 94th Legislature; matched to Xp Lee on state_lower: State House District 34B (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26539,
+      "candidate_id": "621f28a4-617c-420e-9953-2cab926a6435",
+      "note": "Michael Holmstrom, SD-029 in the 94th Legislature; matched to Michael Holmstrom Jr on state_upper: State Senate District 29 (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26627,
+      "candidate_id": "9c004427-604d-4c9f-ac7b-4970c25ed694",
+      "note": "Shelley Buck, HD-047A in the 94th Legislature; matched to Shelley Buck on state_lower: State House District 47A (2024); Minnesota; seat agrees; name matched first_and_last"
+    },
+    {
+      "people_id": 26628,
+      "candidate_id": "9c84aa2c-7c9f-4fac-901a-ab9ae68da714",
+      "note": "Meg Luger-Nikolai, HD-064A in the 94th Legislature; matched to Meg Luger-Nikolai on state_lower: State House District 64A (2024); Minnesota; seat agrees; name matched first_and_last"
+    }
+  ]
 }

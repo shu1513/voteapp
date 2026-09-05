@@ -1,0 +1,3264 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-09-05T15:49:34.731Z",
+  "finishedAt": "2026-09-05T15:49:34.825Z",
+  "jurisdiction": "MN",
+  "sessionId": 2151,
+  "evidenceDir": "evidence/rollcall/legiscan-mn-2151",
+  "scopeFrom": "2026-08-01",
+  "peopleSource": "evidence/rollcall/legiscan-mn-2151/legiscan-people-mn-2151.json",
+  "peopleMembers": 206,
+  "candidatePool": 395,
+  "crosswalkFile": "evidence/rollcall/legiscan-mn-2151/crosswalk.json",
+  "crosswalkEntries": 206,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 6301,
+      "rosterName": "Erin Murphy",
+      "rosterSeat": "senate SD-064",
+      "candidateId": "fb5339d7-7977-488d-a88c-63d2025f5500",
+      "candidateName": "Erin Murphy",
+      "candidacy": "state_upper: State Senate District 64 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 6306,
+      "rosterName": "Bobby Champion",
+      "rosterSeat": "senate SD-059",
+      "candidateId": "9c8a2557-7409-48ec-9f10-68983c7985bd",
+      "candidateName": "Bobby Joe Champion",
+      "candidacy": "state_upper: State Senate District 59 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 6307,
+      "rosterName": "Rick Hansen",
+      "rosterSeat": "house HD-053B",
+      "candidateId": "a8d23aed-7fc8-4e7e-a1d1-1fcc60db4db8",
+      "candidateName": "Rick Hansen",
+      "candidacy": "state_lower: State House District 53B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 6321,
+      "rosterName": "Leon Lillie",
+      "rosterSeat": "house HD-044B",
+      "candidateId": "cf7e7123-4c27-498d-bbd7-0700c17b0838",
+      "candidateName": "Leon M. Lillie",
+      "candidacy": "state_lower: State House District 44B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 6367,
+      "rosterName": "Tina Liebling",
+      "rosterSeat": "house HD-024B",
+      "candidateId": "c4a7d715-4474-4cff-8831-e3fdce627953",
+      "candidateName": "Tina Liebling",
+      "candidacy": "state_lower: State House District 24B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 6381,
+      "rosterName": "Paul H. Anderson",
+      "rosterSeat": "house HD-012A",
+      "candidateId": "a24fe205-729d-45ad-bff7-f7fc17b7eab7",
+      "candidateName": "Paul H. Anderson",
+      "candidacy": "state_lower: State House District 12A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 6392,
+      "rosterName": "Gregory Davids",
+      "rosterSeat": "house HD-026B",
+      "candidateId": "02118de9-e45f-46eb-974c-ec22d2833878",
+      "candidateName": "Gregory M. Davids",
+      "candidacy": "state_lower: State House District 26B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 6403,
+      "rosterName": "Torrey Westrom",
+      "rosterSeat": "senate SD-012",
+      "candidateId": "4bb24bc6-687b-40ed-8243-340c352d0868",
+      "candidateName": "Torrey Westrom",
+      "candidacy": "state_upper: State Senate District 12 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 6407,
+      "rosterName": "Peggy Scott",
+      "rosterSeat": "house HD-031B",
+      "candidateId": "7342db0f-a23e-4fbd-8886-abbd317b87ec",
+      "candidateName": "Peggy Scott",
+      "candidacy": "state_lower: State House District 31B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 6408,
+      "rosterName": "Jim Abeler",
+      "rosterSeat": "senate SD-035",
+      "candidateId": "db0d6537-89f3-4cc1-8855-4f12f4404fad",
+      "candidateName": "Jim Abeler",
+      "candidacy": "state_upper: State Senate District 35 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 6439,
+      "rosterName": "Ronald Latz",
+      "rosterSeat": "senate SD-046",
+      "candidateId": "fc3b9d36-88f2-4950-860b-45fb501b2e92",
+      "candidateName": "Ron Latz",
+      "candidacy": "state_upper: State Senate District 46 (2024); Minnesota",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 6444,
+      "rosterName": "John Marty",
+      "rosterSeat": "senate SD-040",
+      "candidateId": "ee0da28d-3e4b-4574-b848-ade38728d8fc",
+      "candidateName": "John Marty",
+      "candidacy": "state_upper: State Senate District 40 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 10511,
+      "rosterName": "Duane Quam",
+      "rosterSeat": "house HD-024A",
+      "candidateId": "3a187a82-db11-40aa-bfcb-90ec5666f596",
+      "candidateName": "Duane Quam",
+      "candidacy": "state_lower: State House District 24A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 10520,
+      "rosterName": "Mary Franson",
+      "rosterSeat": "house HD-012B",
+      "candidateId": "1835e25f-24ea-4abf-8cc6-fedac7060bb0",
+      "candidateName": "Mary Franson",
+      "candidacy": "state_lower: State House District 12B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 10522,
+      "rosterName": "Glenn Gruenhagen",
+      "rosterSeat": "senate SD-017",
+      "candidateId": "267ea9e6-5fed-46f2-a05b-ac2a3126f034",
+      "candidateName": "Glenn Gruenhagen",
+      "candidacy": "state_upper: State Senate District 17 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 10860,
+      "rosterName": "Joe McDonald",
+      "rosterSeat": "house HD-029A",
+      "candidateId": "c3acbd96-85e5-44c6-96ba-de23e514b7bb",
+      "candidateName": "Joe McDonald",
+      "candidacy": "state_lower: State House District 29A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 10866,
+      "rosterName": "John Hoffman",
+      "rosterSeat": "senate SD-034",
+      "candidateId": "95e238cf-4eff-4736-8d48-502587235b01",
+      "candidateName": "John Hoffman",
+      "candidacy": "state_upper: State Senate District 34 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 14365,
+      "rosterName": "Peter Fischer",
+      "rosterSeat": "house HD-044A",
+      "candidateId": "7eb7e679-8f0d-480d-92e8-a989ad670326",
+      "candidateName": "Peter M Fischer",
+      "candidacy": "state_lower: State House District 44A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 14366,
+      "rosterName": "Mike Freiberg",
+      "rosterSeat": "house HD-043B",
+      "candidateId": "e539007b-603c-4124-bcaa-c720defd5593",
+      "candidateName": "Mike Freiberg",
+      "candidacy": "state_upper: State Senate District 43 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 15070,
+      "rosterName": "Karin Housley",
+      "rosterSeat": "senate SD-033",
+      "candidateId": "7bf255d0-aaad-4634-b911-ca916ea03f27",
+      "candidateName": "Karin Housley",
+      "candidacy": "state_upper: State Senate District 33 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15367,
+      "rosterName": "Steve Green",
+      "rosterSeat": "senate SD-002",
+      "candidateId": "ac63a977-5461-417f-b756-09a5e804794f",
+      "candidateName": "Steve Green",
+      "candidacy": "state_upper: State Senate District 2 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15369,
+      "rosterName": "Foung Hawj",
+      "rosterSeat": "senate SD-067",
+      "candidateId": "60c9f515-01b9-48f4-b84e-e14417422c9a",
+      "candidateName": "Foung Hawj",
+      "candidacy": "state_upper: State Senate District 67 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15471,
+      "rosterName": "Marion Rarick",
+      "rosterSeat": "house HD-029B",
+      "candidateId": "c5560765-2e58-41cd-95fd-928eaffc536a",
+      "candidateName": "Marion (O'Neill) Rarick",
+      "candidacy": "state_lower: State House District 29B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 16544,
+      "rosterName": "Jeff Backer",
+      "rosterSeat": "house HD-009A",
+      "candidateId": "469ca122-9739-4368-90ad-c468bc72c675",
+      "candidateName": "Jeff Backer",
+      "candidacy": "state_lower: State House District 9A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 16545,
+      "rosterName": "Dave Baker",
+      "rosterSeat": "house HD-016B",
+      "candidateId": "bf0fa0c9-fc87-4162-94fd-b99df0f3ccf4",
+      "candidateName": "Dave Baker",
+      "candidacy": "state_lower: State House District 16B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 16548,
+      "rosterName": "Joshua Heintzeman",
+      "rosterSeat": "house HD-006B",
+      "candidateId": "59bd4c8d-bbd8-44c9-8c15-c57d6774be4b",
+      "candidateName": "Josh Heintzeman",
+      "candidacy": "state_lower: State House District 6B (2024); Minnesota",
+      "confidence": "first_prefix",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 16550,
+      "rosterName": "Jon Koznick",
+      "rosterSeat": "house HD-057A",
+      "candidateId": "4cb1b2e8-b5ed-425e-8ae2-238756ab336d",
+      "candidateName": "Jon Koznick",
+      "candidacy": "state_lower: State House District 57A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 16553,
+      "rosterName": "Jim Nash",
+      "rosterSeat": "house HD-048A",
+      "candidateId": "945dce5d-3ff2-4d3d-9ac8-e31cfbebf1cb",
+      "candidateName": "Jim Nash",
+      "candidacy": "state_lower: State House District 48A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 16555,
+      "rosterName": "Jason Rarick",
+      "rosterSeat": "house SD-011",
+      "candidateId": "a8807927-ddf5-4b6c-bb93-3e6d913c0f56",
+      "candidateName": "Jason Rarick",
+      "candidacy": "state_upper: State Senate District 11 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16700,
+      "rosterName": "Eric Lucero",
+      "rosterSeat": "senate SD-030",
+      "candidateId": "4e407146-7866-484a-b055-e87731712132",
+      "candidateName": "Eric Lucero",
+      "candidacy": "state_upper: State Senate District 30 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16705,
+      "rosterName": "Cheryl Youakim",
+      "rosterSeat": "house HD-046B",
+      "candidateId": "eb835e9e-7034-4aed-963e-73d7fdbc3deb",
+      "candidateName": "Cheryl Youakim",
+      "candidacy": "state_lower: State House District 46B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 17034,
+      "rosterName": "Dave Pinto",
+      "rosterSeat": "house HD-064B",
+      "candidateId": "d0cd51d2-d5ae-4fbe-adc9-01be523099ea",
+      "candidateName": "Dave Pinto",
+      "candidacy": "state_lower: State House District 64B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 18343,
+      "rosterName": "Nick Frentz",
+      "rosterSeat": "senate SD-018",
+      "candidateId": "7e3edd87-ad41-4f35-968a-24e29280554d",
+      "candidateName": "Nick Frentz",
+      "candidacy": "state_upper: State Senate District 18 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18346,
+      "rosterName": "Mark Koran",
+      "rosterSeat": "senate SD-028",
+      "candidateId": "97820d36-80d8-4177-a2dd-82e2ee835efd",
+      "candidateName": "Mark Koran",
+      "candidacy": "state_upper: State Senate District 28 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18347,
+      "rosterName": "Andrew Lang",
+      "rosterSeat": "senate SD-016",
+      "candidateId": "c51a575f-c3d6-45ec-863b-650a1c7ac26c",
+      "candidateName": "Andrew Lang",
+      "candidacy": "state_upper: State Senate District 16 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18349,
+      "rosterName": "Andrew Mathews",
+      "rosterSeat": "senate SD-027",
+      "candidateId": "b46915a9-15db-4dbd-84d3-4b14c8d3899f",
+      "candidateName": "Andrew Mathews",
+      "candidacy": "state_upper: State Senate District 27 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18352,
+      "rosterName": "John Jasinski",
+      "rosterSeat": "senate SD-019",
+      "candidateId": "c1716bc7-5347-4366-96e5-034fd38092e3",
+      "candidateName": "John R. Jasinski",
+      "candidacy": "state_upper: State Senate District 19 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18397,
+      "rosterName": "Mary Kunesh-Podein",
+      "rosterSeat": "senate SD-039",
+      "candidateId": "4e7a08bd-d8d6-4067-816a-f2c825b15d98",
+      "candidateName": "Mary Kunesh-Podein",
+      "candidacy": "state_upper: State Senate District 39 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18398,
+      "rosterName": "Fue Lee",
+      "rosterSeat": "house HD-059A",
+      "candidateId": "e7898ee3-4b39-4f20-b381-5bd15f0c4684",
+      "candidateName": "Fue Lee",
+      "candidacy": "state_lower: State House District 59A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 18399,
+      "rosterName": "Erin Maye Quade",
+      "rosterSeat": "senate SD-056",
+      "candidateId": "d820d94a-8a54-4133-8782-c09029efbe1d",
+      "candidateName": "Erin Maye Quade",
+      "candidacy": "state_upper: State Senate District 56 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18507,
+      "rosterName": "Cal Bahr",
+      "rosterSeat": "senate SD-031",
+      "candidateId": "20b5a21b-0e6e-4897-8b64-58dd817591c3",
+      "candidateName": "Calvin Bahr",
+      "candidacy": "state_upper: State Senate District 31 (2024); Minnesota",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18560,
+      "rosterName": "Matt Bliss",
+      "rosterSeat": "house HD-002B",
+      "candidateId": "6be4a741-8c56-4d57-ac80-c402a8ec3a9a",
+      "candidateName": "Matt Bliss",
+      "candidacy": "state_lower: State House District 2B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 18564,
+      "rosterName": "Nolan West",
+      "rosterSeat": "house HD-032A",
+      "candidateId": "c2e8c6d4-978b-40a0-b196-f28d51fbe74a",
+      "candidateName": "Nolan West",
+      "candidacy": "state_lower: State House District 32A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 19400,
+      "rosterName": "Mark Johnson",
+      "rosterSeat": "senate SD-001",
+      "candidateId": "056a5e6a-b598-426a-822c-f19007c494d5",
+      "candidateName": "Mark Johnson",
+      "candidacy": "state_upper: State Senate District 1 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20437,
+      "rosterName": "Patty Acomb",
+      "rosterSeat": "house HD-045B",
+      "candidateId": "b39b3588-055c-438d-a594-4e155f3b1959",
+      "candidateName": "Patty Acomb",
+      "candidacy": "state_lower: State House District 45B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20438,
+      "rosterName": "Kristin Bahner",
+      "rosterSeat": "house HD-037B",
+      "candidateId": "e130fa3a-7acc-40c9-97f5-8ca022fa51e2",
+      "candidateName": "Kristin Bahner",
+      "candidacy": "state_lower: State House District 37B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20443,
+      "rosterName": "Steve Elkins",
+      "rosterSeat": "house HD-050B",
+      "candidateId": "27b72616-a696-44bb-b6fd-498c9c71d6c8",
+      "candidateName": "Steve Elkins",
+      "candidacy": "state_lower: State House District 50B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20444,
+      "rosterName": "Aisha Gomez",
+      "rosterSeat": "house HD-062A",
+      "candidateId": "83b24c29-2b2c-42b6-b161-9251b191d818",
+      "candidateName": "Aisha Gomez",
+      "candidacy": "state_lower: State House District 62A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20447,
+      "rosterName": "Michael Howard",
+      "rosterSeat": "house HD-051A",
+      "candidateId": "1307732a-0e4d-4084-8649-44166a8db49b",
+      "candidateName": "Michael Howard",
+      "candidacy": "state_lower: State House District 51A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20448,
+      "rosterName": "John Huot",
+      "rosterSeat": "house HD-056B",
+      "candidateId": "75171b1a-daae-4782-a674-89280bdc8b7a",
+      "candidateName": "John Huot",
+      "candidacy": "state_lower: State House District 56B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20449,
+      "rosterName": "Ginny Klevorn",
+      "rosterSeat": "house HD-042B",
+      "candidateId": "5e97e4dd-1bac-4b1c-a8d3-da87f140cc90",
+      "candidateName": "Ginny Klevorn",
+      "candidacy": "state_lower: State House District 42B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20450,
+      "rosterName": "Carlie Kotyza-Witthuhn",
+      "rosterSeat": "house HD-049B",
+      "candidateId": "f853361d-1f9b-47d0-b371-60e0713e1945",
+      "candidateName": "Carlie Kotyza-Witthuhn",
+      "candidacy": "state_lower: State House District 49B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20453,
+      "rosterName": "Jamie Long",
+      "rosterSeat": "house HD-061B",
+      "candidateId": "64b1186f-9656-41e5-8a19-f96e3d757ed5",
+      "candidateName": "Jamie Long",
+      "candidacy": "state_lower: State House District 61B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20457,
+      "rosterName": "Mohamud Noor",
+      "rosterSeat": "house HD-060B",
+      "candidateId": "35c0d1d0-452f-44af-9c2c-8a88ed3db8b0",
+      "candidateName": "Mohamud Noor",
+      "candidacy": "state_lower: State House District 60B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20460,
+      "rosterName": "Zack Stephenson",
+      "rosterSeat": "house HD-035A",
+      "candidateId": "77863501-edff-469a-81a5-151c5e33e1be",
+      "candidateName": "Zack Stephenson",
+      "candidacy": "state_lower: State House District 35A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20461,
+      "rosterName": "Brad Tabke",
+      "rosterSeat": "house HD-054A",
+      "candidateId": "7fbccc85-c92d-4c43-867a-133e0e2abb9e",
+      "candidateName": "Brad Tabke",
+      "candidacy": "state_lower: State House District 54A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20462,
+      "rosterName": "Samantha Vang",
+      "rosterSeat": "house HD-038B",
+      "candidateId": "2ddf178c-1416-4227-8f4b-a5ca31a3eac2",
+      "candidateName": "Samantha Vang",
+      "candidacy": "state_lower: State House District 38B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20465,
+      "rosterName": "Jay Xiong",
+      "rosterSeat": "house HD-067B",
+      "candidateId": "74fd4da9-3e45-4760-b793-c60617e1361c",
+      "candidateName": "Jay Xiong",
+      "candidacy": "state_lower: State House District 67B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20621,
+      "rosterName": "Robert Bierman",
+      "rosterSeat": "house HD-056A",
+      "candidateId": "47681f47-cb33-4122-939a-8b8a02f459b0",
+      "candidateName": "Robert Bierman",
+      "candidacy": "state_lower: State House District 56A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 20623,
+      "rosterName": "Shane Mekeland",
+      "rosterSeat": "house HD-027A",
+      "candidateId": "d1e43770-cbe5-4f7a-a69b-f5f70f38a3ca",
+      "candidateName": "Shane Mekeland",
+      "candidacy": "state_lower: State House District 27A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 21346,
+      "rosterName": "Nathan Nelson",
+      "rosterSeat": "house HD-011B",
+      "candidateId": "e5c81e2d-8a9a-4a80-8e99-96266dc293b1",
+      "candidateName": "Nathan Nelson",
+      "candidacy": "state_lower: State House District 11B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 21605,
+      "rosterName": "Sydney Jordan",
+      "rosterSeat": "house HD-060A",
+      "candidateId": "ce14aed1-ae79-439c-83cf-6c41dac2ee2d",
+      "candidateName": "Sydney Jordan",
+      "candidacy": "state_lower: State House District 60A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22139,
+      "rosterName": "Esther Agbaje",
+      "rosterSeat": "house HD-059B",
+      "candidateId": "abadfbf4-02f0-44cc-8366-ff2b98fe06f9",
+      "candidateName": "Esther Agbaje",
+      "candidacy": "state_lower: State House District 59B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22140,
+      "rosterName": "Liz Boldon",
+      "rosterSeat": "senate SD-025",
+      "candidateId": "6f9be086-b462-48e8-8143-8286cacb21d0",
+      "candidateName": "Liz Boldon",
+      "candidacy": "state_upper: State Senate District 25 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22141,
+      "rosterName": "Julia Coleman",
+      "rosterSeat": "senate SD-048",
+      "candidateId": "8120ac72-63da-4ba9-a239-7afa7fc90b25",
+      "candidateName": "Julia Coleman",
+      "candidacy": "state_upper: State Senate District 48 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22143,
+      "rosterName": "Emma Greenman",
+      "rosterSeat": "house HD-063B",
+      "candidateId": "e1841183-9b1d-4d5c-8ec8-0ccc802fb7e9",
+      "candidateName": "Emma Greenman",
+      "candidacy": "state_lower: State House District 63B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22145,
+      "rosterName": "Bjorn Olson",
+      "rosterSeat": "house HD-022A",
+      "candidateId": "f3510bf6-d346-4e3e-9174-08578208b354",
+      "candidateName": "Bjorn Olson",
+      "candidacy": "state_lower: State House District 22A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22209,
+      "rosterName": "Zach Duckworth",
+      "rosterSeat": "senate SD-057",
+      "candidateId": "23e1df82-60e7-4692-b60d-6a1dcc21563a",
+      "candidateName": "Zach Duckworth",
+      "candidacy": "state_upper: State Senate District 57 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22210,
+      "rosterName": "Jen McEwen",
+      "rosterSeat": "senate SD-008",
+      "candidateId": "6df7346a-83f2-4868-b6e4-79435ee073aa",
+      "candidateName": "Jen McEwen",
+      "candidacy": "state_upper: State Senate District 8 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22211,
+      "rosterName": "Aric Putnam",
+      "rosterSeat": "senate SD-014",
+      "candidateId": "41283066-3fb7-4b33-8c93-b49385638223",
+      "candidateName": "Aric Putnam",
+      "candidacy": "state_upper: State Senate District 14 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22268,
+      "rosterName": "Jessica Hanson",
+      "rosterSeat": "house HD-055A",
+      "candidateId": "059a1ecf-bfde-4e26-a4c8-927fc2116a79",
+      "candidateName": "Jessica Hanson",
+      "candidacy": "state_lower: State House District 55A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22269,
+      "rosterName": "Athena Hollins",
+      "rosterSeat": "house HD-066B",
+      "candidateId": "8cd4f8ff-91bb-4216-afcd-5a00d059f50e",
+      "candidateName": "Athena Hollins",
+      "candidacy": "state_lower: State House District 66B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22270,
+      "rosterName": "Spencer Igo",
+      "rosterSeat": "house HD-007A",
+      "candidateId": "5d62d83c-d858-49de-b357-561f6c345ba3",
+      "candidateName": "Spencer Igo",
+      "candidacy": "state_lower: State House District 7A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22272,
+      "rosterName": "Liz Reyer",
+      "rosterSeat": "house HD-052A",
+      "candidateId": "d6630004-3453-4827-9a9f-29e464adb553",
+      "candidateName": "Liz Reyer",
+      "candidacy": "state_upper: State Senate District 52 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22442,
+      "rosterName": "Gene Dornink",
+      "rosterSeat": "senate SD-023",
+      "candidateId": "2c0310c9-76e8-40c8-8462-9aec7d4cefff",
+      "candidateName": "Gene Dornink",
+      "candidacy": "state_upper: State Senate District 23 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22443,
+      "rosterName": "Omar Fateh",
+      "rosterSeat": "senate SD-062",
+      "candidateId": "4dceeee9-a13d-4175-a748-204c0a830a6d",
+      "candidateName": "Omar Fateh",
+      "candidacy": "state_upper: State Senate District 62 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22444,
+      "rosterName": "Ann Johnson Stewart",
+      "rosterSeat": "senate SD-045",
+      "candidateId": "d53fc5fe-13f1-42ae-bbdc-245872f5ff96",
+      "candidateName": "Ann Johnson Stewart",
+      "candidacy": "state_upper: State Senate District 45 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22445,
+      "rosterName": "Lindsey Port",
+      "rosterSeat": "senate SD-055",
+      "candidateId": "165f18f1-5c73-4a84-b2a2-0e804dfd5004",
+      "candidateName": "Lindsey Port",
+      "candidacy": "state_upper: State Senate District 55 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22498,
+      "rosterName": "John Burkel",
+      "rosterSeat": "house HD-001A",
+      "candidateId": "ae74cd9b-757b-4e8b-ba5b-b607d2a9e74b",
+      "candidateName": "John Burkel",
+      "candidacy": "state_lower: State House District 1A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22575,
+      "rosterName": "Patricia Mueller",
+      "rosterSeat": "house HD-023B",
+      "candidateId": "d2f9fe8c-4311-458e-bda0-3c68f3f79d70",
+      "candidateName": "Patricia Mueller",
+      "candidacy": "state_lower: State House District 23B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22651,
+      "rosterName": "Luke Frederick",
+      "rosterSeat": "house HD-018B",
+      "candidateId": "0067d2ab-5514-46eb-ae68-c4165da174cb",
+      "candidateName": "Luke Frederick",
+      "candidacy": "state_lower: State House District 18B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22653,
+      "rosterName": "Jordan Rasmusson",
+      "rosterSeat": "senate SD-009",
+      "candidateId": "d66accfa-beab-4f37-9c25-fe287db246cb",
+      "candidateName": "Jordan Rasmusson",
+      "candidacy": "state_upper: State Senate District 9 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23575,
+      "rosterName": "Heather Gustafson",
+      "rosterSeat": "senate SD-036",
+      "candidateId": "48b05c06-361e-44d9-8d28-b35162c82d69",
+      "candidateName": "Heather Gustafson",
+      "candidacy": "state_upper: State Senate District 36 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23576,
+      "rosterName": "Grant Hauschild",
+      "rosterSeat": "senate SD-003",
+      "candidateId": "5efca3e0-9042-453b-8676-2c1529b2994b",
+      "candidateName": "Grant Hauschild",
+      "candidacy": "state_upper: State Senate District 3 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23577,
+      "rosterName": "Rob Kupec",
+      "rosterSeat": "senate SD-004",
+      "candidateId": "277bf112-1e21-46ee-b74c-d61837e47974",
+      "candidateName": "Rob Kupec",
+      "candidacy": "state_upper: State Senate District 4 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23578,
+      "rosterName": "Zaynab Mohamed",
+      "rosterSeat": "senate SD-063",
+      "candidateId": "7a7400a6-e4c2-445a-860f-31c38d758c92",
+      "candidateName": "Zaynab Mohamed",
+      "candidacy": "state_upper: State Senate District 63 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23579,
+      "rosterName": "Clare Oumou Verbeten",
+      "rosterSeat": "senate SD-066",
+      "candidateId": "daddbcd8-345c-4eb7-bb69-f7a265679b81",
+      "candidateName": "Clare Oumou Verbeten",
+      "candidacy": "state_upper: State Senate District 66 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23580,
+      "rosterName": "Susan Pha",
+      "rosterSeat": "senate SD-038",
+      "candidateId": "b7b7919f-20d1-4c2a-a39a-8737769af783",
+      "candidateName": "Susan Pha",
+      "candidacy": "state_upper: State Senate District 38 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23581,
+      "rosterName": "Judy Seeberger",
+      "rosterSeat": "senate SD-041",
+      "candidateId": "97feef8f-fcf9-4030-83b8-2936cf096209",
+      "candidateName": "Judy Seeberger",
+      "candidacy": "state_upper: State Senate District 41 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23582,
+      "rosterName": "Bonnie Westlin",
+      "rosterSeat": "senate SD-042",
+      "candidateId": "20df7241-1405-459b-a74a-e34e22147aab",
+      "candidateName": "Bonnie Westlin",
+      "candidacy": "state_upper: State Senate District 42 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23654,
+      "rosterName": "Ned Carroll",
+      "rosterSeat": "house HD-042A",
+      "candidateId": "11644222-7a7b-4be1-8d76-16c356661733",
+      "candidateName": "Ned Carroll",
+      "candidacy": "state_lower: State House District 42A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23655,
+      "rosterName": "Ethan Cha",
+      "rosterSeat": "house HD-047B",
+      "candidateId": "d3344625-08a4-41e7-ae3d-01499f3960e5",
+      "candidateName": "Ethan Cha",
+      "candidacy": "state_lower: State House District 47B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23656,
+      "rosterName": "Mary Clardy",
+      "rosterSeat": "house HD-053A",
+      "candidateId": "f4badb2e-f9a8-4809-b477-013c4b5cba7e",
+      "candidateName": "Mary Frances Clardy",
+      "candidacy": "state_lower: State House District 53A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23657,
+      "rosterName": "Nathan Coulter",
+      "rosterSeat": "house HD-051B",
+      "candidateId": "c53d073e-2a28-4bc0-8bcc-d13a70115516",
+      "candidateName": "Nathan Coulter",
+      "candidacy": "state_lower: State House District 51B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23658,
+      "rosterName": "Brion Curran",
+      "rosterSeat": "house HD-036B",
+      "candidateId": "01f88a2f-684c-4d6b-b534-5e0182dfa918",
+      "candidateName": "Brion Curran",
+      "candidacy": "state_lower: State House District 36B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23659,
+      "rosterName": "Ben Davis",
+      "rosterSeat": "house HD-006A",
+      "candidateId": "1277c3d6-82fc-4ca4-a738-3109fff13676",
+      "candidateName": "Ben Davis",
+      "candidacy": "state_lower: State House District 6A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23660,
+      "rosterName": "Robert Farnsworth",
+      "rosterSeat": "senate SD-007",
+      "candidateId": "1560a767-1147-4a1e-8701-07b2869a19ae",
+      "candidateName": "Robert Farnsworth",
+      "candidacy": "state_upper: State Senate District 7 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23661,
+      "rosterName": "Leigh Finke",
+      "rosterSeat": "house HD-066A",
+      "candidateId": "f39d49f1-5ea0-44a4-bdea-cbbbda1bc10c",
+      "candidateName": "Leigh Finke",
+      "candidacy": "state_lower: State House District 66A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23662,
+      "rosterName": "Amanda Hemmingsen-Jaeger",
+      "rosterSeat": "senate SD-047",
+      "candidateId": "e18c507e-b573-48ea-97f6-14161a358d81",
+      "candidateName": "Amanda Hemmingsen-Jaeger",
+      "candidacy": "state_upper: State Senate District 47 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23663,
+      "rosterName": "Kim Hicks",
+      "rosterSeat": "house HD-025A",
+      "candidateId": "06d3ae61-18f2-4097-885c-929a32d6deef",
+      "candidateName": "Kim Hicks",
+      "candidacy": "state_lower: State House District 25A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23664,
+      "rosterName": "Josiah Hill",
+      "rosterSeat": "house HD-033B",
+      "candidateId": "5e6ccc6c-72b2-4088-a3e6-3ce937c3cd8d",
+      "candidateName": "Josiah Hill",
+      "candidacy": "state_lower: State House District 33B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23665,
+      "rosterName": "Samakab Hussein",
+      "rosterSeat": "house HD-065A",
+      "candidateId": "d27f5f38-cfd7-4a92-ae5c-e94fb44a696f",
+      "candidateName": "Samakab Hussein",
+      "candidacy": "state_lower: State House District 65A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23667,
+      "rosterName": "Larry Kraft",
+      "rosterSeat": "house HD-046A",
+      "candidateId": "2e0d193d-b8dd-4b4b-b672-a3cc0a13d9ee",
+      "candidateName": "Larry Kraft",
+      "candidacy": "state_lower: State House District 46A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23668,
+      "rosterName": "Liz Lee",
+      "rosterSeat": "house HD-067A",
+      "candidateId": "dd05b90a-a68e-42ee-8ac1-8f5722106440",
+      "candidateName": "Liz Lee",
+      "candidacy": "state_lower: State House District 67A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23670,
+      "rosterName": "Matt Norris",
+      "rosterSeat": "house HD-032B",
+      "candidateId": "3f07ac5d-da73-4b7d-8d10-b17d2221c297",
+      "candidateName": "Matt Norris",
+      "candidacy": "state_lower: State House District 32B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23672,
+      "rosterName": "Kristi Pursell",
+      "rosterSeat": "house HD-058A",
+      "candidateId": "3655d3fc-b16d-4854-8cec-daa23164487a",
+      "candidateName": "Kristi Pursell",
+      "candidacy": "state_lower: State House District 58A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23673,
+      "rosterName": "Lucille Rehm",
+      "rosterSeat": "house HD-048B",
+      "candidateId": "3ad127f8-c27f-4af9-bc21-af7d314b9173",
+      "candidateName": "Lucille \"Lucy\" Rehm",
+      "candidacy": "state_lower: State House District 48B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23674,
+      "rosterName": "Samantha Sencer-Mura",
+      "rosterSeat": "house HD-063A",
+      "candidateId": "b8df344b-dd5c-41ae-82c3-387042f80d2f",
+      "candidateName": "Samantha Sencer-Mura",
+      "candidacy": "state_lower: State House District 63A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23675,
+      "rosterName": "Roger Skraba",
+      "rosterSeat": "house HD-003A",
+      "candidateId": "88f707e8-88a6-4ff4-9983-89134dc55632",
+      "candidateName": "Roger J. Skraba",
+      "candidacy": "state_lower: State House District 3A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23677,
+      "rosterName": "Ben Bakeberg",
+      "rosterSeat": "house HD-054B",
+      "candidateId": "c8dcb996-0e27-47a4-953a-6b79040e7d3a",
+      "candidateName": "Ben Bakeberg",
+      "candidacy": "state_upper: State Senate District 54 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23678,
+      "rosterName": "Jeff Dotseth",
+      "rosterSeat": "house HD-011A",
+      "candidateId": "6ed0d19f-424b-41df-b2f7-4c16eced61b3",
+      "candidateName": "Jeff Dotseth",
+      "candidacy": "state_lower: State House District 11A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23679,
+      "rosterName": "Dawn Gillman",
+      "rosterSeat": "house HD-017A",
+      "candidateId": "18404d75-f4f4-44e0-af91-cf86c9069e37",
+      "candidateName": "Dawn Gillman",
+      "candidacy": "state_lower: State House District 17A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23680,
+      "rosterName": "Harry Niska",
+      "rosterSeat": "house HD-031A",
+      "candidateId": "28000890-7af1-4156-9e02-5c769b830247",
+      "candidateName": "Harry Niska",
+      "candidacy": "state_lower: State House District 31A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23681,
+      "rosterName": "Bernie Perryman",
+      "rosterSeat": "house HD-014A",
+      "candidateId": "d0e37d57-cc1f-4fb6-b3bc-858b0687ab1b",
+      "candidateName": "Bernie Perryman",
+      "candidacy": "state_upper: State Senate District 14 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23682,
+      "rosterName": "Natalie Zeleznikar",
+      "rosterSeat": "house HD-003B",
+      "candidateId": "61864881-fb0d-400f-a888-a8fc1f4715f7",
+      "candidateName": "Natalie Zeleznikar",
+      "candidacy": "state_lower: State House District 3B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23686,
+      "rosterName": "Steven Jacob",
+      "rosterSeat": "house HD-020B",
+      "candidateId": "21981c6e-80e1-4048-ba4a-74fd745dc7f8",
+      "candidateName": "Steven E Jacob",
+      "candidacy": "state_upper: State Senate District 20 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23755,
+      "rosterName": "Bill Lieske",
+      "rosterSeat": "senate SD-058",
+      "candidateId": "47fbfd78-aae8-476d-ae35-a5d83e2de67f",
+      "candidateName": "Bill Lieske",
+      "candidacy": "state_upper: State Senate District 58 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23756,
+      "rosterName": "Nathan Wesenberg",
+      "rosterSeat": "senate SD-010",
+      "candidateId": "14415842-c06a-45f0-82ce-f8f7b81db075",
+      "candidateName": "Nathan Wesenberg",
+      "candidacy": "state_upper: State Senate District 10 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23808,
+      "rosterName": "Michael Kreun",
+      "rosterSeat": "senate SD-032",
+      "candidateId": "93eb3392-a587-4f72-a256-c3f2c97b3489",
+      "candidateName": "Michael Kreun",
+      "candidacy": "state_upper: State Senate District 32 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23858,
+      "rosterName": "Bobbie Harder",
+      "rosterSeat": "house HD-017B",
+      "candidateId": "d0b0fefa-f682-464e-a853-c14281bbd961",
+      "candidateName": "Bobbie Harder",
+      "candidacy": "state_lower: State House District 17B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23860,
+      "rosterName": "Jim Joy",
+      "rosterSeat": "house HD-004B",
+      "candidateId": "e08f0c6a-282b-49e4-9b30-36d7b556359d",
+      "candidateName": "Jim Joy",
+      "candidacy": "state_lower: State House District 4B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23861,
+      "rosterName": "Krista Knudsen",
+      "rosterSeat": "house HD-005A",
+      "candidateId": "97085ebd-0a35-4705-a73b-2135d28a878c",
+      "candidateName": "Krista Knudsen",
+      "candidacy": "state_lower: State House District 5A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23862,
+      "rosterName": "Andrew Myers",
+      "rosterSeat": "house HD-045A",
+      "candidateId": "33710970-f1bb-472c-bfec-3fb0fe2a9a46",
+      "candidateName": "Andrew Myers",
+      "candidacy": "state_lower: State House District 45A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23863,
+      "rosterName": "Danny Nadeau",
+      "rosterSeat": "house HD-034A",
+      "candidateId": "44ab1a59-bea1-4121-8693-b4b514cab34c",
+      "candidateName": "Danny Nadeau",
+      "candidacy": "state_lower: State House District 34A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23864,
+      "rosterName": "Mike Wiener",
+      "rosterSeat": "house HD-005B",
+      "candidateId": "00cbef00-589d-42e0-8ddb-f2f60b67f766",
+      "candidateName": "Mike Wiener",
+      "candidacy": "state_upper: State Senate District 5 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23865,
+      "rosterName": "Jeff Witte",
+      "rosterSeat": "house HD-057B",
+      "candidateId": "06a41c9a-c278-4790-b64d-b9d8e2990cdb",
+      "candidateName": "Jeff Witte",
+      "candidacy": "state_lower: State House District 57B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23892,
+      "rosterName": "Pam Altendorf",
+      "rosterSeat": "house HD-020A",
+      "candidateId": "ee2b116b-83c2-4baa-b06a-e289c015f198",
+      "candidateName": "Pam Altendorf",
+      "candidacy": "state_lower: State House District 20A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23893,
+      "rosterName": "Marj Fogelman",
+      "rosterSeat": "house HD-021B",
+      "candidateId": "2c7140bf-8e4e-4588-8067-1e400e0ded59",
+      "candidateName": "Marj J Fogelman",
+      "candidacy": "state_lower: State House District 21B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23894,
+      "rosterName": "Walter Hudson",
+      "rosterSeat": "house HD-030A",
+      "candidateId": "aa010d17-dac5-4721-b5f8-32b61843ddb5",
+      "candidateName": "Walter Hudson",
+      "candidacy": "state_lower: State House District 30A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24680,
+      "rosterName": "Tom Murphy",
+      "rosterSeat": "house HD-009B",
+      "candidateId": "c4c986b3-288d-40e5-8fe3-d7137c93e89c",
+      "candidateName": "Tom Murphy",
+      "candidacy": "state_lower: State House District 9B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24681,
+      "rosterName": "Isaac Schultz",
+      "rosterSeat": "house HD-010B",
+      "candidateId": "b278e060-416c-4fc5-a02f-52d1c9d57227",
+      "candidateName": "Isaac Schultz",
+      "candidacy": "state_lower: State House District 10B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25139,
+      "rosterName": "Bianca Virnig",
+      "rosterSeat": "house HD-052B",
+      "candidateId": "32f4dc34-4a2d-4635-886b-2ded1b52c665",
+      "candidateName": "Bianca Virnig",
+      "candidacy": "state_lower: State House District 52B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25190,
+      "rosterName": "Bryan Lawrence",
+      "rosterSeat": "house HD-027B",
+      "candidateId": "97c1015e-82f5-4a8c-8641-53fadde5e800",
+      "candidateName": "Bryan Lawrence",
+      "candidacy": "state_lower: State House District 27B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26170,
+      "rosterName": "Keith Allen",
+      "rosterSeat": "house HD-019A",
+      "candidateId": "83081936-2118-4e77-acf6-231d88ce4cbb",
+      "candidateName": "Keith Allen",
+      "candidacy": "state_lower: State House District 19A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26171,
+      "rosterName": "Tom Dippel",
+      "rosterSeat": "house HD-041B",
+      "candidateId": "6eb1b774-adca-45aa-8831-7c30f28be64f",
+      "candidateName": "Tom Dippel",
+      "candidacy": "state_upper: State Senate District 41 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26172,
+      "rosterName": "Bidal Duran",
+      "rosterSeat": "house HD-002A",
+      "candidateId": "d1a3a46b-ecd1-459e-b3ae-9e5cd553230f",
+      "candidateName": "Bidal Duran Jr",
+      "candidacy": "state_lower: State House District 2A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26173,
+      "rosterName": "Alex Falconer",
+      "rosterSeat": "house HD-049A",
+      "candidateId": "4cfeb950-a9df-4a45-babb-9b20227165fa",
+      "candidateName": "Alex Falconer",
+      "candidacy": "state_lower: State House District 49A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26174,
+      "rosterName": "Steve Gander",
+      "rosterSeat": "house HD-001B",
+      "candidateId": "79567ece-43c9-4390-b1a4-8d6770736dca",
+      "candidateName": "Steve Gander",
+      "candidacy": "state_lower: State House District 1B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26175,
+      "rosterName": "Jimmy Gordon",
+      "rosterSeat": "house HD-028A",
+      "candidateId": "c6435b81-448c-4f1d-afb0-e63f15cf5469",
+      "candidateName": "James \"Jimmy\" Gordon",
+      "candidacy": "state_lower: State House District 28A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26176,
+      "rosterName": "Julie Greene",
+      "rosterSeat": "house HD-050A",
+      "candidateId": "c563002e-7ad1-4fea-9b01-20e873f0bf5a",
+      "candidateName": "Julie Greene",
+      "candidacy": "state_lower: State House District 50A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26177,
+      "rosterName": "Huldah Momanyi-Hiltsley",
+      "rosterSeat": "house HD-038A",
+      "candidateId": "5ce53e74-de6b-4184-8876-5caca3269880",
+      "candidateName": "Huldah Momanyi-Hiltsley",
+      "candidacy": "state_lower: State House District 38A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26178,
+      "rosterName": "Pete Johnson",
+      "rosterSeat": "house HD-008A",
+      "candidateId": "daa7c9f2-9e8a-4120-8474-218920af1ee5",
+      "candidateName": "Peter Johnson",
+      "candidacy": "state_lower: State House District 8A (2024); Minnesota",
+      "confidence": "first_prefix",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26179,
+      "rosterName": "Wayne Johnson",
+      "rosterSeat": "house HD-041A",
+      "candidateId": "41708ada-f984-4ede-b79e-18c90a7ffaba",
+      "candidateName": "Wayne A Johnson",
+      "candidacy": "state_lower: State House District 41A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26180,
+      "rosterName": "Katie Jones",
+      "rosterSeat": "house HD-061A",
+      "candidateId": "45681da6-b679-4a82-9bae-3da26d97c516",
+      "candidateName": "Katie Jones",
+      "candidacy": "state_lower: State House District 61A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26181,
+      "rosterName": "Anquam Mahamoud",
+      "rosterSeat": "house HD-062B",
+      "candidateId": "10c0c2fc-021f-4e1c-aff8-042d39cbb81e",
+      "candidateName": "Anquam Mahamoud",
+      "candidacy": "state_lower: State House District 62B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26182,
+      "rosterName": "Kari Rehrauer",
+      "rosterSeat": "house HD-035B",
+      "candidateId": "95dff6a3-e1da-4a68-a12f-c7e8b506a0ec",
+      "candidateName": "Kari Rehrauer",
+      "candidacy": "state_lower: State House District 35B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26183,
+      "rosterName": "Aaron Repinski",
+      "rosterSeat": "house HD-026A",
+      "candidateId": "9827f2f7-b9d3-429d-a873-b1512a01740d",
+      "candidateName": "Aaron Repinski",
+      "candidacy": "state_lower: State House District 26A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26184,
+      "rosterName": "Drew Roach",
+      "rosterSeat": "house HD-058B",
+      "candidateId": "24946910-4cc0-440e-b49a-4e34dd5e4738",
+      "candidateName": "Drew Roach",
+      "candidacy": "state_lower: State House District 58B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26185,
+      "rosterName": "Max Rymer",
+      "rosterSeat": "house HD-028B",
+      "candidateId": "56bfcb01-b842-436f-bcb2-9af4a6389536",
+      "candidateName": "Max Rymer",
+      "candidacy": "state_lower: State House District 28B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26186,
+      "rosterName": "Erica Schwartz",
+      "rosterSeat": "house HD-018A",
+      "candidateId": "0a75b6ce-a1e5-4572-a61c-c4ae1a34c083",
+      "candidateName": "Erica Schwartz",
+      "candidacy": "state_lower: State House District 18A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26187,
+      "rosterName": "Thomas Sexton",
+      "rosterSeat": "house HD-019B",
+      "candidateId": "67fbe683-cce7-4550-888f-78e70d53aed9",
+      "candidateName": "Thomas J. Sexton",
+      "candidacy": "state_lower: State House District 19B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26188,
+      "rosterName": "Terry Stier",
+      "rosterSeat": "house HD-022B",
+      "candidateId": "57cf8ff0-ff83-4cf4-b489-712ef62f0145",
+      "candidateName": "Terry Matthew Stier",
+      "candidacy": "state_lower: State House District 22B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26189,
+      "rosterName": "Scott Van Binsbergen",
+      "rosterSeat": "house HD-016A",
+      "candidateId": "eff3070f-2b19-48fe-96cc-da2d9e436062",
+      "candidateName": "Scott Van Binsbergen",
+      "candidacy": "state_lower: State House District 16A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26190,
+      "rosterName": "Cal Warwas",
+      "rosterSeat": "house HD-007B",
+      "candidateId": "b4a3de9f-b6a9-4b23-8b00-8344f2ae11e7",
+      "candidateName": "Cal Warwas",
+      "candidacy": "state_lower: State House District 7B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26404,
+      "rosterName": "Doron Clark",
+      "rosterSeat": "senate SD-060",
+      "candidateId": "e476c3da-82b0-4b14-a56f-17f20bcd5e2d",
+      "candidateName": "Doron Clark",
+      "candidacy": "state_upper: State Senate District 60 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26439,
+      "rosterName": "David Gottfried",
+      "rosterSeat": "house HD-040B",
+      "candidateId": "46ba35ae-d49b-4be8-8e09-b53c1fe8b9ef",
+      "candidateName": "David Gottfried",
+      "candidacy": "state_lower: State House District 40B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26466,
+      "rosterName": "Keri Heintzeman",
+      "rosterSeat": "senate SD-006",
+      "candidateId": "e1ad473b-8aed-4e6b-9729-31f57a4a687f",
+      "candidateName": "Keri Heintzeman",
+      "candidacy": "state_upper: State Senate District 6 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26538,
+      "rosterName": "Xp Lee",
+      "rosterSeat": "house HD-034B",
+      "candidateId": "dc3b91ad-9114-4d30-a97e-e4baf93c8b4c",
+      "candidateName": "Xp Lee",
+      "candidacy": "state_lower: State House District 34B (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26539,
+      "rosterName": "Michael Holmstrom",
+      "rosterSeat": "senate SD-029",
+      "candidateId": "621f28a4-617c-420e-9953-2cab926a6435",
+      "candidateName": "Michael Holmstrom Jr",
+      "candidacy": "state_upper: State Senate District 29 (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 26627,
+      "rosterName": "Shelley Buck",
+      "rosterSeat": "house HD-047A",
+      "candidateId": "9c004427-604d-4c9f-ac7b-4970c25ed694",
+      "candidateName": "Shelley Buck",
+      "candidacy": "state_lower: State House District 47A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 26628,
+      "rosterName": "Meg Luger-Nikolai",
+      "rosterSeat": "house HD-064A",
+      "candidateId": "9c84aa2c-7c9f-4fac-901a-ab9ae68da714",
+      "candidateName": "Meg Luger-Nikolai",
+      "candidacy": "state_lower: State House District 64A (2024); Minnesota",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 10515,
+      "name": "Chris Swedzinski",
+      "seat": "house HD-015A"
+    },
+    {
+      "peopleId": 10524,
+      "name": "Tim O'Driscoll",
+      "seat": "house HD-013B"
+    },
+    {
+      "peopleId": 10861,
+      "name": "Joe Schomacker",
+      "seat": "house HD-021A"
+    },
+    {
+      "peopleId": 10869,
+      "name": "Gary Dahms",
+      "seat": "senate SD-015"
+    },
+    {
+      "peopleId": 10870,
+      "name": "Carla Nelson",
+      "seat": "senate SD-024"
+    },
+    {
+      "peopleId": 10874,
+      "name": "Jeremy Miller",
+      "seat": "senate SD-026"
+    },
+    {
+      "peopleId": 14838,
+      "name": "Jeff Howe",
+      "seat": "senate SD-013"
+    },
+    {
+      "peopleId": 14839,
+      "name": "Ron Kresha",
+      "seat": "house HD-010A"
+    },
+    {
+      "peopleId": 15072,
+      "name": "Eric Pratt",
+      "seat": "senate SD-054"
+    },
+    {
+      "peopleId": 15371,
+      "name": "Bill Weber",
+      "seat": "senate SD-021"
+    },
+    {
+      "peopleId": 15436,
+      "name": "Melissa Wiklund",
+      "seat": "senate SD-051"
+    },
+    {
+      "peopleId": 16546,
+      "name": "Peggy Bennett",
+      "seat": "house HD-023A"
+    },
+    {
+      "peopleId": 18340,
+      "name": "Steve Cwodzinski",
+      "seat": "senate SD-049"
+    },
+    {
+      "peopleId": 18341,
+      "name": "Rich Draheim",
+      "seat": "senate SD-022"
+    },
+    {
+      "peopleId": 18342,
+      "name": "Justin Eichorn",
+      "seat": "senate SD-006"
+    },
+    {
+      "peopleId": 18345,
+      "name": "Matt Klein",
+      "seat": "senate SD-053"
+    },
+    {
+      "peopleId": 18351,
+      "name": "Paul Utke",
+      "seat": "senate SD-005"
+    },
+    {
+      "peopleId": 18510,
+      "name": "Erin Koegel",
+      "seat": "house HD-039A"
+    },
+    {
+      "peopleId": 20446,
+      "name": "Kaohly Her",
+      "seat": "house HD-064A"
+    },
+    {
+      "peopleId": 20454,
+      "name": "Alice Mann",
+      "seat": "senate SD-050"
+    },
+    {
+      "peopleId": 20455,
+      "name": "Kelly Moller",
+      "seat": "house HD-040A"
+    },
+    {
+      "peopleId": 20464,
+      "name": "Dan Wolgamott",
+      "seat": "house HD-014B"
+    },
+    {
+      "peopleId": 20466,
+      "name": "Tou Xiong",
+      "seat": "senate SD-044"
+    },
+    {
+      "peopleId": 20897,
+      "name": "Lisa Demuth",
+      "seat": "house HD-013A"
+    },
+    {
+      "peopleId": 21063,
+      "name": "Kristin Robbins",
+      "seat": "house HD-037A"
+    },
+    {
+      "peopleId": 21606,
+      "name": "Paul Novotny",
+      "seat": "house HD-030B"
+    },
+    {
+      "peopleId": 22142,
+      "name": "Cedrick Frazier",
+      "seat": "house HD-043A"
+    },
+    {
+      "peopleId": 22144,
+      "name": "Heather Keeler",
+      "seat": "house HD-004A"
+    },
+    {
+      "peopleId": 22267,
+      "name": "Kaela Berg",
+      "seat": "house HD-055B"
+    },
+    {
+      "peopleId": 22499,
+      "name": "Sandra Feist",
+      "seat": "house HD-039B"
+    },
+    {
+      "peopleId": 23666,
+      "name": "Alicia Kozlowski",
+      "seat": "house HD-008B"
+    },
+    {
+      "peopleId": 23669,
+      "name": "Nicole Mitchell",
+      "seat": "senate SD-047"
+    },
+    {
+      "peopleId": 23671,
+      "name": "Maria Perez-Vega",
+      "seat": "house HD-065B"
+    },
+    {
+      "peopleId": 23676,
+      "name": "Andrew Smith",
+      "seat": "house HD-025B"
+    },
+    {
+      "peopleId": 23741,
+      "name": "Elliott Engen",
+      "seat": "house HD-036A"
+    },
+    {
+      "peopleId": 23742,
+      "name": "Patti Anderson",
+      "seat": "house HD-033A"
+    },
+    {
+      "peopleId": 6344,
+      "name": "Melissa Hortman",
+      "seat": "house HD-034B"
+    },
+    {
+      "peopleId": 6374,
+      "name": "Paul Torkelson",
+      "seat": "house HD-015B"
+    },
+    {
+      "peopleId": 6384,
+      "name": "Steve Drazkowski",
+      "seat": "senate SD-020"
+    },
+    {
+      "peopleId": 6387,
+      "name": "Bruce Anderson",
+      "seat": "senate SD-029"
+    },
+    {
+      "peopleId": 6430,
+      "name": "Ann Rest",
+      "seat": "senate SD-043"
+    },
+    {
+      "peopleId": 6436,
+      "name": "David Dibble",
+      "seat": "senate SD-061"
+    },
+    {
+      "peopleId": 6447,
+      "name": "James Carlson",
+      "seat": "senate SD-052"
+    },
+    {
+      "peopleId": 6458,
+      "name": "Warren Limmer",
+      "seat": "senate SD-037"
+    },
+    {
+      "peopleId": 6483,
+      "name": "Sandra Pappas",
+      "seat": "senate SD-065"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "1baa98bc-3cb9-4c17-9cf5-39b7837cc01f",
+      "name": "_ Rocco",
+      "scope": "state_upper",
+      "districtName": "State Senate District 65 (2024); Minnesota"
+    },
+    {
+      "candidateId": "4b7eec12-5f21-424b-ac78-5ed3b0c2335b",
+      "name": "A.J. Prospect",
+      "scope": "state_lower",
+      "districtName": "State House District 56A (2024); Minnesota"
+    },
+    {
+      "candidateId": "60e51e15-0eb0-4e25-bb3e-6b6993687604",
+      "name": "Aaron Kania",
+      "scope": "state_lower",
+      "districtName": "State House District 3A (2024); Minnesota"
+    },
+    {
+      "candidateId": "5609d58f-5635-4835-9e2a-7e1c6d2235b0",
+      "name": "Aaron Klemz",
+      "scope": "state_lower",
+      "districtName": "State House District 39A (2024); Minnesota"
+    },
+    {
+      "candidateId": "0a3a3847-aa71-4d84-a9e5-f6024d20984e",
+      "name": "Aaron Paul",
+      "scope": "state_lower",
+      "districtName": "State House District 54A (2024); Minnesota"
+    },
+    {
+      "candidateId": "502df0d0-ab31-4395-8d80-bb2ea8e6a9dd",
+      "name": "Aaron Schweiger",
+      "scope": "state_lower",
+      "districtName": "State House District 3B (2024); Minnesota"
+    },
+    {
+      "candidateId": "b786005f-de47-4f0d-b112-7a478bde0c6c",
+      "name": "Abdi Daisane",
+      "scope": "state_lower",
+      "districtName": "State House District 14A (2024); Minnesota"
+    },
+    {
+      "candidateId": "34d16252-0107-4bbe-9f77-c6c0f7dadb98",
+      "name": "Abigail Wolters",
+      "scope": "state_upper",
+      "districtName": "State Senate District 60 (2024); Minnesota"
+    },
+    {
+      "candidateId": "278df0a7-a569-4281-a5a9-3b287be60740",
+      "name": "Aisha Elmquist",
+      "scope": "state_lower",
+      "districtName": "State House District 40A (2024); Minnesota"
+    },
+    {
+      "candidateId": "4ab87f6e-82bc-470f-9189-016323930d00",
+      "name": "AJ Gubash",
+      "scope": "state_lower",
+      "districtName": "State House District 53A (2024); Minnesota"
+    },
+    {
+      "candidateId": "d691f315-0f43-4874-949c-265fb38f598c",
+      "name": "Allan Kehr II",
+      "scope": "state_lower",
+      "districtName": "State House District 8A (2024); Minnesota"
+    },
+    {
+      "candidateId": "8238744e-1149-40e3-92b9-b3ad68ed1b49",
+      "name": "Allen Shen",
+      "scope": "state_lower",
+      "districtName": "State House District 40B (2024); Minnesota"
+    },
+    {
+      "candidateId": "c84901db-8d1c-4072-bd72-5341ae89c07f",
+      "name": "Allie Wolf",
+      "scope": "state_lower",
+      "districtName": "State House District 26B (2024); Minnesota"
+    },
+    {
+      "candidateId": "eb79bdb1-f332-47c9-a12f-673a1f779f49",
+      "name": "Amáda Márquez Simula",
+      "scope": "state_lower",
+      "districtName": "State House District 39B (2024); Minnesota"
+    },
+    {
+      "candidateId": "c65173dd-df15-4bd2-9de1-4d2fd271488a",
+      "name": "Amanda Matchett",
+      "scope": "state_lower",
+      "districtName": "State House District 32A (2024); Minnesota"
+    },
+    {
+      "candidateId": "422a592b-6fb4-4c08-95ac-bae5ec0440a6",
+      "name": "Andrea Boettger",
+      "scope": "state_upper",
+      "districtName": "State Senate District 15 (2024); Minnesota"
+    },
+    {
+      "candidateId": "5b17a706-4d92-4323-9d28-f9473163a82d",
+      "name": "Andrea Zupancich",
+      "scope": "state_upper",
+      "districtName": "State Senate District 3 (2024); Minnesota"
+    },
+    {
+      "candidateId": "c3b32d49-b5d0-4e53-88aa-e09b4032308d",
+      "name": "Andrew Hattaway",
+      "scope": "state_lower",
+      "districtName": "State House District 56B (2024); Minnesota"
+    },
+    {
+      "candidateId": "0d0fa75d-4bd3-402a-ad5c-e12b41432c2a",
+      "name": "Andrew Rockhold",
+      "scope": "state_lower",
+      "districtName": "State House District 4A (2024); Minnesota"
+    },
+    {
+      "candidateId": "75f77fce-8462-4f43-b305-d46d0ebe543a",
+      "name": "Andy Macko",
+      "scope": "state_lower",
+      "districtName": "State House District 39A (2024); Minnesota"
+    },
+    {
+      "candidateId": "4bb47780-201e-46a2-9b9c-3f60dccb98c8",
+      "name": "Andy Smith",
+      "scope": "state_lower",
+      "districtName": "State House District 25B (2024); Minnesota"
+    },
+    {
+      "candidateId": "196323cd-f280-4f39-b1fc-b4e477cdf36a",
+      "name": "Angela Nelson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 35 (2024); Minnesota"
+    },
+    {
+      "candidateId": "17855e9e-b8c0-42df-8022-fde0c8d85507",
+      "name": "Angela Thompson",
+      "scope": "state_lower",
+      "districtName": "State House District 33A (2024); Minnesota"
+    },
+    {
+      "candidateId": "aa46ecd3-64ac-41f7-9b6b-9f2428249285",
+      "name": "Angie Hanson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 23 (2024); Minnesota"
+    },
+    {
+      "candidateId": "a8270880-6e0d-49dd-8f30-0f0b7309567a",
+      "name": "Arlis Sayler",
+      "scope": "state_lower",
+      "districtName": "State House District 13A (2024); Minnesota"
+    },
+    {
+      "candidateId": "9f941c3c-8458-4f8f-bcd8-480bad810a6c",
+      "name": "Austin Peterson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 4 (2024); Minnesota"
+    },
+    {
+      "candidateId": "77304196-52c0-4115-b91a-7d01b56bb6c6",
+      "name": "Ben Wieman",
+      "scope": "state_lower",
+      "districtName": "State House District 17B (2024); Minnesota"
+    },
+    {
+      "candidateId": "0cc645cf-c3be-475c-bc65-edce0f48ce58",
+      "name": "Bjorn Solberg",
+      "scope": "state_upper",
+      "districtName": "State Senate District 1 (2024); Minnesota"
+    },
+    {
+      "candidateId": "408d720c-9658-45b4-b936-d2694c1344ad",
+      "name": "Bob Sullentrop",
+      "scope": "state_lower",
+      "districtName": "State House District 62B (2024); Minnesota"
+    },
+    {
+      "candidateId": "a01a0bfc-dee6-4f39-ae48-7a72a6885fa4",
+      "name": "Brad Olson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 38 (2024); Minnesota"
+    },
+    {
+      "candidateId": "e1e58cf4-4c33-4755-90e5-824254f4ce8e",
+      "name": "Brad Trahan",
+      "scope": "state_lower",
+      "districtName": "State House District 25A (2024); Minnesota"
+    },
+    {
+      "candidateId": "5b74d7cd-04ef-4850-9527-0871025fd0e5",
+      "name": "Bradley L Hennen",
+      "scope": "state_lower",
+      "districtName": "State House District 15A (2024); Minnesota"
+    },
+    {
+      "candidateId": "c75d8389-2cd1-4a42-8c3c-5f9913dc5c4c",
+      "name": "Brady Hoag",
+      "scope": "state_upper",
+      "districtName": "State Senate District 37 (2024); Minnesota"
+    },
+    {
+      "candidateId": "baad04ad-694e-4f05-a712-d5038c49334c",
+      "name": "Brady O'Neil",
+      "scope": "state_upper",
+      "districtName": "State Senate District 52 (2024); Minnesota"
+    },
+    {
+      "candidateId": "e0c924a8-21a9-4b47-aa4b-9aed02ef5d0a",
+      "name": "Brandon Van Dover",
+      "scope": "state_upper",
+      "districtName": "State Senate District 27 (2024); Minnesota"
+    },
+    {
+      "candidateId": "18fd6ce8-b419-4526-8d1a-4f0fabbfca6b",
+      "name": "Braxton Seifert",
+      "scope": "state_upper",
+      "districtName": "State Senate District 15 (2024); Minnesota"
+    },
+    {
+      "candidateId": "a382644e-e818-42f6-85c5-d14403bd2bf0",
+      "name": "Brian Cohn",
+      "scope": "state_lower",
+      "districtName": "State House District 57B (2024); Minnesota"
+    },
+    {
+      "candidateId": "4f6a3834-fa8b-4162-926c-274d9ea58311",
+      "name": "Brian Lindquist",
+      "scope": "state_lower",
+      "districtName": "State House District 10A (2024); Minnesota"
+    },
+    {
+      "candidateId": "ed92f391-bd2f-4a4c-ae37-7e22f6b39061",
+      "name": "Brian Stalboerger",
+      "scope": "state_upper",
+      "districtName": "State Senate District 47 (2024); Minnesota"
+    },
+    {
+      "candidateId": "cfc7bc22-b570-4bb2-9d9d-f5d0bb3ed75d",
+      "name": "Brian Walker",
+      "scope": "state_lower",
+      "districtName": "State House District 31A (2024); Minnesota"
+    },
+    {
+      "candidateId": "c40a2595-7e12-47a0-9467-9391da554cd6",
+      "name": "Caitlyn Sanow-Minett",
+      "scope": "state_upper",
+      "districtName": "State Senate District 21 (2024); Minnesota"
+    },
+    {
+      "candidateId": "941cd205-c6f1-41e5-84a0-47c5c332b120",
+      "name": "Caleb Steffenhagen",
+      "scope": "state_lower",
+      "districtName": "State House District 48B (2024); Minnesota"
+    },
+    {
+      "candidateId": "25d466bb-54de-482d-90e0-03ac6b3e735e",
+      "name": "Calvin Larson Jr",
+      "scope": "state_upper",
+      "districtName": "State Senate District 2 (2024); Minnesota"
+    },
+    {
+      "candidateId": "1f246b5e-e8e1-4764-8d40-c5397d65d203",
+      "name": "Chad Westberg",
+      "scope": "state_lower",
+      "districtName": "State House District 30B (2024); Minnesota"
+    },
+    {
+      "candidateId": "e187a611-df82-45cb-82d0-bafa19657615",
+      "name": "Charles A. McConaughay",
+      "scope": "state_lower",
+      "districtName": "State House District 27B (2024); Minnesota"
+    },
+    {
+      "candidateId": "045fc41e-0fc5-4a55-b227-b1d01be56731",
+      "name": "Charlie Kistler",
+      "scope": "state_lower",
+      "districtName": "State House District 38A (2024); Minnesota"
+    },
+    {
+      "candidateId": "695819e2-d1ab-49ff-bacf-63a8bb944353",
+      "name": "Cherie Johnson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 26 (2024); Minnesota"
+    },
+    {
+      "candidateId": "ea694570-b913-4453-9350-74b904c750de",
+      "name": "Chris Ford",
+      "scope": "state_upper",
+      "districtName": "State Senate District 32 (2024); Minnesota"
+    },
+    {
+      "candidateId": "5fd73a9a-a8e9-43c4-b3df-400f7cc9a6ab",
+      "name": "Chris Knoll",
+      "scope": "state_upper",
+      "districtName": "State Senate District 21 (2024); Minnesota"
+    },
+    {
+      "candidateId": "2ef06199-b37a-4906-9387-64e78edff47b",
+      "name": "Chris Swanson",
+      "scope": "state_lower",
+      "districtName": "State House District 11A (2024); Minnesota"
+    },
+    {
+      "candidateId": "0f2856f9-14c5-494a-bedd-dae2d24d0fb4",
+      "name": "Chris Wedum",
+      "scope": "state_lower",
+      "districtName": "State House District 50A (2024); Minnesota"
+    },
+    {
+      "candidateId": "7d355d60-83b1-4912-bbc3-4d57ad7b6eb7",
+      "name": "Christoph Dundas",
+      "scope": "state_lower",
+      "districtName": "State House District 23B (2024); Minnesota"
+    },
+    {
+      "candidateId": "58be7769-d91a-4951-9292-fa4ce5ce3f86",
+      "name": "Christopher Kartschoke",
+      "scope": "state_lower",
+      "districtName": "State House District 54B (2024); Minnesota"
+    },
+    {
+      "candidateId": "fa09ac9e-6004-4e1c-aa7d-10c9fd1d535e",
+      "name": "Christos Roy Jensen",
+      "scope": "state_lower",
+      "districtName": "State House District 52A (2024); Minnesota"
+    },
+    {
+      "candidateId": "8541e7a4-1c70-456c-aff7-83af7f3c2a96",
+      "name": "Cole Birkeland",
+      "scope": "state_lower",
+      "districtName": "State House District 41A (2024); Minnesota"
+    },
+    {
+      "candidateId": "09143a1a-1268-4c73-a59b-f94580a201a4",
+      "name": "Colin J. Minehart",
+      "scope": "state_lower",
+      "districtName": "State House District 23A (2024); Minnesota"
+    },
+    {
+      "candidateId": "d9cb9110-1e49-4bcc-9edd-54cfdf560c9b",
+      "name": "Colton Kratky",
+      "scope": "state_lower",
+      "districtName": "State House District 29B (2024); Minnesota"
+    },
+    {
+      "candidateId": "8fb3e31c-7bb1-4a9b-9d4c-dce801f74bec",
+      "name": "Dan Horoshak",
+      "scope": "state_lower",
+      "districtName": "State House District 7B (2024); Minnesota"
+    },
+    {
+      "candidateId": "c4dd25cb-41c3-4213-84d6-3c100fbc0f64",
+      "name": "Dan Kessler",
+      "scope": "state_upper",
+      "districtName": "State Senate District 48 (2024); Minnesota"
+    },
+    {
+      "candidateId": "bac12ae0-87f1-4736-8249-93f55c55927e",
+      "name": "Dan Rogers",
+      "scope": "state_upper",
+      "districtName": "State Senate District 2 (2024); Minnesota"
+    },
+    {
+      "candidateId": "4397d4a1-f468-4f0d-ada9-0395b0256efc",
+      "name": "Dan S. Mitchell",
+      "scope": "state_lower",
+      "districtName": "State House District 5A (2024); Minnesota"
+    },
+    {
+      "candidateId": "d52d5843-d233-43b8-a5f5-f9a9219571ac",
+      "name": "Dan Wilson",
+      "scope": "state_lower",
+      "districtName": "State House District 26A (2024); Minnesota"
+    },
+    {
+      "candidateId": "2aad684c-d909-4d12-9b1d-45a84c2dee1c",
+      "name": "Daniel Colten Schmidt",
+      "scope": "state_lower",
+      "districtName": "State House District 28B (2024); Minnesota"
+    },
+    {
+      "candidateId": "3b1f977f-7829-4abd-9520-de08d25b0108",
+      "name": "Darci Smith",
+      "scope": "state_lower",
+      "districtName": "State House District 37A (2024); Minnesota"
+    },
+    {
+      "candidateId": "a8f33b0a-bc0b-44fa-a557-3941ecf21df5",
+      "name": "Darrick Law",
+      "scope": "state_upper",
+      "districtName": "State Senate District 8 (2024); Minnesota"
+    },
+    {
+      "candidateId": "bc531aac-d654-4e04-8f60-d4f2f69be194",
+      "name": "David J Torgelson",
+      "scope": "state_lower",
+      "districtName": "State House District 16A (2024); Minnesota"
+    },
+    {
+      "candidateId": "6261644e-6b76-403a-904f-ee13e35fdb3d",
+      "name": "Dawn Loberg",
+      "scope": "state_lower",
+      "districtName": "State House District 13B (2024); Minnesota"
+    },
+    {
+      "candidateId": "7481ad08-7ed1-454c-a3c8-322b280c2b25",
+      "name": "Denise Slipy",
+      "scope": "state_upper",
+      "districtName": "State Senate District 6 (2024); Minnesota"
+    },
+    {
+      "candidateId": "a7e5d8fa-7f7b-4b59-b87f-945f1c68f37c",
+      "name": "Diane Napper",
+      "scope": "state_upper",
+      "districtName": "State Senate District 63 (2024); Minnesota"
+    },
+    {
+      "candidateId": "d56d3f65-af46-42ad-abf4-d90b85ad1a88",
+      "name": "Dustin DuFault",
+      "scope": "state_upper",
+      "districtName": "State Senate District 49 (2024); Minnesota"
+    },
+    {
+      "candidateId": "3490c359-8c49-41b9-b505-1462b4f37bec",
+      "name": "Ed Fellows",
+      "scope": "state_lower",
+      "districtName": "State House District 58B (2024); Minnesota"
+    },
+    {
+      "candidateId": "8f7ebf13-7421-46ed-8b6c-9c2c3473f406",
+      "name": "Emily Dahlgren",
+      "scope": "state_lower",
+      "districtName": "State House District 29A (2024); Minnesota"
+    },
+    {
+      "candidateId": "9ad412c5-8e46-4bf6-8154-e3a97a038aa7",
+      "name": "Emily Thabes",
+      "scope": "state_lower",
+      "districtName": "State House District 2B (2024); Minnesota"
+    },
+    {
+      "candidateId": "c8821aca-f07b-4441-af6e-3f64cdcb0f93",
+      "name": "Erika Yoney",
+      "scope": "state_lower",
+      "districtName": "State House District 4A (2024); Minnesota"
+    },
+    {
+      "candidateId": "c8181b19-b422-44c6-88b8-f18e63f90456",
+      "name": "Erin McCabe Ningen",
+      "scope": "state_lower",
+      "districtName": "State House District 7A (2024); Minnesota"
+    },
+    {
+      "candidateId": "67fe1e40-1f46-4e9d-a855-e60c2c4b5460",
+      "name": "Frank Pafko",
+      "scope": "state_lower",
+      "districtName": "State House District 51A (2024); Minnesota"
+    },
+    {
+      "candidateId": "a19d233c-3506-42cc-b8fb-9180e3c377c5",
+      "name": "Gadisa Berkessa",
+      "scope": "state_upper",
+      "districtName": "State Senate District 31 (2024); Minnesota"
+    },
+    {
+      "candidateId": "fe668ee9-78e9-4a3e-a51e-30eb2eb92b92",
+      "name": "George Gilmour",
+      "scope": "state_lower",
+      "districtName": "State House District 52A (2024); Minnesota"
+    },
+    {
+      "candidateId": "790e8b34-4691-4476-988c-62e42c2e4336",
+      "name": "Geri Theis",
+      "scope": "state_lower",
+      "districtName": "State House District 15B (2024); Minnesota"
+    },
+    {
+      "candidateId": "cb000825-0f51-45e9-b1cb-60a160bb48b0",
+      "name": "Heather Arndt",
+      "scope": "state_lower",
+      "districtName": "State House District 20A (2024); Minnesota"
+    },
+    {
+      "candidateId": "7d4b4170-8506-419e-ba30-6c6796f46d8e",
+      "name": "Heather Holmes",
+      "scope": "state_lower",
+      "districtName": "State House District 24A (2024); Minnesota"
+    },
+    {
+      "candidateId": "74ba04c9-b5bb-439d-876f-6f1e03768b2a",
+      "name": "Heidi Heino",
+      "scope": "state_upper",
+      "districtName": "State Senate District 36 (2024); Minnesota"
+    },
+    {
+      "candidateId": "17aa92b4-986d-4629-bfad-62026fec2926",
+      "name": "Hunter Cantrell",
+      "scope": "state_lower",
+      "districtName": "State House District 55B (2024); Minnesota"
+    },
+    {
+      "candidateId": "458c862c-e0f4-418b-898b-92aded660567",
+      "name": "Jack Hedin",
+      "scope": "state_upper",
+      "districtName": "State Senate District 26 (2024); Minnesota"
+    },
+    {
+      "candidateId": "add88e1e-34a9-4dee-8eb7-4072713d34b7",
+      "name": "Jack L'Heureux",
+      "scope": "state_lower",
+      "districtName": "State House District 11B (2024); Minnesota"
+    },
+    {
+      "candidateId": "01a1a495-eb7e-4c50-9d30-83e5d12a83f2",
+      "name": "Jackie Henry",
+      "scope": "state_upper",
+      "districtName": "State Senate District 18 (2024); Minnesota"
+    },
+    {
+      "candidateId": "bc197dd4-885f-4a0c-a836-b0c8f377738b",
+      "name": "James Tacheny",
+      "scope": "state_upper",
+      "districtName": "State Senate District 44 (2024); Minnesota"
+    },
+    {
+      "candidateId": "4b1c0e9b-3e6e-4868-97e3-c0c92b0c3c3e",
+      "name": "Jared J. Gapinski",
+      "scope": "state_upper",
+      "districtName": "State Senate District 13 (2024); Minnesota"
+    },
+    {
+      "candidateId": "19efdbb0-e47e-42d0-8fa3-f0b7d7287f7c",
+      "name": "Jason Heaser",
+      "scope": "state_lower",
+      "districtName": "State House District 34A (2024); Minnesota"
+    },
+    {
+      "candidateId": "d9acf032-64dd-40a4-a31e-1cfd0ce1f110",
+      "name": "Jason Lohmann",
+      "scope": "state_upper",
+      "districtName": "State Senate District 20 (2024); Minnesota"
+    },
+    {
+      "candidateId": "d6fcf8c9-d4be-45c6-8ec4-9f7c9a01cd14",
+      "name": "JD Delgado",
+      "scope": "state_lower",
+      "districtName": "State House District 57A (2024); Minnesota"
+    },
+    {
+      "candidateId": "ff2d1506-9fb7-4042-a488-ee9f76430690",
+      "name": "Jeff Houdek",
+      "scope": "state_lower",
+      "districtName": "State House District 49A (2024); Minnesota"
+    },
+    {
+      "candidateId": "309c7868-8ac0-4443-8a85-a2297b786fb8",
+      "name": "Jeff Larson",
+      "scope": "state_lower",
+      "districtName": "State House District 10B (2024); Minnesota"
+    },
+    {
+      "candidateId": "2001b00a-a961-42b4-aa01-031ea3ea6988",
+      "name": "Jen Bloomquist",
+      "scope": "state_lower",
+      "districtName": "State House District 31B (2024); Minnesota"
+    },
+    {
+      "candidateId": "8bf009ad-08ec-4f73-9746-f6020253fc48",
+      "name": "Jen Fox",
+      "scope": "state_lower",
+      "districtName": "State House District 41B (2024); Minnesota"
+    },
+    {
+      "candidateId": "899cbc89-6151-434a-acc1-d7c832ff866f",
+      "name": "Jennifer Compeau",
+      "scope": "state_lower",
+      "districtName": "State House District 1B (2024); Minnesota"
+    },
+    {
+      "candidateId": "7d3aa354-21dd-4167-b63e-654b1d154811",
+      "name": "Jennifer McPherson",
+      "scope": "state_lower",
+      "districtName": "State House District 67A (2024); Minnesota"
+    },
+    {
+      "candidateId": "c42bf8c8-38c0-4d8d-a825-0a51c524a69e",
+      "name": "Jeremy Munson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 22 (2024); Minnesota"
+    },
+    {
+      "candidateId": "f989bfa7-23a7-4168-b450-b2eda57ab981",
+      "name": "Jess Lewis",
+      "scope": "state_lower",
+      "districtName": "State House District 43B (2024); Minnesota"
+    },
+    {
+      "candidateId": "6c77898c-f6fa-450f-b794-5754b1b401fc",
+      "name": "Jessica L. Johnson",
+      "scope": "state_lower",
+      "districtName": "State House District 33B (2024); Minnesota"
+    },
+    {
+      "candidateId": "b275c311-d168-4445-9bbf-7f2a0efe201a",
+      "name": "Jim DeMay",
+      "scope": "state_lower",
+      "districtName": "State House District 36A (2024); Minnesota"
+    },
+    {
+      "candidateId": "04844a24-c4f6-48e4-bc50-1a051490de93",
+      "name": "Jim Lund",
+      "scope": "state_lower",
+      "districtName": "State House District 51B (2024); Minnesota"
+    },
+    {
+      "candidateId": "7e43e17d-fc82-4c5a-ba79-1c45d310535c",
+      "name": "Joe Brothers",
+      "scope": "state_lower",
+      "districtName": "State House District 48A (2024); Minnesota"
+    },
+    {
+      "candidateId": "35796758-12f7-4472-b8d6-3b8e9405c065",
+      "name": "Joe Staloch",
+      "scope": "state_lower",
+      "districtName": "State House District 23A (2024); Minnesota"
+    },
+    {
+      "candidateId": "eb5db013-8031-492e-97fb-c04bf8091cda",
+      "name": "Joey Smyth",
+      "scope": "state_lower",
+      "districtName": "State House District 30A (2024); Minnesota"
+    },
+    {
+      "candidateId": "5c2ff755-db77-49c4-a9f5-a746a86b97f5",
+      "name": "John Holmberg",
+      "scope": "state_lower",
+      "districtName": "State House District 60A (2024); Minnesota"
+    },
+    {
+      "candidateId": "9a8ad9b2-4379-492a-968f-4777980ae283",
+      "name": "John Howie",
+      "scope": "state_upper",
+      "districtName": "State Senate District 25 (2024); Minnesota"
+    },
+    {
+      "candidateId": "08458a10-aa6d-4bee-8ba5-a3d45b17a5b9",
+      "name": "John Jose",
+      "scope": "state_lower",
+      "districtName": "State House District 14A (2024); Minnesota"
+    },
+    {
+      "candidateId": "76b2b2db-5c53-400e-a57b-fe2af1638fd1",
+      "name": "John Michael Ajouri",
+      "scope": "state_lower",
+      "districtName": "State House District 24B (2024); Minnesota"
+    },
+    {
+      "candidateId": "567e54e7-8494-4b85-8c2f-2f671296879e",
+      "name": "Jon Wilson",
+      "scope": "state_lower",
+      "districtName": "State House District 21B (2024); Minnesota"
+    },
+    {
+      "candidateId": "7b93d124-f68c-4721-9f83-a8dc9281db4c",
+      "name": "Jonathan Claussen",
+      "scope": "state_lower",
+      "districtName": "State House District 5B (2024); Minnesota"
+    },
+    {
+      "candidateId": "4d5a3900-d148-495c-a491-9cd1de7e4c6a",
+      "name": "Josh Jungling",
+      "scope": "state_lower",
+      "districtName": "State House District 35A (2024); Minnesota"
+    },
+    {
+      "candidateId": "7a146910-a911-41d7-9d80-18d3cecceccc",
+      "name": "Julie Henslin",
+      "scope": "state_lower",
+      "districtName": "State House District 16B (2024); Minnesota"
+    },
+    {
+      "candidateId": "59b41aa0-b99b-476f-b97d-c84dcccd8316",
+      "name": "Julie Kelzer",
+      "scope": "state_upper",
+      "districtName": "State Senate District 17 (2024); Minnesota"
+    },
+    {
+      "candidateId": "76506fac-8b46-4e5d-b520-04599db79e9c",
+      "name": "Juline Birgersson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 51 (2024); Minnesota"
+    },
+    {
+      "candidateId": "f6fabcc0-73b2-464a-886f-3842ed2bca25",
+      "name": "Justin Doyle",
+      "scope": "state_lower",
+      "districtName": "State House District 13B (2024); Minnesota"
+    },
+    {
+      "candidateId": "7514970a-121e-4c62-a397-78619b815c5e",
+      "name": "Justin Middaugh",
+      "scope": "state_lower",
+      "districtName": "State House District 44A (2024); Minnesota"
+    },
+    {
+      "candidateId": "61d2cccf-b2fa-4b48-974d-1bfc6e044434",
+      "name": "Karen Attia",
+      "scope": "state_upper",
+      "districtName": "State Senate District 34 (2024); Minnesota"
+    },
+    {
+      "candidateId": "4e122706-3e18-45d2-8a39-8ad6a3a2f3ff",
+      "name": "Kari Dorry",
+      "scope": "state_upper",
+      "districtName": "State Senate District 12 (2024); Minnesota"
+    },
+    {
+      "candidateId": "a792f1bb-2f66-400d-887f-f11f0cfede16",
+      "name": "Karl Olson",
+      "scope": "state_lower",
+      "districtName": "State House District 46A (2024); Minnesota"
+    },
+    {
+      "candidateId": "40a7106e-9bf1-4d7d-b1e4-8c5b1d689083",
+      "name": "Karla Hult",
+      "scope": "state_upper",
+      "districtName": "State Senate District 50 (2024); Minnesota"
+    },
+    {
+      "candidateId": "5a1f831d-af8f-4968-a742-ba69845fca51",
+      "name": "Kathleen Bart",
+      "scope": "state_upper",
+      "districtName": "State Senate District 66 (2024); Minnesota"
+    },
+    {
+      "candidateId": "a85eb300-b1f4-435c-b21a-624b2abbefc7",
+      "name": "Kathy Burkett",
+      "scope": "state_lower",
+      "districtName": "State House District 42A (2024); Minnesota"
+    },
+    {
+      "candidateId": "94d80fe4-2196-4672-9876-3356eaf25c35",
+      "name": "Kathy Jorgenson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 16 (2024); Minnesota"
+    },
+    {
+      "candidateId": "9893ce56-aaa5-4731-9d1f-569c80839588",
+      "name": "Kayla Wright",
+      "scope": "state_upper",
+      "districtName": "State Senate District 46 (2024); Minnesota"
+    },
+    {
+      "candidateId": "373f5f6e-2341-4c8b-8f22-9956385290bd",
+      "name": "Keenan Gentry",
+      "scope": "state_lower",
+      "districtName": "State House District 30B (2024); Minnesota"
+    },
+    {
+      "candidateId": "188d37b7-0121-4585-8d22-5585910ac45b",
+      "name": "Keith R. Klawitter",
+      "scope": "state_lower",
+      "districtName": "State House District 15B (2024); Minnesota"
+    },
+    {
+      "candidateId": "dce9b4aa-4ede-4eb0-bf0b-5378f774a558",
+      "name": "Kenneth Smoron",
+      "scope": "state_lower",
+      "districtName": "State House District 59B (2024); Minnesota"
+    },
+    {
+      "candidateId": "b4f35d94-1b8f-4a0a-affb-a0f80f34d893",
+      "name": "Kevin Peterson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 42 (2024); Minnesota"
+    },
+    {
+      "candidateId": "900740d7-a20e-4fa8-b3fd-2352dca32b9e",
+      "name": "Kim McLaughlin",
+      "scope": "state_upper",
+      "districtName": "State Senate District 7 (2024); Minnesota"
+    },
+    {
+      "candidateId": "4ecdf0c0-f6e9-4629-886e-73b234cb9ad3",
+      "name": "Kim Rich",
+      "scope": "state_lower",
+      "districtName": "State House District 46B (2024); Minnesota"
+    },
+    {
+      "candidateId": "b6c8fc9a-009c-46a8-85b1-55cb8e0a3eea",
+      "name": "Kim Wilson",
+      "scope": "state_lower",
+      "districtName": "State House District 47B (2024); Minnesota"
+    },
+    {
+      "candidateId": "77bc8cb4-487a-40e1-845c-87e9b7538143",
+      "name": "Kris Babler",
+      "scope": "state_upper",
+      "districtName": "State Senate District 49 (2024); Minnesota"
+    },
+    {
+      "candidateId": "11ef96ff-135f-43f9-809e-90ded822b913",
+      "name": "Krish Subrahmanian",
+      "scope": "state_upper",
+      "districtName": "State Senate District 49 (2024); Minnesota"
+    },
+    {
+      "candidateId": "c495e5bd-3583-421d-aac2-0cda55187064",
+      "name": "Krist Wollum",
+      "scope": "state_lower",
+      "districtName": "State House District 21A (2024); Minnesota"
+    },
+    {
+      "candidateId": "37cd23ef-1b27-41fd-972b-ea176426f5e2",
+      "name": "Kristy Janigo",
+      "scope": "state_upper",
+      "districtName": "State Senate District 37 (2024); Minnesota"
+    },
+    {
+      "candidateId": "a58d745a-1f5f-40fa-95fa-d0db26e08024",
+      "name": "Krystyne Knutson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 9 (2024); Minnesota"
+    },
+    {
+      "candidateId": "6918f490-7642-4ea0-922a-37e79867b9fa",
+      "name": "KT Jacobs",
+      "scope": "state_lower",
+      "districtName": "State House District 39B (2024); Minnesota"
+    },
+    {
+      "candidateId": "72a71397-35c5-4852-9b95-d5eb6137a73e",
+      "name": "Kyle Bragg",
+      "scope": "state_lower",
+      "districtName": "State House District 63A (2024); Minnesota"
+    },
+    {
+      "candidateId": "c6743346-48fe-4041-930c-10de46922cf8",
+      "name": "Kyrstin Schuette",
+      "scope": "state_lower",
+      "districtName": "State House District 43A (2024); Minnesota"
+    },
+    {
+      "candidateId": "1a4f868b-13ad-49fe-9a24-ca80e86ac5f0",
+      "name": "Leah Hanson",
+      "scope": "state_lower",
+      "districtName": "State House District 18A (2024); Minnesota"
+    },
+    {
+      "candidateId": "7a87f583-58f3-4b05-a455-155264d2a481",
+      "name": "Leah Temple",
+      "scope": "state_upper",
+      "districtName": "State Senate District 30 (2024); Minnesota"
+    },
+    {
+      "candidateId": "81e93278-4dc3-4bf9-9c2b-3af4710cdbe9",
+      "name": "Leanna Sandahl",
+      "scope": "state_lower",
+      "districtName": "State House District 1A (2024); Minnesota"
+    },
+    {
+      "candidateId": "6b2a2fd5-76fe-40e2-928e-44fd0b600901",
+      "name": "Leslie Larson",
+      "scope": "state_lower",
+      "districtName": "State House District 32B (2024); Minnesota"
+    },
+    {
+      "candidateId": "7f864714-b6ee-42da-85f6-c18b8447eff3",
+      "name": "Liish Kozlowski",
+      "scope": "state_lower",
+      "districtName": "State House District 8B (2024); Minnesota"
+    },
+    {
+      "candidateId": "478f1958-6629-42b4-88bd-6b1c2e57b4cb",
+      "name": "Louis McNutt",
+      "scope": "state_upper",
+      "districtName": "State Senate District 29 (2024); Minnesota"
+    },
+    {
+      "candidateId": "b275ce10-8317-47fe-9463-fd607d550e37",
+      "name": "LS Rusty Nelson",
+      "scope": "state_lower",
+      "districtName": "State House District 21A (2024); Minnesota"
+    },
+    {
+      "candidateId": "75f35033-82ee-4a9b-8338-5bf4cf8f3d77",
+      "name": "Luis Withrow",
+      "scope": "state_lower",
+      "districtName": "State House District 40A (2024); Minnesota"
+    },
+    {
+      "candidateId": "ce5a3c9f-ac54-486b-808a-57885979df14",
+      "name": "Luke Doerer",
+      "scope": "state_lower",
+      "districtName": "State House District 37B (2024); Minnesota"
+    },
+    {
+      "candidateId": "bd01fbef-0787-45d5-99d9-01ddbd0e8e61",
+      "name": "Lydell Sik",
+      "scope": "state_lower",
+      "districtName": "State House District 15B (2024); Minnesota"
+    },
+    {
+      "candidateId": "2e1d2d5c-65b9-4388-a586-b8f21b0e4cc7",
+      "name": "Maggie Evers",
+      "scope": "state_lower",
+      "districtName": "State House District 5B (2024); Minnesota"
+    },
+    {
+      "candidateId": "70291f0a-c38b-4424-9654-4bc7dbe56a54",
+      "name": "Mali Anderson",
+      "scope": "state_lower",
+      "districtName": "State House District 17A (2024); Minnesota"
+    },
+    {
+      "candidateId": "1726d1c3-e54a-4e27-857c-0d03382f2b81",
+      "name": "Marisa Ulmen",
+      "scope": "state_upper",
+      "districtName": "State Senate District 22 (2024); Minnesota"
+    },
+    {
+      "candidateId": "5b8c6ff6-c7c1-4cf2-98d6-246ce229e0b8",
+      "name": "Mark Born",
+      "scope": "state_lower",
+      "districtName": "State House District 66A (2024); Minnesota"
+    },
+    {
+      "candidateId": "96ddaa0d-0043-4eae-b215-b0811f202f5c",
+      "name": "Mark Legvold",
+      "scope": "state_upper",
+      "districtName": "State Senate District 58 (2024); Minnesota"
+    },
+    {
+      "candidateId": "96b41932-c16c-4976-91cd-8526a8265138",
+      "name": "Mark Striemer",
+      "scope": "state_lower",
+      "districtName": "State House District 10A (2024); Minnesota"
+    },
+    {
+      "candidateId": "fb0b5b6a-809e-414b-90e8-b5fede90c45b",
+      "name": "Martha Brown",
+      "scope": "state_lower",
+      "districtName": "State House District 19A (2024); Minnesota"
+    },
+    {
+      "candidateId": "4d2882b4-ac8a-43ce-9d7f-41408b50608c",
+      "name": "Mary Carlson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 11 (2024); Minnesota"
+    },
+    {
+      "candidateId": "2f8afe90-1598-437b-87dc-feecd44a308f",
+      "name": "Mary Nesgoda",
+      "scope": "state_lower",
+      "districtName": "State House District 22B (2024); Minnesota"
+    },
+    {
+      "candidateId": "f382edbc-64f0-4a9a-97ff-ff56a6d83c90",
+      "name": "Mary O'Neal",
+      "scope": "state_lower",
+      "districtName": "State House District 66B (2024); Minnesota"
+    },
+    {
+      "candidateId": "a70ccf7f-2cc1-4a14-aa19-432a8543b82b",
+      "name": "Matthew Eric Zinda",
+      "scope": "state_lower",
+      "districtName": "State House District 6B (2024); Minnesota"
+    },
+    {
+      "candidateId": "6cc6e9ad-509f-4b37-aba0-e777209bab41",
+      "name": "Max Glenna",
+      "scope": "state_upper",
+      "districtName": "State Senate District 28 (2024); Minnesota"
+    },
+    {
+      "candidateId": "99ab07b3-69ff-4bb6-aa04-b1717c914b7b",
+      "name": "Melissa Maertens",
+      "scope": "state_lower",
+      "districtName": "State House District 10A (2024); Minnesota"
+    },
+    {
+      "candidateId": "d977dbd2-2d8d-4294-866c-3e57adcbcc6f",
+      "name": "Michael Gardner",
+      "scope": "state_lower",
+      "districtName": "State House District 12B (2024); Minnesota"
+    },
+    {
+      "candidateId": "95b20c8a-9557-4224-bfdc-994f6e679a4f",
+      "name": "Mike Conway",
+      "scope": "state_lower",
+      "districtName": "State House District 14A (2024); Minnesota"
+    },
+    {
+      "candidateId": "8f3d96d7-7ff1-4dde-bb71-bfb6b3f70fa4",
+      "name": "Monique Doward",
+      "scope": "state_upper",
+      "districtName": "State Senate District 11 (2024); Minnesota"
+    },
+    {
+      "candidateId": "07fcc245-6292-4236-b490-07682c84a7a7",
+      "name": "Murwo S Mohamed",
+      "scope": "state_lower",
+      "districtName": "State House District 40A (2024); Minnesota"
+    },
+    {
+      "candidateId": "c3821e1b-5e3e-4ef1-a046-2fa586f8346b",
+      "name": "Nat Smith",
+      "scope": "state_upper",
+      "districtName": "State Senate District 33 (2024); Minnesota"
+    },
+    {
+      "candidateId": "d20c127f-911f-4e3a-a956-f19a77b69948",
+      "name": "Natalie Barnes",
+      "scope": "state_lower",
+      "districtName": "State House District 54B (2024); Minnesota"
+    },
+    {
+      "candidateId": "4420e2f5-ce53-4205-b11d-e997f4a00891",
+      "name": "Nathan Schmig",
+      "scope": "state_lower",
+      "districtName": "State House District 15A (2024); Minnesota"
+    },
+    {
+      "candidateId": "ce7e440d-0c46-4ced-82a6-f423dbc6c58b",
+      "name": "Nels Pierson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 24 (2024); Minnesota"
+    },
+    {
+      "candidateId": "06019d6e-da30-4dfa-bc6b-590161091d2b",
+      "name": "Nels T. Pierson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 24 (2024); Minnesota"
+    },
+    {
+      "candidateId": "17e54c2e-6418-4038-a412-ab99b2709ec4",
+      "name": "Ngone Saliou Niang",
+      "scope": "state_upper",
+      "districtName": "State Senate District 39 (2024); Minnesota"
+    },
+    {
+      "candidateId": "8202087a-e542-4b17-81e5-cb97a84676ca",
+      "name": "Nicholas Hanson",
+      "scope": "state_lower",
+      "districtName": "State House District 9A (2024); Minnesota"
+    },
+    {
+      "candidateId": "b6ef6395-2ad6-4524-a319-0f03ccd37b10",
+      "name": "Nicholas Peters",
+      "scope": "state_lower",
+      "districtName": "State House District 63B (2024); Minnesota"
+    },
+    {
+      "candidateId": "19a1adda-e6b8-41b0-bab1-fe947558988a",
+      "name": "Nick Ronnenberg",
+      "scope": "state_lower",
+      "districtName": "State House District 23A (2024); Minnesota"
+    },
+    {
+      "candidateId": "9df00d8e-6c1e-411f-bec4-5d19ecc6285e",
+      "name": "Nicky Hardy",
+      "scope": "state_lower",
+      "districtName": "State House District 6B (2024); Minnesota"
+    },
+    {
+      "candidateId": "7caf60f9-eb69-4cef-acdf-fc90b3ea5e5a",
+      "name": "Owen Michaelson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 50 (2024); Minnesota"
+    },
+    {
+      "candidateId": "15342561-2f81-4902-a855-252ae369a324",
+      "name": "Owen Werner",
+      "scope": "state_lower",
+      "districtName": "State House District 9B (2024); Minnesota"
+    },
+    {
+      "candidateId": "578f2de0-3db5-4e4e-8af4-7307574b4c62",
+      "name": "Pam Myhra",
+      "scope": "state_lower",
+      "districtName": "State House District 55A (2024); Minnesota"
+    },
+    {
+      "candidateId": "e48b9733-99b7-4e1f-a289-c9c3f973d34d",
+      "name": "Pam Wolf",
+      "scope": "state_upper",
+      "districtName": "State Senate District 39 (2024); Minnesota"
+    },
+    {
+      "candidateId": "65bec088-9de4-4744-bec6-f486d1dbd8ea",
+      "name": "Patti Mikulski",
+      "scope": "state_lower",
+      "districtName": "State House District 53B (2024); Minnesota"
+    },
+    {
+      "candidateId": "057ad8a3-4c99-44bf-bf38-a3605803d9b9",
+      "name": "Patty Bradway",
+      "scope": "state_lower",
+      "districtName": "State House District 36B (2024); Minnesota"
+    },
+    {
+      "candidateId": "d7643abb-9f2d-4d30-9dde-0f831c3d2a1b",
+      "name": "Paul Cumings",
+      "scope": "state_upper",
+      "districtName": "State Senate District 53 (2024); Minnesota"
+    },
+    {
+      "candidateId": "dd16b43e-cdf3-4c8f-9ab6-fbee1f337998",
+      "name": "Paul R. F. Schumacher",
+      "scope": "state_lower",
+      "districtName": "State House District 14A (2024); Minnesota"
+    },
+    {
+      "candidateId": "d7a832c7-eb83-4e52-a1e0-12ade3a3b7b2",
+      "name": "Rachel Japuntich",
+      "scope": "state_upper",
+      "districtName": "State Senate District 40 (2024); Minnesota"
+    },
+    {
+      "candidateId": "64e59761-94e3-4ea7-a77c-cfe8e4da0e48",
+      "name": "Raymond David Petersen",
+      "scope": "state_upper",
+      "districtName": "State Senate District 56 (2024); Minnesota"
+    },
+    {
+      "candidateId": "c54c3922-cc23-4e6a-ae7c-dc0cc8959555",
+      "name": "Reed J. Olson",
+      "scope": "state_lower",
+      "districtName": "State House District 2A (2024); Minnesota"
+    },
+    {
+      "candidateId": "96e0c45c-a440-4666-95f2-97808d936bc3",
+      "name": "Rick Olson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 54 (2024); Minnesota"
+    },
+    {
+      "candidateId": "8c791433-9210-4366-8cb0-ade462617f27",
+      "name": "Robert Bushard",
+      "scope": "state_upper",
+      "districtName": "State Senate District 64 (2024); Minnesota"
+    },
+    {
+      "candidateId": "08a83054-fca6-487d-8815-1b068961d879",
+      "name": "Robert Marvin",
+      "scope": "state_lower",
+      "districtName": "State House District 38B (2024); Minnesota"
+    },
+    {
+      "candidateId": "eb541136-952e-4588-a29f-4538aa767a26",
+      "name": "Robyn Gulley",
+      "scope": "state_upper",
+      "districtName": "State Senate District 65 (2024); Minnesota"
+    },
+    {
+      "candidateId": "9c630f7a-e8fb-4d89-aa50-07383bc7efd8",
+      "name": "Ruth Bittner",
+      "scope": "state_lower",
+      "districtName": "State House District 34B (2024); Minnesota"
+    },
+    {
+      "candidateId": "1cb5feaa-3394-4145-a586-f3498eb5cc80",
+      "name": "Sam Powell",
+      "scope": "state_upper",
+      "districtName": "State Senate District 19 (2024); Minnesota"
+    },
+    {
+      "candidateId": "990f30b1-da48-4760-817c-746588117e10",
+      "name": "Sam Rosemark",
+      "scope": "state_upper",
+      "districtName": "State Senate District 44 (2024); Minnesota"
+    },
+    {
+      "candidateId": "e14c0dcb-712b-46a7-aea7-e38dcbcbbfa1",
+      "name": "Samuel Grigsby",
+      "scope": "state_lower",
+      "districtName": "State House District 6A (2024); Minnesota"
+    },
+    {
+      "candidateId": "d4387487-e429-4f77-ad26-06537a819ff5",
+      "name": "Sara Bertschinger",
+      "scope": "state_lower",
+      "districtName": "State House District 20B (2024); Minnesota"
+    },
+    {
+      "candidateId": "0e379f23-a922-46b8-97e4-cc643642af9a",
+      "name": "Scott Dibble",
+      "scope": "state_upper",
+      "districtName": "State Senate District 61 (2024); Minnesota"
+    },
+    {
+      "candidateId": "dba67b09-4c75-474f-af67-bd3247eec804",
+      "name": "Sebastian Ellefson",
+      "scope": "state_lower",
+      "districtName": "State House District 65B (2024); Minnesota"
+    },
+    {
+      "candidateId": "ebcc5331-3257-4442-91d6-4349603b72ad",
+      "name": "Sebastian Stoss",
+      "scope": "state_lower",
+      "districtName": "State House District 36A (2024); Minnesota"
+    },
+    {
+      "candidateId": "1e568ae5-ad3c-4a1f-85af-39837391db1b",
+      "name": "Shannon Bruce",
+      "scope": "state_upper",
+      "districtName": "State Senate District 45 (2024); Minnesota"
+    },
+    {
+      "candidateId": "bafb87b9-1a16-4f7f-8c46-94379ba88467",
+      "name": "Shawn Savela",
+      "scope": "state_lower",
+      "districtName": "State House District 8B (2024); Minnesota"
+    },
+    {
+      "candidateId": "f06bbeaf-ce46-465e-b346-f1312ae9fb41",
+      "name": "Simon Glaser",
+      "scope": "state_upper",
+      "districtName": "State Senate District 24 (2024); Minnesota"
+    },
+    {
+      "candidateId": "56299e8d-0bec-430f-9d10-4a1829beca91",
+      "name": "Simon Trautmann Cordova",
+      "scope": "state_upper",
+      "districtName": "State Senate District 51 (2024); Minnesota"
+    },
+    {
+      "candidateId": "0ef936fd-04b8-4f21-8295-f849f97f5226",
+      "name": "Skylar Fynboh",
+      "scope": "state_upper",
+      "districtName": "State Senate District 5 (2024); Minnesota"
+    },
+    {
+      "candidateId": "11b89029-b6d6-401d-bd39-369f35119df4",
+      "name": "Sonja L. Denn",
+      "scope": "state_lower",
+      "districtName": "State House District 22A (2024); Minnesota"
+    },
+    {
+      "candidateId": "81654815-f2b3-48ac-8bec-cab0ef9b912e",
+      "name": "Stacey Stout",
+      "scope": "state_lower",
+      "districtName": "State House District 33A (2024); Minnesota"
+    },
+    {
+      "candidateId": "8b8e4c6d-2823-4ecf-9f5e-67a2129c74b9",
+      "name": "Steve Holm",
+      "scope": "state_lower",
+      "districtName": "State House District 20B (2024); Minnesota"
+    },
+    {
+      "candidateId": "5c6135fb-42a2-4fc7-8c5a-a2b3526b22b5",
+      "name": "Steve Pape",
+      "scope": "state_lower",
+      "districtName": "State House District 35B (2024); Minnesota"
+    },
+    {
+      "candidateId": "f61641ed-174c-4602-977b-b30f126566e9",
+      "name": "Steven E. Cherney",
+      "scope": "state_lower",
+      "districtName": "State House District 58A (2024); Minnesota"
+    },
+    {
+      "candidateId": "5c461540-387d-4c51-ba6d-bffc960ac301",
+      "name": "Steven Schroer",
+      "scope": "state_upper",
+      "districtName": "State Senate District 57 (2024); Minnesota"
+    },
+    {
+      "candidateId": "acfa42c3-abd5-41cb-b73f-261e89c0e826",
+      "name": "Sue Ek",
+      "scope": "state_lower",
+      "districtName": "State House District 14B (2024); Minnesota"
+    },
+    {
+      "candidateId": "74f3d1a8-82b6-4cbc-b038-4e3589fa324f",
+      "name": "Talitha Anderson",
+      "scope": "state_lower",
+      "districtName": "State House District 12A (2024); Minnesota"
+    },
+    {
+      "candidateId": "18757668-ca1e-455d-b3da-71e11a4713b4",
+      "name": "Tanja Goering",
+      "scope": "state_lower",
+      "districtName": "State House District 13A (2024); Minnesota"
+    },
+    {
+      "candidateId": "ac1d07a3-871b-4595-b22a-444ab9ece2b3",
+      "name": "Tara Killen",
+      "scope": "state_upper",
+      "districtName": "State Senate District 10 (2024); Minnesota"
+    },
+    {
+      "candidateId": "c2b8150e-94c0-449c-a670-efc21a543b23",
+      "name": "Thaddeus Laugisch",
+      "scope": "state_lower",
+      "districtName": "State House District 4B (2024); Minnesota"
+    },
+    {
+      "candidateId": "e5dc88b2-213c-4d82-a6ef-7b0b562f7506",
+      "name": "Thomas Bergerson",
+      "scope": "state_lower",
+      "districtName": "State House District 45B (2024); Minnesota"
+    },
+    {
+      "candidateId": "54d3a5f6-3009-4e41-8f8a-f852bd69fb97",
+      "name": "Tim Dummer",
+      "scope": "state_lower",
+      "districtName": "State House District 28A (2024); Minnesota"
+    },
+    {
+      "candidateId": "5d7f2ad2-0c2a-46f3-a796-093f6a2bc4a0",
+      "name": "TJ Hawthorne",
+      "scope": "state_lower",
+      "districtName": "State House District 44B (2024); Minnesota"
+    },
+    {
+      "candidateId": "332d46ab-4ae0-4dc1-9828-ae709d2ecd64",
+      "name": "Toby Hesselgrave",
+      "scope": "state_upper",
+      "districtName": "State Senate District 67 (2024); Minnesota"
+    },
+    {
+      "candidateId": "51834ded-f043-4d2b-b897-12ad43bc9519",
+      "name": "Todd Buchwald",
+      "scope": "state_lower",
+      "districtName": "State House District 55B (2024); Minnesota"
+    },
+    {
+      "candidateId": "bb1dc503-51fa-45ba-b30e-c633f1aae27d",
+      "name": "Todd Hesemann",
+      "scope": "state_lower",
+      "districtName": "State House District 43A (2024); Minnesota"
+    },
+    {
+      "candidateId": "c271320a-075c-4716-aa48-0ce60d0980bc",
+      "name": "Todd Podgorski",
+      "scope": "state_upper",
+      "districtName": "State Senate District 53 (2024); Minnesota"
+    },
+    {
+      "candidateId": "8dab4c39-9086-461a-9330-83034e4d46b2",
+      "name": "Tom Lopac",
+      "scope": "state_lower",
+      "districtName": "State House District 52B (2024); Minnesota"
+    },
+    {
+      "candidateId": "0bf536e0-ee51-48a2-9ba2-7a2df15b7317",
+      "name": "Tom McKee",
+      "scope": "state_lower",
+      "districtName": "State House District 37A (2024); Minnesota"
+    },
+    {
+      "candidateId": "47d29fa7-086c-406a-b64a-8a3b9b753692",
+      "name": "Tracey Breazeale",
+      "scope": "state_lower",
+      "districtName": "State House District 45A (2024); Minnesota"
+    },
+    {
+      "candidateId": "99ea6801-b73a-40aa-968d-93f4cb0d2a9e",
+      "name": "Trent C Dilks",
+      "scope": "state_upper",
+      "districtName": "State Senate District 13 (2024); Minnesota"
+    },
+    {
+      "candidateId": "7316bea0-db4a-4bea-bb1d-d5ca7958a233",
+      "name": "Van Holston",
+      "scope": "state_upper",
+      "districtName": "State Senate District 55 (2024); Minnesota"
+    },
+    {
+      "candidateId": "bd6feeee-33ba-499a-af7d-19c6eaef4c18",
+      "name": "Vanessa Davenport",
+      "scope": "state_lower",
+      "districtName": "State House District 27A (2024); Minnesota"
+    },
+    {
+      "candidateId": "c22cfb5c-acc3-4a49-89e6-63152acff276",
+      "name": "Wendy Cregg",
+      "scope": "state_lower",
+      "districtName": "State House District 49B (2024); Minnesota"
+    },
+    {
+      "candidateId": "607a8ec0-8c7f-486f-a082-6b9ff4f9b9dc",
+      "name": "Wes Lund",
+      "scope": "state_lower",
+      "districtName": "State House District 25B (2024); Minnesota"
+    },
+    {
+      "candidateId": "3f339b0d-6c5a-4c79-aaba-8d4d6e194bd7",
+      "name": "William Beck",
+      "scope": "state_lower",
+      "districtName": "State House District 41B (2024); Minnesota"
+    },
+    {
+      "candidateId": "82f3f90b-529a-4ad2-b69f-72ec65c45a17",
+      "name": "Zachary \"Zach\" Dorholt",
+      "scope": "state_lower",
+      "districtName": "State House District 14B (2024); Minnesota"
+    },
+    {
+      "candidateId": "c50e4c54-59f1-4751-802c-76fbe9bc8a3c",
+      "name": "Zack Meyman",
+      "scope": "state_lower",
+      "districtName": "State House District 19B (2024); Minnesota"
+    }
+  ],
+  "files": 0,
+  "fileErrors": 0,
+  "counts": {},
+  "rolls": []
+}
