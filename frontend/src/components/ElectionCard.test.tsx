@@ -258,11 +258,39 @@ describe("ElectionCard", () => {
     const chipTexts = Array.from(label.parentElement?.children ?? [])
       .map((chip) => chip.textContent)
       .filter((text) => text !== "Affects:");
+    // Three saved matches fill the cap, so the unsaved area only counts.
     expect(chipTexts).toEqual([
       "Civil Rights (saved)",
       "Environment and Public Health (saved)",
       "Gun Control (saved)",
-      "Immigration",
+      "+1 more issue",
+    ]);
+  });
+
+  it("shows every saved match even past the cap, with no unsaved areas beside them", () => {
+    renderCard(
+      electionSummary({
+        research_areas: [
+          area("a-1", "Civil Rights", "civil_rights"),
+          area("a-2", "Gun Control", "gun_control"),
+          area("a-3", "Immigration", "immigration"),
+          area("a-4", "Housing Affordability", "housing_affordability"),
+          area("a-5", "Data Privacy", "data_privacy"),
+          area("a-6", "Foreign Trade", "foreign_trade"),
+        ],
+      }),
+      { "a-1": 1, "a-2": 2, "a-3": 3, "a-4": 4 }
+    );
+    const label = screen.getByText("Affects:");
+    const chipTexts = Array.from(label.parentElement?.children ?? [])
+      .map((chip) => chip.textContent)
+      .filter((text) => text !== "Affects:");
+    expect(chipTexts).toEqual([
+      "Civil Rights (saved)",
+      "Gun Control (saved)",
+      "Immigration (saved)",
+      "Housing Affordability (saved)",
+      "+2 more issues",
     ]);
   });
 

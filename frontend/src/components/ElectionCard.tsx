@@ -34,9 +34,9 @@ const RESULT_CHIP_CLASSES: Record<ResultChipTone, string> = {
 // Statewide races carry a dozen-plus research areas; rendering every one
 // buried the card's actual signal (title, candidates, vote power) under a
 // wall of identical chips. The card is a preview — saved-area matches all
-// show (they are the personal signal), other areas cap out and the election
-// page carries the full set.
-const MAX_UNSAVED_AREA_CHIPS = 3;
+// show (they are the personal signal) and count against the cap, other areas
+// fill what room is left, and the election page carries the full set.
+const MAX_AREA_CHIPS = 3;
 
 // Research areas render as plain colored text, comma-separated — NOT boxed
 // chips. Boxed/pill styling is reserved for interactive elements; a bordered
@@ -301,7 +301,9 @@ function ElectionCard({
     election.research_areas,
     savedAreaWeights
   );
-  const visibleOtherAreas = otherAreas.slice(0, MAX_UNSAVED_AREA_CHIPS);
+  // Saved matches count against the cap: three saved issues leave no room
+  // for unsaved ones, and the overflow count absorbs the rest.
+  const visibleOtherAreas = otherAreas.slice(0, Math.max(0, MAX_AREA_CHIPS - savedAreas.length));
   const hiddenAreaCount = otherAreas.length - visibleOtherAreas.length;
   // The viewer's planned vote, shown only on upcoming races: a past
   // election's choice is history. Withdrawn picks stay visible with a flag —
