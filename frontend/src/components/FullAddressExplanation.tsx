@@ -7,14 +7,17 @@ import { useState } from "react";
  * block of text to the landing page. This is informational, not consent, so
  * it deliberately has no checkbox or "Agree" action.
  */
-export function FullAddressExplanation() {
+export function FullAddressExplanation({ onOpen }: { onOpen?: () => void } = {}) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          onOpen?.();
+          setOpen(true);
+        }}
         className="rounded-sm text-left underline hover:text-rausch focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rausch"
       >
         Why full address?

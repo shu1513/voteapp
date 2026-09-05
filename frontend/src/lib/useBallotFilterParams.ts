@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router";
 import type { BallotRaceType, VoteImpactThreshold } from "@voteapp/api-client";
+import { track } from "./usage";
 
 /**
  * URL state for the ballot filters and the race-type tab, shared by both
@@ -56,9 +57,23 @@ export function useBallotFilterParams(): {
     impactRequested: rawImpact === "high" || rawImpact === "medium" ? rawImpact : null,
     // Same rule: an unknown type reads as the "All" tab.
     raceTypeRequested: rawType === "office" || rawType === "ballot_measure" ? rawType : null,
-    onIssuesFilterChange: (on: boolean) => setParams({ issues: on ? "mine" : null }),
-    onImpactFilterChange: (level: VoteImpactThreshold | null) => setParams({ impact: level }),
-    onRaceTypeChange: (raceType: BallotRaceType | null) => setParams({ type: raceType }),
-    onShowAll: () => setParams({ issues: null, impact: null }),
+    // Each change is also a list_control usage event (one place for both
+    // ballot pages): the control and its new value, nothing about the list.
+    onIssuesFilterChange: (on: boolean) => {
+      track("list_control", { control: "filter_issues", value: on ? "on" : "off" });
+      setParams({ issues: on ? "mine" : null });
+    },
+    onImpactFilterChange: (level: VoteImpactThreshold | null) => {
+      track("list_control", { control: "filter_impact", value: level ?? "any" });
+      setParams({ impact: level });
+    },
+    onRaceTypeChange: (raceType: BallotRaceType | null) => {
+      track("list_control", { control: "race_tab", value: raceType ?? "all" });
+      setParams({ type: raceType });
+    },
+    onShowAll: () => {
+      track("list_control", { control: "show_all", value: "all" });
+      setParams({ issues: null, impact: null });
+    },
   };
 }

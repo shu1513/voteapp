@@ -39,6 +39,8 @@ import { createAskService } from "../chatbot/askService.js";
 import { createFeedbackTokens, submitAnswerFeedback, type FeedbackVerdict } from "../chatbot/feedback.js";
 import { readChatbotConfigFromEnv } from "../chatbot/chatbotConfig.js";
 import { maybeRunQuestionRetention } from "../chatbot/maintenance.js";
+import { insertUsageEvents } from "../usage/events.js";
+import { maybeRunUsageRetention } from "../usage/maintenance.js";
 import { createEmbeddingsClient } from "../chatbot/embeddingsClient.js";
 import { createOpenAiResponsesClient } from "../chatbot/llm/openaiResponses.js";
 import type { LlmAnswering } from "../chatbot/answer.js";
@@ -362,8 +364,14 @@ async function main(): Promise<void> {
   // user cap + answer cache); the ask wiring further down reuses this value.
   const chatbotConfig = readChatbotConfigFromEnv();
   const chatbotNeedsRedis = chatbotConfig.enabled && chatbotConfig.llm !== null;
+  // Usage analytics (docs/plans/usage-analytics.md): a write feature, default
+  // off, enabled explicitly per environment once the privacy policy text is
+  // live. Read here because its 90-day retention is Redis-elected — a
+  // deployment where analytics is the only Redis consumer must still get a
+  // client, or stored events would silently outlive the promise.
+  const usageAnalyticsEnabled = readBooleanEnv("USAGE_ANALYTICS_ENABLED", false);
   const redis =
-    addressCacheEnabled || authConfigured || autoDistrictResearchNeedsRedis || chatbotNeedsRedis
+    addressCacheEnabled || authConfigured || autoDistrictResearchNeedsRedis || chatbotNeedsRedis || usageAnalyticsEnabled
       ? createClient({ url: readEnv("REDIS_URL", "redis://localhost:6379") })
       : null;
   const buildAddressResolverOptions = () => ({
@@ -712,9 +720,21 @@ async function main(): Promise<void> {
   // rows logged while it was on (an empty/absent log makes this a daily
   // no-op). Full teardown per the isolation contract is DROP SCHEMA, which
   // removes the data and the obligation together.
-  const runRetention = () => void maybeRunQuestionRetention(pool, redis?.isOpen ? redis : null);
+  // Usage-events retention rides the same schedule and, like the chatbot
+  // purge, runs regardless of USAGE_ANALYTICS_ENABLED — rows stored while
+  // it was on still age out.
+  const runRetention = () => {
+    const maintenanceRedis = redis?.isOpen ? redis : null;
+    void maybeRunQuestionRetention(pool, maintenanceRedis);
+    void maybeRunUsageRetention(pool, maintenanceRedis);
+  };
   runRetention();
   setInterval(runRetention, 3_600_000).unref();
+  // Off → POST /api/usage/events is a 404 and the frontend module is inert
+  // via its own VITE_USAGE_ANALYTICS_ENABLED flag.
+  if (usageAnalyticsEnabled) {
+    console.log("usage analytics intake enabled (POST /api/usage/events)");
+  }
   if (chatbotConfig.enabled) {
     console.log(
       `chatbot ask enabled (embeddings: ${chatbotConfig.embeddingsUrl ? "configured" : "NOT configured — keyword-only retrieval"}; LLM: ${chatbotLlm ? `${chatbotConfig.llm?.model} (effort ${chatbotConfig.llm?.reasoningEffort})` : "off — retrieval-only"})`
@@ -750,6 +770,17 @@ async function main(): Promise<void> {
     // Unsubscribe pages link back to /me/settings on the public site.
     ...(siteOrigin ?? authPublicBaseUrl ? { publicSiteOrigin: siteOrigin ?? authPublicBaseUrl ?? undefined } : {}),
     createContentReport: (input) => createContentReport(pool, input),
+    ...(usageAnalyticsEnabled
+      ? {
+          recordUsageEvents: async (rows, dropped) => {
+            if (dropped > 0) {
+              // Count only — the rejected payloads are never logged.
+              console.warn(`usage events: dropped ${dropped} invalid event(s) from one batch`);
+            }
+            await insertUsageEvents(pool, rows);
+          },
+        }
+      : {}),
     logDiagnostics: logAddressResolutionDiagnostics,
     // [ballot-personalized-ordering]: the plain reader is decorated with the
     // sort/followed-first ordering; on feature removal call the reader alone.

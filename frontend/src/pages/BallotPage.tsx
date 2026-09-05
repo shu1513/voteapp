@@ -30,6 +30,7 @@ import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { useHydrated } from "../lib/useHydrated";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
+import { useTrackBallotResult, track } from "../lib/usage";
 
 // The anonymous endpoint can honor these server-side. my_areas is offered on
 // top of them to signed-in visitors with saved research areas, honored by a
@@ -123,6 +124,12 @@ export function BallotPage() {
     enabled: districtIds.length > 0,
   });
 
+  useTrackBallotResult(ballot, {
+    scope: isPartialBallot ? (partialScope ?? "unknown") : "exact",
+    partialBanner: isPartialBallot,
+    ambiguousBanner: Boolean(matchedAddress && ambiguousMatchCount),
+  });
+
   // Keep the guest draft's badge link and progress denominator tracking the
   // ballot the guest actually looked at last. Signed-in visitors never touch
   // the draft here — theirs lives in the account.
@@ -137,6 +144,7 @@ export function BallotPage() {
   }, [isGuest, ballotElections, districtIds.join(",")]);
 
   function onSortChange(nextSort: string) {
+    track("list_control", { control: "sort", value: nextSort });
     setSearchParams(
       (previous) => {
         const next = new URLSearchParams(previous);
@@ -282,7 +290,11 @@ export function BallotPage() {
           ) : (
             "This is a partial ballot."
           )}{" "}
-          <Link to="/?new=1" className="underline hover:text-rausch">
+          <Link
+            to="/?new=1"
+            onClick={() => track("partial_upgrade_click", { banner: "partial" })}
+            className="underline hover:text-rausch"
+          >
             Enter your street address
           </Link>{" "}
           to check for additional congressional, legislative, local, and school races.
@@ -293,7 +305,11 @@ export function BallotPage() {
         <p role="alert" className="mt-2 rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink">
           Your search matched {ambiguousMatchCount} possible addresses, and this ballot is for{" "}
           <span className="font-medium">{matchedAddress}</span>. If that is not your address,{" "}
-          <Link to="/?new=1" className="underline hover:text-rausch">
+          <Link
+            to="/?new=1"
+            onClick={() => track("partial_upgrade_click", { banner: "ambiguous" })}
+            className="underline hover:text-rausch"
+          >
             search again
           </Link>{" "}
           with your full street address, city, and ZIP code.

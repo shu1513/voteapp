@@ -5,6 +5,7 @@ import {
   PRE_SEARCH_AGREEMENT_PARAGRAPHS,
   PRE_SEARCH_CHECKBOX_LABEL,
 } from "@voteapp/api-client";
+import { track } from "../lib/usage";
 
 // The anonymous clickwrap, deferred to the moment it gates something. The
 // landing page carries no checkbox and no legal box: assent is asked for when
@@ -29,12 +30,12 @@ import {
 // Escape, and scroll locking come from the library.
 
 const DOCUMENT_LINKS = [
-  { label: "Terms of Use", href: "/terms" },
-  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Use", href: "/terms", doc: "terms" },
+  { label: "Privacy Policy", href: "/privacy", doc: "privacy" },
   // Full document title, matching the checkbox label word-for-word: the label
   // says "AI Research and Election Information Disclaimer", so a bare
   // "Disclaimer" link would leave the reader unsure it is the same document.
-  { label: "AI Research and Election Information Disclaimer", href: "/disclaimer" },
+  { label: "AI Research and Election Information Disclaimer", href: "/disclaimer", doc: "disclaimer" },
 ] as const;
 
 type PreSearchTermsDialogProps = {
@@ -97,6 +98,7 @@ export function PreSearchTermsDialog({
                     href={document.href}
                     target="_blank"
                     rel="noreferrer"
+                    onClick={() => track("terms_doc_open", { doc: document.doc })}
                     className="text-ink underline hover:text-rausch"
                   >
                     {document.label}

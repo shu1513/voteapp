@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link, useRouteError } from "react-router";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { captureMonitoredError } from "../lib/errorMonitoring";
+import { track } from "../lib/usage";
 
 // errorElement for the router root: a render error anywhere in the tree
 // otherwise unmounts the app into a blank page. Rendered outside <App/>, so
@@ -15,6 +16,7 @@ export function RouteError() {
   // In an effect so StrictMode's double render doesn't double-report.
   useEffect(() => {
     captureMonitoredError(error, { source: "route_error_boundary" });
+    track("error_shown", { category: "render" });
   }, [error]);
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 text-center text-ink">

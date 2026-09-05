@@ -8,6 +8,7 @@ import { TermsRenewalGate } from "./components/TermsRenewalGate";
 import { APP_NAME, VERIFY_WITH_OFFICIALS_NOTE, apiRequest, purgeAccountScopedQueries, useMe } from "@voteapp/api-client";
 import { useFlushBallotDraft } from "./lib/useFlushBallotDraft";
 import { myDraftLabel, useGuestDraftNav, useMyPicksProgress } from "./lib/usePickProgress";
+import { useUsageTracking } from "./lib/usage";
 
 /**
  * The signed-in account menu: a "Hi {first name} ▾" button that discloses
@@ -232,6 +233,9 @@ export function App() {
   const lastPathname = useRef(location.pathname);
   // Replays a guest ballot draft into the account on login/registration.
   useFlushBallotDraft();
+  // First-party usage analytics (docs/plans/usage-analytics.md): page views,
+  // foreground time, auth transitions. Inert unless the build flag is set.
+  useUsageTracking();
 
   // In-app navigation keeps focus wherever it was in the old page; move it
   // to the new page's content so keyboard and screen-reader users land where

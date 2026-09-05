@@ -1,7 +1,12 @@
+import { useEffect } from "react";
 import { Link } from "react-router";
+import { track } from "../lib/usage";
 
 /** Not-found body for detail-route ErrorBoundaries (loader threw 404). */
 export function NotFoundNotice({ subject }: { subject: "Election" | "Candidate" | "Pick card" }) {
+  useEffect(() => {
+    track("error_shown", { category: "not_found" });
+  }, []);
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 text-center">
       <h1 className="text-title font-bold">{subject} not found</h1>

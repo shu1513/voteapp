@@ -8,6 +8,7 @@ import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferen
 import type { UserEmailPreferences } from "../pipeline/users/userEmailPreferences.js";
 import type { RegisterUserPushTokenInput } from "../pipeline/users/userPushTokens.js";
 import type { CreatedContentReport, ContentReportInput } from "../pipeline/reports/contentReports.js";
+import type { UsageEventRow } from "../usage/events.js";
 import type { UserIdentity } from "../pipeline/users/userIdentity.js";
 import type { AddressResolutionResult } from "../pipeline/address/addressResolverService.js";
 import type { AddressSuggestion, RetrievedSuggestedAddress } from "../pipeline/address/googlePlacesAutocomplete.js";
@@ -267,6 +268,11 @@ export type AddressApiServerOptions = {
   authRateLimit?: (input: AuthApiRateLimitInput) => AuthApiRateLimitResult;
   contentReportRateLimit?: (input: AddressApiRateLimitInput) => AddressApiRateLimitResult;
   createContentReport?: (input: ContentReportInput) => Promise<CreatedContentReport>;
+  /** POST /api/usage/events — first-party usage analytics intake
+   * (docs/plans/usage-analytics.md). Absent (404) when USAGE_ANALYTICS_ENABLED
+   * is off. Receives catalog-validated rows only; `dropped` is the count of
+   * rejected events for the operator log — never their contents. */
+  recordUsageEvents?: (rows: readonly UsageEventRow[], dropped: number) => Promise<void>;
   resolveClientIp?: (input: AddressApiClientIpInput) => string;
   resolveAuthenticatedUserId?: (input: {
     headers: AddressApiClientIpInput["headers"];

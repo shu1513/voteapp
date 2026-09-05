@@ -1,0 +1,219 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { ApiError } from "@voteapp/api-client";
+import {
+  countBucket,
+  errorCategoryOf,
+  flushUsageEventsForTests,
+  isUsageOptedOut,
+  positionBucket,
+  resetUsageForTests,
+  routeForMatchId,
+  setUsageOptOut,
+  track,
+} from "./usage";
+
+type SentBody = {
+  v: number;
+  events: { name: string; route: string; session_id: string; props: Record<string, unknown> }[];
+};
+
+function stubFetch(status = 204) {
+  const fetchMock = vi.fn(async () => ({ ok: status < 300, status, headers: new Headers(), json: async () => ({}) }));
+  vi.stubGlobal("fetch", fetchMock);
+  return fetchMock;
+}
+
+function sentBodies(fetchMock: ReturnType<typeof stubFetch>): SentBody[] {
+  return fetchMock.mock.calls.map((call) => JSON.parse((call as unknown as [string, RequestInit])[1].body as string));
+}
+
+beforeEach(() => {
+  resetUsageForTests();
+  localStorage.clear();
+  sessionStorage.clear();
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.unstubAllEnvs();
+});
+
+describe("track", () => {
+  it("is inert unless the build flag is on", () => {
+    const fetchMock = stubFetch();
+    track("address_input");
+    flushUsageEventsForTests();
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(sessionStorage.getItem("voteapp_usage_session")).toBeNull();
+  });
+
+  it("opens a session, sends a session_start first, and posts only catalog fields", async () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    const fetchMock = stubFetch();
+    track("address_input");
+    flushUsageEventsForTests();
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
+
+    const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+    expect(url).toBe("/api/usage/events");
+    expect(init.method).toBe("POST");
+    expect(init.keepalive).toBe(true);
+    const body = sentBodies(fetchMock)[0]!;
+    expect(body.v).toBe(1);
+    expect(body.events.map((event) => event.name)).toEqual(["session_start", "address_input"]);
+    // Route ids only — no pathname, no href, no query string anywhere.
+    for (const event of body.events) {
+      expect(Object.keys(event).sort()).toEqual(
+        ["client_offset_ms", "event_id", "name", "page_view_id", "props", "route", "session_id"].sort()
+      );
+      expect(JSON.stringify(event)).not.toContain("http");
+    }
+    expect(body.events[0]!.props).toMatchObject({ referrer_bucket: "direct", auth: "unknown", had_saved_draft: false });
+    expect(sessionStorage.getItem("voteapp_usage_session")).not.toBeNull();
+  });
+
+  it("stops for the tab once the server says the feature is off (404)", async () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    const fetchMock = stubFetch(404);
+    track("address_input");
+    flushUsageEventsForTests();
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
+    track("address_submit", { via_suggestion: false });
+    flushUsageEventsForTests();
+    expect(fetchMock).toHaveBeenCalledOnce();
+  });
+
+  it("re-sends a batch once after a server failure, then gives up", async () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    const fetchMock = stubFetch(503);
+    track("address_input");
+    flushUsageEventsForTests();
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
+    // The re-queue lands after the response settles; keep flushing until
+    // the second request goes out (one in-flight request at a time).
+    await vi.waitFor(() => {
+      flushUsageEventsForTests();
+      expect(fetchMock).toHaveBeenCalledTimes(2);
+    });
+    expect(sentBodies(fetchMock)[1]!.events.map((event) => event.name)).toEqual(["session_start", "address_input"]);
+    await vi.waitFor(() => {
+      flushUsageEventsForTests();
+      expect(fetchMock).toHaveBeenCalledTimes(2);
+    });
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    flushUsageEventsForTests();
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("never resends a batch that failed in flight after the visitor opted out", async () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    let release!: (value: { ok: boolean; status: number; headers: Headers; json: () => Promise<unknown> }) => void;
+    const fetchMock = vi.fn(() => new Promise<{ ok: boolean; status: number; headers: Headers; json: () => Promise<unknown> }>((resolve) => {
+      release = resolve;
+    }));
+    vi.stubGlobal("fetch", fetchMock);
+    track("address_input");
+    flushUsageEventsForTests();
+    expect(fetchMock).toHaveBeenCalledOnce();
+    // Opt out while the request is in flight, then let it fail.
+    setUsageOptOut(true);
+    release({ ok: false, status: 503, headers: new Headers(), json: async () => ({}) });
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    flushUsageEventsForTests();
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    expect(fetchMock).toHaveBeenCalledOnce();
+  });
+
+  it("honors the /privacy opt-out and drops anything queued", () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    const fetchMock = stubFetch();
+    track("address_input");
+    setUsageOptOut(true);
+    expect(isUsageOptedOut()).toBe(true);
+    track("address_submit", { via_suggestion: false });
+    flushUsageEventsForTests();
+    expect(fetchMock).not.toHaveBeenCalled();
+    setUsageOptOut(false);
+    expect(isUsageOptedOut()).toBe(false);
+  });
+
+  it("reuses a recent stored session and rotates a stale one", async () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    const fetchMock = stubFetch();
+    const recent = { id: "11111111-1111-4111-8111-111111111111", started_at: Date.now() - 60_000, last_active_at: Date.now() - 60_000 };
+    sessionStorage.setItem("voteapp_usage_session", JSON.stringify(recent));
+    track("address_input");
+    flushUsageEventsForTests();
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
+    const first = sentBodies(fetchMock)[0]!;
+    expect(first.events.map((event) => event.name)).toEqual(["address_input"]);
+    expect(first.events[0]!.session_id).toBe(recent.id);
+
+    resetUsageForTests();
+    const stale = { ...recent, last_active_at: Date.now() - 31 * 60_000 };
+    sessionStorage.setItem("voteapp_usage_session", JSON.stringify(stale));
+    track("address_input");
+    flushUsageEventsForTests();
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    const second = sentBodies(fetchMock)[1]!;
+    expect(second.events.map((event) => event.name)).toEqual(["session_start", "address_input"]);
+    expect(second.events[0]!.session_id).not.toBe(recent.id);
+  });
+
+  it("keeps an opt-out for the tab even when localStorage refuses the write", async () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    const fetchMock = stubFetch();
+    const setItem = vi.spyOn(Storage.prototype, "setItem").mockImplementation((key: string) => {
+      if (key === "voteapp_usage_optout") throw new Error("quota");
+    });
+    try {
+      setUsageOptOut(true);
+      expect(isUsageOptedOut()).toBe(true);
+      track("address_input");
+      flushUsageEventsForTests();
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      expect(fetchMock).not.toHaveBeenCalled();
+    } finally {
+      setItem.mockRestore();
+    }
+  });
+
+  it("never throws when sessionStorage is unavailable", () => {
+    vi.stubEnv("VITE_USAGE_ANALYTICS_ENABLED", "true");
+    const fetchMock = stubFetch();
+    const getItem = vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+      throw new Error("blocked");
+    });
+    try {
+      expect(() => track("address_input")).not.toThrow();
+      flushUsageEventsForTests();
+      expect(fetchMock).not.toHaveBeenCalled();
+    } finally {
+      getItem.mockRestore();
+    }
+  });
+});
+
+describe("helpers", () => {
+  it("maps route ids and never falls back to a path", () => {
+    expect(routeForMatchId("pages/HomePage")).toBe("home");
+    expect(routeForMatchId("pages/PublicPickCardPage")).toBe("pick_card");
+    expect(routeForMatchId("routes/privacy")).toBe("privacy");
+    expect(routeForMatchId("0-3")).toBe("other");
+    expect(routeForMatchId(undefined)).toBe("other");
+  });
+
+  it("buckets counts and positions", () => {
+    expect([0, 1, 3, 4, 10, 11, 25, 26].map(countBucket)).toEqual(["0", "1-3", "1-3", "4-10", "4-10", "11-25", "11-25", "26+"]);
+    expect([1, 3, 4, 10, 11].map(positionBucket)).toEqual(["1-3", "1-3", "4-10", "4-10", "11+"]);
+  });
+
+  it("categorizes errors without carrying their messages", () => {
+    expect(errorCategoryOf(new ApiError(422, "address_not_found", "We couldn't find 123 Main St"))).toBe("address");
+    expect(errorCategoryOf(new ApiError(429, "rate_limited", "slow down", 30))).toBe("rate_limited");
+    expect(errorCategoryOf(new ApiError(502, "bad_gateway", "upstream"))).toBe("server");
+    expect(errorCategoryOf(new ApiError(404, "not_found", "gone"))).toBe("not_found");
+    expect(errorCategoryOf(new ApiError(400, "invalid_request", "bad"))).toBe("other");
+    expect(errorCategoryOf(new TypeError("Failed to fetch"))).toBe("network");
+  });
+});

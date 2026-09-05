@@ -52,6 +52,25 @@ describe("createInMemoryAddressApiRateLimiter", () => {
     expect(limiter(retrieve)).toEqual({ allowed: false, retryAfterSeconds: 60 });
   });
 
+  it("gives usage-analytics flushes their own per-IP bucket", () => {
+    let now = 1_000;
+    const limiter = createInMemoryAddressApiRateLimiter({
+      windowMs: 60_000,
+      maxRequests: 1,
+      now: () => now,
+    });
+    const usage = { clientIp: "203.0.113.10", method: "POST", pathname: "/api/usage/events" };
+
+    expect(limiter(usage)).toEqual({ allowed: true });
+    expect(limiter(usage)).toEqual({ allowed: false, retryAfterSeconds: 60 });
+    // The exhausted analytics bucket leaves the plain budget untouched, and
+    // the plain budget being spent does not block a flush.
+    expect(limiter(request("203.0.113.10"))).toEqual({ allowed: true });
+    expect(limiter(request("203.0.113.10"))).toEqual({ allowed: false, retryAfterSeconds: 60 });
+    now += 60_000;
+    expect(limiter(usage)).toEqual({ allowed: true });
+  });
+
   it("sweeps expired buckets lazily", () => {
     let now = 1_000;
     const limiter = createInMemoryAddressApiRateLimiter({
