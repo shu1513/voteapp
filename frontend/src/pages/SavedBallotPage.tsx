@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError, apiRequest } from "@voteapp/api-client";
@@ -17,10 +17,9 @@ import { deriveBallotFilters, railSortForBallotSort, useElectionChoices, useMyRe
 import { useBallotFilterParams } from "../lib/useBallotFilterParams";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useMe } from "@voteapp/api-client";
-import { clearPendingDistrictIds, readPendingDistrictIds } from "../lib/pendingDistricts";
+import { retryDistrictHandoff, useDistrictHandoffStatus } from "../lib/districtHandoff";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
-import { useHydrated } from "../lib/useHydrated";
 import { track, useTrackBallotResult } from "../lib/usage";
 
 type SavedBallot = BallotSummary & { matched_address?: string };
@@ -189,7 +188,6 @@ export function SavedBallotPage() {
       void navigate(location.pathname, { replace: true, state: null });
     }
   }, [location.pathname, location.state, navigate]);
-  const queryClient = useQueryClient();
   const {
     weights: savedAreaWeights,
     savedAreaIds,
@@ -234,70 +232,12 @@ export function SavedBallotPage() {
   // preferences failure it falls open — list shown, seed simply omitted.
   const { prefs: ballotPreferencesQuery, current: ballotPreferences } = useBallotPreferences();
   const effectiveListSort = sortOverride ?? ballotPreferences?.sort ?? null;
-  // sessionStorage is browser-only, so the hydration render must match the
-  // server's "done" — the queued handoff engages in the effect below instead.
-  // Post-hydration mounts (SPA navigations) still read synchronously, keeping
-  // the ballot query disabled from the first render while ids are queued.
-  const hydrated = useHydrated();
-  const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
-    hydrated && readPendingDistrictIds().length > 0 ? "pending" : "done"
-  );
-  const handoffFiredRef = useRef(false);
-  useEffect(() => {
-    if (hydrated && readPendingDistrictIds().length > 0) {
-      setHandoffState((current) => (current === "done" ? "pending" : current));
-    }
-  }, [hydrated]);
+  // Anonymous-to-account handoff (lib/districtHandoff.ts) runs app-wide from
+  // App; this page only reads its status: the ballot query is withheld while
+  // ids are still queued, and a recoverable failure gets an explicit retry.
+  const handoffState = useDistrictHandoffStatus();
 
   const verified = me?.email_verified === true;
-
-  // Anonymous-to-account handoff: initialize saved districts from the last
-  // anonymous search, but only once verified (the endpoint is
-  // verified-email-gated). Only a definitive rejection of the payload itself
-  // (400: malformed or unknown district ids) resolves to "the account's
-  // ballot is the source of truth". Everything else — 401/403 (session or
-  // verification state changed server-side), 429, network and server
-  // failures — is recoverable, so keep the queued ids and surface an
-  // explicit retry instead of dropping the user onto the empty set-address
-  // form with their search lost.
-  useEffect(() => {
-    if (!verified || handoffState !== "pending" || handoffFiredRef.current) {
-      return;
-    }
-    handoffFiredRef.current = true;
-    const districtIds = readPendingDistrictIds();
-    void (async () => {
-      try {
-        await apiRequest("/api/me/districts/initialize", {
-          method: "POST",
-          body: { district_ids: districtIds },
-        });
-        track("handoff_result", { outcome: "done" });
-        clearPendingDistrictIds();
-        setHandoffState("done");
-        void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
-        // The pick gate's district set (useMyDistricts) was just initialized
-        // — refetch it or stale ids keep gating pick buttons. Not needed in
-        // the 400 branch below: a rejected payload changes nothing.
-        void queryClient.invalidateQueries({ queryKey: ["me", "districts"] });
-      } catch (error) {
-        if (error instanceof ApiError && error.status === 400) {
-          track("handoff_result", { outcome: "rejected" });
-          clearPendingDistrictIds();
-          setHandoffState("done");
-          void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
-        } else {
-          track("handoff_result", { outcome: "failed" });
-          setHandoffState("failed");
-        }
-      }
-    })();
-  }, [verified, handoffState, queryClient]);
-
-  function retryHandoff() {
-    handoffFiredRef.current = false;
-    setHandoffState("pending");
-  }
 
   const ballot = useQuery<SavedBallot>({
     // The override is part of the key so switching (or clearing) it
@@ -359,7 +299,7 @@ export function SavedBallotPage() {
         </p>
         <button
           type="button"
-          onClick={retryHandoff}
+          onClick={retryDistrictHandoff}
           className="rounded-lg bg-rausch px-4 py-2 font-semibold text-white transition hover:bg-rausch-dark"
         >
           Try again

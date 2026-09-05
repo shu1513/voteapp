@@ -1,11 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
+import { Outlet } from "react-router";
 import userEvent from "@testing-library/user-event";
 import { SavedBallotPage } from "./SavedBallotPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { ballotSummary, electionSummary, ME_UNVERIFIED, ME_VERIFIED } from "../test/fixtures";
 import { readPendingDistrictIds, savePendingDistrictIds } from "../lib/pendingDistricts";
+import { resetDistrictHandoffForTests, useDistrictHandoffRunner } from "../lib/districtHandoff";
 
 const VERIFIED_BASE = {
   "/api/me": { body: ME_VERIFIED },
@@ -13,12 +15,24 @@ const VERIFIED_BASE = {
   "/api/me/research-area-preferences": { body: { preferences: [] } },
 };
 
+// The district handoff runs from App, not the page: mirror that so the page
+// under test reads the real global run instead of one it would start itself.
+function HandoffLayout() {
+  useDistrictHandoffRunner();
+  return <Outlet />;
+}
+
 function renderSavedBallot(state?: unknown, search?: string) {
   return renderRoutes(
     [
-      { path: "/me/ballot", element: <SavedBallotPage /> },
-      { path: "/login", element: <p /> },
-      { path: "/elections/:electionId", element: <p /> },
+      {
+        element: <HandoffLayout />,
+        children: [
+          { path: "/me/ballot", element: <SavedBallotPage /> },
+          { path: "/login", element: <p /> },
+          { path: "/elections/:electionId", element: <p /> },
+        ],
+      },
     ],
     { pathname: "/me/ballot", search, state }
   );
@@ -28,6 +42,7 @@ beforeEach(() => {
   // No pending anonymous-search districts: the handoff must stay quiet.
   localStorage.clear();
   sessionStorage.clear();
+  resetDistrictHandoffForTests();
 });
 
 afterEach(() => {

@@ -7,6 +7,7 @@ import { RouteError } from "./components/RouteError";
 import { TermsRenewalGate } from "./components/TermsRenewalGate";
 import { APP_NAME, VERIFY_WITH_OFFICIALS_NOTE, apiRequest, purgeAccountScopedQueries, useMe } from "@voteapp/api-client";
 import { useFlushBallotDraft } from "./lib/useFlushBallotDraft";
+import { useDistrictHandoffRunner } from "./lib/districtHandoff";
 import { myDraftLabel, useGuestDraftNav, useMyPicksProgress } from "./lib/usePickProgress";
 import { trackSettled, useUsageTracking } from "./lib/usage";
 
@@ -237,6 +238,9 @@ export function App() {
   const lastPathname = useRef(location.pathname);
   // Replays a guest ballot draft into the account on login/registration.
   useFlushBallotDraft();
+  // Initializes account districts from a guest address search once /api/me
+  // reports a verified session, on whatever page the user landed.
+  useDistrictHandoffRunner();
   // First-party usage analytics (docs/plans/usage-analytics.md): page views,
   // foreground time, auth transitions. Inert unless the build flag is set.
   useUsageTracking();
