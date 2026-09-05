@@ -842,6 +842,8 @@ async function main(): Promise<void> {
             membershipService.createPortalSession(userId, input),
           cancelAuthenticatedMembership: (userId: string) => membershipService.cancelMembership(userId),
           resumeAuthenticatedMembership: (userId: string) => membershipService.resumeMembership(userId),
+          changeAuthenticatedMembershipAmount: (userId: string, input: { amount_cents: number }) =>
+            membershipService.changeMonthlyAmount(userId, input),
           handleStripeWebhookEvent: (input: { rawBody: Buffer; signatureHeader: string | null }) =>
             membershipService.handleWebhookEvent(input),
         }

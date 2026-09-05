@@ -682,10 +682,20 @@ export type MembershipPayment = {
 export type MembershipMembership = {
   /** Raw Stripe subscription status, verbatim. */
   stripe_status: string;
+  /** What the current billing period costs. */
   monthly_amount_cents: number;
   cancel_at_period_end: boolean;
   current_period_end: string | null;
   started_at: string;
+  /** A requested amount change that has not billed yet
+   * (docs/plans/membership-manage-page.md). `applied` = the new price is
+   * set at Stripe and the advance notice sent, so `starts_at` is firm;
+   * otherwise `starts_at` is the projected renewal (null when unknown). */
+  pending_amount_change: {
+    new_amount_cents: number;
+    starts_at: string | null;
+    applied: boolean;
+  } | null;
 };
 
 export type MembershipStatus =
