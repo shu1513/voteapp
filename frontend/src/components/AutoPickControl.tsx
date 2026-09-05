@@ -23,8 +23,8 @@ import { RegisterPromptDialog } from "./RegisterPromptDialog";
 // port); this file keeps the web widgets.
 //
 // Below the issue floor the button explains what to do instead of calling
-// the API. Guests get a teaser pill in the button's place — "Which
-// candidate best matches your values?" — that opens the shared log in /
+// the API. Guests get a teaser pill in the button's place — "See which
+// candidate best matches your values" — that opens the shared log in /
 // sign up dialog (same as the follow button), with this page as the
 // post-auth return path: issue preferences are account-only, and the
 // question is the pitch for an account. Plain words on purpose: a first
@@ -72,21 +72,21 @@ export function AutoPickControl({
   if (me === undefined) {
     return null;
   }
-  // Signed-out: the teaser instead of the button. Same pill shape and
-  // size as the button it stands in for, so it is obviously clickable, but
-  // an outline in ink — not orange (that means "runs the engine now"), not
-  // the red of the sign-up buttons, and not the green the issue chips use.
-  // The click opens the shared dialog (the dialog owns the signup_prompt
-  // usage events), which explains the two-step deal: rank issues, then see
-  // the match.
+  // Signed-out: the teaser instead of the button, styled exactly like it
+  // (same orange pill, same size) so it reads as the one action here. The
+  // click opens the shared dialog (the dialog owns the signup_prompt usage
+  // events), which explains the two-step deal: pick issues, then see the
+  // match.
   if (me === null) {
-    const question = measure ? "Does this measure match your values?" : "Which candidate best matches your values?";
+    const question = measure
+      ? "See whether this measure matches your values"
+      : "See which candidate best matches your values";
     return (
       <>
         <button
           type="button"
           onClick={() => setTeaserOpen(true)}
-          className={`inline-block rounded-full border border-ink bg-white font-semibold text-ink transition hover:bg-surface ${
+          className={`rounded-full border border-autopick-border bg-autopick font-semibold text-autopick-ink transition hover:bg-autopick-dark ${
             compact ? "px-2.5 py-1 text-xs" : "px-3 py-1.5 text-sm"
           }`}
         >
@@ -99,8 +99,8 @@ export function AutoPickControl({
           title={question}
           description={
             measure
-              ? "Sign up to rank the issues you care about, and see whether this measure matches what you believe. Signing up is free."
-              : "Sign up to rank the issues you care about, and see which candidate best matches what you believe. Signing up is free."
+              ? "Sign up to pick the issues you care about, and see whether this measure matches what you believe. Signing up is free."
+              : "Sign up to pick the issues you care about, and see which candidate best matches what you believe. Signing up is free."
           }
         />
       </>
