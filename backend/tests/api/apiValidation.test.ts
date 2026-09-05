@@ -796,3 +796,24 @@ describe("parsePublicAddressResolveBodyValue", () => {
     expect(parseAuthenticatedAddressBodyValue({ address: "1 Main St" })).toEqual({ address: "1 Main St" });
   });
 });
+
+describe("containsNulCharacter", () => {
+  it("finds U+0000 in nested strings and nowhere else", async () => {
+    const { containsNulCharacter } = await import("../../src/api/apiValidation.js");
+    expect(containsNulCharacter("plain")).toBe(false);
+    expect(containsNulCharacter({ a: ["ok", { b: "fine" }], n: 1, t: true, z: null })).toBe(false);
+    expect(containsNulCharacter("bad\u0000")).toBe(true);
+    expect(containsNulCharacter({ a: ["ok", { b: "x\u0000y" }] })).toBe(true);
+    expect(containsNulCharacter([1, [2, ["\u0000"]]])).toBe(true);
+    expect(containsNulCharacter(null)).toBe(false);
+    expect(containsNulCharacter(undefined)).toBe(false);
+  });
+
+  it("makes the candidate search query reject NUL before the ILIKE query", async () => {
+    const { parseCandidateSearchQuery } = await import("../../src/api/apiValidation.js");
+    expect(() => parseCandidateSearchQuery(new URL("http://x/api/candidates/search?q=hil%00ar"))).toThrow(
+      /must not contain NUL/
+    );
+    expect(parseCandidateSearchQuery(new URL("http://x/api/candidates/search?q=hilar"))).toBe("hilar");
+  });
+});

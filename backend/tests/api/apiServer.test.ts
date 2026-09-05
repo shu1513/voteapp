@@ -4779,6 +4779,27 @@ describe("content report API", () => {
     });
   });
 
+  it("rejects a NUL character anywhere in the JSON body with 400 before the writer runs", async () => {
+    const createContentReport = vi.fn().mockResolvedValue({ id: "99999999-9999-4999-8999-999999999999" });
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn().mockResolvedValue(resolvedAddress), createContentReport }), {
+      method: "POST",
+      path: "/api/content-reports",
+      body: JSON.stringify({
+        entity_type: "candidate_record",
+        entity_id: "22222222-2222-4222-8222-222222222222",
+        message: "This record seems wrong\u0000",
+      }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: { code: "invalid_request", message: "Request body must not contain NUL characters" },
+    });
+    expect(createContentReport).not.toHaveBeenCalled();
+  });
+
   it("attaches the trusted user id when a session is present", async () => {
     const createContentReport = vi.fn().mockResolvedValue({ id: "99999999-9999-4999-8999-999999999999" });
     const resolveAuthenticatedUserId = vi.fn().mockResolvedValue("11111111-1111-4111-8111-111111111111");
