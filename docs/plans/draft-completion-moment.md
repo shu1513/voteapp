@@ -253,9 +253,42 @@ Both are frontend only. No migrations, no API change, no flags.
 - Nearest day passes: guest target expires to null; signed-in progress
   moves to the next date, which starts a fresh baseline.
 
+## Mobile (Expo app)
+
+Ported 2026-09-04, same rules with three deliberate differences:
+
+- Account only. Mobile has no guest draft, so there is one progress source
+  (`mobile/src/lib/useMyPicksProgress.ts`, the saved-ballot header's
+  counter) and no sign-up link on the milestone.
+- Notice placement: RN has no shared header row and the codebase forbids
+  absolute overlays (the pick screens use "root View + footer sibling" so
+  nothing can cover the pick footer). The notice
+  (`mobile/src/components/DraftCompleteNotice.tsx`) therefore mounts in
+  flow at the top of the two screens where picks are made — the election
+  screen and the candidate screen — above their ScrollView. Per-screen
+  instances: the baseline starts from the cached progress on mount, so
+  arriving on a screen with an already-complete draft never fires. Screens
+  beneath the focused one stay mounted in a native stack, so only the
+  focused instance fires and announces (`useIsFocused`); the others keep
+  their baseline current and stay silent. Losing focus, an unpick, a ballot
+  change, or unknown progress clears the fired notice at render time (not
+  just hides it), so an unpick → repick cannot resurrect a notice the seen
+  marker already ruled out. No root-layout mount, no app-wide ballot query.
+- Seen marker is AsyncStorage (`mobile/src/lib/draftCompleteSeen.ts`, same
+  key and per-date array as the web), so the check is async; the effect
+  guards the resolved promise against an unpick or unmount in between.
+
+Same as the web: known incomplete → known complete for the same identity +
+day + race list; null breaks the chain; wording never says "complete";
+polite live region (Android) plus an explicit VoiceOver announcement;
+"Review my picks" pushes `/my-draft`; the My Draft screen's milestone
+(`mobile/src/components/DraftMilestone.tsx`, nearest upcoming date, above
+the cards) marks the day as seen, which also covers batch auto-fill done
+on that screen. Mobile has no test runner; verification is typecheck,
+lint, and a simulator run.
+
 ## Out of scope
 
-- Mobile app parity (own hook, own notice). Follow-up.
 - Seat-completion or abstention rules, partial-ballot wording changes.
 - Printing (already exists in Ballot preview), confetti, animation, email
   or push on completion.

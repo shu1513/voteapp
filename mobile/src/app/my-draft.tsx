@@ -13,6 +13,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { AccountGate } from "../components/AccountGate";
 import { AutoPickFillControl } from "../components/AutoPickControls";
 import { Collapsible } from "../components/Collapsible";
+import { DraftMilestone } from "../components/DraftMilestone";
 import { RemoveStrandedPickButton } from "../components/ElectionChoiceControls";
 import { ShareButton, SITE_ORIGIN } from "../components/ShareButton";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
@@ -493,6 +494,9 @@ function MyDraftBody({ me }: { me: Me }) {
     byDate.set(election.election_date, group);
   }
   const dates = [...byDate.keys()].sort();
+  // The milestone judges the nearest UPCOMING day, not dates[0]: a
+  // just-finished day still carded has nothing left to celebrate.
+  const nearestUpcomingDate = dates.find((date) => date >= today);
   const cardedElectionIds = new Set((ballot.data?.elections ?? []).map((election) => election.id));
 
   // One reveal: nothing below the heading until BOTH queries settle, and no
@@ -546,6 +550,13 @@ function MyDraftBody({ me }: { me: Me }) {
           // upcoming elections. No CTA: there is nothing for them to do.
           <Text className="mt-3 text-sm text-ink-soft">No upcoming elections on your ballot yet.</Text>
         )
+      ) : null}
+      {picksSettled && nearestUpcomingDate !== undefined ? (
+        <DraftMilestone
+          date={nearestUpcomingDate}
+          elections={byDate.get(nearestUpcomingDate) ?? []}
+          choiceByElectionId={choiceByElectionId}
+        />
       ) : null}
       {picksSettled ? (
         <View className="mt-4 gap-4">
