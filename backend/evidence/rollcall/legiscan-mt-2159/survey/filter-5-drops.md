@@ -413,3 +413,39 @@ highways, water resources, hunting licences and economic development. Less
 paperwork and less public reporting are the same act. There is no single subject
 a reader could hold a position on, which is the plainest form of a filter 5
 failure.
+
+## Batch 13
+
+### The 58 joint-resolution rolls, disposed under filter 2
+
+These were left as `unbatched` from the start of the campaign, and they should
+not have been. **A Montana joint resolution does not become law.** Its whole
+action trail ends at "Filed with Secretary of State": no governor's signature, no
+session law chapter number, no statute amended. That is filter 2, not filter 5.
+
+All 58 rolls across 38 resolutions are now marked
+`dropped:filter-2-not-law`. They are study resolutions (interim studies of youth
+court law, guardianships, wildfire safety, the primary election date), position
+resolutions (urging changes to federal wildfire policy, supporting the federal
+SAFER banking act), and honorary resolutions. A candidate record saying someone
+"voted for" a study of farmers' markets would tell a reader nothing about the
+law, because nothing changed.
+
+### One measure dropped after a full read
+
+**SB 498** removes the rule that election judges separate each party's primary
+ballots and count them separately, keeping it only in counties that count solely
+by hand. Everything else in 13-10-311 survives, including reconciling the totals
+against the number of electors and bundling each party's ballots separately for
+return. It changes the order of work at the count table and nothing a voter
+experiences.
+
+### One measure deferred, not dropped
+
+**SB 147** is left `unbatched` on purpose. Its only operative content is
+"Section 55, Chapter 716, Laws of 2023, is repealed", and the enrolled text does
+not say what that section did. The bill's title is "revising the Montana Indian
+Child Welfare Act", which strongly suggests a repealed sunset, but Montana's
+archive would not serve the 2023 chapter text, so it is unconfirmed. A record
+that says "repealed section 55" tells a reader nothing, and a record that guesses
+at a sunset could be wrong. It waits for the 2023 chapter text.

@@ -396,48 +396,48 @@ HB 953	B	house	2025-04-08	1539751	73	24	batch-02	Revise medicaid laws related to
 HB 953	B	senate	2025-04-24	1557130	28	22	batch-02	Revise medicaid laws related to direct primary care
 HB 97	B	senate	2025-03-17	1518569	29	20	dropped:filter-5	Allow for platooning vehicles
 HB 99	B	senate	2025-03-17	1518441	37	12	dropped:filter-5	Revise laws related to motor vehicle laws for clarity and consistency
-HJ 10	JR	house	2025-03-31	1530906	58	41	unbatched	Resolution on sports laws
-HJ 10	JR	senate	2025-04-22	1553562	31	19	unbatched	Resolution on sports laws
+HJ 10	JR	house	2025-03-31	1530906	58	41	dropped:filter-2-not-law	Resolution on sports laws
+HJ 10	JR	senate	2025-04-22	1553562	31	19	dropped:filter-2-not-law	Resolution on sports laws
 HJ 17	JR	house	2025-03-21	1524194	58	38	superseded:later-roll-used	Resolution regarding energy
-HJ 17	JR	house	2025-04-25	1558032	63	37	unbatched	Resolution regarding energy
-HJ 17	JR	senate	2025-04-18	1552222	35	15	unbatched	Resolution regarding energy
-HJ 19	JR	house	2025-03-28	1530281	78	21	unbatched	Resolution to provide for frontotemporal degeneration awareness week
-HJ 19	JR	senate	2025-04-22	1554751	34	16	unbatched	Resolution to provide for frontotemporal degeneration awareness week
-HJ 23	JR	house	2025-04-16	1549838	74	24	unbatched	Interim study on youth court laws
-HJ 23	JR	senate	2025-04-29	1560247	34	16	unbatched	Interim study on youth court laws
-HJ 26	JR	house	2025-04-17	1551384	70	29	unbatched	Study guardianships and conservatorships
+HJ 17	JR	house	2025-04-25	1558032	63	37	dropped:filter-2-not-law	Resolution regarding energy
+HJ 17	JR	senate	2025-04-18	1552222	35	15	dropped:filter-2-not-law	Resolution regarding energy
+HJ 19	JR	house	2025-03-28	1530281	78	21	dropped:filter-2-not-law	Resolution to provide for frontotemporal degeneration awareness week
+HJ 19	JR	senate	2025-04-22	1554751	34	16	dropped:filter-2-not-law	Resolution to provide for frontotemporal degeneration awareness week
+HJ 23	JR	house	2025-04-16	1549838	74	24	dropped:filter-2-not-law	Interim study on youth court laws
+HJ 23	JR	senate	2025-04-29	1560247	34	16	dropped:filter-2-not-law	Interim study on youth court laws
+HJ 26	JR	house	2025-04-17	1551384	70	29	dropped:filter-2-not-law	Study guardianships and conservatorships
 HJ 26	JR	senate	2025-04-29	1559905	24	26	superseded:later-roll-used	Study guardianships and conservatorships
-HJ 26	JR	senate	2025-04-30	1562101	29	21	unbatched	Study guardianships and conservatorships
-HJ 27	JR	house	2025-04-17	1551942	57	42	unbatched	Interim study on laws regarding morticians and funeral services
-HJ 27	JR	senate	2025-04-25	1558255	30	19	unbatched	Interim study on laws regarding morticians and funeral services
-HJ 28	JR	house	2025-04-17	1551677	59	40	unbatched	Interim study to identify and improve access to federal grant opportunities for the state of Montana, tribal governments, and local government entities
-HJ 28	JR	senate	2025-04-29	1560243	29	21	unbatched	Interim study to identify and improve access to federal grant opportunities for the state of Montana, tribal governments, and local government entities
-HJ 30	JR	senate	2025-04-29	1560236	37	12	unbatched	Study resolution on incentivizing housing density and affordability
-HJ 31	JR	house	2025-04-02	1534810	74	21	unbatched	Joint resolution honoring educational support professionals
-HJ 32	JR	senate	2025-04-29	1560267	37	13	unbatched	Interim study of advanced investigator qualifications for law enforcement
-HJ 35	JR	house	2025-04-05	1537666	56	42	unbatched	Joint resolution urging changes to federal wildfire policy
-HJ 35	JR	senate	2025-04-22	1553727	32	18	unbatched	Joint resolution urging changes to federal wildfire policy
-HJ 40	JR	senate	2025-04-29	1560170	37	13	unbatched	Interim study on transferring fiscal note production from executive branch to legislative branch
-HJ 42	JR	house	2025-04-23	1556315	70	29	unbatched	Interim study on procurement, no-bid contracts, and transparency on no-bid purchases
-HJ 42	JR	senate	2025-04-30	1563222	27	23	unbatched	Interim study on procurement, no-bid contracts, and transparency on no-bid purchases
-HJ 45	JR	senate	2025-04-29	1560134	31	19	unbatched	Interim study on the impact collateral consequences have on criminal record expungement
-HJ 47	JR	senate	2025-04-30	1562687	33	16	unbatched	Study resolution on local government entity cooperation
-HJ 48	JR	senate	2025-04-30	1563232	28	22	unbatched	Interim study on moving the date of the primary election
-HJ 50	JR	house	2025-04-24	1557718	71	29	unbatched	Interim study of uniform common interest ownership laws
-HJ 50	JR	senate	2025-04-30	1562683	31	19	unbatched	Interim study of uniform common interest ownership laws
-HJ 52	JR	senate	2025-04-30	1563238	36	14	unbatched	Interim study on the Montana cattle industry
-HJ 53	JR	senate	2025-04-29	1560993	29	21	unbatched	Request an interim study on school safety
-HJ 55	JR	house	2025-04-23	1556334	73	26	unbatched	Study resolution on property management licensing and practice
-HJ 55	JR	senate	2025-04-30	1563237	34	16	unbatched	Study resolution on property management licensing and practice
-HJ 56	JR	senate	2025-04-29	1560981	33	17	unbatched	Study resolution of search and rescue services and funding
-HJ 61	JR	house	2025-04-25	1558103	78	22	unbatched	Interim study on the property insurance market in Montana
-HJ 61	JR	senate	2025-04-30	1562176	38	12	unbatched	Interim study on the property insurance market in Montana
-HJ 62	JR	house	2025-04-24	1557212	66	34	unbatched	Study resolution on wildfire safety
-HJ 62	JR	senate	2025-04-30	1562189	34	16	unbatched	Study resolution on wildfire safety
-HJ 7	JR	house	2025-02-05	1482113	53	47	unbatched	Joint resolution congratulating President Donald J. Trump on his re-election
-HJ 7	JR	senate	2025-04-22	1554831	30	20	unbatched	Joint resolution congratulating President Donald J. Trump on his re-election
-HJ 74	JR	house	2025-04-28	1558777	63	37	unbatched	Study resolution analyzing water re-use in the state
-HJ 74	JR	senate	2025-04-30	1562664	33	17	unbatched	Study resolution analyzing water re-use in the state
+HJ 26	JR	senate	2025-04-30	1562101	29	21	dropped:filter-2-not-law	Study guardianships and conservatorships
+HJ 27	JR	house	2025-04-17	1551942	57	42	dropped:filter-2-not-law	Interim study on laws regarding morticians and funeral services
+HJ 27	JR	senate	2025-04-25	1558255	30	19	dropped:filter-2-not-law	Interim study on laws regarding morticians and funeral services
+HJ 28	JR	house	2025-04-17	1551677	59	40	dropped:filter-2-not-law	Interim study to identify and improve access to federal grant opportunities for the state of Montana, tribal governments, and local government entities
+HJ 28	JR	senate	2025-04-29	1560243	29	21	dropped:filter-2-not-law	Interim study to identify and improve access to federal grant opportunities for the state of Montana, tribal governments, and local government entities
+HJ 30	JR	senate	2025-04-29	1560236	37	12	dropped:filter-2-not-law	Study resolution on incentivizing housing density and affordability
+HJ 31	JR	house	2025-04-02	1534810	74	21	dropped:filter-2-not-law	Joint resolution honoring educational support professionals
+HJ 32	JR	senate	2025-04-29	1560267	37	13	dropped:filter-2-not-law	Interim study of advanced investigator qualifications for law enforcement
+HJ 35	JR	house	2025-04-05	1537666	56	42	dropped:filter-2-not-law	Joint resolution urging changes to federal wildfire policy
+HJ 35	JR	senate	2025-04-22	1553727	32	18	dropped:filter-2-not-law	Joint resolution urging changes to federal wildfire policy
+HJ 40	JR	senate	2025-04-29	1560170	37	13	dropped:filter-2-not-law	Interim study on transferring fiscal note production from executive branch to legislative branch
+HJ 42	JR	house	2025-04-23	1556315	70	29	dropped:filter-2-not-law	Interim study on procurement, no-bid contracts, and transparency on no-bid purchases
+HJ 42	JR	senate	2025-04-30	1563222	27	23	dropped:filter-2-not-law	Interim study on procurement, no-bid contracts, and transparency on no-bid purchases
+HJ 45	JR	senate	2025-04-29	1560134	31	19	dropped:filter-2-not-law	Interim study on the impact collateral consequences have on criminal record expungement
+HJ 47	JR	senate	2025-04-30	1562687	33	16	dropped:filter-2-not-law	Study resolution on local government entity cooperation
+HJ 48	JR	senate	2025-04-30	1563232	28	22	dropped:filter-2-not-law	Interim study on moving the date of the primary election
+HJ 50	JR	house	2025-04-24	1557718	71	29	dropped:filter-2-not-law	Interim study of uniform common interest ownership laws
+HJ 50	JR	senate	2025-04-30	1562683	31	19	dropped:filter-2-not-law	Interim study of uniform common interest ownership laws
+HJ 52	JR	senate	2025-04-30	1563238	36	14	dropped:filter-2-not-law	Interim study on the Montana cattle industry
+HJ 53	JR	senate	2025-04-29	1560993	29	21	dropped:filter-2-not-law	Request an interim study on school safety
+HJ 55	JR	house	2025-04-23	1556334	73	26	dropped:filter-2-not-law	Study resolution on property management licensing and practice
+HJ 55	JR	senate	2025-04-30	1563237	34	16	dropped:filter-2-not-law	Study resolution on property management licensing and practice
+HJ 56	JR	senate	2025-04-29	1560981	33	17	dropped:filter-2-not-law	Study resolution of search and rescue services and funding
+HJ 61	JR	house	2025-04-25	1558103	78	22	dropped:filter-2-not-law	Interim study on the property insurance market in Montana
+HJ 61	JR	senate	2025-04-30	1562176	38	12	dropped:filter-2-not-law	Interim study on the property insurance market in Montana
+HJ 62	JR	house	2025-04-24	1557212	66	34	dropped:filter-2-not-law	Study resolution on wildfire safety
+HJ 62	JR	senate	2025-04-30	1562189	34	16	dropped:filter-2-not-law	Study resolution on wildfire safety
+HJ 7	JR	house	2025-02-05	1482113	53	47	dropped:filter-2-not-law	Joint resolution congratulating President Donald J. Trump on his re-election
+HJ 7	JR	senate	2025-04-22	1554831	30	20	dropped:filter-2-not-law	Joint resolution congratulating President Donald J. Trump on his re-election
+HJ 74	JR	house	2025-04-28	1558777	63	37	dropped:filter-2-not-law	Study resolution analyzing water re-use in the state
+HJ 74	JR	senate	2025-04-30	1562664	33	17	dropped:filter-2-not-law	Study resolution analyzing water re-use in the state
 SB 101	B	house	2025-03-27	1529013	58	41	unbatched	Revise laws related to squatting
 SB 101	B	senate	2025-01-24	1481618	35	14	superseded:later-roll-used	Revise laws related to squatting
 SB 101	B	senate	2025-04-01	1533264	35	15	unbatched	Revise laws related to squatting
@@ -445,7 +445,7 @@ SB 104	B	senate	2025-02-28	1502635	38	11	unbatched	Expanding access to low-cost 
 SB 105	B	house	2025-03-31	1531112	77	21	batch-05	Generally revise election laws related to electioneering at polling locations
 SB 105	B	senate	2025-02-26	1500296	28	22	superseded:later-roll-used	Generally revise election laws related to electioneering at polling locations
 SB 105	B	senate	2025-04-04	1537120	36	13	batch-05	Generally revise election laws related to electioneering at polling locations
-SB 110	B	senate	2025-02-10	1485531	33	16	unbatched	Revise laws relating to amusement rides and safety
+SB 110	B	senate	2025-02-10	1485531	33	16	batch-13	Revise laws relating to amusement rides and safety
 SB 113	B	house	2025-03-21	1524060	76	21	unbatched	Revise exemptions related to tow truck lien law
 SB 116	B	house	2025-04-28	1558991	58	41	unbatched	Revise the Montana heritage preservation and development commission membership
 SB 117	B	house	2025-04-16	1550344	67	31	unbatched	Revise government entity limitations on property tax increases
@@ -472,9 +472,9 @@ SB 172	B	senate	2025-02-12	1487519	38	12	unbatched	Revise resort tax eligibility
 SB 177	B	house	2025-04-11	1546071	57	42	unbatched	Allow community choice school commission to seek public funding
 SB 177	B	senate	2025-02-06	1483650	38	11	unbatched	Allow community choice school commission to seek public funding
 SB 178	B	senate	2025-02-14	1497072	33	17	superseded:later-roll-used	Provide for temporary lease of water rights
-SB 181	B	house	2025-04-09	1541804	69	28	unbatched	Generally revise Indian education for all laws
+SB 181	B	house	2025-04-09	1541804	69	28	batch-13	Generally revise Indian education for all laws
 SB 181	B	senate	2025-02-25	1499537	29	20	superseded:later-roll-used	Generally revise Indian education for all laws
-SB 182	B	senate	2025-02-05	1482838	35	13	unbatched	Generally revise MT Indian language preservation program
+SB 182	B	senate	2025-02-05	1482838	35	13	batch-13	Generally revise MT Indian language preservation program
 SB 19	B	house	2025-04-11	1546102	61	38	dropped:filter-5	Revise sentencing laws related to theft
 SB 19	B	senate	2025-02-27	1501654	34	16	superseded:later-roll-used	Revise sentencing laws related to theft
 SB 19	B	senate	2025-04-17	1551478	37	13	dropped:filter-5	Revise sentencing laws related to theft
@@ -517,7 +517,7 @@ SB 264	B	senate	2025-02-18	1492323	33	17	unbatched	Eliminate a defense to the ve
 SB 265	B	house	2025-04-11	1546128	70	29	unbatched	Revise cryptocurrency laws to create Financial Freedom and Innovation Act
 SB 271	B	senate	2025-02-19	1494176	39	10	unbatched	Remove prohibition on certain compensation for collegiate student-athlete's name/image/likeness
 SB 275	B	senate	2025-02-18	1492352	34	16	unbatched	Allow revocation of agricultural covenant on lands annexed into municipality
-SB 276	B	house	2025-04-11	1546387	57	42	unbatched	Generally revise voter identification laws
+SB 276	B	house	2025-04-11	1546387	57	42	batch-13	Generally revise voter identification laws
 SB 278	B	house	2025-04-11	1546451	75	24	unbatched	Revise education laws to support advanced opportunities
 SB 278	B	senate	2025-03-04	1505542	38	12	superseded:later-roll-used	Revise education laws to support advanced opportunities
 SB 278	B	senate	2025-04-17	1551891	36	14	unbatched	Revise education laws to support advanced opportunities
@@ -569,20 +569,20 @@ SB 45	B	house	2025-04-28	1558967	56	44	dropped:filter-5	Create a judicial perfor
 SB 45	B	senate	2025-02-27	1501459	28	22	dropped:filter-5	Create a judicial performance evaluation commission and system
 SB 45	B	senate	2025-04-17	1551286	33	17	dropped:filter-5	Create a judicial performance evaluation commission and system
 SB 45	B	senate	2025-04-25	1558039	31	18	dropped:filter-5	Create a judicial performance evaluation commission and system
-SB 457	B	house	2025-04-11	1546193	55	44	unbatched	Revise laws regarding legislative subpoenas
-SB 457	B	senate	2025-03-06	1508107	31	19	unbatched	Revise laws regarding legislative subpoenas
+SB 457	B	house	2025-04-11	1546193	55	44	batch-13	Revise laws regarding legislative subpoenas
+SB 457	B	senate	2025-03-06	1508107	31	19	batch-13	Revise laws regarding legislative subpoenas
 SB 471	B	senate	2025-03-21	1524172	34	16	unbatched	Generally revise vehicular traffic laws related to pedestrian crossings
 SB 48	B	house	2025-04-11	1546126	57	42	batch-11	Generally revise laws relating to Judicial Standards Commission complaints
 SB 48	B	senate	2025-01-30	1481289	30	19	batch-11	Generally revise laws relating to Judicial Standards Commission complaints
 SB 490	B	house	2025-04-11	1546023	58	41	dropped:filter-5	Revise election laws regarding late registration
 SB 490	B	senate	2025-03-06	1508105	33	16	dropped:filter-5	Revise election laws regarding late registration
-SB 492	B	house	2025-04-11	1546285	56	43	unbatched	Generally revise business disclosure statement requirements for elected officials and department directors
+SB 492	B	house	2025-04-11	1546285	56	43	batch-13	Generally revise business disclosure statement requirements for elected officials and department directors
 SB 493	B	house	2025-04-11	1546453	72	27	dropped:filter-5	Establish the offense of trespass by unmanned aerial vehicle
 SB 495	B	senate	2025-03-06	1507960	39	10	unbatched	Eliminate the tobacco prevention advisory board
 SB 497	B	house	2025-04-11	1546134	77	22	dropped:filter-5	Provide laws related to healthcare provider burnout
 SB 497	B	senate	2025-03-06	1507844	28	21	dropped:filter-5	Provide laws related to healthcare provider burnout
 SB 497	B	senate	2025-04-18	1552290	30	20	dropped:filter-5	Provide laws related to healthcare provider burnout
-SB 498	B	senate	2025-03-06	1508234	30	19	unbatched	Revise election laws related to preparation procedures for primary elections
+SB 498	B	senate	2025-03-06	1508234	30	19	dropped:filter-5	Revise election laws related to preparation procedures for primary elections
 SB 508	B	house	2025-04-11	1546324	62	37	unbatched	Generally revise driving under the influence laws for THC levels in drivers under 21
 SB 511	B	house	2025-04-11	1546250	77	22	unbatched	Generally revising laws related to litigation financing
 SB 511	B	senate	2025-03-06	1508137	34	15	unbatched	Generally revising laws related to litigation financing
@@ -601,7 +601,7 @@ SB 55	B	senate	2025-01-23	1481375	30	20	dropped:filter-5	Provide for legislative
 SB 553	B	house	2025-04-25	1558071	62	38	unbatched	Generally revise state policy laws
 SB 553	B	senate	2025-04-29	1560858	30	20	unbatched	Generally revise state policy laws
 SB 56	B	senate	2025-02-24	1497706	33	16	unbatched	Supplemental employer contribution for PERS, HPORS, SRS, GWPORS
-SB 560	B	house	2025-04-24	1557635	72	28	unbatched	Provide for a hospital community benefit fee
+SB 560	B	house	2025-04-24	1557635	72	28	batch-13	Provide for a hospital community benefit fee
 SB 560	B	senate	2025-04-05	1537842	30	18	superseded:later-roll-used	Provide for a hospital community benefit fee
 SB 61	B	senate	2025-01-20	1481391	28	21	dropped:filter-5	Revise laws related to considerations for measuring of streamflow
 SB 64	B	senate	2025-02-06	1483775	39	10	superseded:later-roll-used	Clarifying calculation of legislator compensation and expenses during the interim
@@ -611,24 +611,24 @@ SB 77	B	senate	2025-02-10	1485219	38	11	superseded:later-roll-used	Require conse
 SB 87	B	house	2025-03-20	1522965	76	22	unbatched	Modify holidays for certain employees and create an annual floating holiday
 SB 91	B	house	2025-04-18	1552110	58	40	batch-04	Require citizenship marker on driver's license and identification cards
 SB 91	B	senate	2025-03-06	1508004	33	16	batch-04	Require citizenship marker on driver's license and identification cards
-SB 95	B	senate	2025-03-21	1524131	39	11	unbatched	Provide funding for suicide prevention
+SB 95	B	senate	2025-03-21	1524131	39	11	batch-13	Provide funding for suicide prevention
 SB 97	B	house	2025-04-11	1546393	57	42	unbatched	Revise venue laws for cases challenging constitutionality of recent laws
 SB 97	B	senate	2025-01-31	1481606	32	18	unbatched	Revise venue laws for cases challenging constitutionality of recent laws
-SJ 1	JR	house	2025-04-24	1556947	80	20	unbatched	Senate joint rules resolution
-SJ 11	JR	house	2025-04-17	1551886	69	30	unbatched	Interim study on farmer's markets and food systems
-SJ 11	JR	senate	2025-03-19	1521811	34	16	unbatched	Interim study on farmer's markets and food systems
-SJ 18	JR	house	2025-04-24	1556805	56	44	unbatched	Resolution supporting recreation uses on Flathead Lake
-SJ 19	JR	house	2025-04-24	1556814	54	46	unbatched	Joint resolution to study public transportation
-SJ 19	JR	senate	2025-04-01	1533561	30	20	unbatched	Joint resolution to study public transportation
-SJ 28	JR	house	2025-04-29	1560989	61	38	unbatched	Interim study resolution on the legislature's ethics processes
-SJ 29	JR	house	2025-04-28	1558775	60	40	unbatched	Interim study resolution on coordinating efforts between OPI and DPHHS in addressing the impacts on children of prenatal exposure to meth and fentanyl
-SJ 35	JR	house	2025-04-30	1562741	60	39	unbatched	Interim study of voter list maintenance and integrity
-SJ 35	JR	senate	2025-04-25	1557997	31	18	unbatched	Interim study of voter list maintenance and integrity
-SJ 36	JR	senate	2025-04-24	1557688	35	14	unbatched	Study dependent neglect standards for prosecutors
-SJ 37	JR	house	2025-04-30	1561789	78	22	unbatched	Interim survey of behavioral health services in Montana
-SJ 37	JR	senate	2025-04-24	1557849	38	11	unbatched	Interim survey of behavioral health services in Montana
-SJ 48	JR	house	2025-04-30	1562188	73	26	unbatched	Interim study of the public health and safety impacts of marijuana legalization
-SJ 49	JR	house	2025-04-30	1562237	68	30	unbatched	Interim study of youth and family behavioral health prevention
-SJ 5	JR	house	2025-04-25	1558170	65	35	unbatched	Resolution for support of federal SAFER banking act
-SJ 5	JR	senate	2025-02-07	1484217	35	14	unbatched	Resolution for support of federal SAFER banking act
-SJ 9	JR	house	2025-03-25	1527080	59	40	unbatched	Joint resolution on the economic dangers of federal debt and deficits
+SJ 1	JR	house	2025-04-24	1556947	80	20	dropped:filter-2-not-law	Senate joint rules resolution
+SJ 11	JR	house	2025-04-17	1551886	69	30	dropped:filter-2-not-law	Interim study on farmer's markets and food systems
+SJ 11	JR	senate	2025-03-19	1521811	34	16	dropped:filter-2-not-law	Interim study on farmer's markets and food systems
+SJ 18	JR	house	2025-04-24	1556805	56	44	dropped:filter-2-not-law	Resolution supporting recreation uses on Flathead Lake
+SJ 19	JR	house	2025-04-24	1556814	54	46	dropped:filter-2-not-law	Joint resolution to study public transportation
+SJ 19	JR	senate	2025-04-01	1533561	30	20	dropped:filter-2-not-law	Joint resolution to study public transportation
+SJ 28	JR	house	2025-04-29	1560989	61	38	dropped:filter-2-not-law	Interim study resolution on the legislature's ethics processes
+SJ 29	JR	house	2025-04-28	1558775	60	40	dropped:filter-2-not-law	Interim study resolution on coordinating efforts between OPI and DPHHS in addressing the impacts on children of prenatal exposure to meth and fentanyl
+SJ 35	JR	house	2025-04-30	1562741	60	39	dropped:filter-2-not-law	Interim study of voter list maintenance and integrity
+SJ 35	JR	senate	2025-04-25	1557997	31	18	dropped:filter-2-not-law	Interim study of voter list maintenance and integrity
+SJ 36	JR	senate	2025-04-24	1557688	35	14	dropped:filter-2-not-law	Study dependent neglect standards for prosecutors
+SJ 37	JR	house	2025-04-30	1561789	78	22	dropped:filter-2-not-law	Interim survey of behavioral health services in Montana
+SJ 37	JR	senate	2025-04-24	1557849	38	11	dropped:filter-2-not-law	Interim survey of behavioral health services in Montana
+SJ 48	JR	house	2025-04-30	1562188	73	26	dropped:filter-2-not-law	Interim study of the public health and safety impacts of marijuana legalization
+SJ 49	JR	house	2025-04-30	1562237	68	30	dropped:filter-2-not-law	Interim study of youth and family behavioral health prevention
+SJ 5	JR	house	2025-04-25	1558170	65	35	dropped:filter-2-not-law	Resolution for support of federal SAFER banking act
+SJ 5	JR	senate	2025-02-07	1484217	35	14	dropped:filter-2-not-law	Resolution for support of federal SAFER banking act
+SJ 9	JR	house	2025-03-25	1527080	59	40	dropped:filter-2-not-law	Joint resolution on the economic dangers of federal debt and deficits

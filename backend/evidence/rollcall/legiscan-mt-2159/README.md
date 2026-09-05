@@ -96,7 +96,7 @@ repository at `/Users/shu/legiscan-data/mt_doc.py` and `mt_diff.py`.
   `divided-enacted-worklist.tsv` (one row per divided-and-enacted roll with its
   disposition), and `filter-5-drops.md` (why each dropped measure was dropped
   after a full read)
-- `batch-01/` through `batch-12/` — each holds `PLAN.md`, `JUDGING.md`,
+- `batch-01/` through `batch-13/` — each holds `PLAN.md`, `JUDGING.md`,
   `judgments.json`, the roll evidence files, and the import ledgers
 
 ## Status
@@ -118,11 +118,14 @@ records.**
 | batch-10 | 8 | 13 | 462 | schools, renters, permits, data, tax credits |
 | batch-11 | 12 | 19 | 773 | environment, courts, contractors, workers' comp, drink-driving, judges |
 | batch-12 | 12 | 17 | 630 | elections, lobbying, transparency, health cover, consumer rules |
-| **total** | **85** | **146** | **6,103** | 18 areas, 87 candidates, 3,676 tags |
+| batch-13 | 8 | 9 | 417 | safety, disclosure, tribal education, voter ID |
+| **total** | **93** | **155** | **6,520** | 18 areas, 87 candidates, 3,937 tags |
 
-**217 divided-and-enacted rolls remain unworked, across 158 bills**, plus 58
-joint-resolution rolls excluded by rule. 90 rolls are marked
-`superseded:later-roll-used`, 114 are dropped under filter 5, one is dropped
+**207 divided-and-enacted rolls remain unworked, across 149 bills.** The 58
+joint-resolution rolls that used to be listed here separately are now disposed:
+a Montana joint resolution never becomes law, so all of them fail filter 2 and
+are marked `dropped:filter-2-not-law`. 90 rolls are marked
+`superseded:later-roll-used`, 115 are dropped under filter 5, one is dropped
 because its chamber's final vote was not divided, and seven are held on the
 LegiScan vote defect described in `CODE-FINDINGS.md` §7 and
 `survey/legiscan-vote-audit.md`.
