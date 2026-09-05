@@ -6,7 +6,7 @@ HB2016	drop:screened	removes licensing-board discipline records from public sour
 HB2024	drop:filter-5	behavioral health workforce grants with a $45 million appropriation; appropriation-led		1594403	Relating to the behavioral health workforce; and declaring an emergency.
 HB2059	drop:filter-5	residential behavioral health capacity with a $90 million appropriation; appropriation-led		1594477	Relating to adult behavioral health facilities; and declaring an emergency.
 HB2072	drop:filter-5	extends three forest products harvest taxes and sets rates; a tax bill with no area carrying a direction	1591551	1593323	Relating to forest products harvest taxation; prescribing an effective date; and providing for revenue raising that requires approval by a three-fifths majority.
-HB2081	candidate		1563826	1591137	Relating to state finance; and prescribing an effective date.
+HB2081	batch-06	judged and imported	1563826	1591137	Relating to state finance; and prescribing an effective date.
 HB2138	batch-02	judged and imported	1595649	1594152	Relating to land use; and declaring an emergency.
 HB2205	drop:screened	changes OHA contracts with coordinated care organisations; administrative	1551624		Relating to coordinated care organization contracts.
 HB2256	drop:filter-5	narrow remedy rule for conservation buyers of unlawfully created parcels	1507276	1564944	Relating to sales of units of land not lawfully established for conservation purposes.
@@ -71,7 +71,7 @@ HB3148	candidate		1594164		Relating to the availability of residential telecommu
 HB3167	drop:filter-5	its only divided House roll is superseded by a 37-3 concurrence and the Senate never divided; attributing the superseded vote is the federal roll-160 retraction shape	1552514		Relating to regulating sales of admission tickets to entertainment events.
 HB3179	candidate			1594492	Relating to public utilities; and declaring an emergency.
 HB3187	batch-01	judged and imported	1549674	1570360	Relating to age-based employment discrimination; and prescribing an effective date.
-HB3194	candidate		1593104	1595282	Relating to farmworker camps.
+HB3194	drop:filter-5	landowner liability for farmworker camps; farm labour housing enforcement, and no research area covers labour or worker-protection questions, the same gap that dropped HB 2688 and HB 2944	1593104	1595282	Relating to farmworker camps.
 HB3233	candidate		1549709	1560449	Relating to rail; and prescribing an effective date.
 HB3336	candidate		1590932		Relating to electric transmission systems; and prescribing an effective date.
 HB3342	drop:filter-5	water rights application processing, notice and deadlines; administrative	1581100	1579065	Relating to water; and prescribing an effective date.
@@ -84,7 +84,7 @@ HB3521	candidate		1551435	1589518	Relating to residential tenancy hold deposits.
 HB3525	batch-03	judged and imported	1595907	1595528	Relating to exempt wells that supply ground water for domestic purposes.
 HB3544	drop:screened	creates a standard contested-case process for water use; procedural	1596058		Relating to water.
 HB3546	batch-03	judged and imported	1585424	1584043	Relating to large energy use facilities; and declaring an emergency.
-HB3550	candidate		1526805		Relating to an exemption for certain minor league baseball players from certain laws governing employment conditions.
+HB3550	batch-06	judged and imported	1526805		Relating to an exemption for certain minor league baseball players from certain laws governing employment conditions.
 HB3630	drop:filter-5	estate tax exemption for farm, forest and fishing interests; family farm preservation against wealth transfer is contested		1595532	Relating to estate tax treatment of natural resource property; and prescribing an effective date.
 HB3644	batch-03	judged and imported	1593994	1595480	Relating to a statewide shelter program; and declaring an emergency.
 HB3646	candidate		1552801	1583613	Relating to contract preferences in public procurement for employee-owned businesses; and prescribing an effective date.
@@ -176,7 +176,7 @@ SB854	drop:screened	lets the Racing Commission impose civil penalties; narrow	15
 SB855	drop:screened	raises Racing Commission penalties for race-meet violations; narrow	1569485	1531154	Relating to civil penalties related to racing.
 SB857	drop:screened	lets a person report to the Racing Commission anonymously; narrow	1584075	1531094	Relating to reporting on violation of animal racing laws.
 SB859	drop:screened	lets the OED director make paid-leave accounting adjustments; administrative		1479575	Relating to accounting adjustments concerning the paid leave program; and prescribing an effective date.
-SB867	candidate		1569520		Relating to investigations by the Department of Education.
+SB867	batch-06	judged and imported	1569520		Relating to investigations by the Department of Education.
 SB870	drop:screened	exempts OLCC permittee home addresses from disclosure; privacy against transparency, no honest direction	1572156		Relating to public records disclosure of OLCC permittee personal information.
 SB872	drop:screened	modifies State Marine Board laws; narrow		1544980	Relating to disciplinary actions imposed by the State Mortuary and Cemetery Board.
 SB904	drop:screened	lets school districts seek an exemption from self-insurance proof; narrow	1573112		Relating to self-insured employers.
@@ -194,11 +194,11 @@ SB1109	drop:filter-5	narrows which boards must record meetings; technical and ar
 SB1125	drop:filter-5	its only divided Senate roll is superseded by a 27-2 concurrence		1536250	Relating to unmanned aircraft systems.
 SB1154	batch-04	judged and imported	1595898	1591482	Relating to ground water.
 SB1168	candidate		1595608	1593890	Relating to per-visit compensation for home health care entities.
-SB1173	candidate		1595933		Relating to product liability civil actions; and prescribing an effective date.
+SB1173	batch-06	judged and imported	1595933		Relating to product liability civil actions; and prescribing an effective date.
 SB1175	drop:screened	creates a task force on barriers to jury service; study body only	1571595		Relating to a task force on removing barriers to jury service; and prescribing an effective date.
 SB1176	drop:screened	directs an agency to publicise the cash-acceptance law; narrow	1570611		Relating to education efforts concerning the obligation of places of public accommodation to accept cash as payment; and prescribing an effective date.
 SB1182	drop:screened	lets ODOT lease or sell surplus Rose Quarter land to a charity; single-project		1581689	Relating to disposition of surplus real property of the Interstate 5 Rose Quarter Project.
-SB1191	candidate		1573964		Relating to informing others of their rights.
+SB1191	batch-06	judged and imported	1573964		Relating to informing others of their rights.
 SB5501	excluded:appropriations	budget or fee-ratification bill	1589025	1583222	Relating to the financial administration of the Oregon Advocacy Commissions Office; and declaring an emergency.
 SB5503	excluded:appropriations	budget or fee-ratification bill	1590964	1585476	Relating to state financial administration; and declaring an emergency.
 SB5507	excluded:appropriations	budget or fee-ratification bill	1584991	1575991	Relating to the financial administration of the State Board of Chiropractic Examiners; and declaring an emergency.
