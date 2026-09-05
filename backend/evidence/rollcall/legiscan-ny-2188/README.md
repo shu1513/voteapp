@@ -77,3 +77,7 @@ extending this crosswalk and re-importing adds those members without duplicating
 
 Batch-01: 11 measures / 22 rolls / **570 records / 53 candidates / 354 tags**. Production
 still has none.
+
+Batch-04 (2026-09-05): A 10710 and A 10711, the two vaccine-schedule measures the user directed
+to import with neutral wording and no direction tag (`general`, non-stance): 4 rolls / **106
+records**. Every row of the worklist now carries a disposition.
