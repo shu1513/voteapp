@@ -41,6 +41,7 @@ import { loadArkansasCandidateFinanceSummariesByCandidateElection } from "../ark
 import { loadWestVirginiaCandidateFinanceSummariesByCandidateElection } from "../westVirginiaFinance/westVirginiaBallotLookupFinanceLoader.js";
 import { loadNorthDakotaCandidateFinanceSummariesByCandidateElection } from "../northDakotaFinance/northDakotaBallotLookupFinanceLoader.js";
 import { loadIdahoCandidateFinanceSummariesByCandidateElection } from "../idahoFinance/idahoBallotLookupFinanceLoader.js";
+import { loadKansasCandidateFinanceSummariesByCandidateElection } from "../kansasFinance/kansasBallotLookupFinanceLoader.js";
 import { loadAlaskaCandidateFinanceSummariesByCandidateElection } from "../alaskaFinance/alaskaCandidateFinanceBallotLookup.js";
 import { loadArizonaCandidateFinanceSummariesByCandidateElection } from "../arizonaFinance/arizonaFinanceBallotLookup.js";
 import { loadFloridaCandidateFinanceSummariesByCandidateElection } from "../floridaFinance/floridaFinanceBallotSummary.js";
@@ -1106,6 +1107,7 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "WV", load: loadWestVirginiaCandidateFinanceSummariesByCandidateElection },
   { state: "ND", load: loadNorthDakotaCandidateFinanceSummariesByCandidateElection },
   { state: "ID", load: loadIdahoCandidateFinanceSummariesByCandidateElection },
+  { state: "KS", load: loadKansasCandidateFinanceSummariesByCandidateElection },
 ];
 
 // Fault-isolated sources swallow errors that previously reached the API

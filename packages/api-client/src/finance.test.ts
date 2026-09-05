@@ -92,6 +92,12 @@ describe("finance source provenance and coverage notes", () => {
     expect(firstFinanceSourceUrl(summary)).toBe("https://sunshine.voteidaho.gov/");
   });
 
+  it("falls back to the Kansas viewer entry page when no breakdown URL exists", () => {
+    const summary = emptySummary();
+    summary.source = "KANSAS_SOS";
+    expect(firstFinanceSourceUrl(summary)).toBe("https://sos.ks.gov/elections/cfr_viewer/cfr_examiner_entry.aspx");
+  });
+
   it("falls back to the Alabama FCPA portal when no breakdown URL exists", () => {
     const summary = emptySummary();
     summary.source = "ALABAMA_FCPA";
