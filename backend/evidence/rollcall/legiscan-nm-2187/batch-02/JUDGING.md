@@ -40,11 +40,13 @@ vote to read. Each bill's history settles which text the House vote endorsed.
 
 Twelve of the 15 need no further work:
 
-- **Ten Senate bills** — Senate Bills 1, 7, 23, 37, 45, 48, 59, 83, 376 and the Senate's own earlier
-  passage of others — reached the House last and were signed with no agreement step afterwards, so
-  the House vote is on the enacted text.
+- **Nine Senate bills** — Senate Bills 1, 7, 23, 37, 45, 48, 59, 83 and 376 — reached the House last
+  and were signed with no agreement step afterwards, so the House vote is on the enacted text.
 - **Senate Bills 5 and 88** were amended by the House and the Senate then concurred, which means the
   Senate accepted the House's version. The House vote is again on the enacted text.
+- **House Bill 91** carried its House committee amendment into the 42-25 floor vote, then cleared both
+  Senate committees and the Senate floor (26-16) with no amendment and was signed as Chapter 147, so
+  the House vote is on the enacted text.
 
 **Three are House bills the Senate amended and the House later agreed to, so the House's only
 recorded vote predates the law.** Each was diffed by pulling the adopted amendments out of the
@@ -59,11 +61,20 @@ amendment that made it. In all three the change is immaterial to what the record
 - **House Bill 78** (voted as `HJC/HJC/HB 78`). The only change after the House vote is Senate Floor
   Amendment 2, which sets the effective date at January 1, 2026.
 - **House Bill 493** (voted as `HAFC/HB 493`, enacted as `HAFC/HB 493/a`). The Senate Tax, Business
-  and Transportation Committee tightened the audit conditions: the most recent audit must be a public
-  record under the Audit Act, and the state agency must name a fiscal agent when the audit is stale.
-  It sharpens the same requirement the House voted for.
+  and Transportation Committee rewrote the first funding criterion. The House text only required the
+  most recent audit to be a public record; the Senate added that a grantee must have completed an
+  audit for one of the past two fiscal years. The Senate also made a qualified, modified, disclaimed
+  or adverse audit opinion trigger the fiscal-agent rule, and softened two of the fallbacks for
+  grantees the Audit Act does not cover with "if necessary" and "may". Already in the House text and
+  unchanged: the fiscal-agent rule when the latest audit is not from either of the two past fiscal
+  years, the repeated-findings rule, and the fallback letting a grantee the Audit Act does not cover
+  qualify by showing adequate accounting methods. Sources: `Amendments_In_Context/HB0493.pdf` and
+  `final/HB0493.pdf` on nmlegis.gov.
 
-Descriptions for those three stay at the level both versions share.
+Descriptions for those three stay at the level both versions share. The first HB 493 descriptions
+did not: they stated the Senate's two-fiscal-year audit requirement as a flat rule and skipped the
+no-audit fallback. Both were rewritten to the shared level on 2026-09-04 and the 58 records refreshed
+(see Import reconciliation).
 
 ## Writing the record text
 
@@ -94,6 +105,18 @@ label carries `nay: null`.
 - Run stamp: `rollcall:NM:house:2187:<roll>:2026-09-04T20:17:53.555Z`, one stamp for the whole batch.
 - 15 files, 15 imported, 0 errors, 63 candidates, 0 notifications.
 - New Mexico now holds **1,690 records across 29 rolls** locally. Production still holds none.
+
+### HB 493 rewrite, 2026-09-04
+
+After the review finding on HB 493 (see Version check), `rollcall:judge` updated that one judgment
+(14 unchanged, 1 updated) and the importer was re-run over the whole batch. Reports:
+`import-dry-run-rerun-report.json` and `import-rerun-report.json`.
+
+- Actions: **814 unchanged, 58 rewrite**, 0 inserts, 0 notifications. The count stays 1,690.
+- The 58 HB 493 rows now carry the run stamp `rollcall:NM:house:2187:1523893:2026-09-05T01:25:41.442Z`;
+  every other row keeps the original stamp.
+- `listPlainLanguageWarnings` over all 30 descriptions after the rewrite: **0 warnings**. The new
+  description is six sentences, longest 29 words.
 
 ## Known feed defects, unchanged from batch-01
 
