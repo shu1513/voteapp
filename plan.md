@@ -1,6 +1,6 @@
 # Finance module consolidation plan (v3)
 
-Date: 2026-08-01 (v2); v3 addendum 2026-09-04 at the end. Scope (v2): `backend/src/pipeline/*Finance` (34 modules, ~140k lines) plus the shared `backend/src/pipeline/finance/` module. v2 incorporates a second review pass; every claim below was verified against the code in this worktree.
+Date: 2026-08-01 (v2), amended 2026-09-04 (v3 addendum at the end). Scope: `backend/src/pipeline/*Finance` (34 modules / ~140k lines at v2; 57 dirs / 227k lines at v3) plus the shared `backend/src/pipeline/finance/` module, and — since v3 — the finance schedulers, scripts and flags. **Where the v3 addendum conflicts with an earlier section, v3 wins**; the earlier sections are kept as history and carry inline pointers where superseded. Every claim was verified against the code in this worktree at the time it was written.
 
 ## Background
 
@@ -155,8 +155,8 @@ Ohio (the first pause-point state, `ohio_plan.md`, PRs 1–8 + live run, 2026-08
 ### Phase 4 — auto-link primitives
 
 Not one `createStandardCandidateFinanceAutoLink`. Verified non-uniformity: Vermont's auto-link lives inside its batchSync with statewide-only safety logic; Michigan's auto-link file only lists candidates (no resolve/write). Extract two composable pieces:
-1. Missing-link query builder (shares the identity descriptor from Phase 2).
-2. Failure-isolated loop runner (attempted/linked/failed counters, per-item error capture).
+1. Missing-link query builder (shares the identity descriptor from Phase 2). *(v3: it needs no link-identity projection and lives in its own module; see the addendum.)*
+2. Failure-isolated loop runner (attempted/linked/failed counters, per-item error capture). *(v3: conditional — extracted only if several wrappers become materially simpler.)*
 
 Candidate mapping, resolver invocation, link writing, and caps stay per-state hooks. Wrapper-equivalent states (the 24 ≥85% group) collapse to config + resolver; Vermont/Michigan-style modules just reuse the primitives where they fit.
 
@@ -196,8 +196,8 @@ Line-deletion estimate (~40k) is provisional and NOT the success criterion. Succ
 
 ## Working rules
 
-- Every migration PR: wrapper keeps exported names/types; per-state tests unmodified (plus new characterization tests where coverage was missing); `npm run typecheck` + `npm test` green; the state's matrix row cited in the PR body with any deltas listed.
-- Factory/descriptor changes land in their own PR before any state migrates onto them.
+- Every migration PR: wrapper keeps exported names/types; per-state tests unmodified (plus new characterization tests where coverage was missing); `npm run typecheck` + `npm test` green; the state's matrix row cited in the PR body with any deltas listed. *(v3 supersedes the test clause: behavioral assertions preserved, implementation-text changes listed and justified, DB-backed comparison for any changed SQL — see "Verification rule" in the addendum.)*
+- Factory/descriptor changes land in their own PR before any state migrates onto them. *(v3: a small backward-compatible option may ship with its one pilot when the option has its own tests; substantial shared-behavior changes still get their own PR.)*
 - A state's extra feature is either promoted into the factory behind config (default = current shared behavior) or the state stays unmigrated. No silent losses, no one-state meta-features.
 
 ---

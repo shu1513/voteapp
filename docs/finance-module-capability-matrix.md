@@ -186,6 +186,6 @@ Hand-verified from each module's writer/loader/due-list files. Legend: **W** = w
 | southCarolina | 2,691 | `sc_` 5 | W | L | **D\*** (`candidate_filer_id`/`candidate_filer_name`) | 1/1/1 | floor 2008, signed cash, M+, `ethics_filer_search` supersession | `linkIdentityColumn: candidate_filer_id` |
 | austin (city) | 3,588 | city | bespoke | L | D | 1/1/0 | — | — |
 | denver (city) | 3,018 | city | bespoke | L | D | 1/1/0 | — | — |
-| phoenix, sanDiegoCity, sanJose, sanFrancisco (cities) | 4,491 / 3,446 / 3,101 / 4,065 | city | bespoke | bespoke | bespoke | 1/1/0 (SF has a scheduler) | — | — |
+| phoenix, sanDiegoCity, sanJose, sanFrancisco (cities) | 4,491 / 3,446 / 3,101 / 4,065 | city | bespoke | bespoke | bespoke | 1/1/0 · 1/1/0 · 1/1/0 · 1/1/1 | — | — |
 
 Phase 2b cohort (D\*, six states): montana (pilot) → missouri, delaware → idaho, southCarolina, alabama. newHampshire is excluded (see its row). Normalized WHERE/JOIN/ORDER clauses of all seven files, newHampshire included, are identical — the exclusion is about its projection, not its predicates.
