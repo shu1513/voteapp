@@ -1,0 +1,8 @@
+roll	bill	bt	ch	date	q	y	n	nv	ab	status	status_date	hist_ok	desc	title
+1358055	HB1	B	house	2023-12-01	passage	101	77	2	0	4	2023-12-08	True	Passage	Georgia House of Representatives Redistricting Act of 2023; enact
+1361975	HB1	B	senate	2023-12-05	passage	32	21	1	2	4	2023-12-08	True	Passage	Georgia House of Representatives Redistricting Act of 2023; enact
+1361973	SB1	B	house	2023-12-05	passage	98	71	5	6	4	2023-12-08	True	Passage	"Georgia Senate Redistricting Act of 2023"; enact
+1358054	SB1	B	senate	2023-12-01	passage	32	23	1	0	4	2023-12-08	True	Passage	"Georgia Senate Redistricting Act of 2023"; enact
+1362080	SB3	B	house	2023-12-07	concurrence	97	71	7	5	4	2023-12-08	True	Agree To Committee Report	"Georgia Congressional Redistricting Act of 2023"; enact
+1362081	SB3	B	house	2023-12-07	passage	98	71	6	5	4	2023-12-08	True	Passage	"Georgia Congressional Redistricting Act of 2023"; enact
+1361977	SB3	B	senate	2023-12-05	passage	32	22	1	1	4	2023-12-08	True	Passage By Substitute	"Georgia Congressional Redistricting Act of 2023"; enact

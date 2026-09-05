@@ -1,0 +1,409 @@
+{
+  "runId": "rollcall-legiscan-fetch-ga-2114-20260905T033135Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "GA-2114",
+  "startedAt": "2026-09-05T03:31:35.807Z",
+  "finishedAt": "2026-09-05T03:31:35.856Z",
+  "datasetDir": "~/legiscan-data/ga-2114",
+  "bills": 67,
+  "votes": 33,
+  "people": 236,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "Local Calendar : House Vote #9",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3",
+        "HB2",
+        "HB4"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Local Consent Calendar: Senate Vote #15",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB3",
+        "HB4",
+        "HB2"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion To Engross: Hb 1 Ex, Sb 3 Ex, And Hr 3 Ex: Senate Vote #17",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B",
+        "R"
+      ],
+      "sampleBills": [
+        "HR3",
+        "HB1",
+        "SB3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt: House Vote #10",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR4"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Adopt: House Vote #15",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR6"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Agree To Committee Report: House Vote #18",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Ex: House Vote #4",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Immediately Transmit: House Vote #5",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Immediately Transmit: House Vote #7",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Local Calendar : House Vote #17",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Passage: House Vote #13",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Passage: House Vote #19",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB3"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Passage: House Vote #6",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "Suspend The Rules: House Vote #11",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 180,
+      "maxTotal": 180,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adoption Of Amendment #1 By The Senator From The 41st: Senate Vote #9",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR6"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adoption: Senate Vote #10",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR6"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adoption: Senate Vote #20",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR3"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adoption: Senate Vote #3",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adoption: Senate Vote #4",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "HR2"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Adoption: Senate Vote #6",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR4"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Local Consent Calendar: Senate Vote #14",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB5"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion To Adopt By Unanimous Consent: Senate Vote #5",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR4"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion To Engross: Senate Vote #11",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Motion To Engross: Senate Vote #2",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "R"
+      ],
+      "sampleBills": [
+        "SR1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Passage By Substitute: Senate Vote #19",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB3"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Passage: Senate Vote #12",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Passage: Senate Vote #18",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 56,
+      "maxTotal": 56,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB1"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 11,
+    "R": 56
+  },
+  "sessionIds": {
+    "2114": 67
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

@@ -1,0 +1,184 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2008",
+   "roll": 1413871,
+   "measure_id": "HB 1339",
+   "vote_date": "2024-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the final version of HB 1339. It loosens the state's certificate of need rules, which decide when a new hospital or clinic may open, by dropping some spending limits and widening the exemptions. It also raises the tax credit for gifts to rural hospitals and sets up a commission to study health coverage in Georgia. The Georgia House agreed it 95-68, and it became law.",
+   "nay_description": "Voted against the final version of HB 1339. It loosens the state's certificate of need rules, which decide when a new hospital or clinic may open, by dropping some spending limits and widening the exemptions. It also raises the tax credit for gifts to rural hospitals and sets up a commission to study health coverage in Georgia. The Georgia House agreed it 95-68, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2008",
+   "roll": 1413872,
+   "measure_id": "HB 1339",
+   "vote_date": "2024-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the final version of HB 1339. It loosens the state's certificate of need rules, which decide when a new hospital or clinic may open, by dropping some spending limits and widening the exemptions. It also raises the tax credit for gifts to rural hospitals and sets up a commission to study health coverage in Georgia. The Georgia Senate agreed it 34-17, and it became law.",
+   "nay_description": "Voted against the final version of HB 1339. It loosens the state's certificate of need rules, which decide when a new hospital or clinic may open, by dropping some spending limits and widening the exemptions. It also raises the tax credit for gifts to rural hospitals and sets up a commission to study health coverage in Georgia. The Georgia Senate agreed it 34-17, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2008",
+   "roll": 1266384,
+   "measure_id": "HB 500",
+   "vote_date": "2023-03-01",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 500. It creates the crime of arson of a law enforcement vehicle, for knowingly damaging one with fire or explosives or helping someone else do so. The penalty is five to 20 years in prison, a fine of up to $100,000, or both, and the offense is added to the state bail schedule. The Georgia House passed it 100-69, and it became law.",
+   "nay_description": "Voted against HB 500. It creates the crime of arson of a law enforcement vehicle, for knowingly damaging one with fire or explosives or helping someone else do so. The penalty is five to 20 years in prison, a fine of up to $100,000, or both, and the offense is added to the state bail schedule. The Georgia House passed it 100-69, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2008",
+   "roll": 1417370,
+   "measure_id": "HB 500",
+   "vote_date": "2024-03-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 500. It creates the crime of arson of a law enforcement vehicle, for knowingly damaging one with fire or explosives or helping someone else do so. The penalty is five to 20 years in prison, a fine of up to $100,000, or both, and the offense is added to the state bail schedule. The Georgia Senate passed it 36-18, and it became law.",
+   "nay_description": "Voted against HB 500. It creates the crime of arson of a law enforcement vehicle, for knowingly damaging one with fire or explosives or helping someone else do so. The penalty is five to 20 years in prison, a fine of up to $100,000, or both, and the offense is added to the state bail schedule. The Georgia Senate passed it 36-18, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2008",
+   "roll": 1380401,
+   "measure_id": "HB 557",
+   "vote_date": "2024-02-08",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the compromise version of HB 557. It lets doctors pass to nurse practitioners and physician assistants the power to prescribe some Schedule II drugs, and approves nurse protocol agreements on their own when set conditions are met. It also lets those providers sign the form a person needs for a disabled parking decal. The Georgia House adopted it 132-35, and it became law.",
+   "nay_description": "Voted against the compromise version of HB 557. It lets doctors pass to nurse practitioners and physician assistants the power to prescribe some Schedule II drugs, and approves nurse protocol agreements on their own when set conditions are met. It also lets those providers sign the form a person needs for a disabled parking decal. The Georgia House adopted it 132-35, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2008",
+   "roll": 1286168,
+   "measure_id": "SB 159",
+   "vote_date": "2023-03-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 159. It raises the penalties for inmates caught with banned items such as cell phones, and sets stiffer penalties when a prison employee or contractor is the one who brings them in. It also raises the penalty for flying a drone over a prison to take photographs or video. The Georgia House passed it 103-72, and it became law.",
+   "nay_description": "Voted against SB 159. It raises the penalties for inmates caught with banned items such as cell phones, and sets stiffer penalties when a prison employee or contractor is the one who brings them in. It also raises the penalty for flying a drone over a prison to take photographs or video. The Georgia House passed it 103-72, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "house",
+   "session": "2008",
+   "roll": 1412720,
+   "measure_id": "SB 362",
+   "vote_date": "2024-03-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 362. To keep state economic development incentives, an employer may no longer accept a union based on signed cards alone, and may not hand over workers' home addresses or personal phone numbers. An employer that does either must pay back every incentive it got for the project. The Georgia House passed it 96-78, and it became law.",
+   "nay_description": "Voted against SB 362. To keep state economic development incentives, an employer may no longer accept a union based on signed cards alone, and may not hand over workers' home addresses or personal phone numbers. An employer that does either must pay back every incentive it got for the project. The Georgia House passed it 96-78, and it became law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2008",
+   "roll": 1380351,
+   "measure_id": "SB 362",
+   "vote_date": "2024-02-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 362. To keep state economic development incentives, an employer may no longer accept a union based on signed cards alone, and may not hand over workers' home addresses or personal phone numbers. An employer that does either must pay back every incentive it got for the project. The Georgia Senate passed it 31-23, and it became law.",
+   "nay_description": "Voted against SB 362. To keep state economic development incentives, an employer may no longer accept a union based on signed cards alone, and may not hand over workers' home addresses or personal phone numbers. An employer that does either must pay back every incentive it got for the project. The Georgia Senate passed it 31-23, and it became law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2008",
+   "roll": 1417439,
+   "measure_id": "SB 414",
+   "vote_date": "2024-03-28",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the final version of SB 414. It bars state and local agencies from collecting, requiring or releasing any list that identifies a person as a member, volunteer, supporter or donor of a nonprofit group. It keeps that information out of open records requests and makes improper collection or disclosure a crime. The Georgia Senate agreed it 33-21, and it became law.",
+   "nay_description": "Voted against the final version of SB 414. It bars state and local agencies from collecting, requiring or releasing any list that identifies a person as a member, volunteer, supporter or donor of a nonprofit group. It keeps that information out of open records requests and makes improper collection or disclosure a crime. The Georgia Senate agreed it 33-21, and it became law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "GA",
+   "chamber": "senate",
+   "session": "2008",
+   "roll": 1400098,
+   "measure_id": "SB 517",
+   "vote_date": "2024-02-29",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 517. It gives police officers immunity from criminal charges and from being sued when their threat or use of force was justified or otherwise lawful. Before this, an officer in that position had a defense to raise at trial rather than immunity from the case itself. The Georgia Senate passed it 34-17, and it became law.",
+   "nay_description": "Voted against SB 517. It gives police officers immunity from criminal charges and from being sued when their threat or use of force was justified or otherwise lawful. Before this, an officer in that position had a defense to raise at trial rather than immunity from the case itself. The Georgia Senate passed it 34-17, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
