@@ -79,8 +79,36 @@ costs nothing.
 
 ## Crosswalk
 
-`crosswalk.json` holds all 206 people: **48 mapped, 158 explicit nulls.** Validation over every
+`crosswalk.json` holds all 206 people: **164 mapped, 42 explicit nulls.** Validation over every
 stored roll returned `no_crosswalk` 0 and 0 file errors in both sessions.
+
+**Refreshed 2026-09-05, after the full November 2026 roster campaign.** The roster now covers all
+134 House districts (253 candidates) and all 67 Senate districts (134 candidates), so the resolver
+was re-run and the crosswalk went from 48 mapped to 164. The 116 additions break down as:
+
+- **161 proposals, every one reviewed by hand and accepted.** 157 agree on the seat outright.
+  Four are sitting representatives moving up to the Senate district their own House district nests
+  inside, which is mechanical corroboration in Minnesota: Mike Freiberg (HD-043B to SD-043),
+  Ben Bakeberg (HD-054B to SD-054), Steven Jacob (HD-020B to SD-020) and Mike Wiener (HD-005B to
+  SD-005). Four matched on a weaker first-name prefix but on the same seat and were accepted:
+  Ronald/Ron Latz, Joshua/Josh Heintzeman, Cal/Calvin Bahr and Pete/Peter Johnson.
+- **2 more hand-added members of the nickname class**, alongside Scott Dibble below. LegiScan
+  carries the legal first name and the ballot carries the working name, and the proposer reads
+  neither: **Alicia Kozlowski, House District 8B**, who appears on the 2026 ballot as Liish
+  Kozlowski, and **Andrew Smith, House District 25B**, who appears as Andy Smith. Both are on
+  their own seat.
+- **6 surname collisions rejected on the seat**: Carla Nelson, Tou Xiong, Nicole Mitchell,
+  Patti Anderson, Bruce Anderson and James Carlson each share a surname with a 2026 candidate on
+  a different seat.
+- **The 42 remaining nulls are sitting members who are not on the November ballot at all.** Each
+  was checked by hand against the Secretary of State general-election roster for its own seat and
+  against every other 2026 seat, and each carries that reason in the file.
+
+⚠ Writing the November general profiles created a second candidate row for 45 Senate members who
+already had a row from the August 11 primary roster, because those primary rows carry no hard
+identifier for the writer to match on. All 45 were merged with the earlier primary row as the
+survivor before the crosswalk was refreshed, so the ids in this file are the surviving rows and
+the records written before this campaign stayed with them.
 
 The proposer was run with `--scope-from 2026-08-01` so that members whose only stored 2026
 contest is the August 11 primary were reviewed here rather than left unexamined. Whether they
@@ -108,27 +136,53 @@ receive records is the importer's own `--scope-from` decision, which this file d
   special session's people file holds 201 people against the regular session's 206, because
   five members were replaced mid-term.
 
-**Fan-out is small, and our roster is the reason.** With the pipeline's default November-2026
-scope, a Senate roll reaches 22 candidates and a House roll reaches 3. Our Minnesota roster
-covers 30 of 67 Senate districts and 1 of 134 House districts for November; a roster campaign
-filling the House districts, followed by a re-import, adds those members without duplicating
-anything.
+**Fan-out was small, and our roster was the reason. That is now fixed.** Before the roster
+campaign, at the pipeline's default November-2026 scope, a Senate roll reached 22 candidates and a
+House roll reached 3, because the roster held only 30 of 67 Senate districts and 1 of 134 House
+districts. After the campaign the roster holds every district in both chambers, and the same three
+rolls reach **113 and 112 candidates in the House and 44 in the Senate**. The re-import added no
+duplicates: every record written before the campaign came back `unchanged`.
 
 ## Batches
 
-`batch-01/` holds the whole campaign: **2 measures, 3 rolls, 28 records, 25 candidates**, with
+`batch-01/` holds the whole campaign: **2 measures, 3 rolls, 269 records, 157 candidates**, with
 `PLAN.md` recording a disposition for every one of the 30 gated measures and `JUDGING.md`
 recording the reading. Twenty-eight measures are dropped, most of them biennial budget acts and
 seven of them because their 2025 vote was cast on text a 2026 conference committee replaced.
+
+## Re-import after the roster campaign (2026-09-05)
+
+The same `batch-01/` evidence was re-imported once per session against the refreshed crosswalk.
+Nothing about the judgments changed; only the set of members the rolls could reach.
+
+| run | plan | live | result |
+|---|---|---|---|
+| `--state MN` (2151) | 110 inserts, 3 unchanged | 110 inserts, 3 unchanged | 113 records on SF 2200 |
+| `--state MN-2217` (2217) | 131 inserts, 25 unchanged | 131 inserts, 25 unchanged | 156 records on HF 1 |
+
+The three counts reconcile: the dry runs planned 241 inserts, the live runs performed 241, and the
+database moved from **28 records across 25 candidates to 269 records across 157 candidates**
+(28 + 241 = 269) for `origin_run_id like 'rollcall:MN:%'`. Convergence dry runs afterwards reported
+`unchanged` for all 113 and all 156 rows and wrote nothing.
+
+Of the 269 records, 236 carry a research-area tag. The 33 without one are the nay side of SF 2200,
+whose nay stance the committed judgment sets to null on purpose.
 
 ## Layout
 
 - `survey/` — the description histogram both sessions were configured from, and
   `divided-enacted-worklist.tsv`, which carries a disposition and a reason for all 51 gated
   rolls across all 30 measures.
-- `batch-01/` — judgments, roll evidence, the two import ledgers and their convergence runs.
-- `crosswalk.json`, `legiscan-people-mn-2151.json`, `crosswalk-proposals-report.json` — the
-  identity review. The full resolve report is tens of megabytes and is never committed.
+- `batch-01/` — judgments, roll evidence, and the import ledgers. The original ledgers from the
+  first import are `import-2151-report.json`, `import-2217-report.json` and their two convergence
+  files. The re-import after the roster campaign has its own set, named for that run:
+  `import-2151-roster-link-report.json` and `import-2217-roster-link-report.json` for the live runs,
+  `import-2217-roster-link-dry-run-report.json` for the plan, and the two
+  `*-roster-link-convergence-report.json` files for the confirming dry runs.
+- `crosswalk.json`, `legiscan-people-mn-2151.json` — the identity review.
+  `crosswalk-proposals-report.json` is the FIRST resolver run (47 proposals, before the roster
+  campaign) and is kept for history. `resolve-report.json` is the 2026-09-05 re-run against the
+  full roster (161 proposals) and is the one the current crosswalk was built from.
 
 Datasets and full evidence live outside the repository at `/Users/shu/legiscan-data/mn-2151*`
 and `/Users/shu/legiscan-data/mn-2217*`.
