@@ -75,3 +75,13 @@ stored vote row.**
 Predicted independently before touching the database: **442 records and 395 area tags**. Dry run
 442 insert, real run 442 insert with 0 errors, database 442 and 395, re-run all 442 unchanged.
 Real stamp `2026-09-05T04:28:11.920Z`.
+
+## Review revisions (2026-09-05)
+
+One description was corrected after PR review, re-judged, and re-imported (73 rows rewritten,
+re-run all 442 unchanged).
+
+- **SB 35** — the first draft defined a mill against what a property "is worth", which overstates
+  the saving about nine times: K.S.A. 76-6b01 levies on assessed value, and Kansas assesses a home
+  at 11.5% of appraised value (K.S.A. 79-1439). The description now says assessed value and gives
+  the real figure, about $35 a year on a $200,000 home.

@@ -76,3 +76,16 @@ also carries the roll.
 
 **64 measures carrying 64 rolls** are marked `candidate:batch-03`. Every one has survived the
 title-versus-act check; none has had its enacted act read.
+
+## Review revisions (2026-09-05)
+
+Two descriptions were corrected after PR review, re-judged, and re-imported (71 + 74 rows
+rewritten, re-run all 512 unchanged).
+
+- **HB 2106** — the first draft said the ban covers US companies mostly owned abroad and stopped
+  there. Section 1(e)(5) exempts such a company when the money comes only from its US operations
+  and US citizens or permanent residents decide how it is spent. The description now says so.
+- **SB 375** — the first draft made the home-page notice sound universal. Section 4(a) requires
+  the client notice, board notice and home-page notice only when no written financial analysis
+  backs the recommendation; section 4(b) instead requires the client notice, the analysis on
+  request, and a copy to the board. The description now keeps the two cases apart.
