@@ -50,7 +50,9 @@ percent" rather than asserting a rate the statute does not contain.
 No structural element changes: not the ANB thresholds, not the per-ANB
 decrements, not the 44.7%, 35.3%, 80%, 140% or 175% percentages. There is no
 appropriation. The figures carry "for each succeeding fiscal year" with no
-sunset, so they are permanent.
+sunset, so they are permanent. Each spot is one step for fiscal 2026 and a
+second for fiscal 2027; the 2027 figure then holds. The description says so
+rather than implying a rise every year, which the act does not provide.
 
 Area `public_education_quality`, yes vote **for**. The area names funding
 explicitly.
@@ -123,9 +125,12 @@ restrictions are struck: **"in April, May, or June"**, the window in which the
 evaluation could be given, and **"for the subsequent school year"**, which had
 limited an eligible child's help to the next year alone.
 
-**No money changes.** The $1,000 per child annual cap appears in two places and
-carries no mark, as do the age and grade tests. So the programme covers more
-ground from the same pot, and the description says so.
+**No funding rule changes.** The $1,000 per child annual cap appears in two
+places and carries no mark, as do the age and grade tests. That cap binds only
+the home-based programme (20-7-1803(6)(b)(iv) and 20-7-1804(2)); the classroom
+and jumpstart programmes are funded through enrolment counts under 20-9-311, so
+their cost moves with the number of eligible children. The description names
+the home-based cap and draws no conclusion about the programme as a whole.
 
 Area `public_education_quality`, yes vote **for**.
 
