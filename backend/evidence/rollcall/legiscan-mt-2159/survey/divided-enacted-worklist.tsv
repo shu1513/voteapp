@@ -467,8 +467,8 @@ SB 154	B	senate	2025-04-12	1546642	36	14	unbatched	Revise prohibition on sale or
 SB 168	B	house	2025-04-11	1546399	64	35	batch-11	Revise laws related to lakeshore protection
 SB 170	B	house	2025-03-21	1524212	57	40	batch-02	Eliminate termination date of community health aide program
 SB 170	B	senate	2025-02-11	1486315	34	16	batch-02	Eliminate termination date of community health aide program
-SB 172	B	house	2025-03-21	1524092	57	40	batch-14	Revise resort tax eligibility and allow use for workforce housing
-SB 172	B	senate	2025-02-12	1487519	38	12	batch-14	Revise resort tax eligibility and allow use for workforce housing
+SB 172	B	house	2025-03-21	1524092	57	40	dropped:coordination-voided	Revise resort tax eligibility and allow use for workforce housing
+SB 172	B	senate	2025-02-12	1487519	38	12	dropped:coordination-voided	Revise resort tax eligibility and allow use for workforce housing
 SB 177	B	house	2025-04-11	1546071	57	42	unbatched	Allow community choice school commission to seek public funding
 SB 177	B	senate	2025-02-06	1483650	38	11	unbatched	Allow community choice school commission to seek public funding
 SB 178	B	senate	2025-02-14	1497072	33	17	superseded:later-roll-used	Provide for temporary lease of water rights

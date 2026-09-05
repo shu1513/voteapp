@@ -492,3 +492,19 @@ subjects, no single direction.
 support guidelines, with associated duties and reporting. The guidelines
 themselves are unchanged. It alters who reviews a rule rather than the rule, and
 no research area carries a position on the composition of a review committee.
+
+## Correction — SB 172, dropped after import
+
+**SB 172** was imported in batch 14 and has been withdrawn. It is marked
+`dropped:coordination-voided`, a disposition used here for the first time.
+
+Its four operative sections amend 7-6-1503, 7-6-1504, 7-6-1541 and 7-6-1542.
+HB 162 section 2 voids the first and replaces that statute outright; HB 162
+section 3 voids the other three. Both acts were signed, so SB 172 has no
+operative section left and changed no law.
+
+This is not a filter 5 failure. SB 172 had a nameable subject and a defensible
+direction; it simply never took effect. The campaign's filters do not currently
+ask whether another act voided the measure being judged, and they should: a
+coordination instruction that kills a bill lives in the *other* bill's text, so
+reading the measure on its own can never reveal it.

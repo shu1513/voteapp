@@ -119,10 +119,14 @@ records.**
 | batch-11 | 12 | 19 | 773 | environment, courts, contractors, workers' comp, drink-driving, judges |
 | batch-12 | 12 | 17 | 630 | elections, lobbying, transparency, health cover, consumer rules |
 | batch-13 | 8 | 9 | 417 | safety, disclosure, tribal education, voter ID |
-| batch-14 | 8 | 12 | 579 | housing, zoning, impact fees, property |
+| batch-14 | 7 | 10 | 494 | housing, zoning, impact fees, property |
 | batch-15 | 7 | 10 | 433 | tax credits, bonding, broadband, litigation funding |
 | batch-16 | 12 | 17 | 633 | children, schools, responders, brownfields, wildlife |
-| **total** | **120** | **194** | **8,165** | 18 areas, 87 candidates, 4,973 tags |
+| **total** | **119** | **192** | **8,080** | 18 areas, 87 candidates, 4,921 tags |
+
+85 further records were imported and then retired: every operative section of
+SB 172 was voided by HB 162's coordination instructions, so SB 172 changed no
+law. See `batch-14/PLAN.md`.
 
 **161 divided-and-enacted rolls remain unworked, across 116 bills.** The 58
 joint-resolution rolls that used to be listed here separately are now disposed:
