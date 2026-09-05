@@ -17,7 +17,12 @@ export function readPositiveIntegerFlag(argv: readonly string[], flagName: strin
   if (!/^[1-9]\d*$/.test(rawValue)) {
     throw new Error(`${flagName} must be a positive integer, got: ${rawValue}`);
   }
-  return Number(rawValue);
+  // Digit-only values above 2^53 - 1 would be silently rounded by Number().
+  const parsed = Number(rawValue);
+  if (!Number.isSafeInteger(parsed)) {
+    throw new Error(`${flagName} must be a positive integer, got: ${rawValue}`);
+  }
+  return parsed;
 }
 
 /**
