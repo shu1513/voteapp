@@ -81,14 +81,15 @@ export function AutoPickControl({
   }
   // Signed-out: the teaser instead of the button. Text link, not the
   // orange pill — orange means "runs the engine now", and this only leads
-  // to sign-up. Navy, semibold, no underline: stands out from the grey
-  // body text without borrowing the red of the sign-up buttons.
+  // to sign-up. Nudge green, semibold, no underline: the color of the
+  // address nudge and draft milestone (the other "next step" prompts),
+  // clearly not body text, and not the red of the sign-up buttons.
   if (me === null) {
     return (
       <Link
         to={`/register?next=${encodeURIComponent(pathname)}`}
         onClick={() => track("signup_prompt", { source: "autopick", action: "click" })}
-        className={`inline-block font-semibold text-navy hover:text-ink ${
+        className={`inline-block font-semibold text-nudge-deep hover:text-ink ${
           compact ? "text-xs" : "text-sm"
         }`}
       >
