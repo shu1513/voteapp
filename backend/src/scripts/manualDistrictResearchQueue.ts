@@ -11,7 +11,9 @@ import {
   releaseManualDistrictResearchRequest,
   releaseStaleManualDistrictResearchClaims,
   MANUAL_DISTRICT_RESEARCH_CURRENT_ELECTIONS_DEFERRAL_SQL,
+  MANUAL_DISTRICT_RESEARCH_CLAIM_ORDERS,
   MANUAL_RESEARCH_AGENT_KINDS,
+  type ManualDistrictResearchClaimOrder,
   type ManualResearchAgentKind,
 } from "../pipeline/address/manualDistrictResearchRequests.js";
 
@@ -27,6 +29,7 @@ function usage(): string {
     "Commands:",
     "  claim     Claim the highest-priority queued request whose district is still stale",
     "            (each claim counts one attempt). --agent <name> [--agent-kind claude|codex|human|other]",
+    "            [--order demand|population] (default: demand).",
     "  start     Mark a claimed request running. --request-id <id>",
     "  complete  Mark a claimed/running request succeeded; requires this claim to",
     "            produce an elections-write stamp or future district-level elections deferral.",
@@ -88,10 +91,17 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
           `Invalid --agent-kind: ${agentKindRaw}. Expected one of ${MANUAL_RESEARCH_AGENT_KINDS.join(", ")}.`
         );
       }
+      const orderRaw = (flags.get("order") ?? "demand").toLowerCase();
+      if (!MANUAL_DISTRICT_RESEARCH_CLAIM_ORDERS.includes(orderRaw as ManualDistrictResearchClaimOrder)) {
+        throw new Error(
+          `Invalid --order: ${orderRaw}. Expected one of ${MANUAL_DISTRICT_RESEARCH_CLAIM_ORDERS.join(", ")}.`
+        );
+      }
       const claimed = await claimNextManualDistrictResearchRequest(pool, {
         claimedBy,
         agentKind: agentKindRaw as ManualResearchAgentKind,
         cooldownDays: readElectionsSearchCooldownDaysFromEnv(),
+        order: orderRaw as ManualDistrictResearchClaimOrder,
       });
       if (!claimed) {
         print({ claimed: false, reason: "no claimable requests" });
@@ -297,6 +307,7 @@ const COMMAND_FLAG_SPECS: Record<string, readonly CliFlagSpec[]> = {
   claim: [
     { name: "--agent", value: "space" },
     { name: "--agent-kind", value: "space" },
+    { name: "--order", value: "space" },
   ],
   start: [{ name: "--request-id", value: "space" }],
   complete: [

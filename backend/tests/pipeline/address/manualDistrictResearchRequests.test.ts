@@ -300,6 +300,29 @@ describe("claimNextManualDistrictResearchRequest", () => {
     expect(claimSql).toContain("ORDER BY r2.request_count DESC, r2.requested_at ASC");
   });
 
+  it("can order the claim by population first without changing the default", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rowCount: 0, rows: [] })
+      .mockResolvedValueOnce({ rowCount: 0, rows: [] })
+      .mockResolvedValueOnce({ rows: [makeClaimRow({ district_id: OTHER_DISTRICT_ID })] });
+
+    await claimNextManualDistrictResearchRequest(
+      { query },
+      {
+        claimedBy: "codex-session",
+        agentKind: "codex",
+        cooldownDays: 180,
+        order: "population",
+      }
+    );
+
+    const claimSql = query.mock.calls[2]?.[0] as string;
+    expect(claimSql).toContain(
+      "ORDER BY d.population DESC, r2.request_count DESC, r2.requested_at ASC"
+    );
+  });
+
   it("includes the active-future-deferral gate and manual-seed override in the claim SQL", async () => {
     const query = vi
       .fn()

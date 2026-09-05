@@ -6,12 +6,18 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 
 export type ManualResearchTriggerSource = "address_resolve" | "me_address_update" | "manual_seed";
 export type ManualResearchAgentKind = "claude" | "codex" | "human" | "other";
+export type ManualDistrictResearchClaimOrder = "demand" | "population";
 
 export const MANUAL_RESEARCH_AGENT_KINDS: readonly ManualResearchAgentKind[] = [
   "claude",
   "codex",
   "human",
   "other",
+];
+
+export const MANUAL_DISTRICT_RESEARCH_CLAIM_ORDERS: readonly ManualDistrictResearchClaimOrder[] = [
+  "demand",
+  "population",
 ];
 
 // Shared by the authoritative completion UPDATE and the CLI's friendly
@@ -201,8 +207,9 @@ export async function enqueueManualDistrictResearchRequestsForStaleDistricts(
  * Both steps use the same SQL staleness predicate the enqueue uses: first every
  * queued request whose district is now fresh is retired as 'skipped' in one
  * bulk UPDATE, then a single atomic UPDATE (FOR UPDATE SKIP LOCKED, so
- * concurrent agents never grab the same row) claims the hottest remaining
- * request. Returns null when nothing claimable remains.
+ * concurrent agents never grab the same row) claims the next request. Demand
+ * order remains the default for user-driven work; population order is an
+ * explicit bulk-backfill mode. Returns null when nothing claimable remains.
  */
 export async function claimNextManualDistrictResearchRequest(
   db: Queryable,
@@ -210,9 +217,14 @@ export async function claimNextManualDistrictResearchRequest(
     claimedBy: string;
     agentKind: ManualResearchAgentKind;
     cooldownDays: number;
+    order?: ManualDistrictResearchClaimOrder;
   }
 ): Promise<ClaimedManualDistrictResearchRequest | null> {
-  const { claimedBy, agentKind, cooldownDays } = input;
+  const { claimedBy, agentKind, cooldownDays, order = "demand" } = input;
+  const claimOrderSql =
+    order === "population"
+      ? "d.population DESC, r2.request_count DESC, r2.requested_at ASC"
+      : "r2.request_count DESC, r2.requested_at ASC";
 
   // Rows for a duplicate Census district retire unconditionally, including
   // manual_seed ones: the government is real but another districts row owns it,
@@ -282,7 +294,7 @@ export async function claimNextManualDistrictResearchRequest(
                 AND md.blocked_until > CURRENT_DATE
             )
           )
-        ORDER BY r2.request_count DESC, r2.requested_at ASC
+        ORDER BY ${claimOrderSql}
         FOR UPDATE OF r2 SKIP LOCKED
         LIMIT 1
       )
