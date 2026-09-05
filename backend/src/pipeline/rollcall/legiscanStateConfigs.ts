@@ -510,6 +510,96 @@ const MINNESOTA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
   /^senate: urgency declared rules suspended$/,
 ];
 
+// Oregon, surveyed 2026-09-04 on session 2191 (2025 Regular Session:
+// 3,466 bills / 3,565 roll calls / 115 people for 60 House + 30 Senate
+// seats, the extra names being mid-session replacements).
+//
+// Oregon writes the BODY in front of every question, and that one habit
+// separates floor from committee with no arithmetic: a committee roll always
+// begins `House Committee ` or `Senate Committee ` (`Senate Committee Do pass
+// with amendments. (Printed A-Eng.)`), and no floor roll does. All 1,954
+// committee rolls in the session carry that prefix. They are excluded BY
+// RULE rather than left to the tally check, because Oregon's joint Ways and
+// Means committee seats 23-24 members — 77 to 80 percent of the 30-seat
+// Senate — so a tally-only cut would park every large Senate committee roll
+// in the surfaced queue.
+//
+// The floor vocabulary is tiny. Passage is a bare `House Third Reading` /
+// `Senate Third Reading` (672 / 670 rolls, total 59-60 and 29-30). The
+// originating chamber accepts the other chamber's changes with `Third
+// Reading in Concurrence` (52 House / 36 Senate), which Oregon's own history
+// spells out as "Senate concurred in House amendments and repassed bill" —
+// one vote that both concurs and repasses, so it lands on the enacted text.
+//
+// ⚠ `Repassed` IS TWO DIFFERENT QUESTIONS AND THE DESC CANNOT TELL THEM
+// APART. Four of the five occurrences are conference-report repassage
+// ("Senate adopted Conference Committee Report and repassed bill" — SB 916,
+// HB 3127, HB 2614, HB 3694). The fifth is a VETO OVERRIDE: SB 875's Senate
+// roll of 2025-06-25 is the motion to repass the bill notwithstanding the
+// Governor's veto under Art. V, sec. 15b. Only the bill history separates
+// them, so read it before describing any Repassed roll. The class recorded
+// here is the majority case; questionClass is report metadata and is never
+// persisted, and SB 875 was vetoed and stayed vetoed, so it never reaches
+// the enacted gate anyway.
+//
+// The House takes TWO rolls on a conference report — `House Adopted
+// Conference Comittee Report` (the feed's own misspelling, one `m`) and then
+// `House Repassed`, the same day and often the same tally (SB 916: 35-22
+// twice). The repass is the chamber's final action on the enacted text, so
+// batch selection prefers it and acknowledges the same-day adopt roll. The
+// Senate folds both into its single `Senate Repassed`.
+//
+// Everything excluded below is floor-sized but is not a vote on the measure:
+// motions to substitute the minority committee report for the majority's, to
+// reconsider, refer, re-refer, table or change the calendar, the vote
+// refusing to concur in the other chamber's amendments (the step that sends
+// a bill to conference), and withdrawing a bill from committee.
+//
+// Resolutions need no patterns. Oregon's concurrent resolutions, joint
+// memorials and simple resolutions (types CR, JM, R) are dropped before the
+// config is read, and they own the only remaining floor families — `Senate
+// Final Reading`, `House Read and Adopted`, `House Special Order` and
+// `House Resolution Adopted`. ⚠ Oregon's 56 JOINT resolutions, the type that
+// carries a proposed constitutional amendment, have ZERO recorded floor
+// votes in this dataset, so no amendment can be queued from this feed. That
+// is not the Georgia gap (where the type itself was dropped); the type is
+// kept and the rolls simply do not exist.
+//
+// Every one of the 3,565 rolls classifies: 1,954 committee, 1,437 kept
+// floor, 125 dropped on measure type and 49 excluded questions, with NOTHING
+// surfaced. Feed health is the cleanest tier — 0 repeated roll_call_ids,
+// 0 summary-only rolls, 0 tally mismatches, 0 member lists whose length
+// disagrees with the stated total, and 3 identity-duplicate extras.
+const OREGON_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Passage: 672 House / 670 Senate.
+  { pattern: /^(?:house|senate) third reading$/, questionClass: "passage" },
+  // Concurring in the other chamber's amendments and repassing in one vote
+  // (52 House / 36 Senate).
+  { pattern: /^(?:house|senate) third reading in concurrence$/, questionClass: "concurrence" },
+  // Repassage after a conference report (3 House / 5 Senate). See the
+  // veto-override caveat above.
+  { pattern: /^(?:house|senate) repassed$/, questionClass: "conference_report" },
+  // Adopting the conference report itself; the feed misspells "Committee".
+  { pattern: /^house adopted conference comittee report$/, questionClass: "conference_report" },
+];
+
+const OREGON_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // Every committee roll, by its own prefix. Listed first and kept ahead of
+  // the tally check so Ways and Means (23-24 of 30 Senate seats) cannot
+  // surface. The bare `House Committee` / `Senate Committee` descs match too.
+  /^(?:house|senate) committee\b/,
+  // Motions about the bill's handling, not about the bill: substituting the
+  // minority committee report, reconsidering, referring, re-referring,
+  // tabling and changing the calendar.
+  /^(?:house|senate) motion to /,
+  // Refusing to concur in the other chamber's amendments — the step that
+  // sends a bill to conference. It must be excluded before the concurrence
+  // pattern above could ever claim it.
+  /^(?:house|senate) refuse to concur$/,
+  // Pulling a bill out of committee onto the floor calendar.
+  /^house withdraw from committee$/,
+];
+
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
   // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
   // die 2026-04-03). Vocabulary measured from the full dataset survey
@@ -3131,6 +3221,29 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     chamberSizes: { house: 134, senate: 67 },
     keptQuestions: MINNESOTA_KEPT_QUESTIONS,
     excludedQuestions: MINNESOTA_EXCLUDED_QUESTIONS,
+  },
+
+  // Oregon, 2025 Regular Session. Oregon meets every year, so the 2026
+  // session is its own dataset (LegiScan 2252) and would need its own
+  // `OR-2252` entry; nothing here covers it.
+  //
+  // Pool measured before any judging, per the campaign rule: 425 divided
+  // floor votes (217 House / 208 Senate), 393 of them on measures that
+  // became law, across 225 measures. Oregon is a Democratic trifecta, so the
+  // divided-and-enacted set is the majority's agenda and stance directions
+  // mirror the Republican-trifecta states.
+  //
+  // Roster reach is asymmetric and it is the Senate that is capped: all 60
+  // House seats are on the Nov-2026 ballot and our rosters cover 59 of them
+  // (109 candidates), while Oregon staggers its Senate, so only 15 of 30
+  // Senate districts are up (28 candidates). House rolls therefore carry
+  // most of the fan-out value.
+  OR: {
+    jurisdiction: "OR",
+    sessionId: 2191,
+    chamberSizes: { house: 60, senate: 30 },
+    keptQuestions: OREGON_KEPT_QUESTIONS,
+    excludedQuestions: OREGON_EXCLUDED_QUESTIONS,
   },
 };
 

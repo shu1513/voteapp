@@ -1,0 +1,220 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1595256,
+      "measure_id": "SB 243",
+      "vote_date": "2025-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 243, which bans devices that make a gun fire faster, such as bump stocks, forced reset triggers, trigger cranks and auto sears. Bringing one into Oregon, making one or selling one is now a felony. Simply having one is a misdemeanor. Police may have one only with their agency's approval, and owners of federally registered machine guns may keep one only if their registered gun needs it to work. Cities, counties and districts may also bar people with a concealed handgun license from carrying inside a building they use for official meetings, so long as they post signs at the doors and a notice online. The law set March 15, 2026 as the date the permit-to-buy and large-magazine rules from Ballot Measure 114 start to apply. The Oregon House passed it 33-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 243, which bans devices that make a gun fire faster, such as bump stocks, forced reset triggers, trigger cranks and auto sears. Bringing one into Oregon, making one or selling one is now a felony. Simply having one is a misdemeanor. Police may have one only with their agency's approval, and owners of federally registered machine guns may keep one only if their registered gun needs it to work. Cities, counties and districts may also bar people with a concealed handgun license from carrying inside a building they use for official meetings, so long as they post signs at the doors and a notice online. The law set March 15, 2026 as the date the permit-to-buy and large-magazine rules from Ballot Measure 114 start to apply. The Oregon House passed it 33-10, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1595872,
+      "measure_id": "SB 243",
+      "vote_date": "2025-06-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 243, which bans devices that make a gun fire faster, such as bump stocks, forced reset triggers, trigger cranks and auto sears. Bringing one into Oregon, making one or selling one is now a felony. Simply having one is a misdemeanor. Police may have one only with their agency's approval, and owners of federally registered machine guns may keep one only if their registered gun needs it to work. Cities, counties and districts may also bar people with a concealed handgun license from carrying inside a building they use for official meetings, so long as they post signs at the doors and a notice online. The law set March 15, 2026 as the date the permit-to-buy and large-magazine rules from Ballot Measure 114 start to apply. The Oregon Senate agreed to the House's changes 18-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 243, which bans devices that make a gun fire faster, such as bump stocks, forced reset triggers, trigger cranks and auto sears. Bringing one into Oregon, making one or selling one is now a felony. Simply having one is a misdemeanor. Police may have one only with their agency's approval, and owners of federally registered machine guns may keep one only if their registered gun needs it to work. Cities, counties and districts may also bar people with a concealed handgun license from carrying inside a building they use for official meetings, so long as they post signs at the doors and a notice online. The law set March 15, 2026 as the date the permit-to-buy and large-magazine rules from Ballot Measure 114 start to apply. The Oregon Senate agreed to the House's changes 18-11, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1573242,
+      "measure_id": "SB 599",
+      "vote_date": "2025-05-19",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 599, which bars a landlord from asking about the immigration or citizenship status of an applicant, a tenant, or anyone in their home. The one exception is where a federal rent aid program requires it. A landlord may not turn down an applicant who has no Social Security number or cannot prove lawful presence. The applicant must still show identification from a list in the law, such as a birth record, a visa, a taxpayer ID card or a passport. Landlords also may not reveal, or threaten to reveal, someone's status in order to harass, scare or punish them. A renter who is wronged can sue and recover costs and attorney fees. The Oregon House passed it 36-15, and it became law.",
+      "nay_description": "Voted against Senate Bill 599, which bars a landlord from asking about the immigration or citizenship status of an applicant, a tenant, or anyone in their home. The one exception is where a federal rent aid program requires it. A landlord may not turn down an applicant who has no Social Security number or cannot prove lawful presence. The applicant must still show identification from a list in the law, such as a birth record, a visa, a taxpayer ID card or a passport. Landlords also may not reveal, or threaten to reveal, someone's status in order to harass, scare or punish them. A renter who is wronged can sue and recover costs and attorney fees. The Oregon House passed it 36-15, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1524701,
+      "measure_id": "SB 599",
+      "vote_date": "2025-03-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 599, which bars a landlord from asking about the immigration or citizenship status of an applicant, a tenant, or anyone in their home. The one exception is where a federal rent aid program requires it. A landlord may not turn down an applicant who has no Social Security number or cannot prove lawful presence. The applicant must still show identification from a list in the law, such as a birth record, a visa, a taxpayer ID card or a passport. Landlords also may not reveal, or threaten to reveal, someone's status in order to harass, scare or punish them. A renter who is wronged can sue and recover costs and attorney fees. The Oregon Senate passed it 21-8, and it became law.",
+      "nay_description": "Voted against Senate Bill 599, which bars a landlord from asking about the immigration or citizenship status of an applicant, a tenant, or anyone in their home. The one exception is where a federal rent aid program requires it. A landlord may not turn down an applicant who has no Social Security number or cannot prove lawful presence. The applicant must still show identification from a list in the law, such as a birth record, a visa, a taxpayer ID card or a passport. Landlords also may not reveal, or threaten to reveal, someone's status in order to harass, scare or punish them. A renter who is wronged can sue and recover costs and attorney fees. The Oregon Senate passed it 21-8, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1587412,
+      "measure_id": "SB 1098",
+      "vote_date": "2025-06-09",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1098, which stops schools from refusing to pick or keep library books, textbooks and teaching materials because of who wrote them, or whose story they tell, when that person or group is protected by Oregon's school anti-discrimination law. People who are not responsible for choosing materials can no longer get a book pulled at will. A parent, guardian or school worker must ask in writing. A school or district committee must then review the request and publish a written reason before the book comes off the shelf. The same rules cover textbooks the State Board of Education picks. The Oregon House passed it 34-21, and it became law.",
+      "nay_description": "Voted against Senate Bill 1098, which stops schools from refusing to pick or keep library books, textbooks and teaching materials because of who wrote them, or whose story they tell, when that person or group is protected by Oregon's school anti-discrimination law. People who are not responsible for choosing materials can no longer get a book pulled at will. A parent, guardian or school worker must ask in writing. A school or district committee must then review the request and publish a written reason before the book comes off the shelf. The same rules cover textbooks the State Board of Education picks. The Oregon House passed it 34-21, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1530994,
+      "measure_id": "SB 1098",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1098, which stops schools from refusing to pick or keep library books, textbooks and teaching materials because of who wrote them, or whose story they tell, when that person or group is protected by Oregon's school anti-discrimination law. People who are not responsible for choosing materials can no longer get a book pulled at will. A parent, guardian or school worker must ask in writing. A school or district committee must then review the request and publish a written reason before the book comes off the shelf. The same rules cover textbooks the State Board of Education picks. The Oregon Senate passed it 18-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 1098, which stops schools from refusing to pick or keep library books, textbooks and teaching materials because of who wrote them, or whose story they tell, when that person or group is protected by Oregon's school anti-discrimination law. People who are not responsible for choosing materials can no longer get a book pulled at will. A parent, guardian or school worker must ask in writing. A school or district committee must then review the request and publish a written reason before the book comes off the shelf. The same rules cover textbooks the State Board of Education picks. The Oregon Senate passed it 18-10, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1581306,
+      "measure_id": "SB 605",
+      "vote_date": "2025-05-29",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 605, which bars anyone from telling a credit bureau that an Oregon resident owes a medical debt, or how much. It also bars credit bureaus from putting medical debt in a credit report. Breaking either rule breaks Oregon's consumer protection law, and a court may wipe out the debt so that it cannot be collected. The law also widened what counts as medical debt. It now covers money owed for treatment, devices, supplies, drugs or care, not just hospital and nonprofit clinic bills, and it takes in debt on a credit card meant for medical bills. The Oregon House passed it 34-17, and it became law.",
+      "nay_description": "Voted against Senate Bill 605, which bars anyone from telling a credit bureau that an Oregon resident owes a medical debt, or how much. It also bars credit bureaus from putting medical debt in a credit report. Breaking either rule breaks Oregon's consumer protection law, and a court may wipe out the debt so that it cannot be collected. The law also widened what counts as medical debt. It now covers money owed for treatment, devices, supplies, drugs or care, not just hospital and nonprofit clinic bills, and it takes in debt on a credit card meant for medical bills. The Oregon House passed it 34-17, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1586668,
+      "measure_id": "SB 605",
+      "vote_date": "2025-06-09",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 605, which bars anyone from telling a credit bureau that an Oregon resident owes a medical debt, or how much. It also bars credit bureaus from putting medical debt in a credit report. Breaking either rule breaks Oregon's consumer protection law, and a court may wipe out the debt so that it cannot be collected. The law also widened what counts as medical debt. It now covers money owed for treatment, devices, supplies, drugs or care, not just hospital and nonprofit clinic bills, and it takes in debt on a credit card meant for medical bills. The Oregon Senate agreed to the House's changes 18-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 605, which bars anyone from telling a credit bureau that an Oregon resident owes a medical debt, or how much. It also bars credit bureaus from putting medical debt in a credit report. Breaking either rule breaks Oregon's consumer protection law, and a court may wipe out the debt so that it cannot be collected. The law also widened what counts as medical debt. It now covers money owed for treatment, devices, supplies, drugs or care, not just hospital and nonprofit clinic bills, and it takes in debt on a credit card meant for medical bills. The Oregon Senate agreed to the House's changes 18-12, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1581255,
+      "measure_id": "SB 430",
+      "vote_date": "2025-05-29",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 430, which requires anyone who sells goods or services online to show the full price up front, including every fee a buyer has to pay. Three things may still be added on: government taxes and fees, the real cost of shipping or of providing the service, and a service fee that depends on distance or on what the buyer picks. That service fee must be shown clearly before the buyer agrees to pay. Breaking the rule breaks Oregon's consumer protection law. Banks, mortgage lenders and consumer finance firms are exempt where listed federal disclosure laws already apply. So are internet providers that follow the federal broadband label rules. The Oregon House passed it 35-15, and it became law.",
+      "nay_description": "Voted against Senate Bill 430, which requires anyone who sells goods or services online to show the full price up front, including every fee a buyer has to pay. Three things may still be added on: government taxes and fees, the real cost of shipping or of providing the service, and a service fee that depends on distance or on what the buyer picks. That service fee must be shown clearly before the buyer agrees to pay. Breaking the rule breaks Oregon's consumer protection law. Banks, mortgage lenders and consumer finance firms are exempt where listed federal disclosure laws already apply. So are internet providers that follow the federal broadband label rules. The Oregon House passed it 35-15, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1583987,
+      "measure_id": "SB 430",
+      "vote_date": "2025-06-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 430, which requires anyone who sells goods or services online to show the full price up front, including every fee a buyer has to pay. Three things may still be added on: government taxes and fees, the real cost of shipping or of providing the service, and a service fee that depends on distance or on what the buyer picks. That service fee must be shown clearly before the buyer agrees to pay. Breaking the rule breaks Oregon's consumer protection law. Banks, mortgage lenders and consumer finance firms are exempt where listed federal disclosure laws already apply. So are internet providers that follow the federal broadband label rules. The Oregon Senate agreed to the House's changes 18-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 430, which requires anyone who sells goods or services online to show the full price up front, including every fee a buyer has to pay. Three things may still be added on: government taxes and fees, the real cost of shipping or of providing the service, and a service fee that depends on distance or on what the buyer picks. That service fee must be shown clearly before the buyer agrees to pay. Breaking the rule breaks Oregon's consumer protection law. Banks, mortgage lenders and consumer finance firms are exempt where listed federal disclosure laws already apply. So are internet providers that follow the federal broadband label rules. The Oregon Senate agreed to the House's changes 18-11, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2191",
+      "roll": 1549674,
+      "measure_id": "HB 3187",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3187, which bars an employer or hiring agency from asking an applicant's age or birth date, or when they went to or finished school, until the first interview is over. Where there is no interview, the bar runs until a conditional job offer is made. They may still ask when the answer is needed to check a genuine job requirement or to follow another law. The law also drops an old rule that let apprenticeship programs turn away someone who could not finish the training before turning 70. The Oregon House passed it 42-16, and it became law.",
+      "nay_description": "Voted against House Bill 3187, which bars an employer or hiring agency from asking an applicant's age or birth date, or when they went to or finished school, until the first interview is over. Where there is no interview, the bar runs until a conditional job offer is made. They may still ask when the answer is needed to check a genuine job requirement or to follow another law. The law also drops an old rule that let apprenticeship programs turn away someone who could not finish the training before turning 70. The Oregon House passed it 42-16, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2191",
+      "roll": 1570360,
+      "measure_id": "HB 3187",
+      "vote_date": "2025-05-13",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 3187, which bars an employer or hiring agency from asking an applicant's age or birth date, or when they went to or finished school, until the first interview is over. Where there is no interview, the bar runs until a conditional job offer is made. They may still ask when the answer is needed to check a genuine job requirement or to follow another law. The law also drops an old rule that let apprenticeship programs turn away someone who could not finish the training before turning 70. The Oregon Senate passed it 20-9, and it became law.",
+      "nay_description": "Voted against House Bill 3187, which bars an employer or hiring agency from asking an applicant's age or birth date, or when they went to or finished school, until the first interview is over. Where there is no interview, the bar runs until a conditional job offer is made. They may still ask when the answer is needed to check a genuine job requirement or to follow another law. The law also drops an old rule that let apprenticeship programs turn away someone who could not finish the training before turning 70. The Oregon Senate passed it 20-9, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

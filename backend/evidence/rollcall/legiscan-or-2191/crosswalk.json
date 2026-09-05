@@ -1,0 +1,463 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "OR",
+  "session_id": 2191,
+  "note": "people_id -> VoteApp candidate id for the Oregon 2025 Regular Session (LegiScan 2191). Seats in these notes come from LegiScan's `district` field, which is the reliable one here: its `role` field contradicts it, printing senators as \"house\" beside an SD- district, so seat logic reads district and never role. Mapped entries are the 52 proposals from rollcall:legiscan:resolve, every one checked by hand, plus 9 pairs the proposer cannot reach: six are the nickname class (LegiScan keeps the legal first name while the ballot carries the working one), one is a shortened multi-part surname, and two are sitting members running for statewide office, who fall outside the state-legislative candidate pool by design. Explicit nulls are members with no Nov-2026 state-legislative candidacy; 16 of them hold Senate seats that are not on the 2026 ballot at all, because Oregon staggers its Senate.",
+  "entries": [
+    {
+      "people_id": 6204,
+      "candidate_id": "2bd4279d-02ab-40f2-8f81-35c478da7580",
+      "note": "Sara Gelser Blouin, SD-008 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Sara Gelser Blouin"
+    },
+    {
+      "people_id": 6221,
+      "candidate_id": null,
+      "note": "Kim Thatcher, SD-011 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 6229,
+      "candidate_id": null,
+      "note": "Lew Frederick, SD-022 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 6241,
+      "candidate_id": "296d22c9-c898-46fb-b624-62fe0958e5d2",
+      "note": "Gregory Smith, HD-057 in the 2025 session; proposed by name match (first_prefix) and accepted, on the ballot as Greg Smith"
+    },
+    {
+      "people_id": 6267,
+      "candidate_id": "6b479c50-64cf-43ee-be67-4ae63b164255",
+      "note": "Nancy Nathanson, HD-013 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Nancy Nathanson"
+    },
+    {
+      "people_id": 6275,
+      "candidate_id": null,
+      "note": "Fred Girod, SD-009 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 6283,
+      "candidate_id": "6e622214-28f8-4629-b90e-a1e302edebb8",
+      "note": "Floyd Prozanski, SD-004 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Floyd Prozanski"
+    },
+    {
+      "people_id": 6284,
+      "candidate_id": null,
+      "note": "Bruce Starr, SD-012 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 10752,
+      "candidate_id": null,
+      "note": "Mike McLane, SD-030 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 14772,
+      "candidate_id": "fbed3337-b824-4a18-9171-2a5fcded3237",
+      "note": "David Gomberg, HD-010 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as David Gomberg"
+    },
+    {
+      "people_id": 15768,
+      "candidate_id": null,
+      "note": "Chris Gorsek, SD-025 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 15769,
+      "candidate_id": null,
+      "note": "John Lively, HD-007 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 16808,
+      "candidate_id": "c04b0788-71ae-44fb-9ecd-37b895ef62a2",
+      "note": "Paul Evans, HD-020 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Paul Evans"
+    },
+    {
+      "people_id": 16809,
+      "candidate_id": null,
+      "note": "Ken Helm, HD-027 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 16810,
+      "candidate_id": "ae95b651-6d8a-48b1-aae4-80464f873975",
+      "note": "Susan McLain, HD-029 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Susan McLain"
+    },
+    {
+      "people_id": 16811,
+      "candidate_id": "81fd1d1d-088a-4b42-9309-08aae5b29329",
+      "note": "Robert Nosse, HD-042 in the 2025 session; proposed by name match (first_prefix) and accepted, on the ballot as Rob Nosse"
+    },
+    {
+      "people_id": 16814,
+      "candidate_id": null,
+      "note": "Kathleen Taylor, SD-021 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 16818,
+      "candidate_id": null,
+      "note": "Cedric Hayden, SD-006 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 18581,
+      "candidate_id": "629d43aa-f6ef-405a-80d9-70ee233ba789",
+      "note": "David Smith, SD-001 in the 2025 session; hand-added: LegiScan prints him as David Smith at SD-001; the ballot name is David Brock Smith and his current office is Oregon State Senator, District 1. He is running for UNITED STATES SENATOR in Nov 2026, so he sits outside the state-legislative pool"
+    },
+    {
+      "people_id": 18583,
+      "candidate_id": "9167e221-c44d-45cc-be83-21b5d5f3deb0",
+      "note": "Julianne Fahey, HD-014 in the 2025 session; hand-added: legal first name Julianne in LegiScan, on the ballot as Julie Fahey; same seat"
+    },
+    {
+      "people_id": 18585,
+      "candidate_id": "0dfa0eac-facd-4c9c-8fe3-25f8322d396d",
+      "note": "Pam Marsh, HD-005 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Pam Marsh"
+    },
+    {
+      "people_id": 18586,
+      "candidate_id": "b36886fd-92b4-412d-ac9d-dc456ad98a84",
+      "note": "Mark Meek, SD-020 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Mark Meek"
+    },
+    {
+      "people_id": 18588,
+      "candidate_id": "910aee51-2157-4771-9784-767feb20671b",
+      "note": "Tawna Sanchez, HD-043 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Tawna Sanchez"
+    },
+    {
+      "people_id": 18597,
+      "candidate_id": "a720e687-b47c-4ed8-b718-224924cab251",
+      "note": "James Manning, SD-007 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as James Manning"
+    },
+    {
+      "people_id": 18600,
+      "candidate_id": "85fe465a-6118-4f13-a231-7a571a8b8a6b",
+      "note": "Werner Reschke, HD-055 in the 2025 session; hand-added: legal first name Eric, nickname Werner; the ballot name \"E. Werner Reschke\" leads with a single-letter token and the prefix rule needs both names at least two letters; same seat"
+    },
+    {
+      "people_id": 18601,
+      "candidate_id": null,
+      "note": "Janeen Sollman, SD-015 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 19312,
+      "candidate_id": null,
+      "note": "Rick Lewis, HD-018 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 19542,
+      "candidate_id": "673c1c11-d517-46eb-bb79-f0cad1466e72",
+      "note": "Jeff Helfrich, HD-052 in the 2025 session; proposed by name match (first_prefix) and accepted, on the ballot as Jeffrey Helfrich; he is vacating House District 52 to run for Senate District 26, the seat Daniel Bonham is leaving, and House District 52 is an open race on the 2026 ballot"
+    },
+    {
+      "people_id": 19543,
+      "candidate_id": null,
+      "note": "Daniel Bonham, SD-026 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 19566,
+      "candidate_id": "b4daf5fd-538b-4b97-b7f1-7bb974e79240",
+      "note": "Rob Wagner, SD-019 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Rob Wagner"
+    },
+    {
+      "people_id": 20424,
+      "candidate_id": "00185c65-117d-4e1b-a566-2020c96bb310",
+      "note": "Christine Drazan, HD-051 in the 2025 session; hand-added: Christine Drazan voted this session as the House District 51 member; she has since moved to Senate District 26, her current office, and is running for GOVERNOR in Nov 2026, so she sits outside the state-legislative pool"
+    },
+    {
+      "people_id": 20426,
+      "candidate_id": "6267a908-b0b8-4aad-954a-094296f7dc3f",
+      "note": "Courtney Neron Misslin, SD-013 in the 2025 session; hand-added: LegiScan last name \"Neron Misslin\", on the ballot as Courtney Neron; her current office is Oregon State Senator and she is running again in Senate District 13, the seat she held in the session"
+    },
+    {
+      "people_id": 20429,
+      "candidate_id": null,
+      "note": "Jeffrey Golden, SD-003 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 20616,
+      "candidate_id": "974b34d8-fb19-45dc-a9aa-31405cb8dc36",
+      "note": "Kimberly Wallan, HD-006 in the 2025 session; proposed by name match (first_prefix) and accepted, on the ballot as Kim Wallan"
+    },
+    {
+      "people_id": 20618,
+      "candidate_id": "947ea398-25cb-4cbf-8c18-0d20e44f670a",
+      "note": "Shelly Boshart Davis, HD-015 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Shelly Boshart Davis"
+    },
+    {
+      "people_id": 21434,
+      "candidate_id": "8a72a888-de5e-44a7-9379-98b8760e38fb",
+      "note": "Vikki Breese-Iverson, HD-059 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Vikki Breese-Iverson"
+    },
+    {
+      "people_id": 21542,
+      "candidate_id": "63581e53-b259-4682-a143-3d95cdef5629",
+      "note": "Mark Owens, HD-060 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Mark Owens"
+    },
+    {
+      "people_id": 22306,
+      "candidate_id": null,
+      "note": "Richard Anderson, SD-005 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 22307,
+      "candidate_id": "9c284d4a-eeba-4ac7-a06a-71272e385c2e",
+      "note": "Kayse Jama, SD-024 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Kayse Jama"
+    },
+    {
+      "people_id": 22308,
+      "candidate_id": null,
+      "note": "Katherine Lieber, SD-014 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 22309,
+      "candidate_id": "c182987f-74bc-4a8e-8a28-d9415624f24f",
+      "note": "Deb Patterson, SD-010 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Deb Patterson"
+    },
+    {
+      "people_id": 22311,
+      "candidate_id": null,
+      "note": "Wlnsvey Campos, SD-018 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 22312,
+      "candidate_id": null,
+      "note": "Jami Cate, HD-011 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 22313,
+      "candidate_id": "924a0172-9a75-4bf4-8a19-880c933dd1cd",
+      "note": "Dacia Grayber, HD-028 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Dacia Grayber"
+    },
+    {
+      "people_id": 22314,
+      "candidate_id": "022c7d72-d5db-484d-a5e0-11fc2dea690b",
+      "note": "Zach Hudson, HD-049 in the 2025 session; proposed by name match (first_prefix) and accepted, on the ballot as Zach Hudson"
+    },
+    {
+      "people_id": 22315,
+      "candidate_id": "57d9b927-77ea-41f8-ae56-02a058f4265f",
+      "note": "Jason Kropf, HD-054 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Jason Kropf"
+    },
+    {
+      "people_id": 22316,
+      "candidate_id": "9a53b614-9684-46c2-981a-6f25c49dd3d9",
+      "note": "Bobby Levy, HD-058 in the 2025 session; hand-added: legal first name Barbara, nickname Bobby; same seat"
+    },
+    {
+      "people_id": 22318,
+      "candidate_id": null,
+      "note": "Khanh Pham, SD-023 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 22319,
+      "candidate_id": "14a6918c-f34a-4eb7-88be-cbe65cd5ec2a",
+      "note": "Lisa Reynolds, SD-017 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Lisa Reynolds"
+    },
+    {
+      "people_id": 22320,
+      "candidate_id": "910318fe-d439-4e06-a0a7-3b6a14789355",
+      "note": "Ricki Ruiz, HD-050 in the 2025 session; hand-added: legal first name Ricardo, nickname Ricki; same seat"
+    },
+    {
+      "people_id": 22321,
+      "candidate_id": null,
+      "note": "Suzanne Weber, SD-016 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 22322,
+      "candidate_id": null,
+      "note": "Boomer Wright, HD-009 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 22909,
+      "candidate_id": "22ebf982-f927-4d41-8676-b27ab13641ac",
+      "note": "Andrea Valderrama, HD-047 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Andrea Valderrama"
+    },
+    {
+      "people_id": 22950,
+      "candidate_id": "f843c648-3413-455e-8518-ea637d2b70a9",
+      "note": "Anna Scharf, HD-023 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Anna Scharf"
+    },
+    {
+      "people_id": 23063,
+      "candidate_id": "6c7a568c-ab3c-4471-82ca-4ed162748e64",
+      "note": "Travis Nelson, HD-044 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Travis Nelson"
+    },
+    {
+      "people_id": 23064,
+      "candidate_id": "09e54780-8bd7-48d0-8afb-d5288d321da5",
+      "note": "Nathan Sosa, HD-030 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Nathan Sosa"
+    },
+    {
+      "people_id": 23847,
+      "candidate_id": "5ce55cea-4a34-488f-ad1e-afbd53fd9a3f",
+      "note": "Ben Bowman, HD-025 in the 2025 session; proposed by name match (first_prefix) and accepted, on the ballot as Ben Bowman"
+    },
+    {
+      "people_id": 23848,
+      "candidate_id": null,
+      "note": "Ed  Diehl, HD-017 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 23849,
+      "candidate_id": "cc55ee8c-817c-4909-909d-a680ae7e92f9",
+      "note": "Mark Gamba, HD-041 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Mark Gamba"
+    },
+    {
+      "people_id": 23850,
+      "candidate_id": null,
+      "note": "Annessa Hartman, HD-040 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 23851,
+      "candidate_id": "f3e604b0-2e56-41e4-8e85-449bc573a157",
+      "note": "Cyrus Javadi, HD-032 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Cyrus Javadi"
+    },
+    {
+      "people_id": 23852,
+      "candidate_id": "9c3bfb4c-1698-48cf-8246-7b023c770cb4",
+      "note": "Emerson Levy, HD-053 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Emerson Levy"
+    },
+    {
+      "people_id": 23853,
+      "candidate_id": "2b9538a6-534d-4099-bb84-2494e26db46a",
+      "note": "Kevin Mannix, HD-021 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Kevin Mannix"
+    },
+    {
+      "people_id": 23854,
+      "candidate_id": "0965089a-b4c1-4357-be9b-290b23f053bb",
+      "note": "Virgle Osborne, HD-002 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Virgle Osborne"
+    },
+    {
+      "people_id": 23855,
+      "candidate_id": "b68ad01f-d6e6-4ba6-93a8-cade3ff90e28",
+      "note": "Hai Pham, HD-036 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Hai Pham"
+    },
+    {
+      "people_id": 23856,
+      "candidate_id": "4af35f0e-767b-439a-8c68-56427bca2497",
+      "note": "Jules Walters, HD-037 in the 2025 session; hand-added: legal first name Julianna, nickname Jules; same seat"
+    },
+    {
+      "people_id": 23857,
+      "candidate_id": null,
+      "note": "Aaron Woods, SD-013 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 23867,
+      "candidate_id": "9c312be6-2a9a-4406-add1-c26c55b00b0b",
+      "note": "Emily McIntire, HD-056 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Emily McIntire"
+    },
+    {
+      "people_id": 23910,
+      "candidate_id": "10c48a5c-92a8-422d-91df-12177e514f87",
+      "note": "Lucetta Elmer, HD-024 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Lucetta Elmer"
+    },
+    {
+      "people_id": 23912,
+      "candidate_id": "890d7617-d45b-4bd8-805e-1e63464ac8ee",
+      "note": "Thuy Tran, HD-045 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Thuy Tran"
+    },
+    {
+      "people_id": 23913,
+      "candidate_id": null,
+      "note": "Hoa Nguyen, HD-048 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 23914,
+      "candidate_id": "06cb4955-6734-4dc5-ab56-44e2321422b4",
+      "note": "Farrah Chaichi, HD-035 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Farrah Chaichi"
+    },
+    {
+      "people_id": 24261,
+      "candidate_id": "db520a8a-f4c3-45b9-a55c-d60a5eed35cf",
+      "note": "Tom Andersen, HD-019 in the 2025 session; hand-added: legal first name Thomas, nickname Tom; \"thomas\" is not a prefix of \"tom\", so the proposer could not reach it; same seat"
+    },
+    {
+      "people_id": 24263,
+      "candidate_id": "6a9761f1-5971-498f-9310-6f3c876c05d7",
+      "note": "Daniel Nguyen, HD-038 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Daniel Loc Nguyen"
+    },
+    {
+      "people_id": 24887,
+      "candidate_id": "3b22b5e0-98f7-435b-b842-4d0648bf1d99",
+      "note": "Court Boice, HD-001 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Court Boice"
+    },
+    {
+      "people_id": 25131,
+      "candidate_id": "b7e1a447-a2f2-41d3-821d-346bbf04de2b",
+      "note": "Dwayne Yunker, HD-003 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Dwayne Yunker"
+    },
+    {
+      "people_id": 25435,
+      "candidate_id": null,
+      "note": "Shannon Isadore, HD-033 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 26274,
+      "candidate_id": "dc9f335e-b80f-4314-8b31-b1c07bb344ac",
+      "note": "Willy Chotzen, HD-046 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Willy Chotzen"
+    },
+    {
+      "people_id": 26275,
+      "candidate_id": "83a02730-b14d-4769-8fc6-d56e2eeb95b5",
+      "note": "Darcey Edwards, HD-031 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Darcey Edwards"
+    },
+    {
+      "people_id": 26276,
+      "candidate_id": "35d218da-a3ae-4651-bf00-64dc4daeb5de",
+      "note": "Lisa Fragala, HD-008 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Lisa Fragala"
+    },
+    {
+      "people_id": 26277,
+      "candidate_id": "bb143c7a-9e6a-4ed7-b816-fbe054369633",
+      "note": "Darin Harbick, HD-012 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Darin Harbick"
+    },
+    {
+      "people_id": 26278,
+      "candidate_id": "9d0b0af7-34b3-446e-8854-509e2a2fd0a6",
+      "note": "Sarah Finger McDonald, HD-016 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Sarah Finger McDonald"
+    },
+    {
+      "people_id": 26279,
+      "candidate_id": "1de02114-fd04-4c83-a44c-5979aa81afae",
+      "note": "Lesly Munoz, HD-022 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Lesly Mu\u00f1oz"
+    },
+    {
+      "people_id": 26280,
+      "candidate_id": null,
+      "note": "Anthony Broadman, SD-027 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 26281,
+      "candidate_id": null,
+      "note": "Todd Nash, SD-029 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 26282,
+      "candidate_id": "80c8362b-b433-4058-9183-3711148a3204",
+      "note": "April Dobson, HD-039 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as April Dobson"
+    },
+    {
+      "people_id": 26283,
+      "candidate_id": "ac269763-cb10-4501-8dae-841a4b2904e5",
+      "note": "Alek Skarlatos, HD-004 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Alek Skarlatos"
+    },
+    {
+      "people_id": 26284,
+      "candidate_id": null,
+      "note": "Diane Linthicum, SD-028 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 26285,
+      "candidate_id": null,
+      "note": "Noah Robinson, SD-002 in the 2025 session; no Nov-2026 state-legislative candidacy"
+    },
+    {
+      "people_id": 26384,
+      "candidate_id": "763462b2-70d8-40cf-a558-5a2f1edeb133",
+      "note": "Mari Watanabe, HD-034 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Mari Watanabe"
+    },
+    {
+      "people_id": 26475,
+      "candidate_id": "de5f1316-5903-46f0-8117-597226f0401c",
+      "note": "Sue Rieke Smith, HD-026 in the 2025 session; proposed by name match (first_and_last) and accepted, on the ballot as Sue Rieke Smith"
+    }
+  ]
+}
