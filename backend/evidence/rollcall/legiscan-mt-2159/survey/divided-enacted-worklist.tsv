@@ -1,18 +1,18 @@
 measure	bill_type	chamber	vote_date	roll	yea	nay	disposition	title
 HB 10	B	senate	2025-04-23	1555651	39	11	dropped:filter-5	Long-range information technology appropriations
-HB 102	B	house	2025-01-24	1481443	60	38	unbatched	Revise laws related to public defenders for clarity
-HB 105	B	senate	2025-03-18	1519799	34	15	unbatched	Revise laws related to game bird farms
-HB 107	B	senate	2025-03-19	1521731	32	18	unbatched	Revising licensing requirements for commercial activities regulated by FWP
-HB 115	B	house	2025-01-22	1481488	76	24	unbatched	Revise Montana code annotated publishing laws related to code commissioner duties
+HB 102	B	house	2025-01-24	1481443	60	38	dropped:filter-5	Revise laws related to public defenders for clarity
+HB 105	B	senate	2025-03-18	1519799	34	15	dropped:filter-5	Revise laws related to game bird farms
+HB 107	B	senate	2025-03-19	1521731	32	18	dropped:filter-5	Revising licensing requirements for commercial activities regulated by FWP
+HB 115	B	house	2025-01-22	1481488	76	24	dropped:filter-5	Revise Montana code annotated publishing laws related to code commissioner duties
 HB 12	B	house	2025-03-19	1521291	70	28	superseded:later-roll-used	Montana historic preservation grants
 HB 12	B	house	2025-04-29	1559919	70	29	dropped:filter-5	Montana historic preservation grants
 HB 12	B	senate	2025-04-24	1557215	39	10	dropped:filter-5	Montana historic preservation grants
 HB 121	B	house	2025-01-16	1481625	58	41	batch-01	Provide privacy in certain restrooms, changing rooms, and sleeping quarters
 HB 121	B	senate	2025-02-11	1486495	32	18	batch-01	Provide privacy in certain restrooms, changing rooms, and sleeping quarters
-HB 122	B	house	2025-01-29	1481638	76	24	unbatched	Revise right-of-way laws
-HB 122	B	senate	2025-04-08	1540610	31	17	unbatched	Revise right-of-way laws
-HB 123	B	senate	2025-04-09	1542212	26	22	unbatched	Revise alcohol laws relating to self-service
-HB 127	B	senate	2025-04-02	1534382	36	14	unbatched	Revise laws related to the fire suppression account
+HB 122	B	house	2025-01-29	1481638	76	24	dropped:filter-5	Revise right-of-way laws
+HB 122	B	senate	2025-04-08	1540610	31	17	dropped:filter-5	Revise right-of-way laws
+HB 123	B	senate	2025-04-09	1542212	26	22	dropped:filter-5	Revise alcohol laws relating to self-service
+HB 127	B	senate	2025-04-02	1534382	36	14	dropped:filter-5	Revise laws related to the fire suppression account
 HB 128	B	senate	2025-04-01	1532853	35	15	unbatched	Protect volunteer emergency service providers from termination
 HB 129	B	senate	2025-04-24	1557141	32	18	unbatched	Provide income tax benefit to support emergency response volunteers
 HB 13	B	house	2025-01-27	1481194	71	27	dropped:filter-5	State Employee Pay Plan
@@ -34,15 +34,15 @@ HB 167	B	senate	2025-03-17	1518996	31	18	unbatched	Generally revise election law
 HB 168	B	house	2025-04-05	1537640	64	34	batch-09	Provide state funding for preschool children with disabilities
 HB 168	B	senate	2025-04-22	1554305	29	21	batch-09	Provide state funding for preschool children with disabilities
 HB 171	B	senate	2025-04-07	1538324	35	14	unbatched	Eliminate Montana alfalfa seed committee
-HB 173	B	house	2025-01-29	1481810	59	41	unbatched	Revise definition of victim in youth court act
-HB 173	B	senate	2025-03-27	1529200	32	18	unbatched	Revise definition of victim in youth court act
+HB 173	B	house	2025-01-29	1481810	59	41	dropped:filter-5	Revise definition of victim in youth court act
+HB 173	B	senate	2025-03-27	1529200	32	18	dropped:filter-5	Revise definition of victim in youth court act
 HB 179	B	house	2025-02-04	1481813	58	42	batch-07	Revise election laws related to inactive voter status
 HB 181	B	house	2025-01-23	1481839	80	20	unbatched	Provide authority for patrol officers to make arrests on capitol complex
 HB 184	B	house	2025-01-30	1481846	78	22	unbatched	Modify language in the MCA that may diminish the dignity of individuals who are deaf or hard of hearing
-HB 194	B	house	2025-02-03	1481877	71	28	unbatched	Generally revise laws related to juries
+HB 194	B	house	2025-02-03	1481877	71	28	dropped:filter-5	Generally revise laws related to juries
 HB 197	B	house	2025-01-30	1481902	58	42	superseded:later-roll-used	Revising workers’ compensation laws relating to when the employee is released to return to work
-HB 197	B	house	2025-03-20	1523909	59	39	unbatched	Revising workers’ compensation laws relating to when the employee is released to return to work
-HB 197	B	senate	2025-03-17	1518988	35	14	unbatched	Revising workers’ compensation laws relating to when the employee is released to return to work
+HB 197	B	house	2025-03-20	1523909	59	39	batch-11	Revising workers’ compensation laws relating to when the employee is released to return to work
+HB 197	B	senate	2025-03-17	1518988	35	14	batch-11	Revising workers’ compensation laws relating to when the employee is released to return to work
 HB 2	B	house	2025-04-07	1538411	61	38	superseded:later-roll-used	General Appropriations Act
 HB 2	B	house	2025-04-30	1562041	66	34	dropped:filter-5	General Appropriations Act
 HB 2	B	senate	2025-04-23	1555295	27	23	dropped:filter-5	General Appropriations Act
@@ -74,19 +74,19 @@ HB 231	B	senate	2025-04-24	1557138	25	25	superseded:later-roll-used	Revise prope
 HB 231	B	senate	2025-04-25	1558093	25	24	superseded:later-roll-used	Revise property tax rates for certain property
 HB 231	B	senate	2025-04-30	1562488	28	22	batch-07	Revise property tax rates for certain property
 HB 233	B	house	2025-02-11	1486213	63	36	unbatched	Provide for transfer of title of open spaces in final plat to HOA
-HB 239	B	senate	2025-04-22	1553971	38	12	unbatched	Revise laws related to construction contractors
+HB 239	B	senate	2025-04-22	1553971	38	12	batch-11	Revise laws related to construction contractors
 HB 24	B	house	2025-01-21	1480872	79	20	dropped:filter-5	Clarify laws related to kindergarten
 HB 245	B	house	2025-02-10	1485363	63	37	unbatched	Revise the Montana HELP Act workforce development provisions and termination date
 HB 245	B	senate	2025-02-27	1501769	30	20	unbatched	Revise the Montana HELP Act workforce development provisions and termination date
-HB 254	B	senate	2025-03-31	1531011	34	16	unbatched	Eliminate fingerprint background check requirements for professional employer organization
+HB 254	B	senate	2025-03-31	1531011	34	16	batch-11	Eliminate fingerprint background check requirements for professional employer organization
 HB 259	B	house	2025-02-25	1499043	56	44	superseded:later-roll-used	Revise fish and wildlife  commission techniques for gray wolf management
 HB 259	B	house	2025-04-11	1546150	56	43	batch-08	Revise fish and wildlife  commission techniques for gray wolf management
 HB 259	B	senate	2025-03-31	1531438	32	18	batch-08	Revise fish and wildlife  commission techniques for gray wolf management
-HB 264	B	senate	2025-04-07	1538477	32	17	unbatched	Generally revise wildlife location data subject to public information requests
+HB 264	B	senate	2025-04-07	1538477	32	17	dropped:filter-5	Generally revise wildlife location data subject to public information requests
 HB 266	B	house	2025-04-15	1549159	77	20	dropped:filter-5	Establish education inflation reconciliation process
 HB 266	B	senate	2025-04-02	1534942	31	19	dropped:filter-5	Establish education inflation reconciliation process
 HB 268	B	house	2025-02-06	1483807	60	39	unbatched	Generally revise notification requirements related to the registration of sexual and violent offenders
-HB 270	B	house	2025-04-15	1548325	64	33	unbatched	Revise remedies to MEPA
+HB 270	B	house	2025-04-15	1548325	64	33	batch-11	Revise remedies to MEPA
 HB 278	B	house	2025-02-12	1488434	60	40	batch-01	Require peace officer to check and report immigration status during lawful stop
 HB 278	B	senate	2025-04-01	1533387	30	20	batch-01	Require peace officer to check and report immigration status during lawful stop
 HB 28	B	house	2025-01-17	1480903	73	25	dropped:filter-5	Clarify timelines and opening procedures for public charter schools
@@ -110,25 +110,25 @@ HB 312	B	house	2025-02-12	1487891	78	22	unbatched	Revise speed limit laws
 HB 329	B	house	2025-03-28	1530365	51	48	superseded:later-roll-used	Make the Montana ammunition act permanent
 HB 329	B	house	2025-04-30	1562426	55	45	dropped:filter-5	Make the Montana ammunition act permanent
 HB 329	B	senate	2025-04-14	1547688	34	14	superseded:later-roll-used	Make the Montana ammunition act permanent
-HB 332	B	house	2025-02-19	1494275	66	34	unbatched	Generally revise youth court laws
-HB 332	B	senate	2025-04-11	1545985	30	18	unbatched	Generally revise youth court laws
+HB 332	B	house	2025-02-19	1494275	66	34	dropped:filter-5	Generally revise youth court laws
+HB 332	B	senate	2025-04-11	1545985	30	18	dropped:filter-5	Generally revise youth court laws
 HB 337	B	house	2025-04-02	1535087	55	40	batch-01	Revise income tax laws to lower income taxes
 HB 337	B	senate	2025-04-22	1554357	34	16	batch-01	Revise income tax laws to lower income taxes
 HB 338	B	senate	2025-04-11	1546110	32	16	batch-10	Revise laws regarding targeted early numeracy intervention
-HB 342	B	house	2025-02-13	1489730	57	42	unbatched	Revise civil liability laws to provide a statutory duty of care for certain actions
-HB 342	B	senate	2025-04-09	1542136	32	17	unbatched	Revise civil liability laws to provide a statutory duty of care for certain actions
+HB 342	B	house	2025-02-13	1489730	57	42	batch-11	Revise civil liability laws to provide a statutory duty of care for certain actions
+HB 342	B	senate	2025-04-09	1542136	32	17	batch-11	Revise civil liability laws to provide a statutory duty of care for certain actions
 HB 343	B	house	2025-03-05	1505800	56	42	dropped:filter-5	Require schools to provide religious instruction released time program
 HB 343	B	senate	2025-04-18	1552256	31	19	dropped:filter-5	Require schools to provide religious instruction released time program
 HB 344	B	house	2025-02-19	1494138	62	38	superseded:later-roll-used	Revise criminal laws.
-HB 344	B	house	2025-04-15	1548471	68	29	unbatched	Revise criminal laws.
-HB 344	B	senate	2025-04-02	1534593	36	14	unbatched	Revise criminal laws.
+HB 344	B	house	2025-04-15	1548471	68	29	batch-11	Revise criminal laws.
+HB 344	B	senate	2025-04-02	1534593	36	14	batch-11	Revise criminal laws.
 HB 348	B	house	2025-02-22	1497139	65	32	unbatched	Revise special session polling laws
 HB 348	B	senate	2025-04-22	1554343	29	21	unbatched	Revise special session polling laws
 HB 349	B	senate	2025-04-15	1549233	35	15	unbatched	Revise TRS laws related to reemployment
 HB 350	B	house	2025-02-20	1496092	57	42	unbatched	Prohibit enforcement of policies issued by certain intergovernmental entities
 HB 350	B	senate	2025-04-11	1546438	32	16	unbatched	Prohibit enforcement of policies issued by certain intergovernmental entities
 HB 352	B	senate	2025-04-03	1536334	35	15	unbatched	Revise child support guideline laws and establish a committee
-HB 354	B	house	2025-02-28	1502361	67	31	unbatched	Revise penalties for criminal trespass while fishing, trapping, hunting, or collecting antlers/sheds/horns
+HB 354	B	house	2025-02-28	1502361	67	31	dropped:filter-5	Revise penalties for criminal trespass while fishing, trapping, hunting, or collecting antlers/sheds/horns
 HB 358	B	senate	2025-04-12	1546696	37	13	unbatched	Generally revise pension laws related to the Volunteer Firefighters' Compensation Act
 HB 365	B	house	2025-02-19	1494271	57	43	unbatched	Revise laws relating to attorney fees and costs based on legislative conduct
 HB 365	B	senate	2025-04-14	1547627	31	17	unbatched	Revise laws relating to attorney fees and costs based on legislative conduct
@@ -156,15 +156,15 @@ HB 411	B	house	2025-03-26	1528094	56	43	unbatched	Exempt agricultural property f
 HB 411	B	senate	2025-04-22	1554841	38	12	unbatched	Exempt agricultural property from open space levies
 HB 413	B	house	2025-02-27	1501539	56	42	batch-05	Revise election laws regarding residency
 HB 413	B	senate	2025-04-11	1545872	30	18	batch-05	Revise election laws regarding residency
-HB 415	B	house	2025-02-21	1496478	63	35	unbatched	Revise laws on a judge's ability to provide bail to certain defendants
-HB 415	B	senate	2025-04-14	1547363	34	14	unbatched	Revise laws on a judge's ability to provide bail to certain defendants
+HB 415	B	house	2025-02-21	1496478	63	35	dropped:filter-5	Revise laws on a judge's ability to provide bail to certain defendants
+HB 415	B	senate	2025-04-14	1547363	34	14	dropped:filter-5	Revise laws on a judge's ability to provide bail to certain defendants
 HB 416	B	house	2025-02-26	1500714	56	44	unbatched	Require homeowners' associations to seek permission for entry on real property
 HB 421	B	senate	2025-04-24	1557114	37	13	unbatched	Increase DNRC fire assessment fees
 HB 423	B	senate	2025-04-14	1547202	31	17	dropped:filter-5	Revise election laws related to active and inactive voter lists
 HB 427	B	house	2025-03-01	1503077	57	40	superseded:later-roll-used	Require government to provide certain building code text or citation causing delay or stop
 HB 427	B	house	2025-04-16	1550413	61	37	batch-10	Require government to provide certain building code text or citation causing delay or stop
 HB 427	B	senate	2025-04-07	1538689	39	10	batch-10	Require government to provide certain building code text or citation causing delay or stop
-HB 43	B	senate	2025-02-24	1497732	30	19	unbatched	Generally revise motor vehicle traffic regulation laws
+HB 43	B	senate	2025-02-24	1497732	30	19	dropped:filter-5	Generally revise motor vehicle traffic regulation laws
 HB 430	B	house	2025-02-22	1497173	75	23	unbatched	Repeal process to establish county owned scales
 HB 442	B	senate	2025-04-14	1546894	30	18	unbatched	Revise laws regarding reporting requirements for certain professional occupations
 HB 443	B	house	2025-03-03	1503739	63	35	unbatched	Repeal county licensing of transient retail merchants
@@ -174,9 +174,9 @@ HB 446	B	house	2025-04-29	1560255	50	49	unbatched	Revise indecent exposure laws
 HB 446	B	senate	2025-04-12	1546649	29	21	superseded:later-roll-used	Revise indecent exposure laws
 HB 446	B	senate	2025-04-29	1560256	31	19	unbatched	Revise indecent exposure laws
 HB 46	B	house	2025-01-21	1480950	77	22	dropped:filter-5	Revise change of attorney laws for public defenders
-HB 466	B	senate	2025-04-14	1546924	38	10	unbatched	Provide categorical exclusions from MEPA
-HB 467	B	house	2025-02-25	1499519	64	36	unbatched	Revise DUI testing to include oral fluids
-HB 467	B	senate	2025-04-14	1547317	38	10	unbatched	Revise DUI testing to include oral fluids
+HB 466	B	senate	2025-04-14	1546924	38	10	batch-11	Provide categorical exclusions from MEPA
+HB 467	B	house	2025-02-25	1499519	64	36	batch-11	Revise DUI testing to include oral fluids
+HB 467	B	senate	2025-04-14	1547317	38	10	batch-11	Revise DUI testing to include oral fluids
 HB 471	B	house	2025-03-06	1507017	56	42	batch-04	Revise education laws related to human sexuality and identity instruction
 HB 471	B	senate	2025-04-10	1543602	28	20	batch-04	Revise education laws related to human sexuality and identity instruction
 HB 476	B	house	2025-03-18	1520054	74	24	unbatched	Establish grant program for newborn safety devices
@@ -198,14 +198,14 @@ HB 509	B	senate	2025-04-14	1546910	38	10	batch-01	Revise the quality educator lo
 HB 515	B	house	2025-04-05	1537661	73	25	superseded:later-roll-used	Generally revise laws relating to school facilities consolidating two existing state special revenue accounts
 HB 515	B	house	2025-04-25	1557972	80	20	batch-10	Generally revise laws relating to school facilities consolidating two existing state special revenue accounts
 HB 515	B	senate	2025-04-22	1553789	29	21	batch-10	Generally revise laws relating to school facilities consolidating two existing state special revenue accounts
-HB 516	B	senate	2025-04-12	1546731	39	11	unbatched	Move workers' compensation court to judicial branch
+HB 516	B	senate	2025-04-12	1546731	39	11	dropped:filter-5	Move workers' compensation court to judicial branch
 HB 521	B	house	2025-03-07	1508658	58	41	unbatched	Generally revise civil liability laws
 HB 521	B	senate	2025-04-14	1547802	34	14	unbatched	Generally revise civil liability laws
 HB 523	B	house	2025-03-07	1508550	67	32	unbatched	Providing for disposition of abandoned graveyard lots
 HB 531	B	house	2025-03-07	1508459	59	40	unbatched	Revise laws related to legislative rules
 HB 531	B	senate	2025-04-10	1544837	29	19	unbatched	Revise laws related to legislative rules
-HB 535	B	house	2025-03-05	1505667	62	36	unbatched	Revise the uniform criminal extradition act
-HB 535	B	senate	2025-04-15	1549180	33	17	unbatched	Revise the uniform criminal extradition act
+HB 535	B	house	2025-03-05	1505667	62	36	dropped:filter-5	Revise the uniform criminal extradition act
+HB 535	B	senate	2025-04-15	1549180	33	17	dropped:filter-5	Revise the uniform criminal extradition act
 HB 543	B	senate	2025-04-17	1551129	31	19	unbatched	Repeal termination date on reporting and disclosure of violence against health care employees
 HB 55	B	house	2025-01-21	1481165	74	25	superseded:later-roll-used	Revising public utility resource planning laws
 HB 55	B	house	2025-04-22	1553264	63	35	batch-08	Revising public utility resource planning laws
@@ -217,13 +217,13 @@ HB 571	B	house	2025-03-06	1507137	60	39	superseded:later-roll-used	Revise aerona
 HB 571	B	house	2025-04-16	1550784	66	32	unbatched	Revise aeronautics laws related to the use of ADS–B information
 HB 571	B	senate	2025-04-08	1541164	30	18	unbatched	Revise aeronautics laws related to the use of ADS–B information
 HB 573	B	senate	2025-04-15	1548715	30	20	unbatched	Revise transformational learning laws to create a phase II grant program
-HB 575	B	house	2025-03-01	1503051	68	29	unbatched	Generally revise the proceedings in which a public defender may be assigned
-HB 575	B	senate	2025-04-28	1559166	25	24	unbatched	Generally revise the proceedings in which a public defender may be assigned
-HB 578	B	house	2025-03-06	1507053	58	41	unbatched	Generally revise laws related to restitution
-HB 578	B	senate	2025-04-16	1550003	31	19	unbatched	Generally revise laws related to restitution
+HB 575	B	house	2025-03-01	1503051	68	29	batch-11	Generally revise the proceedings in which a public defender may be assigned
+HB 575	B	senate	2025-04-28	1559166	25	24	batch-11	Generally revise the proceedings in which a public defender may be assigned
+HB 578	B	house	2025-03-06	1507053	58	41	dropped:filter-5	Generally revise laws related to restitution
+HB 578	B	senate	2025-04-16	1550003	31	19	dropped:filter-5	Generally revise laws related to restitution
 HB 582	B	house	2025-03-07	1508516	59	40	superseded:later-roll-used	Generally revise criminal law
-HB 582	B	house	2025-04-16	1550192	59	39	unbatched	Generally revise criminal law
-HB 582	B	senate	2025-04-08	1539790	31	17	unbatched	Generally revise criminal law
+HB 582	B	house	2025-04-16	1550192	59	39	dropped:filter-5	Generally revise criminal law
+HB 582	B	senate	2025-04-08	1539790	31	17	dropped:filter-5	Generally revise criminal law
 HB 586	B	house	2025-04-17	1551665	73	26	unbatched	Generally revise child safety restraint system laws
 HB 586	B	senate	2025-04-03	1536708	30	20	unbatched	Generally revise child safety restraint system laws
 HB 587	B	house	2025-03-07	1508574	55	44	batch-08	Revise mine reclamation laws
@@ -240,19 +240,19 @@ HB 599	B	house	2025-03-07	1508673	74	25	batch-10	Revise student data collection 
 HB 599	B	senate	2025-04-22	1553709	29	21	batch-10	Revise student data collection laws
 HB 601	B	senate	2025-04-12	1546559	28	22	unbatched	Create online portal for community assisters related to Medicaid
 HB 602	B	senate	2025-04-18	1552335	28	22	dropped:filter-5	Require school district personnel to inform board of trustees of reductions in force
-HB 603	B	house	2025-03-06	1507044	68	31	unbatched	Eliminate attorney requirements on quasi-judicial boards
-HB 603	B	senate	2025-04-15	1549207	36	14	unbatched	Eliminate attorney requirements on quasi-judicial boards
+HB 603	B	house	2025-03-06	1507044	68	31	dropped:filter-5	Eliminate attorney requirements on quasi-judicial boards
+HB 603	B	senate	2025-04-15	1549207	36	14	dropped:filter-5	Eliminate attorney requirements on quasi-judicial boards
 HB 61	B	senate	2025-02-25	1498741	38	11	dropped:filter-5	Revise inter-entity loan process
 HB 611	B	senate	2025-04-15	1549226	32	18	unbatched	Generally revise salaries for certain elected officials
-HB 612	B	house	2025-03-07	1508758	59	40	unbatched	Generally revise criminal procedure laws
-HB 612	B	senate	2025-04-15	1548399	30	20	unbatched	Generally revise criminal procedure laws
+HB 612	B	house	2025-03-07	1508758	59	40	dropped:filter-5	Generally revise criminal procedure laws
+HB 612	B	senate	2025-04-15	1548399	30	20	dropped:filter-5	Generally revise criminal procedure laws
 HB 614	B	senate	2025-04-10	1543596	38	10	dropped:filter-5	Allow for the termination of certain county zoning districts
 HB 62	B	senate	2025-04-09	1541568	32	16	dropped:filter-5	Generally revise laws related to the administration of MPERA
 HB 621	B	senate	2025-04-07	1538792	37	12	unbatched	Allow a local first response entity to establish a peer support program
 HB 623	B	house	2025-04-17	1551603	64	35	dropped:filter-5	Revise laws relating to nuclear energy
 HB 625	B	house	2025-03-06	1507045	63	36	unbatched	Withhold entitlement share for non-compliance with child abuse reporting requirements
 HB 625	B	senate	2025-04-15	1549184	30	20	unbatched	Withhold entitlement share for non-compliance with child abuse reporting requirements
-HB 626	B	senate	2025-04-08	1539702	38	10	unbatched	Generally revise DUI laws
+HB 626	B	senate	2025-04-08	1539702	38	10	dropped:filter-5	Generally revise DUI laws
 HB 636	B	senate	2025-04-11	1546218	35	13	dropped:filter-5	Generally revise marijuana laws
 HB 638	B	house	2025-03-07	1508716	57	41	batch-06	Revise human rights laws
 HB 638	B	senate	2025-04-15	1548414	31	19	batch-06	Revise human rights laws
@@ -301,10 +301,10 @@ HB 723	B	house	2025-03-07	1508592	57	42	superseded:later-roll-used	Establish ann
 HB 723	B	house	2025-04-18	1552116	58	41	batch-06	Establish annual reporting requirements of infants born alive
 HB 723	B	senate	2025-04-12	1546591	31	19	batch-06	Establish annual reporting requirements of infants born alive
 HB 726	B	house	2025-03-07	1508610	62	37	superseded:later-roll-used	Generally revise bail bonds laws
-HB 726	B	house	2025-04-11	1546357	56	43	unbatched	Generally revise bail bonds laws
+HB 726	B	house	2025-04-11	1546357	56	43	dropped:filter-5	Generally revise bail bonds laws
 HB 736	B	house	2025-04-18	1552294	69	30	batch-08	Provide nutrient pollutant loading offsets
-HB 74	B	house	2025-01-30	1481325	78	22	unbatched	Revising private fish pond and commercial take laws
-HB 74	B	senate	2025-03-18	1519772	30	19	unbatched	Revising private fish pond and commercial take laws
+HB 74	B	house	2025-01-30	1481325	78	22	batch-11	Revising private fish pond and commercial take laws
+HB 74	B	senate	2025-03-18	1519772	30	19	batch-11	Revising private fish pond and commercial take laws
 HB 740	B	house	2025-04-18	1552120	63	35	batch-02	Revise laws relating to pharmacies, pharmacy benefit managers, and other entities
 HB 740	B	senate	2025-04-12	1546636	39	11	batch-02	Revise laws relating to pharmacies, pharmacy benefit managers, and other entities
 HB 742	B	house	2025-03-07	1508813	69	30	superseded:later-roll-used	Revise nuisance compliance laws
@@ -322,7 +322,7 @@ HB 76	B	house	2025-04-28	1558903	69	31	held:legiscan-vote-defect	Generally revis
 HB 76	B	senate	2025-04-12	1546687	31	19	superseded:later-roll-used	Generally revise laws related to the board of behavioral health
 HB 764	B	senate	2025-04-11	1545902	34	14	unbatched	Revise public transit laws
 HB 770	B	house	2025-03-07	1508724	56	43	unbatched	Revise candidate campaign finance reporting laws
-HB 775	B	senate	2025-04-22	1554560	38	12	unbatched	Repeal sunset on Water Court actions
+HB 775	B	senate	2025-04-22	1554560	38	12	dropped:filter-5	Repeal sunset on Water Court actions
 HB 78	B	senate	2025-03-18	1519952	29	20	unbatched	Adopt pet insurance model act
 HB 791	B	house	2025-03-07	1508729	57	42	superseded:later-roll-used	Generally revise nuisance laws
 HB 791	B	house	2025-04-18	1552218	58	41	unbatched	Generally revise nuisance laws
@@ -368,7 +368,7 @@ HB 888	B	house	2025-04-25	1558107	59	41	held:legiscan-vote-defect	Revise local b
 HB 888	B	senate	2025-04-18	1552278	30	20	unbatched	Revise local board of health rules for isolation and quarantine
 HB 891	B	house	2025-04-05	1537815	57	41	unbatched	Provide subpoena powers to the office of inspector general
 HB 891	B	senate	2025-04-18	1552333	32	18	unbatched	Provide subpoena powers to the office of inspector general
-HB 897	B	house	2025-04-05	1537710	60	38	unbatched	Generally revise laws related to shed hunting on wildlife management areas
+HB 897	B	house	2025-04-05	1537710	60	38	dropped:filter-5	Generally revise laws related to shed hunting on wildlife management areas
 HB 898	B	house	2025-04-05	1537655	66	32	superseded:later-roll-used	Generally revise laws related to LLC operating agreements
 HB 899	B	house	2025-04-08	1539776	58	39	superseded:later-roll-used	Establish Montana state shooting  center task force
 HB 899	B	house	2025-04-25	1558178	58	42	unbatched	Establish Montana state shooting  center task force
@@ -394,8 +394,8 @@ HB 949	B	house	2025-04-08	1539527	76	21	unbatched	Require fee schedule and repor
 HB 949	B	senate	2025-04-18	1552347	33	17	unbatched	Require fee schedule and report for certain commitments
 HB 953	B	house	2025-04-08	1539751	73	24	batch-02	Revise medicaid laws related to direct primary care
 HB 953	B	senate	2025-04-24	1557130	28	22	batch-02	Revise medicaid laws related to direct primary care
-HB 97	B	senate	2025-03-17	1518569	29	20	unbatched	Allow for platooning vehicles
-HB 99	B	senate	2025-03-17	1518441	37	12	unbatched	Revise laws related to motor vehicle laws for clarity and consistency
+HB 97	B	senate	2025-03-17	1518569	29	20	dropped:filter-5	Allow for platooning vehicles
+HB 99	B	senate	2025-03-17	1518441	37	12	dropped:filter-5	Revise laws related to motor vehicle laws for clarity and consistency
 HJ 10	JR	house	2025-03-31	1530906	58	41	unbatched	Resolution on sports laws
 HJ 10	JR	senate	2025-04-22	1553562	31	19	unbatched	Resolution on sports laws
 HJ 17	JR	house	2025-03-21	1524194	58	38	superseded:later-roll-used	Resolution regarding energy
@@ -464,7 +464,7 @@ SB 149	B	senate	2025-04-12	1546668	40	10	unbatched	Revise emotional support anim
 SB 154	B	house	2025-04-10	1543333	56	42	unbatched	Revise prohibition on sale or purchase of human body parts under the revised Uniform Anatomical Gift Act.
 SB 154	B	senate	2025-01-30	1481960	30	19	superseded:later-roll-used	Revise prohibition on sale or purchase of human body parts under the revised Uniform Anatomical Gift Act.
 SB 154	B	senate	2025-04-12	1546642	36	14	unbatched	Revise prohibition on sale or purchase of human body parts under the revised Uniform Anatomical Gift Act.
-SB 168	B	house	2025-04-11	1546399	64	35	unbatched	Revise laws related to lakeshore protection
+SB 168	B	house	2025-04-11	1546399	64	35	batch-11	Revise laws related to lakeshore protection
 SB 170	B	house	2025-03-21	1524212	57	40	batch-02	Eliminate termination date of community health aide program
 SB 170	B	senate	2025-02-11	1486315	34	16	batch-02	Eliminate termination date of community health aide program
 SB 172	B	house	2025-03-21	1524092	57	40	unbatched	Revise resort tax eligibility and allow use for workforce housing
@@ -475,9 +475,9 @@ SB 178	B	senate	2025-02-14	1497072	33	17	superseded:later-roll-used	Provide for 
 SB 181	B	house	2025-04-09	1541804	69	28	unbatched	Generally revise Indian education for all laws
 SB 181	B	senate	2025-02-25	1499537	29	20	superseded:later-roll-used	Generally revise Indian education for all laws
 SB 182	B	senate	2025-02-05	1482838	35	13	unbatched	Generally revise MT Indian language preservation program
-SB 19	B	house	2025-04-11	1546102	61	38	unbatched	Revise sentencing laws related to theft
+SB 19	B	house	2025-04-11	1546102	61	38	dropped:filter-5	Revise sentencing laws related to theft
 SB 19	B	senate	2025-02-27	1501654	34	16	superseded:later-roll-used	Revise sentencing laws related to theft
-SB 19	B	senate	2025-04-17	1551478	37	13	unbatched	Revise sentencing laws related to theft
+SB 19	B	senate	2025-04-17	1551478	37	13	dropped:filter-5	Revise sentencing laws related to theft
 SB 193	B	house	2025-04-11	1546351	57	42	unbatched	Provide that members of the attorneys' examining board are appointed by the governor
 SB 193	B	senate	2025-02-12	1488273	31	19	unbatched	Provide that members of the attorneys' examining board are appointed by the governor
 SB 194	B	house	2025-04-11	1546375	56	43	unbatched	Eliminate the board of public assistance
@@ -560,7 +560,7 @@ SB 41	B	senate	2025-01-29	1481224	32	17	batch-05	Requiring substitution of distr
 SB 426	B	senate	2025-03-06	1507863	36	14	unbatched	Generally revise the Uniform Commercial Code
 SB 428	B	house	2025-04-11	1546030	72	27	unbatched	Generally revise county speed limits
 SB 428	B	senate	2025-03-06	1508011	31	18	unbatched	Generally revise county speed limits
-SB 429	B	house	2025-04-24	1557239	80	20	unbatched	Generally revise laws related to determination and restoration of fitness in criminal proceedings
+SB 429	B	house	2025-04-24	1557239	80	20	dropped:filter-5	Generally revise laws related to determination and restoration of fitness in criminal proceedings
 SB 430	B	house	2025-04-23	1555403	78	21	unbatched	Generally revise laws related to civil commitment and emergency detention of mentally ill persons
 SB 440	B	house	2025-04-11	1546096	58	41	batch-07	Revising election laws related to reporting election results
 SB 440	B	senate	2025-03-06	1508129	31	18	superseded:later-roll-used	Revising election laws related to reporting election results
@@ -572,12 +572,12 @@ SB 45	B	senate	2025-04-25	1558039	31	18	dropped:filter-5	Create a judicial perfo
 SB 457	B	house	2025-04-11	1546193	55	44	unbatched	Revise laws regarding legislative subpoenas
 SB 457	B	senate	2025-03-06	1508107	31	19	unbatched	Revise laws regarding legislative subpoenas
 SB 471	B	senate	2025-03-21	1524172	34	16	unbatched	Generally revise vehicular traffic laws related to pedestrian crossings
-SB 48	B	house	2025-04-11	1546126	57	42	unbatched	Generally revise laws relating to Judicial Standards Commission complaints
-SB 48	B	senate	2025-01-30	1481289	30	19	unbatched	Generally revise laws relating to Judicial Standards Commission complaints
+SB 48	B	house	2025-04-11	1546126	57	42	batch-11	Generally revise laws relating to Judicial Standards Commission complaints
+SB 48	B	senate	2025-01-30	1481289	30	19	batch-11	Generally revise laws relating to Judicial Standards Commission complaints
 SB 490	B	house	2025-04-11	1546023	58	41	dropped:filter-5	Revise election laws regarding late registration
 SB 490	B	senate	2025-03-06	1508105	33	16	dropped:filter-5	Revise election laws regarding late registration
 SB 492	B	house	2025-04-11	1546285	56	43	unbatched	Generally revise business disclosure statement requirements for elected officials and department directors
-SB 493	B	house	2025-04-11	1546453	72	27	unbatched	Establish the offense of trespass by unmanned aerial vehicle
+SB 493	B	house	2025-04-11	1546453	72	27	dropped:filter-5	Establish the offense of trespass by unmanned aerial vehicle
 SB 495	B	senate	2025-03-06	1507960	39	10	unbatched	Eliminate the tobacco prevention advisory board
 SB 497	B	house	2025-04-11	1546134	77	22	dropped:filter-5	Provide laws related to healthcare provider burnout
 SB 497	B	senate	2025-03-06	1507844	28	21	dropped:filter-5	Provide laws related to healthcare provider burnout
@@ -597,13 +597,13 @@ SB 535	B	senate	2025-04-29	1559961	29	21	unbatched	Revise laws related to experi
 SB 542	B	house	2025-04-24	1556679	73	26	held:legiscan-vote-defect	Generally revise property tax laws
 SB 542	B	senate	2025-04-05	1537635	36	12	superseded:later-roll-used	Generally revise property tax laws
 SB 542	B	senate	2025-04-30	1562501	28	22	batch-07	Generally revise property tax laws
-SB 55	B	senate	2025-01-23	1481375	30	20	unbatched	Provide for legislative intent regarding streamflow information
+SB 55	B	senate	2025-01-23	1481375	30	20	dropped:filter-5	Provide for legislative intent regarding streamflow information
 SB 553	B	house	2025-04-25	1558071	62	38	unbatched	Generally revise state policy laws
 SB 553	B	senate	2025-04-29	1560858	30	20	unbatched	Generally revise state policy laws
 SB 56	B	senate	2025-02-24	1497706	33	16	unbatched	Supplemental employer contribution for PERS, HPORS, SRS, GWPORS
 SB 560	B	house	2025-04-24	1557635	72	28	unbatched	Provide for a hospital community benefit fee
 SB 560	B	senate	2025-04-05	1537842	30	18	superseded:later-roll-used	Provide for a hospital community benefit fee
-SB 61	B	senate	2025-01-20	1481391	28	21	unbatched	Revise laws related to considerations for measuring of streamflow
+SB 61	B	senate	2025-01-20	1481391	28	21	dropped:filter-5	Revise laws related to considerations for measuring of streamflow
 SB 64	B	senate	2025-02-06	1483775	39	10	superseded:later-roll-used	Clarifying calculation of legislator compensation and expenses during the interim
 SB 74	B	house	2025-04-17	1551760	70	28	unbatched	Generally revise marijuana laws
 SB 74	B	senate	2025-03-27	1528983	38	12	unbatched	Generally revise marijuana laws

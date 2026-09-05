@@ -326,3 +326,64 @@ campaign checkpoint so SB 260 is never judged as though those sections were law.
 from cities, towns and counties to the state Department of Labor and Industry,
 leaving local governments a right to receive plans and comment. Who holds the
 authority is the whole of it.
+
+## Batch 11
+
+Thirty-one measures were read for batch 11 and dropped. The largest group is a
+change of judgment rather than a set of unrelated bills, so it comes first.
+
+### Six crime bills, and the reason the area does not decide them
+
+The `public_safety_and_crime_control` area is **not** an axis where a harsher
+penalty is always the "for" direction. The records already imported in this
+campaign tag both a bill that funds violence-intervention work and a bill that
+**ends** automatic life sentences as "for" that area. Both readings are
+defensible, which is exactly the problem: the area alone cannot tell a reader
+which way a sentence increase cuts.
+
+So a bill whose only content is a longer sentence, a wider detention power, or a
+new way of counting a prior conviction has no defensible direction, and fails
+filter 5. On that basis:
+
+- **HB 415**, **HB 535**, **HB 578**, **HB 582**, **HB 612** and **SB 19** are
+  dropped, along with **HB 626**, which makes a pending or later drink-driving
+  offence count as a prior conviction if it is decided first.
+
+Two drink-driving bills were **kept**, and the line between them matters. HB 344
+and HB 467 change how impairment is **detected and proved** — a list of drugs
+with blood limits, and saliva added to the tests a driver already consents to.
+Detection standards have a defensible direction; sentence length does not.
+
+This caution is recorded in the campaign checkpoint so later batches apply the
+same line.
+
+### Nine more crime and courts bills
+
+**HB 102**, **HB 173**, **HB 194**, **HB 332**, **HB 354**, **HB 516**,
+**HB 603**, **HB 726** and **SB 493** are procedural: filing steps, court
+paperwork, definitions and agency practice, with no subject a reader could hold a
+position on.
+
+**SB 429** is court procedure of the same kind.
+
+### Nine administrative bills
+
+**HB 43**, **HB 97**, **HB 99**, **HB 105**, **HB 107**, **HB 115**, **HB 122**,
+**HB 123** and **HB 127** are agency housekeeping — board membership, reporting
+dates, fee accounting and renumbering. The one keep from that group of ten is
+HB 74, which makes a fish pond licence mandatory and raises the fees and bond.
+
+### Five water, wildlife and land bills
+
+- **SB 55** and **SB 61** are declaratory. Both state legislative intent about
+  measuring streamflow. Neither amends a statute, sets a duty, names a number or
+  carries a penalty. `pdfplumber` finds **zero** strike or underline marks in
+  either, which confirms no existing law was touched.
+- **HB 775** repeals the sunset on judicial review of Water Court decisions. It
+  makes a temporary rule permanent and does nothing else.
+- **HB 264** restricts release of wildlife collar and telemetry data under
+  public-records law, releasable a year after a study ends. It pulls against
+  transparency and toward protecting hunted animals at once, and no single area
+  carries it.
+- **HB 897** creates a $50 non-resident shed hunting licence with a warning and
+  fines up to $500. A narrow licensing rule.
