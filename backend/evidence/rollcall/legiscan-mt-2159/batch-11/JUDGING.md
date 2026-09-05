@@ -33,11 +33,13 @@ measuring streamflow.
 ## HB 74 — private fish ponds
 
 Chapter 39. The change that matters is one word: 87-4-603(1) read that an owner
-"may apply" for a fish pond licence, and "may" is struck with "shall" underlined.
-A licence is now required rather than optional.
+"may apply" for a fish pond license, and "may" is struck with "shall" underlined.
+A license is now required rather than optional.
 
 The fees follow: the application fee is struck at $10 and set at $600, the
-renewal fee struck at $10 and set at $250. The surety bond required before
+renewal fee struck at $10 and set at $250. A license runs 10 years (87-4-606(1));
+only a licensee who sells fish or eggs renews annually (87-4-606(3)(b)), so the
+renewal fee is not a yearly cost for an ordinary owner. The surety bond required before
 selling fish, eggs or fry is struck at $500 and set at $2,500. Recordkeeping,
 site inspections and disease testing are added, and paddlefish caviar sales are
 repealed. Direction **for** `environment_and_public_health`: mandatory licensing,
@@ -68,7 +70,7 @@ The fee change was checked against the marks rather than assumed. In 39-9-206 th
 words "construction contractors and h" are struck from "shall charge fees to
 construction contractors and home inspectors", and the whole $70 cap — both the
 initial and the renewal figure — is struck. What remains of that section covers
-home inspectors only. Contractor licence fees are set by the department under
+home inspectors only. Contractor license fees are set by the department under
 section 1 and must cover the full cost of the programme.
 
 So the accurate statement is that the $70 cap is deleted and replaced by
@@ -177,7 +179,11 @@ Two details decided the wording. It sits under subsection **(4)(a)**, the branch
 conditioned on a finding of indigence under 47-1-111, so the description says the
 parent must first be found unable to afford a lawyer. And 42-2-607 is in the
 adoption title, so this is a termination brought against the parent's wishes.
-Direction **for** `civil_rights`.
+The description does not claim parents previously had no route to counsel:
+In re Adoption of A.W.S. (2014 MT 198) already required appointed counsel for
+indigent parents in Adoption Act terminations on equal-protection grounds, and
+courts were ordering the public defender office to take those cases. The act
+writes that duty into 47-1-104. Direction **for** `civil_rights`.
 
 The act's title also mentions assigning a public defender to a treatment court
 team. No operative text for that was located in the enrolled bill, so it is **not
@@ -206,7 +212,9 @@ the permit, whichever is later. The limit does not apply where the structure
 causes documented material harm to lakeshore stability, water quality or aquatic
 life, materially interferes with navigation or recreation, or is a documented
 public nuisance. Minor work is exempt from review, "minor" meaning under $10,000
-over a 5-year period excluding unpaid labour.
+over a 5-year period excluding unpaid labor — but not when it involves
+significant excavation, dredging, in-fill, diminishment of aquatic life, or
+interference with navigation or recreation (75-7-218(2)(a)).
 
 Direction **against** `environment_and_public_health`: it shortens the window for
 enforcement and removes a class of work from review.
