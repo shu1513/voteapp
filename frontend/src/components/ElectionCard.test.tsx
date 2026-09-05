@@ -771,12 +771,13 @@ describe("ElectionCard result chip", () => {
 
   it("shows the current-cycle rating chip instead of the historic one when both arrive", () => {
     const historical = {
-      display_label: "Historically not competitive",
+      display_label: "Historically competitive",
       display_description: "Based on the 2024 Governor result.",
       source: "MIT_2024",
       source_url: null,
       election_year: 2024,
-      margin_percent: 22.4,
+      margin_percent: 8.4,
+      competitiveness_label: "competitive",
       stale_after_redistricting: false,
     };
     renderCard(
@@ -794,10 +795,36 @@ describe("ElectionCard result chip", () => {
     );
     // Both chips at once would contradict on a race that flipped.
     expect(screen.getByText("Currently a toss-up")).toBeInTheDocument();
-    expect(screen.queryByText("Historically not competitive")).not.toBeInTheDocument();
+    expect(screen.queryByText("Historically competitive")).not.toBeInTheDocument();
 
     // Fallback race (and any backend that predates the field): historic chip.
     renderCard(electionSummary({ id: "e-2", historical_competitiveness: historical }));
-    expect(screen.getByText("Historically not competitive")).toBeInTheDocument();
+    expect(screen.getByText("Historically competitive")).toBeInTheDocument();
+  });
+
+  it("shows no competitiveness chip for the safe tier", () => {
+    renderCard(
+      electionSummary({
+        historical_competitiveness: {
+          display_label: "Historically not competitive",
+          display_description: "Based on the 2024 Governor result.",
+          source: "MIT_2024",
+          source_url: null,
+          election_year: 2024,
+          margin_percent: 22.4,
+          competitiveness_label: "safe",
+          stale_after_redistricting: false,
+        },
+        current_competitiveness: {
+          display_label: "Currently not competitive",
+          display_description: "Based on current race ratings from Inside Elections as of August 6, 2026.",
+          competitiveness_label: "safe",
+          method: "outlet_consensus",
+          confidence: "medium",
+          as_of: "2026-08-06",
+        },
+      })
+    );
+    expect(screen.queryByText(/not competitive/)).not.toBeInTheDocument();
   });
 });

@@ -18,7 +18,7 @@ type RegisterPromptDialogProps = {
   /** One-sentence pitch for signing up; rendered in the dialog's body row. */
   description: React.ReactNode;
   /** Which members-only control opened it, for the signup_prompt usage event. */
-  source: "follow" | "pick";
+  source: "follow" | "pick" | "autopick";
 };
 
 export function RegisterPromptDialog({ open, onClose, title, description, source }: RegisterPromptDialogProps) {

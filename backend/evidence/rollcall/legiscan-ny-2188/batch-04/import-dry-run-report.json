@@ -1,0 +1,139 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": true,
+  "skipExisting": false,
+  "startedAt": "2026-09-05T22:06:04.966Z",
+  "finishedAt": "2026-09-05T22:06:05.708Z",
+  "jurisdiction": "NY",
+  "sessionId": 2188,
+  "evidenceDir": "evidence/rollcall/legiscan-ny-2188/batch-04",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-ny-2188/crosswalk.json",
+  "crosswalkEntries": 219,
+  "peopleFile": "evidence/rollcall/legiscan-ny-2188/legiscan-people-ny-2188.json",
+  "peopleMembers": 219,
+  "files": 4,
+  "outcomes": {
+    "dry_run": 4
+  },
+  "actions": {
+    "insert": 106
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-ny-house-2188-roll1687411.json",
+      "state": "NY",
+      "chamber": "house",
+      "sessionId": 2188,
+      "roll": 1687411,
+      "outcome": "dry_run",
+      "legislativeVoteId": "dce01d1e-3a31-47f6-91c5-708f7b5ea572",
+      "reviewStatus": "approved",
+      "bill": "A10710",
+      "voteDate": "2026-04-21",
+      "officialVoteDate": null,
+      "measureId": "A 10710",
+      "question": "Assembly Floor Vote - Final Passage",
+      "originRunId": "rollcall:NY:house:2188:1687411:2026-09-05T22:06:04.966Z",
+      "members": 138,
+      "notVoting": 0,
+      "absent": 12,
+      "resolution": {
+        "unmatched_reviewed": 85,
+        "matched": 53
+      },
+      "actions": {
+        "insert": 53
+      },
+      "notified": 0,
+      "candidates": 53,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ny-house-2188-roll1687413.json",
+      "state": "NY",
+      "chamber": "house",
+      "sessionId": 2188,
+      "roll": 1687413,
+      "outcome": "dry_run",
+      "legislativeVoteId": "d8e592c3-0cda-4ba6-ab8d-44875f98317d",
+      "reviewStatus": "approved",
+      "bill": "A10711",
+      "voteDate": "2026-04-21",
+      "officialVoteDate": null,
+      "measureId": "A 10711",
+      "question": "Assembly Floor Vote - Final Passage",
+      "originRunId": "rollcall:NY:house:2188:1687413:2026-09-05T22:06:04.966Z",
+      "members": 138,
+      "notVoting": 0,
+      "absent": 12,
+      "resolution": {
+        "unmatched_reviewed": 85,
+        "matched": 53
+      },
+      "actions": {
+        "insert": 53
+      },
+      "notified": 0,
+      "candidates": 53,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ny-senate-2188-roll1689755.json",
+      "state": "NY",
+      "chamber": "senate",
+      "sessionId": 2188,
+      "roll": 1689755,
+      "outcome": "dry_run",
+      "legislativeVoteId": "4a89a210-f1fd-4460-9118-ed1ce563ed98",
+      "reviewStatus": "approved",
+      "bill": "A10711",
+      "voteDate": "2026-04-21",
+      "officialVoteDate": null,
+      "measureId": "A 10711",
+      "question": "Senate Floor Vote - Final Passage",
+      "originRunId": "rollcall:NY:senate:2188:1689755:2026-09-05T22:06:04.966Z",
+      "members": 62,
+      "notVoting": 0,
+      "absent": 1,
+      "resolution": {
+        "unmatched_reviewed": 62
+      },
+      "actions": {},
+      "notified": 0,
+      "candidates": 0,
+      "error": null,
+      "related": 0
+    },
+    {
+      "file": "ls-ny-senate-2188-roll1696603.json",
+      "state": "NY",
+      "chamber": "senate",
+      "sessionId": 2188,
+      "roll": 1696603,
+      "outcome": "dry_run",
+      "legislativeVoteId": "48da8870-7f5e-4fc9-8db8-36977f600a32",
+      "reviewStatus": "approved",
+      "bill": "A10710",
+      "voteDate": "2026-05-11",
+      "officialVoteDate": null,
+      "measureId": "A 10710",
+      "question": "Senate Floor Vote - Final Passage",
+      "originRunId": "rollcall:NY:senate:2188:1696603:2026-09-05T22:06:04.966Z",
+      "members": 60,
+      "notVoting": 0,
+      "absent": 3,
+      "resolution": {
+        "unmatched_reviewed": 60
+      },
+      "actions": {},
+      "notified": 0,
+      "candidates": 0,
+      "error": null,
+      "related": 0
+    }
+  ]
+}

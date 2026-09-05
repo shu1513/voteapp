@@ -2,7 +2,12 @@
 // must be treated as calendar dates, not instants: new Date("2026-11-03")
 // parses as UTC midnight and renders the previous day in US timezones.
 
-import type { CandidateRosterStatus, FinanceOutsideIndustryEvidence } from "./types";
+import type {
+  CandidateRosterStatus,
+  CurrentCompetitiveness,
+  FinanceOutsideIndustryEvidence,
+  HistoricalCompetitiveness,
+} from "./types";
 
 export function formatElectionDate(isoDate: string): string {
   const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(isoDate.trim());
@@ -92,6 +97,24 @@ const VOTE_POWER_LABELS: Record<string, string> = {
 
 export function formatVotePowerLabel(label: string): string {
   return VOTE_POWER_LABELS[label] ?? label;
+}
+
+export type CompetitivenessChip = { label: string; description: string };
+
+// The current-cycle rating replaces the historic chip when present — the
+// backend only sends it when the rating drove the grade, and showing both
+// would contradict on races that flipped. The "safe" tier renders no chip:
+// most races carry no competitiveness text at all, so "not competitive"
+// read as a verdict on those few rather than the absence of a close race.
+export function competitivenessChip(election: {
+  current_competitiveness?: CurrentCompetitiveness | null;
+  historical_competitiveness: HistoricalCompetitiveness | null;
+}): CompetitivenessChip | null {
+  const rating = election.current_competitiveness ?? election.historical_competitiveness;
+  if (!rating || rating.competitiveness_label === "safe") {
+    return null;
+  }
+  return { label: rating.display_label, description: rating.display_description };
 }
 
 /** Election result outcomes arrive snake_case (e.g. "too_close"). */
@@ -306,6 +329,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   UTAH_DISCLOSURES: "Utah Financial Disclosures",
   HAWAII_CSC: "Hawaii Campaign Spending Commission",
   IDAHO_SUNSHINE: "Idaho Secretary of State Sunshine Portal",
+  KANSAS_SOS: "Kansas Secretary of State",
   VIRGINIA_CFREPORTS: "Virginia CFReports",
   TENNESSEE_CAMP: "Tennessee Registry of Election Finance",
   WASHINGTON_PDC: "Washington PDC",

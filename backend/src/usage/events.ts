@@ -293,7 +293,7 @@ const CATALOG: Record<string, { required: Record<string, PropRule>; optional?: R
     required: { pick_count_bucket: oneOf(...COUNT_BUCKETS), view: oneOf("list", "ballot"), store: oneOf("account", "draft") },
   },
   signup_prompt: {
-    required: { source: oneOf("follow", "pick", "draft", "milestone", "picks_wall", "chat"), action: oneOf("shown", "click") },
+    required: { source: oneOf("follow", "pick", "draft", "milestone", "picks_wall", "chat", "autopick"), action: oneOf("shown", "click") },
   },
   auth_result: {
     required: {

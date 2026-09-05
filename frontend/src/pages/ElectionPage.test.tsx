@@ -60,12 +60,13 @@ describe("ElectionPage", () => {
     renderElection(() =>
       electionDetail({
         historical_competitiveness: {
-          display_label: "Historically not competitive",
+          display_label: "Historically competitive",
           display_description: "Based on the 2024 Governor result.",
           source: "MIT_2024",
           source_url: null,
           election_year: 2024,
-          margin_percent: 22.4,
+          margin_percent: 8.4,
+          competitiveness_label: "competitive",
           stale_after_redistricting: false,
         },
         current_competitiveness: {
@@ -81,6 +82,26 @@ describe("ElectionPage", () => {
 
     // Both chips at once would contradict on a race that flipped.
     expect(await screen.findByText("Currently a toss-up")).toBeInTheDocument();
+    expect(screen.queryByText("Historically competitive")).not.toBeInTheDocument();
+  });
+
+  it("shows no competitiveness chip for the safe tier", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        historical_competitiveness: {
+          display_label: "Historically not competitive",
+          display_description: "Based on the 2024 Governor result.",
+          source: "MIT_2024",
+          source_url: null,
+          election_year: 2024,
+          margin_percent: 22.4,
+          competitiveness_label: "safe",
+          stale_after_redistricting: false,
+        },
+      })
+    );
+    expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
     expect(screen.queryByText("Historically not competitive")).not.toBeInTheDocument();
   });
 
@@ -839,9 +860,10 @@ describe("ElectionPage", () => {
     // mid-page buttons are gone).
     const yes = await screen.findByRole("button", { name: "Yes" });
     expect(screen.getAllByRole("button", { name: "Yes" })).toHaveLength(1);
-    // Auto-pick is account-only and hides entirely from guests — no button
-    // anywhere on the page for this anonymous session.
+    // Auto-pick is account-only: guests get the sign-up teaser in its
+    // place (measure wording), never the button itself.
     expect(screen.queryByRole("button", { name: "Auto-pick by my issues" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Does this measure match your values?" })).toBeInTheDocument();
     // Nothing to confirm before the pick.
     expect(screen.queryByRole("link", { name: /My Draft/ })).not.toBeInTheDocument();
     await userEvent.setup().click(yes);

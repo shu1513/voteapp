@@ -198,6 +198,8 @@ services:
         value: "true"
       - key: INDIANA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: KANSAS_CAMPAIGN_FINANCE_ENABLED
+        value: "true"
       - key: KENTUCKY_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: LOS_ANGELES_CITY_CAMPAIGN_FINANCE_ENABLED

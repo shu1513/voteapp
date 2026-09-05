@@ -1,5 +1,6 @@
 import type { ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 import {
+  competitivenessChip,
   formatChoiceLabel,
   formatDistrictName,
   formatDistrictType,
@@ -44,6 +45,7 @@ export function ElectionCard({
   // absence of a green chip already marks them. Same rule as the web card.
   const isUpcoming = election.election_date >= usLatestLocalDate();
   const choiceLabel = myChoice && isUpcoming ? formatChoiceLabel(myChoice) : null;
+  const competitiveness = competitivenessChip(election);
   return (
     <Pressable
       onPress={() => router.push(`/elections/${election.id}`)}
@@ -93,17 +95,8 @@ export function ElectionCard({
             My vote power: {formatVotePowerLabel(election.vote_power.label)}
           </Text>
         ) : null}
-        {/* Current-cycle rating replaces the historic chip when present —
-            the backend only sends it when the rating drove the grade, and
-            showing both would contradict on races that flipped. */}
-        {election.current_competitiveness ? (
-          <Text className="rounded bg-surface px-2 py-0.5 text-xs text-ink-soft">
-            {election.current_competitiveness.display_label}
-          </Text>
-        ) : election.historical_competitiveness ? (
-          <Text className="rounded bg-surface px-2 py-0.5 text-xs text-ink-soft">
-            {election.historical_competitiveness.display_label}
-          </Text>
+        {competitiveness ? (
+          <Text className="rounded bg-surface px-2 py-0.5 text-xs text-ink-soft">{competitiveness.label}</Text>
         ) : null}
         {election.has_results ? (
           // Called results get the badge colors from the election page

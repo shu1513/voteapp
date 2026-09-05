@@ -8,6 +8,9 @@ const FINANCE_SOURCE_HOME_URLS: Partial<Record<FinanceSummary["source"], string>
   // POST APIs, so the provenance fallback is the portal home.
   ARKANSAS_CFIS: "https://ethics-disclosures.sos.arkansas.gov/",
   IDAHO_SUNSHINE: "https://sunshine.voteidaho.gov/",
+  // The Kansas viewer keeps report identity in server session state, so
+  // there is no per-report deep link; the entry page is the fallback.
+  KANSAS_SOS: "https://sos.ks.gov/elections/cfr_viewer/cfr_examiner_entry.aspx",
   MISSOURI_MEC: "https://www.mec.mo.gov/MEC/Campaign_Finance/",
   // Montana CERS deep links are POST/session driven, so the card's
   // provenance fallback points at the COPP home page instead.

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   buildResultChipParts,
+  competitivenessChip,
   financeSourceLabel,
   formatDistrictName,
   formatDistrictType,
@@ -29,6 +30,52 @@ describe("formatElectionDate", () => {
 
   it("passes through unparseable values", () => {
     expect(formatElectionDate("TBD")).toBe("TBD");
+  });
+});
+
+describe("competitivenessChip", () => {
+  const historical = {
+    display_label: "Historically competitive",
+    display_description: "Based on the 2024 Governor result.",
+    source: "MIT_2024",
+    source_url: null,
+    election_year: 2024,
+    margin_percent: 8.4,
+    competitiveness_label: "competitive",
+    stale_after_redistricting: false,
+  };
+  const current = {
+    display_label: "Currently a toss-up",
+    display_description: "Based on current race ratings from Inside Elections as of August 6, 2026.",
+    competitiveness_label: "toss_up",
+    method: "outlet_consensus",
+    confidence: "medium",
+    as_of: "2026-08-06",
+  };
+
+  it("prefers the current-cycle rating over the historic one", () => {
+    expect(competitivenessChip({ current_competitiveness: current, historical_competitiveness: historical })).toEqual({
+      label: "Currently a toss-up",
+      description: current.display_description,
+    });
+    expect(competitivenessChip({ historical_competitiveness: historical })).toEqual({
+      label: "Historically competitive",
+      description: historical.display_description,
+    });
+  });
+
+  it("renders nothing for the safe tier or when no rating exists", () => {
+    expect(competitivenessChip({ historical_competitiveness: null })).toBeNull();
+    expect(
+      competitivenessChip({ historical_competitiveness: { ...historical, competitiveness_label: "safe" } })
+    ).toBeNull();
+    // A safe current rating hides the chip even when the historic one was close.
+    expect(
+      competitivenessChip({
+        current_competitiveness: { ...current, competitiveness_label: "safe" },
+        historical_competitiveness: historical,
+      })
+    ).toBeNull();
   });
 });
 
@@ -181,6 +228,7 @@ describe("financeSourceLabel", () => {
     expect(financeSourceLabel("NEVADA_AURORA")).toBe("Nevada Secretary of State");
     expect(financeSourceLabel("NEW_HAMPSHIRE_CFS")).toBe("New Hampshire Campaign Finance System");
     expect(financeSourceLabel("IDAHO_SUNSHINE")).toBe("Idaho Secretary of State Sunshine Portal");
+    expect(financeSourceLabel("KANSAS_SOS")).toBe("Kansas Secretary of State");
     expect(financeSourceLabel("MISSISSIPPI_SOS")).toBe("Mississippi Secretary of State");
     expect(financeSourceLabel("RHODE_ISLAND_ERTS")).toBe("Rhode Island Board of Elections");
     expect(financeSourceLabel("SOUTH_CAROLINA_CAMPAIGN_FINANCE")).toBe("South Carolina State Ethics Commission");

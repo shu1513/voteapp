@@ -1,0 +1,68 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NY",
+   "chamber": "house",
+   "session": "2188",
+   "roll": 1687411,
+   "measure_id": "A 10710",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "general"
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 10710, which changes which vaccines New York health insurance plans must cover. Before, plans had to cover the shots recommended by the federal Advisory Committee on Immunization Practices. The bill adds shots recommended by the state health commissioner, who must use generally accepted medical standards and take into account the recommendations of the American Academy of Pediatrics, the American Academy of Family Physicians, the American College of Obstetricians and Gynecologists, the American College of Physicians, and similar nationally or internationally recognized scientific groups. The New York Assembly passed it 99-39. It became law.",
+   "nay_description": "Voted against Assembly Bill 10710, which changes which vaccines New York health insurance plans must cover. Before, plans had to cover the shots recommended by the federal Advisory Committee on Immunization Practices. The bill adds shots recommended by the state health commissioner, who must use generally accepted medical standards and take into account the recommendations of the American Academy of Pediatrics, the American Academy of Family Physicians, the American College of Obstetricians and Gynecologists, the American College of Physicians, and similar nationally or internationally recognized scientific groups. The New York Assembly passed it 99-39. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "senate",
+   "session": "2188",
+   "roll": 1696603,
+   "measure_id": "A 10710",
+   "vote_date": "2026-05-11",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "general"
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 10710, which changes which vaccines New York health insurance plans must cover. Before, plans had to cover the shots recommended by the federal Advisory Committee on Immunization Practices. The bill adds shots recommended by the state health commissioner, who must use generally accepted medical standards and take into account the recommendations of the American Academy of Pediatrics, the American Academy of Family Physicians, the American College of Obstetricians and Gynecologists, the American College of Physicians, and similar nationally or internationally recognized scientific groups. The New York Senate passed it 38-22. It became law.",
+   "nay_description": "Voted against Assembly Bill 10710, which changes which vaccines New York health insurance plans must cover. Before, plans had to cover the shots recommended by the federal Advisory Committee on Immunization Practices. The bill adds shots recommended by the state health commissioner, who must use generally accepted medical standards and take into account the recommendations of the American Academy of Pediatrics, the American Academy of Family Physicians, the American College of Obstetricians and Gynecologists, the American College of Physicians, and similar nationally or internationally recognized scientific groups. The New York Senate passed it 38-22. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "house",
+   "session": "2188",
+   "roll": 1687413,
+   "measure_id": "A 10711",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "general"
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 10711, which changes who sets the standards for the vaccines New York requires for children. State law lists the shots a child must have, such as polio, measles, mumps, whooping cough and hepatitis B. Before, those shots had to meet standards approved by the United States Public Health Service, and some followed federal Advisory Committee on Immunization Practices guidance. The bill says they follow regulations issued by the state health commissioner instead, using generally accepted medical standards and taking into account the recommendations of the American Academy of Pediatrics, the American Academy of Family Physicians, the American College of Obstetricians and Gynecologists, the American College of Physicians, the federal Advisory Committee on Immunization Practices, and similar scientific groups. It also lets pharmacists give COVID-19 shots to patients age two and older on a doctor's or nurse practitioner's order, and has the state health department, rather than the federal committee, set the adult and newborn immunization schedules that pharmacies and social services offices hand out. The New York Assembly passed it 90-48. It became law.",
+   "nay_description": "Voted against Assembly Bill 10711, which changes who sets the standards for the vaccines New York requires for children. State law lists the shots a child must have, such as polio, measles, mumps, whooping cough and hepatitis B. Before, those shots had to meet standards approved by the United States Public Health Service, and some followed federal Advisory Committee on Immunization Practices guidance. The bill says they follow regulations issued by the state health commissioner instead, using generally accepted medical standards and taking into account the recommendations of the American Academy of Pediatrics, the American Academy of Family Physicians, the American College of Obstetricians and Gynecologists, the American College of Physicians, the federal Advisory Committee on Immunization Practices, and similar scientific groups. It also lets pharmacists give COVID-19 shots to patients age two and older on a doctor's or nurse practitioner's order, and has the state health department, rather than the federal committee, set the adult and newborn immunization schedules that pharmacies and social services offices hand out. The New York Assembly passed it 90-48. It became law."
+  },
+  {
+   "jurisdiction": "NY",
+   "chamber": "senate",
+   "session": "2188",
+   "roll": 1689755,
+   "measure_id": "A 10711",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "general"
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 10711, which changes who sets the standards for the vaccines New York requires for children. State law lists the shots a child must have, such as polio, measles, mumps, whooping cough and hepatitis B. Before, those shots had to meet standards approved by the United States Public Health Service, and some followed federal Advisory Committee on Immunization Practices guidance. The bill says they follow regulations issued by the state health commissioner instead, using generally accepted medical standards and taking into account the recommendations of the American Academy of Pediatrics, the American Academy of Family Physicians, the American College of Obstetricians and Gynecologists, the American College of Physicians, the federal Advisory Committee on Immunization Practices, and similar scientific groups. It also lets pharmacists give COVID-19 shots to patients age two and older on a doctor's or nurse practitioner's order, and has the state health department, rather than the federal committee, set the adult and newborn immunization schedules that pharmacies and social services offices hand out. The New York Senate passed it 39-23. It became law.",
+   "nay_description": "Voted against Assembly Bill 10711, which changes who sets the standards for the vaccines New York requires for children. State law lists the shots a child must have, such as polio, measles, mumps, whooping cough and hepatitis B. Before, those shots had to meet standards approved by the United States Public Health Service, and some followed federal Advisory Committee on Immunization Practices guidance. The bill says they follow regulations issued by the state health commissioner instead, using generally accepted medical standards and taking into account the recommendations of the American Academy of Pediatrics, the American Academy of Family Physicians, the American College of Obstetricians and Gynecologists, the American College of Physicians, the federal Advisory Committee on Immunization Practices, and similar scientific groups. It also lets pharmacists give COVID-19 shots to patients age two and older on a doctor's or nurse practitioner's order, and has the state health department, rather than the federal committee, set the adult and newborn immunization schedules that pharmacies and social services offices hand out. The New York Senate passed it 39-23. It became law."
+  }
+ ]
+}
