@@ -411,6 +411,20 @@ export function buildUnsubscribeUrlBuilderFromEnv(
   };
 }
 
+/**
+ * Guard for every SES mailer builder: a real send must carry the footer link
+ * and RFC 8058 headers, so refuse to build the mailer when the unsubscribe
+ * pair is missing instead of quietly sending without them. Console mailers
+ * and dry runs never reach real inboxes and stay unaffected.
+ */
+export function assertUnsubscribeLinksConfigured(mailerLabel: string): void {
+  if (!readOptionalEnv("NOTIFICATIONS_UNSUBSCRIBE_URL") || !readOptionalEnv("NOTIFICATIONS_UNSUBSCRIBE_SECRET")) {
+    throw new Error(
+      `${mailerLabel} requires NOTIFICATIONS_UNSUBSCRIBE_URL and NOTIFICATIONS_UNSUBSCRIBE_SECRET so every email carries an unsubscribe link (or set NOTIFICATIONS_MAILER=console)`
+    );
+  }
+}
+
 /** App-unique advisory lock key for the live digest run. */
 export const DIGEST_RUN_LOCK_KEY = 74_310_146;
 
@@ -474,6 +488,7 @@ export function buildDigestMailerFromEnv(): CandidateFollowDigestMailer {
       "SES digest mailer requires AUTH_FROM_EMAIL and AUTH_SES_REGION/AWS_REGION (or set NOTIFICATIONS_MAILER=console)"
     );
   }
+  assertUnsubscribeLinksConfigured("SES digest mailer");
   const replyToEmailAddress = readOptionalEnv("AUTH_REPLY_TO_EMAIL");
   return createSesCandidateFollowDigestMailer({
     sesClient: new SESv2Client({ region: sesRegion }),
