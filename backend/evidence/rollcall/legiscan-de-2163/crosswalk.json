@@ -2,7 +2,7 @@
   "source": "legiscan",
   "jurisdiction": "DE",
   "session_id": 2163,
-  "note": "people_id -> VoteApp candidate id for the Delaware 153rd General Assembly (LegiScan 2163). Every person in the session file has an entry, so a null is a reviewed decision rather than a gap the resolver has yet to reach. Seats come from LegiScan's `district` field, which agrees with Delaware's own roster throughout this session; `role` is not read anywhere, because LegiScan has been seen to contradict itself between the two. Delaware's roster in this database is partial by design: all 11 Senate districts on the 2026 ballot are covered, but only 8 of the 41 House districts, so most nulls are members whose district simply has no candidate rows yet. A roster campaign is filling those in, and re-running the import after it lands adds the new members without duplicating anything.",
+  "note": "people_id -> VoteApp candidate id for the Delaware 153rd General Assembly (LegiScan 2163). Every person in the session file has an entry, so a null is a reviewed decision rather than a gap the resolver has yet to reach. Seats come from LegiScan's `district` field, which agrees with Delaware's own roster throughout this session; `role` is not read anywhere, because LegiScan has been seen to contradict itself between the two. Delaware's roster in this database is partial by design: all 11 Senate districts on the 2026 ballot are covered, and, after the House roster campaign, 26 of the 41 House districts, so most nulls are members whose district simply has no candidate rows yet. A roster campaign is filling those in, and re-running the import after it lands adds the new members without duplicating anything.",
   "entries": [
     {
       "people_id": 4411,
@@ -11,8 +11,8 @@
     },
     {
       "people_id": 4428,
-      "candidate_id": null,
-      "note": "Daniel Short, HD-039. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "17d86bdd-fe8c-4bd6-a71c-1ee9e207d822",
+      "note": "Daniel Short, HD-039. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 4447,
@@ -27,7 +27,7 @@
     {
       "people_id": 4460,
       "candidate_id": "99177e7c-618c-4bc1-b633-c524ec61ce5d",
-      "note": "Gerald Hocker, SD-020. Exact name match both ways, declined because our roster holds TWO candidate rows for him in the same 2026 Senate District 20 race, which breaks the proposer's rule that a match be unique in both directions. Linked to the older row (created 2026-07-16), which carries his summary and three existing records; the newer duplicate (fe8a281c-7c2a-4f05-9892-d91671201409, display name `Gerald W. Hocker`, created 2026-08-27) is a roster defect recorded in the README and left alone here."
+      "note": "Gerald Hocker, SD-020. Hand-added in batch-01 because the roster then held two candidate rows for him in the same 2026 Senate District 20 race, which broke the proposer's rule that a match be unique both ways. The duplicate has since been merged into this row and soft-deleted, so the resolver now proposes this mapping on its own."
     },
     {
       "people_id": 10562,
@@ -51,8 +51,8 @@
     },
     {
       "people_id": 14543,
-      "candidate_id": null,
-      "note": "Timothy Dukes, HD-040. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "94edb4f6-0974-4abb-8c31-6bd62f701ffa",
+      "note": "Timothy Dukes, HD-040. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 14544,
@@ -71,8 +71,8 @@
     },
     {
       "people_id": 14549,
-      "candidate_id": null,
-      "note": "Jeffrey Spiegelman, HD-011. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "d76e9281-151b-4ed0-a5b0-d09e38157901",
+      "note": "Jeffrey Spiegelman, HD-011. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 14551,
@@ -96,8 +96,8 @@
     },
     {
       "people_id": 16446,
-      "candidate_id": null,
-      "note": "Sean Lynn, HD-031. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "da5c572f-f5d0-4ee7-a26b-a7c60f828a4a",
+      "note": "Sean Lynn, HD-031. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 16769,
@@ -141,8 +141,8 @@
     },
     {
       "people_id": 19897,
-      "candidate_id": null,
-      "note": "Kendra Johnson, HD-005. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "97048b8b-b447-457a-a5f4-a9060e5613f2",
+      "note": "Kendra Johnson, HD-005. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 19898,
@@ -176,8 +176,8 @@
     },
     {
       "people_id": 19904,
-      "candidate_id": null,
-      "note": "Jesse Vanderwende, HD-035. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "a0d42a34-6316-4002-bf8b-785fa801c2da",
+      "note": "Jesse Vanderwende, HD-035. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 19921,
@@ -196,13 +196,13 @@
     },
     {
       "people_id": 20204,
-      "candidate_id": null,
-      "note": "William Bush, HD-029. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "7c490ebc-f3f3-4abe-8499-5f62c21a7d7a",
+      "note": "William Bush, HD-029. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 21729,
-      "candidate_id": null,
-      "note": "Larry Lambert, HD-007. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "62e0492a-a618-4dc3-ab23-7fa79756fb92",
+      "note": "Larry Lambert, HD-007. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 21730,
@@ -216,13 +216,13 @@
     },
     {
       "people_id": 21732,
-      "candidate_id": null,
-      "note": "Madinah Wilson-Anton, HD-026. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "75eb10f4-6323-4a19-ae9f-93dbbe55ab59",
+      "note": "Madinah Wilson-Anton, HD-026. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 21733,
       "candidate_id": null,
-      "note": "Kyle Gay, SD-005 at the start of the General Assembly. She left to become Lieutenant Governor; like Sarah McBride her only five votes are on the excluded 2024-12-16 organisational resolutions. Raymond Seigfried (people_id 19901) won the special election for the seat and is mapped."
+      "note": "Kyle Gay, SD-005 at the start of the General Assembly. She left to become Lieutenant Governor; like Sarah McBride her only five votes are on the excluded 2024-12-16 organizational resolutions. Raymond Seigfried (people_id 19901) won the special election for the seat and is mapped."
     },
     {
       "people_id": 21734,
@@ -237,7 +237,7 @@
     {
       "people_id": 21736,
       "candidate_id": null,
-      "note": "Sarah McBride, SD-001 at the start of the General Assembly. She resigned to take Delaware's US House seat, and her only five votes in this dataset are on 2024-12-16 organisational resolutions that the pipeline excludes by measure type, so she casts nothing the importer would ever fan out. Her one 2026 candidacy is for the US House, outside the state-legislative pool. Daniel Cruce (people_id 26416) won the special election for the seat and is mapped."
+      "note": "Sarah McBride, SD-001 at the start of the General Assembly. She resigned to take Delaware's US House seat, and her only five votes in this dataset are on 2024-12-16 organizational resolutions that the pipeline excludes by measure type, so she casts nothing the importer would ever fan out. Her one 2026 candidacy is for the US House, outside the state-legislative pool. Daniel Cruce (people_id 26416) won the special election for the seat and is mapped."
     },
     {
       "people_id": 23364,
@@ -246,18 +246,18 @@
     },
     {
       "people_id": 23365,
-      "candidate_id": null,
-      "note": "DeShanna Neal, HD-013. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "b1f24df7-4bfc-48e9-a550-808a4fb2d33d",
+      "note": "DeShanna Neal, HD-013. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 23366,
-      "candidate_id": null,
-      "note": "Sophie Phillips, HD-018. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "aa06426a-90a3-43e9-9add-e36a9008c927",
+      "note": "Sophie Phillips, HD-018. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 23367,
-      "candidate_id": null,
-      "note": "Cyndie Romer, HD-025. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "264e8797-b579-40ab-8147-41503a58b7ec",
+      "note": "Cyndie Romer, HD-025. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 23368,
@@ -286,8 +286,8 @@
     },
     {
       "people_id": 25026,
-      "candidate_id": null,
-      "note": "Valerie Jones Giltner, HD-037. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "0661328b-39bd-421d-98d5-85901ad7cf34",
+      "note": "Valerie Jones Giltner, HD-037. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 25513,
@@ -306,13 +306,13 @@
     },
     {
       "people_id": 25516,
-      "candidate_id": null,
-      "note": "Kamela Smith, HD-015. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "e46f13ec-71c5-455f-a1b5-a0130c57b7b1",
+      "note": "Kamela Smith, HD-015. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 25517,
-      "candidate_id": null,
-      "note": "Frank Burns, HD-021. No Delaware state-legislative candidacy on or after 2026-11-01 in our roster; casts 658 votes in this session."
+      "candidate_id": "19bd580e-d344-44cc-baf5-e51cad23b7d2",
+      "note": "Frank Burns, HD-021. Proposed by name (first and last) and reviewed; seat agrees. Reachable only after the Delaware House roster campaign added this district, so batch-01 first imported without this member and a re-import added them."
     },
     {
       "people_id": 25518,

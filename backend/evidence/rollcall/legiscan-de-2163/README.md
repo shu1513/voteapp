@@ -16,14 +16,17 @@ legiscan-de-2163/
   survey/
     survey-report.json             the measured description histogram
     divided-worklist.tsv           all 158 divided rolls, each with a disposition
-  batch-01/
+  batch-01/  batch-02/
     PLAN.md                        what was selected and why
     JUDGING.md                     how each measure was judged, and the checks run
     judgments.json                 the 25 judgments, the decision of record
     ls-de-*.json                   the 25 roll evidence files
     import-dry-run-report.json     the plan
-    import-report.json             the insert ledger
-    import-rerun-report.json       the convergence run
+    import-report.json             the first insert ledger (177 records)
+    import-crosswalk-extension-report.json
+                                   the re-import after the roster grew (+169)
+    import-dry-run-rerun-report.json
+                                   the convergence run, all unchanged
 ```
 
 The full fetch (1,278 roll evidence files, 18 MB) and the dataset live outside the
@@ -108,9 +111,11 @@ rolls were checked against this rule and all 25 are their chamber's last.
 
 ## Crosswalk
 
-65 entries: 12 proposed by the resolver (all reviewed and accepted) + 2 added by hand
-+ 51 explicit nulls. Validated over all 1,278 stored rolls: matched 8,746
-member-votes, `no_crosswalk` 0, `out_of_scope` 0, 0 file errors, 0 zero-match rolls.
+65 entries, **29 mapped and 36 explicit nulls**. Batch-01 mapped 14 (12 proposed, 2 by
+hand); the roster campaign then made 15 more sitting House members reachable, every one
+an exact name-and-seat match, with no candidate id moving under an existing mapping.
+Validated over all 1,278 stored rolls: matched 17,791 member-votes, `no_crosswalk` 0,
+`out_of_scope` 0, 0 file errors, 0 zero-match rolls.
 
 The two hand-adds are both classes this campaign has met before:
 
@@ -119,39 +124,53 @@ The two hand-adds are both classes this campaign has met before:
   `Jack Walsh`, byte-identical to LegiScan's `name`, and the proposer reads neither
   field. The same finding as Pennsylvania, Connecticut, North Carolina, Indiana and
   Kentucky.
-- **Gerald Hocker, SD-020** — an exact name match both ways, declined because our
-  roster holds two candidate rows for him in the same race. See CODE-FINDINGS §3.
+- **Gerald Hocker, SD-020** — an exact name match both ways, declined at the time
+  because the roster held two candidate rows for him in the same race. That duplicate
+  has since been merged away, so he is now a plain proposal. See CODE-FINDINGS §3.
 
-**Delaware's roster in this database is partial by design.** All 11 Senate districts
-on the 2026 ballot are covered, but only 8 of the 41 House districts, and only 5 of
-those 8 have the sitting member on the ballot. **Fan-out is therefore House median 5
-per roll and Senate median 9** — the smallest of any state in this campaign, and a
-roster limit rather than a feed limit. A roster campaign is filling the House in
-parallel; re-running the import afterwards adds the new members without duplicating
-anything, because the fan-out keys on the roll-call URL.
+**Delaware's roster grew mid-campaign, and the crosswalk grew with it.** Batch-01 was
+first imported when only 8 of the 41 House districts were rostered, giving a fan-out of
+5 candidates per House roll. The House roster campaign then reached 26 of 41 districts,
+the resolver proposed 15 more sitting members, and **a re-import took batch-01 from 177
+records to 346 across 29 candidates with no re-judging** — House fan-out went from a
+median of 5 per roll to 19, Senate stays at 9. That is the idempotent path working:
+the fan-out keys on the roll-call URL, so re-running adds members and duplicates
+nothing. Expect to do it again as the remaining 15 House districts are rostered.
 
 Two members are null for a reason worth stating: **Sarah McBride** (SD-001, left for
 Delaware's US House seat) and **Kyle Gay** (SD-005, left to become Lieutenant
-Governor) each cast only five votes in this dataset, all on 2024-12-16 organisational
+Governor) each cast only five votes in this dataset, all on 2024-12-16 organizational
 resolutions that the pipeline excludes by measure type. Their successors, Daniel Cruce
 and Raymond Seigfried, are mapped.
 
 ## Pool and what is left
 
-158 divided rolls on kept bill types. **91 are on measures that became law**, across
-60 measures (54 House, 37 Senate; 25 measures divided in both chambers). Every one of
-the 158 carries a disposition in `survey/divided-worklist.tsv`:
+158 divided rolls on kept bill types. **91 are on measures that became law**, across 60
+measures. **Delaware is finished: every one of the 158 carries a final disposition and
+nothing is open.**
 
 | disposition | rolls |
 | --- | --- |
 | out-of-gate (measure did not become law) | 59 |
-| candidate:batch-02 | 43 |
+| dropped under filter 5 | 41 |
 | batch-01 | 25 |
-| dropped under filter 5 | 16 |
+| batch-02 | 18 |
 | excluded (procedural, or question not recoverable) | 8 |
 | superseded by a later vote in the same chamber | 7 |
 
-**The session is still open and Delaware's signing lags badly** — one bill that passed
-on 24 June was signed on 20 August. 40 divided rolls sit on bills that had passed both
-chambers but were not yet signed at the dataset cut, so the divided-and-enacted pool
-will grow. Watch the count of bills at status 3 fall, the same signal California uses.
+**Delaware total: 645 records / 29 candidates / 492 tags across 31 measures and 43
+rolls, in 12 of the 27 research areas.** Production holds none of it.
+
+Batch-01 took the marquee measures; batch-02 worked the entire remainder, screening all
+38 leftover measures from their synopses and reading the surviving 20 in full.
+
+Two standing reasons to come back:
+
+1. **The session is still running and Delaware signs late** — one bill passed on 24 June
+   was signed on 20 August. 40 divided rolls sit on bills that had passed both chambers
+   but were unsigned at the 2026-08-30 dataset cut. Watch the count of bills at status 3
+   fall, the signal California uses, and re-fetch.
+2. **15 of the 41 House districts are still unrostered.** A House roll reaches 19 or 20
+   candidates today; with a full roster it would reach about 40. Re-importing after the
+   roster campaign finishes adds those members without re-judging anything — which is
+   exactly what the batch-01 re-import already demonstrated.
