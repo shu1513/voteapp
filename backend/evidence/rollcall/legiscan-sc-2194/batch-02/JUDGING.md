@@ -44,17 +44,32 @@ records a real division.
 
 Every label uses `nay: null`.
 
-- **H 3927**, `civil_rights`, against. The bill's own title is the Ending
-  Illegal Discrimination and Restoring Merit-Based Opportunity Act; it would bar
-  every state office, division or unit from operating diversity, equity and
-  inclusion programs.
-- **H 4760**, `womens_reproductive_rights`, against. New crimes and penalties
-  for abortion-inducing drugs, and mifepristone and misoprostol added to
-  Schedule IV so that possession alone becomes a criminal offense, with
-  exceptions.
-- **H 4764**, `immigration`, against. Every law enforcement agency operating a
-  correctional facility would have to sign an agreement with federal immigration
-  authorities to help enforce federal immigration law.
+- **H 3927**, `civil_rights`, against. Section 1-1-1920 defines DEI as
+  programs that "constitute illegal discrimination", and 1-1-1930 opens with
+  "Except as required by federal law". The description carries both
+  qualifications. The label stays: the operative sections shut every DEI
+  office, DEI statement and mandatory DEI training in every public entity,
+  and Section 2 repeals S.C. Code 1-13-110, the 1978 requirement that each
+  state agency keep an affirmative action plan approved by the Human Affairs
+  Commission. Those are concrete cuts to anti-discrimination machinery
+  regardless of how the definition is read, and every other DEI-office ban
+  in the run (NC SB 129, TN SB 227 and SB 558, AL) carries the same label.
+- **H 4760**, `womens_reproductive_rights`, against. Section 44-41-820 makes
+  it a felony to deliver, dispense, distribute or provide abortion-inducing
+  drugs to a pregnant woman; subsection (C)(2)-(3) exempts the woman's own
+  acts and her possession for her own use. Section 3 lists mifepristone and
+  misoprostol as Schedule IV and makes possession a felony unless obtained
+  by valid prescription, again exempting a pregnant woman's possession for
+  her own consumption. The description names the supplier offense, the
+  patient exemption and the prescription exemption directly instead of
+  "using" and "some exceptions".
+- **H 4764**, `immigration`, against. Subsection (B) requires every law
+  enforcement agency operating a correctional facility to enter a 287(g)
+  agreement; (D) turns that into an annual request when no agreement can be
+  had; (E) excuses an agency whose governing body formally finds compliance
+  fiscally or operationally impractical, subject to the Attorney General
+  finding the written findings sufficient under (J)(4). The description
+  carries all three tiers rather than a bare mandate.
 - **H 4767**, `corporate_accountability`, **for**. Noncompete clauses in
   physician employment contracts would be void and against public policy, and a
   departing doctor could keep treating existing patients. It limits a term an
@@ -72,8 +87,16 @@ Every label uses `nay: null`.
 Each cites its own roll call's tally and ends by saying the Senate had not voted
 on the bill, so it has not become law — the wording follows the Pennsylvania
 batch-02 precedent. Every description uses "would" rather than the present
-tense, because none of these is law. Plain-language lint: 12 descriptions, 0
-warnings, median Flesch-Kincaid grade 7.6, worst 10.7.
+tense, because none of these is law. Plain-language lint after the review
+rewrite: 12 descriptions, 0 warnings, longest sentence 29 words.
+
+## Review rewrite
+
+PR review flagged H 3927, H 4760 and H 4764 as overstating the voted text.
+All three descriptions were rewritten against the amended prints named above,
+the judgments re-applied with `rollcall:judge` (3 updated, 3 unchanged), and
+the batch re-imported: 304 records rewritten in place, 297 unchanged, no new
+rows. Labels unchanged. See `import-rerun-report.json`.
 
 ## Duplicates
 
