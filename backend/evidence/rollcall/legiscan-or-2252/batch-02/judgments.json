@@ -1,0 +1,230 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1635482,
+      "measure_id": "HB 4079",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4079, which makes schools tell families when federal immigration officers have come onto school grounds. Every school district, education service district and public charter school must adopt a notice policy. It has to follow the model the Attorney General publishes. The policy must name at least one administrator who confirms such a visit and sends the notice. It must make reasonable efforts to tell a student, or their parent, when the school has given the student's information to a federal immigration officer. Districts choose which grades get a notice. Contractors and volunteers who serve students may ask to be told as well. A court order or another law can override the duty to notify. The Oregon House passed it 35-22, and it became law.",
+      "nay_description": "Voted against House Bill 4079, which makes schools tell families when federal immigration officers have come onto school grounds. Every school district, education service district and public charter school must adopt a notice policy. It has to follow the model the Attorney General publishes. The policy must name at least one administrator who confirms such a visit and sends the notice. It must make reasonable efforts to tell a student, or their parent, when the school has given the student's information to a federal immigration officer. Districts choose which grades get a notice. Contractors and volunteers who serve students may ask to be told as well. A court order or another law can override the duty to notify. The Oregon House passed it 35-22, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1649817,
+      "measure_id": "HB 4079",
+      "vote_date": "2026-03-02",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4079, which makes schools tell families when federal immigration officers have come onto school grounds. Every school district, education service district and public charter school must adopt a notice policy. It has to follow the model the Attorney General publishes. The policy must name at least one administrator who confirms such a visit and sends the notice. It must make reasonable efforts to tell a student, or their parent, when the school has given the student's information to a federal immigration officer. Districts choose which grades get a notice. Contractors and volunteers who serve students may ask to be told as well. A court order or another law can override the duty to notify. The Oregon Senate passed it 18-10, and it became law.",
+      "nay_description": "Voted against House Bill 4079, which makes schools tell families when federal immigration officers have come onto school grounds. Every school district, education service district and public charter school must adopt a notice policy. It has to follow the model the Attorney General publishes. The policy must name at least one administrator who confirms such a visit and sends the notice. It must make reasonable efforts to tell a student, or their parent, when the school has given the student's information to a federal immigration officer. Districts choose which grades get a notice. Contractors and volunteers who serve students may ask to be told as well. A court order or another law can override the duty to notify. The Oregon Senate passed it 18-10, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1646425,
+      "measure_id": "SB 1538",
+      "vote_date": "2026-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1538, which bars Oregon schools from treating students worse over their immigration or citizenship status. That is added to a list that already covered race, religion, sex, gender identity and disability. The law also gives a place in a district's classes to everyone aged 5 to 19 who lives there. Colleges may still follow rules set by federal law or by a grant. They may still charge a fee for an international program. Students here on a cultural exchange are treated separately. The Attorney General must update the model policy schools use when police ask for information. Districts must hand that policy to their staff. The Oregon House passed it 36-21, and it became law.",
+      "nay_description": "Voted against Senate Bill 1538, which bars Oregon schools from treating students worse over their immigration or citizenship status. That is added to a list that already covered race, religion, sex, gender identity and disability. The law also gives a place in a district's classes to everyone aged 5 to 19 who lives there. Colleges may still follow rules set by federal law or by a grant. They may still charge a fee for an international program. Students here on a cultural exchange are treated separately. The Attorney General must update the model policy schools use when police ask for information. Districts must hand that policy to their staff. The Oregon House passed it 36-21, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1635096,
+      "measure_id": "SB 1538",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1538, which bars Oregon schools from treating students worse over their immigration or citizenship status. That is added to a list that already covered race, religion, sex, gender identity and disability. The law also gives a place in a district's classes to everyone aged 5 to 19 who lives there. Colleges may still follow rules set by federal law or by a grant. They may still charge a fee for an international program. Students here on a cultural exchange are treated separately. The Attorney General must update the model policy schools use when police ask for information. Districts must hand that policy to their staff. The Oregon Senate passed it 23-7, and it became law.",
+      "nay_description": "Voted against Senate Bill 1538, which bars Oregon schools from treating students worse over their immigration or citizenship status. That is added to a list that already covered race, religion, sex, gender identity and disability. The law also gives a place in a district's classes to everyone aged 5 to 19 who lives there. Colleges may still follow rules set by federal law or by a grant. They may still charge a fee for an international program. Students here on a cultural exchange are treated separately. The Attorney General must update the model policy schools use when police ask for information. Districts must hand that policy to their staff. The Oregon Senate passed it 23-7, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1656408,
+      "measure_id": "HB 4138",
+      "vote_date": "2026-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4138, which requires officers policing in Oregon to be easy to identify. On duty and doing enforcement work, an officer must wear a uniform. It must show their last name or a unique number, the name of their agency, and an issued badge. Undercover work, escort details, detective work and off-duty emergencies are left out. Agencies must publish a written policy limiting face coverings. An officer may not wear one that hides their face, except in narrow cases such as guarding against harm. None at all is allowed where ballots are being collected or counted. The rules reach federal and out-of-state agencies too. Public workers may not knowingly help such an agency act against a person's rights. A court may be asked to stop a breach. The Oregon House agreed to the Senate's changes 34-18, and it became law.",
+      "nay_description": "Voted against House Bill 4138, which requires officers policing in Oregon to be easy to identify. On duty and doing enforcement work, an officer must wear a uniform. It must show their last name or a unique number, the name of their agency, and an issued badge. Undercover work, escort details, detective work and off-duty emergencies are left out. Agencies must publish a written policy limiting face coverings. An officer may not wear one that hides their face, except in narrow cases such as guarding against harm. None at all is allowed where ballots are being collected or counted. The rules reach federal and out-of-state agencies too. Public workers may not knowingly help such an agency act against a person's rights. A court may be asked to stop a breach. The Oregon House agreed to the Senate's changes 34-18, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1655626,
+      "measure_id": "HB 4138",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4138, which requires officers policing in Oregon to be easy to identify. On duty and doing enforcement work, an officer must wear a uniform. It must show their last name or a unique number, the name of their agency, and an issued badge. Undercover work, escort details, detective work and off-duty emergencies are left out. Agencies must publish a written policy limiting face coverings. An officer may not wear one that hides their face, except in narrow cases such as guarding against harm. None at all is allowed where ballots are being collected or counted. The rules reach federal and out-of-state agencies too. Public workers may not knowingly help such an agency act against a person's rights. A court may be asked to stop a breach. The Oregon Senate passed it 18-10, and it became law.",
+      "nay_description": "Voted against House Bill 4138, which requires officers policing in Oregon to be easy to identify. On duty and doing enforcement work, an officer must wear a uniform. It must show their last name or a unique number, the name of their agency, and an issued badge. Undercover work, escort details, detective work and off-duty emergencies are left out. Agencies must publish a written policy limiting face coverings. An officer may not wear one that hides their face, except in narrow cases such as guarding against harm. None at all is allowed where ballots are being collected or counted. The rules reach federal and out-of-state agencies too. Public workers may not knowingly help such an agency act against a person's rights. A court may be asked to stop a breach. The Oregon Senate passed it 18-10, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1649574,
+      "measure_id": "SB 1587",
+      "vote_date": "2026-03-02",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1587, which stops government bodies handing personal data to data brokers for immigration enforcement. First the broker must put it in writing. It must say the data will not be sold or passed to anyone who would use it to enforce federal immigration law. If the body has good reason to think that promise is false, it must turn the broker down and keep the data. Three things are left alone. A release required by the public records law. One ordered by a court. And facts already open to anyone on the same terms. The Oregon House passed it 33-14, and it became law.",
+      "nay_description": "Voted against Senate Bill 1587, which stops government bodies handing personal data to data brokers for immigration enforcement. First the broker must put it in writing. It must say the data will not be sold or passed to anyone who would use it to enforce federal immigration law. If the body has good reason to think that promise is false, it must turn the broker down and keep the data. Three things are left alone. A release required by the public records law. One ordered by a court. And facts already open to anyone on the same terms. The Oregon House passed it 33-14, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1653141,
+      "measure_id": "SB 1587",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1587, which stops government bodies handing personal data to data brokers for immigration enforcement. First the broker must put it in writing. It must say the data will not be sold or passed to anyone who would use it to enforce federal immigration law. If the body has good reason to think that promise is false, it must turn the broker down and keep the data. Three things are left alone. A release required by the public records law. One ordered by a court. And facts already open to anyone on the same terms. The Oregon Senate agreed to the House's changes 18-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 1587, which stops government bodies handing personal data to data brokers for immigration enforcement. First the broker must put it in writing. It must say the data will not be sold or passed to anyone who would use it to enforce federal immigration law. If the body has good reason to think that promise is false, it must turn the broker down and keep the data. Three things are left alone. A release required by the public records law. One ordered by a court. And facts already open to anyone on the same terms. The Oregon Senate agreed to the House's changes 18-11, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1649883,
+      "measure_id": "SB 1570",
+      "vote_date": "2026-03-02",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1570, which tells hospitals to plan for the arrival of police. Each hospital must write down how it will respond. It must name at least one senior person to meet officers. It must also mark which parts of the building are not open to the public. Those must take in every area where entry is controlled, and every patient room. The rules cover federal, state and local agencies. A university police force is left out. Hospitals and health centers also may not punish a worker who hands out state material on immigrant rights and free legal help. That worker may complain to the state labor bureau. The Oregon House passed it 34-14, and it became law.",
+      "nay_description": "Voted against Senate Bill 1570, which tells hospitals to plan for the arrival of police. Each hospital must write down how it will respond. It must name at least one senior person to meet officers. It must also mark which parts of the building are not open to the public. Those must take in every area where entry is controlled, and every patient room. The rules cover federal, state and local agencies. A university police force is left out. Hospitals and health centers also may not punish a worker who hands out state material on immigrant rights and free legal help. That worker may complain to the state labor bureau. The Oregon House passed it 34-14, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1652570,
+      "measure_id": "SB 1570",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1570, which tells hospitals to plan for the arrival of police. Each hospital must write down how it will respond. It must name at least one senior person to meet officers. It must also mark which parts of the building are not open to the public. Those must take in every area where entry is controlled, and every patient room. The rules cover federal, state and local agencies. A university police force is left out. Hospitals and health centers also may not punish a worker who hands out state material on immigrant rights and free legal help. That worker may complain to the state labor bureau. The Oregon Senate agreed to the House's changes 18-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 1570, which tells hospitals to plan for the arrival of police. Each hospital must write down how it will respond. It must name at least one senior person to meet officers. It must also mark which parts of the building are not open to the public. Those must take in every area where entry is controlled, and every patient room. The rules cover federal, state and local agencies. A university police force is left out. Hospitals and health centers also may not punish a worker who hands out state material on immigrant rights and free legal help. That worker may complain to the state labor bureau. The Oregon Senate agreed to the House's changes 18-11, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1649905,
+      "measure_id": "SB 1594",
+      "vote_date": "2026-03-02",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1594, which makes the state write its rules on immigration requests with immigrant families in mind. The Department of Justice must ask the state's Office of Immigrant and Refugee Advancement for input. That applies each time it writes, reviews or updates the model policies. For the school version the Attorney General must also ask school board and school staff groups. The school model must say how to check that a warrant is valid. A superintendent must sign off on any response. A legal review first is urged. The model must say how staff should act. Every district must give the policy to its workers. The Oregon House passed it 33-14, and it became law.",
+      "nay_description": "Voted against Senate Bill 1594, which makes the state write its rules on immigration requests with immigrant families in mind. The Department of Justice must ask the state's Office of Immigrant and Refugee Advancement for input. That applies each time it writes, reviews or updates the model policies. For the school version the Attorney General must also ask school board and school staff groups. The school model must say how to check that a warrant is valid. A superintendent must sign off on any response. A legal review first is urged. The model must say how staff should act. Every district must give the policy to its workers. The Oregon House passed it 33-14, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1652756,
+      "measure_id": "SB 1594",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1594, which makes the state write its rules on immigration requests with immigrant families in mind. The Department of Justice must ask the state's Office of Immigrant and Refugee Advancement for input. That applies each time it writes, reviews or updates the model policies. For the school version the Attorney General must also ask school board and school staff groups. The school model must say how to check that a warrant is valid. A superintendent must sign off on any response. A legal review first is urged. The model must say how staff should act. Every district must give the policy to its workers. The Oregon Senate agreed to the House's changes 18-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 1594, which makes the state write its rules on immigration requests with immigrant families in mind. The Department of Justice must ask the state's Office of Immigrant and Refugee Advancement for input. That applies each time it writes, reviews or updates the model policies. For the school version the Attorney General must also ask school board and school staff groups. The school model must say how to check that a warrant is valid. A superintendent must sign off on any response. A legal review first is urged. The model must say how staff should act. Every district must give the policy to its workers. The Oregon Senate agreed to the House's changes 18-11, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    }
+  ]
+}
