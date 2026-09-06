@@ -15,9 +15,16 @@ operative text instead of the summary changed three descriptions here:
 | HB 1235 | service attempted on **3 separate days** | **two** separate days |
 | HB 1158 | vendor must remove ads within **3 days** | within **30 days** |
 | HB 1011 | caps the wait list fee at **$25** | no fee cap at all — it was amended out |
+| HB 1291 | fingerprint check, 10-hour driving cap, identity check before each ride, ride data given to complainants | **privately administered** check every six months; no hour cap; no per-ride check; regulators set complainant data-access rules |
+| SB 86 | suspend or close an account after any reported rule or law breach | only for four **subject uses**: illicit-substance sales or ads, unlawful gun sales, sex trafficking of a minor, sexually exploitative material |
+| HB 1122 | licensed driver must **sit in the driver's seat** | must be aboard, monitoring and able to intervene; the driver's seat only **while hazardous materials are carried** |
+| HB 1235 | jury-trial right for every tenant; remote jury appearance by **phone or video** | **public-housing tenants excluded** (court trial only); remote jury appearance by **video** only |
 
 Had the summaries been trusted, three of the eighteen descriptions would have
-carried a false detail. **Rule for this scope: quote nothing from the summary
+carried a false detail. Review of the first import caught four more, all of
+the same kind: a detail the summary carries that the voted print amended away.
+Those four were rewritten from the operative text and re-imported (the
+`rewrite` actions in `import-rerun-report.json`). **Rule for this scope: quote nothing from the summary
 block that is not confirmed in the enacting text.**
 
 ## Conditional wording, enforced by the builder
