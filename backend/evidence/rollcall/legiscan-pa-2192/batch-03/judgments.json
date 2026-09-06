@@ -1002,8 +1002,8 @@
       "nay_description": "Voted against House Bill 2391. Pennsylvania law already bars prepayment penalties on every home mortgage. The bill would have kept that protection only for mortgages taken out for personal, family or household use, letting lenders charge a penalty for paying off an investment property loan early. The Pennsylvania House passed it 117-84. As of August 2026 the Senate had not voted on it.",
       "labels": [
         {
-          "slug": "corporate_accountability",
-          "yea": "for",
+          "slug": "general",
+          "yea": null,
           "nay": null
         }
       ]
@@ -1376,8 +1376,8 @@
       "measure_id": "HB 734",
       "vote_date": "2025-05-05",
       "review_status": "approved",
-      "yea_description": "Voted for House Bill 734. It would have required landlords to provide a habitable home and set out what happens when tenants are displaced. If rental housing is condemned, the landlord must act within 60 hours, and the bill defines temporary and permanent displacement and what each requires. The Pennsylvania House passed it 106-97. As of August 2026 the Senate had not voted on it.",
-      "nay_description": "Voted against House Bill 734. It would have required landlords to provide a habitable home and set out what happens when tenants are displaced. If rental housing is condemned, the landlord must act within 60 hours, and the bill defines temporary and permanent displacement and what each requires. The Pennsylvania House passed it 106-97. As of August 2026 the Senate had not voted on it.",
+      "yea_description": "Voted for House Bill 734. It would have required landlords to provide a habitable home and set out what happens when tenants are displaced. If rental housing is condemned, the landlord must act within 60 hours, and the bill defines temporary and permanent displacement and what each requires. The Pennsylvania House passed it 106-97. The Senate moved it through committee and second consideration in June 2025, then parked it in Appropriations without a final vote.",
+      "nay_description": "Voted against House Bill 734. It would have required landlords to provide a habitable home and set out what happens when tenants are displaced. If rental housing is condemned, the landlord must act within 60 hours, and the bill defines temporary and permanent displacement and what each requires. The Pennsylvania House passed it 106-97. The Senate moved it through committee and second consideration in June 2025, then parked it in Appropriations without a final vote.",
       "labels": [
         {
           "slug": "housing_affordability",
