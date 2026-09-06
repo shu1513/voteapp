@@ -1393,23 +1393,36 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
 
     async logoutAll(input) {
       const userId = normalizeUserId(input.userId);
-      // Epoch bump first: revocation must not depend on Redis. The caller's
-      // own session dies too — logout-all means everywhere, and the API
-      // clears the cookie in the same response.
-      await options.db.query(
-        `
-          UPDATE public.users
-          SET session_epoch = session_epoch + 1,
-              updated_at = now()
-          WHERE id = $1::uuid
-            AND deleted_at IS NULL
-        `,
-        [userId]
-      );
-      // Sessions are not the only channel that reaches a device: push
-      // notifications carry personalized content too, so logout-all revokes
-      // every push token as well. Re-login re-registers the device's token.
-      await revokeAllUserPushTokens(options.db, userId);
+      // Epoch bump and push-token revocation in ONE transaction: revocation
+      // must not depend on Redis, and the two durable halves must land
+      // together. Sessions are not the only channel that reaches a device —
+      // push notifications carry personalized content too — and once the
+      // epoch bump commits the caller's own session is dead, so a failed
+      // second statement could not be retried by the same session; the
+      // signed-out device would keep receiving pushes. The caller's session
+      // dying is intended: logout-all means everywhere, and the API clears
+      // the cookie in the same response. Re-login re-registers the token.
+      const client = await options.db.connect();
+      try {
+        await client.query("BEGIN");
+        await client.query(
+          `
+            UPDATE public.users
+            SET session_epoch = session_epoch + 1,
+                updated_at = now()
+            WHERE id = $1::uuid
+              AND deleted_at IS NULL
+          `,
+          [userId]
+        );
+        await revokeAllUserPushTokens(client, userId);
+        await client.query("COMMIT");
+      } catch (error) {
+        await rollbackQuietly(client);
+        throw error;
+      } finally {
+        client.release();
+      }
       // Best-effort, like the other credential flows: the bump above already
       // revoked every session, so a Redis failure must not fail a logout-all
       // that succeeded from a security standpoint.
