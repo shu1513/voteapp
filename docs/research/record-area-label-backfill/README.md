@@ -71,7 +71,24 @@ A record whose candidate has no office election at all cannot go through the wra
 
 A separate, larger gap turned up while verifying: 294 records whose judgment DID state a nay stance had never had it applied (GA 170, ME 49, TX 44, US 118-1 roll 705 31). Re-importing those roll calls closed all of them.
 
-Re-importing federal `backfill-118-117/batch-07` also INSERTED 371 new records, for approved roll calls whose members are linked now but were not at first import. Remaining federal batches were left un-run pending a decision on those.
+Re-importing the federal evidence also INSERTS records, for approved roll calls
+whose members are linked now but were not at first import. Those inserts were
+reviewed and approved, and all 27 federal evidence directories were then run
+(backfill-118-117, expansion-119-1, pilot-119-1, refetch-2026-08-29): 456 roll
+calls, 6,609 records inserted, 5,291 of them tagged immediately. The rest are
+nay-side rows whose judgment gives the no side no tag.
+
+About 42 hand-written rows were absorbed in the process: when a live
+hand-written record cites the same roll call, the importer rewrites it in place
+so one vote is not told twice. That is the importer's dedupe, not data loss.
+
+A hand-removed tag on a roll-call record does not survive a re-import either.
+One record (Chuck Edwards, US House roll 285) had its `general` tag removed by
+hand and got it back, because tags are re-derived from the roll call's own
+labels every time.
+
+After this pass there is no roll-call record left whose judgment gives it a tag
+it does not have.
 
 Do not hand-tag a `rollcall_import` record. `syncRollCallRecordTags` makes a record's tags exactly the roll call's labels for its side, so anything added by hand is deleted on the next import of that roll call. Fix the judgment instead.
 
