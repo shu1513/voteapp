@@ -1,0 +1,158 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1655021,
+      "measure_id": "SB 1568",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1568, which widens what the Oregon Health Plan and private health plans must cover around birth. The state must write rules by January 2028 setting who counts as a birth doula and who counts as a postpartum doula. Doula services must be available without a referral or a signature from another provider. Coverage must run to at least 12 visits or 24 hours of care, on top of labor and delivery, whatever the outcome of the birth. More hours can be approved where they are needed. Lactation counselors are added as a covered service too. The wider coverage reaches plan contracts made or renewed from January 2028. The Oregon Senate agreed to the House's changes 23-7, and it became law.",
+      "nay_description": "Voted against Senate Bill 1568, which widens what the Oregon Health Plan and private health plans must cover around birth. The state must write rules by January 2028 setting who counts as a birth doula and who counts as a postpartum doula. Doula services must be available without a referral or a signature from another provider. Coverage must run to at least 12 visits or 24 hours of care, on top of labor and delivery, whatever the outcome of the birth. More hours can be approved where they are needed. Lactation counselors are added as a covered service too. The wider coverage reaches plan contracts made or renewed from January 2028. The Oregon Senate agreed to the House's changes 23-7, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1651028,
+      "measure_id": "SB 1598",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1598, which makes health plans in Oregon cover more preventive care at no charge to the patient. The list of covered services is moved forward from the federal rules of January 2023 to those of June 2025. Plans must also cover vaccines that Oregon's Public Health Officer recommends. That officer may issue such recommendations, and must weigh the evidence and the guidance of medical and scientific bodies. The state must publish each recommendation, saying who it is meant to help and how it should be given. Plans then have 15 business days to cover it. Patients may not be charged a share of the cost, except where federal law allows. The Oregon House passed it 39-18, and it became law.",
+      "nay_description": "Voted against Senate Bill 1598, which makes health plans in Oregon cover more preventive care at no charge to the patient. The list of covered services is moved forward from the federal rules of January 2023 to those of June 2025. Plans must also cover vaccines that Oregon's Public Health Officer recommends. That officer may issue such recommendations, and must weigh the evidence and the guidance of medical and scientific bodies. The state must publish each recommendation, saying who it is meant to help and how it should be given. Plans then have 15 business days to cover it. Patients may not be charged a share of the cost, except where federal law allows. The Oregon House passed it 39-18, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1638681,
+      "measure_id": "SB 1598",
+      "vote_date": "2026-02-19",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1598, which makes health plans in Oregon cover more preventive care at no charge to the patient. The list of covered services is moved forward from the federal rules of January 2023 to those of June 2025. Plans must also cover vaccines that Oregon's Public Health Officer recommends. That officer may issue such recommendations, and must weigh the evidence and the guidance of medical and scientific bodies. The state must publish each recommendation, saying who it is meant to help and how it should be given. Plans then have 15 business days to cover it. Patients may not be charged a share of the cost, except where federal law allows. The Oregon Senate passed it 17-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 1598, which makes health plans in Oregon cover more preventive care at no charge to the patient. The list of covered services is moved forward from the federal rules of January 2023 to those of June 2025. Plans must also cover vaccines that Oregon's Public Health Officer recommends. That officer may issue such recommendations, and must weigh the evidence and the guidance of medical and scientific bodies. The state must publish each recommendation, saying who it is meant to help and how it should be given. Plans then have 15 business days to cover it. Patients may not be charged a share of the cost, except where federal law allows. The Oregon Senate passed it 17-11, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1655393,
+      "measure_id": "HB 4075",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4075, which puts the state behind a loan to keep a rural hospital afloat. By April 2027 the State Treasurer must guarantee one rural hospital stabilization loan. The hospital must be run by an elected board and be paid by Medicare on the usual hospital basis. The money may only cover a cash shortage or refinance old debt. It may not pay for new services, new buildings or improvements. The loan must run no more than 20 years, be paid down steadily with no balloon payment, and come from one lender or a single group of lenders. The state takes a first claim on nearly all the hospital's land and equipment. The Oregon House passed it 42-15, and it became law.",
+      "nay_description": "Voted against House Bill 4075, which puts the state behind a loan to keep a rural hospital afloat. By April 2027 the State Treasurer must guarantee one rural hospital stabilization loan. The hospital must be run by an elected board and be paid by Medicare on the usual hospital basis. The money may only cover a cash shortage or refinance old debt. It may not pay for new services, new buildings or improvements. The loan must run no more than 20 years, be paid down steadily with no balloon payment, and come from one lender or a single group of lenders. The state takes a first claim on nearly all the hospital's land and equipment. The Oregon House passed it 42-15, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1656533,
+      "measure_id": "HB 4075",
+      "vote_date": "2026-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4075, which puts the state behind a loan to keep a rural hospital afloat. By April 2027 the State Treasurer must guarantee one rural hospital stabilization loan. The hospital must be run by an elected board and be paid by Medicare on the usual hospital basis. The money may only cover a cash shortage or refinance old debt. It may not pay for new services, new buildings or improvements. The loan must run no more than 20 years, be paid down steadily with no balloon payment, and come from one lender or a single group of lenders. The state takes a first claim on nearly all the hospital's land and equipment. The Oregon Senate passed it 16-12, and it became law.",
+      "nay_description": "Voted against House Bill 4075, which puts the state behind a loan to keep a rural hospital afloat. By April 2027 the State Treasurer must guarantee one rural hospital stabilization loan. The hospital must be run by an elected board and be paid by Medicare on the usual hospital basis. The money may only cover a cash shortage or refinance old debt. It may not pay for new services, new buildings or improvements. The loan must run no more than 20 years, be paid down steadily with no balloon payment, and come from one lender or a single group of lenders. The state takes a first claim on nearly all the hospital's land and equipment. The Oregon Senate passed it 16-12, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1652969,
+      "measure_id": "HB 4115",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4115, which changes how often caregivers are re-checked and how fast providers get paid. A state criminal records check for a listed caregiver now lasts three years, not 18 months. The listed group is wide. It takes in home care workers and personal support workers. It takes in staff at adult foster homes, home health agencies and in-home care agencies. It takes in mental health and addiction treatment workers, including peer support specialists. The law also makes a care organization pay a provider back to the day the provider joined the state Medicaid program. Before, payment could start later. The Oregon Senate passed it 22-8, and it became law.",
+      "nay_description": "Voted against House Bill 4115, which changes how often caregivers are re-checked and how fast providers get paid. A state criminal records check for a listed caregiver now lasts three years, not 18 months. The listed group is wide. It takes in home care workers and personal support workers. It takes in staff at adult foster homes, home health agencies and in-home care agencies. It takes in mental health and addiction treatment workers, including peer support specialists. The law also makes a care organization pay a provider back to the day the provider joined the state Medicaid program. Before, payment could start later. The Oregon Senate passed it 22-8, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1643436,
+      "measure_id": "SB 1575",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1575, which pauses new hospice licenses in Oregon while the state writes tougher rules. The health authority may not grant a new hospice license until those rules are in place. It has 24 months to finish them. An applicant must now report a poor record in any state. That means a license taken away or put on hold. It means a finding or penalty from a regulator. It means any ruling or deal over health care fraud. And it means being shut out of Medicare or Medicaid. The in-person visit to every licensed hospice is kept. Four groups may still be licensed during the pause. One is anyone offering to serve an area or group that is short of care. The Oregon Senate passed it 19-8, and it became law.",
+      "nay_description": "Voted against Senate Bill 1575, which pauses new hospice licenses in Oregon while the state writes tougher rules. The health authority may not grant a new hospice license until those rules are in place. It has 24 months to finish them. An applicant must now report a poor record in any state. That means a license taken away or put on hold. It means a finding or penalty from a regulator. It means any ruling or deal over health care fraud. And it means being shut out of Medicare or Medicaid. The in-person visit to every licensed hospice is kept. Four groups may still be licensed during the pause. One is anyone offering to serve an area or group that is short of care. The Oregon Senate passed it 19-8, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1655384,
+      "measure_id": "HB 4142",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4142, which lets patients use medical marijuana where they live. It is known as Ryan's Law. A listed care organization or residential facility must let a qualifying patient or resident use medical marijuana on site. Each one must write a policy. The policy covers how the marijuana is bought, stored, given and thrown away. It must set clear steps for handling it. It must keep patients safe through proper storage and correct doses. It must say how anything left over is disposed of. Staff who give direct care must be trained, on top of any training the law already requires. The Oregon Senate passed it 20-8, and it became law.",
+      "nay_description": "Voted against House Bill 4142, which lets patients use medical marijuana where they live. It is known as Ryan's Law. A listed care organization or residential facility must let a qualifying patient or resident use medical marijuana on site. Each one must write a policy. The policy covers how the marijuana is bought, stored, given and thrown away. It must set clear steps for handling it. It must keep patients safe through proper storage and correct doses. It must say how anything left over is disposed of. Staff who give direct care must be trained, on top of any training the law already requires. The Oregon Senate passed it 20-8, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
