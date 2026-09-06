@@ -59,8 +59,8 @@
       "measure_id": "HB 88",
       "vote_date": "2025-11-19",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.B. 88, which increased the penalties for trafficking cocaine, fentanyl-related compounds, heroin, and methamphetamine, and removed the knowledge requirement for certain fentanyl possession offenses. It added a mandatory five-year prison term for involuntary manslaughter when a lethal amount of fentanyl was in the victim's body and the autopsy is consistent with an opioid overdose. It also required public schools to teach students in kindergarten through grade 12 about the dangers of fentanyl, and required state colleges to run a similar program. It passed the Ohio House 71-18.",
-      "nay_description": "Voted against passing H.B. 88, which increased the penalties for trafficking cocaine, fentanyl-related compounds, heroin, and methamphetamine, and removed the knowledge requirement for certain fentanyl possession offenses. It added a mandatory five-year prison term for involuntary manslaughter when a lethal amount of fentanyl was in the victim's body and the autopsy is consistent with an opioid overdose. It also required public schools to teach students in kindergarten through grade 12 about the dangers of fentanyl, and required state colleges to run a similar program. It passed the Ohio House 71-18.",
+      "yea_description": "Voted to pass H.B. 88, which increased the penalties for trafficking cocaine, fentanyl-related compounds, heroin, and methamphetamine, removed the knowledge requirement for certain fentanyl possession offenses, and required public schools to teach students in kindergarten through grade 12 about the dangers of fentanyl. It passed the Ohio House 71-18.",
+      "nay_description": "Voted against passing H.B. 88, which increased the penalties for trafficking cocaine, fentanyl-related compounds, heroin, and methamphetamine, removed the knowledge requirement for certain fentanyl possession offenses, and required public schools to teach students in kindergarten through grade 12 about the dangers of fentanyl. It passed the Ohio House 71-18.",
       "labels": [
         {
           "slug": "public_safety_and_crime_control",
@@ -76,8 +76,8 @@
       "measure_id": "HB 485",
       "vote_date": "2025-11-19",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.B. 485, the Baby Olivia Act, which required every public school to teach human growth and development in grades 5 through 12. The instruction must use a high-definition ultrasound video and the \"Meet Baby Olivia\" video produced by the anti-abortion group Live Action, or a substantially similar video. A student must be excused from it if a parent or guardian asks in writing. It passed the Ohio House 59-27.",
-      "nay_description": "Voted against passing H.B. 485, the Baby Olivia Act, which required every public school to teach human growth and development in grades 5 through 12. The instruction must use a high-definition ultrasound video and the \"Meet Baby Olivia\" video produced by the anti-abortion group Live Action, or a substantially similar video. A student must be excused from it if a parent or guardian asks in writing. It passed the Ohio House 59-27.",
+      "yea_description": "Voted to pass H.B. 485, the Baby Olivia Act, which required every public school to teach human growth and development in grades 5 through 12 using a high-definition ultrasound video and the \"Meet Baby Olivia\" video produced by the anti-abortion group Live Action, or a substantially similar video. It passed the Ohio House 59-27.",
+      "nay_description": "Voted against passing H.B. 485, the Baby Olivia Act, which required every public school to teach human growth and development in grades 5 through 12 using a high-definition ultrasound video and the \"Meet Baby Olivia\" video produced by the anti-abortion group Live Action, or a substantially similar video. It passed the Ohio House 59-27.",
       "labels": [
         {
           "slug": "womens_reproductive_rights",
@@ -127,8 +127,8 @@
       "measure_id": "HB 249",
       "vote_date": "2026-03-25",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.B. 249, the Indecent Exposure Modernization Act, which created the criminal offense of unlawful adult cabaret performance. It covers performances outside an adult cabaret where minors may be present that are harmful to juveniles or obscene, including performances by entertainers who exhibit a gender identity different from their biological sex. It passed the Ohio House 63-32.",
-      "nay_description": "Voted against passing H.B. 249, the Indecent Exposure Modernization Act, which created the criminal offense of unlawful adult cabaret performance. It covers performances outside an adult cabaret where minors may be present that are harmful to juveniles or obscene, including performances by entertainers who exhibit a gender identity different from their biological sex. It passed the Ohio House 63-32.",
+      "yea_description": "Voted to pass H.B. 249, the Indecent Exposure Modernization Act, which created the criminal offense of unlawful adult cabaret performance for performances outside an adult cabaret that are harmful to juveniles or obscene, a category the bill defined to include entertainers who exhibit a gender identity different from their biological sex. It passed the Ohio House 63-32.",
+      "nay_description": "Voted against passing H.B. 249, the Indecent Exposure Modernization Act, which created the criminal offense of unlawful adult cabaret performance for performances outside an adult cabaret that are harmful to juveniles or obscene, a category the bill defined to include entertainers who exhibit a gender identity different from their biological sex. It passed the Ohio House 63-32.",
       "labels": [
         {
           "slug": "civil_rights",
@@ -161,8 +161,8 @@
       "measure_id": "HB 347",
       "vote_date": "2026-03-25",
       "review_status": "approved",
-      "yea_description": "Voted to pass H.B. 347, the SHE WINS Act. Outside a medical emergency, an elective abortion could be performed only if a physician met with the woman at least 24 hours beforehand, gave her specified information, and documented her informed consent. A physician who did not comply faced professional discipline and a civil suit in which the court had to award at least $100,000 in statutory damages for each successful claim, plus costs and attorney's fees. It passed the Ohio House 64-32.",
-      "nay_description": "Voted against passing H.B. 347, the SHE WINS Act. Outside a medical emergency, an elective abortion could be performed only if a physician met with the woman at least 24 hours beforehand, gave her specified information, and documented her informed consent. A physician who did not comply faced professional discipline and a civil suit in which the court had to award at least $100,000 in statutory damages for each successful claim, plus costs and attorney's fees. It passed the Ohio House 64-32.",
+      "yea_description": "Voted to pass H.B. 347, the SHE WINS Act, which permitted an elective abortion only where a physician met with the woman at least 24 hours beforehand to provide specified information and document her informed consent, and authorized civil damages and professional discipline against physicians who did not comply. It passed the Ohio House 64-32.",
+      "nay_description": "Voted against passing H.B. 347, the SHE WINS Act, which permitted an elective abortion only where a physician met with the woman at least 24 hours beforehand to provide specified information and document her informed consent, and authorized civil damages and professional discipline against physicians who did not comply. It passed the Ohio House 64-32.",
       "labels": [
         {
           "slug": "womens_reproductive_rights",
