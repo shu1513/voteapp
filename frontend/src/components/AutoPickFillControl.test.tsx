@@ -251,6 +251,27 @@ describe("AutoPickFillControl", () => {
     expect(requestsTo(fetchMock, "/api/me/election-choices")).toEqual([]);
   });
 
+  it("replaces the fill button with Clear once the date has auto picks, even with races still open", async () => {
+    // A rerun over the races the engine already left open would return the
+    // same "not enough evidence"; Clear → fill again is the useful path.
+    stubApiRoutes({
+      "/api/me": { body: { user: SIGNED_IN } },
+      "/api/me/research-area-preferences": { body: THREE_PREFERENCES },
+    });
+    renderControl({
+      choices: [
+        choice({
+          picks: [
+            { candidate_id: CAND_A, display_name: "Alice", candidacy_status: "declared", origin: "auto" },
+          ],
+        }),
+      ],
+    });
+    expect(await screen.findByRole("button", { name: "Clear auto picks" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Auto-fill empty picks by my issues" })).toBeNull();
+    expect(screen.queryByText(/Picks the best match for your ranked issues/)).toBeNull();
+  });
+
   it("hides the clear button when the only auto picks are on another date", async () => {
     stubApiRoutes({
       "/api/me": { body: { user: SIGNED_IN } },
