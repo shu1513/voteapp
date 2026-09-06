@@ -101,8 +101,8 @@
    "measure_id": "SB 2031",
    "vote_date": "2026-04-02",
    "review_status": "approved",
-   "yea_description": "Voted to pass SB 2031. It lets a person sue a health care provider for an injury caused by a medical procedure that was done to help them live as a gender different from their sex. The Tennessee House passed it 72-19, and it became law.",
-   "nay_description": "Voted against SB 2031. It lets a person sue a health care provider for an injury caused by a medical procedure that was done to help them live as a gender different from their sex. The Tennessee House passed it 72-19, and it became law.",
+   "yea_description": "Voted to pass SB 2031. It lets a person sue a health care provider for an injury caused by a medical procedure that was done to help them live as a gender different from their sex, but only if they, or their parent when they were a minor, agreed to it partly or wholly because the provider coerced them. The Tennessee House passed it 72-19, and it became law.",
+   "nay_description": "Voted against SB 2031. It lets a person sue a health care provider for an injury caused by a medical procedure that was done to help them live as a gender different from their sex, but only if they, or their parent when they were a minor, agreed to it partly or wholly because the provider coerced them. The Tennessee House passed it 72-19, and it became law.",
    "labels": [
     {
      "slug": "civil_rights",
@@ -178,24 +178,6 @@
    "labels": [
     {
      "slug": "immigration",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "TN",
-   "chamber": "house",
-   "session": "2161",
-   "roll": 1536603,
-   "measure_id": "SB 766",
-   "vote_date": "2025-04-03",
-   "review_status": "approved",
-   "yea_description": "Voted to pass SB 766. It lets an insurance premium finance company charge customers a convenience fee for paying by card or other electronic means. The fee may not be more than what the payment actually costs the company to process. The Tennessee House passed it 48-27, and it became law.",
-   "nay_description": "Voted against SB 766. It lets an insurance premium finance company charge customers a convenience fee for paying by card or other electronic means. The fee may not be more than what the payment actually costs the company to process. The Tennessee House passed it 48-27, and it became law.",
-   "labels": [
-    {
-     "slug": "cost_of_living_reduction",
      "yea": "against",
      "nay": null
     }

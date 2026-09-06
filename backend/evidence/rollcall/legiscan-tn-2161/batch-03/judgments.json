@@ -26,8 +26,8 @@
    "measure_id": "HB 22",
    "vote_date": "2025-03-10",
    "review_status": "approved",
-   "yea_description": "Voted to pass HB 22. It requires every city, county, school district and other local governing body to set aside time for public comment at each public meeting. People may speak on items on the agenda and on any other matter the body has power over. The Tennessee House passed it 60-29, and it became law.",
-   "nay_description": "Voted against HB 22. It requires every city, county, school district and other local governing body to set aside time for public comment at each public meeting. People may speak on items on the agenda and on any other matter the body has power over. The Tennessee House passed it 60-29, and it became law.",
+   "yea_description": "Voted to pass HB 22. It requires every city, county, school district and other local governing body to set aside time for public comment at each public meeting. People may speak on items on the agenda and on any other matter the body has power over. The Tennessee House passed it 60-30 (recorded 60-29 in the LegiScan roll, which omits one no vote), and it became law.",
+   "nay_description": "Voted against HB 22. It requires every city, county, school district and other local governing body to set aside time for public comment at each public meeting. People may speak on items on the agenda and on any other matter the body has power over. The Tennessee House passed it 60-30 (recorded 60-29 in the LegiScan roll, which omits one no vote), and it became law.",
    "labels": [
     {
      "slug": "anti_corruption",
@@ -80,8 +80,8 @@
    "measure_id": "HB 618",
    "vote_date": "2025-02-27",
    "review_status": "approved",
-   "yea_description": "Voted to pass HB 618. It bars a person who holds a local elected office from holding a second elected office in Tennessee at the same time. Anyone holding two offices when the law took effect could keep them until those terms ran out, and party executive committee seats do not count. The Tennessee House passed it 61-26. The Senate later changed when the ban starts, and the bill became law.",
-   "nay_description": "Voted against HB 618. It bars a person who holds a local elected office from holding a second elected office in Tennessee at the same time. Anyone holding two offices when the law took effect could keep them until those terms ran out, and party executive committee seats do not count. The Tennessee House passed it 61-26. The Senate later changed when the ban starts, and the bill became law.",
+   "yea_description": "Voted to pass HB 618. It bars a person who holds a local elected office from holding a second elected office in Tennessee at the same time. Anyone holding two offices when the law took effect could keep them until those terms ran out, and party executive committee seats do not count. The Tennessee House passed it 61-27 (recorded 61-26 in the LegiScan roll, which omits one no vote). The Senate later changed when the ban starts, and the bill became law.",
+   "nay_description": "Voted against HB 618. It bars a person who holds a local elected office from holding a second elected office in Tennessee at the same time. Anyone holding two offices when the law took effect could keep them until those terms ran out, and party executive committee seats do not count. The Tennessee House passed it 61-27 (recorded 61-26 in the LegiScan roll, which omits one no vote). The Senate later changed when the ban starts, and the bill became law.",
    "labels": [
     {
      "slug": "anti_corruption",
@@ -227,8 +227,8 @@
    "measure_id": "SB 880",
    "vote_date": "2025-04-07",
    "review_status": "approved",
-   "yea_description": "Voted to pass SB 880. It bars state agencies from setting a numeric limit on a pollutant or contaminant in drinking water, air, waste or a cleanup site unless the best available science shows a direct link to bodily harm in people. A rule that does not meet that test cannot be adopted. The Tennessee House passed it 74-22, and it became law.",
-   "nay_description": "Voted against SB 880. It bars state agencies from setting a numeric limit on a pollutant or contaminant in drinking water, air, waste or a cleanup site unless the best available science shows a direct link to bodily harm in people. A rule that does not meet that test cannot be adopted. The Tennessee House passed it 74-22, and it became law.",
+   "yea_description": "Voted to pass SB 880. It bars state agencies from setting a numeric limit on a pollutant or contaminant in drinking water, air, waste or a cleanup site unless the best available science shows a direct link to bodily harm in people. A rule that does not meet that test cannot be adopted. The test applies only to new state rules that are stricter than federal rules or cover something federal rules do not, and it does not apply to the health or agriculture departments or to emergency rules. The Tennessee House passed it 74-22, and it became law.",
+   "nay_description": "Voted against SB 880. It bars state agencies from setting a numeric limit on a pollutant or contaminant in drinking water, air, waste or a cleanup site unless the best available science shows a direct link to bodily harm in people. A rule that does not meet that test cannot be adopted. The test applies only to new state rules that are stricter than federal rules or cover something federal rules do not, and it does not apply to the health or agriculture departments or to emergency rules. The Tennessee House passed it 74-22, and it became law.",
    "labels": [
     {
      "slug": "environment_and_public_health",

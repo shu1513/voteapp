@@ -1,6 +1,7 @@
 # Judging notes, Tennessee batch-04
 
-Twelve roll calls on eleven measures, all enacted. Every chaptered act was
+Eleven roll calls on ten measures, all enacted (twelve on eleven as imported;
+SB 766 was retracted on PR review, see the end of this file). Every chaptered act was
 downloaded through the LegiScan API with byte length and MD5 verified, extracted
 to text and read. Scope `--scope-from 2026-08-01`, Tennessee's primary date.
 
@@ -53,7 +54,10 @@ Every label uses `nay: null`.
   and racial quotas.
 - **SB 2031**, `civil_rights`, against. It creates a civil action against a
   health care professional for injury from a procedure performed to enable a
-  person to identify with a gender different from their sex.
+  person to identify with a gender different from their sex, where consent was
+  given in whole or in part because of the professional's coercion. The first
+  description omitted the coercion condition, which is an element of the claim,
+  not a defense; fixed on PR review.
 - **SB 955**, `civil_rights`, against. The Medical Ethics Defense Act protects a
   provider, institution or payer refusing to participate in care that conflicts
   with its conscience, defined for an institution by its own governing
@@ -71,10 +75,6 @@ Every label uses `nay: null`.
   creates a Class A misdemeanor for recklessly discharging a firearm into the
   air, ground, water or a nearby object at a public gathering of 25 or more,
   with an exception for officers in the line of duty.
-- **SB 766**, `cost_of_living_reduction`, against. It permits a new consumer
-  convenience fee on electronic insurance premium payments, capped at the
-  licensee's actual processing cost — the cap is in the description because it
-  bounds how much the fee can be.
 - **SB 1858**, `election_integrity`, against. Section 3 changes the time a court
   must give the General Assembly to cure a defect from fifteen calendar days to
   ninety. The direction rests on that concrete fact: a plan a court has found
@@ -91,3 +91,24 @@ warnings, median Flesch-Kincaid grade 6.4, worst 9.1 — the plainest batch so f
 
 Swept the candidates who received records for any non-roll-call record on the
 same measure and date. 0 found.
+
+## Post-import review (PR #1184)
+
+- **SB 2031.** Coercion condition added to both descriptions; 75 records
+  rewritten.
+- **SB 766 retracted.** House roll 1536603 (3 April 2025) is 48-27 with 14 not
+  voting, and the raw roll says `passed: 0`: 48 is short of the 50-vote
+  constitutional majority. The House passed the bill 82-12 on 14 April 2025,
+  and LegiScan carries no roll for that vote. So the batch's only divided roll on
+  this measure is a failed vote, not the chamber's vote on the enacted text, and
+  the description had called it a passage. Retraction follows the Maryland HB
+  767 recipe: 65 records retired via `manual:records:retire`
+  (`sb766-retirements.json`), the roll set back to pending, the entry removed
+  from `judgments.json`, the evidence JSON removed from this directory (it stays
+  in the out-of-repo store). The survey's divided-and-enacted worklist keys on
+  the bill's enactment, so a failed roll on an enacted bill passes it; check
+  `passed` before judging.
+
+Re-import after the corrections: 11 files, 75 rewritten, 721 unchanged, 0
+errors (`import-rerun-report.json`). Batch is now **11 rolls / 10 measures /
+796 records**.

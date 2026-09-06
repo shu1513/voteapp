@@ -74,9 +74,11 @@ Every label uses `nay: null`.
   offenses, which reaches organized protest.
 - **SB 449**, `womens_reproductive_rights`, yea **for**. The act states that
   Tennessee law does not prohibit contraception or fertility treatment and
-  acknowledges the right to provide and to use them. Its own subsection (c)
-  says it creates no entitlement to the services or to funding or coverage, and
-  the description says so too rather than overstating the act.
+  acknowledges the right to provide and to use them. Subsection (b) acknowledges
+  the right of a provider to perform them and of a person to receive them;
+  subsection (c) says that is not an entitlement to the services or to funding
+  or coverage. The first description collapsed both into "does not create a
+  right to those services", which contradicts (b). Fixed on PR review.
 - **SB 2412**, `womens_reproductive_rights`, yea against. It lets the attorney
   general sue to enforce the abortion-inducing drug protocol, at $10,000 per
   knowing violation, $1,000,000 where a court finds serious bodily injury or
@@ -102,3 +104,22 @@ text is 20 descriptions, 0 warnings, median grade 7.6, worst 9.3.
 
 Swept the 99 candidates who received records for any non-roll-call record on the
 same measure and date. 0 found.
+
+## Post-import review (PR #1184)
+
+- **SB 6002, House roll 1477617.** Official tally 72-22; LegiScan lists 72-21.
+  LegiScan omits **Shaundelle Brooks (HD-060)** from this roll — she is absent
+from the member list, not recorded as not voting — as it does on three other
+early-2025 House rolls in this run. Tennessee's own bill pages list her voting No on each.
+Every other name on the roll matches the official list, so the roll is kept and
+her vote is added by hand (the Alabama HB 95 precedent: a member the feed does
+not cover is not a member who abstained). Her four records cite the official
+bill page and carry the neutral `general` label, matching the `nay: null` side
+of each roll. The descriptions now state the official tally and, in
+parentheses, the LegiScan tally the judge's tally gate requires.
+- **SB 449.** Description corrected as noted under label reasoning: the act
+  recognizes a right to provide and use the services and disclaims an
+  entitlement to them, not the right itself. 58 records rewritten.
+
+Re-import after the corrections: 10 files, 151 rewritten, 495 unchanged, 0
+errors (`import-rerun-report.json`).

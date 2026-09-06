@@ -7,13 +7,13 @@ Complete as of 6 September 2026. Batches 01 through 09.
 | 01 | 14 | 12 | 826 |
 | 02 | 10 | 7 | 646 |
 | 03 | 13 | 11 | 864 |
-| 04 | 12 | 11 | 861 |
+| 04 | 11 | 10 | 796 |
 | 05 | 11 | 10 | 774 |
 | 06 | 8 | 7 | 496 |
 | 07 | 7 | 7 | 463 |
 | 08 | 10 | 9 | 454 |
 | 09 | 4 | 4 | 244 |
-| **total** | **89** | **78** | **5,628** |
+| **total** | **88** | **77** | **5,563** |
 
 Scope for every batch is `--scope-from 2026-08-01`, Tennessee's primary date,
 per the scope note in `README.md`. Every batch reconciles three ways — report
@@ -23,7 +23,8 @@ total, run-stamp predicate, table delta — and sweeps clean for duplicates.
 
 | disposition | rolls |
 | --- | --- |
-| imported across batches 01-09 | 89 |
+| imported across batches 01-09 | 88 |
+| imported, then retracted on PR review (SB 766: the roll failed) | 1 |
 | superseded by a later roll on the same measure and chamber | 7 |
 | dropped on the version check | 2 |
 | left open: ceremonial joint resolutions | 56 |
@@ -53,6 +54,18 @@ total, run-stamp predicate, table delta — and sweeps clean for duplicates.
 7. **Tennessee's divided education record mostly cannot be labeled.** It is
    school-choice financing and administrative machinery, plus curriculum
    mandates. Roughly 25 education measures were read and four were imported.
+8. **A failed roll passes the divided-and-enacted gate.** The worklist keys on
+   the bill's enactment, and SB 766's only divided House roll is the 48-27 vote
+   that fell short of 50 (`passed: 0`); the bill passed 82-12 eleven days later
+   on a roll LegiScan does not carry. Check `passed` and the bill history before
+   judging. Found on PR #1184 review; retracted in batch-04.
+9. **LegiScan omits Shaundelle Brooks (HD-060) from early-2025 House rolls.**
+   Four imported rolls (SB 6002, HB 618, HB 22, HB 120) list one fewer No than
+   the official bill page, and every other name matches. A tally audit of all 89
+   imported rolls against the dataset's own bill-history strings
+   (`Passed H., Ayes 72, Nays 22`) found exactly these four plus SB 766. Her
+   votes are hand-written records citing the official page (the Alabama HB 95
+   precedent); the rolls stay. Run that audit before judging future batches.
 
 ## Open for the operator
 

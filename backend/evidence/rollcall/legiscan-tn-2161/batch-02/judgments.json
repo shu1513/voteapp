@@ -98,8 +98,8 @@
    "measure_id": "SB 449",
    "vote_date": "2025-04-10",
    "review_status": "approved",
-   "yea_description": "Voted to pass SB 449. It says Tennessee law does not ban birth control or fertility treatment, and that a doctor may offer them and a person may use them. It does not create a right to those services, or to funding or insurance for them. The Tennessee House passed it 54-37, and it became law.",
-   "nay_description": "Voted against SB 449. It says Tennessee law does not ban birth control or fertility treatment, and that a doctor may offer them and a person may use them. It does not create a right to those services, or to funding or insurance for them. The Tennessee House passed it 54-37, and it became law.",
+   "yea_description": "Voted to pass SB 449. It says Tennessee law does not ban birth control or fertility treatment, and that a doctor has a right to offer them and a person has a right to use them. It does not promise anyone those services, or funding or insurance for them. The Tennessee House passed it 54-37, and it became law.",
+   "nay_description": "Voted against SB 449. It says Tennessee law does not ban birth control or fertility treatment, and that a doctor has a right to offer them and a person has a right to use them. It does not promise anyone those services, or funding or insurance for them. The Tennessee House passed it 54-37, and it became law.",
    "labels": [
     {
      "slug": "womens_reproductive_rights",
@@ -134,8 +134,8 @@
    "measure_id": "SB 6002",
    "vote_date": "2025-01-30",
    "review_status": "approved",
-   "yea_description": "Voted to pass SB 6002. It creates a new immigration enforcement office inside the state safety department, run by an officer the governor picks. That officer directs how state and local police work with federal immigration agents, hands out money from a new grant fund, and runs the state's part in federal programs. The Tennessee House passed it 72-21, and it became law.",
-   "nay_description": "Voted against SB 6002. It creates a new immigration enforcement office inside the state safety department, run by an officer the governor picks. That officer directs how state and local police work with federal immigration agents, hands out money from a new grant fund, and runs the state's part in federal programs. The Tennessee House passed it 72-21, and it became law.",
+   "yea_description": "Voted to pass SB 6002. It creates a new immigration enforcement office inside the state safety department, run by an officer the governor picks. That officer directs how state and local police work with federal immigration agents, hands out money from a new grant fund, and runs the state's part in federal programs. The Tennessee House passed it 72-22 (recorded 72-21 in the LegiScan roll, which omits one no vote), and it became law.",
+   "nay_description": "Voted against SB 6002. It creates a new immigration enforcement office inside the state safety department, run by an officer the governor picks. That officer directs how state and local police work with federal immigration agents, hands out money from a new grant fund, and runs the state's part in federal programs. The Tennessee House passed it 72-22 (recorded 72-21 in the LegiScan roll, which omits one no vote), and it became law.",
    "labels": [
     {
      "slug": "immigration",

@@ -26,8 +26,8 @@
    "measure_id": "HB 120",
    "vote_date": "2025-03-10",
    "review_status": "approved",
-   "yea_description": "Voted to pass HB 120. It creates the crime of deliberately blocking a member of the state division of protective services from entering, leaving or moving around a location. The division covers the highway patrol, commissioned homeland security officers, and officers supporting their work. The Tennessee House passed it 73-19, and it became law.",
-   "nay_description": "Voted against HB 120. It creates the crime of deliberately blocking a member of the state division of protective services from entering, leaving or moving around a location. The division covers the highway patrol, commissioned homeland security officers, and officers supporting their work. The Tennessee House passed it 73-19, and it became law.",
+   "yea_description": "Voted to pass HB 120. It creates the crime of deliberately blocking a member of the state division of protective services from entering, leaving or moving around a location. The division covers the highway patrol, commissioned homeland security officers, and officers supporting their work. The Tennessee House passed it 73-20 (recorded 73-19 in the LegiScan roll, which omits one no vote), and it became law.",
+   "nay_description": "Voted against HB 120. It creates the crime of deliberately blocking a member of the state division of protective services from entering, leaving or moving around a location. The division covers the highway patrol, commissioned homeland security officers, and officers supporting their work. The Tennessee House passed it 73-20 (recorded 73-19 in the LegiScan roll, which omits one no vote), and it became law.",
    "labels": [
     {
      "slug": "public_safety_and_crime_control",
@@ -62,13 +62,11 @@
    "measure_id": "HB 1332",
    "vote_date": "2025-04-14",
    "review_status": "approved",
-   "yea_description": "Voted to pass HB 1332. It tightens who may get an enhanced handgun carry permit. An applicant is turned down if they have any conviction for driving under the influence in the past five years, or two or more in the past ten. The Tennessee House passed it 71-21, and it became law.",
-   "nay_description": "Voted against HB 1332. It tightens who may get an enhanced handgun carry permit. An applicant is turned down if they have any conviction for driving under the influence in the past five years, or two or more in the past ten. The Tennessee House passed it 71-21, and it became law.",
+   "yea_description": "Voted to pass HB 1332. It lowers the age to apply for a handgun carry permit from 21 to 18. It also tightens who may get an enhanced permit: an applicant is turned down if they have any conviction for driving under the influence in the past five years, or two or more in the past ten. The Tennessee House passed it 71-21, and it became law.",
+   "nay_description": "Voted against HB 1332. It lowers the age to apply for a handgun carry permit from 21 to 18. It also tightens who may get an enhanced permit: an applicant is turned down if they have any conviction for driving under the influence in the past five years, or two or more in the past ten. The Tennessee House passed it 71-21, and it became law.",
    "labels": [
     {
-     "slug": "gun_control",
-     "yea": "for",
-     "nay": null
+     "slug": "general"
     }
    ]
   },

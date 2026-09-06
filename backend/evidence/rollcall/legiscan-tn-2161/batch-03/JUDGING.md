@@ -8,7 +8,8 @@ date, per the session README.
 
 ## The version check found one real mismatch
 
-**HB 618.** The House passed it 61-26 on 27 February 2025. A year later the
+**HB 618.** The House passed it 61-27 on 27 February 2025 (LegiScan's roll
+lists 61-26; see the review section). A year later the
 Senate substituted, adopted Amendment 2 and passed it 21-10 on 26 February 2026;
 the House then concurred 76-14 on 5 March 2026, which is not divided. So the
 House's only divided roll is on the pre-amendment text.
@@ -77,7 +78,11 @@ Every label uses `nay: null`.
   a numeric limit for a contaminant or pollutant in drinking water, water
   pollution control, air quality, hazardous substances, site remediation or
   waste handling unless the best available science establishes a direct link to
-  "manifest bodily harm in humans."
+  "manifest bodily harm in humans." Subsections (c) and (d) bound it: only
+  rules stricter than a federal regulation or adopted where none exists, and
+  never rules the health or agriculture departments adopt, federally required
+  rules, or emergency rules. The description now states that scope; the first
+  draft read as if every numeric limit were covered.
 - **HB 2569**, `environment_and_public_health`, **for**. Hospitals must offer
   inpatients aged 50 and over, rather than 65 and over, an influenza
   immunization each year from 1 October to 1 March, and a pneumococcal
@@ -108,3 +113,22 @@ warnings, median Flesch-Kincaid grade 7.6, worst 10.0.
 
 Swept the 99 candidates who received records for any non-roll-call record on the
 same measure and date. 0 found.
+
+## Post-import review (PR #1184)
+
+- **HB 618, House roll 1501024** (official 61-27, LegiScan 61-26) and **HB 22,
+  House roll 1509630** (official 60-30, LegiScan 60-29). LegiScan omits **Shaundelle Brooks (HD-060)** from this roll — she is absent
+from the member list, not recorded as not voting — as it does on three other
+early-2025 House rolls in this run. Tennessee's own bill pages list her voting No on each.
+Every other name on the roll matches the official list, so the roll is kept and
+her vote is added by hand (the Alabama HB 95 precedent: a member the feed does
+not cover is not a member who abstained). Her four records cite the official
+bill page and carry the neutral `general` label, matching the `nay: null` side
+of each roll. The descriptions now state the official tally and, in
+parentheses, the LegiScan tally the judge's tally gate requires.
+- **SB 880.** Scope limitation added to the description, as noted under label
+  reasoning. The direction stands: the act still stops the state from going
+  beyond federal limits on its own evidence.
+
+Re-import after the corrections: 13 files, 223 rewritten, 641 unchanged, 0
+errors (`import-rerun-report.json`).

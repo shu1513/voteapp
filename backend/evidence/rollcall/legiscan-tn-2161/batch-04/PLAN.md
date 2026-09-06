@@ -1,6 +1,8 @@
 # TN batch-04 — selection
 
 **12 divided floor votes across 11 enacted measures**, same five filters.
+SB 766 was retracted on PR review (see `JUDGING.md`): 11 rolls / 10 measures
+stand.
 
 ## What went in
 
@@ -15,10 +17,11 @@
 | SB 350 landlords may not bar tenants' firearms | gun_control | against | H 73-21 |
 | SB 2459 bars asking foster parents about their firearms | gun_control | against | H 72-23 |
 | SB 1747 reckless discharge at a public gathering | gun_control | **for** | H 63-18 |
-| SB 766 premium finance convenience fees | cost_of_living_reduction | against | H 48-27 |
+| ~~SB 766 premium finance convenience fees~~ | cost_of_living_reduction | against | H 48-27, retracted: the vote failed |
 | SB 1858 90 days to fix a redistricting plan, was 15 | election_integrity | against | H 76-20 |
 
-SB 766 at 48-27 is the closest vote in any Tennessee batch so far.
+SB 766 at 48-27 was the closest vote in any Tennessee batch so far — because it
+failed (14 not voting, 50 needed). The raw roll's `passed: 0` was missed.
 
 `gun_control` appears in both directions in the same batch, as it did in
 batch-01: SB 350 and SB 2459 widen access and shield gun ownership from
