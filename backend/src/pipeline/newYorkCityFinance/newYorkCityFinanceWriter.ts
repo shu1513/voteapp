@@ -169,7 +169,6 @@ async function writeNewYorkCityFinanceLink(input: {
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'active', $9, $10, $11)
       ON CONFLICT (candidate_id, election_id, cfb_candidate_id)
       DO UPDATE SET
-        election_year = EXCLUDED.election_year,
         candidate_name_normalized = EXCLUDED.candidate_name_normalized,
         office_code = EXCLUDED.office_code,
         borough_code = EXCLUDED.borough_code,
@@ -177,7 +176,7 @@ async function writeNewYorkCityFinanceLink(input: {
         ${manualProtectedLinkAssignments("nyc_candidate_finance_links")},
         source_url = COALESCE(EXCLUDED.source_url, nyc_candidate_finance_links.source_url),
         last_verified_at = EXCLUDED.last_verified_at
-      RETURNING id::text AS id, link_status, link_source
+      RETURNING id::text AS id, link_status, link_source, election_year
     `,
     [
       input.link.candidateId,
@@ -193,7 +192,7 @@ async function writeNewYorkCityFinanceLink(input: {
       input.link.lastVerifiedAt.toISOString(),
     ]
   );
-  assertLinkWriteNotBlocked("NYC", result.rows[0], input.link.linkSource);
+  assertLinkWriteNotBlocked("NYC", result.rows[0], input.link.linkSource, input.link.electionYear);
   const id = result.rows[0]?.id;
   if (!id) throw new Error("NYC finance link upsert returned no id");
   return id;
