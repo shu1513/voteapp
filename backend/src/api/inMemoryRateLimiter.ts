@@ -64,6 +64,10 @@ export function createInMemoryKeyedRateLimiter<TInput>(
     if (!existing || now - existing.windowStartedAt >= options.windowMs) {
       if (!existing) {
         evictOldestUntilUnderCap();
+      } else {
+        // Map.set on an existing key keeps its old position; delete first so
+        // the reset window moves to the end like any other hit (see below).
+        buckets.delete(key);
       }
       buckets.set(key, { windowStartedAt: now, count: 1 });
       return { allowed: true };

@@ -34,4 +34,26 @@ describe("createInMemoryKeyedRateLimiter", () => {
     expect(limit("hot").allowed).toBe(false);
     expect(limit.getBucketCount()).toBe(2);
   });
+
+  it("a bucket reset by window expiry counts as recently hit under cap pressure", () => {
+    let now = 1_000;
+    // Long sweep interval so the expired bucket stays in the map and takes
+    // the in-place reset branch instead of being swept and re-inserted.
+    const limit = createInMemoryKeyedRateLimiter(
+      { windowMs: 60_000, maxRequests: 1, maxBuckets: 2, sweepIntervalMs: 1_000_000, now: () => now },
+      (k: string) => k
+    );
+
+    expect(limit("a")).toEqual({ allowed: true });
+    expect(limit("b")).toEqual({ allowed: true });
+
+    // "a" expires and resets in place: it is now the most recently hit key.
+    now += 60_000;
+    expect(limit("a")).toEqual({ allowed: true });
+
+    // A third key must evict "b" (least recently hit), not the just-reset "a".
+    expect(limit("c")).toEqual({ allowed: true });
+    expect(limit("a").allowed).toBe(false);
+    expect(limit.getBucketCount()).toBe(2);
+  });
 });
