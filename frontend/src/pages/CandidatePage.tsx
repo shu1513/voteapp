@@ -1056,9 +1056,16 @@ export function CandidatePage() {
                         <span className="text-subheading font-semibold text-ink">
                           {group.areaName}
                         </span>{" "}
-                        <span className="text-xs text-ink-soft">
-                          · {group.records.length} record{group.records.length === 1 ? "" : "s"}
-                        </span>
+                        {/* The total is redundant when every record in the
+                            group has a stance — "2 records · 2 support" said
+                            the same thing twice. It stays for stance-less
+                            groups (General, Other) and when neutral records
+                            make the tallies fall short of the total. */}
+                        {forCount + againstCount !== group.records.length ? (
+                          <span className="text-xs text-ink-soft">
+                            · {group.records.length} record{group.records.length === 1 ? "" : "s"}
+                          </span>
+                        ) : null}
                         {forCount > 0 ? (
                           <span className="text-xs font-medium text-green-900">
                             {" "}

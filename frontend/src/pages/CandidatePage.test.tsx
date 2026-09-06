@@ -127,8 +127,10 @@ describe("CandidatePage", () => {
     expect(groupState("Housing")).toBe(false);
     expect(groupState("Privacy")).toBe(false);
     // Collapsed groups still state their size, so the closed profile reads
-    // as an index of which issues carry a record.
-    expect(screen.getAllByText("· 1 record")).toHaveLength(4);
+    // as an index of which issues carry a record. Every record here has a
+    // stance, so the tally IS the size — no separate "1 record" count.
+    expect(screen.getAllByText("· 1 support")).toHaveLength(4);
+    expect(screen.queryByText("· 1 record")).not.toBeInTheDocument();
     // The group heading sits OUTSIDE the disclosure (a heading inside
     // <summary> can drop out of screen-reader heading navigation), same
     // pattern as the campaign-finance section.
@@ -194,8 +196,10 @@ describe("CandidatePage", () => {
     expect(summaryText("Gun Control")).toContain("· 3 support");
     expect(summaryText("Gun Control")).toContain("· 1 oppose");
     // Housing has no supporting record; a "0 support" would be pure noise.
+    // Its one record is the one oppose, so the total is dropped too.
     expect(summaryText("Housing Affordability")).toContain("· 1 oppose");
     expect(summaryText("Housing Affordability")).not.toContain("support");
+    expect(summaryText("Housing Affordability")).not.toContain("record");
     expect(summaryText("Impartiality")).toContain("· 1 unfavorable");
   });
 
