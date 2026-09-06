@@ -736,9 +736,10 @@ describe("PicksPage", () => {
     expect(screen.getByRole("link", { name: "Sheriff" })).toHaveAttribute("href", "/elections/e-old");
   });
 
-  it("badges auto picks and offers the fill/clear batch controls", async () => {
+  it("badges auto picks and swaps the fill button for Clear once the engine has picked", async () => {
     // e-1's pick came from the engine (origin auto) → Auto chip + a clear
-    // button; e-2 has no pick → the fill button counts it.
+    // button; e-2 is still open, but the fill button stays hidden until Clear
+    // runs — a rerun would only repeat the engine's "not enough evidence".
     stubApiRoutes(
       verifiedRoutes({
         "/api/me/election-choices": {
@@ -762,8 +763,8 @@ describe("PicksPage", () => {
     renderPicks();
 
     expect(await screen.findByText("Auto")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Auto-fill empty picks by my issues" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Clear auto picks" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Auto-fill empty picks by my issues" })).toBeNull();
   });
 
   it("annotates undecided rows with the engine's reason after a fill run", async () => {
