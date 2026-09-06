@@ -80,6 +80,12 @@ largest strands and says the bill also covered other environmental measures.
 Per-roll fan-out: 27 to 30 candidates on Assembly rolls, 10 or 11 on Senate rolls, none at
 zero. SB 128's Assembly roll reaches 27 rather than 30 because three members did not vote.
 
+**Review fix, 2026-09-06 (PR #1193):** the report files first committed here were
+batch-04's, copied by mistake. `import-report.json` is now the importer's own report for
+this run (started `2026-09-06T07:45:55.360Z`, 332 inserts, 1,418 unchanged). The dry-run
+report is not kept — its run-dir copy was overwritten by the review rewrite's dry run before
+the mistake was noticed.
+
 ## Duplicate sweep
 
 Swept with `origin_run_id NOT LIKE 'rollcall:%'`. Within a candidate there are **0 duplicate

@@ -63,7 +63,7 @@ homes are outside the cap.
 
 | check | result |
 | --- | --- |
-| import report | 308 inserts, 1,110 unchanged, 0 errors |
+| import report (seen at run time; file not kept — see review fixes) | 308 inserts, 1,110 unchanged, 0 errors |
 | run-stamp predicate `rollcall:NV:%:2026-09-06T07:34:43.546Z` | 308 records, 41 candidates |
 | table delta | 1,418 − 1,110 = 308 |
 
@@ -79,3 +79,23 @@ records.
 One hand-written row mentions a measure in this batch: a member who **introduced** AB 223.
 Introducing a bill is a different act from voting on it, so it was kept, the same treatment
 given to the AB 416 sponsorship row in batch-04.
+
+## Review fixes, 2026-09-06 (PR #1193)
+
+- **AB 185 (Assembly)** — the outdoor-play-space exception applies only to a facility in a
+  multi-family dwelling or an apartment or condominium building (first reprint, sections 7
+  and 8). The description said any qualifying home near a park; it now names the building
+  limit.
+- **AB 223** — "added pests, mold, lead paint … to the list of things a rental must have"
+  said the opposite of the bill. Now "freedom from pests, mold and lead paint, plus working
+  locks and safety equipment".
+- **Import reports** — the two report files first committed here were batch-04's, copied
+  by mistake. The importer's own report for this batch (`import-rerun-report.json` in the
+  run dir) was overwritten by the batch-06 run before it was copied out, so it cannot be
+  restored. The copies are removed. Evidence for the import is
+  `import-db-reconciliation.json` — run-stamp counts taken from the local database, 308
+  records across 41 candidates over all 16 rolls — plus batch-06's ledger, which lists all
+  16 rolls as already imported.
+- The rewrite of AB 185, AB 223 and batch-04's SB 171 is `import-rerun-report.json`:
+  **112 rewritten, 1,638 unchanged, 0 errors**. A database scan for the old wording returns
+  0; the new wording returns 112.

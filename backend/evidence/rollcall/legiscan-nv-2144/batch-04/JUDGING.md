@@ -129,3 +129,12 @@ Fixed at the source: the comma was restored in the `judgments.json` files of bat
 which is exactly the 645 defective rows. A database scan for the pattern now returns 0 for
 Nevada and 0 across every state. The insert ledger for this batch is `import-report.json`;
 the rewrite is `import-rerun-report.json`.
+
+## Review fix, 2026-09-06 (PR #1193)
+
+**SB 171** — both chambers' descriptions said the governor could not hand a person over to
+another state over gender-affirming care. Section 2 of the bill keeps extradition when the
+person was physically present in the demanding state at the time of the alleged offense
+and then fled. The descriptions now carry that exception. Re-applied with `rollcall:judge`
+and `rollcall:legiscan:import`; the rewrite (41 rows for SB 171, 112 in total with the
+batch-05 fixes) is `batch-05/import-rerun-report.json`.

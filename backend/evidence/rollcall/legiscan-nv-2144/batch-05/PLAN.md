@@ -61,7 +61,8 @@ Nevada campaign so far.
 **The Assembly voted the first reprint.** It stopped a homeowners association banning a
 licensed child care home for 5 to 12 children, let renters run one unless the lease said
 otherwise, and — in sections 7 and 8 — barred state and local licensing rules from
-refusing a license to such a home for lacking outdoor play space if it sits within a mile
+refusing a license to such a home in a multi-family, apartment or condominium building
+for lacking outdoor play space if it sits within a mile
 of a park. Senior housing was exempt.
 
 **The Senate voted the second reprint,** which is a noticeably weaker bill. Sections 7 and
