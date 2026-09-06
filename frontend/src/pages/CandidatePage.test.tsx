@@ -755,6 +755,35 @@ describe("CandidatePage", () => {
     expect(await screen.findByRole("button", { name: "Following" })).toBeInTheDocument();
   });
 
+  it("asks before unfollowing: Cancel sends nothing, Unfollow sends following:false", async () => {
+    const fetchMock = stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
+      "/api/me/candidate-follows": (_url, init) =>
+        init?.method === "PUT" ? { body: { follow: null } } : { body: { follows: [candidateFollow()] } },
+    });
+    const user = userEvent.setup();
+    renderCandidate(() => candidateDetail());
+
+    const following = await screen.findByRole("button", { name: "Following" });
+    // Hover previews the action the click will ask about.
+    await user.hover(following);
+    expect(following).toHaveTextContent("Unfollow");
+    await user.click(following);
+    const dialog = await screen.findByRole("dialog", { name: "Unfollow Jordan Voter?" });
+    await user.click(within(dialog).getByRole("button", { name: "Cancel" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(fetchMock.mock.calls.find(([, init]) => init?.method === "PUT")).toBeUndefined();
+
+    await user.click(screen.getByRole("button", { name: /Following|Unfollow/ }));
+    await user.click(within(await screen.findByRole("dialog")).getByRole("button", { name: "Unfollow" }));
+    await waitFor(() => {
+      const put = fetchMock.mock.calls.find(([, init]) => init?.method === "PUT");
+      expect(put).toBeDefined();
+      expect(JSON.parse(String(put![1]!.body))).toEqual({ candidate_id: "c-1", following: false });
+    });
+  });
+
   it("lets logged-out visitors pick from the sticky bar straight into the local ballot draft", async () => {
     clearBallotDraft();
     // Pick controls only render for races in the viewer's districts; a

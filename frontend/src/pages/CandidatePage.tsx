@@ -871,6 +871,7 @@ export function CandidatePage() {
                 // this one's button.
                 key={candidate.candidate_id}
                 candidateId={candidate.candidate_id}
+                candidateName={candidate.display_name}
                 isFollowing={isFollowing}
               />
             ) : me === null ? (
