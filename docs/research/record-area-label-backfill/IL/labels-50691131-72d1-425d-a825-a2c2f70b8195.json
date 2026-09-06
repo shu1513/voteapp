@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "850b5150-3317-4e22-9508-95b0cc3a7739",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "850b5150-3317-4e22-9508-95b0cc3a7739",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "1a3b66a5-0452-4d30-b012-6d4a85bd72af",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "1a3b66a5-0452-4d30-b012-6d4a85bd72af",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}
