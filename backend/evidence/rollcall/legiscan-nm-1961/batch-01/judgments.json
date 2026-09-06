@@ -1,0 +1,122 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1961",
+   "roll": 1136666,
+   "measure_id": "HB 132",
+   "vote_date": "2022-02-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 132, which caps what small lenders in New Mexico may charge. A storefront or installment loan can no longer carry an annual rate above 36 percent. The bill also makes more lenders hold a state license and adds reporting and notice rules. The New Mexico House passed it 51-18. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 132, which caps what small lenders in New Mexico may charge. A storefront or installment loan can no longer carry an annual rate above 36 percent. The bill also makes more lenders hold a state license and adds reporting and notice rules. The New Mexico House passed it 51-18. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1961",
+   "roll": 1139251,
+   "measure_id": "HB 22",
+   "vote_date": "2022-02-09",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 22, which requires every state department to make its programs usable by people who do not speak English well. Agencies have to provide meaningful access, such as translated forms or interpreters, so language does not shut someone out of a state service. The New Mexico House passed it 42-23, and it became law.",
+   "nay_description": "Voted against House Bill 22, which requires every state department to make its programs usable by people who do not speak English well. Agencies have to provide meaningful access, such as translated forms or interpreters, so language does not shut someone out of a state service. The New Mexico House passed it 42-23, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1961",
+   "roll": 1135705,
+   "measure_id": "HB 37",
+   "vote_date": "2022-02-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 37, which starts a grant program to make low-income homes use less energy. The New Mexico Mortgage Finance Authority may seek and hand out the block grants, and a new fund holds the money. Work paid for this way, such as insulation and better heating, cuts a household's utility bills. The New Mexico House passed it 44-24, and it became law.",
+   "nay_description": "Voted against House Bill 37, which starts a grant program to make low-income homes use less energy. The New Mexico Mortgage Finance Authority may seek and hand out the block grants, and a new fund holds the money. Work paid for this way, such as insulation and better heating, cuts a household's utility bills. The New Mexico House passed it 44-24, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1961",
+   "roll": 1147049,
+   "measure_id": "SB 140",
+   "vote_date": "2022-02-16",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 140, the Opportunity Scholarship Act. It writes New Mexico's tuition promise into law for residents taking at least six credit hours at a public college or tribal college in the state. The higher education department runs the scholarship, and the bill sets aside money for it. The New Mexico House passed it 51-17, and it became law.",
+   "nay_description": "Voted against Senate Bill 140, the Opportunity Scholarship Act. It writes New Mexico's tuition promise into law for residents taking at least six credit hours at a public college or tribal college in the state. The higher education department runs the scholarship, and the bill sets aside money for it. The New Mexico House passed it 51-17, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1961",
+   "roll": 1145480,
+   "measure_id": "SB 4",
+   "vote_date": "2022-02-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 4, which firms up New Mexico's prevailing wage rules for public works. The state must set the prevailing wage and benefit rates each year by October 1, to take effect the next January 1. An appeal of a rate no longer puts it on hold unless a court or a final ruling says so. The New Mexico House passed it 44-25, and it became law.",
+   "nay_description": "Voted against Senate Bill 4, which firms up New Mexico's prevailing wage rules for public works. The state must set the prevailing wage and benefit rates each year by October 1, to take effect the next January 1. An appeal of a rate no longer puts it on hold unless a court or a final ruling says so. The New Mexico House passed it 44-25, and it became law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1961",
+   "roll": 1145394,
+   "measure_id": "SB 41",
+   "vote_date": "2022-02-16",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 41, which treats university research park corporations as public employers. Their workers now fall under the Public Employee Bargaining Act, so they can organize and bargain over pay and working conditions. The New Mexico House passed it 36-32, and it became law.",
+   "nay_description": "Voted against Senate Bill 41, which treats university research park corporations as public employers. Their workers now fall under the Public Employee Bargaining Act, so they can organize and bargain over pay and working conditions. The New Mexico House passed it 36-32, and it became law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,65 @@
+{
+  "runId": "rollcall-legiscan-fetch-nm-1830-20260906T204704Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "jurisdiction": "NM",
+  "sessionId": 1830,
+  "dryRun": false,
+  "startedAt": "2026-09-06T20:47:04.551Z",
+  "finishedAt": "2026-09-06T20:47:04.614Z",
+  "datasetDir": "~/legiscan-data/nm-1830",
+  "evidenceDir": "evidence/rollcall/legiscan-nm-1830/batch-01",
+  "bills": 10,
+  "datasetVotes": 8,
+  "billFilter": [
+    "HB 2"
+  ],
+  "billFilterMisses": 6,
+  "excludedMeasureVotes": 0,
+  "committeeVotes": 0,
+  "unrecordedVotes": 0,
+  "duplicateVotes": 0,
+  "floorVotes": 2,
+  "surfaced": 0,
+  "fileErrors": [],
+  "counts": {
+    "inserted": 2
+  },
+  "rows": [
+    {
+      "bill": "HB2",
+      "chamber": "house",
+      "roll": 1041760,
+      "desc": "House Final Passage",
+      "outcome": "inserted",
+      "evidenceFile": "ls-nm-house-1830-roll1041760.json",
+      "voteDate": "2021-03-31",
+      "measureId": "HB 2",
+      "result": "Passed",
+      "yeas": 38,
+      "nays": 32,
+      "isFloorVote": true,
+      "questionClass": "passage",
+      "classificationReason": "kept:passage",
+      "judgmentCleared": false,
+      "error": null
+    },
+    {
+      "bill": "HB2",
+      "chamber": "senate",
+      "roll": 1042478,
+      "desc": "Senate Final Passage",
+      "outcome": "inserted",
+      "evidenceFile": "ls-nm-senate-1830-roll1042478.json",
+      "voteDate": "2021-03-31",
+      "measureId": "HB 2",
+      "result": "Passed",
+      "yeas": 22,
+      "nays": 15,
+      "isFloorVote": true,
+      "questionClass": "passage",
+      "classificationReason": "kept:passage",
+      "judgmentCleared": false,
+      "error": null
+    }
+  ]
+}

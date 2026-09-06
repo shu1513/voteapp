@@ -1,0 +1,1185 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-09-06T05:54:25.085Z",
+  "finishedAt": "2026-09-06T05:54:25.168Z",
+  "jurisdiction": "NM",
+  "sessionId": 1967,
+  "evidenceDir": "evidence/rollcall/legiscan-nm-1967",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "~/legiscan-data/nm-1967",
+  "peopleMembers": 112,
+  "candidatePool": 105,
+  "crosswalkFile": null,
+  "crosswalkEntries": null,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 6115,
+      "rosterName": "Miguel Garcia",
+      "rosterSeat": "house HD-014",
+      "candidateId": "9d6b41d4-cafa-48cb-a489-f7d2f874c113",
+      "candidateName": "Miguel Garcia",
+      "candidacy": "state_lower: State House District 14 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 6117,
+      "rosterName": "Patricia Lundstrom",
+      "rosterSeat": "house HD-009",
+      "candidateId": "170e5b60-c50a-4ac4-adc4-7c44fc85637f",
+      "candidateName": "Patricia Lundstrom",
+      "candidacy": "state_lower: State House District 9 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12054,
+      "rosterName": "Cathrynn Brown",
+      "rosterSeat": "house HD-055",
+      "candidateId": "b258dce0-2416-48ca-bb3c-fcd5e6788d1d",
+      "candidateName": "Cathrynn Brown",
+      "candidacy": "state_lower: State House District 55 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15018,
+      "rosterName": "Doreen Gallegos",
+      "rosterSeat": "house HD-052",
+      "candidateId": "48a9cd51-c75f-4022-a533-a0dd2d6dd33e",
+      "candidateName": "Doreen Y. Gallegos",
+      "candidacy": "state_lower: State House District 52 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15019,
+      "rosterName": "Elizabeth Thomson",
+      "rosterSeat": "house HD-024",
+      "candidateId": "35baff6b-79e1-4fd3-af8c-e858054c4d11",
+      "candidateName": "Elizabeth Thomson",
+      "candidacy": "state_lower: State House District 24 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17348,
+      "rosterName": "Doreen Johnson",
+      "rosterSeat": "house HD-005",
+      "candidateId": "f673089c-9003-404a-83d2-36a8ad35c09c",
+      "candidateName": "Doreen Wonda Johnson",
+      "candidacy": "state_lower: State House District 5 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17350,
+      "rosterName": "Javier Martinez",
+      "rosterSeat": "house HD-011",
+      "candidateId": "3e088296-85e6-4a97-9f12-13805401dbfa",
+      "candidateName": "Javier Martínez",
+      "candidacy": "state_lower: State House District 11 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17352,
+      "rosterName": "Rodney Montoya",
+      "rosterSeat": "house HD-001",
+      "candidateId": "df4ef917-7459-459b-9541-95ed3a587477",
+      "candidateName": "Rodney Montoya",
+      "candidacy": "state_lower: State House District 1 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18992,
+      "rosterName": "Gail Armstrong",
+      "rosterSeat": "house HD-049",
+      "candidateId": "b7fd5536-f223-456a-9551-be522c3d169d",
+      "candidateName": "Gail Armstrong",
+      "candidacy": "state_lower: State House District 49 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18993,
+      "rosterName": "Rebecca Dow",
+      "rosterSeat": "house HD-038",
+      "candidateId": "733278ba-28b2-464a-bc7a-acd7b516904c",
+      "candidateName": "Rebecca Dow",
+      "candidacy": "state_lower: State House District 38 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18996,
+      "rosterName": "Derrick Lente",
+      "rosterSeat": "house HD-065",
+      "candidateId": "1d0d4351-4192-40a1-865f-b4c8a78f276f",
+      "candidateName": "Derrick Lente",
+      "candidacy": "state_lower: State House District 65 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18998,
+      "rosterName": "Angelica Rubio",
+      "rosterSeat": "house HD-035",
+      "candidateId": "6b1e6dd4-0198-4fcc-97d6-3479e279e973",
+      "candidateName": "Angelica Rubio",
+      "candidacy": "state_lower: State House District 35 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18999,
+      "rosterName": "Debra Sarinana",
+      "rosterSeat": "house HD-021",
+      "candidateId": "0eb8a5a1-ca4a-41ef-80ff-213711685c78",
+      "candidateName": "Debra Sariñana",
+      "candidacy": "state_lower: State House District 21 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19000,
+      "rosterName": "Nathan Small",
+      "rosterSeat": "house HD-036",
+      "candidateId": "bea82c60-424d-4845-8b26-7369b0c08b39",
+      "candidateName": "Nathan Small",
+      "candidacy": "state_lower: State House District 36 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20840,
+      "rosterName": "Christine Chandler",
+      "rosterSeat": "house HD-043",
+      "candidateId": "4251ca17-c8a5-4234-9973-055b45416796",
+      "candidateName": "Christine Chandler",
+      "candidacy": "state_lower: State House District 43 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20869,
+      "rosterName": "Joy Garratt",
+      "rosterSeat": "house HD-029",
+      "candidateId": "6879ee20-b290-4ab9-8eae-6920ad128be6",
+      "candidateName": "Joy Garratt",
+      "candidacy": "state_lower: State House District 29 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20916,
+      "rosterName": "Andrea Romero",
+      "rosterSeat": "house HD-046",
+      "candidateId": "dc7f44e7-b373-4f59-bd2c-177a015fcd64",
+      "candidateName": "Andrea Romero",
+      "candidacy": "state_lower: State House District 46 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20918,
+      "rosterName": "Jack Chatfield",
+      "rosterSeat": "house HD-067",
+      "candidateId": "e9cb2f60-ec7d-4cc1-834d-3b29ceed574d",
+      "candidateName": "Jack Chatfield",
+      "candidacy": "state_lower: State House District 67 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20922,
+      "rosterName": "Dayan Hochman-Vigil",
+      "rosterSeat": "house HD-015",
+      "candidateId": "b16698b9-ba70-471d-b83a-19793e8222f8",
+      "candidateName": "Dayan Hochman-Vigil",
+      "candidacy": "state_lower: State House District 15 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20925,
+      "rosterName": "Raymundo Lara",
+      "rosterSeat": "house HD-034",
+      "candidateId": "9caae60f-eba5-4dfc-8718-d1f6d9a1d40d",
+      "candidateName": "Raymundo Lara",
+      "candidacy": "state_lower: State House District 34 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 20999,
+      "rosterName": "Micaela Cadena",
+      "rosterSeat": "house HD-033",
+      "candidateId": "4fa45bb0-1732-4912-98e1-a9ab8d14f6bc",
+      "candidateName": "Micaela Lara Cadena",
+      "candidacy": "state_lower: State House District 33 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21693,
+      "rosterName": "Tara Lujan",
+      "rosterSeat": "house HD-048",
+      "candidateId": "b30f8e2b-4153-4a2d-a6e4-1ba6a98b5c36",
+      "candidateName": "Tara Lujan",
+      "candidacy": "state_lower: State House District 48 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21694,
+      "rosterName": "Linda Serrato",
+      "rosterSeat": "house HD-045",
+      "candidateId": "02328c63-4729-4fbb-ab9a-97d736a7078b",
+      "candidateName": "Linda Serrato",
+      "candidacy": "state_lower: State House District 45 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22537,
+      "rosterName": "Randall Pettigrew",
+      "rosterSeat": "house HD-061",
+      "candidateId": "a9db9243-f14d-4732-8de7-f7917a41387a",
+      "candidateName": "Randall Pettigrew",
+      "candidacy": "state_lower: State House District 61 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22547,
+      "rosterName": "Joshua Hernandez",
+      "rosterSeat": "house HD-060",
+      "candidateId": "b545c6b2-6f03-4971-ac5c-95e25b6654f9",
+      "candidateName": "Joshua Hernandez",
+      "candidacy": "state_lower: State House District 60 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22646,
+      "rosterName": "Luis Terrazas",
+      "rosterSeat": "house HD-039",
+      "candidateId": "26f5dd88-69db-4bdf-b850-fe69c68c63b4",
+      "candidateName": "Luis Terrazas",
+      "candidacy": "state_lower: State House District 39 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22648,
+      "rosterName": "Stefani Lord",
+      "rosterSeat": "house HD-022",
+      "candidateId": "0c4e8a11-3e71-4c89-b09f-e58effff1ad7",
+      "candidateName": "Stefani Lord",
+      "candidacy": "state_lower: State House District 22 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22657,
+      "rosterName": "Meredith Dixon",
+      "rosterSeat": "house HD-020",
+      "candidateId": "6baee8e6-cc33-4ae0-b851-98e2596f8fda",
+      "candidateName": "Meredith Dixon",
+      "candidacy": "state_lower: State House District 20 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22659,
+      "rosterName": "Kristina Ortez",
+      "rosterSeat": "house HD-042",
+      "candidateId": "a513b827-38ac-4f94-b4b7-7c1ce54bdc17",
+      "candidateName": "Kristina Ortez",
+      "candidacy": "state_lower: State House District 42 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22984,
+      "rosterName": "Pamelya Herndon",
+      "rosterSeat": "house HD-028",
+      "candidateId": "56c3da81-1f46-40b4-ba80-1d3e63b524d9",
+      "candidateName": "Pamelya Herndon",
+      "candidacy": "state_lower: State House District 28 (2024); New Mexico",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 11740,
+      "name": "Zachary Cook",
+      "seat": "house HD-056"
+    },
+    {
+      "peopleId": 11839,
+      "name": "James Strickler",
+      "seat": "house HD-002"
+    },
+    {
+      "peopleId": 11840,
+      "name": "Jane Powdrell-Culbert",
+      "seat": "house HD-044"
+    },
+    {
+      "peopleId": 11918,
+      "name": "Alonzo Baldonado",
+      "seat": "house HD-008"
+    },
+    {
+      "peopleId": 12357,
+      "name": "William Burt",
+      "seat": "senate SD-033"
+    },
+    {
+      "peopleId": 15016,
+      "name": "Christine Trujillo",
+      "seat": "house HD-025"
+    },
+    {
+      "peopleId": 15017,
+      "name": "David Gallegos",
+      "seat": "senate SD-041"
+    },
+    {
+      "peopleId": 15021,
+      "name": "Georgene Louis",
+      "seat": "house HD-026"
+    },
+    {
+      "peopleId": 15023,
+      "name": "Jason Harper",
+      "seat": "house HD-057"
+    },
+    {
+      "peopleId": 15024,
+      "name": "Kelly Fajardo",
+      "seat": "house HD-007"
+    },
+    {
+      "peopleId": 15027,
+      "name": "Patricia Roybal Cabellero",
+      "seat": "house HD-013"
+    },
+    {
+      "peopleId": 15036,
+      "name": "Craig Brandt",
+      "seat": "senate SD-040"
+    },
+    {
+      "peopleId": 15037,
+      "name": "Jacob Candelaria",
+      "seat": "senate SD-026"
+    },
+    {
+      "peopleId": 15038,
+      "name": "Mark Moores",
+      "seat": "senate SD-021"
+    },
+    {
+      "peopleId": 15039,
+      "name": "Michael Padilla",
+      "seat": "senate SD-014"
+    },
+    {
+      "peopleId": 15109,
+      "name": "Ron Griggs",
+      "seat": "senate SD-034"
+    },
+    {
+      "peopleId": 15110,
+      "name": "Daniel Ivey-Soto",
+      "seat": "senate SD-015"
+    },
+    {
+      "peopleId": 15111,
+      "name": "Cliff Pirtle",
+      "seat": "senate SD-032"
+    },
+    {
+      "peopleId": 15113,
+      "name": "Benny Shendo",
+      "seat": "senate SD-022"
+    },
+    {
+      "peopleId": 15114,
+      "name": "William Soules",
+      "seat": "senate SD-037"
+    },
+    {
+      "peopleId": 15116,
+      "name": "John Woods",
+      "seat": "senate SD-007"
+    },
+    {
+      "peopleId": 17343,
+      "name": "Deborah Armstrong",
+      "seat": "house HD-017"
+    },
+    {
+      "peopleId": 17344,
+      "name": "Randal Crowder",
+      "seat": "house HD-064"
+    },
+    {
+      "peopleId": 17351,
+      "name": "Matthew McQueen",
+      "seat": "house HD-050"
+    },
+    {
+      "peopleId": 17353,
+      "name": "Andres Romero",
+      "seat": "house HD-010"
+    },
+    {
+      "peopleId": 17355,
+      "name": "Larry Scott",
+      "seat": "house HD-062"
+    },
+    {
+      "peopleId": 17356,
+      "name": "James Townsend",
+      "seat": "house HD-054"
+    },
+    {
+      "peopleId": 17974,
+      "name": "Harry Garcia",
+      "seat": "house HD-069"
+    },
+    {
+      "peopleId": 18994,
+      "name": "Daymon Ely",
+      "seat": "house HD-023"
+    },
+    {
+      "peopleId": 18995,
+      "name": "Joanne Ferrary",
+      "seat": "house HD-037"
+    },
+    {
+      "peopleId": 18997,
+      "name": "Greg Nibert",
+      "seat": "house HD-059"
+    },
+    {
+      "peopleId": 19001,
+      "name": "Candie Sweetser",
+      "seat": "house HD-032"
+    },
+    {
+      "peopleId": 19018,
+      "name": "Gregory Baca",
+      "seat": "senate SD-029"
+    },
+    {
+      "peopleId": 19020,
+      "name": "Elizabeth Stefanics",
+      "seat": "senate SD-039"
+    },
+    {
+      "peopleId": 19021,
+      "name": "Bill Tallman",
+      "seat": "senate SD-018"
+    },
+    {
+      "peopleId": 20853,
+      "name": "Phelps Anderson",
+      "seat": "house HD-066"
+    },
+    {
+      "peopleId": 20854,
+      "name": "Martin Zamora",
+      "seat": "house HD-063"
+    },
+    {
+      "peopleId": 20917,
+      "name": "Natalie Figueroa",
+      "seat": "house HD-030"
+    },
+    {
+      "peopleId": 20919,
+      "name": "Antoinette Sedillo Lopez",
+      "seat": "senate SD-016"
+    },
+    {
+      "peopleId": 20920,
+      "name": "Karen Bash",
+      "seat": "house HD-068"
+    },
+    {
+      "peopleId": 20923,
+      "name": "Gregg Schmedes",
+      "seat": "senate SD-019"
+    },
+    {
+      "peopleId": 20926,
+      "name": "Susan Herrera",
+      "seat": "house HD-041"
+    },
+    {
+      "peopleId": 20996,
+      "name": "Anthony Allison",
+      "seat": "house HD-004"
+    },
+    {
+      "peopleId": 20997,
+      "name": "Willie Madrid",
+      "seat": "house HD-053"
+    },
+    {
+      "peopleId": 20998,
+      "name": "Rachel Black",
+      "seat": "house HD-051"
+    },
+    {
+      "peopleId": 21511,
+      "name": "Marian Matthews",
+      "seat": "house HD-027"
+    },
+    {
+      "peopleId": 21532,
+      "name": "Shannon Pinto",
+      "seat": "senate SD-003"
+    },
+    {
+      "peopleId": 22536,
+      "name": "Katy Duhigg",
+      "seat": "senate SD-010"
+    },
+    {
+      "peopleId": 22539,
+      "name": "Crystal Diamond",
+      "seat": "senate SD-035"
+    },
+    {
+      "peopleId": 22540,
+      "name": "Carrie Hamblen",
+      "seat": "senate SD-038"
+    },
+    {
+      "peopleId": 22541,
+      "name": "Siah Correa Hemphill",
+      "seat": "senate SD-028"
+    },
+    {
+      "peopleId": 22542,
+      "name": "Martin Hickey",
+      "seat": "senate SD-020"
+    },
+    {
+      "peopleId": 22543,
+      "name": "Leo Jaramillo",
+      "seat": "senate SD-005"
+    },
+    {
+      "peopleId": 22544,
+      "name": "Brenda McKenna",
+      "seat": "senate SD-009"
+    },
+    {
+      "peopleId": 22545,
+      "name": "Harold Pope",
+      "seat": "senate SD-023"
+    },
+    {
+      "peopleId": 22546,
+      "name": "Ryan Lane",
+      "seat": "house HD-003"
+    },
+    {
+      "peopleId": 22655,
+      "name": "Brittney Barreras",
+      "seat": "house HD-012"
+    },
+    {
+      "peopleId": 22656,
+      "name": "Ambrose Castellano",
+      "seat": "house HD-070"
+    },
+    {
+      "peopleId": 22658,
+      "name": "Roger Montoya",
+      "seat": "house HD-040"
+    },
+    {
+      "peopleId": 22751,
+      "name": "Joshua Sanchez",
+      "seat": "senate SD-030"
+    },
+    {
+      "peopleId": 22985,
+      "name": "Kay Bounkeua",
+      "seat": "house HD-019"
+    },
+    {
+      "peopleId": 6100,
+      "name": "Roberto Gonzales",
+      "seat": "senate SD-006"
+    },
+    {
+      "peopleId": 6101,
+      "name": "Mimi Stewart",
+      "seat": "senate SD-017"
+    },
+    {
+      "peopleId": 6114,
+      "name": "Brian Egolf",
+      "seat": "house HD-047"
+    },
+    {
+      "peopleId": 6118,
+      "name": "William Rehm",
+      "seat": "house HD-031"
+    },
+    {
+      "peopleId": 6133,
+      "name": "Antonio Maestas",
+      "seat": "house HD-016"
+    },
+    {
+      "peopleId": 6135,
+      "name": "Eliseo Alcon",
+      "seat": "house HD-006"
+    },
+    {
+      "peopleId": 6141,
+      "name": "Jeff Steinborn",
+      "seat": "senate SD-036"
+    },
+    {
+      "peopleId": 6142,
+      "name": "William O'Neill",
+      "seat": "senate SD-013"
+    },
+    {
+      "peopleId": 6143,
+      "name": "Gail Chasey",
+      "seat": "house HD-018"
+    },
+    {
+      "peopleId": 6144,
+      "name": "Joseph Cervantes",
+      "seat": "senate SD-031"
+    },
+    {
+      "peopleId": 6150,
+      "name": "Candy Ezzell",
+      "seat": "house HD-058"
+    },
+    {
+      "peopleId": 6157,
+      "name": "Peter Wirth",
+      "seat": "senate SD-025"
+    },
+    {
+      "peopleId": 6158,
+      "name": "William Sharer",
+      "seat": "senate SD-001"
+    },
+    {
+      "peopleId": 6164,
+      "name": "Gerald Ortiz Y Pino",
+      "seat": "senate SD-012"
+    },
+    {
+      "peopleId": 6167,
+      "name": "George Munoz",
+      "seat": "senate SD-004"
+    },
+    {
+      "peopleId": 6169,
+      "name": "Linda Lopez",
+      "seat": "senate SD-011"
+    },
+    {
+      "peopleId": 6177,
+      "name": "Pete Campos",
+      "seat": "senate SD-008"
+    },
+    {
+      "peopleId": 6179,
+      "name": "Steven Neville",
+      "seat": "senate SD-002"
+    },
+    {
+      "peopleId": 6181,
+      "name": "Gay Kernan",
+      "seat": "senate SD-042"
+    },
+    {
+      "peopleId": 6193,
+      "name": "Nancy Rodriguez",
+      "seat": "senate SD-024"
+    },
+    {
+      "peopleId": 6197,
+      "name": "Stuart Ingle",
+      "seat": "senate SD-027"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "51f0058b-48ba-4440-9610-5e6123443584",
+      "name": "Abby Foster",
+      "scope": "state_lower",
+      "districtName": "State House District 27 (2024); New Mexico"
+    },
+    {
+      "candidateId": "033c5281-0566-4163-82df-bab0fda78cbe",
+      "name": "Adam Prior",
+      "scope": "state_lower",
+      "districtName": "State House District 44 (2024); New Mexico"
+    },
+    {
+      "candidateId": "67c3f367-5226-4290-8fe7-1057b1b3730c",
+      "name": "Alan Martinez",
+      "scope": "state_lower",
+      "districtName": "State House District 23 (2024); New Mexico"
+    },
+    {
+      "candidateId": "2005fb72-57e5-4944-823a-2833be68fdf8",
+      "name": "Andrea Reeb",
+      "scope": "state_lower",
+      "districtName": "State House District 64 (2024); New Mexico"
+    },
+    {
+      "candidateId": "87d294fa-ffdb-497e-9aea-7a9c31824333",
+      "name": "Angelita Mejia",
+      "scope": "state_lower",
+      "districtName": "State House District 58 (2024); New Mexico"
+    },
+    {
+      "candidateId": "51f0af1a-08dc-4bec-8a0d-301a8fe42a16",
+      "name": "Anita Gonzales",
+      "scope": "state_lower",
+      "districtName": "State House District 70 (2024); New Mexico"
+    },
+    {
+      "candidateId": "01c30024-69c4-4c15-824e-dccd664786b4",
+      "name": "Art De La Cruz",
+      "scope": "state_lower",
+      "districtName": "State House District 12 (2024); New Mexico"
+    },
+    {
+      "candidateId": "e66ee1b4-9f21-4376-b6fa-0caa66f3930d",
+      "name": "Benjamin Luna",
+      "scope": "state_lower",
+      "districtName": "State House District 53 (2024); New Mexico"
+    },
+    {
+      "candidateId": "0671118e-881c-4180-a88a-dcb4499561c4",
+      "name": "Bill Hall",
+      "scope": "state_lower",
+      "districtName": "State House District 3 (2024); New Mexico"
+    },
+    {
+      "candidateId": "836b7eed-e53b-4a4b-bffc-b2406579dd35",
+      "name": "Brenda Olson",
+      "scope": "state_lower",
+      "districtName": "State House District 28 (2024); New Mexico"
+    },
+    {
+      "candidateId": "c36bd407-8620-4f7a-bb9d-438c4e17d138",
+      "name": "Brian Baca",
+      "scope": "state_lower",
+      "districtName": "State House District 8 (2024); New Mexico"
+    },
+    {
+      "candidateId": "e6eb690e-a654-443a-9579-545484cd8ed4",
+      "name": "Carolyn Stith",
+      "scope": "state_lower",
+      "districtName": "State House District 29 (2024); New Mexico"
+    },
+    {
+      "candidateId": "9412e066-5d38-4566-9721-925d293ed95e",
+      "name": "Catherine Cullen",
+      "scope": "state_lower",
+      "districtName": "State House District 57 (2024); New Mexico"
+    },
+    {
+      "candidateId": "f4c8dc4e-4e11-4024-9d13-ce474b2b1fab",
+      "name": "Charlotte Little",
+      "scope": "state_lower",
+      "districtName": "State House District 68 (2024); New Mexico"
+    },
+    {
+      "candidateId": "688eb642-aeae-45d0-b999-451ffa975aa3",
+      "name": "Chriselle Martinez",
+      "scope": "state_lower",
+      "districtName": "State House District 57 (2024); New Mexico"
+    },
+    {
+      "candidateId": "8b105c65-f908-4dd7-b98c-a0b09e9e3db1",
+      "name": "Christopher Crane",
+      "scope": "state_lower",
+      "districtName": "State House District 10 (2024); New Mexico"
+    },
+    {
+      "candidateId": "0dea5812-12e8-4512-879d-c3878d6d9037",
+      "name": "Corey Zimmerman",
+      "scope": "state_lower",
+      "districtName": "State House District 26 (2024); New Mexico"
+    },
+    {
+      "candidateId": "c5505075-4377-4107-990a-ed0f8c15289c",
+      "name": "Cristina Parajón",
+      "scope": "state_lower",
+      "districtName": "State House District 25 (2024); New Mexico"
+    },
+    {
+      "candidateId": "ceb4e507-982b-4e9b-bc2e-e16ddd8c61b1",
+      "name": "Cynthia Borrego",
+      "scope": "state_lower",
+      "districtName": "State House District 17 (2024); New Mexico"
+    },
+    {
+      "candidateId": "3680f1ad-4704-414d-88af-744d7bf1434e",
+      "name": "David Adkins",
+      "scope": "state_lower",
+      "districtName": "State House District 68 (2024); New Mexico"
+    },
+    {
+      "candidateId": "bd7e852a-3c3e-4462-8964-f626464050b3",
+      "name": "David Mooney",
+      "scope": "state_lower",
+      "districtName": "State House District 38 (2024); New Mexico"
+    },
+    {
+      "candidateId": "c3f8d08e-6290-4046-8d44-e7f9f6ff148a",
+      "name": "Denis Litvinenko",
+      "scope": "state_lower",
+      "districtName": "State House District 25 (2024); New Mexico"
+    },
+    {
+      "candidateId": "a834e4ea-232b-415d-99f0-fadd46d418ae",
+      "name": "Elaine Sena Cortez",
+      "scope": "state_lower",
+      "districtName": "State House District 62 (2024); New Mexico"
+    },
+    {
+      "candidateId": "60faae9e-7f86-433b-b3f6-79a604bec1ba",
+      "name": "Eleanor Chavez",
+      "scope": "state_lower",
+      "districtName": "State House District 26 (2024); New Mexico"
+    },
+    {
+      "candidateId": "fac4d58a-741a-4a76-b009-67d23f7761ff",
+      "name": "Elise Taylor",
+      "scope": "state_lower",
+      "districtName": "State House District 23 (2024); New Mexico"
+    },
+    {
+      "candidateId": "6b713456-33a7-430c-b1ce-76ba0d6f31b2",
+      "name": "Elizabeth Torres-Velasquez",
+      "scope": "state_lower",
+      "districtName": "State House District 30 (2024); New Mexico"
+    },
+    {
+      "candidateId": "e51ebbbf-9166-4e23-a06c-d5754a2fe815",
+      "name": "Enrique Vigil",
+      "scope": "state_lower",
+      "districtName": "State House District 33 (2024); New Mexico"
+    },
+    {
+      "candidateId": "944914a8-5610-4eae-826a-452f14327fd4",
+      "name": "G. Andres Romero",
+      "scope": "state_lower",
+      "districtName": "State House District 10 (2024); New Mexico"
+    },
+    {
+      "candidateId": "01f535ef-c534-4e1c-b9b4-c7788e0abc22",
+      "name": "Grace Nagamine",
+      "scope": "state_lower",
+      "districtName": "State House District 51 (2024); New Mexico"
+    },
+    {
+      "candidateId": "918d8c79-0cb8-49b3-9fd4-118aca991bbc",
+      "name": "Harlan Vincent",
+      "scope": "state_lower",
+      "districtName": "State House District 56 (2024); New Mexico"
+    },
+    {
+      "candidateId": "6b0f1146-704d-43a5-98fd-a0bee71e6958",
+      "name": "Heather Ellison",
+      "scope": "state_lower",
+      "districtName": "State House District 4 (2024); New Mexico"
+    },
+    {
+      "candidateId": "4d875aff-25f4-4b51-ae11-02193636620e",
+      "name": "Isabella Solis",
+      "scope": "state_lower",
+      "districtName": "State House District 37 (2024); New Mexico"
+    },
+    {
+      "candidateId": "55d9d533-971e-44c1-9dc0-2d42040c7a5a",
+      "name": "Jahnelle Garcia",
+      "scope": "state_lower",
+      "districtName": "State House District 27 (2024); New Mexico"
+    },
+    {
+      "candidateId": "45e7b9a0-c256-4ef1-b7b9-6214d4f11682",
+      "name": "Janelle Anyanonu",
+      "scope": "state_lower",
+      "districtName": "State House District 19 (2024); New Mexico"
+    },
+    {
+      "candidateId": "8927e590-4052-4dc9-9a20-1940f5be9fbe",
+      "name": "Jenifer Jones",
+      "scope": "state_lower",
+      "districtName": "State House District 32 (2024); New Mexico"
+    },
+    {
+      "candidateId": "69abd88f-eaa9-40f4-93c5-567ba06c3df5",
+      "name": "Jerry Trujillo",
+      "scope": "state_lower",
+      "districtName": "State House District 30 (2024); New Mexico"
+    },
+    {
+      "candidateId": "2453b274-53c2-4260-a30d-9331c93ef192",
+      "name": "John Block",
+      "scope": "state_lower",
+      "districtName": "State House District 51 (2024); New Mexico"
+    },
+    {
+      "candidateId": "840a110d-ff04-454a-ada6-b50e261742df",
+      "name": "Jonathan Henry",
+      "scope": "state_lower",
+      "districtName": "State House District 54 (2024); New Mexico"
+    },
+    {
+      "candidateId": "97e4f2e5-ae32-462c-b8a2-dff408006283",
+      "name": "Joseph Hernandez",
+      "scope": "state_lower",
+      "districtName": "State House District 4 (2024); New Mexico"
+    },
+    {
+      "candidateId": "fa7ecb3e-fc9e-437f-9d43-ce35b3f29d53",
+      "name": "Joseph Sanchez",
+      "scope": "state_lower",
+      "districtName": "State House District 40 (2024); New Mexico"
+    },
+    {
+      "candidateId": "bfd608d1-01ba-4ae1-857e-ea199635386d",
+      "name": "Julia Ruiz",
+      "scope": "state_lower",
+      "districtName": "State House District 36 (2024); New Mexico"
+    },
+    {
+      "candidateId": "4c54acdd-cca1-490f-b735-964b148ebdf2",
+      "name": "Katherine Gauer",
+      "scope": "state_lower",
+      "districtName": "State House District 8 (2024); New Mexico"
+    },
+    {
+      "candidateId": "ab60e77d-454e-4512-b39d-62ef1517dddc",
+      "name": "Kathleen Cates",
+      "scope": "state_lower",
+      "districtName": "State House District 44 (2024); New Mexico"
+    },
+    {
+      "candidateId": "37644962-2901-483c-8848-f2fa00408f67",
+      "name": "Kenneth Brennan",
+      "scope": "state_lower",
+      "districtName": "State House District 50 (2024); New Mexico"
+    },
+    {
+      "candidateId": "ee193383-0c21-4b43-a908-054f6c1345d9",
+      "name": "Landon Dooley",
+      "scope": "state_lower",
+      "districtName": "State House District 40 (2024); New Mexico"
+    },
+    {
+      "candidateId": "b22b7921-100c-4071-8ef3-a03ceb5a0a8c",
+      "name": "Laura Parra",
+      "scope": "state_lower",
+      "districtName": "State House District 32 (2024); New Mexico"
+    },
+    {
+      "candidateId": "14303b6b-a2d9-4fc4-9192-e645b40401d6",
+      "name": "Leanne Gandy",
+      "scope": "state_lower",
+      "districtName": "State House District 66 (2024); New Mexico"
+    },
+    {
+      "candidateId": "17815b6d-b885-4dae-951a-d32e63e4fd17",
+      "name": "Lori Martinez",
+      "scope": "state_lower",
+      "districtName": "State House District 37 (2024); New Mexico"
+    },
+    {
+      "candidateId": "e66b3735-5d1f-4581-82b8-7448f7176162",
+      "name": "Luke Jungmann",
+      "scope": "state_lower",
+      "districtName": "State House District 60 (2024); New Mexico"
+    },
+    {
+      "candidateId": "a3e0dfff-c06e-469f-acc1-c57ecf74d916",
+      "name": "Marianna Anaya",
+      "scope": "state_lower",
+      "districtName": "State House District 18 (2024); New Mexico"
+    },
+    {
+      "candidateId": "99b4206e-7779-4e59-b14e-0b9cf0cb5e74",
+      "name": "Martha Garcia",
+      "scope": "state_lower",
+      "districtName": "State House District 6 (2024); New Mexico"
+    },
+    {
+      "candidateId": "0cc6b260-e675-4933-a15c-edaf5931f6fd",
+      "name": "Michelle Abeyta",
+      "scope": "state_lower",
+      "districtName": "State House District 69 (2024); New Mexico"
+    },
+    {
+      "candidateId": "c4aa0578-6fd6-46a1-8f07-ee77e67da1fa",
+      "name": "Nicole Chavez",
+      "scope": "state_lower",
+      "districtName": "State House District 31 (2024); New Mexico"
+    },
+    {
+      "candidateId": "b2bcdc7d-1b33-43eb-8420-86203a82cf58",
+      "name": "P. Mark Duncan",
+      "scope": "state_lower",
+      "districtName": "State House District 2 (2024); New Mexico"
+    },
+    {
+      "candidateId": "69c65cb9-e503-4594-a75d-13a729da580f",
+      "name": "Patricia Roybal Caballero",
+      "scope": "state_lower",
+      "districtName": "State House District 13 (2024); New Mexico"
+    },
+    {
+      "candidateId": "a8a99d99-af83-490c-aaca-eb0353c9d613",
+      "name": "Paul Spencer",
+      "scope": "state_lower",
+      "districtName": "State House District 6 (2024); New Mexico"
+    },
+    {
+      "candidateId": "27bb09d6-0b8e-4369-8ee8-69e80f8263cf",
+      "name": "Raul Turrieta",
+      "scope": "state_lower",
+      "districtName": "State House District 39 (2024); New Mexico"
+    },
+    {
+      "candidateId": "3a1a1173-bc6e-4a3c-9fa3-7143e5513cb6",
+      "name": "Reena Szczepanski",
+      "scope": "state_lower",
+      "districtName": "State House District 47 (2024); New Mexico"
+    },
+    {
+      "candidateId": "96fe93a2-addb-493a-8626-e9ed0bb09888",
+      "name": "Richard Zubia",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); New Mexico"
+    },
+    {
+      "candidateId": "ed23e59e-93f0-487b-9fc3-58bd5be88713",
+      "name": "Rickie Gonzales II",
+      "scope": "state_lower",
+      "districtName": "State House District 7 (2024); New Mexico"
+    },
+    {
+      "candidateId": "ea3cfc36-a218-4072-a465-d659b4e16abe",
+      "name": "Robert Mason",
+      "scope": "state_lower",
+      "districtName": "State House District 21 (2024); New Mexico"
+    },
+    {
+      "candidateId": "2f43aa2f-ec06-4e9a-8edb-6c43c5016cec",
+      "name": "Ryan Braid",
+      "scope": "state_lower",
+      "districtName": "State House District 31 (2024); New Mexico"
+    },
+    {
+      "candidateId": "d3222934-e5ca-4e38-906c-14262ee56ed6",
+      "name": "Sarah Boses",
+      "scope": "state_lower",
+      "districtName": "State House District 50 (2024); New Mexico"
+    },
+    {
+      "candidateId": "7bf30dea-bc9a-48d6-b35b-9618f70182aa",
+      "name": "Sarah Silva",
+      "scope": "state_lower",
+      "districtName": "State House District 53 (2024); New Mexico"
+    },
+    {
+      "candidateId": "4f0aa5d4-dcfd-49a1-8295-5b88037711d0",
+      "name": "Seth Martin",
+      "scope": "state_lower",
+      "districtName": "State House District 63 (2024); New Mexico"
+    },
+    {
+      "candidateId": "5e5d71fe-50ca-478f-9a0c-594580b26993",
+      "name": "Stacey Rich",
+      "scope": "state_lower",
+      "districtName": "State House District 17 (2024); New Mexico"
+    },
+    {
+      "candidateId": "bb3646de-2f9a-47bf-9991-c42967bdc42e",
+      "name": "Stephen Dodson",
+      "scope": "state_lower",
+      "districtName": "State House District 59 (2024); New Mexico"
+    },
+    {
+      "candidateId": "c3ddeaf7-4af1-4473-8f67-56bbd88fb55b",
+      "name": "Steve Tafoya",
+      "scope": "state_lower",
+      "districtName": "State House District 12 (2024); New Mexico"
+    },
+    {
+      "candidateId": "a35fdcfc-fbdb-456e-81d6-73088e985e6b",
+      "name": "Tanya Mirabal Moya",
+      "scope": "state_lower",
+      "districtName": "State House District 7 (2024); New Mexico"
+    },
+    {
+      "candidateId": "3b063f5a-aa62-46fc-90e0-4e3f995ab046",
+      "name": "Victoria Garcia",
+      "scope": "state_lower",
+      "districtName": "State House District 48 (2024); New Mexico"
+    },
+    {
+      "candidateId": "c2470fbd-7a0b-4bf0-a9d3-c01412c1dccd",
+      "name": "Vincent Soule",
+      "scope": "state_lower",
+      "districtName": "State House District 67 (2024); New Mexico"
+    },
+    {
+      "candidateId": "5a4da4b3-719a-4239-9445-9b80b2503e90",
+      "name": "William Scott",
+      "scope": "state_lower",
+      "districtName": "State House District 22 (2024); New Mexico"
+    },
+    {
+      "candidateId": "68e3c60d-0aaa-400d-a164-f13689484082",
+      "name": "Yanira Gurrola Valenzuela",
+      "scope": "state_lower",
+      "districtName": "State House District 16 (2024); New Mexico"
+    },
+    {
+      "candidateId": "3c067223-a46c-41f1-997d-890e189ff8f5",
+      "name": "Yolanda Jaramillo",
+      "scope": "state_lower",
+      "districtName": "State House District 41 (2024); New Mexico"
+    },
+    {
+      "candidateId": "a59361fd-25a9-48ec-b446-36bf268221e1",
+      "name": "Zach Withers",
+      "scope": "state_lower",
+      "districtName": "State House District 22 (2024); New Mexico"
+    }
+  ],
+  "files": 0,
+  "fileErrors": 0,
+  "counts": {},
+  "rolls": []
+}

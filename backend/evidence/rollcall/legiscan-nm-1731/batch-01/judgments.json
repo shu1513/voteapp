@@ -1,0 +1,238 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1731",
+   "roll": 920800,
+   "measure_id": "HB 100",
+   "vote_date": "2020-02-11",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 100, which changes how New Mexico's health insurance exchange works. The board gets new duties and must offer standardized health plans, so shoppers can compare plans that cover the same things. The exchange also has to report on what it does. The New Mexico House passed it 44-23. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 100, which changes how New Mexico's health insurance exchange works. The board gets new duties and must offer standardized health plans, so shoppers can compare plans that cover the same things. The exchange also has to report on what it does. The New Mexico House passed it 44-23. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1731",
+   "roll": 921973,
+   "measure_id": "HB 126",
+   "vote_date": "2020-02-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 126, which requires health plans in New Mexico to cover a heart artery calcium scan for certain people. The scan looks for calcium in the arteries around the heart, an early sign of heart disease. The rule reaches state employee plans, Medicaid, commercial insurance and health maintenance organizations. The New Mexico House passed it 39-19. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 126, which requires health plans in New Mexico to cover a heart artery calcium scan for certain people. The scan looks for calcium in the arteries around the heart, an early sign of heart disease. The rule reaches state employee plans, Medicaid, commercial insurance and health maintenance organizations. The New Mexico House passed it 39-19. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1731",
+   "roll": 925187,
+   "measure_id": "HB 364",
+   "vote_date": "2020-02-18",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 364, which strengthens collective bargaining for New Mexico public employees. It changes how workers vote to form a bargaining unit, gives unions fair access to employees, widens what can be bargained, and adds employer practices that are banned. It also spells out what the state labor board can order. The New Mexico House passed it 43-25, and it became law.",
+   "nay_description": "Voted against House Bill 364, which strengthens collective bargaining for New Mexico public employees. It changes how workers vote to form a bargaining unit, gives unions fair access to employees, widens what can be bargained, and adds employer practices that are banned. It also spells out what the state labor board can order. The New Mexico House passed it 43-25, and it became law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1731",
+   "roll": 918346,
+   "measure_id": "HB 42",
+   "vote_date": "2020-02-08",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 42, which makes health plans pay pharmacists the same as other providers for the same care. If a trained pharmacist does work that another licensed professional could do, the plan must pay the same rate. The rule covers state worker plans, Medicaid and private insurance. The New Mexico House passed it 40-21, and it became law.",
+   "nay_description": "Voted against House Bill 42, which makes health plans pay pharmacists the same as other providers for the same care. If a trained pharmacist does work that another licensed professional could do, the plan must pay the same rate. The rule covers state worker plans, Medicaid and private insurance. The New Mexico House passed it 40-21, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1731",
+   "roll": 918347,
+   "measure_id": "HB 50",
+   "vote_date": "2020-02-08",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 50, which lets cities and counties use industrial revenue bonds to pay for electric transmission lines. Those bonds lower the cost of building the lines that carry power across New Mexico. A project financed this way must make payments to the state and to local school districts. The New Mexico House passed it 48-21, and it became law.",
+   "nay_description": "Voted against House Bill 50, which lets cities and counties use industrial revenue bonds to pay for electric transmission lines. Those bonds lower the cost of building the lines that carry power across New Mexico. A project financed this way must make payments to the state and to local school districts. The New Mexico House passed it 48-21, and it became law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1731",
+   "roll": 919175,
+   "measure_id": "HB 83",
+   "vote_date": "2020-02-10",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 83, which builds a permanent fund for early childhood education and care. When oil and gas school tax money runs above a set level, the extra goes into a holding fund, then on to the state's tax stabilization reserve and the new early childhood fund. A program fund draws on it to pay for child care and pre-kindergarten. The New Mexico House passed it 51-14, and it became law.",
+   "nay_description": "Voted against House Bill 83, which builds a permanent fund for early childhood education and care. When oil and gas school tax money runs above a set level, the extra goes into a holding fund, then on to the state's tax stabilization reserve and the new early childhood fund. A program fund draws on it to pay for child care and pre-kindergarten. The New Mexico House passed it 51-14, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1731",
+   "roll": 927901,
+   "measure_id": "SB 117",
+   "vote_date": "2020-02-20",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 117, which clarifies the property tax break for low-income people with disabilities. It spells out how the limit on rising home values applies to them, so the value the county taxes does not climb with the market. Their tax bill stays steadier as a result. The New Mexico House passed it 41-12, and it became law.",
+   "nay_description": "Voted against Senate Bill 117, which clarifies the property tax break for low-income people with disabilities. It spells out how the limit on rising home values applies to them, so the value the county taxes does not climb with the market. Their tax bill stays steadier as a result. The New Mexico House passed it 41-12, and it became law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1731",
+   "roll": 926279,
+   "measure_id": "SB 131",
+   "vote_date": "2020-02-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 131, the Tobacco Products Act. It raises the age to buy tobacco to 21 and makes stores, makers and shippers hold a state license. The state's liquor control division checks that they follow the rules. Breaking them can bring a fine or a criminal charge. The New Mexico House passed it 40-28, and it became law.",
+   "nay_description": "Voted against Senate Bill 131, the Tobacco Products Act. It raises the age to buy tobacco to 21 and makes stores, makers and shippers hold a state license. The state's liquor control division checks that they follow the rules. Breaking them can bring a fine or a criminal charge. The New Mexico House passed it 40-28, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1731",
+   "roll": 925076,
+   "measure_id": "SB 137",
+   "vote_date": "2020-02-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 137, which says the state may license a person for a job or profession whatever their immigration status. What matters is whether they are qualified for the work. A licensing board may not turn someone away over that status alone. The New Mexico House passed it 50-18, and it became law.",
+   "nay_description": "Voted against Senate Bill 137, which says the state may license a person for a job or profession whatever their immigration status. What matters is whether they are qualified for the work. A licensing board may not turn someone away over that status alone. The New Mexico House passed it 50-18, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1731",
+   "roll": 927532,
+   "measure_id": "SB 29",
+   "vote_date": "2020-02-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 29, which brings back New Mexico's solar tax credit. A homeowner or business that puts in a solar system can take 10 percent of the purchase price off their state income tax, up to $6,000. The state caps how much credit it hands out in a year. The New Mexico House passed it 51-19, and it became law.",
+   "nay_description": "Voted against Senate Bill 29, which brings back New Mexico's solar tax credit. A homeowner or business that puts in a solar system can take 10 percent of the purchase price off their state income tax, up to $6,000. The state caps how much credit it hands out in a year. The New Mexico House passed it 51-19, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1731",
+   "roll": 923369,
+   "measure_id": "SB 5",
+   "vote_date": "2020-02-13",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 5, the Extreme Risk Firearm Protection Order Act, often called a red flag law. A police officer can ask a court to order someone to give up their guns when that person is a danger. After a hearing, the order can last up to a year. The New Mexico House passed it 39-31, and it became law.",
+   "nay_description": "Voted against Senate Bill 5, the Extreme Risk Firearm Protection Order Act, often called a red flag law. A police officer can ask a court to order someone to give up their guns when that person is a danger. After a hearing, the order can last up to a year. The New Mexico House passed it 39-31, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1731",
+   "roll": 926120,
+   "measure_id": "SB 75",
+   "vote_date": "2020-02-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 75, the Wildlife Trafficking Act. It makes it a crime in New Mexico to buy or sell parts of animals threatened with extinction, such as elephants, lions and rhinoceroses. The act lists exceptions and sets penalties. The New Mexico House passed it 42-22, and it became law.",
+   "nay_description": "Voted against Senate Bill 75, the Wildlife Trafficking Act. It makes it a crime in New Mexico to buy or sell parts of animals threatened with extinction, such as elephants, lions and rhinoceroses. The act lists exceptions and sets penalties. The New Mexico House passed it 42-22, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1731",
+   "roll": 927825,
+   "measure_id": "SB 98",
+   "vote_date": "2020-02-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 98, which tightens the wage rules on New Mexico public building jobs. Workers on those jobs must be paid a set local wage. The bill adds a way to handle a complaint that a contractor paid less, and it raises the fines for doing so. The New Mexico House passed it 45-25, and it became law.",
+   "nay_description": "Voted against Senate Bill 98, which tightens the wage rules on New Mexico public building jobs. Workers on those jobs must be paid a set local wage. The bill adds a way to handle a complaint that a contractor paid less, and it raises the fines for doing so. The New Mexico House passed it 45-25, and it became law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

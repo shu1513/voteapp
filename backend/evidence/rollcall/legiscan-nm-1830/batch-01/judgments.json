@@ -1,0 +1,22 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1830",
+   "roll": 1041760,
+   "measure_id": "HB 2",
+   "vote_date": "2021-03-31",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 2, the Cannabis Regulation Act, which legalized cannabis for adults in New Mexico. A person 21 or older may buy and hold up to two ounces. A new cannabis control division licenses the growers and sellers, and the act taxes sales and shares part of that money with cities and counties. The New Mexico House passed it 38-32. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 2, the Cannabis Regulation Act, which legalized cannabis for adults in New Mexico. A person 21 or older may buy and hold up to two ounces. A new cannabis control division licenses the growers and sellers, and the act taxes sales and shares part of that money with cities and counties. The New Mexico House passed it 38-32. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
