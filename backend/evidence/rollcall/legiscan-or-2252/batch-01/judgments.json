@@ -1,0 +1,194 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1634476,
+      "measure_id": "HB 4088",
+      "vote_date": "2026-02-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4088, which shields reproductive and gender-affirming health care that is legal in Oregon. It says people may get this care here, give it, or help someone else get it. The care must come from a provider licensed here, and the patient must be in Oregon. The Governor may not hand a person over to another state for doing any of that. State and local bodies may not spend staff time, money or equipment to help a federal or out-of-state inquiry into that care. What is already public stays public. Court records of name and sex changes are kept private, and midwives who give this care are protected. The Oregon House passed it 34-22, and it became law.",
+      "nay_description": "Voted against House Bill 4088, which shields reproductive and gender-affirming health care that is legal in Oregon. It says people may get this care here, give it, or help someone else get it. The care must come from a provider licensed here, and the patient must be in Oregon. The Governor may not hand a person over to another state for doing any of that. State and local bodies may not spend staff time, money or equipment to help a federal or out-of-state inquiry into that care. What is already public stays public. Court records of name and sex changes are kept private, and midwives who give this care are protected. The Oregon House passed it 34-22, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": "against"
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1655033,
+      "measure_id": "HB 4088",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4088, which shields reproductive and gender-affirming health care that is legal in Oregon. It says people may get this care here, give it, or help someone else get it. The care must come from a provider licensed here, and the patient must be in Oregon. The Governor may not hand a person over to another state for doing any of that. State and local bodies may not spend staff time, money or equipment to help a federal or out-of-state inquiry into that care. What is already public stays public. Court records of name and sex changes are kept private, and midwives who give this care are protected. The Oregon Senate passed it 18-12, and it became law.",
+      "nay_description": "Voted against House Bill 4088, which shields reproductive and gender-affirming health care that is legal in Oregon. It says people may get this care here, give it, or help someone else get it. The care must come from a provider licensed here, and the patient must be in Oregon. The Governor may not hand a person over to another state for doing any of that. State and local bodies may not spend staff time, money or equipment to help a federal or out-of-state inquiry into that care. What is already public stays public. Court records of name and sex changes are kept private, and midwives who give this care are protected. The Oregon Senate passed it 18-12, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": "against"
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1652703,
+      "measure_id": "HB 4127",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4127, which keeps state money going to reproductive health clinics that federal law has cut off from Medicaid. The Oregon Health Authority must set up a way to pay these nonprofit clinics for each service. The money must be state money, never federal Medicaid money. The authority pays the clinics itself, even for patients in a care organization. At least once every two years it must check that the rates are high enough to keep care within reach. Claims reach back to July 4, 2025. A care organization may not take back money it already paid a clinic just because the clinic lost its federal funding. The Oregon House passed it 34-20, and it became law.",
+      "nay_description": "Voted against House Bill 4127, which keeps state money going to reproductive health clinics that federal law has cut off from Medicaid. The Oregon Health Authority must set up a way to pay these nonprofit clinics for each service. The money must be state money, never federal Medicaid money. The authority pays the clinics itself, even for patients in a care organization. At least once every two years it must check that the rates are high enough to keep care within reach. Claims reach back to July 4, 2025. A care organization may not take back money it already paid a clinic just because the clinic lost its federal funding. The Oregon House passed it 34-20, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1656104,
+      "measure_id": "HB 4127",
+      "vote_date": "2026-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4127, which keeps state money going to reproductive health clinics that federal law has cut off from Medicaid. The Oregon Health Authority must set up a way to pay these nonprofit clinics for each service. The money must be state money, never federal Medicaid money. The authority pays the clinics itself, even for patients in a care organization. At least once every two years it must check that the rates are high enough to keep care within reach. Claims reach back to July 4, 2025. A care organization may not take back money it already paid a clinic just because the clinic lost its federal funding. The Oregon Senate passed it 18-11, and it became law.",
+      "nay_description": "Voted against House Bill 4127, which keeps state money going to reproductive health clinics that federal law has cut off from Medicaid. The Oregon Health Authority must set up a way to pay these nonprofit clinics for each service. The money must be state money, never federal Medicaid money. The authority pays the clinics itself, even for patients in a care organization. At least once every two years it must check that the rates are high enough to keep care within reach. Claims reach back to July 4, 2025. A care organization may not take back money it already paid a clinic just because the clinic lost its federal funding. The Oregon Senate passed it 18-11, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1653050,
+      "measure_id": "HB 4128",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4128, which makes the biggest housing investors wait while ordinary buyers look first. A covered investor may not buy a single-family home unless it has been listed for sale for at least 90 days in a row. Homes that are not publicly listed when the investor makes its offer are exempt, so off-market deals are still allowed. The rule reaches a firm that holds 2,500 or more such homes, pools money from investors, and manages at least $1 billion. Charities, land trusts, land banks, housing authorities and resident-owned co-ops are left out. So are lenders taking a home back on a debt. So are homes already rented, homes built to rent, and homes bought with government money. A buyer using the 90-day route must send a signed notice to the seller and the state. The Attorney General may look into it, sue and fine. The Oregon House agreed to the Senate's changes 38-18, and it became law.",
+      "nay_description": "Voted against House Bill 4128, which makes the biggest housing investors wait while ordinary buyers look first. A covered investor may not buy a single-family home unless it has been listed for sale for at least 90 days in a row. Homes that are not publicly listed when the investor makes its offer are exempt, so off-market deals are still allowed. The rule reaches a firm that holds 2,500 or more such homes, pools money from investors, and manages at least $1 billion. Charities, land trusts, land banks, housing authorities and resident-owned co-ops are left out. So are lenders taking a home back on a debt. So are homes already rented, homes built to rent, and homes bought with government money. A buyer using the 90-day route must send a signed notice to the seller and the state. The Attorney General may look into it, sue and fine. The Oregon House agreed to the Senate's changes 38-18, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1639289,
+      "measure_id": "HB 4111",
+      "vote_date": "2026-02-19",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4111, which keeps a person's immigration status out of most civil lawsuits in Oregon. It may be used only when that status is needed to prove part of a claim. Two narrow exceptions apply, and both come after a trial ends. A final removal order may be used to work out damages for future lost wages. Federal work papers may be used where a court has ordered someone back into a job. Each one must be filed in secret. A judge must hold a closed hearing first, and the papers stay sealed. The law also bars an employer from punishing a worker who updates their records after a lawful change in their federal work permit. The Oregon House passed it 34-19, and it became law.",
+      "nay_description": "Voted against House Bill 4111, which keeps a person's immigration status out of most civil lawsuits in Oregon. It may be used only when that status is needed to prove part of a claim. Two narrow exceptions apply, and both come after a trial ends. A final removal order may be used to work out damages for future lost wages. Federal work papers may be used where a court has ordered someone back into a job. Each one must be filed in secret. A judge must hold a closed hearing first, and the papers stay sealed. The law also bars an employer from punishing a worker who updates their records after a lawful change in their federal work permit. The Oregon House passed it 34-19, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1655156,
+      "measure_id": "HB 4111",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4111, which keeps a person's immigration status out of most civil lawsuits in Oregon. It may be used only when that status is needed to prove part of a claim. Two narrow exceptions apply, and both come after a trial ends. A final removal order may be used to work out damages for future lost wages. Federal work papers may be used where a court has ordered someone back into a job. Each one must be filed in secret. A judge must hold a closed hearing first, and the papers stay sealed. The law also bars an employer from punishing a worker who updates their records after a lawful change in their federal work permit. The Oregon Senate passed it 20-9, and it became law.",
+      "nay_description": "Voted against House Bill 4111, which keeps a person's immigration status out of most civil lawsuits in Oregon. It may be used only when that status is needed to prove part of a claim. Two narrow exceptions apply, and both come after a trial ends. A final removal order may be used to work out damages for future lost wages. Federal work papers may be used where a court has ordered someone back into a job. Each one must be filed in secret. A judge must hold a closed hearing first, and the papers stay sealed. The law also bars an employer from punishing a worker who updates their records after a lawful change in their federal work permit. The Oregon Senate passed it 20-9, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1655695,
+      "measure_id": "HB 4114",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4114, which lets people sue an official who enters their property without a warrant. The right belongs to an owner, a resident, or anyone lawfully there who expects privacy. Property covers buildings, land, cars parked privately, places of worship, schools and medical sites. The entry must have been made under color of law. There must have been no court warrant and no recognized reason to skip one. A person who wins gets their actual losses, may get a court order, and is awarded legal fees. The suit may not be used against anyone who can already be sued under the federal civil rights law. It must be filed within two years. The Oregon Senate passed it 18-11, and it became law.",
+      "nay_description": "Voted against House Bill 4114, which lets people sue an official who enters their property without a warrant. The right belongs to an owner, a resident, or anyone lawfully there who expects privacy. Property covers buildings, land, cars parked privately, places of worship, schools and medical sites. The entry must have been made under color of law. There must have been no court warrant and no recognized reason to skip one. A person who wins gets their actual losses, may get a court order, and is awarded legal fees. The suit may not be used against anyone who can already be sued under the federal civil rights law. It must be filed within two years. The Oregon Senate passed it 18-11, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1652571,
+      "measure_id": "HB 4036",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4036, which sets up a state fund to hold on to low-cost housing that is at risk of being lost. The fund is filled by state bonds. The money goes to the state housing department. It may buy, build, repair, equip or furnish low-cost housing that the state will own or run. The law also widens what counts as at risk. It now takes in buildings whose roofs, wiring, plumbing or other systems have worn out, or soon will. By December 2026 the department must report to lawmakers on the state rules that make low-cost housing costlier to run. The Oregon House passed it 44-12, and it became law.",
+      "nay_description": "Voted against House Bill 4036, which sets up a state fund to hold on to low-cost housing that is at risk of being lost. The fund is filled by state bonds. The money goes to the state housing department. It may buy, build, repair, equip or furnish low-cost housing that the state will own or run. The law also widens what counts as at risk. It now takes in buildings whose roofs, wiring, plumbing or other systems have worn out, or soon will. By December 2026 the department must report to lawmakers on the state rules that make low-cost housing costlier to run. The Oregon House passed it 44-12, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1656025,
+      "measure_id": "HB 4036",
+      "vote_date": "2026-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4036, which sets up a state fund to hold on to low-cost housing that is at risk of being lost. The fund is filled by state bonds. The money goes to the state housing department. It may buy, build, repair, equip or furnish low-cost housing that the state will own or run. The law also widens what counts as at risk. It now takes in buildings whose roofs, wiring, plumbing or other systems have worn out, or soon will. By December 2026 the department must report to lawmakers on the state rules that make low-cost housing costlier to run. The Oregon Senate passed it 22-7, and it became law.",
+      "nay_description": "Voted against House Bill 4036, which sets up a state fund to hold on to low-cost housing that is at risk of being lost. The fund is filled by state bonds. The money goes to the state housing department. It may buy, build, repair, equip or furnish low-cost housing that the state will own or run. The law also widens what counts as at risk. It now takes in buildings whose roofs, wiring, plumbing or other systems have worn out, or soon will. By December 2026 the department must report to lawmakers on the state rules that make low-cost housing costlier to run. The Oregon Senate passed it 22-7, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

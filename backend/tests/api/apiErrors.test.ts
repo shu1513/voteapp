@@ -10,6 +10,7 @@ import { ReplaceUserDistrictsError } from "../../src/pipeline/users/userDistrict
 import { UserResearchAreaPreferencesError } from "../../src/pipeline/users/userResearchAreaPreferences.js";
 import { UserEmailPreferencesError } from "../../src/pipeline/users/userEmailPreferences.js";
 import { UserIdentityError } from "../../src/pipeline/users/userIdentity.js";
+import { RequestValidationError } from "../../src/utils/requestValidationError.js";
 
 describe("mapErrorToResponse", () => {
   it("maps invalid candidate detail IDs to invalid_request", () => {
@@ -194,5 +195,29 @@ describe("mapErrorToResponse", () => {
       code: "unauthorized",
       message: "Authentication is required",
     });
+  });
+});
+
+describe("mapErrorToResponse request-validation boundary", () => {
+  it("maps RequestValidationError to 400 with its code and message", () => {
+    expect(mapErrorToResponse(new RequestValidationError("email must be a string"))).toEqual({
+      statusCode: 400,
+      code: "invalid_request",
+      message: "email must be a string",
+    });
+    expect(mapErrorToResponse(new RequestValidationError("Request body must be valid JSON", "invalid_json"))).toEqual({
+      statusCode: 400,
+      code: "invalid_json",
+      message: "Request body must be valid JSON",
+    });
+  });
+
+  it("treats a bare TypeError or SyntaxError as an internal failure, not a client error", () => {
+    // A runtime TypeError (undefined.foo) or a JSON.parse failure on a stored
+    // value is a bug; surfacing it as a 400 with the internal message would
+    // hide it from the logs and from monitoring.
+    for (const error of [new TypeError("Cannot read properties of undefined (reading 'id')"), new SyntaxError("Unexpected token")]) {
+      expect(mapErrorToResponse(error)).toEqual({ statusCode: 500, code: "internal_error", message: "Internal error" });
+    }
   });
 });

@@ -1,7 +1,7 @@
 # Oregon 2025 — campaign complete
 
 Every measure in the gated pool now carries a disposition. **Nothing is left
-open.**
+open, and nothing is parked.**
 
 ## Final state, local database
 
@@ -19,23 +19,61 @@ open.**
 | Judged and imported (batches 01-12) | 65 |
 | Excluded, appropriations and fee ratification | 47 |
 | Screened out on the summary, with reasons | 72 |
-| Dropped under filter 5 after a full read | 40 |
-| Parked for a user direction call | 1 |
+| Dropped under filter 5 after a full read | 41 |
 | **Total** | **225** |
 
-The one parked measure is **HB 3908**, which raises the share of voters a
-party needs for major-party status. `election_integrity` is defined as
-security, accuracy and auditability and does not cover ballot access, and the
-California rule sends access questions to `civil_rights`. The direction is
-arguable either way, so it is a direction call rather than a judgment.
+## HB 3908, the last measure to be settled
+
+HB 3908 was held back for a direction call and has now been dropped under
+filter 5. The reason is worth writing down, because the first reading of it
+was wrong.
+
+The Act changes one number in one statute. ORS 248.006 says an affiliation of
+voters becomes a **major** political party when at least five percent of
+registered voters are members; the Act raises that to ten percent. Nothing
+else changes.
+
+The first reading treated this as ballot access, which would point to
+`civil_rights` under the rule that sends voter-access questions there. Reading
+the enrolled Act and both neutral staff summaries shows that is not what the
+Act does. Major and minor is a **nominating method**, not a place on the
+ballot: a major party must nominate at the state-run primary, a minor party
+nominates through its own process, and both summaries say a party keeps ballot
+access separately from that classification. No party is removed from any
+ballot.
+
+So neither area fits. `election_integrity` is defined as a secure, accurate
+and auditable count. `civil_rights` covers equal rights, anti-discrimination
+and fair treatment, and the access rule that carried Colorado's SB 1 and
+Arizona's HB 2017 into it is about who may vote and how easily, not about how
+a party picks its nominees.
+
+Two further facts show there is no defensible for-or-against side to write
+down. The neutral summaries record **other minor parties supporting the
+increase** — the group a restriction would be said to harm asked for it. And
+the vote split both caucuses rather than dividing them: 31-26 in the House and
+19-9 in the Senate, with Democrats and Republicans on each side.
+
+A stance tag here would tell voters that 31 House members and 19 Senators took
+a side in a policy fight that the record does not show. Filter 5 exists for
+exactly that, so HB 3908 joins the other 40 drops.
 
 ## Five roll calls held, and why
 
-LegiScan places one member on the wrong side of five Oregon rolls. All 393
-divided-and-enacted rolls were audited against the tally Oregon's own bill
-history prints: **388 match exactly, five are off by one.** Because the
-journal names the nay voters, the misplaced member is identifiable — Girod on
-SB 906's Senate roll, Boice on HB 2957's House roll.
+LegiScan places a member on the wrong side of five of the roll calls this
+campaign could have used. All 393 divided-and-enacted rolls were audited
+against the tally Oregon's own bill history prints: **388 match exactly, five
+are off by one.** Because the journal names the nay voters, the misplaced
+member is identifiable — Girod on SB 906's Senate roll, Boice on HB 2957's
+House roll.
+
+> **Correction, 2026-09-06.** That audit was bounded by the divided gate.
+> Re-running it over every enacted floor roll — all 1,355 — finds **eleven**
+> mismatches, not five. The six extra rolls are not divided under either
+> tally, so none was ever eligible and **no record here changes**; a re-fetch
+> moved exactly six stored rolls and a re-import reported all 3,091 records
+> unchanged. All eleven are now held. The README in this directory has the
+> detail and the reason the bound was unsafe.
 
 All five sit in the config's `heldRollCallIds`, so they are surfaced and can
 never be queued or approved. SB 906 was therefore imported House-only and

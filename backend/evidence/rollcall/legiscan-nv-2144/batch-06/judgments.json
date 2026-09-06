@@ -1,0 +1,310 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1579499,
+   "measure_id": "AB 259",
+   "vote_date": "2025-05-27",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 259, which would have barred anyone in Nevada from paying or billing more than the federal Medicare negotiated price for those drugs, not counting a pharmacy's dispensing fee. Breaking the rule would have counted as a deceptive trade practice that a patient could sue over, but with no criminal penalty. Federal employee plans, plans governed by federal retirement benefits law, and union-employer trusts were exempt unless they chose to opt in. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 259, which would have barred anyone in Nevada from paying or billing more than the federal Medicare negotiated price for those drugs, not counting a pharmacy's dispensing fee. Breaking the rule would have counted as a deceptive trade practice that a patient could sue over, but with no criminal penalty. Federal employee plans, plans governed by federal retirement benefits law, and union-employer trusts were exempt unless they chose to opt in. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1583311,
+   "measure_id": "AB 259",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 259, which would have barred anyone in Nevada from paying or billing more than the federal Medicare negotiated price for those drugs, not counting a pharmacy's dispensing fee. Breaking the rule would have counted as a deceptive trade practice that a patient could sue over, but with no criminal penalty. Federal employee plans, plans governed by federal retirement benefits law, and union-employer trusts were exempt unless they chose to opt in. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 259, which would have barred anyone in Nevada from paying or billing more than the federal Medicare negotiated price for those drugs, not counting a pharmacy's dispensing fee. Breaking the rule would have counted as a deceptive trade practice that a patient could sue over, but with no criminal penalty. Federal employee plans, plans governed by federal retirement benefits law, and union-employer trusts were exempt unless they chose to opt in. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1554310,
+   "measure_id": "AB 282",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 282, which would have made a hospital or doctor investigate when a patient says specific charges on a medical bill are wrong. They would have had to answer within 30 days, stop billing the disputed charge while it was reviewed, and refund any overpayment within 60 days. The version the Assembly voted made a doctor who broke the rule guilty of unprofessional conduct, and let the board set the fine for a facility with no ceiling. The Nevada Assembly passed it 26-16, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 282, which would have made a hospital or doctor investigate when a patient says specific charges on a medical bill are wrong. They would have had to answer within 30 days, stop billing the disputed charge while it was reviewed, and refund any overpayment within 60 days. The version the Assembly voted made a doctor who broke the rule guilty of unprofessional conduct, and let the board set the fine for a facility with no ceiling. The Nevada Assembly passed it 26-16, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1583650,
+   "measure_id": "AB 282",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 282, which would have made a hospital or biller investigate when a patient says specific charges on a medical bill are wrong. They would have had to answer within 30 days, stop billing the disputed charge while it was reviewed, and refund or cancel any overcharge within 60 days. The version the Senate voted covered any billing company, not just the treating doctor, but replaced professional discipline with a single fine of 10 percent of the overcharge, capped at $5,000. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 282, which would have made a hospital or biller investigate when a patient says specific charges on a medical bill are wrong. They would have had to answer within 30 days, stop billing the disputed charge while it was reviewed, and refund or cancel any overcharge within 60 days. The version the Senate voted covered any billing company, not just the treating doctor, but replaced professional discipline with a single fine of 10 percent of the overcharge, capped at $5,000. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1554912,
+   "measure_id": "AB 411",
+   "vote_date": "2025-04-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 411, which would have let the label on a prescription for the abortion medications mifepristone and misoprostol carry the name of the prescribing medical practice instead of the individual prescriber's name. The prescriber had to ask for it. The version the Assembly voted said the pharmacy must make the change once asked. The Nevada Assembly passed it 26-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 411, which would have let the label on a prescription for the abortion medications mifepristone and misoprostol carry the name of the prescribing medical practice instead of the individual prescriber's name. The prescriber had to ask for it. The version the Assembly voted said the pharmacy must make the change once asked. The Nevada Assembly passed it 26-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1575497,
+   "measure_id": "AB 411",
+   "vote_date": "2025-05-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 411, which would have let the label on a prescription for the abortion medications mifepristone and misoprostol carry the name of the prescribing medical practice instead of the individual prescriber's name. The prescriber had to ask for it. The version the Senate voted said the pharmacy may make the change, rather than must, so the choice stayed with the pharmacy. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 411, which would have let the label on a prescription for the abortion medications mifepristone and misoprostol carry the name of the prescribing medical practice instead of the individual prescriber's name. The prescriber had to ask for it. The version the Senate voted said the pharmacy may make the change, rather than must, so the choice stayed with the pharmacy. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1583017,
+   "measure_id": "SB 128",
+   "vote_date": "2025-05-31",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 128, which would have limited how health insurers use computer systems to refuse to pay for care. The version the Assembly voted barred an insurer from relying on artificial intelligence alone to deny, cut back or end approved care, so the software could still be part of a denial. Insurers would also have had 20 days to answer a request, and Medicaid managed care plans were exempt. The Nevada Assembly passed it 23-16, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 128, which would have limited how health insurers use computer systems to refuse to pay for care. The version the Assembly voted barred an insurer from relying on artificial intelligence alone to deny, cut back or end approved care, so the software could still be part of a denial. Insurers would also have had 20 days to answer a request, and Medicaid managed care plans were exempt. The Nevada Assembly passed it 23-16, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1553538,
+   "measure_id": "SB 128",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 128, which would have limited how health insurers use computer systems to refuse to pay for care. The version the Senate voted barred an insurer from using artificial intelligence at all to deny, cut back or end approved care, though it could still use it to approve care automatically. Insurers would also have had 20 days to answer a request, and Medicaid managed care plans were exempt. The Nevada Senate passed it 15-6, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 128, which would have limited how health insurers use computer systems to refuse to pay for care. The version the Senate voted barred an insurer from using artificial intelligence at all to deny, cut back or end approved care, though it could still use it to approve care automatically. Insurers would also have had 20 days to answer a request, and Medicaid managed care plans were exempt. The Nevada Senate passed it 15-6, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1583193,
+   "measure_id": "SB 182",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 182, which would have written maximum numbers of patients per nurse into Nevada law for hospitals with more than 70 beds in Clark and Washoe counties. The limits ran from one patient per nurse in operating and intensive care units to one nurse per four patients on general wards. Hospitals would have had to log missed meal and rest breaks, and could be fined up to $5,000 a day for each violation. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 182, which would have written maximum numbers of patients per nurse into Nevada law for hospitals with more than 70 beds in Clark and Washoe counties. The limits ran from one patient per nurse in operating and intensive care units to one nurse per four patients on general wards. Hospitals would have had to log missed meal and rest breaks, and could be fined up to $5,000 a day for each violation. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1576758,
+   "measure_id": "SB 182",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 182, which would have written maximum numbers of patients per nurse into Nevada law for hospitals with more than 70 beds in Clark and Washoe counties. The limits ran from one patient per nurse in operating and intensive care units to one nurse per four patients on general wards. Hospitals would have had to log missed meal and rest breaks, and could be fined up to $5,000 a day for each violation. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 182, which would have written maximum numbers of patients per nurse into Nevada law for hospitals with more than 70 beds in Clark and Washoe counties. The limits ran from one patient per nurse in operating and intensive care units to one nurse per four patients on general wards. Hospitals would have had to log missed meal and rest breaks, and could be fined up to $5,000 a day for each violation. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1568169,
+   "measure_id": "SB 352",
+   "vote_date": "2025-05-08",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 352, which would have widened Nevada's ban on discrimination by health insurers. The existing ban covered gender identity or expression; the bill would have added race, color, national origin, age, disability, sexual orientation and sex, including intersex traits and pregnancy, and applied the same rule to individual doctors. Insurers could still price by age where other law allows it. The Nevada Assembly passed it 26-15, and after a conference committee added an exemption for limited-benefit policies the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 352, which would have widened Nevada's ban on discrimination by health insurers. The existing ban covered gender identity or expression; the bill would have added race, color, national origin, age, disability, sexual orientation and sex, including intersex traits and pregnancy, and applied the same rule to individual doctors. Insurers could still price by age where other law allows it. The Nevada Assembly passed it 26-15, and after a conference committee added an exemption for limited-benefit policies the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1581341,
+   "measure_id": "AB 414",
+   "vote_date": "2025-05-29",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 414, which would have added air quality duties to the written safety program that larger employers must already keep, at workplaces over 10,000 square feet where staff are exposed to outdoor air for most of a shift, such as distribution centers. Someone would have had to measure the air at least every four hours and log it, trucks would have had to switch engines off while loading, and extra ventilation would have been required when readings ran high. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 414, which would have added air quality duties to the written safety program that larger employers must already keep, at workplaces over 10,000 square feet where staff are exposed to outdoor air for most of a shift, such as distribution centers. Someone would have had to measure the air at least every four hours and log it, trucks would have had to switch engines off while loading, and extra ventilation would have been required when readings ran high. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1583621,
+   "measure_id": "AB 414",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 414, which would have added air quality duties to the written safety program that larger employers must already keep, at workplaces over 10,000 square feet where staff are exposed to outdoor air for most of a shift, such as distribution centers. Someone would have had to measure the air at least every four hours and log it, trucks would have had to switch engines off while loading, and extra ventilation would have been required when readings ran high. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 414, which would have added air quality duties to the written safety program that larger employers must already keep, at workplaces over 10,000 square feet where staff are exposed to outdoor air for most of a shift, such as distribution centers. Someone would have had to measure the air at least every four hours and log it, trucks would have had to switch engines off while loading, and extra ventilation would have been required when readings ran high. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1575513,
+   "measure_id": "AB 244",
+   "vote_date": "2025-05-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 244, which would have banned polystyrene foam food containers at restaurant chains with 10 or more Nevada locations from October 2025, and at every food business from January 2029. The penalty was a civil fine of up to $100 for each day, and the bill deliberately kept the offense out of the misdemeanor rule that covers the rest of the food safety chapter. The Nevada Senate passed it 16-4, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 244, which would have banned polystyrene foam food containers at restaurant chains with 10 or more Nevada locations from October 2025, and at every food business from January 2029. The penalty was a civil fine of up to $100 for each day, and the bill deliberately kept the offense out of the misdemeanor rule that covers the rest of the food safety chapter. The Nevada Senate passed it 16-4, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1578609,
+   "measure_id": "SB 173",
+   "vote_date": "2025-05-26",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 173, an environmental bill whose main parts would have banned intentionally added PFAS chemicals, used for non-stick and stain-resistant coatings, from carpets, food packaging, cosmetics, children's products and indoor furniture, and required cookware containing them to say so on the label. Food delivery apps would have had to let a customer ask for plastic utensils rather than sending them by default. It also funded shade planting in hot neighborhoods and testing of hair products for formaldehyde. The Nevada Senate passed it 13-7, but the Assembly then changed the bill and the Senate never voted on the new version, so it never became law.",
+   "nay_description": "Voted against Senate Bill 173, an environmental bill whose main parts would have banned intentionally added PFAS chemicals, used for non-stick and stain-resistant coatings, from carpets, food packaging, cosmetics, children's products and indoor furniture, and required cookware containing them to say so on the label. Food delivery apps would have had to let a customer ask for plastic utensils rather than sending them by default. It also funded shade planting in hot neighborhoods and testing of hair products for formaldehyde. The Nevada Senate passed it 13-7, but the Assembly then changed the bill and the Senate never voted on the new version, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1583676,
+   "measure_id": "SB 173",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 173, an environmental bill whose main parts would have banned intentionally added PFAS chemicals, used for non-stick and stain-resistant coatings, from carpets, food packaging, cosmetics, children's products and indoor furniture, and required cookware containing them to say so on the label. Food delivery apps would have had to let a customer ask for plastic utensils rather than sending them by default. It also funded shade planting in hot neighborhoods and testing of hair products for formaldehyde. The Nevada Assembly passed it 27-15, but the Senate never voted on the Assembly's changes, so it never became law.",
+   "nay_description": "Voted against Senate Bill 173, an environmental bill whose main parts would have banned intentionally added PFAS chemicals, used for non-stick and stain-resistant coatings, from carpets, food packaging, cosmetics, children's products and indoor furniture, and required cookware containing them to say so on the label. Food delivery apps would have had to let a customer ask for plastic utensils rather than sending them by default. It also funded shade planting in hot neighborhoods and testing of hair products for formaldehyde. The Nevada Assembly passed it 27-15, but the Senate never voted on the Assembly's changes, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1552221,
+   "measure_id": "SB 324",
+   "vote_date": "2025-04-18",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 324, which would have banned selling water in disposable plastic bottles of 4 liters or less in any community bordering the Lake Tahoe watershed. Local health officials would have enforced it with a warning first, then fines rising to $500 for a fourth violation in a year. Only water was covered, so soda and juice in plastic bottles were not. The Nevada Senate passed it 16-4, but the Assembly never voted on it, so it never became law.",
+   "nay_description": "Voted against Senate Bill 324, which would have banned selling water in disposable plastic bottles of 4 liters or less in any community bordering the Lake Tahoe watershed. Local health officials would have enforced it with a warning first, then fines rising to $500 for a fourth violation in a year. Only water was covered, so soda and juice in plastic bottles were not. The Nevada Senate passed it 16-4, but the Assembly never voted on it, so it never became law."
+  }
+ ]
+}

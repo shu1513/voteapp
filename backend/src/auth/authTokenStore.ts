@@ -34,7 +34,7 @@ export type ConsumeUserAuthTokenInput = {
 function normalizeUserId(userId: string): string {
   const normalized = userId.trim();
   if (!isUuid(normalized)) {
-    throw new TypeError("User ID must be a valid UUID");
+    throw new Error("User ID must be a valid UUID");
   }
   return normalized;
 }
@@ -42,31 +42,31 @@ function normalizeUserId(userId: string): string {
 function normalizeTokenHash(tokenHash: string): string {
   const normalized = tokenHash.trim();
   if (normalized.length === 0) {
-    throw new TypeError("Token hash must be a non-empty string");
+    throw new Error("Token hash must be a non-empty string");
   }
   if (!/^[0-9a-f]{64}$/i.test(normalized)) {
-    throw new TypeError("Token hash must be a SHA-256 hex digest");
+    throw new Error("Token hash must be a SHA-256 hex digest");
   }
   return normalized.toLowerCase();
 }
 
 function normalizePurpose(purpose: AuthTokenPurpose): AuthTokenPurpose {
   if (!AUTH_TOKEN_PURPOSES.includes(purpose)) {
-    throw new TypeError(`Unsupported auth token purpose: ${purpose}`);
+    throw new Error(`Unsupported auth token purpose: ${purpose}`);
   }
   return purpose;
 }
 
 function normalizeExpiresAt(expiresAt: Date): Date {
   if (!(expiresAt instanceof Date) || Number.isNaN(expiresAt.getTime())) {
-    throw new TypeError("expiresAt must be a valid Date");
+    throw new Error("expiresAt must be a valid Date");
   }
   return expiresAt;
 }
 
 function normalizeNow(now: Date): Date {
   if (!(now instanceof Date) || Number.isNaN(now.getTime())) {
-    throw new TypeError("now must be a valid Date");
+    throw new Error("now must be a valid Date");
   }
   return now;
 }
@@ -75,12 +75,12 @@ function normalizeNewEmail(purpose: AuthTokenPurpose, newEmail: string | undefin
   if (purpose === "email_change") {
     const normalized = newEmail?.trim();
     if (!normalized) {
-      throw new TypeError("newEmail is required for email_change tokens");
+      throw new Error("newEmail is required for email_change tokens");
     }
     return normalized;
   }
   if (newEmail !== undefined) {
-    throw new TypeError(`newEmail is not allowed for ${purpose} tokens`);
+    throw new Error(`newEmail is not allowed for ${purpose} tokens`);
   }
   return null;
 }
@@ -117,10 +117,10 @@ export async function issueUserAuthToken(
   // authService), which serializes the void+insert per user. Callers that do
   // not hold that lock can race and leave multiple live tokens.
   //
-  // clock_timestamp(), not now(): now() is the transaction start, which can
-  // predate a token another transaction issued while we waited for the user
-  // lock, and chk_user_auth_tokens_consumed_at (consumed_at >= created_at)
-  // would then reject the void.
+  // clock_timestamp(), not now(): now() is the transaction start, which
+  // predates the lock wait. A token committed by another transaction during
+  // that wait has created_at after our start, and chk_user_auth_tokens_consumed_at
+  // (consumed_at >= created_at) would reject the void.
   await db.query(
     `
       UPDATE public.user_auth_tokens
@@ -207,8 +207,7 @@ export async function voidUserAuthTokens(
   }
   const purposes = input.purposes.map(normalizePurpose);
 
-  // clock_timestamp(): see issueUserAuthToken — the transaction-start now()
-  // can predate a token issued while this transaction waited for the lock.
+  // clock_timestamp(), not now(): see issueUserAuthToken.
   const result = await db.query(
     `
       UPDATE public.user_auth_tokens

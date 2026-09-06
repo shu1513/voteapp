@@ -1,0 +1,130 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1632386,
+      "measure_id": "HB 4031",
+      "vote_date": "2026-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4031, which lets some renewable power projects skip the state siting certificate. The exemption covers a facility that makes power only from the sun, the wind, the earth's heat or the sea. The developer must apply to the local government by the end of 2028 and win its approval. It must then tell that government, and copy the state siting council, that building has begun far enough to earn a federal renewable energy tax credit. The notice must name the applicant and the facility. Projects that do not meet all of this still need the state certificate. The Oregon House passed it 43-13, and it became law.",
+      "nay_description": "Voted against House Bill 4031, which lets some renewable power projects skip the state siting certificate. The exemption covers a facility that makes power only from the sun, the wind, the earth's heat or the sea. The developer must apply to the local government by the end of 2028 and win its approval. It must then tell that government, and copy the state siting council, that building has begun far enough to earn a federal renewable energy tax credit. The notice must name the applicant and the facility. Projects that do not meet all of this still need the state certificate. The Oregon House passed it 43-13, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1644327,
+      "measure_id": "HB 4031",
+      "vote_date": "2026-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4031, which lets some renewable power projects skip the state siting certificate. The exemption covers a facility that makes power only from the sun, the wind, the earth's heat or the sea. The developer must apply to the local government by the end of 2028 and win its approval. It must then tell that government, and copy the state siting council, that building has begun far enough to earn a federal renewable energy tax credit. The notice must name the applicant and the facility. Projects that do not meet all of this still need the state certificate. The Oregon Senate passed it 20-8, and it became law.",
+      "nay_description": "Voted against House Bill 4031, which lets some renewable power projects skip the state siting certificate. The exemption covers a facility that makes power only from the sun, the wind, the earth's heat or the sea. The developer must apply to the local government by the end of 2028 and win its approval. It must then tell that government, and copy the state siting council, that building has begun far enough to earn a federal renewable energy tax credit. The notice must name the applicant and the facility. Projects that do not meet all of this still need the state certificate. The Oregon Senate passed it 20-8, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1652848,
+      "measure_id": "HB 4076",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4076, which makes it easier to add power at a site already hooked up to the grid. The state siting council must treat its land use test as met in one case. That is where a new facility will send power out through an existing site's spare hook-up. Any new lines it needs must stay within two miles of that site's edge. Spare hook-up means capacity under the old agreement that is going unused. It may not be more than what was first agreed. A local government may also allow an exception to the statewide farm land goal for a renewable energy site where state rules call for one. The Oregon House agreed to the Senate's changes 41-13, and it became law.",
+      "nay_description": "Voted against House Bill 4076, which makes it easier to add power at a site already hooked up to the grid. The state siting council must treat its land use test as met in one case. That is where a new facility will send power out through an existing site's spare hook-up. Any new lines it needs must stay within two miles of that site's edge. Spare hook-up means capacity under the old agreement that is going unused. It may not be more than what was first agreed. A local government may also allow an exception to the statewide farm land goal for a renewable energy site where state rules call for one. The Oregon House agreed to the Senate's changes 41-13, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1642734,
+      "measure_id": "HB 4134",
+      "vote_date": "2026-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4134, which raises the state lodging tax and sends the extra money to wildlife. The tax on renting a room goes from 1.5 percent to 2.75 percent. It is now split three ways. The first 1.5 percent still goes to the tourism commission as before. A new 0.9 percent goes to the Recovering Oregon's Wildlife Fund Subaccount, which is the renamed Oregon Conservation Strategy Subaccount. The last 0.35 percent is split again, with shares going to the Oregon Conservation Corps and to the State Police to fight poaching. Because the Act raises revenue, it needed a three-fifths vote in each chamber. The Oregon House passed it 36-22, and it became law.",
+      "nay_description": "Voted against House Bill 4134, which raises the state lodging tax and sends the extra money to wildlife. The tax on renting a room goes from 1.5 percent to 2.75 percent. It is now split three ways. The first 1.5 percent still goes to the tourism commission as before. A new 0.9 percent goes to the Recovering Oregon's Wildlife Fund Subaccount, which is the renamed Oregon Conservation Strategy Subaccount. The last 0.35 percent is split again, with shares going to the Oregon Conservation Corps and to the State Police to fight poaching. Because the Act raises revenue, it needed a three-fifths vote in each chamber. The Oregon House passed it 36-22, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1653215,
+      "measure_id": "HB 4134",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4134, which raises the state lodging tax and sends the extra money to wildlife. The tax on renting a room goes from 1.5 percent to 2.75 percent. It is now split three ways. The first 1.5 percent still goes to the tourism commission as before. A new 0.9 percent goes to the Recovering Oregon's Wildlife Fund Subaccount, which is the renamed Oregon Conservation Strategy Subaccount. The last 0.35 percent is split again, with shares going to the Oregon Conservation Corps and to the State Police to fight poaching. Because the Act raises revenue, it needed a three-fifths vote in each chamber. The Oregon Senate passed it 20-9, and it became law.",
+      "nay_description": "Voted against House Bill 4134, which raises the state lodging tax and sends the extra money to wildlife. The tax on renting a room goes from 1.5 percent to 2.75 percent. It is now split three ways. The first 1.5 percent still goes to the tourism commission as before. A new 0.9 percent goes to the Recovering Oregon's Wildlife Fund Subaccount, which is the renamed Oregon Conservation Strategy Subaccount. The last 0.35 percent is split again, with shares going to the Oregon Conservation Corps and to the State Police to fight poaching. Because the Act raises revenue, it needed a three-fifths vote in each chamber. The Oregon Senate passed it 20-9, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1652973,
+      "measure_id": "HB 4153",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4153, which opens land zoned for farming to farm stores and paid visitor attractions. A farm store becomes an allowed use on exclusive farm use land, and on land zoned for mixed farm and forest use. The store must sell products from the farm that runs it. The Act also allows agri-tourism there. That means activities a farm runs to draw visitors and sell its store's goods, and which may earn commercial or entertainment money as well. Named examples are farm tours, classes and exhibits, crop mazes, play structures, farm-to-table meals, animal petting, hay or tractor rides and seasonal events. A farm store may not be used for lodging or as a home. The Oregon House passed it 40-14, and it became law.",
+      "nay_description": "Voted against House Bill 4153, which opens land zoned for farming to farm stores and paid visitor attractions. A farm store becomes an allowed use on exclusive farm use land, and on land zoned for mixed farm and forest use. The store must sell products from the farm that runs it. The Act also allows agri-tourism there. That means activities a farm runs to draw visitors and sell its store's goods, and which may earn commercial or entertainment money as well. Named examples are farm tours, classes and exhibits, crop mazes, play structures, farm-to-table meals, animal petting, hay or tractor rides and seasonal events. A farm store may not be used for lodging or as a home. The Oregon House passed it 40-14, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1656206,
+      "measure_id": "HB 4153",
+      "vote_date": "2026-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4153, which opens land zoned for farming to farm stores and paid visitor attractions. A farm store becomes an allowed use on exclusive farm use land, and on land zoned for mixed farm and forest use. The store must sell products from the farm that runs it. The Act also allows agri-tourism there. That means activities a farm runs to draw visitors and sell its store's goods, and which may earn commercial or entertainment money as well. Named examples are farm tours, classes and exhibits, crop mazes, play structures, farm-to-table meals, animal petting, hay or tractor rides and seasonal events. A farm store may not be used for lodging or as a home. The Oregon Senate passed it 21-8, and it became law.",
+      "nay_description": "Voted against House Bill 4153, which opens land zoned for farming to farm stores and paid visitor attractions. A farm store becomes an allowed use on exclusive farm use land, and on land zoned for mixed farm and forest use. The store must sell products from the farm that runs it. The Act also allows agri-tourism there. That means activities a farm runs to draw visitors and sell its store's goods, and which may earn commercial or entertainment money as well. Named examples are farm tours, classes and exhibits, crop mazes, play structures, farm-to-table meals, animal petting, hay or tractor rides and seasonal events. A farm store may not be used for lodging or as a home. The Oregon Senate passed it 21-8, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    }
+  ]
+}

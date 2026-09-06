@@ -4,6 +4,7 @@ import { AuthGoogleSignInError, createAuthService } from "../../src/auth/authSer
 import { CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
 import { hashPassword } from "../../src/auth/authPrimitives.js";
 import type { GoogleIdTokenPayload } from "../../src/auth/googleIdToken.js";
+import { RequestValidationError } from "../../src/utils/requestValidationError.js";
 
 const USER_ID = "11111111-1111-4111-8111-111111111111";
 const GOOGLE_SUB = "108256793412470351234";
@@ -355,7 +356,7 @@ describe("createAuthService loginWithGoogle", () => {
     const { service } = createService({ client, verify });
 
     await expect(service.loginWithGoogle!({ idToken: "token", intent: "login" })).rejects.toThrow(
-      TypeError
+      RequestValidationError
     );
   });
 

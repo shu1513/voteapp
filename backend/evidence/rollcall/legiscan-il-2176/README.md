@@ -192,34 +192,37 @@ check what each roll's text actually was before importing it.**
 | [batch-01](batch-01/PLAN.md) | 22 | 11 | 1,364 | 132 |
 | [batch-02](batch-02/PLAN.md) | 54 | 29 | 3,319 | 132 |
 | [batch-03](batch-03/JUDGING.md) — the date-skew holds | 3 | 3 | 157 | 126 |
+| [batch-04](batch-04/JUDGING.md) — first 25 of the unbatched pool | 14 | 10 | 984 | 132 |
+| [batch-05](batch-05/JUDGING.md) — measures 26-50 | 23 | 15 | 1,567 | 132 |
+| [batch-06](batch-06/JUDGING.md) — measures 51-75, two more date skews | 13 | 10 | 994 | 132 |
+| [batch-07](batch-07/JUDGING.md) — measures 76-97, the superseded-roll rule | 18 | 12 | 1,314 | 132 |
+| [batch-08](batch-08/JUDGING.md) — measures 98-119, incl. the energy law | 22 | 15 | 1,595 | 132 |
+| [batch-09](batch-09/JUDGING.md) — the last 21 measures | 18 | 16 | 1,520 | 132 |
 
-**Illinois total: 4,840 records across 132 candidates, local `voteapp` only.**
+**Illinois total: 12,814 records across 132 candidates, local `voteapp` only.**
 **Migration 257 (`official_vote_date`) is local only — prod needs it, alongside
 251 and 252, before any Illinois promotion.**
 
 ## What is left
 
-`survey/divided-enacted-worklist.tsv` is the resumable ledger, and after
-batch-02 **every one of its 427 rolls carries a disposition**:
+**Nothing.** `survey/divided-enacted-worklist.tsv` holds 427 rolls and every one
+carries a disposition: **187 judged, 167 screened, 73 dropped, 0 pending.**
 
-| disposition | rolls |
-|---|---|
-| `candidate:unbatched` — passes the synopsis screen, awaiting judging capacity | 204 |
-| `judged:batch-02` | 54 |
-| `screened:no-defensible-stance` | 42 |
-| `screened:technical-or-omnibus` | 36 |
-| `screened:contested-direction` | 26 |
-| `judged:batch-01` | 22 |
-| `screened:appropriations-or-bonds` | 14 |
-| `screened:local-or-narrow` | 14 |
-| `screened:superseded-roll` | 5 |
-| `screened:mixed-direction` | 4 |
-| `screened:version-split` | 3 |
-| `judged:batch-03` | 3 |
+Three rules came out of batches 04-09 and are worth carrying to the next state:
 
-**Nothing is left `pending`.** Every roll is judged or screened.
+1. **A divided roll is imported only when it is that chamber's vote on the text
+   that became law.** In Illinois, where gut-and-replace is the norm, this is the
+   filter that does the most work — it cost HB 1085, HB 2771, HB 3275, HB 3711
+   and HB 4160, each of which the chamber went on to pass with no real split.
+2. **Check every sine-die roll against the ILGA action trail, one at a time.**
+   Four rolls needed an `official_vote_date` override across batches 03, 06 and
+   08, and rolls carrying the identical LegiScan date did not — SB 1859 and
+   SB 24 among them. The skew is per-roll, never per-day.
+3. **A measure whose chamber slot an earlier batch already filled is not
+   imported again.** SB 2339, HB 5295 and SB 3777 each had a later concurrence in
+   the pool; all three are `screened:duplicate-chamber`, because the batch-01
+   descriptions already tell the reader how the final version differed.
 
-A `screened:*` verdict is a decision not to import, with the reason recorded in
-the row. `candidate:unbatched` is a positive triage result from reading the
-measure's Legislative Reference Bureau synopsis — those 204 rolls are the
-resume point, and no further triage is needed to pick them up.
+The batch tooling lives outside the repo at `/Users/shu/legiscan-data/il-work/`:
+`ilga.py` fetches and digests the BillStatus XML, and `ilga-ca.pem` carries the
+Sectigo intermediate that `ftp.ilga.gov` omits.

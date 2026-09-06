@@ -113,3 +113,32 @@ This is a policy gap rather than a defect, and it is not Delaware's to settle. T
 routes would close it: allow a roll-call record to carry no area at all, or define a
 visible non-stance area for votes worth recording that no area can score. Until then
 the campaign loses exactly the votes that divided a legislature most.
+
+## 7. The dataset's bill status trails Delaware's own record, in both directions
+
+The campaign's enacted gate reads the LegiScan bill `status`. For Delaware that field is
+not merely cut-stale, it is behind the state.
+
+Of the 20 bills parked at status 3 (passed both chambers, awaiting the Governor) in the
+dataset cut on **2026-08-30**, nine had in fact been signed. Seven were signed on
+2026-09-02 and 2026-09-03, which a later cut would eventually pick up. **But HB 233 and
+HB 310 were signed on 2026-08-26, four days before that cut, and the dataset still
+carries them as unsigned.** Re-downloading the same session would not have produced
+them.
+
+Two consequences worth carrying to any state whose session is still sitting:
+
+- **Do not treat "re-fetch when the signed count moves" as the mechanism.** It assumes
+  the feed learns of a signature before the next cut, and here it did not.
+- **A re-fetch is not needed anyway.** The fetcher stores every kept-question roll as a
+  pending row when the bill is first seen. The rolls behind an unsigned bill are already
+  in `legislative_votes`; only the enactment fact is missing, and the state publishes it.
+  Delaware's is at `legis.delaware.gov/json/BillDetail/GetRecentReportsByLegislationId`,
+  keyed by the `LegislationId` inside the dataset's own `state_link`.
+
+The same check across the other live sessions found no such gap, but did find two shapes
+that are permanently parked rather than waiting: **vetoed bills** (Alaska HB 10 and
+HB 93) keep status 3 in the dataset, and **concurrent or joint resolutions** (Alaska
+SCR 28/201/202, California SJR 7) are never presented to a governor, so their status can
+never reach enacted. Both should be dispositioned out rather than re-checked.
+

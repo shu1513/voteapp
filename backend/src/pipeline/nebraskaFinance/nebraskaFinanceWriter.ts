@@ -5,6 +5,7 @@ import {
   manualProtectedLinkAssignments,
   type ManualProtectedLinkRow,
 } from "../finance/manualLinkProtection.js";
+import { assertSnapshotDbIsNotPoolClient } from "../finance/financeWriterPoolGuard.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
@@ -135,6 +136,7 @@ function validateNebraskaFinanceLinkInput(link: NebraskaFinanceLinkInput): void 
 }
 
 async function withNebraskaFinanceTransaction<T>(db: Queryable, work: (tx: Queryable) => Promise<T>): Promise<T> {
+  assertSnapshotDbIsNotPoolClient("Nebraska", db);
   if (!canOpenTransaction(db)) {
     try {
       await db.query("BEGIN");

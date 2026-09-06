@@ -103,6 +103,13 @@ jobs:
         env:
           DATABASE_URL: postgresql://voteapp:voteapp@localhost:5432/voteapp
 
+      # A real PoolClient has both connect and release; only a live connection
+      # shows whether a writer given one commits the caller's transaction.
+      - name: Finance snapshot writer pool boundary
+        run: npx vitest run tests/pipeline/newMexicoFinance/newMexicoFinanceWriterPoolBoundary.db.test.ts
+        env:
+          DATABASE_URL: postgresql://voteapp:voteapp@localhost:5432/voteapp
+
       # Auth links issued under a previous owner or credential must stop
       # working when the ownership change commits, and consumers must lock the
       # user row before consuming. Whether the void hits the rows a later
