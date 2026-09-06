@@ -2575,6 +2575,16 @@ async function dispatchApiRequest(
     return;
   }
 
+  // Address resolve is the last route, and it is gated explicitly: a path
+  // that isKnownApiPath recognizes but no branch above handles must answer
+  // 404, not fall through into an address lookup. Nothing advertised falls
+  // through today; this keeps a future recognition/dispatch mismatch from
+  // silently becoming a resolve request.
+  if (url.pathname !== ADDRESS_RESOLVE_PATH) {
+    sendApiResponse(response, toErrorResponse(404, "not_found", "Not found", corsHeaders));
+    return;
+  }
+
   if (request.method !== "POST") {
     sendApiResponse(
       response,
