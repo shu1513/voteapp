@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "274445bd-2c06-497b-b8d3-e8575fdb50df",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "729eb0d8-460f-410d-9b7f-54a4709ec08c",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "6d13484a-65a5-4338-a4c3-4c86f7589022",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "f18bca74-6b9f-42fa-ab6b-5663ed47c3b5",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "d3e2d81b-99e6-4461-8b21-a23416d536f9",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

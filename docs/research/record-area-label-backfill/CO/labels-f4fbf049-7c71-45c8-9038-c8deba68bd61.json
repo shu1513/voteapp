@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "220b5d02-2d57-4fb3-ba43-737300720120",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "ce2cf342-4b88-48e1-99ff-69a02beedf10",
+   "research_area_slug": "personal_income_tax_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "79f8a05d-c877-40b6-8c02-ad3185bb89aa",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "79f8a05d-c877-40b6-8c02-ad3185bb89aa",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  },
+  {
+   "record_id": "b69f2f9d-9989-452e-bd7c-9156d685bba7",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "b69f2f9d-9989-452e-bd7c-9156d685bba7",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "b69f2f9d-9989-452e-bd7c-9156d685bba7",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

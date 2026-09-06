@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "a9395a88-9014-44e8-b4e6-e72f03b8f646",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "da593b64-5056-4b40-82ce-4253ea553501",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  },
+  {
+   "record_id": "da593b64-5056-4b40-82ce-4253ea553501",
+   "research_area_slug": "personal_income_tax_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "8d3beb74-9a91-49b1-b7ba-432f772f23e7",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "a6a573b3-4e92-4f2a-96b0-a8a1f7da2d4d",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}
