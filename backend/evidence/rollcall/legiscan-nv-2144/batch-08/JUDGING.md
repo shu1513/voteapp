@@ -96,3 +96,21 @@ The description used for both rolls states only what the two versions share and 
 would recognize: wider eligibility, no filing fee, one petition instead of several, and
 retroactive reach. It makes no claim about the presumption or the hearing route, so it is
 true of the text each chamber actually voted.
+
+## Review fixes, 2026-09-06 (PR #1218)
+
+Two findings on this batch, both checked against the voted text and both correct.
+
+- **AB 434 (Assembly)** said the ban carried "exceptions only for religious employers".
+  Subsection 2 has two exceptions, both limited to the religious half of the ban: a religious
+  employer, and where the worker's refusal "substantially or materially interferes with the
+  bona fide job performance of the employee or the working relationship". Saying "only"
+  overstated the protection. The description now names both. 30 records rewritten.
+- **AB 488** said a trafficking victim could erase "any state crime or local ordinance
+  violation". Both versions require, at subsection 8, that "the participation of the petitioner
+  in the offense was the direct or indirect result" of the trafficking; victim status alone is
+  not enough. The description now carries that condition. 41 records rewritten.
+
+The ledger is `import-review-fix-report.json` in this directory: started
+`2026-09-06T23:40:38.893Z`, 123 rewritten across batches 07 and 08 (30 + 11 + 41 + 41),
+2,448 unchanged, 0 errors. A convergence dry run afterwards reports all 2,571 unchanged.

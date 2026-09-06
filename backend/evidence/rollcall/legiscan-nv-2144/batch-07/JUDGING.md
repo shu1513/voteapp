@@ -95,3 +95,22 @@ are Kansas Senate Bill 63, a different bill that shares a number. One is an Ohio
 ranked-choice-voting law. One is a member of the public testifying against AB 597, which is
 not a legislator's vote. One is a legislator presenting AB 140 to a committee, which is a
 different act from voting on it.
+
+## Review fixes, 2026-09-06 (PR #1218)
+
+Two findings on this batch, both checked against the voted text and both correct.
+
+- **SB 63 (Senate)** said notifications "would have stopped overnight and during school hours".
+  Section 20 gave a platform a choice — set reasonable limits on daily use and notification
+  hours, **or** stop notifications in those windows — and made the stop mandatory only on a
+  parent's request. The description now says a parent could require the stop and that a
+  platform could otherwise set limits instead. 11 records rewritten.
+- **AB 597** said the mail ballot was requested "by post seven weeks ahead". Section 1 says the
+  request is made "in the manner designated by the county clerk, which may include, without
+  limitation, submitting the request by electronic means." The description now says any way
+  the clerk allowed, including electronically, by the seventh Monday before the primary.
+  41 records rewritten.
+
+Both were the writer's inference going beyond the text. Rewritten in place; the ledger is
+`../batch-08/import-review-fix-report.json` (123 rewritten across both batches, 2,448
+unchanged) and a convergence dry run afterwards reports all 2,571 unchanged.
