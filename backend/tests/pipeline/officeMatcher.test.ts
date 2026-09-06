@@ -126,6 +126,45 @@ describe("OfficeMatcher", () => {
     });
   }
 
+  it("ignores a learned non-judge alias for a judicial-family title", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          // Learned from Kentucky fiscal-court magistrates (county legislators).
+          { office_id: "office-magistrate", normalized_alias: "magistrate" },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-magistrate", canonical_name: "Magistrate" },
+          { id: "office-county-judge", canonical_name: "County Level Judge" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // Georgia's magistrate is a judge; the alias must not pull it into the
+    // Kentucky legislative office.
+    const georgia = await matcher.resolve({
+      scope: "county",
+      districtName: "Putnam County, Georgia",
+      state: "GA",
+      officialBallotTitle: "Magistrate",
+      discoveryContestFamily: "judicial_office",
+    });
+    expect(georgia.officeId).toBe("office-county-judge");
+
+    // The alias still serves the non-judicial family it was learned from.
+    const kentucky = await matcher.resolve({
+      scope: "county",
+      districtName: "Marion County, Kentucky",
+      state: "KY",
+      officialBallotTitle: "Magistrate",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(kentucky.officeId).toBe("office-magistrate");
+  });
+
   it("ignores an already-learned county-clerk alias for a court-clerk title", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: {

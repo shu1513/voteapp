@@ -31,7 +31,7 @@ const SEED_OFFICES: SeedOffice[] = [
     scope: "presidential",
     canonicalName: "President of the United States",
     summary: [
-      "Setting federal taxes and how federal money is spent",
+      "Proposing the federal budget and signing or vetoing tax and spending bills",
       "Picking federal judges and the heads of federal agencies",
       "Deciding on war, trade, and deals with other countries",
     ].join("\n"),
@@ -59,7 +59,7 @@ const SEED_OFFICES: SeedOffice[] = [
     canonicalName: "Governor",
     summary: [
       "Signing or vetoing bills that become state law",
-      "Deciding how much money goes to schools, roads, and health care",
+      "Proposing the state budget for schools, roads, and health care",
       "Picking who leads state agencies",
     ].join("\n"),
   },
@@ -580,7 +580,7 @@ const SEED_OFFICES: SeedOffice[] = [
     scope: "place",
     canonicalName: "Mayor",
     summary: [
-      "Setting city budget priorities",
+      "Proposing the city budget, in many cities",
       "Picking who leads city departments, such as the police chief, in many cities",
       "Signing or vetoing council bills, in many cities",
     ].join("\n"),
