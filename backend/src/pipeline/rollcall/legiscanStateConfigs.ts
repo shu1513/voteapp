@@ -3402,21 +3402,38 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     chamberSizes: { house: 60, senate: 30 },
     keptQuestions: OREGON_KEPT_QUESTIONS,
     excludedQuestions: OREGON_EXCLUDED_QUESTIONS,
-    // ⚠ LegiScan places one member on the WRONG SIDE of these five rolls.
-    // Every divided-and-enacted roll in the session (393 of them) was audited
-    // against the tally Oregon's own bill history prints, and 388 match
-    // exactly. These five are each off by one, and in every case the history
-    // NAMES the nay voters, so the extra member is identifiable: LegiScan
-    // adds Girod to SB 906's nays and Boice to HB 2957's, and Oregon's
-    // journal names neither. A wrong side writes a false record about a named
-    // legislator, and the approval check copies the stored tally into the
-    // record text, so these must never be queued.
+    // ⚠ LegiScan places at least one member on the WRONG SIDE of these eleven
+    // rolls. A wrong side writes a false record about a named legislator, and
+    // the approval check copies the stored tally into the record text, so
+    // these must never be queued.
+    //
+    // The audit runs over EVERY enacted floor roll — all 1,355 of them — and
+    // 1,344 match the tally Oregon's own bill history prints. It deliberately
+    // is NOT bounded by the divided gate. An earlier pass that audited only
+    // the 393 divided-and-enacted rolls found five of these eleven; the other
+    // six sit on rolls that are not divided. That bound is unsafe because a
+    // tally error can itself decide whether a roll passes the gate, as it does
+    // on SB 1565's House roll in the 2026 session. Here none of the six
+    // changes the gate, so no imported 2025 record is affected — but that is a
+    // fact the audit had to establish rather than assume.
+    //
+    // Because the journal names the nay voters, the misplaced member is
+    // usually identifiable, and each entry below says who.
     heldRollCallIds: {
       1543833: "SB 906 Senate 2025-04-10: LegiScan reports 19-8 and lists Girod as a nay; Oregon's journal reports 20-7 and does not name him among the seven nays",
       1590950: "HB 2957 House 2025-06-16: LegiScan reports 35-19 and lists Boice as a nay; Oregon's journal reports 36-18 and does not name him among the eighteen nays",
       1571965: "SB 817 House 2025-05-15: LegiScan reports 37-12, Oregon's journal reports 36-13",
       1595861: "HB 2005 House 2025-06-27: LegiScan reports 39-10, Oregon's journal reports 38-11",
       1594908: "HB 5015 House 2025-06-25: LegiScan reports 40-11, Oregon's journal reports 39-12",
+      // The six below are not divided under either tally, so none of them was
+      // ever eligible for the pool and no imported record depends on them.
+      // They are held because the data is wrong, not because it was used.
+      1507235: "HB 3175 House 2025-03-06: LegiScan reports 46-10 and lists Harbick as a nay; Oregon's journal reports 47-9 and does not name him",
+      1593311: "HB 3746 House 2025-06-20: LegiScan reports 44-5; Oregon's journal reports 42-7 and also names Bowman and Nelson among the nays",
+      1594211: "SB 5534 House 2025-06-24: LegiScan reports 49-1 and lists Boshart Davis as a nay; Oregon's journal reports 50-0 with no nays at all",
+      1551368: "HB 3731 House 2025-04-17: LegiScan reports 47-2 and lists Cate and Diehl as nays; Oregon's journal reports 48-1 and names only Cate",
+      1593876: "SB 1061 Senate 2025-06-23: LegiScan reports 29-0; Oregon's journal reports 30-0, so a member is missing from the roll",
+      1590963: "SB 838 Senate 2025-06-16: LegiScan reports 28-0 with no nays; Oregon's journal reports 27-1 and names Hayden as the nay",
     },
   },
   // Oregon's 2026 regular session — the 35-day short session, sine die
@@ -3435,19 +3452,29 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     chamberSizes: { house: 60, senate: 30 },
     keptQuestions: OREGON_2026_KEPT_QUESTIONS,
     excludedQuestions: OREGON_2026_EXCLUDED_QUESTIONS,
-    // ⚠ One roll where LegiScan and Oregon's own journal disagree. All 85
-    // divided-and-enacted rolls were audited against the tally the bill
-    // history prints, and 84 match exactly.
+    // ⚠ Four rolls where LegiScan and Oregon's own journal disagree. The audit
+    // runs over EVERY enacted floor roll, not only the ones LegiScan itself
+    // reports as divided: 303 of 307 match exactly.
     //
-    // The cause here is new. Oregon lets a senator change a recorded vote by
-    // unanimous consent, and the journal prints the tally AFTER the change.
-    // The 2026 session has five such changes and LegiScan applies four of
-    // them; on HB 4116 it kept the pre-change tally instead. That is why the
-    // audit has to run on every roll: the mechanism does not predict which
-    // rolls are wrong.
+    // Auditing only the divided rolls would have missed three of these four,
+    // and one of the three matters. On SB 1565's House roll LegiScan reports
+    // 45-10, which fails the divided gate, while the journal reports 43-12,
+    // which passes it. A tally error can therefore decide whether a roll is
+    // in the pool at all, so the gate cannot be trusted to bound the audit.
+    //
+    // One cause is Oregon letting a member change a recorded vote by
+    // unanimous consent, with the journal printing the tally AFTER the change.
+    // The session has five such changes and LegiScan applies four of them.
+    // The mechanism does not predict which rolls are wrong.
     heldRollCallIds: {
       1655091:
         "HB 4116 Senate 2026-03-05: LegiScan reports 17-12 with McLane as a yea; Oregon's journal reports 16-13 and names McLane among the thirteen nays, after he was granted unanimous consent to change his vote",
+      1654909:
+        "SB 1565 House 2026-03-05: LegiScan reports 45-10; Oregon's journal reports 43-12 and names Elmer and Munoz among the nays, whom LegiScan records as yeas. This is the roll where the error also changes the divided gate: 45-10 fails it and 43-12 passes it",
+      1655237:
+        "SB 1525 House 2026-03-05: LegiScan reports 55-2 and names Munoz and Sosa as the nays; Oregon's journal reports 56-1 and names only Tran, so three members are on the wrong side",
+      1649476:
+        "SB 1571 House 2026-03-02: LegiScan reports 37-7; Oregon's journal reports 36-8 and names Lewis among the nays, whom LegiScan records as a yea",
     },
   },
 };

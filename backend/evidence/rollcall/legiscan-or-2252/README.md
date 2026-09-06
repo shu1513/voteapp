@@ -52,9 +52,27 @@ flag, which means it is visible but can never be queued or approved. HB 4116
 can still be used from its House roll.
 
 The point worth keeping is that the mechanism does not predict which rolls are
-wrong — four of the five vote changes came through correctly. Every roll in
-the pool was audited against the tally Oregon's own bill history prints, and
-84 of 85 match exactly. `tally-audit.py` in this directory is that audit.
+wrong — four of the five vote changes came through correctly.
+
+**Three more rolls disagree with the journal, and one of them matters.** The
+audit runs over every enacted floor roll, all 307 of them, and 303 match
+exactly. It is deliberately **not** bounded by the divided gate, and this
+session shows why:
+
+| Roll | LegiScan | Oregon's journal |
+| --- | --- | --- |
+| HB 4116 Senate 2026-03-05 | 17-12, McLane a yea | 16-13, McLane a nay |
+| SB 1565 House 2026-03-05 | 45-10 | **43-12**, Elmer and Munoz among the nays |
+| SB 1525 House 2026-03-05 | 55-2, Munoz and Sosa the nays | 56-1, only Tran |
+| SB 1571 House 2026-03-02 | 37-7 | 36-8, Lewis among the nays |
+
+**SB 1565 is the case that changes the rule.** LegiScan's 45-10 fails the
+divided gate; the journal's 43-12 passes it. A tally error can therefore decide
+whether a roll is in the pool at all, so bounding the audit by the gate would
+have hidden the very roll the gate was wrong about. All four are held.
+
+`tally-audit.py` in this directory is that audit, and it takes a dataset
+directory so it can be run against either session.
 
 ## The crosswalk
 

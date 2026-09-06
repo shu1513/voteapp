@@ -60,11 +60,20 @@ exactly that, so HB 3908 joins the other 40 drops.
 
 ## Five roll calls held, and why
 
-LegiScan places one member on the wrong side of five Oregon rolls. All 393
-divided-and-enacted rolls were audited against the tally Oregon's own bill
-history prints: **388 match exactly, five are off by one.** Because the
-journal names the nay voters, the misplaced member is identifiable — Girod on
-SB 906's Senate roll, Boice on HB 2957's House roll.
+LegiScan places a member on the wrong side of five of the roll calls this
+campaign could have used. All 393 divided-and-enacted rolls were audited
+against the tally Oregon's own bill history prints: **388 match exactly, five
+are off by one.** Because the journal names the nay voters, the misplaced
+member is identifiable — Girod on SB 906's Senate roll, Boice on HB 2957's
+House roll.
+
+> **Correction, 2026-09-06.** That audit was bounded by the divided gate.
+> Re-running it over every enacted floor roll — all 1,355 — finds **eleven**
+> mismatches, not five. The six extra rolls are not divided under either
+> tally, so none was ever eligible and **no record here changes**; a re-fetch
+> moved exactly six stored rolls and a re-import reported all 3,091 records
+> unchanged. All eleven are now held. The README in this directory has the
+> detail and the reason the bound was unsafe.
 
 All five sit in the config's `heldRollCallIds`, so they are surfaced and can
 never be queued or approved. SB 906 was therefore imported House-only and
