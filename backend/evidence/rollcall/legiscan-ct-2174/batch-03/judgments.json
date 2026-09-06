@@ -80,8 +80,8 @@
    "measure_id": "HB 7210",
    "vote_date": "2025-05-20",
    "review_status": "approved",
-   "yea_description": "Voted to pass HB 7210. It would require state contracts with halfway houses run for the Department of Correction to follow each resident's own discharge plan. It would also bar discharging a resident just because the facility is closing. The Connecticut House passed it 100-46. The Senate did not vote on it, so it did not become law.",
-   "nay_description": "Voted against HB 7210. It would require state contracts with halfway houses run for the Department of Correction to follow each resident's own discharge plan. It would also bar discharging a resident just because the facility is closing. The Connecticut House passed it 100-46. The Senate did not vote on it, so it did not become law.",
+   "yea_description": "Voted to pass HB 7210. It would require state contracts with halfway houses run for the Department of Correction to follow each resident's own discharge plan. A closing facility could not discharge a resident unless the person is moved to an equivalent facility. If none is available, it would have to stay open until each resident leaves under their plan. The Connecticut House passed it 100-46. The Senate did not vote on it, so it did not become law.",
+   "nay_description": "Voted against HB 7210. It would require state contracts with halfway houses run for the Department of Correction to follow each resident's own discharge plan. A closing facility could not discharge a resident unless the person is moved to an equivalent facility. If none is available, it would have to stay open until each resident leaves under their plan. The Connecticut House passed it 100-46. The Senate did not vote on it, so it did not become law.",
    "labels": [
     {
      "slug": "social_programs_and_welfare",
@@ -98,8 +98,8 @@
    "measure_id": "SB 1427",
    "vote_date": "2025-06-02",
    "review_status": "approved",
-   "yea_description": "Voted to pass SB 1427. It would open Connecticut's paid family and medical leave insurance program to certain school employees. The version the House passed also lets a school board that already gives more generous paid leave require staff to use their accrued sick leave first. The Connecticut House passed it 102-46. The Senate did not vote on it again, so it did not become law.",
-   "nay_description": "Voted against SB 1427. It would open Connecticut's paid family and medical leave insurance program to certain school employees. The version the House passed also lets a school board that already gives more generous paid leave require staff to use their accrued sick leave first. The Connecticut House passed it 102-46. The Senate did not vote on it again, so it did not become law.",
+   "yea_description": "Voted to pass SB 1427. It would open Connecticut's paid family and medical leave insurance program to certain school employees. The version the House passed also lets a school board or town that already gives more generous paid leave require staff to take sick leave in the blocks set by their union contract. The Connecticut House passed it 102-46. The Senate did not vote on it again, so it did not become law.",
+   "nay_description": "Voted against SB 1427. It would open Connecticut's paid family and medical leave insurance program to certain school employees. The version the House passed also lets a school board or town that already gives more generous paid leave require staff to take sick leave in the blocks set by their union contract. The Connecticut House passed it 102-46. The Senate did not vote on it again, so it did not become law.",
    "labels": [
     {
      "slug": "social_programs_and_welfare",
@@ -116,8 +116,8 @@
    "measure_id": "SB 8",
    "vote_date": "2025-05-30",
    "review_status": "approved",
-   "yea_description": "Voted to pass SB 8. It would let workers who are off the job because of a strike claim unemployment benefits, once that dispute has run for fourteen days. Connecticut law now bars benefits for the whole of a labor dispute. The Connecticut House passed it 87-59. The Governor vetoed it, so it did not become law.",
-   "nay_description": "Voted against SB 8. It would let workers who are off the job because of a strike claim unemployment benefits, once that dispute has run for fourteen days. Connecticut law now bars benefits for the whole of a labor dispute. The Connecticut House passed it 87-59. The Governor vetoed it, so it did not become law.",
+   "yea_description": "Voted to pass SB 8. It would let workers who are off the job because of a strike claim unemployment benefits, once that strike has run for fourteen days. It would apply to strikes that begin on or after December 14, 2026. Connecticut law now bars benefits for the whole of a strike. The Connecticut House passed it 87-59. The Governor vetoed it, so it did not become law.",
+   "nay_description": "Voted against SB 8. It would let workers who are off the job because of a strike claim unemployment benefits, once that strike has run for fourteen days. It would apply to strikes that begin on or after December 14, 2026. Connecticut law now bars benefits for the whole of a strike. The Connecticut House passed it 87-59. The Governor vetoed it, so it did not become law.",
    "labels": [
     {
      "slug": "reduce_wealth_gap",

@@ -54,7 +54,11 @@ Every label uses `nay: null`.
 - **HB 68**, `corporate_accountability`, against. It strikes "any other injury
   to the person" from the five-year limitations section and leaves those claims
   under the two-year one, so an injured person has less than half as long to
-  file.
+  file. The two-year clause excludes claims "otherwise provided for by law",
+  so the description says "most" and "usually". The same bill also lengthens
+  the childhood-sexual-abuse deadline in §537.046 from ten to twenty years
+  after age 21 (discovery alternative kept); the description states that, and
+  the label follows the bill's main thrust.
 - **HB 918**, `corporate_accountability`, against. A plaintiff must prove the
   defendant designed, made, sold or leased the particular product used, "and not
   a similar or equivalent product", which forecloses market-share and

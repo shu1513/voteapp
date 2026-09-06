@@ -61,8 +61,16 @@ Every label uses `nay: null`.
   days, which shifts bargaining weight toward workers.
 - **SB 1427** and **HB 7210**, `social_programs_and_welfare`, for. Paid family
   and medical leave extended to school employees; and halfway house contracts
-  required to honor a resident's discharge plan and barred from discharging
-  someone because the facility closed.
+  required to honor a resident's discharge plan, with a closing facility barred
+  from discharging anyone unless they move to an equivalent facility (and kept
+  open until each resident leaves under their plan if none exists).
+  SB 1427's House Schedule A (LCO 10402) adds §501: a board of education or
+  municipal employer that already accrues leave faster than the statute may
+  require sick leave to be taken "at the increment prescribed in the
+  collective bargaining agreement" — an increment rule, not a use-sick-leave-
+  first rule. SB 8's fourteen-day rule applies only to labor disputes that
+  begin on or after December 14, 2026, and current law already exempts
+  lockouts, so the description says "strike", not "labor dispute".
 - **HB 6477**, `civil_rights`, for. A plan to review and translate the state
   forms people need to reach services, for people with limited English.
 - **HB 7087**, `environment_and_public_health`, for. A community solar program
