@@ -7,6 +7,10 @@ that proposed more machinery than the bug needs, were cut or narrowed (see
 "Dropped or narrowed" at the end).
 
 Ordering = severity, then cost. Tick the box when merged; note the PR.
+Status 2026-09-06: items 1–9 implemented as PRs #1195–#1203 (one per
+item, each with a negative check: the new tests fail against `main`);
+first steps of 11 (#1204) and 12 (#1205) shipped; 10, 12's scheduler
+half and 13 deferred with reasons inline.
 Regression tests are part of each item, not a separate deliverable. The
 Postgres-backed CI job (`.github/workflows/backend.yml`, second job) runs
 NAMED spec files — every new DB-backed spec must be added to that job.
@@ -350,7 +354,14 @@ it.
 
 ## P4 — structure (no bug; pays off over time)
 
-### [ ] 10. Tests mock `db.query` by call order, which dictates production query order
+### [ ] 10. Tests mock `db.query` by call order, which dictates production query order — DEFERRED
+
+Status 2026-09-06: not started, on purpose. The migration of
+`ballotLookup.test.ts` is large, and no latency gain has been measured;
+parallelizing without a per-scenario query profile and a pool-contention
+comparison could move the bottleneck to the ten-client pool. Prerequisite
+before any code: a benchmark of ballot summary / election detail latency
+under concurrent requests against a realistic dataset.
 
 2,111 `mockResolvedValueOnce` across 211 backend test files; source
 comments preserve mock slots ("issued last so ordered test mocks keep their
@@ -366,7 +377,12 @@ loading; measure tags behind measure ids). Profile per scenario and
 compare latency AND pool contention under concurrent requests before
 committing to it — no gain has been benchmarked yet.
 
-### [ ] 11. `apiServer.ts` dispatcher (2,729 lines)
+### [ ] 11. `apiServer.ts` dispatcher (2,729 lines) — first step PR #1204
+
+Status 2026-09-06: the dispatch tail is gated on `ADDRESS_RESOLVE_PATH`
+and an unmatched known path answers 404 (#1204). Remaining: the
+route-contract test matrix, then descriptor table / route groups only if
+they simplify.
 
 Route knowledge is triplicated (`isKnownApiPath`, JSON-body path list,
 dispatch if-chain); the dispatch tail implicitly handles address resolve.
@@ -380,7 +396,15 @@ bodies, search before loose detail prefixes, session vs verified). Then a
 descriptor table and route-group files, only if it simplifies. "Existing
 tests pass" is necessary, not sufficient — add the matrix cases first.
 
-### [ ] 12. Scheduler and env-reader duplication
+### [ ] 12. Scheduler and env-reader duplication — env half PR #1205
+
+Status 2026-09-06: `config/envReaders.ts` with one stated grammar; the 14
+exact-signature copies removed; lax `parseInt` readers now reject
+malformed values (deployed values verified plain) (#1205). Scheduler
+factory migration not started: the hand-rolled schedulers differ in real
+options (raw cache dir, `includeOutside`, auto-link, master-vs-sync
+gating, recurrence removal, result shapes); each migration needs
+per-state contract tests first.
 
 64 files in `backend/src/scheduler/`; 5 states use
 `createStateCandidateFinanceSyncScheduler`, the rest hand-roll the same
