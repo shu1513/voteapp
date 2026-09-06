@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "46d4c38f-e188-4183-9360-99da4789d2d8",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "93a27702-ff4a-43c7-a423-7acd390c2666",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "ae61fc38-4972-4ac3-8072-bb2f97886c49",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "43642034-dea2-40a4-b409-bb0f2d7a4061",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "5a4ab41f-92ce-4483-845c-2962ec86a372",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

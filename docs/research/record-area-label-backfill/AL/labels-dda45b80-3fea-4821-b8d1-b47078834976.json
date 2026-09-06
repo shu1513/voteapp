@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "41317b41-8cb1-4974-825e-b540a2a70775",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "eb80b812-a13a-4e4c-bb6d-d2ca2099e606",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  },
+  {
+   "record_id": "eb80b812-a13a-4e4c-bb6d-d2ca2099e606",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "60c13a24-8af4-4190-be8d-d560c0c1ea77",
+   "research_area_slug": "personal_income_tax_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "60c13a24-8af4-4190-be8d-d560c0c1ea77",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  }
+ ]
+}

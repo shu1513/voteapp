@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "1d73287a-4fda-479e-89a0-209abcd0eb84",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "cd956222-3a3e-48bf-8fa3-499b71fe6159",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "60d4b193-d6ef-4f25-8162-201c9a2b993b",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  }
+ ]
+}

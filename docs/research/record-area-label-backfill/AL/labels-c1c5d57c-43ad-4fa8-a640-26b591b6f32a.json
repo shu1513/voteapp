@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "88054619-867c-49a1-8605-ee54f8cd37be",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "900f14ec-9cda-422a-9666-d1c22955e06b",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "900f14ec-9cda-422a-9666-d1c22955e06b",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "e4f52ec7-74e6-4586-8e27-7efea8aaa7ba",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "e4f52ec7-74e6-4586-8e27-7efea8aaa7ba",
+   "research_area_slug": "foreign_trade",
+   "stance": "against"
+  }
+ ]
+}
