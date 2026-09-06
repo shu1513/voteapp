@@ -742,7 +742,7 @@ describe("CandidatePage", () => {
     expect(screen.queryByRole("button", { name: "Follow" })).not.toBeInTheDocument();
   });
 
-  it("shows the follow button as Unfollow once the follows list confirms it", async () => {
+  it("shows the follow button as Following once the follows list confirms it", async () => {
     // The anonymous loader payload always carries is_following=false; the
     // button must reflect the client-fetched follows list, not the payload.
     stubApiRoutes({
@@ -752,7 +752,7 @@ describe("CandidatePage", () => {
     });
     renderCandidate(() => candidateDetail());
 
-    expect(await screen.findByRole("button", { name: "Unfollow" })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "Following" })).toBeInTheDocument();
   });
 
   it("lets logged-out visitors pick from the sticky bar straight into the local ballot draft", async () => {

@@ -43,13 +43,16 @@ export function FollowButton({ candidateId, isFollowing, size = "md" }: FollowBu
         type="button"
         disabled={saving}
         onClick={toggle}
+        // Instagram's pattern: solid blue to follow, quiet grey once
+        // following (the click still unfollows). Not the brand red — the
+        // header's Sign up already owns it, and two red buttons dilute both.
         className={
           isFollowing
-            ? `${base} border border-line bg-white text-ink hover:border-rausch`
-            : `${base} bg-rausch text-white hover:bg-rausch-dark`
+            ? `${base} bg-gray-100 text-ink hover:bg-gray-200`
+            : `${base} bg-[#0095f6] text-white hover:bg-[#1877f2]`
         }
       >
-        {setFollow.isPending ? "…" : isFollowing ? "Unfollow" : "Follow"}
+        {setFollow.isPending ? "…" : isFollowing ? "Following" : "Follow"}
       </button>
       {errorMessage ? (
         // role="alert": announced to assistive technology when it appears.
