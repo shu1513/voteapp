@@ -82,15 +82,30 @@ afterEach(() => {
 });
 
 describe("ElectionCard", () => {
-  it("puts vote power and the candidate count on the title row, with the district below", () => {
+  it("puts vote power on the title row, with the district below, and no candidate count", () => {
     renderCard(electionSummary());
 
     const row = screen.getByRole("heading", { name: "Governor" }).parentElement;
     expect(row).toHaveTextContent("My vote power: High");
-    expect(row).toHaveTextContent("2 candidates");
+    // A contested race's headcount changed nothing about opening it.
+    expect(row).not.toHaveTextContent(/candidate/);
     // Every card names its district — generic titles ("Mayor", "Governor")
     // don't say where the race is.
     expect(screen.getByText("Alaska")).toBeInTheDocument();
+  });
+
+  it("says Uncontested for a lone candidate on a final list, nothing while the list is open", () => {
+    renderCard(electionSummary({ candidate_count: 1 }));
+    expect(screen.getByText("Uncontested")).toBeInTheDocument();
+
+    renderCard(
+      electionSummary({
+        id: "e-2",
+        candidate_count: 1,
+        candidate_roster_status: { reason: "awaiting_official_roster", check_after: null },
+      })
+    );
+    expect(screen.getAllByText("Uncontested")).toHaveLength(1);
   });
 
   it("color-codes the vote-power badge by level", () => {
@@ -117,7 +132,7 @@ describe("ElectionCard", () => {
     renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "unknown" } }));
 
     expect(screen.queryByText(/My vote power:/)).not.toBeInTheDocument();
-    expect(screen.getByText("2 candidates")).toBeInTheDocument();
+    expect(screen.getByText("Alaska")).toBeInTheDocument();
   });
 
   it("shows the district name on every card", () => {

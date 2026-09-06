@@ -369,13 +369,17 @@ function ElectionCard({
           ) : null}
           {election.race_type === "ballot_measure" ? (
             <span className="whitespace-nowrap text-sm text-dem-blue">Ballot Measure</span>
-          ) : (
+          ) : election.candidate_count === 0 && election.candidate_roster_status ? (
             <span className="whitespace-nowrap text-sm text-ink-soft">
-              {election.candidate_count === 0 && election.candidate_roster_status
-                ? formatRosterStatus(election.candidate_roster_status).short
-                : `${election.candidate_count} candidate${election.candidate_count === 1 ? "" : "s"}`}
+              {formatRosterStatus(election.candidate_roster_status).short}
             </span>
-          )}
+          ) : election.candidate_count === 1 && !election.candidate_roster_status ? (
+            // The one count worth a word: a lone candidate on a final list
+            // means the race is decided. Any other count changed nothing
+            // about whether to open the race, so it no longer renders; a
+            // lone name on a not-yet-final list stays silent — more may come.
+            <span className="whitespace-nowrap text-sm text-ink-soft">Uncontested</span>
+          ) : null}
         </span>
       </div>
       {/* Always show the district: ballot titles are often generic ("Mayor",
