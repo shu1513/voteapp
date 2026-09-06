@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "94f4c461-fc0b-4c2f-ab92-036901438877",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "c18de87b-5a72-4227-99ed-64760b61a434",
+   "research_area_slug": "immigration",
+   "stance": "for"
+  },
+  {
+   "record_id": "d0e33f72-93ee-46d0-b066-c7812f8721e8",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "78e4b2a6-aa83-4ab2-a6f4-341765d00999",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "3afe988c-6bd6-4915-81aa-80f1c4f9f295",
+   "research_area_slug": "immigration",
+   "stance": "for"
+  }
+ ]
+}

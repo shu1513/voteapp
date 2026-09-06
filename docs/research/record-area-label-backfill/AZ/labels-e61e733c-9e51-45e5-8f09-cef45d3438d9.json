@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "a022509c-bb18-4969-9b34-cf9be8ccc2c7",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "a022509c-bb18-4969-9b34-cf9be8ccc2c7",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "cfdddc72-6548-4830-9fd3-60a2d23c8785",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "cfdddc72-6548-4830-9fd3-60a2d23c8785",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

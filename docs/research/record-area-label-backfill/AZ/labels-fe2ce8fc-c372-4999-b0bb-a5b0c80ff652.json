@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "5ab2f4ce-60d8-424a-8bdb-1b849d61d228",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "cda151d6-61c9-457b-98cf-c9fc4bb5c380",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "3ecbc126-6256-4f63-9602-d6bd944a7277",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  }
+ ]
+}
