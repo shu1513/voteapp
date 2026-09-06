@@ -24,7 +24,7 @@ whole tree).
 
 ## P1 — security
 
-### [ ] 1. Void outstanding auth tokens when ownership or credentials change; fix lock order
+### [x] 1. Void outstanding auth tokens when ownership or credentials change; fix lock order — PR #1195
 
 Files: `backend/src/auth/authService.ts`, `backend/src/auth/authTokenStore.ts`
 
@@ -84,7 +84,7 @@ re-register vs verify does not deadlock (two clients, interleaved).
 
 ## P2 — correctness / data integrity
 
-### [ ] 2. Manual finance-link protection: missing or incomplete in 24 bespoke writers
+### [x] 2. Manual finance-link protection: missing or incomplete in 24 bespoke writers — PR #1196
 
 Files: `backend/src/pipeline/<state>Finance/<state>FinanceWriter.ts`;
 reference guard in `pipeline/finance/standardStateFinanceSnapshotWriter.ts:396`
@@ -147,7 +147,7 @@ inactive/manual; manual→manual status change both ways applies; automatic
 different identity cannot disable an active manual link; metadata refresh
 matches the rule; blocked write is not reported as linked.
 
-### [ ] 3. `TypeError`/`SyntaxError` are mapped to HTTP 400 — internal bugs hide as client errors
+### [x] 3. `TypeError`/`SyntaxError` are mapped to HTTP 400 — internal bugs hide as client errors — PR #1197
 
 File: `backend/src/api/apiErrors.ts:30-35`
 
@@ -181,7 +181,7 @@ field still 400 `invalid_request` with the same message; an injected
 internal `TypeError` and `SyntaxError` from a handler → 500 `internal_error`
 with a scrubbed body and exactly one capture.
 
-### [ ] 4. API pool has no deadlines or error handler; auth flows hold a pool client during SES sends
+### [x] 4. API pool has no deadlines or error handler; auth flows hold a pool client during SES sends — PR #1198
 
 Files: `backend/src/scripts/runAddressApiServer.ts:221`, `:990`;
 `backend/src/auth/authService.ts:793`, `:823`
@@ -224,7 +224,7 @@ emitted pool error is captured and the process stays up.
 Note: 242 `new Pool(` sites repo-wide; 4 set timeouts. A `createPool(kind)`
 helper is welcome when touching them — not a sweep now.
 
-### [ ] 5. `logoutAll` epoch bump and push-token revoke are not one transaction
+### [x] 5. `logoutAll` epoch bump and push-token revoke are not one transaction — PR #1199
 
 File: `backend/src/auth/authService.ts:1393`
 
@@ -240,7 +240,7 @@ transaction. Tests: injected push-UPDATE failure rolls back both; success
 changes both; Redis failure after commit still returns success; existing
 API cookie-clearing test unchanged.
 
-### [ ] 6. Cross-tab account switch leaves the previous account's private queries cached
+### [x] 6. Cross-tab account switch leaves the previous account's private queries cached — PR #1200
 
 Files: `packages/api-client/src/useMe.ts` (only)
 
@@ -274,33 +274,33 @@ assert render history never contains B's identity with A's districts.
 
 ## P3 — correctness, cheap
 
-### [ ] 7. Bespoke finance writers run `BEGIN/COMMIT` on a caller-supplied client
+### [x] 7. Bespoke finance writers run `BEGIN/COMMIT` on a caller-supplied client — PR #1201
 
 Files: 25 `with<State>FinanceTransaction` helpers in
 `pipeline/*Finance/*Writer.ts`.
 
-Problem. Two shapes, both wrong on a real `PoolClient`:
-- 16 writers (alaska, florida, hawaii, illinois, kentucky, louisiana,
-  massachusetts, michigan, minnesota, newJersey, newMexico, newYork,
-  pennsylvania, vermont, washington, wisconsin) detect "pool" as `connect
-  && !release`; a `PoolClient` has `release`, so it takes the direct branch
-  and issues `BEGIN/COMMIT` on the caller's client — committing the
-  caller's open transaction.
-- 9 writers (california, colorado, connecticut, indiana, nebraska,
-  oklahoma, tennessee, utah, virginia) detect on `connect` only; a
-  `PoolClient` also has `connect`, so they call it and throw "Client has
-  already been connected" — loud, not corrupting.
+Problem (corrected after reading every helper — the earlier "16 writers
+commit the caller's transaction" claim was wrong):
+- 15 writers already reject a `PoolClient` (alaska, florida, hawaii,
+  kentucky, louisiana, massachusetts, newJersey, newYork, pennsylvania,
+  vermont, washington, wisconsin, illinois, michigan, minnesota).
+- newMexico detects "pool" as `connect && !release`; a real `PoolClient`
+  has `release`, so it takes the direct branch and issues `BEGIN/COMMIT`
+  on the caller's client — the only corrupting case.
+- 9 writers (connecticut, indiana, nebraska, oklahoma, utah, california,
+  colorado, tennessee, virginia) detect on `connect` only; a `PoolClient`
+  also has `connect`, so they call it and throw "Client has already been
+  connected" — loud, not corrupting.
 No current production caller passes a client — latent contract hazard.
 
-Fix: snapshot entry points take `Pool` (type + runtime reject of a
-`release`-bearing object before any transaction command); delete the
-direct branch; link-upsert/query-only helpers keep accepting a transaction
-client. No SAVEPOINT support. Test doubles expose the pool/client boundary
-instead of relying on the deleted branch. Test: a supplied transaction
-client is rejected without `BEGIN`/`COMMIT`/`ROLLBACK`; pool path still
-commits and rolls back.
+Fix (shipped): shared `assertSnapshotDbIsNotPoolClient` runs first in the
+ten helpers and fails closed on any `release`-bearing object before any
+statement. Query-only test doubles keep their behaviour (as illinois/
+michigan/minnesota already do); link-upsert helpers still accept a
+transaction client. No SAVEPOINT support. Postgres-backed New Mexico spec
+proves a caller's open transaction survives the rejection.
 
-### [ ] 8. Finance sync workers never capture degraded or failed runs
+### [x] 8. Finance sync workers never capture degraded or failed runs — PR #1202
 
 Files: 42 `backend/src/scripts/run*FinanceSyncSchedulerWorker.ts` (all
 near-identical to `runNewMexicoCandidateFinanceSyncSchedulerWorker.ts`);
@@ -332,7 +332,7 @@ first, add bounded deferral only if a queue shows it. Never advance
 `last_synced_at` for failed rows. NYC already has attempt tracking; leave
 it.
 
-### [ ] 9. Small fixes (one PR)
+### [x] 9. Small fixes (one PR) — PR #1203
 
 - `frontend/tsconfig.app.json`: add `"strict": true` (already passes with
   0 errors; the flag locks it in).
