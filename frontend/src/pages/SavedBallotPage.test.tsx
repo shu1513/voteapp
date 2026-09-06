@@ -213,8 +213,8 @@ describe("SavedBallotPage", () => {
     expect(await screen.findByRole("heading", { name: "Verify your email" })).toBeInTheDocument();
   });
 
-  describe("followed-first preference", () => {
-    it("renders the checkbox inline with the sort control, with no Filters disclosure", async () => {
+  describe("list controls", () => {
+    it("shows only the sort select — no followed-first checkbox, no Filters disclosure", async () => {
       stubApiRoutes({
         ...VERIFIED_BASE,
         "/api/me/ballot": {
@@ -223,31 +223,10 @@ describe("SavedBallotPage", () => {
       });
       renderSavedBallot();
       expect(await screen.findByText("Governor")).toBeInTheDocument();
-      expect(await screen.findByRole("checkbox", { name: "Followed candidates first" })).toBeChecked();
+      expect(await screen.findByRole("combobox")).toBeInTheDocument();
+      expect(screen.queryByRole("checkbox", { name: "Followed candidates first" })).not.toBeInTheDocument();
       expect(screen.queryByRole("button", { name: /Filters/ })).not.toBeInTheDocument();
       expect(screen.queryByText(/hidden/)).not.toBeInTheDocument();
-    });
-
-    it("saves the followed-first preference with the full-object PUT", async () => {
-      const putBodies: unknown[] = [];
-      stubApiRoutes({
-        ...VERIFIED_BASE,
-        "/api/me/ballot-preferences": (_url, init) => {
-          if (init?.method === "PUT") {
-            const body = JSON.parse(String(init.body));
-            putBodies.push(body);
-            return { body };
-          }
-          return { body: { sort: "vote_power", followed_first: true } };
-        },
-        "/api/me/ballot": { body: ballotSummary([electionSummary()]) },
-      });
-      const user = userEvent.setup();
-      renderSavedBallot();
-
-      await user.click(await screen.findByRole("checkbox", { name: "Followed candidates first" }));
-      await waitFor(() => expect(putBodies).toHaveLength(1));
-      expect(putBodies[0]).toEqual({ sort: "vote_power", followed_first: false });
     });
   });
 });
