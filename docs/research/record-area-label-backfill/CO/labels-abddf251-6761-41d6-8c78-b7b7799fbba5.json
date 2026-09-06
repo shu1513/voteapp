@@ -1,0 +1,54 @@
+{
+ "labels": [
+  {
+   "record_id": "eb64cc73-f463-4265-9ad0-397b46b9e8bf",
+   "research_area_slug": "anti_corruption",
+   "stance": "against"
+  },
+  {
+   "record_id": "a26d2a26-c774-492a-aa37-a5a13fd6d73e",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  },
+  {
+   "record_id": "20e0b8cc-832f-4801-9984-c9c9e46d38a6",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "20e0b8cc-832f-4801-9984-c9c9e46d38a6",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "81ff8577-3f34-4041-9b19-3483a69004f4",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "e8d71db5-59a8-484e-a9f5-5bcdfc391d90",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "e3f9845c-ed02-4aba-ba89-0a8a3a59ac45",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "1edd5a32-9db4-4e52-a849-fd3e214a0d1a",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "d600d9ed-7dbb-435b-b6b6-81db9cb7dc8f",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "394b2741-c99c-438a-ac35-feca74a394bf",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

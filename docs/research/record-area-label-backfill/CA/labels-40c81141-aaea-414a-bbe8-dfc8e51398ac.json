@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "8950fcce-de2b-4b49-8fc3-a211a0237946",
+   "research_area_slug": "immigration",
+   "stance": "against"
+  },
+  {
+   "record_id": "004d7abf-4bba-4cd9-946f-8c7dcdd5206b",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "004d7abf-4bba-4cd9-946f-8c7dcdd5206b",
+   "research_area_slug": "national_defense",
+   "stance": "for"
+  },
+  {
+   "record_id": "004d7abf-4bba-4cd9-946f-8c7dcdd5206b",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  }
+ ]
+}

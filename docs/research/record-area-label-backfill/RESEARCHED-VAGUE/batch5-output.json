@@ -1,0 +1,786 @@
+{
+ "proposals": [
+  {
+   "candidate_id": "88e41f0a-7847-4e1d-8ed3-1598760780b1",
+   "labels": [
+    {
+     "record_id": "ffc46a46-5411-4090-8602-a4a7adb8d643",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for",
+     "found": "MichiganVotes bill page: HB 4613 stretched the nonrenewable temporary EMS license from 120 days to one year, so people who finished training but have not passed the exam can keep working under supervision, which expands the supply of EMS providers."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "893a4817-c407-47a0-8813-61682f77ae6f",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "874d371e-0b53-44d2-9f0a-f90026b4058a",
+     "reason": "no clear direction a voter can weigh",
+     "found": "The RI bill text PDF would not convert to readable text and no summary of 2025-S 888 was found elsewhere. Limiting a mayoral academy board's voting seats to mayors and town administrators changes who controls the board, not what the school does, so there is no expand/restrict direction."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8af9b410-93a7-4e2e-aedc-5c42be9d5af3",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "4ff69450-e94a-4bc9-b731-7221addaa583",
+     "reason": "no clear direction",
+     "found": "LegiScan text of IL HB 4751: it restores Prevailing Wage Act language from before Public Act 104-17, saying pay and benefits may be based on craft and skill level when set by a union collective bargaining agreement. It neither clearly raises nor clearly lowers worker pay, since any differential must come from a union contract."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8b4c8d65-b361-4d3f-87b0-cbb36136e39e",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "5b84f9ca-bea9-4787-ac12-2f1dcea97ceb",
+     "reason": "could not determine what the amendment did",
+     "found": "The Washington bill page confirms HB 1296 became Chapter 369, 2025 Laws, but it does not publish the text of floor amendment 437, so there is no way to say which way Ley's rejected amendment would have moved the law."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8bb0a719-951d-4a33-84e6-8b382a9d93b4",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "20bdb454-47fc-44cf-b646-30f2657f58ed",
+     "reason": "could not determine the direction",
+     "found": "Searches of Lake Stevens city documents and news turned up nothing on the Lakeview Flats project or Resolution 2025-15, so it is unknown what the terminated development agreement would have built."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8bf01902-e745-4a6e-870a-235b5a7e4f2d",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "6fae4d49-6a42-4a2f-9100-7e1c3d48cd1b",
+     "reason": "no clear direction",
+     "found": "Bill text and TN coverage: SB 298 extends the existing authority to offer an elective, nonsectarian academic Bible course to public charter schools, changes the approval and notice steps, and requires curricula to be posted online. It adds an elective option and more disclosure; it does not clearly raise or lower education quality."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8c77bd1a-3507-4fb1-a096-1e9868197161",
+   "labels": [
+    {
+     "record_id": "8b996a80-d3d1-45f4-9394-e9d76e2b00bd",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "against",
+     "found": "Alabama Reflector and the enrolled bill: HB 452 raises the Colbert County sheriff's total pay from $50,000 to $96,000 a year out of the county general fund, so it increases public spending."
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "dd144855-d016-4152-9db0-743bea548953",
+     "reason": "fee and paperwork change only",
+     "found": "Act 2025-180 adds a five-year pistol permit option in Colbert County at the same yearly cost as the existing one-year permit. It does not change who may get a permit or carry, so it moves neither for nor against gun control."
+    },
+    {
+     "record_id": "45095a71-4b7a-4e7a-a391-2801542e867a",
+     "reason": "no allowed research area matches",
+     "found": "LegiScan and AL Reporter: HB 450 would have raised the maximum age to be elected or appointed a judge from 70 to 75. It was indefinitely postponed. An age limit for judges does not touch any of this office's allowed areas."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8cf3d7b4-f397-4180-b4ca-13b3913a3b77",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "c4900f69-d3fb-4d1d-8ad1-a7711c1c7cfe",
+     "reason": "no clear direction",
+     "found": "The Anchorage Daily News account describes adoption of a new municipal district map and a 12th Assembly seat. Adopting a map is the required decennial task; the record gives no evidence the map helped or hurt fair representation."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8d163f08-0218-4dde-9765-c6829f9228f9",
+   "labels": [
+    {
+     "record_id": "f9ef3bc6-df81-4042-a6f4-2b44c33c31cd",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for",
+     "found": "MichiganVotes bill page: SB 249 keeps the National Registry exam route and also orders the state health department to create a second, alternative paramedic exam within two years, adding a path to licensure rather than removing one."
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "9ba856ca-3de6-4079-999c-5f1faab77b5d",
+     "reason": "no clear direction",
+     "found": "MichiganVotes and Michigan Legislature records: HB 6023 was part of the 2018 HIV law modernization package (HB 6016-6023) and removed an outdated seven-day HIV reporting window written when test results took days. Reporting itself was not abolished, so this is a timing cleanup with no health or rights direction."
+    },
+    {
+     "record_id": "fc5f22eb-05fe-4b1b-aa55-c55b9778e120",
+     "reason": "definitions cleanup",
+     "found": "MichiganVotes page for SB 581 gives only 'clarify definitions, expand flexibility for local development authorities, and refine procedures'; the substantive changes are not stated and no direction is identifiable."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8d4f0fbb-3c83-42a7-bc5c-9f26f808f603",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "cdeeb85e-085f-4517-aba6-d974d197411d",
+     "reason": "no clear direction",
+     "found": "This is a campaign forum statement, not an action. 'Stronger oversight of transitional housing' could mean more support or more restriction, and the article does not say which."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8db96e61-0972-4e78-ad81-dc9b1fcda435",
+   "labels": [
+    {
+     "record_id": "c3f9eadd-7653-4013-9ff7-eb1bde7f8b00",
+     "research_area_slug": "social_programs_and_welfare",
+     "stance": "for",
+     "found": "GovTrack, CBO and the bill text: H.R. 3453, the Empower Charter School Educators to Lead Act, widens eligibility for the federal Charter Schools Program, allows up to $100,000 in pre-charter planning money per qualified developer, and funds technical assistance and auditing help for chartering agencies. Federal office, so the school record maps to social programs."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8dd936fb-1e3d-482b-8e3d-8ca815bb9e40",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "b4bb9f94-b633-4e56-92fd-e45e49aad264",
+     "reason": "only a no vote, with no stated alternative",
+     "found": "The Hamilton County minutes show a delay motion and a no vote on adopting the Plan Hamilton update. The minutes do not say what Highlander wanted the plan to do instead, so the vote alone shows no direction."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8f447677-06bd-436b-b88b-9841c9f8f363",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "fc5fbb2f-8f77-44b8-b319-ca99c1a4d083",
+     "reason": "no clear direction",
+     "found": "MichiganVotes: HB 4345 lets a district that closes during a declared state of emergency avoid the minimum instructional-day penalty. It passed 110-0 as an emergency carve-out and does not clearly raise or lower school quality."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8f953510-b03a-44a6-891f-7c404282a1bd",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "7eac4f41-ca8d-453a-81a9-23dc65c3260d",
+     "reason": "no clear direction",
+     "found": "The Nebraska Executive Board's 2024 legislative summary confirms LB 1343 would have moved the two inspector general appointments to the Legislature's Executive Board and dropped the five-year term. It changes who appoints the watchdogs and how long they serve, not their powers or independence in any clear direction, and it never passed."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9005eeaf-0c99-4103-aa51-f4e47fff47db",
+   "labels": [
+    {
+     "record_id": "9ef24ac0-fdf5-414f-8d1c-628f998dcfe8",
+     "research_area_slug": "gun_control",
+     "stance": "against",
+     "found": "TrackBill summary of IL HB 1344: it exempts court security officers from the bans on carrying concealed weapons in a vehicle and on public streets, and deems them qualified law enforcement officers under the federal Law Enforcement Officers Safety Act, which widens who may carry."
+    },
+    {
+     "record_id": "9ef24ac0-fdf5-414f-8d1c-628f998dcfe8",
+     "research_area_slug": "public_safety_and_crime_control",
+     "stance": "for",
+     "found": "Same bill: giving court security officers law-enforcement carry status is aimed at courthouse security."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9036fba8-1fef-4ec8-a2e6-2f2ded4987d5",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "84ec88e0-048b-48ea-8721-92939b3078cd",
+     "reason": "sales tax record; no allowed area fits",
+     "found": "The enrolled Act 2023-554 cuts the state sales tax on groceries. Under the label rules, personal_income_tax_reduction covers only personal income tax, and a tax cut on its own carries no spending tag, so no allowed area fits."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "90c7b3b6-d107-4682-91fe-b19e55f7d4d0",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "62eae06a-4d7d-4f57-bb0d-805f30d0a32e",
+     "reason": "definitions cleanup",
+     "found": "Arkansas Act 292 of 2023 only widens the statutory definition of 'election media' to cover devices such as memory sticks used with voting machines. It adds no rule that helps or hurts voters."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "912667cd-a6a6-41b9-80a5-ea77a3241c2d",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "a326b97c-b6c8-4fed-b5d2-1c799acf14e8",
+     "reason": "no clear direction",
+     "found": "The Florida bill page shows HB 4021 was a local bill redrawing the Melbourne-Tillman Water Control District boundaries, and it died in subcommittee. A boundary redraw for one special district has no stated policy direction."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "92dc58d7-1137-4941-b0c6-ddf74495bc55",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "41320ef8-2436-4304-a805-a11930ce3d76",
+     "reason": "technical conformity change",
+     "found": "MichiganVotes: HB 5877 amends section 3912 of the Estates and Protected Individuals Code so the 'transfer made for value' evidence rule matches the repeal of the real estate transfer tax. It is a cross-reference cleanup."
+    },
+    {
+     "record_id": "7435335b-d73e-4af0-a445-17baff8c3be3",
+     "reason": "could not determine the direction",
+     "found": "The roll call was on 2026 HB 5571, which concerns single-interior-stairway apartment buildings and the sunset of MCL 125.1504j. The MichiganVotes pages do not say whether the bill ends or creates that sunset, so it is unclear whether the no vote cut against cheaper apartment construction or against loosened fire-exit rules."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "937902a3-1ed1-48d5-bbab-adaa735bbfa7",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "2ce20ea3-a037-47c2-ab07-53a6d7cc0c43",
+     "reason": "no clear direction",
+     "found": "WECT reports a 5-4 vote to close East Arcadia School and merge its students into Clarkton School of Discovery. A closure and merger can mean either a loss of a community school or consolidation into a better-resourced one, and the coverage does not establish which."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "938a9450-4bd1-4d0d-b96c-50ddb94ec0ef",
+   "labels": [
+    {
+     "record_id": "5c3b175e-1cb4-40da-979f-83beee0aa165",
+     "research_area_slug": "public_safety_and_crime_control",
+     "stance": "for",
+     "found": "Alaska's News Source and the bill title: HB 79 would have restored a defined-benefit pension option, plus medical, disability and death benefits, for state troopers, firefighters and corrections officers, which Kopp pitched as a fix for officers leaving Alaska for states with pensions."
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "08ec1a17-34f3-4bc3-bbc7-20c30ab19d2a",
+     "reason": "could not determine the direction",
+     "found": "The Alaska Legislature bill page returns 403 to fetching and no summary of HB 93 (30th Legislature) on Alaska Railroad rights of way was found elsewhere. The bill stalled in committee."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "941cf774-55ff-487c-9b84-d4cdb736342e",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "0abb9944-9f47-4f7a-b15f-aa45d3174add",
+     "reason": "no clear direction",
+     "found": "The Florida bill page shows HB 823 would bar some dietetic and nutrition services, strip certain title authorizations from licensed dietitians and nutritionists, and revise licensure requirements and exemptions. It tightens some things and loosens others, and it died in subcommittee."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "943c3726-501c-4893-bb2d-7819174c772b",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "0ddbc06a-d18a-4eab-b591-21d483836783",
+     "reason": "no clear direction",
+     "found": "MichiganVotes: HB 4836 lets a student, with parent consent, skip the workforce readiness part of the Michigan Merit Exam. Less required testing is not by itself better or worse for school quality."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "944914a8-5610-4eae-826a-452f14327fd4",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "90b1a334-edb9-43c9-ad5c-734e3621963f",
+     "reason": "a study, no direction",
+     "found": "The New Mexico Legislature page shows HM 47 is a House memorial asking for a study of teacher workloads. A study sets no policy."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "94744249-3f11-4d15-9a85-3929609b68c5",
+   "labels": [
+    {
+     "record_id": "1a1fd785-badc-47d3-b105-5fbb4c66ee74",
+     "research_area_slug": "public_infrastructure",
+     "stance": "for",
+     "found": "MichiganVotes: Public Act 203 of 2024 changed the transportation economic development fund formula to set aside money for forest roads and rural road improvements, directing road money to areas that were getting less."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "94cd7b0c-b53d-4b82-a3fd-0c8eee032a8a",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "03b89577-c6eb-4e81-a6e1-321c5d90235a",
+     "reason": "no allowed research area matches and direction unclear",
+     "found": "The Florida Senate page for 2017 SB 160 says only 'revising the formula for the adjusted state minimum wage' and the bill died in committee. It does not say whether the new formula would raise or lower the wage, and the Attorney General allowed-area list has no wage or wealth-gap area."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "94def1c3-8362-4c14-8510-940f523ffeb1",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "9cde8c5e-04b5-4b05-8808-c461e6e8b55c",
+     "reason": "could not determine the direction",
+     "found": "The Arkansas bill page and the governor's signing notice confirm Act 287 of 2025 amends the special authorization for meal and lodging reimbursement on state business, but neither says whether reimbursement was widened or narrowed."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "94f556a4-c774-4791-a6cd-6a6a3db43d2a",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "92d248e2-1ab4-49bb-ac48-b3369933db45",
+     "reason": "only a no vote, with no stated alternative",
+     "found": "The Tampa Bay Beacons story reports the 4-1 approval of a Brooksville-FDOT roadway agreement and Erhard's lone no vote, but does not say what she objected to or what she wanted instead."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "95967f6c-4190-44b9-bdd9-57f51cf024ed",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "3114987f-adbd-4aa7-97ae-f3e215e912b3",
+     "reason": "no allowed research area matches",
+     "found": "The Alaska bill page blocks fetching and no summary was found. Court-ordered make-up visitation is family-court procedure and does not land in any of this office's allowed areas; the bill was also held in committee."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "95e1fb8d-5dd4-42b6-b29a-c7074bc15627",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "843409d3-bddf-474f-a3cb-6a7ead6aba67",
+     "reason": "no clear direction",
+     "found": "HB 8 of the 33rd Alaska Legislature dealt with how electric-assisted bicycles are classified and regulated, and the governor vetoed it. A vehicle classification bill gives no clear for or against direction in the allowed areas."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "95e433c8-9b58-4834-8adf-d83b3ed64682",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "e7ec3bd9-48ca-4855-8df2-42fa962a0e9b",
+     "reason": "only a no vote, with no stated alternative",
+     "found": "The Senate roll call confirms Marshall voted no on the Fiscal Responsibility Act, which raised the debt ceiling and capped spending. Voting against a bill that both raised borrowing authority and capped spending does not by itself show whether he wanted more or less spending."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "96546748-1fd5-4d4c-b3e3-ee8273949818",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "e65f641a-d8ce-44e3-87f2-730d20a5e8ec",
+     "reason": "no clear direction",
+     "found": "A.10161 authorizes one county to swap reforested county land for other public land. Land stays in public hands, so there is no clear gain or loss for any allowed area."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "96abc127-047b-4fc4-ab8e-0f980163e524",
+   "labels": [
+    {
+     "record_id": "b4ee3c48-c95d-4cb5-aadf-c973b6184864",
+     "research_area_slug": "data_privacy",
+     "stance": "for",
+     "found": "TrackBill and The Generator's summary of GA SB 81: the act adds consumer and dealer data protections to the franchise law, requiring a dealer's prior written consent before a manufacturer or vendor accesses their data, mandating secure open APIs, and barring unreasonable data access charges."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9701e853-ffb8-49b0-90d2-403b1afa97b8",
+   "labels": [
+    {
+     "record_id": "9f152597-a5e9-4a13-802d-be2a820f5e99",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for",
+     "found": "The Florida Senate bill page for HB 683: it drops the requirement that a supervising physician notify the Department of Health in writing before delegating prescribing, drops the requirement that the physician's name appear on a PA's prescriptions, and revises the PA and APRN formularies. It gives these clinicians more independence, which widens patient access. It passed the House 112-4 and died in Senate Rules."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "97e0b5cb-febd-48bf-baeb-5f78d1e916fb",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "2622045b-b760-4a95-88b3-1408f91f9bcd",
+     "reason": "no clear direction",
+     "found": "MichiganVotes: the vote was on 2025 SB 691, which moves Michigan's primary from August to May starting in 2027 and shifts the related deadlines. Moving an election date is not itself a gain or loss for election integrity."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "988460b4-9ffb-46dd-a89b-1e81aad09a9d",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "acc9a2e6-63cb-456c-8cf4-fdb467b8c9ad",
+     "reason": "no clear direction",
+     "found": "The board minutes show a 4-3 first-reading approval of the 2026-2027 school calendar with an earlier start date. A calendar start date is a scheduling preference, not a quality change."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "996abb9f-c04e-4a39-8d29-6f37d50f0bf3",
+   "labels": [
+    {
+     "record_id": "dff82ad0-51a9-4d6e-91f1-eb74366f4a18",
+     "research_area_slug": "election_integrity",
+     "stance": "against",
+     "found": "MichiganVotes bill page for HB 5574: it requires the Secretary of State to notify the Board of State Canvassers as soon as a petition is filed, post petition details online within two business days, give monthly status updates, and certify ballot wording to county clerks 60 days out, with each statewide question numbered 60 days ahead. Lindsey voted no on that transparency package."
+    },
+    {
+     "record_id": "0ed037bd-8a21-401d-9cf1-b80d0c965bba",
+     "research_area_slug": "corporate_accountability",
+     "stance": "against",
+     "found": "MichiganVotes bill page for SB 49: it brings Michigan's workplace safety act in line with federal standards, consolidates enforcement, adds penalties for violations, and funds training through employer assessments. Lindsey voted no on tightening those employer duties."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "99ac7911-c3b8-42c3-b1e8-97a74ea07454",
+   "labels": [
+    {
+     "record_id": "0633dbd8-a7f3-4061-8c31-f50d56ad0f41",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "against",
+     "found": "The Kansas Legislature page for HB 2126 states its purpose: authorize over-the-counter purchase of ivermectin and hydroxychloroquine tablets. Selling those prescription drugs without a prescription removes medical oversight. The bill died."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9a69c900-4c2b-4b59-9fb0-43cc1ba3fad6",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "3cfb7621-0474-4f21-8e98-82a0c7b60de9",
+     "reason": "no clear direction",
+     "found": "The Maryland bill page shows HB0325 only changes who sits on the Professional Standards and Teacher Education Board. Reshuffling board seats gives no direction on teacher quality or anything else in the allowed list."
+    },
+    {
+     "record_id": "a8335c69-9fd0-4f78-98c6-2b72b2fc0324",
+     "reason": "no clear direction",
+     "found": "This is committee testimony on the same board-composition bill, so it carries the same lack of direction."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9ab7297d-8ad1-47ce-a15f-5f2aa7189e96",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "047744ea-5aa4-42f9-a07e-cf7ef95eadc4",
+     "reason": "no clear direction",
+     "found": "The Shreveport minutes record a vote to adopt Ordinance No. 187 of 2021 amending the 2021 General Fund Budget, but do not say what was added or cut, so it is not possible to say whether spending went up or down."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9acd6268-0b48-4809-9d37-80014bacd031",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "50112248-edb7-4c2c-8478-7816981b00b1",
+     "reason": "could not determine the direction",
+     "found": "LegiScan blocks fetching and no coverage of AL HB 570 (2025) was found. 'Further provided for pistol-permit fees' in Pike County does not say whether fees went up or down, and the bill stayed in committee."
+    },
+    {
+     "record_id": "14ca21e4-519b-4149-b798-1ddd4bc34c2d",
+     "reason": "could not determine the direction",
+     "found": "No summary of AL HB 406 (2026) was found. Changing how nonstandard diplomas count in school report-card grades could raise or lower reported grades, and the bill died in committee."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9b62ac48-10c9-41cc-836c-788728bc8d78",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "403bacad-9d0d-475f-8031-7fc42fd875cd",
+     "reason": "contested framing: redistricting timing / a no vote read as the opposite claim; the record states no such effect"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9b70aac3-1894-4dbe-ae1f-1cced409a1ac",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "2dd55816-3506-436e-b659-9b72693536ea",
+     "reason": "a study, no direction",
+     "found": "Ricketts' own press release describes the Rural Depositories Revitalization Study Act as a bill to study ways to strengthen rural banks and credit unions. A study sets no policy."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9ba2f231-0781-4cb3-aa2a-57c29322e989",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "c7db1632-040c-4bea-aa71-8325458b4646",
+     "reason": "no clear direction",
+     "found": "SB 2134 changes who sits on the teachers' fund for retirement board. A board membership change gives no direction on any allowed area."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9c0c09af-9e8b-4552-8529-1efde7fbe25f",
+   "labels": [
+    {
+     "record_id": "ca559ce3-c854-487b-9824-9a217321f3dc",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "for",
+     "found": "LD 299 is an agriculture investment bond, meaning state borrowing that voters would approve. Tuell voted against enacting it, which is a vote against new state borrowing."
+    },
+    {
+     "record_id": "d372812a-bc45-47d9-a31d-bfd48d7a93dd",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "for",
+     "found": "Same LD 299 farm investment bond; Tuell again voted no as the House accepted the Senate version, so again a vote against new borrowing."
+    },
+    {
+     "record_id": "718c1d90-0bd2-4acd-822d-0ffe31b6b0dd",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for",
+     "found": "Maine Morning Star and the governor's veto message: LD 307 creates a Maine Data Center Coordination Council and puts a temporary moratorium on data centers needing 20 megawatts or more, to study grid load and protect ratepayers from higher electricity bills. Tuell voted to enact it over the veto; the override failed."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9ca66835-a4a8-4363-830a-fcc492719989",
+   "labels": [
+    {
+     "record_id": "67355390-5fa6-428c-a398-6eeb250f5952",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for",
+     "found": "Alabama Department of Revenue notice and Bloomberg Tax: HB 131 of 2024 exempts prescribed durable medical equipment and supplies billed to Medicare, Medicaid or a health plan from state, county and municipal sales, use, rental and leasing taxes, with a provider exemption certificate required from September 1, 2024."
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "b928f268-12a4-4730-bba6-90dcceb6c2df",
+     "reason": "no clear direction",
+     "found": "HB 248 of 2025 would have banned dispersing substances intended to affect the weather. It bans a practice with no established public-health harm and no established benefit in the record, and it died in committee."
+    },
+    {
+     "record_id": "8a1837a9-13cf-4089-8025-f5d5a7636958",
+     "reason": "cuts both ways",
+     "found": "HB 80 of 2026 would give evicted tenants notice about what happens to belongings left behind, which helps tenants, while shielding landlords and officers from damage claims, which hurts them. It did not pass the Senate."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9d759e46-376b-470e-beb1-4fdd0c7220db",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "dda015b9-ef2c-4bfd-aa61-86c8ca6b0736",
+     "reason": "cuts both ways",
+     "found": "SHRM and Jackson Lewis summaries of Public Act 1 of 2025: SB 8 sped up the standard minimum wage increases above the earlier schedule, but it also kept the tip credit that the court ruling would have ended and cut the scheduled tipped wage from $6.49 to $4.74 an hour. Low-wage workers gained on one side and lost on the other."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9e054e61-7501-4073-b4b9-d40d8faf1f2e",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "0a51150c-3715-4e9d-94f8-bfb446e81b22",
+     "reason": "no clear direction",
+     "found": "HB 823 changes how North Carolina counties create and finance service districts, including research and urban redevelopment districts. The record does not say whether it makes districts easier or harder to create or fund."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9e2b285d-7c65-4706-b2e0-539608654d9a",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "d541bbb9-1be5-4d64-a85f-754c748ef14e",
+     "reason": "no clear direction",
+     "found": "The Elkhart code page shows an ordinance replacing the earlier wastewater-use ordinances with updated rules. A recodification of utility rules gives no direction on public health or spending."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9e6fb01a-fc78-4343-ad52-1227bf6a58a1",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "4105f56e-d1fb-452a-8cbe-e46e9f8d31f7",
+     "reason": "no allowed research area matches",
+     "found": "WHRO reports the council voted to put an at-large council seats referendum on the November ballot, with Remick against. This is an election-system question and the City Council allowed-area list has no election area."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9ec54b11-3dd1-4182-8a62-3821c779aa03",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "b616953e-93ee-491c-bf97-b223dce64819",
+     "reason": "a date change, no direction",
+     "found": "The Colorado bill page shows HB26-1219 only pushes back a deadline in the battery stewardship assessment. It does not change the program itself."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "9f78e276-6cce-401a-bbfe-1f20b0a95631",
+   "labels": [
+    {
+     "record_id": "40f4ca73-0e7e-4adc-b615-c743c870e95a",
+     "research_area_slug": "civil_rights",
+     "stance": "for",
+     "found": "The April 26, 2021 Maine Education Committee hearing covered LD 474, An Act Regarding School Discipline for Maine's Youngest Children, which bars expelling any student in grade 5 or below and bars withholding recess for those grades (Maine Senate Democrats release; the bill was signed June 21, 2021). Fournier's own PDF would not convert to text, so this rests on the hearing date and subject match."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "a03952d3-3f2c-4c6a-9ab7-64ef80e8f395",
+   "labels": [
+    {
+     "record_id": "00d04b4c-1c39-46ed-a843-ffb813605899",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for",
+     "found": "Police1 and Fox5 Vegas: Nevada SB 7 restores the conclusive presumption that lung disease in firefighters, arson investigators and police officers with two or more years of service is job-related, after a November 2025 state Supreme Court ruling made first responders prove specific exposure. It applies retroactively to pending claims."
+    },
+    {
+     "record_id": "00d04b4c-1c39-46ed-a843-ffb813605899",
+     "research_area_slug": "corporate_accountability",
+     "stance": "for",
+     "found": "Same act: it lets the administrator order insurers and third-party administrators to pay up to $200 a day from the date of appeal to final decision when they wrongly deny one of these claims."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "a0e7d691-5bfd-4b29-872f-c16090482055",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "6f227fb4-0b37-4f42-aab7-c321d9385705",
+     "reason": "contested framing: redistricting timing / a no vote read as the opposite claim; the record states no such effect"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "a14c064d-0994-494d-974a-9c53a1d31472",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "5a4000c8-cb58-44af-bdc9-6d9e06a6f607",
+     "reason": "technical clarification",
+     "found": "The Maryland bill page shows HB1138 only clarifies which Consumer Price Index is used for certain state pension cost-of-living adjustments. It does not raise or lower benefits in any stated way."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "a1c95373-ce34-4779-9cd8-2d537db50da1",
+   "labels": [
+    {
+     "record_id": "2cfccf53-8644-4ab2-be87-f33b4935c2a5",
+     "research_area_slug": "gun_control",
+     "stance": "for",
+     "found": "The 2025 Georgia House Journal entry for HB 80: it lets law-enforcement agencies destroy or sell firearms in their custody and revises the handling procedures. Allowing destruction gives agencies a way to keep seized guns out of circulation instead of only reselling them. It was referred to committee."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "a1df8563-8111-44ac-ab39-503a0656b546",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "ac305aa1-557e-4b7d-847d-bbd7750af4ff",
+     "reason": "cuts both ways",
+     "found": "The session law (Chapter 240) and TrackBill: HB 2672 keeps cities from banning or restricting short-term rentals by use or occupancy, which limits local control, while also letting them regulate for fire, building, health, sanitation and traffic reasons, require owner contact information, and impose penalties for violations. It loosens and tightens local power at the same time."
+    }
+   ],
+   "retire_candidates": []
+  }
+ ]
+}

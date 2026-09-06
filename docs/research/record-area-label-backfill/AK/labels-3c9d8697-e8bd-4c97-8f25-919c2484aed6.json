@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "35e0e14b-ff6f-4fa9-86b5-9a17aab5cfaa",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "8bd58b05-345a-4eac-bec4-ae397d479a43",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "8bd58b05-345a-4eac-bec4-ae397d479a43",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "325d97bd-73a3-49c7-b12d-c64f74f0de1b",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "ddb3e0c3-da64-4636-8904-8ac9ee8aa1ec",
+   "research_area_slug": "housing_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "781995fd-acf2-4f75-b24f-8ac8b8103620",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

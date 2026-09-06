@@ -1,0 +1,34 @@
+{
+ "labels": [
+  {
+   "record_id": "061dbde4-9964-4368-8567-7b5d9ccc7484",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "ade4652f-5dec-4851-9dd4-c5a42e6a9ec4",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "80918768-64a8-4a5e-9780-5041ef1d2bb1",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "43d9c893-15e5-4850-8d3e-cb82822b5e30",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "3a294062-4474-4d2d-bc66-df8707539566",
+   "research_area_slug": "public_infrastructure",
+   "stance": "against"
+  },
+  {
+   "record_id": "e099bde3-0b7f-4e6f-bb22-62a683e1df70",
+   "research_area_slug": "public_infrastructure",
+   "stance": "against"
+  }
+ ]
+}

@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "ebd08304-85a7-4caa-b9fe-b5ed5e1e10fb",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "d07d8575-8d3e-4a7a-bfa9-0cb2921addb7",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "5015379a-f516-48d5-b498-28eef6ac44ee",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "bea87e0d-9b72-4c5e-b342-c71a67eef083",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  },
+  {
+   "record_id": "bea87e0d-9b72-4c5e-b342-c71a67eef083",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  }
+ ]
+}

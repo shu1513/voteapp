@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "fd85e42c-a0bf-4ac8-8af6-5696355b999e",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "46cd91ec-ec7a-49a7-9a36-39e5a5948439",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "d97e096b-60b2-418c-a19e-9f26e6809903",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "9bb5d35b-3a05-4bce-ad53-f403522eaf9c",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "3b411415-fa7c-479d-b1e3-5ac555d3370f",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "e0183fb2-a3af-423c-93fb-11e09038f699",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "a73be6b8-fbdd-466a-8f36-bd15370c93bf",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "4227ff4c-2700-4f43-a0f8-1563c40a5b74",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,192 @@
+{"proposals": [
+ {
+  "candidate_id": "0ecc8326-7d66-4bf2-930f-a5e9ed0ddeb3",
+  "labels": [
+   {"record_id": "f8cc0dc1-61ba-4014-a794-535b6b623580", "research_area_slug": "data_privacy", "stance": "against"},
+   {"record_id": "77115bcc-219e-47e6-9ec9-dbbefc6041de", "research_area_slug": "public_education_quality", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0fd2dac3-e9ce-4a69-9aa8-df71f60683c8",
+  "labels": [
+   {"record_id": "d5257e5b-5a44-4e0e-a0da-9de4200e2363", "research_area_slug": "government_efficiency", "stance": "for"},
+   {"record_id": "eaa974fb-889a-422c-876b-c2e70f2006cf", "research_area_slug": "housing_affordability", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "1301d1d4-a6e1-4c92-a989-5a4d1a6f0176",
+  "labels": [
+   {"record_id": "da3180f9-8db8-4b90-83d9-f35f204dab77", "research_area_slug": "civil_rights", "stance": "for"},
+   {"record_id": "4b1fef4d-7749-4270-a1ee-064e0d3394b6", "research_area_slug": "public_safety_and_crime_control", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "1f2a14b1-9276-4850-b912-8767f3d2c249",
+  "labels": [
+   {"record_id": "c66f7032-acb6-4242-88e1-1c6a45393c28", "research_area_slug": "civil_rights", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "2a76ecea-73f2-4ec2-934d-d12a7ac612c6",
+  "labels": [
+   {"record_id": "31e6f876-8875-471f-9d2a-b37848aff8be", "research_area_slug": "environment_and_public_health", "stance": "for"},
+   {"record_id": "31e6f876-8875-471f-9d2a-b37848aff8be", "research_area_slug": "corporate_accountability", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "19cc571b-a4cc-4b0c-8403-4b52ce2e5fd2", "reason": "study task force only; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "3571fb4b-0774-42b2-8b79-cc2297c9030c",
+  "labels": [
+   {"record_id": "e54dfd45-f41a-4389-b6d5-4b86c7f021b8", "research_area_slug": "public_safety_and_crime_control", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "40b5e106-ba46-4c74-9469-5ff6200d6095",
+  "labels": [],
+  "skipped": [
+   {"record_id": "597ff74d-ef2b-4acc-9e31-f4f2d439ef26", "reason": "special hunting permission; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4de9f0f8-8530-4d14-b5ce-7a49546538dc",
+  "labels": [
+   {"record_id": "b251a7c5-2d75-417f-a590-859487e2d7ce", "research_area_slug": "public_safety_and_crime_control", "stance": "for"},
+   {"record_id": "e3b5c580-1a83-42ef-b162-48a283a55f22", "research_area_slug": "government_spending_reduction", "stance": "against"},
+   {"record_id": "e3b5c580-1a83-42ef-b162-48a283a55f22", "research_area_slug": "public_infrastructure", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "65d91c34-cd6a-483e-8668-5ef2e4df86b3",
+  "labels": [],
+  "skipped": [
+   {"record_id": "bede766a-54df-40a0-9a38-b8c46d6b048e", "reason": "farm meat sales rule; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "66813136-6f7d-42c9-bbe4-f42f2a0bcd71",
+  "labels": [
+   {"record_id": "d7024f41-6330-4a1c-bf52-84f73809d953", "research_area_slug": "data_privacy", "stance": "for"},
+   {"record_id": "d7024f41-6330-4a1c-bf52-84f73809d953", "research_area_slug": "corporate_accountability", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "6a6007c0-f29a-4edb-9630-dfc916ccd573",
+  "labels": [
+   {"record_id": "a28ad577-e417-41b2-a7cd-3978d6360228", "research_area_slug": "data_privacy", "stance": "for"},
+   {"record_id": "a28ad577-e417-41b2-a7cd-3978d6360228", "research_area_slug": "corporate_accountability", "stance": "for"},
+   {"record_id": "15ce8b78-5bb3-456a-96bb-dc366aff5b51", "research_area_slug": "reduce_wealth_gap", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "6dc2483a-57b7-4e95-8008-27cc5555d080",
+  "labels": [
+   {"record_id": "fb68a3c9-5d50-417f-8d3a-428d603dce55", "research_area_slug": "social_programs_and_welfare", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "75c75c9f-27bb-4086-a211-25eb598a3f24",
+  "labels": [
+   {"record_id": "77f6d142-b39e-4b57-98d4-760844f65368", "research_area_slug": "corporate_accountability", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "83d4610e-1c1c-424b-8f5f-3c8d7d570177",
+  "labels": [],
+  "skipped": [
+   {"record_id": "21bb5689-9a2c-45e1-8ff8-137ecd6c9da3", "reason": "wildlife salvage rule; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "90e8eed5-6bcc-4acc-92be-acb0e0d2e362",
+  "labels": [
+   {"record_id": "46afaafb-eae0-493f-8a4b-4ca0f94383a2", "research_area_slug": "anti_corruption", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "986ba775-7052-4be8-afaf-39e66b505d6b",
+  "labels": [
+   {"record_id": "c2688cd1-197e-41d1-8020-9d542cf1362a", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "9c0b5d22-746f-49b6-8e1f-0f48f83831bb",
+  "labels": [
+   {"record_id": "9e73fd24-6d98-4094-8f80-ab6c39877782", "research_area_slug": "anti_corruption", "stance": "for"},
+   {"record_id": "9e73fd24-6d98-4094-8f80-ab6c39877782", "research_area_slug": "election_integrity", "stance": "for"},
+   {"record_id": "ca16508a-bf5d-4b90-96a3-103b24b6398c", "research_area_slug": "public_safety_and_crime_control", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "aebb97a3-b7fa-432f-bc49-447817edff5c",
+  "labels": [],
+  "skipped": [
+   {"record_id": "0f0c3643-61af-4b89-979a-004bced13331", "reason": "sales tax and property tax swap; personal income tax area does not apply and no other allowed area fits"},
+   {"record_id": "1f7a5092-a7f6-49c5-9eb0-ca5cfeb84fb8", "reason": "text does not say which direction the school aid formula changes"},
+   {"record_id": "73d74b12-45fd-4a5f-925b-59b93de352d5", "reason": "hunting drone rule; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "c581373b-7177-43ba-bacd-f1e4e0b1bf32",
+  "labels": [
+   {"record_id": "cb531a66-1777-4e0b-a097-a9f1363d7070", "research_area_slug": "anti_corruption", "stance": "for"},
+   {"record_id": "c09f5c33-1f17-4479-937c-4dabd2f8d6c1", "research_area_slug": "election_integrity", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "edcb53f4-8c85-4795-9bcf-324952abcb78",
+  "labels": [
+   {"record_id": "ca66921c-ee8a-4971-8e1d-9f5f17962060", "research_area_slug": "anti_corruption", "stance": "for"},
+   {"record_id": "47cd6b85-a7fb-4c7e-9d96-b67e3b7e023a", "research_area_slug": "public_infrastructure", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "6167d42b-b3b8-46a5-919c-b523ac2eaa92", "reason": "study task force only; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "feea9286-c571-4b02-9fe1-4ee6d1820938",
+  "labels": [
+   {"record_id": "d231cc4a-572d-492a-b755-7ccf957505fc", "research_area_slug": "election_integrity", "stance": "for"},
+   {"record_id": "d231cc4a-572d-492a-b755-7ccf957505fc", "research_area_slug": "anti_corruption", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "6134d009-9b33-4d3b-85da-0b47846c76d6", "reason": "auto insurance minimums; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ }
+]}

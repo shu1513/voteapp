@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "97a94e78-0d13-4f5b-9dff-6517d7e586f2",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  },
+  {
+   "record_id": "3378884f-2f8e-4b04-8f70-e1523ba3a7b2",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "against"
+  },
+  {
+   "record_id": "3378884f-2f8e-4b04-8f70-e1523ba3a7b2",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "2e135705-363e-48ba-b484-7fa350000d95",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "e95fa095-5d33-46cf-908c-04f42fac7fee",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "120ec71b-5e12-4348-b35d-15e74c4d8800",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "d94efe1b-e902-4aeb-af4a-6f2ff9f8437e",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "d94efe1b-e902-4aeb-af4a-6f2ff9f8437e",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  }
+ ]
+}

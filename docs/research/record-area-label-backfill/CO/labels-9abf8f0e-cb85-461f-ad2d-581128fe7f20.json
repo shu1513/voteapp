@@ -1,0 +1,34 @@
+{
+ "labels": [
+  {
+   "record_id": "fb4510de-6ca0-4d73-8885-1bac679283c2",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "bb258bba-8d76-4ee0-b215-3aa538624420",
+   "research_area_slug": "personal_income_tax_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "bb258bba-8d76-4ee0-b215-3aa538624420",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "b89f7027-e4e7-4662-999d-b30dd4a70fe4",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  },
+  {
+   "record_id": "ec9d112f-537d-4e3a-8620-4a1f1180b2cc",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "ec9d112f-537d-4e3a-8620-4a1f1180b2cc",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  }
+ ]
+}

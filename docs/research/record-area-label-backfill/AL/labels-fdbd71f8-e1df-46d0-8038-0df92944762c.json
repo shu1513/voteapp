@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "ac31f4ae-0ae7-4535-a138-13850ca5cfc2",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "be8b8240-d048-4790-b9d6-d269d9828b42",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "bc1f1b24-40b3-4a72-8f1f-bdc3b068b78f",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

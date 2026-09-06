@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "19b5f9a0-794e-4fcc-9b2f-a18b6c6d8863",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "0cf54268-d73d-4e65-bb24-d148aa72dff1",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "2f6471fd-e380-45a6-9e9a-36a6eb5fa3f4",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "862ea96c-9240-4254-829a-51d3c388722d",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

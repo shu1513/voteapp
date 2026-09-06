@@ -1,0 +1,153 @@
+{"proposals": [
+  {
+    "candidate_id": "0b2e431c-4ffc-4dd8-9e93-4f4c5619cea5",
+    "labels": [],
+    "skipped": [
+      {"record_id": "4eddf79f-df29-4aeb-8f39-8fff0ee4551c", "reason": "a tour plus a thing he did not say; no action that directly affects an allowed area"},
+      {"record_id": "a3a4fc57-e408-46d8-afb5-a5f3e197b5cc", "reason": "no allowed research area matches"}
+    ],
+    "retire_candidates": []
+  },
+  {
+    "candidate_id": "0c82a25e-5dbc-4a54-8b7c-eb846c11a2bf",
+    "labels": [],
+    "skipped": [
+      {"record_id": "91ad6913-ca6b-4556-9f30-7b270452e331", "reason": "comment in a discussion with no clear direction for or against merit pay"}
+    ],
+    "retire_candidates": []
+  },
+  {
+    "candidate_id": "2164ee4d-a655-4da2-8591-8350a02f55d3",
+    "labels": [
+      {"record_id": "4c323251-1c6c-4bd8-a9a9-28c6b88e8783", "research_area_slug": "government_efficiency", "stance": "for"},
+      {"record_id": "ddaeaf23-efea-43ef-abc1-8256be202cf5", "research_area_slug": "social_programs_and_welfare", "stance": "for"}
+    ],
+    "skipped": [],
+    "retire_candidates": []
+  },
+  {
+    "candidate_id": "26477cbe-f951-4446-96e8-7a7633d841a1",
+    "labels": [],
+    "skipped": [],
+    "retire_candidates": [
+      {"record_id": "da213edf-4dee-4c6a-aa4e-b3d7fe833536", "reason": "bio filler: official biography listing appointment and committee service"}
+    ]
+  },
+  {
+    "candidate_id": "3b490c74-3fd4-4182-92da-7738b3659c5f",
+    "labels": [
+      {"record_id": "a3089835-2c45-4e07-8955-f1e646f334a1", "research_area_slug": "housing_affordability", "stance": "for"}
+    ],
+    "skipped": [],
+    "retire_candidates": []
+  },
+  {
+    "candidate_id": "5a64fecb-f8d4-40b3-a0c2-a99e7b4dfbc6",
+    "labels": [],
+    "skipped": [
+      {"record_id": "2d75a942-700e-4047-b96d-2bf4da349df9", "reason": "record does not say what the financing policy does, so no area is clearly affected"},
+      {"record_id": "41c72089-6ea2-4ddd-af07-08767aa47003", "reason": "procedural, no stance"}
+    ],
+    "retire_candidates": []
+  },
+  {
+    "candidate_id": "5a94bb54-0c93-417f-a966-cfb44b5f457e",
+    "labels": [
+      {"record_id": "ee90d0de-92c0-4ef4-8e53-dff052e5b5aa", "research_area_slug": "government_efficiency", "stance": "for"}
+    ],
+    "skipped": [],
+    "retire_candidates": []
+  },
+  {
+    "candidate_id": "5f9c1d96-0d84-4317-95cf-5f487dd7c8c3",
+    "labels": [
+      {"record_id": "c307a100-6811-406e-b1a5-5b05c46ae44e", "research_area_slug": "government_efficiency", "stance": "for"},
+      {"record_id": "baef943c-05b4-4e5b-86f5-d44892269449", "research_area_slug": "data_privacy", "stance": "for"}
+    ],
+    "skipped": [],
+    "retire_candidates": []
+  },
+  {
+    "candidate_id": "6021af0c-a9bf-4fad-a409-a6a5618b3990",
+    "labels": [],
+    "skipped": [],
+    "retire_candidates": [
+      {"record_id": "015fa03f-b864-47b8-8fc0-b71d6ea2e387", "reason": "bio filler: states only that he held the office"}
+    ]
+  },
+  {
+    "candidate_id": "6544754e-524d-4750-b57c-2f04120275e8",
+    "labels": [
+      {"record_id": "ae9b9bcf-e053-407d-9a6d-b2cb53f10402", "research_area_slug": "immigration", "stance": "against"},
+      {"record_id": "ae9b9bcf-e053-407d-9a6d-b2cb53f10402", "research_area_slug": "data_privacy", "stance": "against"}
+    ],
+    "skipped": [],
+    "retire_candidates": []
+  },
+  {
+    "candidate_id": "74082275-b79a-487a-b823-39350786b0ea",
+    "labels": [],
+    "skipped": [],
+    "retire_candidates": [
+      {"record_id": "464750ea-2d81-4f55-9ade-c1222ff69605", "reason": "bio filler: military service history"},
+      {"record_id": "9dd3eda4-972a-46c4-a30f-cc914be69ace", "reason": "bio filler: introduced by job title and years of experience"}
+    ]
+  },
+  {
+    "candidate_id": "85dcae51-1695-4e5d-a74b-de6662978bcd",
+    "labels": [
+      {"record_id": "7cac104f-3107-46d7-81fa-8869f0c75a8e", "research_area_slug": "public_education_quality", "stance": "for"},
+      {"record_id": "7cac104f-3107-46d7-81fa-8869f0c75a8e", "research_area_slug": "public_infrastructure", "stance": "for"},
+      {"record_id": "7cac104f-3107-46d7-81fa-8869f0c75a8e", "research_area_slug": "government_spending_reduction", "stance": "against"}
+    ],
+    "skipped": [],
+    "retire_candidates": [
+      {"record_id": "0306ff86-f4b0-4be5-9425-26ebeb435e29", "reason": "status update: a timeline presentation and construction progress report"}
+    ]
+  },
+  {
+    "candidate_id": "be0ecae5-5a1f-4c82-919e-ae9a18e4de86",
+    "labels": [
+      {"record_id": "542befe5-fe7a-4de1-9b96-4bd55bfa7e16", "research_area_slug": "public_education_quality", "stance": "for"},
+      {"record_id": "542befe5-fe7a-4de1-9b96-4bd55bfa7e16", "research_area_slug": "government_spending_reduction", "stance": "against"}
+    ],
+    "skipped": [],
+    "retire_candidates": []
+  },
+  {
+    "candidate_id": "d11840ea-8d31-41fb-b434-0f1fe67c59d6",
+    "labels": [],
+    "skipped": [
+      {"record_id": "b75ba1e0-82a2-449f-b025-afd6cae9baf0", "reason": "dark-sky ordinance is an environment topic, which this office's list does not allow"}
+    ],
+    "retire_candidates": []
+  },
+  {
+    "candidate_id": "d539e579-76d1-4904-a1cb-5052fdb0f793",
+    "labels": [
+      {"record_id": "2d38c2f1-b55a-4e51-9b4e-4d815604d8a2", "research_area_slug": "public_safety_and_crime_control", "stance": "for"}
+    ],
+    "skipped": [
+      {"record_id": "212b7877-16b8-472b-8cb9-7465bcfb9cd1", "reason": "single-case charging decision on the evidence; no stance on an allowed area"},
+      {"record_id": "ebfd0da7-a030-4d40-be02-ba59383761a2", "reason": "case classification finding; procedural, no stance"}
+    ],
+    "retire_candidates": []
+  },
+  {
+    "candidate_id": "ebc54329-66b2-437a-9e2d-2a490547a4f1",
+    "labels": [],
+    "skipped": [
+      {"record_id": "7eabf534-04c5-4a70-8104-4dbd854c945c", "reason": "single-case charging decision on the evidence; no stance on an allowed area"},
+      {"record_id": "fc6d550c-2fcb-4b7f-9693-3f0781d72208", "reason": "single-case charging decision on the evidence; no stance on an allowed area"}
+    ],
+    "retire_candidates": []
+  },
+  {
+    "candidate_id": "f6548792-2ca9-42c0-b2aa-74ab3e7274d1",
+    "labels": [],
+    "skipped": [
+      {"record_id": "8a443125-1eea-4394-94d6-278d8a571ff1", "reason": "city annexation resolution; no allowed research area matches"}
+    ],
+    "retire_candidates": []
+  }
+]}

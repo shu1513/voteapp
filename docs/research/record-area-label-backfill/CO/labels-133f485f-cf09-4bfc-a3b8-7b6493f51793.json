@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "5ced1428-b141-4bf0-965f-8009f60b3d31",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "a82ae97f-1943-4a06-a2d7-f51d2331541d",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  },
+  {
+   "record_id": "a82ae97f-1943-4a06-a2d7-f51d2331541d",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "eb3b088e-a446-48e7-84a1-054ee66f4355",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "b28e08e6-7c99-45dd-84a4-693692d9330f",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "cc0e2285-9365-4a32-93a9-3993587f386a",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "c8e45883-8a08-4a79-8d3a-7c879193f706",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "ff0af38d-d2a2-4fd1-aa45-a3367ba35f63",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "ff0af38d-d2a2-4fd1-aa45-a3367ba35f63",
+   "research_area_slug": "data_privacy",
+   "stance": "against"
+  },
+  {
+   "record_id": "9ecb417d-e427-4acf-b2b5-91e02183a54a",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

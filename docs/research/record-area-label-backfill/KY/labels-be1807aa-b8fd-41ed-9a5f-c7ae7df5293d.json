@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "90469f68-8d85-4b9b-9fe1-c93cd803da97",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "d794c639-3991-4d09-ac07-beb0e1fbb444",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "d794c639-3991-4d09-ac07-beb0e1fbb444",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  }
+ ]
+}

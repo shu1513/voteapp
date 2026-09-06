@@ -1,0 +1,284 @@
+{"proposals": [
+ {
+  "candidate_id": "00b38d4b-1ea1-45ef-a0d6-c17b511d1d65",
+  "labels": [
+   {"record_id": "f21914bb-71e2-4b30-acf8-9655a6c1507e", "research_area_slug": "anti_corruption", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "244d866c-be07-420e-99a6-a98fc17eb130", "reason": "foreign-investment and sister-city restrictions; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "00ffb7aa-a623-4565-8938-5b40476807b9",
+  "labels": [
+   {"record_id": "cfe2f064-8e84-406f-9835-c279807d2e01", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "38eb1a52-9129-4463-b839-3bdd2f6ab21f", "reason": "advisory board membership change; no allowed research area matches"},
+   {"record_id": "92a5dbd5-78d8-47e3-a4fb-78103e8720cd", "reason": "retirement-system membership detail; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "013a4afe-2bfb-4a32-bb0b-7cec3de43672",
+  "labels": [],
+  "skipped": [
+   {"record_id": "a02b4266-1a54-4c9c-8895-6db9fc445b75", "reason": "routine distribution of collected funds; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "08e9dcbb-a303-446c-8043-f8d15e362b34",
+  "labels": [
+   {"record_id": "d0476fec-b933-438d-9c4d-679f57734f41", "research_area_slug": "social_programs_and_welfare", "stance": "for"},
+   {"record_id": "15640833-7a62-49aa-b375-15066862f06d", "research_area_slug": "public_safety_and_crime_control", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "7538d54f-32ec-418f-b66c-559210438f01", "reason": "professional registration act; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0d054f6f-30d9-4c4e-935f-3822ce5844b6",
+  "labels": [
+   {"record_id": "f36c1b91-8948-41a5-ba00-6829e80764ac", "research_area_slug": "public_education_quality", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0e77c732-576a-4f52-977d-29326d3bd6df",
+  "labels": [],
+  "skipped": [
+   {"record_id": "77e1a780-8f9c-477b-81cc-b6d17acce879", "reason": "property-tax credit; personal income tax area does not apply and no other allowed area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0faaceae-8163-477a-80a8-360e2bd9b551",
+  "labels": [
+   {"record_id": "792198d9-221d-426b-929d-e5a7210c13d9", "research_area_slug": "corporate_accountability", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "0579404c-adaf-44a9-93ed-f6494882044d", "reason": "property-tax staff recognition payments; no allowed research area matches"},
+   {"record_id": "0832e2be-cfe2-4903-b226-c94803c40700", "reason": "sales-tax exemption; personal income tax area does not apply"},
+   {"record_id": "44adf5f5-8c0c-4489-a2e9-435e488ab487", "reason": "county board membership rule with no stated direction; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "1275a371-33ed-47cc-9698-f7b2b1cca3f9",
+  "labels": [],
+  "skipped": [
+   {"record_id": "fa901965-b479-4811-9ba0-d762e80329bd", "reason": "surrogate access rule with no stated direction; no allowed research area matches"},
+   {"record_id": "c0aaebf6-addf-4ae9-812d-06281e251467", "reason": "election-complaint deadlines amended, direction not stated"},
+   {"record_id": "2d8e78d3-f200-42aa-934f-03554f0851d0", "reason": "new recreation office, no funding or direction stated"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "1298cd56-fc8b-4cd4-9142-296d6fd9a7b3",
+  "labels": [
+   {"record_id": "5d28dd39-05b8-4b3a-8a85-f19b7f4abe71", "research_area_slug": "public_education_quality", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "75e1851e-5b74-47b9-b20a-d841e2bdee55", "reason": "accident-report threshold changed, direction not stated"},
+   {"record_id": "70bd6dd6-c04d-4014-a6bb-ab3205644961", "reason": "traffic passing rule amended, direction not stated"},
+   {"record_id": "3a6dd3fa-8291-4654-a82b-6adfeadcfebb", "reason": "damages recovery for medical care; no allowed research area matches"},
+   {"record_id": "cd5ded00-7d46-460f-addd-6035b2e485a6", "reason": "foreign-investment and sister-city restrictions; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "155ca8dd-d43c-4d18-84b9-57d7a8a0920d",
+  "labels": [
+   {"record_id": "d70e3ea0-5578-4055-99a8-91db79c6af80", "research_area_slug": "election_integrity", "stance": "for"},
+   {"record_id": "d70e3ea0-5578-4055-99a8-91db79c6af80", "research_area_slug": "civil_rights", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "c798382b-d90a-49d1-ba1d-ca60b097e5d5", "reason": "property-tax credit; personal income tax area does not apply and no other allowed area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "156a12d5-33a1-47cd-8fd6-096f2e1b5b5a",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "330b15ff-662f-4c49-bb54-aaef5b3ee28d", "reason": "trivia / bio filler: published a news report, no action a voter can judge"}
+  ]
+ },
+ {
+  "candidate_id": "15707b3f-a3af-48fa-86ef-a9cbebe471c2",
+  "labels": [
+   {"record_id": "c0268805-19d3-434e-92f1-f834737f6e52", "research_area_slug": "public_safety_and_crime_control", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "6af7ec25-3293-4aea-b79f-637cf875e02f", "reason": "school tax-rate filing deadline, direction not stated"},
+   {"record_id": "9ad00bc4-1e47-4768-aab6-6879f0805d18", "reason": "storage-tank cleanup payments amended, direction not stated"},
+   {"record_id": "2aa85820-91bf-46b7-9845-9f44fe5e7190", "reason": "property-tax credit; personal income tax area does not apply and no other allowed area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "17a4865b-c754-4b29-8f13-c2f5dd4a2c20",
+  "labels": [],
+  "skipped": [
+   {"record_id": "741e77ba-664a-40da-a8ed-909e7d4d1c76", "reason": "non-binding resolution asking Congress for federal aid; no state action or direct effect"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "2236d4e0-16bb-43fc-aa73-e3fdfed57afa",
+  "labels": [],
+  "skipped": [
+   {"record_id": "d3a47ef5-5a2a-462a-aa50-201182d5c970", "reason": "retirement payout option detail; no allowed research area matches"},
+   {"record_id": "55878165-663a-4d42-a930-0823eb9f3ec3", "reason": "jurisdiction over federal lands; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "22ec75c3-1cf1-4df7-be7e-f85b1e5a8c9f",
+  "labels": [
+   {"record_id": "dc6406e3-27b0-40d0-900c-eca8a094b037", "research_area_slug": "anti_corruption", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "8dd0f637-8b1c-45b7-a597-efc7aebc8367", "reason": "real-estate license education rules; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "2785ac71-f714-4048-bde7-a78d9d5c4bce",
+  "labels": [
+   {"record_id": "09dfd951-1d87-4410-9c27-366a2bbc0a78", "research_area_slug": "personal_income_tax_reduction", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "3523a5b6-de47-4c61-a46a-1867cbc8d62a", "reason": "study task force only; no direct effect stated"},
+   {"record_id": "6ee79345-bb39-44a1-a021-b9c91947cebb", "reason": "scholarship rules changed and prize withholding added, direction not stated"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "289490be-22c7-4726-b6fb-443b8278d593",
+  "labels": [
+   {"record_id": "7428c167-a9e4-4e21-9070-9c8e1d7c8145", "research_area_slug": "public_safety_and_crime_control", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "85f3a17e-d189-4957-85c3-36077fab2ac9", "reason": "property-tax credit; personal income tax area does not apply and no other allowed area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "2be169e2-2ff1-4923-b720-22c97eeccbbb",
+  "labels": [
+   {"record_id": "a1e57efb-cfc1-4fee-b39e-d383733b4769", "research_area_slug": "civil_rights", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "33aed35b-6522-4793-b42c-f04b7d6ec1c9", "reason": "firefighter residency rule; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "2f17e969-adee-4bb9-ba0d-119d75dfd91d",
+  "labels": [],
+  "skipped": [
+   {"record_id": "ae7fd536-5850-4ca0-98fe-34d91e5db446", "reason": "private-property liability for dirt bikes; no allowed research area matches"},
+   {"record_id": "22302585-3905-4e02-a19c-0eecb477999b", "reason": "city-county jurisdiction change; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "354e2767-892a-4ded-8672-c747dca12d54",
+  "labels": [
+   {"record_id": "ea9260bc-a831-46d3-9daa-efe8244a0870", "research_area_slug": "social_programs_and_welfare", "stance": "for"},
+   {"record_id": "ea9260bc-a831-46d3-9daa-efe8244a0870", "research_area_slug": "public_education_quality", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "3eb3ac5e-1565-43f3-9465-961222197714",
+  "labels": [
+   {"record_id": "ae6348d8-dc4a-4be2-b76f-9a3901665b40", "research_area_slug": "corporate_accountability", "stance": "against"},
+   {"record_id": "8dab2219-fc2d-4a48-994e-5b01b696e96c", "research_area_slug": "public_education_quality", "stance": "for"},
+   {"record_id": "8dab2219-fc2d-4a48-994e-5b01b696e96c", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "3a024005-5c93-4a64-88d5-1d3913f6a789", "reason": "personal-property tax collection timing; personal income tax area does not apply"},
+   {"record_id": "cd7cfb0f-c7b5-461d-8008-75571b3eef51", "reason": "salary disclosure process amended, direction not stated"},
+   {"record_id": "1e5a3d5e-9ed0-4e69-ba25-2d3a95e3a9ae", "reason": "extracurricular eligibility change, direction not stated"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "44208755-3bd3-4685-b1e9-87fff33ef3ab",
+  "labels": [
+   {"record_id": "1b1010d9-531f-4d26-b09a-f3441f7fc1c7", "research_area_slug": "government_spending_reduction", "stance": "for"},
+   {"record_id": "17397d7e-c745-4139-9670-3abde6a90ef4", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "d384bdfb-9a7d-4d25-ac98-5943a5919b3f", "reason": "employer match to tuition savings accounts; effect on allowed areas is indirect"},
+   {"record_id": "c450dbea-4481-4fe4-9d29-2c145165e69f", "reason": "rollover tax treatment amended, direction not stated"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4890534a-a568-418c-8bdb-ce6d1752099e",
+  "labels": [
+   {"record_id": "6ff184c0-07a1-4fd4-bd7f-2743d41b155d", "research_area_slug": "housing_affordability", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4ccdcc4f-e9a9-4319-83a3-7975f768642d",
+  "labels": [],
+  "skipped": [
+   {"record_id": "8d0118ef-4779-4256-bc78-7129ea52d834", "reason": "nurse-aide trainer qualification detail; no allowed research area matches"},
+   {"record_id": "555f349c-31af-41e7-aa09-248573a62f46", "reason": "modular building inspection change, direction not stated"},
+   {"record_id": "28574acd-aed7-4d33-ad78-f60b07fbc6cb", "reason": "new job registration act; no allowed research area matches"},
+   {"record_id": "4c1536e2-ef4c-4391-909b-e37d82241ad0", "reason": "terminology change only; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4f2bb8f3-5783-4ac3-b068-24b0857b77a1",
+  "labels": [],
+  "skipped": [
+   {"record_id": "4ca0a131-095b-4bc5-89ab-33d208d99fea", "reason": "fireworks sales times; no allowed research area matches"},
+   {"record_id": "f907bfe5-7e41-498c-a2bf-e896bea9abc5", "reason": "animal rescue law; no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "519d7e73-da03-4bb8-b997-e25ebcf7b658",
+  "labels": [
+   {"record_id": "656183ca-df50-4820-91f2-72fb8973b1d9", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "63b6ba1e-5af6-47c4-b0ee-27104546c6b2", "reason": "storage-facility lien procedures; no allowed research area matches"},
+   {"record_id": "4906e32b-d8aa-4fb5-881b-f44a8b3bbe01", "reason": "racing facility and rural economic options; no allowed research area matches"},
+   {"record_id": "537829aa-6190-4623-ac06-8b56540d7757", "reason": "student-athlete publicity rights amended, direction not stated"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "54155825-c27a-4b9a-8d44-590bddb03cba",
+  "labels": [
+   {"record_id": "c5d77621-a998-4d91-b586-b53709e4884f", "research_area_slug": "environment_and_public_health", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "d269bc5f-edb9-4b91-877e-ac9bfa737276", "reason": "school transfer deadlines amended, direction not stated"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "552af230-3978-4b5c-86d1-2371423576d6",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "e6d10dda-3cb1-44c5-a968-4bec4ca21025", "reason": "pure candidacy: lawsuit over a rival's primary eligibility, no policy content"}
+  ]
+ }
+]}

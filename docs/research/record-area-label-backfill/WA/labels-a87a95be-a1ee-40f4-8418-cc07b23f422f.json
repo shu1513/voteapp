@@ -1,0 +1,34 @@
+{
+ "labels": [
+  {
+   "record_id": "d2141ea8-667b-4830-bf56-cabcfc33180c",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "bfbeebd2-8db9-4f59-8124-3f16d42d2366",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "55fcd9de-e1f5-4555-9e3c-ef97dec1f3c9",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "74a97845-0fca-40ad-94d0-e1d314ccb388",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "c75c92ab-f6af-433f-89ae-c83c54cadbdc",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "efcecfe5-2a07-4915-86a8-c3a8c33bcc4f",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

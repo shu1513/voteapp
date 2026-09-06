@@ -1,0 +1,49 @@
+{
+ "labels": [
+  {
+   "record_id": "c5da775b-0809-4b57-aa89-7cdef553a19a",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "c5da775b-0809-4b57-aa89-7cdef553a19a",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "a0388e4e-8985-4d74-ace2-548fc1985be3",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "f35270cf-9b96-4073-b769-c3b5d6ece992",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "f35270cf-9b96-4073-b769-c3b5d6ece992",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "08f44394-9134-45c0-b9f7-9c52b46b8154",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "08f44394-9134-45c0-b9f7-9c52b46b8154",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "ac43317a-f374-4756-b381-bb8922fba4ca",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "37e27908-3ec5-4a0b-8697-f3547e7b6021",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "against"
+  }
+ ]
+}

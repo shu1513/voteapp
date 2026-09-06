@@ -1,0 +1,386 @@
+{"proposals": [
+ {
+  "candidate_id": "056602ae-3ded-474c-8559-f16d80cf1349",
+  "labels": [],
+  "skipped": [
+   {"record_id": "241f5c96-3a00-4083-a305-c729e056079b", "reason": "voted no; text does not say what he wanted instead"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0721a07a-6ee5-4d6c-a572-5694868c48c1",
+  "labels": [
+   {"record_id": "bdfdd1f2-cf89-4d8e-855d-44a008c964f5", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "077500d1-4a46-44c1-8f58-435877fa2e30",
+  "labels": [
+   {"record_id": "76499473-904c-4e6c-ab33-7ca94fa2f937", "research_area_slug": "corporate_accountability", "stance": "for"},
+   {"record_id": "76499473-904c-4e6c-ab33-7ca94fa2f937", "research_area_slug": "public_safety_and_crime_control", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0ae48bbc-c5a4-4ec0-bbcd-ff73b8e17357",
+  "labels": [
+   {"record_id": "18e073de-89a1-48d1-83a7-cadb176f59b1", "research_area_slug": "corporate_accountability", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0e44cb83-0a87-459c-8453-eed3ebc362d5",
+  "labels": [
+   {"record_id": "07eefe96-0c8b-48c8-a823-9033dd6ed1c6", "research_area_slug": "government_efficiency", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "108a8024-b8c4-41e8-bba7-ce89e76b2371",
+  "labels": [
+   {"record_id": "26cf166b-0ddb-4bc4-9421-b99e315adefa", "research_area_slug": "corporate_accountability", "stance": "for"},
+   {"record_id": "0e69e649-cd74-4a1d-8b0c-7d148876f611", "research_area_slug": "civil_rights", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "2987b1f8-ed28-4d8d-806c-f4f29e7bb21f", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "15198ea5-4550-4e1e-a943-cd85fc1f5e66",
+  "labels": [
+   {"record_id": "18a89a7c-1597-4d83-9a71-61cdd57e38ef", "research_area_slug": "healthcare_affordability", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "0d4e3544-c054-4068-a91c-ecabb83687e8", "reason": "text does not say which way the rules change"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "1815e85b-2fbc-4062-8909-03e01fc74f26",
+  "labels": [
+   {"record_id": "1e4528db-9acf-4307-83c9-184edae37372", "research_area_slug": "civil_rights", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "19981a2c-8388-4ef9-b999-d27374087526",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "1aef2dfa-20c7-4d84-a849-e4d40a8a1ac0", "reason": "routine listing as counsel of record on an appeal; nothing for a voter to decide on"},
+   {"record_id": "20ab45cb-a483-4def-9604-87b2b3a83c7e", "reason": "routine listing as counsel of record on an appeal; nothing for a voter to decide on"},
+   {"record_id": "465e5815-c250-4cb5-b53e-de26756f2360", "reason": "routine listing as counsel of record on an appeal; nothing for a voter to decide on"},
+   {"record_id": "c41ad045-1e1f-42b4-89cc-adffb2a515fb", "reason": "routine listing as counsel of record on an appeal; nothing for a voter to decide on"},
+   {"record_id": "6e325c07-c946-4aed-90ff-ca5beab1090a", "reason": "routine listing as counsel of record on an appeal; nothing for a voter to decide on"}
+  ]
+ },
+ {
+  "candidate_id": "21e4089c-e593-4797-83b2-1560dd82051c",
+  "labels": [],
+  "skipped": [
+   {"record_id": "5ad43cc8-acb3-40c5-9ccd-096c0d869917", "reason": "voted no; text does not say what he wanted instead, and public_infrastructure is not allowed for this office"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "2a347595-22e6-468e-9b3f-1fbe1caf2893",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "afb04533-754a-4306-a7f2-3bc615a8dfa3", "reason": "bio filler: described his job duties at a hearing, no position taken"}
+  ]
+ },
+ {
+  "candidate_id": "3623d2a5-3b26-4cf2-b326-3366100770dc",
+  "labels": [
+   {"record_id": "7d7cd616-412a-4931-a59f-bf536926b763", "research_area_slug": "election_integrity", "stance": "for"},
+   {"record_id": "75bd3a88-2472-4fbb-9685-08bda0946e78", "research_area_slug": "gun_control", "stance": "against"},
+   {"record_id": "75bd3a88-2472-4fbb-9685-08bda0946e78", "research_area_slug": "corporate_accountability", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "452d2412-3077-4add-88e4-3d89a49ab2e1",
+  "labels": [
+   {"record_id": "e596feb8-1092-4c4d-b0dd-31952f04ffea", "research_area_slug": "government_efficiency", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "913b387a-668b-4b6b-bb6f-82408d6071b3", "reason": "changes who advises on ferry funding; no direction stated"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4cb0cecf-f681-46c8-ab4f-1d0c2fa0b4ec",
+  "labels": [
+   {"record_id": "296e26de-05fd-4e00-9564-6e8d2ff942ce", "research_area_slug": "social_programs_and_welfare", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4dc533f6-5348-485e-a218-a6697ac5fbc7",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "ba915c27-b51d-437a-99f1-4875671c614b", "reason": "bio filler: an appointment to a council, no action taken"}
+  ]
+ },
+ {
+  "candidate_id": "518828f0-2b4a-467e-a883-91f6775b78ce",
+  "labels": [
+   {"record_id": "cd66eaf9-9eb1-4b50-a205-5544153fd245", "research_area_slug": "public_safety_and_crime_control", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "8320795a-16f6-4619-941a-1146d06a98c3", "reason": "objection was about burden on courts and lawyers; no allowed process or spending area for this office"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "582a575e-eb04-45a8-ac2d-cf8b406977d9",
+  "labels": [
+   {"record_id": "943b43e5-53ad-4fb8-bba9-c5a10935ae7d", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "e0ea8f6a-8bb4-4b7a-add5-e657d5668b8a", "reason": "procedural, no stance"},
+   {"record_id": "5a60ff00-2d57-4f3b-a561-4cc2967ecb07", "reason": "procedural, no stance"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "5b088da8-a634-4a21-9018-c5d7941e1034",
+  "labels": [],
+  "skipped": [
+   {"record_id": "0cd0e6a4-bda9-43a3-af32-b1011e7e7636", "reason": "text does not say how the tax laws change"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "6bc06251-844a-4577-add4-eab61fa18b8f",
+  "labels": [
+   {"record_id": "9671c2ec-749c-481c-83c1-3176cb5e57aa", "research_area_slug": "environment_and_public_health", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "5e402022-147f-44ec-8529-1aac3bf343dc", "reason": "production tax relief; personal_income_tax_reduction does not apply and no other area fits"},
+   {"record_id": "58ed24bd-9491-4d31-8cc7-7ed8bd2c0382", "reason": "business tax credit; personal_income_tax_reduction does not apply and no other area fits"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "70a54f93-1a0a-4aac-a4e1-24dc97b831cc",
+  "labels": [
+   {"record_id": "19ca1e51-65f9-4495-807d-35646d4425b1", "research_area_slug": "reduce_wealth_gap", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "099c4089-3ae3-4bf3-86a3-e523a528ec2c", "reason": "bio filler: a title listing"}
+  ]
+ },
+ {
+  "candidate_id": "7437d0db-f1de-4986-8604-1d35c4d6e1f5",
+  "labels": [
+   {"record_id": "18b7fbe8-716f-4693-a301-705c13b2bdd1", "research_area_slug": "public_safety_and_crime_control", "stance": "against"},
+   {"record_id": "18b7fbe8-716f-4693-a301-705c13b2bdd1", "research_area_slug": "government_spending_reduction", "stance": "for"},
+   {"record_id": "26cc8148-c592-467c-b483-2b7522d9eb43", "research_area_slug": "public_safety_and_crime_control", "stance": "for"},
+   {"record_id": "5da5e478-c91d-4b07-8c2f-21709446ea6e", "research_area_slug": "housing_affordability", "stance": "against"},
+   {"record_id": "5da5e478-c91d-4b07-8c2f-21709446ea6e", "research_area_slug": "data_privacy", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "7c96265c-d2f4-4adb-a5a6-37347cd66d0e",
+  "labels": [
+   {"record_id": "25b92f58-96d2-4008-a2ec-025cf2d08ae3", "research_area_slug": "corporate_accountability", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "d99f2ee5-f398-468c-859f-26d5af4b9067", "reason": "text does not say which way the self-insurance rules change"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "7cf81eef-af57-4bec-8032-3ea36ee7646c",
+  "labels": [],
+  "skipped": [
+   {"record_id": "3d40f0b9-b2db-44ad-95fc-72b12a27b795", "reason": "text does not say what the growth-management bill would do"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "85e8e45a-9151-4080-86c2-b8e4a16ed184",
+  "labels": [
+   {"record_id": "f8b5e374-5e8b-468b-975d-fbe527c1d174", "research_area_slug": "environment_and_public_health", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "8ae3728e-5261-420f-834a-12e56d2b4030",
+  "labels": [
+   {"record_id": "cac20db9-5419-432c-9262-0f8d526f59af", "research_area_slug": "government_efficiency", "stance": "for"},
+   {"record_id": "beb0885a-63af-4f1d-a09f-bc503eb12db2", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "908a3675-614c-4b36-9453-4752503415a1",
+  "labels": [
+   {"record_id": "55b8ac62-3514-4efa-89b5-f34a5eea1cdb", "research_area_slug": "environment_and_public_health", "stance": "against"},
+   {"record_id": "3341c061-7418-4aae-ac9c-3d1f1d8645f9", "research_area_slug": "environment_and_public_health", "stance": "against"},
+   {"record_id": "ded7f37a-aab8-4cfe-a2e9-3377cf39f634", "research_area_slug": "corporate_accountability", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "965ce036-f9f0-41ac-a6fa-4169a5ac0aa6",
+  "labels": [
+   {"record_id": "bac64ee5-16a1-46f1-af00-c2abfbc3178d", "research_area_slug": "gun_control", "stance": "against"},
+   {"record_id": "dd4421d1-7a1b-4d5c-ae00-78cd01a8808d", "research_area_slug": "anti_corruption", "stance": "for"},
+   {"record_id": "c81217c6-47e2-4e62-b3f6-17f6039334b3", "research_area_slug": "environment_and_public_health", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "971220e9-a424-4351-8f39-87efd45a8f75",
+  "labels": [
+   {"record_id": "25d24ecb-8242-4576-aecb-8f7e5abf116a", "research_area_slug": "environment_and_public_health", "stance": "for"},
+   {"record_id": "c20fd194-1b3b-4f85-bb9f-385ac931c0b1", "research_area_slug": "government_efficiency", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "98f77913-f7c0-4fcf-8815-f05888a19f51",
+  "labels": [
+   {"record_id": "13af7738-436d-4eee-a01f-6aa253fb4c6e", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "9c0c09af-9e8b-4552-8529-1efde7fbe25f",
+  "labels": [],
+  "skipped": [
+   {"record_id": "ca559ce3-c854-487b-9824-9a217321f3dc", "reason": "voted no; text does not say what he wanted instead"},
+   {"record_id": "d372812a-bc45-47d9-a31d-bfd48d7a93dd", "reason": "voted no; text does not say what he wanted instead"},
+   {"record_id": "718c1d90-0bd2-4acd-822d-0ffe31b6b0dd", "reason": "text does not say what the energy bill would do"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "9f78e276-6cce-401a-bbfe-1f20b0a95631",
+  "labels": [
+   {"record_id": "af1fff1e-c7bc-43c3-958f-4a19e9ffb195", "research_area_slug": "social_programs_and_welfare", "stance": "for"},
+   {"record_id": "af1fff1e-c7bc-43c3-958f-4a19e9ffb195", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "40f4ca73-0e7e-4adc-b615-c743c870e95a", "reason": "text does not say what the school-discipline bill would do"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "ba2f46b4-abac-4430-bb8d-77421d0d3be8",
+  "labels": [],
+  "skipped": [
+   {"record_id": "e6c8f77c-a93d-4d77-b983-ffc57b760300", "reason": "no allowed research area matches"},
+   {"record_id": "96b06cfa-998e-4764-ba65-cc6d86343bb8", "reason": "no allowed research area matches"},
+   {"record_id": "a4f7b055-6a5c-43ba-a3d1-69d36cf78d90", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "c43ad1ad-474b-4f17-a547-1da166b6f485",
+  "labels": [],
+  "skipped": [
+   {"record_id": "08c13f22-9eeb-4b4b-a09f-97b201973cd2", "reason": "text does not say which way the motion went on the bill"}
+  ],
+  "retire_candidates": [
+   {"record_id": "a048d037-7efc-41e1-9284-81ca552a4c14", "reason": "bio filler: committee membership listing"},
+   {"record_id": "8b1bff2c-5b41-43a8-b378-ffccae30bc51", "reason": "bio filler: district and service listing"}
+  ]
+ },
+ {
+  "candidate_id": "c496bbd0-51f4-4cc0-94c1-9621e69470c5",
+  "labels": [
+   {"record_id": "02e573e3-62ea-47d0-a7e9-1edf09883aa6", "research_area_slug": "environment_and_public_health", "stance": "for"},
+   {"record_id": "02e573e3-62ea-47d0-a7e9-1edf09883aa6", "research_area_slug": "government_spending_reduction", "stance": "against"},
+   {"record_id": "0ca79712-138e-4789-8fb8-0b5940239746", "research_area_slug": "social_programs_and_welfare", "stance": "for"},
+   {"record_id": "0ca79712-138e-4789-8fb8-0b5940239746", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "685c7451-7a4c-409c-ab88-774f0f47aa67", "reason": "text does not say which way the benefit rules change"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d568ec86-b973-445d-91c5-60457d0b0baf",
+  "labels": [
+   {"record_id": "e37a8661-cf13-4fa7-bffc-0b18c6da1e70", "research_area_slug": "environment_and_public_health", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "0a47bce8-0d74-432a-90c1-53d7bac350c5", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": [
+   {"record_id": "ad797a5f-9202-42cf-aa0f-c88eab5b5e09", "reason": "bio filler: board roles held"}
+  ]
+ },
+ {
+  "candidate_id": "e73bafa6-98d2-47a1-83ff-7d6358cfdf7a",
+  "labels": [],
+  "skipped": [
+   {"record_id": "1a8c3b06-635c-4c19-9030-fa4788eb0496", "reason": "sets up a study group; no direction stated"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "ea991e7b-d06c-4d64-ba1a-f8bbcda90e0f",
+  "labels": [
+   {"record_id": "afb3ea7e-3b8d-4031-b038-14e14557c87f", "research_area_slug": "anti_corruption", "stance": "against"},
+   {"record_id": "5e0d3521-c662-469d-8a24-6b5a6f9e616e", "research_area_slug": "public_education_quality", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "72cc5b15-c9bd-4b6e-af8a-7b234a69aa5b", "reason": "text does not say what the volunteer-service rules would do"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "f746ace1-66e3-4ae3-86a5-f17e5481f5e0",
+  "labels": [
+   {"record_id": "ac24b890-9b30-475e-b34c-a413353988c4", "research_area_slug": "public_safety_and_crime_control", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "370abb0e-f08f-4ff1-b688-1016269f40a9", "reason": "text does not say what the EMS bill would do"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "fb68b415-9602-4fd0-a858-0cc7a97ec832",
+  "labels": [
+   {"record_id": "9c1061cd-4944-4f47-9ec0-dddaa27760f0", "research_area_slug": "healthcare_affordability", "stance": "for"},
+   {"record_id": "2733ac78-c5a0-4bdf-abab-ef012a812641", "research_area_slug": "gun_control", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "fcdda115-32ca-4748-a668-9148e51069fd",
+  "labels": [
+   {"record_id": "364d6394-fbc1-4d63-8978-63afee00c343", "research_area_slug": "social_programs_and_welfare", "stance": "for"},
+   {"record_id": "364d6394-fbc1-4d63-8978-63afee00c343", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "d250f9fe-3fc6-44a6-9e77-670db33330ba", "reason": "text does not say what the restraint and seclusion bill would do"}
+  ],
+  "retire_candidates": []
+ }
+]}

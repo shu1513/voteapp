@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "7b41603c-cdad-4dea-b0ea-17431e1a1670",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "0f32f692-5022-4f5b-aa4d-1b3f88972932",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "f41ebb7a-f822-4738-88b9-67004e651970",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "f41ebb7a-f822-4738-88b9-67004e651970",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "daa4c906-d958-432d-98dd-152e352b9b47",
+   "research_area_slug": "data_privacy",
+   "stance": "against"
+  }
+ ]
+}

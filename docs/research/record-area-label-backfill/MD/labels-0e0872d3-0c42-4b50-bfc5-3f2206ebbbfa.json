@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "7655bbc8-0c86-469a-8fc4-aed993abf981",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "ff5a708f-af1e-416b-a0dc-49941647f475",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  },
+  {
+   "record_id": "ca9a80ff-7c79-495c-a0af-5f594a8f34c6",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "20510d54-ae15-4b7e-ac58-a67fd610436d",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "aace205a-8df8-4fa0-8c2f-688d2e5c92cb",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  }
+ ]
+}

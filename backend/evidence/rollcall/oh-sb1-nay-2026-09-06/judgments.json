@@ -1,0 +1,22 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "OH",
+   "chamber": "senate",
+   "session": "136",
+   "roll": 1743028529,
+   "measure_id": "SB 1",
+   "vote_date": "2025-03-26",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 1, the Senate's last step on the bill. The law bars Ohio's public universities from keeping or opening diversity, equity, and inclusion offices. It also bans full-time faculty at those schools from striking, and adds reviews of tenured professors. The Ohio Senate agreed 20-11, and the governor signed it on March 28, 2025.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 1 at the Senate's last step on the bill. The law bars Ohio's public universities from keeping or opening diversity, equity, and inclusion offices. It also bans full-time faculty at those schools from striking, and adds reviews of tenured professors. The Senate agreed 20-11 anyway, and the governor signed it on March 28, 2025.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

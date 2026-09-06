@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "e10822d6-6185-4d10-a485-34dc64642b20",
+   "research_area_slug": "anti_corruption",
+   "stance": "against"
+  },
+  {
+   "record_id": "e10822d6-6185-4d10-a485-34dc64642b20",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "662ea7c5-9840-4422-ad3c-d6441ac95f23",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "662ea7c5-9840-4422-ad3c-d6441ac95f23",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "e1771dda-bd53-4b8d-918b-6f535504935e",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "e1771dda-bd53-4b8d-918b-6f535504935e",
+   "research_area_slug": "data_privacy",
+   "stance": "against"
+  },
+  {
+   "record_id": "d1775e99-3fbd-4422-b7cc-5b2d4cd68e6a",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

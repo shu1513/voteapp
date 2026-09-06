@@ -1,0 +1,34 @@
+{
+ "labels": [
+  {
+   "record_id": "c2cbd8fa-1aab-4a84-a10f-27de5020fd8b",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "eae52969-8961-4052-9d5d-758d3fc4322c",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "a3a47b6a-3ce2-4c75-bc3d-1d47fd73bffa",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "a3a47b6a-3ce2-4c75-bc3d-1d47fd73bffa",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "42a1e3f3-57c1-4a9f-b29c-330c3f2e5961",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "42a1e3f3-57c1-4a9f-b29c-330c3f2e5961",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

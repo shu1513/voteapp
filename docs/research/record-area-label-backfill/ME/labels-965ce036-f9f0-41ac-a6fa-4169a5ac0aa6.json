@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "bac64ee5-16a1-46f1-af00-c2abfbc3178d",
+   "research_area_slug": "gun_control",
+   "stance": "against"
+  },
+  {
+   "record_id": "dd4421d1-7a1b-4d5c-ae00-78cd01a8808d",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "c81217c6-47e2-4e62-b3f6-17f6039334b3",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

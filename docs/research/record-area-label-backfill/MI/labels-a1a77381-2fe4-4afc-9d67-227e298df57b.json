@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "a47111d0-c71d-45d1-bcbc-df84f528daa5",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "a47111d0-c71d-45d1-bcbc-df84f528daa5",
+   "research_area_slug": "legal_competence",
+   "stance": "for"
+  },
+  {
+   "record_id": "869eaf59-e8ae-4b54-ad53-8f835543db7a",
+   "research_area_slug": "impartiality",
+   "stance": "for"
+  },
+  {
+   "record_id": "c775ce70-f60e-4256-bdae-d7f6904cb7d7",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

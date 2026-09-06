@@ -1,0 +1,59 @@
+{
+ "labels": [
+  {
+   "record_id": "e62f7434-7ee3-406f-bfe6-71319b3936aa",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "ae90565c-b27c-4aa5-9fbf-f209c262bbaa",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "ae90565c-b27c-4aa5-9fbf-f209c262bbaa",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "adc02ae1-dd19-4ce6-af56-483a88b24db5",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "adc02ae1-dd19-4ce6-af56-483a88b24db5",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  },
+  {
+   "record_id": "adc02ae1-dd19-4ce6-af56-483a88b24db5",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "cfd6b8ea-1ebe-4513-a799-bc1c8509a462",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "698f8cb1-0dd2-42ff-8daa-e73412bf89a8",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "698f8cb1-0dd2-42ff-8daa-e73412bf89a8",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "698f8cb1-0dd2-42ff-8daa-e73412bf89a8",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "bb73a66c-9a4a-447f-8c1e-b677649c55bc",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

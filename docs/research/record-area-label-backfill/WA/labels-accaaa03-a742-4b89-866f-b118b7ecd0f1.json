@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "bde40195-24ed-4461-b16f-ed87bc9fcdf3",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "0eee01b5-3218-4fc8-a3aa-42713b0b2314",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "59fc704e-660f-49c7-90e4-aad63505b588",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

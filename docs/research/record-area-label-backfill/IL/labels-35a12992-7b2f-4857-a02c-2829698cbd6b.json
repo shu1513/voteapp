@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "14ce1e66-5186-4632-8378-ff456a77afc9",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "14ce1e66-5186-4632-8378-ff456a77afc9",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "3e2f3ec4-4ff7-4141-bd23-c801a01e23e5",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "3e2f3ec4-4ff7-4141-bd23-c801a01e23e5",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

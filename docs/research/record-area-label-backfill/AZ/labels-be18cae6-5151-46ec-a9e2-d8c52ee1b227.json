@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "8fc2be57-89d4-47a9-a6d6-f709def233bd",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "a2c17fc5-6b68-4d7a-914e-48ad14b830a2",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "366ed081-a53c-4c66-bf87-dde09f9709a1",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  }
+ ]
+}

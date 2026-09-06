@@ -1,0 +1,728 @@
+{"proposals": [
+ {
+  "candidate_id": "bc3dcf72-0af6-42c2-8e3b-5fe7c9114149",
+  "labels": [
+   {"record_id": "a1f2b11c-34ff-44fd-bd7c-b947656f53d1", "research_area_slug": "government_efficiency", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "bdae7f4f-944d-48e6-b7bb-971cda791d49",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "e906e1b5-13a0-4d24-b3a7-6469ed8bf588", "reason": "trivia / honorary resolution"}
+  ]
+ },
+ {
+  "candidate_id": "beeb0cfb-05b0-473d-b2f4-ba0e79c59513",
+  "labels": [
+   {"record_id": "2907a5c0-58f1-42c9-b2c3-aa88e9438e39", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "bef7591b-6e4d-4b61-b167-8a0331e59eb9",
+  "labels": [
+   {"record_id": "43433428-4655-4eff-8cbb-fb178f115f54", "research_area_slug": "anti_corruption", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "496911b3-4607-46b2-b920-ddc20469fdcd", "reason": "no allowed research area matches"},
+   {"record_id": "7ffb6b78-28bc-438d-a389-3227be68e9f9", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "bf3da7dc-11dd-47fd-9c8a-441b3b6886d3",
+  "labels": [],
+  "skipped": [
+   {"record_id": "2ff5ca60-04a8-4781-ba93-97e2b33b3504", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "bf78e8c6-35d3-422f-ae27-715610ad17cf",
+  "labels": [],
+  "skipped": [
+   {"record_id": "f0e06369-de40-4af9-8305-1c81858f1c72", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "c00c4ef7-b509-48c6-afcb-4931103c9f9f",
+  "labels": [],
+  "skipped": [
+   {"record_id": "ef158c80-3746-49bd-a858-859e33d55ca6", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "c09581e2-51d7-4cf6-870b-aa5084ca93d9",
+  "labels": [],
+  "skipped": [
+   {"record_id": "a377a5f0-54af-49cb-85de-0c24068a18af", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "c1257f2c-4102-4d91-bf73-0eefda20e461",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "34cb019c-965e-4e21-bd64-2dfc955c46e8", "reason": "bio filler / office status row"}
+  ]
+ },
+ {
+  "candidate_id": "c1e87d43-5a56-4a1b-a44f-f6ce886fe7c3",
+  "labels": [],
+  "skipped": [
+   {"record_id": "abbdbec9-0917-4567-98f0-f412e058cd50", "reason": "procedural, no stance"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "c36b0da1-0f80-4794-8ce9-5fa3f598251f",
+  "labels": [],
+  "skipped": [
+   {"record_id": "54d9619a-139d-473a-85e6-865ae0870c15", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "c57271dd-53eb-4c76-a1d3-d07e0505cad9",
+  "labels": [],
+  "skipped": [
+   {"record_id": "fb8fca45-b96d-4eeb-8257-7f7bb2e955da", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "c6597574-3ddf-46e4-8271-933c9c3549bb",
+  "labels": [],
+  "skipped": [
+   {"record_id": "bb792908-1e9d-4c46-bc92-bb05b589e361", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "c68e2f0e-b5d1-4157-9b65-7a61b7ee1eb6",
+  "labels": [
+   {"record_id": "6413d989-10f1-43b6-9473-f5ff2cf9f6c7", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "256f358b-9d58-4751-b83a-c5eab1b24a41", "reason": "procedural, no stance"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "c76230fc-c518-4d68-a005-e1d8cc179c06",
+  "labels": [],
+  "skipped": [
+   {"record_id": "12085946-8d8c-4cab-9cdd-6750fc17ce32", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "c822311b-69a1-4989-8c83-c07fe2bdaee8",
+  "labels": [
+   {"record_id": "eea0c45f-0946-418b-b4b9-474208dc21ff", "research_area_slug": "anti_corruption", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "c850a3fa-26ea-4909-9334-4d15fc377a1f",
+  "labels": [],
+  "skipped": [
+   {"record_id": "4a8fb52e-a286-43f9-a5d1-439e918d8edb", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "c8ee0f74-9fd0-444a-8214-9aa93ac0a802",
+  "labels": [],
+  "skipped": [
+   {"record_id": "f15b0205-b2c6-4033-bbd5-a8a51bf8f754", "reason": "neutral only"},
+   {"record_id": "c930c407-ca9c-4725-ab53-5cd285cfdee7", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "c903aadc-edb5-4dac-83eb-4d9023369b0f",
+  "labels": [],
+  "skipped": [
+   {"record_id": "ed0e9bd8-9106-4f7c-a638-3f565f37282a", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "ca31588c-cbe8-4682-ab8d-6c4501745fe7",
+  "labels": [],
+  "skipped": [
+   {"record_id": "c9666a8d-8420-4836-acf0-ef5302145c84", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "cb53cd69-6a4e-46f6-9ae9-3b8153d96641",
+  "labels": [
+   {"record_id": "701e3a04-c9ca-4701-a84a-32639632fc9c", "research_area_slug": "anti_corruption", "stance": "for"},
+   {"record_id": "d58ff911-347d-4777-a2f2-0a97838c1213", "research_area_slug": "anti_corruption", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "cc03a72d-4403-4087-b6c2-bd987bcc0a94",
+  "labels": [],
+  "skipped": [
+   {"record_id": "083a6a45-9f4f-4625-96ca-35a3c95a971e", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "ccb081e2-08ca-4679-b683-13c2a7848a0b",
+  "labels": [],
+  "skipped": [
+   {"record_id": "42006b0a-d289-4310-a23a-35e9bf0cec9d", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "cdb6d381-7bd5-4378-bfef-a6380a5ff631",
+  "labels": [
+   {"record_id": "afc65ccd-e920-4af2-a11f-197c182cbde2", "research_area_slug": "anti_corruption", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "cea56964-5a1c-40ac-a679-3fcc0d3d75ff",
+  "labels": [
+   {"record_id": "51550542-c3da-4d01-a799-8096b31030f4", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "cedb7726-e9c6-49ae-956d-23d9bcec4551",
+  "labels": [],
+  "skipped": [
+   {"record_id": "cac6fa62-bbea-439a-a5d2-efec75950dcb", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "cef0e1ec-9606-4e7e-907c-2b5f391d9f3b",
+  "labels": [],
+  "skipped": [
+   {"record_id": "5a59d7b9-e46d-4331-84fb-6bb0c2a2d852", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "cf0ca797-b65c-499d-af0e-532498c8c969",
+  "labels": [],
+  "skipped": [
+   {"record_id": "51ffa380-a39c-4ec9-8199-47f0083c4d83", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "cfcd3783-5b70-4efd-ba19-fe41a3f1b45e",
+  "labels": [],
+  "skipped": [
+   {"record_id": "af0bee8b-e45e-46c7-bd0e-2cd91a12405a", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "cfe33463-fd18-4f36-ab4d-049c93dce742",
+  "labels": [
+   {"record_id": "3d23b7d7-02aa-4b6e-adfe-f71aef00d66f", "research_area_slug": "environment_and_public_health", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "a6f7df7a-9031-4a6e-8775-07e96b742654", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d06cd007-6532-4b4e-aaf7-b26793543f94",
+  "labels": [
+   {"record_id": "43f29f7f-a492-4b38-bf2a-b6a6e3596bde", "research_area_slug": "anti_corruption", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d06d7e92-a10e-4233-b574-077df9acffe0",
+  "labels": [
+   {"record_id": "7d32e940-d7ed-4859-ab0d-3d56b3a7b1dd", "research_area_slug": "anti_corruption", "stance": "for"},
+   {"record_id": "cb75c997-d6cb-4084-9b65-d9a208720c42", "research_area_slug": "anti_corruption", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d0abb3df-9f56-41cf-bf46-22f327e1f8ba",
+  "labels": [],
+  "skipped": [
+   {"record_id": "6639b9fd-584d-4640-8261-ae2f58fc96ca", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d0e33ca8-3d5a-481d-933e-378539ebcc5c",
+  "labels": [
+   {"record_id": "f6e7d801-0d46-434a-9cc2-40973e269976", "research_area_slug": "corporate_accountability", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d131ee60-bf69-4001-8d82-f14897ca1d03",
+  "labels": [
+   {"record_id": "67d6c533-4d44-4a03-919d-6f0a37320bb2", "research_area_slug": "government_efficiency", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d1fb342c-4410-4fac-ba4b-d4bb24476e0a",
+  "labels": [],
+  "skipped": [
+   {"record_id": "2142d9b1-61f8-41d9-a3db-f0ab190e0f48", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d2c61cb3-a248-400d-841b-325b99b9d42a",
+  "labels": [
+   {"record_id": "081079ab-2585-427d-aa12-5901802ac45b", "research_area_slug": "anti_corruption", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d3bc6a4a-c857-433f-855d-f7cdecb69a26",
+  "labels": [
+   {"record_id": "66f06b5c-04a6-4e9f-955e-1f834d7783cf", "research_area_slug": "anti_corruption", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d4d316b2-37a1-40e0-8f2a-229f50c61fee",
+  "labels": [],
+  "skipped": [
+   {"record_id": "4cb96aa5-fcb3-4053-a2d8-a056fc2e677a", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d559381a-cb2d-4cf7-8f42-0318105e4ffd",
+  "labels": [],
+  "skipped": [
+   {"record_id": "73246936-04d4-4ac0-88d6-a42e8d8b0fd9", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d55b1e40-d59d-4734-bc52-feb7019f13bc",
+  "labels": [],
+  "skipped": [
+   {"record_id": "a545325f-a3db-4e70-9c11-24a9f0e5372c", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d5701ff1-31e0-4bf3-b6f4-e435a0cfcd25",
+  "labels": [
+   {"record_id": "3dea7177-d4ae-43f4-8104-86c66ad1c265", "research_area_slug": "anti_corruption", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d5a9dee4-6339-48a9-8cd9-07fd84be8903",
+  "labels": [],
+  "skipped": [
+   {"record_id": "023c4b42-825a-495a-93ea-ad5371d05d6c", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d5f09de6-eece-4d4c-86af-db4587610617",
+  "labels": [],
+  "skipped": [
+   {"record_id": "7c86068f-6ee5-47e8-8aa0-fe9a840dfa8a", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d70202eb-d487-4700-b45c-27919d31d0c8",
+  "labels": [
+   {"record_id": "86fcaa3d-d4b1-46fa-a157-269b0be4d9aa", "research_area_slug": "anti_corruption", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d752a592-9ec0-4549-bed2-7ec43bd3c700",
+  "labels": [
+   {"record_id": "4142a75f-9bc3-4470-a8f8-486edba9cab3", "research_area_slug": "anti_corruption", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d76072ec-14a1-4791-9445-e50ecaf5157f",
+  "labels": [
+   {"record_id": "f0cd8349-c22a-4b56-b142-1b52800eccef", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "527c4303-84e7-4197-906c-01b06685269a", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d76c81b7-ca37-43e0-a443-befa24700abe",
+  "labels": [],
+  "skipped": [
+   {"record_id": "12a2c4fd-e261-46b9-8788-4860ee626279", "reason": "procedural, no stance"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d7793b96-dc5c-4570-8599-c6cda1ce9931",
+  "labels": [
+   {"record_id": "4cb791a3-06f2-4372-8f63-e8af60264418", "research_area_slug": "election_integrity", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "deb5fd69-6115-4141-8dbe-68d84a27bde0",
+  "labels": [],
+  "skipped": [
+   {"record_id": "5f1e8f94-c351-4586-8f62-2c4c7033adc2", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e03db104-d8ec-4047-998a-fd7a7b0b598f",
+  "labels": [],
+  "skipped": [
+   {"record_id": "cfb04041-7641-48a1-802a-749f52f9f999", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e0c7d07a-64d0-4344-99ea-dafc31a7c6ba",
+  "labels": [],
+  "skipped": [
+   {"record_id": "f1fa2616-6013-4a37-834a-f943243d8e59", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e0e53f86-583b-45d7-b195-b66383024964",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "ffa39166-6cd3-4d09-8a70-12b5ec50ebad", "reason": "trivia / professional honor"}
+  ]
+ },
+ {
+  "candidate_id": "e42ffdbf-cf9f-44ed-82e7-b023bfc0de22",
+  "labels": [
+   {"record_id": "f333ff9d-2e5c-4a60-bd0e-4e59cf23706b", "research_area_slug": "government_efficiency", "stance": "against"},
+   {"record_id": "a8809e38-5876-40eb-956f-8a06ced1c106", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "0e6f112c-3c14-4ca1-a307-9b2f2e48922f", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e4deef99-f826-4b83-a76a-d48075d92aca",
+  "labels": [
+   {"record_id": "f703df19-996f-4701-a65f-fcc6d40099a4", "research_area_slug": "government_efficiency", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e5453938-a313-408d-94f2-e8932e5a030c",
+  "labels": [
+   {"record_id": "3163f9a1-ec8a-4a0b-b18c-53b43bbb48b6", "research_area_slug": "government_efficiency", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e5ade476-818f-4c17-8151-486ab6916690",
+  "labels": [],
+  "skipped": [
+   {"record_id": "ad3db2d3-ca93-4ed1-b38b-8428f50276aa", "reason": "procedural, no stance"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e6b7eff5-cc4b-44c5-b53c-254e77874461",
+  "labels": [],
+  "skipped": [
+   {"record_id": "abff9674-5b23-4318-b931-6de07e91da6b", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e75d2835-5e44-4ec9-a182-16ddaf137c9b",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "80a3f818-ba28-4811-a462-ab17ef17b428", "reason": "bio filler"},
+   {"record_id": "bfa7d4e3-a248-4861-ab7c-8bbdde8c5321", "reason": "bio filler"},
+   {"record_id": "89d2700b-2737-4f3e-b669-f9d938d7438b", "reason": "bio filler"}
+  ]
+ },
+ {
+  "candidate_id": "e7cc830c-87d1-4fc4-943f-154f8d9ab2e0",
+  "labels": [],
+  "skipped": [
+   {"record_id": "9f47d7bf-661f-4825-ba45-cce4c914443a", "reason": "neutral only"},
+   {"record_id": "98185d11-1f6f-40e2-9170-d89804280fc7", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e9a8dfc3-b0cb-448c-9d0e-91457a152c9a",
+  "labels": [
+   {"record_id": "2ebebbcd-75ca-4758-8883-17e7614e798c", "research_area_slug": "impartiality", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "ac994d77-9701-49b8-a6c9-6dc97eab4310", "reason": "no clear direction"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "eb52dce0-3762-49f7-adbd-fc5f94de6dd1",
+  "labels": [
+   {"record_id": "c2ccfe6a-15af-45a3-bc70-89c3ebb2dbed", "research_area_slug": "legal_competence", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "ebb646f9-85ef-4493-9133-174273f3a8b7",
+  "labels": [
+   {"record_id": "44849e7d-c73d-4d4b-a044-bf07180a89a3", "research_area_slug": "public_safety_and_crime_control", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "6febf7f9-a91e-402d-b09a-08f512b0fde1", "reason": "no allowed research area matches"},
+   {"record_id": "629a2d0c-af9e-4ab9-ba4f-97f4824acdd6", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "ebb75811-72a6-4a71-8b53-8cf09c350b89",
+  "labels": [],
+  "skipped": [
+   {"record_id": "20d461e3-9d05-4771-90d5-b5dc26b920a9", "reason": "neutral only"},
+   {"record_id": "62a48756-6840-4c77-90ad-cab64505ccf7", "reason": "neutral only"},
+   {"record_id": "8a6a24df-158f-441c-86fa-41463cd141b3", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "ec68410a-fd44-4fec-8370-2a985da8d2af",
+  "labels": [
+   {"record_id": "0c9be5dc-a099-45a3-b439-faa1780cdfd2", "research_area_slug": "anti_corruption", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "ee03d963-695d-4cd6-8c2f-046e1ffefd4d",
+  "labels": [],
+  "skipped": [
+   {"record_id": "e6bc7162-d1ce-49ae-bc0f-60eed58b3432", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "ee0e30e8-2d09-4fb3-ba71-64780a0da94a",
+  "labels": [],
+  "skipped": [
+   {"record_id": "f8915bd7-def1-46c7-98aa-ba9b03b8eba5", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "ef02cc00-9a1a-4b4c-aa57-b97f9f7c20ce",
+  "labels": [],
+  "skipped": [
+   {"record_id": "90ef8eca-52c8-499d-becb-7ead28e52b97", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "ef89fc9b-697a-4832-aca5-f2f8f4e0c3c5",
+  "labels": [],
+  "skipped": [
+   {"record_id": "d0b0e70e-cc03-4f35-9c8c-18ae76343f03", "reason": "neutral only"},
+   {"record_id": "95696720-7ed8-4398-98b0-b14d97f3cca0", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "f201f023-bf32-439e-af7b-4075264afb0f",
+  "labels": [],
+  "skipped": [
+   {"record_id": "978ccf14-86e5-4ec5-88d4-27fc929f3c21", "reason": "procedural, no stance"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "f229f61e-43be-4024-a557-9d240dc60b98",
+  "labels": [
+   {"record_id": "b4922d76-a925-4710-bdce-8fa8bd574315", "research_area_slug": "environment_and_public_health", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "76393af2-83e6-458b-9da6-50b846ae256a", "reason": "procedural, no stance"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "f24785db-88b7-4ed3-b406-94f994281dae",
+  "labels": [],
+  "skipped": [
+   {"record_id": "90b3889f-a4a9-4d33-9cad-9495c65fc5fc", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "f2fa9538-b3e8-4f87-b5af-fdf8c409320b",
+  "labels": [],
+  "skipped": [
+   {"record_id": "6c18371e-cd8c-46fb-8bbe-5cf9ae402ba8", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "f357b88b-54b5-4180-994a-d9b48f6bf484",
+  "labels": [],
+  "skipped": [
+   {"record_id": "a802d0ae-6133-42b6-bbd0-f3fa5e1dbe17", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "f66f889b-d31c-424e-8b24-51f765f52bf0",
+  "labels": [],
+  "skipped": [
+   {"record_id": "9a4a742f-9222-4123-8227-0df7982d3cf2", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "f678e78e-3b43-475b-b767-8a61570da4fc",
+  "labels": [],
+  "skipped": [
+   {"record_id": "d01a444c-4bf8-4af5-b919-e7b958dd4e92", "reason": "neutral only"},
+   {"record_id": "806da65b-957d-4b40-831b-e4f3b0c1f271", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "f6bfa834-db3c-4f6a-8151-b0db420b1e3b",
+  "labels": [
+   {"record_id": "c6cd4fd5-b608-46f7-b0fb-3def4bdd1d6a", "research_area_slug": "legal_competence", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "ed7db7b6-d3f0-43ec-bd51-4a9889559cb5", "reason": "neutral only"}
+  ],
+  "retire_candidates": [
+   {"record_id": "9837b69c-b515-47ee-8899-b519c2434edc", "reason": "bio filler / appointment announcement"}
+  ]
+ },
+ {
+  "candidate_id": "f89419ee-c2e8-41d5-85cb-00adbb9d0744",
+  "labels": [],
+  "skipped": [
+   {"record_id": "4b5d66b3-00d7-47f5-8ba4-f684367dcd5e", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "fa008901-b39f-4f2f-84ee-4df4e3fd03dd",
+  "labels": [
+   {"record_id": "988a81a9-6f26-4391-a7f8-710169a034d4", "research_area_slug": "anti_corruption", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "fa5974b4-edf7-41f7-9925-9003fcd34256",
+  "labels": [],
+  "skipped": [
+   {"record_id": "5a6f7c80-89f8-49c4-9640-e1851cf3185f", "reason": "neutral only"},
+   {"record_id": "28dce3f4-ccae-4943-8e0c-d1b9d7e25185", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "fbee944c-50ca-48b8-a3c2-34ae0404d2e2",
+  "labels": [
+   {"record_id": "70060178-5bc4-400f-bcfc-a575111e5c12", "research_area_slug": "government_efficiency", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "7abe80c1-5d68-49dd-9df6-3ca91ddc77d1", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "fcb56718-66ac-4a35-b298-d540d54ea5a7",
+  "labels": [],
+  "skipped": [
+   {"record_id": "dfc04038-ca62-49db-9c09-ca44853955bb", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "fd9f5a81-b2d1-4d13-8734-e74306ef175d",
+  "labels": [
+   {"record_id": "75ee6c00-72eb-4e4b-8954-eeab8afb1942", "research_area_slug": "anti_corruption", "stance": "for"},
+   {"record_id": "75ee6c00-72eb-4e4b-8954-eeab8afb1942", "research_area_slug": "peaceful_foreign_policy", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "fe5a712f-31bc-495b-99f3-59494fca10a3",
+  "labels": [],
+  "skipped": [
+   {"record_id": "d4b4b249-b437-4dd1-9883-e4e8906024f6", "reason": "procedural, no stance"},
+   {"record_id": "47584766-6a8b-4afa-9a3c-a2612c1245bc", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "ff3259d9-f91b-443f-9508-16dc213caa0b",
+  "labels": [],
+  "skipped": [
+   {"record_id": "01254033-a8cd-4620-a38b-6ab871976959", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "ff4bd1ae-cfd9-4e53-9243-7c3337efc387",
+  "labels": [],
+  "skipped": [
+   {"record_id": "18b9f6ce-c507-4f8f-a970-e2764cda7a7c", "reason": "procedural, no stance"}
+  ],
+  "retire_candidates": []
+ }
+]}

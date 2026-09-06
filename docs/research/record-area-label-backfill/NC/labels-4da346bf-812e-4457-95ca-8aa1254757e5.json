@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "b350bc01-9d27-47b9-9aa4-73d81283b55c",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "f557f7f3-a241-4306-b056-9c84e0d0c697",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "f557f7f3-a241-4306-b056-9c84e0d0c697",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "59143fa5-77a1-4bf0-b2c9-45ee1ebf8702",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "59143fa5-77a1-4bf0-b2c9-45ee1ebf8702",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

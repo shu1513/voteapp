@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "3398c794-2933-46a3-adf0-ad5c94637e17",
+   "research_area_slug": "anti_corruption",
+   "stance": "against"
+  },
+  {
+   "record_id": "3398c794-2933-46a3-adf0-ad5c94637e17",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "3398c794-2933-46a3-adf0-ad5c94637e17",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  },
+  {
+   "record_id": "3398c794-2933-46a3-adf0-ad5c94637e17",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  }
+ ]
+}

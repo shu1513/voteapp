@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "65322e4b-4278-4143-9d76-e0209dea7a63",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  },
+  {
+   "record_id": "aeded85a-e387-4a64-8af4-9e58854ee9fa",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "befff363-1c88-4ee8-8e12-af72b82adaba",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "aef45523-0664-40f6-8baa-37e06abfe601",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

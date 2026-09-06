@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "dc9434f0-e8a2-4e86-b28c-6fe65ff18be8",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "eeb82fa7-c32d-4fa8-92bf-bbd10b8c53e2",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "c5159cf0-9c46-4b1b-9c82-a5b41821c57e",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "c5159cf0-9c46-4b1b-9c82-a5b41821c57e",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "2ef16f11-539f-41e5-85ce-4796631cc64d",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "e33fa646-ff2a-4be8-8ced-f8fd53524daf",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "dac4c6de-b2f4-4b06-9359-74ec5f2833fb",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "e72fa893-d2f4-4aa2-b79b-a9e9d25b1c32",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "e72fa893-d2f4-4aa2-b79b-a9e9d25b1c32",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "243cc759-1853-4987-8cf2-d01d5299dccb",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "243cc759-1853-4987-8cf2-d01d5299dccb",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "2d8e8af6-b3b2-4b68-8f0e-c5708a35e1e9",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  },
+  {
+   "record_id": "01f17175-22ea-42ae-8846-0a6920445b93",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "01f17175-22ea-42ae-8846-0a6920445b93",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "521693c2-7cf5-4719-a98e-495ec4fec917",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

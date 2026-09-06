@@ -1,0 +1,361 @@
+{
+  "decisions": [
+    {
+      "vote_id": "de9a7cfe-7b5d-4755-a373-1d1c62df6f2a",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null,
+          "why": "A no vote on adding one regulator's power over escrow and lender licensees can rest on regulatory burden or drafting, not on opposing accountability."
+        }
+      ]
+    },
+    {
+      "vote_id": "513d2ba1-57e0-4533-bd9c-e9fea07d386e",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null,
+          "why": "A no vote on hospital staffing fines can be about cost to hospitals or how the on-call list is defined."
+        }
+      ]
+    },
+    {
+      "vote_id": "22128ac3-e5e3-4886-a872-3ec05fc10453",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null,
+          "why": "A no vote can be about the size of the new antitrust fines rather than about holding companies to account."
+        }
+      ]
+    },
+    {
+      "vote_id": "53a5b883-c7cb-4fe4-aee3-438a0bbd6fe6",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null,
+          "why": "A no vote on public campaign financing can be about spending tax money on campaigns, not about tolerating corruption."
+        }
+      ]
+    },
+    {
+      "vote_id": "61997470-1db8-4f26-8e57-ff0369125926",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null,
+          "why": "A no vote can be about limiting police access to fraud investigations, so it does not show opposition to election integrity."
+        }
+      ]
+    },
+    {
+      "vote_id": "02704629-11d6-4dbd-be79-5ce2f7f14825",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null,
+          "why": "Same bill in the other chamber: a no vote can be about police access rules rather than about election integrity itself."
+        }
+      ]
+    },
+    {
+      "vote_id": "7c87632a-864f-46fc-a81f-f175c8b93ea5",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null,
+          "why": "A no vote can be about closing public records or about the new online speech offenses, not about immigration."
+        }
+      ]
+    },
+    {
+      "vote_id": "cfb35e08-fda4-4e38-8b3b-c1f2f328f9f0",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null,
+          "why": "Same bill in the other chamber: a no vote can be about public records or speech rules, not about immigration."
+        }
+      ]
+    },
+    {
+      "vote_id": "af5cc99a-cb84-4221-ad83-450cb7809cd3",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "against",
+          "nay": "for",
+          "why": "The bill's core act is repealing voter-approved paid sick time and the minimum wage increases, so a no vote is the only thing keeping those wage and leave gains."
+        },
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null,
+          "why": "A no vote defends worker benefits, which is not the same as a general position on holding companies accountable."
+        }
+      ]
+    },
+    {
+      "vote_id": "b5215799-7712-4897-9c14-5ca17a9f1de6",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": "for",
+          "why": "The measure's whole purpose is repealing the abortion right voters put in the constitution, so a no vote is the only thing standing against that repeal."
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null,
+          "why": "The transgender care ban is one part of a larger abortion measure, so a no vote does not pin down a broad civil rights position."
+        }
+      ]
+    },
+    {
+      "vote_id": "331d70fc-df90-4fcc-a8a9-486af3f1b33a",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null,
+          "why": "This omnibus bill mixes new crimes, background checks, benefits and closed pension records, so a no vote could target any one of them."
+        },
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null,
+          "why": "A no vote could just as easily be about the new crime penalties as about the closed investment records."
+        }
+      ]
+    },
+    {
+      "vote_id": "e8306538-fdb9-4d20-9c4c-308e71eb87f1",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "against",
+          "nay": "for",
+          "why": "The bill's whole act is stripping cities of the power to protect renters, so a no vote is the only thing keeping those protections available."
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null,
+          "why": "A no vote reads as defending local housing rules, which is narrower than a general civil rights position."
+        }
+      ]
+    },
+    {
+      "vote_id": "c4c7af1e-ec7d-4d8c-96cc-285d8095c68b",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for",
+          "nay": null,
+          "why": "A no vote on a capital gains deduction can be about who benefits or lost state revenue, not about opposing lower income taxes."
+        },
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null,
+          "why": "The bill bundles tax cuts with new local sales tax authority, so a no vote does not show one direction on living costs."
+        }
+      ]
+    },
+    {
+      "vote_id": "2f2b2912-76da-431b-886d-ea3a26a7304e",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": "for",
+          "why": "Every part of the bill closes government records or slows requests, so a no vote is the only thing keeping those records open to the public."
+        },
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null,
+          "why": "A no vote most likely defends open records, which says nothing clear about the person's view on privacy."
+        }
+      ]
+    },
+    {
+      "vote_id": "8e391df5-18bc-4b1d-93c9-d29e755baeb7",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "against",
+          "nay": "for",
+          "why": "Same repeal bill in the Senate: a no vote is the only thing keeping the voter-approved sick time and wage increases."
+        },
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null,
+          "why": "Defending worker benefits is not the same as a general position on holding companies accountable."
+        }
+      ]
+    },
+    {
+      "vote_id": "a2307280-6bcb-40ea-b108-3dfb5ba093c3",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null,
+          "why": "A no vote can be about the bill sidelining the Ethics Commission or shielding donors, not about foreign money in elections."
+        },
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null,
+          "why": "A no vote can be aimed at the donor secrecy provision or at the enforcement scheme, so it points in no single direction."
+        }
+      ]
+    },
+    {
+      "vote_id": "5ef7608a-6cf6-4771-aa5c-ca9be0ec20a0",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": "for",
+          "why": "Same repeal measure in the Senate: a no vote is the only thing standing against undoing the constitutional abortion right."
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null,
+          "why": "The transgender care ban is one part of a larger abortion measure, so a no vote does not pin down a broad civil rights position."
+        }
+      ]
+    },
+    {
+      "vote_id": "6db1a07b-5d94-4190-aa02-57aad704e5e3",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "against",
+          "nay": "for",
+          "why": "Same preemption bill in the Senate: a no vote is the only thing keeping local renter protections possible."
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null,
+          "why": "A no vote reads as defending local housing rules, which is narrower than a general civil rights position."
+        }
+      ]
+    },
+    {
+      "vote_id": "bcb4bfd1-97bc-449b-8da6-23e50018db79",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null,
+          "why": "The bill also bars faculty strikes and adds tenure reviews, so a no vote may be about labor or tenure rather than the diversity ban."
+        }
+      ]
+    },
+    {
+      "vote_id": "8139db35-897f-4253-8399-06b8cc148491",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": "for",
+          "why": "The bill does one thing, loosen child labor hour limits for employers, so a no vote is the only thing keeping those limits in place."
+        }
+      ]
+    },
+    {
+      "vote_id": "b42d640c-32f8-4b92-8397-0d26fce100b8",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": "for",
+          "why": "The bill does one thing, block public nuisance suits over product sales, so a no vote is the only thing keeping that route to hold sellers liable."
+        }
+      ]
+    },
+    {
+      "vote_id": "21d84c9d-8e5f-4a03-a888-927e0a5aaafe",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": "for",
+          "why": "The bill does one thing, force state and local officials to permit immigration arrests, so a no vote is the only thing against that mandate."
+        }
+      ]
+    },
+    {
+      "vote_id": "d2f360cd-ae87-4d6c-ab9d-68ae86a1621e",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": "for",
+          "why": "Same child labor bill in the House: a no vote is the only thing keeping the existing work hour limits for young teens."
+        }
+      ]
+    },
+    {
+      "vote_id": "61be5907-0665-4327-a740-2fdbed528001",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null,
+          "why": "A no vote on ending the mail ballot grace period is about voter access, not evidence of opposing election integrity."
+        }
+      ]
+    },
+    {
+      "vote_id": "a979113b-3043-4687-9c1f-e83e29b27dd9",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null,
+          "why": "A no vote on longer drug sentences can be about prison policy or dropping the knowledge requirement, not about public safety as a goal."
+        }
+      ]
+    },
+    {
+      "vote_id": "1dc38266-66ef-4420-8028-48088558cb9d",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null,
+          "why": "A no vote can be about the state dictating school curriculum or naming one group's video, not about abortion rights."
+        }
+      ]
+    },
+    {
+      "vote_id": "9a134bd8-39d9-46ae-bb46-783e4f8d0e5e",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null,
+          "why": "This rewrite of marijuana law has many parts, and a no vote could come from wanting looser or tighter rules."
+        }
+      ]
+    }
+  ]
+}

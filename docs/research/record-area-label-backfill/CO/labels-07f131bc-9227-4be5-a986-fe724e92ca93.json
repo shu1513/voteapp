@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "5e8e9595-6b5c-4387-9136-ce2e16a5abbf",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "82b25d25-2c38-4dea-b22f-fc3888207259",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "82b25d25-2c38-4dea-b22f-fc3888207259",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

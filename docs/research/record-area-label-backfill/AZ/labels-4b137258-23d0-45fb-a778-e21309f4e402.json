@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "83cb5371-9f07-4ec7-b9a3-864913078bb3",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "7ce31086-8b0b-420e-ac60-b1ade35c330c",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "7ce31086-8b0b-420e-ac60-b1ade35c330c",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "948a059d-cf17-4520-8663-3dccb4f2b7fc",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

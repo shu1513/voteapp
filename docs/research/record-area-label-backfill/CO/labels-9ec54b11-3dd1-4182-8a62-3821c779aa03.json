@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "62729179-9c16-4ce8-b620-cc8f8d9e9e0d",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "8732bf5c-9246-4d5a-890e-3832bfcf15fd",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "01b97cf5-b9d0-42ac-995a-8deff7e0ba74",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

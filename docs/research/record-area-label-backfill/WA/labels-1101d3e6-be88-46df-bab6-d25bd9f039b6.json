@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "2d68c393-10b1-4b0b-acc3-8b8918eb8816",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "2d68c393-10b1-4b0b-acc3-8b8918eb8816",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "761ab970-72cb-4ff8-a974-cd714fb25da9",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "2584f9b5-7357-40b6-a975-7b9579a39237",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "a9ea2616-42d8-4653-9f30-f3eb12df63f8",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "a9ea2616-42d8-4653-9f30-f3eb12df63f8",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "8c8ee3aa-98a9-4084-999c-b62a8fd83d92",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "290cfbad-8397-4432-9668-021fa0e6f854",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  }
+ ]
+}

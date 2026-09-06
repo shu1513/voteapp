@@ -1,0 +1,34 @@
+{
+ "labels": [
+  {
+   "record_id": "ddc89746-09d9-4805-b053-83d5acc3188b",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  },
+  {
+   "record_id": "ddc89746-09d9-4805-b053-83d5acc3188b",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "eeb25e75-c05b-4666-a7b6-75eafab3ecdd",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "e22513b6-f88d-466b-9502-a825496a5257",
+   "research_area_slug": "national_defense",
+   "stance": "against"
+  },
+  {
+   "record_id": "e22513b6-f88d-466b-9502-a825496a5257",
+   "research_area_slug": "peaceful_foreign_policy",
+   "stance": "for"
+  },
+  {
+   "record_id": "e22513b6-f88d-466b-9502-a825496a5257",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

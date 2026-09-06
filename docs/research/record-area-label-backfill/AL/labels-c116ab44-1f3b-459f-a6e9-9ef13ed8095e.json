@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "d2c892d3-d213-4350-a7ff-e1a12160e228",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "da4fa7ab-0368-4579-9b8e-e41d52f6e281",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "da4fa7ab-0368-4579-9b8e-e41d52f6e281",
+   "research_area_slug": "personal_income_tax_reduction",
+   "stance": "for"
+  }
+ ]
+}
