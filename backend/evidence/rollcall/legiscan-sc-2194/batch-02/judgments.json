@@ -1,0 +1,118 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "SC",
+   "chamber": "house",
+   "session": "2194",
+   "roll": 1535156,
+   "measure_id": "H 3045",
+   "vote_date": "2025-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H 3045. It would create the crime of obscene visual representations of child sexual abuse, set penalties for it, and add it to the state's sex offender registry. The South Carolina House passed it 76-20. As of September 2026 the Senate had not voted on it, so it has not become law.",
+   "nay_description": "Voted against H 3045. It would create the crime of obscene visual representations of child sexual abuse, set penalties for it, and add it to the state's sex offender registry. The South Carolina House passed it 76-20. As of September 2026 the Senate had not voted on it, so it has not become law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1536027
+   ]
+  },
+  {
+   "jurisdiction": "SC",
+   "chamber": "house",
+   "session": "2194",
+   "roll": 1561513,
+   "measure_id": "H 3645",
+   "vote_date": "2025-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H 3645. It would increase the number of weeks of paid parental leave that eligible state employees get when a child is born or adopted. The South Carolina House passed it 80-31. As of September 2026 the Senate had not voted on it, so it has not become law.",
+   "nay_description": "Voted against H 3645. It would increase the number of weeks of paid parental leave that eligible state employees get when a child is born or adopted. The South Carolina House passed it 80-31. As of September 2026 the Senate had not voted on it, so it has not become law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1561890
+   ]
+  },
+  {
+   "jurisdiction": "SC",
+   "chamber": "house",
+   "session": "2194",
+   "roll": 1534869,
+   "measure_id": "H 3927",
+   "vote_date": "2025-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H 3927, the Ending Illegal Discrimination and Restoring Merit-Based Opportunity Act. It would bar state agencies, local governments, public colleges and school districts from keeping diversity, equity and inclusion (DEI) offices. They also could not require DEI statements or training, or give preference on DEI grounds. It would also repeal the law that makes each state agency keep an affirmative action plan. The bill defines DEI as programs that amount to illegal discrimination based on race, sex, religion, color or national origin. Anything federal law requires would stay. The South Carolina House passed it 82-32. As of September 2026 the Senate had not voted on it, so it has not become law.",
+   "nay_description": "Voted against H 3927, the Ending Illegal Discrimination and Restoring Merit-Based Opportunity Act. It would bar state agencies, local governments, public colleges and school districts from keeping diversity, equity and inclusion (DEI) offices. They also could not require DEI statements or training, or give preference on DEI grounds. It would also repeal the law that makes each state agency keep an affirmative action plan. The bill defines DEI as programs that amount to illegal discrimination based on race, sex, religion, color or national origin. Anything federal law requires would stay. The South Carolina House passed it 82-32. As of September 2026 the Senate had not voted on it, so it has not become law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "SC",
+   "chamber": "house",
+   "session": "2194",
+   "roll": 1625316,
+   "measure_id": "H 4760",
+   "vote_date": "2026-02-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H 4760. It would make it a felony to give, sell or send a pregnant woman abortion-inducing drugs such as mifepristone or misoprostol. It would also list both drugs as Schedule IV controlled substances, so possessing them without a valid prescription would be a felony. The pregnant woman herself could not be charged for taking or possessing the drugs. Doctors and pharmacists prescribing or filling them for other medical reasons would be exempt. The South Carolina House passed it 76-28. As of September 2026 the Senate had not voted on it, so it has not become law.",
+   "nay_description": "Voted against H 4760. It would make it a felony to give, sell or send a pregnant woman abortion-inducing drugs such as mifepristone or misoprostol. It would also list both drugs as Schedule IV controlled substances, so possessing them without a valid prescription would be a felony. The pregnant woman herself could not be charged for taking or possessing the drugs. Doctors and pharmacists prescribing or filling them for other medical reasons would be exempt. The South Carolina House passed it 76-28. As of September 2026 the Senate had not voted on it, so it has not become law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "SC",
+   "chamber": "house",
+   "session": "2194",
+   "roll": 1675715,
+   "measure_id": "H 4764",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H 4764. It would require every law enforcement agency that runs a jail to sign an agreement with federal immigration authorities. Under it, jail officers would help enforce federal immigration law. An agency that could not get an agreement would have to ask again every year. A local governing body could opt out by formally finding that joining would be unaffordable or would impair the agency's core work. The attorney general would decide whether those findings hold up. The state law enforcement division would have to train agencies doing that work. The South Carolina House passed it 84-26. As of September 2026 the Senate had not voted on it, so it has not become law.",
+   "nay_description": "Voted against H 4764. It would require every law enforcement agency that runs a jail to sign an agreement with federal immigration authorities. Under it, jail officers would help enforce federal immigration law. An agency that could not get an agreement would have to ask again every year. A local governing body could opt out by formally finding that joining would be unaffordable or would impair the agency's core work. The attorney general would decide whether those findings hold up. The state law enforcement division would have to train agencies doing that work. The South Carolina House passed it 84-26. As of September 2026 the Senate had not voted on it, so it has not become law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "SC",
+   "chamber": "house",
+   "session": "2194",
+   "roll": 1670890,
+   "measure_id": "H 4767",
+   "vote_date": "2026-03-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H 4767. It would ban noncompete clauses in doctors' employment contracts, treating them as void and against public policy because they get in the way of a patient's choice of doctor. A doctor who leaves a practice could keep treating their existing patients. The South Carolina House passed it 58-53. As of September 2026 the Senate had not voted on it, so it has not become law.",
+   "nay_description": "Voted against H 4767. It would ban noncompete clauses in doctors' employment contracts, treating them as void and against public policy because they get in the way of a patient's choice of doctor. A doctor who leaves a practice could keep treating their existing patients. The South Carolina House passed it 58-53. As of September 2026 the Senate had not voted on it, so it has not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
