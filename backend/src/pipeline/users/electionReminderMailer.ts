@@ -47,11 +47,11 @@ function resolveBrandName(appName: string | undefined): string {
 
 function normalizeEmailAddress(email: string): string {
   if (typeof email !== "string") {
-    throw new TypeError("Email address must be a string");
+    throw new Error("Email address must be a string");
   }
   const normalized = email.trim();
   if (normalized.length === 0) {
-    throw new TypeError("Email address must be a non-empty string");
+    throw new Error("Email address must be a non-empty string");
   }
   return normalized;
 }

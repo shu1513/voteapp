@@ -22,7 +22,7 @@ function normalizePath(path: string | undefined): string {
 function normalizeSessionCookieValue(value: string): string {
   const normalized = value.trim();
   if (normalized.length === 0) {
-    throw new TypeError("Session cookie value must be a non-empty string");
+    throw new Error("Session cookie value must be a non-empty string");
   }
   return normalized;
 }
@@ -79,7 +79,7 @@ export function serializeAuthSessionCookie(
   if (options.maxAgeSeconds !== undefined && options.maxAgeSeconds !== null) {
     const maxAgeSeconds = Math.trunc(options.maxAgeSeconds);
     if (!Number.isFinite(maxAgeSeconds) || maxAgeSeconds < 0) {
-      throw new TypeError("maxAgeSeconds must be a non-negative finite number");
+      throw new Error("maxAgeSeconds must be a non-negative finite number");
     }
     parts.push(`Max-Age=${maxAgeSeconds}`);
   }

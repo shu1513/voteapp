@@ -9,6 +9,7 @@ import { CURRENT_TERMS_VERSION, isAcceptableTermsVersion } from "../constants/le
 import { recordTermsAcceptance } from "../pipeline/users/userTermsAcceptances.js";
 import { revokeAllUserPushTokens } from "../pipeline/users/userPushTokens.js";
 import type { VerifyGoogleIdToken } from "./googleIdToken.js";
+import { RequestValidationError } from "../utils/requestValidationError.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type TransactionalDb = Pick<Pool, "connect" | "query">;
@@ -149,14 +150,14 @@ type AuthUserRow = {
 
 function normalizeEmail(email: string): string {
   if (typeof email !== "string") {
-    throw new TypeError("Email must be a string");
+    throw new RequestValidationError("Email must be a string");
   }
   const normalized = email.trim();
   if (normalized.length === 0) {
-    throw new TypeError("Email must be a non-empty string");
+    throw new RequestValidationError("Email must be a non-empty string");
   }
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(normalized)) {
-    throw new TypeError("Email must be a valid email address");
+    throw new RequestValidationError("Email must be a valid email address");
   }
   return normalized;
 }
@@ -166,7 +167,7 @@ function normalizeOptionalFirstName(firstName: string | undefined): string | nul
     return null;
   }
   if (typeof firstName !== "string") {
-    throw new TypeError("firstName must be a string");
+    throw new RequestValidationError("firstName must be a string");
   }
   const normalized = firstName.trim();
   return normalized.length > 0 ? normalized : null;
@@ -183,15 +184,15 @@ function deriveFirstName(email: string, providedFirstName: string | null): strin
 
 function normalizePublicBaseUrl(publicBaseUrl: string): URL {
   if (typeof publicBaseUrl !== "string") {
-    throw new TypeError("publicBaseUrl must be a string");
+    throw new Error("publicBaseUrl must be a string");
   }
   const normalized = publicBaseUrl.trim();
   if (normalized.length === 0) {
-    throw new TypeError("publicBaseUrl must be a non-empty string");
+    throw new Error("publicBaseUrl must be a non-empty string");
   }
   const parsed = new URL(normalized);
   if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-    throw new TypeError("publicBaseUrl must use http or https");
+    throw new Error("publicBaseUrl must use http or https");
   }
   return parsed;
 }
@@ -260,7 +261,7 @@ function toEmailChangeLink(baseUrl: URL, token: string): string {
 function normalizeUserId(userId: string): string {
   const normalized = typeof userId === "string" ? userId.trim() : "";
   if (!isUuid(normalized)) {
-    throw new TypeError("userId must be a UUID");
+    throw new RequestValidationError("userId must be a UUID");
   }
   return normalized;
 }
@@ -432,7 +433,7 @@ function validateGoogleClaims(payload: {
   hd?: string;
   given_name?: string;
 }): GoogleIdentity {
-  const invalid = () => new TypeError("Google sign-in failed: invalid credential");
+  const invalid = () => new RequestValidationError("Google sign-in failed: invalid credential");
   const sub = typeof payload.sub === "string" ? payload.sub.trim() : "";
   if (sub.length === 0) {
     throw invalid();
@@ -456,7 +457,7 @@ function validateGoogleClaims(payload: {
   // Google-account holder someone else's VoteApp account.
   const lowerEmail = email.toLowerCase();
   if (!lowerEmail.endsWith("@gmail.com") && !lowerEmail.endsWith("@googlemail.com") && hd === null) {
-    throw new TypeError(
+    throw new RequestValidationError(
       "Google sign-in is only available for Gmail and Google Workspace addresses. Use email signup or login instead."
     );
   }
@@ -545,7 +546,7 @@ function createLoginWithGoogle(deps: {
           // stored email deliberately does not follow Google email changes,
           // so an overwrite here would let a token holding a recycled email
           // steal the account. Generic message — detail only helps probing.
-          throw new TypeError("Google sign-in failed: this email cannot be linked to this Google account");
+          throw new RequestValidationError("Google sign-in failed: this email cannot be linked to this Google account");
         }
         if (byEmail.email_verified) {
           // Both sides verified + authoritative: link (either intent).
@@ -655,10 +656,10 @@ function createLoginWithGoogle(deps: {
 
   return async function loginWithGoogle(input) {
     if (typeof input.idToken !== "string" || input.idToken.trim().length === 0) {
-      throw new TypeError("idToken must be a non-empty string");
+      throw new RequestValidationError("idToken must be a non-empty string");
     }
     if (input.intent !== "login" && input.intent !== "signup") {
-      throw new TypeError('intent must be "login" or "signup"');
+      throw new RequestValidationError('intent must be "login" or "signup"');
     }
     if (input.intent === "signup") {
       const acceptedTermsVersion =
@@ -666,7 +667,7 @@ function createLoginWithGoogle(deps: {
       // Same dual-layer rule as register: no caller may persist acceptance
       // of anything but the current version or a listed grace version.
       if (!isAcceptableTermsVersion(acceptedTermsVersion)) {
-        throw new TypeError(
+        throw new RequestValidationError(
           `acceptedTermsVersion must be an accepted terms version (current: ${CURRENT_TERMS_VERSION})`
         );
       }
@@ -678,7 +679,7 @@ function createLoginWithGoogle(deps: {
     } catch {
       // Library errors (bad signature, wrong audience, expired, malformed)
       // must all surface as one generic 400, never a 500.
-      throw new TypeError("Google sign-in failed: invalid credential");
+      throw new RequestValidationError("Google sign-in failed: invalid credential");
     }
     const identity = validateGoogleClaims(payload);
 
@@ -764,7 +765,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       // current version or a listed grace version — the stored value is the
       // evidentiary record of what the visitor's bundle actually showed.
       if (!isAcceptableTermsVersion(acceptedTermsVersion)) {
-        throw new TypeError(
+        throw new RequestValidationError(
           `acceptedTermsVersion must be an accepted terms version (current: ${CURRENT_TERMS_VERSION})`
         );
       }
@@ -835,7 +836,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
 
     async verifyEmail(input) {
       if (typeof input.token !== "string" || input.token.trim().length === 0) {
-        throw new TypeError("token must be a non-empty string");
+        throw new RequestValidationError("token must be a non-empty string");
       }
 
       const client = await options.db.connect();
@@ -847,7 +848,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           now: new Date(),
         });
         if (!consumed) {
-          throw new TypeError("Verification token is invalid or expired");
+          throw new RequestValidationError("Verification token is invalid or expired");
         }
 
         // Verification upgrades every session's privileges, so revoke the
@@ -890,7 +891,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       const passwordHash = user?.password_hash ?? (await DUMMY_PASSWORD_HASH_PROMISE);
       const passwordMatches = await verifyPassword(passwordHash, input.password);
       if (!user || user.password_hash === null || !passwordMatches) {
-        throw new TypeError("Invalid email or password");
+        throw new RequestValidationError("Invalid email or password");
       }
 
       const client = await options.db.connect();
@@ -988,7 +989,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
 
     async resetPassword(input) {
       if (typeof input.token !== "string" || input.token.trim().length === 0) {
-        throw new TypeError("token must be a non-empty string");
+        throw new RequestValidationError("token must be a non-empty string");
       }
       validatePasswordPolicy(input.password);
       const client = await options.db.connect();
@@ -1002,7 +1003,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           now: new Date(),
         });
         if (!consumed) {
-          throw new TypeError("Password reset token is invalid or expired");
+          throw new RequestValidationError("Password reset token is invalid or expired");
         }
 
         // Hash only after the token is proven valid: bogus-token requests
@@ -1056,7 +1057,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
     async changePassword(input) {
       const userId = normalizeUserId(input.userId);
       if (typeof input.currentPassword !== "string" || input.currentPassword.length === 0) {
-        throw new TypeError("currentPassword must be a non-empty string");
+        throw new RequestValidationError("currentPassword must be a non-empty string");
       }
       validatePasswordPolicy(input.newPassword);
 
@@ -1069,7 +1070,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         // those users at the password-reset flow to add a password first.
         if (!user || user.password_hash === null || !(await verifyPassword(user.password_hash, input.currentPassword))) {
           // Same message for missing user and wrong password, like login.
-          throw new TypeError("Current password is incorrect");
+          throw new RequestValidationError("Current password is incorrect");
         }
 
         const passwordHash = await hashPassword(input.newPassword);
@@ -1126,7 +1127,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       const userId = normalizeUserId(input.userId);
       const newEmail = normalizeEmail(input.newEmail);
       if (typeof input.password !== "string" || input.password.length === 0) {
-        throw new TypeError("password must be a non-empty string");
+        throw new RequestValidationError("password must be a non-empty string");
       }
 
       const client = await options.db.connect();
@@ -1138,10 +1139,10 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         const user = await findActiveUserByIdForUpdate(client, userId);
         // NULL hash (Google-only account) never matches — add a password first.
         if (!user || user.password_hash === null || !(await verifyPassword(user.password_hash, input.password))) {
-          throw new TypeError("Password is incorrect");
+          throw new RequestValidationError("Password is incorrect");
         }
         if (user.email.toLowerCase() === newEmail.toLowerCase()) {
-          throw new TypeError("New email must be different from the current email");
+          throw new RequestValidationError("New email must be different from the current email");
         }
 
         // Void outstanding change links up front, not only inside
@@ -1203,7 +1204,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
 
     async verifyEmailChange(input) {
       if (typeof input.token !== "string" || input.token.trim().length === 0) {
-        throw new TypeError("token must be a non-empty string");
+        throw new RequestValidationError("token must be a non-empty string");
       }
 
       let changedUserId: string | null = null;
@@ -1216,7 +1217,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           now: new Date(),
         });
         if (!consumed || !consumed.newEmail) {
-          throw new TypeError("Email change token is invalid or expired");
+          throw new RequestValidationError("Email change token is invalid or expired");
         }
 
         // The link landed in the new inbox, so the new address is verified.
@@ -1241,7 +1242,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         await rollbackQuietly(client);
         // Another account claimed the address between request and confirm.
         if ((error as { code?: string }).code === "23505") {
-          throw new TypeError("Email change token is invalid or expired");
+          throw new RequestValidationError("Email change token is invalid or expired");
         }
         throw error;
       } finally {
@@ -1268,7 +1269,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
     async deleteAccount(input) {
       const userId = normalizeUserId(input.userId);
       if (typeof input.password !== "string" || input.password.length === 0) {
-        throw new TypeError("password must be a non-empty string");
+        throw new RequestValidationError("password must be a non-empty string");
       }
 
       // Membership cancellation is a precondition (Terms §14.3: deleting the
@@ -1287,7 +1288,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           const user = await findActiveUserByIdForUpdate(precheckClient, userId);
           // NULL hash (Google-only account) never matches — add a password first.
           if (!user || user.password_hash === null || !(await verifyPassword(user.password_hash, input.password))) {
-            throw new TypeError("Password is incorrect");
+            throw new RequestValidationError("Password is incorrect");
           }
           // Pure check — release the row lock before any network call.
           await precheckClient.query("ROLLBACK");
@@ -1308,7 +1309,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         const user = await findActiveUserByIdForUpdate(client, userId);
         // NULL hash (Google-only account) never matches — add a password first.
         if (!user || user.password_hash === null || !(await verifyPassword(user.password_hash, input.password))) {
-          throw new TypeError("Password is incorrect");
+          throw new RequestValidationError("Password is incorrect");
         }
 
         // Two tables outlive the user row and need explicit scrubbing before

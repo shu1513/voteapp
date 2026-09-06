@@ -11,6 +11,7 @@
 // whole session's trail.
 
 import type { Pool } from "pg";
+import { RequestValidationError } from "../utils/requestValidationError.js";
 
 export const USAGE_PAYLOAD_VERSION = 1;
 export const MAX_USAGE_EVENTS_PER_REQUEST = 40;
@@ -462,17 +463,17 @@ export function parseUsageEvent(value: unknown): UsageEventRow | null {
  */
 export function parseUsageEventsBodyValue(parsed: unknown): ParsedUsageEvents {
   if (!isRecord(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
   if (parsed.v !== USAGE_PAYLOAD_VERSION) {
-    throw new TypeError(`v must be ${USAGE_PAYLOAD_VERSION}`);
+    throw new RequestValidationError(`v must be ${USAGE_PAYLOAD_VERSION}`);
   }
   const events = parsed.events;
   if (!Array.isArray(events) || events.length === 0) {
-    throw new TypeError("events must be a non-empty array");
+    throw new RequestValidationError("events must be a non-empty array");
   }
   if (events.length > MAX_USAGE_EVENTS_PER_REQUEST) {
-    throw new TypeError(`events must contain at most ${MAX_USAGE_EVENTS_PER_REQUEST} items`);
+    throw new RequestValidationError(`events must contain at most ${MAX_USAGE_EVENTS_PER_REQUEST} items`);
   }
   const accepted: UsageEventRow[] = [];
   let dropped = 0;

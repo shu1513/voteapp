@@ -7,6 +7,7 @@ import {
   type MembershipChangedEmailInput,
   type MembershipStripeClient,
 } from "../../src/api/membership/membershipService.js";
+import { RequestValidationError } from "../../src/utils/requestValidationError.js";
 
 const USER_ID = "11111111-1111-4111-8111-111111111111";
 const BILLING_CUSTOMER_ID = "22222222-2222-4222-8222-222222222222";
@@ -211,13 +212,13 @@ describe("membership createCheckoutSession", () => {
   it("rejects amounts below the $5 minimum and above the $1,000 cap", async () => {
     const service = createService({ db: dbWithCustomer(), stripe: createStripeMock() });
     await expect(service.createCheckoutSession(USER_ID, { kind: "one_time", amount_cents: 499 })).rejects.toThrow(
-      TypeError
+      RequestValidationError
     );
     await expect(service.createCheckoutSession(USER_ID, { kind: "monthly", amount_cents: 100_001 })).rejects.toThrow(
-      TypeError
+      RequestValidationError
     );
     await expect(service.createCheckoutSession(USER_ID, { kind: "monthly", amount_cents: 10.5 })).rejects.toThrow(
-      TypeError
+      RequestValidationError
     );
   });
 
@@ -1245,7 +1246,7 @@ describe("membership changeMonthlyAmount", () => {
   it("rejects amounts outside the checkout bounds before touching Stripe", async () => {
     const { stripe, service } = setup();
     for (const amount_cents of [499, 100_001, 10.5]) {
-      await expect(service.changeMonthlyAmount(USER_ID, { amount_cents })).rejects.toThrow(TypeError);
+      await expect(service.changeMonthlyAmount(USER_ID, { amount_cents })).rejects.toThrow(RequestValidationError);
     }
     expect(stripe.subscriptions.retrieve).not.toHaveBeenCalled();
   });
