@@ -1,0 +1,34 @@
+{
+ "labels": [
+  {
+   "record_id": "36e8df0f-2c09-4ab2-82e4-40b7e49a93bb",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "e8646b03-d789-4919-b7b2-b82c4995f2c2",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "9eb922bc-4168-448b-930c-d954707e80e1",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "9eb922bc-4168-448b-930c-d954707e80e1",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "9eb922bc-4168-448b-930c-d954707e80e1",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "9eb922bc-4168-448b-930c-d954707e80e1",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

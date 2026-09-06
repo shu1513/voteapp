@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "d9e8f943-9c40-4c3e-80bf-a1a28c2d2fae",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "d3266964-1653-45d9-8b38-b0bbe7be36ec",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "0f834e94-ef4f-47f7-ba1d-482e08c2f1cb",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "9aa4f86f-574c-4729-bb6a-7a49789395a8",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

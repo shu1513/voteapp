@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "fcb7a1ec-5147-407c-85bc-a271cd89a738",
+   "research_area_slug": "anti_corruption",
+   "stance": "against"
+  },
+  {
+   "record_id": "f284e9b1-6389-413a-b865-fcee69d2bc16",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  },
+  {
+   "record_id": "abe93110-2824-4bf9-be0e-ac36a1790655",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "5addedb2-41f9-49c9-9459-8ef4fda3ab85",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "162d0336-6c10-48dd-b75e-6434ef3faeff",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "b268149b-6bf4-4c6b-994e-3da04743072c",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "a4a7ae45-694d-4ad7-98b2-ecc80199d96c",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "against"
+  },
+  {
+   "record_id": "b76861a4-72db-46c7-8c48-13ebee1504b4",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "ca0c3539-7c8b-413a-90a2-b800e696f54c",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "d391f9f0-57b7-460d-8acf-1fc6fcb52cae",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "d391f9f0-57b7-460d-8acf-1fc6fcb52cae",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "823c409c-97cc-41a0-bf9e-c257f848158b",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  },
+  {
+   "record_id": "8f15d2d8-5d22-4d65-967f-a0eef931c8da",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  }
+ ]
+}

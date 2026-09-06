@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "e7516695-d146-4fda-ae1c-ddd17c7eda0a",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "e7516695-d146-4fda-ae1c-ddd17c7eda0a",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "d4f8bccd-e7a4-4e47-aaf1-26505e9431cb",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "9dd91f17-e81d-4e84-96e6-4f72fa43b3e9",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

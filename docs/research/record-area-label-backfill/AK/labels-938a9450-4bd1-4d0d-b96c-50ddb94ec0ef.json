@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "77337a26-c65a-4d50-a0cf-b2c9e651081b",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "2bf09626-82ab-4296-bf08-c0766873d294",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "f088771a-69d8-428c-9f5e-b249a925111c",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

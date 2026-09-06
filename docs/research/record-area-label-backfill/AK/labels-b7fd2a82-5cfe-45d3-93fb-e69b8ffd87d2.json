@@ -1,0 +1,49 @@
+{
+ "labels": [
+  {
+   "record_id": "7ebf45ce-2233-43c7-b5bc-9f0299b7c0b3",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "bf72c9f6-28e8-41ed-a133-eaec77a0149d",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "3df92cd1-76ad-4da5-8d49-6a8631a23a0f",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "a59a8926-cd32-4bea-8db9-f8b80ffcb0c4",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "c27c2733-400f-4f92-8f0d-119f5009f365",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "c27c2733-400f-4f92-8f0d-119f5009f365",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "076b147f-7867-4200-b5af-1631ccb35718",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "88afdb02-6896-4edd-99b5-d708b3120a41",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "4d147ff0-3ea8-4484-91c3-75c6708f1360",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

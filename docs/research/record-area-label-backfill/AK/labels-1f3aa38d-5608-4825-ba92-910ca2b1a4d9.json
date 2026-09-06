@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "00569d18-0f03-483a-aaff-eedaba8a6837",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "1e17e352-8668-48da-963a-233ff27c9e14",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "ac0c04a6-ccdd-4bb8-8c3d-0b1ed241b5c5",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "d42de001-05c0-4586-a809-2ebe80318441",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "8950e530-829a-438b-9be5-a9a6aaaa4907",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

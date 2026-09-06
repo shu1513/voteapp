@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "e35854e6-0312-495d-9182-ab27d1fcae16",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "23f97fb4-0fd2-47c9-b59c-e6e598cf0206",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "13f4e715-31b0-4d47-84d6-3ff6943ab244",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "fe734b79-09d8-4f61-b6ff-d7f38a038e35",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "60a0acf9-51ee-4f64-afa7-8f0ecfde5533",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "802711ef-e546-4be4-a766-c750668f3424",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "802711ef-e546-4be4-a766-c750668f3424",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}
