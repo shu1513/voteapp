@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "f1aea04f-a482-481e-889c-c98124ad61f0",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "5f58d7e1-c532-4c19-81b1-746d8542853b",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "26635908-e714-4a99-882e-ca7cddf61d95",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "57aa1519-8443-40f3-80a0-2c6c68f4e001",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

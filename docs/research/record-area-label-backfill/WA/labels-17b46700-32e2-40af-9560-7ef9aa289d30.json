@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "5ca40206-f0ce-4b5c-be73-988372809ef4",
+   "research_area_slug": "data_privacy",
+   "stance": "against"
+  },
+  {
+   "record_id": "5ca40206-f0ce-4b5c-be73-988372809ef4",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "ef29e9c9-32a7-4a75-b706-9a5a6ffe3474",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "d2b25f21-0bd5-4da8-833a-ed580a8a60eb",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

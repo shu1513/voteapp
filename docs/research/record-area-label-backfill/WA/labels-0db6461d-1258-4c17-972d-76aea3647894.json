@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "bc7cb753-4ebc-4afa-900f-b0897a9e3f54",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "ed7b976a-24dc-4100-b688-eb42e6b53e6b",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "0753e3d1-791b-4f7d-8f4a-75079438e087",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "c93e6dcc-eafa-43b9-a99b-8cfc1e999407",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "4ace671a-96db-4c00-a13d-da0d13ae5a82",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "4ace671a-96db-4c00-a13d-da0d13ae5a82",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "7a9385fe-6268-4806-91c4-4abdc8f66dcc",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  }
+ ]
+}

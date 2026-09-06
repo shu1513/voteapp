@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "f38979b3-8ba2-4dd4-a695-29ce41383503",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "724ce4ce-5d83-4114-bbd8-34f3bb93e666",
+   "research_area_slug": "housing_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "7c7b9e43-851d-424c-ac55-f9cb5ede9328",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "f22b1bc3-2d42-4f02-902d-e0565ee71c29",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

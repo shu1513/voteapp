@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "7fd5575a-8c01-46df-ae7f-8487b3cc6e6c",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  },
+  {
+   "record_id": "89e1a4c8-19ec-4ff5-85ea-8ed8650599ef",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "67f2da18-6c24-4a78-b1ca-526b0b3e4dc7",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  },
+  {
+   "record_id": "67f2da18-6c24-4a78-b1ca-526b0b3e4dc7",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "da844c0f-72f0-4ba5-8891-67e50af712fe",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

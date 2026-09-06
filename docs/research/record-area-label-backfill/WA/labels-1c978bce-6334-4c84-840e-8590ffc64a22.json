@@ -1,0 +1,94 @@
+{
+ "labels": [
+  {
+   "record_id": "8d711082-f10f-4c2e-b8ca-fc3d27e0d25a",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "d3ffec5d-7f9a-43f1-8ce2-5e39ed5ace22",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "d3ffec5d-7f9a-43f1-8ce2-5e39ed5ace22",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "365d8c58-0d2b-48c3-a69f-d3f25b0485c3",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "e5778587-0d62-4c62-9cf7-079dcf19be34",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "e3013845-87f4-4180-a99c-0f07962efc3c",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "31c58da7-08d9-43ea-a553-1d3973e969bc",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "31c58da7-08d9-43ea-a553-1d3973e969bc",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "2aabf1fd-dfdb-437b-b57c-38cf9eac4736",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "9d11b35e-1104-47a8-96a8-cf7558667a36",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "fe61303c-0be7-485d-b44a-df638a678cd3",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "1c16271f-ba97-453d-a849-1fe0b926c9ef",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "67fc87f0-511a-4f66-ae92-6eac8aeed1e7",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "728e5a44-1828-4133-9351-46e26b076177",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "05c06846-34c1-4c54-9980-0fa2c132b1b0",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "0c069b4e-2f0d-4609-8e2b-441f58352dc8",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "0c069b4e-2f0d-4609-8e2b-441f58352dc8",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  },
+  {
+   "record_id": "0c069b4e-2f0d-4609-8e2b-441f58352dc8",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  }
+ ]
+}

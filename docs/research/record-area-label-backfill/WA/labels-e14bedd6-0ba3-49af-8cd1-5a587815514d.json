@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "6a50e34a-3617-45b2-848c-e45c20b23460",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "6a50e34a-3617-45b2-848c-e45c20b23460",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "7682ccaf-72bc-4805-b243-d13c6bad6b40",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "7682ccaf-72bc-4805-b243-d13c6bad6b40",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

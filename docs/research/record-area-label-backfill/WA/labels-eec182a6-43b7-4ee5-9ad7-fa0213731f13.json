@@ -1,0 +1,74 @@
+{
+ "labels": [
+  {
+   "record_id": "6e66dd59-2307-4bfd-834b-28b382a83846",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "6e66dd59-2307-4bfd-834b-28b382a83846",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "5fcbdecd-6ab9-4e71-b3ff-0a33708b9601",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  },
+  {
+   "record_id": "d89b839b-d1bf-487e-9d83-2e1fbc4db7da",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "8d70e1f3-9b3d-483d-af88-e35a124911b3",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "8d70e1f3-9b3d-483d-af88-e35a124911b3",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "471e06d0-2108-4b98-b7aa-a8d8c79a99e8",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "84c5a69e-8755-4855-87aa-ff8acbdf17c2",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "6a3ce83a-c98d-4fda-8161-c706921b51db",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "6a3ce83a-c98d-4fda-8161-c706921b51db",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "63b1519b-974b-4ca4-991b-da2bd4a5c651",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "5285e466-634f-446c-823b-4fe13e58ea77",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "1d056718-fc38-41fd-ba50-7b911ed3d470",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "9523f603-8d9b-43b1-b00e-f531bf7b0cae",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

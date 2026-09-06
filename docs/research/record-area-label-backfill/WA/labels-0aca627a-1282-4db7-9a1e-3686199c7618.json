@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "ae774176-cf39-4dc4-9c63-1e30bcd3ce52",
+   "research_area_slug": "public_infrastructure",
+   "stance": "against"
+  },
+  {
+   "record_id": "ae774176-cf39-4dc4-9c63-1e30bcd3ce52",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "97082a13-8c5c-4df2-a648-d3ad95827176",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "753d0b07-7eb6-4d1c-8d3d-48826566c4f7",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "6d9637a3-6879-49e2-a2b8-879835a94d27",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  },
+  {
+   "record_id": "d67ec516-eb2f-441e-85b2-b0e3e561e130",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "cd4d7076-4184-4351-9bd7-b927cc53586e",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  }
+ ]
+}

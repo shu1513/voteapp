@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "a9e712a2-f0d5-40db-ad17-6c79c77f6a92",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "aeb56260-aead-47a0-93a2-acdc869e88d0",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "f7511acd-cc5a-4b57-a908-4bf934d7d605",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "f94aa079-bad8-4adf-ad63-7dacfba0125e",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}
