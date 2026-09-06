@@ -1,0 +1,418 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1716924,
+      "measure_id": "HB 4304",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4304. House Bill 4304 set rules for public colleges. Each campus must work to keep its classrooms free of unlawful bias and harassment. Its conduct rules must not turn on the views a student holds, and it must say how disabled students ask for help. A campus may not unlawfully limit a student's right to speak, publish, or gather. The House passed it 72-37, and it became law.",
+      "nay_description": "Voted against House Bill 4304. House Bill 4304 set rules for public colleges. Each campus must work to keep its classrooms free of unlawful bias and harassment. Its conduct rules must not turn on the views a student holds, and it must say how disabled students ask for help. A campus may not unlawfully limit a student's right to speak, publish, or gather. The House passed it 72-37, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1716925,
+      "measure_id": "HB 4304",
+      "vote_date": "2026-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4304. House Bill 4304 set rules for public colleges. Each campus must work to keep its classrooms free of unlawful bias and harassment. Its conduct rules must not turn on the views a student holds, and it must say how disabled students ask for help. A campus may not unlawfully limit a student's right to speak, publish, or gather. The Senate passed it 37-19, and it became law.",
+      "nay_description": "Voted against House Bill 4304. House Bill 4304 set rules for public colleges. Each campus must work to keep its classrooms free of unlawful bias and harassment. Its conduct rules must not turn on the views a student holds, and it must say how disabled students ask for help. A campus may not unlawfully limit a student's right to speak, publish, or gather. The Senate passed it 37-19, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1722086,
+      "measure_id": "HB 4397",
+      "vote_date": "2026-05-19",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4397. House Bill 4397 raised the training a person needs to work as a school psychologist. Starting July 1, 2027, that means an approved graduate degree of at least 60 semester hours and 1,200 hours of supervised practice. At least 600 of those hours must be in a school. The Senate passed it 46-12, and it became law.",
+      "nay_description": "Voted against House Bill 4397. House Bill 4397 raised the training a person needs to work as a school psychologist. Starting July 1, 2027, that means an approved graduate degree of at least 60 semester hours and 1,200 hours of supervised practice. At least 600 of those hours must be in a school. The Senate passed it 46-12, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1723398,
+      "measure_id": "HB 4420",
+      "vote_date": "2026-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4420. House Bill 4420 covered news and other media produced at state colleges and universities. It made that media a public forum for the employees who produce it. School officials may no longer review the content before it is published. The House passed it 75-36, and it became law.",
+      "nay_description": "Voted against House Bill 4420. House Bill 4420 covered news and other media produced at state colleges and universities. It made that media a public forum for the employees who produce it. School officials may no longer review the content before it is published. The House passed it 75-36, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1723399,
+      "measure_id": "HB 4420",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4420. House Bill 4420 covered news and other media produced at state colleges and universities. It made that media a public forum for the employees who produce it. School officials may no longer review the content before it is published. The Senate passed it 39-19, and it became law.",
+      "nay_description": "Voted against House Bill 4420. House Bill 4420 covered news and other media produced at state colleges and universities. It made that media a public forum for the employees who produce it. School officials may no longer review the content before it is published. The Senate passed it 39-19, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1723013,
+      "measure_id": "HB 4514",
+      "vote_date": "2026-04-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4514. House Bill 4514 applies when an electric, gas, water, or sewer utility asks to raise rates across the board. The utility must tell customers they may ask for a public forum on the increase. A customer makes that request in writing to the Illinois Commerce Commission. The House passed it 81-22, and it became law.",
+      "nay_description": "Voted against House Bill 4514. House Bill 4514 applies when an electric, gas, water, or sewer utility asks to raise rates across the board. The utility must tell customers they may ask for a public forum on the increase. A customer makes that request in writing to the Illinois Commerce Commission. The House passed it 81-22, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1717543,
+      "measure_id": "HB 4533",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4533. House Bill 4533 covered companies licensed to send money out of the country. Each must offer every customer sending money abroad the chance to make a voluntary donation to the Illinois DREAM Fund, which pays for college scholarships for the children of immigrants. The House passed it 73-38, and it became law.",
+      "nay_description": "Voted against House Bill 4533. House Bill 4533 covered companies licensed to send money out of the country. Each must offer every customer sending money abroad the chance to make a voluntary donation to the Illinois DREAM Fund, which pays for college scholarships for the children of immigrants. The House passed it 73-38, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1717544,
+      "measure_id": "HB 4533",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4533. House Bill 4533 covered companies licensed to send money out of the country. Each must offer every customer sending money abroad the chance to make a voluntary donation to the Illinois DREAM Fund, which pays for college scholarships for the children of immigrants. The Senate passed it 39-19, and it became law.",
+      "nay_description": "Voted against House Bill 4533. House Bill 4533 covered companies licensed to send money out of the country. Each must offer every customer sending money abroad the chance to make a voluntary donation to the Illinois DREAM Fund, which pays for college scholarships for the children of immigrants. The Senate passed it 39-19, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1718060,
+      "measure_id": "HB 4577",
+      "vote_date": "2026-05-27",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate version of House Bill 4577. House Bill 4577 wrote into law what play-based learning in kindergarten means. It covers both play a teacher sets up and leads toward a learning goal, and play a child chooses in a room the teacher arranged for the same purpose. The House agreed to that version 76-27, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 4577. House Bill 4577 wrote into law what play-based learning in kindergarten means. It covers both play a teacher sets up and leads toward a learning goal, and play a child chooses in a room the teacher arranged for the same purpose. The House agreed to that version 76-27, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1718059,
+      "measure_id": "HB 4577",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4577. House Bill 4577 wrote into law what play-based learning in kindergarten means. It covers both play a teacher sets up and leads toward a learning goal, and play a child chooses in a room the teacher arranged for the same purpose. The Senate passed it 45-13, and it became law.",
+      "nay_description": "Voted against House Bill 4577. House Bill 4577 wrote into law what play-based learning in kindergarten means. It covers both play a teacher sets up and leads toward a learning goal, and play a child chooses in a room the teacher arranged for the same purpose. The Senate passed it 45-13, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1718840,
+      "measure_id": "HB 4606",
+      "vote_date": "2026-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4606. House Bill 4606 let the Department of Human Services build and run the administration behind short-term home visits offered to every family with a newborn. The department may list the visiting models that fit the state's goals and set rules to support them. The House passed it 73-31, and it became law.",
+      "nay_description": "Voted against House Bill 4606. House Bill 4606 let the Department of Human Services build and run the administration behind short-term home visits offered to every family with a newborn. The department may list the visiting models that fit the state's goals and set rules to support them. The House passed it 73-31, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1718656,
+      "measure_id": "HB 4639",
+      "vote_date": "2026-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4639. House Bill 4639 changed the Juvenile Court Act. A judge, and not only the State's Attorney, may set up community mediation programs for young people accused of a crime. Before sentencing, a judge may require those involved to consider a restorative practice where one is available. The House passed it 65-39, and it became law.",
+      "nay_description": "Voted against House Bill 4639. House Bill 4639 changed the Juvenile Court Act. A judge, and not only the State's Attorney, may set up community mediation programs for young people accused of a crime. Before sentencing, a judge may require those involved to consider a restorative practice where one is available. The House passed it 65-39, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1718657,
+      "measure_id": "HB 4639",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4639. House Bill 4639 changed the Juvenile Court Act. A judge, and not only the State's Attorney, may set up community mediation programs for young people accused of a crime. Before sentencing, a judge may require those involved to consider a restorative practice where one is available. The Senate passed it 39-18, and it became law.",
+      "nay_description": "Voted against House Bill 4639. House Bill 4639 changed the Juvenile Court Act. A judge, and not only the State's Attorney, may set up community mediation programs for young people accused of a crime. Before sentencing, a judge may require those involved to consider a restorative practice where one is available. The Senate passed it 39-18, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1723007,
+      "measure_id": "HB 4702",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4702. House Bill 4702 created the Diaper Labeling Act. Makers must list what is in a diaper. They have 18 months to comply, may name trade secret ingredients by their common use instead of the exact chemical, and may list ingredients that make up one percent or less in any order. The House passed it 73-38, and it became law.",
+      "nay_description": "Voted against House Bill 4702. House Bill 4702 created the Diaper Labeling Act. Makers must list what is in a diaper. They have 18 months to comply, may name trade secret ingredients by their common use instead of the exact chemical, and may list ingredients that make up one percent or less in any order. The House passed it 73-38, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1722358,
+      "measure_id": "HB 4788",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4788. House Bill 4788 covered the CPR training high schools must teach. Starting in the 2029-2030 school year, that training must use manikins with breasts as well as manikins without them. Schools may meet this by adding chest covers to manikins they already own. The House passed it 73-38, and it became law.",
+      "nay_description": "Voted against House Bill 4788. House Bill 4788 covered the CPR training high schools must teach. Starting in the 2029-2030 school year, that training must use manikins with breasts as well as manikins without them. Schools may meet this by adding chest covers to manikins they already own. The House passed it 73-38, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1722359,
+      "measure_id": "HB 4788",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4788. House Bill 4788 covered the CPR training high schools must teach. Starting in the 2029-2030 school year, that training must use manikins with breasts as well as manikins without them. Schools may meet this by adding chest covers to manikins they already own. The Senate passed it 43-13, and it became law.",
+      "nay_description": "Voted against House Bill 4788. House Bill 4788 covered the CPR training high schools must teach. Starting in the 2029-2030 school year, that training must use manikins with breasts as well as manikins without them. Schools may meet this by adding chest covers to manikins they already own. The Senate passed it 43-13, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1720568,
+      "measure_id": "HB 4862",
+      "vote_date": "2026-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4862. House Bill 4862 required every school board to adopt a written procedure supporting school employees' mental health by January 1, 2028. It must include a way for staff to give feedback and a yearly notice telling staff what help is available. The House passed it 81-27, and it became law.",
+      "nay_description": "Voted against House Bill 4862. House Bill 4862 required every school board to adopt a written procedure supporting school employees' mental health by January 1, 2028. It must include a way for staff to give feedback and a yearly notice telling staff what help is available. The House passed it 81-27, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1720569,
+      "measure_id": "HB 4862",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4862. House Bill 4862 required every school board to adopt a written procedure supporting school employees' mental health by January 1, 2028. It must include a way for staff to give feedback and a yearly notice telling staff what help is available. The Senate passed it 43-15, and it became law.",
+      "nay_description": "Voted against House Bill 4862. House Bill 4862 required every school board to adopt a written procedure supporting school employees' mental health by January 1, 2028. It must include a way for staff to give feedback and a yearly notice telling staff what help is available. The Senate passed it 43-15, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1722906,
+      "measure_id": "HB 4890",
+      "vote_date": "2026-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4890. House Bill 4890 set up a court process for a child who came to this country alone, is held in federal refugee care in Illinois, and says a parent hurt or abandoned them. A judge may rule that the child is now under the court's care. That ruling opens the door to health, school, and social services. The House passed it 82-26, and it became law.",
+      "nay_description": "Voted against House Bill 4890. House Bill 4890 set up a court process for a child who came to this country alone, is held in federal refugee care in Illinois, and says a parent hurt or abandoned them. A judge may rule that the child is now under the court's care. That ruling opens the door to health, school, and social services. The House passed it 82-26, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1717950,
+      "measure_id": "HB 4948",
+      "vote_date": "2026-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4948. House Bill 4948 created the Intelligent Speed Assistance Program. A driver with two qualifying speeding offenses within 12 months must install a device that holds the vehicle to the speed limit, and their license stays suspended until they take part. Participants pay up to $30 a month, and a state fund helps drivers who cannot afford it. The House passed it 77-24, and it became law.",
+      "nay_description": "Voted against House Bill 4948. House Bill 4948 created the Intelligent Speed Assistance Program. A driver with two qualifying speeding offenses within 12 months must install a device that holds the vehicle to the speed limit, and their license stays suspended until they take part. Participants pay up to $30 a month, and a state fund helps drivers who cannot afford it. The House passed it 77-24, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1719213,
+      "measure_id": "HB 4966",
+      "vote_date": "2026-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate version of House Bill 4966. House Bill 4966 is called the SECURE Act. It covers children in the care of the state child welfare agency. The agency must guard any record that would show a child's sexual orientation and limit who inside the agency may see it. Each child's case plan must be built around who that child is. The House agreed to that version 75-40, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 4966. House Bill 4966 is called the SECURE Act. It covers children in the care of the state child welfare agency. The agency must guard any record that would show a child's sexual orientation and limit who inside the agency may see it. Each child's case plan must be built around who that child is. The House agreed to that version 75-40, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1719212,
+      "measure_id": "HB 4966",
+      "vote_date": "2026-05-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4966. House Bill 4966 is called the SECURE Act. It covers children in the care of the state child welfare agency. The agency must guard any record that would show a child's sexual orientation and limit who inside the agency may see it. Each child's case plan must be built around who that child is. The Senate passed it 35-19, and it became law.",
+      "nay_description": "Voted against House Bill 4966. House Bill 4966 is called the SECURE Act. It covers children in the care of the state child welfare agency. The agency must guard any record that would show a child's sexual orientation and limit who inside the agency may see it. Each child's case plan must be built around who that child is. The Senate passed it 35-19, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1723157,
+      "measure_id": "HB 5070",
+      "vote_date": "2026-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 5070. House Bill 5070 limited which federal pollution rules Illinois may copy. The Illinois Pollution Control Board may not adopt a federal rule that sets a weaker standard than a rule the Board already has in place. The House passed it 69-28, and it became law.",
+      "nay_description": "Voted against House Bill 5070. House Bill 5070 limited which federal pollution rules Illinois may copy. The Illinois Pollution Control Board may not adopt a federal rule that sets a weaker standard than a rule the Board already has in place. The House passed it 69-28, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
