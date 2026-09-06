@@ -37,15 +37,25 @@ export function CappedInlineList({
         </Fragment>
       ))}
       {showToggle ? (
-        // relative z-10 lifts the toggle above a card's stretched link so the
-        // click expands the row instead of navigating.
+        // Link-styled (same navy underline as "See full profile →") with a
+        // flipping chevron, so it reads as clickable next to the plain issue
+        // names. relative z-10 lifts it above a card's stretched link so the
+        // click expands the row instead of navigating; the padding widens the
+        // tap target without moving the text.
         <button
           type="button"
           onClick={() => setExpanded((value) => !value)}
           aria-expanded={expanded}
-          className="relative z-10 font-medium text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink"
+          className="relative z-10 -my-1 inline-flex items-center gap-1 py-1 font-medium text-navy underline underline-offset-2 hover:text-rausch-deep"
         >
           {expanded ? "Show less" : `+${hiddenCount} more ${noun}`}
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 12 12"
+            className={`h-3 w-3 transition-transform ${expanded ? "rotate-180" : ""}`}
+          >
+            <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </button>
       ) : null}
     </p>
