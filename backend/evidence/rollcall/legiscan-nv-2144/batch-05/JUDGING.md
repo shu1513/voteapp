@@ -85,10 +85,20 @@ given to the AB 416 sponsorship row in batch-04.
 - **AB 185 (Assembly)** — the outdoor-play-space exception applies only to a facility in a
   multi-family dwelling or an apartment or condominium building (first reprint, sections 7
   and 8). The description said any qualifying home near a park; it now names the building
-  limit.
+  limit. The drafting is ambiguous: "does not have an outdoor play space that is located:
+  (1) in a multi-family dwelling or an apartment or condominium building; and (2) within 1
+  mile of an accessible park" attaches "located" to the play space, not the facility. Read
+  that way the waiver reaches every facility, because almost none has a play space inside an
+  apartment building, and clause (2) would do no work. The description follows the only
+  reading in which both clauses mean something: the facility is in such a building and
+  within a mile of a park. The digest (lines 29 to 35) repeats the same sentence, so it
+  settles nothing.
 - **AB 223** — "added pests, mold, lead paint … to the list of things a rental must have"
-  said the opposite of the bill. Now "freedom from pests, mold and lead paint, plus working
-  locks and safety equipment".
+  said the opposite of the bill. The bill requires *measures*: a unit is not habitable if it
+  substantially lacks "effective measures in place to control the presence of rodents,
+  insects and vermin" or measures to "prevent exposure to unsafe levels of radon, lead
+  paint, asbestos, toxic mold". Lead paint present in an old building is not itself a
+  breach, so the description says measures, not absence.
 - **Import reports** — the two report files first committed here were batch-04's, copied
   by mistake. The importer's own report for this batch (`import-rerun-report.json` in the
   run dir) was overwritten by the batch-06 run before it was copied out, so it cannot be
@@ -96,6 +106,10 @@ given to the AB 416 sponsorship row in batch-04.
   `import-db-reconciliation.json` — run-stamp counts taken from the local database, 308
   records across 41 candidates over all 16 rolls — plus batch-06's ledger, which lists all
   16 rolls as already imported.
-- The rewrite of AB 185, AB 223 and batch-04's SB 171 is `import-rerun-report.json`:
-  **112 rewritten, 1,638 unchanged, 0 errors**. A database scan for the old wording returns
-  0; the new wording returns 112.
+- The rewrite ran in two passes, each with its own ledger:
+  `import-review-rewrite-report.json` (07:54Z) covers AB 185, AB 223 and batch-04's SB 171 —
+  **112 rewritten, 1,638 unchanged, 0 errors**. `import-rerun-report.json` (22:45Z) covers
+  the second AB 223 wording pass — **41 rewritten, 1,709 unchanged, 0 errors**. The run dir
+  holds only one rerun report and the second run overwrote the first, so the first was copied
+  out before that run started. A database scan for either old wording returns 0; Nevada's
+  live roll-call total is unchanged at 1,750.

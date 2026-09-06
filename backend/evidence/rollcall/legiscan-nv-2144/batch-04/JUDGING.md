@@ -136,5 +136,10 @@ the rewrite is `import-rerun-report.json`.
 another state over gender-affirming care. Section 2 of the bill keeps extradition when the
 person was physically present in the demanding state at the time of the alleged offense
 and then fled. The descriptions now carry that exception. Re-applied with `rollcall:judge`
-and `rollcall:legiscan:import`; the rewrite (41 rows for SB 171, 112 in total with the
-batch-05 fixes) is `batch-05/import-rerun-report.json`.
+and `rollcall:legiscan:import`; the rewrite is recorded in
+`batch-05/import-review-rewrite-report.json` (41 SB 171 rows inside a 112-row pass).
+
+Section 1 carries a second limit that the description still does not spell out: the shield
+does not apply if the acts charged would also be a crime under Nevada law. The first
+sentence already says the care has to be lawful in Nevada, which carries the substance, and
+the sentence is at 43 words against a 45-word limit. Left as is deliberately.
