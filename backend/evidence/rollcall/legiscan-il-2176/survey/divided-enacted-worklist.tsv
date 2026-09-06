@@ -21,8 +21,8 @@ SB2339	H	1582511	2025-05-31	75	42	Third Reading in House	judged:batch-01
 SB2339	S	1717513	2025-10-30	37	20	Senate Concurrence	screened:duplicate-chamber — SB 2339’s Senate slot is already filled by batch-01 roll 1544480, whose description already states that the House removed the E-Verify limits and that the narrower version became law
 HB0460	H	1574246	2025-05-20	70	40	Third Reading in House	judged:batch-02
 HB0460	S	1582161	2025-05-30	34	18	Third Reading in Senate	judged:batch-02
-SB0025	H	1722387	2025-10-29	70	37	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-SB0025	S	1722388	2025-10-30	37	22	Senate Concurrence	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+SB0025	H	1722387	2025-10-29	70	37	House Third Reading	judged:batch-08
+SB0025	S	1722388	2025-10-30	37	22	Senate Concurrence	judged:batch-08
 SB3019	S	1718412	2026-05-31	36	19	Senate Concurrence	screened:no-defensible-stance — Targeted Advertising Services Tax — a revenue measure with no area direction
 SB3019	H	1718414	2026-05-31	73	41	House Third Reading	screened:no-defensible-stance — Targeted Advertising Services Tax — a revenue measure with no area direction
 HB0022	S	1581393	2025-05-29	33	21	Third Reading in Senate	screened:local-or-narrow — one village, district or fee; not a statewide position
@@ -66,15 +66,15 @@ HB2425	S	1581340	2025-05-29	36	18	Third Reading in Senate	judged:batch-02
 HB2419	H	1544981	2025-04-10	76	38	Third Reading in House	screened:superseded-roll — HB 2419 — the House later voted the enacted Senate version (roll 1582280); that concurrence is the imported roll
 HB2419	S	1576506	2025-05-22	37	19	Third Reading in Senate	judged:batch-04
 HB2419	H	1582280	2025-05-30	77	39	Concurrence in House	judged:batch-04
-SB0019	S	1545001	2025-04-10	32	22	Third Reading in Senate	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-SB0019	H	1574260	2025-05-20	74	37	Third Reading in House	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+SB0019	S	1545001	2025-04-10	32	22	Third Reading in Senate	judged:batch-08
+SB0019	H	1574260	2025-05-20	74	37	Third Reading in House	judged:batch-08
 SB0248	S	1562104	2025-04-30	34	17	Third Reading in Senate	screened:contested-direction — post-conviction relief for under-21 offenders cuts both toward fairness and against finality for victims
 SB0248	H	1719968	2026-05-31	63	42	House Third Reading	screened:contested-direction — post-conviction relief for under-21 offenders cuts both toward fairness and against finality for victims
 HB5384	H	1716837	2026-04-09	70	36	House Third Reading	screened:no-defensible-stance — removes an annual currency-exchange examination mandate
 HB5384	S	1716838	2026-05-14	38	19	Senate Third Reading	screened:no-defensible-stance — removes an annual currency-exchange examination mandate
-HB5492	H	1718096	2026-04-15	74	37	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-HB5492	S	1718097	2026-05-30	38	19	Senate Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-HB5492	H	1718098	2026-05-31	75	39	House Concurrence	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+HB5492	H	1718096	2026-04-15	74	37	House Third Reading	screened:superseded-roll — HB 5492 — the House later voted the enacted Senate version (roll 1718098); that concurrence is the imported roll
+HB5492	S	1718097	2026-05-30	38	19	Senate Third Reading	judged:batch-08
+HB5492	H	1718098	2026-05-31	75	39	House Concurrence	judged:batch-08
 HB5093	H	1718440	2026-04-09	71	37	House Third Reading	judged:batch-02
 HB5093	S	1718441	2026-05-30	38	19	Senate Third Reading	judged:batch-02
 HB5093	H	1718442	2026-05-31	70	40	House Concurrence	screened:superseded-roll — another roll on this measure was judged in batch-02 under the one-roll-per-chamber rule
@@ -127,7 +127,7 @@ HB5390	H	1718529	2026-04-16	73	34	House Third Reading	judged:batch-02
 HB5390	S	1718530	2026-05-20	39	19	Senate Third Reading	judged:batch-02
 HB5295	H	1721610	2026-04-16	73	34	House Third Reading	judged:batch-01
 HB5295	S	1721611	2026-05-30	38	19	Senate Third Reading	judged:batch-01
-HB5295	H	1721612	2026-05-31	73	39	House Concurrence	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+HB5295	H	1721612	2026-05-31	73	39	House Concurrence	screened:duplicate-chamber — HB 5295’s House slot is already filled by batch-01 roll 1721610, whose description already states that the Senate changed the definitions and access rules and that the final version became law
 HB1083	H	1586216	2025-04-10	74	38	Third Reading in House	judged:batch-02
 HB1083	S	1586217	2025-05-21	39	18	Third Reading in Senate	judged:batch-02
 HB4639	H	1718656	2026-04-16	65	39	House Third Reading	judged:batch-05
@@ -150,8 +150,8 @@ SB2111	S	1717317	2025-10-30	36	21	Senate Concurrence	dropped:filter-5 — lettin
 SB2111	H	1717319	2025-10-31	72	32	House Third Reading	dropped:filter-5 — letting a bicycle roll through a stop sign after slowing and yielding is a genuine safety-versus-mobility dispute, not a one-directional measure
 SB1507	S	1543883	2025-04-10	37	19	Third Reading in Senate	screened:no-defensible-stance — a UIC transportation study
 SB1507	H	1576906	2025-05-22	77	34	Third Reading in House	screened:no-defensible-stance — a UIC transportation study
-HB4277	H	1723605	2026-04-14	75	33	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-HB4277	S	1723606	2026-05-20	36	19	Senate Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+HB4277	H	1723605	2026-04-14	75	33	House Third Reading	judged:batch-08
+HB4277	S	1723606	2026-05-20	36	19	Senate Third Reading	judged:batch-08
 HB5024	H	1716944	2026-04-08	72	35	House Third Reading	judged:batch-02
 HB5024	S	1716945	2026-05-31	39	17	Senate Third Reading	judged:batch-03 — imported with official_vote_date 2026-06-01 (ILGA action trail)
 SB1911	S	1722052	2025-10-30	37	19	Senate Concurrence	screened:appropriations-or-bonds — no honest research area for a fund-the-government or bond vote
@@ -172,8 +172,8 @@ HB2726	H	1544869	2025-04-10	75	37	Third Reading in House	judged:batch-04
 HB2726	S	1575184	2025-05-21	39	16	Third Reading in Senate	judged:batch-04
 HB4456	H	1717748	2026-04-15	74	37	House Third Reading	judged:batch-02
 HB4456	S	1717749	2026-05-19	42	17	Senate Third Reading	judged:batch-02
-SB0453	S	1580076	2025-05-28	39	16	Third Reading in Senate	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-SB0453	H	1582370	2025-05-31	82	33	Third Reading in House	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+SB0453	S	1580076	2025-05-28	39	16	Third Reading in Senate	dropped:filter-3 — initial-agreement bargaining rules under the Public Labor Relations Act have no labor research area
+SB0453	H	1582370	2025-05-31	82	33	Third Reading in House	dropped:filter-3 — initial-agreement bargaining rules under the Public Labor Relations Act have no labor research area
 HB3493	H	1545477	2025-04-11	77	38	Third Reading in House	screened:no-defensible-stance — carve-out from a local-regulation rule for one class of municipality
 HB3493	S	1582177	2025-05-30	40	16	Third Reading in Senate	screened:no-defensible-stance — carve-out from a local-regulation rule for one class of municipality
 HB3493	H	1582780	2025-05-31	77	39	Concurrence in House	screened:no-defensible-stance — carve-out from a local-regulation rule for one class of municipality
@@ -222,17 +222,17 @@ HB4217	S	1720545	2026-05-20	43	15	Senate Third Reading	judged:batch-07
 SB3777	S	1721226	2026-05-20	38	20	Senate Third Reading	judged:batch-01
 SB3777	H	1721227	2026-05-31	72	38	House Third Reading	judged:batch-01
 SB3777	S	1721228	2026-05-31	41	14	Senate Concurrence	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-SB0714	S	1720248	2026-05-13	42	14	Senate Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-SB0714	H	1720249	2026-05-27	70	38	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+SB0714	S	1720248	2026-05-13	42	14	Senate Third Reading	judged:batch-08
+SB0714	H	1720249	2026-05-27	70	38	House Third Reading	judged:batch-08
 HB4862	H	1720568	2026-04-16	81	27	House Third Reading	judged:batch-05
 HB4862	S	1720569	2026-05-20	43	15	Senate Third Reading	judged:batch-05
 HB1365	S	1575014	2025-05-21	39	16	Third Reading in Senate	screened:no-defensible-stance — therapist and counsellor licensure mechanics
 HB1365	H	1582046	2025-05-30	85	28	Concurrence in House	screened:no-defensible-stance — therapist and counsellor licensure mechanics
 HB1367	H	1539808	2025-04-08	75	39	Third Reading in House	screened:contested-direction — cuts the township open-space acreage threshold — conservation access vs. development latitude
 HB1367	S	1575171	2025-05-21	43	14	Third Reading in Senate	screened:contested-direction — cuts the township open-space acreage threshold — conservation access vs. development latitude
-HB4273	H	1717613	2026-04-14	73	37	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-HB4273	S	1717614	2026-05-13	43	14	Senate Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-HB4273	H	1717615	2026-05-27	72	38	House Concurrence	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+HB4273	H	1717613	2026-04-14	73	37	House Third Reading	screened:superseded-roll — HB 4273 — the House later voted the enacted Senate version (roll 1717615); that concurrence is the imported roll
+HB4273	S	1717614	2026-05-13	43	14	Senate Third Reading	judged:batch-08
+HB4273	H	1717615	2026-05-27	72	38	House Concurrence	judged:batch-08
 HB5552	H	1719956	2026-04-09	71	34	House Third Reading	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
 HB5552	S	1719957	2026-05-20	43	14	Senate Third Reading	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
 HB5552	H	1719958	2026-05-27	74	37	House Concurrence	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
@@ -244,17 +244,17 @@ HB4571	H	1717392	2026-04-14	76	33	House Third Reading	judged:batch-02
 HB4571	S	1717393	2026-05-31	44	14	Senate Third Reading	judged:batch-02
 SB2980	S	1723794	2026-04-15	42	13	Senate Third Reading	dropped:filter-3 — the act only moves the due dates of Climate Displacement Task Force reports
 SB2980	H	1723795	2026-05-21	73	34	House Third Reading	dropped:filter-3 — the act only moves the due dates of Climate Displacement Task Force reports
-HB5228	H	1716845	2026-04-17	76	24	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-HB5228	S	1716846	2026-05-30	39	19	Senate Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-HB5228	H	1716847	2026-05-31	89	27	House Concurrence	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+HB5228	H	1716845	2026-04-17	76	24	House Third Reading	dropped:filter-3 — the enacted text adds a surcharge on insurers for the Workers’ Compensation Commission Operations Fund
+HB5228	S	1716846	2026-05-30	39	19	Senate Third Reading	dropped:filter-3 — the enacted text adds a surcharge on insurers for the Workers’ Compensation Commission Operations Fund
+HB5228	H	1716847	2026-05-31	89	27	House Concurrence	dropped:filter-3 — the enacted text adds a surcharge on insurers for the Workers’ Compensation Commission Operations Fund
 HB4788	H	1722358	2026-04-14	73	38	House Third Reading	judged:batch-05
 HB4788	S	1722359	2026-05-20	43	13	Senate Third Reading	judged:batch-05
 HB3094	H	1538471	2025-04-07	69	37	Third Reading in House	screened:no-defensible-stance — a construction-industry carve-out from the Transportation Benefits Program Act
 HB3094	S	1576105	2025-05-22	44	13	Third Reading in Senate	screened:no-defensible-stance — a construction-industry carve-out from the Transportation Benefits Program Act
 HB4418	H	1722447	2026-04-09	69	33	House Third Reading	judged:batch-02
 HB4418	S	1722448	2026-05-28	44	13	Senate Third Reading	judged:batch-02
-HB5316	H	1723643	2026-04-09	70	35	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-HB5316	S	1723644	2026-05-14	44	13	Senate Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+HB5316	H	1723643	2026-04-09	70	35	House Third Reading	judged:batch-08
+HB5316	S	1723644	2026-05-14	44	13	Senate Third Reading	judged:batch-08
 HB4339	H	1718089	2026-04-08	77	24	House Third Reading	judged:batch-01
 HB4339	S	1718090	2026-05-29	41	12	Senate Third Reading	judged:batch-01
 SB3272	S	1718701	2026-04-14	41	12	Senate Third Reading	screened:mixed-direction — the concrete legal effect is exempting ICC expert hiring from the Procurement Code; clean-energy benefit is indirect
@@ -299,7 +299,7 @@ HB2546	S	1576509	2025-05-22	33	21	Third Reading in Senate	screened:contested-dir
 HB3662	H	1543398	2025-04-09	72	42	Third Reading in House	dropped:filter-3 — the enacted text extends tax increment financing deadlines for eight named municipalities
 SB3066	H	1724228	2026-05-21	70	40	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
 SB1667	H	1574060	2025-05-20	73	40	Third Reading in House	dropped:filter-3 — unclaimed property remittance and finder licensing fall under no research area
-SB0067	H	1575955	2025-05-22	75	40	Third Reading in House	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+SB0067	H	1575955	2025-05-22	75	40	Third Reading in House	judged:batch-08
 SB3917	H	1718613	2026-05-22	64	34	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
 HB4540	H	1721350	2026-04-14	72	38	House Third Reading	dropped:filter-3 — making companion animals subject to the replevin article falls under no research area
 HB1712	H	1541838	2025-04-09	76	40	Third Reading in House	dropped:filter-3 — approving and posting POLST training material is administrative
@@ -331,7 +331,7 @@ SB1989	S	1718359	2025-10-30	39	19	Senate Concurrence	screened:local-or-narrow �
 HB4826	H	1722873	2026-04-08	71	37	House Third Reading	dropped:filter-3 — allowing continuing education credit for courses on recognizing crime victimization is an administrative rule
 HB4826	H	1722875	2026-05-27	74	36	House Concurrence	dropped:filter-3 — allowing continuing education credit for courses on recognizing crime victimization is an administrative rule
 HB1616	H	1539121	2025-04-07	70	34	Third Reading in House	judged:batch-04
-HB5269	H	1723096	2026-04-09	70	34	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+HB5269	H	1723096	2026-04-09	70	34	House Third Reading	dropped:filter-3 — quorum rules and federal citation updates for the Guardianship and Advocacy Commission are administrative
 HB3638	H	1539857	2025-04-08	77	37	Third Reading in House	dropped:filter-5 — the enacted amendment removes the seven-year limit on agreements that bar a former employee from reapplying while keeping other transparency duties; the direction cuts both ways
 SB3037	H	1717358	2026-05-27	75	36	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
 SB3565	H	1718521	2026-05-29	73	35	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
@@ -348,13 +348,13 @@ SB2426	H	1581829	2025-05-29	77	35	Third Reading in House	dropped:filter-3 — pr
 HB1810	H	1718111	2026-04-16	72	34	House Third Reading	screened:contested-direction — renames earned sentence credit and changes eligibility
 HB1810	H	1718113	2026-05-31	80	36	House Concurrence	screened:contested-direction — renames earned sentence credit and changes eligibility
 HB4537	H	1721921	2026-05-30	80	35	House Concurrence	screened:local-or-narrow — one village, district or fee; not a statewide position
-SB0175	H	1575156	2025-05-21	76	33	Third Reading in House	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-HB4255	H	1718515	2026-04-14	76	33	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+SB0175	H	1575156	2025-05-21	76	33	Third Reading in House	judged:batch-08
+HB4255	H	1718515	2026-04-14	76	33	House Third Reading	dropped:filter-3 — banning big cats from traveling animal acts is an animal welfare measure and no research area covers it
 HB4606	H	1718840	2026-04-08	73	31	House Third Reading	judged:batch-05
-SB0069	H	1574406	2025-05-20	78	33	Third Reading in House	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-HB5284	H	1719226	2026-04-17	71	32	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-HB5284	H	1719228	2026-05-28	78	33	House Concurrence	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-HB5460	H	1720537	2026-04-15	76	32	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+SB0069	H	1574406	2025-05-20	78	33	Third Reading in House	judged:batch-08
+HB5284	H	1719226	2026-04-17	71	32	House Third Reading	screened:superseded-roll — HB 5284 — the House later voted the enacted Senate version (roll 1719228); that concurrence is the imported roll
+HB5284	H	1719228	2026-05-28	78	33	House Concurrence	judged:batch-08
+HB5460	H	1720537	2026-04-15	76	32	House Third Reading	judged:batch-08
 HB1576	H	1541250	2025-04-08	75	38	Third Reading in House	dropped:filter-3 — Court of Claims judge terms and filing fees fall under no research area
 HB1576	H	1582419	2025-05-31	81	34	Concurrence in House	dropped:filter-3 — Court of Claims judge terms and filing fees fall under no research area
 HB4536	S	1723121	2026-05-20	41	17	Senate Third Reading	dropped:filter-3 — the act only redefines trauma terms used in regional institute training
@@ -373,7 +373,7 @@ SB3422	H	1723289	2026-05-21	77	30	House Third Reading	candidate:unbatched — sy
 SB2506	H	1576001	2025-05-22	81	31	Third Reading in House	dropped:filter-3 — the act only sets the membership of a zoning impacts task force
 HB3019	H	1582746	2025-05-31	84	32	Concurrence in House	judged:batch-04
 SB2019	H	1576074	2025-05-22	83	31	Third Reading in House	dropped:filter-3 — requiring a boating safety certificate for electric-motor boats is a narrow licensing rule with no research area
-HB5551	H	1717980	2026-05-28	81	30	House Concurrence	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+HB5551	H	1717980	2026-05-28	81	30	House Concurrence	dropped:filter-3 — the act mixes an end date for aid recomputation, separate public day school rules and teaching program cohort sizes, with no single subject
 HB4491	H	1718374	2026-04-16	81	30	House Third Reading	dropped:filter-3 — line-of-duty illness pay for public employees is an employment benefit and no labor research area exists
 SB1947	H	1575845	2025-05-22	84	31	Third Reading in House	judged:batch-06
 HB1628	H	1542832	2025-04-09	82	30	Third Reading in House	dropped:filter-5 — the enacted amendment both adds and removes forfeiture reporting duties, so the direction cuts both ways
@@ -386,7 +386,7 @@ HB2464	H	1546298	2025-04-11	84	30	Third Reading in House	judged:batch-04
 SB2253	H	1580688	2025-05-28	84	30	Third Reading in House	screened:local-or-narrow — one village, district or fee; not a statewide position
 HB3200	H	1545966	2025-04-11	85	30	Third Reading in House	dropped:filter-3 — recovering unclaimed property from people found ineligible for unemployment benefits is a collections mechanism with no research area
 SB4025	H	1723679	2026-05-28	83	29	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-SB1173	H	1575317	2025-05-21	81	28	Third Reading in House	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+SB1173	H	1575317	2025-05-21	81	28	Third Reading in House	judged:batch-08
 HB3811	H	1720802	2026-04-16	81	28	House Third Reading	dropped:filter-3 — shortening a successor guardian notice period from 120 to 60 days falls under no research area
 SB1344	H	1582483	2025-05-31	87	30	Third Reading in House	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
 SB3107	H	1718235	2026-05-27	79	27	House Third Reading	screened:local-or-narrow — one village, district or fee; not a statewide position
@@ -394,12 +394,12 @@ SB4041	H	1724011	2026-05-22	71	24	House Third Reading	candidate:unbatched — sy
 HB2987	H	1586220	2025-05-20	83	28	Third Reading in House	judged:batch-04
 SB3314	H	1723917	2026-05-21	83	28	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
 SB0807	S	1722658	2026-05-07	42	14	Senate Third Reading	screened:technical-or-omnibus — multi-act cleanup with no single nameable subject
-SB0212	H	1574922	2025-05-21	82	27	Third Reading in House	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
-HB5511	H	1722070	2026-04-16	82	27	House Third Reading	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+SB0212	H	1574922	2025-05-21	82	27	Third Reading in House	judged:batch-08
+HB5511	H	1722070	2026-04-16	82	27	House Third Reading	dropped:filter-5 — device-level age signals for minors trade a child-safety gain against an age-verification cost to every user; the direction is contested
 HB1224	H	1541808	2025-04-09	79	35	Third Reading in House	dropped:filter-3 — retainage limits on state construction contracts fall under no research area
 HB1224	H	1582864	2025-05-31	86	28	Concurrence in House	dropped:filter-3 — retainage limits on state construction contracts fall under no research area
 HB1224	H	1717523	2025-06-01	86	28	House Concurrence	dropped:filter-3 — retainage limits on state construction contracts fall under no research area
-SB0024	H	1582508	2025-05-31	87	28	Third Reading in House	candidate:unbatched — synopsis screen says stance-defensible; awaiting judging capacity
+SB0024	H	1582508	2025-05-31	87	28	Third Reading in House	judged:batch-08
 HB3275	H	1544772	2025-04-10	85	27	Third Reading in House	screened:superseded-roll — HB 3275 — the House vote on the enacted Senate version was 115-0 (roll 1721418), not divided, so this earlier roll is not a vote on the law
 HB4890	H	1722906	2026-04-16	82	26	House Third Reading	judged:batch-05
 SB2761	H	1717623	2026-05-21	79	25	House Third Reading	dropped:filter-3 — adding service animals to existing school ADA in-service training is a training-content tweak
