@@ -3357,6 +3357,17 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     keptQuestions: COLORADO_KEPT_QUESTIONS,
     excludedQuestions: COLORADO_EXCLUDED_QUESTIONS,
   },
+  // Colorado's 2025 First Special Session, called in August 2025. The chamber
+  // sizes and the vote-description grammar are the same as the regular
+  // session, so it reuses both pattern lists; the survey over this dataset
+  // left no description unmatched.
+  "CO-2224": {
+    jurisdiction: "CO",
+    sessionId: 2224,
+    chamberSizes: { house: 65, senate: 35 },
+    keptQuestions: COLORADO_KEPT_QUESTIONS,
+    excludedQuestions: COLORADO_EXCLUDED_QUESTIONS,
+  },
 
 
   // Minnesota Legislature, 94th (2025-2026 regular) and the 2025 First
