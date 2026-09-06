@@ -743,7 +743,7 @@ export function ElectionPage() {
                       <span className="font-medium text-ink-soft">{label}</span>{" "}
                       {tags.map((tag, index, all) => (
                         <Fragment key={tag.research_area_id}>
-                          <span className={tagClass}>
+                          <span className={savedAreaIds.has(tag.research_area_id) ? SAVED_AREA_TEXT_CLASS : tagClass}>
                             {tag.name}
                             {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
                           </span>
@@ -761,9 +761,7 @@ export function ElectionPage() {
                       .map((tag, index, all) => (
                         <Fragment key={tag.research_area_id}>
                           <span
-                            className={
-                              savedAreaIds.has(tag.research_area_id) ? "font-medium text-green-900" : "text-ink-soft"
-                            }
+                            className={savedAreaIds.has(tag.research_area_id) ? SAVED_AREA_TEXT_CLASS : "text-ink-soft"}
                           >
                             {tag.name}
                             {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
@@ -1090,12 +1088,17 @@ export function ElectionPage() {
                           key: stance.research_area_id,
                           node: (
                             <span
+                              // Saved issues take the shared purple; the +N/-N
+                              // counts (and the sr-only "for/against") still
+                              // carry the direction the color otherwise would.
                               className={
-                                stance.against_count === 0
-                                  ? "font-medium text-green-900"
-                                  : stance.for_count === 0
-                                    ? "font-medium text-red-900"
-                                    : "font-medium text-amber-900"
+                                savedAreaIds.has(stance.research_area_id)
+                                  ? SAVED_AREA_TEXT_CLASS
+                                  : stance.against_count === 0
+                                    ? "font-medium text-green-900"
+                                    : stance.for_count === 0
+                                      ? "font-medium text-red-900"
+                                      : "font-medium text-amber-900"
                               }
                             >
                               {stance.name}{" "}

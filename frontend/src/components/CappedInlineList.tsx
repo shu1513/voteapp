@@ -16,7 +16,8 @@ export function CappedInlineList({
   cap = INLINE_LIST_CAP,
   className,
 }: {
-  label: string;
+  /** Leading label ("Affects:"); omitted when a heading above carries it. */
+  label?: string;
   items: { key: string; node: ReactNode }[];
   /** Plural noun for the overflow toggle ("issues" → "+4 more issues"). */
   noun: string;
@@ -29,7 +30,11 @@ export function CappedInlineList({
   const showToggle = items.length > cap;
   return (
     <p className={className}>
-      <span className="font-medium text-ink-soft">{label}</span>{" "}
+      {label ? (
+        <>
+          <span className="font-medium text-ink-soft">{label}</span>{" "}
+        </>
+      ) : null}
       {visible.map((item, index) => (
         <Fragment key={item.key}>
           {item.node}

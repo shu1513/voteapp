@@ -379,6 +379,29 @@ describe("CandidatePage", () => {
       const supportsBox = screen.getByRole("heading", { name: "Supports" }).closest("div") as HTMLElement;
       const bolded = [...supportsBox.querySelectorAll("p .font-semibold")].map((el) => el.textContent);
       expect(bolded).toEqual(["Gun Control (1 record)"]);
+      // Purple is the saved-issue color on every surface.
+      expect(supportsBox.querySelector("p .font-semibold")?.className).toContain("text-purple-800");
+    });
+
+    it("caps each box at three issues and expands the rest in place", async () => {
+      stubApiRoutes({ ...ANONYMOUS });
+      renderCandidate(() =>
+        candidateDetail({
+          records: [
+            record("r-1", [{ areaId: "a-1", slug: "healthcare_affordability", name: "Healthcare Affordability", stance: "for" }]),
+            record("r-2", [{ areaId: "a-2", slug: "gun_control", name: "Gun Control", stance: "for" }]),
+            record("r-3", [{ areaId: "a-3", slug: "housing_affordability", name: "Housing Affordability", stance: "for" }]),
+            record("r-4", [{ areaId: "a-4", slug: "data_privacy", name: "Data Privacy", stance: "for" }]),
+          ],
+        })
+      );
+
+      await screen.findByRole("heading", { name: "Jordan Voter" });
+      const supportsBox = screen.getByRole("heading", { name: "Supports" }).closest("div") as HTMLElement;
+      expect(boxText("Supports")).not.toContain("Data Privacy");
+      await userEvent.click(within(supportsBox).getByRole("button", { name: "+1 more issues" }));
+      expect(boxText("Supports")).toContain("Data Privacy (1 record)");
+      expect(within(supportsBox).getByRole("button", { name: "Show less" })).toBeInTheDocument();
     });
   });
 

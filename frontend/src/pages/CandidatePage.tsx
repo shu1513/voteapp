@@ -16,7 +16,9 @@ import {
   sortCandidateRailEntries,
   type CandidateRailSortKey,
 } from "@voteapp/api-client";
+import { CappedInlineList } from "../components/CappedInlineList";
 import { DetailPager } from "../components/DetailPager";
+import { SAVED_AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { DetailRail } from "../components/DetailRail";
 import {
   pagerNeighbors,
@@ -312,8 +314,8 @@ function StanceSummary({
   if (supports.length === 0 && opposes.length === 0 && mixed.length === 0) {
     return null;
   }
-  // The viewer's saved areas render semibold so their issues stand out from
-  // the rest of the list, mirroring the front-of-list ordering.
+  // The viewer's saved areas render in the shared saved-issue purple so they
+  // stand out from the rest of the list, mirroring the front-of-list ordering.
   const savedAreaIds = new Set(preferences.map((preference) => preference.research_area_id));
   // Comma-separated text, not boxed chips (boxes read as buttons — same
   // rule as the roster rows). Name and count stay one text node so an
@@ -322,7 +324,7 @@ function StanceSummary({
   const areaWithCount = (area: RecordAreaStance) => {
     const count = area.for_count + area.against_count;
     const text = `${area.name} (${count} record${count === 1 ? "" : "s"})`;
-    return savedAreaIds.has(area.research_area_id) ? <span className="font-semibold">{text}</span> : text;
+    return savedAreaIds.has(area.research_area_id) ? <span className={SAVED_AREA_TEXT_CLASS}>{text}</span> : text;
   };
   const sideBox = (side: "supports" | "opposes", areas: RecordAreaStance[]) =>
     areas.length === 0 ? null : (
@@ -342,14 +344,11 @@ function StanceSummary({
         >
           {side === "supports" ? "Supports" : "Opposes"}
         </h3>
-        <p className="mt-1 text-sm text-ink">
-          {areas.map((area, index) => (
-            <Fragment key={area.research_area_id}>
-              {index > 0 ? ", " : null}
-              {areaWithCount(area)}
-            </Fragment>
-          ))}
-        </p>
+        <CappedInlineList
+          noun="issues"
+          className="mt-1 text-sm text-ink"
+          items={areas.map((area) => ({ key: area.research_area_id, node: areaWithCount(area) }))}
+        />
       </div>
     );
   return (
@@ -372,23 +371,19 @@ function StanceSummary({
       {mixed.length > 0 ? (
         <div className="mt-3 rounded border border-amber-200 bg-amber-50 p-3">
           <h3 className="text-subheading font-semibold text-amber-900">Mixed record</h3>
-          <p className="mt-1 text-sm text-ink">
-            {/* Same "N support · N oppose" phrasing as the record group
-                headers, so the two surfaces can't drift apart. */}
-            {mixed.map((area, index) => {
+          {/* Same "N support · N oppose" phrasing as the record group
+              headers, so the two surfaces can't drift apart. */}
+          <CappedInlineList
+            noun="issues"
+            className="mt-1 text-sm text-ink"
+            items={mixed.map((area) => {
               const text = `${area.name} (${area.for_count} support · ${area.against_count} oppose)`;
-              return (
-                <Fragment key={area.research_area_id}>
-                  {index > 0 ? ", " : null}
-                  {savedAreaIds.has(area.research_area_id) ? (
-                    <span className="font-semibold">{text}</span>
-                  ) : (
-                    text
-                  )}
-                </Fragment>
-              );
+              return {
+                key: area.research_area_id,
+                node: savedAreaIds.has(area.research_area_id) ? <span className={SAVED_AREA_TEXT_CLASS}>{text}</span> : text,
+              };
             })}
-          </p>
+          />
         </div>
       ) : null}
     </section>

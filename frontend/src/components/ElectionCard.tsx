@@ -41,12 +41,12 @@ const MAX_AREA_CHIPS = 3;
 // Research areas render as plain colored text, comma-separated — NOT boxed
 // chips. Boxed/pill styling is reserved for interactive elements; a bordered
 // area "chip" read as a button and invited dead clicks. Saved matches lead
-// AND render semibold — the same double cue (front-of-list + weight) as the
-// candidate page's stance boxes — while the shared green keeps the row
-// reading as one list. Both exported so the election detail page's affects
-// row matches the card's.
+// AND render in purple: purple means "an issue on my list" on every surface
+// (ballot cards, election rows, the candidate page's stance boxes) and is
+// the one hue the stance colors (green/red/amber) and party colors don't
+// use. Both exported so the other surfaces match the card's.
 export const AREA_TEXT_CLASS = "font-medium text-green-900";
-export const SAVED_AREA_TEXT_CLASS = "font-semibold text-green-900";
+export const SAVED_AREA_TEXT_CLASS = "font-semibold text-purple-800";
 
 // An office race with no published candidate list renders a placeholder card
 // ("Candidate list not final") with nothing to read. Ballot measures are
