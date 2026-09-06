@@ -2,6 +2,7 @@ import { Pool } from "pg";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { createAuthService } from "../../src/auth/authService.js";
+import { voidUserAuthTokens } from "../../src/auth/authTokenStore.js";
 import { CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
 
 /**
@@ -64,8 +65,9 @@ describe.skipIf(!databaseUrl)("auth-token lifecycle (requires DATABASE_URL)", ()
     sendPasswordResetEmail: vi.fn().mockResolvedValue(undefined),
     sendEmailChangeEmail: vi.fn().mockResolvedValue(undefined),
   };
-  const service = () =>
+  const service = (overrides: { emailVerificationTtlSeconds?: number } = {}) =>
     createAuthService({
+      ...overrides,
       db: pool,
       redis: createRedisFake(),
       mailer,
@@ -254,5 +256,64 @@ describe.skipIf(!databaseUrl)("auth-token lifecycle (requires DATABASE_URL)", ()
       [userId]
     );
     expect(row.rows[0]?.email).toBe(VICTIM_EMAIL);
+  });
+
+  it("voiding tolerates a token another request issued after this transaction began", async () => {
+    // A consumer's transaction starts, then (while it waits for the user
+    // lock) a forgot-password request commits a fresh reset token. When the
+    // consumer voids, consumed_at must not be its transaction-start time —
+    // that predates the new token's created_at and would trip
+    // chk_user_auth_tokens_consumed_at, turning verification into a 500.
+    const auth = service();
+    await auth.register({ email: VICTIM_EMAIL, password: PASSWORD_A, acceptedTermsVersion: CURRENT_TERMS_VERSION });
+    const userId = await userIdByEmail(VICTIM_EMAIL);
+
+    const voider = await pool.connect();
+    try {
+      await voider.query("BEGIN");
+      await voider.query("SELECT now()"); // pin the transaction timestamp
+      await auth.forgotPassword({ email: VICTIM_EMAIL });
+      const resetToken = lastLink(mailer.sendPasswordResetEmail);
+
+      await expect(
+        voidUserAuthTokens(voider, { userId, purposes: ["password_reset", "email_change"] })
+      ).resolves.toBe(1);
+      await voider.query("COMMIT");
+
+      await expect(auth.resetPassword({ token: resetToken, password: "another-password-789" })).rejects.toThrow(
+        "Password reset token is invalid or expired"
+      );
+    } finally {
+      await voider.query("ROLLBACK").catch(() => undefined);
+      voider.release();
+    }
+  });
+
+  it("a token that expires during the lock wait is rejected", async () => {
+    const auth = service({ emailVerificationTtlSeconds: 1 });
+    await auth.register({ email: VICTIM_EMAIL, password: PASSWORD_A, acceptedTermsVersion: CURRENT_TERMS_VERSION });
+    const userId = await userIdByEmail(VICTIM_EMAIL);
+    const verifyToken = lastLink(mailer.sendVerificationEmail);
+
+    const owner = await pool.connect();
+    try {
+      await owner.query("BEGIN");
+      await owner.query("SELECT 1 FROM public.users WHERE id = $1::uuid FOR UPDATE", [userId]);
+
+      // Peek sees a live token, then the consumer blocks past expires_at.
+      const consume = auth.verifyEmail({ token: verifyToken });
+      await new Promise((resolve) => setTimeout(resolve, 1300));
+      await owner.query("COMMIT");
+
+      await expect(consume).rejects.toThrow("Verification token is invalid or expired");
+    } finally {
+      await owner.query("ROLLBACK").catch(() => undefined);
+      owner.release();
+    }
+    const row = await pool.query<{ email_verified: boolean }>(
+      "SELECT email_verified FROM public.users WHERE id = $1::uuid",
+      [userId]
+    );
+    expect(row.rows[0]?.email_verified).toBe(false);
   });
 });

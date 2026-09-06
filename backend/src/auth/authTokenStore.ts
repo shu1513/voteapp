@@ -116,10 +116,15 @@ export async function issueUserAuthToken(
   // holds a FOR UPDATE lock on the user row (register/resend/forgot flows in
   // authService), which serializes the void+insert per user. Callers that do
   // not hold that lock can race and leave multiple live tokens.
+  //
+  // clock_timestamp(), not now(): now() is the transaction start, which
+  // predates the lock wait. A token committed by another transaction during
+  // that wait has created_at after our start, and chk_user_auth_tokens_consumed_at
+  // (consumed_at >= created_at) would reject the void.
   await db.query(
     `
       UPDATE public.user_auth_tokens
-      SET consumed_at = now()
+      SET consumed_at = clock_timestamp()
       WHERE user_id = $1::uuid
         AND purpose = $2
         AND consumed_at IS NULL
@@ -202,10 +207,11 @@ export async function voidUserAuthTokens(
   }
   const purposes = input.purposes.map(normalizePurpose);
 
+  // clock_timestamp(), not now(): see issueUserAuthToken.
   const result = await db.query(
     `
       UPDATE public.user_auth_tokens
-      SET consumed_at = now()
+      SET consumed_at = clock_timestamp()
       WHERE user_id = $1::uuid
         AND purpose = ANY($2::text[])
         AND consumed_at IS NULL

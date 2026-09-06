@@ -323,7 +323,8 @@ async function lockUserAndConsumeToken(
   if (!user) {
     throw new TypeError(input.invalidMessage);
   }
-  const consumed = await consumeUserAuthToken(client, { token: input.token, purpose: input.purpose, now });
+  // Fresh clock for the consume: the lock wait may have crossed expires_at.
+  const consumed = await consumeUserAuthToken(client, { token: input.token, purpose: input.purpose });
   if (!consumed) {
     throw new TypeError(input.invalidMessage);
   }
@@ -1211,7 +1212,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         await client.query(
           `
             UPDATE public.user_auth_tokens
-            SET consumed_at = now()
+            SET consumed_at = clock_timestamp()
             WHERE user_id = $1::uuid
               AND purpose = 'email_change'
               AND consumed_at IS NULL

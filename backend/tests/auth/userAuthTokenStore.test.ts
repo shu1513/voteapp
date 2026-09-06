@@ -230,7 +230,7 @@ describe("userAuthTokenStore peek and void", () => {
     await expect(voidUserAuthTokens(db, { userId, purposes: ["password_reset", "email_change"] })).resolves.toBe(2);
     const sql = String(db.query.mock.calls[0]?.[0]);
     expect(sql).toContain("UPDATE public.user_auth_tokens");
-    expect(sql).toContain("SET consumed_at = now()");
+    expect(sql).toContain("SET consumed_at = clock_timestamp()");
     expect(sql).toContain("purpose = ANY($2::text[])");
     expect(sql).toContain("consumed_at IS NULL");
     expect(db.query.mock.calls[0]?.[1]).toEqual([userId, ["password_reset", "email_change"]]);

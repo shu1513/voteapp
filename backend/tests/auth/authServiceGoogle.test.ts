@@ -265,7 +265,7 @@ describe("createAuthService loginWithGoogle", () => {
     // Session rides the BUMPED epoch, so pre-takeover sessions are dead.
     expect(redis.setEx).toHaveBeenCalledWith(expect.any(String), expect.any(Number), `${USER_ID}:5`);
     // ...and so is every link the pre-registrant requested (all purposes).
-    expect(client.query).toHaveBeenCalledWith(expect.stringContaining("SET consumed_at = now()"), [
+    expect(client.query).toHaveBeenCalledWith(expect.stringContaining("SET consumed_at = clock_timestamp()"), [
       USER_ID,
       ["email_verify", "password_reset", "email_change"],
     ]);
