@@ -215,8 +215,8 @@
       "measure_id": "SB 2835",
       "vote_date": "2025-05-27",
       "review_status": "approved",
-      "yea_description": "Voted to pass Senate Bill 2835. It lets cities approve an apartment building with one stairway when it has no more than six stories above ground and four homes per floor. It must have a stronger sprinkler system called Standard 13, two-hour fire-rated halls and stairs, an escape opening on each floor, and smoke and fire alarms, despite local code changes. The bill became law after the Texas House passed it 81-57.",
-      "nay_description": "Voted against Senate Bill 2835. It lets cities approve an apartment building with one stairway when it has no more than six stories above ground and four homes per floor. It must have a stronger sprinkler system called Standard 13, two-hour fire-rated halls and stairs, an escape opening on each floor, and smoke and fire alarms, despite local code changes. The bill became law after the Texas House passed it 81-57.",
+      "yea_description": "Voted to pass Senate Bill 2835. It lets cities approve an apartment building with one stairway when it has no more than six stories above grade and four homes per floor. It must have stairway sprinklers meeting National Fire Protection Association Standard 13, two-hour fire-rated stairway enclosures, one-hour fire-rated hallways, an escape opening on each floor served by the single exit, and smoke and fire alarms, despite local code changes. The bill became law after the Texas House passed it 81-57.",
+      "nay_description": "Voted against Senate Bill 2835. It lets cities approve an apartment building with one stairway when it has no more than six stories above grade and four homes per floor. It must have stairway sprinklers meeting National Fire Protection Association Standard 13, two-hour fire-rated stairway enclosures, one-hour fire-rated hallways, an escape opening on each floor served by the single exit, and smoke and fire alarms, despite local code changes. The bill became law after the Texas House passed it 81-57.",
       "labels": [
         {
           "slug": "housing_affordability",

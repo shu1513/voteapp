@@ -1,148 +1,148 @@
 {
- "judgments": [
-  {
-   "jurisdiction": "CA",
-   "chamber": "house",
-   "session": "2172",
-   "roll": 1602447,
-   "measure_id": "AB 1078",
-   "vote_date": "2025-09-11",
-   "review_status": "pending",
-   "yea_description": "Voted to pass Assembly Bill 1078, which tightens who may hold a California license to carry a concealed handgun. It bars a license for someone convicted under federal law or another state's law of an offense that already disqualifies people here. It also bars a license for someone who has been under a restraining or protective order, and for anyone unlawfully using or addicted to a controlled substance. An applicant who was never given notice and a chance to be heard before that order was issued is not disqualified by it. When a licensing authority disqualifies someone for drug use it must report that to the federal background check system within five days. A licensee must tell the issuing authority about any restraining order, arrest, charge or conviction for a listed crime, and failing to do so costs them the license. The bill also raises the number of firearms a person may apply to buy in any 30 days from one to three, starting April 1, 2026. A federal court had already blocked the one-gun limit while that case is on appeal. It lets someone carry an unloaded firearm locked in a box on a bus or train. A non-resident applicant must swear that the county they applied in is the main place in California they plan to spend time, and must complete live-fire training for each handgun they want licensed. The authority may let that applicant take any required psychological exam remotely, or with a provider within 75 miles of home. The bill also lifts the gun ban for someone whose out-of-state non-violent felony was erased or pardoned, as specified. The Assembly passed it 57-20 and it became law.",
-   "nay_description": "Voted against passing Assembly Bill 1078, which tightens who may hold a California license to carry a concealed handgun. It bars a license for someone convicted under federal law or another state's law of an offense that already disqualifies people here. It also bars a license for someone who has been under a restraining or protective order, and for anyone unlawfully using or addicted to a controlled substance. An applicant who was never given notice and a chance to be heard before that order was issued is not disqualified by it. When a licensing authority disqualifies someone for drug use it must report that to the federal background check system within five days. A licensee must tell the issuing authority about any restraining order, arrest, charge or conviction for a listed crime, and failing to do so costs them the license. The bill also raises the number of firearms a person may apply to buy in any 30 days from one to three, starting April 1, 2026. A federal court had already blocked the one-gun limit while that case is on appeal. It lets someone carry an unloaded firearm locked in a box on a bus or train. A non-resident applicant must swear that the county they applied in is the main place in California they plan to spend time, and must complete live-fire training for each handgun they want licensed. The authority may let that applicant take any required psychological exam remotely, or with a provider within 75 miles of home. The bill also lifts the gun ban for someone whose out-of-state non-violent felony was erased or pardoned, as specified. The Assembly passed it 57-20 and it became law.",
-   "labels": [
+  "judgments": [
     {
-     "slug": "gun_control",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "CA",
-   "chamber": "senate",
-   "session": "2172",
-   "roll": 1601537,
-   "measure_id": "AB 1078",
-   "vote_date": "2025-09-09",
-   "review_status": "pending",
-   "yea_description": "Voted to pass Assembly Bill 1078, which tightens who may hold a California license to carry a concealed handgun. It bars a license for someone convicted under federal law or another state's law of an offense that already disqualifies people here. It also bars a license for someone who has been under a restraining or protective order, and for anyone unlawfully using or addicted to a controlled substance. An applicant who was never given notice and a chance to be heard before that order was issued is not disqualified by it. When a licensing authority disqualifies someone for drug use it must report that to the federal background check system within five days. A licensee must tell the issuing authority about any restraining order, arrest, charge or conviction for a listed crime, and failing to do so costs them the license. The bill also raises the number of firearms a person may apply to buy in any 30 days from one to three, starting April 1, 2026. A federal court had already blocked the one-gun limit while that case is on appeal. It lets someone carry an unloaded firearm locked in a box on a bus or train. A non-resident applicant must swear that the county they applied in is the main place in California they plan to spend time, and must complete live-fire training for each handgun they want licensed. The authority may let that applicant take any required psychological exam remotely, or with a provider within 75 miles of home. The bill also lifts the gun ban for someone whose out-of-state non-violent felony was erased or pardoned, as specified. The Senate passed it 29-10 and it became law.",
-   "nay_description": "Voted against passing Assembly Bill 1078, which tightens who may hold a California license to carry a concealed handgun. It bars a license for someone convicted under federal law or another state's law of an offense that already disqualifies people here. It also bars a license for someone who has been under a restraining or protective order, and for anyone unlawfully using or addicted to a controlled substance. An applicant who was never given notice and a chance to be heard before that order was issued is not disqualified by it. When a licensing authority disqualifies someone for drug use it must report that to the federal background check system within five days. A licensee must tell the issuing authority about any restraining order, arrest, charge or conviction for a listed crime, and failing to do so costs them the license. The bill also raises the number of firearms a person may apply to buy in any 30 days from one to three, starting April 1, 2026. A federal court had already blocked the one-gun limit while that case is on appeal. It lets someone carry an unloaded firearm locked in a box on a bus or train. A non-resident applicant must swear that the county they applied in is the main place in California they plan to spend time, and must complete live-fire training for each handgun they want licensed. The authority may let that applicant take any required psychological exam remotely, or with a provider within 75 miles of home. The bill also lifts the gun ban for someone whose out-of-state non-violent felony was erased or pardoned, as specified. The Senate passed it 29-10 and it became law.",
-   "labels": [
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602447,
+      "measure_id": "AB 1078",
+      "vote_date": "2025-09-11",
+      "review_status": "pending",
+      "yea_description": "Voted to pass Assembly Bill 1078, which tightens who may hold a California license to carry a concealed handgun. It bars a license for someone convicted under federal law or another state's law of an offense that already disqualifies people here. It also bars a license for someone who has been under a restraining or protective order, and for anyone unlawfully using or addicted to a controlled substance. An applicant who was never given notice and a chance to be heard before that order was issued is not disqualified by it. When a licensing authority disqualifies someone for drug use it must report that to the federal background check system within five days. A licensee must tell the issuing authority about any restraining order, arrest, charge or conviction for a listed crime, and failing to do so costs them the license. The bill also raises the number of firearms a person may apply to buy in any 30 days from one to three, starting April 1, 2026. A federal court had already blocked the one-gun limit while that case is on appeal. It lets someone carry an unloaded firearm locked in a box on a bus or train. A non-resident applicant must swear that the county they applied in is the main place in California they plan to spend time, and must complete live-fire training for each handgun they want licensed. The authority may let that applicant take any required psychological exam remotely, or with a provider within 75 miles of home. The bill also lifts the gun ban for someone whose out-of-state non-violent felony was erased or pardoned, as specified. The Assembly passed it 57-20 and it became law.",
+      "nay_description": "Voted against passing Assembly Bill 1078, which tightens who may hold a California license to carry a concealed handgun. It bars a license for someone convicted under federal law or another state's law of an offense that already disqualifies people here. It also bars a license for someone who has been under a restraining or protective order, and for anyone unlawfully using or addicted to a controlled substance. An applicant who was never given notice and a chance to be heard before that order was issued is not disqualified by it. When a licensing authority disqualifies someone for drug use it must report that to the federal background check system within five days. A licensee must tell the issuing authority about any restraining order, arrest, charge or conviction for a listed crime, and failing to do so costs them the license. The bill also raises the number of firearms a person may apply to buy in any 30 days from one to three, starting April 1, 2026. A federal court had already blocked the one-gun limit while that case is on appeal. It lets someone carry an unloaded firearm locked in a box on a bus or train. A non-resident applicant must swear that the county they applied in is the main place in California they plan to spend time, and must complete live-fire training for each handgun they want licensed. The authority may let that applicant take any required psychological exam remotely, or with a provider within 75 miles of home. The bill also lifts the gun ban for someone whose out-of-state non-violent felony was erased or pardoned, as specified. The Assembly passed it 57-20 and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "gun_control",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "CA",
-   "chamber": "house",
-   "session": "2172",
-   "roll": 1725928,
-   "measure_id": "AB 1116",
-   "vote_date": "2026-08-25",
-   "review_status": "approved",
-   "yea_description": "Voted to pass Assembly Bill 1116, which opens online voter registration to citizens who have no California driver's license or state ID card. Today the Secretary of State's website can register a voter only if the state already holds their license or ID record. Under the bill a voter without either may register online by giving the last four digits of their Social Security number. Their identity is checked against their name, date of birth and those digits through processes the state and federal government already use. The Secretary of State must build an accessible way to collect an image of the voter's signature, and county officials may compare a mail ballot signature against it. The change takes effect on January 1, 2029. The Assembly passed it 59-19. The bill has passed the Legislature and is awaiting the governor's decision.",
-   "nay_description": "Voted against passing Assembly Bill 1116, which opens online voter registration to citizens who have no California driver's license or state ID card. Today the Secretary of State's website can register a voter only if the state already holds their license or ID record. Under the bill a voter without either may register online by giving the last four digits of their Social Security number. Their identity is checked against their name, date of birth and those digits through processes the state and federal government already use. The Secretary of State must build an accessible way to collect an image of the voter's signature, and county officials may compare a mail ballot signature against it. The change takes effect on January 1, 2029. The Assembly passed it 59-19. The bill has passed the Legislature and is awaiting the governor's decision.",
-   "labels": [
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601537,
+      "measure_id": "AB 1078",
+      "vote_date": "2025-09-09",
+      "review_status": "pending",
+      "yea_description": "Voted to pass Assembly Bill 1078, which tightens who may hold a California license to carry a concealed handgun. It bars a license for someone convicted under federal law or another state's law of an offense that already disqualifies people here. It also bars a license for someone who has been under a restraining or protective order, and for anyone unlawfully using or addicted to a controlled substance. An applicant who was never given notice and a chance to be heard before that order was issued is not disqualified by it. When a licensing authority disqualifies someone for drug use it must report that to the federal background check system within five days. A licensee must tell the issuing authority about any restraining order, arrest, charge or conviction for a listed crime, and failing to do so costs them the license. The bill also raises the number of firearms a person may apply to buy in any 30 days from one to three, starting April 1, 2026. A federal court had already blocked the one-gun limit while that case is on appeal. It lets someone carry an unloaded firearm locked in a box on a bus or train. A non-resident applicant must swear that the county they applied in is the main place in California they plan to spend time, and must complete live-fire training for each handgun they want licensed. The authority may let that applicant take any required psychological exam remotely, or with a provider within 75 miles of home. The bill also lifts the gun ban for someone whose out-of-state non-violent felony was erased or pardoned, as specified. The Senate passed it 29-10 and it became law.",
+      "nay_description": "Voted against passing Assembly Bill 1078, which tightens who may hold a California license to carry a concealed handgun. It bars a license for someone convicted under federal law or another state's law of an offense that already disqualifies people here. It also bars a license for someone who has been under a restraining or protective order, and for anyone unlawfully using or addicted to a controlled substance. An applicant who was never given notice and a chance to be heard before that order was issued is not disqualified by it. When a licensing authority disqualifies someone for drug use it must report that to the federal background check system within five days. A licensee must tell the issuing authority about any restraining order, arrest, charge or conviction for a listed crime, and failing to do so costs them the license. The bill also raises the number of firearms a person may apply to buy in any 30 days from one to three, starting April 1, 2026. A federal court had already blocked the one-gun limit while that case is on appeal. It lets someone carry an unloaded firearm locked in a box on a bus or train. A non-resident applicant must swear that the county they applied in is the main place in California they plan to spend time, and must complete live-fire training for each handgun they want licensed. The authority may let that applicant take any required psychological exam remotely, or with a provider within 75 miles of home. The bill also lifts the gun ban for someone whose out-of-state non-violent felony was erased or pardoned, as specified. The Senate passed it 29-10 and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "CA",
-   "chamber": "senate",
-   "session": "2172",
-   "roll": 1725801,
-   "measure_id": "AB 1116",
-   "vote_date": "2026-08-24",
-   "review_status": "approved",
-   "yea_description": "Voted to pass Assembly Bill 1116, which opens online voter registration to citizens who have no California driver's license or state ID card. Today the Secretary of State's website can register a voter only if the state already holds their license or ID record. Under the bill a voter without either may register online by giving the last four digits of their Social Security number. Their identity is checked against their name, date of birth and those digits through processes the state and federal government already use. The Secretary of State must build an accessible way to collect an image of the voter's signature, and county officials may compare a mail ballot signature against it. The change takes effect on January 1, 2029. The Senate passed it 29-9. The bill has passed the Legislature and is awaiting the governor's decision.",
-   "nay_description": "Voted against passing Assembly Bill 1116, which opens online voter registration to citizens who have no California driver's license or state ID card. Today the Secretary of State's website can register a voter only if the state already holds their license or ID record. Under the bill a voter without either may register online by giving the last four digits of their Social Security number. Their identity is checked against their name, date of birth and those digits through processes the state and federal government already use. The Secretary of State must build an accessible way to collect an image of the voter's signature, and county officials may compare a mail ballot signature against it. The change takes effect on January 1, 2029. The Senate passed it 29-9. The bill has passed the Legislature and is awaiting the governor's decision.",
-   "labels": [
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1725928,
+      "measure_id": "AB 1116",
+      "vote_date": "2026-08-25",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1116, which opens online voter registration to citizens who have no California driver's license or state ID card. Today the Secretary of State's website can register a voter only if the state already holds their license or ID record. Under the bill a voter without either may register online by giving the last four digits of their Social Security number. Their identity is checked against their name, date of birth and those digits through processes the state and federal government already use. The Secretary of State must build an accessible way to collect an image of the voter's signature, and county officials must compare a mail ballot signature against the signatures in the voter's registration record, including that image. The change takes effect on January 1, 2029. The Assembly passed it 59-19. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "nay_description": "Voted against passing Assembly Bill 1116, which opens online voter registration to citizens who have no California driver's license or state ID card. Today the Secretary of State's website can register a voter only if the state already holds their license or ID record. Under the bill a voter without either may register online by giving the last four digits of their Social Security number. Their identity is checked against their name, date of birth and those digits through processes the state and federal government already use. The Secretary of State must build an accessible way to collect an image of the voter's signature, and county officials must compare a mail ballot signature against the signatures in the voter's registration record, including that image. The change takes effect on January 1, 2029. The Assembly passed it 59-19. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "CA",
-   "chamber": "house",
-   "session": "2172",
-   "roll": 1602402,
-   "measure_id": "AB 1249",
-   "vote_date": "2025-09-10",
-   "review_status": "approved",
-   "yea_description": "Voted to pass Assembly Bill 1249, which widens early in-person voting. A voter may cast their mail ballot at the elections official's office or a satellite location starting 29 days before election day. For a statewide election, a county that does not run an all-mail election must open at least one early voting site on the Saturday before election day, for at least six hours. At that site a voter can hand in a mail ballot, register to vote, cast a provisional ballot, or get a replacement ballot. The bill drops the rule that a ballot voted at a satellite location go into a voter identification envelope. It also drops the requirement that officials announce a satellite location through a general news release, and instead requires notice at least two weeks ahead. The Assembly passed it 60-18 and it became law.",
-   "nay_description": "Voted against passing Assembly Bill 1249, which widens early in-person voting. A voter may cast their mail ballot at the elections official's office or a satellite location starting 29 days before election day. For a statewide election, a county that does not run an all-mail election must open at least one early voting site on the Saturday before election day, for at least six hours. At that site a voter can hand in a mail ballot, register to vote, cast a provisional ballot, or get a replacement ballot. The bill drops the rule that a ballot voted at a satellite location go into a voter identification envelope. It also drops the requirement that officials announce a satellite location through a general news release, and instead requires notice at least two weeks ahead. The Assembly passed it 60-18 and it became law.",
-   "labels": [
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1725801,
+      "measure_id": "AB 1116",
+      "vote_date": "2026-08-24",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1116, which opens online voter registration to citizens who have no California driver's license or state ID card. Today the Secretary of State's website can register a voter only if the state already holds their license or ID record. Under the bill a voter without either may register online by giving the last four digits of their Social Security number. Their identity is checked against their name, date of birth and those digits through processes the state and federal government already use. The Secretary of State must build an accessible way to collect an image of the voter's signature, and county officials may compare a mail ballot signature against it. The change takes effect on January 1, 2029. The Senate passed it 29-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "nay_description": "Voted against passing Assembly Bill 1116, which opens online voter registration to citizens who have no California driver's license or state ID card. Today the Secretary of State's website can register a voter only if the state already holds their license or ID record. Under the bill a voter without either may register online by giving the last four digits of their Social Security number. Their identity is checked against their name, date of birth and those digits through processes the state and federal government already use. The Secretary of State must build an accessible way to collect an image of the voter's signature, and county officials may compare a mail ballot signature against it. The change takes effect on January 1, 2029. The Senate passed it 29-9. The bill has passed the Legislature and is awaiting the governor's decision.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "CA",
-   "chamber": "senate",
-   "session": "2172",
-   "roll": 1601555,
-   "measure_id": "AB 1249",
-   "vote_date": "2025-09-09",
-   "review_status": "approved",
-   "yea_description": "Voted to pass Assembly Bill 1249, which widens early in-person voting. A voter may cast their mail ballot at the elections official's office or a satellite location starting 29 days before election day. For a statewide election, a county that does not run an all-mail election must open at least one early voting site on the Saturday before election day, for at least six hours. At that site a voter can hand in a mail ballot, register to vote, cast a provisional ballot, or get a replacement ballot. The bill drops the rule that a ballot voted at a satellite location go into a voter identification envelope. It also drops the requirement that officials announce a satellite location through a general news release, and instead requires notice at least two weeks ahead. The Senate passed it 30-10 and it became law.",
-   "nay_description": "Voted against passing Assembly Bill 1249, which widens early in-person voting. A voter may cast their mail ballot at the elections official's office or a satellite location starting 29 days before election day. For a statewide election, a county that does not run an all-mail election must open at least one early voting site on the Saturday before election day, for at least six hours. At that site a voter can hand in a mail ballot, register to vote, cast a provisional ballot, or get a replacement ballot. The bill drops the rule that a ballot voted at a satellite location go into a voter identification envelope. It also drops the requirement that officials announce a satellite location through a general news release, and instead requires notice at least two weeks ahead. The Senate passed it 30-10 and it became law.",
-   "labels": [
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602402,
+      "measure_id": "AB 1249",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1249, which widens early in-person voting. A voter may cast their mail ballot at the elections official's office or a satellite location starting 29 days before election day. For a statewide election, a county that does not run an all-mail election must open at least one early voting site on the Saturday before election day, for at least six hours. At that site a voter can hand in a mail ballot, register to vote, cast a provisional ballot, or get a replacement ballot. The bill drops the rule that a ballot voted at a satellite location go into a voter identification envelope. It also drops the requirement that officials announce a satellite location through a general news release, and instead requires notice at least two weeks ahead. The Assembly passed it 60-18 and it became law.",
+      "nay_description": "Voted against passing Assembly Bill 1249, which widens early in-person voting. A voter may cast their mail ballot at the elections official's office or a satellite location starting 29 days before election day. For a statewide election, a county that does not run an all-mail election must open at least one early voting site on the Saturday before election day, for at least six hours. At that site a voter can hand in a mail ballot, register to vote, cast a provisional ballot, or get a replacement ballot. The bill drops the rule that a ballot voted at a satellite location go into a voter identification envelope. It also drops the requirement that officials announce a satellite location through a general news release, and instead requires notice at least two weeks ahead. The Assembly passed it 60-18 and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "CA",
-   "chamber": "house",
-   "session": "2172",
-   "roll": 1602460,
-   "measure_id": "AB 1324",
-   "vote_date": "2025-09-11",
-   "review_status": "approved",
-   "yea_description": "Voted to pass Assembly Bill 1324, which would have widened who qualifies for CalWORKs, the state's cash aid program for low-income families with children. A child now counts as deprived of parental support through unemployment only if the parent worked under 100 hours in the past four weeks. The bill would have dropped that hour test, so the hours a parent works would not matter as long as the family stayed within the income limits. It would have paid aid to a family whose parent or caretaker is on strike or locked out, as far as federal law allows, and counted that person's needs in the payment. It would have counted self-employment as a work activity. Counties taking subsidized employment money would have had to say in their plans how they will keep those placements from displacing public employees, and avoid employers with a bad safety or labor record. The state would have had to study a wider CalWORKs and report to legislative committees by January 1, 2028. The Assembly passed it 60-15, but the governor vetoed it, so it did not become law.",
-   "nay_description": "Voted against passing Assembly Bill 1324, which would have widened who qualifies for CalWORKs, the state's cash aid program for low-income families with children. A child now counts as deprived of parental support through unemployment only if the parent worked under 100 hours in the past four weeks. The bill would have dropped that hour test, so the hours a parent works would not matter as long as the family stayed within the income limits. It would have paid aid to a family whose parent or caretaker is on strike or locked out, as far as federal law allows, and counted that person's needs in the payment. It would have counted self-employment as a work activity. Counties taking subsidized employment money would have had to say in their plans how they will keep those placements from displacing public employees, and avoid employers with a bad safety or labor record. The state would have had to study a wider CalWORKs and report to legislative committees by January 1, 2028. The Assembly passed it 60-15, but the governor vetoed it, so it did not become law.",
-   "labels": [
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601555,
+      "measure_id": "AB 1249",
+      "vote_date": "2025-09-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1249, which widens early in-person voting. A voter may cast their mail ballot at the elections official's office or a satellite location starting 29 days before election day. For a statewide election, a county that does not run an all-mail election must open at least one early voting site on the Saturday before election day, for at least six hours. At that site a voter can hand in a mail ballot, register to vote, cast a provisional ballot, or get a replacement ballot. The bill drops the rule that a ballot voted at a satellite location go into a voter identification envelope. It also drops the requirement that officials announce a satellite location through a general news release, and instead requires notice at least two weeks ahead. The Senate passed it 30-10 and it became law.",
+      "nay_description": "Voted against passing Assembly Bill 1249, which widens early in-person voting. A voter may cast their mail ballot at the elections official's office or a satellite location starting 29 days before election day. For a statewide election, a county that does not run an all-mail election must open at least one early voting site on the Saturday before election day, for at least six hours. At that site a voter can hand in a mail ballot, register to vote, cast a provisional ballot, or get a replacement ballot. The bill drops the rule that a ballot voted at a satellite location go into a voter identification envelope. It also drops the requirement that officials announce a satellite location through a general news release, and instead requires notice at least two weeks ahead. The Senate passed it 30-10 and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "social_programs_and_welfare",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "CA",
-   "chamber": "senate",
-   "session": "2172",
-   "roll": 1601801,
-   "measure_id": "AB 1324",
-   "vote_date": "2025-09-10",
-   "review_status": "approved",
-   "yea_description": "Voted to pass Assembly Bill 1324, which would have widened who qualifies for CalWORKs, the state's cash aid program for low-income families with children. A child now counts as deprived of parental support through unemployment only if the parent worked under 100 hours in the past four weeks. The bill would have dropped that hour test, so the hours a parent works would not matter as long as the family stayed within the income limits. It would have paid aid to a family whose parent or caretaker is on strike or locked out, as far as federal law allows, and counted that person's needs in the payment. It would have counted self-employment as a work activity. Counties taking subsidized employment money would have had to say in their plans how they will keep those placements from displacing public employees, and avoid employers with a bad safety or labor record. The state would have had to study a wider CalWORKs and report to legislative committees by January 1, 2028. The Senate passed it 30-10, but the governor vetoed it, so it did not become law.",
-   "nay_description": "Voted against passing Assembly Bill 1324, which would have widened who qualifies for CalWORKs, the state's cash aid program for low-income families with children. A child now counts as deprived of parental support through unemployment only if the parent worked under 100 hours in the past four weeks. The bill would have dropped that hour test, so the hours a parent works would not matter as long as the family stayed within the income limits. It would have paid aid to a family whose parent or caretaker is on strike or locked out, as far as federal law allows, and counted that person's needs in the payment. It would have counted self-employment as a work activity. Counties taking subsidized employment money would have had to say in their plans how they will keep those placements from displacing public employees, and avoid employers with a bad safety or labor record. The state would have had to study a wider CalWORKs and report to legislative committees by January 1, 2028. The Senate passed it 30-10, but the governor vetoed it, so it did not become law.",
-   "labels": [
+      "jurisdiction": "CA",
+      "chamber": "house",
+      "session": "2172",
+      "roll": 1602460,
+      "measure_id": "AB 1324",
+      "vote_date": "2025-09-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1324, which would have widened who qualifies for CalWORKs, the state's cash aid program for low-income families with children. A child now counts as deprived of parental support through unemployment only if the parent worked under 100 hours in the past four weeks. The bill would have dropped that hour test, so the hours a parent works would not matter as long as the family stayed within the income limits. It would have paid aid to a family whose parent or caretaker is on strike or locked out, as far as federal law allows, and counted that person's needs in the payment. It would have counted self-employment as a work activity. Counties taking subsidized employment money would have had to say in their plans how they will keep those placements from displacing public employees, and avoid employers with a bad safety or labor record. The state would have had to study a wider CalWORKs and report to legislative committees by January 1, 2028. The Assembly passed it 60-15, but the governor vetoed it, so it did not become law.",
+      "nay_description": "Voted against passing Assembly Bill 1324, which would have widened who qualifies for CalWORKs, the state's cash aid program for low-income families with children. A child now counts as deprived of parental support through unemployment only if the parent worked under 100 hours in the past four weeks. The bill would have dropped that hour test, so the hours a parent works would not matter as long as the family stayed within the income limits. It would have paid aid to a family whose parent or caretaker is on strike or locked out, as far as federal law allows, and counted that person's needs in the payment. It would have counted self-employment as a work activity. Counties taking subsidized employment money would have had to say in their plans how they will keep those placements from displacing public employees, and avoid employers with a bad safety or labor record. The state would have had to study a wider CalWORKs and report to legislative committees by January 1, 2028. The Assembly passed it 60-15, but the governor vetoed it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "social_programs_and_welfare",
-     "yea": "for",
-     "nay": null
+      "jurisdiction": "CA",
+      "chamber": "senate",
+      "session": "2172",
+      "roll": 1601801,
+      "measure_id": "AB 1324",
+      "vote_date": "2025-09-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Assembly Bill 1324, which would have widened who qualifies for CalWORKs, the state's cash aid program for low-income families with children. A child now counts as deprived of parental support through unemployment only if the parent worked under 100 hours in the past four weeks. The bill would have dropped that hour test, so the hours a parent works would not matter as long as the family stayed within the income limits. It would have paid aid to a family whose parent or caretaker is on strike or locked out, as far as federal law allows, and counted that person's needs in the payment. It would have counted self-employment as a work activity. Counties taking subsidized employment money would have had to say in their plans how they will keep those placements from displacing public employees, and avoid employers with a bad safety or labor record. The state would have had to study a wider CalWORKs and report to legislative committees by January 1, 2028. The Senate passed it 30-10, but the governor vetoed it, so it did not become law.",
+      "nay_description": "Voted against passing Assembly Bill 1324, which would have widened who qualifies for CalWORKs, the state's cash aid program for low-income families with children. A child now counts as deprived of parental support through unemployment only if the parent worked under 100 hours in the past four weeks. The bill would have dropped that hour test, so the hours a parent works would not matter as long as the family stayed within the income limits. It would have paid aid to a family whose parent or caretaker is on strike or locked out, as far as federal law allows, and counted that person's needs in the payment. It would have counted self-employment as a work activity. Counties taking subsidized employment money would have had to say in their plans how they will keep those placements from displacing public employees, and avoid employers with a bad safety or labor record. The state would have had to study a wider CalWORKs and report to legislative committees by January 1, 2028. The Senate passed it 30-10, but the governor vetoed it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
     }
-   ]
-  }
- ]
+  ]
 }

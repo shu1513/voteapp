@@ -1,442 +1,442 @@
 {
- "judgments": [
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1594835,
-   "measure_id": "LD 1126",
-   "vote_date": "2025-06-25",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1126, a gun bill. A serial number is the maker's ID number that lets police trace a gun. Starting January 1, 2027, having a gun with no serial number is a civil violation with a fine of up to $50 the first time, and a crime for repeat offenses. Bringing one into Maine, selling it, or handing it over is a crime from the first offense. The rules also cover the frame, the core part a gun is built on. Buying one that already has a number requires a background check. Guns made before 1968, antiques, collector pieces, and guns that can no longer fire are left out. The bill also bans guns built to slip past metal detectors. The two chambers had passed different versions. This vote accepted the Senate's wording. The Maine House agreed 73-67 and the bill became law.",
-   "nay_description": "Voted no on LD 1126, a gun bill. A serial number is the maker's ID number that lets police trace a gun. Starting January 1, 2027, having a gun with no serial number is a civil violation with a fine of up to $50 the first time, and a crime for repeat offenses. Bringing one into Maine, selling it, or handing it over is a crime from the first offense. The rules also cover the frame, the core part a gun is built on. Buying one that already has a number requires a background check. Guns made before 1968, antiques, collector pieces, and guns that can no longer fire are left out. The bill also bans guns built to slip past metal detectors. The two chambers had passed different versions. This vote accepted the Senate's wording. The Maine House agreed 73-67 and the bill became law.",
-   "labels": [
+  "judgments": [
     {
-     "slug": "gun_control",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1595032,
-   "measure_id": "LD 1126",
-   "vote_date": "2025-06-25",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1126, a gun bill. A serial number is the maker's ID number that lets police trace a gun. Starting January 1, 2027, having a gun with no serial number is a civil violation with a fine of up to $50 the first time, and a crime for repeat offenses. Bringing one into Maine, selling it, or handing it over is a crime from the first offense. The rules also cover the frame, the core part a gun is built on. Buying one that already has a number requires a background check. Guns made before 1968, antiques, collector pieces, and guns that can no longer fire are left out. The bill also bans guns built to slip past metal detectors. This was the final passage vote. The Maine Senate passed it 17-16 and it became law.",
-   "nay_description": "Voted no on LD 1126, a gun bill. A serial number is the maker's ID number that lets police trace a gun. Starting January 1, 2027, having a gun with no serial number is a civil violation with a fine of up to $50 the first time, and a crime for repeat offenses. Bringing one into Maine, selling it, or handing it over is a crime from the first offense. The rules also cover the frame, the core part a gun is built on. Buying one that already has a number requires a background check. Guns made before 1968, antiques, collector pieces, and guns that can no longer fire are left out. The bill also bans guns built to slip past metal detectors. This was the final passage vote. The Maine Senate passed it 17-16 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1594835,
+      "measure_id": "LD 1126",
+      "vote_date": "2025-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1126, a gun bill. A serial number is the maker's ID number that lets police trace a gun. Starting January 1, 2027, having a gun with no serial number is a civil violation with a fine of up to $50 the first time, and a crime for repeat offenses. Bringing one into Maine, selling it, or handing it over is a crime from the first offense. The rules also cover the frame, the core part a gun is built on. Buying one that already has a number requires a background check. Guns made before 1968, antiques, collector pieces, and guns that can no longer fire are left out. The bill also bans guns built to slip past metal detectors. The two chambers had passed different versions. This vote accepted the Senate's wording. The Maine House agreed 73-67 and the bill became law.",
+      "nay_description": "Voted no on LD 1126, a gun bill. A serial number is the maker's ID number that lets police trace a gun. Starting January 1, 2027, having a gun with no serial number is a civil violation with a fine of up to $50 the first time, and a crime for repeat offenses. Bringing one into Maine, selling it, or handing it over is a crime from the first offense. The rules also cover the frame, the core part a gun is built on. Buying one that already has a number requires a background check. Guns made before 1968, antiques, collector pieces, and guns that can no longer fire are left out. The bill also bans guns built to slip past metal detectors. The two chambers had passed different versions. This vote accepted the Senate's wording. The Maine House agreed 73-67 and the bill became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "gun_control",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1592017,
-   "measure_id": "LD 1971",
-   "vote_date": "2025-06-18",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1971, a bill about local police and federal immigration agents. Maine police, sheriffs, and jails may no longer spend their money or their officers' time helping enforce federal civil immigration law. They may not hold someone in jail past their release time just because federal agents ask. They may not tell those agents a person's release date or home address unless that information is already public. They may still share someone's immigration status when federal law calls for it, and they may still run normal criminal investigations. This was the final passage vote. The Maine House passed it 75-73 and it became law.",
-   "nay_description": "Voted no on LD 1971, a bill about local police and federal immigration agents. Maine police, sheriffs, and jails may no longer spend their money or their officers' time helping enforce federal civil immigration law. They may not hold someone in jail past their release time just because federal agents ask. They may not tell those agents a person's release date or home address unless that information is already public. They may still share someone's immigration status when federal law calls for it, and they may still run normal criminal investigations. This was the final passage vote. The Maine House passed it 75-73 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1595032,
+      "measure_id": "LD 1126",
+      "vote_date": "2025-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1126, a gun bill. A serial number is the maker's ID number that lets police trace a gun. Starting January 1, 2027, having a gun with no serial number is a civil violation with a fine of up to $50 the first time, and a crime for repeat offenses. Bringing one into Maine, selling it, or handing it over is a crime from the first offense. The rules also cover the frame, the core part a gun is built on. Buying one that already has a number requires a background check. Guns made before 1968, antiques, collector pieces, and guns that can no longer fire are left out. The bill also bans guns built to slip past metal detectors. This was the final passage vote. The Maine Senate passed it 17-16 and it became law.",
+      "nay_description": "Voted no on LD 1126, a gun bill. A serial number is the maker's ID number that lets police trace a gun. Starting January 1, 2027, having a gun with no serial number is a civil violation with a fine of up to $50 the first time, and a crime for repeat offenses. Bringing one into Maine, selling it, or handing it over is a crime from the first offense. The rules also cover the frame, the core part a gun is built on. Buying one that already has a number requires a background check. Guns made before 1968, antiques, collector pieces, and guns that can no longer fire are left out. The bill also bans guns built to slip past metal detectors. This was the final passage vote. The Maine Senate passed it 17-16 and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "immigration",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1592547,
-   "measure_id": "LD 1971",
-   "vote_date": "2025-06-18",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1971, a bill about local police and federal immigration agents. Maine police, sheriffs, and jails may no longer spend their money or their officers' time helping enforce federal civil immigration law. They may not hold someone in jail past their release time just because federal agents ask. They may not tell those agents a person's release date or home address unless that information is already public. They may still share someone's immigration status when federal law calls for it, and they may still run normal criminal investigations. This was the final passage vote. The Maine Senate passed it 20-14 and it became law.",
-   "nay_description": "Voted no on LD 1971, a bill about local police and federal immigration agents. Maine police, sheriffs, and jails may no longer spend their money or their officers' time helping enforce federal civil immigration law. They may not hold someone in jail past their release time just because federal agents ask. They may not tell those agents a person's release date or home address unless that information is already public. They may still share someone's immigration status when federal law calls for it, and they may still run normal criminal investigations. This was the final passage vote. The Maine Senate passed it 20-14 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1592017,
+      "measure_id": "LD 1971",
+      "vote_date": "2025-06-18",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1971, a bill about local police and federal immigration agents. Maine police, sheriffs, and jails may no longer spend their money or their officers' time helping enforce federal civil immigration law. They may not hold someone in jail past their release time just because federal agents ask. They may not tell those agents a person's release date or home address unless that information is already public. They may still share someone's immigration status when federal law calls for it, and they may still run normal criminal investigations. This was the final passage vote. The Maine House passed it 75-73 and it became law.",
+      "nay_description": "Voted no on LD 1971, a bill about local police and federal immigration agents. Maine police, sheriffs, and jails may no longer spend their money or their officers' time helping enforce federal civil immigration law. They may not hold someone in jail past their release time just because federal agents ask. They may not tell those agents a person's release date or home address unless that information is already public. They may still share someone's immigration status when federal law calls for it, and they may still run normal criminal investigations. This was the final passage vote. The Maine House passed it 75-73 and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "immigration",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1574213,
-   "measure_id": "LD 538",
-   "vote_date": "2025-05-20",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 538, a bill about what goes on a prescription label. A pharmacy may now print the name of the health care facility on the label instead of the name of the prescriber, meaning the doctor, nurse practitioner, or other provider who wrote the prescription. This applies to mifepristone and misoprostol, the drugs used for medication abortion, and to their generic versions. It happens only if the prescriber asks for it. Normally Maine law requires the prescriber's own name on every drug label. The Maine House passed it 75-71 and it became law.",
-   "nay_description": "Voted no on LD 538, a bill about what goes on a prescription label. A pharmacy may now print the name of the health care facility on the label instead of the name of the prescriber, meaning the doctor, nurse practitioner, or other provider who wrote the prescription. This applies to mifepristone and misoprostol, the drugs used for medication abortion, and to their generic versions. It happens only if the prescriber asks for it. Normally Maine law requires the prescriber's own name on every drug label. The Maine House passed it 75-71 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1592547,
+      "measure_id": "LD 1971",
+      "vote_date": "2025-06-18",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1971, a bill about local police and federal immigration agents. Maine police, sheriffs, and jails may no longer spend their money or their officers' time helping enforce federal civil immigration law. They may not hold someone in jail past their release time just because federal agents ask. They may not tell those agents a person's release date or home address unless that information is already public. They may still share someone's immigration status when federal law calls for it, and they may still run normal criminal investigations. This was the final passage vote. The Maine Senate passed it 20-14 and it became law.",
+      "nay_description": "Voted no on LD 1971, a bill about local police and federal immigration agents. Maine police, sheriffs, and jails may no longer spend their money or their officers' time helping enforce federal civil immigration law. They may not hold someone in jail past their release time just because federal agents ask. They may not tell those agents a person's release date or home address unless that information is already public. They may still share someone's immigration status when federal law calls for it, and they may still run normal criminal investigations. This was the final passage vote. The Maine Senate passed it 20-14 and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "womens_reproductive_rights",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1574972,
-   "measure_id": "LD 538",
-   "vote_date": "2025-05-21",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 538, a bill about what goes on a prescription label. A pharmacy may now print the name of the health care facility on the label instead of the name of the prescriber, meaning the doctor, nurse practitioner, or other provider who wrote the prescription. This applies to mifepristone and misoprostol, the drugs used for medication abortion, and to their generic versions. It happens only if the prescriber asks for it. Normally Maine law requires the prescriber's own name on every drug label. The Maine Senate passed it 19-13 and it became law.",
-   "nay_description": "Voted no on LD 538, a bill about what goes on a prescription label. A pharmacy may now print the name of the health care facility on the label instead of the name of the prescriber, meaning the doctor, nurse practitioner, or other provider who wrote the prescription. This applies to mifepristone and misoprostol, the drugs used for medication abortion, and to their generic versions. It happens only if the prescriber asks for it. Normally Maine law requires the prescriber's own name on every drug label. The Maine Senate passed it 19-13 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1574213,
+      "measure_id": "LD 538",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 538, a bill about what goes on a prescription label. A pharmacy may now print the name of the health care facility on the label instead of the name of the prescriber, meaning the doctor, nurse practitioner, or other provider who wrote the prescription. This applies to mifepristone and misoprostol, the drugs used for medication abortion, and to their generic versions. It happens only if the prescriber asks for it. Normally Maine law requires the prescriber's own name on every drug label. The Maine House passed it 75-71 and it became law.",
+      "nay_description": "Voted no on LD 538, a bill about what goes on a prescription label. A pharmacy may now print the name of the health care facility on the label instead of the name of the prescriber, meaning the doctor, nurse practitioner, or other provider who wrote the prescription. This applies to mifepristone and misoprostol, the drugs used for medication abortion, and to their generic versions. It happens only if the prescriber asks for it. Normally Maine law requires the prescriber's own name on every drug label. The Maine House passed it 75-71 and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "womens_reproductive_rights",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1592313,
-   "measure_id": "LD 556",
-   "vote_date": "2025-06-18",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 556, a bill about who decides what heats your home. A Maine town or city may no longer pass a rule that stops a person or business from picking any safe heating or energy system sold on the market. Towns also may not block someone from hiring a fuel or energy company to install, service, or refill that system. Towns may still encourage one kind of system and spend money to promote it. In practice this stops a town from banning natural gas or oil heat in new buildings. This was the final passage vote. The Maine House passed it 78-67 and it became law.",
-   "nay_description": "Voted no on LD 556, a bill about who decides what heats your home. A Maine town or city may no longer pass a rule that stops a person or business from picking any safe heating or energy system sold on the market. Towns also may not block someone from hiring a fuel or energy company to install, service, or refill that system. Towns may still encourage one kind of system and spend money to promote it. In practice this stops a town from banning natural gas or oil heat in new buildings. This was the final passage vote. The Maine House passed it 78-67 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1574972,
+      "measure_id": "LD 538",
+      "vote_date": "2025-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 538, a bill about what goes on a prescription label. A pharmacy may now print the name of the health care facility on the label instead of the name of the prescriber, meaning the doctor, nurse practitioner, or other provider who wrote the prescription. This applies to mifepristone and misoprostol, the drugs used for medication abortion, and to their generic versions. It happens only if the prescriber asks for it. Normally Maine law requires the prescriber's own name on every drug label. The Maine Senate passed it 19-13 and it became law.",
+      "nay_description": "Voted no on LD 538, a bill about what goes on a prescription label. A pharmacy may now print the name of the health care facility on the label instead of the name of the prescriber, meaning the doctor, nurse practitioner, or other provider who wrote the prescription. This applies to mifepristone and misoprostol, the drugs used for medication abortion, and to their generic versions. It happens only if the prescriber asks for it. Normally Maine law requires the prescriber's own name on every drug label. The Maine Senate passed it 19-13 and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1594826,
-   "measure_id": "LD 556",
-   "vote_date": "2025-06-25",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 556, a bill about who decides what heats your home. A Maine town or city may no longer pass a rule that stops a person or business from picking any safe heating or energy system sold on the market. Towns also may not block someone from hiring a fuel or energy company to install, service, or refill that system. Towns may still encourage one kind of system and spend money to promote it. In practice this stops a town from banning natural gas or oil heat in new buildings. This was the final passage vote. The Maine Senate passed it 18-14 and it became law.",
-   "nay_description": "Voted no on LD 556, a bill about who decides what heats your home. A Maine town or city may no longer pass a rule that stops a person or business from picking any safe heating or energy system sold on the market. Towns also may not block someone from hiring a fuel or energy company to install, service, or refill that system. Towns may still encourage one kind of system and spend money to promote it. In practice this stops a town from banning natural gas or oil heat in new buildings. This was the final passage vote. The Maine Senate passed it 18-14 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1592313,
+      "measure_id": "LD 556",
+      "vote_date": "2025-06-18",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 556, a bill about who decides what heats your home. A Maine town or city may no longer pass a rule that stops a person or business from picking any safe heating or energy system sold on the market. Towns also may not block someone from hiring a fuel or energy company to install, service, or refill that system. Towns may still encourage one kind of system and spend money to promote it. In practice this stops a town from banning natural gas or oil heat in new buildings. This was the final passage vote. The Maine House passed it 78-67 and it became law.",
+      "nay_description": "Voted no on LD 556, a bill about who decides what heats your home. A Maine town or city may no longer pass a rule that stops a person or business from picking any safe heating or energy system sold on the market. Towns also may not block someone from hiring a fuel or energy company to install, service, or refill that system. Towns may still encourage one kind of system and spend money to promote it. In practice this stops a town from banning natural gas or oil heat in new buildings. This was the final passage vote. The Maine House passed it 78-67 and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1590978,
-   "measure_id": "LD 1868",
-   "vote_date": "2025-06-16",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1868, a clean electricity bill. Companies that sell electricity in Maine must start buying power the state counts as clean. The share starts at 1 percent of what they sell in 2031 and climbs to 10 percent by 2040. Nuclear plants count. So do hydroelectric dams that meet the state's rules for letting fish swim past. So does any power the state certifies as giving off almost no greenhouse gas. This was the final passage vote. The Maine House passed it 77-68 and it became law.",
-   "nay_description": "Voted no on LD 1868, a clean electricity bill. Companies that sell electricity in Maine must start buying power the state counts as clean. The share starts at 1 percent of what they sell in 2031 and climbs to 10 percent by 2040. Nuclear plants count. So do hydroelectric dams that meet the state's rules for letting fish swim past. So does any power the state certifies as giving off almost no greenhouse gas. This was the final passage vote. The Maine House passed it 77-68 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1594826,
+      "measure_id": "LD 556",
+      "vote_date": "2025-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 556, a bill about who decides what heats your home. A Maine town or city may no longer pass a rule that stops a person or business from picking any safe heating or energy system sold on the market. Towns also may not block someone from hiring a fuel or energy company to install, service, or refill that system. Towns may still encourage one kind of system and spend money to promote it. In practice this stops a town from banning natural gas or oil heat in new buildings. This was the final passage vote. The Maine Senate passed it 18-14 and it became law.",
+      "nay_description": "Voted no on LD 556, a bill about who decides what heats your home. A Maine town or city may no longer pass a rule that stops a person or business from picking any safe heating or energy system sold on the market. Towns also may not block someone from hiring a fuel or energy company to install, service, or refill that system. Towns may still encourage one kind of system and spend money to promote it. In practice this stops a town from banning natural gas or oil heat in new buildings. This was the final passage vote. The Maine Senate passed it 18-14 and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1591936,
-   "measure_id": "LD 1868",
-   "vote_date": "2025-06-17",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1868, a clean electricity bill. Companies that sell electricity in Maine must start buying power the state counts as clean. The share starts at 1 percent of what they sell in 2031 and climbs to 10 percent by 2040. Nuclear plants count. So do hydroelectric dams that meet the state's rules for letting fish swim past. So does any power the state certifies as giving off almost no greenhouse gas. This was the final passage vote. The Maine Senate passed it 19-16 and it became law.",
-   "nay_description": "Voted no on LD 1868, a clean electricity bill. Companies that sell electricity in Maine must start buying power the state counts as clean. The share starts at 1 percent of what they sell in 2031 and climbs to 10 percent by 2040. Nuclear plants count. So do hydroelectric dams that meet the state's rules for letting fish swim past. So does any power the state certifies as giving off almost no greenhouse gas. This was the final passage vote. The Maine Senate passed it 19-16 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1590978,
+      "measure_id": "LD 1868",
+      "vote_date": "2025-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1868, a clean electricity bill. Companies that sell electricity in Maine must start buying power the state counts as clean. The share starts at 1 percent of what they sell in 2031 and climbs to 10 percent by 2040. Nuclear plants count. So do hydroelectric dams that meet the state's rules for letting fish swim past. So does any power the state certifies as giving off almost no greenhouse gas. The law also raises the separate renewable power requirement from 40 percent in 2030 to 50 percent by 2040. It moves the state's goal from 100 percent renewable electricity by 2050 to 90 percent renewable plus 10 percent clean by 2040. If enough clean power is not built, the Public Utilities Commission may pause the scheduled increases. This was the final passage vote. The Maine House passed it 77-68 and it became law.",
+      "nay_description": "Voted no on LD 1868, a clean electricity bill. Companies that sell electricity in Maine must start buying power the state counts as clean. The share starts at 1 percent of what they sell in 2031 and climbs to 10 percent by 2040. Nuclear plants count. So do hydroelectric dams that meet the state's rules for letting fish swim past. So does any power the state certifies as giving off almost no greenhouse gas. The law also raises the separate renewable power requirement from 40 percent in 2030 to 50 percent by 2040. It moves the state's goal from 100 percent renewable electricity by 2050 to 90 percent renewable plus 10 percent clean by 2040. If enough clean power is not built, the Public Utilities Commission may pause the scheduled increases. This was the final passage vote. The Maine House passed it 77-68 and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for",
-     "nay": null
-    }
-   ],
-   "acknowledge_later_rolls": [
-    1591935
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1579051,
-   "measure_id": "LD 61",
-   "vote_date": "2025-05-27",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 61, a bill about bosses watching workers. A boss must tell workers before starting to watch them with cameras, tracking software, or other electronic tools. The boss must repeat that notice in writing once a year. Watching or recording a worker inside their home, their own car, or on their own property is banned unless the job truly requires it. Workers may say no when a boss asks to put tracking apps on their personal phone or computer. Homes where paid caregivers work are exempt. The Maine House passed it 73-63 and it became law.",
-   "nay_description": "Voted no on LD 61, a bill about bosses watching workers. A boss must tell workers before starting to watch them with cameras, tracking software, or other electronic tools. The boss must repeat that notice in writing once a year. Watching or recording a worker inside their home, their own car, or on their own property is banned unless the job truly requires it. Workers may say no when a boss asks to put tracking apps on their personal phone or computer. Homes where paid caregivers work are exempt. The Maine House passed it 73-63 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1591936,
+      "measure_id": "LD 1868",
+      "vote_date": "2025-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1868, a clean electricity bill. Companies that sell electricity in Maine must start buying power the state counts as clean. The share starts at 1 percent of what they sell in 2031 and climbs to 10 percent by 2040. Nuclear plants count. So do hydroelectric dams that meet the state's rules for letting fish swim past. So does any power the state certifies as giving off almost no greenhouse gas. This was the final passage vote. The Maine Senate passed it 19-16 and it became law.",
+      "nay_description": "Voted no on LD 1868, a clean electricity bill. Companies that sell electricity in Maine must start buying power the state counts as clean. The share starts at 1 percent of what they sell in 2031 and climbs to 10 percent by 2040. Nuclear plants count. So do hydroelectric dams that meet the state's rules for letting fish swim past. So does any power the state certifies as giving off almost no greenhouse gas. This was the final passage vote. The Maine Senate passed it 19-16 and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1591935
+      ]
+    },
     {
-     "slug": "data_privacy",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1579868,
-   "measure_id": "LD 61",
-   "vote_date": "2025-05-28",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 61, a bill about bosses watching workers. A boss must tell workers before starting to watch them with cameras, tracking software, or other electronic tools. The boss must repeat that notice in writing once a year. Watching or recording a worker inside their home, their own car, or on their own property is banned unless the job truly requires it. Workers may say no when a boss asks to put tracking apps on their personal phone or computer. Homes where paid caregivers work are exempt. The Maine Senate passed it 20-14 and it became law.",
-   "nay_description": "Voted no on LD 61, a bill about bosses watching workers. A boss must tell workers before starting to watch them with cameras, tracking software, or other electronic tools. The boss must repeat that notice in writing once a year. Watching or recording a worker inside their home, their own car, or on their own property is banned unless the job truly requires it. Workers may say no when a boss asks to put tracking apps on their personal phone or computer. Homes where paid caregivers work are exempt. The Maine Senate passed it 20-14 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1579051,
+      "measure_id": "LD 61",
+      "vote_date": "2025-05-27",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 61, a bill about bosses watching workers. A boss must tell workers before starting to watch them with computers, phones, or other electronic monitoring systems. Security or safety cameras, and GPS tracking on company-owned vehicles, do not count as surveillance under this law. The boss must tell job applicants at the interview and give current workers written notice once a year. Watching or recording a worker inside their home, their own car, or on their own property is banned unless the job truly requires it. Workers may say no when a boss asks to put tracking apps on their personal phone or computer. Settings where paid personal care services are provided are exempt. Each violation carries a fine of $100 to $500. The Maine House passed it 73-63 and it became law.",
+      "nay_description": "Voted no on LD 61, a bill about bosses watching workers. A boss must tell workers before starting to watch them with computers, phones, or other electronic monitoring systems. Security or safety cameras, and GPS tracking on company-owned vehicles, do not count as surveillance under this law. The boss must tell job applicants at the interview and give current workers written notice once a year. Watching or recording a worker inside their home, their own car, or on their own property is banned unless the job truly requires it. Workers may say no when a boss asks to put tracking apps on their personal phone or computer. Settings where paid personal care services are provided are exempt. Each violation carries a fine of $100 to $500. The Maine House passed it 73-63 and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "data_privacy",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1658072,
-   "measure_id": "LD 517",
-   "vote_date": "2026-03-10",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 517, a bill about fake audio and video in campaign ads. A political ad that uses fake audio, video, or images of a candidate must carry a warning saying the content was changed. The law calls this synthetic media, meaning a doctored clip that would fool a reasonable person about what a candidate said or did. Ads that are clearly jokes or parody do not need the warning. Neither do small edits like cropping or color fixes. The Maine House passed it 73-65 and it became law.",
-   "nay_description": "Voted no on LD 517, a bill about fake audio and video in campaign ads. A political ad that uses fake audio, video, or images of a candidate must carry a warning saying the content was changed. The law calls this synthetic media, meaning a doctored clip that would fool a reasonable person about what a candidate said or did. Ads that are clearly jokes or parody do not need the warning. Neither do small edits like cropping or color fixes. The Maine House passed it 73-65 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1579868,
+      "measure_id": "LD 61",
+      "vote_date": "2025-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 61, a bill about bosses watching workers. A boss must tell workers before starting to monitor them electronically, for example with tracking software or monitoring of work computers and phones. The boss must repeat that notice in writing once a year and must tell job applicants at the interview. Security or safety cameras, and GPS trackers on vehicles the employer owns, are not covered by the law. Watching or recording a worker inside their home, their own car, or on their own property is banned unless the job truly requires it. Workers may say no when a boss asks to put tracking apps on their personal phone or computer. Homes where paid caregivers work are exempt. A boss who breaks the law faces a fine of $100 to $500 for each violation. The Maine Senate passed it 20-14 and it became law.",
+      "nay_description": "Voted no on LD 61, a bill about bosses watching workers. A boss must tell workers before starting to monitor them electronically, for example with tracking software or monitoring of work computers and phones. The boss must repeat that notice in writing once a year and must tell job applicants at the interview. Security or safety cameras, and GPS trackers on vehicles the employer owns, are not covered by the law. Watching or recording a worker inside their home, their own car, or on their own property is banned unless the job truly requires it. Workers may say no when a boss asks to put tracking apps on their personal phone or computer. Homes where paid caregivers work are exempt. A boss who breaks the law faces a fine of $100 to $500 for each violation. The Maine Senate passed it 20-14 and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "election_integrity",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1661402,
-   "measure_id": "LD 517",
-   "vote_date": "2026-03-12",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 517, a bill about fake audio and video in campaign ads. A political ad that uses fake audio, video, or images of a candidate must carry a warning saying the content was changed. The law calls this synthetic media, meaning a doctored clip that would fool a reasonable person about what a candidate said or did. Ads that are clearly jokes or parody do not need the warning. Neither do small edits like cropping or color fixes. The Maine Senate passed it 20-14 and it became law.",
-   "nay_description": "Voted no on LD 517, a bill about fake audio and video in campaign ads. A political ad that uses fake audio, video, or images of a candidate must carry a warning saying the content was changed. The law calls this synthetic media, meaning a doctored clip that would fool a reasonable person about what a candidate said or did. Ads that are clearly jokes or parody do not need the warning. Neither do small edits like cropping or color fixes. The Maine Senate passed it 20-14 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1658072,
+      "measure_id": "LD 517",
+      "vote_date": "2026-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 517, a bill about fake audio and video in campaign ads. A political ad that uses fake audio, video, or images of a candidate must carry a warning saying the content was changed. The law calls this synthetic media, meaning a doctored clip that would fool a reasonable person about what a candidate said or did. Ads that are clearly jokes or parody do not need the warning. Neither do small edits like cropping or color fixes. Breaking this rule can cost up to five times what was spent on the ad, and the usual chance to fix the problem within 10 days and avoid a penalty does not apply. A broadcaster or newspaper is only liable if it ran the ad knowing it contained synthetic media. The Maine House passed it 73-65 and it became law.",
+      "nay_description": "Voted no on LD 517, a bill about fake audio and video in campaign ads. A political ad that uses fake audio, video, or images of a candidate must carry a warning saying the content was changed. The law calls this synthetic media, meaning a doctored clip that would fool a reasonable person about what a candidate said or did. Ads that are clearly jokes or parody do not need the warning. Neither do small edits like cropping or color fixes. Breaking this rule can cost up to five times what was spent on the ad, and the usual chance to fix the problem within 10 days and avoid a penalty does not apply. A broadcaster or newspaper is only liable if it ran the ad knowing it contained synthetic media. The Maine House passed it 73-65 and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "election_integrity",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1589984,
-   "measure_id": "LD 1937",
-   "vote_date": "2025-06-12",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1937, a bill about free and reduced hospital care. Maine hospitals must run a program that helps patients pay, and must give free care to patients whose family income is at or below twice the federal poverty level. The federal poverty level is the income line the government uses to decide who counts as poor. A hospital has 45 days to answer a completed application. Patients earning up to four times that line must be offered a payment plan that never takes more than 4 percent of their monthly family income. The Maine Senate passed it 21-14 and it became law.",
-   "nay_description": "Voted no on LD 1937, a bill about free and reduced hospital care. Maine hospitals must run a program that helps patients pay, and must give free care to patients whose family income is at or below twice the federal poverty level. The federal poverty level is the income line the government uses to decide who counts as poor. A hospital has 45 days to answer a completed application. Patients earning up to four times that line must be offered a payment plan that never takes more than 4 percent of their monthly family income. The Maine Senate passed it 21-14 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1661402,
+      "measure_id": "LD 517",
+      "vote_date": "2026-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 517, a bill about fake audio and video in campaign ads. A political ad that uses fake audio, video, or images of a candidate must carry a warning saying the content was changed. The law calls this synthetic media, meaning a doctored clip that would fool a reasonable person about what a candidate said or did. Satire and parody do not need the warning. Neither do edits that only sharpen the picture or sound, add captions, or highlight part of a clip, so long as they do not change the impression a viewer gets. The Maine Senate passed it 20-14 and it became law.",
+      "nay_description": "Voted no on LD 517, a bill about fake audio and video in campaign ads. A political ad that uses fake audio, video, or images of a candidate must carry a warning saying the content was changed. The law calls this synthetic media, meaning a doctored clip that would fool a reasonable person about what a candidate said or did. Satire and parody do not need the warning. Neither do edits that only sharpen the picture or sound, add captions, or highlight part of a clip, so long as they do not change the impression a viewer gets. The Maine Senate passed it 20-14 and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "healthcare_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1591741,
-   "measure_id": "LD 1937",
-   "vote_date": "2025-06-17",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1937, a bill about free and reduced hospital care. Maine hospitals must run a program that helps patients pay, and must give free care to patients whose family income is at or below twice the federal poverty level. The federal poverty level is the income line the government uses to decide who counts as poor. A hospital has 45 days to answer a completed application. Patients earning up to four times that line must be offered a payment plan that never takes more than 4 percent of their monthly family income. The Maine House passed it 75-72 and it became law.",
-   "nay_description": "Voted no on LD 1937, a bill about free and reduced hospital care. Maine hospitals must run a program that helps patients pay, and must give free care to patients whose family income is at or below twice the federal poverty level. The federal poverty level is the income line the government uses to decide who counts as poor. A hospital has 45 days to answer a completed application. Patients earning up to four times that line must be offered a payment plan that never takes more than 4 percent of their monthly family income. The Maine House passed it 75-72 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1589984,
+      "measure_id": "LD 1937",
+      "vote_date": "2025-06-12",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1937, a bill about free and reduced hospital care. Maine hospitals must run a program that helps patients pay, and must give free care to patients whose family income is at or below twice the federal poverty level. The federal poverty level is the income line the government uses to decide who counts as poor. A hospital has 45 days to answer a completed application. Patients earning up to four times that line must be offered a payment plan that never takes more than 4 percent of their monthly family income. The Maine Senate passed it 21-14 and it became law.",
+      "nay_description": "Voted no on LD 1937, a bill about free and reduced hospital care. Maine hospitals must run a program that helps patients pay, and must give free care to patients whose family income is at or below twice the federal poverty level. The federal poverty level is the income line the government uses to decide who counts as poor. A hospital has 45 days to answer a completed application. Patients earning up to four times that line must be offered a payment plan that never takes more than 4 percent of their monthly family income. The Maine Senate passed it 21-14 and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "healthcare_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1587268,
-   "measure_id": "LD 598",
-   "vote_date": "2025-06-10",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 598, a bill about pay when a shift is cancelled. If a worker shows up for a scheduled shift and the boss then cancels it or cuts it short, the boss must still pay them. The pay is two hours at the worker's normal rate, or the pay for the shift they were scheduled for, whichever is less. This covers employers with at least 10 workers. It does not apply when bad weather, a disaster, the worker's own illness, or a workplace injury stops the work. A boss who made a documented, good-faith try to call the worker off before they came in also does not owe the pay. The two chambers had passed different versions. This vote accepted the Senate's wording. The Maine House agreed 76-69 and the bill became law.",
-   "nay_description": "Voted no on LD 598, a bill about pay when a shift is cancelled. If a worker shows up for a scheduled shift and the boss then cancels it or cuts it short, the boss must still pay them. The pay is two hours at the worker's normal rate, or the pay for the shift they were scheduled for, whichever is less. This covers employers with at least 10 workers. It does not apply when bad weather, a disaster, the worker's own illness, or a workplace injury stops the work. A boss who made a documented, good-faith try to call the worker off before they came in also does not owe the pay. The two chambers had passed different versions. This vote accepted the Senate's wording. The Maine House agreed 76-69 and the bill became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1591741,
+      "measure_id": "LD 1937",
+      "vote_date": "2025-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1937, a bill about free and reduced hospital care. Maine hospitals must run a program that helps patients pay, and must give free care to patients whose family income is at or below twice the federal poverty level. The federal poverty level is the income line the government uses to decide who counts as poor. A hospital has 45 days to answer a completed application. Patients earning up to four times that line must be offered a payment plan that never takes more than 4 percent of their monthly family income. The Maine House passed it 75-72 and it became law.",
+      "nay_description": "Voted no on LD 1937, a bill about free and reduced hospital care. Maine hospitals must run a program that helps patients pay, and must give free care to patients whose family income is at or below twice the federal poverty level. The federal poverty level is the income line the government uses to decide who counts as poor. A hospital has 45 days to answer a completed application. Patients earning up to four times that line must be offered a payment plan that never takes more than 4 percent of their monthly family income. The Maine House passed it 75-72 and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "corporate_accountability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1588827,
-   "measure_id": "LD 598",
-   "vote_date": "2025-06-11",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 598, a bill about pay when a shift is cancelled. If a worker shows up for a scheduled shift and the boss then cancels it or cuts it short, the boss must still pay them. The pay is two hours at the worker's normal rate, or the pay for the shift they were scheduled for, whichever is less. This covers employers with at least 10 workers. It does not apply when bad weather, a disaster, the worker's own illness, or a workplace injury stops the work. A boss who made a documented, good-faith try to call the worker off before they came in also does not owe the pay. This was the final passage vote. The Maine Senate passed it 18-16 and it became law.",
-   "nay_description": "Voted no on LD 598, a bill about pay when a shift is cancelled. If a worker shows up for a scheduled shift and the boss then cancels it or cuts it short, the boss must still pay them. The pay is two hours at the worker's normal rate, or the pay for the shift they were scheduled for, whichever is less. This covers employers with at least 10 workers. It does not apply when bad weather, a disaster, the worker's own illness, or a workplace injury stops the work. A boss who made a documented, good-faith try to call the worker off before they came in also does not owe the pay. This was the final passage vote. The Maine Senate passed it 18-16 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1587268,
+      "measure_id": "LD 598",
+      "vote_date": "2025-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 598, a bill about pay when a shift is cancelled. If a worker shows up for a scheduled shift and the boss then cancels it or cuts it short, the boss must still pay them. The pay is two hours at the worker's normal rate, or the pay for the shift they were scheduled for, whichever is less. This covers employers with at least 10 workers. It does not apply when bad weather, a disaster, the worker's own illness, or a workplace injury stops the work. A boss who made a documented, good-faith try to call the worker off before they came in also does not owe the pay. The two chambers had passed different versions. This vote accepted the Senate's wording. The Maine House agreed 76-69 and the bill became law.",
+      "nay_description": "Voted no on LD 598, a bill about pay when a shift is cancelled. If a worker shows up for a scheduled shift and the boss then cancels it or cuts it short, the boss must still pay them. The pay is two hours at the worker's normal rate, or the pay for the shift they were scheduled for, whichever is less. This covers employers with at least 10 workers. It does not apply when bad weather, a disaster, the worker's own illness, or a workplace injury stops the work. A boss who made a documented, good-faith try to call the worker off before they came in also does not owe the pay. The two chambers had passed different versions. This vote accepted the Senate's wording. The Maine House agreed 76-69 and the bill became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "corporate_accountability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1678714,
-   "measure_id": "LD 2231",
-   "vote_date": "2026-04-08",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 2231, a bill about rent in mobile home parks. The owner of a mobile home park may raise lot rent only once a year. Lot rent is what a homeowner pays for the ground their home sits on. Residents can force the owner into mediation, a meeting with a neutral third person, when a rent increase runs more than 1 point above the region's rise in everyday prices. If the park owner demands that homeowners sign a secrecy agreement during that mediation, the owner is treated as acting in bad faith. The Maine House passed it 78-67 and it became law.",
-   "nay_description": "Voted no on LD 2231, a bill about rent in mobile home parks. The owner of a mobile home park may raise lot rent only once a year. Lot rent is what a homeowner pays for the ground their home sits on. Residents can force the owner into mediation, a meeting with a neutral third person, when a rent increase runs more than 1 point above the region's rise in everyday prices. If the park owner demands that homeowners sign a secrecy agreement during that mediation, the owner is treated as acting in bad faith. The Maine House passed it 78-67 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1588827,
+      "measure_id": "LD 598",
+      "vote_date": "2025-06-11",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 598, a bill about pay when a shift is cancelled. If a worker shows up for a scheduled shift and the boss then cancels it or cuts it short, the boss must still pay them. The pay is two hours at the worker's normal rate, or the pay for the shift they were scheduled for, whichever is less. This covers employers with at least 10 workers. It does not apply when bad weather, a disaster, the worker's own illness, or a workplace injury stops the work. Seasonal-industry workers and public employees covered by a union contract are also outside the law. A boss who made a documented, good-faith try to call the worker off does not owe the pay. But if the worker still turns up, the boss must give them duties they can do, and must pay them if there is no work to assign. This was the final passage vote. The Maine Senate passed it 18-16 and it became law.",
+      "nay_description": "Voted no on LD 598, a bill about pay when a shift is cancelled. If a worker shows up for a scheduled shift and the boss then cancels it or cuts it short, the boss must still pay them. The pay is two hours at the worker's normal rate, or the pay for the shift they were scheduled for, whichever is less. This covers employers with at least 10 workers. It does not apply when bad weather, a disaster, the worker's own illness, or a workplace injury stops the work. Seasonal-industry workers and public employees covered by a union contract are also outside the law. A boss who made a documented, good-faith try to call the worker off does not owe the pay. But if the worker still turns up, the boss must give them duties they can do, and must pay them if there is no work to assign. This was the final passage vote. The Maine Senate passed it 18-16 and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "housing_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1679427,
-   "measure_id": "LD 2231",
-   "vote_date": "2026-04-08",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 2231, a bill about rent in mobile home parks. The owner of a mobile home park may raise lot rent only once a year. Lot rent is what a homeowner pays for the ground their home sits on. Residents can force the owner into mediation, a meeting with a neutral third person, when a rent increase runs more than 1 point above the region's rise in everyday prices. If the park owner demands that homeowners sign a secrecy agreement during that mediation, the owner is treated as acting in bad faith. The Maine Senate passed it 20-14 and it became law.",
-   "nay_description": "Voted no on LD 2231, a bill about rent in mobile home parks. The owner of a mobile home park may raise lot rent only once a year. Lot rent is what a homeowner pays for the ground their home sits on. Residents can force the owner into mediation, a meeting with a neutral third person, when a rent increase runs more than 1 point above the region's rise in everyday prices. If the park owner demands that homeowners sign a secrecy agreement during that mediation, the owner is treated as acting in bad faith. The Maine Senate passed it 20-14 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1678714,
+      "measure_id": "LD 2231",
+      "vote_date": "2026-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 2231, a bill about mobile home parks and manufactured housing. The owner of a mobile home park may raise lot rent only once a year. Lot rent is what a homeowner pays for the ground their home sits on. Residents can force the owner into mediation, a meeting with a neutral third person, when a rent increase runs more than 1 point above the region's rise in everyday prices. If the park owner demands a secrecy agreement during that mediation, the owner is treated as acting in bad faith. The law also cuts the minimum lot sizes towns may require for new or expanded mobile home parks, and lets a manufactured home or tiny home be converted into real estate and sold by deed. The Maine House passed it 78-67 and it became law.",
+      "nay_description": "Voted no on LD 2231, a bill about mobile home parks and manufactured housing. The owner of a mobile home park may raise lot rent only once a year. Lot rent is what a homeowner pays for the ground their home sits on. Residents can force the owner into mediation, a meeting with a neutral third person, when a rent increase runs more than 1 point above the region's rise in everyday prices. If the park owner demands a secrecy agreement during that mediation, the owner is treated as acting in bad faith. The law also cuts the minimum lot sizes towns may require for new or expanded mobile home parks, and lets a manufactured home or tiny home be converted into real estate and sold by deed. The Maine House passed it 78-67 and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "housing_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1587988,
-   "measure_id": "LD 1016",
-   "vote_date": "2025-06-10",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1016, a bill about who pays when a mobile home park is sold. Anyone who buys a mobile home park or manufactured housing community must pay $10,000 for each lot in it. The money goes to a state fund that helps keep those parks in business as affordable housing. Public housing agencies do not pay. Neither do co-ops owned by the residents themselves. Neither do buyers worth less than $50 million. This vote accepted the committee's recommendation to pass the bill. Right after it, the House changed some details, including how a buyer proves it is small enough to skip the fee. The House accepted the report 75-65 and the bill became law.",
-   "nay_description": "Voted no on LD 1016, a bill about who pays when a mobile home park is sold. Anyone who buys a mobile home park or manufactured housing community must pay $10,000 for each lot in it. The money goes to a state fund that helps keep those parks in business as affordable housing. Public housing agencies do not pay. Neither do co-ops owned by the residents themselves. Neither do buyers worth less than $50 million. This vote accepted the committee's recommendation to pass the bill. Right after it, the House changed some details, including how a buyer proves it is small enough to skip the fee. The House accepted the report 75-65 and the bill became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1679427,
+      "measure_id": "LD 2231",
+      "vote_date": "2026-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 2231, a bill about manufactured housing, mobile homes and tiny homes. The owner of a mobile home park may raise lot rent only once a year. Lot rent is what a homeowner pays for the ground their home sits on. Residents can force the owner into mediation, a meeting with a neutral third person, when a rent increase runs more than 1 point above the region's rise in everyday prices. If the park owner demands that homeowners sign a secrecy agreement during that mediation, the owner is treated as acting in bad faith. The law also cuts the minimum lot sizes a town may require in a mobile home park, and lets the title to a tiny home be cancelled so the home becomes real property. The Maine Senate passed it 20-14 and it became law.",
+      "nay_description": "Voted no on LD 2231, a bill about manufactured housing, mobile homes and tiny homes. The owner of a mobile home park may raise lot rent only once a year. Lot rent is what a homeowner pays for the ground their home sits on. Residents can force the owner into mediation, a meeting with a neutral third person, when a rent increase runs more than 1 point above the region's rise in everyday prices. If the park owner demands that homeowners sign a secrecy agreement during that mediation, the owner is treated as acting in bad faith. The law also cuts the minimum lot sizes a town may require in a mobile home park, and lets the title to a tiny home be cancelled so the home becomes real property. The Maine Senate passed it 20-14 and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "housing_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1588941,
-   "measure_id": "LD 1016",
-   "vote_date": "2025-06-11",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1016, a bill about who pays when a mobile home park is sold. Anyone who buys a mobile home park or manufactured housing community must pay $10,000 for each lot in it. The money goes to a state fund that helps keep those parks in business as affordable housing. Public housing agencies do not pay. Neither do co-ops owned by the residents themselves. Neither do buyers worth less than $50 million. The two chambers had passed different versions. This vote accepted the House's wording. The Maine Senate agreed 18-15 and the bill became law.",
-   "nay_description": "Voted no on LD 1016, a bill about who pays when a mobile home park is sold. Anyone who buys a mobile home park or manufactured housing community must pay $10,000 for each lot in it. The money goes to a state fund that helps keep those parks in business as affordable housing. Public housing agencies do not pay. Neither do co-ops owned by the residents themselves. Neither do buyers worth less than $50 million. The two chambers had passed different versions. This vote accepted the House's wording. The Maine Senate agreed 18-15 and the bill became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1587988,
+      "measure_id": "LD 1016",
+      "vote_date": "2025-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1016, a bill about who pays when a mobile home park is sold. Anyone who buys a mobile home park or manufactured housing community must pay $10,000 for each lot in it. The money goes to a state fund that helps keep those parks in business as affordable housing. Public housing agencies do not pay. Neither do co-ops owned by the residents themselves. Neither do buyers worth less than $50 million. This vote accepted the committee's recommendation to pass the bill. Right after it, the House changed some details, including how a buyer proves it is small enough to skip the fee. The House accepted the report 75-65 and the bill became law.",
+      "nay_description": "Voted no on LD 1016, a bill about who pays when a mobile home park is sold. Anyone who buys a mobile home park or manufactured housing community must pay $10,000 for each lot in it. The money goes to a state fund that helps keep those parks in business as affordable housing. Public housing agencies do not pay. Neither do co-ops owned by the residents themselves. Neither do buyers worth less than $50 million. This vote accepted the committee's recommendation to pass the bill. Right after it, the House changed some details, including how a buyer proves it is small enough to skip the fee. The House accepted the report 75-65 and the bill became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "housing_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1678354,
-   "measure_id": "LD 2176",
-   "vote_date": "2026-04-07",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 2176, a bill about tenants' private information. A landlord may not hand out a tenant's or applicant's private information without their permission when the point is to scare or pressure them into moving out, and there is no real business reason for it. Doing so costs the landlord $1,000. The bill also raises the fine for a landlord who walks into a tenant's home without proper notice from $100 to $250. The Maine Senate passed it 20-14 and it became law.",
-   "nay_description": "Voted no on LD 2176, a bill about tenants' private information. A landlord may not hand out a tenant's or applicant's private information without their permission when the point is to scare or pressure them into moving out, and there is no real business reason for it. Doing so costs the landlord $1,000. The bill also raises the fine for a landlord who walks into a tenant's home without proper notice from $100 to $250. The Maine Senate passed it 20-14 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1588941,
+      "measure_id": "LD 1016",
+      "vote_date": "2025-06-11",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1016, a bill about who pays when a mobile home park is sold. Anyone who buys a mobile home park or manufactured housing community must pay $10,000 for each lot in it. The money goes to a state fund that helps keep those parks in business as affordable housing. Public housing agencies do not pay. Neither do co-ops owned by the residents themselves. Neither do buyers worth less than $50 million. The two chambers had passed different versions. This vote accepted the House's wording. The Maine Senate agreed 18-15 and the bill became law.",
+      "nay_description": "Voted no on LD 1016, a bill about who pays when a mobile home park is sold. Anyone who buys a mobile home park or manufactured housing community must pay $10,000 for each lot in it. The money goes to a state fund that helps keep those parks in business as affordable housing. Public housing agencies do not pay. Neither do co-ops owned by the residents themselves. Neither do buyers worth less than $50 million. The two chambers had passed different versions. This vote accepted the House's wording. The Maine Senate agreed 18-15 and the bill became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "data_privacy",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1678710,
-   "measure_id": "LD 2176",
-   "vote_date": "2026-04-08",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 2176, a bill about tenants' private information. A landlord may not hand out a tenant's or applicant's private information without their permission when the point is to scare or pressure them into moving out, and there is no real business reason for it. Doing so costs the landlord $1,000. The bill also raises the fine for a landlord who walks into a tenant's home without proper notice from $100 to $250. This was the final passage vote. The Maine House passed it 75-73 and it became law.",
-   "nay_description": "Voted no on LD 2176, a bill about tenants' private information. A landlord may not hand out a tenant's or applicant's private information without their permission when the point is to scare or pressure them into moving out, and there is no real business reason for it. Doing so costs the landlord $1,000. The bill also raises the fine for a landlord who walks into a tenant's home without proper notice from $100 to $250. This was the final passage vote. The Maine House passed it 75-73 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1678354,
+      "measure_id": "LD 2176",
+      "vote_date": "2026-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 2176, a bill about tenants' private information. A landlord may not hand out a tenant's or applicant's private information without their permission when the point is to scare or pressure them into moving out, and there is no real business reason for it. Doing so costs the landlord $1,000. The bill also raises the fine for a landlord who walks into a tenant's home without proper notice from $100 to $250. The Maine Senate passed it 20-14 and it became law.",
+      "nay_description": "Voted no on LD 2176, a bill about tenants' private information. A landlord may not hand out a tenant's or applicant's private information without their permission when the point is to scare or pressure them into moving out, and there is no real business reason for it. Doing so costs the landlord $1,000. The bill also raises the fine for a landlord who walks into a tenant's home without proper notice from $100 to $250. The Maine Senate passed it 20-14 and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "data_privacy",
-     "yea": "for",
-     "nay": null
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1678710,
+      "measure_id": "LD 2176",
+      "vote_date": "2026-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 2176, a bill about tenants' private information. A landlord may not hand out a tenant's or applicant's private information without their permission when the point is to scare or pressure them into moving out, and there is no real business reason for it. The tenant can sue and recover actual damages or $1,000, whichever is greater, plus a court order to stop and attorney's fees. The bill also raises the fine for a landlord who walks into a tenant's home without proper notice from $100 to $250. This was the final passage vote. The Maine House passed it 75-73 and it became law.",
+      "nay_description": "Voted no on LD 2176, a bill about tenants' private information. A landlord may not hand out a tenant's or applicant's private information without their permission when the point is to scare or pressure them into moving out, and there is no real business reason for it. The tenant can sue and recover actual damages or $1,000, whichever is greater, plus a court order to stop and attorney's fees. The bill also raises the fine for a landlord who walks into a tenant's home without proper notice from $100 to $250. This was the final passage vote. The Maine House passed it 75-73 and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1678709
+      ]
     }
-   ],
-   "acknowledge_later_rolls": [
-    1678709
-   ]
-  }
- ]
+  ]
 }
