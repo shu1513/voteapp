@@ -2,22 +2,22 @@
   "importerVersion": "rollcall-legiscan-import-v1",
   "dryRun": true,
   "skipExisting": false,
-  "startedAt": "2026-08-31T07:29:25.155Z",
-  "finishedAt": "2026-08-31T07:29:29.415Z",
+  "startedAt": "2026-09-06T17:42:46.041Z",
+  "finishedAt": "2026-09-06T17:42:48.187Z",
   "jurisdiction": "TN",
   "sessionId": 2161,
-  "evidenceDir": "/Users/shu/.codex/worktrees/bbf1/voteApp/backend/evidence/rollcall/legiscan-tn-2161/batch-01",
-  "scopeFrom": "2026-08-01",
-  "crosswalkFile": "/Users/shu/.codex/worktrees/bbf1/voteApp/backend/evidence/rollcall/legiscan-tn-2161/crosswalk.json",
+  "evidenceDir": "evidence/rollcall/legiscan-tn-2161/batch-01",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-tn-2161/crosswalk.json",
   "crosswalkEntries": 136,
-  "peopleFile": "/Users/shu/.codex/worktrees/bbf1/voteApp/backend/evidence/rollcall/legiscan-tn-2161/legiscan-people-tn-2161.json",
+  "peopleFile": "evidence/rollcall/legiscan-tn-2161/legiscan-people-tn-2161.json",
   "peopleMembers": 136,
   "files": 14,
   "outcomes": {
     "dry_run": 14
   },
   "actions": {
-    "unchanged": 826
+    "unchanged": 691
   },
   "notified": 0,
   "rolls": [
@@ -35,16 +35,17 @@
       "officialVoteDate": null,
       "measureId": "HB 749",
       "question": "FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION",
-      "originRunId": "rollcall:TN:house:2161:1535748:2026-08-31T07:29:25.155Z",
+      "originRunId": "rollcall:TN:house:2161:1535748:2026-09-06T17:42:46.041Z",
       "members": 89,
       "notVoting": 0,
       "absent": 0,
       "resolution": {
-        "matched": 75,
-        "unmatched_reviewed": 14
+        "matched": 68,
+        "unmatched_reviewed": 14,
+        "out_of_scope": 7
       },
       "actions": {
-        "unchanged": 75
+        "unchanged": 68
       },
       "notified": 0,
       "candidates": [
@@ -541,18 +542,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b88192db-65c0-49a7-ab9d-3d97bef0d034",
-          "candidateName": "Monty Fritts",
-          "peopleId": 23186,
-          "memberName": "Monty Fritts",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "7dd421c1-b999-40f7-aeb5-a281615d1cd3",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "dc8c8125-184a-47b4-bc2e-e0fef257c003",
           "candidateName": "Jake McCalmon",
           "peopleId": 23187,
@@ -793,42 +782,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "63bcad7c-87af-4391-b5f5-80dcad3bf42b",
-          "candidateName": "Bo Mitchell",
-          "peopleId": 15503,
-          "memberName": "Bo Mitchell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "bcca6780-387e-49ab-8742-497d3a2a874e",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "e9f4408e-8bce-4e23-ba37-1890382b0e6e",
-          "candidateName": "Jason L Powell",
-          "peopleId": 15504,
-          "memberName": "Jason Powell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "7119119f-d85c-4e49-9ad4-38c35ed131ff",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "b70b2cb9-0931-4b37-aaa4-72af5c79279f",
-          "candidateName": "John Ray Clemmons",
-          "peopleId": 16867,
-          "memberName": "John Clemmons",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "91b4d843-779a-409f-b9d2-59e096329333",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "5d7c5982-c10c-4101-a0b7-17732011edbf",
           "candidateName": "Jesse Chism",
           "peopleId": 20337,
@@ -848,18 +801,6 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "658f78e6-a9f3-4cf1-8fb9-7570890423de",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "683772f0-79db-4677-af8b-55b73bd6a74b",
-          "candidateName": "Bob Freeman",
-          "peopleId": 20341,
-          "memberName": "Bob Freeman",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "3a6be021-6882-404e-a38e-ad2fce90f3bd",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -913,18 +854,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b752a56d-642e-45be-a859-5a2c4d957801",
-          "candidateName": "Justin Jones",
-          "peopleId": 24826,
-          "memberName": "Justin Jones",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "2b836a77-fc6c-45a3-95b0-20d6ed212914",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "cb692cdb-9d70-4482-8583-b3b040b6ea0d",
           "candidateName": "Aftyn Behn",
           "peopleId": 24997,
@@ -932,18 +861,6 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "41a0b117-990f-4a54-970c-af6ece1d5d29",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "92b5a2bf-b6b4-42bb-af9b-eb72d0081e99",
-          "candidateName": "Shaundelle Brooks",
-          "peopleId": 25239,
-          "memberName": "Shaundelle Brooks",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "d06be099-d7a8-4580-b513-fd3c66754ab0",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -965,16 +882,17 @@
       "officialVoteDate": null,
       "measureId": "SB 1360",
       "question": "FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION",
-      "originRunId": "rollcall:TN:house:2161:1548823:2026-08-31T07:29:25.155Z",
+      "originRunId": "rollcall:TN:house:2161:1548823:2026-09-06T17:42:46.041Z",
       "members": 92,
       "notVoting": 0,
       "absent": 0,
       "resolution": {
-        "matched": 77,
-        "unmatched_reviewed": 15
+        "matched": 69,
+        "unmatched_reviewed": 15,
+        "out_of_scope": 8
       },
       "actions": {
-        "unchanged": 77
+        "unchanged": 69
       },
       "notified": 0,
       "candidates": [
@@ -1507,18 +1425,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b88192db-65c0-49a7-ab9d-3d97bef0d034",
-          "candidateName": "Monty Fritts",
-          "peopleId": 23186,
-          "memberName": "Monty Fritts",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "c82a9c37-6e80-4d9c-9e6c-8cbb2073cf0c",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "dc8c8125-184a-47b4-bc2e-e0fef257c003",
           "candidateName": "Jake McCalmon",
           "peopleId": 23187,
@@ -1747,54 +1653,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "c0bcafb9-233c-4dc7-80d5-87368a584bef",
-          "candidateName": "Harold M. Love, Jr.",
-          "peopleId": 15502,
-          "memberName": "Harold Love",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "b01d0dc7-97ca-42ac-ac36-ea38f89da894",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "63bcad7c-87af-4391-b5f5-80dcad3bf42b",
-          "candidateName": "Bo Mitchell",
-          "peopleId": 15503,
-          "memberName": "Bo Mitchell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "454b2aca-e806-450a-a67a-6b252f605970",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "e9f4408e-8bce-4e23-ba37-1890382b0e6e",
-          "candidateName": "Jason L Powell",
-          "peopleId": 15504,
-          "memberName": "Jason Powell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "b9de23d4-5c17-4b0b-bf68-7f2fcc6b054d",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "b70b2cb9-0931-4b37-aaa4-72af5c79279f",
-          "candidateName": "John Ray Clemmons",
-          "peopleId": 16867,
-          "memberName": "John Clemmons",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "07fd9f55-fd74-4e48-887e-0786f4791c42",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "5d7c5982-c10c-4101-a0b7-17732011edbf",
           "candidateName": "Jesse Chism",
           "peopleId": 20337,
@@ -1814,18 +1672,6 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "cafe336b-7bac-4385-9af2-bba574ea2b26",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "683772f0-79db-4677-af8b-55b73bd6a74b",
-          "candidateName": "Bob Freeman",
-          "peopleId": 20341,
-          "memberName": "Bob Freeman",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "7b536ffc-365d-4669-bd3b-1e168328049c",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -1855,18 +1701,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b752a56d-642e-45be-a859-5a2c4d957801",
-          "candidateName": "Justin Jones",
-          "peopleId": 24826,
-          "memberName": "Justin Jones",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "be12f950-d68e-44de-aa19-f9e305caa20e",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "eb3aba67-4e3f-4c97-9598-2bac4be16164",
           "candidateName": "Justin J. Pearson",
           "peopleId": 24880,
@@ -1889,18 +1723,6 @@
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
-        },
-        {
-          "candidateId": "92b5a2bf-b6b4-42bb-af9b-eb72d0081e99",
-          "candidateName": "Shaundelle Brooks",
-          "peopleId": 25239,
-          "memberName": "Shaundelle Brooks",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "fbda5e50-64d1-46a9-a023-18674fa9b9ca",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
         }
       ],
       "error": null
@@ -1919,16 +1741,17 @@
       "officialVoteDate": null,
       "measureId": "SB 670",
       "question": "FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION",
-      "originRunId": "rollcall:TN:house:2161:1553646:2026-08-31T07:29:25.155Z",
+      "originRunId": "rollcall:TN:house:2161:1553646:2026-09-06T17:42:46.041Z",
       "members": 92,
       "notVoting": 1,
       "absent": 0,
       "resolution": {
-        "matched": 76,
-        "unmatched_reviewed": 16
+        "matched": 68,
+        "unmatched_reviewed": 16,
+        "out_of_scope": 8
       },
       "actions": {
-        "unchanged": 76
+        "unchanged": 68
       },
       "notified": 0,
       "candidates": [
@@ -2461,18 +2284,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b88192db-65c0-49a7-ab9d-3d97bef0d034",
-          "candidateName": "Monty Fritts",
-          "peopleId": 23186,
-          "memberName": "Monty Fritts",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "7b1052d4-4103-40a1-932e-b450d3c51bac",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "dc8c8125-184a-47b4-bc2e-e0fef257c003",
           "candidateName": "Jake McCalmon",
           "peopleId": 23187,
@@ -2665,54 +2476,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "c0bcafb9-233c-4dc7-80d5-87368a584bef",
-          "candidateName": "Harold M. Love, Jr.",
-          "peopleId": 15502,
-          "memberName": "Harold Love",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "a67d2c17-ce66-4eaf-aed1-71b9a3ac4365",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "63bcad7c-87af-4391-b5f5-80dcad3bf42b",
-          "candidateName": "Bo Mitchell",
-          "peopleId": 15503,
-          "memberName": "Bo Mitchell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "51817390-699d-4292-871c-64f8f4eaf5d6",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "e9f4408e-8bce-4e23-ba37-1890382b0e6e",
-          "candidateName": "Jason L Powell",
-          "peopleId": 15504,
-          "memberName": "Jason Powell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "90443a06-5a70-4178-ae82-5e83c690113b",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "b70b2cb9-0931-4b37-aaa4-72af5c79279f",
-          "candidateName": "John Ray Clemmons",
-          "peopleId": 16867,
-          "memberName": "John Clemmons",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "4cf288d2-9081-4be8-b163-a9472519a72a",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "4d9a734b-337e-40ba-aa97-0cb9a313e8f5",
           "candidateName": "Vincent Dixie",
           "peopleId": 20339,
@@ -2720,18 +2483,6 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "e6151318-3f8e-4866-868d-35505e1c3350",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "683772f0-79db-4677-af8b-55b73bd6a74b",
-          "candidateName": "Bob Freeman",
-          "peopleId": 20341,
-          "memberName": "Bob Freeman",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "50995fdc-36e9-4f73-bc05-cdb27e079bb7",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -2797,18 +2548,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b752a56d-642e-45be-a859-5a2c4d957801",
-          "candidateName": "Justin Jones",
-          "peopleId": 24826,
-          "memberName": "Justin Jones",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "cc544474-b671-4bb4-9857-6f3f70985947",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "eb3aba67-4e3f-4c97-9598-2bac4be16164",
           "candidateName": "Justin J. Pearson",
           "peopleId": 24880,
@@ -2831,18 +2570,6 @@
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
-        },
-        {
-          "candidateId": "92b5a2bf-b6b4-42bb-af9b-eb72d0081e99",
-          "candidateName": "Shaundelle Brooks",
-          "peopleId": 25239,
-          "memberName": "Shaundelle Brooks",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "9bceaa86-bd8e-4c80-bf61-6268bfd6c56b",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
         }
       ],
       "error": null
@@ -2861,16 +2588,17 @@
       "officialVoteDate": null,
       "measureId": "SB 1084",
       "question": "FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION",
-      "originRunId": "rollcall:TN:house:2161:1554040:2026-08-31T07:29:25.155Z",
+      "originRunId": "rollcall:TN:house:2161:1554040:2026-09-06T17:42:46.041Z",
       "members": 97,
       "notVoting": 0,
       "absent": 0,
       "resolution": {
-        "matched": 81,
-        "unmatched_reviewed": 16
+        "matched": 73,
+        "unmatched_reviewed": 16,
+        "out_of_scope": 8
       },
       "actions": {
-        "unchanged": 81
+        "unchanged": 73
       },
       "notified": 0,
       "candidates": [
@@ -3403,18 +3131,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b88192db-65c0-49a7-ab9d-3d97bef0d034",
-          "candidateName": "Monty Fritts",
-          "peopleId": 23186,
-          "memberName": "Monty Fritts",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "f21007b5-fb79-444f-99d0-7f2dc479f563",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "dc8c8125-184a-47b4-bc2e-e0fef257c003",
           "candidateName": "Jake McCalmon",
           "peopleId": 23187,
@@ -3655,54 +3371,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "c0bcafb9-233c-4dc7-80d5-87368a584bef",
-          "candidateName": "Harold M. Love, Jr.",
-          "peopleId": 15502,
-          "memberName": "Harold Love",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "2c6c4d1e-8d27-4650-8144-d3068e4689af",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "63bcad7c-87af-4391-b5f5-80dcad3bf42b",
-          "candidateName": "Bo Mitchell",
-          "peopleId": 15503,
-          "memberName": "Bo Mitchell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "16237390-aa37-4ae9-b1a4-c1b4ec5dd18b",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "e9f4408e-8bce-4e23-ba37-1890382b0e6e",
-          "candidateName": "Jason L Powell",
-          "peopleId": 15504,
-          "memberName": "Jason Powell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "c305f1e5-e443-4ba6-955a-4af524a56170",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "b70b2cb9-0931-4b37-aaa4-72af5c79279f",
-          "candidateName": "John Ray Clemmons",
-          "peopleId": 16867,
-          "memberName": "John Clemmons",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "d591e7aa-afd2-4712-9204-5ddfd8e88e9d",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "5d7c5982-c10c-4101-a0b7-17732011edbf",
           "candidateName": "Jesse Chism",
           "peopleId": 20337,
@@ -3722,18 +3390,6 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "85d3f096-6df8-4253-bdd3-04ce4a0e3a45",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "683772f0-79db-4677-af8b-55b73bd6a74b",
-          "candidateName": "Bob Freeman",
-          "peopleId": 20341,
-          "memberName": "Bob Freeman",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "5f0a5fa5-3878-47a5-ad4a-61f4afe4bb6c",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -3799,18 +3455,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b752a56d-642e-45be-a859-5a2c4d957801",
-          "candidateName": "Justin Jones",
-          "peopleId": 24826,
-          "memberName": "Justin Jones",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "233eecdc-b562-4aa5-b1a1-d6ba10e63a64",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "eb3aba67-4e3f-4c97-9598-2bac4be16164",
           "candidateName": "Justin J. Pearson",
           "peopleId": 24880,
@@ -3833,18 +3477,6 @@
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
-        },
-        {
-          "candidateId": "92b5a2bf-b6b4-42bb-af9b-eb72d0081e99",
-          "candidateName": "Shaundelle Brooks",
-          "peopleId": 25239,
-          "memberName": "Shaundelle Brooks",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "789c61de-f1fe-4973-aea2-58f7a01e2f15",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
         }
       ],
       "error": null
@@ -3863,16 +3495,17 @@
       "officialVoteDate": null,
       "measureId": "SB 336",
       "question": "FLOOR VOTE: REGULAR CALENDAR AS AMENDED PASSAGE ON THIRD CONSIDERATION",
-      "originRunId": "rollcall:TN:house:2161:1657505:2026-08-31T07:29:25.155Z",
+      "originRunId": "rollcall:TN:house:2161:1657505:2026-09-06T17:42:46.041Z",
       "members": 88,
       "notVoting": 5,
       "absent": 0,
       "resolution": {
-        "matched": 76,
-        "unmatched_reviewed": 12
+        "matched": 68,
+        "unmatched_reviewed": 12,
+        "out_of_scope": 8
       },
       "actions": {
-        "unchanged": 76
+        "unchanged": 68
       },
       "notified": 0,
       "candidates": [
@@ -4033,42 +3666,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "c0bcafb9-233c-4dc7-80d5-87368a584bef",
-          "candidateName": "Harold M. Love, Jr.",
-          "peopleId": 15502,
-          "memberName": "Harold Love",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "35b16b70-7e33-47ff-8b8e-51b73c9abc2d",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "63bcad7c-87af-4391-b5f5-80dcad3bf42b",
-          "candidateName": "Bo Mitchell",
-          "peopleId": 15503,
-          "memberName": "Bo Mitchell",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "bca60539-0b50-4793-aff5-4b245548cd1c",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "e9f4408e-8bce-4e23-ba37-1890382b0e6e",
-          "candidateName": "Jason L Powell",
-          "peopleId": 15504,
-          "memberName": "Jason Powell",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "cdc8f70a-7c79-48f0-bfc4-74826d2408ff",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "4167be0b-efcb-4349-bdc6-16221949d02c",
           "candidateName": "Dan Howell",
           "peopleId": 16859,
@@ -4100,18 +3697,6 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "a79e6f5a-bedd-4a7f-b89b-a4d1873f2289",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "b70b2cb9-0931-4b37-aaa4-72af5c79279f",
-          "candidateName": "John Ray Clemmons",
-          "peopleId": 16867,
-          "memberName": "John Clemmons",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "d193aceb-2531-4ffe-b484-99ff1f4536dc",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4208,18 +3793,6 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "e6439b7e-33aa-4d04-82dc-a97a03349651",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "683772f0-79db-4677-af8b-55b73bd6a74b",
-          "candidateName": "Bob Freeman",
-          "peopleId": 20341,
-          "memberName": "Bob Freeman",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "e45a1c41-ae7e-4314-8390-c1ea11730887",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4381,18 +3954,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b88192db-65c0-49a7-ab9d-3d97bef0d034",
-          "candidateName": "Monty Fritts",
-          "peopleId": 23186,
-          "memberName": "Monty Fritts",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "73425014-8d29-459c-aed9-736774f57c93",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "7b9fea80-010c-43c0-943a-9c35b8ca24c6",
           "candidateName": "Kevin Raper",
           "peopleId": 23188,
@@ -4465,18 +4026,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b752a56d-642e-45be-a859-5a2c4d957801",
-          "candidateName": "Justin Jones",
-          "peopleId": 24826,
-          "memberName": "Justin Jones",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "6b3f3e54-662e-4f89-93b9-d21fb5803a39",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "eb3aba67-4e3f-4c97-9598-2bac4be16164",
           "candidateName": "Justin J. Pearson",
           "peopleId": 24880,
@@ -4508,18 +4057,6 @@
           "side": "yea",
           "action": "unchanged",
           "recordId": "08f3a14c-ef30-4ca9-a663-da1223e183c8",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "92b5a2bf-b6b4-42bb-af9b-eb72d0081e99",
-          "candidateName": "Shaundelle Brooks",
-          "peopleId": 25239,
-          "memberName": "Shaundelle Brooks",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "eec03908-aefc-433b-a2d7-223d15b2df4e",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -4805,16 +4342,17 @@
       "officialVoteDate": null,
       "measureId": "HB 2070",
       "question": "FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION",
-      "originRunId": "rollcall:TN:house:2161:1661430:2026-08-31T07:29:25.155Z",
+      "originRunId": "rollcall:TN:house:2161:1661430:2026-09-06T17:42:46.041Z",
       "members": 87,
       "notVoting": 1,
       "absent": 0,
       "resolution": {
-        "matched": 75,
-        "unmatched_reviewed": 12
+        "matched": 69,
+        "unmatched_reviewed": 12,
+        "out_of_scope": 6
       },
       "actions": {
-        "unchanged": 75
+        "unchanged": 69
       },
       "notified": 0,
       "candidates": [
@@ -5335,18 +4873,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b88192db-65c0-49a7-ab9d-3d97bef0d034",
-          "candidateName": "Monty Fritts",
-          "peopleId": 23186,
-          "memberName": "Monty Fritts",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "3f1c4c72-8580-400f-8735-566713cd0efc",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "7b9fea80-010c-43c0-943a-9c35b8ca24c6",
           "candidateName": "Kevin Raper",
           "peopleId": 23188,
@@ -5563,42 +5089,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "c0bcafb9-233c-4dc7-80d5-87368a584bef",
-          "candidateName": "Harold M. Love, Jr.",
-          "peopleId": 15502,
-          "memberName": "Harold Love",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "3db48580-f2f5-46d6-81cd-3182f8f2f1a0",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "63bcad7c-87af-4391-b5f5-80dcad3bf42b",
-          "candidateName": "Bo Mitchell",
-          "peopleId": 15503,
-          "memberName": "Bo Mitchell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "4b89cc6c-844c-4b71-ae56-21ebd65451de",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "b70b2cb9-0931-4b37-aaa4-72af5c79279f",
-          "candidateName": "John Ray Clemmons",
-          "peopleId": 16867,
-          "memberName": "John Clemmons",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "f5e01ef9-594b-4c07-acc7-51da3ac4efcc",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "5d7c5982-c10c-4101-a0b7-17732011edbf",
           "candidateName": "Jesse Chism",
           "peopleId": 20337,
@@ -5671,18 +5161,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b752a56d-642e-45be-a859-5a2c4d957801",
-          "candidateName": "Justin Jones",
-          "peopleId": 24826,
-          "memberName": "Justin Jones",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "e19a4b98-7654-41ce-9421-81c6e516de3e",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "eb3aba67-4e3f-4c97-9598-2bac4be16164",
           "candidateName": "Justin J. Pearson",
           "peopleId": 24880,
@@ -5705,18 +5183,6 @@
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
-        },
-        {
-          "candidateId": "92b5a2bf-b6b4-42bb-af9b-eb72d0081e99",
-          "candidateName": "Shaundelle Brooks",
-          "peopleId": 25239,
-          "memberName": "Shaundelle Brooks",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "e79c28c6-6a45-4dc9-a09c-7658d7117893",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
         }
       ],
       "error": null
@@ -5735,16 +5201,17 @@
       "officialVoteDate": null,
       "measureId": "HB 2185",
       "question": "FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION",
-      "originRunId": "rollcall:TN:house:2161:1666206:2026-08-31T07:29:25.155Z",
+      "originRunId": "rollcall:TN:house:2161:1666206:2026-09-06T17:42:46.041Z",
       "members": 90,
       "notVoting": 0,
       "absent": 0,
       "resolution": {
-        "matched": 76,
-        "unmatched_reviewed": 14
+        "matched": 68,
+        "unmatched_reviewed": 14,
+        "out_of_scope": 8
       },
       "actions": {
-        "unchanged": 76
+        "unchanged": 68
       },
       "notified": 0,
       "candidates": [
@@ -6241,18 +5708,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b88192db-65c0-49a7-ab9d-3d97bef0d034",
-          "candidateName": "Monty Fritts",
-          "peopleId": 23186,
-          "memberName": "Monty Fritts",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "70b474c2-e242-47d1-9417-9151d3417d22",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "dc8c8125-184a-47b4-bc2e-e0fef257c003",
           "candidateName": "Jake McCalmon",
           "peopleId": 23187,
@@ -6481,54 +5936,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "c0bcafb9-233c-4dc7-80d5-87368a584bef",
-          "candidateName": "Harold M. Love, Jr.",
-          "peopleId": 15502,
-          "memberName": "Harold Love",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "40ac6785-eb11-4810-9c08-1d7fbd7cbecd",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "63bcad7c-87af-4391-b5f5-80dcad3bf42b",
-          "candidateName": "Bo Mitchell",
-          "peopleId": 15503,
-          "memberName": "Bo Mitchell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "d916e91e-f4a4-4a1e-9650-cfaab08873fb",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "e9f4408e-8bce-4e23-ba37-1890382b0e6e",
-          "candidateName": "Jason L Powell",
-          "peopleId": 15504,
-          "memberName": "Jason Powell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "acaa04e2-421c-453b-932f-7b85b570128b",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "b70b2cb9-0931-4b37-aaa4-72af5c79279f",
-          "candidateName": "John Ray Clemmons",
-          "peopleId": 16867,
-          "memberName": "John Clemmons",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "81b5d24f-ed0c-4ff1-beb7-2b0dc0f59e69",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "5d7c5982-c10c-4101-a0b7-17732011edbf",
           "candidateName": "Jesse Chism",
           "peopleId": 20337,
@@ -6548,18 +5955,6 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "7a7233d8-0b0b-47c3-a5e8-7577039a28a0",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "683772f0-79db-4677-af8b-55b73bd6a74b",
-          "candidateName": "Bob Freeman",
-          "peopleId": 20341,
-          "memberName": "Bob Freeman",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "6c65a3b8-5772-4f7a-a8c6-3612b12b60be",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -6613,18 +6008,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b752a56d-642e-45be-a859-5a2c4d957801",
-          "candidateName": "Justin Jones",
-          "peopleId": 24826,
-          "memberName": "Justin Jones",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "ea324a20-8283-4541-bdff-cbeae4158b40",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "eb3aba67-4e3f-4c97-9598-2bac4be16164",
           "candidateName": "Justin J. Pearson",
           "peopleId": 24880,
@@ -6647,18 +6030,6 @@
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
-        },
-        {
-          "candidateId": "92b5a2bf-b6b4-42bb-af9b-eb72d0081e99",
-          "candidateName": "Shaundelle Brooks",
-          "peopleId": 25239,
-          "memberName": "Shaundelle Brooks",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "e1413501-0088-4b5a-97a8-932b6547c045",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
         }
       ],
       "error": null
@@ -6677,16 +6048,17 @@
       "officialVoteDate": null,
       "measureId": "SB 2348",
       "question": "FLOOR VOTE: REGULAR CALENDAR PASSAGE ON THIRD CONSIDERATION",
-      "originRunId": "rollcall:TN:house:2161:1681950:2026-08-31T07:29:25.155Z",
+      "originRunId": "rollcall:TN:house:2161:1681950:2026-09-06T17:42:46.041Z",
       "members": 94,
       "notVoting": 0,
       "absent": 0,
       "resolution": {
-        "matched": 79,
-        "unmatched_reviewed": 15
+        "matched": 72,
+        "unmatched_reviewed": 15,
+        "out_of_scope": 7
       },
       "actions": {
-        "unchanged": 79
+        "unchanged": 72
       },
       "notified": 0,
       "candidates": [
@@ -7207,18 +6579,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b88192db-65c0-49a7-ab9d-3d97bef0d034",
-          "candidateName": "Monty Fritts",
-          "peopleId": 23186,
-          "memberName": "Monty Fritts",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "fe946104-244f-44b2-bbff-415a3cb5a4fd",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "dc8c8125-184a-47b4-bc2e-e0fef257c003",
           "candidateName": "Jake McCalmon",
           "peopleId": 23187,
@@ -7483,42 +6843,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "63bcad7c-87af-4391-b5f5-80dcad3bf42b",
-          "candidateName": "Bo Mitchell",
-          "peopleId": 15503,
-          "memberName": "Bo Mitchell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "52016c2c-7dd0-4333-9eb8-a5d7d916f5c3",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "e9f4408e-8bce-4e23-ba37-1890382b0e6e",
-          "candidateName": "Jason L Powell",
-          "peopleId": 15504,
-          "memberName": "Jason Powell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "604e24c7-3a49-4ee8-98d6-21e01044fa6d",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "b70b2cb9-0931-4b37-aaa4-72af5c79279f",
-          "candidateName": "John Ray Clemmons",
-          "peopleId": 16867,
-          "memberName": "John Clemmons",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "efbc96bd-b2e1-4e13-9a8d-04ba4d840259",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "5d7c5982-c10c-4101-a0b7-17732011edbf",
           "candidateName": "Jesse Chism",
           "peopleId": 20337,
@@ -7538,18 +6862,6 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "2cd69bd6-0390-4481-b16e-120be47d9516",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "683772f0-79db-4677-af8b-55b73bd6a74b",
-          "candidateName": "Bob Freeman",
-          "peopleId": 20341,
-          "memberName": "Bob Freeman",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "0909e50d-8ba1-40e0-a5d9-40f52d331f0a",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -7591,18 +6903,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b752a56d-642e-45be-a859-5a2c4d957801",
-          "candidateName": "Justin Jones",
-          "peopleId": 24826,
-          "memberName": "Justin Jones",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "3662a7f7-1614-4a83-b123-1d91af7ba382",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "eb3aba67-4e3f-4c97-9598-2bac4be16164",
           "candidateName": "Justin J. Pearson",
           "peopleId": 24880,
@@ -7625,18 +6925,6 @@
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
-        },
-        {
-          "candidateId": "92b5a2bf-b6b4-42bb-af9b-eb72d0081e99",
-          "candidateName": "Shaundelle Brooks",
-          "peopleId": 25239,
-          "memberName": "Shaundelle Brooks",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "96f820a8-d2d7-41aa-9760-1933844c27b5",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
         }
       ],
       "error": null
@@ -7655,16 +6943,17 @@
       "officialVoteDate": null,
       "measureId": "SB 1915",
       "question": "FLOOR VOTE: REGULAR CALENDAR AS AMENDED PASSAGE ON THIRD CONSIDERATION",
-      "originRunId": "rollcall:TN:house:2161:1687306:2026-08-31T07:29:25.155Z",
+      "originRunId": "rollcall:TN:house:2161:1687306:2026-09-06T17:42:46.041Z",
       "members": 94,
       "notVoting": 0,
       "absent": 0,
       "resolution": {
-        "matched": 80,
-        "unmatched_reviewed": 14
+        "matched": 72,
+        "unmatched_reviewed": 14,
+        "out_of_scope": 8
       },
       "actions": {
-        "unchanged": 80
+        "unchanged": 72
       },
       "notified": 0,
       "candidates": [
@@ -8209,18 +7498,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b88192db-65c0-49a7-ab9d-3d97bef0d034",
-          "candidateName": "Monty Fritts",
-          "peopleId": 23186,
-          "memberName": "Monty Fritts",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "46723d99-12c6-48a2-9818-a25cfb19d84b",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "dc8c8125-184a-47b4-bc2e-e0fef257c003",
           "candidateName": "Jake McCalmon",
           "peopleId": 23187,
@@ -8461,54 +7738,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "c0bcafb9-233c-4dc7-80d5-87368a584bef",
-          "candidateName": "Harold M. Love, Jr.",
-          "peopleId": 15502,
-          "memberName": "Harold Love",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "6a36eab4-3c72-4b17-8700-b49ae9d658fb",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "63bcad7c-87af-4391-b5f5-80dcad3bf42b",
-          "candidateName": "Bo Mitchell",
-          "peopleId": 15503,
-          "memberName": "Bo Mitchell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "3bc4e8f1-1260-4d6f-a381-987b1d2e4739",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "e9f4408e-8bce-4e23-ba37-1890382b0e6e",
-          "candidateName": "Jason L Powell",
-          "peopleId": 15504,
-          "memberName": "Jason Powell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "12ca5f2f-3a5c-4ab6-907b-28c5b3a5c931",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "b70b2cb9-0931-4b37-aaa4-72af5c79279f",
-          "candidateName": "John Ray Clemmons",
-          "peopleId": 16867,
-          "memberName": "John Clemmons",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "3d92f082-3790-42a0-bfa2-c9fcc62fcc73",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "5d7c5982-c10c-4101-a0b7-17732011edbf",
           "candidateName": "Jesse Chism",
           "peopleId": 20337,
@@ -8528,18 +7757,6 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "9de490c7-6727-4b06-a283-28c8ded3fad9",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "683772f0-79db-4677-af8b-55b73bd6a74b",
-          "candidateName": "Bob Freeman",
-          "peopleId": 20341,
-          "memberName": "Bob Freeman",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "426a694a-1c5a-4daa-ae6b-c17b1db4c2ce",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8593,18 +7810,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b752a56d-642e-45be-a859-5a2c4d957801",
-          "candidateName": "Justin Jones",
-          "peopleId": 24826,
-          "memberName": "Justin Jones",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "7f91404a-7393-4b6c-a594-ef87752d9b7e",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "cb692cdb-9d70-4482-8583-b3b040b6ea0d",
           "candidateName": "Aftyn Behn",
           "peopleId": 24997,
@@ -8612,18 +7817,6 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "d01fd6a2-74c2-48f3-af62-9579023be888",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "92b5a2bf-b6b4-42bb-af9b-eb72d0081e99",
-          "candidateName": "Shaundelle Brooks",
-          "peopleId": 25239,
-          "memberName": "Shaundelle Brooks",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "9983818a-7f12-4c4e-9673-7f0b874ff88a",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -8645,16 +7838,17 @@
       "officialVoteDate": null,
       "measureId": "SB 1713",
       "question": "FLOOR VOTE: REGULAR CALENDAR AS AMENDED PASSAGE ON THIRD CONSIDERATION",
-      "originRunId": "rollcall:TN:house:2161:1687321:2026-08-31T07:29:25.155Z",
+      "originRunId": "rollcall:TN:house:2161:1687321:2026-09-06T17:42:46.041Z",
       "members": 86,
       "notVoting": 1,
       "absent": 0,
       "resolution": {
-        "matched": 72,
-        "unmatched_reviewed": 14
+        "matched": 64,
+        "unmatched_reviewed": 14,
+        "out_of_scope": 8
       },
       "actions": {
-        "unchanged": 72
+        "unchanged": 64
       },
       "notified": 0,
       "candidates": [
@@ -9151,18 +8345,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b88192db-65c0-49a7-ab9d-3d97bef0d034",
-          "candidateName": "Monty Fritts",
-          "peopleId": 23186,
-          "memberName": "Monty Fritts",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "96d612d1-56a0-4a2c-a7ea-07fa752c5ae2",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "7b9fea80-010c-43c0-943a-9c35b8ca24c6",
           "candidateName": "Kevin Raper",
           "peopleId": 23188,
@@ -9367,54 +8549,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "c0bcafb9-233c-4dc7-80d5-87368a584bef",
-          "candidateName": "Harold M. Love, Jr.",
-          "peopleId": 15502,
-          "memberName": "Harold Love",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "6b5f8b5e-5213-40fa-bbd6-f45b487a6ad3",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "63bcad7c-87af-4391-b5f5-80dcad3bf42b",
-          "candidateName": "Bo Mitchell",
-          "peopleId": 15503,
-          "memberName": "Bo Mitchell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "8a08ff15-90f4-4734-a94e-f3517a7281a0",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "e9f4408e-8bce-4e23-ba37-1890382b0e6e",
-          "candidateName": "Jason L Powell",
-          "peopleId": 15504,
-          "memberName": "Jason Powell",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "3a9525db-13b1-44c6-984b-5e34a7d1debf",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "b70b2cb9-0931-4b37-aaa4-72af5c79279f",
-          "candidateName": "John Ray Clemmons",
-          "peopleId": 16867,
-          "memberName": "John Clemmons",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "d833ea93-7b97-4fa8-bd11-05bcbcdcc9c0",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "5d7c5982-c10c-4101-a0b7-17732011edbf",
           "candidateName": "Jesse Chism",
           "peopleId": 20337,
@@ -9434,18 +8568,6 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "a40bcebc-0bcc-4286-842a-fd8990951112",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "683772f0-79db-4677-af8b-55b73bd6a74b",
-          "candidateName": "Bob Freeman",
-          "peopleId": 20341,
-          "memberName": "Bob Freeman",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "b2514f58-6798-4ad0-8857-0a79e4c8cd28",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -9487,18 +8609,6 @@
           "relatedRecordIds": []
         },
         {
-          "candidateId": "b752a56d-642e-45be-a859-5a2c4d957801",
-          "candidateName": "Justin Jones",
-          "peopleId": 24826,
-          "memberName": "Justin Jones",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "6f7a27d3-1c52-47d6-8fa5-e8dbbe0a2bd7",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
           "candidateId": "cb692cdb-9d70-4482-8583-b3b040b6ea0d",
           "candidateName": "Aftyn Behn",
           "peopleId": 24997,
@@ -9506,18 +8616,6 @@
           "side": "nay",
           "action": "unchanged",
           "recordId": "e4345d48-4b82-4b93-8081-bb03ca50a026",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "92b5a2bf-b6b4-42bb-af9b-eb72d0081e99",
-          "candidateName": "Shaundelle Brooks",
-          "peopleId": 25239,
-          "memberName": "Shaundelle Brooks",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "93afe48b-c2e8-46fa-bbf9-181f37b60d02",
           "ambiguousRecordIds": [],
           "notified": false,
           "relatedRecordIds": []
@@ -9539,202 +8637,17 @@
       "officialVoteDate": null,
       "measureId": "SB 336",
       "question": "FLOOR VOTE: as Amended Third Consideration",
-      "originRunId": "rollcall:TN:senate:2161:1543982:2026-08-31T07:29:25.155Z",
+      "originRunId": "rollcall:TN:senate:2161:1543982:2026-09-06T17:42:46.041Z",
       "members": 32,
       "notVoting": 0,
       "absent": 0,
       "resolution": {
         "unmatched_reviewed": 17,
-        "matched": 15
+        "out_of_scope": 15
       },
-      "actions": {
-        "unchanged": 15
-      },
+      "actions": {},
       "notified": 0,
-      "candidates": [
-        {
-          "candidateId": "b13cdb24-792f-4f80-8231-64e83fe9118d",
-          "candidateName": "Dewey \"Rusty\" Crowe",
-          "peopleId": 7282,
-          "memberName": "Rusty Crowe",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "386b9762-e2d0-4ede-9fbf-99d918b2ddc7",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "539140c6-7881-4a89-9074-ad48cfd802a9",
-          "candidateName": "Steve Southerland",
-          "peopleId": 7292,
-          "memberName": "Steve Southerland",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "85cb3542-a2eb-4ec1-a0f7-2b2182fd8046",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "da36e86f-d0c1-4b8b-9d3b-bb8d98cd8f39",
-          "candidateName": "Jack Johnson",
-          "peopleId": 7298,
-          "memberName": "Jack Johnson",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "2a44c1cf-354d-4d60-8554-66fad80670e8",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "9f0c5c54-3ebf-4e9a-b227-0d801557db80",
-          "candidateName": "Mark Pody",
-          "peopleId": 12238,
-          "memberName": "Mark Pody",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "0d6dd544-39e3-49c8-b345-fc637b01381a",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "5208ee4f-5c24-4437-b27c-e1bace9573dc",
-          "candidateName": "Raumesh Akbari",
-          "peopleId": 16126,
-          "memberName": "Raumesh Akbari",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "496812ff-f66b-4be6-909b-8f927f40d769",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "d6b4672b-6bbe-44a0-aa0c-39423e227aac",
-          "candidateName": "Paul Bailey",
-          "peopleId": 16127,
-          "memberName": "Paul Bailey",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "f075bf7a-b47a-4be8-83ac-e166487a8883",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "4286f4d2-1a33-48ec-b1c6-f156fa476494",
-          "candidateName": "Richard M. Briggs",
-          "peopleId": 17140,
-          "memberName": "Richard Briggs",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "3fa70b64-2ed4-4352-af74-c387adab5cc6",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "c275fcd0-df93-4f16-b4dd-ce72641189fb",
-          "candidateName": "Jeff Yarbro",
-          "peopleId": 17141,
-          "memberName": "Jeff Yarbro",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "f669492b-53fe-47e9-ae99-210aebd2618c",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "e95d70bf-bf31-43c3-b0cc-97ab2a4ff62b",
-          "candidateName": "Ed Jackson",
-          "peopleId": 17913,
-          "memberName": "Edward Jackson",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "bb1f6fbe-6917-49b6-b1e7-9cf7f211552f",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "cd243b27-6899-43dc-837b-a0a19b2d5e1b",
-          "candidateName": "London Lamar",
-          "peopleId": 20192,
-          "memberName": "London Lamar",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "7d95227d-7577-47a9-bae3-0f2de0da8e56",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "c822311b-69a1-4989-8c83-c07fe2bdaee8",
-          "candidateName": "Charlane Oliver",
-          "peopleId": 24391,
-          "memberName": "Charlane Oliver",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "fff360ef-411b-49e6-8480-51cf052997c6",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "7472a1e3-728b-4ead-8688-df30c75c5b2a",
-          "candidateName": "Bo Watson",
-          "peopleId": 7270,
-          "memberName": "Bo Watson",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "7db75140-cb96-46f0-86d5-ccad0fb148fe",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": [
-            "9c87a33d-d81b-4886-9159-ac15d458bce0"
-          ]
-        },
-        {
-          "candidateId": "0f96023d-f40f-44fa-9759-a2a0de3abd18",
-          "candidateName": "Dawn White",
-          "peopleId": 15467,
-          "memberName": "Dawn White",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "911a7736-1561-47ef-afd6-1a7626cb3b89",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "762fa6b8-4364-4e5a-8091-794794f7587b",
-          "candidateName": "Brent Taylor",
-          "peopleId": 23362,
-          "memberName": "Brent Taylor",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "f0335deb-f214-4d89-ad20-a10247eb0e21",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "dcf81fb9-b104-446b-90e6-033707e07897",
-          "candidateName": "J. Adam Lowe",
-          "peopleId": 24390,
-          "memberName": "Adam Lowe",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "6b926344-b939-4c23-ae18-91f50215bb98",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        }
-      ],
+      "candidates": [],
       "error": null
     },
     {
@@ -9751,190 +8664,17 @@
       "officialVoteDate": null,
       "measureId": "HB 1093",
       "question": "FLOOR VOTE: Third Consideration",
-      "originRunId": "rollcall:TN:senate:2161:1556833:2026-08-31T07:29:25.155Z",
+      "originRunId": "rollcall:TN:senate:2161:1556833:2026-09-06T17:42:46.041Z",
       "members": 31,
       "notVoting": 0,
       "absent": 0,
       "resolution": {
         "unmatched_reviewed": 17,
-        "matched": 14
+        "out_of_scope": 14
       },
-      "actions": {
-        "unchanged": 14
-      },
+      "actions": {},
       "notified": 0,
-      "candidates": [
-        {
-          "candidateId": "b13cdb24-792f-4f80-8231-64e83fe9118d",
-          "candidateName": "Dewey \"Rusty\" Crowe",
-          "peopleId": 7282,
-          "memberName": "Rusty Crowe",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "f81c19b7-771d-45a3-b9ae-f354cff2ae0a",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "da36e86f-d0c1-4b8b-9d3b-bb8d98cd8f39",
-          "candidateName": "Jack Johnson",
-          "peopleId": 7298,
-          "memberName": "Jack Johnson",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "437cdc28-b1b7-4441-9240-da45dcc34d01",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "0f96023d-f40f-44fa-9759-a2a0de3abd18",
-          "candidateName": "Dawn White",
-          "peopleId": 15467,
-          "memberName": "Dawn White",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "8b4078c0-df02-438e-b1fb-723333328a42",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "5208ee4f-5c24-4437-b27c-e1bace9573dc",
-          "candidateName": "Raumesh Akbari",
-          "peopleId": 16126,
-          "memberName": "Raumesh Akbari",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "f517885d-e585-4574-a37f-bc75101b692a",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "4286f4d2-1a33-48ec-b1c6-f156fa476494",
-          "candidateName": "Richard M. Briggs",
-          "peopleId": 17140,
-          "memberName": "Richard Briggs",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "0b509a34-b6fc-4e72-8281-d1767de51d54",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "c275fcd0-df93-4f16-b4dd-ce72641189fb",
-          "candidateName": "Jeff Yarbro",
-          "peopleId": 17141,
-          "memberName": "Jeff Yarbro",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "f97cc2a0-2e85-4d87-8961-61c20a5b881f",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "e95d70bf-bf31-43c3-b0cc-97ab2a4ff62b",
-          "candidateName": "Ed Jackson",
-          "peopleId": 17913,
-          "memberName": "Edward Jackson",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "48cdc170-1546-4182-ad14-961259fed17e",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "cd243b27-6899-43dc-837b-a0a19b2d5e1b",
-          "candidateName": "London Lamar",
-          "peopleId": 20192,
-          "memberName": "London Lamar",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "848221a4-67cd-404f-aa26-a254de58865d",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "762fa6b8-4364-4e5a-8091-794794f7587b",
-          "candidateName": "Brent Taylor",
-          "peopleId": 23362,
-          "memberName": "Brent Taylor",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "0d95ad7e-9d95-461a-b2da-29924e18b44b",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "7472a1e3-728b-4ead-8688-df30c75c5b2a",
-          "candidateName": "Bo Watson",
-          "peopleId": 7270,
-          "memberName": "Bo Watson",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "339acbbe-855d-4e5c-82f6-2c7606ce3f0b",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": [
-            "7ae98983-416a-45c3-95a7-bdb337cd41a1"
-          ]
-        },
-        {
-          "candidateId": "539140c6-7881-4a89-9074-ad48cfd802a9",
-          "candidateName": "Steve Southerland",
-          "peopleId": 7292,
-          "memberName": "Steve Southerland",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "06753540-afab-465a-9ac8-c09ea09fd6c4",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "9f0c5c54-3ebf-4e9a-b227-0d801557db80",
-          "candidateName": "Mark Pody",
-          "peopleId": 12238,
-          "memberName": "Mark Pody",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "b161c3c8-456f-476f-aaef-4a1b3d5b2bbf",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "8bf01902-e745-4a6e-870a-235b5a7e4f2d",
-          "candidateName": "Kerry E. Roberts",
-          "peopleId": 12656,
-          "memberName": "Kerry Roberts",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "20d0ecbc-e025-488f-a38e-485363981e07",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "dcf81fb9-b104-446b-90e6-033707e07897",
-          "candidateName": "J. Adam Lowe",
-          "peopleId": 24390,
-          "memberName": "Adam Lowe",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "8412eb22-8b43-4c86-83c7-6cd7037706a7",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        }
-      ],
+      "candidates": [],
       "error": null
     },
     {
@@ -9951,212 +8691,17 @@
       "officialVoteDate": null,
       "measureId": "SB 2040",
       "question": "FLOOR VOTE: as Amended Third Consideration",
-      "originRunId": "rollcall:TN:senate:2161:1686179:2026-08-31T07:29:25.155Z",
+      "originRunId": "rollcall:TN:senate:2161:1686179:2026-09-06T17:42:46.041Z",
       "members": 33,
       "notVoting": 0,
       "absent": 0,
       "resolution": {
         "unmatched_reviewed": 17,
-        "matched": 16
+        "out_of_scope": 16
       },
-      "actions": {
-        "unchanged": 16
-      },
+      "actions": {},
       "notified": 0,
-      "candidates": [
-        {
-          "candidateId": "7472a1e3-728b-4ead-8688-df30c75c5b2a",
-          "candidateName": "Bo Watson",
-          "peopleId": 7270,
-          "memberName": "Bo Watson",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "835b7cfe-43e5-4874-a4fc-ff9903db9731",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "b13cdb24-792f-4f80-8231-64e83fe9118d",
-          "candidateName": "Dewey \"Rusty\" Crowe",
-          "peopleId": 7282,
-          "memberName": "Rusty Crowe",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "62640b60-5c8c-4a8a-a148-dc81862e8c2e",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "9f0c5c54-3ebf-4e9a-b227-0d801557db80",
-          "candidateName": "Mark Pody",
-          "peopleId": 12238,
-          "memberName": "Mark Pody",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "8eb42d12-49e5-4fec-a1a2-0bdade582b46",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "8bf01902-e745-4a6e-870a-235b5a7e4f2d",
-          "candidateName": "Kerry E. Roberts",
-          "peopleId": 12656,
-          "memberName": "Kerry Roberts",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "51a1238b-2f54-47e8-864e-1b5b4946d846",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "0f96023d-f40f-44fa-9759-a2a0de3abd18",
-          "candidateName": "Dawn White",
-          "peopleId": 15467,
-          "memberName": "Dawn White",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "7315893b-68b4-4c86-9190-0ab993c64b05",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "c275fcd0-df93-4f16-b4dd-ce72641189fb",
-          "candidateName": "Jeff Yarbro",
-          "peopleId": 17141,
-          "memberName": "Jeff Yarbro",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "57e762b7-9d90-40d3-9623-fd508b7590e4",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "e95d70bf-bf31-43c3-b0cc-97ab2a4ff62b",
-          "candidateName": "Ed Jackson",
-          "peopleId": 17913,
-          "memberName": "Edward Jackson",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "d0b943ed-12d3-43cf-80d5-e7028a6a0d9d",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "cd243b27-6899-43dc-837b-a0a19b2d5e1b",
-          "candidateName": "London Lamar",
-          "peopleId": 20192,
-          "memberName": "London Lamar",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "2b73f27b-5af4-4e7c-b994-55d46879249e",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "dcf81fb9-b104-446b-90e6-033707e07897",
-          "candidateName": "J. Adam Lowe",
-          "peopleId": 24390,
-          "memberName": "Adam Lowe",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "a6452089-9184-4d1d-8048-4200e143da04",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "c822311b-69a1-4989-8c83-c07fe2bdaee8",
-          "candidateName": "Charlane Oliver",
-          "peopleId": 24391,
-          "memberName": "Charlane Oliver",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "6b4ca3aa-787d-4a0e-a0e0-1d55b300df7c",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "539140c6-7881-4a89-9074-ad48cfd802a9",
-          "candidateName": "Steve Southerland",
-          "peopleId": 7292,
-          "memberName": "Steve Southerland",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "391fb3f2-e969-4ce2-b605-9a2c8206e42e",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "da36e86f-d0c1-4b8b-9d3b-bb8d98cd8f39",
-          "candidateName": "Jack Johnson",
-          "peopleId": 7298,
-          "memberName": "Jack Johnson",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "998564f1-f0dd-434e-83ec-c86ef778ae8f",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "5208ee4f-5c24-4437-b27c-e1bace9573dc",
-          "candidateName": "Raumesh Akbari",
-          "peopleId": 16126,
-          "memberName": "Raumesh Akbari",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "34e28057-d8eb-4707-9046-f52ccc23d53b",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "d6b4672b-6bbe-44a0-aa0c-39423e227aac",
-          "candidateName": "Paul Bailey",
-          "peopleId": 16127,
-          "memberName": "Paul Bailey",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "36d7d0fa-8efc-4a03-bc1a-e59ad03005b8",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "4286f4d2-1a33-48ec-b1c6-f156fa476494",
-          "candidateName": "Richard M. Briggs",
-          "peopleId": 17140,
-          "memberName": "Richard Briggs",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "059ffc19-ac98-458b-b8f5-468e53c583d0",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "762fa6b8-4364-4e5a-8091-794794f7587b",
-          "candidateName": "Brent Taylor",
-          "peopleId": 23362,
-          "memberName": "Brent Taylor",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "a4c6e3b2-c7c3-4e6c-ac14-b6b510c026a6",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        }
-      ],
+      "candidates": [],
       "error": null
     },
     {
@@ -10173,190 +8718,17 @@
       "officialVoteDate": null,
       "measureId": "SB 1915",
       "question": "FLOOR VOTE: Motion to Concur House Amendment # 1",
-      "originRunId": "rollcall:TN:senate:2161:1688578:2026-08-31T07:29:25.155Z",
+      "originRunId": "rollcall:TN:senate:2161:1688578:2026-09-06T17:42:46.041Z",
       "members": 30,
       "notVoting": 0,
       "absent": 0,
       "resolution": {
         "unmatched_reviewed": 16,
-        "matched": 14
+        "out_of_scope": 14
       },
-      "actions": {
-        "unchanged": 14
-      },
+      "actions": {},
       "notified": 0,
-      "candidates": [
-        {
-          "candidateId": "7472a1e3-728b-4ead-8688-df30c75c5b2a",
-          "candidateName": "Bo Watson",
-          "peopleId": 7270,
-          "memberName": "Bo Watson",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "96cddf3f-6e36-4bba-b8f7-59bb874e3761",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": [
-            "b7cf4250-8fb4-4572-ad40-8e4933e92e22"
-          ]
-        },
-        {
-          "candidateId": "b13cdb24-792f-4f80-8231-64e83fe9118d",
-          "candidateName": "Dewey \"Rusty\" Crowe",
-          "peopleId": 7282,
-          "memberName": "Rusty Crowe",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "9f08aaff-0b0a-4e69-8bcb-1b59e94d81ee",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "539140c6-7881-4a89-9074-ad48cfd802a9",
-          "candidateName": "Steve Southerland",
-          "peopleId": 7292,
-          "memberName": "Steve Southerland",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "10df48de-b6eb-4550-a896-a992c8add209",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "da36e86f-d0c1-4b8b-9d3b-bb8d98cd8f39",
-          "candidateName": "Jack Johnson",
-          "peopleId": 7298,
-          "memberName": "Jack Johnson",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "ff4b5cc7-7847-4b75-8c7b-700c6d99a270",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "8bf01902-e745-4a6e-870a-235b5a7e4f2d",
-          "candidateName": "Kerry E. Roberts",
-          "peopleId": 12656,
-          "memberName": "Kerry Roberts",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "d11faa9e-39ff-464c-b228-fd0955f25255",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "0f96023d-f40f-44fa-9759-a2a0de3abd18",
-          "candidateName": "Dawn White",
-          "peopleId": 15467,
-          "memberName": "Dawn White",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "6a84aaf3-2caf-4cdc-9df0-9b2043443c84",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "d6b4672b-6bbe-44a0-aa0c-39423e227aac",
-          "candidateName": "Paul Bailey",
-          "peopleId": 16127,
-          "memberName": "Paul Bailey",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "3835a887-7fca-4061-9f17-8ba236cc20ea",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "4286f4d2-1a33-48ec-b1c6-f156fa476494",
-          "candidateName": "Richard M. Briggs",
-          "peopleId": 17140,
-          "memberName": "Richard Briggs",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "81b00953-1ca5-44ef-8212-6de5d19abacf",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "e95d70bf-bf31-43c3-b0cc-97ab2a4ff62b",
-          "candidateName": "Ed Jackson",
-          "peopleId": 17913,
-          "memberName": "Edward Jackson",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "b9c5ea84-5f54-42a2-9c3f-c93c6ef74e35",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "762fa6b8-4364-4e5a-8091-794794f7587b",
-          "candidateName": "Brent Taylor",
-          "peopleId": 23362,
-          "memberName": "Brent Taylor",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "e018d716-2bfa-4526-956e-132390966ff7",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "dcf81fb9-b104-446b-90e6-033707e07897",
-          "candidateName": "J. Adam Lowe",
-          "peopleId": 24390,
-          "memberName": "Adam Lowe",
-          "side": "yea",
-          "action": "unchanged",
-          "recordId": "6e02d00b-5960-4e6b-a6d5-9010d7b49de0",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "5208ee4f-5c24-4437-b27c-e1bace9573dc",
-          "candidateName": "Raumesh Akbari",
-          "peopleId": 16126,
-          "memberName": "Raumesh Akbari",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "c97c944c-d80c-4668-acd5-c41d3a9eb62f",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "c275fcd0-df93-4f16-b4dd-ce72641189fb",
-          "candidateName": "Jeff Yarbro",
-          "peopleId": 17141,
-          "memberName": "Jeff Yarbro",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "dae27ace-4e54-43d4-8e95-ebfe6ab5a7c1",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        },
-        {
-          "candidateId": "c822311b-69a1-4989-8c83-c07fe2bdaee8",
-          "candidateName": "Charlane Oliver",
-          "peopleId": 24391,
-          "memberName": "Charlane Oliver",
-          "side": "nay",
-          "action": "unchanged",
-          "recordId": "6bb15786-43f1-4675-afd3-e0ef75857c55",
-          "ambiguousRecordIds": [],
-          "notified": false,
-          "relatedRecordIds": []
-        }
-      ],
+      "candidates": [],
       "error": null
     }
   ]
