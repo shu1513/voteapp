@@ -1,0 +1,130 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CT",
+   "chamber": "house",
+   "session": "2174",
+   "roll": 1585175,
+   "measure_id": "HB 5269",
+   "vote_date": "2025-06-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 5269. It would tighten the rules on online gambling. A person could hold only one account on each platform, and paying with a credit card would be barred outright rather than merely capped. The Connecticut House passed it 100-46. The Senate did not vote on it, so it did not become law.",
+   "nay_description": "Voted against HB 5269. It would tighten the rules on online gambling. A person could hold only one account on each platform, and paying with a credit card would be barred outright rather than merely capped. The Connecticut House passed it 100-46. The Senate did not vote on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CT",
+   "chamber": "house",
+   "session": "2174",
+   "roll": 1571909,
+   "measure_id": "HB 6477",
+   "vote_date": "2025-05-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 6477. It would require the Governor's office to write a plan, by January 2026, for reviewing and translating the state forms and applications a person needs to get state services or benefits, for people whose English is limited. The Connecticut House passed it 100-46. The Senate did not vote on it, so it did not become law.",
+   "nay_description": "Voted against HB 6477. It would require the Governor's office to write a plan, by January 2026, for reviewing and translating the state forms and applications a person needs to get state services or benefits, for people whose English is limited. The Connecticut House passed it 100-46. The Senate did not vote on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CT",
+   "chamber": "house",
+   "session": "2174",
+   "roll": 1573756,
+   "measure_id": "HB 7065",
+   "vote_date": "2025-05-19",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 7065. It would take possession of small amounts of psilocybin, the drug in psychedelic mushrooms, out of the criminal penalties Connecticut applies to hallucinogens. The Connecticut House passed it 74-65. The Senate did not vote on it, so it did not become law.",
+   "nay_description": "Voted against HB 7065. It would take possession of small amounts of psilocybin, the drug in psychedelic mushrooms, out of the criminal penalties Connecticut applies to hallucinogens. The Connecticut House passed it 74-65. The Senate did not vote on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CT",
+   "chamber": "house",
+   "session": "2174",
+   "roll": 1584512,
+   "measure_id": "HB 7087",
+   "vote_date": "2025-06-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 7087. It would set the rules for community solar, where people subscribe to a shared solar array and get credit on their power bill for the electricity it makes. The state utility regulator would run the program. The Connecticut House passed it 103-42. The Senate did not vote on it, so it did not become law.",
+   "nay_description": "Voted against HB 7087. It would set the rules for community solar, where people subscribe to a shared solar array and get credit on their power bill for the electricity it makes. The state utility regulator would run the program. The Connecticut House passed it 103-42. The Senate did not vote on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CT",
+   "chamber": "house",
+   "session": "2174",
+   "roll": 1574761,
+   "measure_id": "HB 7210",
+   "vote_date": "2025-05-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 7210. It would require state contracts with halfway houses run for the Department of Correction to follow each resident's own discharge plan. It would also bar discharging a resident just because the facility is closing. The Connecticut House passed it 100-46. The Senate did not vote on it, so it did not become law.",
+   "nay_description": "Voted against HB 7210. It would require state contracts with halfway houses run for the Department of Correction to follow each resident's own discharge plan. It would also bar discharging a resident just because the facility is closing. The Connecticut House passed it 100-46. The Senate did not vote on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CT",
+   "chamber": "house",
+   "session": "2174",
+   "roll": 1583673,
+   "measure_id": "SB 1427",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1427. It would open Connecticut's paid family and medical leave insurance program to certain school employees. The version the House passed also lets a school board that already gives more generous paid leave require staff to use their accrued sick leave first. The Connecticut House passed it 102-46. The Senate did not vote on it again, so it did not become law.",
+   "nay_description": "Voted against SB 1427. It would open Connecticut's paid family and medical leave insurance program to certain school employees. The version the House passed also lets a school board that already gives more generous paid leave require staff to use their accrued sick leave first. The Connecticut House passed it 102-46. The Senate did not vote on it again, so it did not become law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CT",
+   "chamber": "house",
+   "session": "2174",
+   "roll": 1584862,
+   "measure_id": "SB 8",
+   "vote_date": "2025-05-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 8. It would let workers who are off the job because of a strike claim unemployment benefits, once that dispute has run for fourteen days. Connecticut law now bars benefits for the whole of a labor dispute. The Connecticut House passed it 87-59. The Governor vetoed it, so it did not become law.",
+   "nay_description": "Voted against SB 8. It would let workers who are off the job because of a strike claim unemployment benefits, once that dispute has run for fourteen days. Connecticut law now bars benefits for the whole of a labor dispute. The Connecticut House passed it 87-59. The Governor vetoed it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

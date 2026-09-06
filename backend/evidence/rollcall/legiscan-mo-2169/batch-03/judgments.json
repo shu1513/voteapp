@@ -1,0 +1,100 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1495925,
+   "measure_id": "HB 544",
+   "vote_date": "2025-02-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 544. It would make a pesticide label approved by the federal Environmental Protection Agency enough to satisfy any Missouri requirement for a cancer warning. That would block claims that a maker should have warned about cancer risk beyond what the federal label says. The Missouri House passed it 85-72. The Senate did not vote on it, so it did not become law.",
+   "nay_description": "Voted against HB 544. It would make a pesticide label approved by the federal Environmental Protection Agency enough to satisfy any Missouri requirement for a cancer warning. That would block claims that a maker should have warned about cancer risk beyond what the federal label says. The Missouri House passed it 85-72. The Senate did not vote on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1495924
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1544622,
+   "measure_id": "HB 565",
+   "vote_date": "2025-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 565. It would widen Missouri's shield against lawsuits over horse and livestock activities, covering more people and more situations where someone is hurt taking part in them. The Missouri House passed it 97-51. The Senate did not vote on it, so it did not become law.",
+   "nay_description": "Voted against HB 565. It would widen Missouri's shield against lawsuits over horse and livestock activities, covering more people and more situations where someone is hurt taking part in them. The Missouri House passed it 97-51. The Senate did not vote on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1495937,
+   "measure_id": "HB 68",
+   "vote_date": "2025-02-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 68. It would move claims for personal injury out of Missouri's five-year deadline for filing a lawsuit and into the two-year one. A person hurt by someone else would have less than half as long to sue. The Missouri House passed it 92-42. The Senate did not vote on it, so it did not become law.",
+   "nay_description": "Voted against HB 68. It would move claims for personal injury out of Missouri's five-year deadline for filing a lawsuit and into the two-year one. A person hurt by someone else would have less than half as long to sue. The Missouri House passed it 92-42. The Senate did not vote on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1495936
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1495948,
+   "measure_id": "HB 742",
+   "vote_date": "2025-02-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 742. It would bar any state department from spending money on diversity, equity and inclusion programs, staffing or other work, or on anything else that gives preferential treatment based on race, color, religion, sex, gender, sexual orientation or ethnicity. The Missouri House passed it 108-50. The Senate did not vote on it, so it did not become law.",
+   "nay_description": "Voted against HB 742. It would bar any state department from spending money on diversity, equity and inclusion programs, staffing or other work, or on anything else that gives preferential treatment based on race, color, religion, sex, gender, sexual orientation or ethnicity. The Missouri House passed it 108-50. The Senate did not vote on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1554799,
+   "measure_id": "HB 918",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 918. In a lawsuit over harm from a product, it would require the injured person to prove the defendant made, sold or leased the exact product involved, not a similar one. A company whose product was not identified as the one used could not be held liable. The Missouri House passed it 94-57. The Senate did not vote on it, so it did not become law.",
+   "nay_description": "Voted against HB 918. In a lawsuit over harm from a product, it would require the injured person to prove the defendant made, sold or leased the exact product involved, not a similar one. A company whose product was not identified as the one used could not be held liable. The Missouri House passed it 94-57. The Senate did not vote on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
