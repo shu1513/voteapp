@@ -101,8 +101,8 @@
       "measure_id": "HB 5295",
       "vote_date": "2026-05-30",
       "review_status": "approved",
-      "yea_description": "Voted to pass the Senate version of House Bill 5295. It made health networks separate abortion-related records and block sharing outside Illinois unless the patient chose a provider, while adding coded-record definitions and tighter rules for who may receive data. The Senate passed it 38-19; the House agreed, and it became law effective July 1, 2027.",
-      "nay_description": "Voted against the Senate version of House Bill 5295. It made health networks separate abortion-related records and block sharing outside Illinois unless the patient chose a provider, while adding coded-record definitions and tighter rules for who may receive data. The Senate passed it 38-19; the House agreed, and it became law effective July 1, 2027.",
+      "yea_description": "Voted to pass the Senate version of House Bill 5295. It requires electronic health networks to segregate coded abortion and gender-dysphoria health records and block out-of-state sharing, except for technical support, quality assurance, payment operations, or with patient consent, and lets patients sue. The Senate passed it 38-19; the House agreed, and it became law effective July 1, 2027.",
+      "nay_description": "Voted against the Senate version of House Bill 5295. It requires electronic health networks to segregate coded abortion and gender-dysphoria health records and block out-of-state sharing, except for technical support, quality assurance, payment operations, or with patient consent, and lets patients sue. The Senate passed it 38-19; the House agreed, and it became law effective July 1, 2027.",
       "labels": [
         {
           "slug": "womens_reproductive_rights",
@@ -342,8 +342,8 @@
       "measure_id": "SB 3772",
       "vote_date": "2026-04-29",
       "review_status": "approved",
-      "yea_description": "Voted to pass Senate Bill 3772. For air permits requested on or after January 1, 2026, the state must study effects on communities flagged for unfair pollution burdens, the applicant's past record, and whether more tests or changes are needed. It also creates an Environmental Justice Office and officer to coordinate this work across state environmental programs. The Illinois Senate passed it 43-11, and it became law.",
-      "nay_description": "Voted against Senate Bill 3772. For air permits requested on or after January 1, 2026, the state must study effects on communities flagged for unfair pollution burdens, the applicant's past record, and whether more tests or changes are needed. It also creates an Environmental Justice Office and officer to coordinate this work across state environmental programs. The Illinois Senate passed it 43-11, and it became law.",
+      "yea_description": "Voted to pass Senate Bill 3772. For air permits requested on or after January 1, 2027, the state must study effects on communities flagged for unfair pollution burdens, the applicant's past record, and whether more tests or changes are needed. It also creates an Environmental Justice Office and officer to coordinate this work across state environmental programs. The Illinois Senate passed it 43-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 3772. For air permits requested on or after January 1, 2027, the state must study effects on communities flagged for unfair pollution burdens, the applicant's past record, and whether more tests or changes are needed. It also creates an Environmental Justice Office and officer to coordinate this work across state environmental programs. The Illinois Senate passed it 43-11, and it became law.",
       "labels": [
         {
           "slug": "environment_and_public_health",
@@ -360,8 +360,8 @@
       "measure_id": "SB 3772",
       "vote_date": "2026-05-30",
       "review_status": "approved",
-      "yea_description": "Voted to pass Senate Bill 3772. For air permits requested on or after January 1, 2026, the state must study effects on communities flagged for unfair pollution burdens, the applicant's past record, and whether more tests or changes are needed. It also creates an Environmental Justice Office and officer to coordinate this work across state environmental programs. The Illinois House passed it 73-39, and it became law.",
-      "nay_description": "Voted against Senate Bill 3772. For air permits requested on or after January 1, 2026, the state must study effects on communities flagged for unfair pollution burdens, the applicant's past record, and whether more tests or changes are needed. It also creates an Environmental Justice Office and officer to coordinate this work across state environmental programs. The Illinois House passed it 73-39, and it became law.",
+      "yea_description": "Voted to pass Senate Bill 3772. For air-pollution construction permits sought on or after January 1, 2027 by sources in areas flagged for unfair pollution burdens, the state must notify the community, weigh whether emissions can be cut, and decide whether more air modeling is needed. It must also weigh the applicant's past record of environmental violations before issuing a permit. It creates an Environmental Justice Office and officer inside the state environmental agency. The Illinois House passed it 73-39, and it became law.",
+      "nay_description": "Voted against Senate Bill 3772. For air-pollution construction permits sought on or after January 1, 2027 by sources in areas flagged for unfair pollution burdens, the state must notify the community, weigh whether emissions can be cut, and decide whether more air modeling is needed. It must also weigh the applicant's past record of environmental violations before issuing a permit. It creates an Environmental Justice Office and officer inside the state environmental agency. The Illinois House passed it 73-39, and it became law.",
       "labels": [
         {
           "slug": "environment_and_public_health",

@@ -1,406 +1,406 @@
 {
- "judgments": [
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1591745,
-   "measure_id": "LD 93",
-   "vote_date": "2025-06-17",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 93, a bill about who gets state-bought vaccines. Maine buys vaccines in bulk and hands them to doctors' offices, and until now that program covered only children. The bill opens it to every Maine resident, adults included. Health insurance companies pay for it through fees set by a state board. That board also picks which vaccines the program buys. The bill drops the old rule that the board's list had to follow the federal vaccine advisory committee's recommendations. This was the final passage vote. The Maine House passed it 78-70 and it became law.",
-   "nay_description": "Voted no on LD 93, a bill about who gets state-bought vaccines. Maine buys vaccines in bulk and hands them to doctors' offices, and until now that program covered only children. The bill opens it to every Maine resident, adults included. Health insurance companies pay for it through fees set by a state board. That board also picks which vaccines the program buys. The bill drops the old rule that the board's list had to follow the federal vaccine advisory committee's recommendations. This was the final passage vote. The Maine House passed it 78-70 and it became law.",
-   "labels": [
+  "judgments": [
     {
-     "slug": "healthcare_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1591746,
-   "measure_id": "LD 93",
-   "vote_date": "2025-06-17",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 93, a bill about who gets state-bought vaccines. Maine buys vaccines in bulk and hands them to doctors' offices, and until now that program covered only children. The bill opens it to every Maine resident, adults included. Health insurance companies pay for it through fees set by a state board. That board also picks which vaccines the program buys. The bill drops the old rule that the board's list had to follow the federal vaccine advisory committee's recommendations. The Maine Senate passed it 20-13 and it became law.",
-   "nay_description": "Voted no on LD 93, a bill about who gets state-bought vaccines. Maine buys vaccines in bulk and hands them to doctors' offices, and until now that program covered only children. The bill opens it to every Maine resident, adults included. Health insurance companies pay for it through fees set by a state board. That board also picks which vaccines the program buys. The bill drops the old rule that the board's list had to follow the federal vaccine advisory committee's recommendations. The Maine Senate passed it 20-13 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1591745,
+      "measure_id": "LD 93",
+      "vote_date": "2025-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 93, a bill about who gets state-bought vaccines. Maine buys vaccines in bulk and hands them to doctors' offices, and that program used to cover only children. The bill opens it to every Maine resident, adults included. Health insurance companies pay for it through fees set by a state board. That board also picks which vaccines the program buys. The bill takes the federal vaccine advisory committee out of the board's criteria: the board used to have to consider the vaccines that committee recommended, and now looks at vaccines available through any low-cost bulk purchase option. This was the final passage vote. The Maine House passed it 78-70 and it became law.",
+      "nay_description": "Voted no on LD 93, a bill about who gets state-bought vaccines. Maine buys vaccines in bulk and hands them to doctors' offices, and that program used to cover only children. The bill opens it to every Maine resident, adults included. Health insurance companies pay for it through fees set by a state board. That board also picks which vaccines the program buys. The bill takes the federal vaccine advisory committee out of the board's criteria: the board used to have to consider the vaccines that committee recommended, and now looks at vaccines available through any low-cost bulk purchase option. This was the final passage vote. The Maine House passed it 78-70 and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "healthcare_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1591136,
-   "measure_id": "LD 427",
-   "vote_date": "2025-06-16",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 427, a bill about town parking rules. A town may not require more than one off-street parking space per home in an area it has marked for growth. Off-street parking means spaces on the property rather than on the street. A town must also let a builder meet its parking rules by renting spaces in a nearby lot, as long as that lot is within a quarter mile. The House had rejected this bill twice before. This vote accepted the Senate's move to make it law. The Maine House agreed 82-65 and the bill became law.",
-   "nay_description": "Voted no on LD 427, a bill about town parking rules. A town may not require more than one off-street parking space per home in an area it has marked for growth. Off-street parking means spaces on the property rather than on the street. A town must also let a builder meet its parking rules by renting spaces in a nearby lot, as long as that lot is within a quarter mile. The House had rejected this bill twice before. This vote accepted the Senate's move to make it law. The Maine House agreed 82-65 and the bill became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1591746,
+      "measure_id": "LD 93",
+      "vote_date": "2025-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 93, a bill about who gets state-bought vaccines. Maine buys vaccines in bulk and hands them to doctors' offices, and that program used to cover only children. The bill opens it to every Maine resident, adults included. Health insurance companies pay for it through fees set by a state board. That board also picks which vaccines the program buys. The bill takes the federal vaccine advisory committee out of the board's criteria: the board used to have to consider the vaccines that committee recommended, and now looks at vaccines available through any low-cost bulk purchase option. The Maine Senate passed it 20-13 and it became law.",
+      "nay_description": "Voted no on LD 93, a bill about who gets state-bought vaccines. Maine buys vaccines in bulk and hands them to doctors' offices, and that program used to cover only children. The bill opens it to every Maine resident, adults included. Health insurance companies pay for it through fees set by a state board. That board also picks which vaccines the program buys. The bill takes the federal vaccine advisory committee out of the board's criteria: the board used to have to consider the vaccines that committee recommended, and now looks at vaccines available through any low-cost bulk purchase option. The Maine Senate passed it 20-13 and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "housing_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ],
-   "acknowledge_later_rolls": [
-    1590996
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1679820,
-   "measure_id": "LD 2106",
-   "vote_date": "2026-04-09",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 2106, a bill about immigration agents at schools, clinics, and libraries. The Attorney General must write model rules to keep public buildings open to everyone, whatever their immigration status. The rules limit when staff may let immigration agents into areas that are closed to the public, and when staff may hand over private records for immigration enforcement. They go only as far as state and federal law allow. Public schools, colleges, state institutions, and state libraries must adopt them. Private schools, clinics, day cares, town libraries, and houses of worship may adopt them if they choose. This was the final passage vote. The Maine House passed it 79-69 and it became law.",
-   "nay_description": "Voted no on LD 2106, a bill about immigration agents at schools, clinics, and libraries. The Attorney General must write model rules to keep public buildings open to everyone, whatever their immigration status. The rules limit when staff may let immigration agents into areas that are closed to the public, and when staff may hand over private records for immigration enforcement. They go only as far as state and federal law allow. Public schools, colleges, state institutions, and state libraries must adopt them. Private schools, clinics, day cares, town libraries, and houses of worship may adopt them if they choose. This was the final passage vote. The Maine House passed it 79-69 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1591136,
+      "measure_id": "LD 427",
+      "vote_date": "2025-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 427, a bill about town parking rules. A town may not require more than one off-street parking space per home in an area it has marked for growth. Off-street parking means spaces on the property rather than on the street. A town must also let a builder meet its parking rules by renting spaces in a nearby lot, as long as that lot is within a quarter mile. The House had rejected this bill twice before. This vote accepted the Senate's move to make it law. The Maine House agreed 82-65 and the bill became law.",
+      "nay_description": "Voted no on LD 427, a bill about town parking rules. A town may not require more than one off-street parking space per home in an area it has marked for growth. Off-street parking means spaces on the property rather than on the street. A town must also let a builder meet its parking rules by renting spaces in a nearby lot, as long as that lot is within a quarter mile. The House had rejected this bill twice before. This vote accepted the Senate's move to make it law. The Maine House agreed 82-65 and the bill became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1590996
+      ]
+    },
     {
-     "slug": "immigration",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1679434,
-   "measure_id": "LD 2106",
-   "vote_date": "2026-04-08",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 2106, a bill about immigration agents at schools, clinics, and libraries. The Attorney General must write model rules to keep public buildings open to everyone, whatever their immigration status. The rules limit when staff may let immigration agents into areas that are closed to the public, and when staff may hand over private records for immigration enforcement. They go only as far as state and federal law allow. Public schools, colleges, state institutions, and state libraries must adopt them. Private schools, clinics, day cares, town libraries, and houses of worship may adopt them if they choose. The Maine Senate passed it 20-14 and it became law.",
-   "nay_description": "Voted no on LD 2106, a bill about immigration agents at schools, clinics, and libraries. The Attorney General must write model rules to keep public buildings open to everyone, whatever their immigration status. The rules limit when staff may let immigration agents into areas that are closed to the public, and when staff may hand over private records for immigration enforcement. They go only as far as state and federal law allow. Public schools, colleges, state institutions, and state libraries must adopt them. Private schools, clinics, day cares, town libraries, and houses of worship may adopt them if they choose. The Maine Senate passed it 20-14 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1679820,
+      "measure_id": "LD 2106",
+      "vote_date": "2026-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 2106, a bill about immigration agents at schools, clinics, and libraries. The law itself bars staff at public schools, public colleges, state institutions, and state libraries from voluntarily letting immigration agents into areas closed to the public. It also bars them from voluntarily handing over student, health, or library patron records for immigration enforcement. A court order or a state or federal law requiring disclosure still applies. The Attorney General must publish model policies within 60 days, and those public bodies must adopt them or equivalent ones. Private schools, clinics, day cares, town libraries, and houses of worship may adopt them if they choose. This was the final passage vote. The Maine House passed it 79-69 and it became law.",
+      "nay_description": "Voted no on LD 2106, a bill about immigration agents at schools, clinics, and libraries. The law itself bars staff at public schools, public colleges, state institutions, and state libraries from voluntarily letting immigration agents into areas closed to the public. It also bars them from voluntarily handing over student, health, or library patron records for immigration enforcement. A court order or a state or federal law requiring disclosure still applies. The Attorney General must publish model policies within 60 days, and those public bodies must adopt them or equivalent ones. Private schools, clinics, day cares, town libraries, and houses of worship may adopt them if they choose. This was the final passage vote. The Maine House passed it 79-69 and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "immigration",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1583054,
-   "measure_id": "LD 1366",
-   "vote_date": "2025-06-02",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1366, a bill about cocaine sentencing. Maine used to punish crack cocaine at lower amounts than powder cocaine, so the same charge took far less crack. The bill erases that split. One 14-gram line now applies to cocaine in any form for the charge of dealing based on how much someone holds. For smuggling cocaine into the state, the old 32-gram line for crack is gone and a single 112-gram line applies. The Maine House passed it 74-67 and it became law.",
-   "nay_description": "Voted no on LD 1366, a bill about cocaine sentencing. Maine used to punish crack cocaine at lower amounts than powder cocaine, so the same charge took far less crack. The bill erases that split. One 14-gram line now applies to cocaine in any form for the charge of dealing based on how much someone holds. For smuggling cocaine into the state, the old 32-gram line for crack is gone and a single 112-gram line applies. The Maine House passed it 74-67 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1679434,
+      "measure_id": "LD 2106",
+      "vote_date": "2026-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 2106, a bill about immigration agents at schools, clinics, and libraries. The Attorney General must write model rules to keep public buildings open to everyone, whatever their immigration status. The rules limit when staff may let immigration agents into areas that are closed to the public, and when staff may hand over private records for immigration enforcement. They go only as far as state and federal law allow. Public schools, colleges, state institutions, and state libraries must adopt them. Private schools, clinics, day cares, town libraries, and houses of worship may adopt them if they choose. The Maine Senate passed it 20-14 and it became law.",
+      "nay_description": "Voted no on LD 2106, a bill about immigration agents at schools, clinics, and libraries. The Attorney General must write model rules to keep public buildings open to everyone, whatever their immigration status. The rules limit when staff may let immigration agents into areas that are closed to the public, and when staff may hand over private records for immigration enforcement. They go only as far as state and federal law allow. Public schools, colleges, state institutions, and state libraries must adopt them. Private schools, clinics, day cares, town libraries, and houses of worship may adopt them if they choose. The Maine Senate passed it 20-14 and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1584436,
-   "measure_id": "LD 1366",
-   "vote_date": "2025-06-03",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1366, a bill about cocaine sentencing. Maine used to punish crack cocaine at lower amounts than powder cocaine, so the same charge took far less crack. The bill erases that split. One 14-gram line now applies to cocaine in any form for the charge of dealing based on how much someone holds. For smuggling cocaine into the state, the old 32-gram line for crack is gone and a single 112-gram line applies. The Maine Senate passed it 16-15 and it became law.",
-   "nay_description": "Voted no on LD 1366, a bill about cocaine sentencing. Maine used to punish crack cocaine at lower amounts than powder cocaine, so the same charge took far less crack. The bill erases that split. One 14-gram line now applies to cocaine in any form for the charge of dealing based on how much someone holds. For smuggling cocaine into the state, the old 32-gram line for crack is gone and a single 112-gram line applies. The Maine Senate passed it 16-15 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1583054,
+      "measure_id": "LD 1366",
+      "vote_date": "2025-06-02",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1366, a bill about cocaine sentencing. Maine law used to set a lower amount for crack cocaine than for powder cocaine, so the same charge took far less crack. The bill erases that split. For someone with a prior drug conviction, the Class B crime of unlawful possession of cocaine now starts at more than 14 grams of cocaine in any form. The old 4-gram line for crack is repealed. For aggravated smuggling of cocaine into the state, a Class A crime, the old 32-gram line for crack is gone and a single 112-gram line applies. The Maine House passed it 74-67 and it became law.",
+      "nay_description": "Voted no on LD 1366, a bill about cocaine sentencing. Maine law used to set a lower amount for crack cocaine than for powder cocaine, so the same charge took far less crack. The bill erases that split. For someone with a prior drug conviction, the Class B crime of unlawful possession of cocaine now starts at more than 14 grams of cocaine in any form. The old 4-gram line for crack is repealed. For aggravated smuggling of cocaine into the state, a Class A crime, the old 32-gram line for crack is gone and a single 112-gram line applies. The Maine House passed it 74-67 and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1590866,
-   "measure_id": "LD 1784",
-   "vote_date": "2025-06-13",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1784, a bill about police rulebooks. Every Maine law enforcement agency, including town and city police, county sheriffs, and the State Police, must publish the rules its officers work under, written in plain language. They go on a public website that costs nothing and needs no password, or on paper handed over within seven business days of a request. Agencies must train their officers on those rules and confirm to the state each year that they have done it. Confidential investigation files stay private, and an agency may charge a fair price for photocopies. The Maine House passed it 73-69 and it became law.",
-   "nay_description": "Voted no on LD 1784, a bill about police rulebooks. Every Maine law enforcement agency, including town and city police, county sheriffs, and the State Police, must publish the rules its officers work under, written in plain language. They go on a public website that costs nothing and needs no password, or on paper handed over within seven business days of a request. Agencies must train their officers on those rules and confirm to the state each year that they have done it. Confidential investigation files stay private, and an agency may charge a fair price for photocopies. The Maine House passed it 73-69 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1584436,
+      "measure_id": "LD 1366",
+      "vote_date": "2025-06-03",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1366, a bill about cocaine sentencing. Maine used to punish crack cocaine at lower amounts than powder cocaine, so the same charge took far less crack. The bill erases that split. For the Class B crime of unlawful possession by a person who already has a drug conviction, the old 4-gram line for crack is gone and one 14-gram line now applies to cocaine in any form. For aggravated importing of cocaine into the state, the old 32-gram line for crack is gone and a single 112-gram line applies. The Maine Senate passed it 16-15 and it became law.",
+      "nay_description": "Voted no on LD 1366, a bill about cocaine sentencing. Maine used to punish crack cocaine at lower amounts than powder cocaine, so the same charge took far less crack. The bill erases that split. For the Class B crime of unlawful possession by a person who already has a drug conviction, the old 4-gram line for crack is gone and one 14-gram line now applies to cocaine in any form. For aggravated importing of cocaine into the state, the old 32-gram line for crack is gone and a single 112-gram line applies. The Maine Senate passed it 16-15 and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "public_safety_and_crime_control",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1591150,
-   "measure_id": "LD 1784",
-   "vote_date": "2025-06-16",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1784, a bill about police rulebooks. Every Maine law enforcement agency, including town and city police, county sheriffs, and the State Police, must publish the rules its officers work under, written in plain language. They go on a public website that costs nothing and needs no password, or on paper handed over within seven business days of a request. Agencies must train their officers on those rules and confirm to the state each year that they have done it. Confidential investigation files stay private, and an agency may charge a fair price for photocopies. The Maine Senate passed it 17-16 and it became law.",
-   "nay_description": "Voted no on LD 1784, a bill about police rulebooks. Every Maine law enforcement agency, including town and city police, county sheriffs, and the State Police, must publish the rules its officers work under, written in plain language. They go on a public website that costs nothing and needs no password, or on paper handed over within seven business days of a request. Agencies must train their officers on those rules and confirm to the state each year that they have done it. Confidential investigation files stay private, and an agency may charge a fair price for photocopies. The Maine Senate passed it 17-16 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1590866,
+      "measure_id": "LD 1784",
+      "vote_date": "2025-06-13",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1784, a bill about police rulebooks. Every Maine law enforcement agency, including town and city police, county sheriffs, and the State Police, must publish the rules its officers work under, written in plain language. They go on a public website that costs nothing and needs no password, or on paper handed over within seven business days of a request. Agencies must train their officers on those rules and confirm to the state each year that they have done it. Confidential investigation files stay private, and an agency may charge a fair price for photocopies. The Maine House passed it 73-69 and it became law.",
+      "nay_description": "Voted no on LD 1784, a bill about police rulebooks. Every Maine law enforcement agency, including town and city police, county sheriffs, and the State Police, must publish the rules its officers work under, written in plain language. They go on a public website that costs nothing and needs no password, or on paper handed over within seven business days of a request. Agencies must train their officers on those rules and confirm to the state each year that they have done it. Confidential investigation files stay private, and an agency may charge a fair price for photocopies. The Maine House passed it 73-69 and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "public_safety_and_crime_control",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1587779,
-   "measure_id": "LD 537",
-   "vote_date": "2025-06-10",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 537, a bill about posting a child's private information online. A family can now sue someone who shares a child's private information, whether online or any other way. This is often called doxing. The person must have shared the information on purpose, knowing the risk, or by ignoring an obvious one. The sharing must also have actually led to stalking, physical harm, serious damage to property, or a real fear for someone's safety. The Maine House passed it 78-69 and it became law.",
-   "nay_description": "Voted no on LD 537, a bill about posting a child's private information online. A family can now sue someone who shares a child's private information, whether online or any other way. This is often called doxing. The person must have shared the information on purpose, knowing the risk, or by ignoring an obvious one. The sharing must also have actually led to stalking, physical harm, serious damage to property, or a real fear for someone's safety. The Maine House passed it 78-69 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1591150,
+      "measure_id": "LD 1784",
+      "vote_date": "2025-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1784, a bill about police rulebooks. Every Maine law enforcement agency, including town and city police, county sheriffs, and the State Police, must publish the rules its officers work under, written in plain language. They go on a public website that costs nothing and needs no password, or on paper handed over within seven business days of a request. Agencies must train their officers on those rules and confirm to the state each year that they have done it. Confidential investigation files stay private, and an agency may charge a fair price for photocopies. The Maine Senate passed it 17-16 and it became law.",
+      "nay_description": "Voted no on LD 1784, a bill about police rulebooks. Every Maine law enforcement agency, including town and city police, county sheriffs, and the State Police, must publish the rules its officers work under, written in plain language. They go on a public website that costs nothing and needs no password, or on paper handed over within seven business days of a request. Agencies must train their officers on those rules and confirm to the state each year that they have done it. Confidential investigation files stay private, and an agency may charge a fair price for photocopies. The Maine Senate passed it 17-16 and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "data_privacy",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1587780,
-   "measure_id": "LD 537",
-   "vote_date": "2025-06-10",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 537, a bill about posting a child's private information online. A family can now sue someone who shares a child's private information, whether online or any other way. This is often called doxing. The person must have shared the information on purpose, knowing the risk, or by ignoring an obvious one. The sharing must also have actually led to stalking, physical harm, serious damage to property, or a real fear for someone's safety. The Maine Senate passed it 18-14 and it became law.",
-   "nay_description": "Voted no on LD 537, a bill about posting a child's private information online. A family can now sue someone who shares a child's private information, whether online or any other way. This is often called doxing. The person must have shared the information on purpose, knowing the risk, or by ignoring an obvious one. The sharing must also have actually led to stalking, physical harm, serious damage to property, or a real fear for someone's safety. The Maine Senate passed it 18-14 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1587779,
+      "measure_id": "LD 537",
+      "vote_date": "2025-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 537, a bill about posting a child's private information online. A family can now sue someone who shares a child's private information, whether online or any other way. This is often called doxing. The person must have shared the information on purpose, knowing the risk, or by ignoring an obvious one. The sharing must also have actually led to stalking, physical harm, serious damage to property, or a real fear for someone's safety. The Maine House passed it 78-69 and it became law.",
+      "nay_description": "Voted no on LD 537, a bill about posting a child's private information online. A family can now sue someone who shares a child's private information, whether online or any other way. This is often called doxing. The person must have shared the information on purpose, knowing the risk, or by ignoring an obvious one. The sharing must also have actually led to stalking, physical harm, serious damage to property, or a real fear for someone's safety. The Maine House passed it 78-69 and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "data_privacy",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1668557,
-   "measure_id": "LD 2114",
-   "vote_date": "2026-03-24",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 2114, a bill about preschool for 3-year-olds. Public preschool in Maine may now take 3-year-olds, not just 4-year-olds. The bill writes 3-year-olds into the legal definition of a public preschool program and into the programs the state urges districts to build. A child who turns 3 by October 15 of the school year may enroll where a program serves that age, as long as the child has not been identified as having a disability. This was the final passage vote. The Maine House passed it 75-68 and it became law.",
-   "nay_description": "Voted no on LD 2114, a bill about preschool for 3-year-olds. Public preschool in Maine may now take 3-year-olds, not just 4-year-olds. The bill writes 3-year-olds into the legal definition of a public preschool program and into the programs the state urges districts to build. A child who turns 3 by October 15 of the school year may enroll where a program serves that age, as long as the child has not been identified as having a disability. This was the final passage vote. The Maine House passed it 75-68 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1587780,
+      "measure_id": "LD 537",
+      "vote_date": "2025-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 537, a bill about posting a child's private information online. A family can now sue someone who shares a child's private information, whether online or any other way. This is often called doxing. The person must have shared the information on purpose, knowing the risk, or by ignoring an obvious one. The sharing must also have actually led to stalking, physical harm, serious damage to property, or a real fear for someone's safety. The Maine Senate passed it 18-14 and it became law.",
+      "nay_description": "Voted no on LD 537, a bill about posting a child's private information online. A family can now sue someone who shares a child's private information, whether online or any other way. This is often called doxing. The person must have shared the information on purpose, knowing the risk, or by ignoring an obvious one. The sharing must also have actually led to stalking, physical harm, serious damage to property, or a real fear for someone's safety. The Maine Senate passed it 18-14 and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "public_education_quality",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1666449,
-   "measure_id": "LD 2114",
-   "vote_date": "2026-03-19",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 2114, a bill about preschool for 3-year-olds. Public preschool in Maine may now take 3-year-olds, not just 4-year-olds. The bill writes 3-year-olds into the legal definition of a public preschool program and into the programs the state urges districts to build. A child who turns 3 by October 15 of the school year may enroll where a program serves that age, as long as the child has not been identified as having a disability. The Maine Senate passed it 18-14 and it became law.",
-   "nay_description": "Voted no on LD 2114, a bill about preschool for 3-year-olds. Public preschool in Maine may now take 3-year-olds, not just 4-year-olds. The bill writes 3-year-olds into the legal definition of a public preschool program and into the programs the state urges districts to build. A child who turns 3 by October 15 of the school year may enroll where a program serves that age, as long as the child has not been identified as having a disability. The Maine Senate passed it 18-14 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1668557,
+      "measure_id": "LD 2114",
+      "vote_date": "2026-03-24",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 2114, a bill about preschool for 3-year-olds. Public preschool in Maine may now take 3-year-olds, not just 4-year-olds. The bill writes 3-year-olds into the legal definition of a public preschool program and into the programs the state urges districts to build. A child who is at least 3 by October 15 of the school year may enroll where a program serves that age, and a 3-year-old identified as having a disability may enroll in an available program at any time before kindergarten. This was the final passage vote. The Maine House passed it 75-68 and it became law.",
+      "nay_description": "Voted no on LD 2114, a bill about preschool for 3-year-olds. Public preschool in Maine may now take 3-year-olds, not just 4-year-olds. The bill writes 3-year-olds into the legal definition of a public preschool program and into the programs the state urges districts to build. A child who is at least 3 by October 15 of the school year may enroll where a program serves that age, and a 3-year-old identified as having a disability may enroll in an available program at any time before kindergarten. This was the final passage vote. The Maine House passed it 75-68 and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "public_education_quality",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1647559,
-   "measure_id": "LD 2037",
-   "vote_date": "2026-02-26",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 2037, a bill about power plant pollution limits. Maine limits how much carbon dioxide its power plants may release, under a program it runs with other states. Carbon dioxide is the main gas driving climate change. The old law shrank that limit by 2.5 percent a year. The bill replaces it with a set schedule that falls from 2,065,595 tons in 2027 to 221,314 tons in 2037 and every year after. This was the final passage vote. The Maine House passed it 71-66 and it became law.",
-   "nay_description": "Voted no on LD 2037, a bill about power plant pollution limits. Maine limits how much carbon dioxide its power plants may release, under a program it runs with other states. Carbon dioxide is the main gas driving climate change. The old law shrank that limit by 2.5 percent a year. The bill replaces it with a set schedule that falls from 2,065,595 tons in 2027 to 221,314 tons in 2037 and every year after. This was the final passage vote. The Maine House passed it 71-66 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1666449,
+      "measure_id": "LD 2114",
+      "vote_date": "2026-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 2114, a bill about preschool for 3-year-olds. Public preschool in Maine may now take 3-year-olds, not just 4-year-olds. The bill writes 3-year-olds into the legal definition of a public preschool program and into the programs the state urges districts to build. A child who turns 3 by October 15 of the school year may enroll where a program serves 3-year-olds without disabilities. A 3-year-old identified as having a disability may enroll in an available program at any time before kindergarten, and the state may pay start-up costs for such programs. The Maine Senate passed it 18-14 and it became law.",
+      "nay_description": "Voted no on LD 2114, a bill about preschool for 3-year-olds. Public preschool in Maine may now take 3-year-olds, not just 4-year-olds. The bill writes 3-year-olds into the legal definition of a public preschool program and into the programs the state urges districts to build. A child who turns 3 by October 15 of the school year may enroll where a program serves 3-year-olds without disabilities. A 3-year-old identified as having a disability may enroll in an available program at any time before kindergarten, and the state may pay start-up costs for such programs. The Maine Senate passed it 18-14 and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1631625,
-   "measure_id": "LD 2037",
-   "vote_date": "2026-02-12",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 2037, a bill about power plant pollution limits. Maine limits how much carbon dioxide its power plants may release, under a program it runs with other states. Carbon dioxide is the main gas driving climate change. The old law shrank that limit by 2.5 percent a year. The bill replaces it with a set schedule that falls from 2,065,595 tons in 2027 to 221,314 tons in 2037 and every year after. The Maine Senate passed it 19-13 and it became law.",
-   "nay_description": "Voted no on LD 2037, a bill about power plant pollution limits. Maine limits how much carbon dioxide its power plants may release, under a program it runs with other states. Carbon dioxide is the main gas driving climate change. The old law shrank that limit by 2.5 percent a year. The bill replaces it with a set schedule that falls from 2,065,595 tons in 2027 to 221,314 tons in 2037 and every year after. The Maine Senate passed it 19-13 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1647559,
+      "measure_id": "LD 2037",
+      "vote_date": "2026-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 2037, a bill about power plant pollution limits. Maine limits how much carbon dioxide its power plants may release, under a program it runs with other states. Carbon dioxide is the main gas driving climate change. The old law shrank that limit by 2.5 percent a year. The bill replaces it with a set schedule that falls from 2,065,595 tons in 2027 to 221,314 tons in 2037 and every year after. This was the final passage vote. The Maine House passed it 71-66 and it became law.",
+      "nay_description": "Voted no on LD 2037, a bill about power plant pollution limits. Maine limits how much carbon dioxide its power plants may release, under a program it runs with other states. Carbon dioxide is the main gas driving climate change. The old law shrank that limit by 2.5 percent a year. The bill replaces it with a set schedule that falls from 2,065,595 tons in 2027 to 221,314 tons in 2037 and every year after. This was the final passage vote. The Maine House passed it 71-66 and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1571130,
-   "measure_id": "LD 1080",
-   "vote_date": "2025-05-14",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1080, a bill about utility deposits. A utility may no longer demand a deposit from someone signing up for home service just because of how much that person earns. The rule covers applicants, meaning people who have not been that utility's customer in the past 30 days. The state's Public Utilities Commission, which oversees power and water companies, must start writing the detailed rules within 30 days. The Maine House passed it 77-63 and it became law.",
-   "nay_description": "Voted no on LD 1080, a bill about utility deposits. A utility may no longer demand a deposit from someone signing up for home service just because of how much that person earns. The rule covers applicants, meaning people who have not been that utility's customer in the past 30 days. The state's Public Utilities Commission, which oversees power and water companies, must start writing the detailed rules within 30 days. The Maine House passed it 77-63 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1631625,
+      "measure_id": "LD 2037",
+      "vote_date": "2026-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 2037, a bill about power plant pollution limits. Maine limits how much carbon dioxide its power plants may release, under a program it runs with other states. Carbon dioxide is the main gas driving climate change. The old law shrank that limit by 2.5 percent a year. The bill replaces it with a set schedule that falls from 2,065,595 tons in 2027 to 221,314 tons in 2037 and every year after. The Maine Senate passed it 19-13 and it became law.",
+      "nay_description": "Voted no on LD 2037, a bill about power plant pollution limits. Maine limits how much carbon dioxide its power plants may release, under a program it runs with other states. Carbon dioxide is the main gas driving climate change. The old law shrank that limit by 2.5 percent a year. The bill replaces it with a set schedule that falls from 2,065,595 tons in 2027 to 221,314 tons in 2037 and every year after. The Maine Senate passed it 19-13 and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "corporate_accountability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1574011,
-   "measure_id": "LD 1080",
-   "vote_date": "2025-05-20",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1080, a bill about utility deposits. A utility may no longer demand a deposit from someone signing up for home service just because of how much that person earns. The rule covers applicants, meaning people who have not been that utility's customer in the past 30 days. The state's Public Utilities Commission, which oversees power and water companies, must start writing the detailed rules within 30 days. The Maine Senate passed it 19-13 and it became law.",
-   "nay_description": "Voted no on LD 1080, a bill about utility deposits. A utility may no longer demand a deposit from someone signing up for home service just because of how much that person earns. The rule covers applicants, meaning people who have not been that utility's customer in the past 30 days. The state's Public Utilities Commission, which oversees power and water companies, must start writing the detailed rules within 30 days. The Maine Senate passed it 19-13 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1571130,
+      "measure_id": "LD 1080",
+      "vote_date": "2025-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1080, a bill about utility deposits. A utility may no longer demand a deposit from someone signing up for home service just because of how much that person earns. The rule covers applicants, meaning people who have not been that utility's customer in the past 30 days. The state's Public Utilities Commission, which oversees power and water companies, must start writing the detailed rules within 30 days. The Maine House passed it 77-63 and it became law.",
+      "nay_description": "Voted no on LD 1080, a bill about utility deposits. A utility may no longer demand a deposit from someone signing up for home service just because of how much that person earns. The rule covers applicants, meaning people who have not been that utility's customer in the past 30 days. The state's Public Utilities Commission, which oversees power and water companies, must start writing the detailed rules within 30 days. The Maine House passed it 77-63 and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "corporate_accountability",
-     "yea": "for",
-     "nay": null
-    }
-   ],
-   "acknowledge_later_rolls": [
-    1574010
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1654878,
-   "measure_id": "LD 1587",
-   "vote_date": "2026-03-05",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1587, a bill about enforcing labor laws. The head of Maine's Bureau of Labor Standards may now open an investigation whenever the director believes a person or a business has broken the state's labor laws. The director may look at records, take sworn statements, and issue subpoenas, which are legal orders to hand over documents or testify. The director may also order penalties once a violation is confirmed. The House had turned this bill down two weeks earlier. This vote reversed that and accepted the Senate's version. The Maine House agreed 72-68 and the bill became law.",
-   "nay_description": "Voted no on LD 1587, a bill about enforcing labor laws. The head of Maine's Bureau of Labor Standards may now open an investigation whenever the director believes a person or a business has broken the state's labor laws. The director may look at records, take sworn statements, and issue subpoenas, which are legal orders to hand over documents or testify. The director may also order penalties once a violation is confirmed. The House had turned this bill down two weeks earlier. This vote reversed that and accepted the Senate's version. The Maine House agreed 72-68 and the bill became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1574011,
+      "measure_id": "LD 1080",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1080, a bill about utility deposits. A utility may no longer demand a deposit from someone signing up for home service just because of how much that person earns. The rule covers applicants, meaning people who have not been that utility's customer in the past 30 days. The state's Public Utilities Commission, which oversees power and water companies, must start writing the detailed rules within 30 days. The Maine Senate passed it 19-13 and it became law.",
+      "nay_description": "Voted no on LD 1080, a bill about utility deposits. A utility may no longer demand a deposit from someone signing up for home service just because of how much that person earns. The rule covers applicants, meaning people who have not been that utility's customer in the past 30 days. The state's Public Utilities Commission, which oversees power and water companies, must start writing the detailed rules within 30 days. The Maine Senate passed it 19-13 and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1574010
+      ]
+    },
     {
-     "slug": "corporate_accountability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1646248,
-   "measure_id": "LD 1587",
-   "vote_date": "2026-02-26",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 1587, a bill about enforcing labor laws. The head of Maine's Bureau of Labor Standards may now open an investigation whenever the director believes a person or a business has broken the state's labor laws. The director may look at records, take sworn statements, and issue subpoenas, which are legal orders to hand over documents or testify. The director may also order penalties once a violation is confirmed. The Maine Senate passed it 18-14 and it became law.",
-   "nay_description": "Voted no on LD 1587, a bill about enforcing labor laws. The head of Maine's Bureau of Labor Standards may now open an investigation whenever the director believes a person or a business has broken the state's labor laws. The director may look at records, take sworn statements, and issue subpoenas, which are legal orders to hand over documents or testify. The director may also order penalties once a violation is confirmed. The Maine Senate passed it 18-14 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1654878,
+      "measure_id": "LD 1587",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1587, a bill about enforcing labor laws. The head of Maine's Bureau of Labor Standards may now open an investigation whenever the director believes a person or a business has broken the state's labor laws. The director may look at records, take sworn statements, and issue subpoenas, which are legal orders to hand over documents or testify. The director may also order penalties once a violation is confirmed. The House had turned this bill down nine days earlier. This vote reversed that and accepted the Senate's version. The Maine House agreed 72-68 and the bill became law.",
+      "nay_description": "Voted no on LD 1587, a bill about enforcing labor laws. The head of Maine's Bureau of Labor Standards may now open an investigation whenever the director believes a person or a business has broken the state's labor laws. The director may look at records, take sworn statements, and issue subpoenas, which are legal orders to hand over documents or testify. The director may also order penalties once a violation is confirmed. The House had turned this bill down nine days earlier. This vote reversed that and accepted the Senate's version. The Maine House agreed 72-68 and the bill became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "corporate_accountability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1543527,
-   "measure_id": "LD 585",
-   "vote_date": "2025-04-10",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 585, a bill about spending power-grid money on heat pumps and electric cars. Efficiency Maine, the state agency that pays for energy-saving upgrades, gets money from the regional power grid for keeping electricity supply available. That money must go toward helping people switch to electric equipment that pays for itself and lowers electricity bills over its lifetime, such as high-efficiency heat pumps and electric cars. The old law only required this through the 2024-25 budget year. The bill makes it permanent. The Maine Senate passed it 19-15 and it became law.",
-   "nay_description": "Voted no on LD 585, a bill about spending power-grid money on heat pumps and electric cars. Efficiency Maine, the state agency that pays for energy-saving upgrades, gets money from the regional power grid for keeping electricity supply available. That money must go toward helping people switch to electric equipment that pays for itself and lowers electricity bills over its lifetime, such as high-efficiency heat pumps and electric cars. The old law only required this through the 2024-25 budget year. The bill makes it permanent. The Maine Senate passed it 19-15 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1646248,
+      "measure_id": "LD 1587",
+      "vote_date": "2026-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 1587, a bill about enforcing labor laws. The head of Maine's Bureau of Labor Standards may now open an investigation whenever the director believes a person or a business has broken Maine's employment practices or wage laws. The director may look at records, take sworn statements, and issue subpoenas, which are legal orders to hand over documents or testify. The director may order penalties and order violations fixed, plus an extra fine of up to $1,000 a day for every day a payment is late or a violation goes uncorrected. The director may also seize money or property held for the violator by a bank or other third party. Notices of violation must be posted at the workplace and given to the employees covered. The Maine Senate passed it 18-14 and it became law.",
+      "nay_description": "Voted no on LD 1587, a bill about enforcing labor laws. The head of Maine's Bureau of Labor Standards may now open an investigation whenever the director believes a person or a business has broken Maine's employment practices or wage laws. The director may look at records, take sworn statements, and issue subpoenas, which are legal orders to hand over documents or testify. The director may order penalties and order violations fixed, plus an extra fine of up to $1,000 a day for every day a payment is late or a violation goes uncorrected. The director may also seize money or property held for the violator by a bank or other third party. Notices of violation must be posted at the workplace and given to the employees covered. The Maine Senate passed it 18-14 and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "house",
-   "session": "2181",
-   "roll": 1549183,
-   "measure_id": "LD 585",
-   "vote_date": "2025-04-15",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 585, a bill about spending power-grid money on heat pumps and electric cars. Efficiency Maine, the state agency that pays for energy-saving upgrades, gets money from the regional power grid for keeping electricity supply available. That money must go toward helping people switch to electric equipment that pays for itself and lowers electricity bills over its lifetime, such as high-efficiency heat pumps and electric cars. The old law only required this through the 2024-25 budget year. The bill makes it permanent. The Maine House passed it 77-72 and it became law.",
-   "nay_description": "Voted no on LD 585, a bill about spending power-grid money on heat pumps and electric cars. Efficiency Maine, the state agency that pays for energy-saving upgrades, gets money from the regional power grid for keeping electricity supply available. That money must go toward helping people switch to electric equipment that pays for itself and lowers electricity bills over its lifetime, such as high-efficiency heat pumps and electric cars. The old law only required this through the 2024-25 budget year. The bill makes it permanent. The Maine House passed it 77-72 and it became law.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1543527,
+      "measure_id": "LD 585",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 585, a bill about spending power-grid money on heat pumps and electric cars. Efficiency Maine, the state agency that pays for energy-saving upgrades, gets money from the regional power grid for keeping electricity supply available. That money must go toward helping people switch to electric equipment that pays for itself and lowers electricity bills over its lifetime, such as high-efficiency heat pumps and electric cars. The old law only required this through the 2024-25 budget year. The bill makes it permanent. The Maine Senate passed it 19-15 and it became law.",
+      "nay_description": "Voted no on LD 585, a bill about spending power-grid money on heat pumps and electric cars. Efficiency Maine, the state agency that pays for energy-saving upgrades, gets money from the regional power grid for keeping electricity supply available. That money must go toward helping people switch to electric equipment that pays for itself and lowers electricity bills over its lifetime, such as high-efficiency heat pumps and electric cars. The old law only required this through the 2024-25 budget year. The bill makes it permanent. The Maine Senate passed it 19-15 and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "ME",
-   "chamber": "senate",
-   "session": "2181",
-   "roll": 1590110,
-   "measure_id": "LD 427",
-   "vote_date": "2025-06-12",
-   "review_status": "approved",
-   "yea_description": "Voted yes on LD 427, a bill about town parking rules. The version the Senate voted on went further than the law that ended up passing. It would also have barred a town from requiring any off-street parking within a quarter mile of a transit stop. Off-street parking means spaces on the property rather than on the street. It capped required parking at one space per home in areas marked for growth, and made towns accept parking rented in a nearby lot. The Senate dropped the transit-stop piece later the same day, and the smaller version became law. The Maine Senate passed the broader version 19-16.",
-   "nay_description": "Voted no on LD 427, a bill about town parking rules. The version the Senate voted on went further than the law that ended up passing. It would also have barred a town from requiring any off-street parking within a quarter mile of a transit stop. Off-street parking means spaces on the property rather than on the street. It capped required parking at one space per home in areas marked for growth, and made towns accept parking rented in a nearby lot. The Senate dropped the transit-stop piece later the same day, and the smaller version became law. The Maine Senate passed the broader version 19-16.",
-   "labels": [
+      "jurisdiction": "ME",
+      "chamber": "house",
+      "session": "2181",
+      "roll": 1549183,
+      "measure_id": "LD 585",
+      "vote_date": "2025-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 585, a bill about spending power-grid money on heat pumps and electric cars. Efficiency Maine, the state agency that pays for energy-saving upgrades, gets money from the regional power grid for keeping electricity supply available. Under the old law that money had to promote heat pumps and be deposited in the state's Heating Fuels Efficiency and Weatherization Fund, and only through the 2024-25 budget year. The new law drops the weatherization fund requirement and the end date. It permanently directs the money to any electric equipment that pays for itself and lowers electricity bills over its lifetime, including heat pumps and electric vehicles. The Maine House passed it 77-72 and it became law.",
+      "nay_description": "Voted no on LD 585, a bill about spending power-grid money on heat pumps and electric cars. Efficiency Maine, the state agency that pays for energy-saving upgrades, gets money from the regional power grid for keeping electricity supply available. Under the old law that money had to promote heat pumps and be deposited in the state's Heating Fuels Efficiency and Weatherization Fund, and only through the 2024-25 budget year. The new law drops the weatherization fund requirement and the end date. It permanently directs the money to any electric equipment that pays for itself and lowers electricity bills over its lifetime, including heat pumps and electric vehicles. The Maine House passed it 77-72 and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "housing_affordability",
-     "yea": "for",
-     "nay": null
+      "jurisdiction": "ME",
+      "chamber": "senate",
+      "session": "2181",
+      "roll": 1590110,
+      "measure_id": "LD 427",
+      "vote_date": "2025-06-12",
+      "review_status": "approved",
+      "yea_description": "Voted yes on LD 427, a bill about town parking rules. The version the Senate voted on went further than the law that ended up passing. It would also have barred a town from requiring any off-street parking within a quarter mile of a transit stop. Off-street parking means spaces on the property rather than on the street. It capped required parking at one space per home in areas marked for growth, and made towns accept parking rented in a nearby lot. The Senate dropped the transit-stop piece later the same day, and the smaller version became law. The Maine Senate passed the broader version 19-16.",
+      "nay_description": "Voted no on LD 427, a bill about town parking rules. The version the Senate voted on went further than the law that ended up passing. It would also have barred a town from requiring any off-street parking within a quarter mile of a transit stop. Off-street parking means spaces on the property rather than on the street. It capped required parking at one space per home in areas marked for growth, and made towns accept parking rented in a nearby lot. The Senate dropped the transit-stop piece later the same day, and the smaller version became law. The Maine Senate passed the broader version 19-16.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
     }
-   ]
-  }
- ]
+  ]
 }
