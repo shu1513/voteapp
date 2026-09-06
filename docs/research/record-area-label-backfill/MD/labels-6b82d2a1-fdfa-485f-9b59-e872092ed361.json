@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "97c38a11-4aa6-468f-a958-72d2fb2dbc75",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "97c38a11-4aa6-468f-a958-72d2fb2dbc75",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "db317186-0877-4b88-b5de-5acc051ca0ea",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "bff2ef96-051a-4376-8909-b295e8ac04f2",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "0a14b52d-4179-4307-89f3-89cf4aec0f3d",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "0a14b52d-4179-4307-89f3-89cf4aec0f3d",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "0a14b52d-4179-4307-89f3-89cf4aec0f3d",
+   "research_area_slug": "gun_control",
+   "stance": "against"
+  },
+  {
+   "record_id": "31d74828-3497-4f54-a932-29c8ec7969c4",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  }
+ ]
+}

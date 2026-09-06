@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "2a3e621a-6d69-45bd-a13c-31f8a78b1e55",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "3fd8dd15-d586-4218-ac74-37de83f194a9",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "3fd8dd15-d586-4218-ac74-37de83f194a9",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

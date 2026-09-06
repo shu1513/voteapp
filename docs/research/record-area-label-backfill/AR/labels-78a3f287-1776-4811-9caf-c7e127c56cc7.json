@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "8b027bf6-78d6-4467-a415-c23008419bec",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "a0b54b1e-3cf6-4313-88d1-af7220d0b1ad",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "32f0c209-a452-4516-b3c2-7ba7186d6a97",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  }
+ ]
+}
