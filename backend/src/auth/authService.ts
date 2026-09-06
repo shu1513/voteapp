@@ -770,6 +770,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       }
       const passwordHash = await hashPassword(input.password);
       const client = await options.db.connect();
+      let token: Awaited<ReturnType<typeof issueEmailVerificationToken>> | null = null;
 
       try {
         await client.query("BEGIN");
@@ -785,27 +786,33 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           return;
         }
 
-        const token = await issueEmailVerificationToken(client, {
+        token = await issueEmailVerificationToken(client, {
           userId: user.id,
           ttlSeconds: emailVerificationTtlSeconds,
         });
 
         await client.query("COMMIT");
-        await options.mailer.sendVerificationEmail({
-          email,
-          linkUrl: toEmailVerificationLink(publicBaseUrl, token.rawToken),
-        });
       } catch (error) {
         await rollbackQuietly(client);
         throw error;
       } finally {
         client.release();
       }
+
+      // After the client is released (like forgotPassword): an SES call must
+      // not hold a pool slot, and a mail failure must not run ROLLBACK on a
+      // committed transaction. If the send fails the account still exists;
+      // retrying the form re-registers the unverified address and resends.
+      await options.mailer.sendVerificationEmail({
+        email,
+        linkUrl: toEmailVerificationLink(publicBaseUrl, token.rawToken),
+      });
     },
 
     async resendVerification(input) {
       const email = normalizeEmail(input.email);
       const client = await options.db.connect();
+      let token: Awaited<ReturnType<typeof issueEmailVerificationToken>> | null = null;
 
       try {
         await client.query("BEGIN");
@@ -815,22 +822,24 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           return;
         }
 
-        const token = await issueEmailVerificationToken(client, {
+        token = await issueEmailVerificationToken(client, {
           userId: user.id,
           ttlSeconds: emailVerificationTtlSeconds,
         });
 
         await client.query("COMMIT");
-        await options.mailer.sendVerificationEmail({
-          email,
-          linkUrl: toEmailVerificationLink(publicBaseUrl, token.rawToken),
-        });
       } catch (error) {
         await rollbackQuietly(client);
         throw error;
       } finally {
         client.release();
       }
+
+      // Send after release — see register.
+      await options.mailer.sendVerificationEmail({
+        email,
+        linkUrl: toEmailVerificationLink(publicBaseUrl, token.rawToken),
+      });
     },
 
     async verifyEmail(input) {

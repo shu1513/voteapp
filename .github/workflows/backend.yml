@@ -103,6 +103,13 @@ jobs:
         env:
           DATABASE_URL: postgresql://voteapp:voteapp@localhost:5432/voteapp
 
+      # Pool deadlines: whether Postgres cancels at statement_timeout and the
+      # client comes back reusable is server behaviour, not config text.
+      - name: API DB pool deadlines
+        run: npx vitest run tests/api/apiDbPool.db.test.ts
+        env:
+          DATABASE_URL: postgresql://voteapp:voteapp@localhost:5432/voteapp
+
       - name: Manual district queue claim integration
         run: npx vitest run tests/pipeline/address/manualDistrictResearchRequests.test.ts
         env:
