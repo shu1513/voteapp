@@ -6,7 +6,7 @@ Auto-pick treats every `integrity_and_ethics` tag as a strike (`autoPick.ts` `ef
 
 ## Rule applied (now in `candidateRecordAreaLabelPrompt.ts` and the manual-research `records-import.md`)
 
-Keep `integrity_and_ethics` ONLY for an adverse action against the candidate personally by an official body: conviction, plea, arrest, indictment or pending charge, censure, reprimand, suspension, fine, sanction, license discipline, substantiated ethics or misconduct finding, probable-cause vote, impeachment, court order against them. Formal written warnings count; staff reminders do not. Charges later dropped, dismissed, or acquitted are untagged along with the dismissal record.
+Keep `integrity_and_ethics` ONLY for an adverse action against the candidate personally by an official body: conviction, plea, arrest, indictment or pending charge, censure, reprimand, suspension, fine, sanction, license discipline, substantiated ethics or misconduct finding, probable-cause vote, impeachment, court order against them. Formal written warnings count; staff reminders do not. Charges later dropped, dismissed, or acquitted are untagged along with the dismissal record. A plea or admission under a diversion or deferred-prosecution deal stays tagged even if the charge was later reduced or vacated on completion (Whitaker 181, Flores 240, Emil Jones 249, Paxton 472) — not an exoneration. An administrative license suspension for lapsed registration with no misconduct finding is not discipline (Ramirez 73, O'Brien 505).
 
 Untag everything else. The candidate's own reform work moves to `anti_corruption` with a stance.
 
