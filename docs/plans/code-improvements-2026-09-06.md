@@ -6,11 +6,13 @@ source in this checkout (commit 39be1bd3f). Claims that did not hold up, or
 that proposed more machinery than the bug needs, were cut or narrowed (see
 "Dropped or narrowed" at the end).
 
-Ordering = severity, then cost. Tick the box when merged; note the PR.
+Ordering = severity, then cost. A ticked box means the item's PR is open
+with its negative check done (implemented, awaiting merge); note the PR
+and append "merged" to the heading when it lands.
 Status 2026-09-06: items 1–9 implemented as PRs #1195–#1203 (one per
-item, each with a negative check: the new tests fail against `main`);
-first steps of 11 (#1204) and 12 (#1205) shipped; 10, 12's scheduler
-half and 13 deferred with reasons inline.
+item, each with a negative check: the new tests fail against `main`), all
+awaiting merge; first steps of 11 (#1204) and 12 (#1205) opened; 10, 12's
+scheduler half and 13 deferred with reasons inline.
 Regression tests are part of each item, not a separate deliverable. The
 Postgres-backed CI job (`.github/workflows/backend.yml`, second job) runs
 NAMED spec files — every new DB-backed spec must be added to that job.
@@ -132,13 +134,19 @@ Problem, verified per writer:
 Fix — one rule, applied per writer (no factory migration):
 
 - Automatic writes (`link_source <> 'manual'`) hitting a manual row: keep
-  `link_status` and `link_source`; may refresh metadata columns
-  (`election_year`, names, office, district, `source_url`,
-  `last_verified_at`) — same as factory M today. Manual writes
-  (`EXCLUDED.link_source = 'manual'`) apply in full. SQL:
-  `CASE WHEN links.link_source = 'manual' AND EXCLUDED.link_source <> 'manual'
-  THEN links.link_status ELSE EXCLUDED.link_status END` (same for
-  `link_source`).
+  `election_year`, `link_status` and `link_source`; may refresh the other
+  metadata columns (names, office, district, `source_url`,
+  `last_verified_at`). `election_year` is not metadata: the snapshot
+  tables in 50 states reference `(link id, election_year)` with `ON UPDATE
+  CASCADE`, so a refreshed year relabels the operator's existing summaries
+  and breakdowns as another cycle's, and the factory's pre-check already
+  rejects the mismatch. An automatic write proposing another year for a
+  manual row fails closed with that same error — checked after the upsert
+  from the RETURNED row, so the factory path without M+ is covered too.
+  Manual writes (`EXCLUDED.link_source = 'manual'`) apply in full,
+  including the year. SQL: `CASE WHEN links.link_source = 'manual' AND
+  EXCLUDED.link_source <> 'manual' THEN links.<col> ELSE EXCLUDED.<col>
+  END` for the three kept columns.
 - Every pre-INSERT retire step adds `AND link_source IS DISTINCT FROM
   'manual'` unless the incoming write is manual (NYC pattern).
 - Auto-link and sync callers: a write that was blocked/kept must not be
@@ -148,8 +156,9 @@ Fix — one rule, applied per writer (no factory migration):
 Tests: table-driven over all 24 writers with real Postgres (wire into the
 DB CI job): inactive/manual + automatic same identity → stays
 inactive/manual; manual→manual status change both ways applies; automatic
-different identity cannot disable an active manual link; metadata refresh
-matches the rule; blocked write is not reported as linked.
+different identity cannot disable an active manual link; automatic
+different year → rejected, year unchanged; metadata refresh matches the
+rule; blocked write is not reported as linked.
 
 ### [x] 3. `TypeError`/`SyntaxError` are mapped to HTTP 400 — internal bugs hide as client errors — PR #1197
 
@@ -246,7 +255,8 @@ API cookie-clearing test unchanged.
 
 ### [x] 6. Cross-tab account switch leaves the previous account's private queries cached — PR #1200
 
-Files: `packages/api-client/src/useMe.ts` (only)
+Files: `packages/api-client/src/useMe.ts`,
+`backend/src/pipeline/users/userIdentity.ts` (adds `id` to the reply)
 
 Problem. Private keys are account-independent (`["me","districts"]`,
 `["me","election-choices"]`, `["me","follows"]`, `["me","ballot"]`,
@@ -260,18 +270,22 @@ privacy issue, web only in practice (mobile has no second tab).
 
 Fix (no key changes, no new hook): purge INSIDE `useMe`'s `queryFn`,
 before the new identity reaches the cache — compare
-`queryClient.getQueryData(["me"])?.email` with the response (defined →
+`queryClient.getQueryData(["me"])?.id` with the response (defined →
 different, or defined → 401/null) and call `purgeAccountScopedQueries`
 first. Because the cache update for `["me"]` happens after the purge, no
 render ever sees B's identity with A's data (a `useEffect` purge would
-paint one frame of B + A). Keep the existing login/logout purges. `Me` has
-no `id`; email is the only identity field exposed — an email change on the
-same account causes one harmless refetch.
+paint one frame of B + A). Keep the existing login/logout purges. The
+identity is the account id, which GET /api/me (and the two replies that
+share `UserIdentity`) now include: users are soft-deleted under a partial
+unique email index, so an email can be deleted and registered again as a
+NEW account, and an email compare would keep the deleted account's cache
+in a stale tab. An email change on the same account purges nothing.
 
 Residual (accepted): a mutation started by A that completes after the
 switch can `setQueryData` under a static key. Rare; not worth a boundary.
 
-Tests (hook tests, existing runner): A→B, A→null, verified→unverified;
+Tests (hook tests, existing runner): A→B, A→null, same email/different
+account (deleted, then registered again), same account/changed email;
 assert render history never contains B's identity with A's districts.
 
 ---
