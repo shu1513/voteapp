@@ -17,7 +17,7 @@ HB0601	senate	1543970	2025-04-10	24	6	passage		AN ACT to amend Tennessee Code An
 HB0612	house	1544003	2025-04-10	74	20	passage		AN ACT to amend Tennessee Code Annotated, Title 69, Chapter 3, relative to permits.
 HB0618	house	1501024	2025-02-27	61	26	passage		AN ACT to amend Tennessee Code Annotated, Title 2 and Title 8, relative to public office.
 HB0618	senate	1646824	2026-02-26	21	10	passage		AN ACT to amend Tennessee Code Annotated, Title 2 and Title 8, relative to public office.
-HB0622	house	1551312	2025-04-17	73	24	passage		AN ACT to amend Tennessee Code Annotated, Title 5; Title 6; Title 7; Title 8 and Title 49, relative to hiring practices of governmental entities.
+HB0622	house	1551312	2025-04-17	73	24	passage	batch-02	AN ACT to amend Tennessee Code Annotated, Title 5; Title 6; Title 7; Title 8 and Title 49, relative to hiring practices of governmental entities.
 HB0749	house	1535748	2025-04-03	68	21	passage	batch-01	AN ACT to amend Tennessee Code Annotated, Title 55, Chapter 50, relative to driver licenses issued to persons without lawful presence.
 HB0754	house	1670954	2026-03-26	70	21	passage		AN ACT to amend Tennessee Code Annotated, Title 1; Title 4; Title 33; Title 56; Title 63; Title 68 and Title 71, relative to health care.
 HB0754	house	1682980	2026-04-15	73	23	concurrence		AN ACT to amend Tennessee Code Annotated, Title 1; Title 4; Title 33; Title 56; Title 63; Title 68 and Title 71, relative to health care.
@@ -75,8 +75,8 @@ HB2177	house	1687223	2026-04-21	62	29	passage		AN ACT to amend Tennessee Code An
 HB2177	house	1687804	2026-04-22	60	22	concurrence		AN ACT to amend Tennessee Code Annotated, Title 9; Title 49, Chapter 13; Title 49, Chapter 2; Title 49, Chapter 3 and Title 49, Chapter 1, Part 3, rel
 HB2185	house	1666206	2026-03-19	68	22	passage	batch-01	AN ACT to amend Tennessee Code Annotated, Title 2, relative to voter eligibility.
 HB2194	house	1657733	2026-03-09	70	21	passage		AN ACT to amend Tennessee Code Annotated, Title 49, Chapter 7; Title 49, Chapter 8 and Title 49, Chapter 9, relative to public institutions of higher
-HB2219	house	1685948	2026-04-20	71	25	passage		AN ACT to amend Tennessee Code Annotated, Title 4; Title 7; Title 8; Title 16; Title 17; Title 38; Title 39; Title 40 and Title 41, relative to immigr
-HB2219	senate	1690535	2026-04-23	24	7	passage		AN ACT to amend Tennessee Code Annotated, Title 4; Title 7; Title 8; Title 16; Title 17; Title 38; Title 39; Title 40 and Title 41, relative to immigr
+HB2219	house	1685948	2026-04-20	71	25	passage	batch-02	AN ACT to amend Tennessee Code Annotated, Title 4; Title 7; Title 8; Title 16; Title 17; Title 38; Title 39; Title 40 and Title 41, relative to immigr
+HB2219	senate	1690535	2026-04-23	24	7	passage	batch-02	AN ACT to amend Tennessee Code Annotated, Title 4; Title 7; Title 8; Title 16; Title 17; Title 38; Title 39; Title 40 and Title 41, relative to immigr
 HB2359	house	1687303	2026-04-21	29	64	passage		AN ACT to amend Tennessee Code Annotated, Title 39, Chapter 17; Title 43; Title 57 and Title 67, Chapter 4, Part 10, relative to vapor products.
 HB2366	house	1676948	2026-04-06	70	23	passage		AN ACT to amend Tennessee Code Annotated, Title 5; Title 6; Title 7 and Title 67, relative to tourism development zones.
 HB2395	house	1657659	2026-03-09	64	25	passage		AN ACT to amend Tennessee Code Annotated, Title 49, Chapter 1 and Title 49, Chapter 6, relative to social studies education.
@@ -177,10 +177,10 @@ SB0336	senate	1543982	2025-04-10	24	8	passage	batch-01	AN ACT to amend Tennessee
 SB0350	house	1657614	2026-03-09	73	21	passage		AN ACT to amend Tennessee Code Annotated, Title 66, relative to leases.
 SB0376	house	1544284	2025-04-10	73	22	passage		AN ACT to amend Tennessee Code Annotated, Title 49, Chapter 7, relative to institutions of higher education.
 SB0392	house	1554338	2025-04-22	73	22	passage		AN ACT to amend Tennessee Code Annotated, Title 39, relative to criminal offenses.
-SB0449	house	1544236	2025-04-10	54	37	passage		AN ACT to amend Tennessee Code Annotated, Title 63 and Title 68, relative to reproductive health care.
+SB0449	house	1544236	2025-04-10	54	37	passage	batch-02	AN ACT to amend Tennessee Code Annotated, Title 63 and Title 68, relative to reproductive health care.
 SB0464	house	1549275	2025-04-15	71	23	passage		AN ACT to amend Tennessee Code Annotated, Title 40, relative to pretrial release.
 SB0468	house	1548732	2025-04-15	72	22	passage		AN ACT to amend Tennessee Code Annotated, Title 4; Title 37; Title 41; Title 49 and Title 68, relative to public safety.
-SB0468	house	1687800	2026-04-22	71	18	conference_report		AN ACT to amend Tennessee Code Annotated, Title 4; Title 37; Title 41; Title 49 and Title 68, relative to public safety.
+SB0468	house	1687800	2026-04-22	71	18	conference_report	batch-02	AN ACT to amend Tennessee Code Annotated, Title 4; Title 37; Title 41; Title 49 and Title 68, relative to public safety.
 SB0471	house	1538443	2025-04-07	73	20	passage		AN ACT to amend Tennessee Code Annotated, Title 49, Chapter 6, Part 13, relative to the Success Sequence Act.
 SB0503	house	1551037	2025-04-16	70	22	passage		AN ACT to amend Tennessee Code Annotated, Title 4, Chapter 1, Part 4, relative to months of observance.
 SB0525	house	1543720	2025-04-10	73	22	passage		AN ACT to amend Tennessee Code Annotated, Title 2; Title 5; Title 6; Title 7 and Title 20, Chapter 18, relative to ballot measures.
@@ -191,7 +191,7 @@ SB0670	house	1553646	2025-04-21	71	21	passage	batch-01	AN ACT to amend Tennessee
 SB0674	house	1641638	2026-02-23	70	22	passage		AN ACT to amend Tennessee Code Annotated, Title 7 and Title 50, relative to the regulation of employment.
 SB0688	house	1550166	2025-04-16	67	20	passage		AN ACT to amend Tennessee Code Annotated, Title 49, Chapter 1; Title 49, Chapter 3 and Title 49, Chapter 5, relative to the state board of education's
 SB0690	house	1528866	2025-03-27	73	22	passage		AN ACT to amend Tennessee Code Annotated, Title 49, relative to virtual school students.
-SB0694	house	1519163	2025-03-17	61	26	passage		AN ACT to amend Tennessee Code Annotated, Title 45, Chapter 5, relative to industrial loan and thrift companies.
+SB0694	house	1519163	2025-03-17	61	26	passage	batch-02	AN ACT to amend Tennessee Code Annotated, Title 45, Chapter 5, relative to industrial loan and thrift companies.
 SB0714	house	1553980	2025-04-22	63	30	passage		AN ACT to amend Tennessee Code Annotated, Title 4; Title 5; Title 6; Title 7 and Title 49, relative to education.
 SB0714	house	1688333	2026-04-22	73	19	conference_report		AN ACT to amend Tennessee Code Annotated, Title 4; Title 5; Title 6; Title 7 and Title 49, relative to education.
 SB0734	house	1524981	2025-03-24	58	22	passage		AN ACT to amend Tennessee Code Annotated, Section 7-4-202, relative to hotel occupancy taxes within metropolitan governments.
@@ -270,21 +270,21 @@ SB2201	house	1677582	2026-04-07	67	18	passage		AN ACT to amend Tennessee Code An
 SB2201	senate	1673488	2026-03-30	26	7	passage		AN ACT to amend Tennessee Code Annotated, Title 37; Title 49, Chapter 6, Part 30 and Title 55, Chapter 10, relative to truancy.
 SB2205	house	1681032	2026-04-13	69	23	passage		AN ACT to amend Tennessee Code Annotated, relative to transportation infrastructure projects.
 SB2206	house	1673212	2026-03-30	75	19	passage		AN ACT to amend Tennessee Code Annotated, Title 4; Title 9 and Title 49, relative to the federal tax credit for contributions made to certain scholars
-SB2222	house	1671320	2026-03-26	71	20	passage		AN ACT to amend Tennessee Code Annotated, Title 29; Title 38 and Title 50, relative to liability for actions of demonstrators.
+SB2222	house	1671320	2026-03-26	71	20	passage	batch-02	AN ACT to amend Tennessee Code Annotated, Title 29; Title 38 and Title 50, relative to liability for actions of demonstrators.
 SB2318	house	1687197	2026-04-21	65	18	passage		AN ACT to amend Tennessee Code Annotated, Title 49, relative to charter schools.
 SB2324	house	1673352	2026-03-30	75	19	passage		AN ACT to amend Tennessee Code Annotated, Title 36 and Title 37, relative to children.
 SB2348	house	1681950	2026-04-14	70	24	passage	batch-01	AN ACT to amend Tennessee Code Annotated, Title 10 and Title 49, relative to librarians.
 SB2364	house	1666252	2026-03-19	70	18	passage		AN ACT to amend Tennessee Code Annotated, Title 4, Chapter 21, relative to the attorney general and reporter.
 SB2403	house	1686752	2026-04-21	54	31	passage		AN ACT to amend Tennessee Code Annotated, Title 4, Chapter 29 and Title 49, relative to education.
 SB2403	house	1689505	2026-04-23	68	18	conference_report		AN ACT to amend Tennessee Code Annotated, Title 4, Chapter 29 and Title 49, relative to education.
-SB2412	house	1684544	2026-04-16	74	20	passage		AN ACT to amend Tennessee Code Annotated, Title 4, Chapter 18; Title 29, Chapter 39 and Title 63, Chapter 6, Part 11, relative to civil actions.
+SB2412	house	1684544	2026-04-16	74	20	passage	batch-02	AN ACT to amend Tennessee Code Annotated, Title 4, Chapter 18; Title 29, Chapter 39 and Title 63, Chapter 6, Part 11, relative to civil actions.
 SB2441	house	1681381	2026-04-13	69	21	passage		AN ACT to amend Tennessee Code Annotated, Title 49, relative to virtual schools.
 SB2459	house	1683417	2026-04-15	72	23	passage		AN ACT to amend Tennessee Code Annotated, Title 37, relative to the department of children's services.
 SB2473	house	1685997	2026-04-20	70	22	passage		AN ACT to amend Tennessee Code Annotated, Title 4; Title 7 and Title 42, relative to airport authorities.
 SB2473	house	1689485	2026-04-23	73	21	passage		AN ACT to amend Tennessee Code Annotated, Title 4; Title 7 and Title 42, relative to airport authorities.
 SB2473	senate	1681442	2026-04-13	25	8	passage		AN ACT to amend Tennessee Code Annotated, Title 4; Title 7 and Title 42, relative to airport authorities.
 SB2641	house	1688364	2026-04-22	67	24	passage		AN ACT to amend Tennessee Code Annotated, Title 9, Chapter 4, relative to investments.
-SB6002	house	1477617	2025-01-30	72	21	passage		AN ACT to amend Tennessee Code Annotated, Title 2; Title 4; Title 5; Title 6; Title 7; Title 8 and Title 55, relative to non-United States citizens.
-SB6002	senate	1476571	2025-01-29	26	7	passage		AN ACT to amend Tennessee Code Annotated, Title 2; Title 4; Title 5; Title 6; Title 7; Title 8 and Title 55, relative to non-United States citizens.
+SB6002	house	1477617	2025-01-30	72	21	passage	batch-02	AN ACT to amend Tennessee Code Annotated, Title 2; Title 4; Title 5; Title 6; Title 7; Title 8 and Title 55, relative to non-United States citizens.
+SB6002	senate	1476571	2025-01-29	26	7	passage	batch-02	AN ACT to amend Tennessee Code Annotated, Title 2; Title 4; Title 5; Title 6; Title 7; Title 8 and Title 55, relative to non-United States citizens.
 SJR0006	house	1489227	2025-02-13	71	18	concurrence		A RESOLUTION to honor and commend the October 7th Coalition and Patricia Heaton.
 SJR0539	house	1623161	2026-02-04	70	18	passage		A RESOLUTION to honor the memory of Charlie Kirk.

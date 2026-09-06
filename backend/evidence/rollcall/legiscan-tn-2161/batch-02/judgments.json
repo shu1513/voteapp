@@ -1,0 +1,184 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1685948,
+   "measure_id": "HB 2219",
+   "vote_date": "2026-04-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 2219. It requires every county sheriff to sign a deal with federal immigration agents under a federal program called 287(g), which lets local officers do some federal immigration work. The sheriff does not need the county's approval, and the state can hold back money from a county that does not sign. The Tennessee House passed it 71-25, and it became law.",
+   "nay_description": "Voted against HB 2219. It requires every county sheriff to sign a deal with federal immigration agents under a federal program called 287(g), which lets local officers do some federal immigration work. The sheriff does not need the county's approval, and the state can hold back money from a county that does not sign. The Tennessee House passed it 71-25, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1690535,
+   "measure_id": "HB 2219",
+   "vote_date": "2026-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 2219. It requires every county sheriff to sign a deal with federal immigration agents under a federal program called 287(g), which lets local officers do some federal immigration work. The sheriff does not need the county's approval, and the state can hold back money from a county that does not sign. The Tennessee Senate passed it 24-7, and it became law.",
+   "nay_description": "Voted against HB 2219. It requires every county sheriff to sign a deal with federal immigration agents under a federal program called 287(g), which lets local officers do some federal immigration work. The sheriff does not need the county's approval, and the state can hold back money from a county that does not sign. The Tennessee Senate passed it 24-7, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1551312,
+   "measure_id": "HB 622",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 622. It bars county and city governments from using race, ethnicity, sex, age or a similar trait to make a hiring or job decision. Those choices must rest on merit, skills, veteran status, or rules about who is legally eligible. The law lists a few exceptions. The Tennessee House passed it 73-24, and it became law.",
+   "nay_description": "Voted against HB 622. It bars county and city governments from using race, ethnicity, sex, age or a similar trait to make a hiring or job decision. Those choices must rest on merit, skills, veteran status, or rules about who is legally eligible. The law lists a few exceptions. The Tennessee House passed it 73-24, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1671320,
+   "measure_id": "SB 2222",
+   "vote_date": "2026-03-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 2222. It lets someone sue a person who paid a protester to show up, and make that payer cover damage the protester caused. It applies when the protester's conduct fits crimes such as rioting, disorderly conduct, blocking a road, or harassment. The Tennessee House passed it 71-20, and it became law.",
+   "nay_description": "Voted against SB 2222. It lets someone sue a person who paid a protester to show up, and make that payer cover damage the protester caused. It applies when the protester's conduct fits crimes such as rioting, disorderly conduct, blocking a road, or harassment. The Tennessee House passed it 71-20, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1684544,
+   "measure_id": "SB 2412",
+   "vote_date": "2026-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 2412. It lets the state attorney general sue to enforce Tennessee's rules on abortion pills. The fine is $10,000 for each knowing violation, and $1 million if a court finds someone was badly hurt or died. Each person given the drug counts as a separate violation. The Tennessee House passed it 74-20, and it became law.",
+   "nay_description": "Voted against SB 2412. It lets the state attorney general sue to enforce Tennessee's rules on abortion pills. The fine is $10,000 for each knowing violation, and $1 million if a court finds someone was badly hurt or died. Each person given the drug counts as a separate violation. The Tennessee House passed it 74-20, and it became law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1544236,
+   "measure_id": "SB 449",
+   "vote_date": "2025-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 449. It says Tennessee law does not ban birth control or fertility treatment, and that a doctor may offer them and a person may use them. It does not create a right to those services, or to funding or insurance for them. The Tennessee House passed it 54-37, and it became law.",
+   "nay_description": "Voted against SB 449. It says Tennessee law does not ban birth control or fertility treatment, and that a doctor may offer them and a person may use them. It does not create a right to those services, or to funding or insurance for them. The Tennessee House passed it 54-37, and it became law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1687800,
+   "measure_id": "SB 468",
+   "vote_date": "2026-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the compromise version of SB 468. It sets what sex, male and female mean in state law, and keeps some single-sex spaces separate on that basis. Those spaces are prisons, juvenile detention centers, public colleges, and shelters for people fleeing domestic violence. The Tennessee House adopted it 71-18, and it became law.",
+   "nay_description": "Voted against the compromise version of SB 468. It sets what sex, male and female mean in state law, and keeps some single-sex spaces separate on that basis. Those spaces are prisons, juvenile detention centers, public colleges, and shelters for people fleeing domestic violence. The Tennessee House adopted it 71-18, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1477617,
+   "measure_id": "SB 6002",
+   "vote_date": "2025-01-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 6002. It creates a new immigration enforcement office inside the state safety department, run by an officer the governor picks. That officer directs how state and local police work with federal immigration agents, hands out money from a new grant fund, and runs the state's part in federal programs. The Tennessee House passed it 72-21, and it became law.",
+   "nay_description": "Voted against SB 6002. It creates a new immigration enforcement office inside the state safety department, run by an officer the governor picks. That officer directs how state and local police work with federal immigration agents, hands out money from a new grant fund, and runs the state's part in federal programs. The Tennessee House passed it 72-21, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1476571,
+   "measure_id": "SB 6002",
+   "vote_date": "2025-01-29",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 6002. It creates a new immigration enforcement office inside the state safety department, run by an officer the governor picks. That officer directs how state and local police work with federal immigration agents, hands out money from a new grant fund, and runs the state's part in federal programs. The Tennessee Senate passed it 26-7, and it became law.",
+   "nay_description": "Voted against SB 6002. It creates a new immigration enforcement office inside the state safety department, run by an officer the governor picks. That officer directs how state and local police work with federal immigration agents, hands out money from a new grant fund, and runs the state's part in federal programs. The Tennessee Senate passed it 26-7, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1519163,
+   "measure_id": "SB 694",
+   "vote_date": "2025-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 694. It raises the top interest rate a consumer loan company may charge on a loan of $100 or more, from 30 percent a year to 36 percent. It also raises a separate fee cap from 10 percent to 12.5 percent. The Tennessee House passed it 61-26, and it became law.",
+   "nay_description": "Voted against SB 694. It raises the top interest rate a consumer loan company may charge on a loan of $100 or more, from 30 percent a year to 36 percent. It also raises a separate fee cap from 10 percent to 12.5 percent. The Tennessee House passed it 61-26, and it became law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
