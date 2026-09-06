@@ -1,0 +1,241 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1663590,
+   "measure_id": "HB 1704",
+   "vote_date": "2026-03-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1704. It makes it a crime for a person 18 or older with a final federal removal order to stay in Tennessee more than 90 days after that order. The charge is a Class A misdemeanor, and a court must pause the case while the person is still pursuing federal appeals. The Tennessee House passed it 73-22, and it became law.",
+   "nay_description": "Voted against HB 1704. It makes it a crime for a person 18 or older with a final federal removal order to stay in Tennessee more than 90 days after that order. The charge is a Class A misdemeanor, and a court must pause the case while the person is still pursuing federal appeals. The Tennessee House passed it 73-22, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1509630,
+   "measure_id": "HB 22",
+   "vote_date": "2025-03-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 22. It requires every city, county, school district and other local governing body to set aside time for public comment at each public meeting. People may speak on items on the agenda and on any other matter the body has power over. The Tennessee House passed it 60-29, and it became law.",
+   "nay_description": "Voted against HB 22. It requires every city, county, school district and other local governing body to set aside time for public comment at each public meeting. People may speak on items on the agenda and on any other matter the body has power over. The Tennessee House passed it 60-29, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1677693,
+   "measure_id": "HB 2569",
+   "vote_date": "2026-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 2569. It lowers from 65 to 50 the age at which a hospital must offer a patient a flu shot before sending them home, each year from October through the start of March. It also requires hospitals to offer those patients a pneumonia shot. The Tennessee House passed it 62-22, and it became law.",
+   "nay_description": "Voted against HB 2569. It lowers from 65 to 50 the age at which a hospital must offer a patient a flu shot before sending them home, each year from October through the start of March. It also requires hospitals to offer those patients a pneumonia shot. The Tennessee House passed it 62-22, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1681809,
+   "measure_id": "HB 2616",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 2616. It lets a local governing body interview candidates for director-level jobs behind closed doors, with no public notice of that session. The body still may not decide or debate the hire in private, and the minutes must name everyone who attended except the applicants. The Tennessee House passed it 61-24, and it became law.",
+   "nay_description": "Voted against HB 2616. It lets a local governing body interview candidates for director-level jobs behind closed doors, with no public notice of that session. The body still may not decide or debate the hire in private, and the minutes must name everyone who attended except the applicants. The Tennessee House passed it 61-24, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1501024,
+   "measure_id": "HB 618",
+   "vote_date": "2025-02-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 618. It bars a person who holds a local elected office from holding a second elected office in Tennessee at the same time. Anyone holding two offices when the law took effect could keep them until those terms ran out, and party executive committee seats do not count. The Tennessee House passed it 61-26. The Senate later changed when the ban starts, and the bill became law.",
+   "nay_description": "Voted against HB 618. It bars a person who holds a local elected office from holding a second elected office in Tennessee at the same time. Anyone holding two offices when the law took effect could keep them until those terms ran out, and party executive committee seats do not count. The Tennessee House passed it 61-26. The Senate later changed when the ban starts, and the bill became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1655770
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1646824,
+   "measure_id": "HB 618",
+   "vote_date": "2026-02-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 618. Starting in 2027 it bars a person who holds a local elected office from holding a second elected office in Tennessee at the same time. Anyone already holding two offices on January 1, 2027 may keep them and run again, and party executive committee seats do not count. The Tennessee Senate passed it 21-10, and it became law.",
+   "nay_description": "Voted against HB 618. Starting in 2027 it bars a person who holds a local elected office from holding a second elected office in Tennessee at the same time. Anyone already holding two offices on January 1, 2027 may keep them and run again, and party executive committee seats do not count. The Tennessee Senate passed it 21-10, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1682980,
+   "measure_id": "HB 754",
+   "vote_date": "2026-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the final version of HB 754. It makes gender clinics report every gender transition procedure to the state health department, including the patient's age, sex and home state, the drugs and doses used, and the name and contact details of the provider who prescribed them. It also bars cities and counties from banning therapy aimed at a minor's gender identity. The Tennessee House agreed it 73-23, and it became law.",
+   "nay_description": "Voted against the final version of HB 754. It makes gender clinics report every gender transition procedure to the state health department, including the patient's age, sex and home state, the drugs and doses used, and the name and contact details of the provider who prescribed them. It also bars cities and counties from banning therapy aimed at a minor's gender identity. The Tennessee House agreed it 73-23, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1681414,
+   "measure_id": "HB 754",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 754. It makes gender clinics report every gender transition procedure to the state health department, including the patient's age, sex and home state, the drugs and doses used, and the name and contact details of the provider who prescribed them. It also bars cities and counties from banning therapy aimed at a minor's gender identity. The Tennessee Senate passed it 24-7, and it became law.",
+   "nay_description": "Voted against HB 754. It makes gender clinics report every gender transition procedure to the state health department, including the patient's age, sex and home state, the drugs and doses used, and the name and contact details of the provider who prescribed them. It also bars cities and counties from banning therapy aimed at a minor's gender identity. The Tennessee Senate passed it 24-7, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1550597,
+   "measure_id": "HB 910",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 910. It shuts down the Tennessee Human Rights Commission at the end of June 2025 and moves its work to a new civil rights enforcement division in the attorney general's office. The commission handled complaints about discrimination in jobs, housing and public places. The Tennessee House passed it 73-23, and it became law.",
+   "nay_description": "Voted against HB 910. It shuts down the Tennessee Human Rights Commission at the end of June 2025 and moves its work to a new civil rights enforcement division in the attorney general's office. The commission handled complaints about discrimination in jobs, housing and public places. The Tennessee House passed it 73-23, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1550532,
+   "measure_id": "SB 1004",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1004. It spells out what counts as a serious risk of lasting harm to a major bodily function under Tennessee's criminal abortion law. It names conditions that qualify, such as severe preeclampsia, an infection that could rupture the uterus, and water breaking too early. It also says no mental health condition counts. The Tennessee House passed it 71-18, and it became law.",
+   "nay_description": "Voted against SB 1004. It spells out what counts as a serious risk of lasting harm to a major bodily function under Tennessee's criminal abortion law. It names conditions that qualify, such as severe preeclampsia, an infection that could rupture the uterus, and water breaking too early. It also says no mental health condition counts. The Tennessee House passed it 71-18, and it became law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1544284,
+   "measure_id": "SB 376",
+   "vote_date": "2025-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 376. It bars four-year colleges in Tennessee from treating people differently by race, color, ethnicity or national origin, and says that includes differences that come from affirmative action. In practice it ends race-conscious admissions and programs at those schools. The Tennessee House passed it 73-22, and it became law.",
+   "nay_description": "Voted against SB 376. It bars four-year colleges in Tennessee from treating people differently by race, color, ethnicity or national origin, and says that includes differences that come from affirmative action. In practice it ends race-conscious admissions and programs at those schools. The Tennessee House passed it 73-22, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1641638,
+   "measure_id": "SB 674",
+   "vote_date": "2026-02-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 674. It gives the state alone the power to set the terms and conditions of employment. Cities and counties may no longer pass or enforce any rule on pay, hours or working conditions that goes beyond state or federal law, unless a state law lets them. The Tennessee House passed it 70-22, and it became law.",
+   "nay_description": "Voted against SB 674. It gives the state alone the power to set the terms and conditions of employment. Cities and counties may no longer pass or enforce any rule on pay, hours or working conditions that goes beyond state or federal law, unless a state law lets them. The Tennessee House passed it 70-22, and it became law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1538827,
+   "measure_id": "SB 880",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 880. It bars state agencies from setting a numeric limit on a pollutant or contaminant in drinking water, air, waste or a cleanup site unless the best available science shows a direct link to bodily harm in people. A rule that does not meet that test cannot be adopted. The Tennessee House passed it 74-22, and it became law.",
+   "nay_description": "Voted against SB 880. It bars state agencies from setting a numeric limit on a pollutant or contaminant in drinking water, air, waste or a cleanup site unless the best available science shows a direct link to bodily harm in people. A rule that does not meet that test cannot be adopted. The Tennessee House passed it 74-22, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
