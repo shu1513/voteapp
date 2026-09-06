@@ -812,7 +812,7 @@ describe("ElectionPage", () => {
           id: "o-1",
           scope: "statewide",
           canonical_name: "Governor",
-          summary: "Your governor runs the state government.\nWhich state laws take effect\nHow much money goes to schools",
+          summary: "Signing or vetoing bills that become state law\nDeciding how much money goes to schools",
         },
         // Alphabetical (API order) on purpose: the page must re-order by
         // public salience, which puts Environment ahead of Civil Rights.
@@ -824,13 +824,10 @@ describe("ElectionPage", () => {
     );
 
     expect(await screen.findByRole("heading", { name: "About this office" })).toBeInTheDocument();
-    // First summary line is the hook paragraph; the rest render as bullets
-    // under the "This office affects:" label.
-    expect(screen.getByText("Your governor runs the state government.")).toBeInTheDocument();
-    expect(screen.getByText("This office affects:")).toBeInTheDocument();
+    // Every summary line is a bullet; no hook paragraph, no label.
     const bullets = screen.getAllByRole("listitem").map((li) => li.textContent);
-    expect(bullets).toEqual(["Which state laws take effect", "How much money goes to schools"]);
-    const description = screen.getByText("How much money goes to schools");
+    expect(bullets).toEqual(["Signing or vetoing bills that become state law", "Deciding how much money goes to schools"]);
+    const description = screen.getByText("Deciding how much money goes to schools");
     const label = screen.getByText("Affects:");
     expect(description.compareDocumentPosition(label) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     const environment = screen.getByText("Environment & Public Health");
@@ -883,7 +880,7 @@ describe("ElectionPage", () => {
     expect(screen.queryByRole("button", { name: "Show less" })).not.toBeInTheDocument();
   });
 
-  it("renders a legacy duty-list summary (no period-terminated hook) as plain bullets", async () => {
+  it("renders an older hook-plus-bullets summary as plain bullets too", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>
       electionDetail({
@@ -891,8 +888,9 @@ describe("ElectionPage", () => {
           id: "o-2",
           scope: "state_lower",
           canonical_name: "State Lower Chamber Legislator",
-          // Pre-hook seed shape, still in a database until the seed re-runs.
-          summary: "Voting on state laws and the state budget\nRepresenting their district in the statehouse",
+          // Earlier seed shape (sentence hook first), still in a database
+          // until the seed re-runs: it must not grow a paragraph or a label.
+          summary: "Your state representative writes state laws.\nVoting on how much you pay in state taxes",
         },
       })
     );
@@ -900,11 +898,9 @@ describe("ElectionPage", () => {
     expect(await screen.findByRole("heading", { name: "About this office" })).toBeInTheDocument();
     const bullets = screen.getAllByRole("listitem").map((li) => li.textContent);
     expect(bullets).toEqual([
-      "Voting on state laws and the state budget",
-      "Representing their district in the statehouse",
+      "Your state representative writes state laws.",
+      "Voting on how much you pay in state taxes",
     ]);
-    // The first duty is not promoted to a hook paragraph, and no "This office
-    // affects:" label is put over gerund duties.
     expect(screen.queryByText("This office affects:")).not.toBeInTheDocument();
     expect(screen.queryByText(/State Lower Chamber Legislator/)).not.toBeInTheDocument();
   });
