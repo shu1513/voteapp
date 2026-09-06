@@ -234,7 +234,6 @@ export async function upsertWisconsinFinanceLink(input: {
       VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14::timestamptz)
       ON CONFLICT (candidate_id, election_id, entity_id)
       DO UPDATE SET
-        election_year = EXCLUDED.election_year,
         candidate_name_normalized = EXCLUDED.candidate_name_normalized,
         office_name = EXCLUDED.office_name,
         district = EXCLUDED.district,
@@ -264,7 +263,7 @@ export async function upsertWisconsinFinanceLink(input: {
     ]
   );
 
-  assertLinkWriteNotBlocked("Wisconsin", result.rows[0], input.link.linkSource ?? "manual");
+  assertLinkWriteNotBlocked("Wisconsin", result.rows[0], input.link.linkSource ?? "manual", input.link.electionYear);
   const linkId = result.rows[0]?.id;
   if (!linkId) {
     throw new Error("Wisconsin finance link upsert did not return an id");

@@ -62,7 +62,8 @@ type WriterCase = {
     ids: { candidateId: string; electionId: string },
     identity: "A" | "B",
     linkSource: string,
-    linkStatus: "active" | "inactive"
+    linkStatus: "active" | "inactive",
+    electionYear?: number
   ) => Promise<{ linkId: string }>;
 };
 
@@ -95,10 +96,16 @@ function simple(
     automaticSource,
     statusInput: true,
     retiresOthers: options.retiresOthers ?? false,
-    upsert: (db, ids, identity, linkSource, linkStatus) =>
+    upsert: (db, ids, identity, linkSource, linkStatus, electionYear) =>
       fn({
         db,
-        link: { ...base(ids), ...identityFields(identity), linkSource, linkStatus } as never,
+        link: {
+          ...base(ids),
+          ...identityFields(identity),
+          linkSource,
+          linkStatus,
+          ...(electionYear === undefined ? {} : { electionYear }),
+        } as never,
       }),
   };
 }
@@ -227,13 +234,13 @@ const WRITERS: WriterCase[] = [
     automaticSource: "cfb_csv",
     statusInput: false,
     retiresOthers: true,
-    upsert: async (db, ids, identity, linkSource) => ({
+    upsert: async (db, ids, identity, linkSource, _linkStatus, electionYear) => ({
       linkId: await upsertNewYorkCityFinanceLink({
         db,
         link: {
           candidateId: ids.candidateId,
           electionId: ids.electionId,
-          electionYear: 2026,
+          electionYear: electionYear ?? 2026,
           candidateNameNormalized: "MANUAL PROTECTION",
           officeCode: "1",
           boroughCode: null,
@@ -328,6 +335,23 @@ describe.skipIf(!databaseUrl)("finance manual-link protection across writers (re
         await expect(w.upsert(pool, ids, "A", w.automaticSource, "active")).resolves.toEqual({ linkId });
 
         expect(await readRows(w.table)).toEqual([{ id: linkId, link_status: "active", link_source: "manual" }]);
+      });
+
+      it("automation with a different election year cannot relabel a manual link", async () => {
+        const { linkId } = await w.upsert(pool, ids, "A", "manual", "active");
+
+        // The snapshot tables reference (link id, election_year) with ON
+        // UPDATE CASCADE: a refreshed year would relabel the operator's
+        // existing summaries and breakdowns as another cycle's.
+        await expect(w.upsert(pool, ids, "A", w.automaticSource, "active", 2028)).rejects.toThrow(
+          "automatic finance link year 2028 does not match the protected manual link year 2026"
+        );
+
+        const year = await pool.query<{ election_year: number }>(
+          `SELECT election_year FROM public.${w.table} WHERE id = $1::uuid`,
+          [linkId]
+        );
+        expect(year.rows).toEqual([{ election_year: 2026 }]);
       });
 
       if (w.statusInput) {
