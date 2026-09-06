@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "e3e3ab2f-ce08-47f6-ae21-8b85ee0643b6",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "e3e3ab2f-ce08-47f6-ae21-8b85ee0643b6",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "b4194ce1-e09a-4de9-9d74-435309514c7b",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "b4194ce1-e09a-4de9-9d74-435309514c7b",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

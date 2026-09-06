@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "d3360d2f-6127-4e5b-9f99-6a2dd24b5637",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "4660976d-c7f1-41b7-a586-a3638b8b4351",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "9ab7fb8f-30fb-47e7-b2aa-974428913c97",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  },
+  {
+   "record_id": "6e280aad-0a1c-4f90-9e4c-f1723bb0db23",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "c42a5b29-380f-44d5-a7ab-4977553b4afc",
+   "research_area_slug": "foreign_trade",
+   "stance": "for"
+  },
+  {
+   "record_id": "aa497867-19c4-4cf0-8e11-fed710500c02",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "a8de77b9-f746-46f3-8e21-e12fa1c8dbcf",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "a8de77b9-f746-46f3-8e21-e12fa1c8dbcf",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "18617bdc-b3cf-48a3-b0d7-4ba58cf9bff6",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "18617bdc-b3cf-48a3-b0d7-4ba58cf9bff6",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "54c25f7b-5c63-4060-9336-5e65cfc4b438",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "534574de-7873-470a-89ab-b513c158bf8f",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  }
+ ]
+}

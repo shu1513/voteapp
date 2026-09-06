@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "9bde5d74-76c4-4e17-9421-092d899c2dea",
+   "research_area_slug": "peaceful_foreign_policy",
+   "stance": "for"
+  },
+  {
+   "record_id": "d35bf97a-6e7c-4c6c-9240-ce149015139c",
+   "research_area_slug": "peaceful_foreign_policy",
+   "stance": "for"
+  },
+  {
+   "record_id": "af60e77f-a4ed-431d-baad-311bd12fba96",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "5068e6c4-74b8-4847-887d-b372a13ccfa5",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  }
+ ]
+}
