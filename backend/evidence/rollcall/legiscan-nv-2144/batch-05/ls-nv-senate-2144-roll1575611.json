@@ -1,0 +1,131 @@
+{
+  "jurisdiction": "NV",
+  "sessionId": 2144,
+  "chamber": "senate",
+  "rollNumber": 1575611,
+  "bill": "AB223",
+  "measureId": "AB 223",
+  "machineUrl": "https://legiscan.com/NV/rollcall/AB223/id/1575611",
+  "fetchedAt": "2026-09-03T01:37:39.069Z",
+  "rollCall": {
+    "roll_call_id": 1575611,
+    "bill_id": 1954381,
+    "date": "2025-05-21",
+    "desc": "Senate Final Passage",
+    "yea": 13,
+    "nay": 8,
+    "nv": 0,
+    "absent": 0,
+    "total": 21,
+    "passed": 1,
+    "chamber": "S",
+    "chamber_id": 66,
+    "votes": [
+      {
+        "people_id": 8496,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 8500,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 12199,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 12200,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 12203,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 12213,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17444,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 17518,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 19220,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 19226,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 21172,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21252,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 22753,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 22754,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 22839,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 24704,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 24824,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 24825,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 25744,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 25745,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 25746,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      }
+    ]
+  }
+}

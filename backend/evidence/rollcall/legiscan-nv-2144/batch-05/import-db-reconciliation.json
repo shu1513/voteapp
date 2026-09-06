@@ -1,0 +1,92 @@
+{
+  "note": "The importer's own report for this batch (import-rerun-report.json in the run dir) was overwritten by the batch-06 run before it was copied here. This file is the run-stamp reconciliation taken from the local voteapp database on 2026-09-06, before the review rewrite that re-stamped the AB 185 and AB 223 rows.",
+  "capturedAt": "2026-09-06",
+  "query": "select origin_run_id, count(*) as records, count(distinct candidate_id) as candidates from candidate_records where origin_run_id like 'rollcall:NV:%:2026-09-06T07:34:43.546Z' group by 1 order by 1",
+  "runStamp": "2026-09-06T07:34:43.546Z",
+  "totals": {
+    "records": 308,
+    "candidates": 41
+  },
+  "rolls": [
+    {
+      "originRunId": "rollcall:NV:house:2144:1551673:2026-09-06T07:34:43.546Z",
+      "records": 30,
+      "candidates": 30
+    },
+    {
+      "originRunId": "rollcall:NV:house:2144:1553732:2026-09-06T07:34:43.546Z",
+      "records": 30,
+      "candidates": 30
+    },
+    {
+      "originRunId": "rollcall:NV:house:2144:1553745:2026-09-06T07:34:43.546Z",
+      "records": 30,
+      "candidates": 30
+    },
+    {
+      "originRunId": "rollcall:NV:house:2144:1553821:2026-09-06T07:34:43.546Z",
+      "records": 30,
+      "candidates": 30
+    },
+    {
+      "originRunId": "rollcall:NV:house:2144:1554207:2026-09-06T07:34:43.546Z",
+      "records": 30,
+      "candidates": 30
+    },
+    {
+      "originRunId": "rollcall:NV:house:2144:1554233:2026-09-06T07:34:43.546Z",
+      "records": 30,
+      "candidates": 30
+    },
+    {
+      "originRunId": "rollcall:NV:house:2144:1575046:2026-09-06T07:34:43.546Z",
+      "records": 30,
+      "candidates": 30
+    },
+    {
+      "originRunId": "rollcall:NV:senate:2144:1552296:2026-09-06T07:34:43.546Z",
+      "records": 11,
+      "candidates": 11
+    },
+    {
+      "originRunId": "rollcall:NV:senate:2144:1575514:2026-09-06T07:34:43.546Z",
+      "records": 11,
+      "candidates": 11
+    },
+    {
+      "originRunId": "rollcall:NV:senate:2144:1575587:2026-09-06T07:34:43.546Z",
+      "records": 11,
+      "candidates": 11
+    },
+    {
+      "originRunId": "rollcall:NV:senate:2144:1575611:2026-09-06T07:34:43.546Z",
+      "records": 11,
+      "candidates": 11
+    },
+    {
+      "originRunId": "rollcall:NV:senate:2144:1576817:2026-09-06T07:34:43.546Z",
+      "records": 11,
+      "candidates": 11
+    },
+    {
+      "originRunId": "rollcall:NV:senate:2144:1577060:2026-09-06T07:34:43.546Z",
+      "records": 11,
+      "candidates": 11
+    },
+    {
+      "originRunId": "rollcall:NV:senate:2144:1578000:2026-09-06T07:34:43.546Z",
+      "records": 10,
+      "candidates": 10
+    },
+    {
+      "originRunId": "rollcall:NV:senate:2144:1578859:2026-09-06T07:34:43.546Z",
+      "records": 11,
+      "candidates": 11
+    },
+    {
+      "originRunId": "rollcall:NV:senate:2144:1580575:2026-09-06T07:34:43.546Z",
+      "records": 11,
+      "candidates": 11
+    }
+  ]
+}

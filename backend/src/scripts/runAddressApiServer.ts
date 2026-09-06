@@ -118,6 +118,7 @@ import {
   createSesMembershipChangedSender,
   createSesMembershipStartedSender,
 } from "../api/membership/membershipMailer.js";
+import { readBooleanEnv, readPositiveIntegerEnv } from "../config/envReaders.js";
 
 function readEnv(name: string, fallback?: string): string {
   const value = process.env[name]?.trim() || fallback;
@@ -134,32 +135,6 @@ function readPort(): number {
     throw new Error(`Invalid ADDRESS_API_PORT: ${raw}`);
   }
   return parsed;
-}
-
-function readPositiveIntegerEnv(name: string, fallback: number): number {
-  const raw = process.env[name]?.trim();
-  if (!raw) {
-    return fallback;
-  }
-  const parsed = Number.parseInt(raw, 10);
-  if (!Number.isInteger(parsed) || parsed <= 0) {
-    throw new Error(`Invalid ${name}: ${raw}`);
-  }
-  return parsed;
-}
-
-function readBooleanEnv(name: string, fallback: boolean): boolean {
-  const raw = process.env[name]?.trim().toLowerCase();
-  if (!raw) {
-    return fallback;
-  }
-  if (["1", "true", "yes", "on"].includes(raw)) {
-    return true;
-  }
-  if (["0", "false", "no", "off"].includes(raw)) {
-    return false;
-  }
-  throw new Error(`Invalid ${name}: ${process.env[name]}`);
 }
 
 function readAllowedOrigins(): string[] {

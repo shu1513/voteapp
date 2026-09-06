@@ -1,0 +1,10 @@
+[
+ {
+  "recordId": "ad999ae0-c355-4fdf-b97b-3908c883748a",
+  "reason": "Duplicate of the imported roll-call record for the same vote. This hand-written record for Michael Carter describes the Colorado House passing House Bill 25-1011 38-23 on 2025-03-05, which is the roll call imported in Colorado batch-11 as record 7adb3857-4309-4054-82e6-a9d4e9096c1f (LegiScan roll 1506064). The imported record cites the roll call itself and carries the same candidate, date and tally."
+ },
+ {
+  "recordId": "fd4d7581-33db-4e16-af92-6ed01a00eb3b",
+  "reason": "Duplicate of the imported roll-call record for the same vote. This hand-written record for Naquetta Ricks describes the Colorado House passing Senate Bill 25-086 46-18 on 2025-03-31 and the governor vetoing it, which is the roll call imported in Colorado batch-11 as record dd77b0f0-7b32-4782-ba12-c79fb63b8ed1 (LegiScan roll 1530965). The imported record cites the roll call itself and carries the same candidate, date and tally."
+ }
+]

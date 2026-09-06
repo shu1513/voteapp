@@ -34,7 +34,7 @@ export type ConsumeUserAuthTokenInput = {
 function normalizeUserId(userId: string): string {
   const normalized = userId.trim();
   if (!isUuid(normalized)) {
-    throw new TypeError("User ID must be a valid UUID");
+    throw new Error("User ID must be a valid UUID");
   }
   return normalized;
 }
@@ -42,31 +42,31 @@ function normalizeUserId(userId: string): string {
 function normalizeTokenHash(tokenHash: string): string {
   const normalized = tokenHash.trim();
   if (normalized.length === 0) {
-    throw new TypeError("Token hash must be a non-empty string");
+    throw new Error("Token hash must be a non-empty string");
   }
   if (!/^[0-9a-f]{64}$/i.test(normalized)) {
-    throw new TypeError("Token hash must be a SHA-256 hex digest");
+    throw new Error("Token hash must be a SHA-256 hex digest");
   }
   return normalized.toLowerCase();
 }
 
 function normalizePurpose(purpose: AuthTokenPurpose): AuthTokenPurpose {
   if (!AUTH_TOKEN_PURPOSES.includes(purpose)) {
-    throw new TypeError(`Unsupported auth token purpose: ${purpose}`);
+    throw new Error(`Unsupported auth token purpose: ${purpose}`);
   }
   return purpose;
 }
 
 function normalizeExpiresAt(expiresAt: Date): Date {
   if (!(expiresAt instanceof Date) || Number.isNaN(expiresAt.getTime())) {
-    throw new TypeError("expiresAt must be a valid Date");
+    throw new Error("expiresAt must be a valid Date");
   }
   return expiresAt;
 }
 
 function normalizeNow(now: Date): Date {
   if (!(now instanceof Date) || Number.isNaN(now.getTime())) {
-    throw new TypeError("now must be a valid Date");
+    throw new Error("now must be a valid Date");
   }
   return now;
 }
@@ -75,12 +75,12 @@ function normalizeNewEmail(purpose: AuthTokenPurpose, newEmail: string | undefin
   if (purpose === "email_change") {
     const normalized = newEmail?.trim();
     if (!normalized) {
-      throw new TypeError("newEmail is required for email_change tokens");
+      throw new Error("newEmail is required for email_change tokens");
     }
     return normalized;
   }
   if (newEmail !== undefined) {
-    throw new TypeError(`newEmail is not allowed for ${purpose} tokens`);
+    throw new Error(`newEmail is not allowed for ${purpose} tokens`);
   }
   return null;
 }

@@ -10,7 +10,13 @@
       "review_status": "approved",
       "yea_description": "Voted to pass HB 115, which requires corrections officials to send monthly release information to election officials so they can restore an eligible Marylander's prior voter registration at a new in-state address. The person must get notice and can decline registration or update their address. It became Chapter 428 of 2026. The Maryland House of Delegates passed it 100-33.",
       "nay_description": "Voted against passing HB 115, which requires corrections officials to send monthly release information to election officials so they can restore an eligible Marylander's prior voter registration at a new in-state address. The person must get notice and can decline registration or update their address. It became Chapter 428 of 2026. The Maryland House of Delegates passed it 100-33.",
-      "labels": [{ "slug": "election_integrity", "yea": "for", "nay": null }]
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
     },
     {
       "jurisdiction": "MD",
@@ -22,7 +28,13 @@
       "review_status": "approved",
       "yea_description": "Voted to pass HB 115, which requires corrections officials to send monthly release information to election officials so they can restore an eligible Marylander's prior voter registration at a new in-state address. The person must get notice and can decline registration or update their address. It became Chapter 428 of 2026. The Maryland Senate passed it 30-13.",
       "nay_description": "Voted against passing HB 115, which requires corrections officials to send monthly release information to election officials so they can restore an eligible Marylander's prior voter registration at a new in-state address. The person must get notice and can decline registration or update their address. It became Chapter 428 of 2026. The Maryland Senate passed it 30-13.",
-      "labels": [{ "slug": "election_integrity", "yea": "for", "nay": null }]
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
     },
     {
       "jurisdiction": "MD",
@@ -32,9 +44,15 @@
       "measure_id": "SB 656",
       "vote_date": "2026-04-08",
       "review_status": "approved",
-      "yea_description": "Voted to pass SB 656, which lets people harmed by prohibited cosmetic ingredients seek damages and treats violations as deceptive consumer practices. It lets health inspectors investigate complaints and requires a plan for a fund to research and treat health conditions tied to harmful hair chemicals. It became Chapter 283 of 2026. The Maryland House of Delegates passed it 101-34.",
-      "nay_description": "Voted against passing SB 656, which lets people harmed by prohibited cosmetic ingredients seek damages and treats violations as deceptive consumer practices. It lets health inspectors investigate complaints and requires a plan for a fund to research and treat health conditions tied to harmful hair chemicals. It became Chapter 283 of 2026. The Maryland House of Delegates passed it 101-34.",
-      "labels": [{ "slug": "environment_and_public_health", "yea": "for", "nay": "against" }]
+      "yea_description": "Voted to pass SB 656, which lets people harmed by prohibited cosmetic ingredients seek damages and treats violations as deceptive consumer practices. It lets state health inspectors investigate complaints and inspect premises. It also creates a Harmful Hair Chemicals Restitution Fund, run by the Attorney General, to pay for research, treatment and restitution for victims. It became Chapter 283 of 2026. The Maryland House of Delegates passed it 101-34.",
+      "nay_description": "Voted against passing SB 656, which lets people harmed by prohibited cosmetic ingredients seek damages and treats violations as deceptive consumer practices. It lets state health inspectors investigate complaints and inspect premises. It also creates a Harmful Hair Chemicals Restitution Fund, run by the Attorney General, to pay for research, treatment and restitution for victims. It became Chapter 283 of 2026. The Maryland House of Delegates passed it 101-34.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
     },
     {
       "jurisdiction": "MD",
@@ -46,7 +64,13 @@
       "review_status": "approved",
       "yea_description": "Voted to pass SB 656, which lets people harmed by prohibited cosmetic ingredients seek damages and treats violations as deceptive consumer practices. It lets health inspectors investigate complaints and requires a plan for a fund to research and treat health conditions tied to harmful hair chemicals. It became Chapter 283 of 2026. The Maryland Senate passed it 32-10.",
       "nay_description": "Voted against passing SB 656, which lets people harmed by prohibited cosmetic ingredients seek damages and treats violations as deceptive consumer practices. It lets health inspectors investigate complaints and requires a plan for a fund to research and treat health conditions tied to harmful hair chemicals. It became Chapter 283 of 2026. The Maryland Senate passed it 32-10.",
-      "labels": [{ "slug": "environment_and_public_health", "yea": "for", "nay": "against" }]
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
     },
     {
       "jurisdiction": "MD",
@@ -58,7 +82,13 @@
       "review_status": "approved",
       "yea_description": "Voted to pass HB 1076, which requires Maryland's public four-year colleges and community colleges to report each year on students' access to nonprescription birth control. Community colleges must make every method of over-the-counter contraception available to students on campus. It became Chapter 674 of 2026. The Maryland Senate passed it 32-13.",
       "nay_description": "Voted against passing HB 1076, which requires Maryland's public four-year colleges and community colleges to report each year on students' access to nonprescription birth control. Community colleges must make every method of over-the-counter contraception available to students on campus. It became Chapter 674 of 2026. The Maryland Senate passed it 32-13.",
-      "labels": [{ "slug": "womens_reproductive_rights", "yea": "for", "nay": "against" }]
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
     },
     {
       "jurisdiction": "MD",
@@ -70,7 +100,13 @@
       "review_status": "approved",
       "yea_description": "Voted to pass HB 103, which bars consumer contracts from waiving, limiting, or taking away remedies that state or federal law gives consumers. It still allows a contract to limit statutory or punitive damages to available insurance coverage and leaves valid arbitration clauses intact. It became Chapter 308 of 2026. The Maryland Senate passed it 35-11.",
       "nay_description": "Voted against passing HB 103, which bars consumer contracts from waiving, limiting, or taking away remedies that state or federal law gives consumers. It still allows a contract to limit statutory or punitive damages to available insurance coverage and leaves valid arbitration clauses intact. It became Chapter 308 of 2026. The Maryland Senate passed it 35-11.",
-      "labels": [{ "slug": "corporate_accountability", "yea": "for", "nay": "against" }]
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
     },
     {
       "jurisdiction": "MD",
@@ -82,7 +118,13 @@
       "review_status": "approved",
       "yea_description": "Voted to pass SB 791, the Community Trust Act, which limits when local jails and police may hold someone for or share information with federal immigration enforcement. It requires a judicial warrant for specified immigration holds, keeps exceptions for some convicted people, and allows lawsuits to enforce the rules. It became Chapter 872 of 2026. The Maryland Senate passed it 32-15.",
       "nay_description": "Voted against passing SB 791, the Community Trust Act, which limits when local jails and police may hold someone for or share information with federal immigration enforcement. It requires a judicial warrant for specified immigration holds, keeps exceptions for some convicted people, and allows lawsuits to enforce the rules. It became Chapter 872 of 2026. The Maryland Senate passed it 32-15.",
-      "labels": [{ "slug": "immigration", "yea": "for", "nay": "against" }]
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
     },
     {
       "jurisdiction": "MD",
@@ -92,9 +134,15 @@
       "measure_id": "SB 791",
       "vote_date": "2026-04-11",
       "review_status": "approved",
-      "yea_description": "Voted to pass SB 791, the Community Trust Act, which limits when local jails and police may hold someone for or share information with federal immigration enforcement. It requires a judicial warrant for specified immigration holds, keeps exceptions for some convicted people, and allows lawsuits to enforce the rules. It became Chapter 872 of 2026. The Maryland House of Delegates passed it 92-37.",
-      "nay_description": "Voted against passing SB 791, the Community Trust Act, which limits when local jails and police may hold someone for or share information with federal immigration enforcement. It requires a judicial warrant for specified immigration holds, keeps exceptions for some convicted people, and allows lawsuits to enforce the rules. It became Chapter 872 of 2026. The Maryland House of Delegates passed it 92-37.",
-      "labels": [{ "slug": "immigration", "yea": "for", "nay": "against" }]
+      "yea_description": "Voted to pass SB 791, the Community Trust Act, which limits when local jails and police may hold someone for or share information with federal immigration enforcement. It requires a judicial warrant for specified immigration holds, keeps exceptions for people with certain convictions, and lets the Attorney General or an affected person sue to enforce it. It also requires state correctional facilities to give federal immigration authorities 48 hours' notice before releasing someone under an active immigration detainer, and lets a judge or court commissioner weigh such a detainer when deciding pretrial release or bail in a felony case. It became Chapter 872 of 2026. The Maryland House of Delegates passed it 92-37.",
+      "nay_description": "Voted against passing SB 791, the Community Trust Act, which limits when local jails and police may hold someone for or share information with federal immigration enforcement. It requires a judicial warrant for specified immigration holds, keeps exceptions for people with certain convictions, and lets the Attorney General or an affected person sue to enforce it. It also requires state correctional facilities to give federal immigration authorities 48 hours' notice before releasing someone under an active immigration detainer, and lets a judge or court commissioner weigh such a detainer when deciding pretrial release or bail in a felony case. It became Chapter 872 of 2026. The Maryland House of Delegates passed it 92-37.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
     },
     {
       "jurisdiction": "MD",
@@ -106,7 +154,13 @@
       "review_status": "approved",
       "yea_description": "Voted to pass HB 1076, which requires Maryland's public four-year colleges and community colleges to report each year on students' access to nonprescription birth control. Community colleges must make every method of over-the-counter contraception available to students on campus. It became Chapter 674 of 2026. The Maryland House of Delegates passed it 98-32.",
       "nay_description": "Voted against passing HB 1076, which requires Maryland's public four-year colleges and community colleges to report each year on students' access to nonprescription birth control. Community colleges must make every method of over-the-counter contraception available to students on campus. It became Chapter 674 of 2026. The Maryland House of Delegates passed it 98-32.",
-      "labels": [{ "slug": "womens_reproductive_rights", "yea": "for", "nay": "against" }]
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
     },
     {
       "jurisdiction": "MD",
@@ -118,7 +172,13 @@
       "review_status": "approved",
       "yea_description": "Voted to pass HB 103, which bars consumer contracts from waiving, limiting, or taking away remedies that state or federal law gives consumers. It still allows a contract to limit statutory or punitive damages to available insurance coverage and leaves valid arbitration clauses intact. It became Chapter 308 of 2026. The Maryland House of Delegates passed it 84-32.",
       "nay_description": "Voted against passing HB 103, which bars consumer contracts from waiving, limiting, or taking away remedies that state or federal law gives consumers. It still allows a contract to limit statutory or punitive damages to available insurance coverage and leaves valid arbitration clauses intact. It became Chapter 308 of 2026. The Maryland House of Delegates passed it 84-32.",
-      "labels": [{ "slug": "corporate_accountability", "yea": "for", "nay": "against" }]
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
     }
   ]
 }

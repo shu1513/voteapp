@@ -1,5 +1,6 @@
 import { isUuid } from "../utils/uuid.js";
 import { generateSessionId, hashSessionId } from "./authPrimitives.js";
+import { RequestValidationError } from "../utils/requestValidationError.js";
 
 export type AuthSessionRedisClient = {
   get(key: string): Promise<string | null>;
@@ -49,7 +50,7 @@ export type DestroyAuthSessionsByUserIdInput = {
 function normalizeUserId(userId: string): string {
   const normalized = userId.trim();
   if (!isUuid(normalized)) {
-    throw new TypeError("User ID must be a valid UUID");
+    throw new Error("User ID must be a valid UUID");
   }
   return normalized;
 }
@@ -57,21 +58,21 @@ function normalizeUserId(userId: string): string {
 function normalizeSessionId(sessionId: string): string {
   const normalized = sessionId.trim();
   if (normalized.length === 0) {
-    throw new TypeError("Session ID must be a non-empty string");
+    throw new RequestValidationError("Session ID must be a non-empty string");
   }
   return normalized;
 }
 
 function normalizeTtlSeconds(ttlSeconds: number): number {
   if (!Number.isInteger(ttlSeconds) || ttlSeconds <= 0) {
-    throw new TypeError("TTL must be a positive integer");
+    throw new Error("TTL must be a positive integer");
   }
   return ttlSeconds;
 }
 
 function normalizeSessionEpoch(sessionEpoch: number): number {
   if (!Number.isInteger(sessionEpoch) || sessionEpoch <= 0) {
-    throw new TypeError("Session epoch must be a positive integer");
+    throw new Error("Session epoch must be a positive integer");
   }
   return sessionEpoch;
 }

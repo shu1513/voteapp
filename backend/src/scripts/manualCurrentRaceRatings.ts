@@ -20,6 +20,7 @@ import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 import { usLatestLocalDateIso } from "../utils/usLocalDate.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
+import { readPositiveIntegerEnv } from "../config/envReaders.js";
 
 // Manual (no AI provider) current-race-rating workflow: the vote-power
 // decisiveness axis prefers a fresh, confident current-cycle rating over
@@ -88,14 +89,6 @@ function requireEnv(name: string): string {
     throw new Error(`${name} is required for manual current race ratings`);
   }
   return value;
-}
-
-function readPositiveIntegerEnv(name: string, fallback: number): number {
-  const raw = process.env[name]?.trim() || String(fallback);
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name}: ${raw}. Expected a positive integer.`);
-  }
-  return Number(raw);
 }
 
 // Election ids are lowercased on the way in: Postgres accepts uppercase

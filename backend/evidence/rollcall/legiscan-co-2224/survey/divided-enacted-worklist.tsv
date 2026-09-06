@@ -1,0 +1,23 @@
+measure	chamber	roll	date	yeas	nays	status	title	disposition
+HB1001	H	1599910	2025-08-23	43	19	divided	Qualified Business Income Deduction Add-Back	imported in batch-01
+HB1001	S	1599967	2025-08-25	23	12	divided	Qualified Business Income Deduction Add-Back	imported in batch-01
+HB1002	H	1599917	2025-08-23	43	20	divided	Corporate Income Tax Foreign Jurisdictions	imported in batch-01
+HB1002	S	1599939	2025-08-24	22	13	divided	Corporate Income Tax Foreign Jurisdictions	imported in batch-01
+HB1003	H	1599915	2025-08-23	41	21	divided	Insurance Premium Tax Rate for Home Offices	imported in batch-01
+HB1003	S	1599960	2025-08-25	22	13	divided	Insurance Premium Tax Rate for Home Offices	imported in batch-01
+HB1004	H	1600105	2025-08-26	41	20	divided	Sale of Tax Credits	dropped: a financing mechanic. It lets the treasurer sell tax credits to companies at a discount to raise cash for the general fund. No research area fits a borrowing device.
+HB1004	S	1600075	2025-08-26	22	12	divided	Sale of Tax Credits	dropped: a financing mechanic. It lets the treasurer sell tax credits to companies at a discount to raise cash for the general fund. No research area fits a borrowing device.
+HB1005	H	1599911	2025-08-23	37	25	divided	Eliminate State Sales Tax Vendor Fee	dropped: runs both ways. It ends the fee only small retailers keep, which raises their costs, while rewriting the share of sales tax that goes to the housing fund.
+HB1005	S	1599959	2025-08-25	18	17	divided	Eliminate State Sales Tax Vendor Fee	dropped: runs both ways. It ends the fee only small retailers keep, which raises their costs, while rewriting the share of sales tax that goes to the housing fund.
+HB1006	H	1600103	2025-08-26	41	20	divided	Improve Affordability Private Health Insurance	imported in batch-01
+HB1006	S	1600085	2025-08-26	24	10	divided	Improve Affordability Private Health Insurance	imported in batch-01
+SB001	H	1599928	2025-08-24	56	4	superseded	Processes to Reduce Spending During Shortfall	superseded: the chamber's last floor vote was not divided, so its earlier divided roll is not the vote on the law
+SB001	S	1599885	2025-08-22	19	16	divided	Processes to Reduce Spending During Shortfall	dropped: internal budget process. It makes the governor tell the Joint Budget Committee before cutting spending and adds hearings. No research area fits.
+SB002	H	1599933	2025-08-24	43	19	divided	State-Only Funding for Certain Entities	imported in batch-01
+SB002	S	1599881	2025-08-22	23	12	divided	State-Only Funding for Certain Entities	imported in batch-01
+SB003	H	1599932	2025-08-24	44	17	divided	Healthy School Meals For All	imported in batch-01
+SB003	S	1599888	2025-08-22	23	12	divided	Healthy School Meals For All	imported in batch-01
+SB004	H	1600086	2025-08-26	48	14	divided	Increase Transparency for Algorithmic Systems	imported in batch-01
+SB004	S	1600091	2025-08-26	29	3	superseded	Increase Transparency for Algorithmic Systems	superseded: the chamber's last floor vote was not divided, so its earlier divided roll is not the vote on the law
+SB005	H	1599952	2025-08-24	43	19	divided	Reallocate Department of Natural Resources Wolf Funding to Health Insurance Enterprise	dropped: a transfer that cuts one program to pay for another. It moves $264,268 from wolf reintroduction to the health insurance fund.
+SB005	S	1599977	2025-08-25	31	3	superseded	Reallocate Department of Natural Resources Wolf Funding to Health Insurance Enterprise	superseded: the chamber's last floor vote was not divided, so its earlier divided roll is not the vote on the law

@@ -1,0 +1,328 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1576020,
+      "measure_id": "SB 1181",
+      "vote_date": "2025-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1181. Senate Bill 1181 is the state law against lawsuits filed to silence people. It now covers freedom of the press alongside free speech and the right to petition. If a court finds a motion under the law was frivolous or filed only to stall a case, it must make that side pay the other's legal fees. The House passed it 75-38, and it became law.",
+      "nay_description": "Voted against Senate Bill 1181. Senate Bill 1181 is the state law against lawsuits filed to silence people. It now covers freedom of the press alongside free speech and the right to petition. If a court finds a motion under the law was frivolous or filed only to stall a case, it must make that side pay the other's legal fees. The House passed it 75-38, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1575131,
+      "measure_id": "SB 1261",
+      "vote_date": "2025-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1261. Senate Bill 1261 covers state homeownership programs. It set up a Community Land Trust Task Force to report to the Governor and lawmakers on land trusts, a way of keeping homes affordable over the long run. The task force closes 14 months after its first meeting. The House passed it 71-37, and it became law.",
+      "nay_description": "Voted against Senate Bill 1261. Senate Bill 1261 covers state homeownership programs. It set up a Community Land Trust Task Force to report to the Governor and lawmakers on land trusts, a way of keeping homes affordable over the long run. The task force closes 14 months after its first meeting. The House passed it 71-37, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1582483,
+      "measure_id": "SB 1344",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1344. Senate Bill 1344 counts sewer inspection done with a closed-circuit camera as public works, so prevailing wage rules apply to it. A contractor that fails to file the certified payroll for a public works job now faces a penalty. The House passed it 87-30, and it became law.",
+      "nay_description": "Voted against Senate Bill 1344. Senate Bill 1344 counts sewer inspection done with a closed-circuit camera as public works, so prevailing wage rules apply to it. A contractor that fails to file the certified payroll for a public works job now faces a penalty. The House passed it 87-30, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1575391,
+      "measure_id": "SB 1441",
+      "vote_date": "2025-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1441. Senate Bill 1441 covers Secure Choice, the state retirement savings program for workers whose employer offers no plan. An employer must sign up every worker who has been there 120 days or more, and must enroll each new worker within 120 days of hire. The House passed it 74-37, and it became law.",
+      "nay_description": "Voted against Senate Bill 1441. Senate Bill 1441 covers Secure Choice, the state retirement savings program for workers whose employer offers no plan. An employer must sign up every worker who has been there 120 days or more, and must enroll each new worker within 120 days of hire. The House passed it 74-37, and it became law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1542233,
+      "measure_id": "SB 1519",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1519. Senate Bill 1519 covers what happens when a school sends a student to the police. Districts must report those referrals. A school district and its local police must also have a written agreement setting out how the two work together. The Senate passed it 37-17, and it became law.",
+      "nay_description": "Voted against Senate Bill 1519. Senate Bill 1519 covers what happens when a school sends a student to the police. Districts must report those referrals. A school district and its local police must also have a written agreement setting out how the two work together. The Senate passed it 37-17, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1580328,
+      "measure_id": "SB 1519",
+      "vote_date": "2025-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1519. Senate Bill 1519 covers what happens when a school sends a student to the police. Districts must report those referrals. A school district and its local police must also have a written agreement setting out how the two work together. The House passed it 69-44, and it became law.",
+      "nay_description": "Voted against Senate Bill 1519. Senate Bill 1519 covers what happens when a school sends a student to the police. Districts must report those referrals. A school district and its local police must also have a written agreement setting out how the two work together. The House passed it 69-44, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1718891,
+      "measure_id": "SB 3020",
+      "vote_date": "2026-05-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 3020. Senate Bill 3020 rewrote what counts as harassment under the state's domestic violence law and its protective order law. It also defined what the word electronic means in those laws. The House passed it 91-23, and it became law.",
+      "nay_description": "Voted against Senate Bill 3020. Senate Bill 3020 rewrote what counts as harassment under the state's domestic violence law and its protective order law. It also defined what the word electronic means in those laws. The House passed it 91-23, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1717358,
+      "measure_id": "SB 3037",
+      "vote_date": "2026-05-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 3037. Senate Bill 3037 is the Dark Sky Act. It limits how much light from an outdoor fixture may spill past the property it lights. The limit sits in the state energy code that applies to commercial buildings. The House passed it 75-36, and it became law.",
+      "nay_description": "Voted against Senate Bill 3037. Senate Bill 3037 is the Dark Sky Act. It limits how much light from an outdoor fixture may spill past the property it lights. The limit sits in the state energy code that applies to commercial buildings. The House passed it 75-36, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1724228,
+      "measure_id": "SB 3066",
+      "vote_date": "2026-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 3066. Senate Bill 3066 created the Service Appointment Fairness Act, covering appointments people book for services. Breaking its rules counts as an unlawful practice under the state consumer fraud law, and carries that law's penalties and enforcement. The House passed it 70-40, and it became law.",
+      "nay_description": "Voted against Senate Bill 3066. Senate Bill 3066 created the Service Appointment Fairness Act, covering appointments people book for services. Breaking its rules counts as an unlawful practice under the state consumer fraud law, and carries that law's penalties and enforcement. The House passed it 70-40, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1718754,
+      "measure_id": "SB 3222",
+      "vote_date": "2026-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 3222. Senate Bill 3222 created the Illinois Hemp Act. Nobody may make, sell, or hand out hemp products in Illinois without the required license. The state may order recalls and impose penalties, and a violation also counts as an unlawful practice under the consumer fraud law. The House passed it 77-31, and it became law.",
+      "nay_description": "Voted against Senate Bill 3222. Senate Bill 3222 created the Illinois Hemp Act. Nobody may make, sell, or hand out hemp products in Illinois without the required license. The state may order recalls and impose penalties, and a violation also counts as an unlawful practice under the consumer fraud law. The House passed it 77-31, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1723917,
+      "measure_id": "SB 3314",
+      "vote_date": "2026-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 3314. Senate Bill 3314 requires a yearly public report on who teaches at Illinois public colleges. Starting in September 2028, the report must show how many credit hours full-time faculty teach, so students can see how courses are staffed. The House passed it 83-28, and it became law.",
+      "nay_description": "Voted against Senate Bill 3314. Senate Bill 3314 requires a yearly public report on who teaches at Illinois public colleges. Starting in September 2028, the report must show how many credit hours full-time faculty teach, so students can see how courses are staffed. The House passed it 83-28, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1718181,
+      "measure_id": "SB 3465",
+      "vote_date": "2026-05-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 3465. Senate Bill 3465 sets sanitary requirements for construction sites, including menstrual hygiene products. Sites must meet them within six months after the law takes effect. The House passed it 71-37, and it became law.",
+      "nay_description": "Voted against Senate Bill 3465. Senate Bill 3465 sets sanitary requirements for construction sites, including menstrual hygiene products. Sites must meet them within six months after the law takes effect. The House passed it 71-37, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1718182,
+      "measure_id": "SB 3465",
+      "vote_date": "2026-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House version of Senate Bill 3465. Senate Bill 3465 sets sanitary requirements for construction sites, including menstrual hygiene products. Sites must meet them within six months after the law takes effect. The Senate agreed to that version 45-13, and it became law.",
+      "nay_description": "Voted against accepting the House version of Senate Bill 3465. Senate Bill 3465 sets sanitary requirements for construction sites, including menstrual hygiene products. Sites must meet them within six months after the law takes effect. The Senate agreed to that version 45-13, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1718521,
+      "measure_id": "SB 3565",
+      "vote_date": "2026-05-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 3565. Senate Bill 3565 lets a township use its public aid money to run food banks and food pantries. It may also give in-kind help with basic needs to people who are poor, homeless, or otherwise in need. The House passed it 73-35, and it became law.",
+      "nay_description": "Voted against Senate Bill 3565. Senate Bill 3565 lets a township use its public aid money to run food banks and food pantries. It may also give in-kind help with basic needs to people who are poor, homeless, or otherwise in need. The House passed it 73-35, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1718613,
+      "measure_id": "SB 3917",
+      "vote_date": "2026-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 3917. Senate Bill 3917 requires testing for PFAS, the so-called forever chemicals, under state water pollution permits. Every major sewage treatment plant, public or private, must regularly test what flows in, what flows out, and its sludge, and every other major industrial discharger must test what flows out. Sludge or biosolids may not be spread on land under a state permit unless they are tested for PFAS too. The House passed it 64-34, and it became law.",
+      "nay_description": "Voted against Senate Bill 3917. Senate Bill 3917 requires testing for PFAS, the so-called forever chemicals, under state water pollution permits. Every major sewage treatment plant, public or private, must regularly test what flows in, what flows out, and its sludge, and every other major industrial discharger must test what flows out. Sludge or biosolids may not be spread on land under a state permit unless they are tested for PFAS too. The House passed it 64-34, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1717874,
+      "measure_id": "SB 4006",
+      "vote_date": "2026-05-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 4006. Senate Bill 4006 covers home insurance and climate risk. An insurer must tell the policyholder in writing whether flood coverage is available. Companies covered by a new climate risk article must also disclose the climate risks they carry. The House passed it 78-32, and it became law.",
+      "nay_description": "Voted against Senate Bill 4006. Senate Bill 4006 covers home insurance and climate risk. An insurer must tell the policyholder in writing whether flood coverage is available. Companies covered by a new climate risk article must also disclose the climate risks they carry. The House passed it 78-32, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1723679,
+      "measure_id": "SB 4025",
+      "vote_date": "2026-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 4025. Senate Bill 4025 covers replacing lead water pipes. A landowner must let the water utility onto the property to replace a lead or galvanized service line when the utility offers to do it free. That duty used to apply only in Chicago and now applies across the state. The House passed it 83-29, and it became law.",
+      "nay_description": "Voted against Senate Bill 4025. Senate Bill 4025 covers replacing lead water pipes. A landowner must let the water utility onto the property to replace a lead or galvanized service line when the utility offers to do it free. That duty used to apply only in Chicago and now applies across the state. The House passed it 83-29, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1724011,
+      "measure_id": "SB 4041",
+      "vote_date": "2026-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 4041. Senate Bill 4041 covers airport noise. No later than December 31, 2030, and every five years after that, an airport sponsor must prepare a noise contour study for each covered airport and post it for the public. The House passed it 71-24, and it became law.",
+      "nay_description": "Voted against Senate Bill 4041. Senate Bill 4041 covers airport noise. No later than December 31, 2030, and every five years after that, an airport sponsor must prepare a noise contour study for each covered airport and post it for the public. The House passed it 71-24, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

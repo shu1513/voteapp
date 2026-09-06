@@ -19,6 +19,7 @@ import { UserIdentityError } from "../pipeline/users/userIdentity.js";
 import { AuthGoogleSignInError } from "../auth/authService.js";
 import { MembershipServiceError, MembershipWebhookRetryError } from "./membership/membershipService.js";
 import type { ApiErrorCode } from "./apiResponses.js";
+import { RequestValidationError } from "../utils/requestValidationError.js";
 
 export type MappedApiError = {
   statusCode: number;
@@ -27,11 +28,13 @@ export type MappedApiError = {
 };
 
 export function mapErrorToResponse(error: unknown): MappedApiError {
-  if (error instanceof SyntaxError) {
-    return { statusCode: 400, code: "invalid_json", message: error.message };
-  }
-  if (error instanceof TypeError) {
-    return { statusCode: 400, code: "invalid_request", message: error.message };
+  // Request problems only. A bare TypeError/SyntaxError is a bug or a bad
+  // stored value, not a client error: it falls through to the 500 branch so
+  // it is logged and captured instead of surfacing as a 400 with an internal
+  // message. (Express body-parser JSON failures are mapped separately in
+  // apiServer before this runs.)
+  if (error instanceof RequestValidationError) {
+    return { statusCode: 400, code: error.code, message: error.message };
   }
   // Distinct code (not a generic 400) so the login page can route the user
   // to the register page instead of showing a dead-end error.

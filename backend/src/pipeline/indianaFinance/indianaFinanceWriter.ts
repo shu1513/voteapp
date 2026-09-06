@@ -1,4 +1,5 @@
 import type { Pool, PoolClient } from "pg";
+import { assertSnapshotDbIsNotPoolClient } from "../finance/financeWriterPoolGuard.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
@@ -125,6 +126,7 @@ function validateIndianaFinanceLinkInput(link: IndianaFinanceLinkInput): void {
 }
 
 async function withIndianaFinanceTransaction<T>(db: Queryable, work: (tx: Queryable) => Promise<T>): Promise<T> {
+  assertSnapshotDbIsNotPoolClient("Indiana", db);
   if (!canOpenTransaction(db)) {
     try {
       await db.query("BEGIN");

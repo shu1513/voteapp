@@ -24,27 +24,27 @@ type EmailMessageKind = "verification" | "password_reset" | "email_change";
 
 function normalizeEmailAddress(email: string): string {
   if (typeof email !== "string") {
-    throw new TypeError("Email address must be a string");
+    throw new Error("Email address must be a string");
   }
   const normalized = email.trim();
   if (normalized.length === 0) {
-    throw new TypeError("Email address must be a non-empty string");
+    throw new Error("Email address must be a non-empty string");
   }
   return normalized;
 }
 
 function normalizeAbsoluteLinkUrl(linkUrl: string): string {
   if (typeof linkUrl !== "string") {
-    throw new TypeError("Link URL must be a string");
+    throw new Error("Link URL must be a string");
   }
   const normalized = linkUrl.trim();
   if (normalized.length === 0) {
-    throw new TypeError("Link URL must be a non-empty string");
+    throw new Error("Link URL must be a non-empty string");
   }
 
   const parsed = new URL(normalized);
   if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-    throw new TypeError("Link URL must use http or https");
+    throw new Error("Link URL must use http or https");
   }
   return parsed.toString();
 }

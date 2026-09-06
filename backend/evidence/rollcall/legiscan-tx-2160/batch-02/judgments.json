@@ -8,8 +8,8 @@
       "measure_id": "HB 493",
       "vote_date": "2025-05-13",
       "review_status": "approved",
-      "yea_description": "Voted to pass House Bill 493. It bars people finally convicted of first- or second-degree felonies, the two most serious levels, from serving as poll watchers. Texas already barred people with an election-related felony, and appointees must now swear in writing that they have no covered conviction. The bill became law after the Texas House passed it 86-52.",
-      "nay_description": "Voted against House Bill 493. It bars people finally convicted of first- or second-degree felonies, the two most serious levels, from serving as poll watchers. Texas already barred people with an election-related felony, and appointees must now swear in writing that they have no covered conviction. The bill became law after the Texas House passed it 86-52.",
+      "yea_description": "Voted to pass House Bill 493. It bars people finally convicted of a first- or second-degree felony from serving as poll watchers. Texas already barred people with an election-related felony, and appointees must now swear in writing that they have no covered conviction. The bill became law after the Texas House passed it 86-52.",
+      "nay_description": "Voted against House Bill 493. It bars people finally convicted of a first- or second-degree felony from serving as poll watchers. Texas already barred people with an election-related felony, and appointees must now swear in writing that they have no covered conviction. The bill became law after the Texas House passed it 86-52.",
       "labels": [
         {
           "slug": "election_integrity",
@@ -232,8 +232,8 @@
       "measure_id": "SB 2284",
       "vote_date": "2025-05-15",
       "review_status": "approved",
-      "yea_description": "Voted to pass Senate Bill 2284, which limits local bow and gun rules. Cities and counties cannot treat bows like firearms or air guns, and licensed handgun carriers keep some rights at public places and events. It also removes one small-city gun power and changes the county bow-hunting lot limit from 10 acres or less to under seven acres. The bill became law after the Texas House passed it 96-43.",
-      "nay_description": "Voted against Senate Bill 2284, which limits local bow and gun rules. Cities and counties cannot treat bows like firearms or air guns, and licensed handgun carriers keep some rights at public places and events. It also removes one small-city gun power and changes the county bow-hunting lot limit from 10 acres or less to under seven acres. The bill became law after the Texas House passed it 96-43.",
+      "yea_description": "Voted to pass Senate Bill 2284, which limits local bow and gun rules. It extends the state ban on city and county firearm rules to archery equipment, so local governments may no longer regulate bows, crossbows, or arrows. It also drops firearms from a municipal fire-prevention power and changes the county bow-hunting lot limit from 10 acres or less to smaller than seven acres. The bill became law after the Texas House passed it 96-43.",
+      "nay_description": "Voted against Senate Bill 2284, which limits local bow and gun rules. It extends the state ban on city and county firearm rules to archery equipment, so local governments may no longer regulate bows, crossbows, or arrows. It also drops firearms from a municipal fire-prevention power and changes the county bow-hunting lot limit from 10 acres or less to smaller than seven acres. The bill became law after the Texas House passed it 96-43.",
       "labels": [
         {
           "slug": "gun_control",
@@ -463,8 +463,8 @@
       "measure_id": "SB 21",
       "vote_date": "2025-05-21",
       "review_status": "approved",
-      "yea_description": "Voted to pass Senate Bill 21. It created the Texas Strategic Bitcoin Reserve, a fund outside the state treasury run by the comptroller. The fund may hold bitcoin or other digital money worth an average of at least $500 billion in total over 24 months; an advisory group must report every two years. The bill became law after the Texas House passed it 101-42.",
-      "nay_description": "Voted against Senate Bill 21. It created the Texas Strategic Bitcoin Reserve, a fund outside the state treasury run by the comptroller. The fund may hold bitcoin or other digital money worth an average of at least $500 billion in total over 24 months; an advisory group must report every two years. The bill became law after the Texas House passed it 101-42.",
+      "yea_description": "Voted to pass Senate Bill 21. It created the Texas Strategic Bitcoin Reserve, a special fund outside the state treasury held and managed by the comptroller. The reserve may buy only bitcoin or other cryptocurrency whose average market value over the past 24 months was at least $500 billion. The comptroller must report to the legislature every two years, advised by a five-member committee. The bill became law after the Texas House passed it 101-42.",
+      "nay_description": "Voted against Senate Bill 21. It created the Texas Strategic Bitcoin Reserve, a special fund outside the state treasury held and managed by the comptroller. The reserve may buy only bitcoin or other cryptocurrency whose average market value over the past 24 months was at least $500 billion. The comptroller must report to the legislature every two years, advised by a five-member committee. The bill became law after the Texas House passed it 101-42.",
       "labels": [
         {
           "slug": "general"
@@ -482,8 +482,8 @@
       "measure_id": "SB 21",
       "vote_date": "2025-05-30",
       "review_status": "approved",
-      "yea_description": "Voted to accept the final House-Senate deal on Senate Bill 21. It created the Texas Strategic Bitcoin Reserve, a fund outside the state treasury run by the comptroller. The fund may hold bitcoin or other digital money worth an average of at least $500 billion in total over 24 months; an advisory group must report every two years. The bill became law after the Texas Senate approved the compromise 23-8.",
-      "nay_description": "Voted against the final House-Senate deal on Senate Bill 21. It created the Texas Strategic Bitcoin Reserve, a fund outside the state treasury run by the comptroller. The fund may hold bitcoin or other digital money worth an average of at least $500 billion in total over 24 months; an advisory group must report every two years. The bill became law after the Texas Senate approved the compromise 23-8.",
+      "yea_description": "Voted to accept the final House-Senate deal on Senate Bill 21. It created the Texas Strategic Bitcoin Reserve, a fund outside the state treasury run by the comptroller. Any bitcoin or other cryptocurrency bought with reserve money must have averaged at least $500 billion in market value over the most recent 24 months. The comptroller must report to the legislature every two years, with advice from a new committee. The bill became law after the Texas Senate approved the compromise 23-8.",
+      "nay_description": "Voted against the final House-Senate deal on Senate Bill 21. It created the Texas Strategic Bitcoin Reserve, a fund outside the state treasury run by the comptroller. Any bitcoin or other cryptocurrency bought with reserve money must have averaged at least $500 billion in market value over the most recent 24 months. The comptroller must report to the legislature every two years, with advice from a new committee. The bill became law after the Texas Senate approved the compromise 23-8.",
       "labels": [
         {
           "slug": "general"

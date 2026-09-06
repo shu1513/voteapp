@@ -129,8 +129,8 @@
       "measure_id": "HJR 98",
       "vote_date": "2025-04-28",
       "review_status": "approved",
-      "yea_description": "Voted through House Joint Resolution 98 to ask Congress for a constitutional convention, a national meeting that can suggest changes to the United States Constitution. Any change had to limit federal spending or power, or set term limits for federal officers and members of Congress. The Texas House backed the request 86-57. It never went to Texas voters.",
-      "nay_description": "Voted against House Joint Resolution 98, which asked Congress for a constitutional convention, a national meeting that can suggest changes to the United States Constitution. Any change had to limit federal spending or power, or set term limits for federal officers and members of Congress. The Texas House backed the request 86-57. It never went to Texas voters.",
+      "yea_description": "Voted through House Joint Resolution 98 to ask Congress for a constitutional convention, a national meeting that can suggest changes to the United States Constitution. Any change had to limit federal spending or power, or set term limits for federal officers and members of Congress. The Texas House backed the request 86-57 and the Senate 17-14. It was filed with the Secretary of State on May 13, 2025, making Texas's application to Congress official. Applications to Congress do not go to Texas voters.",
+      "nay_description": "Voted against House Joint Resolution 98, which asked Congress for a constitutional convention, a national meeting that can suggest changes to the United States Constitution. Any change had to limit federal spending or power, or set term limits for federal officers and members of Congress. The Texas House backed the request 86-57 and the Senate 17-14. It was filed with the Secretary of State on May 13, 2025, making Texas's application to Congress official. Applications to Congress do not go to Texas voters.",
       "labels": [
         {
           "slug": "general"
@@ -145,8 +145,8 @@
       "measure_id": "HJR 98",
       "vote_date": "2025-05-08",
       "review_status": "approved",
-      "yea_description": "Voted through House Joint Resolution 98 to ask Congress for a constitutional convention, a national meeting that can suggest changes to the United States Constitution. Any change had to limit federal spending or power, or set term limits for federal officers and members of Congress. The Texas Senate backed the request 17-14. It never went to Texas voters.",
-      "nay_description": "Voted against House Joint Resolution 98, which asked Congress for a constitutional convention, a national meeting that can suggest changes to the United States Constitution. Any change had to limit federal spending or power, or set term limits for federal officers and members of Congress. The Texas Senate backed the request 17-14. It never went to Texas voters.",
+      "yea_description": "Voted through House Joint Resolution 98 to ask Congress for a constitutional convention, a national meeting that can suggest changes to the United States Constitution. Any change had to limit federal spending or power, or set term limits for federal officers and members of Congress. The Texas Senate backed the request 17-14 and the House 86-57. It was filed with the Secretary of State on May 13, 2025, making Texas's application to Congress official. Applications to Congress do not go to Texas voters.",
+      "nay_description": "Voted against House Joint Resolution 98, which asked Congress for a constitutional convention, a national meeting that can suggest changes to the United States Constitution. Any change had to limit federal spending or power, or set term limits for federal officers and members of Congress. The Texas Senate backed the request 17-14 and the House 86-57. It was filed with the Secretary of State on May 13, 2025, making Texas's application to Congress official. Applications to Congress do not go to Texas voters.",
       "labels": [
         {
           "slug": "general"
@@ -302,8 +302,8 @@
       "measure_id": "SB 12",
       "vote_date": "2025-03-19",
       "review_status": "approved",
-      "yea_description": "Voted to pass Senate Bill 12. It bars public schools from assigning diversity, equity, and inclusion duties or teaching about sexual orientation or gender identity in any grade. Schools cannot sponsor clubs based on those topics, and parents must give written permission for clubs and human sexuality lessons. The bill became law after the Texas Senate passed it 20-11.",
-      "nay_description": "Voted against Senate Bill 12. It bars public schools from assigning diversity, equity, and inclusion duties or teaching about sexual orientation or gender identity in any grade. Schools cannot sponsor clubs based on those topics, and parents must give written permission for clubs and human sexuality lessons. The bill became law after the Texas Senate passed it 20-11.",
+      "yea_description": "Voted to pass Senate Bill 12. It bars public schools from assigning diversity, equity, and inclusion duties or teaching about sexual orientation or gender identity in any grade. Schools cannot sponsor clubs based on those topics, and parents must give written permission for clubs and human sexuality lessons. As enacted it also makes districts adopt a policy barring staff from helping a student socially transition, including by supplying any information about it. The bill became law after the Texas Senate passed it 20-11.",
+      "nay_description": "Voted against Senate Bill 12. It bars public schools from assigning diversity, equity, and inclusion duties or teaching about sexual orientation or gender identity in any grade. Schools cannot sponsor clubs based on those topics, and parents must give written permission for clubs and human sexuality lessons. As enacted it also makes districts adopt a policy barring staff from helping a student socially transition, including by supplying any information about it. The bill became law after the Texas Senate passed it 20-11.",
       "labels": [
         {
           "slug": "civil_rights",

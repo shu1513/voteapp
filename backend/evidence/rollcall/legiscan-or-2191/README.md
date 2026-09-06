@@ -6,6 +6,43 @@ Oregon meets every year, so this session is only the 2025 half. The 2026
 session is a separate LegiScan dataset (2252) and would need its own
 `OR-2252` registry entry; nothing here covers it.
 
+## Correction, 2026-09-06: eleven rolls disagree with the journal, not five
+
+This directory originally said that five of Oregon's 2025 roll calls put a
+member on the wrong side. **The true number is eleven.**
+
+The original audit was bounded by the divided gate: it checked only the 393
+roll calls that are both divided and enacted. Re-running it over **every**
+enacted floor roll — all 1,355 — finds eleven mismatches against the tally
+Oregon's own bill history prints, with 1,344 exact.
+
+The six that were missed are:
+
+| Roll | LegiScan | Oregon's journal |
+| --- | --- | --- |
+| HB 3175 House 2025-03-06 | 46-10, Harbick a nay | 47-9, Harbick not named |
+| HB 3746 House 2025-06-20 | 44-5 | 42-7, Bowman and Nelson also nays |
+| SB 5534 House 2025-06-24 | 49-1, Boshart Davis a nay | 50-0, no nays |
+| HB 3731 House 2025-04-17 | 47-2, Cate and Diehl nays | 48-1, only Cate |
+| SB 1061 Senate 2025-06-23 | 29-0 | 30-0, a member missing |
+| SB 838 Senate 2025-06-16 | 28-0, no nays | 27-1, Hayden a nay |
+
+**No imported record is affected.** None of the six is divided under either
+tally, so none was ever eligible for the pool. That had to be checked rather
+than assumed, and it was: a re-fetch moved exactly six stored rolls and left
+3,312 unchanged, and a re-import reported all 3,091 records `unchanged`.
+
+All eleven now sit in the config's `heldRollCallIds`, so they are surfaced and
+can never be queued.
+
+**Why the bound was unsafe.** A tally error can itself decide whether a roll
+passes the divided gate. Oregon's 2026 session contains exactly that case:
+SB 1565's House roll reads 45-10 in LegiScan, which fails the gate, and 43-12
+in the journal, which passes it. Auditing only what the feed already calls
+divided would have hidden the one roll the feed was wrong about. The audit in
+`../legiscan-or-2252/tally-audit.py` takes a dataset directory and runs over
+every enacted floor roll in either session.
+
 ## The dataset
 
 LegiScan session **2191**, dataset cut 2025-12-07, hash
