@@ -38,6 +38,16 @@ conforming change — the same money is now captured by the new add-back — and
 the act's stated purpose, and its net effect, remain reducing tax avoidance.
 The description does not mention it, because it changes no one's stance.
 
+Review corrected the reason. The first draft called the repeal a conforming
+change, "the same money now captured by the new add-back". It is not: the
+add-back concerns the section 250 deduction, the repealed exclusion concerns
+section 78 dividends, and those are different amounts. The final fiscal note
+(page 4) scores the expanded subtraction on its own, as a minimal revenue
+decrease — it found no case where a corporation had ever included those
+dividends in Colorado taxable income. So it is a small giveback that has cost
+nothing yet, inside an act that raises about $72 million a year. It stays out
+of the description on that footing, not as bookkeeping.
+
 ## SB 25B-004 is a title trap
 
 The act is called "Increase Transparency for Algorithmic Systems". It increases
@@ -74,6 +84,23 @@ premium tax credit. That is a real condition, not a funding contingency of the
 kind this campaign drops — the act commits the money either from tax credit
 sales or, failing that, from the general fund. The description states the
 condition rather than hiding it.
+
+**Section 4 is not conditional, and the fiscal note never mentions it.** It
+amends 10-16-1207 (4)(c.5)(III), the floor for the OmniSalud plans the state
+subsidizes for low-income people who cannot get federal tax credits or
+Medicaid. Two guarantees are struck: the plan "has no premium", and "has an
+actuarial value of not less than ninety-four percent". In their place the plan
+must "maximize enrollment". This is the same hidden-deletion trap as HB
+25B-1001: extracted text shows both guarantees still standing, and page 4 had
+to be rendered to see the strike-throughs. The final fiscal note describes
+OmniSalud only as background and says nothing about the change, which is how
+the first draft missed it — the note was read first.
+
+The description now carries it in three sentences. The label stays
+`healthcare_affordability` with `yea: for`: the $100 million is the act's
+weight, and the OmniSalud change trades per-person guarantees for more people
+covered inside a subsidy program, which is a tradeoff within affordability,
+not a vote against it.
 
 ## Version check
 
