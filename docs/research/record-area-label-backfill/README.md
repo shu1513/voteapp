@@ -121,6 +121,25 @@ The research also surfaced defects no label pass would have caught:
 
 Fixing those needs a description repair, which a label pass is not allowed to do.
 
+## Review corrections
+
+Two review findings on the PR, both the same mistake: treating "we now know what
+the bill did" as if it were "we know why this member voted no."
+
+- 17 research-pass labels sat on plain no votes with no candidate-specific
+  evidence of motive (Bagshaw on Maine's school-funding rewrite, MacEwen on the
+  Climate Commitment Act, and 15 more). Removed with `manual:records:untag`;
+  the file is `untags-no-vote-inversions-2026-09-06.json`. The seven that stayed
+  have evidence in the record itself: Collins and Risch said in their own
+  statements the debt deal cut too little; Revuluri asked where the money was
+  coming from; McClintock later voted for the final bill; Costello voted for the
+  cheaper of two plans.
+- Missouri HJR 73 bundles abortion restrictions with a ban on gender-transition
+  treatment for minors, so a no vote cannot be read as a reproductive-rights
+  position — the same reasoning as Ohio SB 1. Its judgment already carried
+  `nay: null` on the civil-rights label; the reproductive-rights label now
+  matches. Both rolls re-imported; 41 no-voter records lost the tag.
+
 ## Label rules tightened during the run
 
 - `personal_income_tax_reduction` covers personal income tax only. Sales, property, business and production tax records do not belong there.
