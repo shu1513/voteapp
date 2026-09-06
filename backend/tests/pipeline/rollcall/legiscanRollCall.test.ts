@@ -1399,6 +1399,7 @@ describe("getLegiscanStateConfig", () => {
       "AZ",
       "CO",
       "CO-2224",
+      "CO-2243",
       "MN",
       "MN-2217",
       "OR",
@@ -1493,6 +1494,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("AZ").sessionId).toBe(2155);
     expect(getLegiscanStateConfig("CO").sessionId).toBe(2173);
     expect(getLegiscanStateConfig("CO-2224")).toMatchObject({ jurisdiction: "CO", sessionId: 2224 });
+    expect(getLegiscanStateConfig("CO-2243")).toMatchObject({ jurisdiction: "CO", sessionId: 2243 });
     expect(getLegiscanStateConfig("MN").sessionId).toBe(2151);
     expect(getLegiscanStateConfig("MN-2217")).toMatchObject({ jurisdiction: "MN", sessionId: 2217 });
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
