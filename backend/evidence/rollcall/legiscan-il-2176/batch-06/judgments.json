@@ -1,0 +1,240 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1575406,
+      "measure_id": "SB 1560",
+      "vote_date": "2025-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1560. Senate Bill 1560 told the State Board of Education to publish model procedures and guidance for schools that want to screen every student for mental health needs. It also set up training so hospital staff can point families to BEACON, the state's central line for children's behavioral health services. The House passed it 72-36, and it became law.",
+      "nay_description": "Voted against Senate Bill 1560. Senate Bill 1560 told the State Board of Education to publish model procedures and guidance for schools that want to screen every student for mental health needs. It also set up training so hospital staff can point families to BEACON, the state's central line for children's behavioral health services. The House passed it 72-36, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1718322,
+      "measure_id": "SB 1743",
+      "vote_date": "2026-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1743. Senate Bill 1743 removed a rule that barred a psychologist with prescribing authority from writing prescriptions for patients over 65 years old. Those psychologists still work under a written agreement with a supervising physician. That requirement did not change. The House passed it 67-31, and it became law.",
+      "nay_description": "Voted against Senate Bill 1743. Senate Bill 1743 removed a rule that barred a psychologist with prescribing authority from writing prescriptions for patients over 65 years old. Those psychologists still work under a written agreement with a supervising physician. That requirement did not change. The House passed it 67-31, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1582079,
+      "measure_id": "SB 1797",
+      "vote_date": "2025-05-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1797. Senate Bill 1797 created the Digital Assets and Consumer Protection Act. A company that holds or trades digital assets such as cryptocurrency for people in Illinois must register with the state and follow consumer protection rules. People who only write software or help run a network are not covered. The House passed it 76-38, and it became law.",
+      "nay_description": "Voted against Senate Bill 1797. Senate Bill 1797 created the Digital Assets and Consumer Protection Act. A company that holds or trades digital assets such as cryptocurrency for people in Illinois must register with the state and follow consumer protection rules. People who only write software or help run a network are not covered. The House passed it 76-38, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1582866,
+      "measure_id": "SB 1797",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House version of Senate Bill 1797. Senate Bill 1797 created the Digital Assets and Consumer Protection Act. A company that holds or trades digital assets such as cryptocurrency for people in Illinois must register with the state and follow consumer protection rules. People who only write software or help run a network are not covered. The Senate agreed to that version 41-15, and it became law.",
+      "nay_description": "Voted against accepting the House version of Senate Bill 1797. Senate Bill 1797 created the Digital Assets and Consumer Protection Act. A company that holds or trades digital assets such as cryptocurrency for people in Illinois must register with the state and follow consumer protection rules. People who only write software or help run a network are not covered. The Senate agreed to that version 41-15, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "official_vote_date": "2025-06-01"
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1576920,
+      "measure_id": "SB 1859",
+      "vote_date": "2025-05-23",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1859. Senate Bill 1859 created a Climate Displacement Task Force. It studies how flooding, heat, and other climate damage push people out of their homes in Illinois, and what the state should do about it. Members serve without pay, and the task force ends on December 31, 2028. The House passed it 71-38, and it became law.",
+      "nay_description": "Voted against Senate Bill 1859. Senate Bill 1859 created a Climate Displacement Task Force. It studies how flooding, heat, and other climate damage push people out of their homes in Illinois, and what the state should do about it. Members serve without pay, and the task force ends on December 31, 2028. The House passed it 71-38, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1582707,
+      "measure_id": "SB 1859",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House version of Senate Bill 1859. Senate Bill 1859 created a Climate Displacement Task Force. It studies how flooding, heat, and other climate damage push people out of their homes in Illinois, and what the state should do about it. Members serve without pay, and the task force ends on December 31, 2028. The Senate agreed to that version 40-16, and it became law.",
+      "nay_description": "Voted against accepting the House version of Senate Bill 1859. Senate Bill 1859 created a Climate Displacement Task Force. It studies how flooding, heat, and other climate damage push people out of their homes in Illinois, and what the state should do about it. Members serve without pay, and the task force ends on December 31, 2028. The Senate agreed to that version 40-16, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1576860,
+      "measure_id": "SB 1920",
+      "vote_date": "2025-05-23",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1920. Senate Bill 1920 told the State Board of Education to write statewide guidance on how artificial intelligence should be used in grade schools and high schools. It also told the Board to gather teaching material that supports American Sign Language programs. The House passed it 74-34, and it became law.",
+      "nay_description": "Voted against Senate Bill 1920. Senate Bill 1920 told the State Board of Education to write statewide guidance on how artificial intelligence should be used in grade schools and high schools. It also told the Board to gather teaching material that supports American Sign Language programs. The House passed it 74-34, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1575845,
+      "measure_id": "SB 1947",
+      "vote_date": "2025-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1947. Senate Bill 1947 changed how new teachers are licensed. From September 2026 through August 2029, every Illinois college that trains teachers must take part in a pilot of the state's teacher performance assessment. The House passed it 84-31, and it became law.",
+      "nay_description": "Voted against Senate Bill 1947. Senate Bill 1947 changed how new teachers are licensed. From September 2026 through August 2029, every Illinois college that trains teachers must take part in a pilot of the state's teacher performance assessment. The House passed it 84-31, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1576913,
+      "measure_id": "SB 2280",
+      "vote_date": "2025-05-23",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 2280. Senate Bill 2280 changed how the Office of Firearm Violence Prevention reports to lawmakers. Its yearly report must name the communities living with concentrated gun violence, in big cities and smaller ones alike, and explain what money is being spent there to bring it down. The House passed it 71-36, and it became law.",
+      "nay_description": "Voted against Senate Bill 2280. Senate Bill 2280 changed how the Office of Firearm Violence Prevention reports to lawmakers. Its yearly report must name the communities living with concentrated gun violence, in big cities and smaller ones alike, and explain what money is being spent there to bring it down. The House passed it 71-36, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1582429,
+      "measure_id": "SB 2319",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 2319. Senate Bill 2319 created the Digital Asset Kiosks Act. An operator of a crypto cash machine must register with the state, keep to limits on what a customer may be charged and may trade, give clear warnings and receipts, and report where each machine sits. Parts of the act end if the state's broader digital asset law takes effect. The House passed it 81-36, and it became law.",
+      "nay_description": "Voted against Senate Bill 2319. Senate Bill 2319 created the Digital Asset Kiosks Act. An operator of a crypto cash machine must register with the state, keep to limits on what a customer may be charged and may trade, give clear warnings and receipts, and report where each machine sits. Parts of the act end if the state's broader digital asset law takes effect. The House passed it 81-36, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1582888,
+      "measure_id": "SB 2319",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House version of Senate Bill 2319. Senate Bill 2319 created the Digital Asset Kiosks Act. An operator of a crypto cash machine must register with the state, keep to limits on what a customer may be charged and may trade, give clear warnings and receipts, and report where each machine sits. Parts of the act end if the state's broader digital asset law takes effect. The Senate agreed to that version 39-18, and it became law.",
+      "nay_description": "Voted against accepting the House version of Senate Bill 2319. Senate Bill 2319 created the Digital Asset Kiosks Act. An operator of a crypto cash machine must register with the state, keep to limits on what a customer may be charged and may trade, give clear warnings and receipts, and report where each machine sits. Parts of the act end if the state's broader digital asset law takes effect. The Senate agreed to that version 39-18, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "official_vote_date": "2025-06-01"
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1720826,
+      "measure_id": "SB 2762",
+      "vote_date": "2026-05-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 2762. Senate Bill 2762 covers health plans issued or renewed on or after January 1, 2029. They must pay for a seizure detection device when a doctor prescribes one. The device chosen must fit the person's own situation and medical needs, decided with their doctor. The House passed it 82-25, and it became law.",
+      "nay_description": "Voted against Senate Bill 2762. Senate Bill 2762 covers health plans issued or renewed on or after January 1, 2029. They must pay for a seizure detection device when a doctor prescribes one. The device chosen must fit the person's own situation and medical needs, decided with their doctor. The House passed it 82-25, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1717891,
+      "measure_id": "SB 2972",
+      "vote_date": "2026-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 2972. Senate Bill 2972 requires liability insurance for a motorboat over 10 horsepower, a boat longer than 21 feet, or a personal watercraft. The coverage must at least match the minimum Illinois requires for cars. The owner or operator must show proof of insurance when an officer asks. The House passed it 80-22, and it became law.",
+      "nay_description": "Voted against Senate Bill 2972. Senate Bill 2972 requires liability insurance for a motorboat over 10 horsepower, a boat longer than 21 feet, or a personal watercraft. The coverage must at least match the minimum Illinois requires for cars. The owner or operator must show proof of insurance when an officer asks. The House passed it 80-22, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

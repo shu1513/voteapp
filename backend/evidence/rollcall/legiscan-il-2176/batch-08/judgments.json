@@ -1,0 +1,401 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1717615,
+      "measure_id": "HB 4273",
+      "vote_date": "2026-05-27",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate version of House Bill 4273. House Bill 4273 covers home fire insurance. A company may not raise a renewal premium by more than 10% unless it tells the customer at least 60 days ahead. The state also gains power to review these rates, which may not be too high, too low, or unfairly applied. The House agreed to that version 72-38, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 4273. House Bill 4273 covers home fire insurance. A company may not raise a renewal premium by more than 10% unless it tells the customer at least 60 days ahead. The state also gains power to review these rates, which may not be too high, too low, or unfairly applied. The House agreed to that version 72-38, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1717614,
+      "measure_id": "HB 4273",
+      "vote_date": "2026-05-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4273. House Bill 4273 covers home fire insurance. A company may not raise a renewal premium by more than 10% unless it tells the customer at least 60 days ahead. The state also gains power to review these rates, which may not be too high, too low, or unfairly applied. The Senate passed it 43-14, and it became law.",
+      "nay_description": "Voted against House Bill 4273. House Bill 4273 covers home fire insurance. A company may not raise a renewal premium by more than 10% unless it tells the customer at least 60 days ahead. The state also gains power to review these rates, which may not be too high, too low, or unfairly applied. The Senate passed it 43-14, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1723605,
+      "measure_id": "HB 4277",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4277. House Bill 4277 covers people applying to be a notary public. Someone with a felony conviction may apply once they have finished everything their sentence required and 10 years have passed since then. The House passed it 75-33, and it became law.",
+      "nay_description": "Voted against House Bill 4277. House Bill 4277 covers people applying to be a notary public. Someone with a felony conviction may apply once they have finished everything their sentence required and 10 years have passed since then. The House passed it 75-33, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1723606,
+      "measure_id": "HB 4277",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4277. House Bill 4277 covers people applying to be a notary public. Someone with a felony conviction may apply once they have finished everything their sentence required and 10 years have passed since then. The Senate passed it 36-19, and it became law.",
+      "nay_description": "Voted against House Bill 4277. House Bill 4277 covers people applying to be a notary public. Someone with a felony conviction may apply once they have finished everything their sentence required and 10 years have passed since then. The Senate passed it 36-19, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1719228,
+      "measure_id": "HB 5284",
+      "vote_date": "2026-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate version of House Bill 5284. House Bill 5284 covers health insurance plans in Illinois. They must pay for hormone and non-hormone treatment for menopause and the years leading up to it, when a provider says the treatment is medically needed. The House agreed to that version 78-33, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 5284. House Bill 5284 covers health insurance plans in Illinois. They must pay for hormone and non-hormone treatment for menopause and the years leading up to it, when a provider says the treatment is medically needed. The House agreed to that version 78-33, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1723643,
+      "measure_id": "HB 5316",
+      "vote_date": "2026-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 5316. House Bill 5316 lets the state emergency management agency go onto public and private land to take samples of soil, water, and air. It may do this after a disaster or other incident that spreads radioactive material, or threatens to. The House passed it 70-35, and it became law.",
+      "nay_description": "Voted against House Bill 5316. House Bill 5316 lets the state emergency management agency go onto public and private land to take samples of soil, water, and air. It may do this after a disaster or other incident that spreads radioactive material, or threatens to. The House passed it 70-35, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1723644,
+      "measure_id": "HB 5316",
+      "vote_date": "2026-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 5316. House Bill 5316 lets the state emergency management agency go onto public and private land to take samples of soil, water, and air. It may do this after a disaster or other incident that spreads radioactive material, or threatens to. The Senate passed it 44-13, and it became law.",
+      "nay_description": "Voted against House Bill 5316. House Bill 5316 lets the state emergency management agency go onto public and private land to take samples of soil, water, and air. It may do this after a disaster or other incident that spreads radioactive material, or threatens to. The Senate passed it 44-13, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1720537,
+      "measure_id": "HB 5460",
+      "vote_date": "2026-04-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 5460. House Bill 5460 widened who may receive a School Social Work scholarship. It now covers a person working toward a clinical social work or social work license, and a person who will finish a master's degree in social work from an approved program before enrolling. The House passed it 76-32, and it became law.",
+      "nay_description": "Voted against House Bill 5460. House Bill 5460 widened who may receive a School Social Work scholarship. It now covers a person working toward a clinical social work or social work license, and a person who will finish a master's degree in social work from an approved program before enrolling. The House passed it 76-32, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1718098,
+      "measure_id": "HB 5492",
+      "vote_date": "2026-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate version of House Bill 5492. House Bill 5492 covers health plans renewed or issued on or after January 1, 2028. They must pay for up to a six-month supply of prescribed hormone therapy, handed out at one time, along with the supplies needed to take it. The House agreed to that version 75-39, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 5492. House Bill 5492 covers health plans renewed or issued on or after January 1, 2028. They must pay for up to a six-month supply of prescribed hormone therapy, handed out at one time, along with the supplies needed to take it. The House agreed to that version 75-39, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "official_vote_date": "2026-06-01"
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1718097,
+      "measure_id": "HB 5492",
+      "vote_date": "2026-05-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 5492. House Bill 5492 covers health plans renewed or issued on or after January 1, 2028. They must pay for up to a six-month supply of prescribed hormone therapy, handed out at one time, along with the supplies needed to take it. The Senate passed it 38-19, and it became law.",
+      "nay_description": "Voted against House Bill 5492. House Bill 5492 covers health plans renewed or issued on or after January 1, 2028. They must pay for up to a six-month supply of prescribed hormone therapy, handed out at one time, along with the supplies needed to take it. The Senate passed it 38-19, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1545001,
+      "measure_id": "SB 19",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 19. Senate Bill 19 changed how the Prisoner Review Board treats crime victims. A person who holds a protective order against a parole candidate may submit a victim statement, and the Board must publish how its process works. The Attorney General must also review whether victims and witnesses are told about hearings in time. The Senate passed it 32-22, and it became law.",
+      "nay_description": "Voted against Senate Bill 19. Senate Bill 19 changed how the Prisoner Review Board treats crime victims. A person who holds a protective order against a parole candidate may submit a victim statement, and the Board must publish how its process works. The Attorney General must also review whether victims and witnesses are told about hearings in time. The Senate passed it 32-22, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1574260,
+      "measure_id": "SB 19",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 19. Senate Bill 19 changed how the Prisoner Review Board treats crime victims. A person who holds a protective order against a parole candidate may submit a victim statement, and the Board must publish how its process works. The Attorney General must also review whether victims and witnesses are told about hearings in time. The House passed it 74-37, and it became law.",
+      "nay_description": "Voted against Senate Bill 19. Senate Bill 19 changed how the Prisoner Review Board treats crime victims. A person who holds a protective order against a parole candidate may submit a victim statement, and the Board must publish how its process works. The Attorney General must also review whether victims and witnesses are told about hearings in time. The House passed it 74-37, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1582508,
+      "measure_id": "SB 24",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 24. Senate Bill 24 told every police agency to write a policy for missing person cases. No agency may keep a rule that makes a family wait before it takes a missing person report. The House passed it 87-28, and it became law.",
+      "nay_description": "Voted against Senate Bill 24. Senate Bill 24 told every police agency to write a policy for missing person cases. No agency may keep a rule that makes a family wait before it takes a missing person report. The House passed it 87-28, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1722387,
+      "measure_id": "SB 25",
+      "vote_date": "2025-10-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 25. Senate Bill 25 is Illinois' 2025 energy law. City and cooperative electric utilities must now plan their power supply in the open, with public meetings. The law also expands battery storage, rooftop solar rights, and electric car charging. And it changes how the state reviews utility plans and rates. The House passed it 70-37, and it became law.",
+      "nay_description": "Voted against Senate Bill 25. Senate Bill 25 is Illinois' 2025 energy law. City and cooperative electric utilities must now plan their power supply in the open, with public meetings. The law also expands battery storage, rooftop solar rights, and electric car charging. And it changes how the state reviews utility plans and rates. The House passed it 70-37, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1722388,
+      "measure_id": "SB 25",
+      "vote_date": "2025-10-30",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the House version of Senate Bill 25. Senate Bill 25 is Illinois' 2025 energy law. City and cooperative electric utilities must now plan their power supply in the open, with public meetings. The law also expands battery storage, rooftop solar rights, and electric car charging. And it changes how the state reviews utility plans and rates. The Senate agreed to that version 37-22, and it became law.",
+      "nay_description": "Voted against accepting the House version of Senate Bill 25. Senate Bill 25 is Illinois' 2025 energy law. City and cooperative electric utilities must now plan their power supply in the open, with public meetings. The law also expands battery storage, rooftop solar rights, and electric car charging. And it changes how the state reviews utility plans and rates. The Senate agreed to that version 37-22, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1575955,
+      "measure_id": "SB 67",
+      "vote_date": "2025-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 67. Senate Bill 67 covers nurse staffing agencies. An agency may not operate or advertise in Illinois without a license from the Department of Labor, and the department may act against an agency that operates without one. The House passed it 75-40, and it became law.",
+      "nay_description": "Voted against Senate Bill 67. Senate Bill 67 covers nurse staffing agencies. An agency may not operate or advertise in Illinois without a license from the Department of Labor, and the department may act against an agency that operates without one. The House passed it 75-40, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1574406,
+      "measure_id": "SB 69",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 69. Senate Bill 69 covers health insurance policies renewed or issued after January 1, 2027. They must pay for equine therapy when a doctor says it is needed. In equine therapy a patient works with horses as part of treatment. The House passed it 78-33, and it became law.",
+      "nay_description": "Voted against Senate Bill 69. Senate Bill 69 covers health insurance policies renewed or issued after January 1, 2027. They must pay for equine therapy when a doctor says it is needed. In equine therapy a patient works with horses as part of treatment. The House passed it 78-33, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1575156,
+      "measure_id": "SB 175",
+      "vote_date": "2025-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 175. Senate Bill 175 covers health plans renewed or issued on or after January 1, 2027. They must pay for the tests used to find Klinefelter syndrome, a genetic condition in males. That means a karyotype test and the hormone tests that go with it. The House passed it 76-33, and it became law.",
+      "nay_description": "Voted against Senate Bill 175. Senate Bill 175 covers health plans renewed or issued on or after January 1, 2027. They must pay for the tests used to find Klinefelter syndrome, a genetic condition in males. That means a karyotype test and the hormone tests that go with it. The House passed it 76-33, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1574922,
+      "measure_id": "SB 212",
+      "vote_date": "2025-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 212. Senate Bill 212 covers the break time an employer must give a nursing mother. The employer must pay for that time at the worker's regular rate, and may not make her use paid leave for it or cut her pay in any other way. The House passed it 82-27, and it became law.",
+      "nay_description": "Voted against Senate Bill 212. Senate Bill 212 covers the break time an employer must give a nursing mother. The employer must pay for that time at the worker's regular rate, and may not make her use paid leave for it or cut her pay in any other way. The House passed it 82-27, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1720248,
+      "measure_id": "SB 714",
+      "vote_date": "2026-05-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 714. Senate Bill 714 covers car insurance. A company may not raise a renewal premium by more than 10% unless it tells the customer at least 30 days ahead. The state also gains power to review car insurance rates. The defensive driving class that earns a discount drops from eight classroom hours to four. The Senate passed it 42-14, and it became law.",
+      "nay_description": "Voted against Senate Bill 714. Senate Bill 714 covers car insurance. A company may not raise a renewal premium by more than 10% unless it tells the customer at least 30 days ahead. The state also gains power to review car insurance rates. The defensive driving class that earns a discount drops from eight classroom hours to four. The Senate passed it 42-14, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1720249,
+      "measure_id": "SB 714",
+      "vote_date": "2026-05-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 714. Senate Bill 714 covers car insurance. A company may not raise a renewal premium by more than 10% unless it tells the customer at least 30 days ahead. The state also gains power to review car insurance rates. The defensive driving class that earns a discount drops from eight classroom hours to four. The House passed it 70-38, and it became law.",
+      "nay_description": "Voted against Senate Bill 714. Senate Bill 714 covers car insurance. A company may not raise a renewal premium by more than 10% unless it tells the customer at least 30 days ahead. The state also gains power to review car insurance rates. The defensive driving class that earns a discount drops from eight classroom hours to four. The House passed it 70-38, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1575317,
+      "measure_id": "SB 1173",
+      "vote_date": "2025-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass Senate Bill 1173. Senate Bill 1173 covers the form a person without a home signs to prove their status for a state ID card. A notary may not charge any fee for notarizing that form. The House passed it 81-28, and it became law.",
+      "nay_description": "Voted against Senate Bill 1173. Senate Bill 1173 covers the form a person without a home signs to prove their status for a state ID card. A notary may not charge any fee for notarizing that form. The House passed it 81-28, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,328 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1545290,
+      "measure_id": "HB 3097",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 3097. House Bill 3097 required every school district to help each high school student learn about and finish the Free Application for Federal Student Aid, or a state aid form. Districts may offer that help in different formats, times, and settings, and must give a student the chance to ask for one-on-one help. The House passed it 84-24, and it became law.",
+      "nay_description": "Voted against House Bill 3097. House Bill 3097 required every school district to help each high school student learn about and finish the Free Application for Federal Student Aid, or a state aid form. Districts may offer that help in different formats, times, and settings, and must give a student the chance to ask for one-on-one help. The House passed it 84-24, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1582292,
+      "measure_id": "HB 3248",
+      "vote_date": "2025-05-30",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate version of House Bill 3248. House Bill 3248 covers health plans issued or renewed after January 1, 2027. They must pay for laser hair removal when a doctor prescribes it as medically necessary care. The rule does not reach plans that serve people on Medicaid. The House agreed to that version 76-39, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 3248. House Bill 3248 covers health plans issued or renewed after January 1, 2027. They must pay for laser hair removal when a doctor prescribes it as medically necessary care. The rule does not reach plans that serve people on Medicaid. The House agreed to that version 76-39, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1576075,
+      "measure_id": "HB 3248",
+      "vote_date": "2025-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 3248. House Bill 3248 covers health plans issued or renewed after January 1, 2027. They must pay for laser hair removal when a doctor prescribes it as medically necessary care. The rule does not reach plans that serve people on Medicaid. The Senate passed it 37-19, and it became law.",
+      "nay_description": "Voted against House Bill 3248. House Bill 3248 covers health plans issued or renewed after January 1, 2027. They must pay for laser hair removal when a doctor prescribes it as medically necessary care. The rule does not reach plans that serve people on Medicaid. The Senate passed it 37-19, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1544842,
+      "measure_id": "HB 3352",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 3352. House Bill 3352 deals with coerced debt, meaning debt a person was forced or tricked into taking on, often by an abusive partner. A debtor may give a collection agency a written statement that the debt was coerced. The act sets out what that statement must say and how it is delivered. The House passed it 89-23, and it became law.",
+      "nay_description": "Voted against House Bill 3352. House Bill 3352 deals with coerced debt, meaning debt a person was forced or tricked into taking on, often by an abusive partner. A debtor may give a collection agency a written statement that the debt was coerced. The act sets out what that statement must say and how it is delivered. The House passed it 89-23, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1582854,
+      "measure_id": "HB 3363",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate version of House Bill 3363. House Bill 3363 created a State Public Defender Commission and started Illinois toward a statewide Office of the State Public Defender. The commission's first job is to work out what that office would cost and where the money would come from. The House agreed to that version 77-36, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 3363. House Bill 3363 created a State Public Defender Commission and started Illinois toward a statewide Office of the State Public Defender. The commission's first job is to work out what that office would cost and where the money would come from. The House agreed to that version 77-36, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1582633,
+      "measure_id": "HB 3363",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 3363. House Bill 3363 created a State Public Defender Commission and started Illinois toward a statewide Office of the State Public Defender. The commission's first job is to work out what that office would cost and where the money would come from. The Senate passed it 36-19, and it became law.",
+      "nay_description": "Voted against House Bill 3363. House Bill 3363 created a State Public Defender Commission and started Illinois toward a statewide Office of the State Public Defender. The commission's first job is to work out what that office would cost and where the money would come from. The Senate passed it 36-19, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1582496,
+      "measure_id": "HB 3385",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate version of House Bill 3385. House Bill 3385 covers mental health staffing at public colleges and universities. Each must give students access to at least three licensed mental health professionals, or the smaller number its enrollment benchmark calls for, whether they work part-time on campus or full-time on or off campus. The House agreed to that version 91-24, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 3385. House Bill 3385 covers mental health staffing at public colleges and universities. Each must give students access to at least three licensed mental health professionals, or the smaller number its enrollment benchmark calls for, whether they work part-time on campus or full-time on or off campus. The House agreed to that version 91-24, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1720411,
+      "measure_id": "HB 3409",
+      "vote_date": "2026-05-29",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate version of House Bill 3409. House Bill 3409 created the Chemicals in Cosmetic Products Act. From July 1, 2028, it bans making or selling a cosmetic that contains listed chemicals put in on purpose. A product made to meet the law but holding an unavoidable trace of a banned chemical is exempt. The House agreed to that version 74-38, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 3409. House Bill 3409 created the Chemicals in Cosmetic Products Act. From July 1, 2028, it bans making or selling a cosmetic that contains listed chemicals put in on purpose. A product made to meet the law but holding an unavoidable trace of a banned chemical is exempt. The House agreed to that version 74-38, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1717984,
+      "measure_id": "HB 3460",
+      "vote_date": "2026-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 3460. House Bill 3460 covers people applying for a barber, cosmetology, esthetics, hair braiding, or nail technology license. The state may not hold up, delay, or refuse to process an application only because the person applying is in prison. The House passed it 75-37, and it became law.",
+      "nay_description": "Voted against House Bill 3460. House Bill 3460 covers people applying for a barber, cosmetology, esthetics, hair braiding, or nail technology license. The state may not hold up, delay, or refuse to process an application only because the person applying is in prison. The House passed it 75-37, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1722464,
+      "measure_id": "HB 3564",
+      "vote_date": "2026-04-08",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate version of House Bill 3564. House Bill 3564 limits the fees a landlord may charge a renter. Every required fee must appear in the listing and on the first page of the lease, or the renter does not owe it. Application and background check fees are capped at $50 unless the landlord bills a documented higher third-party cost, and fees for lease renewals, after-hours repair calls, and pest control the renter did not cause are banned. Owner-occupied buildings with six or fewer units are exempt. The House agreed to that version 64-40, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 3564. House Bill 3564 limits the fees a landlord may charge a renter. Every required fee must appear in the listing and on the first page of the lease, or the renter does not owe it. Application and background check fees are capped at $50 unless the landlord bills a documented higher third-party cost, and fees for lease renewals, after-hours repair calls, and pest control the renter did not cause are banned. Owner-occupied buildings with six or fewer units are exempt. The House agreed to that version 64-40, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1722460,
+      "measure_id": "HB 3564",
+      "vote_date": "2025-10-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 3564. House Bill 3564 limits the fees a landlord may charge a renter. Every required fee must appear in the listing and on the first page of the lease, or the renter does not owe it. Application and background check fees are capped at $50 unless the landlord bills a documented higher third-party cost, and fees for lease renewals, after-hours repair calls, and pest control the renter did not cause are banned. Owner-occupied buildings with six or fewer units are exempt. The Senate passed it 39-16, and it became law.",
+      "nay_description": "Voted against House Bill 3564. House Bill 3564 limits the fees a landlord may charge a renter. Every required fee must appear in the listing and on the first page of the lease, or the renter does not owe it. Application and background check fees are capped at $50 unless the landlord bills a documented higher third-party cost, and fees for lease renewals, after-hours repair calls, and pest control the renter did not cause are banned. Owner-occupied buildings with six or fewer units are exempt. The Senate passed it 39-16, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1544647,
+      "measure_id": "HB 3566",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 3566. House Bill 3566 covers eviction cases in which a child is named as a defendant. If a minor was named willfully and recklessly against the law, the minor may recover attorney fees, real damages, and $1,000 in set damages. The House passed it 73-38, and it became law.",
+      "nay_description": "Voted against House Bill 3566. House Bill 3566 covers eviction cases in which a child is named as a defendant. If a minor was named willfully and recklessly against the law, the minor may recover attorney fees, real damages, and $1,000 in set damages. The House passed it 73-38, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1582505,
+      "measure_id": "HB 3709",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate version of House Bill 3709. House Bill 3709 covers student health services at public colleges and universities. Each must give enrolled students access to health care workers who can prescribe and hand out birth control, and also to health care workers who can prescribe medication abortion. A campus with a pharmacy must make both available on campus. The House agreed to that version 78-39, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 3709. House Bill 3709 covers student health services at public colleges and universities. Each must give enrolled students access to health care workers who can prescribe and hand out birth control, and also to health care workers who can prescribe medication abortion. A campus with a pharmacy must make both available on campus. The House agreed to that version 78-39, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1582128,
+      "measure_id": "HB 3709",
+      "vote_date": "2025-05-30",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 3709. House Bill 3709 covers student health services at public colleges and universities. Each must give enrolled students access to health care workers who can prescribe and hand out birth control, and also to health care workers who can prescribe medication abortion. A campus with a pharmacy must make both available on campus. The Senate passed it 37-19, and it became law.",
+      "nay_description": "Voted against House Bill 3709. House Bill 3709 covers student health services at public colleges and universities. Each must give enrolled students access to health care workers who can prescribe and hand out birth control, and also to health care workers who can prescribe medication abortion. A campus with a pharmacy must make both available on campus. The Senate passed it 37-19, and it became law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1541747,
+      "measure_id": "HB 3751",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 3751. House Bill 3751 added employment social enterprises to the work of the state's Office of Economic Equity and Empowerment. These are businesses that exist to hire and train people who face serious barriers to work, and the office must now help them. The House passed it 76-39, and it became law.",
+      "nay_description": "Voted against House Bill 3751. House Bill 3751 added employment social enterprises to the work of the state's Office of Economic Equity and Empowerment. These are businesses that exist to hire and train people who face serious barriers to work, and the office must now help them. The House passed it 76-39, and it became law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1719830,
+      "measure_id": "HB 3751",
+      "vote_date": "2026-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 3751. House Bill 3751 added employment social enterprises to the work of the state's Office of Economic Equity and Empowerment. These are businesses that exist to hire and train people who face serious barriers to work, and the office must now help them. The Senate passed it 40-19, and it became law.",
+      "nay_description": "Voted against House Bill 3751. House Bill 3751 added employment social enterprises to the work of the state's Office of Economic Equity and Empowerment. These are businesses that exist to hire and train people who face serious barriers to work, and the office must now help them. The Senate passed it 40-19, and it became law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1720544,
+      "measure_id": "HB 4217",
+      "vote_date": "2026-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4217. House Bill 4217 lets a public defender who already represents someone in a criminal case also represent that person in the driver's license suspension case that grew out of the same arrest. The House passed it 82-28, and it became law.",
+      "nay_description": "Voted against House Bill 4217. House Bill 4217 lets a public defender who already represents someone in a criminal case also represent that person in the driver's license suspension case that grew out of the same arrest. The House passed it 82-28, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1720545,
+      "measure_id": "HB 4217",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 4217. House Bill 4217 lets a public defender who already represents someone in a criminal case also represent that person in the driver's license suspension case that grew out of the same arrest. The Senate passed it 43-15, and it became law.",
+      "nay_description": "Voted against House Bill 4217. House Bill 4217 lets a public defender who already represents someone in a criminal case also represent that person in the driver's license suspension case that grew out of the same arrest. The Senate passed it 43-15, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
