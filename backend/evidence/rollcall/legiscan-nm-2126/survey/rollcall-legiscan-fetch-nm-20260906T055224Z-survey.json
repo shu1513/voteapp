@@ -1,0 +1,65 @@
+{
+  "runId": "rollcall-legiscan-fetch-nm-20260906T055224Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "NM",
+  "startedAt": "2026-09-06T05:52:24.296Z",
+  "finishedAt": "2026-09-06T05:52:24.355Z",
+  "datasetDir": "~/legiscan-data/nm-2126",
+  "bills": 777,
+  "votes": 211,
+  "people": 112,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "House Final Passage",
+      "count": 121,
+      "withoutMemberList": 0,
+      "minTotal": 70,
+      "maxTotal": 70,
+      "billTypes": [
+        "B",
+        "JM",
+        "JR",
+        "M"
+      ],
+      "sampleBills": [
+        "HB1",
+        "HM9",
+        "HM6"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Final Passage",
+      "count": 90,
+      "withoutMemberList": 0,
+      "minTotal": 42,
+      "maxTotal": 42,
+      "billTypes": [
+        "B",
+        "JM",
+        "JR",
+        "M"
+      ],
+      "sampleBills": [
+        "HB1",
+        "SB5",
+        "SJR9"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 658,
+    "JM": 5,
+    "JR": 33,
+    "M": 79,
+    "R": 2
+  },
+  "sessionIds": {
+    "2126": 777
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

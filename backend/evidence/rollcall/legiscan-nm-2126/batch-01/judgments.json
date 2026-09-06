@@ -1,0 +1,212 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2126",
+   "roll": 1375141,
+   "measure_id": "HB 129",
+   "vote_date": "2024-02-02",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 129, which requires a seven-day wait between the sale of a gun and handing it over to the buyer. The wait covers the time needed for a federal background check, and the seller cannot release the gun until that check is finished. Breaking the rule is a misdemeanor. The New Mexico House passed it 37-33. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 129, which requires a seven-day wait between the sale of a gun and handing it over to the buyer. The wait covers the time needed for a federal background check, and the seller cannot release the gun until that check is finished. Breaking the rule is a misdemeanor. The New Mexico House passed it 37-33. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2126",
+   "roll": 1378989,
+   "measure_id": "HB 252",
+   "vote_date": "2024-02-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 252, which rewrote New Mexico's income tax brackets and changed several other taxes. Starting in 2025 the lowest rate is 1.5 percent, the middle brackets are wider, and the top rate of 5.9 percent begins at $315,000 for a couple filing together. The bill also caps the tax break for capital gains and sets a single flat corporate rate. The New Mexico House passed it 48-21. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 252, which rewrote New Mexico's income tax brackets and changed several other taxes. Starting in 2025 the lowest rate is 1.5 percent, the middle brackets are wider, and the top rate of 5.9 percent begins at $315,000 for a couple filing together. The bill also caps the tax break for capital gains and sets a single flat corporate rate. The New Mexico House passed it 48-21. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "personal_income_tax_reduction",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2126",
+   "roll": 1375540,
+   "measure_id": "HB 41",
+   "vote_date": "2024-02-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 41, which sets up a clean transportation fuel standard for New Mexico. The state environmental improvement board must write rules that cut the greenhouse gases from transportation fuels by at least 20 percent below 2018 levels by 2030, and at least 30 percent by 2040. The board may charge fees to run the program. The New Mexico House passed it 36-33, and it became law.",
+   "nay_description": "Voted against House Bill 41, which sets up a clean transportation fuel standard for New Mexico. The state environmental improvement board must write rules that cut the greenhouse gases from transportation fuels by at least 20 percent below 2018 levels by 2030, and at least 30 percent by 2040. The board may charge fees to run the program. The New Mexico House passed it 36-33, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2126",
+   "roll": 1384038,
+   "measure_id": "SB 5",
+   "vote_date": "2024-02-13",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 5, which bars carrying a gun within 100 feet of the door of a polling place while voting is going on, and within 50 feet of a monitored ballot drop box. Police officers and a few others are exempt. Breaking the rule is a petty misdemeanor. The New Mexico House passed it 35-34, and it became law.",
+   "nay_description": "Voted against Senate Bill 5, which bars carrying a gun within 100 feet of the door of a polling place while voting is going on, and within 50 feet of a monitored ballot drop box. Police officers and a few others are exempt. Breaking the rule is a petty misdemeanor. The New Mexico House passed it 35-34, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2126",
+   "roll": 1377761,
+   "measure_id": "HB 195",
+   "vote_date": "2024-02-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 195, which lets the New Mexico Finance Authority lend money for housing. It sets up a new housing fund and lets the authority make loans to housing partners who build homes that working people can afford. It also renames the board that reviews those loans and changes who sits on it. The New Mexico House passed it 50-16, and it became law.",
+   "nay_description": "Voted against House Bill 195, which lets the New Mexico Finance Authority lend money for housing. It sets up a new housing fund and lets the authority make loans to housing partners who build homes that working people can afford. It also renames the board that reviews those loans and changes who sits on it. The New Mexico House passed it 50-16, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2126",
+   "roll": 1381255,
+   "measure_id": "SB 153",
+   "vote_date": "2024-02-10",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 153, which raises the yearly payout from the early childhood education and care fund. Each July the fund must send its program account 5 percent of its average value over the past three years, or $250 million, whichever is larger. Money the program does not spend goes back into the fund. The New Mexico House passed it 52-14, and it became law.",
+   "nay_description": "Voted against Senate Bill 153, which raises the yearly payout from the early childhood education and care fund. Each July the fund must send its program account 5 percent of its average value over the past three years, or $250 million, whichever is larger. Money the program does not spend goes back into the fund. The New Mexico House passed it 52-14, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2126",
+   "roll": 1382540,
+   "measure_id": "HB 182",
+   "vote_date": "2024-02-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 182, which targets fake audio and video in campaign advertising. An ad that uses materially deceptive media must carry a disclaimer saying so. Handing out that kind of media to fool voters becomes a crime, a misdemeanor the first time and a felony after that. The New Mexico House passed it 38-28, and it became law.",
+   "nay_description": "Voted against House Bill 182, which targets fake audio and video in campaign advertising. An ad that uses materially deceptive media must carry a disclaimer saying so. Handing out that kind of media to fool voters becomes a crime, a misdemeanor the first time and a felony after that. The New Mexico House passed it 38-28, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2126",
+   "roll": 1385071,
+   "measure_id": "SB 96",
+   "vote_date": "2024-02-14",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 96, which raises prison terms for two violent crimes. Second degree murder now carries 18 years in prison. Trying to commit second degree murder also carries a higher penalty than before. The New Mexico House passed it 49-18, and it became law.",
+   "nay_description": "Voted against Senate Bill 96, which raises prison terms for two violent crimes. Second degree murder now carries 18 years in prison. Trying to commit second degree murder also carries a higher penalty than before. The New Mexico House passed it 49-18, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2126",
+   "roll": 1384092,
+   "measure_id": "SB 15",
+   "vote_date": "2024-02-13",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 15, which gives the state a say when a New Mexico hospital is bought or merged. Before the deal closes, the parties must file notice, and the insurance superintendent and the health care authority review it. Regulators can approve the deal, block it, or approve it with conditions. The New Mexico House passed it 47-20, and it became law.",
+   "nay_description": "Voted against Senate Bill 15, which gives the state a say when a New Mexico hospital is bought or merged. Before the deal closes, the parties must file notice, and the insurance superintendent and the health care authority review it. Regulators can approve the deal, block it, or approve it with conditions. The New Mexico House passed it 47-20, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2126",
+   "roll": 1375541,
+   "measure_id": "HB 151",
+   "vote_date": "2024-02-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 151, which tells New Mexico colleges that take state money to write rules on affirmative consent. The rules must say each person has to agree to sexual activity. They must also say a person who is asleep or knocked out can never agree, and a school uses that test when it judges a case. The New Mexico House passed it 44-17. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 151, which tells New Mexico colleges that take state money to write rules on affirmative consent. The rules must say each person has to agree to sexual activity. They must also say a person who is asleep or knocked out can never agree, and a school uses that test when it judges a case. The New Mexico House passed it 44-17. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2126",
+   "roll": 1382658,
+   "measure_id": "SB 159",
+   "vote_date": "2024-02-12",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 159, which sets up a permanent savings fund for higher education. It moves $959 million from the state tax stabilization reserve into a new higher education trust fund. Each year 5 percent of the fund's recent average value goes to a program fund that colleges can draw on. The New Mexico House passed it 43-18, and it became law.",
+   "nay_description": "Voted against Senate Bill 159, which sets up a permanent savings fund for higher education. It moves $959 million from the state tax stabilization reserve into a new higher education trust fund. Each year 5 percent of the fund's recent average value goes to a program fund that colleges can draw on. The New Mexico House passed it 43-18, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

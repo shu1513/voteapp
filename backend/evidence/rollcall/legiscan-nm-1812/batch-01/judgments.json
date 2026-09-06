@@ -1,0 +1,294 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1021265,
+   "measure_id": "HB 15",
+   "vote_date": "2021-03-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 15, which set up a new round of sustainable building tax credits for 2021. A person or company that builds or remodels to a high energy standard can take the credit off their state income tax. The older credit is closed to new claims and renamed the 2015 credit. The New Mexico House passed it 48-22. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 15, which set up a new round of sustainable building tax credits for 2021. A person or company that builds or remodels to a high energy standard can take the credit off their state income tax. The older credit is closed to new claims and renamed the 2015 credit. The New Mexico House passed it 48-22. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1017689,
+   "measure_id": "HB 20",
+   "vote_date": "2021-02-28",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 20, the Healthy Workplaces Act, which gives New Mexico workers paid sick leave. A worker earns one hour of sick leave for every 30 hours on the job and may use up to 64 hours a year. Employers who break the rules face penalties. The New Mexico House passed it 36-33. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 20, the Healthy Workplaces Act, which gives New Mexico workers paid sick leave. A worker earns one hour of sick leave for every 30 hours on the job and may use up to 64 hours a year. Employers who break the rules face penalties. The New Mexico House passed it 36-33. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1023153,
+   "measure_id": "HB 266",
+   "vote_date": "2021-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 266, which loosens the rules for an alternative teaching license in special education. It changes what a person must show to earn a level one license, so schools can fill jobs that are hard to staff. Teachers who already hold the license keep it. The New Mexico House passed it 50-15, and it became law.",
+   "nay_description": "Voted against House Bill 266, which loosens the rules for an alternative teaching license in special education. It changes what a person must show to earn a level one license, so schools can fill jobs that are hard to staff. Teachers who already hold the license keep it. The New Mexico House passed it 50-15, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1021322,
+   "measure_id": "HB 291",
+   "vote_date": "2021-03-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 291, which puts more money in the pockets of low-paid New Mexicans. It raises the low-income tax rebate and ties it to inflation, and it lifts the working families tax credit to 20 percent of the federal credit in 2021 and 25 percent later. It also opens that credit to workers who file with a taxpayer ID number instead of a Social Security number. The New Mexico House passed it 42-27. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 291, which puts more money in the pockets of low-paid New Mexicans. It raises the low-income tax rebate and ties it to inflation, and it lifts the working families tax credit to 20 percent of the federal credit in 2021 and 25 percent later. It also opens that credit to workers who file with a taxpayer ID number instead of a Social Security number. The New Mexico House passed it 42-27. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1007178,
+   "measure_id": "HB 4",
+   "vote_date": "2021-02-16",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4, the New Mexico Civil Rights Act. It lets a person sue a public body, such as a police department or a school district, for breaking rights under the state constitution. Government can no longer use qualified immunity as a defense. The law caps what a person may recover and gives three years to file. The New Mexico House passed it 39-29. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 4, the New Mexico Civil Rights Act. It lets a person sue a public body, such as a police department or a school district, for breaking rights under the state constitution. Government can no longer use qualified immunity as a defense. The law caps what a person may recover and gives three years to file. The New Mexico House passed it 39-29. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1010440,
+   "measure_id": "HB 51",
+   "vote_date": "2021-02-16",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 51, the Environmental Database Act. It requires the state to build and run a public website where anyone can look up New Mexico's environmental data. The act says which agencies must supply that data and keep it current. The New Mexico House passed it 44-25, and it became law.",
+   "nay_description": "Voted against House Bill 51, the Environmental Database Act. It requires the state to build and run a public website where anyone can look up New Mexico's environmental data. The act says which agencies must supply that data and keep it current. The New Mexico House passed it 44-25, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1023047,
+   "measure_id": "HB 76",
+   "vote_date": "2021-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 76, which lets the state say no to an air permit. The environment department may now turn down a company that has a bad record of following the rules. Before this, a bad record was not reason enough. The New Mexico House passed it 42-26, and it became law.",
+   "nay_description": "Voted against House Bill 76, which lets the state say no to an air permit. The environment department may now turn down a company that has a bad record of following the rules. Before this, a bad record was not reason enough. The New Mexico House passed it 42-26, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1010416,
+   "measure_id": "SB 10",
+   "vote_date": "2021-02-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 10, which repealed New Mexico's 1969 abortion ban. The old sections made most abortions a crime and set out narrow exceptions. Federal court rulings had left them unenforced, but they stayed on the books until this repeal. The New Mexico House passed it 40-30, and it became law.",
+   "nay_description": "Voted against Senate Bill 10, which repealed New Mexico's 1969 abortion ban. The old sections made most abortions a crime and set out narrow exceptions. Federal court rulings had left them unenforced, but they stayed on the books until this repeal. The New Mexico House passed it 40-30, and it became law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1028638,
+   "measure_id": "SB 112",
+   "vote_date": "2021-03-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 112, which creates a sustainable economy task force and an advisory council. The task force must write a plan to move New Mexico's economy away from depending on oil, gas and other extraction. State agency heads have to follow that plan. The New Mexico House passed it 40-25, and it became law.",
+   "nay_description": "Voted against Senate Bill 112, which creates a sustainable economy task force and an advisory council. The task force must write a plan to move New Mexico's economy away from depending on oil, gas and other extraction. State agency heads have to follow that plan. The New Mexico House passed it 40-25, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1032794,
+   "measure_id": "SB 17",
+   "vote_date": "2021-03-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 17, the Family Income Index Act. The state ranks public schools by the family income of the students they serve and sends extra money to the schools serving the poorest families. The bill sets what a school may spend that money on. The New Mexico House passed it 52-18, and it became law.",
+   "nay_description": "Voted against Senate Bill 17, the Family Income Index Act. The state ranks public schools by the family income of the students they serve and sends extra money to the schools serving the poorest families. The bill sets what a school may spend that money on. The New Mexico House passed it 52-18, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1028688,
+   "measure_id": "SB 219",
+   "vote_date": "2021-03-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 219, which ends the rule that people show proof of citizenship to get certain job licenses. An applicant may hand in a taxpayer ID number instead. If a person can do the work, the state may now license them whatever their immigration status. The New Mexico House passed it 45-23, and it became law.",
+   "nay_description": "Voted against Senate Bill 219, which ends the rule that people show proof of citizenship to get certain job licenses. An applicant may hand in a taxpayer ID number instead. If a person can do the work, the state may now license them whatever their immigration status. The New Mexico House passed it 45-23, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1032178,
+   "measure_id": "SB 317",
+   "vote_date": "2021-03-19",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 317, which raises the tax on health insurance to 3.75 percent of premiums. Part of that money goes into a new fund used to bring down the cost of coverage for New Mexico families and small businesses. The bill also stops health plans from charging a copay or deductible for mental health care. The New Mexico House passed it 43-26, and it became law.",
+   "nay_description": "Voted against Senate Bill 317, which raises the tax on health insurance to 3.75 percent of premiums. Part of that money goes into a new fund used to bring down the cost of coverage for New Mexico families and small businesses. The bill also stops health plans from charging a copay or deductible for mental health care. The New Mexico House passed it 43-26, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1032137,
+   "measure_id": "SB 32",
+   "vote_date": "2021-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 32, the Wildlife Conservation and Public Safety Act. It bans the use of traps, snares and poisons to catch, hurt or kill animals on public land in New Mexico. Breaking the ban carries penalties. The New Mexico House passed it 35-34, and it became law.",
+   "nay_description": "Voted against Senate Bill 32, the Wildlife Conservation and Public Safety Act. It bans the use of traps, snares and poisons to catch, hurt or kill animals on public land in New Mexico. Breaking the ban carries penalties. The New Mexico House passed it 35-34, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1029743,
+   "measure_id": "SB 71",
+   "vote_date": "2021-03-16",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 71, the Patients' Debt Collection Protection Act. Hospitals and clinics must check whether a patient qualifies for help paying, and they may not chase a patient who is too poor to pay. The act also limits how long such a judgment can be enforced and strips attorney fees from some collection suits. The New Mexico House passed it 42-28, and it became law.",
+   "nay_description": "Voted against Senate Bill 71, the Patients' Debt Collection Protection Act. Hospitals and clinics must check whether a patient qualifies for help paying, and they may not chase a patient who is too poor to pay. The act also limits how long such a judgment can be enforced and strips attorney fees from some collection suits. The New Mexico House passed it 42-28, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1812",
+   "roll": 1032192,
+   "measure_id": "SB 8",
+   "vote_date": "2021-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 8, which lets New Mexico set air and hazardous waste rules stricter than the federal ones. Before adopting a tougher rule, the state must hold a hearing and find that the rule better protects public health and the environment. The New Mexico House passed it 39-29, and it became law.",
+   "nay_description": "Voted against Senate Bill 8, which lets New Mexico set air and hazardous waste rules stricter than the federal ones. Before adopting a tougher rule, the state must hold a hearing and find that the rule better protects public health and the environment. The New Mexico House passed it 39-29, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
