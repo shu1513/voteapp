@@ -5,6 +5,7 @@ import {
   MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS,
   MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS,
 } from "../apiValidation.js";
+import { RequestValidationError } from "../../utils/requestValidationError.js";
 
 // Support payments / membership (docs/plans/membership-contributions.md).
 // Stripe holds all card data; our tables hold references and amounts only.
@@ -1153,12 +1154,12 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
         input.amount_cents < MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS ||
         input.amount_cents > MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS
       ) {
-        throw new TypeError(
+        throw new RequestValidationError(
           `amount_cents must be an integer between ${MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS} and ${MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS}`
         );
       }
       if (input.kind !== "one_time" && input.kind !== "monthly") {
-        throw new TypeError("kind must be one_time or monthly");
+        throw new RequestValidationError("kind must be one_time or monthly");
       }
       const email = await lookupActiveUserEmail(userId);
       if (!email) {
@@ -1328,7 +1329,7 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
         input.amount_cents < MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS ||
         input.amount_cents > MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS
       ) {
-        throw new TypeError(
+        throw new RequestValidationError(
           `amount_cents must be an integer between ${MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS} and ${MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS}`
         );
       }

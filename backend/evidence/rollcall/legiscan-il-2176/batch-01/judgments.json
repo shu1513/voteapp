@@ -101,8 +101,8 @@
       "measure_id": "HB 5295",
       "vote_date": "2026-05-30",
       "review_status": "approved",
-      "yea_description": "Voted to pass the Senate version of House Bill 5295. It made health networks separate abortion-related records and block sharing outside Illinois unless the patient chose a provider, while adding coded-record definitions and tighter rules for who may receive data. The Senate passed it 38-19; the House agreed, and it became law effective July 1, 2027.",
-      "nay_description": "Voted against the Senate version of House Bill 5295. It made health networks separate abortion-related records and block sharing outside Illinois unless the patient chose a provider, while adding coded-record definitions and tighter rules for who may receive data. The Senate passed it 38-19; the House agreed, and it became law effective July 1, 2027.",
+      "yea_description": "Voted to pass the Senate version of House Bill 5295. It requires electronic health networks to segregate coded abortion and gender-dysphoria health records and block out-of-state sharing, except for technical support, quality assurance, payment operations, or with patient consent, and lets patients sue. The Senate passed it 38-19; the House agreed, and it became law effective July 1, 2027.",
+      "nay_description": "Voted against the Senate version of House Bill 5295. It requires electronic health networks to segregate coded abortion and gender-dysphoria health records and block out-of-state sharing, except for technical support, quality assurance, payment operations, or with patient consent, and lets patients sue. The Senate passed it 38-19; the House agreed, and it became law effective July 1, 2027.",
       "labels": [
         {
           "slug": "womens_reproductive_rights",

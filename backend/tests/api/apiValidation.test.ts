@@ -37,6 +37,7 @@ import {
   parseResearchAreaPreferencesBodyValue,
   RESEARCH_AREAS_PATH,
 } from "../../src/api/apiValidation.js";
+import { RequestValidationError } from "../../src/utils/requestValidationError.js";
 
 describe("parseChatbotFeedbackBodyValue", () => {
   it("accepts a token with an up or down verdict", () => {
@@ -48,12 +49,12 @@ describe("parseChatbotFeedbackBodyValue", () => {
   });
 
   it("rejects missing or empty tokens, bad verdicts, and unknown fields", () => {
-    expect(() => parseChatbotFeedbackBodyValue({ verdict: "up" })).toThrow(TypeError);
-    expect(() => parseChatbotFeedbackBodyValue({ token: "  ", verdict: "up" })).toThrow(TypeError);
-    expect(() => parseChatbotFeedbackBodyValue({ token: "abc", verdict: "sideways" })).toThrow(TypeError);
-    expect(() => parseChatbotFeedbackBodyValue({ token: "abc", verdict: "up", extra: 1 })).toThrow(TypeError);
-    expect(() => parseChatbotFeedbackBodyValue({ token: "x".repeat(401), verdict: "up" })).toThrow(TypeError);
-    expect(() => parseChatbotFeedbackBodyValue(null)).toThrow(TypeError);
+    expect(() => parseChatbotFeedbackBodyValue({ verdict: "up" })).toThrow(RequestValidationError);
+    expect(() => parseChatbotFeedbackBodyValue({ token: "  ", verdict: "up" })).toThrow(RequestValidationError);
+    expect(() => parseChatbotFeedbackBodyValue({ token: "abc", verdict: "sideways" })).toThrow(RequestValidationError);
+    expect(() => parseChatbotFeedbackBodyValue({ token: "abc", verdict: "up", extra: 1 })).toThrow(RequestValidationError);
+    expect(() => parseChatbotFeedbackBodyValue({ token: "x".repeat(401), verdict: "up" })).toThrow(RequestValidationError);
+    expect(() => parseChatbotFeedbackBodyValue(null)).toThrow(RequestValidationError);
   });
 });
 

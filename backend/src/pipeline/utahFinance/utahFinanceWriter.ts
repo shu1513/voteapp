@@ -2,6 +2,7 @@ import type { Pool, PoolClient } from "pg";
 
 import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
 import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
+import { assertSnapshotDbIsNotPoolClient } from "../finance/financeWriterPoolGuard.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
@@ -166,6 +167,7 @@ function validateUtahFinanceSnapshotInput(input: UtahFinanceSnapshotInput): void
 }
 
 async function withUtahFinanceTransaction<T>(db: Queryable, work: (tx: Queryable) => Promise<T>): Promise<T> {
+  assertSnapshotDbIsNotPoolClient("Utah", db);
   if (!canOpenTransaction(db)) {
     try {
       await db.query("BEGIN");

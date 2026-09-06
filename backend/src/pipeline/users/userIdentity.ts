@@ -1,6 +1,7 @@
 import type { Pool, PoolClient } from "pg";
 
 import { isUuid } from "../../utils/uuid.js";
+import { RequestValidationError } from "../../utils/requestValidationError.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -45,10 +46,10 @@ export async function setUserFirstName(db: Queryable, userId: string, firstName:
   const normalizedUserId = normalizeUserId(userId);
   const normalizedFirstName = typeof firstName === "string" ? firstName.trim() : "";
   if (normalizedFirstName.length === 0) {
-    throw new TypeError("first_name must be a non-empty string");
+    throw new RequestValidationError("first_name must be a non-empty string");
   }
   if (normalizedFirstName.length > MAX_FIRST_NAME_LENGTH) {
-    throw new TypeError(`first_name must be at most ${MAX_FIRST_NAME_LENGTH} characters`);
+    throw new RequestValidationError(`first_name must be at most ${MAX_FIRST_NAME_LENGTH} characters`);
   }
 
   const result = await db.query<UserIdentity>(
@@ -93,7 +94,7 @@ export async function acceptUserTerms(db: Queryable, userId: string, termsVersio
   const normalizedUserId = normalizeUserId(userId);
   const normalizedVersion = typeof termsVersion === "string" ? termsVersion.trim() : "";
   if (normalizedVersion.length === 0) {
-    throw new TypeError("termsVersion must be a non-empty string");
+    throw new RequestValidationError("termsVersion must be a non-empty string");
   }
 
   const result = await db.query<UserIdentity>(

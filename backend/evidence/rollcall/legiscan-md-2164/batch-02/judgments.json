@@ -1,346 +1,346 @@
 {
- "judgments": [
-  {
-   "jurisdiction": "MD",
-   "chamber": "house",
-   "session": "2164",
-   "roll": 1523180,
-   "measure_id": "HB 1085",
-   "vote_date": "2025-03-17",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 1085, which widened a property tax break for housing built by public housing authorities. Housing authorities set up separate nonprofit companies to build and run housing. Property owned by those nonprofits was tax free in only three places: Baltimore City, Howard County and Montgomery County. The bill gives the same break to the nonprofits of every housing authority in the state. A yes vote extended the tax break statewide. The Maryland House of Delegates passed it 103-34 and it was signed into law as Chapter 169 of 2025.",
-   "nay_description": "Voted against passing HB 1085, which widened a property tax break for housing built by public housing authorities. Housing authorities set up separate nonprofit companies to build and run housing. Property owned by those nonprofits was tax free in only three places: Baltimore City, Howard County and Montgomery County. The bill gives the same break to the nonprofits of every housing authority in the state. A no vote opposed extending it beyond the three original places. The Maryland House of Delegates passed it 103-34 over these votes and it was signed into law as Chapter 169 of 2025.",
-   "labels": [
+  "judgments": [
     {
-     "slug": "housing_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "senate",
-   "session": "2164",
-   "roll": 1560961,
-   "measure_id": "HB 1085",
-   "vote_date": "2025-04-03",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 1085, which widened a property tax break for housing built by public housing authorities. Housing authorities set up separate nonprofit companies to build and run housing. Property owned by those nonprofits was tax free in only three places: Baltimore City, Howard County and Montgomery County. The bill gives the same break to the nonprofits of every housing authority in the state. A yes vote extended the tax break statewide. The Maryland Senate passed it 34-13 and it was signed into law as Chapter 169 of 2025.",
-   "nay_description": "Voted against passing HB 1085, which widened a property tax break for housing built by public housing authorities. Housing authorities set up separate nonprofit companies to build and run housing. Property owned by those nonprofits was tax free in only three places: Baltimore City, Howard County and Montgomery County. The bill gives the same break to the nonprofits of every housing authority in the state. A no vote opposed extending it beyond the three original places. The Maryland Senate passed it 34-13 over these votes and it was signed into law as Chapter 169 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "house",
+      "session": "2164",
+      "roll": 1523180,
+      "measure_id": "HB 1085",
+      "vote_date": "2025-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 1085, which widened a property tax break for housing built by public housing authorities. Housing authorities set up separate nonprofit companies to build and run housing. Property owned by those nonprofits was tax free in only three places: Baltimore City, Howard County and Montgomery County. The bill gives the same break to the nonprofits of every housing authority in the state. A yes vote extended the tax break statewide. The Maryland House of Delegates passed it 103-34 and it was signed into law as Chapter 169 of 2025.",
+      "nay_description": "Voted against passing HB 1085, which widened a property tax break for housing built by public housing authorities. Housing authorities set up separate nonprofit companies to build and run housing. Property owned by those nonprofits was tax free in only three places: Baltimore City, Howard County and Montgomery County. The bill gives the same break to the nonprofits of every housing authority in the state. A no vote opposed extending it beyond the three original places. The Maryland House of Delegates passed it 103-34 over these votes and it was signed into law as Chapter 169 of 2025.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "housing_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "house",
-   "session": "2164",
-   "roll": 1525762,
-   "measure_id": "HB 1315",
-   "vote_date": "2025-03-17",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 1315, which locked pharmacist vaccine rules and insurance coverage to federal advice as it stood at the end of 2024. Maryland lets pharmacists give the shots a federal panel recommends. The bill says that means the federal rules in force on December 31, 2024, plus any new vaccine the panel adds later, so a rollback in Washington would not narrow what pharmacists may give. Health plans must also cover every visit and cost for the childhood and teen shots the panel recommended as of that date, starting with plans issued or renewed on or after January 1, 2026. A yes vote locked in the 2024 vaccine access and coverage. The Maryland House of Delegates passed it 103-36 and it was signed into law as Chapter 738 of 2025.",
-   "nay_description": "Voted against passing HB 1315, which locked pharmacist vaccine rules and insurance coverage to federal advice as it stood at the end of 2024. Maryland lets pharmacists give the shots a federal panel recommends. The bill says that means the federal rules in force on December 31, 2024, plus any new vaccine the panel adds later, so a rollback in Washington would not narrow what pharmacists may give. Health plans must also cover every visit and cost for the childhood and teen shots the panel recommended as of that date, starting with plans issued or renewed on or after January 1, 2026. A no vote opposed locking it in. The Maryland House of Delegates passed it 103-36 over these votes and it was signed into law as Chapter 738 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "senate",
+      "session": "2164",
+      "roll": 1560961,
+      "measure_id": "HB 1085",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 1085, which widened a property tax break for housing built by public housing authorities. Housing authorities set up separate nonprofit companies to build and run housing. Property owned by those nonprofits was tax free in only three places: Baltimore City, Howard County and Montgomery County. The bill gives the same break to the nonprofits of every housing authority in the state. A yes vote extended the tax break statewide. The Maryland Senate passed it 34-13 and it was signed into law as Chapter 169 of 2025.",
+      "nay_description": "Voted against passing HB 1085, which widened a property tax break for housing built by public housing authorities. Housing authorities set up separate nonprofit companies to build and run housing. Property owned by those nonprofits was tax free in only three places: Baltimore City, Howard County and Montgomery County. The bill gives the same break to the nonprofits of every housing authority in the state. A no vote opposed extending it beyond the three original places. The Maryland Senate passed it 34-13 over these votes and it was signed into law as Chapter 169 of 2025.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "senate",
-   "session": "2164",
-   "roll": 1561870,
-   "measure_id": "HB 1315",
-   "vote_date": "2025-04-07",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 1315, which locked pharmacist vaccine rules and insurance coverage to federal advice as it stood at the end of 2024. Maryland lets pharmacists give the shots a federal panel recommends. The bill says that means the federal rules in force on December 31, 2024, plus any new vaccine the panel adds later, so a rollback in Washington would not narrow what pharmacists may give. Health plans must also cover every visit and cost for the childhood and teen shots the panel recommended as of that date, starting with plans issued or renewed on or after January 1, 2026. A yes vote locked in the 2024 vaccine access and coverage. The Maryland Senate passed it 35-12 and it was signed into law as Chapter 738 of 2025.",
-   "nay_description": "Voted against passing HB 1315, which locked pharmacist vaccine rules and insurance coverage to federal advice as it stood at the end of 2024. Maryland lets pharmacists give the shots a federal panel recommends. The bill says that means the federal rules in force on December 31, 2024, plus any new vaccine the panel adds later, so a rollback in Washington would not narrow what pharmacists may give. Health plans must also cover every visit and cost for the childhood and teen shots the panel recommended as of that date, starting with plans issued or renewed on or after January 1, 2026. A no vote opposed locking it in. The Maryland Senate passed it 35-12 over these votes and it was signed into law as Chapter 738 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "house",
+      "session": "2164",
+      "roll": 1525762,
+      "measure_id": "HB 1315",
+      "vote_date": "2025-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 1315, which locked pharmacist vaccine rules and insurance coverage to federal advice as it stood at the end of 2024. Maryland lets pharmacists give the shots a federal panel recommends. The bill says that means the federal rules in force on December 31, 2024, plus any new vaccine the panel adds later, so a rollback in Washington would not narrow what pharmacists may give. Health plans must also cover every visit and cost for the childhood and teen shots the panel recommended as of that date, starting with plans issued or renewed on or after January 1, 2026. A yes vote locked in the 2024 vaccine access and coverage. The Maryland House of Delegates passed it 103-36 and it was signed into law as Chapter 738 of 2025.",
+      "nay_description": "Voted against passing HB 1315, which locked pharmacist vaccine rules and insurance coverage to federal advice as it stood at the end of 2024. Maryland lets pharmacists give the shots a federal panel recommends. The bill says that means the federal rules in force on December 31, 2024, plus any new vaccine the panel adds later, so a rollback in Washington would not narrow what pharmacists may give. Health plans must also cover every visit and cost for the childhood and teen shots the panel recommended as of that date, starting with plans issued or renewed on or after January 1, 2026. A no vote opposed locking it in. The Maryland House of Delegates passed it 103-36 over these votes and it was signed into law as Chapter 738 of 2025.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "house",
-   "session": "2164",
-   "roll": 1547666,
-   "measure_id": "HB 1473",
-   "vote_date": "2025-04-07",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 1473, which widened the duty of state agencies to serve people with limited English or a disability. Each covered agency must write a language access plan and give help that is accurate, on time, free to the person, and not much slower or worse than the service English speakers get. More papers must be translated, including applications, consent and complaint forms, emergency notices, and letters about state benefits. A new Maryland Language Advisory Group tracks how agencies are doing and reports to lawmakers each year. A yes vote expanded these language and disability access duties. The Maryland House of Delegates passed it 104-35 and it was signed into law as Chapter 434 of 2025.",
-   "nay_description": "Voted against passing HB 1473, which widened the duty of state agencies to serve people with limited English or a disability. Each covered agency must write a language access plan and give help that is accurate, on time, free to the person, and not much slower or worse than the service English speakers get. More papers must be translated, including applications, consent and complaint forms, emergency notices, and letters about state benefits. A new Maryland Language Advisory Group tracks how agencies are doing and reports to lawmakers each year. A no vote opposed the expanded duties. The Maryland House of Delegates passed it 104-35 over these votes and it was signed into law as Chapter 434 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "senate",
+      "session": "2164",
+      "roll": 1561870,
+      "measure_id": "HB 1315",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 1315, which locked pharmacist vaccine rules and insurance coverage to federal advice as it stood at the end of 2024. Maryland lets pharmacists give the shots a federal panel recommends. The bill says that means the federal rules in force on December 31, 2024, plus any new vaccine the panel adds later, so a rollback in Washington would not narrow what pharmacists may give. Health plans must also cover every visit and cost for the childhood and teen shots the panel recommended as of that date, starting with plans issued or renewed on or after January 1, 2026. A yes vote locked in the 2024 vaccine access and coverage. The Maryland Senate passed it 35-12 and it was signed into law as Chapter 738 of 2025.",
+      "nay_description": "Voted against passing HB 1315, which locked pharmacist vaccine rules and insurance coverage to federal advice as it stood at the end of 2024. Maryland lets pharmacists give the shots a federal panel recommends. The bill says that means the federal rules in force on December 31, 2024, plus any new vaccine the panel adds later, so a rollback in Washington would not narrow what pharmacists may give. Health plans must also cover every visit and cost for the childhood and teen shots the panel recommended as of that date, starting with plans issued or renewed on or after January 1, 2026. A no vote opposed locking it in. The Maryland Senate passed it 35-12 over these votes and it was signed into law as Chapter 738 of 2025.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "senate",
-   "session": "2164",
-   "roll": 1572933,
-   "measure_id": "HB 1473",
-   "vote_date": "2025-04-07",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 1473, which widened the duty of state agencies to serve people with limited English or a disability. Each covered agency must write a language access plan and give help that is accurate, on time, free to the person, and not much slower or worse than the service English speakers get. More papers must be translated, including applications, consent and complaint forms, emergency notices, and letters about state benefits. A new Maryland Language Advisory Group tracks how agencies are doing and reports to lawmakers each year. A yes vote expanded these language and disability access duties. The Maryland Senate passed it 33-13 and it was signed into law as Chapter 434 of 2025.",
-   "nay_description": "Voted against passing HB 1473, which widened the duty of state agencies to serve people with limited English or a disability. Each covered agency must write a language access plan and give help that is accurate, on time, free to the person, and not much slower or worse than the service English speakers get. More papers must be translated, including applications, consent and complaint forms, emergency notices, and letters about state benefits. A new Maryland Language Advisory Group tracks how agencies are doing and reports to lawmakers each year. A no vote opposed the expanded duties. The Maryland Senate passed it 33-13 over these votes and it was signed into law as Chapter 434 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "house",
+      "session": "2164",
+      "roll": 1547666,
+      "measure_id": "HB 1473",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 1473, which widened the duty of state agencies to serve people with limited English or a disability. Each covered agency must write a language access plan and give help that is accurate, on time, free to the person, and not much slower or worse than the service English speakers get. More papers must be translated, including applications, consent and complaint forms, emergency notices, and letters about state benefits. A new Maryland Language Advisory Group tracks how agencies are doing and reports to lawmakers each year. A yes vote expanded these language and disability access duties. The Maryland House of Delegates passed it 104-35 and it was signed into law as Chapter 434 of 2025.",
+      "nay_description": "Voted against passing HB 1473, which widened the duty of state agencies to serve people with limited English or a disability. Each covered agency must write a language access plan and give help that is accurate, on time, free to the person, and not much slower or worse than the service English speakers get. More papers must be translated, including applications, consent and complaint forms, emergency notices, and letters about state benefits. A new Maryland Language Advisory Group tracks how agencies are doing and reports to lawmakers each year. A no vote opposed the expanded duties. The Maryland House of Delegates passed it 104-35 over these votes and it was signed into law as Chapter 434 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "house",
-   "session": "2164",
-   "roll": 1505639,
-   "measure_id": "HB 324",
-   "vote_date": "2025-02-27",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 324, the County Board Member Antibias Training Act. It makes every elected member of a county school board finish an antibias training course at least once during their term. It is the same course school staff already take, but board members take it in their own session. A yes vote required school board members to take the training. The Maryland House of Delegates passed it 105-29 and it was signed into law as Chapter 301 of 2025.",
-   "nay_description": "Voted against passing HB 324, the County Board Member Antibias Training Act. It makes every elected member of a county school board finish an antibias training course at least once during their term. It is the same course school staff already take, but board members take it in their own session. A no vote opposed requiring it. The Maryland House of Delegates passed it 105-29 over these votes and it was signed into law as Chapter 301 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "senate",
+      "session": "2164",
+      "roll": 1572933,
+      "measure_id": "HB 1473",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 1473, which widened the duty of state agencies to serve people with limited English or a disability. Each covered agency must write a language access plan and give help that is accurate, on time, free to the person, and not much slower or worse than the service English speakers get. More papers must be translated, including applications, consent and complaint forms, emergency notices, and letters about state benefits. A new Maryland Language Advisory Group tracks how agencies are doing and reports to lawmakers each year. A yes vote expanded these language and disability access duties. The Maryland Senate passed it 33-13 and it was signed into law as Chapter 434 of 2025.",
+      "nay_description": "Voted against passing HB 1473, which widened the duty of state agencies to serve people with limited English or a disability. Each covered agency must write a language access plan and give help that is accurate, on time, free to the person, and not much slower or worse than the service English speakers get. More papers must be translated, including applications, consent and complaint forms, emergency notices, and letters about state benefits. A new Maryland Language Advisory Group tracks how agencies are doing and reports to lawmakers each year. A no vote opposed the expanded duties. The Maryland Senate passed it 33-13 over these votes and it was signed into law as Chapter 434 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for",
-     "nay": "against"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "senate",
-   "session": "2164",
-   "roll": 1559634,
-   "measure_id": "HB 324",
-   "vote_date": "2025-04-03",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 324, the County Board Member Antibias Training Act. It makes every elected member of a county school board finish an antibias training course at least once during their term. It is the same course school staff already take, but board members take it in their own session. A yes vote required school board members to take the training. The Maryland Senate passed it 34-13 and it was signed into law as Chapter 301 of 2025.",
-   "nay_description": "Voted against passing HB 324, the County Board Member Antibias Training Act. It makes every elected member of a county school board finish an antibias training course at least once during their term. It is the same course school staff already take, but board members take it in their own session. A no vote opposed requiring it. The Maryland Senate passed it 34-13 over these votes and it was signed into law as Chapter 301 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "house",
+      "session": "2164",
+      "roll": 1505639,
+      "measure_id": "HB 324",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 324, the County Board Member Antibias Training Act. It makes every member of a county school board finish an antibias training course at least once during their term. It is the same course school staff already take, but board members take it in their own session. A yes vote required school board members to take the training. The Maryland House of Delegates passed it 105-29 and it was signed into law as Chapter 301 of 2025.",
+      "nay_description": "Voted against passing HB 324, the County Board Member Antibias Training Act. It makes every member of a county school board finish an antibias training course at least once during their term. It is the same course school staff already take, but board members take it in their own session. A no vote opposed requiring it. The Maryland House of Delegates passed it 105-29 over these votes and it was signed into law as Chapter 301 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for",
-     "nay": "against"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "house",
-   "session": "2164",
-   "roll": 1517921,
-   "measure_id": "HB 390",
-   "vote_date": "2025-03-11",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 390, the Affordable Housing Payment in Lieu of Taxes Expansion Act. It lets a county drop the county property tax on a rental building if the owner keeps at least a quarter of the units affordable for 15 years or more. In exchange the owner signs a deal to pay the county a set yearly amount instead of the tax. A unit counts as affordable if a household earning 60% or less of the area's middle income can rent it for no more than 30% of its pay. A yes vote gave counties this new tax tool to encourage affordable rentals. The Maryland House of Delegates passed it 100-38 and it was signed into law as Chapter 107 of 2025.",
-   "nay_description": "Voted against passing HB 390, the Affordable Housing Payment in Lieu of Taxes Expansion Act. It lets a county drop the county property tax on a rental building if the owner keeps at least a quarter of the units affordable for 15 years or more. In exchange the owner signs a deal to pay the county a set yearly amount instead of the tax. A unit counts as affordable if a household earning 60% or less of the area's middle income can rent it for no more than 30% of its pay. A no vote opposed giving counties this new property tax break. The Maryland House of Delegates passed it 100-38 over these votes and it was signed into law as Chapter 107 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "senate",
+      "session": "2164",
+      "roll": 1559634,
+      "measure_id": "HB 324",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 324, the County Board Member Antibias Training Act. It makes every member of a county school board finish an antibias training course at least once during their term. It is the same course school staff already take, but board members take it in their own session. A yes vote required school board members to take the training. The Maryland Senate passed it 34-13 and it was signed into law as Chapter 301 of 2025.",
+      "nay_description": "Voted against passing HB 324, the County Board Member Antibias Training Act. It makes every member of a county school board finish an antibias training course at least once during their term. It is the same course school staff already take, but board members take it in their own session. A no vote opposed requiring it. The Maryland Senate passed it 34-13 over these votes and it was signed into law as Chapter 301 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
     {
-     "slug": "housing_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "senate",
-   "session": "2164",
-   "roll": 1559821,
-   "measure_id": "HB 390",
-   "vote_date": "2025-04-03",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 390, the Affordable Housing Payment in Lieu of Taxes Expansion Act. It lets a county drop the county property tax on a rental building if the owner keeps at least a quarter of the units affordable for 15 years or more. In exchange the owner signs a deal to pay the county a set yearly amount instead of the tax. A unit counts as affordable if a household earning 60% or less of the area's middle income can rent it for no more than 30% of its pay. A yes vote gave counties this new tax tool to encourage affordable rentals. The Maryland Senate passed it 37-10 and it was signed into law as Chapter 107 of 2025.",
-   "nay_description": "Voted against passing HB 390, the Affordable Housing Payment in Lieu of Taxes Expansion Act. It lets a county drop the county property tax on a rental building if the owner keeps at least a quarter of the units affordable for 15 years or more. In exchange the owner signs a deal to pay the county a set yearly amount instead of the tax. A unit counts as affordable if a household earning 60% or less of the area's middle income can rent it for no more than 30% of its pay. A no vote opposed giving counties this new property tax break. The Maryland Senate passed it 37-10 over these votes and it was signed into law as Chapter 107 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "house",
+      "session": "2164",
+      "roll": 1517921,
+      "measure_id": "HB 390",
+      "vote_date": "2025-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 390, the Affordable Housing Payment in Lieu of Taxes Expansion Act. It lets a county drop the county property tax on a rental building if the owner keeps at least a quarter of the units affordable for 15 years or more. In exchange the owner signs a deal to pay the county a set yearly amount instead of the tax. A unit counts as affordable if a household earning 60% or less of the area's middle income can rent it for no more than 30% of its pay. A yes vote gave counties this new tax tool to encourage affordable rentals. The Maryland House of Delegates passed it 100-38 and it was signed into law as Chapter 107 of 2025.",
+      "nay_description": "Voted against passing HB 390, the Affordable Housing Payment in Lieu of Taxes Expansion Act. It lets a county drop the county property tax on a rental building if the owner keeps at least a quarter of the units affordable for 15 years or more. In exchange the owner signs a deal to pay the county a set yearly amount instead of the tax. A unit counts as affordable if a household earning 60% or less of the area's middle income can rent it for no more than 30% of its pay. A no vote opposed giving counties this new property tax break. The Maryland House of Delegates passed it 100-38 over these votes and it was signed into law as Chapter 107 of 2025.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "housing_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "house",
-   "session": "2164",
-   "roll": 1521502,
-   "measure_id": "HB 765",
-   "vote_date": "2025-03-13",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 765, which let hospitals sell patient debt only to buyers who wipe it out. State law had barred hospitals from selling patient debt at all. Now a hospital may sell it to a government body or a nonprofit, but only if the contract says the point of the sale is to cancel the debt, and the patient then owes nothing. The debt must be at least two years old and owed by someone earning up to five times the federal poverty level, or whose medical debt tops 5% of family income. The buyer must tell the patient the debt is gone and try to undo any court judgment or credit report damage. A yes vote opened this path for wiping out old hospital bills. The Maryland House of Delegates passed it 103-36 and it was signed into law as Chapter 750 of 2025.",
-   "nay_description": "Voted against passing HB 765, which let hospitals sell patient debt only to buyers who wipe it out. State law had barred hospitals from selling patient debt at all. Now a hospital may sell it to a government body or a nonprofit, but only if the contract says the point of the sale is to cancel the debt, and the patient then owes nothing. The debt must be at least two years old and owed by someone earning up to five times the federal poverty level, or whose medical debt tops 5% of family income. The buyer must tell the patient the debt is gone and try to undo any court judgment or credit report damage. A no vote opposed the change. The Maryland House of Delegates passed it 103-36 over these votes and it was signed into law as Chapter 750 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "senate",
+      "session": "2164",
+      "roll": 1559821,
+      "measure_id": "HB 390",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 390, the Affordable Housing Payment in Lieu of Taxes Expansion Act. It lets a county drop the county property tax on a rental building if the owner keeps at least a quarter of the units affordable for 15 years or more. In exchange the owner signs a deal to pay the county a set yearly amount instead of the tax. A unit counts as affordable if a household earning 60% or less of the area's middle income can rent it for no more than 30% of its pay. A yes vote gave counties this new tax tool to encourage affordable rentals. The Maryland Senate passed it 37-10 and it was signed into law as Chapter 107 of 2025.",
+      "nay_description": "Voted against passing HB 390, the Affordable Housing Payment in Lieu of Taxes Expansion Act. It lets a county drop the county property tax on a rental building if the owner keeps at least a quarter of the units affordable for 15 years or more. In exchange the owner signs a deal to pay the county a set yearly amount instead of the tax. A unit counts as affordable if a household earning 60% or less of the area's middle income can rent it for no more than 30% of its pay. A no vote opposed giving counties this new property tax break. The Maryland Senate passed it 37-10 over these votes and it was signed into law as Chapter 107 of 2025.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "healthcare_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "senate",
-   "session": "2164",
-   "roll": 1559974,
-   "measure_id": "HB 765",
-   "vote_date": "2025-04-03",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 765, which let hospitals sell patient debt only to buyers who wipe it out. State law had barred hospitals from selling patient debt at all. Now a hospital may sell it to a government body or a nonprofit, but only if the contract says the point of the sale is to cancel the debt, and the patient then owes nothing. The debt must be at least two years old and owed by someone earning up to five times the federal poverty level, or whose medical debt tops 5% of family income. The buyer must tell the patient the debt is gone and try to undo any court judgment or credit report damage. A yes vote opened this path for wiping out old hospital bills. The Maryland Senate passed it 34-12 and it was signed into law as Chapter 750 of 2025.",
-   "nay_description": "Voted against passing HB 765, which let hospitals sell patient debt only to buyers who wipe it out. State law had barred hospitals from selling patient debt at all. Now a hospital may sell it to a government body or a nonprofit, but only if the contract says the point of the sale is to cancel the debt, and the patient then owes nothing. The debt must be at least two years old and owed by someone earning up to five times the federal poverty level, or whose medical debt tops 5% of family income. The buyer must tell the patient the debt is gone and try to undo any court judgment or credit report damage. A no vote opposed the change. The Maryland Senate passed it 34-12 over these votes and it was signed into law as Chapter 750 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "house",
+      "session": "2164",
+      "roll": 1521502,
+      "measure_id": "HB 765",
+      "vote_date": "2025-03-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 765, which let hospitals sell patient debt only to buyers who wipe it out. State law had barred hospitals from selling patient debt at all. Now a hospital may sell it to a government body or a nonprofit, but only if the contract says the point of the sale is to cancel the debt, and the patient then owes nothing. The debt must be at least two years old and owed by someone earning up to five times the federal poverty level, or whose medical debt tops 5% of family income. The buyer must tell the patient the debt is gone and try to undo any court judgment or credit report damage. A yes vote opened this path for wiping out old hospital bills. The Maryland House of Delegates passed it 103-36 and it was signed into law as Chapter 750 of 2025.",
+      "nay_description": "Voted against passing HB 765, which let hospitals sell patient debt only to buyers who wipe it out. State law had barred hospitals from selling patient debt at all. Now a hospital may sell it to a government body or a nonprofit, but only if the contract says the point of the sale is to cancel the debt, and the patient then owes nothing. The debt must be at least two years old and owed by someone earning up to five times the federal poverty level, or whose medical debt tops 5% of family income. The buyer must tell the patient the debt is gone and try to undo any court judgment or credit report damage. A no vote opposed the change. The Maryland House of Delegates passed it 103-36 over these votes and it was signed into law as Chapter 750 of 2025.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "healthcare_affordability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "house",
-   "session": "2164",
-   "roll": 1518677,
-   "measure_id": "HB 783",
-   "vote_date": "2025-03-12",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 783, which added implicit bias and structural racism to the training required of licensed health workers. Implicit bias means the unspoken assumptions a person carries without meaning to. Anyone licensed by a state health board must confirm they finished an approved course on it the first time they renew after April 1, 2026. A state program run with the Office of Minority Health and Health Disparities decides which courses count. A yes vote added this training to health license renewals. The Maryland House of Delegates passed it 101-37 and it was signed into law as Chapter 478 of 2025.",
-   "nay_description": "Voted against passing HB 783, which added implicit bias and structural racism to the training required of licensed health workers. Implicit bias means the unspoken assumptions a person carries without meaning to. Anyone licensed by a state health board must confirm they finished an approved course on it the first time they renew after April 1, 2026. A state program run with the Office of Minority Health and Health Disparities decides which courses count. A no vote opposed adding it. The Maryland House of Delegates passed it 101-37 over these votes and it was signed into law as Chapter 478 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "senate",
+      "session": "2164",
+      "roll": 1559974,
+      "measure_id": "HB 765",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 765, which let hospitals sell patient debt only to buyers who wipe it out. State law had barred hospitals from selling patient debt at all. Now a hospital may sell it to a government body or a nonprofit, but only if the contract says the point of the sale is to cancel the debt, and the patient then owes nothing. The debt must be at least two years old and owed by someone earning up to five times the federal poverty level, or whose medical debt tops 5% of family income. The buyer must tell the patient the debt is gone and try to undo any court judgment or credit report damage. A yes vote opened this path for wiping out old hospital bills. The Maryland Senate passed it 34-12 and it was signed into law as Chapter 750 of 2025.",
+      "nay_description": "Voted against passing HB 765, which let hospitals sell patient debt only to buyers who wipe it out. State law had barred hospitals from selling patient debt at all. Now a hospital may sell it to a government body or a nonprofit, but only if the contract says the point of the sale is to cancel the debt, and the patient then owes nothing. The debt must be at least two years old and owed by someone earning up to five times the federal poverty level, or whose medical debt tops 5% of family income. The buyer must tell the patient the debt is gone and try to undo any court judgment or credit report damage. A no vote opposed the change. The Maryland Senate passed it 34-12 over these votes and it was signed into law as Chapter 750 of 2025.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for",
-     "nay": "against"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "senate",
-   "session": "2164",
-   "roll": 1561936,
-   "measure_id": "HB 783",
-   "vote_date": "2025-04-05",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 783, which added implicit bias and structural racism to the training required of licensed health workers. Implicit bias means the unspoken assumptions a person carries without meaning to. Anyone licensed by a state health board must confirm they finished an approved course on it the first time they renew after April 1, 2026. A state program run with the Office of Minority Health and Health Disparities decides which courses count. A yes vote added this training to health license renewals. The Maryland Senate passed it 29-13 and it was signed into law as Chapter 478 of 2025.",
-   "nay_description": "Voted against passing HB 783, which added implicit bias and structural racism to the training required of licensed health workers. Implicit bias means the unspoken assumptions a person carries without meaning to. Anyone licensed by a state health board must confirm they finished an approved course on it the first time they renew after April 1, 2026. A state program run with the Office of Minority Health and Health Disparities decides which courses count. A no vote opposed adding it. The Maryland Senate passed it 29-13 over these votes and it was signed into law as Chapter 478 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "house",
+      "session": "2164",
+      "roll": 1518677,
+      "measure_id": "HB 783",
+      "vote_date": "2025-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 783, which added implicit bias and structural racism to the training required of licensed health workers. Implicit bias means the unspoken assumptions a person carries without meaning to. Anyone licensed by a state health board must confirm they finished an approved course on it the first time they renew after April 1, 2026. A state program run with the Office of Minority Health and Health Disparities decides which courses count. A yes vote added this training to health license renewals. The Maryland House of Delegates passed it 101-37 and it was signed into law as Chapter 478 of 2025.",
+      "nay_description": "Voted against passing HB 783, which added implicit bias and structural racism to the training required of licensed health workers. Implicit bias means the unspoken assumptions a person carries without meaning to. Anyone licensed by a state health board must confirm they finished an approved course on it the first time they renew after April 1, 2026. A state program run with the Office of Minority Health and Health Disparities decides which courses count. A no vote opposed adding it. The Maryland House of Delegates passed it 101-37 over these votes and it was signed into law as Chapter 478 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for",
-     "nay": "against"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "senate",
-   "session": "2164",
-   "roll": 1562634,
-   "measure_id": "HB 861",
-   "vote_date": "2025-04-04",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 861, which made ride-hailing companies show drivers what the company collected on their rides. A company such as Uber or Lyft must give each driver a weekly summary listing total fares collected, total extra fees charged to riders, the driver's own pay, and the driver's pay as a share of each. Each February the company must also send fare and earnings data to the Public Service Commission, where anything not already public is kept confidential as a trade secret. The law took effect January 1, 2026. A yes vote required these pay disclosures. The Maryland Senate passed it 32-11 and it was signed into law as Chapter 506 of 2025.",
-   "nay_description": "Voted against passing HB 861, which made ride-hailing companies show drivers what the company collected on their rides. A company such as Uber or Lyft must give each driver a weekly summary listing total fares collected, total extra fees charged to riders, the driver's own pay, and the driver's pay as a share of each. Each February the company must also send fare and earnings data to the Public Service Commission, where anything not already public is kept confidential as a trade secret. The law took effect January 1, 2026. A no vote opposed requiring them. The Maryland Senate passed it 32-11 over these votes and it was signed into law as Chapter 506 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "senate",
+      "session": "2164",
+      "roll": 1561936,
+      "measure_id": "HB 783",
+      "vote_date": "2025-04-05",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 783, which added structural racism to the implicit bias training already required of licensed health workers. Implicit bias means the unspoken assumptions a person carries without meaning to. Anyone licensed by a state health board must confirm they finished an approved course covering both subjects the first time they renew after April 1, 2026. A state program run with the Office of Minority Health and Health Disparities decides which courses count. A yes vote added the structural racism material to health license renewals. The Maryland Senate passed it 29-13 and it was signed into law as Chapter 478 of 2025.",
+      "nay_description": "Voted against passing HB 783, which added structural racism to the implicit bias training already required of licensed health workers. Implicit bias means the unspoken assumptions a person carries without meaning to. Anyone licensed by a state health board must confirm they finished an approved course covering both subjects the first time they renew after April 1, 2026. A state program run with the Office of Minority Health and Health Disparities decides which courses count. A no vote opposed adding it. The Maryland Senate passed it 29-13 over these votes and it was signed into law as Chapter 478 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
     {
-     "slug": "corporate_accountability",
-     "yea": "for",
-     "nay": "against"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "house",
-   "session": "2164",
-   "roll": 1547340,
-   "measure_id": "HB 861",
-   "vote_date": "2025-04-07",
-   "review_status": "approved",
-   "yea_description": "Voted to pass HB 861, which made ride-hailing companies show drivers what the company collected on their rides. A company such as Uber or Lyft must give each driver a weekly summary listing total fares collected, total extra fees charged to riders, the driver's own pay, and the driver's pay as a share of each. Each February the company must also send fare and earnings data to the Public Service Commission, where anything not already public is kept confidential as a trade secret. The law took effect January 1, 2026. A yes vote required these pay disclosures. The Maryland House of Delegates passed it 103-37 and it was signed into law as Chapter 506 of 2025.",
-   "nay_description": "Voted against passing HB 861, which made ride-hailing companies show drivers what the company collected on their rides. A company such as Uber or Lyft must give each driver a weekly summary listing total fares collected, total extra fees charged to riders, the driver's own pay, and the driver's pay as a share of each. Each February the company must also send fare and earnings data to the Public Service Commission, where anything not already public is kept confidential as a trade secret. The law took effect January 1, 2026. A no vote opposed requiring them. The Maryland House of Delegates passed it 103-37 over these votes and it was signed into law as Chapter 506 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "senate",
+      "session": "2164",
+      "roll": 1562634,
+      "measure_id": "HB 861",
+      "vote_date": "2025-04-04",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 861, which made ride-hailing companies show drivers what the company collected on their rides. A company such as Uber or Lyft must give each driver a weekly summary listing total fares collected, total extra fees charged to riders, the driver's own pay, and the driver's pay as a share of each. By February 1 each year the company must also send fare and earnings data to the Public Service Commission, where anything not already public is kept confidential as a trade secret. The law took effect January 1, 2026. A yes vote required these pay disclosures. The Maryland Senate passed it 32-11 and it was signed into law as Chapter 506 of 2025.",
+      "nay_description": "Voted against passing HB 861, which made ride-hailing companies show drivers what the company collected on their rides. A company such as Uber or Lyft must give each driver a weekly summary listing total fares collected, total extra fees charged to riders, the driver's own pay, and the driver's pay as a share of each. By February 1 each year the company must also send fare and earnings data to the Public Service Commission, where anything not already public is kept confidential as a trade secret. The law took effect January 1, 2026. A no vote opposed requiring them. The Maryland Senate passed it 32-11 over these votes and it was signed into law as Chapter 506 of 2025.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
     {
-     "slug": "corporate_accountability",
-     "yea": "for",
-     "nay": "against"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "senate",
-   "session": "2164",
-   "roll": 1524890,
-   "measure_id": "SB 432",
-   "vote_date": "2025-03-14",
-   "review_status": "approved",
-   "yea_description": "Voted to pass SB 432, the Expungement Reform Act of 2025, a bill sent up by the Governor's office. Expungement is a court order erasing the record of an old case. The bill starts the waiting period when the whole sentence ends, including probation or parole, and adds credit card theft and driving without a license to the offenses that can be erased. A judge must also weigh how well the person did on supervision and whether they paid any restitution or truly cannot afford it. From January 31, 2026 the state's public case-search website stops showing certain dropped, inactive and pardoned cannabis charges. A yes vote made it easier to clear an old record. The Maryland Senate passed it 36-11 and it was signed into law as Chapter 95 of 2025.",
-   "nay_description": "Voted against passing SB 432, the Expungement Reform Act of 2025, a bill sent up by the Governor's office. Expungement is a court order erasing the record of an old case. The bill starts the waiting period when the whole sentence ends, including probation or parole, and adds credit card theft and driving without a license to the offenses that can be erased. A judge must also weigh how well the person did on supervision and whether they paid any restitution or truly cannot afford it. From January 31, 2026 the state's public case-search website stops showing certain dropped, inactive and pardoned cannabis charges. A no vote opposed these changes. The Maryland Senate passed it 36-11 over these votes and it was signed into law as Chapter 95 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "house",
+      "session": "2164",
+      "roll": 1547340,
+      "measure_id": "HB 861",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 861, which made ride-hailing companies show drivers what the company collected on their rides. A company such as Uber or Lyft must give each driver a weekly summary listing total fares collected, total extra fees charged to riders, the driver's own pay, and the driver's pay as a share of each. Each February the company must also send fare and earnings data to the Public Service Commission, where anything not already public is kept confidential as a trade secret. The law took effect January 1, 2026. A yes vote required these pay disclosures. The Maryland House of Delegates passed it 103-37 and it was signed into law as Chapter 506 of 2025.",
+      "nay_description": "Voted against passing HB 861, which made ride-hailing companies show drivers what the company collected on their rides. A company such as Uber or Lyft must give each driver a weekly summary listing total fares collected, total extra fees charged to riders, the driver's own pay, and the driver's pay as a share of each. Each February the company must also send fare and earnings data to the Public Service Commission, where anything not already public is kept confidential as a trade secret. The law took effect January 1, 2026. A no vote opposed requiring them. The Maryland House of Delegates passed it 103-37 over these votes and it was signed into law as Chapter 506 of 2025.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "house",
-   "session": "2164",
-   "roll": 1544290,
-   "measure_id": "SB 432",
-   "vote_date": "2025-04-02",
-   "review_status": "approved",
-   "yea_description": "Voted to pass SB 432, the Expungement Reform Act of 2025, a bill sent up by the Governor's office. Expungement is a court order erasing the record of an old case. The bill starts the waiting period when the whole sentence ends, including probation or parole, and adds credit card theft and driving without a license to the offenses that can be erased. A judge must also weigh how well the person did on supervision and whether they paid any restitution or truly cannot afford it. From January 31, 2026 the state's public case-search website stops showing certain dropped, inactive and pardoned cannabis charges. A yes vote made it easier to clear an old record. The Maryland House of Delegates passed it 101-38 and it was signed into law as Chapter 95 of 2025.",
-   "nay_description": "Voted against passing SB 432, the Expungement Reform Act of 2025, a bill sent up by the Governor's office. Expungement is a court order erasing the record of an old case. The bill starts the waiting period when the whole sentence ends, including probation or parole, and adds credit card theft and driving without a license to the offenses that can be erased. A judge must also weigh how well the person did on supervision and whether they paid any restitution or truly cannot afford it. From January 31, 2026 the state's public case-search website stops showing certain dropped, inactive and pardoned cannabis charges. A no vote opposed these changes. The Maryland House of Delegates passed it 101-38 over these votes and it was signed into law as Chapter 95 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "senate",
+      "session": "2164",
+      "roll": 1524890,
+      "measure_id": "SB 432",
+      "vote_date": "2025-03-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 432, the Expungement Reform Act of 2025, a bill sent up by the Governor's office. Expungement is a court order erasing the record of an old case. The bill starts the waiting period when the whole sentence ends, including probation or parole, and adds credit card theft and driving without a license to the offenses that can be erased. A judge must also weigh how well the person did on supervision and whether they paid any restitution or truly cannot afford it. From January 31, 2026 the state's public case-search website stops showing certain dropped, inactive and pardoned cannabis charges. A yes vote made it easier to clear an old record. The Maryland Senate passed it 36-11 and it was signed into law as Chapter 95 of 2025.",
+      "nay_description": "Voted against passing SB 432, the Expungement Reform Act of 2025, a bill sent up by the Governor's office. Expungement is a court order erasing the record of an old case. The bill starts the waiting period when the whole sentence ends, including probation or parole, and adds credit card theft and driving without a license to the offenses that can be erased. A judge must also weigh how well the person did on supervision and whether they paid any restitution or truly cannot afford it. From January 31, 2026 the state's public case-search website stops showing certain dropped, inactive and pardoned cannabis charges. A no vote opposed these changes. The Maryland Senate passed it 36-11 over these votes and it was signed into law as Chapter 95 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "MD",
-   "chamber": "senate",
-   "session": "2164",
-   "roll": 1562223,
-   "measure_id": "SB 608",
-   "vote_date": "2025-04-07",
-   "review_status": "approved",
-   "yea_description": "Voted to pass SB 608, which eased a paperwork step for U visas. A U visa lets a crime victim who helps the authorities stay in the United States, but first a state or local official must sign a form saying the victim was helpful. The bill lets the victim's lawyer or advocate ask for that form, drops any limit on how long ago the crime happened, and requires an official who refuses to explain why in writing. A yes vote made the certification easier for immigrant crime victims to get. The Maryland Senate passed it 34-12 and it was signed into law as Chapter 114 of 2025.",
-   "nay_description": "Voted against passing SB 608, which eased a paperwork step for U visas. A U visa lets a crime victim who helps the authorities stay in the United States, but first a state or local official must sign a form saying the victim was helpful. The bill lets the victim's lawyer or advocate ask for that form, drops any limit on how long ago the crime happened, and requires an official who refuses to explain why in writing. A no vote opposed easing it. The Maryland Senate passed it 34-12 over these votes and it was signed into law as Chapter 114 of 2025.",
-   "labels": [
+      "jurisdiction": "MD",
+      "chamber": "house",
+      "session": "2164",
+      "roll": 1544290,
+      "measure_id": "SB 432",
+      "vote_date": "2025-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 432, the Expungement Reform Act of 2025, a bill sent up by the Governor's office. Expungement is a court order erasing the record of an old case. The bill starts the waiting period when the whole sentence ends, including probation or parole, and adds credit card theft and driving without a license to the offenses that can be erased. A judge must also weigh how well the person did on supervision and whether they paid any restitution or truly cannot afford it. From January 31, 2026 the state's public case-search website stops showing certain dropped, inactive and pardoned cannabis charges. A yes vote made it easier to clear an old record. The Maryland House of Delegates passed it 101-38 and it was signed into law as Chapter 95 of 2025.",
+      "nay_description": "Voted against passing SB 432, the Expungement Reform Act of 2025, a bill sent up by the Governor's office. Expungement is a court order erasing the record of an old case. The bill starts the waiting period when the whole sentence ends, including probation or parole, and adds credit card theft and driving without a license to the offenses that can be erased. A judge must also weigh how well the person did on supervision and whether they paid any restitution or truly cannot afford it. From January 31, 2026 the state's public case-search website stops showing certain dropped, inactive and pardoned cannabis charges. A no vote opposed these changes. The Maryland House of Delegates passed it 101-38 over these votes and it was signed into law as Chapter 95 of 2025.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "immigration",
-     "yea": "for",
-     "nay": "against"
+      "jurisdiction": "MD",
+      "chamber": "senate",
+      "session": "2164",
+      "roll": 1562223,
+      "measure_id": "SB 608",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 608, which eased a paperwork step for U visas. A U visa lets a crime victim who helps the authorities stay in the United States, but first a state or local official must sign a form saying the victim was helpful. The bill lets the victim's lawyer or advocate ask for that form, drops any limit on how long ago the crime happened, and requires an official who refuses to explain why in writing. A yes vote made the certification easier for immigrant crime victims to get. The Maryland Senate passed it 34-12 and it was signed into law as Chapter 114 of 2025.",
+      "nay_description": "Voted against passing SB 608, which eased a paperwork step for U visas. A U visa lets a crime victim who helps the authorities stay in the United States, but first a state or local official must sign a form saying the victim was helpful. The bill lets the victim's lawyer or advocate ask for that form, drops any limit on how long ago the crime happened, and requires an official who refuses to explain why in writing. A no vote opposed easing it. The Maryland Senate passed it 34-12 over these votes and it was signed into law as Chapter 114 of 2025.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": "against"
+        }
+      ]
     }
-   ]
-  }
- ]
+  ]
 }

@@ -1,0 +1,131 @@
+{
+  "jurisdiction": "DE",
+  "sessionId": 2163,
+  "chamber": "senate",
+  "rollNumber": 1709692,
+  "bill": "HB380",
+  "measureId": "HB 380",
+  "machineUrl": "https://legiscan.com/DE/rollcall/HB380/id/1709692",
+  "fetchedAt": "2026-09-06T06:41:06.982Z",
+  "rollCall": {
+    "roll_call_id": 1709692,
+    "bill_id": 2143650,
+    "date": "2026-06-16",
+    "desc": "Senate Third Reading",
+    "yea": 15,
+    "nay": 6,
+    "nv": 0,
+    "absent": 0,
+    "total": 21,
+    "passed": 1,
+    "chamber": "S",
+    "chamber_id": 26,
+    "votes": [
+      {
+        "people_id": 4447,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 4457,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 4460,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 11375,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 14546,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 14551,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 14552,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 14553,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 16374,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 18423,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 19351,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 19898,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 19901,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 19903,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 19921,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21734,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21735,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 23368,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 23369,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 23984,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 26416,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      }
+    ]
+  }
+}

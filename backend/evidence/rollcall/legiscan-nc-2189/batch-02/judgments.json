@@ -1,321 +1,321 @@
 {
- "judgments": [
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1604004,
-   "measure_id": "S 249",
-   "vote_date": "2025-10-21",
-   "review_status": "approved",
-   "yea_description": "Voted yes on Senate Bill 249. It redrew two of North Carolina's 14 seats in the U.S. House, District 1 and District 3, both in the east. The other 12 did not change. The legislature's own report on the map shows District 1 going from a close seat to one that voted about 55 percent Republican for president in 2024. A yes vote helped make the bill law. The Senate voted 26-20 and the House 66-48, and congressional maps are not sent to the governor, so it became law that day.",
-   "nay_description": "Voted no on Senate Bill 249. It redrew two of North Carolina's 14 seats in the U.S. House, District 1 and District 3, both in the east. The other 12 did not change. The legislature's own report on the map shows District 1 going from a close seat to one that voted about 55 percent Republican for president in 2024. A no vote was against making it law. The Senate voted 26-20 and the House 66-48, and congressional maps are not sent to the governor, so it became law that day.",
-   "labels": [
+  "judgments": [
     {
-     "slug": "election_integrity",
-     "yea": "against",
-     "nay": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1604135,
-   "measure_id": "S 249",
-   "vote_date": "2025-10-22",
-   "review_status": "approved",
-   "yea_description": "Voted yes on Senate Bill 249. It redrew two of North Carolina's 14 seats in the U.S. House, District 1 and District 3, both in the east. The other 12 did not change. The legislature's own report on the map shows District 1 going from a close seat to one that voted about 55 percent Republican for president in 2024. A yes vote helped make the bill law. The House voted 66-48 and the Senate 26-20, and congressional maps are not sent to the governor, so it became law that day.",
-   "nay_description": "Voted no on Senate Bill 249. It redrew two of North Carolina's 14 seats in the U.S. House, District 1 and District 3, both in the east. The other 12 did not change. The legislature's own report on the map shows District 1 going from a close seat to one that voted about 55 percent Republican for president in 2024. A no vote was against making it law. The House voted 66-48 and the Senate 26-20, and congressional maps are not sent to the governor, so it became law that day.",
-   "labels": [
-    {
-     "slug": "election_integrity",
-     "yea": "against",
-     "nay": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1603081,
-   "measure_id": "H 307",
-   "vote_date": "2025-09-22",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 307, known as Iryna's Law. Judges may no longer release a person before trial on a written promise to appear, and for 18 serious crimes the law starts from the position that no release is safe. It also restarted executions, with a backup method if lethal injection cannot be used, and it barred the state from bringing back a task force on racial equity in criminal justice. A yes vote helped make the bill law. The Senate voted 28-8 and the House agreed 81-31. The governor signed it.",
-   "nay_description": "Voted no on House Bill 307, known as Iryna's Law. Judges may no longer release a person before trial on a written promise to appear, and for 18 serious crimes the law starts from the position that no release is safe. It also restarted executions, with a backup method if lethal injection cannot be used, and it barred the state from bringing back a task force on racial equity in criminal justice. A no vote was against making it law. The Senate voted 28-8 and the House agreed 81-31. The governor signed it.",
-   "labels": [
-    {
-     "slug": "public_safety_and_crime_control",
-     "yea": "for",
-     "nay": null
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1604004,
+      "measure_id": "S 249",
+      "vote_date": "2025-10-21",
+      "review_status": "approved",
+      "yea_description": "Voted yes on Senate Bill 249. It redrew two of North Carolina's 14 seats in the U.S. House, District 1 and District 3, both in the east. The other 12 did not change. The legislature's own report on the map shows District 1 going from a close seat to one that voted about 55 percent Republican for president in 2024. A yes vote helped make the bill law. The Senate voted 26-20 and the House 66-48, and congressional maps are not sent to the governor, so it became law that day.",
+      "nay_description": "Voted no on Senate Bill 249. It redrew two of North Carolina's 14 seats in the U.S. House, District 1 and District 3, both in the east. The other 12 did not change. The legislature's own report on the map shows District 1 going from a close seat to one that voted about 55 percent Republican for president in 2024. A no vote was against making it law. The Senate voted 26-20 and the House 66-48, and congressional maps are not sent to the governor, so it became law that day.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
     },
     {
-     "slug": "civil_rights",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1603096,
-   "measure_id": "H 307",
-   "vote_date": "2025-09-23",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 307, known as Iryna's Law. Judges may no longer release a person before trial on a written promise to appear, and for 18 serious crimes the law starts from the position that no release is safe. It also restarted executions, with a backup method if lethal injection cannot be used, and it barred the state from bringing back a task force on racial equity in criminal justice. A yes vote helped make the bill law. The House agreed 81-31 to the Senate version it had passed 28-8, and the governor signed it.",
-   "nay_description": "Voted no on House Bill 307, known as Iryna's Law. Judges may no longer release a person before trial on a written promise to appear, and for 18 serious crimes the law starts from the position that no release is safe. It also restarted executions, with a backup method if lethal injection cannot be used, and it barred the state from bringing back a task force on racial equity in criminal justice. A no vote was against making it law. The House agreed 81-31 to the Senate version it had passed 28-8, and the governor signed it.",
-   "labels": [
-    {
-     "slug": "public_safety_and_crime_control",
-     "yea": "for",
-     "nay": null
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1604135,
+      "measure_id": "S 249",
+      "vote_date": "2025-10-22",
+      "review_status": "approved",
+      "yea_description": "Voted yes on Senate Bill 249. It redrew two of North Carolina's 14 seats in the U.S. House, District 1 and District 3, both in the east. The other 12 did not change. The legislature's own report on the map shows District 1 going from a close seat to one that voted about 55 percent Republican for president in 2024. A yes vote helped make the bill law. The House voted 66-48 and the Senate 26-20, and congressional maps are not sent to the governor, so it became law that day.",
+      "nay_description": "Voted no on Senate Bill 249. It redrew two of North Carolina's 14 seats in the U.S. House, District 1 and District 3, both in the east. The other 12 did not change. The legislature's own report on the map shows District 1 going from a close seat to one that voted about 55 percent Republican for president in 2024. A no vote was against making it law. The House voted 66-48 and the Senate 26-20, and congressional maps are not sent to the governor, so it became law that day.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
     },
     {
-     "slug": "civil_rights",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1592370,
-   "measure_id": "S 442",
-   "vote_date": "2025-06-18",
-   "review_status": "approved",
-   "yea_description": "Voted yes on Senate Bill 442, the Parents Protection Act. Raising a child as their birth sex, or calling them by it, can no longer be the reason for an abuse or neglect case or a child abuse charge. An adoption agency also may not turn parents down because they will not support a child's gender transition. A yes vote helped make the bill law. The House voted 74-36 and the Senate agreed 28-19. The governor signed it.",
-   "nay_description": "Voted no on Senate Bill 442, the Parents Protection Act. Raising a child as their birth sex, or calling them by it, can no longer be the reason for an abuse or neglect case or a child abuse charge. An adoption agency also may not turn parents down because they will not support a child's gender transition. A no vote was against making it law. The House voted 74-36 and the Senate agreed 28-19. The governor signed it.",
-   "labels": [
-    {
-     "slug": "civil_rights",
-     "yea": "against",
-     "nay": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1594096,
-   "measure_id": "S 442",
-   "vote_date": "2025-06-23",
-   "review_status": "approved",
-   "yea_description": "Voted yes on Senate Bill 442, the Parents Protection Act. Raising a child as their birth sex, or calling them by it, can no longer be the reason for an abuse or neglect case or a child abuse charge. An adoption agency also may not turn parents down because they will not support a child's gender transition. A yes vote helped make the bill law. The Senate agreed 28-19 to the House version passed 74-36, and the governor signed it.",
-   "nay_description": "Voted no on Senate Bill 442, the Parents Protection Act. Raising a child as their birth sex, or calling them by it, can no longer be the reason for an abuse or neglect case or a child abuse charge. An adoption agency also may not turn parents down because they will not support a child's gender transition. A no vote was against making it law. The Senate agreed 28-19 to the House version passed 74-36, and the governor signed it.",
-   "labels": [
-    {
-     "slug": "civil_rights",
-     "yea": "against",
-     "nay": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1587941,
-   "measure_id": "H 568",
-   "vote_date": "2025-06-10",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 568, a labor law bill. State safety inspectors can no longer be made to testify in most private lawsuits, though their written reports may now be used as evidence. Employers with fewer than five workers no longer post the notice of workplace rights, and larger ones post it in one place instead of every room. A yes vote helped make the bill law. The Senate voted 26-17 and the House agreed 72-42. The governor signed it.",
-   "nay_description": "Voted no on House Bill 568, a labor law bill. State safety inspectors can no longer be made to testify in most private lawsuits, though their written reports may now be used as evidence. Employers with fewer than five workers no longer post the notice of workplace rights, and larger ones post it in one place instead of every room. A no vote was against making it law. The Senate voted 26-17 and the House agreed 72-42. The governor signed it.",
-   "labels": [
-    {
-     "slug": "corporate_accountability",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1591676,
-   "measure_id": "H 568",
-   "vote_date": "2025-06-17",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 568, a labor law bill. State safety inspectors can no longer be made to testify in most private lawsuits, though their written reports may now be used as evidence. Employers with fewer than five workers no longer post the notice of workplace rights, and larger ones post it in one place instead of every room. A yes vote helped make the bill law. The House agreed 72-42 to the Senate version passed 26-17, and the governor signed it.",
-   "nay_description": "Voted no on House Bill 568, a labor law bill. State safety inspectors can no longer be made to testify in most private lawsuits, though their written reports may now be used as evidence. Employers with fewer than five workers no longer post the notice of workplace rights, and larger ones post it in one place instead of every room. A no vote was against making it law. The House agreed 72-42 to the Senate version passed 26-17, and the governor signed it.",
-   "labels": [
-    {
-     "slug": "corporate_accountability",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1594508,
-   "measure_id": "S 472",
-   "vote_date": "2025-06-24",
-   "review_status": "approved",
-   "yea_description": "Voted yes on Senate Bill 472, a coastal bill. If the state misses a deadline to review a water quality permit, it loses its say and the project may go ahead without one. The state may not add protections beyond the least needed to meet water standards, and man-made ditches and canals lost coastal protection. A yes vote helped make the bill law. The House voted 66-45 and the Senate agreed 30-15. The governor signed it.",
-   "nay_description": "Voted no on Senate Bill 472, a coastal bill. If the state misses a deadline to review a water quality permit, it loses its say and the project may go ahead without one. The state may not add protections beyond the least needed to meet water standards, and man-made ditches and canals lost coastal protection. A no vote was against making it law. The House voted 66-45 and the Senate agreed 30-15. The governor signed it.",
-   "labels": [
-    {
-     "slug": "environment_and_public_health",
-     "yea": "against",
-     "nay": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1594854,
-   "measure_id": "S 472",
-   "vote_date": "2025-06-25",
-   "review_status": "approved",
-   "yea_description": "Voted yes on Senate Bill 472, a coastal bill. If the state misses a deadline to review a water quality permit, it loses its say and the project may go ahead without one. The state may not add protections beyond the least needed to meet water standards, and man-made ditches and canals lost coastal protection. A yes vote helped make the bill law. The Senate agreed 30-15 to the House version passed 66-45, and the governor signed it.",
-   "nay_description": "Voted no on Senate Bill 472, a coastal bill. If the state misses a deadline to review a water quality permit, it loses its say and the project may go ahead without one. The state may not add protections beyond the least needed to meet water standards, and man-made ditches and canals lost coastal protection. A no vote was against making it law. The Senate agreed 30-15 to the House version passed 66-45, and the governor signed it.",
-   "labels": [
-    {
-     "slug": "environment_and_public_health",
-     "yea": "against",
-     "nay": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1595387,
-   "measure_id": "H 694",
-   "vote_date": "2025-06-26",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 694, a water bill. It folded the Haw, Deep and Contentnea Creek basins into the Cape Fear and Neuse basins. Moving water between them no longer needs a state permit, in any amount, and every local government in the Neuse basin may use an older formula that counts less of a discharge. A yes vote helped make the bill law. The House agreed 66-42 to the Senate version, and the governor signed it.",
-   "nay_description": "Voted no on House Bill 694, a water bill. It folded the Haw, Deep and Contentnea Creek basins into the Cape Fear and Neuse basins. Moving water between them no longer needs a state permit, in any amount, and every local government in the Neuse basin may use an older formula that counts less of a discharge. A no vote was against making it law. The House agreed 66-42 to the Senate version, and the governor signed it.",
-   "labels": [
-    {
-     "slug": "environment_and_public_health",
-     "yea": "against",
-     "nay": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1594025,
-   "measure_id": "H 768",
-   "vote_date": "2025-06-23",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 768. Some apartment buildings, hotels and motels no longer need the system that lets firefighters' radios work inside, and owners already excused may switch off one they installed. It also put state water pollution reviews on a clock, where missing the deadline means the state loses its say and the project may go ahead. A yes vote helped make the bill law. The Senate voted 30-17 and the House agreed 67-44. The governor signed it.",
-   "nay_description": "Voted no on House Bill 768. Some apartment buildings, hotels and motels no longer need the system that lets firefighters' radios work inside, and owners already excused may switch off one they installed. It also put state water pollution reviews on a clock, where missing the deadline means the state loses its say and the project may go ahead. A no vote was against making it law. The Senate voted 30-17 and the House agreed 67-44. The governor signed it.",
-   "labels": [
-    {
-     "slug": "environment_and_public_health",
-     "yea": "against",
-     "nay": null
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1603081,
+      "measure_id": "H 307",
+      "vote_date": "2025-09-22",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 307, known as Iryna's Law. Judges may no longer release a person before trial on a written promise to appear, and for 18 serious crimes the law starts from the position that no release is safe. It also restarted executions, with a backup method if lethal injection cannot be used, and it barred the state from bringing back a task force on racial equity in criminal justice. A yes vote helped make the bill law. The Senate voted 28-8 and the House agreed 81-31. The governor signed it.",
+      "nay_description": "Voted no on House Bill 307, known as Iryna's Law. Judges may no longer release a person before trial on a written promise to appear, and for 18 serious crimes the law starts from the position that no release is safe. It also restarted executions, with a backup method if lethal injection cannot be used, and it barred the state from bringing back a task force on racial equity in criminal justice. A no vote was against making it law. The Senate voted 28-8 and the House agreed 81-31. The governor signed it.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
     },
     {
-     "slug": "public_safety_and_crime_control",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1594425,
-   "measure_id": "H 768",
-   "vote_date": "2025-06-24",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 768. Some apartment buildings, hotels and motels no longer need the system that lets firefighters' radios work inside, and owners already excused may switch off one they installed. It also put state water pollution reviews on a clock, where missing the deadline means the state loses its say and the project may go ahead. A yes vote helped make the bill law. The House agreed 67-44 to the Senate version passed 30-17, and the governor signed it.",
-   "nay_description": "Voted no on House Bill 768. Some apartment buildings, hotels and motels no longer need the system that lets firefighters' radios work inside, and owners already excused may switch off one they installed. It also put state water pollution reviews on a clock, where missing the deadline means the state loses its say and the project may go ahead. A no vote was against making it law. The House agreed 67-44 to the Senate version passed 30-17, and the governor signed it.",
-   "labels": [
-    {
-     "slug": "environment_and_public_health",
-     "yea": "against",
-     "nay": null
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1603096,
+      "measure_id": "H 307",
+      "vote_date": "2025-09-23",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 307, known as Iryna's Law. Judges may no longer release a person before trial on a written promise to appear, and for 18 serious crimes the law starts from the position that no release is safe. It also restarted executions, with a backup method if lethal injection cannot be used, and it barred the state from bringing back a task force on racial equity in criminal justice. A yes vote helped make the bill law. The House agreed 81-31 to the Senate version it had passed 28-8, and the governor signed it.",
+      "nay_description": "Voted no on House Bill 307, known as Iryna's Law. Judges may no longer release a person before trial on a written promise to appear, and for 18 serious crimes the law starts from the position that no release is safe. It also restarted executions, with a backup method if lethal injection cannot be used, and it barred the state from bringing back a task force on racial equity in criminal justice. A no vote was against making it law. The House agreed 81-31 to the Senate version it had passed 28-8, and the governor signed it.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
     },
     {
-     "slug": "public_safety_and_crime_control",
-     "yea": "against",
-     "nay": null
-    }
-   ],
-   "acknowledge_later_rolls": [
-    1594424
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1700911,
-   "measure_id": "H 1089",
-   "vote_date": "2026-05-20",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 1089. It puts a question on the November 3, 2026 ballot asking voters to change the state constitution. The change would order the legislature to pass a law limiting how much the property tax a county or city collects can rise, though it sets no limit itself and allows exceptions. A yes vote helped make the bill law. The Senate voted 31-15 and the House also passed it, and the question now goes to the voters rather than the governor.",
-   "nay_description": "Voted no on House Bill 1089. It puts a question on the November 3, 2026 ballot asking voters to change the state constitution. The change would order the legislature to pass a law limiting how much the property tax a county or city collects can rise, though it sets no limit itself and allows exceptions. A no vote was against making it law. The Senate voted 31-15 and the House also passed it, and the question now goes to the voters rather than the governor.",
-   "labels": [
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1592370,
+      "measure_id": "S 442",
+      "vote_date": "2025-06-18",
+      "review_status": "approved",
+      "yea_description": "Voted yes on Senate Bill 442, the Parents Protection Act. Raising a child as their birth sex, or calling them by it, can no longer be the reason for an abuse or neglect case or a child abuse charge. An adoption agency also may not turn parents down because they will not support a child's gender transition. A yes vote helped make the bill law. The House voted 74-36 and the Senate agreed 28-19. The governor signed it.",
+      "nay_description": "Voted no on Senate Bill 442, the Parents Protection Act. Raising a child as their birth sex, or calling them by it, can no longer be the reason for an abuse or neglect case or a child abuse charge. An adoption agency also may not turn parents down because they will not support a child's gender transition. A no vote was against making it law. The House voted 74-36 and the Senate agreed 28-19. The governor signed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
     {
-     "slug": "cost_of_living_reduction",
-     "yea": "for",
-     "nay": null
-    }
-   ],
-   "acknowledge_later_rolls": [
-    1700910
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1699850,
-   "measure_id": "S 1080",
-   "vote_date": "2026-05-19",
-   "review_status": "approved",
-   "yea_description": "Voted yes on Senate Bill 1080. It puts a question on the November 3, 2026 ballot asking voters to change the state constitution. The change would lower the highest income tax rate the state may ever charge, from 7 percent to 3.5 percent, covering both personal and business income tax. A yes vote helped make the bill law. The Senate voted 30-18 and the House also passed it, and the question now goes to the voters rather than the governor.",
-   "nay_description": "Voted no on Senate Bill 1080. It puts a question on the November 3, 2026 ballot asking voters to change the state constitution. The change would lower the highest income tax rate the state may ever charge, from 7 percent to 3.5 percent, covering both personal and business income tax. A no vote was against making it law. The Senate voted 30-18 and the House also passed it, and the question now goes to the voters rather than the governor.",
-   "labels": [
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1594096,
+      "measure_id": "S 442",
+      "vote_date": "2025-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted yes on Senate Bill 442, the Parents Protection Act. Raising a child as their birth sex, or calling them by it, can no longer be the reason for an abuse or neglect case or a child abuse charge. An adoption agency also may not turn parents down because they will not support a child's gender transition. A yes vote helped make the bill law. The Senate agreed 28-19 to the House version passed 74-36, and the governor signed it.",
+      "nay_description": "Voted no on Senate Bill 442, the Parents Protection Act. Raising a child as their birth sex, or calling them by it, can no longer be the reason for an abuse or neglect case or a child abuse charge. An adoption agency also may not turn parents down because they will not support a child's gender transition. A no vote was against making it law. The Senate agreed 28-19 to the House version passed 74-36, and the governor signed it.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
     {
-     "slug": "personal_income_tax_reduction",
-     "yea": "for",
-     "nay": null
-    }
-   ],
-   "acknowledge_later_rolls": [
-    1699849
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1527367,
-   "measure_id": "H 58",
-   "vote_date": "2025-03-26",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 58. It removed the rule that Scotland County must spend at least the state average per student on its schools out of local money. County commissioners now set that amount themselves, and neither they nor the school board may go to court over it. A yes vote helped make the bill law. The House voted 59-52, and the bill became law.",
-   "nay_description": "Voted no on House Bill 58. It removed the rule that Scotland County must spend at least the state average per student on its schools out of local money. County commissioners now set that amount themselves, and neither they nor the school board may go to court over it. A no vote was against making it law. The House voted 59-52, and the bill became law.",
-   "labels": [
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1587941,
+      "measure_id": "H 568",
+      "vote_date": "2025-06-10",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 568, a labor law bill. State safety inspectors can no longer be made to testify in most private lawsuits, though their written reports may now be used as evidence. Employers with fewer than five workers no longer post the notice of workplace rights, and larger ones post it in one place instead of every room. A yes vote helped make the bill law. The Senate voted 26-17 and the House agreed 72-42. The governor signed it.",
+      "nay_description": "Voted no on House Bill 568, a labor law bill. State safety inspectors can no longer be made to testify in most private lawsuits, though their written reports may now be used as evidence. Employers with fewer than five workers no longer post the notice of workplace rights, and larger ones post it in one place instead of every room. A no vote was against making it law. The Senate voted 26-17 and the House agreed 72-42. The governor signed it.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "public_education_quality",
-     "yea": "against",
-     "nay": null
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1591676,
+      "measure_id": "H 568",
+      "vote_date": "2025-06-17",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 568, a labor law bill. State safety inspectors can no longer be made to testify in most private lawsuits, though their written reports may now be used as evidence. Employers with fewer than five workers no longer post the notice of workplace rights, and larger ones post it in one place instead of every room. A yes vote helped make the bill law. The House agreed 72-42 to the Senate version passed 26-17, and the governor signed it.",
+      "nay_description": "Voted no on House Bill 568, a labor law bill. State safety inspectors can no longer be made to testify in most private lawsuits, though their written reports may now be used as evidence. Employers with fewer than five workers no longer post the notice of workplace rights, and larger ones post it in one place instead of every room. A no vote was against making it law. The House agreed 72-42 to the Senate version passed 26-17, and the governor signed it.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1594508,
+      "measure_id": "S 472",
+      "vote_date": "2025-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted yes on Senate Bill 472, a coastal bill. If the state misses a deadline to review a water quality permit, it loses its say and the project may go ahead without one. The state may not add protections beyond the least needed to meet water standards, and man-made ditches and canals lost coastal protection. A yes vote helped make the bill law. The House voted 66-45 and the Senate agreed 30-15. The governor signed it.",
+      "nay_description": "Voted no on Senate Bill 472, a coastal bill. If the state misses a deadline to review a water quality permit, it loses its say and the project may go ahead without one. The state may not add protections beyond the least needed to meet water standards, and man-made ditches and canals lost coastal protection. A no vote was against making it law. The House voted 66-45 and the Senate agreed 30-15. The governor signed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1594854,
+      "measure_id": "S 472",
+      "vote_date": "2025-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted yes on Senate Bill 472, a coastal bill. If the state misses a deadline to review a water quality permit, it loses its say and the project may go ahead without one. The state may not add protections beyond the least needed to meet water standards, and man-made ditches and canals lost coastal protection. The bill also created a new permit track for upland basin marinas, which the state must approve within 60 days unless it finds the project cannot meet the listed criteria. A yes vote helped make the bill law. The Senate agreed 30-15 to the House version passed 66-45, and the governor signed it.",
+      "nay_description": "Voted no on Senate Bill 472, a coastal bill. If the state misses a deadline to review a water quality permit, it loses its say and the project may go ahead without one. The state may not add protections beyond the least needed to meet water standards, and man-made ditches and canals lost coastal protection. The bill also created a new permit track for upland basin marinas, which the state must approve within 60 days unless it finds the project cannot meet the listed criteria. A no vote was against making it law. The Senate agreed 30-15 to the House version passed 66-45, and the governor signed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1595387,
+      "measure_id": "H 694",
+      "vote_date": "2025-06-26",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 694, a water bill. It folded the Haw, Deep and Contentnea Creek basins into the Cape Fear and Neuse basins. Moving water between them no longer needs a state permit, in any amount, and every local government in the Neuse basin may use an older formula that counts less of a discharge. A yes vote helped make the bill law. The House agreed 66-42 to the Senate version, and the governor signed it.",
+      "nay_description": "Voted no on House Bill 694, a water bill. It folded the Haw, Deep and Contentnea Creek basins into the Cape Fear and Neuse basins. Moving water between them no longer needs a state permit, in any amount, and every local government in the Neuse basin may use an older formula that counts less of a discharge. A no vote was against making it law. The House agreed 66-42 to the Senate version, and the governor signed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1594025,
+      "measure_id": "H 768",
+      "vote_date": "2025-06-23",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 768. Some apartment buildings, hotels and motels no longer need the system that lets firefighters' radios work inside, and owners already excused may switch off one they installed. It also put state water pollution reviews on a clock, where missing the deadline means the state loses its say and the project may go ahead. A yes vote helped make the bill law. The Senate voted 30-17 and the House agreed 67-44. The governor signed it.",
+      "nay_description": "Voted no on House Bill 768. Some apartment buildings, hotels and motels no longer need the system that lets firefighters' radios work inside, and owners already excused may switch off one they installed. It also put state water pollution reviews on a clock, where missing the deadline means the state loses its say and the project may go ahead. A no vote was against making it law. The Senate voted 30-17 and the House agreed 67-44. The governor signed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        },
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1594425,
+      "measure_id": "H 768",
+      "vote_date": "2025-06-24",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 768. Some apartment buildings, hotels and motels no longer need the system that lets firefighters' radios work inside, and owners already excused may switch off one they installed. It also put state water pollution reviews on a clock, where missing the deadline means the state loses its say and the project may go ahead. A yes vote helped make the bill law. The House agreed 67-44 to the Senate version passed 30-17, and the governor signed it.",
+      "nay_description": "Voted no on House Bill 768. Some apartment buildings, hotels and motels no longer need the system that lets firefighters' radios work inside, and owners already excused may switch off one they installed. It also put state water pollution reviews on a clock, where missing the deadline means the state loses its say and the project may go ahead. A no vote was against making it law. The House agreed 67-44 to the Senate version passed 30-17, and the governor signed it.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        },
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1594424
+      ]
+    },
+    {
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1700911,
+      "measure_id": "H 1089",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 1089. It puts a question on the November 3, 2026 ballot asking voters to change the state constitution. The change would order the legislature to pass a law limiting how much the property tax a county or city collects can rise, though it sets no limit itself and allows exceptions. A yes vote helped make the bill law. The Senate voted 31-15 and the House also passed it, and the question now goes to the voters rather than the governor.",
+      "nay_description": "Voted no on House Bill 1089. It puts a question on the November 3, 2026 ballot asking voters to change the state constitution. The change would order the legislature to pass a law limiting how much the property tax a county or city collects can rise, though it sets no limit itself and allows exceptions. A no vote was against making it law. The Senate voted 31-15 and the House also passed it, and the question now goes to the voters rather than the governor.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1700910
+      ]
+    },
+    {
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1699850,
+      "measure_id": "S 1080",
+      "vote_date": "2026-05-19",
+      "review_status": "approved",
+      "yea_description": "Voted yes on Senate Bill 1080. It puts a question on the November 3, 2026 ballot asking voters to change the state constitution. The change would lower the highest income tax rate the state may ever charge, from 7 percent to 3.5 percent, covering both personal and business income tax. A yes vote helped make the bill law. The Senate voted 30-18 and the House also passed it, and the question now goes to the voters rather than the governor.",
+      "nay_description": "Voted no on Senate Bill 1080. It puts a question on the November 3, 2026 ballot asking voters to change the state constitution. The change would lower the highest income tax rate the state may ever charge, from 7 percent to 3.5 percent, covering both personal and business income tax. A no vote was against making it law. The Senate voted 30-18 and the House also passed it, and the question now goes to the voters rather than the governor.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1699849
+      ]
+    },
+    {
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1527367,
+      "measure_id": "H 58",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 58. It removed the rule that Scotland County must spend at least the state average per student on its schools out of local money. For the 2025-2026 budget year only, county commissioners set the school budget themselves, and neither they nor the school board may go to court over that amount. The normal budget process returns the next year. The bill also made unrelated local election changes in Kittrell, Asheboro, Anson County and Caswell County. A yes vote helped make the bill law. The House voted 59-52, and the bill became law.",
+      "nay_description": "Voted no on House Bill 58. It removed the rule that Scotland County must spend at least the state average per student on its schools out of local money. For the 2025-2026 budget year only, county commissioners set the school budget themselves, and neither they nor the school board may go to court over that amount. The normal budget process returns the next year. The bill also made unrelated local election changes in Kittrell, Asheboro, Anson County and Caswell County. A no vote was against making it law. The House voted 59-52, and the bill became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against",
+          "nay": null
+        }
+      ]
     }
-   ]
-  }
- ]
+  ]
 }

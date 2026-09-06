@@ -841,6 +841,36 @@ describe("createApiApp", () => {
     }
   });
 
+  it.each([
+    ["TypeError", new TypeError("Cannot read properties of undefined (reading 'district_id')")],
+    ["SyntaxError", new SyntaxError("Unexpected token } in JSON at position 12")],
+  ])("maps an internal %s to a scrubbed 500 with exactly one capture", async (_name, thrown) => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      // The request itself is well-formed; the failure is a bug deeper in the
+      // handler. It must not come back as a 400 carrying the internal message.
+      const resolveAddress = vi.fn().mockRejectedValue(thrown);
+      const captureUnexpectedError = vi.fn();
+
+      const response = await invokeExpressApp(createApiApp({ resolveAddress, captureUnexpectedError }), {
+        method: "POST",
+        path: "/api/address/resolve",
+        body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
+        headers: { "content-type": "application/json" },
+      });
+
+      expect(response.statusCode).toBe(500);
+      const body = response.body as { error: { code: string; message: string; request_id?: string } };
+      expect(body.error.code).toBe("internal_error");
+      expect(body.error.message).toBe("Internal error");
+      expect(JSON.stringify(body)).not.toContain(thrown.message);
+      expect(captureUnexpectedError).toHaveBeenCalledTimes(1);
+      expect(captureUnexpectedError).toHaveBeenCalledWith(thrown, expect.objectContaining({ requestId: body.error.request_id }));
+    } finally {
+      consoleError.mockRestore();
+    }
+  });
+
   it("does not log or tag expected mapped errors", async () => {
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     try {

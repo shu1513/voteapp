@@ -151,14 +151,15 @@ nothing is open.**
 
 | disposition | rolls |
 | --- | --- |
-| out-of-gate (measure did not become law) | 59 |
 | dropped under filter 5 | 41 |
+| out-of-gate (measure has not become law) | 39 |
 | batch-01 | 25 |
 | batch-02 | 18 |
+| batch-03 | 17 |
+| superseded by a later vote in the same chamber | 10 |
 | excluded (procedural, or question not recoverable) | 8 |
-| superseded by a later vote in the same chamber | 7 |
 
-**Delaware total: 645 records / 29 candidates / 492 tags across 31 measures and 43
+**Delaware total: 888 records / 29 candidates / 780 tags across 40 measures and 60
 rolls, in 12 of the 27 research areas.** Production holds none of it.
 
 Batch-01 took the marquee measures; batch-02 worked the entire remainder, screening all
@@ -166,10 +167,15 @@ Batch-01 took the marquee measures; batch-02 worked the entire remainder, screen
 
 Two standing reasons to come back:
 
-1. **The session is still running and Delaware signs late** — one bill passed on 24 June
-   was signed on 20 August. 40 divided rolls sit on bills that had passed both chambers
-   but were unsigned at the 2026-08-30 dataset cut. Watch the count of bills at status 3
-   fall, the signal California uses, and re-fetch.
+1. **The session is still running and Delaware signs late.** Batch-03 collected the
+   first harvest of this: 9 of the 20 bills parked as "passed both chambers, unsigned"
+   had been signed, worth 17 rolls. **The re-fetch this note originally prescribed would
+   not have found them.** Two of the nine were signed four days BEFORE the 2026-08-30
+   dataset cut and the dataset still shows them unsigned, so LegiScan's Delaware status
+   field trails the state's own record by more than a cut interval. The check that works
+   is to read the Delaware action log directly — see batch-03/JUDGING.md — and the rolls
+   need no re-fetch, since they are already pending in `legislative_votes`. **20 divided
+   rolls across 11 bills are still genuinely waiting on the Governor.**
 2. **15 of the 41 House districts are still unrostered.** A House roll reaches 19 or 20
    candidates today; with a full roster it would reach about 40. Re-importing after the
    roster campaign finishes adds those members without re-judging anything — which is

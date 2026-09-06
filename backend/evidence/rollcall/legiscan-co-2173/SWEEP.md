@@ -118,10 +118,24 @@ Each rewrite pass was followed by re-reading the act against the new text,
 because shortening is where qualifiers get lost. That check caught dropped
 limits in batches 01, 02 and 04, all restored before the import.
 
+## The not-enacted scope is now closed too (batch-11)
+
+This file first said 249 divided rolls remained on measures that did not become
+law. **That number was wrong.** It counted question types the Colorado config
+excludes — second readings, floor amendments, the previous question. Counting
+only the questions this pipeline keeps, the not-enacted pool is 49 divided
+rolls, and **41 after the last-vote filter, on 34 measures**.
+
+Batch-11 works all of them: 22 rolls imported over 18 measures, 19 rolls
+dropped with written reasons, 16 chambers superseded. Details in
+`batch-11/PLAN.md`, and every row is dispositioned in
+`survey/not-enacted-worklist.tsv`.
+
+**Both scopes of the 2025 regular session are now finished.**
+
 ## What is left for Colorado
 
 - **Production promotion.** Colorado has no roll-call records in production.
-- **Two sessions never surveyed**: the 2026 Regular Session (LegiScan 2243) and
-  the 2025 First Special Session (2224).
-- The 249 divided rolls on measures that did **not** become law, a scope this
-  campaign has opened in Pennsylvania and North Carolina but not here.
+- **One session never surveyed**: the 2026 Regular Session (LegiScan 2243).
+  The 2025 First Special Session (2224) was finished on 2026-09-06 and lives in
+  `backend/evidence/rollcall/legiscan-co-2224/`.

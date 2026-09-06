@@ -1,0 +1,148 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1654867,
+      "measure_id": "SB 1515",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1515, which makes it easier for a wrongly convicted person to be paid for the years taken from them. Lawmakers found that people wrongly convicted and jailed in Oregon had been blocked by legal and technical obstacles, and should have a timely route to compensation and a finding of innocence. A person must not have committed the crime, nor any other crime in the same episode. There is now a set way to prove that. It is enough that an earlier court found no reasonable juror would have convicted, weighing all the evidence, old and new. That route is not the only one, and no other way of proving innocence is closed off. The Oregon House passed it 40-16, and it became law.",
+      "nay_description": "Voted against Senate Bill 1515, which makes it easier for a wrongly convicted person to be paid for the years taken from them. Lawmakers found that people wrongly convicted and jailed in Oregon had been blocked by legal and technical obstacles, and should have a timely route to compensation and a finding of innocence. A person must not have committed the crime, nor any other crime in the same episode. There is now a set way to prove that. It is enough that an earlier court found no reasonable juror would have convicted, weighing all the evidence, old and new. That route is not the only one, and no other way of proving innocence is closed off. The Oregon House passed it 40-16, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1635842,
+      "measure_id": "HB 4116",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4116, which pulls Oregon out of a federal rule that let lenders charge rates Oregon does not allow. Lawmakers declare that the state does not want section 521 of a 1980 federal banking law to apply to consumer loans made here. Oregon's own lending law now covers anyone in the business of making consumer loans of $50,000 or less. It applies where the borrower lives in Oregon. It also covers agents, brokers and go-betweens for such a lender. Rights a lender holds under another state or federal law are left alone. The lender must be following that law. The Oregon House passed it 31-24, and it became law.",
+      "nay_description": "Voted against House Bill 4116, which pulls Oregon out of a federal rule that let lenders charge rates Oregon does not allow. Lawmakers declare that the state does not want section 521 of a 1980 federal banking law to apply to consumer loans made here. Oregon's own lending law now covers anyone in the business of making consumer loans of $50,000 or less. It applies where the borrower lives in Oregon. It also covers agents, brokers and go-betweens for such a lender. Rights a lender holds under another state or federal law are left alone. The lender must be following that law. The Oregon House passed it 31-24, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1652384,
+      "measure_id": "HB 4016",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4016, which makes big state contractors prove they have paid their taxes. The rule bites before an agency may sign, renew or extend a contract for goods, services or space. The provider must certify in writing, under penalty of perjury, that it is breaking none of the tax laws the Department of Revenue runs. It must also hand over a certificate from that department saying the same. Anyone holding at least a 20 percent stake in the provider must do both as well. The tax debts counted now include the penalties and interest added to the tax. Contracts with local governments are not covered. The Oregon House passed it 35-21, and it became law.",
+      "nay_description": "Voted against House Bill 4016, which makes big state contractors prove they have paid their taxes. The rule bites before an agency may sign, renew or extend a contract for goods, services or space. The provider must certify in writing, under penalty of perjury, that it is breaking none of the tax laws the Department of Revenue runs. It must also hand over a certificate from that department saying the same. Anyone holding at least a 20 percent stake in the provider must do both as well. The tax debts counted now include the penalties and interest added to the tax. Contracts with local governments are not covered. The Oregon House passed it 35-21, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1656067,
+      "measure_id": "HB 4016",
+      "vote_date": "2026-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4016, which makes big state contractors prove they have paid their taxes. The rule bites before an agency may sign, renew or extend a contract for goods, services or space. The provider must certify in writing, under penalty of perjury, that it is breaking none of the tax laws the Department of Revenue runs. It must also hand over a certificate from that department saying the same. Anyone holding at least a 20 percent stake in the provider must do both as well. The tax debts counted now include the penalties and interest added to the tax. Contracts with local governments are not covered. The Oregon Senate passed it 18-11, and it became law.",
+      "nay_description": "Voted against House Bill 4016, which makes big state contractors prove they have paid their taxes. The rule bites before an agency may sign, renew or extend a contract for goods, services or space. The provider must certify in writing, under penalty of perjury, that it is breaking none of the tax laws the Department of Revenue runs. It must also hand over a certificate from that department saying the same. Anyone holding at least a 20 percent stake in the provider must do both as well. The tax debts counted now include the penalties and interest added to the tax. Contracts with local governments are not covered. The Oregon Senate passed it 18-11, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1647982,
+      "measure_id": "HB 4089",
+      "vote_date": "2026-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4089, which sharpens the criminal law against employers who take work and do not pay for it. The crime of theft of services now reaches anyone who gets paid-for services by force, threat, trickery or any other way of dodging payment. A criminal case does not block a civil one. The worker, a contractor, a representative or the state labor commissioner may still sue for wages, penalties or damages. A state network must build ways to gather and share facts on people who may be doing this and breaking tax or employment law. It also becomes a crime for a builder to knowingly hire a labor contractor who has no state license. The Oregon House passed it 33-9, and it became law.",
+      "nay_description": "Voted against House Bill 4089, which sharpens the criminal law against employers who take work and do not pay for it. The crime of theft of services now reaches anyone who gets paid-for services by force, threat, trickery or any other way of dodging payment. A criminal case does not block a civil one. The worker, a contractor, a representative or the state labor commissioner may still sue for wages, penalties or damages. A state network must build ways to gather and share facts on people who may be doing this and breaking tax or employment law. It also becomes a crime for a builder to knowingly hire a labor contractor who has no state license. The Oregon House passed it 33-9, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1635782,
+      "measure_id": "HB 4069",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4069, which makes mental health and addiction treatment employers write a safety plan for staff. The plan must set out steps for lone workers. It must also cover the places where the work is done. A lone worker is someone doing this work with no colleague nearby. The places covered take in buildings, vehicles and other regular work sites. The duty falls on employers holding a contract with the state health agency. That takes in treatment facilities and homes, secure ones too. It takes in sobering sites, detox centers, halfway houses, mobile crisis teams and emergency shelters. The date each employer must comply by depends on its contract. The Oregon House passed it 36-13, and it became law.",
+      "nay_description": "Voted against House Bill 4069, which makes mental health and addiction treatment employers write a safety plan for staff. The plan must set out steps for lone workers. It must also cover the places where the work is done. A lone worker is someone doing this work with no colleague nearby. The places covered take in buildings, vehicles and other regular work sites. The duty falls on employers holding a contract with the state health agency. That takes in treatment facilities and homes, secure ones too. It takes in sobering sites, detox centers, halfway houses, mobile crisis teams and emergency shelters. The date each employer must comply by depends on its contract. The Oregon House passed it 36-13, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1627973,
+      "measure_id": "HB 4013",
+      "vote_date": "2026-02-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4013, which sets a floor under the limits on how many hours a child may work in Oregon. State rules on a minor's total working hours may not be looser than the federal Fair Labor Standards Act as it stood on January 1, 2026. The state labor bureau may still make them stricter. But it may do so only to keep up with a change in the federal Act or in state law that raises protection for minors. The old words allowing a different result under other Oregon law are struck out. The Oregon House passed it 36-22, and it became law.",
+      "nay_description": "Voted against House Bill 4013, which sets a floor under the limits on how many hours a child may work in Oregon. State rules on a minor's total working hours may not be looser than the federal Fair Labor Standards Act as it stood on January 1, 2026. The state labor bureau may still make them stricter. But it may do so only to keep up with a change in the federal Act or in state law that raises protection for minors. The old words allowing a different result under other Oregon law are struck out. The Oregon House passed it 36-22, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1644355,
+      "measure_id": "HB 4013",
+      "vote_date": "2026-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4013, which sets a floor under the limits on how many hours a child may work in Oregon. State rules on a minor's total working hours may not be looser than the federal Fair Labor Standards Act as it stood on January 1, 2026. The state labor bureau may still make them stricter. But it may do so only to keep up with a change in the federal Act or in state law that raises protection for minors. The old words allowing a different result under other Oregon law are struck out. The Oregon Senate passed it 18-11, and it became law.",
+      "nay_description": "Voted against House Bill 4013, which sets a floor under the limits on how many hours a child may work in Oregon. State rules on a minor's total working hours may not be looser than the federal Fair Labor Standards Act as it stood on January 1, 2026. The state labor bureau may still make them stricter. But it may do so only to keep up with a change in the federal Act or in state law that raises protection for minors. The old words allowing a different result under other Oregon law are struck out. The Oregon Senate passed it 18-11, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
