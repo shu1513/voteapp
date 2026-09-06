@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "c685928f-7236-4463-bc2f-c28272fb8d3e",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "54dd0a14-a6ff-4f8d-9a2c-9a8201ba2a49",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  },
+  {
+   "record_id": "46cf0f45-07a6-4204-bb48-9f4d10a4a2c7",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,49 @@
+{
+ "labels": [
+  {
+   "record_id": "526e7807-e654-4626-8e54-588cf84c8450",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "526e7807-e654-4626-8e54-588cf84c8450",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "a1eb0fcb-ded3-45b2-9eb7-00114b9b590b",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "865a0771-1e29-420d-b784-dc845a73e524",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "865a0771-1e29-420d-b784-dc845a73e524",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "5742fd30-d762-4470-86f1-19ea5cd141c5",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "5742fd30-d762-4470-86f1-19ea5cd141c5",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "352a8568-a464-4763-ac11-e980f8661bf3",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "352a8568-a464-4763-ac11-e980f8661bf3",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

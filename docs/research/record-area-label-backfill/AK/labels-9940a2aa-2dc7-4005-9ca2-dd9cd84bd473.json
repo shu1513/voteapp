@@ -1,0 +1,34 @@
+{
+ "labels": [
+  {
+   "record_id": "df2f4b2a-b1eb-4a90-bb79-90fc462dc41a",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "b022bbe0-5948-4d1c-a721-af6bc64db65e",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "b022bbe0-5948-4d1c-a721-af6bc64db65e",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "ea242497-dded-480c-bcd1-0051b07823ab",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "ea242497-dded-480c-bcd1-0051b07823ab",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "90983114-dff6-4eeb-95af-d9440bc5f3cd",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

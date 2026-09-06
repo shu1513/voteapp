@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "d53f9799-5583-432e-b2f0-1c1047067d5e",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "f32e52fe-be80-4a8d-bb0a-0ccf9aa48d78",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "7c77227e-ca05-4feb-b5b3-1e8c6f0a5295",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "96139734-e2e5-425b-9c47-c48b832a76e2",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "e36adfa9-0f44-4a67-88dd-fb4663307a6f",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

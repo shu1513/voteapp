@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "a09efe44-2d03-48e7-b969-50e4fdd77462",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "a09efe44-2d03-48e7-b969-50e4fdd77462",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "1fe1490f-b0d9-40ae-8319-186452c2485d",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "dfc9e1cb-25b2-45d1-94ce-6cd7b3981f10",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

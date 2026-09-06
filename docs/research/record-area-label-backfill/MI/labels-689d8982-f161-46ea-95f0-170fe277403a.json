@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "e3d2a61d-5b75-4b87-9dcc-21a557cf68d8",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "c34c1ded-10aa-44d2-a9c9-1ae09bed10f7",
+   "research_area_slug": "womens_reproductive_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "c34c1ded-10aa-44d2-a9c9-1ae09bed10f7",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "c34c1ded-10aa-44d2-a9c9-1ae09bed10f7",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "ef5a7ddb-eeff-457f-aa62-29ecb802c935",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

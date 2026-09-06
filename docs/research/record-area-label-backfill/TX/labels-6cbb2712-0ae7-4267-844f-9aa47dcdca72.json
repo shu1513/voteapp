@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "8a60fbc3-72a0-4f66-a096-78337db34bd9",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "88fe18bf-aa8a-4765-9da7-01e24b86e690",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "88fe18bf-aa8a-4765-9da7-01e24b86e690",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "68563e49-ff82-4edf-9917-7fd188925d98",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "68563e49-ff82-4edf-9917-7fd188925d98",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  }
+ ]
+}

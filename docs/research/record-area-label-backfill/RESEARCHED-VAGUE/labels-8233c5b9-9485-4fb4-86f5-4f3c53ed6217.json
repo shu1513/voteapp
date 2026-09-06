@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "687af2ab-e925-4daa-9250-9819440811f0",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "9f29782c-2ecb-4e7e-8361-f2b65fb0b094",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "3241edce-eb70-453b-968e-9f852a5b33f8",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "a978953f-836c-4c7b-825a-d647d41c3cd2",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "fd13eceb-f76a-4eda-aa54-32ebe40b62f8",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "fd13eceb-f76a-4eda-aa54-32ebe40b62f8",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  },
+  {
+   "record_id": "8238c9c5-cbdb-4855-a6a8-5fd7397c73d1",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "8238c9c5-cbdb-4855-a6a8-5fd7397c73d1",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "838e0208-3e03-4a94-833b-6f1c841c8975",
+   "research_area_slug": "anti_corruption",
+   "stance": "against"
+  },
+  {
+   "record_id": "beb368a9-3075-4f0d-9663-9068080a126a",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "against"
+  }
+ ]
+}

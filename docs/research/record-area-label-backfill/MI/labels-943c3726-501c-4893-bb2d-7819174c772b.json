@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "a57a2203-53a7-41fb-a66b-77728a5f754c",
+   "research_area_slug": "gun_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "a57a2203-53a7-41fb-a66b-77728a5f754c",
+   "research_area_slug": "personal_income_tax_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "f407eb16-4bde-482d-9b89-23dfb6a13f39",
+   "research_area_slug": "gun_control",
+   "stance": "against"
+  }
+ ]
+}

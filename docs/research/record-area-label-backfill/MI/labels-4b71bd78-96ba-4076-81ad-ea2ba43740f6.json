@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "173c28af-6cd7-4e65-a875-addd1941112a",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "14b25b2d-0bf6-4b6b-869d-ea19928030e0",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "14b25b2d-0bf6-4b6b-869d-ea19928030e0",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "e3072544-332d-4476-9f61-244d6c61cd96",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

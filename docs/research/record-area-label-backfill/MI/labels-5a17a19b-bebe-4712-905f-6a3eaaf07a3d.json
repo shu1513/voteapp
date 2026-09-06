@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "d66e617f-fc4d-4f05-8802-25d9ec115828",
+   "research_area_slug": "personal_income_tax_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "8062b8a4-36f4-4020-b053-9d21a706f611",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "c90888ca-055a-46f6-b47f-84c36f0d6bc7",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "c90888ca-055a-46f6-b47f-84c36f0d6bc7",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

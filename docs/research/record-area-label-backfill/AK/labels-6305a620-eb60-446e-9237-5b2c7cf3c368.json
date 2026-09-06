@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "c027b869-400d-4a69-93cc-79bba5062b7a",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  },
+  {
+   "record_id": "1cb1e583-41fa-45e7-9464-3146e9a3a9c8",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  },
+  {
+   "record_id": "1cb1e583-41fa-45e7-9464-3146e9a3a9c8",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "fae6b78f-4147-426f-a9a9-a01825c745a4",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "4ffd48d6-a11c-446d-8a96-0a78881c35e6",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

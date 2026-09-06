@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "24261753-e533-44bf-bbbb-4db9e628682d",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "7e128190-ee98-42d0-b18a-6f3b9a5d5b6f",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "9027ce6b-604c-4233-96ec-96f5d42430f7",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  }
+ ]
+}

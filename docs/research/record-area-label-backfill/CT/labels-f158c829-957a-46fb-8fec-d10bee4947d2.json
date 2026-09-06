@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "e7abd995-a80b-4f1f-bf69-e2026a6684de",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "e7abd995-a80b-4f1f-bf69-e2026a6684de",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "f779c98e-bc9b-4bbc-bc76-fa465b7db7cc",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "f779c98e-bc9b-4bbc-bc76-fa465b7db7cc",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

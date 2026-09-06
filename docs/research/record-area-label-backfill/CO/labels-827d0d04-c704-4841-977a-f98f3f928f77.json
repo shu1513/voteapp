@@ -1,0 +1,34 @@
+{
+ "labels": [
+  {
+   "record_id": "620b4e27-f15a-4c05-9d81-e63feceada61",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "f965d9bf-abbe-4449-8e5f-88288cb3d0c8",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "37620bd5-c297-4446-a80e-e541624d3178",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "dc4c5305-2189-4d5f-a32d-61bac588256f",
+   "research_area_slug": "gun_control",
+   "stance": "against"
+  },
+  {
+   "record_id": "760a87ee-2c11-4ecb-a1c0-9fb79e916c21",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "f4446212-e603-4b1a-88f7-e2a6832bc95a",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "bcae710f-0ec0-4145-bba0-cd6816756639",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "11424c7a-8dc8-4eaf-931c-a8ac098fe599",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "de7c9e92-aee9-46dc-871c-78cbe7702076",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "against"
+  },
+  {
+   "record_id": "1673a6df-1618-4fc9-a82d-0caef4fd5bfa",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "against"
+  }
+ ]
+}

@@ -1,0 +1,49 @@
+{
+ "labels": [
+  {
+   "record_id": "e83bccad-de40-456d-a0f9-9c9cd0069c9e",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "2cc9e791-358d-4810-9b6d-56588b9612c9",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "a062ca74-165c-4a76-bac2-e83ef6fc5cf6",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  },
+  {
+   "record_id": "a062ca74-165c-4a76-bac2-e83ef6fc5cf6",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "e2ef169d-30ea-4f81-a71d-675bfe975809",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "de415a8b-a8a2-41c5-a01c-63b11e19e96c",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "ffb25651-077e-42b3-91c9-0736c07b808a",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "1b937d33-de6d-4cb0-b474-cd99615d494c",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "db5e7628-41e9-4e86-bda7-c2b4cafce184",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

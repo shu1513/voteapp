@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "d7af97f8-8394-4864-8815-e4cba5491e3d",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "a29a7b69-9d14-4396-919a-06878402d6ae",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "b97677e0-2441-4cf9-9abe-542512976c70",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "4147fc31-78f8-420f-a63c-72f349b3e63a",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "69507deb-10eb-4cd9-8e28-bbbe647235d8",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "145db57a-1b0f-4d68-923b-aa70ff6a5a53",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "145db57a-1b0f-4d68-923b-aa70ff6a5a53",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

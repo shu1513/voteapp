@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "70f91fed-e898-4f77-8604-339aff6a86f1",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "961a570b-2db1-48b1-bd34-18b67163d78b",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "80017ac4-9e1e-4033-9ade-c89d4516cc82",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  }
+ ]
+}

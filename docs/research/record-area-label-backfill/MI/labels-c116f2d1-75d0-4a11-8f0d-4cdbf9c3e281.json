@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "1c072bda-4f34-45db-b95a-c18d817de5e4",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "1c072bda-4f34-45db-b95a-c18d817de5e4",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "00dcec54-1c09-4838-b0eb-932537c265ed",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  }
+ ]
+}

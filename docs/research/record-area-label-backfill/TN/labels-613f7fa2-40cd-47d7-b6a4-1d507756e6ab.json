@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "d26f4bec-5bc6-4180-b1fb-6c21f38b64dd",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "b6577f80-c47e-4e7e-9b8f-e63704bd626b",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "b6577f80-c47e-4e7e-9b8f-e63704bd626b",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "b20bef15-8e1c-4f95-9c98-88072ba04d51",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "62ababad-a375-4792-844b-2a2ef351e01f",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "62ababad-a375-4792-844b-2a2ef351e01f",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  }
+ ]
+}

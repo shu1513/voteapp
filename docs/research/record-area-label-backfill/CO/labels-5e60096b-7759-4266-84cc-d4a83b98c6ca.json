@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "8e50f435-4adf-4dcd-949e-f0ff2df493a3",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "5f84606c-eeea-4abe-a317-1154156b13ca",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "ecfc510f-a7d4-4a35-ae87-9f79ad7eebd7",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "7d897113-3ecb-4dbc-9c8f-b8f4d9fa3294",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "6ca6f18b-9279-4305-90a2-e5ba28b4f634",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

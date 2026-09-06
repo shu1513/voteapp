@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "c07b661a-4050-42d8-a209-fbc5728682ce",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "b8ede92d-cbe7-4ef2-a45f-8d601bcd5e75",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "2b5eb03b-7bc6-4047-b9d0-10b51ec4d926",
+   "research_area_slug": "national_defense",
+   "stance": "for"
+  }
+ ]
+}

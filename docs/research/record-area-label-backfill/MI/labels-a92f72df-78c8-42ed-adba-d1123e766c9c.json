@@ -1,0 +1,34 @@
+{
+ "labels": [
+  {
+   "record_id": "a40ffde7-76aa-4600-946f-17e98ebd7687",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  },
+  {
+   "record_id": "e3afa447-b3e2-4f3f-82fc-05d13bc1bdbb",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "c62a312c-90ce-4430-aa4f-6d8175aac221",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "b8cdd5e0-55b1-4396-9d7e-725cb59d3cc8",
+   "research_area_slug": "public_infrastructure",
+   "stance": "against"
+  },
+  {
+   "record_id": "b8cdd5e0-55b1-4396-9d7e-725cb59d3cc8",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "f443eb8d-353d-4065-976d-ee4246c73201",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

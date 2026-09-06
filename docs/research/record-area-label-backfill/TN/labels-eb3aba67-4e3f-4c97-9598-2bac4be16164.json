@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "ff4ebf20-2c24-4c77-8507-5b9f8bbf7650",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "e5cb589a-5010-4679-9f11-20243ba12be2",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "e5cb589a-5010-4679-9f11-20243ba12be2",
+   "research_area_slug": "gun_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "1b609248-69a9-48b6-87e7-53e77a9f646f",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "1b609248-69a9-48b6-87e7-53e77a9f646f",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "1b609248-69a9-48b6-87e7-53e77a9f646f",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "e17f9c89-c53b-4e0d-a938-f6021d07b291",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "e17f9c89-c53b-4e0d-a938-f6021d07b291",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

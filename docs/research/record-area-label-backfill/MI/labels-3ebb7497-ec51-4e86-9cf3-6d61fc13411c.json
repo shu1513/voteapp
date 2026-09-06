@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "fa60283c-0042-48e8-b8c3-710d978a6f27",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "af15c057-46a3-42a6-9cc7-1e7313912999",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "050b4d67-c1de-453e-ac7b-8fb49d350db2",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "6123df19-6349-4bc0-a503-a84d49f8e8cd",
+   "research_area_slug": "gun_control",
+   "stance": "against"
+  }
+ ]
+}

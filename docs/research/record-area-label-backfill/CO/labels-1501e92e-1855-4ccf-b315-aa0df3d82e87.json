@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "eff755f7-d846-4fbd-a6a6-8b6f52303b8b",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "fce766a2-e1ed-4ab9-bc08-084238bd3411",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "fce766a2-e1ed-4ab9-bc08-084238bd3411",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "a2405209-c8d4-45cb-a93f-400f8e4b72e1",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "be5cc933-9276-47b7-a963-69803f9bb90a",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "3e4a1064-f178-4ef6-b0ea-10ac6d11f9a0",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  },
+  {
+   "record_id": "3e4a1064-f178-4ef6-b0ea-10ac6d11f9a0",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  }
+ ]
+}

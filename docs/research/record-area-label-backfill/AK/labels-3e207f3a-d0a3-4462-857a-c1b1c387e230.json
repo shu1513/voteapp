@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "cb6b3811-2cea-4eef-98d7-cc4632ebe8e3",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "f21b709a-44cd-4f3c-9294-4bfc78482f66",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "d57c7cc2-519a-4236-a94b-c4a197776c2c",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

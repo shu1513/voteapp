@@ -1,0 +1,341 @@
+{
+  "proposals": [
+    {
+      "candidate_id": "022c7d72-d5db-484d-a5e0-11fc2dea690b",
+      "labels": [
+        {
+          "record_id": "c8caedc5-2bb8-4eeb-9363-f1871b475dea",
+          "research_area_slug": "anti_corruption",
+          "stance": "for"
+        }
+      ],
+      "skipped": [
+        {
+          "record_id": "6213a20b-70cc-4fff-b1f3-fdd41e4abf6e",
+          "reason": "record says the bill changed Measure 114 permit rules but does not say whether it loosened or tightened them, so no stance can be set"
+        }
+      ],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "0965089a-b4c1-4357-be9b-290b23f053bb",
+      "labels": [
+        {
+          "record_id": "a8173a72-f3a2-4fca-bde3-94e00aa654d2",
+          "research_area_slug": "social_programs_and_welfare",
+          "stance": "for"
+        },
+        {
+          "record_id": "a8173a72-f3a2-4fca-bde3-94e00aa654d2",
+          "research_area_slug": "government_spending_reduction",
+          "stance": "against"
+        }
+      ],
+      "skipped": [],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "09e54780-8bd7-48d0-8afb-d5288d321da5",
+      "labels": [
+        {
+          "record_id": "20286047-c9b7-42b0-be33-df6f7aad5162",
+          "research_area_slug": "corporate_accountability",
+          "stance": "for"
+        }
+      ],
+      "skipped": [
+        {
+          "record_id": "c59e9dac-cac2-4308-85c4-40337c8212a7",
+          "reason": "no allowed research area matches"
+        }
+      ],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "0c0fb09b-5695-4f39-9a01-2b91757b108f",
+      "labels": [
+        {
+          "record_id": "a58d993a-f426-4cd0-a631-1fa32d39f920",
+          "research_area_slug": "government_spending_reduction",
+          "stance": "against"
+        },
+        {
+          "record_id": "c8af5322-4477-44f2-a28f-37a2af37d234",
+          "research_area_slug": "public_infrastructure",
+          "stance": "for"
+        },
+        {
+          "record_id": "fe84b3e1-1596-404c-bd9b-4ebaa6c1eefe",
+          "research_area_slug": "government_spending_reduction",
+          "stance": "against"
+        }
+      ],
+      "skipped": [],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "0f29c671-2884-4849-b4f5-51ee0700086d",
+      "labels": [
+        {
+          "record_id": "1d4923b5-982b-4cc8-8bcb-e3112c88eb0d",
+          "research_area_slug": "public_safety_and_crime_control",
+          "stance": "for"
+        },
+        {
+          "record_id": "154e8e2e-4192-4432-967b-409eb6f66d64",
+          "research_area_slug": "public_safety_and_crime_control",
+          "stance": "for"
+        },
+        {
+          "record_id": "b653bb0b-5eb2-4fdc-b0ed-092a6008c747",
+          "research_area_slug": "public_safety_and_crime_control",
+          "stance": "for"
+        }
+      ],
+      "skipped": [
+        {
+          "record_id": "404af497-5a80-41de-9bf1-3f557e2cf1a7",
+          "reason": "procedural, no stance"
+        }
+      ],
+      "retire_candidates": [
+        {
+          "record_id": "5af1d983-d430-4dda-a217-8b707097e125",
+          "reason": "bio filler - committee membership listing with no action"
+        }
+      ]
+    },
+    {
+      "candidate_id": "14a6918c-f34a-4eb7-88be-cbe65cd5ec2a",
+      "labels": [
+        {
+          "record_id": "38a22d19-6c97-4a7b-adc5-9d1b23895e76",
+          "research_area_slug": "corporate_accountability",
+          "stance": "for"
+        },
+        {
+          "record_id": "07d1cea2-5476-418d-91a3-43352eb937f6",
+          "research_area_slug": "healthcare_affordability",
+          "stance": "for"
+        }
+      ],
+      "skipped": [],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "22ebf982-f927-4d41-8676-b27ab13641ac",
+      "labels": [
+        {
+          "record_id": "402d232d-53fc-44fe-aa96-61195560dd25",
+          "research_area_slug": "public_safety_and_crime_control",
+          "stance": "for"
+        },
+        {
+          "record_id": "8777eb2b-c979-4bee-b472-a41d8ba6e173",
+          "research_area_slug": "civil_rights",
+          "stance": "for"
+        }
+      ],
+      "skipped": [],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "2ddfe8c2-a267-495b-8f56-c1a032ae623f",
+      "labels": [],
+      "skipped": [
+        {
+          "record_id": "9ff13022-e838-4d6a-8bab-3b6fe8fc5b5e",
+          "reason": "no allowed research area matches"
+        }
+      ],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "374fc3fc-78c4-4a74-aefb-3e7615277bca",
+      "labels": [
+        {
+          "record_id": "8b802aea-29fc-4eec-aac1-479316338d8f",
+          "research_area_slug": "environment_and_public_health",
+          "stance": "for"
+        },
+        {
+          "record_id": "715c776c-672b-4a1a-9f98-1c4be8a8ec1d",
+          "research_area_slug": "environment_and_public_health",
+          "stance": "for"
+        }
+      ],
+      "skipped": [],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "55456696-da37-4bcb-894a-ea1faf8d68ce",
+      "labels": [
+        {
+          "record_id": "bae435d5-0d0a-4b54-9d83-e87ff0d5e6c7",
+          "research_area_slug": "election_integrity",
+          "stance": "for"
+        }
+      ],
+      "skipped": [],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "5ba3f7c4-39a4-4d78-8e49-4452ce2dbd92",
+      "labels": [
+        {
+          "record_id": "f6f7896b-4e89-4250-9b76-8c2d9b84c321",
+          "research_area_slug": "public_infrastructure",
+          "stance": "for"
+        },
+        {
+          "record_id": "f6f7896b-4e89-4250-9b76-8c2d9b84c321",
+          "research_area_slug": "government_spending_reduction",
+          "stance": "against"
+        },
+        {
+          "record_id": "00108ea5-da15-4cb5-88c0-8abd5844d19f",
+          "research_area_slug": "social_programs_and_welfare",
+          "stance": "for"
+        },
+        {
+          "record_id": "96dea4dc-dd8f-46ef-8f3f-4916825decf6",
+          "research_area_slug": "public_infrastructure",
+          "stance": "for"
+        }
+      ],
+      "skipped": [
+        {
+          "record_id": "0479f9f9-3915-47cb-8fda-49b3bedbf30f",
+          "reason": "no allowed research area matches"
+        },
+        {
+          "record_id": "3d4bc7fb-b6c8-4a97-a844-557ea9213a1c",
+          "reason": "naming designation only; record states no material effect on an allowed area"
+        }
+      ],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "5dbe6cc4-cc62-423d-97e9-4a0ad777ce83",
+      "labels": [],
+      "skipped": [],
+      "retire_candidates": [
+        {
+          "record_id": "e1e5d01a-6346-4450-9944-e0ade589f737",
+          "reason": "bio filler - appointment to a commission with no action"
+        }
+      ]
+    },
+    {
+      "candidate_id": "6a9761f1-5971-498f-9310-6f3c876c05d7",
+      "labels": [],
+      "skipped": [
+        {
+          "record_id": "bd9a5dd2-2eef-4a83-a329-a47b7daf44e7",
+          "reason": "procedural, no stance"
+        },
+        {
+          "record_id": "a1be68af-2a8a-4f75-9bd5-3c4992ad8079",
+          "reason": "record does not say whether the grant cap went up or down, so no stance can be set"
+        }
+      ],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "6b479c50-64cf-43ee-be67-4ae63b164255",
+      "labels": [
+        {
+          "record_id": "56888cae-7ac0-409b-bddc-73ce5ff1cc34",
+          "research_area_slug": "corporate_accountability",
+          "stance": "for"
+        }
+      ],
+      "skipped": [],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "ac269763-cb10-4501-8dae-841a4b2904e5",
+      "labels": [
+        {
+          "record_id": "308a9158-bd36-41bf-ba60-c330b639b696",
+          "research_area_slug": "government_spending_reduction",
+          "stance": "against"
+        }
+      ],
+      "skipped": [],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "b5e8cb25-13d7-4806-88a8-e037bde67c61",
+      "labels": [],
+      "skipped": [
+        {
+          "record_id": "ecd95a86-8aa1-4e53-9931-7bf8ba2313c9",
+          "reason": "no allowed research area matches (education is not in this office's list)"
+        }
+      ],
+      "retire_candidates": [
+        {
+          "record_id": "13016a00-5f51-47aa-a35d-68d6e79a233c",
+          "reason": "bio filler - job history"
+        }
+      ]
+    },
+    {
+      "candidate_id": "d131ee60-bf69-4001-8d82-f14897ca1d03",
+      "labels": [
+        {
+          "record_id": "e1b8a392-8456-4c78-a74b-f8e2878fe507",
+          "research_area_slug": "government_efficiency",
+          "stance": "for"
+        }
+      ],
+      "skipped": [
+        {
+          "record_id": "e38e681b-4079-477f-adf4-def7132d65ad",
+          "reason": "dispute over audit accuracy; record shows no clear direction on an allowed area"
+        }
+      ],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "dc9f335e-b80f-4314-8b31-b1c07bb344ac",
+      "labels": [
+        {
+          "record_id": "365c7322-322a-41d3-bf30-ff53949b281d",
+          "research_area_slug": "reduce_wealth_gap",
+          "stance": "for"
+        }
+      ],
+      "skipped": [
+        {
+          "record_id": "f1a66ae0-f91d-405e-b8d5-4dbdabb2feac",
+          "reason": "no allowed research area matches"
+        }
+      ],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "f77d1179-fd47-41e5-b7af-d9db979ee3b1",
+      "labels": [],
+      "skipped": [
+        {
+          "record_id": "f1509a0f-f0ea-4eff-a9f4-33d67ed99f75",
+          "reason": "record does not say what the urban renewal bill would change, so no stance can be set"
+        }
+      ],
+      "retire_candidates": []
+    },
+    {
+      "candidate_id": "fad729c1-a502-4a62-948c-7d864e5805e0",
+      "labels": [],
+      "skipped": [
+        {
+          "record_id": "4a7c06c9-d7be-4f33-ae8b-414447996262",
+          "reason": "record says the bill modified groundwater rules but not in which direction, so opposing it has no clear stance"
+        }
+      ],
+      "retire_candidates": []
+    }
+  ]
+}

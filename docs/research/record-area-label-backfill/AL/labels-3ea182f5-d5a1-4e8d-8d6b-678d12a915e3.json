@@ -1,0 +1,54 @@
+{
+ "labels": [
+  {
+   "record_id": "dacdbc20-4c6b-4599-aad6-485900478205",
+   "research_area_slug": "personal_income_tax_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "7053589a-7c7a-4560-a16a-0105523c8a98",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "d52bbb5b-e781-4af0-b010-106ef902079c",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "855c11f8-1495-4407-a77d-4cd0985cecaf",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "b88bacc4-2cfc-4cd8-b66c-6726fd91b794",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "c2db6680-c9c9-403c-a665-b76e07cfd468",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "be6a75f8-13eb-4c41-be51-d99df55b6019",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "a255af18-9ea3-4f94-a700-45b7fd4de46d",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "0c46cd48-7180-43e4-93fa-1d36688015ee",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "9f9e5f7e-1d69-41ac-a34f-5e8318e1aa40",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  }
+ ]
+}

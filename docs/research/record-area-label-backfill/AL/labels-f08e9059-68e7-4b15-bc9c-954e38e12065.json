@@ -1,0 +1,89 @@
+{
+ "labels": [
+  {
+   "record_id": "b3f630f3-b7cb-45bc-96a5-f635ca370f8e",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "6b15f5c8-b77c-4624-b81c-4f7e54d12ac9",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "5c799c96-f5c2-4f5e-90fd-ead108377d8a",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "54beab8b-99b4-460d-88a4-b15559e1faa8",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  },
+  {
+   "record_id": "ede11ef8-3e77-4945-b0d9-bb561cee97e2",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "b4d3ab7e-a451-42f5-90c7-fc7142fa2186",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "ae25b095-78ff-4412-b1ca-af5e54449971",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "d2937f0c-cd20-4320-b9b3-7c477ccb4abd",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "94ccb88e-aeb9-40ea-a218-9e0483752a2b",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "99042a31-9490-4fbf-8f4b-a0fe8a505314",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "2e1096a0-5552-45c6-bae6-a749d5d73a47",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "1b82e944-e6f5-4855-9710-5de7605db6f5",
+   "research_area_slug": "personal_income_tax_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "91bef74d-4d5d-427a-bc82-5fccff135fb7",
+   "research_area_slug": "housing_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "91bef74d-4d5d-427a-bc82-5fccff135fb7",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "a1234ed0-44fc-4bad-99f0-27cd9859a77b",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "7efe0103-35c5-43a5-a0ed-67018b810a2e",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "b90f31c1-f9dd-4423-9801-ba9433c0a74b",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

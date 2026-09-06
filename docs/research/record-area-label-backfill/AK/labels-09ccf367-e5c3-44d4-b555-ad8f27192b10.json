@@ -1,0 +1,109 @@
+{
+ "labels": [
+  {
+   "record_id": "49079af7-31fc-41a1-ab63-a1c854c151d6",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "49079af7-31fc-41a1-ab63-a1c854c151d6",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "a9f11039-47f1-4100-931a-2bdb268e3e85",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "a9f11039-47f1-4100-931a-2bdb268e3e85",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "d6672126-f1e5-4af3-9ba9-ca1437f1aa75",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "d6672126-f1e5-4af3-9ba9-ca1437f1aa75",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "ad6b1c60-617c-48a8-a7a8-ef2f86aa62f8",
+   "research_area_slug": "government_efficiency",
+   "stance": "against"
+  },
+  {
+   "record_id": "adfcbaa1-08fc-44c0-9468-f6284bf12c29",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "aa60140a-9e0b-442a-92fd-aa135822685d",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "2e120be3-dd08-4a13-a4b4-f25a41c9136f",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "2e120be3-dd08-4a13-a4b4-f25a41c9136f",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "160ce313-7ad1-46d1-9817-023e40cd73a2",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "d08a3d4b-cef6-4b33-b40a-f297e9760d10",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "f0d9e2cd-5f0c-451c-ab33-f8c02e7ca5cb",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "f0d9e2cd-5f0c-451c-ab33-f8c02e7ca5cb",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  },
+  {
+   "record_id": "b887bc85-e329-442b-ad83-5024b3fb1d46",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "9612a28d-c662-45ea-bbb6-519fe486557d",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "b8e5fcda-fc91-4654-a002-163538278762",
+   "research_area_slug": "gun_control",
+   "stance": "against"
+  },
+  {
+   "record_id": "5ccbda15-3144-4b73-a8d5-195d919922f7",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "5ccbda15-3144-4b73-a8d5-195d919922f7",
+   "research_area_slug": "public_infrastructure",
+   "stance": "against"
+  },
+  {
+   "record_id": "1c567420-05dd-4c01-9570-e43e59e212d9",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  }
+ ]
+}

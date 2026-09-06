@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "f917506b-9466-4793-960a-7d3da59af29d",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "c032e823-19ab-4c75-9c76-bb278e4ba612",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "41a736ab-2e7a-446b-b2d2-34a08df0635f",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "e192f5cb-6da2-40ba-9a20-b474102420cc",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "c151b018-d32c-4405-a9c0-faddbea8329b",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

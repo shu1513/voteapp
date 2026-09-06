@@ -1,0 +1,327 @@
+{"proposals": [
+ {
+  "candidate_id": "cf5f2f7f-0dd4-46c1-b01f-e4ca31888f2d",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "82e0a261-8de6-4e46-b0b1-87b4ed852203", "reason": "bio filler"}
+  ]
+ },
+ {
+  "candidate_id": "d0abb3df-9f56-41cf-bf46-22f327e1f8ba",
+  "labels": [],
+  "skipped": [
+   {"record_id": "229a1513-27fa-444a-92e4-5cd76d131096", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d16332e4-ebd7-4eae-91d9-be59f655b7fd",
+  "labels": [
+   {"record_id": "072b7855-cd79-418c-a35b-12d2aa3b64ad", "research_area_slug": "environment_and_public_health", "stance": "for"},
+   {"record_id": "c1862b35-ceca-4ce2-9879-1f6452c3e4b5", "research_area_slug": "corporate_accountability", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d1f7fab3-b4e2-4090-afeb-2b6788c81a37",
+  "labels": [
+   {"record_id": "ce1cf13f-830e-482d-8e09-f6de0e212db1", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d1fef702-c480-4ffd-80b5-23eac5e35c66",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "4f48476c-9447-4cfe-b338-6a060ecb2782", "reason": "bio filler"},
+   {"record_id": "09fe6e88-5f99-4724-99f4-a17ee88e4dc2", "reason": "bio filler"}
+  ]
+ },
+ {
+  "candidate_id": "d2e9f6bd-7d9a-4ce3-965d-1d7070d89e3c",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "ef8c76c2-341f-4b19-a634-7474af7f9d1a", "reason": "bio filler"}
+  ]
+ },
+ {
+  "candidate_id": "d55b1e40-d59d-4734-bc52-feb7019f13bc",
+  "labels": [
+   {"record_id": "bfb3fd94-81fb-4238-8bdc-4dfc4fda91a9", "research_area_slug": "public_education_quality", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d5fb1756-02bc-4aed-b9c8-f3e06932be30",
+  "labels": [],
+  "skipped": [
+   {"record_id": "7014f46a-a6d8-446b-af5d-6de8c36fb77c", "reason": "no allowed research area matches"},
+   {"record_id": "7f11146d-b9f9-4704-aa67-0bbd6e22f285", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "d65b63d3-0b76-45a8-9d64-03df6d373d97",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "94c1ab4e-6188-401e-9fb0-0d6195776649", "reason": "bio filler"},
+   {"record_id": "7296134d-8cce-4f5d-b4aa-da96d8cb102d", "reason": "pure candidacy"},
+   {"record_id": "41e06325-2683-47ba-8c01-9a21a8fcceda", "reason": "bio filler"}
+  ]
+ },
+ {
+  "candidate_id": "d70202eb-d487-4700-b45c-27919d31d0c8",
+  "labels": [
+   {"record_id": "67898394-09d2-4a58-952c-4a43ed4539ea", "research_area_slug": "government_spending_reduction", "stance": "against"},
+   {"record_id": "7feef14d-d39b-4002-9b47-3f422d2199da", "research_area_slug": "environment_and_public_health", "stance": "for"},
+   {"record_id": "2b53866b-cf88-4ab1-95ef-c63c0335b58e", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "0b989f68-f7d9-43d0-815c-98d10f13fb0d", "reason": "bio filler"},
+   {"record_id": "0a4967a4-206f-4424-8e5a-544dcac65b48", "reason": "bio filler"}
+  ]
+ },
+ {
+  "candidate_id": "d764458e-1b14-415d-938f-9bd87b0d371a",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "faa59852-e364-4cac-9bba-8d95167ccadc", "reason": "bio filler"},
+   {"record_id": "a65c067f-6710-426d-b52a-8e989c87c1fb", "reason": "bio filler"},
+   {"record_id": "505c3bad-d55b-4b94-9f7d-f26cca461275", "reason": "bio filler"}
+  ]
+ },
+ {
+  "candidate_id": "da8c9aef-588c-4f68-987a-9b40916ab85e",
+  "labels": [],
+  "skipped": [
+   {"record_id": "48662438-0d23-45b1-9caf-e40101e2ca30", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "dba75f21-52ae-4a14-a1bd-830fab6c69a4",
+  "labels": [
+   {"record_id": "f7dd022d-a96d-433f-ae81-3b86d3eab10f", "research_area_slug": "civil_rights", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "dbc2bb91-f8b0-46f4-83d5-6c277e3b5b3e",
+  "labels": [],
+  "skipped": [
+   {"record_id": "0958d875-e9b3-4789-baa7-318239c737a7", "reason": "no allowed research area matches"},
+   {"record_id": "a29418fc-fb5b-4a23-8212-96fabdf04da5", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "dd453695-2341-4349-a329-3f7bd4cb5a40",
+  "labels": [],
+  "skipped": [
+   {"record_id": "0be0e29b-6709-437f-958c-fcb22d5ab34a", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e079229e-6bba-427b-b14e-38bcfa301af0",
+  "labels": [
+   {"record_id": "e73ffa21-6930-401e-b989-107e19a62931", "research_area_slug": "public_infrastructure", "stance": "for"},
+   {"record_id": "e73ffa21-6930-401e-b989-107e19a62931", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e0c0c169-beb3-4468-b125-757df092a818",
+  "labels": [
+   {"record_id": "262caaf5-cd07-4304-b672-bce10345f3f9", "research_area_slug": "environment_and_public_health", "stance": "for"},
+   {"record_id": "ff029de7-f886-405c-b2c8-2abf4d050b0f", "research_area_slug": "government_efficiency", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e26dc863-8d25-48f5-b9da-453a6b481278",
+  "labels": [
+   {"record_id": "63b9b340-60b5-4940-be60-4110539e1939", "research_area_slug": "public_education_quality", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e2753300-60d5-4856-803c-f069238c3736",
+  "labels": [
+   {"record_id": "a5b21285-f9da-4795-9a02-680d2bc6745f", "research_area_slug": "healthcare_affordability", "stance": "for"},
+   {"record_id": "a5b21285-f9da-4795-9a02-680d2bc6745f", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "1e670795-ff76-4308-95be-99322a1b8ef3", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e48ba822-e1fa-47f9-8940-d09ab493b94c",
+  "labels": [
+   {"record_id": "43ffdafa-7113-48d7-924e-f0e627c40781", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "e96fdd86-fa51-43f9-950a-c92348c6265b",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "5530798c-d748-4b59-aab9-862de313c168", "reason": "bio filler"}
+  ]
+ },
+ {
+  "candidate_id": "ed2989a4-5968-4e21-a836-8874965b129f",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "0537cf58-37b6-4129-aded-5c29a75c8c08", "reason": "pure candidacy"}
+  ]
+ },
+ {
+  "candidate_id": "ee9dedbe-75ad-4daf-bc75-1db2c3978d01",
+  "labels": [],
+  "skipped": [
+   {"record_id": "11fd1c2f-351f-4eae-9908-673c950d43a3", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "eeb711f2-cc54-4dd3-92bb-97bda47b51fa",
+  "labels": [],
+  "skipped": [
+   {"record_id": "ace7debd-f150-4f55-abf7-a5ed5c6a11ec", "reason": "procedural, no stance"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "f0dec290-a1f9-4f79-91a1-ed768c25c271",
+  "labels": [
+   {"record_id": "0cd00100-1ebd-4e24-8fa0-e25b2ee59425", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "f52f8436-6b3a-49b9-a020-5ef8b43c690f", "reason": "neutral only"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "f110e2ea-75a3-4901-865c-2c718d9afe15",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "7ffa46d2-bdd3-41b5-8f53-eaec11b2bc87", "reason": "bio filler"}
+  ]
+ },
+ {
+  "candidate_id": "f37082c9-404d-473d-b3eb-0c0877980b7f",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "c2422d39-0286-4522-b63d-f35aeecbaf7a", "reason": "bio filler"}
+  ]
+ },
+ {
+  "candidate_id": "f38ac7f7-479f-4e1c-b51e-e6cdecd786ac",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "24ee85cc-f951-4899-8263-bed358f9311c", "reason": "bio filler"}
+  ]
+ },
+ {
+  "candidate_id": "f458a77d-bbef-42de-a896-41a358b38863",
+  "labels": [
+   {"record_id": "ec5e10cf-c1dd-44c6-9b43-2337a6fba898", "research_area_slug": "environment_and_public_health", "stance": "for"},
+   {"record_id": "ec5e10cf-c1dd-44c6-9b43-2337a6fba898", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "f4fcab10-ba35-4797-865f-e4fa46224704",
+  "labels": [
+   {"record_id": "959a0504-2bd0-4b2f-af8f-a068e2335899", "research_area_slug": "womens_reproductive_rights", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "f811bb79-dbf8-4292-96fd-09d1aeb98f22",
+  "labels": [],
+  "skipped": [
+   {"record_id": "9f512de6-076a-4827-adf6-67a99b2eb607", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "fa8100cc-98ab-445f-8d1e-703e617867d7",
+  "labels": [
+   {"record_id": "71396bb6-f360-4a95-a71a-2329824601f2", "research_area_slug": "corporate_accountability", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "59b13eaf-6223-4f7b-be34-1a5148171026", "reason": "procedural, no stance"},
+   {"record_id": "81dfcbdd-4c14-41f8-80ea-ef5e336d404d", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "fb39892b-9a5e-492a-ac46-1a86b769f47f",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "baa6ae45-4d8f-4274-af70-6b8dd6a4d39c", "reason": "bio filler"}
+  ]
+ },
+ {
+  "candidate_id": "fb5e6881-7c45-4a55-9bb3-7be49cfad9b0",
+  "labels": [
+   {"record_id": "9099a3e4-cda2-4317-9b4d-b618d702b3ba", "research_area_slug": "public_education_quality", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "fc213b15-5745-4288-9433-e3b9b655babf",
+  "labels": [
+   {"record_id": "b30219a2-f47c-4f57-a724-df9c56b0c6f9", "research_area_slug": "environment_and_public_health", "stance": "against"},
+   {"record_id": "abf1e25b-1d16-4bd4-84ad-d86dc8fd5058", "research_area_slug": "environment_and_public_health", "stance": "against"},
+   {"record_id": "1d88f518-8926-4dbf-825d-432a2b736fea", "research_area_slug": "social_programs_and_welfare", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "b7e0f52e-b68c-4cb7-b2bf-6aee6ed4ace4", "reason": "no allowed research area matches"},
+   {"record_id": "306e12b4-e6c8-4659-8e56-e5b6339c68dd", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "fc701f5e-bd8b-4f24-9225-43fda018d013",
+  "labels": [
+   {"record_id": "7f34072a-5075-44af-81a9-72cddda72771", "research_area_slug": "government_efficiency", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "ff060d16-8fed-466a-b862-f589cd4bb21f",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "afd4ba65-48b2-48a9-bd82-856282e9d964", "reason": "pure candidacy"}
+  ]
+ }
+]}

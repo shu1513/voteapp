@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "91bf3a39-9a9f-4605-a9c5-bfb5348c5264",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  },
+  {
+   "record_id": "7f0f74d7-678a-4783-aa7e-10fd53cd293f",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "98757ef1-2649-4d96-9abc-48b7804a24ee",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "1a2f95a1-752c-4310-bce1-7d5a7d8fea6d",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

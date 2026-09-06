@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "52961ea7-e1d6-4608-9df9-5a42386bc026",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "against"
+  },
+  {
+   "record_id": "2711486f-0319-48a7-9354-d81613096622",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "against"
+  },
+  {
+   "record_id": "ecf4a487-80fd-4580-8da4-50ebfbdc081f",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "against"
+  },
+  {
+   "record_id": "ecf4a487-80fd-4580-8da4-50ebfbdc081f",
+   "research_area_slug": "gun_control",
+   "stance": "against"
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "ffe89c2c-d138-4e7d-a901-7806f8d7e75f",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "6ee52ff0-c55e-4950-9f3d-8f8a353493cd",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "3a98ce69-b79e-4a5a-b3af-a02b4925bc7d",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "dce67adc-d2ea-4530-83e5-f83c9526e1da",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "d65a1b6e-ea7c-4c8f-87ca-85c0c617059a",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "d56b84bc-4a1b-41ff-8080-91e12f788a09",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "3e6c7cfc-0d27-452b-880d-e27cad966aae",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

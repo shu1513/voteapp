@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "ce595f29-6438-4793-bd93-95bd94d4527f",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "95a50cec-0cfa-4582-b6b7-627ec9221d43",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "194c1443-dbdb-4fe9-8c5a-a13acee11f26",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "cef4c75f-1858-480b-8d87-f732a55f2aa4",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

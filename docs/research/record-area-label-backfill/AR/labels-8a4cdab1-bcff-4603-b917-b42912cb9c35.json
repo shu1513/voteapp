@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "fff59031-51c5-4410-b67b-a3889e98aaed",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "5c0c869f-0d21-413f-93e8-9b14df6d07d1",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "e1dc9a73-482c-4e33-aa4e-05d8e797b503",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  }
+ ]
+}

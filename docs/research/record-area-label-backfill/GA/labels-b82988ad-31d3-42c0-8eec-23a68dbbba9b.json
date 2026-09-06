@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "4d0d661f-cc38-4752-95a7-47685b71d0e5",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "92ff9ca1-8968-486c-8bf4-2701869f354e",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "0fb32c3c-b24a-400e-a2a1-03a5902dc777",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

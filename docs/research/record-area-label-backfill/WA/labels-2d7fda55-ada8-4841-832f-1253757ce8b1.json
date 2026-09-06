@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "a7a533b7-1a61-416c-8544-99eeb35d76e3",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "b7ed4869-ca14-4716-9034-f8346d33a547",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "ea8db6c9-795f-4e01-aeec-c84f087b3ea4",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+{
+ "labels": [
+  {
+   "record_id": "f8426251-bc5a-442c-b113-bc1c623fc1d2",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "9b1d8995-84cb-446a-ba7a-50509c7a039b",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "c10f9d41-ee98-41b5-b8fb-bf700c843543",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "c9571207-0189-409b-a232-aafdca093fdc",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "0d1d091f-ce58-4ed8-9ce4-f2b0052202b6",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "63fc2081-0716-4b44-9a4b-bf599babd3d5",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  }
+ ]
+}

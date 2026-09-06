@@ -1,0 +1,565 @@
+{
+ "proposals": [
+  {
+   "candidate_id": "42575f69-0bc3-4ac8-969e-4938e1cb04ff",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "60c7c278-93c7-49d3-b94f-5d3c461bd95a",
+     "reason": "record text does not state a direction"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "435455d2-8092-4dfb-b99e-c8f466cba0dc",
+   "labels": [
+    {
+     "record_id": "3a61ebfe-f4a2-4515-a5e7-584844ae613b",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "4450e922-51e0-423f-92da-79f0d6751a31",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "daabd0d0-afc5-4dcb-8a50-2f727f26f1d2",
+     "reason": "bio filler / status: served in the office"
+    },
+    {
+     "record_id": "c7377dac-fe2b-4067-a1e5-e01d6bc3be83",
+     "reason": "bio filler / status: holds the office"
+    }
+   ]
+  },
+  {
+   "candidate_id": "4bfdbdf5-376a-46a3-b674-1c52e9e39e0a",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "87ddc7e2-b72a-411f-9611-8b3c0107fb26",
+     "reason": "bio filler / status: named board chairman"
+    }
+   ]
+  },
+  {
+   "candidate_id": "4cae329f-7803-4345-9125-0fabe3181c92",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "27176d4f-1ede-402c-b6a4-334cc3dfafd4",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "4d705521-63b8-45ea-a07f-8b809c07073c",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "932275db-c052-4561-a17b-1bfb7eaccacb",
+     "reason": "no vote with no stated alternative"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "4e34b7df-704d-44ae-b6a1-bb9cbedd4244",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "d60e4ee5-a7a2-483c-8f45-bc850562849c",
+     "reason": "bio filler: prior service dates"
+    },
+    {
+     "record_id": "38651fd1-6b38-4106-afc1-22983ab5d335",
+     "reason": "pure candidacy: was elected"
+    }
+   ]
+  },
+  {
+   "candidate_id": "4ea5d168-59e3-4c9a-8eea-272d7739975a",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "8f2a57ea-b7b5-4132-b629-67f95139a9cb",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "4f6d9397-02cc-4ce8-8179-c2df02a2ba76",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "47e1c64c-282b-41fd-9c0b-5e4d5a629336",
+     "reason": "no allowed research area matches with a clear direction"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "4fadd9f0-d1a2-492e-a2c8-65ce3adbc7ec",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "b2704628-b325-4936-846c-f34c5535a754",
+     "reason": "bio filler: past jobs"
+    }
+   ]
+  },
+  {
+   "candidate_id": "50cf81e4-08d2-40a8-9365-c22e3ea07c2b",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "c8bdc62c-135a-4b99-9c57-a0d355c80f8a",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "52c71f69-9ad9-4313-b6c0-33013acb819a",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "0db2dd79-818f-4eec-84e3-070887336ab8",
+     "reason": "bio filler / status: served as board chair"
+    }
+   ]
+  },
+  {
+   "candidate_id": "5400fbd0-b884-4e34-9179-9e6b3d81509d",
+   "labels": [
+    {
+     "record_id": "c1d433c4-81ee-4f3c-95a0-57b0ae615fe1",
+     "research_area_slug": "public_safety_and_crime_control",
+     "stance": "for"
+    },
+    {
+     "record_id": "c82cca3c-f5ea-4f70-bc62-b4ff5313d2ce",
+     "research_area_slug": "public_safety_and_crime_control",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "547a18e3-4d87-49f3-af55-6ff3df50d094",
+   "labels": [
+    {
+     "record_id": "8d4df01c-c29c-493f-9eb5-bd32153b5dac",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for"
+    },
+    {
+     "record_id": "8d4df01c-c29c-493f-9eb5-bd32153b5dac",
+     "research_area_slug": "public_infrastructure",
+     "stance": "against"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "54b1a691-99a4-4879-a91d-4a9972e96c75",
+   "labels": [
+    {
+     "record_id": "44fd4e67-7907-4f21-b98c-7a5f47e3bcf7",
+     "research_area_slug": "government_efficiency",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "5c1096b0-fcd9-4483-a2cc-623deef99d72",
+   "labels": [
+    {
+     "record_id": "94c01701-2124-4b4a-a57a-faffaf988d90",
+     "research_area_slug": "housing_affordability",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "5e422c20-4ee4-41de-afbd-91d350539818",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "3b1cb425-c8a5-4a2b-83d4-f5f9ba2904db",
+     "reason": "bio filler: board memberships"
+    }
+   ]
+  },
+  {
+   "candidate_id": "60eb147f-d2ae-425b-8d09-7c0823152c0f",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "7a8c4a5d-dc41-4db6-be3c-4ceac226d0de",
+     "reason": "record text does not state a direction"
+    },
+    {
+     "record_id": "e1d4b17d-3bae-4b1e-ad55-a54b6a660bd1",
+     "reason": "definition-only amendment, no stance"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "623afebb-9520-4f6e-85bd-db3ad4baae5e",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "aeb227be-d2a9-4f75-95b2-61fc1de89ba9",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6262a7a7-2192-472f-a558-fedb329652a8",
+   "labels": [
+    {
+     "record_id": "c0bacb6e-6fdd-4104-af6f-da2f5e477d6f",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "63c4fcc5-2f90-41a3-9299-2209c6443de4",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "db7e38bb-3b81-4954-a171-623d506f92fb",
+     "reason": "bio filler / status: committee chairmanship"
+    }
+   ]
+  },
+  {
+   "candidate_id": "64c6c695-00fc-4f90-8975-9b639cc32d54",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "9e6eacc4-9ca3-4fd1-a948-9525a32dd48e",
+     "reason": "bio filler: association board seat"
+    }
+   ]
+  },
+  {
+   "candidate_id": "654b7db5-2ace-4f35-bfdf-ee3a6b0116a2",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "882df1a1-1170-46c4-b8ff-101bb55cac95",
+     "reason": "bio filler / status: holds the office"
+    }
+   ]
+  },
+  {
+   "candidate_id": "65706f4c-dab7-4942-a8e2-cbce7c239b1f",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "00929702-ec0c-47a1-a5e5-0beb747587d6",
+     "reason": "bio filler: prior office held"
+    }
+   ]
+  },
+  {
+   "candidate_id": "65f8a8ad-cdcc-4246-96a5-8f6ff3dba4c3",
+   "labels": [
+    {
+     "record_id": "bb70e3d5-3f5d-4699-8aec-a523af32d5b3",
+     "research_area_slug": "housing_affordability",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "68558ec0-ddf4-4a0f-b5f5-96a9df8001d6",
+   "labels": [
+    {
+     "record_id": "124856e5-677b-48aa-b485-a8f0373089e0",
+     "research_area_slug": "social_programs_and_welfare",
+     "stance": "for"
+    },
+    {
+     "record_id": "9949af7f-8ba6-446c-b21b-2663d39e91ef",
+     "research_area_slug": "social_programs_and_welfare",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6c5ba2d4-af4b-433f-8af8-b69317112e69",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "0bfc692f-579a-4a57-abb5-13c1688b5110",
+     "reason": "bio filler: foundation board role"
+    },
+    {
+     "record_id": "d2e6ca4e-0b01-48e4-9888-cc2f4a8c4413",
+     "reason": "trivia: attended a program launch"
+    }
+   ]
+  },
+  {
+   "candidate_id": "6ce2450d-05f2-4724-a261-bb78a11a7a3c",
+   "labels": [
+    {
+     "record_id": "e5e1e968-bf45-4b9b-be6c-eab7d7ec08d3",
+     "research_area_slug": "anti_corruption",
+     "stance": "against"
+    },
+    {
+     "record_id": "238c155a-daf3-41a4-a2e4-3877d199ce94",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for"
+    },
+    {
+     "record_id": "c76fc7fd-c8db-4609-8222-a3a7da20d24f",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for"
+    },
+    {
+     "record_id": "d56baafa-7272-4a05-a1d5-858ce7a39355",
+     "research_area_slug": "government_efficiency",
+     "stance": "for"
+    },
+    {
+     "record_id": "ad749985-4d1f-416a-bf5e-c512d6850e81",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for"
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "0e4c0f8a-95c7-4e48-870c-ea241f63108f",
+     "reason": "record text does not state a direction"
+    },
+    {
+     "record_id": "bd9cf12b-55cb-4898-8699-939096dff865",
+     "reason": "record text does not state a direction"
+    },
+    {
+     "record_id": "473a6203-f776-4c2a-b864-6eda5eccd293",
+     "reason": "record text does not state a direction"
+    },
+    {
+     "record_id": "86a13ae7-d965-4238-a722-7b1c36cddb73",
+     "reason": "record text does not state a direction"
+    },
+    {
+     "record_id": "17d333df-a3c5-473f-82e8-46ceccf5962c",
+     "reason": "no allowed research area matches"
+    },
+    {
+     "record_id": "44348b8d-b6d5-448c-9b1b-cb1bc7a19cc0",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": [
+    {
+     "record_id": "383d0744-a861-48f9-b797-38bc4db6c45f",
+     "reason": "bio filler / status: committee assignments"
+    }
+   ]
+  },
+  {
+   "candidate_id": "731af163-3098-4320-8361-2ab307918e27",
+   "labels": [
+    {
+     "record_id": "8c73f184-6b17-4adf-98b6-41496a982c3d",
+     "research_area_slug": "government_efficiency",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "733620cf-c1d4-42dc-a1b8-81091146a33d",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "57d7df68-cd1e-4afa-927b-e848e299d43c",
+     "reason": "bio filler / status: chaired a review body"
+    }
+   ]
+  },
+  {
+   "candidate_id": "7363811b-43a3-4b1b-9792-9c0fd2e1916e",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "5eb6be47-94d4-4752-bcb9-50f4165f3002",
+     "reason": "procedural, no stance"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7496bbaf-da0a-476d-bedf-c16cc4e1e672",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "210318b3-e374-4a92-bfc4-2b0b2d24376f",
+     "reason": "bio filler / status: board vice chair"
+    }
+   ]
+  },
+  {
+   "candidate_id": "75bbf86b-b809-496d-ab27-3c04fd154546",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "d7a84f9b-15d6-42a4-8ab3-f5631d21a187",
+     "reason": "bio filler: past jobs"
+    },
+    {
+     "record_id": "c9840004-2a46-4047-b9b1-8cfa01cca723",
+     "reason": "bio filler / status: incumbency"
+    }
+   ]
+  },
+  {
+   "candidate_id": "768d3579-1296-4263-9f83-67ba74213ba8",
+   "labels": [
+    {
+     "record_id": "b94cc94b-b5ae-47c1-b4bb-41bc6f4816b7",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7b50476c-8355-4a13-8cd7-0ee201156d03",
+   "labels": [
+    {
+     "record_id": "4c61e4ba-1299-4481-94b1-170fbc6188f4",
+     "research_area_slug": "public_education_quality",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "d5064bca-5b4a-40c7-a7bf-bc44eb867ed5",
+     "reason": "bio filler / status: committee assignments"
+    }
+   ]
+  },
+  {
+   "candidate_id": "7c0690f5-8049-45a4-8174-add8e7ae8f47",
+   "labels": [
+    {
+     "record_id": "805c8b22-5fdf-4cfa-adef-183c292a7f34",
+     "research_area_slug": "public_education_quality",
+     "stance": "for"
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "06560104-7ffa-4a74-a2c4-f156549691a5",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7d745dc7-eca6-4bd4-9d15-74a9cac55481",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "5acb0c24-7175-49e0-8413-b9c69c16d2c2",
+     "reason": "bio filler: prior office held"
+    },
+    {
+     "record_id": "0f11cc66-599e-40c5-a045-8c10fb463c82",
+     "reason": "bio filler: past career"
+    }
+   ]
+  },
+  {
+   "candidate_id": "7e367e36-d122-4a1c-b277-f5660b0d4f3d",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "e6d37c14-ffa7-40e4-9206-0f45033fe1a4",
+     "reason": "bio filler: association presidency"
+    },
+    {
+     "record_id": "25139579-8754-4078-8321-05ba9c2140e0",
+     "reason": "bio filler: association presidency"
+    }
+   ]
+  },
+  {
+   "candidate_id": "7e52c873-2253-466f-8f4a-d9fbae733e29",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "5712b111-338c-454c-be02-fed2769d574a",
+     "reason": "bio filler / status: board chairmanship"
+    },
+    {
+     "record_id": "8a147dcd-f29e-491a-8da8-c1ec7070e246",
+     "reason": "bio filler / status: board chairmanship"
+    }
+   ]
+  },
+  {
+   "candidate_id": "7e54d882-3ebc-4973-a165-71c8cce73e7f",
+   "labels": [
+    {
+     "record_id": "04e84ea7-52c3-43a7-a8fc-b66585c0d60b",
+     "research_area_slug": "housing_affordability",
+     "stance": "against"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  }
+ ]
+}

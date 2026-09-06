@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "b251a7c5-2d75-417f-a590-859487e2d7ce",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "e3b5c580-1a83-42ef-b162-48a283a55f22",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "e3b5c580-1a83-42ef-b162-48a283a55f22",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  }
+ ]
+}

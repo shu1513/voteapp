@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "ac714a01-e1d6-4803-85fb-94ddeb4e3ef1",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "efae7785-1f68-41cd-b739-71c6ae899eea",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "efae7785-1f68-41cd-b739-71c6ae899eea",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "6c93b630-ec36-4b1c-89e5-2b504b49fd19",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "6c93b630-ec36-4b1c-89e5-2b504b49fd19",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "0dfddd68-8285-4a01-9197-cfc7fc68d54a",
+   "research_area_slug": "public_infrastructure",
+   "stance": "against"
+  },
+  {
+   "record_id": "0dfddd68-8285-4a01-9197-cfc7fc68d54a",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "3dc57d30-fa5e-41d1-9eb9-d4597fff90cd",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  }
+ ]
+}

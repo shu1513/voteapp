@@ -1,0 +1,899 @@
+{
+ "proposals": [
+  {
+   "candidate_id": "12ec5a8f-a07b-4701-8a21-96747d3c57a0",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "2b4cfa7a-8fd8-446c-9394-1163842c10c5",
+     "reason": "The committee met to review possible uses of opioid settlement money with county and hospital staff. It was a review meeting, not a funding decision, so there is no direction to weigh.",
+     "found": "The county agenda shows a settlement committee review of funding opportunities."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "12f13da7-e29d-4865-a98b-9a81262799ed",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "3093b40f-2255-4ba5-8b77-80a62099c2e0",
+     "reason": "This is the county property tax (millage) rate. The record does not say whether the rate went up or down, and property tax does not belong in the personal income tax area.",
+     "found": "The minutes show only the adoption of a 4.8900 general-fund millage rate."
+    },
+    {
+     "record_id": "36c9e4aa-08b8-4c2b-864d-ad2a8c605fa0",
+     "reason": "A land-use map swap. Rural residential is low density, so this does not clearly add or block housing.",
+     "found": "The county record shows 82 acres moved to rural residential and 5 acres to commercial."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "1309afb2-2123-4421-a964-21027be9944b",
+   "labels": [
+    {
+     "record_id": "c81cfbc7-9dbd-40d2-932f-7cb1057ee78f",
+     "research_area_slug": "civil_rights",
+     "stance": "for",
+     "found": "The state bill page says SB26-014 lets a defendant found not guilty by reason of insanity be placed in the community for treatment and clarifies the legal standard for release."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "133f485f-cf09-4bfc-a3b8-7b6493f51793",
+   "labels": [
+    {
+     "record_id": "e1467079-4792-4f3e-aa8f-eb094cf57506",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for",
+     "found": "HB26-1305 lets rural hospitals run remote psychiatric inpatient sites under the main hospital's license; the stated goal is more access to inpatient behavioral health care."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "14335811-8723-4905-84cf-57b3281da1ca",
+   "labels": [
+    {
+     "record_id": "fba6057d-4510-4cbc-9a28-8604286e774e",
+     "research_area_slug": "social_programs_and_welfare",
+     "stance": "for",
+     "found": "SB 2139 makes the county human service zone pay for the burial or cremation of a person who dies indigent, sets one statewide eligibility form, and requires a process for religious burial requests."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "15198ea5-4550-4e1e-a943-cd85fc1f5e66",
+   "labels": [
+    {
+     "record_id": "0d4e3544-c054-4068-a91c-ecabb83687e8",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for",
+     "found": "LD 1803 widens what optometrists may do, adding some eye surgeries and broader prescribing; sponsors and the committee framed it as expanding access to eye care."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "15707b3f-a3af-48fa-86ef-a9cbebe471c2",
+   "labels": [
+    {
+     "record_id": "9ad00bc4-1e47-4768-aab6-6879f0805d18",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for",
+     "found": "Act 706 changes how the state Storage Tank Trust Fund pays for cleaning up leaking petroleum tanks, including paying owners' consultants directly, which speeds cleanup."
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "6af7ec25-3293-4aea-b79f-637cf875e02f",
+     "reason": "Act 721 only moved the deadline for districts to file their school tax rate. A date change with no direction.",
+     "found": "Arkansas Act 721 of 2023 amended the filing deadline in Ark. Code 6-14-111."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "16068107-652e-4e28-9954-a80e3588bc9d",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "5d9975ff-90b3-41cc-88b4-d70d35a9f9a4",
+     "reason": "The ordinance tightened rules for accessory dwelling units outside urban growth areas after a Growth Management Hearings Board ruling. The record does not say what Low wanted instead.",
+     "found": "County legislative file for Ordinance 23-133 and the county code section it amended."
+    },
+    {
+     "record_id": "a9311217-3cf8-4782-b2a8-0772f4962fbf",
+     "reason": "Wording cleanup only.",
+     "found": "HB 1007 changed the small-claims notice from saying judgment 'will be given' to 'may be given' if the defendant does not appear."
+    },
+    {
+     "record_id": "6895467e-4ddd-4a26-9119-301648db7c2e",
+     "reason": "Capital gains is not the personal income tax area, and this bill has no single direction.",
+     "found": "SSB 5314 was mostly technical: new broker reporting, a credit to stop double taxation with the business tax, and spouse rules."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "16600ad3-4aba-41db-9b83-f942029628e7",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "1857aec6-dbd1-49eb-9d51-1fc58e8325ce",
+     "reason": "Local board housekeeping with no direction a voter can weigh.",
+     "found": "Act 2015-116 changed how the Tree Commission is run in Class 2 cities."
+    },
+    {
+     "record_id": "d00c3303-5d1b-4746-8dfd-05523b59584e",
+     "reason": "I could not find a source showing this map helped or hurt any allowed area.",
+     "found": "Act 2021-556 was the 2021 Alabama House district map."
+    },
+    {
+     "record_id": "fdf97fef-ad6b-4ab1-b5e2-a19b14bd9824",
+     "reason": "The direction is genuinely mixed, so I did not label it.",
+     "found": "Act 2023-507 set Alabama's first process for releasing body and dash camera video: agencies must answer the person recorded, but may refuse while an investigation is active. News coverage shows lawyers split on whether it opened or closed access."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "17b46700-32e2-40af-9560-7ef9aa289d30",
+   "labels": [
+    {
+     "record_id": "d0810e50-0a00-4fc5-9df5-076f5057077b",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for",
+     "found": "Chapter 444 of 2019 renamed and reworked the substance use disorder professional credential and cut required experience hours for applicants with more education, which widens the treatment workforce."
+    },
+    {
+     "record_id": "89503242-6abe-4df1-b445-9624a3e01b61",
+     "research_area_slug": "civil_rights",
+     "stance": "for",
+     "found": "The House bill analysis says 2SHB 2066 ends automatic license revocation for general felonies involving a vehicle; a license is now revoked only if the judge orders it."
+    },
+    {
+     "record_id": "89bf0224-e0d3-4205-bc94-9d96709000c3",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for",
+     "found": "Chapter 360 of 2025 waives certification, exam and renewal fees for peer support specialist trainees through 2030 and extends peer support to victim advocates."
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "a7dedc64-fb17-4766-8915-79d9bdd13bb9",
+     "reason": "The two changes point in opposite directions, so there is no single stance.",
+     "found": "Chapter 82 of 2020 let the corrections department choose not to treat a sixth low-level supervision violation as high-level, but also allowed up to 3 days of jail for any low-level violation."
+    },
+    {
+     "record_id": "5758b557-cae2-4205-a47f-b007d7553793",
+     "reason": "A no vote with no stated reason; members voted no on this bill from both directions.",
+     "found": "2E2SSB 5536 was the 2023 special-session drug possession and treatment law."
+    },
+    {
+     "record_id": "9e5e74f9-cea6-4e09-92a0-233b2c8055c4",
+     "reason": "Capital gains is not the personal income tax area, and this bill has no single direction.",
+     "found": "SSB 5314 was mostly technical: new broker reporting, a credit to stop double taxation with the business tax, and spouse rules."
+    },
+    {
+     "record_id": "a6309a6b-d8f1-4d94-829d-02886245e31a",
+     "reason": "I could not find a source saying whether the bill tightened or loosened the fuel rules.",
+     "found": "E2SHB 2215 changed fuels policy under the Climate Commitment Act."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "183244bd-db8f-4a54-a8b3-b8e82a3f10f9",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "f7f2528b-c352-4ab6-9b4d-e9c6f65e23c8",
+     "reason": "Neither the bill page nor the vote record says whether the conditions got stricter or looser.",
+     "found": "Public Act 131 of 2022 changed the conditions for a municipal hospital board to sell, lease or transfer a hospital."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "195c9e4b-a909-4eaa-ba88-8163c9256850",
+   "labels": [
+    {
+     "record_id": "dc5ce46d-e1fa-4c33-81ac-3195840c3cbe",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "against",
+     "found": "Chapter 276 lets the Heritage Areas Authority award more grants and loans and raises the program cap (supporters cited $6 million going to $12 million), so it commits more public money."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "19de2288-f562-4ec8-8c28-c50485301949",
+   "labels": [
+    {
+     "record_id": "f786c062-17fd-4abf-b0ae-053ae2cd1f46",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "against",
+     "found": "Her bill would force solar farms to follow local planning and zoning rules, which makes solar projects harder to build."
+    },
+    {
+     "record_id": "082e5cfc-126f-4da5-86cd-83484f337899",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "against",
+     "found": "HB 6298 would give town chief elected officials a say over certain solar projects and change how testimony reaches the state Siting Council, adding hurdles for solar."
+    },
+    {
+     "record_id": "ec760862-2885-4532-a53f-b2020411b4fc",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "against",
+     "found": "She joined local officials opposing a 30-megawatt expansion of the Gravel Pit Solar project."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "1a0ae191-debc-4ed3-a23a-3ad351bf2987",
+   "labels": [
+    {
+     "record_id": "b11edce1-5c7b-4278-801a-b49e065bd6e7",
+     "research_area_slug": "social_programs_and_welfare",
+     "stance": "for",
+     "found": "Chapter 178 of 2024 opened the National Guard education grant to spouses and dependents and stretched the use window from 5 to 6 years."
+    },
+    {
+     "record_id": "b11edce1-5c7b-4278-801a-b49e065bd6e7",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "against",
+     "found": "Chapter 178 of 2024 opened the National Guard education grant to spouses and dependents and stretched the use window from 5 to 6 years."
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "1add5177-7de1-469c-b196-3abb2d5374f3",
+     "reason": "The measure mixes parental access with student privacy and passed 82-15 with wide bipartisan support, so there is no single direction.",
+     "found": "Initiative 2081 is the parents' bill of rights covering access to school records and curricula."
+    },
+    {
+     "record_id": "f484cb9b-2a8b-423a-a883-cf5863812033",
+     "reason": "A no vote on a school funding bill with no reason stated in the record.",
+     "found": "ESSB 6260 changed public-education funding in 2026."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "1c978bce-6334-4c84-840e-8590ffc64a22",
+   "labels": [
+    {
+     "record_id": "a8fd3ae3-46cb-47fe-8217-9a452b9f1274",
+     "research_area_slug": "social_programs_and_welfare",
+     "stance": "for",
+     "found": "Chapter 223 of 2025 dropped the 'least expensive' rule and the $100 cap on transport for people leaving prison, and keeps a $40 subsistence payment."
+    },
+    {
+     "record_id": "a8fd3ae3-46cb-47fe-8217-9a452b9f1274",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "against",
+     "found": "Chapter 223 of 2025 dropped the 'least expensive' rule and the $100 cap on transport for people leaving prison, and keeps a $40 subsistence payment."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "1ccc1ebf-58ca-446d-95de-209061caf5e3",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "04e17fb9-2072-4220-aba3-c25d1afc177d",
+     "reason": "The minutes do not say whether the change added money or cut it.",
+     "found": "The ordinance amended the budget for the 2016 Flood Alternative Project."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "1d605ac3-2023-4d32-bbdd-86870e6e228b",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "4122c8df-7174-4f9d-ac87-8982dbb05bb4",
+     "reason": "A vote on one land-use application, tied to one proposed business type. No general direction.",
+     "found": "The city record shows the special-exception motion was amended and then failed to get his support."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "1e1420ed-3862-4952-b5ad-164510807ff3",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "422f961e-e066-48d9-9c63-1a418ec3cdc1",
+     "reason": "I could not confirm what the proposed rule change would have done, so the direction is unknown.",
+     "found": "He signed group comment opposing proposed changes to the criminal discovery court rules."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "1e25b4e0-afe1-41c1-89b4-a20f85e12293",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "f330fdfe-d943-4f75-b740-00671ca2b177",
+     "reason": "Hiring a superintendent is a personnel choice with no policy direction.",
+     "found": "News coverage shows a unanimous board vote to hire the finalist."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "1f5484ab-c4b1-40c5-8636-faed6280c759",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "adb665c6-2c87-41ea-99e8-41da4225de85",
+     "reason": "Reporting numbers is not a decision, so there is nothing to take a side on.",
+     "found": "The article is his public account of deaths, autopsies and staffing at the coroner's office."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "1f9b744f-1dea-4d7e-a77a-21dd51d33d80",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "57c4f74c-fb0d-46eb-ab40-0a8eaf991d6d",
+     "reason": "Adding a court appeal route does not clearly strengthen or weaken ethics enforcement, and the bill only got a committee referral.",
+     "found": "SB 304 would let people appeal a local ethics board's final order to circuit court."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "21b0974b-91a3-45c8-a1b2-abcc755b1291",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "02e168fa-b8c2-48a3-ac85-b5da15244d1e",
+     "reason": "This is a court ruling in a case where he was the lawyer, not his own policy action.",
+     "found": "The county recorder's release names him as counsel in the election-authority case."
+    },
+    {
+     "record_id": "99b060a3-9bb9-4088-9dae-748ff805b2c9",
+     "reason": "This is a court ruling in a case where he was the lawyer, not his own policy action.",
+     "found": "The court release describes the Supreme Court order in the same election-authority case."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "21e4089c-e593-4797-83b2-1560dd82051c",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "5ad43cc8-acb3-40c5-9ccd-096c0d869917",
+     "reason": "A no vote on applying for a grant, with no reason given in the minutes.",
+     "found": "The council approved the $795,000 FAA grant application 7-2 with Mills opposed."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "2456a4a1-3a70-4bf4-b23a-4dc79f8c3cfd",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "39d32240-74af-477a-8a5f-310fc8996c84",
+     "reason": "The only source is a House calendar listing; I could not confirm the bill's purpose or effect.",
+     "found": "HB 621 would let General Assembly members request help from the state investigation bureau."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "263dd950-0634-437f-9e82-849abd79a11c",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "bcd64484-88cd-4c30-8651-4e9707a27444",
+     "reason": "The minutes do not say whether the credit got bigger or smaller, and property tax is not the personal income tax area.",
+     "found": "Local coverage shows the senior property tax credit amendment was debated at length before the commission acted."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "26666903-d3ab-4853-8a85-2b9a4f5aa36d",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "2378fb50-52c0-476e-b407-b9d4b7e6ddeb",
+     "reason": "A no vote on putting a school sales surtax on the ballot, with no reason stated in the minutes.",
+     "found": "The board resolution would have called a referendum on a half-cent school capital-outlay surtax."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "2785ac71-f714-4048-bde7-a78d9d5c4bce",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "6ee79345-bb39-44a1-a021-b9c91947cebb",
+     "reason": "I could not confirm whether the scholarship rules got more or less generous, and withholding on lottery prizes is not the personal income tax area.",
+     "found": "Act 265 of 2010 amended the lottery-funded Academic Challenge Scholarship program."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "287c0ec6-7568-476a-865f-1d0b9487c1fe",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "99881c84-b6a2-47b3-9159-d36236f52246",
+     "reason": "The record does not say what the two failed amendments would have changed.",
+     "found": "Both amendments to ESHB 1296 were rejected 42-52."
+    },
+    {
+     "record_id": "f4a796bd-af49-4c3a-964c-aca61b8e9a1e",
+     "reason": "A no vote with no stated reason.",
+     "found": "ESHB 1296 revised state requirements for school policies on student rights and instructional materials."
+    },
+    {
+     "record_id": "57e3a971-6a8a-4c12-9932-d86bf4c2acc9",
+     "reason": "A no vote with no stated reason, and the record does not say which way the bill moved the rules.",
+     "found": "ESHB 1916 changed voter registration challenges and voter list management."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "29d12570-8eca-4063-9f58-dc6756060b7f",
+   "labels": [
+    {
+     "record_id": "f86aefb8-3d12-44d7-9b08-2f53cdad5760",
+     "research_area_slug": "data_privacy",
+     "stance": "against",
+     "found": "MichiganVotes shows roll call 253 was on 2026 HB 5974, which requires providers to give parents a minor's medical records, including care minors can now get confidentially such as pregnancy, contraception, sexually transmitted infections and mental health."
+    },
+    {
+     "record_id": "f86aefb8-3d12-44d7-9b08-2f53cdad5760",
+     "research_area_slug": "womens_reproductive_rights",
+     "stance": "against",
+     "found": "MichiganVotes shows roll call 253 was on 2026 HB 5974, which requires providers to give parents a minor's medical records, including care minors can now get confidentially such as pregnancy, contraception, sexually transmitted infections and mental health."
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "4d8efa08-a3e8-4ccf-aa97-151d2c8bf0ec",
+     "reason": "The minutes do not say whether the rewritten rules were stricter or looser.",
+     "found": "He moved to introduce a city ordinance rewriting massage parlor rules; the council backed introduction 7-0."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "2bc11db7-5679-4aee-938a-03b6495e9545",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "a7fae199-a2e1-46dc-96a8-7cc34b958e08",
+     "reason": "A no vote on an override of a veto of a funding bill, with no stated reason, so I cannot claim he wanted less school money.",
+     "found": "HB 2138 created extra state aid for high school career and technical education credentials."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "2bea4ece-5d2d-4064-887a-78ec36c09975",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "aec0b7fb-00e0-444c-9a9d-9854aa7b5f87",
+     "reason": "This changes who picks the superintendent, not school quality, and no allowed area covers it.",
+     "found": "HR 174 is a proposed constitutional amendment to have the state board appoint the school superintendent instead of voters electing the office."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "2c8a732b-102f-441e-a2ff-d14bf544a7bb",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "76060ce3-d5b1-4115-be9b-d9b34ddeb3de",
+     "reason": "A no vote, and the sources do not say which way the bill moved gun rules.",
+     "found": "HB 2052 dealt with concealed-carry license eligibility and privacy for armed off-duty officers."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "315936a0-4a71-4901-8b4d-bfc1b63bd614",
+   "labels": [
+    {
+     "record_id": "ad4c4e1d-3650-4310-8d99-79d5e83192cf",
+     "research_area_slug": "government_efficiency",
+     "stance": "for",
+     "found": "Act 2025-410 is the Teacher Paperwork Streamlining Act: the state must build one digital platform that consolidates literacy, numeracy and special-education paperwork so teachers file less."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "32d302a6-e170-44d1-b72d-716086b0cf75",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "50b12aed-7200-4174-9aac-7f52e5067045",
+     "reason": "Setting up a governance structure gives no direction a voter can weigh in the allowed areas.",
+     "found": "The 2007 law made Community Preservation and Development Authorities state agencies."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "32dd035d-adfa-48db-8a85-02adb4ffe7d1",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "28e18135-5143-409d-b612-4eb2203ade67",
+     "reason": "The bill died in committee and I could not confirm what it would have changed.",
+     "found": "HB 62 concerned how campaign money may be treated for dependent-care expenses."
+    },
+    {
+     "record_id": "7c1d6cc9-a104-4691-9253-7c38648010aa",
+     "reason": "The bill died in committee and I could not find what it actually required.",
+     "found": "HB 456 was described only as protections for youth athletes."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "332db9e9-ae82-46db-9cba-f863d600c12e",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "836dd8c9-13b6-446b-8ae6-ba1731aaed1e",
+     "reason": "The bill was killed in committee and I could not confirm what the requirements would have been.",
+     "found": "HB26-1292 would set requirements for scholarship-granting organizations and the schools that receive the money."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "338af6a5-aece-4145-b039-0ce9278572d1",
+   "labels": [
+    {
+     "record_id": "35e775cb-fffe-44e4-93bf-286b57cf7887",
+     "research_area_slug": "public_safety_and_crime_control",
+     "stance": "for",
+     "found": "HB 4981 would require a sheriff candidate to have at least five years as a licensed police or corrections officer, on top of residency."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "347af80e-9444-4a73-8308-dbdb35b54590",
+   "labels": [
+    {
+     "record_id": "ef318d0c-c1f1-4e36-9f52-fa1d5eeff437",
+     "research_area_slug": "corporate_accountability",
+     "stance": "for",
+     "found": "Chapter 216 gives a storage renter at least 30 days after a nonrenewal notice to remove property and at least 10 days notice before the operator disposes of it."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "347ebbfc-7842-4d48-ad3b-3e91589d6dc0",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "ea22a9b8-8005-4b36-ac74-1e3720482930",
+     "reason": "A no vote on outsourcing, with no reason given in the minutes.",
+     "found": "The motion directed staff to outsource city solid-waste services and passed 4-1."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "34c76888-3d77-49b8-9aca-9b1bf4da64dd",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "a4b8ec2b-f245-43ad-aac1-52312ba62da5",
+     "reason": "A no vote on a budget bill, with no stated reason, so I cannot claim he wanted more or less school money.",
+     "found": "HB 4577 was the House Republican K-12 school aid budget for 2025-26."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "35510be8-f0e5-41b0-98ed-43dbc285e278",
+   "labels": [
+    {
+     "record_id": "07688c87-4096-4f02-82df-2ed4b1108d0b",
+     "research_area_slug": "public_safety_and_crime_control",
+     "stance": "for",
+     "found": "HB 651 keeps school-zone speed cameras but adds regular accuracy testing with public logs, clearer warning signs, a complaint process, permit revocation for misuse, and limits ticket money to public safety uses."
+    },
+    {
+     "record_id": "07688c87-4096-4f02-82df-2ed4b1108d0b",
+     "research_area_slug": "government_efficiency",
+     "stance": "for",
+     "found": "HB 651 keeps school-zone speed cameras but adds regular accuracy testing with public logs, clearer warning signs, a complaint process, permit revocation for misuse, and limits ticket money to public safety uses."
+    },
+    {
+     "record_id": "e2959a37-1459-4a09-9d8b-f4c5407a55db",
+     "research_area_slug": "public_safety_and_crime_control",
+     "stance": "for",
+     "found": "HB 295 lets property owners claim money from a local government that does not enforce laws on illegal camping, panhandling, loitering, drug activity and public intoxication."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "35fd746a-08aa-4739-8e1d-c230e562b683",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "2a238bf3-f272-4d37-a4b1-6516a1e8d772",
+     "reason": "A family-law change; no allowed area fits it.",
+     "found": "HB 4077 would let courts set parenting time for an adult child whose disability limits independent decision-making."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "3605b793-dd4e-4e0f-9117-343d22a36d90",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "a10a4aa4-7a95-4f34-b357-989e5e9396b3",
+     "reason": "A definitions fix with no direction.",
+     "found": "Act 2022-438 put two dropped phrases back into the legal definition of a shotgun after an earlier 2022 law removed them."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "366ea5d1-920f-4442-aff6-cd536eeb3c88",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "008771df-d493-4589-ab17-4eeaa08911f3",
+     "reason": "A no vote with no stated reason.",
+     "found": "SB 1289 would require the governor and water director to give legislative committees groundwater reports 30 days before release."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "3787e645-7a5d-456e-b35b-34074b68cf4a",
+   "labels": [
+    {
+     "record_id": "f331c7d4-c690-4a93-8937-7e608679bff6",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for",
+     "found": "HB 77, the Zachary Thomas Newborn Screening Act, makes the state add conditions from the federal recommended panel, adding screening for MPS I, MPS II, Pompe disease and GAMT."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "37c37d67-08b5-40ad-8d5a-66dec98a9631",
+   "labels": [
+    {
+     "record_id": "585262d7-1e0f-4260-9642-0bd63f18155c",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "against",
+     "found": "SB 220 widened the list of conditions that qualify a patient for a medical cannabis card, and he voted against it."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "390ae1a6-a41c-4074-b3e4-9eca2857491d",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "a6a02b4a-b5aa-4fb8-b83c-e1f866ba330f",
+     "reason": "The measure mixes parental access with student privacy and passed 82-15 with wide bipartisan support, so there is no single direction.",
+     "found": "Initiative 2081 is the parents' bill of rights covering access to school records and curricula."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "39fdacff-fff7-4266-9158-2a411fd777ff",
+   "labels": [
+    {
+     "record_id": "e43daa5b-43c1-4f6a-8c70-6065a64ae72b",
+     "research_area_slug": "corporate_accountability",
+     "stance": "against",
+     "found": "HB 21 would narrow construction-defect suits: it defines 'material violation' and makes an owner file a warranty claim and be refused before going to court."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "3ac25543-06d8-4de3-814d-a13f4037338a",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "03e576c1-c66d-43c6-ae25-0ada144c50f7",
+     "reason": "The bill page does not say whether it raised pay or capped it, and the bill died in committee.",
+     "found": "SB 136 addressed public-school personnel salary schedules."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "3c3f5934-c492-4c79-a558-8d9d3ed7785f",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "e1850877-f205-4ef1-b8e5-d122cf383543",
+     "reason": "Dropping party labels from some county races has no clear direction in the allowed areas.",
+     "found": "The Senate replaced the food-vehicle text; the enacted Act 710 requires nonpartisan election of county officers and district attorneys in certain counties."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "3c513417-7aa8-4219-98d5-2f58def19207",
+   "labels": [
+    {
+     "record_id": "f989870e-cbf1-4ac0-bfc3-867e612db5bf",
+     "research_area_slug": "anti_corruption",
+     "stance": "for",
+     "found": "The state audit report shows the office accepted the finding and put two-person control on Gateway data entry."
+    },
+    {
+     "record_id": "f989870e-cbf1-4ac0-bfc3-867e612db5bf",
+     "research_area_slug": "government_efficiency",
+     "stance": "for",
+     "found": "The state audit report shows the office accepted the finding and put two-person control on Gateway data entry."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "3c718aaf-c7fe-4f3f-8933-167c194df8ed",
+   "labels": [
+    {
+     "record_id": "6d573099-c750-43db-96e8-abd9c30393da",
+     "research_area_slug": "government_efficiency",
+     "stance": "for",
+     "found": "Act 472 rewrites the trade licensing chapter, accepts technical education and registered apprenticeships as routes to a license, keeps reciprocity, and bars unlicensed firms from advertising as licensed trades."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "3cf6dc43-74bb-41c9-8972-b6be1e35b79a",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "96886775-66fb-4b3c-9604-b5f88f423659",
+     "reason": "The bill page does not show whether tuition went up or down, and the bill died in the Senate.",
+     "found": "HB 5601 moved assets and debts between USF Sarasota-Manatee and New College and changed some tuition rates."
+    },
+    {
+     "record_id": "31e3a559-3521-4b5f-b72e-e97032ac060d",
+     "reason": "No source establishes a direction for any allowed area.",
+     "found": "She voted for Florida's 2026 congressional map."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "3ea182f5-d5a1-4e8d-8d6b-678d12a915e3",
+   "labels": [
+    {
+     "record_id": "c59c3bd1-8d2d-4fbd-b188-720f0182f2c4",
+     "research_area_slug": "civil_rights",
+     "stance": "against",
+     "found": "SB 272 of 2018 added nitrogen hypoxia as an execution method a capital defendant may elect, expanding how the state may carry out the death penalty."
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "4186597e-164b-485e-925d-37f4d15442ad",
+     "reason": "Administrative housekeeping with no direction.",
+     "found": "Act 2016-421 moved boat registration decal duties to the state law enforcement agency."
+    },
+    {
+     "record_id": "e0738999-6c84-4578-8328-6a4e54d388d1",
+     "reason": "No source establishes a direction for any allowed area.",
+     "found": "HB571 was the 2017 Alabama House district map."
+    },
+    {
+     "record_id": "ab20862d-258a-4f00-b371-9b51ee7d2b37",
+     "reason": "Sources disagree on whether leaving the multistate system helps or hurts the accuracy of voter rolls.",
+     "found": "HB479 replaced the ERIC data-sharing system with a state system for spotting voters who moved."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "3eb3ac5e-1565-43f3-9465-961222197714",
+   "labels": [
+    {
+     "record_id": "cd7cfb0f-c7b5-461d-8008-75571b3eef51",
+     "research_area_slug": "anti_corruption",
+     "stance": "for",
+     "found": "Act 658 of 2021 removed the rule that a public employee be told when someone requests their salary, and removed the employee's right to get an attorney general opinion first."
+    },
+    {
+     "record_id": "cd7cfb0f-c7b5-461d-8008-75571b3eef51",
+     "research_area_slug": "data_privacy",
+     "stance": "against",
+     "found": "Act 658 of 2021 removed the rule that a public employee be told when someone requests their salary, and removed the employee's right to get an attorney general opinion first."
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "1e5a3d5e-9ed0-4e69-ba25-2d3a95e3a9ae",
+     "reason": "This is a sports eligibility rule; no allowed area fits it cleanly.",
+     "found": "Act 475 imposes a 365-day varsity ban after a transfer and moves sign-up deadlines earlier for home-schooled students."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "3ee1e9fa-d02f-4235-a6b5-eb99ecdd2a18",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "61564fc6-e9ce-4629-846d-61776a63d0ca",
+     "reason": "A no vote on a savings deposit, with no stated reason.",
+     "found": "The vote was on raising Arizona's rainy-day fund by 10 percent."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "4034ada6-2570-450e-b409-f660641bc12b",
+   "labels": [
+    {
+     "record_id": "9faf732b-7031-4d68-94aa-88decbcf98c2",
+     "research_area_slug": "public_education_quality",
+     "stance": "against",
+     "found": "The 2015 law scrapped the Kansas school funding formula and replaced it with fixed block grants that held district funding flat."
+    },
+    {
+     "record_id": "9faf732b-7031-4d68-94aa-88decbcf98c2",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "for",
+     "found": "The 2015 law scrapped the Kansas school funding formula and replaced it with fixed block grants that held district funding flat."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  }
+ ]
+}

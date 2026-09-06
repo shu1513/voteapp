@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "6943d368-610d-47b3-909a-5876a9aa19a0",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "4db5827f-bbcf-4bb0-abf5-b3b95ba8b242",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "1a31dc03-e347-4052-8c81-e74b1e8a901b",
+   "research_area_slug": "public_infrastructure",
+   "stance": "against"
+  },
+  {
+   "record_id": "1a31dc03-e347-4052-8c81-e74b1e8a901b",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  }
+ ]
+}

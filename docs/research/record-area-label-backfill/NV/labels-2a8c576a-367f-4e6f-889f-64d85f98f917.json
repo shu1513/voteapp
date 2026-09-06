@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "a0ab4ed4-a63e-4e52-9a72-0510ea9e653b",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "a0ab4ed4-a63e-4e52-9a72-0510ea9e653b",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "7cf35c95-0ac1-4c38-8a3b-3498b0186640",
+   "research_area_slug": "gun_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "7cf35c95-0ac1-4c38-8a3b-3498b0186640",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "a895f4e8-9bb8-45d6-be9a-fe739c01e610",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "e3ca885f-ff0a-4df5-addb-c642c2150938",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "5af8fa86-135c-4843-addf-ac93fcb5a103",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "cf720acc-3cb4-4441-bfd3-eb8eb1c6b873",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

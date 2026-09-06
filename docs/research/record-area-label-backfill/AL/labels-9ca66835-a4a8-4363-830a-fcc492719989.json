@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "c6318c3b-2c47-42c4-ae27-b8d4102cf116",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "b9a80339-bfd6-4756-b738-906ab9927f51",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "46e7f9f6-e487-4ea5-aca4-f4cf160bcd42",
+   "research_area_slug": "anti_corruption",
+   "stance": "against"
+  },
+  {
+   "record_id": "9de10beb-81a7-4946-bd5f-02c8d5771d17",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "17ba89d7-ea69-4d09-bd90-ee0e539732b9",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "0fc81b8a-9cd7-425f-94ea-9a5f467b2e31",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "43a07fa0-7340-44a1-9e0b-9038b4840eb1",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "4c916c8a-fae9-4d01-9d96-021f73eb56e4",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

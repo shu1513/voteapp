@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "7e681928-3ca6-4ab9-b976-675f9cba47d1",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "e87ea65c-d9ba-4e73-939c-f94eb4df735f",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "e87ea65c-d9ba-4e73-939c-f94eb4df735f",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

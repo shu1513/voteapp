@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "1de4fdad-f4d6-408f-a0a8-1ec9208c0b64",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "890f85e3-328a-48b9-8659-ea2b7b9c968d",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "890f85e3-328a-48b9-8659-ea2b7b9c968d",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "c597d4bc-fc80-44b4-b63d-9dc69ec06ff8",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "against"
+  }
+ ]
+}

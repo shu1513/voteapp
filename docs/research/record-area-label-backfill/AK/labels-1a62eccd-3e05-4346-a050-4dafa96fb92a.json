@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "a1ddd84f-f29f-4a55-b267-610ad31c01db",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "88ecc363-ae1a-4521-829b-af5ef93704d8",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "70bb4962-adbb-4df7-a00f-0d95fb268359",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "d6dd7c54-2c4c-493f-85e3-9fb7ccd9aae3",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "1d97dc0a-98cd-41fa-aa63-70dc9c7f5d8a",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  }
+ ]
+}

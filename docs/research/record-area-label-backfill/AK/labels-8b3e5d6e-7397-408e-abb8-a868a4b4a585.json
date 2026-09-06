@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "8e1682da-876e-433b-9b4d-3098733a949b",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  },
+  {
+   "record_id": "7c880de7-8e7b-4e54-abcc-136094f8f1ab",
+   "research_area_slug": "personal_income_tax_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "5d92a643-8d0d-49e4-bdc2-30d249d5a850",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  },
+  {
+   "record_id": "5d92a643-8d0d-49e4-bdc2-30d249d5a850",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "c3cde0d3-066a-42be-b56c-3ca0864467d5",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

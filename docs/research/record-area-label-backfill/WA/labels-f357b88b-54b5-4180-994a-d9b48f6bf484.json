@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "b37b4922-1dfe-479e-bc27-8762768a258a",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "8b0ed339-fe27-465a-9d76-179b24f5f1ed",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "670403a9-1b9a-4f08-be8f-76ab20490c4b",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "670403a9-1b9a-4f08-be8f-76ab20490c4b",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "670403a9-1b9a-4f08-be8f-76ab20490c4b",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "6542f987-5289-4f67-a616-0bd4956491f3",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "6542f987-5289-4f67-a616-0bd4956491f3",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "97e40e58-9a27-4819-bf68-8489a020aec5",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  }
+ ]
+}

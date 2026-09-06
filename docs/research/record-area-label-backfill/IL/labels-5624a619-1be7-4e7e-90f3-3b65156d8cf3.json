@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "70ba036f-a969-432b-8936-20f50b80ed54",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "70ba036f-a969-432b-8936-20f50b80ed54",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "8808ecee-cb5e-4294-94d4-66c82a883318",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "8808ecee-cb5e-4294-94d4-66c82a883318",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "6829540e-a5e1-409f-bd29-e3ec45b1a419",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

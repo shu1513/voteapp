@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "fea6b853-8385-48ce-912a-fcb21eb52e0f",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "fea6b853-8385-48ce-912a-fcb21eb52e0f",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "f83a6be6-0b58-40e2-bddc-ef799a3af823",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "f83a6be6-0b58-40e2-bddc-ef799a3af823",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

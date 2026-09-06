@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "6b203bf2-b37d-42d0-97a5-1507d3a58649",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "20f3ccc8-4341-473e-a6d4-e5f05e3be35b",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "9eda7463-0519-473f-bfe2-13aa77f50850",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "against"
+  }
+ ]
+}

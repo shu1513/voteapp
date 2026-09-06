@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "b273f56b-45f8-4f5b-89bf-60a6baa4c645",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  },
+  {
+   "record_id": "79bc2849-dd11-4f9f-86bb-eea14d7cd7e2",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "045c8514-7b74-49ef-b4dd-2ff94010d242",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "040324be-2916-4c08-aeeb-66a3451f5b11",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}
