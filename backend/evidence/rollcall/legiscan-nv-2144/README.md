@@ -144,7 +144,14 @@ the bill never became law and describes it with "would have".
 | batch-04 | vetoed | 9 | 18 | 364 |
 | batch-05 | vetoed, one chamber only, and one failed vote | 9 | 16 | 308 |
 | batch-06 | vetoed, and two that died between the chambers | 10 | 17 | 332 |
-| **total** | | **56** | **90** | **1,750** |
+| batch-07 | vetoed, and one that died between the chambers | 9 | 17 | 336 |
+| batch-08 | vetoed, and two that died between the chambers | 8 | 13 | 255 |
+| batch-09 | vetoed, and one that died in committee | 6 | 11 | 230 |
+| **total** | | **79** | **131** | **2,571** |
+
+**Nevada is finished.** All 104 divided-and-enacted rolls and all 187 divided non-enacted
+rolls carry a disposition. The full accounting is in
+[`README-RUN-SUMMARY.md`](README-RUN-SUMMARY.md).
 
 One hand-written duplicate was retired during the batch-04 sweep, and a wording defect in
 batches 01 to 03 — 645 records whose closing clause began with a lowercase word — was
