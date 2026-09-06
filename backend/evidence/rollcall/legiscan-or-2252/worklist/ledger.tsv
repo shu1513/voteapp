@@ -1,23 +1,23 @@
 bill	disposition	reason	house_roll	senate_roll	title
-HB4013	candidate		1627973	1644355	Relating to labor standards.
-HB4016	candidate		1652384	1656067	Relating to tax compliance; and prescribing an effective date.
+HB4013	batch-05	judged and imported	1627973	1644355	Relating to labor standards.
+HB4016	batch-05	judged and imported	1652384	1656067	Relating to tax compliance; and prescribing an effective date.
 HB4018	candidate		1654731	1655568	Relating to elections; and declaring an emergency.
 HB4027	candidate		1647837	1652882	Relating to the Bureau of Labor and Industries; and prescribing an effective date.
 HB4031	candidate		1632386	1644327	Relating to the siting of renewable energy facilities; and prescribing an effective date.
 HB4036	batch-01	judged and imported	1652571	1656025	Relating to affordable housing; and declaring an emergency.
 HB4060	batch-04	judged and imported		1651434	Relating to fluorescent lamps; and declaring an emergency.
 HB4066	candidate		1630289		Relating to education; and declaring an emergency.
-HB4069	candidate		1635782		Relating to the safety of behavioral health workers; and prescribing an effective date.
+HB4069	batch-05	judged and imported	1635782		Relating to the safety of behavioral health workers; and prescribing an effective date.
 HB4075	batch-03	judged and imported	1655393	1656533	Relating to hospital finance; and declaring an emergency.
 HB4076	candidate		1652848		Relating to energy; and prescribing an effective date.
 HB4079	batch-02	judged and imported	1635482	1649817	Relating to policies for when federal immigration authorities enter public education property; and prescribing an effective date.
 HB4084	candidate			1656161	Relating to economic development; and prescribing an effective date.
 HB4088	batch-01	judged and imported	1634476	1655033	Relating to health; and declaring an emergency.
-HB4089	candidate		1647982		Relating to criminal offenses related to work.
+HB4089	batch-05	judged and imported	1647982		Relating to criminal offenses related to work.
 HB4111	batch-01	judged and imported	1639289	1655156	Relating to immigration-related practices; and prescribing an effective date.
 HB4114	batch-01	judged and imported		1655695	Relating to law enforcement operations; and declaring an emergency.
 HB4115	batch-03	judged and imported		1652969	Relating to health care providers; and prescribing an effective date.
-HB4116	candidate		1635842		Relating to consumer finance loans; and prescribing an effective date.
+HB4116	batch-05	judged and imported	1635842		Relating to consumer finance loans; and prescribing an effective date.
 HB4124	candidate			1653923	Relating to the state post-secondary education system; and declaring an emergency.
 HB4127	batch-01	judged and imported	1652703	1656104	Relating to Medicaid payments to reproductive health care providers; and declaring an emergency.
 HB4128	batch-01	judged and imported	1653050		Relating to sale of single-family residences.
@@ -35,7 +35,7 @@ HB5204	excluded:appropriations	budget bill: makes budget changes for the current
 SB1501	candidate		1656532	1653188	Relating to the Moda Center; and declaring an emergency.
 SB1507	candidate		1645381	1634601	Relating to revenue; and prescribing an effective date.
 SB1512	candidate		1645204		Relating to workforce development.
-SB1515	candidate		1654867		Relating to wrongful convictions; and declaring an emergency.
+SB1515	batch-05	judged and imported	1654867		Relating to wrongful convictions; and declaring an emergency.
 SB1517	drop:version	The divided Senate roll (16-13, 2026-02-24) was on the A-Engrossed text. The House amended it to B-Engrossed and passed it 55-2, and the Senate concurred 29-0. The law is the B-Engrossed text and neither chamber divided on it.			
 SB1521	drop:filter-5	Lets Portland-area cities require affordable units in new multiunit housing only if they pay the developer an offset worth at least the expected loss in value. Under housing_affordability the whole dispute — whether an inclusionary requirement produces affordable homes or suppresses building — sits inside the area, and the Act does both things at once: it authorizes the requirement and constrains it. A reader cannot be told honestly what a yes vote was for. The AZ SB 1611 precedent: where the trade is the dispute itself, drop.	1653763	1640098	Relating to local requirements to develop affordable housing.
 SB1523	batch-04	judged and imported		1635459	Relating to electronic access to residential tenancies; and prescribing an effective date.
