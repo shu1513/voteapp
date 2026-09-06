@@ -1,0 +1,238 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1551754,
+   "measure_id": "AB 155",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 155, which would have made the number of students per teacher, and per specialist such as a school counselor, something school districts must negotiate with their unions rather than set alone. Where a union contract set a ratio, the district would no longer have had to weigh the State Board of Education's recommended ratios. It would have applied only to contracts signed from July 2025 onward. The Nevada Assembly passed it 26-16, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 155, which would have made the number of students per teacher, and per specialist such as a school counselor, something school districts must negotiate with their unions rather than set alone. Where a union contract set a ratio, the district would no longer have had to weigh the State Board of Education's recommended ratios. It would have applied only to contracts signed from July 2025 onward. The Nevada Assembly passed it 26-16, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1577938,
+   "measure_id": "AB 155",
+   "vote_date": "2025-05-23",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 155, which would have made the number of students per teacher, and per specialist such as a school counselor, something school districts must negotiate with their unions rather than set alone. Where a union contract set a ratio, the district would no longer have had to weigh the State Board of Education's recommended ratios. It would have applied only to contracts signed from July 2025 onward. The Nevada Senate passed it 16-4, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 155, which would have made the number of students per teacher, and per specialist such as a school counselor, something school districts must negotiate with their unions rather than set alone. Where a union contract set a ratio, the district would no longer have had to weigh the State Board of Education's recommended ratios. It would have applied only to contracts signed from July 2025 onward. The Nevada Senate passed it 16-4, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1554516,
+   "measure_id": "AB 434",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 434, which would have made it unlawful for an employer to punish or threaten a worker who refuses to attend a meeting held to push the employer's religious or political opinions. A worker could sue for lost wages, damages and legal costs. The version the Assembly voted covered any meeting held for that purpose, with exceptions only for religious employers. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 434, which would have made it unlawful for an employer to punish or threaten a worker who refuses to attend a meeting held to push the employer's religious or political opinions. A worker could sue for lost wages, damages and legal costs. The version the Assembly voted covered any meeting held for that purpose, with exceptions only for religious employers. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1576604,
+   "measure_id": "AB 434",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 434, which would have made it unlawful for an employer to punish or threaten a worker who refuses to attend a meeting held to push the employer's religious or political opinions. A worker could sue for lost wages, damages and legal costs. The version the Senate voted narrowed this to meetings whose primary purpose was that, and let an employer still require managers and supervisors to attend. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 434, which would have made it unlawful for an employer to punish or threaten a worker who refuses to attend a meeting held to push the employer's religious or political opinions. A worker could sue for lost wages, damages and legal costs. The version the Senate voted narrowed this to meetings whose primary purpose was that, and let an employer still require managers and supervisors to attend. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1576208,
+   "measure_id": "SB 301",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 301, which would have let state peace officers in categories one, two and three who work outside the regular civil service system join the state employee collective bargaining system. Collective bargaining means negotiating pay and conditions as a group. The existing exclusions, such as for managers and short-term temporary staff, would have stayed in place. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 301, which would have let state peace officers in categories one, two and three who work outside the regular civil service system join the state employee collective bargaining system. Collective bargaining means negotiating pay and conditions as a group. The existing exclusions, such as for managers and short-term temporary staff, would have stayed in place. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1550210,
+   "measure_id": "SB 301",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 301, which would have let state peace officers in categories one, two and three who work outside the regular civil service system join the state employee collective bargaining system. Collective bargaining means negotiating pay and conditions as a group. The existing exclusions, such as for managers and short-term temporary staff, would have stayed in place. The Nevada Senate passed it 15-6, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 301, which would have let state peace officers in categories one, two and three who work outside the regular civil service system join the state employee collective bargaining system. Collective bargaining means negotiating pay and conditions as a group. The existing exclusions, such as for managers and short-term temporary staff, would have stayed in place. The Nevada Senate passed it 15-6, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1556367,
+   "measure_id": "SB 410",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 410, which would have written into law that the insurance benefits local governments must negotiate with their unions include insurance for an employee's dependents. It changed nothing else about what must be bargained. It would not have applied to any union contract signed before October 2025. The Nevada Senate passed it 15-6, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 410, which would have written into law that the insurance benefits local governments must negotiate with their unions include insurance for an employee's dependents. It changed nothing else about what must be bargained. It would not have applied to any union contract signed before October 2025. The Nevada Senate passed it 15-6, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1578362,
+   "measure_id": "SB 172",
+   "vote_date": "2025-05-26",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 172, the Agricultural Workers' Bill of Rights. It would have given farm workers a meal break after five hours rather than eight, and capped how much an employer may count lodging and meals as wages. It would also have guaranteed visitors and access to doctors, teachers, lawyers and clergy at employer housing. The Nevada Senate passed it 13-7, but the Assembly never voted on final passage, so it never became law.",
+   "nay_description": "Voted against Senate Bill 172, the Agricultural Workers' Bill of Rights. It would have given farm workers a meal break after five hours rather than eight, and capped how much an employer may count lodging and meals as wages. It would also have guaranteed visitors and access to doctors, teachers, lawyers and clergy at employer housing. The Nevada Senate passed it 13-7, but the Assembly never voted on final passage, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1554237,
+   "measure_id": "AB 209",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 209, which would have given a person working in prostitution immunity from being prosecuted for prostitution or solicitation when the evidence came out of their own call for help. The version the Assembly voted covered a call to a 911 service or medical provider for assistance of any kind. It covered only those two offenses and nobody else at the scene. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 209, which would have given a person working in prostitution immunity from being prosecuted for prostitution or solicitation when the evidence came out of their own call for help. The version the Assembly voted covered a call to a 911 service or medical provider for assistance of any kind. It covered only those two offenses and nobody else at the scene. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1576530,
+   "measure_id": "AB 209",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 209, which would have given a person working in prostitution immunity from being prosecuted for prostitution or solicitation when the evidence came out of their own call for help. The version the Senate voted narrowed this to a call seeking medical assistance. It covered only those two offenses and nobody else at the scene. The Nevada Senate passed it 14-7, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 209, which would have given a person working in prostitution immunity from being prosecuted for prostitution or solicitation when the evidence came out of their own call for help. The version the Senate voted narrowed this to a call seeking medical assistance. It covered only those two offenses and nobody else at the scene. The Nevada Senate passed it 14-7, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1554018,
+   "measure_id": "AB 488",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 488, which would have widened the right of a human trafficking victim to have a conviction erased and the record sealed. Existing law covers a short list of offenses and excludes violent crimes; the bill would have covered any state crime or local ordinance violation. It also removed the filing fee, allowed one petition instead of several, and applied to convictions from any year. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 488, which would have widened the right of a human trafficking victim to have a conviction erased and the record sealed. Existing law covers a short list of offenses and excludes violent crimes; the bill would have covered any state crime or local ordinance violation. It also removed the filing fee, allowed one petition instead of several, and applied to convictions from any year. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1576931,
+   "measure_id": "AB 488",
+   "vote_date": "2025-05-23",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 488, which would have widened the right of a human trafficking victim to have a conviction erased and the record sealed. Existing law covers a short list of offenses and excludes violent crimes; the bill would have covered any state crime or local ordinance violation. It also removed the filing fee, allowed one petition instead of several, and applied to convictions from any year. The Nevada Senate passed it 14-7, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 488, which would have widened the right of a human trafficking victim to have a conviction erased and the record sealed. Existing law covers a short list of offenses and excludes violent crimes; the bill would have covered any state crime or local ordinance violation. It also removed the filing fee, allowed one petition instead of several, and applied to convictions from any year. The Nevada Senate passed it 14-7, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1581090,
+   "measure_id": "AB 91",
+   "vote_date": "2025-05-29",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 91, which would have let the parole board give a second look to people serving time for the most serious felonies, once they had served at least ten years of their minimum term and did not pose a significant risk. It would also have raised from 18 to 25 the age at which an offense counts for Nevada's existing youth parole rule. Nobody sentenced to death could apply. The Nevada Assembly passed it 27-15, but the Senate never voted on it, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 91, which would have let the parole board give a second look to people serving time for the most serious felonies, once they had served at least ten years of their minimum term and did not pose a significant risk. It would also have raised from 18 to 25 the age at which an offense counts for Nevada's existing youth parole rule. Nobody sentenced to death could apply. The Nevada Assembly passed it 27-15, but the Senate never voted on it, so it never became law."
+  }
+ ]
+}
