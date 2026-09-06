@@ -3,13 +3,13 @@ HB4013	batch-05	judged and imported	1627973	1644355	Relating to labor standards.
 HB4016	batch-05	judged and imported	1652384	1656067	Relating to tax compliance; and prescribing an effective date.
 HB4018	candidate		1654731	1655568	Relating to elections; and declaring an emergency.
 HB4027	candidate		1647837	1652882	Relating to the Bureau of Labor and Industries; and prescribing an effective date.
-HB4031	candidate		1632386	1644327	Relating to the siting of renewable energy facilities; and prescribing an effective date.
+HB4031	batch-06	judged and imported	1632386	1644327	Relating to the siting of renewable energy facilities; and prescribing an effective date.
 HB4036	batch-01	judged and imported	1652571	1656025	Relating to affordable housing; and declaring an emergency.
 HB4060	batch-04	judged and imported		1651434	Relating to fluorescent lamps; and declaring an emergency.
 HB4066	candidate		1630289		Relating to education; and declaring an emergency.
 HB4069	batch-05	judged and imported	1635782		Relating to the safety of behavioral health workers; and prescribing an effective date.
 HB4075	batch-03	judged and imported	1655393	1656533	Relating to hospital finance; and declaring an emergency.
-HB4076	candidate		1652848		Relating to energy; and prescribing an effective date.
+HB4076	batch-06	judged and imported	1652848		Relating to energy; and prescribing an effective date.
 HB4079	batch-02	judged and imported	1635482	1649817	Relating to policies for when federal immigration authorities enter public education property; and prescribing an effective date.
 HB4084	candidate			1656161	Relating to economic development; and prescribing an effective date.
 HB4088	batch-01	judged and imported	1634476	1655033	Relating to health; and declaring an emergency.
@@ -21,13 +21,13 @@ HB4116	batch-05	judged and imported	1635842		Relating to consumer finance loans;
 HB4124	candidate			1653923	Relating to the state post-secondary education system; and declaring an emergency.
 HB4127	batch-01	judged and imported	1652703	1656104	Relating to Medicaid payments to reproductive health care providers; and declaring an emergency.
 HB4128	batch-01	judged and imported	1653050		Relating to sale of single-family residences.
-HB4134	candidate		1642734	1653215	Relating to funding for natural resource matters; prescribing an effective date; and providing for revenue raising that requires approval by a three-fifths majority.
+HB4134	batch-06	judged and imported	1642734	1653215	Relating to funding for natural resource matters; prescribing an effective date; and providing for revenue raising that requires approval by a three-fifths majority.
 HB4138	batch-02	judged and imported	1656408	1655626	Relating to limitations on the actions of public employees; and declaring an emergency.
 HB4142	batch-03	judged and imported		1655384	Relating to marijuana for medical use; and prescribing an effective date.
 HB4144	batch-04	judged and imported		1655714	Relating to batteries.
 HB4145	drop:version	The divided House roll (33-19, 2026-02-25) was on the A-Engrossed text. The Senate then amended it to B-Engrossed and passed it 30-0, and the House concurred 50-3. The law is the B-Engrossed text and neither chamber divided on it, so the 33-19 vote was on a text that never became law.			
-HB4148	candidate		1644831	1655224	Relating to local taxation; and prescribing an effective date.
-HB4153	candidate		1652973	1656206	Relating to farm stores.
+HB4148	drop:filter-5	Changes the split of local lodging tax revenue from 70 percent tourism and 30 percent local services to 50/50, and lets tourism money fund resiliency grants for restaurants and lodging. This is local budget flexibility, and the nays crossed both caucuses in both chambers. No area carries a defensible for or against.	1644831	1655224	Relating to local taxation; and prescribing an effective date.
+HB4153	batch-06	judged and imported	1652973	1656206	Relating to farm stores.
 HB4159	candidate		1656432		Relating to the Oregon Government Ethics Commission.
 HB4179	candidate		1656433		Relating to entities created by the Oregon Health and Science University.
 HB5203	excluded:appropriations	fee ratification bill, named as such by its own staff summary	1656411	1656412	Relating to state financial administration; and declaring an emergency.
@@ -40,7 +40,7 @@ SB1517	drop:version	The divided Senate roll (16-13, 2026-02-24) was on the A-Eng
 SB1521	drop:filter-5	Lets Portland-area cities require affordable units in new multiunit housing only if they pay the developer an offset worth at least the expected loss in value. Under housing_affordability the whole dispute — whether an inclusionary requirement produces affordable homes or suppresses building — sits inside the area, and the Act does both things at once: it authorizes the requirement and constrains it. A reader cannot be told honestly what a yes vote was for. The AZ SB 1611 precedent: where the trade is the dispute itself, drop.	1653763	1640098	Relating to local requirements to develop affordable housing.
 SB1523	batch-04	judged and imported		1635459	Relating to electronic access to residential tenancies; and prescribing an effective date.
 SB1538	batch-02	judged and imported	1646425	1635096	Relating to conduct of public education; and prescribing an effective date.
-SB1565	candidate			1640168	Relating to snowmobiles; and prescribing an effective date.
+SB1565	drop:filter-5	Raises the two-year snowmobile registration fee from $10 to $30, and nothing else. No research area fits: it is a recreation user fee, not transport infrastructure that supports daily life, and the vote crossed both caucuses. Senate-only in any case, because the House roll is held.		1640168	Relating to snowmobiles; and prescribing an effective date.
 SB1568	batch-03	judged and imported		1655021	Relating to perinatal services; and declaring an emergency.
 SB1570	batch-02	judged and imported	1649883	1652570	Relating to protections in health care facilities; and prescribing an effective date.
 SB1575	batch-03	judged and imported		1643436	Relating to hospice licensure; and declaring an emergency.
