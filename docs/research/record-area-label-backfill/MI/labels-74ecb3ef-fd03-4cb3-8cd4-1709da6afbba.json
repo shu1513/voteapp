@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "b38736fc-c958-4627-85bc-4acaa4294fe5",
+   "research_area_slug": "peaceful_foreign_policy",
+   "stance": "against"
+  },
+  {
+   "record_id": "fa5e2efd-ae13-4f75-bee4-3319743a94a0",
+   "research_area_slug": "national_defense",
+   "stance": "for"
+  },
+  {
+   "record_id": "361cdbe0-fc70-4db6-9e53-8827bc3171a9",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

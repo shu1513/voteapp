@@ -1,0 +1,49 @@
+{
+ "labels": [
+  {
+   "record_id": "913afd04-ecc4-4a92-a588-3b82bc306817",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "913afd04-ecc4-4a92-a588-3b82bc306817",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "8781e362-efae-4224-b35d-71298bd851db",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "2521c664-dc11-46ab-a4b8-d0cb95eccb0d",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "8b2365e9-29cd-4c49-9e8d-59428a606808",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "a4ca95af-e20f-46fb-817a-2e8ed7ae89c6",
+   "research_area_slug": "government_efficiency",
+   "stance": "against"
+  },
+  {
+   "record_id": "a62ea018-3cc5-4c73-9e90-1b94412fa56f",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "c84cfa50-2109-4aca-baa7-d60b7b8f1e6e",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "b1934d9c-aed7-48d5-8387-a78fdc0bbdea",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  }
+ ]
+}

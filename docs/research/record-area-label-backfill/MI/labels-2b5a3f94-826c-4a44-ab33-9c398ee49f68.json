@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "e8fab60b-ed66-45ab-83ff-395bf4863d34",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "b12e85b7-18ad-4d34-bb65-0bcab82fcbba",
+   "research_area_slug": "public_infrastructure",
+   "stance": "against"
+  },
+  {
+   "record_id": "b12e85b7-18ad-4d34-bb65-0bcab82fcbba",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "5561b8d0-5964-4260-9694-2cec35b568ea",
+   "research_area_slug": "womens_reproductive_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "b7648537-8abc-4237-b383-e5344c27b639",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "3ca3341f-7460-4b99-816e-3281a6bc146a",
+   "research_area_slug": "housing_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "3ca3341f-7460-4b99-816e-3281a6bc146a",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

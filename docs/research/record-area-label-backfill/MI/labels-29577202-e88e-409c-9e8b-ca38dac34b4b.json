@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "d331de7c-0819-4aca-a7fe-b8fe0b0170d7",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "8e42e5a2-b22b-4b2e-a8e0-8324960d6b46",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "45ef7127-401f-43eb-ac5c-809db985683b",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "d2c3f04e-9350-424e-b7db-158833591201",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "8bac3b22-7403-4760-b898-bd319b8d9a15",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "d9ab0295-63b5-4604-bcf4-466c33b72c03",
+   "research_area_slug": "data_privacy",
+   "stance": "against"
+  },
+  {
+   "record_id": "d85c80d7-57ef-42e6-9a05-557cb6ebf373",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "c9958e5d-d032-4117-b69b-137cd2b476cd",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "925fee9e-0970-4ac5-9cc7-be997234edfd",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

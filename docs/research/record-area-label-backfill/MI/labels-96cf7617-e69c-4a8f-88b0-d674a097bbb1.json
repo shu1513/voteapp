@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "0745941a-0f85-4955-864d-dc081fda49f3",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "b6948575-78ab-4f02-95cc-2f7fab118f2c",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  },
+  {
+   "record_id": "e80ea892-d1b4-48f6-b300-50a9e41a5758",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "against"
+  }
+ ]
+}
