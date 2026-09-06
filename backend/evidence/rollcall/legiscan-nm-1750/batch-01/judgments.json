@@ -1,0 +1,61 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1750",
+   "roll": 967932,
+   "measure_id": "HB 5",
+   "vote_date": "2020-06-19",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 5, which set up the New Mexico Civil Rights Commission. The commission had to study whether a person should be able to sue in state court when the state constitution is broken. It also looked at ending qualified immunity, the rule that shields officials from such suits. It had to report by November 15, 2020. The New Mexico House passed it 53-17. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 5, which set up the New Mexico Civil Rights Commission. The commission had to study whether a person should be able to sue in state court when the state constitution is broken. It also looked at ending qualified immunity, the rule that shields officials from such suits. It had to report by November 15, 2020. The New Mexico House passed it 53-17. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1750",
+   "roll": 968153,
+   "measure_id": "SB 8",
+   "vote_date": "2020-06-22",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 8, which makes New Mexico police wear body cameras when they deal with the public. Each agency must set rules for when the camera runs and how long the video is kept. An officer who leaves the camera off or erases video early faces consequences. Destroying that video also becomes grounds for a lawsuit. The New Mexico House passed it 44-26, and it became law.",
+   "nay_description": "Voted against Senate Bill 8, which makes New Mexico police wear body cameras when they deal with the public. Each agency must set rules for when the camera runs and how long the video is kept. An officer who leaves the camera off or erases video early faces consequences. Destroying that video also becomes grounds for a lawsuit. The New Mexico House passed it 44-26, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "1750",
+   "roll": 967952,
+   "measure_id": "SB 4",
+   "vote_date": "2020-06-20",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 4, which set special rules for New Mexico's 2020 general election during the pandemic. County clerks could mail a ballot application to every voter without being asked. Tribal and pueblo land could run all-mail voting. A task force of lawmakers could let the secretary of state take emergency steps, and the rules ended after that election. The New Mexico House passed it 44-26, and it became law.",
+   "nay_description": "Voted against Senate Bill 4, which set special rules for New Mexico's 2020 general election during the pandemic. County clerks could mail a ballot application to every voter without being asked. Tribal and pueblo land could run all-mail voting. A task force of lawmakers could let the secretary of state take emergency steps, and the rules ended after that election. The New Mexico House passed it 44-26, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    967936
+   ]
+  }
+ ]
+}

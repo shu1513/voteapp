@@ -1,0 +1,384 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1257860,
+   "measure_id": "HB 7",
+   "vote_date": "2023-02-21",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 7, the Reproductive and Gender-Affirming Health Care Freedom Act. It stops state and local governments in New Mexico from blocking someone's access to reproductive health care, such as abortion, or to gender-affirming care. Cities and counties can no longer pass local rules that get in the way, and the law can be enforced in court. The New Mexico House passed it 38-31. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 7, the Reproductive and Gender-Affirming Health Care Freedom Act. It stops state and local governments in New Mexico from blocking someone's access to reproductive health care, such as abortion, or to gender-affirming care. Cities and counties can no longer pass local rules that get in the way, and the law can be enforced in court. The New Mexico House passed it 38-31. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1247617,
+   "measure_id": "HB 9",
+   "vote_date": "2023-02-09",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 9, which makes it a crime to leave a gun where a child can reach it. Storing a firearm carelessly so a minor can get to it is a misdemeanor. If the child then hurts or kills someone with it, the crime becomes a fourth degree felony. A minor means anyone under 18, and the bill lists exceptions. The New Mexico House passed it 37-32. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 9, which makes it a crime to leave a gun where a child can reach it. Storing a firearm carelessly so a minor can get to it is a misdemeanor. If the child then hurts or kills someone with it, the crime becomes a fourth degree felony. A minor means anyone under 18, and the bill lists exceptions. The New Mexico House passed it 37-32. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1275811,
+   "measure_id": "SB 180",
+   "vote_date": "2023-03-14",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 180, a large rewrite of New Mexico's election law. It starts a program to guard elections, makes poll watchers and challengers take training, and requires vote centers where any voter in the county can cast a ballot. It also changes the rules for mailed ballots and hides the home address of a public official. The New Mexico House passed it 44-25, and it became law.",
+   "nay_description": "Voted against Senate Bill 180, a large rewrite of New Mexico's election law. It starts a program to guard elections, makes poll watchers and challengers take training, and requires vote centers where any voter in the county can cast a ballot. It also changes the rules for mailed ballots and hides the home address of a public official. The New Mexico House passed it 44-25, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1273524,
+   "measure_id": "HB 547",
+   "vote_date": "2023-03-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 547, the 2023 tax package. It reworked the income tax brackets, cut the gross receipts tax rate, and raised the child income tax credit for lower and middle income families. It also capped the deduction for capital gains, set one flat corporate rate, and raised taxes on liquor and cigars. The New Mexico House passed it 50-18, and it became law.",
+   "nay_description": "Voted against House Bill 547, the 2023 tax package. It reworked the income tax brackets, cut the gross receipts tax rate, and raised the child income tax credit for lower and middle income families. It also capped the deduction for capital gains, set one flat corporate rate, and raised taxes on liquor and cigars. The New Mexico House passed it 50-18, and it became law.",
+   "labels": [
+    {
+     "slug": "personal_income_tax_reduction",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1278310,
+   "measure_id": "SB 13",
+   "vote_date": "2023-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 13, which protects people who take part in reproductive or gender-affirming health care. If the care is legal in New Mexico, a patient, a doctor, or someone who helps them cannot be punished for it. The shield covers lawsuits, criminal charges, and the loss of a license. The New Mexico House passed it 38-30, and it became law.",
+   "nay_description": "Voted against Senate Bill 13, which protects people who take part in reproductive or gender-affirming health care. If the care is legal in New Mexico, a patient, a doctor, or someone who helps them cannot be punished for it. The shield covers lawsuits, criminal charges, and the loss of a license. The New Mexico House passed it 38-30, and it became law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1275934,
+   "measure_id": "SB 72",
+   "vote_date": "2023-03-14",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 72, which creates a wildlife corridors fund in the state treasury. The transportation department runs the fund and spends it on the road crossings and other work called for by the Wildlife Corridors Act, so animals can cross highways safely. The department must report on that work each year. The New Mexico House passed it 49-20, and it became law.",
+   "nay_description": "Voted against Senate Bill 72, which creates a wildlife corridors fund in the state treasury. The transportation department runs the fund and spends it on the road crossings and other work called for by the Wildlife Corridors Act, so animals can cross highways safely. The department must report on that work each year. The New Mexico House passed it 49-20, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1257723,
+   "measure_id": "HB 4",
+   "vote_date": "2023-02-21",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4, the voting rights package. It sets up automatic voter registration at the driver's license office, creates a list for voters who want a mailed ballot every election, and restores the vote to people leaving prison. It also adds the Native American Voting Rights Act, which protects polling place access on tribal land. The New Mexico House passed it 41-26. The Senate changed it, the House agreed, and it became law.",
+   "nay_description": "Voted against House Bill 4, the voting rights package. It sets up automatic voter registration at the driver's license office, creates a list for voters who want a mailed ballot every election, and restores the vote to people leaving prison. It also adds the Native American Voting Rights Act, which protects polling place access on tribal land. The New Mexico House passed it 41-26. The Senate changed it, the House agreed, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1269773,
+   "measure_id": "SB 1",
+   "vote_date": "2023-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 1, the Regional Water System Resiliency Act. It lets local governments band together and form a regional authority to run their water systems. Such an authority can sell bonds and take over the assets, debts and water rights of the systems that join it. The New Mexico House passed it 46-22, and it became law.",
+   "nay_description": "Voted against Senate Bill 1, the Regional Water System Resiliency Act. It lets local governments band together and form a regional authority to run their water systems. Such an authority can sell bonds and take over the assets, debts and water rights of the systems that join it. The New Mexico House passed it 46-22, and it became law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1268315,
+   "measure_id": "HB 207",
+   "vote_date": "2023-03-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 207, which widens New Mexico's Human Rights Act. The act now covers what the state, local governments and public contractors do, not only private employers and businesses. It also adds gender to the list of protected classes. The New Mexico House passed it 47-20, and it became law.",
+   "nay_description": "Voted against House Bill 207, which widens New Mexico's Human Rights Act. The act now covers what the state, local governments and public contractors do, not only private employers and businesses. It also adds gender to the list of protected classes. The New Mexico House passed it 47-20, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1250857,
+   "measure_id": "HB 31",
+   "vote_date": "2023-02-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 31, which drops the rule that a person changing their legal name must publish a notice in a newspaper. A resident 14 or older still asks a district court for the change, but no longer has to make the request public. The publication law dated from 1889 and is repealed. The New Mexico House passed it 43-24, and it became law.",
+   "nay_description": "Voted against House Bill 31, which drops the rule that a person changing their legal name must publish a notice in a newspaper. A resident 14 or older still asks a district court for the change, but no longer has to make the request public. The publication law dated from 1889 and is repealed. The New Mexico House passed it 43-24, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1276784,
+   "measure_id": "SB 397",
+   "vote_date": "2023-03-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 397, which puts school-based health centers into state law. The health department pays for them, regulates them, and writes the rules they follow. The centers give students health care at school. The New Mexico House passed it 40-25, and it became law.",
+   "nay_description": "Voted against Senate Bill 397, which puts school-based health centers into state law. The health department pays for them, regulates them, and writes the rules they follow. The centers give students health care at school. The New Mexico House passed it 40-25, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1278309,
+   "measure_id": "SB 181",
+   "vote_date": "2023-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 181, which aims to prevent opioid overdose deaths. A prescriber who writes at least a five-day supply of an opioid painkiller must also prescribe naloxone, the drug that reverses an overdose. The naloxone comes with written directions and a warning to call 911 right after giving it. The New Mexico House passed it 46-20, and it became law.",
+   "nay_description": "Voted against Senate Bill 181, which aims to prevent opioid overdose deaths. A prescriber who writes at least a five-day supply of an opioid painkiller must also prescribe naloxone, the drug that reverses an overdose. The naloxone comes with written directions and a warning to call 911 right after giving it. The New Mexico House passed it 46-20, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1273523,
+   "measure_id": "SB 64",
+   "vote_date": "2023-03-13",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 64, which bars New Mexico from sentencing a child to life in prison without parole. A person convicted for something done as a child gets a parole hearing after 15 years, after 20 years for one first degree murder, or after 25 years for two or more. The parole board interviews the inmate before it decides. The New Mexico House passed it 37-25, and it became law.",
+   "nay_description": "Voted against Senate Bill 64, which bars New Mexico from sentencing a child to life in prison without parole. A person convicted for something done as a child gets a parole hearing after 15 years, after 20 years for one first degree murder, or after 25 years for two or more. The parole board interviews the inmate before it decides. The New Mexico House passed it 37-25, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1252386,
+   "measure_id": "HB 169",
+   "vote_date": "2023-02-15",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 169, which lets people talk about ethics complaints they file against a state lawmaker. The old rule barred someone who filed a complaint from saying anything in public about the filing or the investigation. That gag is now gone. The New Mexico House passed it 39-28, and it became law.",
+   "nay_description": "Voted against House Bill 169, which lets people talk about ethics complaints they file against a state lawmaker. The old rule barred someone who filed a complaint from saying anything in public about the filing or the investigation. That gag is now gone. The New Mexico House passed it 39-28, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1278330,
+   "measure_id": "SB 273",
+   "vote_date": "2023-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 273, which requires health plans to treat mental health like other medical care. An insurer may not put tighter limits on mental health or substance use treatment than it puts on the rest of its coverage. Insurers have to show they follow the rule. The New Mexico House passed it 52-13, and it became law.",
+   "nay_description": "Voted against Senate Bill 273, which requires health plans to treat mental health like other medical care. An insurer may not put tighter limits on mental health or substance use treatment than it puts on the rest of its coverage. Insurers have to show they follow the rule. The New Mexico House passed it 52-13, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1273521,
+   "measure_id": "HB 481",
+   "vote_date": "2023-03-13",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 481, which changes what the state reading materials fund pays for. The fund now helps public schools buy elementary reading materials that match the science of reading, the research on how children learn to read. Schools apply to the education department for the money. The New Mexico House passed it 44-15, and it became law.",
+   "nay_description": "Voted against House Bill 481, which changes what the state reading materials fund pays for. The fund now helps public schools buy elementary reading materials that match the science of reading, the research on how children learn to read. Schools apply to the education department for the money. The New Mexico House passed it 44-15, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1268657,
+   "measure_id": "HB 139",
+   "vote_date": "2023-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 139, which cuts back on court fees and on jail for people who cannot pay. It repeals several fees, lets people work off fines and costs through community service, and shortens how long a person can be jailed for not paying. Judges still set payment plans. The New Mexico House passed it 42-18, and it became law.",
+   "nay_description": "Voted against House Bill 139, which cuts back on court fees and on jail for people who cannot pay. It repeals several fees, lets people work off fines and costs through community service, and shortens how long a person can be jailed for not paying. Judges still set payment plans. The New Mexico House passed it 42-18, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1269457,
+   "measure_id": "HB 134",
+   "vote_date": "2023-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 134, which requires free menstrual products in New Mexico public schools. Middle schools, junior highs and high schools must stock them in every women's and gender-neutral bathroom and in at least one men's bathroom. Students pay nothing. The New Mexico House passed it 42-20, and it became law.",
+   "nay_description": "Voted against House Bill 134, which requires free menstrual products in New Mexico public schools. Middle schools, junior highs and high schools must stock them in every women's and gender-neutral bathroom and in at least one men's bathroom. Students pay nothing. The New Mexico House passed it 42-20, and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1268677,
+   "measure_id": "HB 533",
+   "vote_date": "2023-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 533, which raises what school districts pay toward their employees' health insurance. A district or charter school must cover at least 80 percent of the premium for an employee earning under $50,000, 70 percent up to $60,000, and 60 percent above that. School staff pay less as a result. The New Mexico House passed it 44-16, and it became law.",
+   "nay_description": "Voted against House Bill 533, which raises what school districts pay toward their employees' health insurance. A district or charter school must cover at least 80 percent of the premium for an employee earning under $50,000, 70 percent up to $60,000, and 60 percent above that. School staff pay less as a result. The New Mexico House passed it 44-16, and it became law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "NM",
+   "chamber": "house",
+   "session": "2030",
+   "roll": 1278351,
+   "measure_id": "SB 280",
+   "vote_date": "2023-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 280, the Cybersecurity Act. It sets up a state office, led by a chief security officer, whose job is to guard New Mexico's computer systems and the data they hold. To keep the state's weak spots secret, some of that office's meetings and files are closed to the public. The New Mexico House passed it 43-15, and it became law.",
+   "nay_description": "Voted against Senate Bill 280, the Cybersecurity Act. It sets up a state office, led by a chief security officer, whose job is to guard New Mexico's computer systems and the data they hold. To keep the state's weak spots secret, some of that office's meetings and files are closed to the public. The New Mexico House passed it 43-15, and it became law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
