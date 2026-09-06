@@ -1,0 +1,52 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "TN",
+      "chamber": "house",
+      "session": "2161",
+      "roll": 1695420,
+      "measure_id": "HB 7002",
+      "vote_date": "2026-05-07",
+      "review_status": "approved",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ],
+      "yea_description": "Voted to pass House Bill 7002. House Bill 7002 dealt with when Tennessee may redraw its congressional districts. State law had barred the General Assembly from changing those districts between the federal counts that happen once every ten years. The act removes that bar, so lawmakers may redraw the congressional map at any time. The Tennessee House passed it 66-24, and it became law as Public Chapter 1.",
+      "nay_description": "Voted against House Bill 7002. House Bill 7002 dealt with when Tennessee may redraw its congressional districts. State law had barred the General Assembly from changing those districts between the federal counts that happen once every ten years. The act removes that bar, so lawmakers may redraw the congressional map at any time. The Tennessee House passed it 66-24, and it became law as Public Chapter 1."
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "senate",
+      "session": "2161",
+      "roll": 1695421,
+      "measure_id": "HB 7002",
+      "vote_date": "2026-05-07",
+      "review_status": "approved",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ],
+      "yea_description": "Voted to pass House Bill 7002. House Bill 7002 dealt with when Tennessee may redraw its congressional districts. State law had barred the General Assembly from changing those districts between the federal counts that happen once every ten years. The act removes that bar, so lawmakers may redraw the congressional map at any time. The Tennessee Senate passed it 22-8, and it became law as Public Chapter 1.",
+      "nay_description": "Voted against House Bill 7002. House Bill 7002 dealt with when Tennessee may redraw its congressional districts. State law had barred the General Assembly from changing those districts between the federal counts that happen once every ten years. The act removes that bar, so lawmakers may redraw the congressional map at any time. The Tennessee Senate passed it 22-8, and it became law as Public Chapter 1."
+    },
+    {
+      "jurisdiction": "TN",
+      "chamber": "house",
+      "session": "2161",
+      "roll": 1695538,
+      "measure_id": "HB 7003",
+      "vote_date": "2026-05-07",
+      "review_status": "approved",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ],
+      "yea_description": "Voted to pass House Bill 7003. House Bill 7003 redrew the lines of Tennessee's congressional districts. It replaced the boundaries the General Assembly had set earlier in 2026. The Tennessee House passed it 64-25, and it became law as Public Chapter 3.",
+      "nay_description": "Voted against House Bill 7003. House Bill 7003 redrew the lines of Tennessee's congressional districts. It replaced the boundaries the General Assembly had set earlier in 2026. The Tennessee House passed it 64-25, and it became law as Public Chapter 3."
+    }
+  ]
+}

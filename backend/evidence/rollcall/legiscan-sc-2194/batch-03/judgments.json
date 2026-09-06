@@ -1,0 +1,52 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "SC",
+      "chamber": "house",
+      "session": "2194",
+      "roll": 1697896,
+      "measure_id": "S 933",
+      "vote_date": "2026-05-13",
+      "review_status": "approved",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ],
+      "yea_description": "Voted to pass Senate Bill 933. Senate Bill 933 set what a South Carolina lawmaker is paid. Starting with the 128th General Assembly, a member gets $15,000 in legislative pay plus a $32,500 in-district allowance, or $47,500 together. That combined amount rises with inflation every two years, by no more than five percent. The South Carolina House passed it 59-48, and it became law as Act 200.",
+      "nay_description": "Voted against Senate Bill 933. Senate Bill 933 set what a South Carolina lawmaker is paid. Starting with the 128th General Assembly, a member gets $15,000 in legislative pay plus a $32,500 in-district allowance, or $47,500 together. That combined amount rises with inflation every two years, by no more than five percent. The South Carolina House passed it 59-48, and it became law as Act 200."
+    },
+    {
+      "jurisdiction": "SC",
+      "chamber": "house",
+      "session": "2194",
+      "roll": 1698173,
+      "measure_id": "S 508",
+      "vote_date": "2026-05-14",
+      "review_status": "approved",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ],
+      "yea_description": "Voted to adopt the conference report on Senate Bill 508. Senate Bill 508 widened the set of monuments and memorials that may not be moved or disturbed. Only the General Assembly may act on one, and only by joint resolution, with a few stated exceptions. A nonprofit group registered with the state may go to court to stop an action the law forbids. The South Carolina House adopted the report 79-28, and it became law as Act 224.",
+      "nay_description": "Voted against the conference report on Senate Bill 508. Senate Bill 508 widened the set of monuments and memorials that may not be moved or disturbed. Only the General Assembly may act on one, and only by joint resolution, with a few stated exceptions. A nonprofit group registered with the state may go to court to stop an action the law forbids. The South Carolina House adopted the report 79-28, and it became law as Act 224."
+    },
+    {
+      "jurisdiction": "SC",
+      "chamber": "house",
+      "session": "2194",
+      "roll": 1711985,
+      "measure_id": "H 3558",
+      "vote_date": "2026-06-25",
+      "review_status": "approved",
+      "labels": [
+        {
+          "slug": "general"
+        }
+      ],
+      "yea_description": "Voted to override the Governor's veto of House Bill 3558. House Bill 3558 set the rules for the commissioners South Carolina would send to an Article V convention. That is the process the U.S. Constitution provides for proposing amendments to it. The act defines the terms, and sets who may serve, how they are picked, the oath they take, and what they must do. The House voted 74-27 to override and the Senate followed 20-5, so the act became law as Act 247.",
+      "nay_description": "Voted against overriding the Governor's veto of House Bill 3558. House Bill 3558 set the rules for the commissioners South Carolina would send to an Article V convention. That is the process the U.S. Constitution provides for proposing amendments to it. The act defines the terms, and sets who may serve, how they are picked, the oath they take, and what they must do. The House voted 74-27 to override and the Senate followed 20-5, so the act became law as Act 247."
+    }
+  ]
+}

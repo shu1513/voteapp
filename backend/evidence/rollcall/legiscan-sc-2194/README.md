@@ -62,6 +62,23 @@ calibrated for South Carolina and was kept. The House minority holds 37 of 128 s
 people file (29 percent) and the Senate minority 12 of 47 (26 percent), both above the threshold,
 so a straight party-line vote still counts as divided. Kentucky's recalibration is not needed.
 
+## batch-03 — the three no-stance measures (2026-09-06)
+
+S 933 (legislator pay, Act 200), S 508 (monuments, Act 224) and H 3558 (Article V
+commissioners, Act 247) were all dropped `filter-5` because no direction could be
+defended. The user reopened the no-stance route on 2026-09-06, so each is now
+imported with a neutral description and a bare `general` label: **3 House rolls,
+296 records.** South Carolina now holds **897 records**, local only.
+
+Two of the three needed the "vote on the enacted text" rule: S 508's imported
+roll is the **conference report** (79-28), not the earlier passage vote, and
+H 3558's is the **veto override** (74-27), because the act became law only when
+the veto fell. Both earlier rolls are `screened:superseded-roll`.
+
+**H 5683, the congressional redistricting bill, never became law** — the Senate
+continued it 26-18 on 2026-05-26 — so it is not in this scope at all. See
+[batch-03/JUDGING.md](batch-03/JUDGING.md).
+
 ## Judging sources
 
 **The bill page is the whole toolkit**: `https://www.scstatehouse.gov/sess126_2025-2026/bills/<n>.htm`

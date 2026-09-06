@@ -96,9 +96,9 @@ HB6004	house	1477566	2025-01-30	54	43	passage		AN ACT to amend Tennessee Code An
 HB6004	senate	1492168	2025-01-30	20	13	passage		AN ACT to amend Tennessee Code Annotated, Title 4, Chapter 49; Title 8 and Title 49, relative to the Education Freedom Act of 2025.
 HB7001	house	1695281	2026-05-07	68	25	passage		AN ACT to amend Tennessee Code Annotated, Title 2, relative to the 2026 congressional elections.
 HB7001	senate	1695922	2026-05-07	23	7	passage		AN ACT to amend Tennessee Code Annotated, Title 2, relative to the 2026 congressional elections.
-HB7002	house	1695420	2026-05-07	66	24	passage		AN ACT to amend Tennessee Code Annotated, Title 2, Chapter 16, relative to congressional districts.
-HB7002	senate	1695421	2026-05-07	22	8	passage		AN ACT to amend Tennessee Code Annotated, Title 2, Chapter 16, relative to congressional districts.
-HB7003	house	1695538	2026-05-07	64	25	passage		AN ACT to amend Tennessee Code Annotated, Title 2, Chapter 16 and Chapter 742 of the Public Acts of 2026, relative to congressional districts.
+HB7002	house	1695420	2026-05-07	66	24	passage	batch-10	AN ACT to amend Tennessee Code Annotated, Title 2, Chapter 16, relative to congressional districts.
+HB7002	senate	1695421	2026-05-07	22	8	passage	batch-10	AN ACT to amend Tennessee Code Annotated, Title 2, Chapter 16, relative to congressional districts.
+HB7003	house	1695538	2026-05-07	64	25	passage	batch-10	AN ACT to amend Tennessee Code Annotated, Title 2, Chapter 16 and Chapter 742 of the Public Acts of 2026, relative to congressional districts.
 HB7005	house	1695457	2026-05-07	69	23	passage		AN ACT to make appropriations for the purpose of defraying the expenses of the state government for the fiscal years beginning July 1, 2025, and July
 HB7005	senate	1695459	2026-05-07	24	6	passage		AN ACT to make appropriations for the purpose of defraying the expenses of the state government for the fiscal years beginning July 1, 2025, and July
 HJR0017	house	1517166	2025-03-13	69	22	passage		A RESOLUTION to urge the United States Congress to repeal all taxes on income and enact a national retail sales tax as specified in H.R. 25, the Fair
