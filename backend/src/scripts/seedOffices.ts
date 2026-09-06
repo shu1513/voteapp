@@ -22,18 +22,19 @@ type SeedOfficeAlias = {
 // ("Your sheriff runs the county's law enforcement department and the county
 // jail."), and every line after it is one concrete thing the office affects,
 // rendered by the election page as a bullet under "This office affects:".
-// Plain 8th-grade language, at most four bullets, no filler ("other duties
-// as assigned"); hedge with "in many states" only where the fact varies.
+// Plain 7th-to-8th-grade language, exactly three bullets, most important
+// first, each short enough to scan; no filler ("other duties as assigned");
+// hedge with "in many states" only where the fact varies. Enforced by
+// assertSummaryShape below.
 const SEED_OFFICES: SeedOffice[] = [
   {
     scope: "presidential",
     canonicalName: "President of the United States",
     summary: [
-      "The president leads the federal government, signs bills passed by Congress into law or vetoes them, and commands the U.S. military.",
+      "The president leads the federal government, signs or vetoes bills from Congress, and commands the U.S. military.",
       "Federal taxes and how federal money is spent",
-      "Who serves as federal judges and heads of federal agencies",
-      "How the U.S. deals with other countries, including trade and war",
-      "Rules on health care, immigration, and the environment set by federal agencies",
+      "Who serves as federal judges and agency heads",
+      "War, trade, and how the U.S. deals with other countries",
     ].join("\n"),
   },
   {
@@ -42,29 +43,28 @@ const SEED_OFFICES: SeedOffice[] = [
     summary: [
       "The vice president takes over if the president cannot serve and breaks tie votes in the U.S. Senate.",
       "Who leads the country if the president dies, resigns, or is removed",
-      "Which side wins in the Senate when a vote is tied",
+      "Which side wins a tied vote in the U.S. Senate",
+      "The count of states' electoral votes for president",
     ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "United States Senator",
     summary: [
-      "Your U.S. senator helps write and vote on federal laws, federal taxes, and how the federal government spends its money.",
+      "Your U.S. senator writes and votes on federal laws, federal taxes, and federal spending.",
       "How much you pay in federal income tax",
       "Social Security, Medicare, and other federal programs",
       "Who becomes a federal judge or Supreme Court justice",
-      "Whether the U.S. signs treaties with other countries",
     ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Governor",
     summary: [
-      "Your governor runs the state government, proposes the state budget, and signs bills passed by the legislature into law or vetoes them.",
-      "Which bills become state law and which get vetoed",
+      "Your governor runs the state government, proposes the state budget, and signs or vetoes bills.",
+      "Which bills become state law",
       "How much money goes to schools, roads, and health care",
-      "Who leads state agencies and, in many states, who serves as a state judge",
-      "How the state responds to emergencies, such as storms or disease outbreaks",
+      "Who leads state agencies",
     ].join("\n"),
   },
   {
@@ -74,6 +74,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your lieutenant governor takes over if the governor cannot serve and, in many states, presides over the state senate.",
       "Who runs the state if the governor leaves office",
       "How the state senate runs its sessions, in many states",
+      "Tie votes in the state senate, in many states",
     ].join("\n"),
   },
   {
@@ -81,9 +82,9 @@ const SEED_OFFICES: SeedOffice[] = [
     canonicalName: "Secretary of State",
     summary: [
       "Your secretary of state keeps official state records and, in most states, oversees elections.",
-      "How elections are run and how results are certified, in most states",
+      "How elections are run and results are certified, in most states",
       "Voter registration and how you vote, in most states",
-      "Business registration and official state records",
+      "Business filings and official state records",
     ].join("\n"),
   },
   {
@@ -91,10 +92,9 @@ const SEED_OFFICES: SeedOffice[] = [
     canonicalName: "Attorney General",
     summary: [
       "Your attorney general is the state's top lawyer and enforces state laws in court.",
-      "Whether companies that cheat or scam people in your state get taken to court",
+      "Whether companies that scam people get sued",
       "How consumer protection and fraud laws are enforced",
-      "Whether the state sues, or defends itself when it is sued",
-      "Legal advice that guides what state agencies can do",
+      "Whether the state sues, or defends itself when sued",
     ].join("\n"),
   },
   {
@@ -104,7 +104,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your state treasurer manages the state's money, including its bank accounts, investments, and debt.",
       "How state money is invested until it is spent",
       "How much the state borrows and how it pays it back",
-      "Whether state bills and payments go out on time",
+      "Whether state bills are paid on time",
     ].join("\n"),
   },
   {
@@ -123,7 +123,8 @@ const SEED_OFFICES: SeedOffice[] = [
     summary: [
       "Your state comptroller keeps the state's official financial records and approves state payments.",
       "Whether state payments are tracked and paid correctly",
-      "Public reports on how much the state collects and spends",
+      "Public reports on what the state collects and spends",
+      "Estimates of state income that shape the budget, in some states",
     ].join("\n"),
   },
   {
@@ -132,20 +133,18 @@ const SEED_OFFICES: SeedOffice[] = [
     summary: [
       "Your commissioner of agriculture oversees farming, food safety, and related inspections in the state.",
       "Food safety inspections",
-      "Whether gas pumps and store scales are checked for accuracy, in many states",
+      "Whether gas pumps and store scales are accurate, in many states",
       "Rules on pesticides and animal health",
-      "Programs that support farmers and ranchers",
     ].join("\n"),
   },
   {
     scope: "statewide",
     canonicalName: "Commissioner of Insurance",
     summary: [
-      "Your commissioner of insurance licenses insurance companies and reviews the rates they charge in the state.",
+      "Your commissioner of insurance licenses insurance companies and reviews the rates they charge.",
       "Car, home, and health insurance rates",
-      "Whether insurance companies can operate in your state",
-      "What happens when you file a complaint against an insurer",
-      "Whether insurers stay able to pay claims",
+      "What happens when you complain about an insurer",
+      "Whether an insurance company can operate in your state",
     ].join("\n"),
   },
   {
@@ -153,7 +152,7 @@ const SEED_OFFICES: SeedOffice[] = [
     canonicalName: "Superintendent of Public Instruction",
     summary: [
       "Your superintendent of public instruction leads the state education department and carries out state rules for public schools.",
-      "Learning standards and testing in public K-12 schools",
+      "Learning standards and testing in public schools",
       "How state money is divided among school districts",
       "Public reports on how schools and students are doing",
     ].join("\n"),
@@ -164,9 +163,8 @@ const SEED_OFFICES: SeedOffice[] = [
     summary: [
       "Your public service commissioner sets the rates utility companies can charge for electricity, gas, water, or phone service.",
       "How much you pay for electricity, gas, and water",
+      "What happens when you complain about a utility",
       "Whether utilities can build new power plants and lines",
-      "What happens when you complain about a utility company",
-      "Whether utility service stays safe and reliable",
     ].join("\n"),
   },
   {
@@ -175,7 +173,7 @@ const SEED_OFFICES: SeedOffice[] = [
     summary: [
       "Your corporation commissioner regulates utility companies and, depending on the state, certain other businesses.",
       "How much you pay for electricity, gas, and water",
-      "What happens when you complain about a utility company",
+      "What happens when you complain about a utility",
       "Business filings and investment rules, in some states",
     ].join("\n"),
   },
@@ -184,7 +182,7 @@ const SEED_OFFICES: SeedOffice[] = [
     canonicalName: "State Level Judge",
     summary: [
       "State judges decide appeals and major cases under state law and rule on what the state constitution means.",
-      "How state laws and the state constitution are interpreted",
+      "How state laws and the state constitution are read",
       "Rulings that lower state courts must follow",
       "Outcomes of major criminal and civil cases",
     ].join("\n"),
@@ -204,9 +202,9 @@ const SEED_OFFICES: SeedOffice[] = [
     canonicalName: "State Board of Regents Member",
     summary: [
       "Regents govern the state's public university system.",
-      "Tuition rates at state universities",
+      "Tuition at state universities",
       "University budgets",
-      "Who serves as university presidents and chancellors",
+      "Who serves as university presidents",
     ].join("\n"),
   },
   {
@@ -216,6 +214,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "Board of equalization members make sure property is valued evenly across counties for tax purposes.",
       "Whether property values are set fairly from county to county",
       "Appeals of property assessments",
+      "Rules county assessors must follow",
     ].join("\n"),
   },
   {
@@ -225,7 +224,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your labor commissioner enforces wage and workplace laws in the state.",
       "Whether minimum wage and overtime laws are enforced",
       "Investigations of unsafe or unfair workplaces",
-      "Licensing and inspection of certain trades and workplaces",
+      "Licensing and inspection of certain trades",
     ].join("\n"),
   },
   {
@@ -252,33 +251,30 @@ const SEED_OFFICES: SeedOffice[] = [
     scope: "us_house",
     canonicalName: "United States Representative",
     summary: [
-      "Your U.S. representative helps write and vote on federal laws, federal taxes, and how the federal government spends its money.",
+      "Your U.S. representative writes and votes on federal laws, federal taxes, and federal spending.",
       "How much you pay in federal income tax",
       "Social Security, Medicare, and other federal programs",
       "Federal spending on roads, defense, and health care",
-      "Tax bills, which the Constitution says must start in the House",
     ].join("\n"),
   },
   {
     scope: "state_upper",
     canonicalName: "State Senator",
     summary: [
-      "Your state senator helps write and vote on the laws for your state and how the state spends its money.",
+      "Your state senator writes and votes on state laws and how the state spends its money.",
       "How much you pay in state taxes",
       "How much money your local public schools get",
       "Which roads and highways get built or repaired",
-      "Who gets confirmed to lead state agencies, in many states",
     ].join("\n"),
   },
   {
     scope: "state_lower",
     canonicalName: "State Lower Chamber Legislator",
     summary: [
-      "Your state representative helps write and vote on the laws for your state and how the state spends its money.",
+      "Your state representative writes and votes on state laws and how the state spends its money.",
       "How much you pay in state taxes",
       "How much money your local public schools get",
       "Which roads and highways get built or repaired",
-      "Whether you can get help from a state program, like unemployment or Medicaid",
     ].join("\n"),
   },
   {
@@ -306,10 +302,9 @@ const SEED_OFFICES: SeedOffice[] = [
     canonicalName: "County Executive",
     summary: [
       "Your county executive runs county government day to day, like a mayor for the county.",
-      "The county budget proposal, including property tax and spending plans",
+      "The county budget, including property tax and spending plans",
       "County roads, parks, and public health services",
-      "Emergency response, such as during storms or floods",
-      "Who leads county departments, such as public works and health",
+      "Who leads county departments",
     ].join("\n"),
   },
   {
@@ -318,7 +313,7 @@ const SEED_OFFICES: SeedOffice[] = [
     summary: [
       "Your borough president speaks for the borough inside city government and reviews land-use plans there.",
       "How part of the city budget is spent in your borough",
-      "Zoning and land-use decisions in your borough",
+      "Zoning and land use in your borough",
       "Who sits on community boards",
     ].join("\n"),
   },
@@ -330,7 +325,6 @@ const SEED_OFFICES: SeedOffice[] = [
       "Police patrols and deputies in the county",
       "How the county jail is run",
       "Evictions, warrants, and other court orders",
-      "Courthouse security, in many counties",
     ].join("\n"),
   },
   {
@@ -340,16 +334,10 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your district attorney decides who gets charged with crimes in the county and prosecutes those cases in court.",
       "Which crimes get charged and which are dropped",
       "Plea deals and the sentences prosecutors ask for",
-      "How police and prosecutors work together on cases",
+      "How police and prosecutors work together",
     ].join("\n"),
   },
   {
-    // Georgia's county misdemeanor prosecutor, elected separately from the
-    // District Attorney: the DA takes felonies to superior court for a
-    // multi-county judicial circuit, the solicitor-general takes misdemeanors
-    // to the county's State Court, and a county can hold both contests in the
-    // same cycle. NOT South Carolina's "Solicitor", which IS that state's
-    // felony circuit prosecutor (a District Attorney by another name).
     scope: "county",
     canonicalName: "Solicitor General",
     summary: [
@@ -400,54 +388,33 @@ const SEED_OFFICES: SeedOffice[] = [
     ].join("\n"),
   },
   {
-    // Alabama counties elect ONE of two arrangements for property tax: a
-    // separate Tax Assessor and Tax Collector (Jefferson, Madison, Tuscaloosa
-    // — all on the Nov 2026 ballot), or this merged office, created county by
-    // county under Title 40 of the Code of Alabama. Lee County is a merged
-    // county. The two halves already have catalog homes (County Assessor and
-    // Collector of Revenue, aliased below); the merged office needs its own
-    // row, exactly as County Assessor-Recorder does for the combined
-    // assess-and-record office.
     scope: "county",
     canonicalName: "Revenue Commissioner",
     summary: [
       "Your revenue commissioner estimates property values for taxes and collects property and vehicle taxes.",
       "The value placed on your home or land for tax purposes",
-      "Property tax bills and taxes on vehicles, boats, and manufactured homes",
-      "Property tax exemptions, such as homeowner or over-65 discounts",
+      "Property tax bills and taxes on vehicles and boats",
+      "Property tax exemptions, such as over-65 discounts",
     ].join("\n"),
   },
   {
-    // The other elected office in Alabama's split arrangement, and NOT the
-    // St. Louis-style License Collector below: the county tag office. Business
-    // licences are one line of the job — the bulk is motor-vehicle titles and
-    // tags, manufactured homes, driver-licence renewals, conservation permits
-    // and the sales/use tax on vehicle and boat sales. Mobile County's license
-    // commission raises roughly 57% of that county's general-fund revenue.
     scope: "county",
     canonicalName: "License Commissioner",
     summary: [
       "Your license commissioner issues vehicle tags and titles and collects the related taxes and fees.",
       "Vehicle tags, titles, and boat registrations",
       "Taxes and fees when you buy or register a vehicle",
-      "Business licenses and hunting and fishing licenses",
-      "Driver license renewals, in many counties",
+      "Business, hunting, and fishing licenses",
     ].join("\n"),
   },
   {
-    // Virginia's chief local tax ASSESSING officer — one of the five
-    // constitutional officers every county and independent city elects under
-    // Art. VII Sec. 4, to a four-year term. Distinct from both offices above:
-    // it assesses personal-property, business-license, machinery-and-tools and
-    // meals taxes but does NOT collect, which is the elected Treasurer's job.
     scope: "county",
     canonicalName: "Commissioner of the Revenue",
     summary: [
       "Your commissioner of the revenue decides what local taxes each resident and business owes, such as the tax on cars.",
       "The local tax on your car and business property",
       "Business license taxes",
-      "Appeals when you dispute a local tax assessment",
-      "Help filing state income tax returns, in most localities",
+      "Appeals when you dispute a local tax",
     ].join("\n"),
   },
   {
@@ -456,8 +423,8 @@ const SEED_OFFICES: SeedOffice[] = [
     summary: [
       "Your public defender defends people charged with crimes who cannot afford a lawyer.",
       "The quality of legal defense for people who cannot pay",
-      "How the office of defense lawyers and investigators is run",
       "Whether every defendant gets the fair defense the Constitution promises",
+      "How the office of defense lawyers and investigators is run",
     ].join("\n"),
   },
   {
@@ -487,6 +454,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your public administrator settles the money and property of people who die without a will or anyone to handle their estate.",
       "What happens to an estate when no family member can handle it",
       "Care for adults who cannot care for themselves, in some counties",
+      "Burials for people with no one to arrange them, in some counties",
     ].join("\n"),
   },
   {
@@ -496,6 +464,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your county recorder records deeds, mortgages, and other official land documents.",
       "Recorded deeds, mortgages, and liens",
       "Public access to property records",
+      "Certified copies of recorded documents",
     ].join("\n"),
   },
   {
@@ -506,7 +475,6 @@ const SEED_OFFICES: SeedOffice[] = [
       "Court records and case files",
       "Court fines and fees",
       "Jury summons, in many places",
-      "Help filing and finding court documents",
     ].join("\n"),
   },
   {
@@ -515,7 +483,7 @@ const SEED_OFFICES: SeedOffice[] = [
     summary: [
       "Your county coroner investigates sudden, unexpected, or suspicious deaths.",
       "Which deaths get investigated",
-      "Official cause of death findings, sometimes with autopsies",
+      "Official cause of death findings",
       "Death certificates",
     ].join("\n"),
   },
@@ -533,7 +501,7 @@ const SEED_OFFICES: SeedOffice[] = [
     scope: "county",
     canonicalName: "County Level Judge",
     summary: [
-      "County judges hear trials — criminal cases, lawsuits, family, or probate matters, depending on the court.",
+      "County judges hear trials, such as criminal cases, lawsuits, family matters, and probate, depending on the court.",
       "Outcomes of trials in the county",
       "Rulings on evidence, and sentences in criminal cases",
       "Family, probate, and civil disputes",
@@ -547,7 +515,6 @@ const SEED_OFFICES: SeedOffice[] = [
       "Small-claims cases",
       "Evictions, in many states",
       "Traffic and minor criminal citations, where state law allows",
-      "Marriages and routine legal papers",
     ].join("\n"),
   },
   {
@@ -576,7 +543,7 @@ const SEED_OFFICES: SeedOffice[] = [
     summary: [
       "Your county engineer plans, builds, and maintains county roads, bridges, and other public works.",
       "Which county roads and bridges get built or repaired",
-      "Construction permits and engineering plans for county projects",
+      "Permits and plans for county construction projects",
       "County engineering contracts and staff",
     ].join("\n"),
   },
@@ -591,20 +558,6 @@ const SEED_OFFICES: SeedOffice[] = [
     ].join("\n"),
   },
   {
-    // Independent fire districts are their own elected taxing bodies, separate
-    // from county or city government (Florida alone puts dozens of these
-    // boards on the ballot). Filed at county scope because the district sits
-    // inside one county and its seats appear on that county's ballot.
-    //
-    // Caveat for whoever imports these contests: a fire district's boundaries
-    // are SUB-county and there is no districts row for them, so an election
-    // attached to the county district shows to every voter in the county, not
-    // only the ones inside that fire district. That is the same limitation
-    // county-scope seat elections already carry (County Commissioner District
-    // 2 and friends, ~600 live rows) and it needs address-resolved special
-    // districts to fix properly — but it bites harder here, because a fire
-    // district is a separate jurisdiction rather than one seat on a body that
-    // governs the whole county. Weigh that before publishing a roster.
     scope: "county",
     canonicalName: "Fire Control District Commissioner",
     summary: [
@@ -612,31 +565,9 @@ const SEED_OFFICES: SeedOffice[] = [
       "Fire district taxes and assessments",
       "Fire stations, trucks, and emergency medical service",
       "Who serves as fire chief",
-      "Staffing and equipment for the district",
     ].join("\n"),
   },
   {
-    // A Florida community development district is a special-purpose local
-    // government created under Fla. Stat. ch. 190 to finance and maintain a
-    // development's infrastructure. Its board is five members, and s.
-    // 190.006(4) states the office name outright: "Members of the board shall
-    // be known as supervisors."
-    //
-    // Only the qualified-elector elections reach a public ballot. A new
-    // district's supervisors are chosen at a landowners' meeting by acre-
-    // weighted vote (s. 190.006(2)); once the district passes the thresholds
-    // in s. 190.006(3)(a)2, seats transfer to the qualified electors and are
-    // elected at the November general election, nonpartisan, with candidates
-    // qualifying for individual seats under s. 99.061. The county supervisor
-    // of elections prepares the ballot and the county canvassing board
-    // certifies the result (s. 190.006(3)(b)-(d)) — which is why this is filed
-    // at county scope, the same as Fire Control District Commissioner.
-    //
-    // Same caveat as that office, and it bites harder here: a CDD's boundaries
-    // are SUB-county — often a single subdivision — and there is no districts
-    // row for one, so an election attached to the county district shows to
-    // every voter in the county rather than only the few hundred inside the
-    // district. Weigh that before publishing a roster.
     scope: "county",
     canonicalName: "Community Development District Supervisor",
     summary: [
@@ -644,12 +575,8 @@ const SEED_OFFICES: SeedOffice[] = [
       "Assessments on property in the district",
       "Roads, drainage, and water and sewer lines the district maintains",
       "Parks, ponds, pools, and clubhouses",
-      "Contracts with the district's manager and vendors",
     ].join("\n"),
   },
-  // The four offices below reached long-lived databases through a version of
-  // this seed that was edited afterwards, so no current file reproduced them.
-  // Definitions recovered verbatim from the local catalog.
   {
     scope: "county",
     canonicalName: "Collector of Revenue",
@@ -667,6 +594,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your license collector issues business licenses and collects the related fees.",
       "Business licenses and fees",
       "Records of businesses allowed to operate in the county",
+      "Penalties for businesses that operate without a license",
     ].join("\n"),
   },
   {
@@ -686,6 +614,27 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your county board of review member hears property tax assessment appeals.",
       "Whether your property assessment appeal succeeds",
       "Whether assessments follow state and local rules",
+      "Certain property tax exemptions, in some counties",
+    ].join("\n"),
+  },
+  {
+    scope: "county",
+    canonicalName: "County Jailer",
+    summary: [
+      "Your county jailer runs the county jail.",
+      "How the county jail is run",
+      "Safety of people held in the county jail",
+      "Jail staff, transport, and jail services",
+    ].join("\n"),
+  },
+  {
+    scope: "county",
+    canonicalName: "Magistrate",
+    summary: [
+      "Your magistrate sits on the county fiscal court and votes on the county budget and local rules.",
+      "Your county property tax rate",
+      "County roads and services in your district",
+      "County rules, called ordinances",
     ].join("\n"),
   },
   {
@@ -695,8 +644,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your mayor is the city's top elected leader and helps set city priorities and the city budget.",
       "City budget priorities",
       "Who leads city departments, such as the police chief, in many cities",
-      "Which council bills become law and which get vetoed, in many cities",
-      "Day-to-day city operations, in cities without a hired city manager",
+      "Which council bills become law or get vetoed, in many cities",
     ].join("\n"),
   },
   {
@@ -705,6 +653,7 @@ const SEED_OFFICES: SeedOffice[] = [
     summary: [
       "Your public advocate investigates complaints about city services and speaks for residents inside city government.",
       "What happens when you complain about a city service",
+      "Who becomes mayor if the mayor leaves office",
       "Bills introduced in the city council, where the charter allows",
     ].join("\n"),
   },
@@ -729,9 +678,6 @@ const SEED_OFFICES: SeedOffice[] = [
     ].join("\n"),
   },
   {
-    // Grand Rapids MI and many Michigan/Midwest cities elect their public
-    // library's governing board citywide, on its own ballot heading
-    // ("Library Board 6 Year Term", Kent County live).
     scope: "place",
     canonicalName: "Library Board Member",
     summary: [
@@ -739,7 +685,6 @@ const SEED_OFFICES: SeedOffice[] = [
       "Library hours and services",
       "How library money is spent",
       "Who serves as library director",
-      "Library building projects",
     ].join("\n"),
   },
   {
@@ -749,6 +694,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your city clerk keeps official city records and, in some cities, runs local elections.",
       "Meeting minutes, ordinances, and public notices",
       "How local elections are run, in some cities",
+      "Business licenses and permits, in some cities",
     ].join("\n"),
   },
   {
@@ -778,6 +724,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your alderman passes city laws and the city budget as a member of the city council.",
       "City laws and the city budget",
       "City services in your ward",
+      "Zoning and land use in your ward",
     ].join("\n"),
   },
   {
@@ -786,7 +733,8 @@ const SEED_OFFICES: SeedOffice[] = [
     summary: [
       "Your town council member passes town rules and the town budget.",
       "Town rules and the town budget",
-      "Town services and departments",
+      "Your town property tax rate, in many towns",
+      "Town services, such as police, roads, and parks",
     ].join("\n"),
   },
   {
@@ -796,6 +744,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your municipal trustee sits on the village or town governing board and votes on local rules and the budget.",
       "Local rules and the budget",
       "Local services and staff",
+      "Zoning and building rules in the village or town",
     ].join("\n"),
   },
   {
@@ -804,6 +753,7 @@ const SEED_OFFICES: SeedOffice[] = [
     summary: [
       "Your town moderator runs town meetings, where residents debate and vote on town business.",
       "How town meetings are run and votes are counted",
+      "Which motions get debated at town meeting, and in what order",
       "Members of certain town committees, in some towns",
     ].join("\n"),
   },
@@ -814,6 +764,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your municipal assessor estimates property values used for local property taxes.",
       "The value placed on your home or land for tax purposes",
       "Property tax exemptions and value appeals",
+      "Property records and maps",
     ].join("\n"),
   },
   {
@@ -832,6 +783,7 @@ const SEED_OFFICES: SeedOffice[] = [
     summary: [
       "Your municipal controller keeps the city's books and audits city spending.",
       "Audits of city spending",
+      "Whether city payments are tracked and paid correctly",
       "City financial reports",
     ].join("\n"),
   },
@@ -841,12 +793,11 @@ const SEED_OFFICES: SeedOffice[] = [
     summary: [
       "Your municipal constable serves court papers and local legal notices.",
       "Court papers and legal notices",
+      "Evictions and property seizures ordered by a court, in some places",
       "Certain local law enforcement",
     ].join("\n"),
   },
   {
-    // A Louisiana city marshal is the elected law-enforcement officer of the
-    // city court (La. R.S. 13:1879 et seq.), NOT a judge — see migration 224.
     scope: "place",
     canonicalName: "City Marshal",
     summary: [
@@ -863,7 +814,6 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your school board member sets policy and approves the budget for the school district.",
       "How school district money is spent",
       "Who serves as superintendent",
-      "School boundaries and calendars",
       "Curriculum choices, within state rules",
     ].join("\n"),
   },
@@ -874,7 +824,6 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your school board member sets policy and approves the budget for the school district.",
       "How school district money is spent",
       "Who serves as superintendent",
-      "School boundaries and calendars",
       "Curriculum choices, within state rules",
     ].join("\n"),
   },
@@ -885,7 +834,6 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your school board member sets policy and approves the budget for the school district.",
       "How school district money is spent",
       "Who serves as superintendent",
-      "School boundaries and calendars",
       "Curriculum choices, within state rules",
     ].join("\n"),
   },
@@ -2327,6 +2275,19 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
   },
 ];
 
+function assertSummaryShape(rows: readonly SeedOffice[]): void {
+  for (const row of rows) {
+    const lines = row.summary.split("\n");
+    // Hook sentence plus exactly three bullets: the election page shows the
+    // bullets as-is, and more than three stops reading as a quick scan.
+    if (lines.length !== 4 || lines.some((line) => line.trim().length === 0)) {
+      throw new Error(
+        `Office summary must be one hook line plus three bullets: ${row.scope}::${row.canonicalName}`
+      );
+    }
+  }
+}
+
 function assertNoDuplicateSeedKeys(rows: readonly SeedOffice[]): void {
   const seen = new Set<string>();
   for (const row of rows) {
@@ -2587,6 +2548,7 @@ async function upsertOfficeAlias(client: PoolClient, row: SeedOfficeAlias): Prom
 
 async function main(): Promise<void> {
   assertNoDuplicateSeedKeys(SEED_OFFICES);
+  assertSummaryShape(SEED_OFFICES);
   assertNoDuplicateSeedAliasKeys(SEED_OFFICE_ALIASES);
 
   const env = getPipelineEnv();
