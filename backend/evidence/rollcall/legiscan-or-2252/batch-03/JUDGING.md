@@ -8,7 +8,7 @@ across 63 candidates.
 | SB 1598 preventive care and vaccines covered at no charge | House 39-18, Senate 17-11 | `healthcare_affordability`, `environment_and_public_health` | for | — |
 | SB 1568 doula and lactation coverage around birth | Senate 23-7 | `healthcare_affordability` | for | — |
 | HB 4075 state guarantee for a rural hospital loan | House 42-15, Senate 16-12 | `healthcare_affordability` | for | — |
-| HB 4115 longer caregiver checks, faster provider payment | Senate 22-8 | `healthcare_affordability` | for | — |
+| HB 4115 longer caregiver checks, back pay for behavioral health providers | Senate 22-8 | `healthcare_affordability` | for | — |
 | SB 1575 pause on new hospice licenses while rules tighten | Senate 19-8 | `healthcare_affordability` | for | — |
 | HB 4142 Ryan's Law, medical marijuana in care facilities | Senate 20-8 | `healthcare_affordability` | for | — |
 

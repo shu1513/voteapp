@@ -115,3 +115,31 @@ Every batch: a dry run matching the real run exactly, a third run reporting
 every record `unchanged`, zero errors, zero notifications, and row counts
 reconciled three ways — the import report's inserts, the rows in the database,
 and the sum of the per-roll counts.
+
+### One evidence defect, found in review
+
+The importer writes each run's report into the run directory, so every
+batch's real run overwrote the previous one. The `import-report.json` copied
+into batches 02–07 was batch-01's file each time, not that batch's own. The
+six copies are removed; the real per-batch reports are gone.
+
+What survives is the database. Each batch's records carry their own run
+timestamp — b01 06:13:47Z, b02 06:18:12Z, b03 06:21:00Z, b04 06:23:45Z,
+b05 06:26:27Z, b06 06:33:00Z, b07 06:36:43Z, all on 2026-09-06 — and the
+counts match the batch table above. `import-report.json` at the campaign root
+is a whole-pool real run made after the two corrections below: 58 approved
+rolls, 1,691 records, 60 rewritten and 1,631 `unchanged`, zero errors, zero
+notifications.
+
+## Two descriptions corrected in review
+
+- **HB 4128** said a covered investor may not buy a home unless it was listed
+  for 90 days. Section 2(1)(e) of the enrolled Act exempts a home that is not
+  publicly listed when the offer is made, so off-market purchases stay legal.
+  Both descriptions now say so. 49 records rewritten.
+- **HB 4115** said a care organization pays a provider back to the day the
+  provider joined Medicaid. Section 5(2) runs back to the date the provider
+  applied for enrollment, only where that application produced a provider
+  number, and covers only behavioral health providers employed by an agency
+  that contracts with the coordinated care organization. Both descriptions now
+  say so. 11 records rewritten.
