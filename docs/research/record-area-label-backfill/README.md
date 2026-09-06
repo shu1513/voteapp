@@ -37,6 +37,16 @@ File mode makes **no AI call** (`ai_calls=0` in every run summary). It is additi
 
 A record whose candidate has no office election at all cannot go through the wrapper — it takes `--election-date` and resolves the office allowlist from that election. Those records stay untagged and are listed per state below. AK has 13 across six candidates, FL has 2, AZ has 6: Rasmussen, Schuerch, Church, Gettys, Sumner, Hnilicka.
 
+## Roll-call nay backfill, 2026-09-06
+
+134 approved judgments predated the `nay` field, so nay voters on them got no tag. Each stance label was decided again: what does a NO vote on THIS measure actually evidence? 14 labels got a real stance, 120 rows were confirmed null. Applied through `rollcall:judge`, then the affected roll calls were re-imported so the tags come from the pipeline. Evidence: `backend/evidence/rollcall/nay-backfill-2026-09-06/`.
+
+A separate, larger gap turned up while verifying: 294 records whose judgment DID state a nay stance had never had it applied (GA 170, ME 49, TX 44, US 118-1 roll 705 31). Re-importing those roll calls closed all of them.
+
+Re-importing federal `backfill-118-117/batch-07` also INSERTED 371 new records, for approved roll calls whose members are linked now but were not at first import. Remaining federal batches were left un-run pending a decision on those.
+
+Do not hand-tag a `rollcall_import` record. `syncRollCallRecordTags` makes a record's tags exactly the roll call's labels for its side, so anything added by hand is deleted on the next import of that roll call. Fix the judgment instead.
+
 ## Label rules tightened during the run
 
 - `personal_income_tax_reduction` covers personal income tax only. Sales, property, business and production tax records do not belong there.

@@ -1,0 +1,2499 @@
+{
+ "judgments": [
+  {
+   "chamber": "house",
+   "roll": 1579285,
+   "measure_id": "AB 1056",
+   "vote_date": "2025-05-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1056, which limits who can inherit a commercial gill net or trammel net permit. California stopped issuing new ones long ago, so these permits change hands only by transfer. The law removes the rule that let a permit pass to another qualified fisher when the holder died or became disabled. From January 1, 2027 a long-standing holder may pass a permit only to a family member, and once it moves that way it cannot be passed on again. It passed the California State Assembly 51-17 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 1056, which limits who can inherit a commercial gill net or trammel net permit. California stopped issuing new ones long ago, so these permits change hands only by transfer. The law removes the rule that let a permit pass to another qualified fisher when the holder died or became disabled. From January 1, 2027 a long-standing holder may pass a permit only to a family member, and once it moves that way it cannot be passed on again. It passed the California State Assembly 51-17 and became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1584292,
+   "measure_id": "SB 825",
+   "vote_date": "2025-06-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 825, which confirms that California's financial protection regulator can act against licensed escrow agents and finance lenders that deceive or take advantage of customers. Those businesses are otherwise exempt from the state's consumer financial protection law, and the bill makes clear that the exemption does not shield them from the ban on deceptive and abusive practices. It passed the California State Senate 28-10 and became law.",
+   "nay_description": "Voted against passing Senate Bill 825, which confirms that California's financial protection regulator can act against licensed escrow agents and finance lenders that deceive or take advantage of customers. Those businesses are otherwise exempt from the state's consumer financial protection law, and the bill makes clear that the exemption does not shield them from the ban on deceptive and abusive practices. It passed the California State Senate 28-10 and became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1586421,
+   "measure_id": "SB 82",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 82, which stops the fine print in a consumer contract from reaching disputes that have nothing to do with that contract. Its terms for settling disputes can cover only arguments about the product, service, money, or credit the contract itself provides. A clause signing away that protection has no force, and courts must read the rule in the consumer's favor. The law adds to other consumer protections rather than replacing them. It passed the California State Senate 28-10 and became law.",
+   "nay_description": "Voted against passing Senate Bill 82, which stops the fine print in a consumer contract from reaching disputes that have nothing to do with that contract. Its terms for settling disputes can cover only arguments about the product, service, money, or credit the contract itself provides. A clause signing away that protection has no force, and courts must read the rule in the consumer's favor. The law adds to other consumer protections rather than replacing them. It passed the California State Senate 28-10 and became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1600931,
+   "measure_id": "AB 1061",
+   "vote_date": "2025-09-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1061, which narrows a historic-buildings rule that had been keeping small housing projects and lot splits out of fast-track approval. Before, any site inside a listed historic district was shut out; now only a building that actually contributes to such a district, or a property listed as a landmark in its own right, is. Cities and counties may still set clear standards to protect the character of a district on the state historic register. A lot split still may not require tearing down or altering the buildings the law names. It passed the California State Senate 24-10 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 1061, which narrows a historic-buildings rule that had been keeping small housing projects and lot splits out of fast-track approval. Before, any site inside a listed historic district was shut out; now only a building that actually contributes to such a district, or a property listed as a landmark in its own right, is. Cities and counties may still set clear standards to protect the character of a district on the state historic register. A lot split still may not require tearing down or altering the buildings the law names. It passed the California State Senate 24-10 and became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601163,
+   "measure_id": "AB 1415",
+   "vote_date": "2025-09-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1415, which extends the state's health care cost watchdog to cover the management companies that run medical practices behind the scenes. It writes hedge funds and similar investor owners into the law by name. Those management companies must report data to the office, and must give it advance written notice of mergers and other deals involving them or the companies that own them. It passed the California State Senate 26-10 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 1415, which extends the state's health care cost watchdog to cover the management companies that run medical practices behind the scenes. It writes hedge funds and similar investor owners into the law by name. Those management companies must report data to the office, and must give it advance written notice of mergers and other deals involving them or the companies that own them. It passed the California State Senate 26-10 and became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601264,
+   "measure_id": "AB 1318",
+   "vote_date": "2025-09-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1318, an urgent measure that took effect at once. Wherever state law looks at a charity's federal tax-exempt status to decide who can receive a state grant, contract, or payment, state tax-exempt status now counts as well. The same change reaches the charities that run state programs for refugees and immigrants, which pay for immigration lawyers, emergency help, and resettlement support for people granted asylum. It passed the California State Senate 29-10 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 1318, an urgent measure that took effect at once. Wherever state law looks at a charity's federal tax-exempt status to decide who can receive a state grant, contract, or payment, state tax-exempt status now counts as well. The same change reaches the charities that run state programs for refugees and immigrants, which pay for immigration lawyers, emergency help, and resettlement support for people granted asylum. It passed the California State Senate 29-10 and became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1601300,
+   "measure_id": "AB 1061",
+   "vote_date": "2025-09-08",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1061, which narrows a historic-buildings rule that had been keeping small housing projects and lot splits out of fast-track approval. Before, any site inside a listed historic district was shut out; now only a building that actually contributes to such a district, or a property listed as a landmark in its own right, is. Cities and counties may still set clear standards to protect the character of a district on the state historic register. A lot split still may not require tearing down or altering the buildings the law names. The California State Assembly agreed 46-18, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1061, which narrows a historic-buildings rule that had been keeping small housing projects and lot splits out of fast-track approval. Before, any site inside a listed historic district was shut out; now only a building that actually contributes to such a district, or a property listed as a landmark in its own right, is. Cities and counties may still set clear standards to protect the character of a district on the state historic register. A lot split still may not require tearing down or altering the buildings the law names. The California State Assembly agreed 46-18, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1601306,
+   "measure_id": "AB 1415",
+   "vote_date": "2025-09-08",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1415, which extends the state's health care cost watchdog to cover the management companies that run medical practices behind the scenes. It writes hedge funds and similar investor owners into the law by name. Those management companies must report data to the office, and must give it advance written notice of mergers and other deals involving them or the companies that own them. The California State Assembly agreed 51-19, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1415, which extends the state's health care cost watchdog to cover the management companies that run medical practices behind the scenes. It writes hedge funds and similar investor owners into the law by name. Those management companies must report data to the office, and must give it advance written notice of mergers and other deals involving them or the companies that own them. The California State Assembly agreed 51-19, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1601381,
+   "measure_id": "SB 524",
+   "vote_date": "2025-09-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 524, which makes every police agency set rules for official reports written with artificial intelligence. Such a report must say that a computer helped write it and carry the signature of the officer who prepared it, and the first computer-written draft must be kept as long as the report. That draft does not count as the officer's own statement, and the agency must keep a log of who used the tool and what video or audio it worked from. The companies supplying these tools may not share, sell, or otherwise use police information except for that agency's work or under a court order, though they may look at it to fix faults, reduce bias, and improve accuracy. It passed the California State Assembly 50-17 and became law.",
+   "nay_description": "Voted against passing Senate Bill 524, which makes every police agency set rules for official reports written with artificial intelligence. Such a report must say that a computer helped write it and carry the signature of the officer who prepared it, and the first computer-written draft must be kept as long as the report. That draft does not count as the officer's own statement, and the agency must keep a log of who used the tool and what video or audio it worked from. The companies supplying these tools may not share, sell, or otherwise use police information except for that agency's work or under a court order, though they may look at it to fix faults, reduce bias, and improve accuracy. It passed the California State Assembly 50-17 and became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1601396,
+   "measure_id": "SB 704",
+   "vote_date": "2025-09-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 704, which requires gun barrels to be sold or handed over in person through a licensed gun dealer. The rule does not cover sales to police agencies, the military, licensed dealers, or collectors of antique guns. It also leaves out transfers from someone's estate, a barrel already attached to a gun, and a barrel bought in the same sale as a gun that gets its own background check. Holding barrels with plans to sell them is also barred unless the seller is a licensed dealer. From July 1, 2027 the dealer must check whether the buyer is allowed to own a gun, for a fee of up to $5, and keep a record of the sale. A first or second offense is a misdemeanor, and later ones can be charged as felonies. It passed the California State Assembly 57-20 and became law.",
+   "nay_description": "Voted against passing Senate Bill 704, which requires gun barrels to be sold or handed over in person through a licensed gun dealer. The rule does not cover sales to police agencies, the military, licensed dealers, or collectors of antique guns. It also leaves out transfers from someone's estate, a barrel already attached to a gun, and a barrel bought in the same sale as a gun that gets its own background check. Holding barrels with plans to sell them is also barred unless the seller is a licensed dealer. From July 1, 2027 the dealer must check whether the buyer is allowed to own a gun, for a fee of up to $5, and keep a record of the sale. A first or second offense is a misdemeanor, and later ones can be charged as felonies. It passed the California State Assembly 57-20 and became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1601404,
+   "measure_id": "SB 82",
+   "vote_date": "2025-09-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 82, which stops the fine print in a consumer contract from reaching disputes that have nothing to do with that contract. Its terms for settling disputes can cover only arguments about the product, service, money, or credit the contract itself provides. A clause signing away that protection has no force, and courts must read the rule in the consumer's favor. The law adds to other consumer protections rather than replacing them. It passed the California State Assembly 55-18 and became law.",
+   "nay_description": "Voted against passing Senate Bill 82, which stops the fine print in a consumer contract from reaching disputes that have nothing to do with that contract. Its terms for settling disputes can cover only arguments about the product, service, money, or credit the contract itself provides. A clause signing away that protection has no force, and courts must read the rule in the consumer's favor. The law adds to other consumer protections rather than replacing them. It passed the California State Assembly 55-18 and became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1601453,
+   "measure_id": "SB 580",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 580, which orders the Attorney General to publish model rules, by July 1, 2026, for how state and local agencies deal with immigration authorities. The Attorney General must also publish guidance and audit standards for limiting how far the information in government databases can be reached for immigration enforcement. Every state and local agency must adopt the model rules, or its own equivalent, by January 1, 2027. It passed the California State Assembly 58-19 and became law.",
+   "nay_description": "Voted against passing Senate Bill 580, which orders the Attorney General to publish model rules, by July 1, 2026, for how state and local agencies deal with immigration authorities. The Attorney General must also publish guidance and audit standards for limiting how far the information in government databases can be reached for immigration enforcement. Every state and local agency must adopt the model rules, or its own equivalent, by January 1, 2027. It passed the California State Assembly 58-19 and became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601478,
+   "measure_id": "AB 246",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 246, the Social Security Tenant Protection Act, which lets a tenant being evicted over unpaid rent point to a break in their Social Security payments as a defense, through January 20, 2029. It covers income lost because something the federal government did, or failed to do, stopped, delayed, or reduced the benefits the household normally receives. A tenant who satisfies the court of that, and that it is why the rent went unpaid, has the eviction put on hold. The hold ends at whichever comes first: 14 days after the benefits start again, or six months. The rent is still owed, and within 14 days of the money resuming the tenant must pay everything behind or agree a payment plan with the landlord. It passed the California State Senate 27-11 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 246, the Social Security Tenant Protection Act, which lets a tenant being evicted over unpaid rent point to a break in their Social Security payments as a defense, through January 20, 2029. It covers income lost because something the federal government did, or failed to do, stopped, delayed, or reduced the benefits the household normally receives. A tenant who satisfies the court of that, and that it is why the rent went unpaid, has the eviction put on hold. The hold ends at whichever comes first: 14 days after the benefits start again, or six months. The rent is still owed, and within 14 days of the money resuming the tenant must pay everything behind or agree a payment plan with the landlord. It passed the California State Senate 27-11 and became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1601531,
+   "measure_id": "SB 30",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 30, which stops a public agency from selling, donating, or handing on diesel rail equipment for further use once the agency retires it. An agency may pass it on only if it approves the deal at a public meeting and the equipment qualifies. Equipment qualifies if it meets one of the cleaner federal engine grades, pollutes no more than equipment in those grades, or has had its diesel engine taken out. It passed the California State Assembly 53-22 and became law.",
+   "nay_description": "Voted against passing Senate Bill 30, which stops a public agency from selling, donating, or handing on diesel rail equipment for further use once the agency retires it. An agency may pass it on only if it approves the deal at a public meeting and the equipment qualifies. Equipment qualifies if it meets one of the cleaner federal engine grades, pollutes no more than equipment in those grades, or has had its diesel engine taken out. It passed the California State Assembly 53-22 and became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1601541,
+   "measure_id": "AB 1318",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1318, an urgent measure that took effect at once. Wherever state law looks at a charity's federal tax-exempt status to decide who can receive a state grant, contract, or payment, state tax-exempt status now counts as well. The same change reaches the charities that run state programs for refugees and immigrants, which pay for immigration lawyers, emergency help, and resettlement support for people granted asylum. The California State Assembly agreed 60-19, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1318, an urgent measure that took effect at once. Wherever state law looks at a charity's federal tax-exempt status to decide who can receive a state grant, contract, or payment, state tax-exempt status now counts as well. The same change reaches the charities that run state programs for refugees and immigrants, which pay for immigration lawyers, emergency help, and resettlement support for people granted asylum. The California State Assembly agreed 60-19, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1601569,
+   "measure_id": "SB 518",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 518, which sets up a Bureau for Descendants of American Slavery inside the state Civil Rights Department, run by a deputy director the governor appoints and the Senate confirms. A genealogy unit checks whether a person descends from enslaved Americans, and that finding is what qualifies someone for state benefits meant for descendants. The bureau also runs education, outreach, and legal units, and must follow rules on how it collects, stores, and shares personal and genetic information. None of it starts unless the Legislature sets aside money for it. It passed the California State Assembly 60-17 and became law.",
+   "nay_description": "Voted against passing Senate Bill 518, which sets up a Bureau for Descendants of American Slavery inside the state Civil Rights Department, run by a deputy director the governor appoints and the Senate confirms. A genealogy unit checks whether a person descends from enslaved Americans, and that finding is what qualifies someone for state benefits meant for descendants. The bureau also runs education, outreach, and legal units, and must follow rules on how it collects, stores, and shares personal and genetic information. None of it starts unless the Legislature sets aside money for it. It passed the California State Assembly 60-17 and became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1601602,
+   "measure_id": "SB 634",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 634, which stops cities, counties, and special districts from passing or enforcing local laws against people who help the homeless. No local law may stop a person or organization from providing support services, or from helping someone with the basics of staying alive. That means help with eating and drinking, sleeping, staying out of the weather, and staying clean and healthy, including handing out food, water, blankets, and pillows. It does not cover handing out plywood or other heavy building materials. The state calls this a statewide matter, so it binds charter cities too. It passed the California State Assembly 55-20 and became law.",
+   "nay_description": "Voted against passing Senate Bill 634, which stops cities, counties, and special districts from passing or enforcing local laws against people who help the homeless. No local law may stop a person or organization from providing support services, or from helping someone with the basics of staying alive. That means help with eating and drinking, sleeping, staying out of the weather, and staying clean and healthy, including handing out food, water, blankets, and pillows. It does not cover handing out plywood or other heavy building materials. The state calls this a statewide matter, so it binds charter cities too. It passed the California State Assembly 55-20 and became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601620,
+   "measure_id": "AB 1037",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1037, which widens access to overdose-reversal drugs such as naloxone. Standing prescriptions and the right to carry one now cover any overdose, not only an opioid overdose, and anyone in a position to help a person at risk may hold one and pass it on. It drops the rule that a person be trained before receiving or carrying one. Someone who gives the drug in good faith, and is not paid for it, is generally not liable for civil damages, trained or not, unless they were grossly negligent or acted wilfully. It passed the California State Senate 30-10 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 1037, which widens access to overdose-reversal drugs such as naloxone. Standing prescriptions and the right to carry one now cover any overdose, not only an opioid overdose, and anyone in a position to help a person at risk may hold one and pass it on. It drops the rule that a person be trained before receiving or carrying one. Someone who gives the drug in good faith, and is not paid for it, is generally not liable for civil damages, trained or not, unless they were grossly negligent or acted wilfully. It passed the California State Senate 30-10 and became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1601634,
+   "measure_id": "SB 627",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 627, which makes it a crime for a law enforcement officer to wear a face covering that hides who they are while on duty. The rule reaches federal agents and officers from other states working in California, and the offense is an infraction or a misdemeanor. Officers may still cover their faces while working undercover, during tactical operations, where health and safety law requires it, to protect their identity during a prosecution, or as a disability accommodation. Every agency working in the state must post a written face-covering policy by July 1, 2026, and officers whose agency posts one that follows the law cannot be charged. It passed the California State Assembly 45-23 and became law.",
+   "nay_description": "Voted against passing Senate Bill 627, which makes it a crime for a law enforcement officer to wear a face covering that hides who they are while on duty. The rule reaches federal agents and officers from other states working in California, and the offense is an infraction or a misdemeanor. Officers may still cover their faces while working undercover, during tactical operations, where health and safety law requires it, to protect their identity during a prosecution, or as a disability accommodation. Every agency working in the state must post a written face-covering policy by July 1, 2026, and officers whose agency posts one that follows the law cannot be charged. It passed the California State Assembly 45-23 and became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601640,
+   "measure_id": "SB 704",
+   "vote_date": "2025-09-09",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 704, which requires gun barrels to be sold or handed over in person through a licensed gun dealer. The rule does not cover sales to police agencies, the military, licensed dealers, or collectors of antique guns. It also leaves out transfers from someone's estate, a barrel already attached to a gun, and a barrel bought in the same sale as a gun that gets its own background check. Holding barrels with plans to sell them is also barred unless the seller is a licensed dealer. From July 1, 2027 the dealer must check whether the buyer is allowed to own a gun, for a fee of up to $5, and keep a record of the sale. A first or second offense is a misdemeanor, and later ones can be charged as felonies. The California State Senate agreed 29-10, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 704, which requires gun barrels to be sold or handed over in person through a licensed gun dealer. The rule does not cover sales to police agencies, the military, licensed dealers, or collectors of antique guns. It also leaves out transfers from someone's estate, a barrel already attached to a gun, and a barrel bought in the same sale as a gun that gets its own background check. Holding barrels with plans to sell them is also barred unless the seller is a licensed dealer. From July 1, 2027 the dealer must check whether the buyer is allowed to own a gun, for a fee of up to $5, and keep a record of the sale. A first or second offense is a misdemeanor, and later ones can be charged as felonies. The California State Senate agreed 29-10, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601722,
+   "measure_id": "SB 30",
+   "vote_date": "2025-09-10",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 30, which stops a public agency from selling, donating, or handing on diesel rail equipment for further use once the agency retires it. An agency may pass it on only if it approves the deal at a public meeting and the equipment qualifies. Equipment qualifies if it meets one of the cleaner federal engine grades, pollutes no more than equipment in those grades, or has had its diesel engine taken out. The California State Senate agreed 29-10, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 30, which stops a public agency from selling, donating, or handing on diesel rail equipment for further use once the agency retires it. An agency may pass it on only if it approves the deal at a public meeting and the equipment qualifies. Equipment qualifies if it meets one of the cleaner federal engine grades, pollutes no more than equipment in those grades, or has had its diesel engine taken out. The California State Senate agreed 29-10, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601730,
+   "measure_id": "AB 628",
+   "vote_date": "2025-09-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 628, which adds a working stove and refrigerator to the things a rented home must have to be fit to live in, for leases signed, changed, or renewed from January 1, 2026. If the maker or the government recalls a stove or refrigerator, the landlord has 30 days from being told to repair or replace it. A tenant and landlord may agree when signing that the tenant will supply and look after their own refrigerator, on conditions the law sets. Some homes, including permanent supportive housing, are left out, and tenants keep their existing rights to fix a problem themselves or move out. It passed the California State Senate 25-11 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 628, which adds a working stove and refrigerator to the things a rented home must have to be fit to live in, for leases signed, changed, or renewed from January 1, 2026. If the maker or the government recalls a stove or refrigerator, the landlord has 30 days from being told to repair or replace it. A tenant and landlord may agree when signing that the tenant will supply and look after their own refrigerator, on conditions the law sets. Some homes, including permanent supportive housing, are left out, and tenants keep their existing rights to fix a problem themselves or move out. It passed the California State Senate 25-11 and became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601734,
+   "measure_id": "SB 524",
+   "vote_date": "2025-09-10",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 524, which makes every police agency set rules for official reports written with artificial intelligence. Such a report must say that a computer helped write it and carry the signature of the officer who prepared it, and the first computer-written draft must be kept as long as the report. That draft does not count as the officer's own statement, and the agency must keep a log of who used the tool and what video or audio it worked from. The companies supplying these tools may not share, sell, or otherwise use police information except for that agency's work or under a court order, though they may look at it to fix faults, reduce bias, and improve accuracy. The California State Senate agreed 28-10, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 524, which makes every police agency set rules for official reports written with artificial intelligence. Such a report must say that a computer helped write it and carry the signature of the officer who prepared it, and the first computer-written draft must be kept as long as the report. That draft does not count as the officer's own statement, and the agency must keep a log of who used the tool and what video or audio it worked from. The companies supplying these tools may not share, sell, or otherwise use police information except for that agency's work or under a court order, though they may look at it to fix faults, reduce bias, and improve accuracy. The California State Senate agreed 28-10, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601757,
+   "measure_id": "AB 858",
+   "vote_date": "2025-09-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 858, which keeps a job recall law running until January 1, 2027. It covers hotels, private clubs, event centers, airport food and service companies, and the firms that clean and maintain office and retail buildings. Those employers must tell workers they laid off about openings the workers are qualified for, and offer the jobs in an order of preference. It protects workers with at least six months on the job who were laid off for reasons tied to the COVID-19 pandemic, and bars punishing a worker for claiming these rights. It passed the California State Senate 29-10 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 858, which keeps a job recall law running until January 1, 2027. It covers hotels, private clubs, event centers, airport food and service companies, and the firms that clean and maintain office and retail buildings. Those employers must tell workers they laid off about openings the workers are qualified for, and offer the jobs in an order of preference. It protects workers with at least six months on the job who were laid off for reasons tied to the COVID-19 pandemic, and bars punishing a worker for claiming these rights. It passed the California State Senate 29-10 and became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601758,
+   "measure_id": "AB 1319",
+   "vote_date": "2025-09-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1319, which makes it illegal in California to bring in, send out, carry, sell, buy, or hold for sale any fish, wildlife, or plant taken in breach of a state or federal wildlife law. It measures those laws as they stood on January 19, 2025, so later cuts to federal protection do not narrow it, and anything seized is forfeited on conviction. The Department of Fish and Wildlife must also add a species to a temporary candidate list when federal protection for it is reduced. The rules stop working at the end of 2031, and a business is not liable while it follows a federal permit that allows some harm to a protected species. It passed the California State Senate 25-10 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 1319, which makes it illegal in California to bring in, send out, carry, sell, buy, or hold for sale any fish, wildlife, or plant taken in breach of a state or federal wildlife law. It measures those laws as they stood on January 19, 2025, so later cuts to federal protection do not narrow it, and anything seized is forfeited on conviction. The Department of Fish and Wildlife must also add a species to a temporary candidate list when federal protection for it is reduced. The rules stop working at the end of 2031, and a business is not liable while it follows a federal permit that allows some harm to a protected species. It passed the California State Senate 25-10 and became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601770,
+   "measure_id": "SB 580",
+   "vote_date": "2025-09-10",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 580, which orders the Attorney General to publish model rules, by July 1, 2026, for how state and local agencies deal with immigration authorities. The Attorney General must also publish guidance and audit standards for limiting how far the information in government databases can be reached for immigration enforcement. Every state and local agency must adopt the model rules, or its own equivalent, by January 1, 2027. The California State Senate agreed 30-10, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 580, which orders the Attorney General to publish model rules, by July 1, 2026, for how state and local agencies deal with immigration authorities. The Attorney General must also publish guidance and audit standards for limiting how far the information in government databases can be reached for immigration enforcement. Every state and local agency must adopt the model rules, or its own equivalent, by January 1, 2027. The California State Senate agreed 30-10, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601772,
+   "measure_id": "AB 692",
+   "vote_date": "2025-09-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 692, which bars employers from making a worker sign a contract, from January 1, 2026 on, that leaves the worker owing money if the job ends. These stay-or-pay deals can require paying back an employer, a training company, or a debt collector. Some are still allowed: government loan-repayment programs, tuition for a credential the worker can take to another job, approved apprenticeships, certain signing bonuses, and contracts to rent or buy a home. A banned term counts as an illegal restraint on a person's right to work, and a worker can sue over it, for themselves or for others in the same position, and collect penalties. It passed the California State Senate 25-11 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 692, which bars employers from making a worker sign a contract, from January 1, 2026 on, that leaves the worker owing money if the job ends. These stay-or-pay deals can require paying back an employer, a training company, or a debt collector. Some are still allowed: government loan-repayment programs, tuition for a credential the worker can take to another job, approved apprenticeships, certain signing bonuses, and contracts to rent or buy a home. A banned term counts as an illegal restraint on a person's right to work, and a worker can sue over it, for themselves or for others in the same position, and collect penalties. It passed the California State Senate 25-11 and became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601776,
+   "measure_id": "AB 495",
+   "vote_date": "2025-09-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 495, the Family Preparedness Plan Act, which lets more relatives sign the form that allows an adult to enroll a child in school and approve school-related medical care. A court can name an adult the parent chooses as a joint guardian when that parent will be unavailable for a time, including because of an immigration case, and those guardianship files stay private. School districts must keep their policies on immigration enforcement current with the Attorney General's guidance. Licensed child care centers may not collect information about a child's or family's immigration status, and must report requests from law enforcement for records or for entry to the center. It passed the California State Senate 29-10 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 495, the Family Preparedness Plan Act, which lets more relatives sign the form that allows an adult to enroll a child in school and approve school-related medical care. A court can name an adult the parent chooses as a joint guardian when that parent will be unavailable for a time, including because of an immigration case, and those guardianship files stay private. School districts must keep their policies on immigration enforcement current with the Attorney General's guidance. Licensed child care centers may not collect information about a child's or family's immigration status, and must report requests from law enforcement for records or for entry to the center. It passed the California State Senate 29-10 and became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601796,
+   "measure_id": "SB 634",
+   "vote_date": "2025-09-10",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 634, which stops cities, counties, and special districts from passing or enforcing local laws against people who help the homeless. No local law may stop a person or organization from providing support services, or from helping someone with the basics of staying alive. That means help with eating and drinking, sleeping, staying out of the weather, and staying clean and healthy, including handing out food, water, blankets, and pillows. It does not cover handing out plywood or other heavy building materials. The state calls this a statewide matter, so it binds charter cities too. The California State Senate agreed 22-16, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 634, which stops cities, counties, and special districts from passing or enforcing local laws against people who help the homeless. No local law may stop a person or organization from providing support services, or from helping someone with the basics of staying alive. That means help with eating and drinking, sleeping, staying out of the weather, and staying clean and healthy, including handing out food, water, blankets, and pillows. It does not cover handing out plywood or other heavy building materials. The state calls this a statewide matter, so it binds charter cities too. The California State Senate agreed 22-16, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601798,
+   "measure_id": "SB 518",
+   "vote_date": "2025-09-10",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 518, which sets up a Bureau for Descendants of American Slavery inside the state Civil Rights Department, run by a deputy director the governor appoints and the Senate confirms. A genealogy unit checks whether a person descends from enslaved Americans, and that finding is what qualifies someone for state benefits meant for descendants. The bureau also runs education, outreach, and legal units, and must follow rules on how it collects, stores, and shares personal and genetic information. None of it starts unless the Legislature sets aside money for it. The California State Senate agreed 30-10, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 518, which sets up a Bureau for Descendants of American Slavery inside the state Civil Rights Department, run by a deputy director the governor appoints and the Senate confirms. A genealogy unit checks whether a person descends from enslaved Americans, and that finding is what qualifies someone for state benefits meant for descendants. The bureau also runs education, outreach, and legal units, and must follow rules on how it collects, stores, and shares personal and genetic information. None of it starts unless the Legislature sets aside money for it. The California State Senate agreed 30-10, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601893,
+   "measure_id": "AB 1056",
+   "vote_date": "2025-09-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1056, which limits who can inherit a commercial gill net or trammel net permit. California stopped issuing new ones long ago, so these permits change hands only by transfer. The law removes the rule that let a permit pass to another qualified fisher when the holder died or became disabled. From January 1, 2027 a long-standing holder may pass a permit only to a family member, and once it moves that way it cannot be passed on again. It passed the California State Senate 29-10 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 1056, which limits who can inherit a commercial gill net or trammel net permit. California stopped issuing new ones long ago, so these permits change hands only by transfer. The law removes the rule that let a permit pass to another qualified fisher when the holder died or became disabled. From January 1, 2027 a long-standing holder may pass a permit only to a family member, and once it moves that way it cannot be passed on again. It passed the California State Senate 29-10 and became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601916,
+   "measure_id": "AB 325",
+   "vote_date": "2025-09-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 325, which makes it easier to bring a price-fixing case under California's antitrust law. A complaint can go forward if the facts it sets out make a conspiracy to restrain trade plausible, and it no longer has to rule out the chance the companies acted on their own. The law also bars using or handing out a shared pricing algorithm as part of such a conspiracy, or pressuring another business into charging the price the algorithm suggests. It passed the California State Senate 29-9 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 325, which makes it easier to bring a price-fixing case under California's antitrust law. A complaint can go forward if the facts it sets out make a conspiracy to restrain trade plausible, and it no longer has to rule out the chance the companies acted on their own. The law also bars using or handing out a shared pricing algorithm as part of such a conspiracy, or pressuring another business into charging the price the algorithm suggests. It passed the California State Senate 29-9 and became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601939,
+   "measure_id": "SB 627",
+   "vote_date": "2025-09-11",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 627, which makes it a crime for a law enforcement officer to wear a face covering that hides who they are while on duty. The rule reaches federal agents and officers from other states working in California, and the offense is an infraction or a misdemeanor. Officers may still cover their faces while working undercover, during tactical operations, where health and safety law requires it, to protect their identity during a prosecution, or as a disability accommodation. Every agency working in the state must post a written face-covering policy by July 1, 2026, and officers whose agency posts one that follows the law cannot be charged. The California State Senate agreed 28-11, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 627, which makes it a crime for a law enforcement officer to wear a face covering that hides who they are while on duty. The rule reaches federal agents and officers from other states working in California, and the offense is an infraction or a misdemeanor. Officers may still cover their faces while working undercover, during tactical operations, where health and safety law requires it, to protect their identity during a prosecution, or as a disability accommodation. Every agency working in the state must post a written face-covering policy by July 1, 2026, and officers whose agency posts one that follows the law cannot be charged. The California State Senate agreed 28-11, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172",
+   "acknowledge_later_rolls": [
+    1601937
+   ]
+  },
+  {
+   "chamber": "senate",
+   "roll": 1601943,
+   "measure_id": "AB 1071",
+   "vote_date": "2025-09-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1071, which helps a defendant who says the state pursued their conviction or sentence because of their race, ethnicity, or national origin. They can ask the court to order the release of all the evidence bearing on that claim. A judge who finds such a violation can also fix it with any remedy another law does not forbid. It passed the California State Senate 25-11 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 1071, which helps a defendant who says the state pursued their conviction or sentence because of their race, ethnicity, or national origin. They can ask the court to order the release of all the evidence bearing on that claim. A judge who finds such a violation can also fix it with any remedy another law does not forbid. It passed the California State Senate 25-11 and became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1602195,
+   "measure_id": "AB 572",
+   "vote_date": "2025-09-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 572, which makes every police agency and prosecutor's office adopt rules, by January 1, 2027, for interviewing the family of someone a police officer killed or badly hurt. Before that first formal interview, the officer or prosecutor must give their name and agency, show identification in person, tell the family what happened to their relative, and say the interview is part of an investigation. They must also tell the family they can bring someone they trust, and can choose whether to come to the station. These steps can be skipped if an officer reasonably believes waiting would lose or destroy evidence or put the public in immediate danger, or if the family member has already been given the same warnings or a Miranda warning. The law separately bars threats, lies, fake evidence, and misleading statements to press someone into an interview or during one. It passed the California State Senate 22-10 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 572, which makes every police agency and prosecutor's office adopt rules, by January 1, 2027, for interviewing the family of someone a police officer killed or badly hurt. Before that first formal interview, the officer or prosecutor must give their name and agency, show identification in person, tell the family what happened to their relative, and say the interview is part of an investigation. They must also tell the family they can bring someone they trust, and can choose whether to come to the station. These steps can be skipped if an officer reasonably believes waiting would lose or destroy evidence or put the public in immediate danger, or if the family member has already been given the same warnings or a Miranda warning. The law separately bars threats, lies, fake evidence, and misleading statements to press someone into an interview or during one. It passed the California State Senate 22-10 and became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602196,
+   "measure_id": "AB 572",
+   "vote_date": "2025-09-13",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 572, which makes every police agency and prosecutor's office adopt rules, by January 1, 2027, for interviewing the family of someone a police officer killed or badly hurt. Before that first formal interview, the officer or prosecutor must give their name and agency, show identification in person, tell the family what happened to their relative, and say the interview is part of an investigation. They must also tell the family they can bring someone they trust, and can choose whether to come to the station. These steps can be skipped if an officer reasonably believes waiting would lose or destroy evidence or put the public in immediate danger, or if the family member has already been given the same warnings or a Miranda warning. The law separately bars threats, lies, fake evidence, and misleading statements to press someone into an interview or during one. The California State Assembly agreed 42-22, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 572, which makes every police agency and prosecutor's office adopt rules, by January 1, 2027, for interviewing the family of someone a police officer killed or badly hurt. Before that first formal interview, the officer or prosecutor must give their name and agency, show identification in person, tell the family what happened to their relative, and say the interview is part of an investigation. They must also tell the family they can bring someone they trust, and can choose whether to come to the station. These steps can be skipped if an officer reasonably believes waiting would lose or destroy evidence or put the public in immediate danger, or if the family member has already been given the same warnings or a Miranda warning. The law separately bars threats, lies, fake evidence, and misleading statements to press someone into an interview or during one. The California State Assembly agreed 42-22, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1602214,
+   "measure_id": "SB 596",
+   "vote_date": "2025-09-12",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 596, which tightens the fines hospitals face for breaking nurse-to-patient staffing limits. A hospital escapes a fine if it has used up its on-call list of nurses, and the law now spells out what that list is. Calling nurses who were not scheduled on call, and who are not in the backup pool for that ward and shift, does not count as using it up. The health department must also treat a breach on each separate day as its own violation. The California State Senate agreed 21-10, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 596, which tightens the fines hospitals face for breaking nurse-to-patient staffing limits. A hospital escapes a fine if it has used up its on-call list of nurses, and the law now spells out what that list is. Calling nurses who were not scheduled on call, and who are not in the backup pool for that ward and shift, does not count as using it up. The health department must also treat a breach on each separate day as its own violation. The California State Senate agreed 21-10, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602272,
+   "measure_id": "SB 42",
+   "vote_date": "2025-09-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 42, the California Fair Elections Act, which lifts the state ban on candidates using public money to run for office. Only candidates who accept spending limits and meet the qualifying rules could take it. Public money could not pay legal bills or pay a candidate back for loans to their own campaign, and the fine for taking money from a foreign government goes up. Because the bill changes a law the voters passed, it takes effect only if voters approve it at the election on November 3, 2026. It passed the California State Assembly 59-20 and became law.",
+   "nay_description": "Voted against passing Senate Bill 42, the California Fair Elections Act, which lifts the state ban on candidates using public money to run for office. Only candidates who accept spending limits and meet the qualifying rules could take it. Public money could not pay legal bills or pay a candidate back for loans to their own campaign, and the fine for taking money from a foreign government goes up. Because the bill changes a law the voters passed, it takes effect only if voters approve it at the election on November 3, 2026. It passed the California State Assembly 59-20 and became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1602275,
+   "measure_id": "SB 79",
+   "vote_date": "2025-09-12",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 79, which makes cities and counties allow apartment buildings near major transit stops, on land already zoned for homes, shops, or a mix of the two. The closer a site sits to the stop, the taller and denser the law lets a building be. Builders must include homes people on lower incomes can afford, follow rules that limit tearing down existing homes and protect tenants from being forced out, and meet pay standards for construction work. A city or county can adopt its own plan for building near transit instead of following the state rules. The California State Senate agreed 21-8, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 79, which makes cities and counties allow apartment buildings near major transit stops, on land already zoned for homes, shops, or a mix of the two. The closer a site sits to the stop, the taller and denser the law lets a building be. Builders must include homes people on lower incomes can afford, follow rules that limit tearing down existing homes and protect tenants from being forced out, and meet pay standards for construction work. A city or county can adopt its own plan for building near transit instead of following the state rules. The California State Senate agreed 21-8, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602306,
+   "measure_id": "SB 763",
+   "vote_date": "2025-09-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 763, which raises the top fines for illegal deals that restrain trade under California's antitrust law. A company can now be fined up to $6 million, up from $1 million, and a person up to $1 million, up from $250,000, or more if the court ties the fine to the money made or the losses caused. The law also adds a penalty of up to $1 million for each violation, which the Attorney General or a district attorney can seek in a civil case. It passed the California State Assembly 53-20 and became law.",
+   "nay_description": "Voted against passing Senate Bill 763, which raises the top fines for illegal deals that restrain trade under California's antitrust law. A company can now be fined up to $6 million, up from $1 million, and a person up to $1 million, up from $250,000, or more if the court ties the fine to the money made or the losses caused. The law also adds a penalty of up to $1 million for each violation, which the Attorney General or a district attorney can seek in a civil case. It passed the California State Assembly 53-20 and became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602313,
+   "measure_id": "AB 325",
+   "vote_date": "2025-09-12",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 325, which makes it easier to bring a price-fixing case under California's antitrust law. A complaint can go forward if the facts it sets out make a conspiracy to restrain trade plausible, and it no longer has to rule out the chance the companies acted on their own. The law also bars using or handing out a shared pricing algorithm as part of such a conspiracy, or pressuring another business into charging the price the algorithm suggests. The California State Assembly agreed 54-18, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 325, which makes it easier to bring a price-fixing case under California's antitrust law. A complaint can go forward if the facts it sets out make a conspiracy to restrain trade plausible, and it no longer has to rule out the chance the companies acted on their own. The law also bars using or handing out a shared pricing algorithm as part of such a conspiracy, or pressuring another business into charging the price the algorithm suggests. The California State Assembly agreed 54-18, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1602340,
+   "measure_id": "AB 1127",
+   "vote_date": "2025-09-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1127, which bars licensed gun dealers, from July 1, 2026, from selling or handing over pistols that can be turned into machine guns. The law covers semi-automatic pistols with a cross-shaped trigger bar, which a small device fitted to the back of the slide can convert to fire repeatedly on one pull of the trigger. A first offense costs the dealer up to $1,000, a second up to $5,000 and possibly their license, and a third is a misdemeanor that takes the license away. Pistols delivered to the dealer before January 1, 2026 are exempt, along with sales to police, listed state agencies, and the military; sales between private parties handled by a dealer; and transfers to gunsmiths, other licensed dealers, and crime laboratories. It passed the California State Senate 29-9 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 1127, which bars licensed gun dealers, from July 1, 2026, from selling or handing over pistols that can be turned into machine guns. The law covers semi-automatic pistols with a cross-shaped trigger bar, which a small device fitted to the back of the slide can convert to fire repeatedly on one pull of the trigger. A first offense costs the dealer up to $1,000, a second up to $5,000 and possibly their license, and a third is a misdemeanor that takes the license away. Pistols delivered to the dealer before January 1, 2026 are exempt, along with sales to police, listed state agencies, and the military; sales between private parties handled by a dealer; and transfers to gunsmiths, other licensed dealers, and crime laboratories. It passed the California State Senate 29-9 and became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602341,
+   "measure_id": "AB 1127",
+   "vote_date": "2025-09-13",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1127, which bars licensed gun dealers, from July 1, 2026, from selling or handing over pistols that can be turned into machine guns. The law covers semi-automatic pistols with a cross-shaped trigger bar, which a small device fitted to the back of the slide can convert to fire repeatedly on one pull of the trigger. A first offense costs the dealer up to $1,000, a second up to $5,000 and possibly their license, and a third is a misdemeanor that takes the license away. Pistols delivered to the dealer before January 1, 2026 are exempt, along with sales to police, listed state agencies, and the military; sales between private parties handled by a dealer; and transfers to gunsmiths, other licensed dealers, and crime laboratories. The California State Assembly agreed 54-16, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1127, which bars licensed gun dealers, from July 1, 2026, from selling or handing over pistols that can be turned into machine guns. The law covers semi-automatic pistols with a cross-shaped trigger bar, which a small device fitted to the back of the slide can convert to fire repeatedly on one pull of the trigger. A first offense costs the dealer up to $1,000, a second up to $5,000 and possibly their license, and a third is a misdemeanor that takes the license away. Pistols delivered to the dealer before January 1, 2026 are exempt, along with sales to police, listed state agencies, and the military; sales between private parties handled by a dealer; and transfers to gunsmiths, other licensed dealers, and crime laboratories. The California State Assembly agreed 54-16, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602345,
+   "measure_id": "AB 1071",
+   "vote_date": "2025-09-13",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1071, which helps a defendant who says the state pursued their conviction or sentence because of their race, ethnicity, or national origin. They can ask the court to order the release of all the evidence bearing on that claim. A judge who finds such a violation can also fix it with any remedy another law does not forbid. The California State Assembly agreed 42-21, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1071, which helps a defendant who says the state pursued their conviction or sentence because of their race, ethnicity, or national origin. They can ask the court to order the release of all the evidence bearing on that claim. A judge who finds such a violation can also fix it with any remedy another law does not forbid. The California State Assembly agreed 42-21, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1602348,
+   "measure_id": "AB 1036",
+   "vote_date": "2025-09-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 1036, which widens the right to see the evidence in your own case after you have been convicted. The right used to cover only serious or violent felonies carrying 15 years or more; it now covers any felony with a state prison sentence. What must be handed over includes anything held by a prosecutor who worked on the case that points away from guilt or toward a lighter sentence. A prosecutor who wants to hold back notes from jury selection must first show the court how those notes bear on their case. It passed the California State Senate 28-9 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 1036, which widens the right to see the evidence in your own case after you have been convicted. The right used to cover only serious or violent felonies carrying 15 years or more; it now covers any felony with a state prison sentence. What must be handed over includes anything held by a prosecutor who worked on the case that points away from guilt or toward a lighter sentence. A prosecutor who wants to hold back notes from jury selection must first show the court how those notes bear on their case. It passed the California State Senate 28-9 and became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602349,
+   "measure_id": "AB 1036",
+   "vote_date": "2025-09-13",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1036, which widens the right to see the evidence in your own case after you have been convicted. The right used to cover only serious or violent felonies carrying 15 years or more; it now covers any felony with a state prison sentence. What must be handed over includes anything held by a prosecutor who worked on the case that points away from guilt or toward a lighter sentence. A prosecutor who wants to hold back notes from jury selection must first show the court how those notes bear on their case. The California State Assembly agreed 54-18, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1036, which widens the right to see the evidence in your own case after you have been convicted. The right used to cover only serious or violent felonies carrying 15 years or more; it now covers any felony with a state prison sentence. What must be handed over includes anything held by a prosecutor who worked on the case that points away from guilt or toward a lighter sentence. A prosecutor who wants to hold back notes from jury selection must first show the court how those notes bear on their case. The California State Assembly agreed 54-18, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602370,
+   "measure_id": "SB 79",
+   "vote_date": "2025-09-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 79, which makes cities and counties allow apartment buildings near major transit stops, on land already zoned for homes, shops, or a mix of the two. The closer a site sits to the stop, the taller and denser the law lets a building be. Builders must include homes people on lower incomes can afford, follow rules that limit tearing down existing homes and protect tenants from being forced out, and meet pay standards for construction work. A city or county can adopt its own plan for building near transit instead of following the state rules. It passed the California State Assembly 43-19 and became law.",
+   "nay_description": "Voted against passing Senate Bill 79, which makes cities and counties allow apartment buildings near major transit stops, on land already zoned for homes, shops, or a mix of the two. The closer a site sits to the stop, the taller and denser the law lets a building be. Builders must include homes people on lower incomes can afford, follow rules that limit tearing down existing homes and protect tenants from being forced out, and meet pay standards for construction work. A city or county can adopt its own plan for building near transit instead of following the state rules. It passed the California State Assembly 43-19 and became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602457,
+   "measure_id": "AB 495",
+   "vote_date": "2025-09-11",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 495, the Family Preparedness Plan Act, which lets more relatives sign the form that allows an adult to enroll a child in school and approve school-related medical care. A court can name an adult the parent chooses as a joint guardian when that parent will be unavailable for a time, including because of an immigration case, and those guardianship files stay private. School districts must keep their policies on immigration enforcement current with the Attorney General's guidance. Licensed child care centers may not collect information about a child's or family's immigration status, and must report requests from law enforcement for records or for entry to the center. The California State Assembly agreed 60-20, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 495, the Family Preparedness Plan Act, which lets more relatives sign the form that allows an adult to enroll a child in school and approve school-related medical care. A court can name an adult the parent chooses as a joint guardian when that parent will be unavailable for a time, including because of an immigration case, and those guardianship files stay private. School districts must keep their policies on immigration enforcement current with the Attorney General's guidance. Licensed child care centers may not collect information about a child's or family's immigration status, and must report requests from law enforcement for records or for entry to the center. The California State Assembly agreed 60-20, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602464,
+   "measure_id": "AB 246",
+   "vote_date": "2025-09-10",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 246, the Social Security Tenant Protection Act, which lets a tenant being evicted over unpaid rent point to a break in their Social Security payments as a defense, through January 20, 2029. It covers income lost because something the federal government did, or failed to do, stopped, delayed, or reduced the benefits the household normally receives. A tenant who satisfies the court of that, and that it is why the rent went unpaid, has the eviction put on hold. The hold ends at whichever comes first: 14 days after the benefits start again, or six months. The rent is still owed, and within 14 days of the money resuming the tenant must pay everything behind or agree a payment plan with the landlord. The California State Assembly agreed 50-17, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 246, the Social Security Tenant Protection Act, which lets a tenant being evicted over unpaid rent point to a break in their Social Security payments as a defense, through January 20, 2029. It covers income lost because something the federal government did, or failed to do, stopped, delayed, or reduced the benefits the household normally receives. A tenant who satisfies the court of that, and that it is why the rent went unpaid, has the eviction put on hold. The hold ends at whichever comes first: 14 days after the benefits start again, or six months. The rent is still owed, and within 14 days of the money resuming the tenant must pay everything behind or agree a payment plan with the landlord. The California State Assembly agreed 50-17, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602473,
+   "measure_id": "AB 1319",
+   "vote_date": "2025-09-11",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1319, which makes it illegal in California to bring in, send out, carry, sell, buy, or hold for sale any fish, wildlife, or plant taken in breach of a state or federal wildlife law. It measures those laws as they stood on January 19, 2025, so later cuts to federal protection do not narrow it, and anything seized is forfeited on conviction. The Department of Fish and Wildlife must also add a species to a temporary candidate list when federal protection for it is reduced. The rules stop working at the end of 2031, and a business is not liable while it follows a federal permit that allows some harm to a protected species. The California State Assembly agreed 51-19, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1319, which makes it illegal in California to bring in, send out, carry, sell, buy, or hold for sale any fish, wildlife, or plant taken in breach of a state or federal wildlife law. It measures those laws as they stood on January 19, 2025, so later cuts to federal protection do not narrow it, and anything seized is forfeited on conviction. The Department of Fish and Wildlife must also add a species to a temporary candidate list when federal protection for it is reduced. The rules stop working at the end of 2031, and a business is not liable while it follows a federal permit that allows some harm to a protected species. The California State Assembly agreed 51-19, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602504,
+   "measure_id": "AB 692",
+   "vote_date": "2025-09-11",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 692, which bars employers from making a worker sign a contract, from January 1, 2026 on, that leaves the worker owing money if the job ends. These stay-or-pay deals can require paying back an employer, a training company, or a debt collector. Some are still allowed: government loan-repayment programs, tuition for a credential the worker can take to another job, approved apprenticeships, certain signing bonuses, and contracts to rent or buy a home. A banned term counts as an illegal restraint on a person's right to work, and a worker can sue over it, for themselves or for others in the same position, and collect penalties. The California State Assembly agreed 46-20, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 692, which bars employers from making a worker sign a contract, from January 1, 2026 on, that leaves the worker owing money if the job ends. These stay-or-pay deals can require paying back an employer, a training company, or a debt collector. Some are still allowed: government loan-repayment programs, tuition for a credential the worker can take to another job, approved apprenticeships, certain signing bonuses, and contracts to rent or buy a home. A banned term counts as an illegal restraint on a person's right to work, and a worker can sue over it, for themselves or for others in the same position, and collect penalties. The California State Assembly agreed 46-20, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602510,
+   "measure_id": "AB 1037",
+   "vote_date": "2025-09-10",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 1037, which widens access to overdose-reversal drugs such as naloxone. Standing prescriptions and the right to carry one now cover any overdose, not only an opioid overdose, and anyone in a position to help a person at risk may hold one and pass it on. It drops the rule that a person be trained before receiving or carrying one. Someone who gives the drug in good faith, and is not paid for it, is generally not liable for civil damages, trained or not, unless they were grossly negligent or acted wilfully. The California State Assembly agreed 53-21, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 1037, which widens access to overdose-reversal drugs such as naloxone. Standing prescriptions and the right to carry one now cover any overdose, not only an opioid overdose, and anyone in a position to help a person at risk may hold one and pass it on. It drops the rule that a person be trained before receiving or carrying one. Someone who gives the drug in good faith, and is not paid for it, is generally not liable for civil damages, trained or not, unless they were grossly negligent or acted wilfully. The California State Assembly agreed 53-21, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602523,
+   "measure_id": "AB 628",
+   "vote_date": "2025-09-11",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 628, which adds a working stove and refrigerator to the things a rented home must have to be fit to live in, for leases signed, changed, or renewed from January 1, 2026. If the maker or the government recalls a stove or refrigerator, the landlord has 30 days from being told to repair or replace it. A tenant and landlord may agree when signing that the tenant will supply and look after their own refrigerator, on conditions the law sets. Some homes, including permanent supportive housing, are left out, and tenants keep their existing rights to fix a problem themselves or move out. The California State Assembly agreed 49-17, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 628, which adds a working stove and refrigerator to the things a rented home must have to be fit to live in, for leases signed, changed, or renewed from January 1, 2026. If the maker or the government recalls a stove or refrigerator, the landlord has 30 days from being told to repair or replace it. A tenant and landlord may agree when signing that the tenant will supply and look after their own refrigerator, on conditions the law sets. Some homes, including permanent supportive housing, are left out, and tenants keep their existing rights to fix a problem themselves or move out. The California State Assembly agreed 49-17, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602541,
+   "measure_id": "AB 858",
+   "vote_date": "2025-09-11",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 858, which keeps a job recall law running until January 1, 2027. It covers hotels, private clubs, event centers, airport food and service companies, and the firms that clean and maintain office and retail buildings. Those employers must tell workers they laid off about openings the workers are qualified for, and offer the jobs in an order of preference. It protects workers with at least six months on the job who were laid off for reasons tied to the COVID-19 pandemic, and bars punishing a worker for claiming these rights. The California State Assembly agreed 49-19, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 858, which keeps a job recall law running until January 1, 2027. It covers hotels, private clubs, event centers, airport food and service companies, and the firms that clean and maintain office and retail buildings. Those employers must tell workers they laid off about openings the workers are qualified for, and offer the jobs in an order of preference. It protects workers with at least six months on the job who were laid off for reasons tied to the COVID-19 pandemic, and bars punishing a worker for claiming these rights. The California State Assembly agreed 49-19, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602551,
+   "measure_id": "SB 825",
+   "vote_date": "2025-09-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 825, which confirms that California's financial protection regulator can act against licensed escrow agents and finance lenders that deceive or take advantage of customers. Those businesses are otherwise exempt from the state's consumer financial protection law, and the bill makes clear that the exemption does not shield them from the ban on deceptive and abusive practices. It passed the California State Assembly 59-19 and became law.",
+   "nay_description": "Voted against passing Senate Bill 825, which confirms that California's financial protection regulator can act against licensed escrow agents and finance lenders that deceive or take advantage of customers. Those businesses are otherwise exempt from the state's consumer financial protection law, and the bill makes clear that the exemption does not shield them from the ban on deceptive and abusive practices. It passed the California State Assembly 59-19 and became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1602572,
+   "measure_id": "SB 596",
+   "vote_date": "2025-09-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 596, which tightens the fines hospitals face for breaking nurse-to-patient staffing limits. A hospital escapes a fine if it has used up its on-call list of nurses, and the law now spells out what that list is. Calling nurses who were not scheduled on call, and who are not in the backup pool for that ward and shift, does not count as using it up. The health department must also treat a breach on each separate day as its own violation. It passed the California State Assembly 48-19 and became law.",
+   "nay_description": "Voted against passing Senate Bill 596, which tightens the fines hospitals face for breaking nurse-to-patient staffing limits. A hospital escapes a fine if it has used up its on-call list of nurses, and the law now spells out what that list is. Calling nurses who were not scheduled on call, and who are not in the backup pool for that ward and shift, does not count as using it up. The health department must also treat a breach on each separate day as its own violation. It passed the California State Assembly 48-19 and became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1602893,
+   "measure_id": "SB 763",
+   "vote_date": "2025-09-13",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 763, which raises the top fines for illegal deals that restrain trade under California's antitrust law. A company can now be fined up to $6 million, up from $1 million, and a person up to $1 million, up from $250,000, or more if the court ties the fine to the money made or the losses caused. The law also adds a penalty of up to $1 million for each violation, which the Attorney General or a district attorney can seek in a civil case. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 763, which raises the top fines for illegal deals that restrain trade under California's antitrust law. A company can now be fined up to $6 million, up from $1 million, and a person up to $1 million, up from $250,000, or more if the court ties the fine to the money made or the losses caused. The law also adds a penalty of up to $1 million for each violation, which the Attorney General or a district attorney can seek in a civil case. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1602930,
+   "measure_id": "SB 42",
+   "vote_date": "2025-09-13",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 42, the California Fair Elections Act, which lifts the state ban on candidates using public money to run for office. Only candidates who accept spending limits and meet the qualifying rules could take it. Public money could not pay legal bills or pay a candidate back for loans to their own campaign, and the fine for taking money from a foreign government goes up. Because the bill changes a law the voters passed, it takes effect only if voters approve it at the election on November 3, 2026. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 42, the California Fair Elections Act, which lifts the state ban on candidates using public money to run for office. Only candidates who accept spending limits and meet the qualifying rules could take it. Public money could not pay legal bills or pay a candidate back for loans to their own campaign, and the fine for taking money from a foreign government goes up. Because the bill changes a law the voters passed, it takes effect only if voters approve it at the election on November 3, 2026. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1701449,
+   "measure_id": "SB 73",
+   "vote_date": "2026-05-22",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 73, which bars police officers from interfering with the running of an election and lets named officials sue to enforce that. No one may let a law enforcement agent see, disturb, change, or take voter rosters or voter lists without a court order, unless they are investigating certain voting fraud. For certified voting machines the rule is stricter: a court order is needed, with no fraud exception. Under either rule, officers may still help with logistics, transport, or security if the elections official has signed a written agreement with their agency. The Attorney General must publish guidance on answering law enforcement requests to enter rooms where ballots are kept. Taking a package of voted ballots from an elections official is now a crime, and an observer may not challenge a signature the voter has already confirmed. It passed the California State Assembly 57-19 and became law.",
+   "nay_description": "Voted against passing Senate Bill 73, which bars police officers from interfering with the running of an election and lets named officials sue to enforce that. No one may let a law enforcement agent see, disturb, change, or take voter rosters or voter lists without a court order, unless they are investigating certain voting fraud. For certified voting machines the rule is stricter: a court order is needed, with no fraud exception. Under either rule, officers may still help with logistics, transport, or security if the elections official has signed a written agreement with their agency. The Attorney General must publish guidance on answering law enforcement requests to enter rooms where ballots are kept. Taking a package of voted ballots from an elections official is now a crime, and an observer may not challenge a signature the voter has already confirmed. It passed the California State Assembly 57-19 and became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1702119,
+   "measure_id": "SB 73",
+   "vote_date": "2026-05-26",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Assembly's changes to Senate Bill 73, which bars police officers from interfering with the running of an election and lets named officials sue to enforce that. No one may let a law enforcement agent see, disturb, change, or take voter rosters or voter lists without a court order, unless they are investigating certain voting fraud. For certified voting machines the rule is stricter: a court order is needed, with no fraud exception. Under either rule, officers may still help with logistics, transport, or security if the elections official has signed a written agreement with their agency. The Attorney General must publish guidance on answering law enforcement requests to enter rooms where ballots are kept. Taking a package of voted ballots from an elections official is now a crime, and an observer may not challenge a signature the voter has already confirmed. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Assembly's changes to Senate Bill 73, which bars police officers from interfering with the running of an election and lets named officials sue to enforce that. No one may let a law enforcement agent see, disturb, change, or take voter rosters or voter lists without a court order, unless they are investigating certain voting fraud. For certified voting machines the rule is stricter: a court order is needed, with no fraud exception. Under either rule, officers may still help with logistics, transport, or security if the elections official has signed a written agreement with their agency. The Attorney General must publish guidance on answering law enforcement requests to enter rooms where ballots are kept. Taking a package of voted ballots from an elections official is now a crime, and an observer may not challenge a signature the voter has already confirmed. The California State Senate agreed 29-8, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1725364,
+   "measure_id": "AB 2624",
+   "vote_date": "2026-08-18",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Assembly Bill 2624, which lets people who provide immigration support services keep their home address private when they face threats or harassment because of that work. Their employees and volunteers are covered too, and the program starts on October 1, 2027. It keeps a participant's address out of answers to public records requests. The law also bars selling or trading their personal details or photo online to stir up violence against them, and bars posting that information with the specific intent that someone attack them straight away. It passed the California State Senate 30-10 and became law.",
+   "nay_description": "Voted against passing Assembly Bill 2624, which lets people who provide immigration support services keep their home address private when they face threats or harassment because of that work. Their employees and volunteers are covered too, and the program starts on October 1, 2027. It keeps a participant's address out of answers to public records requests. The law also bars selling or trading their personal details or photo online to stir up violence against them, and bars posting that information with the specific intent that someone attack them straight away. It passed the California State Senate 30-10 and became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1725474,
+   "measure_id": "AB 2624",
+   "vote_date": "2026-08-19",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the Senate's changes to Assembly Bill 2624, which lets people who provide immigration support services keep their home address private when they face threats or harassment because of that work. Their employees and volunteers are covered too, and the program starts on October 1, 2027. It keeps a participant's address out of answers to public records requests. The law also bars selling or trading their personal details or photo online to stir up violence against them, and bars posting that information with the specific intent that someone attack them straight away. The California State Assembly agreed 59-19, sending the bill to the governor, and it became law.",
+   "nay_description": "Voted against agreeing to the Senate's changes to Assembly Bill 2624, which lets people who provide immigration support services keep their home address private when they face threats or harassment because of that work. Their employees and volunteers are covered too, and the program starts on October 1, 2027. It keeps a participant's address out of answers to public records requests. The law also bars selling or trading their personal details or photo online to stir up violence against them, and bars posting that information with the specific intent that someone attack them straight away. The California State Assembly agreed 59-19, sending the bill to the governor, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "CA",
+   "session": "2172"
+  },
+  {
+   "chamber": "house",
+   "roll": 1517204,
+   "measure_id": "HB 567",
+   "vote_date": "2025-03-13",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 567, which repealed Missouri's earned paid sick time law in full, the law voters approved as Proposition A in November 2024. It also ended the automatic inflation adjustment of the state minimum wage after 2024 and struck the yearly increases scheduled from 2027 on; the $13.75 rate for 2025 and the $15.00 rate for 2026 stayed in place. In the other direction, it extended the minimum wage law to public employers for the first time. The Missouri House passed it 96-51 and it became law.",
+   "nay_description": "Voted against House Bill 567, which repealed Missouri's earned paid sick time law in full, the law voters approved as Proposition A in November 2024. It also ended the automatic inflation adjustment of the state minimum wage after 2024 and struck the yearly increases scheduled from 2027 on; the $13.75 rate for 2025 and the $15.00 rate for 2026 stayed in place. In the other direction, it extended the minimum wage law to public employers for the first time. The Missouri House passed it 96-51 and it became law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "against",
+     "nay": "for"
+    },
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "MO",
+   "session": "2169",
+   "acknowledge_later_rolls": [
+    1517205,
+    1517206
+   ]
+  },
+  {
+   "chamber": "house",
+   "roll": 1551715,
+   "measure_id": "HJR 73",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for House Joint Resolution 73, which would repeal the reproductive-freedom right Missouri voters added to the state constitution in 2024. It would allow abortion only for a medical emergency, a fetal anomaly, rape or incest, and only through 12 weeks of pregnancy in cases of rape or incest. It would let the legislature regulate abortion providers and facilities, bar public funding except for a medical emergency, rape or incest, and require consent from both a minor and a parent. It would also ban gender transition surgery, cross-sex hormones and puberty blockers for anyone under 18. The Missouri House passed it 103-51. It takes effect only if Missouri voters approve it; a joint resolution needs no governor's signature.",
+   "nay_description": "Voted against House Joint Resolution 73, which would repeal the reproductive-freedom right Missouri voters added to the state constitution in 2024. It would allow abortion only for a medical emergency, a fetal anomaly, rape or incest, and only through 12 weeks of pregnancy in cases of rape or incest. It would let the legislature regulate abortion providers and facilities, bar public funding except for a medical emergency, rape or incest, and require consent from both a minor and a parent. It would also ban gender transition surgery, cross-sex hormones and puberty blockers for anyone under 18. The Missouri House passed it 103-51. It takes effect only if Missouri voters approve it; a joint resolution needs no governor's signature.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": "for"
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "MO",
+   "session": "2169",
+   "acknowledge_later_rolls": [
+    1551714
+   ]
+  },
+  {
+   "chamber": "house",
+   "roll": 1563728,
+   "measure_id": "SB 71",
+   "vote_date": "2025-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 71, which made it burglary in the second degree to break into a motor vehicle or into a restricted area of a commercial business, and a class C felony when a firearm is involved or stolen. It created a new class A misdemeanor for trying the handles of one vehicle after another to get in and steal. It required fingerprint-based state and federal criminal background checks for applicants to about forty licensing boards and for peace officer training. It created tuition awards for public safety workers and their dependents and extended the line-of-duty death benefit. It also let public retirement systems close records tied to their investments and business dealings, and let the local government retirement board debate investments in closed session. It dropped the rule that that board's investment counselor be registered with the Securities and Exchange Commission. The Missouri House passed it 112-33 and it became law.",
+   "nay_description": "Voted against Senate Bill 71, which made it burglary in the second degree to break into a motor vehicle or into a restricted area of a commercial business, and a class C felony when a firearm is involved or stolen. It created a new class A misdemeanor for trying the handles of one vehicle after another to get in and steal. It required fingerprint-based state and federal criminal background checks for applicants to about forty licensing boards and for peace officer training. It created tuition awards for public safety workers and their dependents and extended the line-of-duty death benefit. It also let public retirement systems close records tied to their investments and business dealings, and let the local government retirement board debate investments in closed session. It dropped the rule that that board's investment counselor be registered with the Securities and Exchange Commission. The Missouri House passed it 112-33 and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "MO",
+   "session": "2169",
+   "acknowledge_later_rolls": [
+    1563729
+   ]
+  },
+  {
+   "chamber": "house",
+   "roll": 1565418,
+   "measure_id": "HB 595",
+   "vote_date": "2025-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 595, which stopped Missouri cities and counties from passing several kinds of renter protection. They may no longer bar a landlord from refusing a tenant because the tenant's lawful income includes housing assistance. They may no longer limit how a landlord uses income tests, credit scores, credit reports, eviction or property damage history, or criminal history. They may no longer cap a security deposit or require that tenants get a right of first refusal. Cities and counties may still bar discrimination against people who receive veterans' benefits, and they keep their authority over property they own, voluntary subsidized-rent agreements and homes assisted with federal community development block grant money. A separate section requires a real estate broker acting for a buyer or tenant to sign a written agency agreement before acting, not while acting. The Missouri House passed the conference version 103-37 and it became law.",
+   "nay_description": "Voted against House Bill 595, which stopped Missouri cities and counties from passing several kinds of renter protection. They may no longer bar a landlord from refusing a tenant because the tenant's lawful income includes housing assistance. They may no longer limit how a landlord uses income tests, credit scores, credit reports, eviction or property damage history, or criminal history. They may no longer cap a security deposit or require that tenants get a right of first refusal. Cities and counties may still bar discrimination against people who receive veterans' benefits, and they keep their authority over property they own, voluntary subsidized-rent agreements and homes assisted with federal community development block grant money. A separate section requires a real estate broker acting for a buyer or tenant to sign a written agency agreement before acting, not while acting. The Missouri House passed the conference version 103-37 and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "against",
+     "nay": "for"
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "MO",
+   "session": "2169"
+  },
+  {
+   "chamber": "house",
+   "roll": 1567074,
+   "measure_id": "HB 594",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 594, which cut personal income tax by letting individuals deduct 100 percent of their capital gains starting with the 2025 tax year. The same deduction reaches corporations only if Missouri's top individual income tax rate first falls to 4.5 percent or less. The bill also exempted diapers, incontinence products and feminine hygiene products from state sales tax, and raised and inflation-indexed the property tax credit for seniors and disabled veterans. It let counties, ambulance districts and fire protection districts ask their own voters for higher local sales taxes. The Missouri House adopted the Senate's version 102-41 and it became law.",
+   "nay_description": "Voted against House Bill 594, which cut personal income tax by letting individuals deduct 100 percent of their capital gains starting with the 2025 tax year. The same deduction reaches corporations only if Missouri's top individual income tax rate first falls to 4.5 percent or less. The bill also exempted diapers, incontinence products and feminine hygiene products from state sales tax, and raised and inflation-indexed the property tax credit for seniors and disabled veterans. It let counties, ambulance districts and fire protection districts ask their own voters for higher local sales taxes. The Missouri House adopted the Senate's version 102-41 and it became law.",
+   "labels": [
+    {
+     "slug": "personal_income_tax_reduction",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "MO",
+   "session": "2169",
+   "acknowledge_later_rolls": [
+    1567073
+   ]
+  },
+  {
+   "chamber": "house",
+   "roll": 1569572,
+   "measure_id": "HB 145",
+   "vote_date": "2025-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 145, which closed several kinds of government records under Missouri's Sunshine Law. It closed individually identifiable information about minors held by cities, towns, villages and park boards, and the customer usage and billing records of municipal utilities. It also closed camping and lodging reservation details for public parks and the locations of endangered or imperiled species. Names, billing addresses and service dates for commercial utility accounts stay public. The bill widened the officials who can have their personal information stripped from public records to include prosecutors' employees, court clerks and juvenile officers. It also lets an agency treat a records request as withdrawn if the requester does not pay the fees within 90 days, or 150 days when the fees top $1,000. The Missouri House gave it final approval 107-50 and it became law.",
+   "nay_description": "Voted against House Bill 145, which closed several kinds of government records under Missouri's Sunshine Law. It closed individually identifiable information about minors held by cities, towns, villages and park boards, and the customer usage and billing records of municipal utilities. It also closed camping and lodging reservation details for public parks and the locations of endangered or imperiled species. Names, billing addresses and service dates for commercial utility accounts stay public. The bill widened the officials who can have their personal information stripped from public records to include prosecutors' employees, court clerks and juvenile officers. It also lets an agency treat a records request as withdrawn if the requester does not pay the fees within 90 days, or 150 days when the fees top $1,000. The Missouri House gave it final approval 107-50 and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": "for"
+    },
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "MO",
+   "session": "2169",
+   "acknowledge_later_rolls": [
+    1569571
+   ]
+  },
+  {
+   "chamber": "senate",
+   "roll": 1571781,
+   "measure_id": "HB 567",
+   "vote_date": "2025-05-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 567, which repealed Missouri's earned paid sick time law in full, the law voters approved as Proposition A in November 2024. It also ended the automatic inflation adjustment of the state minimum wage after 2024 and struck the yearly increases scheduled from 2027 on; the $13.75 rate for 2025 and the $15.00 rate for 2026 stayed in place. In the other direction, it extended the minimum wage law to public employers for the first time. The Missouri Senate gave it final approval 22-11 and it became law.",
+   "nay_description": "Voted against House Bill 567, which repealed Missouri's earned paid sick time law in full, the law voters approved as Proposition A in November 2024. It also ended the automatic inflation adjustment of the state minimum wage after 2024 and struck the yearly increases scheduled from 2027 on; the $13.75 rate for 2025 and the $15.00 rate for 2026 stayed in place. In the other direction, it extended the minimum wage law to public employers for the first time. The Missouri Senate gave it final approval 22-11 and it became law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "against",
+     "nay": "for"
+    },
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "MO",
+   "session": "2169"
+  },
+  {
+   "chamber": "house",
+   "roll": 1572256,
+   "measure_id": "SB 152",
+   "vote_date": "2025-05-15",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 152, which barred foreign nationals from funding or steering Missouri ballot measure campaigns. A foreign national may not contribute to, spend on, give in-kind support to, solicit money for, or take part in the decisions of a committee working on a ballot measure. Committees must get a written affirmation from anyone giving more than $2,000 that the donor is not a foreign national. Violators can be ordered to refund or hand over the money, committee officers can be held personally liable, and damages can reach twice the amount, or three times that for a knowing violation. The Attorney General enforces the new sections, and the law switches off the Missouri Ethics Commission's usual complaint process for them. It also gives donors to tax-exempt organizations a right of privacy that limits what the Attorney General may collect or disclose. The Missouri House passed it 94-47 and it became law.",
+   "nay_description": "Voted against Senate Bill 152, which barred foreign nationals from funding or steering Missouri ballot measure campaigns. A foreign national may not contribute to, spend on, give in-kind support to, solicit money for, or take part in the decisions of a committee working on a ballot measure. Committees must get a written affirmation from anyone giving more than $2,000 that the donor is not a foreign national. Violators can be ordered to refund or hand over the money, committee officers can be held personally liable, and damages can reach twice the amount, or three times that for a knowing violation. The Attorney General enforces the new sections, and the law switches off the Missouri Ethics Commission's usual complaint process for them. It also gives donors to tax-exempt organizations a right of privacy that limits what the Attorney General may collect or disclose. The Missouri House passed it 94-47 and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "MO",
+   "session": "2169",
+   "acknowledge_later_rolls": [
+    1572255
+   ]
+  },
+  {
+   "chamber": "senate",
+   "roll": 1578547,
+   "measure_id": "HJR 73",
+   "vote_date": "2025-05-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Joint Resolution 73, which would repeal the reproductive-freedom right Missouri voters added to the state constitution in 2024. It would allow abortion only for a medical emergency, a fetal anomaly, rape or incest, and only through 12 weeks of pregnancy in cases of rape or incest. It would let the legislature regulate abortion providers and facilities, bar public funding except for a medical emergency, rape or incest, and require consent from both a minor and a parent. It would also ban gender transition surgery, cross-sex hormones and puberty blockers for anyone under 18. The Missouri Senate passed it 21-11. It takes effect only if Missouri voters approve it; a joint resolution needs no governor's signature.",
+   "nay_description": "Voted against House Joint Resolution 73, which would repeal the reproductive-freedom right Missouri voters added to the state constitution in 2024. It would allow abortion only for a medical emergency, a fetal anomaly, rape or incest, and only through 12 weeks of pregnancy in cases of rape or incest. It would let the legislature regulate abortion providers and facilities, bar public funding except for a medical emergency, rape or incest, and require consent from both a minor and a parent. It would also ban gender transition surgery, cross-sex hormones and puberty blockers for anyone under 18. The Missouri Senate passed it 21-11. It takes effect only if Missouri voters approve it; a joint resolution needs no governor's signature.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": "for"
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "MO",
+   "session": "2169"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1578662,
+   "measure_id": "HB 595",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 595, which stopped Missouri cities and counties from passing several kinds of renter protection. They may no longer bar a landlord from refusing a tenant because the tenant's lawful income includes housing assistance. They may no longer limit how a landlord uses income tests, credit scores, credit reports, eviction or property damage history, or criminal history. They may no longer cap a security deposit or require that tenants get a right of first refusal. Cities and counties may still bar discrimination against people who receive veterans' benefits, and they keep their authority over property they own, voluntary subsidized-rent agreements and homes assisted with federal community development block grant money. A separate section requires a real estate broker acting for a buyer or tenant to sign a written agency agreement before acting, not while acting. The Missouri Senate gave it final approval 23-10 and it became law.",
+   "nay_description": "Voted against House Bill 595, which stopped Missouri cities and counties from passing several kinds of renter protection. They may no longer bar a landlord from refusing a tenant because the tenant's lawful income includes housing assistance. They may no longer limit how a landlord uses income tests, credit scores, credit reports, eviction or property damage history, or criminal history. They may no longer cap a security deposit or require that tenants get a right of first refusal. Cities and counties may still bar discrimination against people who receive veterans' benefits, and they keep their authority over property they own, voluntary subsidized-rent agreements and homes assisted with federal community development block grant money. A separate section requires a real estate broker acting for a buyer or tenant to sign a written agency agreement before acting, not while acting. The Missouri Senate gave it final approval 23-10 and it became law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "against",
+     "nay": "for"
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "MO",
+   "session": "2169"
+  },
+  {
+   "chamber": "house",
+   "roll": 1742433648,
+   "measure_id": "SB 1",
+   "vote_date": "2025-03-19",
+   "review_status": "approved",
+   "yea_description": "Voted to pass S.B. 1, the Advance Ohio Higher Education Act, which banned diversity, equity, and inclusion offices and training at Ohio's public universities, barred full-time faculty strikes, and added post-tenure reviews for professors. It passed the Ohio House 59-34 and was signed into law.",
+   "nay_description": "Voted against passing S.B. 1, the Advance Ohio Higher Education Act, which banned diversity, equity, and inclusion offices and training at Ohio's public universities, barred full-time faculty strikes, and added post-tenure reviews for professors. It passed the Ohio House 59-34 and was signed into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1744237690,
+   "measure_id": "SB 50",
+   "vote_date": "2025-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass S.B. 50, which would have let employers schedule 14- and 15-year-olds to work until 9 p.m. year-round with a parent's or guardian's written approval, loosening the work-hour limits for young teens during the school year. It passed the Ohio Senate 24-9 and was vetoed by the Governor.",
+   "nay_description": "Voted against passing S.B. 50, which would have let employers schedule 14- and 15-year-olds to work until 9 p.m. year-round with a parent's or guardian's written approval, loosening the work-hour limits for young teens during the school year. It passed the Ohio Senate 24-9 and was vetoed by the Governor.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "house",
+   "roll": 1746659043,
+   "measure_id": "HB 126",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 126, which prohibited public nuisance lawsuits arising from the sale of a product. It passed the Ohio House 59-36.",
+   "nay_description": "Voted against passing H.B. 126, which prohibited public nuisance lawsuits arising from the sale of a product. It passed the Ohio House 59-36.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1750290051,
+   "measure_id": "SB 172",
+   "vote_date": "2025-06-18",
+   "review_status": "approved",
+   "yea_description": "Voted to pass S.B. 172, which required Ohio public offices and public officials to allow the arrest or detention of any person unlawfully present in the United States for deportation or other immigration proceedings, anywhere in the state and despite the privilege from arrest that continuing law grants in certain cases. It passed the Ohio Senate 23-8.",
+   "nay_description": "Voted against passing S.B. 172, which required Ohio public offices and public officials to allow the arrest or detention of any person unlawfully present in the United States for deportation or other immigration proceedings, anywhere in the state and despite the privilege from arrest that continuing law grants in certain cases. It passed the Ohio Senate 23-8.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "house",
+   "roll": 1762391504,
+   "measure_id": "SB 50",
+   "vote_date": "2025-11-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass S.B. 50, which would have let employers schedule 14- and 15-year-olds to work until 9 p.m. year-round with a parent's or guardian's written approval, loosening the work-hour limits for young teens during the school year. It passed the Ohio House 62-30 and was vetoed by the Governor.",
+   "nay_description": "Voted against passing S.B. 50, which would have let employers schedule 14- and 15-year-olds to work until 9 p.m. year-round with a parent's or guardian's written approval, loosening the work-hour limits for young teens during the school year. It passed the Ohio House 62-30 and was vetoed by the Governor.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "house",
+   "roll": 1763604123,
+   "measure_id": "SB 293",
+   "vote_date": "2025-11-19",
+   "review_status": "approved",
+   "yea_description": "Voted to pass S.B. 293, which required absentee ballots returned by mail to reach the board of elections by the 7:30 p.m. close of polls on Election Day to be counted, ending the four-day grace period, and directed monthly checks of state and federal databases to cancel the registrations of people identified as noncitizens. It passed the Ohio House 61-30 and was signed into law.",
+   "nay_description": "Voted against passing S.B. 293, which required absentee ballots returned by mail to reach the board of elections by the 7:30 p.m. close of polls on Election Day to be counted, ending the four-day grace period, and directed monthly checks of state and federal databases to cancel the registrations of people identified as noncitizens. It passed the Ohio House 61-30 and was signed into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "house",
+   "roll": 1763605433,
+   "measure_id": "HB 88",
+   "vote_date": "2025-11-19",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 88, which increased the penalties for trafficking cocaine, fentanyl-related compounds, heroin, and methamphetamine, removed the knowledge requirement for certain fentanyl possession offenses, and required public schools to teach students in kindergarten through grade 12 about the dangers of fentanyl. It passed the Ohio House 71-18.",
+   "nay_description": "Voted against passing H.B. 88, which increased the penalties for trafficking cocaine, fentanyl-related compounds, heroin, and methamphetamine, removed the knowledge requirement for certain fentanyl possession offenses, and required public schools to teach students in kindergarten through grade 12 about the dangers of fentanyl. It passed the Ohio House 71-18.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "house",
+   "roll": 1763614397,
+   "measure_id": "HB 485",
+   "vote_date": "2025-11-19",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 485, the Baby Olivia Act, which required every public school to teach human growth and development in grades 5 through 12 using a high-definition ultrasound video and the \"Meet Baby Olivia\" video produced by the anti-abortion group Live Action, or a substantially similar video. It passed the Ohio House 59-27.",
+   "nay_description": "Voted against passing H.B. 485, the Baby Olivia Act, which required every public school to teach human growth and development in grades 5 through 12 using a high-definition ultrasound video and the \"Meet Baby Olivia\" video produced by the anti-abortion group Live Action, or a substantially similar video. It passed the Ohio House 59-27.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1765324310,
+   "measure_id": "SB 56",
+   "vote_date": "2025-12-09",
+   "review_status": "approved",
+   "yea_description": "Voted to agree to the conference report on S.B. 56, sending to the Governor a law that rewrote Ohio's marijuana laws into a single Marijuana Control Law, barred possession or use of marijuana not bought from a licensed Ohio dispensary or grown at the user's own home, and ended the state's authority to approve new forms of adult-use marijuana. It passed the Ohio Senate 22-7 and was signed into law.",
+   "nay_description": "Voted against the conference report on S.B. 56, which sent to the Governor a law that rewrote Ohio's marijuana laws into a single Marijuana Control Law, barred possession or use of marijuana not bought from a licensed Ohio dispensary or grown at the user's own home, and ended the state's authority to approve new forms of adult-use marijuana. It passed the Ohio Senate 22-7 and was signed into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "house",
+   "roll": 1772069636,
+   "measure_id": "HB 503",
+   "vote_date": "2026-02-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 503, which required voter approval for a municipality to decrease or repeal an existing municipal income tax reciprocity credit, and let voters authorize or increase such a credit by initiative. It passed the Ohio House 65-27.",
+   "nay_description": "Voted against passing H.B. 503, which required voter approval for a municipality to decrease or repeal an existing municipal income tax reciprocity credit, and let voters authorize or increase such a credit by initiative. It passed the Ohio House 65-27.",
+   "labels": [
+    {
+     "slug": "personal_income_tax_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "house",
+   "roll": 1773874979,
+   "measure_id": "HB 92",
+   "vote_date": "2026-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 92, which barred municipalities from putting a lien on rental property over water or sewer bills left unpaid under a tenant's own service contract, and barred them from refusing or cutting off utility service to a landlord or a new tenant because a former tenant did not pay. It passed the Ohio House 67-30.",
+   "nay_description": "Voted against passing H.B. 92, which barred municipalities from putting a lien on rental property over water or sewer bills left unpaid under a tenant's own service contract, and barred them from refusing or cutting off utility service to a landlord or a new tenant because a former tenant did not pay. It passed the Ohio House 67-30.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "house",
+   "roll": 1774485008,
+   "measure_id": "HB 249",
+   "vote_date": "2026-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 249, the Indecent Exposure Modernization Act, which created the criminal offense of unlawful adult cabaret performance for performances outside an adult cabaret that are harmful to juveniles or obscene, a category the bill defined to include entertainers who exhibit a gender identity different from their biological sex. It passed the Ohio House 63-32.",
+   "nay_description": "Voted against passing H.B. 249, the Indecent Exposure Modernization Act, which created the criminal offense of unlawful adult cabaret performance for performances outside an adult cabaret that are harmful to juveniles or obscene, a category the bill defined to include entertainers who exhibit a gender identity different from their biological sex. It passed the Ohio House 63-32.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "house",
+   "roll": 1774485447,
+   "measure_id": "HB 252",
+   "vote_date": "2026-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 252, which created new aggravated burglary, burglary, and trespass offenses that dropped the requirement that the offender act by force, stealth, or deception, and generally increased the penalties for the existing offenses. It passed the Ohio House 70-25.",
+   "nay_description": "Voted against passing H.B. 252, which created new aggravated burglary, burglary, and trespass offenses that dropped the requirement that the offender act by force, stealth, or deception, and generally increased the penalties for the existing offenses. It passed the Ohio House 70-25.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "house",
+   "roll": 1774487705,
+   "measure_id": "HB 347",
+   "vote_date": "2026-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 347, the SHE WINS Act, which permitted an elective abortion only where a physician met with the woman at least 24 hours beforehand to provide specified information and document her informed consent, and authorized civil damages and professional discipline against physicians who did not comply. It passed the Ohio House 64-32.",
+   "nay_description": "Voted against passing H.B. 347, the SHE WINS Act, which permitted an elective abortion only where a physician met with the woman at least 24 hours beforehand to provide specified information and document her informed consent, and authorized civil damages and professional discipline against physicians who did not comply. It passed the Ohio House 64-32.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "senate",
+   "roll": 1776292440,
+   "measure_id": "SB 278",
+   "vote_date": "2026-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted to pass S.B. 278, which expanded the damages available against a municipal corporation that enacts or enforces gun control measures to include punitive or exemplary damages. It passed the Ohio Senate 24-9.",
+   "nay_description": "Voted against passing S.B. 278, which expanded the damages available against a municipal corporation that enacts or enforces gun control measures to include punitive or exemplary damages. It passed the Ohio Senate 24-9.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "house",
+   "roll": 1781055485,
+   "measure_id": "HB 319",
+   "vote_date": "2026-06-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass H.B. 319, the Clinical Teaching Subsidy Reform Act, which directed the Chancellor of Higher Education to distribute an annual clinical teaching subsidy to Ohio's public medical schools and to publish each school's enrollment, the performance metrics used to allocate the money, and its final allocation. It passed the Ohio House 70-26.",
+   "nay_description": "Voted against passing H.B. 319, the Clinical Teaching Subsidy Reform Act, which directed the Chancellor of Higher Education to distribute an annual clinical teaching subsidy to Ohio's public medical schools and to publish each school's enrollment, the performance metrics used to allocate the money, and its final allocation. It passed the Ohio House 70-26.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "jurisdiction": "OH",
+   "session": "136"
+  },
+  {
+   "chamber": "house",
+   "roll": 45,
+   "measure_id": "H R 803",
+   "vote_date": "2021-02-26",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 803, the Protecting America's Wilderness and Public Lands Act, which designated new wilderness, conservation, and recreation areas on federal land across eight states and the Virgin Islands. The House passed it 227-200.",
+   "nay_description": "Voted against H.R. 803, the Protecting America's Wilderness and Public Lands Act, which designated new wilderness, conservation, and recreation areas on federal land across eight states and the Virgin Islands. The House passed it 227-200.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 60,
+   "measure_id": "H R 1280",
+   "vote_date": "2021-03-03",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 1280, which restricted chokeholds and no-knock warrants, made it easier to sue officers for misconduct, and created national standards and misconduct reporting for police. The House passed it 220-212.",
+   "nay_description": "Voted against H.R. 1280, which restricted chokeholds and no-knock warrants, made it easier to sue officers for misconduct, and created national standards and misconduct reporting for police. The House passed it 220-212.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 72,
+   "measure_id": "H R 1319",
+   "vote_date": "2021-03-10",
+   "review_status": "approved",
+   "yea_description": "Voted to send H.R. 1319, the American Rescue Plan Act, to the President, agreeing to the Senate's version of the $1.9 trillion COVID-19 relief package that sent $1,400 payments to most households, extended jobless benefits, expanded the child tax credit, and funded vaccines and schools. The House passed it 220-211.",
+   "nay_description": "Voted against sending H.R. 1319, the American Rescue Plan Act, to the President, which agreed to the Senate's version of the $1.9 trillion COVID-19 relief package that sent $1,400 payments to most households, extended jobless benefits, expanded the child tax credit, and funded vaccines and schools. The House passed it 220-211.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 82,
+   "measure_id": "H J RES 17",
+   "vote_date": "2021-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted for H.J.Res. 17, which removed the deadline for states to approve the Equal Rights Amendment, which would bar discrimination based on sex. The House passed it 222-204.",
+   "nay_description": "Voted against H.J.Res. 17, which removed the deadline for states to approve the Equal Rights Amendment, which would bar discrimination based on sex. The House passed it 222-204.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 86,
+   "measure_id": "H R 1620",
+   "vote_date": "2021-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 1620, the Violence Against Women Act Reauthorization, which renewed federal programs against domestic violence, sexual assault, and stalking through 2026 and added housing protections and firearm restrictions for convicted abusers. The House passed it 244-172.",
+   "nay_description": "Voted against H.R. 1620, the Violence Against Women Act Reauthorization, which renewed federal programs against domestic violence, sexual assault, and stalking through 2026 and added housing protections and firearm restrictions for convicted abusers. The House passed it 244-172.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 96,
+   "measure_id": "H R 1868",
+   "vote_date": "2021-03-19",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 1868, which paused automatic Medicare budget cuts through the end of 2021. The House passed it 246-175.",
+   "nay_description": "Voted against H.R. 1868, which paused automatic Medicare budget cuts through the end of 2021. The House passed it 246-175.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1,
+   "acknowledge_later_rolls": [
+    98
+   ]
+  },
+  {
+   "chamber": "house",
+   "roll": 134,
+   "measure_id": "H R 1629",
+   "vote_date": "2021-05-11",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 1629, the Fairness in Orphan Drug Exclusivity Act, which limited seven years of sole-sales rights for rare-disease drugs to those not expected to make a profit. It failed 250-168 under a fast-track process needing two-thirds support, so it did not become law.",
+   "nay_description": "Voted against H.R. 1629, the Fairness in Orphan Drug Exclusivity Act, which limited seven years of sole-sales rights for rare-disease drugs to those not expected to make a profit. It failed 250-168 under a fast-track process needing two-thirds support, so it did not become law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1,
+   "acknowledge_later_rolls": [
+    150
+   ]
+  },
+  {
+   "chamber": "house",
+   "roll": 143,
+   "measure_id": "H R 1065",
+   "vote_date": "2021-05-14",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 1065, the Pregnant Workers Fairness Act, which required employers to make reasonable work changes for workers affected by pregnancy or childbirth. The House passed it 315-101.",
+   "nay_description": "Voted against H.R. 1065, the Pregnant Workers Fairness Act, which required employers to make reasonable work changes for workers affected by pregnancy or childbirth. The House passed it 315-101.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 181,
+   "measure_id": "S J RES 15",
+   "vote_date": "2021-06-24",
+   "review_status": "approved",
+   "yea_description": "Voted for sending S.J.Res. 15 to the President to cancel the federal bank regulator's true lender rule, a rule that let national banks be named as lender on loans funded by others and so shield them from state interest rate caps. The House passed it 218-208.",
+   "nay_description": "Voted against sending S.J.Res. 15 to the President to cancel the federal bank regulator's true lender rule, a rule that let national banks be named as lender on loans funded by others and so shield them from state interest rate caps. The House passed it 218-208.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 182,
+   "measure_id": "H R 1443",
+   "vote_date": "2021-06-24",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 1443, the LGBTQ Business Equal Credit Enforcement and Investment Act, which required lenders to report credit application data for LGBTQ-owned businesses so fair lending laws can be enforced. The House passed it 252-176.",
+   "nay_description": "Voted against H.R. 1443, the LGBTQ Business Equal Credit Enforcement and Investment Act, which required lenders to report credit application data for LGBTQ-owned businesses so fair lending laws can be enforced. The House passed it 252-176.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 183,
+   "measure_id": "S J RES 13",
+   "vote_date": "2021-06-24",
+   "review_status": "approved",
+   "yea_description": "Voted for sending S.J.Res. 13 to the President to cancel the federal workplace rights rule requiring the agency to give employers evidence and legal reasons for a discrimination finding before settlement talks. The House passed it 219-210.",
+   "nay_description": "Voted against sending S.J.Res. 13 to the President to cancel the federal workplace rights rule requiring the agency to give employers evidence and legal reasons for a discrimination finding before settlement talks. The House passed it 219-210.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 195,
+   "measure_id": "H R 2662",
+   "vote_date": "2021-06-29",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 2662, the Inspector General Independence and Empowerment Act, which limited the President's power to remove inspectors general, required reasons be given to Congress, and strengthened their subpoena and reporting authority. The House passed it 221-182.",
+   "nay_description": "Voted against H.R. 2662, the Inspector General Independence and Empowerment Act, which limited the President's power to remove inspectors general, required reasons be given to Congress, and strengthened their subpoena and reporting authority. The House passed it 221-182.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 217,
+   "measure_id": "H R 2467",
+   "vote_date": "2021-07-21",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 2467, which directed the federal environmental agency to label long-lasting PFAS chemicals hazardous, set drinking water limits, and fund cleanup of contaminated sites. The House passed it 241-183.",
+   "nay_description": "Voted against H.R. 2467, which directed the federal environmental agency to label long-lasting PFAS chemicals hazardous, set drinking water limits, and fund cleanup of contaminated sites. The House passed it 241-183.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 293,
+   "measure_id": "H R 4350",
+   "vote_date": "2021-09-23",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 4350, the National Defense Authorization Act for Fiscal Year 2022, which set defense policy and approved Defense Department programs, military construction, and related national security activities. The House passed it 316-113.",
+   "nay_description": "Voted against H.R. 4350, the National Defense Authorization Act for Fiscal Year 2022, which set defense policy and approved Defense Department programs, military construction, and related national security activities. The House passed it 316-113.",
+   "labels": [
+    {
+     "slug": "national_defense",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 331,
+   "measure_id": "H R 3110",
+   "vote_date": "2021-10-22",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 3110, the PUMP for Nursing Mothers Act, which extended the right to break time and a private space to pump breast milk at work to salaried and other workers the existing law left out. The House passed it 276-149.",
+   "nay_description": "Voted against H.R. 3110, the PUMP for Nursing Mothers Act, which extended the right to break time and a private space to pump breast milk at work to salaried and other workers the existing law left out. The House passed it 276-149.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 336,
+   "measure_id": "H R 2119",
+   "vote_date": "2021-10-26",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 2119, the Family Violence Prevention and Services Improvement Act, which renewed and expanded federal funding for emergency shelters and support services for domestic violence victims through 2026. The House passed it 228-200.",
+   "nay_description": "Voted against H.R. 2119, the Family Violence Prevention and Services Improvement Act, which renewed and expanded federal funding for emergency shelters and support services for domestic violence victims through 2026. The House passed it 228-200.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 369,
+   "measure_id": "H R 3684",
+   "vote_date": "2021-11-05",
+   "review_status": "approved",
+   "yea_description": "Voted to send H.R. 3684, the Infrastructure Investment and Jobs Act, to the President, agreeing to the Senate version that put roughly $1 trillion into roads, bridges, rail, transit, broadband, ports, airports, water systems, and the power grid. The House passed it 228-206.",
+   "nay_description": "Voted against sending H.R. 3684, the Infrastructure Investment and Jobs Act, to the President, which agreed to the Senate version that put roughly $1 trillion into roads, bridges, rail, transit, broadband, ports, airports, water systems, and the power grid. The House passed it 228-206.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 404,
+   "measure_id": "S 610",
+   "vote_date": "2021-12-07",
+   "review_status": "approved",
+   "yea_description": "Voted for S. 610, the Protecting Medicare and American Farmers from Sequester Cuts Act, which delayed automatic Medicare payment cuts through March 2022 and eased other scheduled reductions. The House passed it 222-212.",
+   "nay_description": "Voted against S. 610, the Protecting Medicare and American Farmers from Sequester Cuts Act, which delayed automatic Medicare payment cuts through March 2022 and eased other scheduled reductions. The House passed it 222-212.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 440,
+   "measure_id": "H R 5314",
+   "vote_date": "2021-12-09",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 5314, the Protecting Our Democracy Act, which tightened limits on presidential pardons and emergency powers, strengthened enforcement of congressional subpoenas, and added transparency requirements for the executive branch. The House passed it 220-208.",
+   "nay_description": "Voted against H.R. 5314, the Protecting Our Democracy Act, which tightened limits on presidential pardons and emergency powers, strengthened enforcement of congressional subpoenas, and added transparency requirements for the executive branch. The House passed it 220-208.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 33,
+   "measure_id": "H R 4445",
+   "vote_date": "2022-02-07",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 4445, which let people alleging sexual assault or harassment take their claim to court despite a contract requiring private arbitration instead of court. The House passed it 335-97, and it became law.",
+   "nay_description": "Voted against H.R. 4445, which let people alleging sexual assault or harassment take their claim to court despite a contract requiring private arbitration instead of court. The House passed it 335-97, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 38,
+   "measure_id": "H R 3076",
+   "vote_date": "2022-02-08",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 3076, which ended the requirement that the Postal Service save in advance for retiree health benefits, moved postal retirees into a new health plan tied to Medicare, and required six-day delivery. The House passed it 342-92, and it became law.",
+   "nay_description": "Voted against H.R. 3076, which ended the requirement that the Postal Service save in advance for retiree health benefits, moved postal retirees into a new health plan tied to Medicare, and required six-day delivery. The House passed it 342-92, and it became law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 43,
+   "measure_id": "H R 3485",
+   "vote_date": "2022-02-09",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 3485, which imposed entry bans on people from other countries responsible for human rights abuses against people because of their sexual orientation or gender identity. The House passed it 227-206.",
+   "nay_description": "Voted against H.R. 3485, which imposed entry bans on people from other countries responsible for human rights abuses against people because of their sexual orientation or gender identity. The House passed it 227-206.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 57,
+   "measure_id": "H R 3967",
+   "vote_date": "2022-03-03",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 3967, which expanded veterans' health care and disability benefits for veterans exposed to burn pits and other toxic substances by presuming their illnesses were caused by military service. The House passed it 256-174.",
+   "nay_description": "Voted against H.R. 3967, which expanded veterans' health care and disability benefits for veterans exposed to burn pits and other toxic substances by presuming their illnesses were caused by military service. The House passed it 256-174.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 109,
+   "measure_id": "H R 1916",
+   "vote_date": "2022-04-04",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 1916, which required private health plans to cover diagnosis and treatment of birth defects and other conditions present at birth, including rebuilding surgery. The House passed it 310-110.",
+   "nay_description": "Voted against H.R. 1916, which required private health plans to cover diagnosis and treatment of birth defects and other conditions present at birth, including rebuilding surgery. The House passed it 310-110.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 182,
+   "measure_id": "H R 5129",
+   "vote_date": "2022-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 5129, the Community Services Block Grant Modernization Act, which renewed through 2032 federal grants for local antipoverty services and raised the income eligibility threshold. The House passed it 246-169.",
+   "nay_description": "Voted against H.R. 5129, the Community Services Block Grant Modernization Act, which renewed through 2032 federal grants for local antipoverty services and raised the income eligibility threshold. The House passed it 246-169.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 221,
+   "measure_id": "H R 350",
+   "vote_date": "2022-05-18",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 350, the Domestic Terrorism Prevention Act, which created domestic terrorism teams at the FBI, Justice Department, and Homeland Security and required regular reporting on domestic terrorist threats. The House passed it 222-203.",
+   "nay_description": "Voted against H.R. 350, the Domestic Terrorism Prevention Act, which created domestic terrorism teams at the FBI, Justice Department, and Homeland Security and required regular reporting on domestic terrorist threats. The House passed it 222-203.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 267,
+   "measure_id": "H R 2773",
+   "vote_date": "2022-06-14",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 2773, the Recovering America's Wildlife Act, which sent dedicated federal funding to states and tribes to conserve and restore wildlife and plant species of greatest conservation need. The House passed it 231-190.",
+   "nay_description": "Voted against H.R. 2773, the Recovering America's Wildlife Act, which sent dedicated federal funding to states and tribes to conserve and restore wildlife and plant species of greatest conservation need. The House passed it 231-190.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 275,
+   "measure_id": "H R 2543",
+   "vote_date": "2022-06-15",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 2543, the Financial Services Racial Equity, Inclusion, and Economic Justice Act, which widened access to credit, mortgages, and banking, strengthened lending discrimination rules, and made racial equity one of the Federal Reserve's duties. The House passed it 215-207.",
+   "nay_description": "Voted against H.R. 2543, the Financial Services Racial Equity, Inclusion, and Economic Justice Act, which widened access to credit, mortgages, and banking, strengthened lending discrimination rules, and made racial equity one of the Federal Reserve's duties. The House passed it 215-207.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 277,
+   "measure_id": "H R 7606",
+   "vote_date": "2022-06-16",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 7606, the Lower Food and Fuel Costs Act, which funded nutrient management and technology-guided farming, expanded biofuel infrastructure, and strengthened oversight of meat and poultry markets. The House passed it 221-204.",
+   "nay_description": "Voted against H.R. 7606, the Lower Food and Fuel Costs Act, which funded nutrient management and technology-guided farming, expanded biofuel infrastructure, and strengthened oversight of meat and poultry markets. The House passed it 221-204.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 296,
+   "measure_id": "H R 4176",
+   "vote_date": "2022-06-23",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 4176, the LGBTQI+ Data Inclusion Act, which required federal government surveys to offer voluntary questions on sexual orientation and gender identity. The House passed it 220-201.",
+   "nay_description": "Voted against H.R. 4176, the LGBTQI+ Data Inclusion Act, which required federal government surveys to offer voluntary questions on sexual orientation and gender identity. The House passed it 220-201.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 307,
+   "measure_id": "H R 6538",
+   "vote_date": "2022-07-13",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 6538, the Active Shooter Alert Act, which created a national alert network, run by a Justice Department coordinator, to warn the public during an active shooter emergency. The House passed it 260-169.",
+   "nay_description": "Voted against H.R. 6538, the Active Shooter Alert Act, which created a national alert network, run by a Justice Department coordinator, to warn the public during an active shooter emergency. The House passed it 260-169.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 309,
+   "measure_id": "S 3373",
+   "vote_date": "2022-07-13",
+   "review_status": "approved",
+   "yea_description": "Voted for S. 3373, the final version of the Honoring our PACT Act, which expanded veterans' health care and disability benefits for veterans exposed to burn pits and other toxic substances. The House passed it 342-88, and it became law.",
+   "nay_description": "Voted against S. 3373, the final version of the Honoring our PACT Act, which expanded veterans' health care and disability benefits for veterans exposed to burn pits and other toxic substances. The House passed it 342-88, and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 350,
+   "measure_id": "H R 7900",
+   "vote_date": "2022-07-14",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 7900, the National Defense Authorization Act for Fiscal Year 2023, which set defense policy and approved Defense Department programs, purchases, and military construction. The House passed it 329-101.",
+   "nay_description": "Voted against H.R. 7900, the National Defense Authorization Act for Fiscal Year 2023, which set defense policy and approved Defense Department programs, purchases, and military construction. The House passed it 329-101.",
+   "labels": [
+    {
+     "slug": "national_defense",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 414,
+   "measure_id": "H R 5118",
+   "vote_date": "2022-07-29",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 5118, the Wildfire Response and Drought Resiliency Act, which funded wildfire mitigation, forest and watershed restoration, and drought planning, and raised pay for federal wildland firefighters. The House passed it 218-199.",
+   "nay_description": "Voted against H.R. 5118, the Wildfire Response and Drought Resiliency Act, which funded wildfire mitigation, forest and watershed restoration, and drought planning, and raised pay for federal wildland firefighters. The House passed it 218-199.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 420,
+   "measure_id": "H R 5376",
+   "vote_date": "2022-08-12",
+   "review_status": "approved",
+   "yea_description": "Voted to send H.R. 5376, the Inflation Reduction Act, to the President, agreeing to the Senate version that let Medicare negotiate drug prices, capped insulin costs for seniors, funded clean energy tax credits, and set a 15 percent minimum tax on large corporations. The House passed it 220-207.",
+   "nay_description": "Voted against sending H.R. 5376, the Inflation Reduction Act, to the President, which let Medicare negotiate drug prices, capped insulin costs for seniors, funded clean energy tax credits, and set a 15 percent minimum tax on large corporations. The House passed it 220-207.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    },
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 449,
+   "measure_id": "H R 8873",
+   "vote_date": "2022-09-21",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 8873, the Presidential Election Reform Act, which rewrote how electoral votes are cast and counted, requiring electors to be chosen under state law set before election day and narrowing grounds for objections in Congress. The House passed it 229-203.",
+   "nay_description": "Voted against H.R. 8873, the Presidential Election Reform Act, which rewrote how electoral votes are cast and counted, requiring electors to be chosen under state law set before election day and narrowing grounds for objections in Congress. The House passed it 229-203.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 453,
+   "measure_id": "H R 4118",
+   "vote_date": "2022-09-22",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 4118, the Break the Cycle of Violence Act, which funded community violence intervention programs and job training in neighborhoods with high rates of gun violence. The House passed it 220-207.",
+   "nay_description": "Voted against H.R. 4118, the Break the Cycle of Violence Act, which funded community violence intervention programs and job training in neighborhoods with high rates of gun violence. The House passed it 220-207.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 454,
+   "measure_id": "H R 5768",
+   "vote_date": "2022-09-22",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 5768, which funded state, local, and tribal investigators and prosecutors to raise the share of cases solved for murders and other violent crimes. The House passed it 250-178.",
+   "nay_description": "Voted against H.R. 5768, which funded state, local, and tribal investigators and prosecutors to raise the share of cases solved for murders and other violent crimes. The House passed it 250-178.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 480,
+   "measure_id": "S 4524",
+   "vote_date": "2022-11-16",
+   "review_status": "approved",
+   "yea_description": "Voted for S. 4524, which made contract terms that bar sharing facts or criticism signed before a dispute unenforceable in sexual assault and sexual harassment cases. The House passed it 315-109, and it became law.",
+   "nay_description": "Voted against S. 4524, which made contract terms that bar sharing facts or criticism signed before a dispute unenforceable in sexual assault and sexual harassment cases. The House passed it 315-109, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 492,
+   "measure_id": "H R 3372",
+   "vote_date": "2022-12-01",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 3372, the One Stop Shop Community Reentry Program Act, which funded community organizations that help people leaving prison find housing, jobs, and services. The House passed it 259-167.",
+   "nay_description": "Voted against H.R. 3372, the One Stop Shop Community Reentry Program Act, which funded community organizations that help people leaving prison find housing, jobs, and services. The House passed it 259-167.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 524,
+   "measure_id": "S 3905",
+   "vote_date": "2022-12-14",
+   "review_status": "approved",
+   "yea_description": "Voted for S. 3905, which required federal purchasing rules to be rewritten to identify and limit conflicts between contractors' private interests and government work. The House passed it 219-205, and it became law.",
+   "nay_description": "Voted against S. 3905, which required federal purchasing rules to be rewritten to identify and limit conflicts between contractors' private interests and government work. The House passed it 219-205, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 525,
+   "measure_id": "S 4003",
+   "vote_date": "2022-12-14",
+   "review_status": "approved",
+   "yea_description": "Voted for S. 4003, the Law Enforcement De-Escalation Training Act, which funded real-life police training to calm tense situations, avoid force, and respond to people in a mental health crisis. The House passed it 264-162, and it became law.",
+   "nay_description": "Voted against S. 4003, the Law Enforcement De-Escalation Training Act, which funded real-life police training to calm tense situations, avoid force, and respond to people in a mental health crisis. The House passed it 264-162, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 539,
+   "measure_id": "H R 9640",
+   "vote_date": "2022-12-22",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 9640, which required audits of every sitting president's tax return and public release of the returns and findings. The House passed it 222-201.",
+   "nay_description": "Voted against H.R. 9640, which required audits of every sitting president's tax return and public release of the returns and findings. The House passed it 222-201.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 117,
+   "session": 2
+  },
+  {
+   "chamber": "house",
+   "roll": 705,
+   "measure_id": "H J RES 88",
+   "vote_date": "2023-12-07",
+   "review_status": "approved",
+   "yea_description": "Voted for H.J.Res. 88 to cancel the Education Department's SAVE plan, the student loan plan that lowered payments based on income. The House passed it 210-189.",
+   "nay_description": "Voted against H.J.Res. 88 to cancel the Education Department's SAVE plan, the student loan plan that lowered payments based on income. The House passed it 210-189.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": "for"
+    }
+   ],
+   "congress": 118,
+   "session": 1
+  },
+  {
+   "chamber": "house",
+   "roll": 153,
+   "measure_id": "H R 2931",
+   "vote_date": "2025-06-05",
+   "review_status": "approved",
+   "yea_description": "Voted for H.R. 2931, the Save SBA from Sanctuary Cities Act, which required the federal small-business agency to move any office located in a sanctuary area out of that area within 60 days. The House passed it 211-199.",
+   "nay_description": "Voted against H.R. 2931, the Save SBA from Sanctuary Cities Act, which required the federal small-business agency to move any office located in a sanctuary area out of that area within 60 days. The House passed it 211-199.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "congress": 119,
+   "session": 1
+  },
+  {
+   "chamber": "senate",
+   "roll": 225,
+   "measure_id": "S.J.Res. 49",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted for S.J.Res. 49, which would end the April 2, 2025 emergency used to place a 10 percent tariff on most imports and higher tariffs on some trading partners. The Senate tied 49-49, so it did not become law.",
+   "nay_description": "Voted against S.J.Res. 49, which would end the April 2, 2025 emergency used to place a 10 percent tariff on most imports and higher tariffs on some trading partners. The Senate tied 49-49, so it did not become law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "congress": 119,
+   "session": 1
+  }
+ ]
+}

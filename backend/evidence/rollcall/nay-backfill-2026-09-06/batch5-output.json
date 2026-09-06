@@ -1,0 +1,159 @@
+{"decisions": [
+  {
+    "vote_id": "79d74b32-9e44-4445-b764-d531c8e266fd",
+    "labels": [
+      {"slug": "government_efficiency", "yea": "for", "nay": null, "why": "A no vote on the postal overhaul could be about the cost of shifting retiree health costs to Medicare, not about running government well."}
+    ]
+  },
+  {
+    "vote_id": "e37c767c-38c6-4206-beb7-afba1f90038f",
+    "labels": [
+      {"slug": "civil_rights", "yea": "for", "nay": null, "why": "A no vote could be about adding a new immigration ban or about foreign policy, not about civil rights."}
+    ]
+  },
+  {
+    "vote_id": "90a707c5-472b-4ad3-b485-d4a002b4ee1f",
+    "labels": [
+      {"slug": "healthcare_affordability", "yea": "for", "nay": null, "why": "A no vote on the burn pit benefits bill could be about its cost or how it was budgeted."}
+    ]
+  },
+  {
+    "vote_id": "7befb12d-6e0f-4d70-ac1e-1776cdb97c82",
+    "labels": [
+      {"slug": "healthcare_affordability", "yea": "for", "nay": null, "why": "A no vote could be about opposing new coverage mandates on insurers in general, not about making care affordable."}
+    ]
+  },
+  {
+    "vote_id": "ce3ed3f0-5114-4076-9e3c-07cb4ff78979",
+    "labels": [
+      {"slug": "social_programs_and_welfare", "yea": "for", "nay": null, "why": "A no vote could be about the ten-year spending level or the wider eligibility rules, not about antipoverty aid itself."}
+    ]
+  },
+  {
+    "vote_id": "856dadc4-c327-495e-ab5f-5ea0c7d61cf9",
+    "labels": [
+      {"slug": "public_safety_and_crime_control", "yea": "for", "nay": null, "why": "A no vote could be about giving federal agencies new domestic surveillance roles, which is a civil liberties concern, not weaker public safety."}
+    ]
+  },
+  {
+    "vote_id": "c2e69dfb-6179-46ee-8324-161a1bc99e01",
+    "labels": [
+      {"slug": "environment_and_public_health", "yea": "for", "nay": null, "why": "A no vote could be about the dedicated funding stream and how it was paid for."}
+    ]
+  },
+  {
+    "vote_id": "6b008ddd-1cd6-4c57-987c-91c8b588a419",
+    "labels": [
+      {"slug": "reduce_wealth_gap", "yea": "for", "nay": null, "why": "A no vote could be about new bank rules or about adding a duty to the Federal Reserve, not about closing the wealth gap."}
+    ]
+  },
+  {
+    "vote_id": "62162c45-6b8d-439e-a2a1-a6388223cadc",
+    "labels": [
+      {"slug": "cost_of_living_reduction", "yea": "for", "nay": null, "why": "A no vote could be a judgment that this farm and biofuel spending would not actually lower prices."}
+    ]
+  },
+  {
+    "vote_id": "9f5a5592-71c0-44ce-b428-0d0faf23a6d8",
+    "labels": [
+      {"slug": "civil_rights", "yea": "for", "nay": null, "why": "A no vote could be about privacy or the burden of adding questions to federal surveys."}
+    ]
+  },
+  {
+    "vote_id": "736c3e84-4863-4e7b-aeb6-07d580e8a936",
+    "labels": [
+      {"slug": "public_safety_and_crime_control", "yea": "for", "nay": null, "why": "A no vote could be about creating a new federal alert system and coordinator, not about public safety goals."}
+    ]
+  },
+  {
+    "vote_id": "567b3618-9f54-418a-a4e5-28bb72e8aa53",
+    "labels": [
+      {"slug": "healthcare_affordability", "yea": "for", "nay": null, "why": "A no vote on the final PACT Act could be about its cost or budget treatment."}
+    ]
+  },
+  {
+    "vote_id": "b47ca543-762f-492a-8b14-da432c66565d",
+    "labels": [
+      {"slug": "national_defense", "yea": "for", "nay": null, "why": "No votes on a defense bill come from people who want less military spending and from people who object to other provisions in it."}
+    ]
+  },
+  {
+    "vote_id": "14d87c61-9e8a-49c0-a676-cc12ca42f1d9",
+    "labels": [
+      {"slug": "environment_and_public_health", "yea": "for", "nay": null, "why": "A no vote could be about the spending level or the land management rules in the bill."}
+    ]
+  },
+  {
+    "vote_id": "05fb3829-eab1-4cc7-b079-742795b5ba2a",
+    "labels": [
+      {"slug": "environment_and_public_health", "yea": "for", "nay": null, "why": "This bill bundled taxes, energy, and health together, so a no vote could be about the corporate tax or the overall spending."},
+      {"slug": "healthcare_affordability", "yea": "for", "nay": null, "why": "A no vote could be about the tax and energy parts of the same bill rather than the drug pricing parts."}
+    ]
+  },
+  {
+    "vote_id": "d53aef79-bd21-43bc-84b9-5b07177ead20",
+    "labels": [
+      {"slug": "election_integrity", "yea": "for", "nay": null, "why": "A no vote could be a preference for the separate Senate version of electoral count reform, or a federalism objection."}
+    ]
+  },
+  {
+    "vote_id": "e66f2ae4-4911-46ed-8c15-ea8b874782f5",
+    "labels": [
+      {"slug": "public_safety_and_crime_control", "yea": "for", "nay": null, "why": "A no vote could be a judgment that grants to community groups are the wrong way to cut crime, not opposition to cutting crime."}
+    ]
+  },
+  {
+    "vote_id": "105761de-9893-442d-aa4e-a17f1c80314b",
+    "labels": [
+      {"slug": "public_safety_and_crime_control", "yea": "for", "nay": null, "why": "A no vote could be about new federal grant spending or federal involvement in local policing."}
+    ]
+  },
+  {
+    "vote_id": "2b4a472c-b91f-4e74-9188-74be5e3858fa",
+    "labels": [
+      {"slug": "civil_rights", "yea": "for", "nay": null, "why": "A no vote could be about voiding contract terms people already signed, which is a contract law objection."}
+    ]
+  },
+  {
+    "vote_id": "2ec12b6f-1b01-4aaa-a146-d053e7e46d8f",
+    "labels": [
+      {"slug": "public_safety_and_crime_control", "yea": "for", "nay": null, "why": "A no vote could be about funding community groups rather than about how to handle people leaving prison."}
+    ]
+  },
+  {
+    "vote_id": "95e2b92d-6295-4235-93ee-c62e4cbfda84",
+    "labels": [
+      {"slug": "anti_corruption", "yea": "for", "nay": null, "why": "A no vote could be about extra paperwork for federal contractors, not about tolerating conflicts of interest."}
+    ]
+  },
+  {
+    "vote_id": "1135b88a-558f-4be9-98d6-e1f301175964",
+    "labels": [
+      {"slug": "public_safety_and_crime_control", "yea": "for", "nay": null, "why": "A no vote could be about federal grants shaping local police training rather than about public safety."}
+    ]
+  },
+  {
+    "vote_id": "916cefd3-1725-441b-8809-6be0c34cc0e2",
+    "labels": [
+      {"slug": "anti_corruption", "yea": "for", "nay": null, "why": "A no vote could be about the privacy of tax returns or about the timing of this bill, not about corruption in general."}
+    ]
+  },
+  {
+    "vote_id": "1c25b74c-e307-4e90-814f-ee22cd2202f9",
+    "labels": [
+      {"slug": "social_programs_and_welfare", "yea": "against", "nay": "for", "why": "The whole resolution was to cancel a benefit program, so a no vote was the only way to keep it and cannot be explained by cost."}
+    ]
+  },
+  {
+    "vote_id": "09b38330-9408-43fd-9b4b-143df8c4fc84",
+    "labels": [
+      {"slug": "immigration", "yea": "against", "nay": null, "why": "A no vote could be about disrupting small-business services by forcing offices to move, not about immigration policy."}
+    ]
+  },
+  {
+    "vote_id": "61e27c32-5f35-4cec-85f2-00e96796a2be",
+    "labels": [
+      {"slug": "cost_of_living_reduction", "yea": "for", "nay": null, "why": "A no vote could be about deferring to the President's trade authority, and saying someone opposes lower living costs would be wrong."}
+    ]
+  }
+]}
