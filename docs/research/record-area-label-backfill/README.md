@@ -81,4 +81,28 @@ Do not hand-tag a `rollcall_import` record. `syncRollCallRecordTags` makes a rec
 - A no vote on a funding bill is not a spending cut unless the record says the member wanted less money.
 - A single court ruling, or a lawsuit about the candidate's own eligibility, does not carry a stance on a whole area.
 
-Retire candidates are flagged only. Nothing is retired without a separate decision.
+## Retirements applied 2026-09-06
+
+The 676 retire candidates were approved and soft-retired with
+`manual:records:retire --apply`. The file is `retirements-2026-09-06.json`.
+Soft retirement keeps the row, its area tags and its notification history, and
+keeps the identity slot so a later sweep folds into the tombstone instead of
+resurrecting the claim. Reverse one with `--unretire`.
+
+## Ohio SB 1: one bill, two answers, resolved
+
+The House vote (roll 1742433648) and the Senate concurrence (roll 1743028529)
+are the same bill. Its content is three separate restrictions: a ban on
+university DEI offices, a ban on full-time faculty strikes, and post-tenure
+reviews. Only the first touches civil rights.
+
+The Senate judgment said a no vote evidences `civil_rights: for`; the House
+judgment said it evidences nothing. A no vote here cannot be pinned to any one
+of the three provisions, so reading it as a civil-rights position would render
+a member who objected to the strike ban as "Supports Civil Rights". That is the
+inversion `labelsForSide` exists to prevent, and the "the whole bill is a
+repeal" exception does not apply to a three-part bill.
+
+The Senate judgment was corrected to `nay: null` and the roll call re-imported.
+Both chambers now read the same way: yes-voters tagged `civil_rights: against`,
+no-voters untagged.
