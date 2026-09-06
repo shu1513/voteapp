@@ -144,7 +144,8 @@ the bill never became law and describes it with "would have".
 | batch-04 | vetoed | 9 | 18 | 364 |
 | batch-05 | vetoed, one chamber only, and one failed vote | 9 | 16 | 308 |
 | batch-06 | vetoed, and two that died between the chambers | 10 | 17 | 332 |
-| **total** | | **56** | **90** | **1,750** |
+| batch-07 | vetoed, and one that died between the chambers | 9 | 17 | 336 |
+| **total** | | **65** | **107** | **2,086** |
 
 One hand-written duplicate was retired during the batch-04 sweep, and a wording defect in
 batches 01 to 03 — 645 records whose closing clause began with a lowercase word — was

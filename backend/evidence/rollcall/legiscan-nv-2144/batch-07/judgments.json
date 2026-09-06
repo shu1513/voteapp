@@ -1,0 +1,310 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1551302,
+   "measure_id": "AB 217",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 217, which would have barred public schools and their staff from letting federal immigration officers onto school grounds without a court order or warrant, and from handing over information about a student or the student's family. The version the Assembly voted made a first offense a matter for school discipline and a repeat offense a misdemeanor. The Nevada Assembly passed it 31-11, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 217, which would have barred public schools and their staff from letting federal immigration officers onto school grounds without a court order or warrant, and from handing over information about a student or the student's family. The version the Assembly voted made a first offense a matter for school discipline and a repeat offense a misdemeanor. The Nevada Assembly passed it 31-11, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1577997,
+   "measure_id": "AB 217",
+   "vote_date": "2025-05-23",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 217, which would have barred public schools and their staff from letting federal immigration officers onto school grounds without a court order or warrant, and from handing over information about a student or the student's family. The version the Senate voted dropped the criminal penalty the Assembly had passed, leaving school discipline as the only consequence. The Nevada Senate passed it 14-6, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 217, which would have barred public schools and their staff from letting federal immigration officers onto school grounds without a court order or warrant, and from handing over information about a student or the student's family. The version the Senate voted dropped the criminal penalty the Assembly had passed, leaving school discipline as the only consequence. The Nevada Senate passed it 14-6, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1552350,
+   "measure_id": "AB 140",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 140, which would have ended the fixed four-year life of a driver authorization card, the driving credential for Nevada residents who cannot get a regular license. The Department of Motor Vehicles would have set the expiry by regulation, and that regulation would have had to make the card last as long as a driver's license, unless federal law required otherwise. The Nevada Assembly passed it 28-14, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 140, which would have ended the fixed four-year life of a driver authorization card, the driving credential for Nevada residents who cannot get a regular license. The Department of Motor Vehicles would have set the expiry by regulation, and that regulation would have had to make the card last as long as a driver's license, unless federal law required otherwise. The Nevada Assembly passed it 28-14, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1575648,
+   "measure_id": "AB 140",
+   "vote_date": "2025-05-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 140, which would have ended the fixed four-year life of a driver authorization card, the driving credential for Nevada residents who cannot get a regular license. The Department of Motor Vehicles would have set the expiry by regulation, and that regulation would have had to make the card last as long as a driver's license, unless federal law required otherwise. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 140, which would have ended the fixed four-year life of a driver authorization card, the driving credential for Nevada residents who cannot get a regular license. The Department of Motor Vehicles would have set the expiry by regulation, and that regulation would have had to make the card last as long as a driver's license, unless federal law required otherwise. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1550566,
+   "measure_id": "SB 141",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 141, which would have made every county, city and town jail write and follow a policy for prisoners who are transgender, gender non-conforming, non-binary or intersex. The policy had to cover housing, searches, medical care, clothing and hygiene, and had to include a grievance process. It also had to bar unclothed searches to view a prisoner's genitals after intake unless there were reasonable grounds. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 141, which would have made every county, city and town jail write and follow a policy for prisoners who are transgender, gender non-conforming, non-binary or intersex. The policy had to cover housing, searches, medical care, clothing and hygiene, and had to include a grievance process. It also had to bar unclothed searches to view a prisoner's genitals after intake unless there were reasonable grounds. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1583179,
+   "measure_id": "SB 85",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 85, which would have made Nevada's collection of traffic stop data permanent by removing the end date of December 2025. Police agencies record the perceived race, ethnicity, age and sex of the driver and the reason for the stop, and report it each February. The bill also left local agencies to carry the cost themselves rather than claim it back from the state. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 85, which would have made Nevada's collection of traffic stop data permanent by removing the end date of December 2025. Police agencies record the perceived race, ethnicity, age and sex of the driver and the reason for the stop, and report it each February. The bill also left local agencies to carry the cost themselves rather than claim it back from the state. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1580710,
+   "measure_id": "SB 85",
+   "vote_date": "2025-05-28",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 85, which would have made Nevada's collection of traffic stop data permanent by removing the end date of December 2025. Police agencies record the perceived race, ethnicity, age and sex of the driver and the reason for the stop, and report it each February. The bill also left local agencies to carry the cost themselves rather than claim it back from the state. The Nevada Senate passed it 11-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 85, which would have made Nevada's collection of traffic stop data permanent by removing the end date of December 2025. Police agencies record the perceived race, ethnicity, age and sex of the driver and the reason for the stop, and report it each February. The bill also left local agencies to carry the cost themselves rather than claim it back from the state. The Nevada Senate passed it 11-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1578347,
+   "measure_id": "AB 589",
+   "vote_date": "2025-05-26",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 589, which would have barred state agencies, local governments and their contractors from collecting or sharing data identifying people with autism, except for listed purposes such as running a benefits program or providing care. It would also have made it a felony to sell or pass on someone's DNA sample or genetic information without fresh consent, even if the sample was first taken with consent. The Nevada Assembly passed it 27-14, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 589, which would have barred state agencies, local governments and their contractors from collecting or sharing data identifying people with autism, except for listed purposes such as running a benefits program or providing care. It would also have made it a felony to sell or pass on someone's DNA sample or genetic information without fresh consent, even if the sample was first taken with consent. The Nevada Assembly passed it 27-14, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1581651,
+   "measure_id": "AB 589",
+   "vote_date": "2025-05-29",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 589, which would have barred state agencies, local governments and their contractors from collecting or sharing data identifying people with autism, except for listed purposes such as running a benefits program or providing care. It would also have made it a felony to sell or pass on someone's DNA sample or genetic information without fresh consent, even if the sample was first taken with consent. The Nevada Senate passed it 13-7, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 589, which would have barred state agencies, local governments and their contractors from collecting or sharing data identifying people with autism, except for listed purposes such as running a benefits program or providing care. It would also have made it a felony to sell or pass on someone's DNA sample or genetic information without fresh consent, even if the sample was first taken with consent. The Nevada Senate passed it 13-7, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1578740,
+   "measure_id": "SB 63",
+   "vote_date": "2025-05-27",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 63, the Nevada Youth Online Safety Act, which would have barred online platforms from using a person under 18's personal information to pick what content and ads they see. A parent could switch off endless scrolling, autoplay, livestreaming and like counts on a child's account, and notifications would have stopped overnight and during school hours. It also set rules for handling the data of children under 13. The Nevada Senate passed it 13-8, but the Assembly then removed the parts about young people and the Senate never voted on the new version, so it never became law.",
+   "nay_description": "Voted against Senate Bill 63, the Nevada Youth Online Safety Act, which would have barred online platforms from using a person under 18's personal information to pick what content and ads they see. A parent could switch off endless scrolling, autoplay, livestreaming and like counts on a child's account, and notifications would have stopped overnight and during school hours. It also set rules for handling the data of children under 13. The Nevada Senate passed it 13-8, but the Assembly then removed the parts about young people and the Senate never voted on the new version, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1583741,
+   "measure_id": "SB 63",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 63, which the Assembly passed after removing the whole Youth Online Safety Act the Senate had passed. What was left covers only children under 13: a parent must agree before a service handles their data, and the data may not be sold or used for targeted ads. The Assembly version also barred anyone but the Attorney General from suing over it. The Nevada Assembly passed it 26-15, but the Senate never voted on the Assembly's version, so it never became law.",
+   "nay_description": "Voted against Senate Bill 63, which the Assembly passed after removing the whole Youth Online Safety Act the Senate had passed. What was left covers only children under 13: a parent must agree before a service handles their data, and the data may not be sold or used for targeted ads. The Assembly version also barred anyone but the Attorney General from suing over it. The Nevada Assembly passed it 26-15, but the Senate never voted on the Assembly's version, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1575920,
+   "measure_id": "SB 102",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 102, which would have made it a felony to knowingly file a false election document with intent to defraud, and a separate felony to create or serve in a false slate of presidential electors. Anyone convicted of the elector crime would have been permanently barred from holding public office in Nevada. The Secretary of State would have had to investigate complaints or refer them for prosecution. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 102, which would have made it a felony to knowingly file a false election document with intent to defraud, and a separate felony to create or serve in a false slate of presidential electors. Anyone convicted of the elector crime would have been permanently barred from holding public office in Nevada. The Secretary of State would have had to investigate complaints or refer them for prosecution. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1548312,
+   "measure_id": "SB 102",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 102, which would have made it a felony to knowingly file a false election document with intent to defraud, and a separate felony to create or serve in a false slate of presidential electors. Anyone convicted of the elector crime would have been permanently barred from holding public office in Nevada. The Secretary of State would have had to investigate complaints or refer them for prosecution. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 102, which would have made it a felony to knowingly file a false election document with intent to defraud, and a separate felony to create or serve in a false slate of presidential electors. Anyone convicted of the elector crime would have been permanently barred from holding public office in Nevada. The Secretary of State would have had to investigate complaints or refer them for prosecution. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1582251,
+   "measure_id": "AB 597",
+   "vote_date": "2025-05-30",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 597, which would have let a voter registered with no party choose one major party's ballot and vote in that party's primary, either by asking for it by post seven weeks ahead or by asking in person. A voter could take only one primary ballot. Presidential preference primaries would have stayed closed to voters with no party. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 597, which would have let a voter registered with no party choose one major party's ballot and vote in that party's primary, either by asking for it by post seven weeks ahead or by asking in person. A voter could take only one primary ballot. Presidential preference primaries would have stayed closed to voters with no party. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1583696,
+   "measure_id": "AB 597",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 597, which would have let a voter registered with no party choose one major party's ballot and vote in that party's primary, either by asking for it by post seven weeks ahead or by asking in person. A voter could take only one primary ballot. Presidential preference primaries would have stayed closed to voters with no party. The Nevada Senate passed it 12-9, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 597, which would have let a voter registered with no party choose one major party's ballot and vote in that party's primary, either by asking for it by post seven weeks ahead or by asking in person. A voter could take only one primary ballot. Presidential preference primaries would have stayed closed to voters with no party. The Nevada Senate passed it 12-9, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1577027,
+   "measure_id": "SB 89",
+   "vote_date": "2025-05-23",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 89, which would have added hate crime convictions to the list of convictions that bar a person from buying or owning a gun in Nevada. A conviction for a violent hate crime would have barred a person for life, and any other hate crime conviction for ten years. People convicted before July 2025 could keep guns they already legally owned. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 89, which would have added hate crime convictions to the list of convictions that bar a person from buying or owning a gun in Nevada. A conviction for a violent hate crime would have barred a person for life, and any other hate crime conviction for ten years. People convicted before July 2025 could keep guns they already legally owned. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1573331,
+   "measure_id": "SB 89",
+   "vote_date": "2025-05-19",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 89, which would have added hate crime convictions to the list of convictions that bar a person from buying or owning a gun in Nevada. A conviction for a violent hate crime would have barred a person for life, and any other hate crime conviction for ten years. People convicted before July 2025 could keep guns they already legally owned. The Nevada Senate passed it 12-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 89, which would have added hate crime convictions to the list of convictions that bar a person from buying or owning a gun in Nevada. A conviction for a violent hate crime would have barred a person for life, and any other hate crime conviction for ten years. People convicted before July 2025 could keep guns they already legally owned. The Nevada Senate passed it 12-8, but the governor vetoed the bill, so it never became law."
+  }
+ ]
+}
