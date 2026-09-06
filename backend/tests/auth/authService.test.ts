@@ -959,25 +959,29 @@ describe("createAuthService logoutAll", () => {
   it("bumps the session epoch and still succeeds when the Redis sweep fails", async () => {
     const redis = createRedisMock();
     redis.sMembers.mockRejectedValue(new Error("redis down"));
-    const db = createDbMock(createDbClientMock());
+    const client = createDbClientMock();
+    client.query.mockResolvedValue({ rows: [], rowCount: 1 });
 
     const service = createAuthService({
-      db: db as never,
+      db: createDbMock(client) as never,
       redis: redis as never,
       mailer: createMailerMock(),
       publicBaseUrl: "https://example.com",
     });
 
-    // The epoch bump lands on the pool before Redis is touched, so the DB
-    // revocation is durable and the best-effort sweep failure must not
-    // surface an error for a logout-all that already succeeded.
+    // The epoch bump commits before Redis is touched, so the DB revocation
+    // is durable and the best-effort sweep failure must not surface an
+    // error for a logout-all that already succeeded.
     await expect(service.logoutAll({ userId: USER_ID })).resolves.toBeUndefined();
-    const bumpCall = db.query.mock.calls.find((call) => String(call[0]).includes("session_epoch = session_epoch + 1"));
+    const bumpCall = client.query.mock.calls.find((call) => String(call[0]).includes("session_epoch = session_epoch + 1"));
     expect(bumpCall?.[1]).toEqual([USER_ID]);
+    expect(client.query).toHaveBeenCalledWith("COMMIT");
   });
 
-  it("revokes every push token, so signed-out devices stop receiving pushes", async () => {
-    const db = createDbMock(createDbClientMock());
+  it("revokes every push token in the same transaction as the epoch bump", async () => {
+    const client = createDbClientMock();
+    client.query.mockResolvedValue({ rows: [], rowCount: 1 });
+    const db = createDbMock(client);
 
     const service = createAuthService({
       db: db as never,
@@ -987,10 +991,43 @@ describe("createAuthService logoutAll", () => {
     });
 
     await service.logoutAll({ userId: USER_ID });
-    const revokeCall = db.query.mock.calls.find(
-      (call) => String(call[0]).includes("user_push_tokens") && String(call[0]).includes("revoked_at = now()")
-    );
-    expect(revokeCall?.[1]).toEqual([USER_ID]);
+    const sqls = client.query.mock.calls.map((call) => String(call[0]));
+    const beginAt = sqls.indexOf("BEGIN");
+    const bumpAt = sqls.findIndex((sql) => sql.includes("session_epoch = session_epoch + 1"));
+    const revokeAt = sqls.findIndex((sql) => sql.includes("user_push_tokens") && sql.includes("revoked_at = now()"));
+    const commitAt = sqls.indexOf("COMMIT");
+    expect(beginAt).toBeGreaterThanOrEqual(0);
+    expect(bumpAt).toBeGreaterThan(beginAt);
+    expect(revokeAt).toBeGreaterThan(bumpAt);
+    expect(commitAt).toBeGreaterThan(revokeAt);
+    expect(client.query.mock.calls[revokeAt]?.[1]).toEqual([USER_ID]);
+    // Nothing goes through the pool directly; both writes ride the one client.
+    expect(db.query).not.toHaveBeenCalled();
+    expect(client.release).toHaveBeenCalledTimes(1);
+  });
+
+  it("rolls the epoch bump back when the push-token revocation fails, so the caller can retry", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // epoch bump
+      .mockRejectedValueOnce(new Error("push tokens table locked")) // revoke fails
+      .mockResolvedValueOnce({ rows: [] }); // ROLLBACK
+    const redis = createRedisMock();
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: redis as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await expect(service.logoutAll({ userId: USER_ID })).rejects.toThrow("push tokens table locked");
+    expect(client.query).toHaveBeenCalledWith("ROLLBACK");
+    expect(client.query).not.toHaveBeenCalledWith("COMMIT");
+    expect(client.release).toHaveBeenCalledTimes(1);
+    // No Redis sweep for a revocation that did not happen.
+    expect(redis.sMembers).not.toHaveBeenCalled();
   });
 });
 
