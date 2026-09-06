@@ -1,0 +1,140 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1654731,
+      "measure_id": "HB 4018",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4018, which puts off Oregon's new campaign money disclosure rules by three years. The reporting duties and the public campaign finance dashboard passed in 2024 were to start on January 1, 2028. They now start on January 1, 2031, and apply to elections after January 1, 2032. Changes to the complaint and civil penalty rules slip from 2027 to 2031 as well. The Act does set out what the system will require. Once a group spends $50,000 backing or opposing a candidate on its own, it must name every donor who gave $5,000 or more. It also treats two membership groups run by the same people as one for contribution limits, unless each decides on its own whom to back. The Oregon House passed it 39-19, and it became law.",
+      "nay_description": "Voted against House Bill 4018, which puts off Oregon's new campaign money disclosure rules by three years. The reporting duties and the public campaign finance dashboard passed in 2024 were to start on January 1, 2028. They now start on January 1, 2031, and apply to elections after January 1, 2032. Changes to the complaint and civil penalty rules slip from 2027 to 2031 as well. The Act does set out what the system will require. Once a group spends $50,000 backing or opposing a candidate on its own, it must name every donor who gave $5,000 or more. It also treats two membership groups run by the same people as one for contribution limits, unless each decides on its own whom to back. The Oregon House passed it 39-19, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1655568,
+      "measure_id": "HB 4018",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4018, which puts off Oregon's new campaign money disclosure rules by three years. The reporting duties and the public campaign finance dashboard passed in 2024 were to start on January 1, 2028. They now start on January 1, 2031, and apply to elections after January 1, 2032. Changes to the complaint and civil penalty rules slip from 2027 to 2031 as well. The Act does set out what the system will require. Once a group spends $50,000 backing or opposing a candidate on its own, it must name every donor who gave $5,000 or more. It also treats two membership groups run by the same people as one for contribution limits, unless each decides on its own whom to back. The Oregon Senate passed it 20-9, and it became law.",
+      "nay_description": "Voted against House Bill 4018, which puts off Oregon's new campaign money disclosure rules by three years. The reporting duties and the public campaign finance dashboard passed in 2024 were to start on January 1, 2028. They now start on January 1, 2031, and apply to elections after January 1, 2032. Changes to the complaint and civil penalty rules slip from 2027 to 2031 as well. The Act does set out what the system will require. Once a group spends $50,000 backing or opposing a candidate on its own, it must name every donor who gave $5,000 or more. It also treats two membership groups run by the same people as one for contribution limits, unless each decides on its own whom to back. The Oregon Senate passed it 20-9, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1656432,
+      "measure_id": "HB 4159",
+      "vote_date": "2026-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4159, which changes who sits on Oregon's ethics board and what stays private. The Governor appoints nine members. At least one must have worked in local government. The Act also keeps legal privilege alive for a message sent to the Oregon Government Ethics Commission. That covers someone giving facts about a complaint the commission is deciding. Without it, handing the material over could have given up the privilege. The Oregon House agreed to the Senate's changes 37-15, and it became law.",
+      "nay_description": "Voted against House Bill 4159, which changes who sits on Oregon's ethics board and what stays private. The Governor appoints nine members. At least one must have worked in local government. The Act also keeps legal privilege alive for a message sent to the Oregon Government Ethics Commission. That covers someone giving facts about a complaint the commission is deciding. Without it, handing the material over could have given up the privilege. The Oregon House agreed to the Senate's changes 37-15, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1645381,
+      "measure_id": "SB 1507",
+      "vote_date": "2026-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1507, which makes Oregon tax income that new federal breaks had freed, and pays some of it back to low-paid workers. Interest on a car loan that a taxpayer deducted on their federal return must be added back to income on their Oregon return. So must any gain on qualified small business stock that federal law let them leave out. Both apply from the 2026 tax year. Oregon also refuses the federal bonus depreciation write-off. In the other direction the Act raises Oregon's earned income tax credit, which goes to working people on low pay, and adds a credit for creating new jobs. The Oregon House passed it 34-21, and it became law.",
+      "nay_description": "Voted against Senate Bill 1507, which makes Oregon tax income that new federal breaks had freed, and pays some of it back to low-paid workers. Interest on a car loan that a taxpayer deducted on their federal return must be added back to income on their Oregon return. So must any gain on qualified small business stock that federal law let them leave out. Both apply from the 2026 tax year. Oregon also refuses the federal bonus depreciation write-off. In the other direction the Act raises Oregon's earned income tax credit, which goes to working people on low pay, and adds a credit for creating new jobs. The Oregon House passed it 34-21, and it became law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1634601,
+      "measure_id": "SB 1507",
+      "vote_date": "2026-02-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1507, which makes Oregon tax income that new federal breaks had freed, and pays some of it back to low-paid workers. Interest on a car loan that a taxpayer deducted on their federal return must be added back to income on their Oregon return. So must any gain on qualified small business stock that federal law let them leave out. Both apply from the 2026 tax year. Oregon also refuses the federal bonus depreciation write-off. In the other direction the Act raises Oregon's earned income tax credit, which goes to working people on low pay, and adds a credit for creating new jobs. The Oregon Senate passed it 17-13, and it became law.",
+      "nay_description": "Voted against Senate Bill 1507, which makes Oregon tax income that new federal breaks had freed, and pays some of it back to low-paid workers. Interest on a car loan that a taxpayer deducted on their federal return must be added back to income on their Oregon return. So must any gain on qualified small business stock that federal law let them leave out. Both apply from the 2026 tax year. Oregon also refuses the federal bonus depreciation write-off. In the other direction the Act raises Oregon's earned income tax credit, which goes to working people on low pay, and adds a credit for creating new jobs. The Oregon Senate passed it 17-13, and it became law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1645204,
+      "measure_id": "SB 1512",
+      "vote_date": "2026-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1512, which reshapes Prosperity 10,000, the state program that helps people into work. The workforce commission must now award the money as grants to local workforce boards, which run the program. The purposes are rewritten. They include help navigating workforce programs, community-based career counseling and wraparound support. The program must widen access rather than serve only listed priority groups. Targets stay: at least 80 percent of participants must finish, and a set share must be women. Local boards must weigh how a funding bid shows it has reached priority groups in target industries. The Oregon House passed it 36-16, and it became law.",
+      "nay_description": "Voted against Senate Bill 1512, which reshapes Prosperity 10,000, the state program that helps people into work. The workforce commission must now award the money as grants to local workforce boards, which run the program. The purposes are rewritten. They include help navigating workforce programs, community-based career counseling and wraparound support. The program must widen access rather than serve only listed priority groups. Targets stay: at least 80 percent of participants must finish, and a set share must be women. Local boards must weigh how a funding bid shows it has reached priority groups in target industries. The Oregon House passed it 36-16, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1656433,
+      "measure_id": "HB 4179",
+      "vote_date": "2026-03-06",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4179, which extends the state's legal shield to doctors at nonprofits set up by Oregon Health and Science University. Such a group counts as one the university created, so long as the university is a corporate member of it. A doctor, naturopathic doctor or dentist who treats patients there is then treated as a state worker on duty. That matters for a patient who sues. The state tort claims law applies instead, and it caps what an injured patient may win. Two parts of the professional corporation law, which would otherwise set their liability, no longer apply. The Oregon House agreed to the Senate's changes 36-16, and it became law.",
+      "nay_description": "Voted against House Bill 4179, which extends the state's legal shield to doctors at nonprofits set up by Oregon Health and Science University. Such a group counts as one the university created, so long as the university is a corporate member of it. A doctor, naturopathic doctor or dentist who treats patients there is then treated as a state worker on duty. That matters for a patient who sues. The state tort claims law applies instead, and it caps what an injured patient may win. Two parts of the professional corporation law, which would otherwise set their liability, no longer apply. The Oregon House agreed to the Senate's changes 36-16, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

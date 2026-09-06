@@ -35,6 +35,12 @@ is new.
 **85 roll calls across 51 measures are both divided and enacted.** Divided
 means the smaller side is at least a quarter of the larger one.
 
+The campaign is complete: **36 measures judged over 58 approved roll calls,
+1,691 records across 63 candidates**, in seven batches. Two measures were
+excluded as budget or fee bills, two dropped because the divided vote was cast
+on a text that never became law, and nine dropped under filter 5. Nothing is
+open. See `worklist/CAMPAIGN-COMPLETE.md`.
+
 ## One roll call is held back, and the reason is new
 
 Oregon lets a senator change a recorded vote by unanimous consent, and the

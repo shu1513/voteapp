@@ -1,24 +1,24 @@
 bill	disposition	reason	house_roll	senate_roll	title
 HB4013	batch-05	judged and imported	1627973	1644355	Relating to labor standards.
 HB4016	batch-05	judged and imported	1652384	1656067	Relating to tax compliance; and prescribing an effective date.
-HB4018	candidate		1654731	1655568	Relating to elections; and declaring an emergency.
-HB4027	candidate		1647837	1652882	Relating to the Bureau of Labor and Industries; and prescribing an effective date.
+HB4018	batch-07	judged and imported	1654731	1655568	Relating to elections; and declaring an emergency.
+HB4027	drop:filter-5	Creates the BOLI Expenses Fund and lets the consumer and business services director set an assessment on employers and employees to fill it. This is agency financing, so a vote on it is a vote on arithmetic rather than on a policy anyone can name — the same reason budget and fee bills are excluded.	1647837	1652882	Relating to the Bureau of Labor and Industries; and prescribing an effective date.
 HB4031	batch-06	judged and imported	1632386	1644327	Relating to the siting of renewable energy facilities; and prescribing an effective date.
 HB4036	batch-01	judged and imported	1652571	1656025	Relating to affordable housing; and declaring an emergency.
 HB4060	batch-04	judged and imported		1651434	Relating to fluorescent lamps; and declaring an emergency.
-HB4066	candidate		1630289		Relating to education; and declaring an emergency.
+HB4066	drop:filter-5	Education grab-bag: OHSU board meetings, education service district board stipends, the military children compact, the State Board of Education, school district budget committees and a Portland State study of farmworker labor standards. There is no nameable subject shared by the strands, so filter 3 fails and no single area fits.	1630289		Relating to education; and declaring an emergency.
 HB4069	batch-05	judged and imported	1635782		Relating to the safety of behavioral health workers; and prescribing an effective date.
 HB4075	batch-03	judged and imported	1655393	1656533	Relating to hospital finance; and declaring an emergency.
 HB4076	batch-06	judged and imported	1652848		Relating to energy; and prescribing an effective date.
 HB4079	batch-02	judged and imported	1635482	1649817	Relating to policies for when federal immigration authorities enter public education property; and prescribing an effective date.
-HB4084	candidate			1656161	Relating to economic development; and prescribing an effective date.
+HB4084	drop:filter-5	Economic development omnibus: a Joint Permitting Council for fast-track permits, enterprise zone limits on data centers, and a jobs tax credit. Its strands pull against each other inside the same area — faster permitting cuts against environmental review while the data centre limits cut for it — and the Senate nays are mostly environmental Democrats. No honest single direction.		1656161	Relating to economic development; and prescribing an effective date.
 HB4088	batch-01	judged and imported	1634476	1655033	Relating to health; and declaring an emergency.
 HB4089	batch-05	judged and imported	1647982		Relating to criminal offenses related to work.
 HB4111	batch-01	judged and imported	1639289	1655156	Relating to immigration-related practices; and prescribing an effective date.
 HB4114	batch-01	judged and imported		1655695	Relating to law enforcement operations; and declaring an emergency.
 HB4115	batch-03	judged and imported		1652969	Relating to health care providers; and prescribing an effective date.
 HB4116	batch-05	judged and imported	1635842		Relating to consumer finance loans; and prescribing an effective date.
-HB4124	candidate			1653923	Relating to the state post-secondary education system; and declaring an emergency.
+HB4124	drop:filter-5	Directs the Higher Education Coordinating Commission to study the post-secondary system and report recommendations. A study creates no policy anyone voted for or against, and the nays included a Democrat.		1653923	Relating to the state post-secondary education system; and declaring an emergency.
 HB4127	batch-01	judged and imported	1652703	1656104	Relating to Medicaid payments to reproductive health care providers; and declaring an emergency.
 HB4128	batch-01	judged and imported	1653050		Relating to sale of single-family residences.
 HB4134	batch-06	judged and imported	1642734	1653215	Relating to funding for natural resource matters; prescribing an effective date; and providing for revenue raising that requires approval by a three-fifths majority.
@@ -28,13 +28,13 @@ HB4144	batch-04	judged and imported		1655714	Relating to batteries.
 HB4145	drop:version	The divided House roll (33-19, 2026-02-25) was on the A-Engrossed text. The Senate then amended it to B-Engrossed and passed it 30-0, and the House concurred 50-3. The law is the B-Engrossed text and neither chamber divided on it, so the 33-19 vote was on a text that never became law.			
 HB4148	drop:filter-5	Changes the split of local lodging tax revenue from 70 percent tourism and 30 percent local services to 50/50, and lets tourism money fund resiliency grants for restaurants and lodging. This is local budget flexibility, and the nays crossed both caucuses in both chambers. No area carries a defensible for or against.	1644831	1655224	Relating to local taxation; and prescribing an effective date.
 HB4153	batch-06	judged and imported	1652973	1656206	Relating to farm stores.
-HB4159	candidate		1656432		Relating to the Oregon Government Ethics Commission.
-HB4179	candidate		1656433		Relating to entities created by the Oregon Health and Science University.
+HB4159	batch-07	judged and imported	1656432		Relating to the Oregon Government Ethics Commission.
+HB4179	batch-07	judged and imported	1656433		Relating to entities created by the Oregon Health and Science University.
 HB5203	excluded:appropriations	fee ratification bill, named as such by its own staff summary	1656411	1656412	Relating to state financial administration; and declaring an emergency.
 HB5204	excluded:appropriations	budget bill: makes budget changes for the current biennium	1656327		Relating to state financial administration; and declaring an emergency.
-SB1501	candidate		1656532	1653188	Relating to the Moda Center; and declaring an emergency.
-SB1507	candidate		1645381	1634601	Relating to revenue; and prescribing an effective date.
-SB1512	candidate		1645204		Relating to workforce development.
+SB1501	drop:filter-5	State ownership and operation of the Moda Center through a joint authority, with tax revenue directed to an arena fund. Public money for a sports arena has no single area, and the nays crossed both caucuses in both chambers (Chaichi, Chotzen and Gomberg alongside Boshart Davis, Cate and Diehl in the House; Patterson and Pham alongside Hayden and Linthicum in the Senate).	1656532	1653188	Relating to the Moda Center; and declaring an emergency.
+SB1507	batch-07	judged and imported	1645381	1634601	Relating to revenue; and prescribing an effective date.
+SB1512	batch-07	judged and imported	1645204		Relating to workforce development.
 SB1515	batch-05	judged and imported	1654867		Relating to wrongful convictions; and declaring an emergency.
 SB1517	drop:version	The divided Senate roll (16-13, 2026-02-24) was on the A-Engrossed text. The House amended it to B-Engrossed and passed it 55-2, and the Senate concurred 29-0. The law is the B-Engrossed text and neither chamber divided on it.			
 SB1521	drop:filter-5	Lets Portland-area cities require affordable units in new multiunit housing only if they pay the developer an offset worth at least the expected loss in value. Under housing_affordability the whole dispute — whether an inclusionary requirement produces affordable homes or suppresses building — sits inside the area, and the Act does both things at once: it authorizes the requirement and constrains it. A reader cannot be told honestly what a yes vote was for. The AZ SB 1611 precedent: where the trade is the dispute itself, drop.	1653763	1640098	Relating to local requirements to develop affordable housing.
@@ -49,4 +49,4 @@ SB1587	batch-02	judged and imported	1649574	1653141	Relating to data brokers; an
 SB1590	batch-04	judged and imported	1649903	1652724	Relating to public lands; and declaring an emergency.
 SB1594	batch-02	judged and imported	1649905	1652756	Relating to immigration; and declaring an emergency.
 SB1598	batch-03	judged and imported	1651028	1638681	Relating to access to health services; and declaring an emergency.
-SB1599	candidate		1649838	1648483	Relating to a special election date for Referendum Petition 2026-302; and declaring an emergency.
+SB1599	drop:filter-5	Sets the referendum on the 2025 transportation funding law for the May 2026 primary, and changes who writes the ballot title and explanatory statement for it. The subject is the scheduling and mechanics of one referendum. election_integrity is defined as a secure, accurate and auditable count, which this is not, and no other area carries it.	1649838	1648483	Relating to a special election date for Referendum Petition 2026-302; and declaring an emergency.
