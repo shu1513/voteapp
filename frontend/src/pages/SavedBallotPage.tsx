@@ -24,12 +24,10 @@ import { track, useTrackBallotResult } from "../lib/usage";
 type SavedBallot = BallotSummary & { matched_address?: string };
 
 // Persisted ordering preferences: unlike the race-type tab's URL param,
-// these save to the account and apply to every future visit. The sort select
-// and the "Followed candidates first" checkbox are separate controls, so the
-// shared query/mutation plumbing lives in this hook — one instance per
-// control is safe because the mutationKey lock below allows only one save in
-// flight, and each control merges its change from its own pending overlay
-// or the shared cache.
+// these save to the account and apply to every future visit. Only the sort
+// select is exposed here — `followed_first` stays in the saved object (the
+// PUT replaces the FULL object, so it must round-trip untouched) but has no
+// control of its own: the toolbar was too busy with it.
 function useBallotPreferences() {
   const queryClient = useQueryClient();
   // Optimistic overlay: consecutive changes must merge from the latest view,
@@ -57,8 +55,7 @@ function useBallotPreferences() {
   // Cross-mount in-flight guard: component-local isPending resets on remount
   // (navigate away and back mid-save), but the mutation cache does not — a
   // remounted control must stay locked until the older full-object PUT
-  // settles, or two writes could commit out of order. Shared across both
-  // preference controls, so a save from one also locks the other.
+  // settles, or two writes could commit out of order.
   const saving = useIsMutating({ mutationKey: ["put-ballot-preferences"] }) > 0;
 
   const current = pending ?? prefs.data ?? null;
@@ -129,34 +126,6 @@ function BallotSortPreference({
             </option>
           ))}
         </select>
-      </label>
-      {update.isError ? <ErrorNotice error={update.error} /> : null}
-    </div>
-  );
-}
-
-function FollowedFirstPreference() {
-  const { prefs, update, saving, current, change } = useBallotPreferences();
-  if (prefs.isError) {
-    return <ErrorNotice error={prefs.error} />;
-  }
-  if (!current) {
-    return null;
-  }
-  return (
-    <div className="flex flex-col items-end gap-1">
-      <label className="flex cursor-pointer items-center gap-2 text-sm text-ink-soft">
-        <input
-          type="checkbox"
-          checked={current.followed_first}
-          disabled={saving}
-          onChange={(event) => {
-            track("list_control", { control: "followed_first", value: event.target.checked ? "on" : "off" });
-            change({ followed_first: event.target.checked });
-          }}
-          className="h-4 w-4 accent-rausch"
-        />
-        Followed candidates first
       </label>
       {update.isError ? <ErrorNotice error={update.error} /> : null}
     </div>
@@ -379,7 +348,6 @@ export function SavedBallotPage() {
             <RaceTypeTabs raceType={filtersView.raceType} onChange={onRaceTypeChange} />
           ) : null}
           <BallotSortPreference sortOverride={sortOverride} onClearOverride={clearSortOverride} />
-          <FollowedFirstPreference />
         </div>
         <HowToVoteControl states={data.districts.map((district) => district.state)} />
       </div>
