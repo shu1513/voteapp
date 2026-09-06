@@ -1,0 +1,205 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1538713,
+   "measure_id": "HB 1237",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the final version of HB 1237. It bars state boards from keeping anyone off because of race, color, ethnicity or national origin. It also bars race-based rules for who sits on a board, naming affirmative action, racial preferences and racial quotas. The Tennessee House agreed it 73-22, and it became law.",
+   "nay_description": "Voted against the final version of HB 1237. It bars state boards from keeping anyone off because of race, color, ethnicity or national origin. It also bars race-based rules for who sits on a board, naming affirmative action, racial preferences and racial quotas. The Tennessee House agreed it 73-22, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1531898,
+   "measure_id": "HB 1237",
+   "vote_date": "2025-03-31",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1237. It bars state boards from keeping anyone off because of race, color, ethnicity or national origin. It also bars race-based rules for who sits on a board, naming affirmative action, racial preferences and racial quotas. The Tennessee Senate passed it 24-6, and it became law.",
+   "nay_description": "Voted against HB 1237. It bars state boards from keeping anyone off because of race, color, ethnicity or national origin. It also bars race-based rules for who sits on a board, naming affirmative action, racial preferences and racial quotas. The Tennessee Senate passed it 24-6, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1663455,
+   "measure_id": "HB 1705",
+   "vote_date": "2026-03-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1705. Starting in July 2026 it bars any state or local government employer in Tennessee, including school districts, from hiring a person without first checking their work authorization through the federal E-Verify system. The Tennessee House passed it 73-21, and it became law.",
+   "nay_description": "Voted against HB 1705. Starting in July 2026 it bars any state or local government employer in Tennessee, including school districts, from hiring a person without first checking their work authorization through the federal E-Verify system. The Tennessee House passed it 73-21, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1676866
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1688346,
+   "measure_id": "SB 1747",
+   "vote_date": "2026-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1747. It makes it a crime to recklessly fire a gun into the air, the ground, water or a nearby object at a public gathering or event where at least 25 people are present. The charge is a Class A misdemeanor, and officers acting in the line of duty are exempt. The Tennessee House passed it 63-18, and it became law.",
+   "nay_description": "Voted against SB 1747. It makes it a crime to recklessly fire a gun into the air, the ground, water or a nearby object at a public gathering or event where at least 25 people are present. The charge is a Class A misdemeanor, and officers acting in the line of duty are exempt. The Tennessee House passed it 63-18, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1682315,
+   "measure_id": "SB 1858",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1858. When a court finds a fault in a Tennessee redistricting plan, it must now give the legislature 90 days to fix it instead of 15. The act also lets these cases be filed in any county and has the state supreme court pick a three-judge panel with one judge from each grand division. The Tennessee House passed it 76-20, and it became law.",
+   "nay_description": "Voted against SB 1858. When a court finds a fault in a Tennessee redistricting plan, it must now give the legislature 90 days to fix it instead of 15. The act also lets these cases be filed in any county and has the state supreme court pick a three-judge panel with one judge from each grand division. The Tennessee House passed it 76-20, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1675998,
+   "measure_id": "SB 2031",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 2031. It lets a person sue a health care provider for an injury caused by a medical procedure that was done to help them live as a gender different from their sex, but only if they, or their parent when they were a minor, agreed to it partly or wholly because the provider coerced them. The Tennessee House passed it 72-19, and it became law.",
+   "nay_description": "Voted against SB 2031. It lets a person sue a health care provider for an injury caused by a medical procedure that was done to help them live as a gender different from their sex, but only if they, or their parent when they were a minor, agreed to it partly or wholly because the provider coerced them. The Tennessee House passed it 72-19, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1550606,
+   "measure_id": "SB 227",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 227. It lets a charity that houses someone it knows is in the country illegally be sued for loss, injury or death caused by a crime that person commits while living there. The charity is liable only if its own conduct was careless or worse. The Tennessee House passed it 70-23, and it became law.",
+   "nay_description": "Voted against SB 227. It lets a charity that houses someone it knows is in the country illegally be sued for loss, injury or death caused by a crime that person commits while living there. The charity is liable only if its own conduct was careless or worse. The Tennessee House passed it 70-23, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1683417,
+   "measure_id": "SB 2459",
+   "vote_date": "2026-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 2459. It bars the children's services department from asking foster parents how many guns they own or what kind, or asking to see them. The department may still ask whether guns are in the home and whether they are stored safely. The Tennessee House passed it 72-23, and it became law.",
+   "nay_description": "Voted against SB 2459. It bars the children's services department from asking foster parents how many guns they own or what kind, or asking to see them. The department may still ask whether guns are in the home and whether they are stored safely. The Tennessee House passed it 72-23, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1657614,
+   "measure_id": "SB 350",
+   "vote_date": "2026-03-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 350. It bars a landlord from stopping a renter from having, carrying or storing a gun in their own home or in their car in the tenant parking area, and while going to and from those places. The Tennessee House passed it 73-21, and it became law.",
+   "nay_description": "Voted against SB 350. It bars a landlord from stopping a renter from having, carrying or storing a gun in their own home or in their car in the tenant parking area, and while going to and from those places. The Tennessee House passed it 73-21, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1554338,
+   "measure_id": "SB 392",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 392. It creates the crime of human smuggling. A person commits it by moving, hiding or sheltering someone they know is in the country illegally, when they do so for money or other financial gain. The Tennessee House passed it 73-22, and it became law.",
+   "nay_description": "Voted against SB 392. It creates the crime of human smuggling. A person commits it by moving, hiding or sheltering someone they know is in the country illegally, when they do so for money or other financial gain. The Tennessee House passed it 73-22, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1538800,
+   "measure_id": "SB 955",
+   "vote_date": "2025-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 955. The Medical Ethics Defense Act lets a health care provider, and a hospital or clinic, refuse to take part in care that goes against their stated ethical, moral or religious beliefs. Extra cost or burden this puts on another provider is not a defense against the new protection. The Tennessee House passed it 71-24, and it became law.",
+   "nay_description": "Voted against SB 955. The Medical Ethics Defense Act lets a health care provider, and a hospital or clinic, refuse to take part in care that goes against their stated ethical, moral or religious beliefs. Extra cost or burden this puts on another provider is not a defense against the new protection. The Tennessee House passed it 71-24, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
