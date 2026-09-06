@@ -1,4 +1,5 @@
 import type { AuthApiRateLimitInput, AuthApiRateLimitResult } from "./addressApiTypes.js";
+import { RequestValidationError } from "../utils/requestValidationError.js";
 
 export const DEFAULT_AUTH_API_RATE_LIMIT_WINDOW_MS = 15 * 60_000;
 export const DEFAULT_AUTH_API_RATE_LIMIT_MAX_REQUESTS_PER_IP = 10;
@@ -26,7 +27,7 @@ export type InMemoryAuthApiRateLimiter = ((input: AuthApiRateLimitInput) => Auth
 function normalizeEmail(email: string): string {
   const normalized = email.trim().toLowerCase();
   if (normalized.length === 0) {
-    throw new TypeError("Email must be a non-empty string");
+    throw new RequestValidationError("Email must be a non-empty string");
   }
   return normalized;
 }

@@ -1,0 +1,259 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1538841,
+      "measure_id": "HB 1430",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1430. House Bill 1430 let the State Treasurer make, buy, and service loans that refinance student debt. It also took away the Treasurer's power to use income share agreements, under which a student promises a share of future pay instead of repaying a set amount. The House passed it 67-38, and it became law.",
+      "nay_description": "Voted against House Bill 1430. House Bill 1430 let the State Treasurer make, buy, and service loans that refinance student debt. It also took away the Treasurer's power to use income share agreements, under which a student promises a share of future pay instead of repaying a set amount. The House passed it 67-38, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1576619,
+      "measure_id": "HB 1430",
+      "vote_date": "2025-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1430. House Bill 1430 let the State Treasurer make, buy, and service loans that refinance student debt. It also took away the Treasurer's power to use income share agreements, under which a student promises a share of future pay instead of repaying a set amount. The Senate passed it 46-12, and it became law.",
+      "nay_description": "Voted against House Bill 1430. House Bill 1430 let the State Treasurer make, buy, and service loans that refinance student debt. It also took away the Treasurer's power to use income share agreements, under which a student promises a share of future pay instead of repaying a set amount. The Senate passed it 46-12, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1539121,
+      "measure_id": "HB 1616",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1616. House Bill 1616 gave part-time employees the same organ donor leave full-time employees already had. They may take up to 10 days off in a 12-month period. Pay is figured from the daily average they earned over their previous two months of work. The House passed it 70-34, and it became law.",
+      "nay_description": "Voted against House Bill 1616. House Bill 1616 gave part-time employees the same organ donor leave full-time employees already had. They may take up to 10 days off in a 12-month period. Pay is figured from the daily average they earned over their previous two months of work. The House passed it 70-34, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1575036,
+      "measure_id": "HB 1859",
+      "vote_date": "2025-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 1859. House Bill 1859 said a community college course must be taught by a qualified faculty member. Artificial intelligence cannot be the only source of instruction. Faculty may still use artificial intelligence to help with their teaching. The Senate passed it 46-12, and it became law.",
+      "nay_description": "Voted against House Bill 1859. House Bill 1859 said a community college course must be taught by a qualified faculty member. Artificial intelligence cannot be the only source of instruction. Faculty may still use artificial intelligence to help with their teaching. The Senate passed it 46-12, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1538332,
+      "measure_id": "HB 2397",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2397. House Bill 2397, the Eddie Thomas Act, made the Department of Corrections publish a yearly report on hospice and end-of-life care in state prisons. The report must cover who received that care, how many people in custody died, and what staff were available to provide it. The House passed it 78-27, and it became law.",
+      "nay_description": "Voted against House Bill 2397. House Bill 2397, the Eddie Thomas Act, made the Department of Corrections publish a yearly report on hospice and end-of-life care in state prisons. The report must cover who received that care, how many people in custody died, and what staff were available to provide it. The House passed it 78-27, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1576072,
+      "measure_id": "HB 2397",
+      "vote_date": "2025-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2397. House Bill 2397, the Eddie Thomas Act, made the Department of Corrections publish a yearly report on hospice and end-of-life care in state prisons. The report must cover who received that care, how many people in custody died, and what staff were available to provide it. The Senate passed it 33-19, and it became law.",
+      "nay_description": "Voted against House Bill 2397. House Bill 2397, the Eddie Thomas Act, made the Department of Corrections publish a yearly report on hospice and end-of-life care in state prisons. The report must cover who received that care, how many people in custody died, and what staff were available to provide it. The Senate passed it 33-19, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1576506,
+      "measure_id": "HB 2419",
+      "vote_date": "2025-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2419. House Bill 2419 changed how local officials decide where a waste facility may be built. They must weigh traffic pollution from the site. They must also weigh how the site's pollution would add to pollution already there, and how that combined load would fall on nearby communities. The Senate passed it 37-19, and it became law.",
+      "nay_description": "Voted against House Bill 2419. House Bill 2419 changed how local officials decide where a waste facility may be built. They must weigh traffic pollution from the site. They must also weigh how the site's pollution would add to pollution already there, and how that combined load would fall on nearby communities. The Senate passed it 37-19, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1582280,
+      "measure_id": "HB 2419",
+      "vote_date": "2025-05-30",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate version of House Bill 2419. House Bill 2419 changed how local officials decide where a waste facility may be built. They must weigh traffic pollution from the site. They must also weigh how the site's pollution would add to pollution already there, and how that combined load would fall on nearby communities. The House agreed to that version 77-39, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 2419. House Bill 2419 changed how local officials decide where a waste facility may be built. They must weigh traffic pollution from the site. They must also weigh how the site's pollution would add to pollution already there, and how that combined load would fall on nearby communities. The House agreed to that version 77-39, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1546298,
+      "measure_id": "HB 2464",
+      "vote_date": "2025-04-11",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2464. House Bill 2464 protected families whose newborn needs intensive care. When that care comes from a hospital or doctor outside the family's insurance network and is billed as an emergency, the insurer must make sure the family pays no more than in-network care would have cost. The House passed it 84-30, and it became law.",
+      "nay_description": "Voted against House Bill 2464. House Bill 2464 protected families whose newborn needs intensive care. When that care comes from a hospital or doctor outside the family's insurance network and is billed as an emergency, the insurer must make sure the family pays no more than in-network care would have cost. The House passed it 84-30, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1582721,
+      "measure_id": "HB 2516",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate version of House Bill 2516. House Bill 2516 bans the sale of several products that contain added PFAS, a group of long-lasting chemicals linked to health harm. The ban starts in 2032 and covers cosmetics, dental floss, products for babies and children, menstrual products, and underwear. The Senate had taken cookware and food packaging off that list. The House agreed to that version 77-39, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 2516. House Bill 2516 bans the sale of several products that contain added PFAS, a group of long-lasting chemicals linked to health harm. The ban starts in 2032 and covers cosmetics, dental floss, products for babies and children, menstrual products, and underwear. The Senate had taken cookware and food packaging off that list. The House agreed to that version 77-39, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1544869,
+      "measure_id": "HB 2726",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2726. House Bill 2726 gave the Department of Natural Resources the power to use rewilding as a way to conserve land. Rewilding can include returning land to its natural state and bringing back native species, including top predators and species other wildlife depend on. The House passed it 75-37, and it became law.",
+      "nay_description": "Voted against House Bill 2726. House Bill 2726 gave the Department of Natural Resources the power to use rewilding as a way to conserve land. Rewilding can include returning land to its natural state and bringing back native species, including top predators and species other wildlife depend on. The House passed it 75-37, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "senate",
+      "session": "2176",
+      "roll": 1575184,
+      "measure_id": "HB 2726",
+      "vote_date": "2025-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2726. House Bill 2726 gave the Department of Natural Resources the power to use rewilding as a way to conserve land. Rewilding can include returning land to its natural state and bringing back native species, including top predators and species other wildlife depend on. The Senate passed it 39-16, and it became law.",
+      "nay_description": "Voted against House Bill 2726. House Bill 2726 gave the Department of Natural Resources the power to use rewilding as a way to conserve land. Rewilding can include returning land to its natural state and bringing back native species, including top predators and species other wildlife depend on. The Senate passed it 39-16, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1586220,
+      "measure_id": "HB 2987",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 2987. House Bill 2987 required every warehouse in Illinois to write a tornado safety plan and update it each year. Copies go to the local fire department and emergency agency. Warehouses built after the law took effect must be designed to protect life in a tornado at least as well as the building code demands for other extreme weather, and county and city building inspectors must hold a national certification. The House passed it 83-28, later agreed to a Senate wording change 99-15, and it became law.",
+      "nay_description": "Voted against House Bill 2987. House Bill 2987 required every warehouse in Illinois to write a tornado safety plan and update it each year. Copies go to the local fire department and emergency agency. Warehouses built after the law took effect must be designed to protect life in a tornado at least as well as the building code demands for other extreme weather, and county and city building inspectors must hold a national certification. The House passed it 83-28, later agreed to a Senate wording change 99-15, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1586222
+      ]
+    },
+    {
+      "jurisdiction": "IL",
+      "chamber": "house",
+      "session": "2176",
+      "roll": 1582746,
+      "measure_id": "HB 3019",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to accept the Senate version of House Bill 3019. House Bill 3019 made health insurers report how much of the money they collect in premiums goes back out to pay claims. If federal rules that require those reports and refunds are repealed, insurers must still file the reports with Illinois or pay the refunds. The House agreed to that version 84-32, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 3019. House Bill 3019 made health insurers report how much of the money they collect in premiums goes back out to pay claims. If federal rules that require those reports and refunds are repealed, insurers must still file the reports with Illinois or pay the refunds. The House agreed to that version 84-32, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1661653,
+   "measure_id": "HB 1194",
+   "vote_date": "2026-03-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1194. It extends Tennessee's work authorization law to almost every private employer. The law had applied to businesses with at least six employees; it now applies to those with at least one. The Tennessee Senate passed it 19-13, and it became law.",
+   "nay_description": "Voted against HB 1194. It extends Tennessee's work authorization law to almost every private employer. The law had applied to businesses with at least six employees; it now applies to those with at least one. The Tennessee Senate passed it 19-13, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1687780,
+   "measure_id": "HB 1709",
+   "vote_date": "2026-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the final version of HB 1709. It requires a person to be a United States citizen or a qualified immigrant to get a range of state licenses, certificates and permits, such as a court reporter license. The Tennessee House agreed it 70-21, and it became law.",
+   "nay_description": "Voted against the final version of HB 1709. It requires a person to be a United States citizen or a qualified immigrant to get a range of state licenses, certificates and permits, such as a court reporter license. The Tennessee House agreed it 70-21, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1677121,
+   "measure_id": "HB 2018",
+   "vote_date": "2026-04-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 2018. It requires a sheriff's department already working under a federal 287(g) agreement to accept and honor any immigration detainer it receives. That means holding the person for up to 48 hours beyond when they would otherwise be released, not counting weekends and holidays. The Tennessee House passed it 72-23, and it became law.",
+   "nay_description": "Voted against HB 2018. It requires a sheriff's department already working under a federal 287(g) agreement to accept and honor any immigration detainer it receives. That means holding the person for up to 48 hours beyond when they would otherwise be released, not counting weekends and holidays. The Tennessee House passed it 72-23, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1684476
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1687884,
+   "measure_id": "HB 2502",
+   "vote_date": "2026-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the final version of HB 2502. It applies Tennessee sales tax to the service of sending money from this state to a place outside the United States through a licensed money transmitter. The Tennessee House agreed it 70-19, and it became law.",
+   "nay_description": "Voted against the final version of HB 2502. It applies Tennessee sales tax to the service of sending money from this state to a place outside the United States through a licensed money transmitter. The Tennessee House agreed it 70-19, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1685052,
+   "measure_id": "HB 2502",
+   "vote_date": "2026-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 2502. It applies Tennessee sales tax to the service of sending money from this state to a place outside the United States through a licensed money transmitter. The Tennessee Senate passed it 21-7, and it became law.",
+   "nay_description": "Voted against HB 2502. It applies Tennessee sales tax to the service of sending money from this state to a place outside the United States through a licensed money transmitter. The Tennessee Senate passed it 21-7, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1670926,
+   "measure_id": "SB 1464",
+   "vote_date": "2026-03-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1464. It requires state agencies and officials to keep secret the names of officers taking part in federal immigration enforcement in Tennessee. That information is closed to public records requests. The Tennessee House passed it 70-19, and it became law.",
+   "nay_description": "Voted against SB 1464. It requires state agencies and officials to keep secret the names of officers taking part in federal immigration enforcement in Tennessee. That information is closed to public records requests. The Tennessee House passed it 70-19, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1687313,
+   "measure_id": "SB 1587",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1587. It makes it a crime for an employer to knowingly let a person who is in the country illegally drive a commercial vehicle in Tennessee, and a crime for that person to drive one. The Tennessee House passed it 73-20, and it became law.",
+   "nay_description": "Voted against SB 1587. It makes it a crime for an employer to knowingly let a person who is in the country illegally drive a commercial vehicle in Tennessee, and a crime for that person to drive one. The Tennessee House passed it 73-20, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1548654,
+   "measure_id": "SB 750",
+   "vote_date": "2025-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 750. It requires the state's immigration enforcement division to report to the legislature by July 2026 on crime it links to people in the country illegally, including an assessment of criminal enterprises and of threats. The Tennessee House passed it 75-20, and it became law.",
+   "nay_description": "Voted against SB 750. It requires the state's immigration enforcement division to report to the legislature by July 2026 on crime it links to people in the country illegally, including an assessment of criminal enterprises and of threats. The Tennessee House passed it 75-20, and it became law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

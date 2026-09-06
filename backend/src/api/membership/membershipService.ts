@@ -5,6 +5,7 @@ import {
   MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS,
   MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS,
 } from "../apiValidation.js";
+import { RequestValidationError } from "../../utils/requestValidationError.js";
 
 // Support payments / membership (docs/plans/membership-contributions.md).
 // Stripe holds all card data; our tables hold references and amounts only.
@@ -1059,15 +1060,20 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
       if (!customer) {
         return { enabled: true, membership: null, total_net_cents: 0, payments: [] };
       }
-      const subscriptionResult = await db.query<{
-        stripe_subscription_id: string;
-        stripe_status: string;
-        monthly_amount_cents: number;
-        cancel_at_period_end: boolean;
-        current_period_end: Date | null;
-        started_at: Date;
-      }>(
-        `
+      // Three independent reads after the customer lookup, issued together
+      // (latency only — separate statements on the pool are not one
+      // snapshot). The amount-change read below depends on the subscription
+      // and stays sequential.
+      const [subscriptionResult, paymentsResult, totalResult] = await Promise.all([
+        db.query<{
+          stripe_subscription_id: string;
+          stripe_status: string;
+          monthly_amount_cents: number;
+          cancel_at_period_end: boolean;
+          current_period_end: Date | null;
+          started_at: Date;
+        }>(
+          `
           SELECT stripe_status, monthly_amount_cents, cancel_at_period_end,
                  current_period_end, started_at, stripe_subscription_id
           FROM public.billing_subscriptions
@@ -1075,32 +1081,33 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
             AND stripe_status NOT IN ('canceled', 'incomplete_expired')
           LIMIT 1
         `,
-        [customer.id]
-      );
-      const paymentsResult = await db.query<{
-        amount_cents: number;
-        refunded_amount_cents: number;
-        kind: MembershipKind;
-        currency: string;
-        paid_at: Date;
-      }>(
-        `
+          [customer.id]
+        ),
+        db.query<{
+          amount_cents: number;
+          refunded_amount_cents: number;
+          kind: MembershipKind;
+          currency: string;
+          paid_at: Date;
+        }>(
+          `
           SELECT amount_cents, refunded_amount_cents, kind, currency, paid_at
           FROM public.billing_payments
           WHERE billing_customer_id = $1::uuid
           ORDER BY paid_at DESC
           LIMIT 50
         `,
-        [customer.id]
-      );
-      const totalResult = await db.query<{ total_net_cents: number }>(
-        `
+          [customer.id]
+        ),
+        db.query<{ total_net_cents: number }>(
+          `
           SELECT COALESCE(SUM(amount_cents - refunded_amount_cents), 0)::int AS total_net_cents
           FROM public.billing_payments
           WHERE billing_customer_id = $1::uuid
         `,
-        [customer.id]
-      );
+          [customer.id]
+        ),
+      ]);
       const subscription = subscriptionResult.rows[0] ?? null;
       const changes = subscription ? await listUnbilledAmountChanges(subscription.stripe_subscription_id) : [];
       const periodAmountCents = subscription ? currentPeriodAmount(changes, subscription.monthly_amount_cents) : 0;
@@ -1153,12 +1160,12 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
         input.amount_cents < MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS ||
         input.amount_cents > MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS
       ) {
-        throw new TypeError(
+        throw new RequestValidationError(
           `amount_cents must be an integer between ${MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS} and ${MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS}`
         );
       }
       if (input.kind !== "one_time" && input.kind !== "monthly") {
-        throw new TypeError("kind must be one_time or monthly");
+        throw new RequestValidationError("kind must be one_time or monthly");
       }
       const email = await lookupActiveUserEmail(userId);
       if (!email) {
@@ -1328,7 +1335,7 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
         input.amount_cents < MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS ||
         input.amount_cents > MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS
       ) {
-        throw new TypeError(
+        throw new RequestValidationError(
           `amount_cents must be an integer between ${MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS} and ${MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS}`
         );
       }

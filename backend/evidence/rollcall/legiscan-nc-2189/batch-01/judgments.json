@@ -1,269 +1,269 @@
 {
- "judgments": [
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1599102,
-   "measure_id": "H 193",
-   "vote_date": "2025-07-29",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 193, a gun bill. It lets staff at private schools carry a gun at school if the school agrees in writing. It also lets permit holders carry a hidden handgun in a church that shares land with a school. It also raised the penalties for attacking or threatening a public official. A yes vote backed making the bill law over the governor's veto. The House voted 72-48 to override, the Senate did the same that day, and the bill became law.",
-   "nay_description": "Voted no on House Bill 193, a gun bill. It lets staff at private schools carry a gun at school if the school agrees in writing. It also lets permit holders carry a hidden handgun in a church that shares land with a school. It also raised the penalties for attacking or threatening a public official. A no vote would have let the governor's veto stand. The House voted 72-48 to override, the Senate did the same that day, and the bill became law.",
-   "labels": [
+  "judgments": [
     {
-     "slug": "gun_control",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1599165,
-   "measure_id": "H 193",
-   "vote_date": "2025-07-29",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 193, a gun bill. It lets staff at private schools carry a gun at school if the school agrees in writing. It also lets permit holders carry a hidden handgun in a church that shares land with a school. It also raised the penalties for attacking or threatening a public official. A yes vote backed making the bill law over the governor's veto. The Senate voted 29-19 to override, the House did the same that day, and the bill became law.",
-   "nay_description": "Voted no on House Bill 193, a gun bill. It lets staff at private schools carry a gun at school if the school agrees in writing. It also lets permit holders carry a hidden handgun in a church that shares land with a school. It also raised the penalties for attacking or threatening a public official. A no vote would have let the governor's veto stand. The Senate voted 29-19 to override, the House did the same that day, and the bill became law.",
-   "labels": [
-    {
-     "slug": "gun_control",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1599134,
-   "measure_id": "H 318",
-   "vote_date": "2025-07-29",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 318, an immigration bill. Jails must check the status of anyone charged with a felony, some serious misdemeanors, or drunk driving. If federal agents want the person, the jail must hold them up to 48 more hours after they would have gone free. Judges must run the same check when they set bail. A yes vote backed making the bill law over the governor's veto. The House voted 72-48 to override, the Senate did the same that day, and the bill became law.",
-   "nay_description": "Voted no on House Bill 318, an immigration bill. Jails must check the status of anyone charged with a felony, some serious misdemeanors, or drunk driving. If federal agents want the person, the jail must hold them up to 48 more hours after they would have gone free. Judges must run the same check when they set bail. A no vote would have let the governor's veto stand. The House voted 72-48 to override, the Senate did the same that day, and the bill became law.",
-   "labels": [
-    {
-     "slug": "immigration",
-     "yea": "against",
-     "nay": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1599133,
-   "measure_id": "H 318",
-   "vote_date": "2025-07-29",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 318, an immigration bill. Jails must check the status of anyone charged with a felony, some serious misdemeanors, or drunk driving. If federal agents want the person, the jail must hold them up to 48 more hours after they would have gone free. Judges must run the same check when they set bail. A yes vote backed making the bill law over the governor's veto. The Senate voted 30-19 to override, the House did the same that day, and the bill became law.",
-   "nay_description": "Voted no on House Bill 318, an immigration bill. Jails must check the status of anyone charged with a felony, some serious misdemeanors, or drunk driving. If federal agents want the person, the jail must hold them up to 48 more hours after they would have gone free. Judges must run the same check when they set bail. A no vote would have let the governor's veto stand. The Senate voted 30-19 to override, the House did the same that day, and the bill became law.",
-   "labels": [
-    {
-     "slug": "immigration",
-     "yea": "against",
-     "nay": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1599122,
-   "measure_id": "H 805",
-   "vote_date": "2025-07-29",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 805. It sets one fixed meaning of sex, man and woman for every state and local rule, and it stops state money from paying for gender transition care in prisons. The same law makes porn sites check the age and written consent of everyone in an image, and take images down within 72 hours when asked. It also changed school rules on shared sleeping quarters and library books. A yes vote backed making the bill law over the governor's veto. The House voted 72-48 to override, the Senate did the same that day, and the bill became law.",
-   "nay_description": "Voted no on House Bill 805. It sets one fixed meaning of sex, man and woman for every state and local rule, and it stops state money from paying for gender transition care in prisons. The same law makes porn sites check the age and written consent of everyone in an image, and take images down within 72 hours when asked. It also changed school rules on shared sleeping quarters and library books. A no vote would have let the governor's veto stand. The House voted 72-48 to override, the Senate did the same that day, and the bill became law.",
-   "labels": [
-    {
-     "slug": "civil_rights",
-     "yea": "against",
-     "nay": null
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1599102,
+      "measure_id": "H 193",
+      "vote_date": "2025-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 193, a gun bill. It lets a private school employee or volunteer carry a gun at school only with the school's written permission, a concealed handgun permit, and eight extra hours of gun safety training each year. It also lets permit holders carry a hidden handgun in a church that shares land with a school. It also raised the penalties for attacking or threatening a public official. A yes vote backed making the bill law over the governor's veto. The House voted 72-48 to override, the Senate did the same that day, and the bill became law.",
+      "nay_description": "Voted no on House Bill 193, a gun bill. It lets a private school employee or volunteer carry a gun at school only with the school's written permission, a concealed handgun permit, and eight extra hours of gun safety training each year. It also lets permit holders carry a hidden handgun in a church that shares land with a school. It also raised the penalties for attacking or threatening a public official. A no vote would have let the governor's veto stand. The House voted 72-48 to override, the Senate did the same that day, and the bill became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
     },
     {
-     "slug": "corporate_accountability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1599171,
-   "measure_id": "H 805",
-   "vote_date": "2025-07-29",
-   "review_status": "approved",
-   "yea_description": "Voted yes on House Bill 805. It sets one fixed meaning of sex, man and woman for every state and local rule, and it stops state money from paying for gender transition care in prisons. The same law makes porn sites check the age and written consent of everyone in an image, and take images down within 72 hours when asked. It also changed school rules on shared sleeping quarters and library books. A yes vote backed making the bill law over the governor's veto. The Senate voted 30-19 to override, the House did the same that day, and the bill became law.",
-   "nay_description": "Voted no on House Bill 805. It sets one fixed meaning of sex, man and woman for every state and local rule, and it stops state money from paying for gender transition care in prisons. The same law makes porn sites check the age and written consent of everyone in an image, and take images down within 72 hours when asked. It also changed school rules on shared sleeping quarters and library books. A no vote would have let the governor's veto stand. The Senate voted 30-19 to override, the House did the same that day, and the bill became law.",
-   "labels": [
-    {
-     "slug": "civil_rights",
-     "yea": "against",
-     "nay": null
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1599165,
+      "measure_id": "H 193",
+      "vote_date": "2025-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 193, a gun bill. It lets staff at private schools carry a gun at school if the school agrees in writing. It also lets permit holders carry a hidden handgun in a church that shares land with a school. It also raised the penalties for attacking or threatening a public official. A yes vote backed making the bill law over the governor's veto. The Senate voted 29-19 to override, the House did the same that day, and the bill became law.",
+      "nay_description": "Voted no on House Bill 193, a gun bill. It lets staff at private schools carry a gun at school if the school agrees in writing. It also lets permit holders carry a hidden handgun in a church that shares land with a school. It also raised the penalties for attacking or threatening a public official. A no vote would have let the governor's veto stand. The Senate voted 29-19 to override, the House did the same that day, and the bill became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
     },
     {
-     "slug": "corporate_accountability",
-     "yea": "for",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1599149,
-   "measure_id": "S 266",
-   "vote_date": "2025-07-29",
-   "review_status": "approved",
-   "yea_description": "Voted yes on Senate Bill 266, an energy bill. It erased the rule that big power companies must cut carbon dioxide 70 percent below 2005 levels by 2030. The 2050 goal of no net emissions stays. The law also lets a power company raise rates to pay for a plant that is still being built. A yes vote backed making the bill law over the governor's veto. The Senate voted 30-18 to override, the House did the same that day, and the bill became law.",
-   "nay_description": "Voted no on Senate Bill 266, an energy bill. It erased the rule that big power companies must cut carbon dioxide 70 percent below 2005 levels by 2030. The 2050 goal of no net emissions stays. The law also lets a power company raise rates to pay for a plant that is still being built. A no vote would have let the governor's veto stand. The Senate voted 30-18 to override, the House did the same that day, and the bill became law.",
-   "labels": [
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1599134,
+      "measure_id": "H 318",
+      "vote_date": "2025-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 318, an immigration bill. Jails must check the status of anyone charged with a felony, some serious misdemeanors, or drunk driving. If federal agents want the person, the jail must hold them up to 48 more hours after they would have gone free. Judges must run the same check when they set bail. A yes vote backed making the bill law over the governor's veto. The House voted 72-48 to override, the Senate did the same that day, and the bill became law.",
+      "nay_description": "Voted no on House Bill 318, an immigration bill. Jails must check the status of anyone charged with a felony, some serious misdemeanors, or drunk driving. If federal agents want the person, the jail must hold them up to 48 more hours after they would have gone free. Judges must run the same check when they set bail. A no vote would have let the governor's veto stand. The House voted 72-48 to override, the Senate did the same that day, and the bill became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1599150,
-   "measure_id": "S 266",
-   "vote_date": "2025-07-29",
-   "review_status": "approved",
-   "yea_description": "Voted yes on Senate Bill 266, an energy bill. It erased the rule that big power companies must cut carbon dioxide 70 percent below 2005 levels by 2030. The 2050 goal of no net emissions stays. The law also lets a power company raise rates to pay for a plant that is still being built. A yes vote backed making the bill law over the governor's veto. The House voted 74-46 to override, the Senate did the same that day, and the bill became law.",
-   "nay_description": "Voted no on Senate Bill 266, an energy bill. It erased the rule that big power companies must cut carbon dioxide 70 percent below 2005 levels by 2030. The 2050 goal of no net emissions stays. The law also lets a power company raise rates to pay for a plant that is still being built. A no vote would have let the governor's veto stand. The House voted 74-46 to override, the Senate did the same that day, and the bill became law.",
-   "labels": [
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1599133,
+      "measure_id": "H 318",
+      "vote_date": "2025-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 318, an immigration bill. Jails must check the status of anyone charged with a felony, some serious misdemeanors, or drunk driving. If federal agents want the person, the jail must hold them up to 48 more hours after they would have gone free. Judges must run the same check when they set bail. A yes vote backed making the bill law over the governor's veto. The Senate voted 30-19 to override, the House did the same that day, and the bill became law.",
+      "nay_description": "Voted no on House Bill 318, an immigration bill. Jails must check the status of anyone charged with a felony, some serious misdemeanors, or drunk driving. If federal agents want the person, the jail must hold them up to 48 more hours after they would have gone free. Judges must run the same check when they set bail. A no vote would have let the governor's veto stand. The Senate voted 30-19 to override, the House did the same that day, and the bill became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
     {
-     "slug": "environment_and_public_health",
-     "yea": "against",
-     "nay": null
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1599126,
-   "measure_id": "S 153",
-   "vote_date": "2025-07-29",
-   "review_status": "approved",
-   "yea_description": "Voted yes on Senate Bill 153, the Border Protection Act. State police and prison agencies must sign deals to work with federal immigration agents. State agencies must also stop giving state-paid benefits and housing help to people here without legal permission, though food aid is left alone. A city or county with a sanctuary policy can now be sued. A yes vote backed making the bill law over the governor's veto. The Senate voted 30-19 to override in July 2025, the House followed in June 2026, and the bill became law.",
-   "nay_description": "Voted no on Senate Bill 153, the Border Protection Act. State police and prison agencies must sign deals to work with federal immigration agents. State agencies must also stop giving state-paid benefits and housing help to people here without legal permission, though food aid is left alone. A city or county with a sanctuary policy can now be sued. A no vote would have let the governor's veto stand. The Senate voted 30-19 to override in July 2025, the House followed in June 2026, and the bill became law.",
-   "labels": [
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1599122,
+      "measure_id": "H 805",
+      "vote_date": "2025-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 805. It sets one fixed meaning of sex, man and woman for every state and local rule, and it bars state money from paying for gender transition surgery, puberty blockers, or cross-sex hormones for minors or for state prisoners. The same law makes porn sites check the age and written consent of everyone in an image, and take images down within 72 hours when asked. It also changed school rules on shared sleeping quarters and library books. A yes vote backed making the bill law over the governor's veto. The House voted 72-48 to override, the Senate did the same that day, and the bill became law.",
+      "nay_description": "Voted no on House Bill 805. It sets one fixed meaning of sex, man and woman for every state and local rule, and it bars state money from paying for gender transition surgery, puberty blockers, or cross-sex hormones for minors or for state prisoners. The same law makes porn sites check the age and written consent of everyone in an image, and take images down within 72 hours when asked. It also changed school rules on shared sleeping quarters and library books. A no vote would have let the governor's veto stand. The House voted 72-48 to override, the Senate did the same that day, and the bill became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        },
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "immigration",
-     "yea": "against",
-     "nay": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1711527,
-   "measure_id": "S 153",
-   "vote_date": "2026-06-24",
-   "review_status": "pending",
-   "yea_description": "Voted yes on Senate Bill 153, the Border Protection Act. State police and prison agencies must sign deals to work with federal immigration agents. State agencies must also stop giving state-paid benefits and housing help to people here without legal permission, though food aid is left alone. A city or county with a sanctuary policy can now be sued. A yes vote backed making the bill law over the governor's veto. The House voted 71-47 to override in June 2026, after the Senate did so in July 2025, and the bill became law.",
-   "nay_description": "Voted no on Senate Bill 153, the Border Protection Act. State police and prison agencies must sign deals to work with federal immigration agents. State agencies must also stop giving state-paid benefits and housing help to people here without legal permission, though food aid is left alone. A city or county with a sanctuary policy can now be sued. A no vote would have let the governor's veto stand. The House voted 71-47 to override in June 2026, after the Senate did so in July 2025, and the bill became law.",
-   "labels": [
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1599171,
+      "measure_id": "H 805",
+      "vote_date": "2025-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted yes on House Bill 805. It sets one fixed meaning of sex, man and woman for every state and local rule, and it stops state money from paying for gender transition care in prisons. The same law makes porn sites check the age and written consent of everyone in an image, and take images down within 72 hours when asked. It also changed school rules on shared sleeping quarters and library books. A yes vote backed making the bill law over the governor's veto. The Senate voted 30-19 to override, the House did the same that day, and the bill became law.",
+      "nay_description": "Voted no on House Bill 805. It sets one fixed meaning of sex, man and woman for every state and local rule, and it stops state money from paying for gender transition care in prisons. The same law makes porn sites check the age and written consent of everyone in an image, and take images down within 72 hours when asked. It also changed school rules on shared sleeping quarters and library books. A no vote would have let the governor's veto stand. The Senate voted 30-19 to override, the House did the same that day, and the bill became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        },
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "immigration",
-     "yea": "against",
-     "nay": "for"
-    }
-   ],
-   "note": "Held out of batch-01: LegiScan omits the House's unaffiliated members from this roll, so its member list shows 71-46 while the official transcript records 71-47. The descriptions quote the official 71-47 so the judge's tally gate blocks approval until the stored tally is corrected."
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1599167,
-   "measure_id": "S 227",
-   "vote_date": "2025-07-29",
-   "review_status": "approved",
-   "yea_description": "Voted yes on Senate Bill 227. Public schools may no longer run a diversity, equity and inclusion office, or teach what the law calls divisive concepts. One banned idea is that one race or sex is better than another. Free speech and normal history teaching are protected. Each school must report every year that it follows the law. A yes vote backed making the bill law over the governor's veto. The Senate voted 30-19 to override in July 2025, the House followed in June 2026, and the bill became law.",
-   "nay_description": "Voted no on Senate Bill 227. Public schools may no longer run a diversity, equity and inclusion office, or teach what the law calls divisive concepts. One banned idea is that one race or sex is better than another. Free speech and normal history teaching are protected. Each school must report every year that it follows the law. A no vote would have let the governor's veto stand. The Senate voted 30-19 to override in July 2025, the House followed in June 2026, and the bill became law.",
-   "labels": [
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1599149,
+      "measure_id": "S 266",
+      "vote_date": "2025-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted yes on Senate Bill 266, an energy bill. It erased the rule that big power companies must cut carbon dioxide 70 percent below 2005 levels by 2030. The 2050 goal of no net emissions stays. The law also lets a power company raise rates to pay for a plant that is still being built. A yes vote backed making the bill law over the governor's veto. The Senate voted 30-18 to override, the House did the same that day, and the bill became law.",
+      "nay_description": "Voted no on Senate Bill 266, an energy bill. It erased the rule that big power companies must cut carbon dioxide 70 percent below 2005 levels by 2030. The 2050 goal of no net emissions stays. The law also lets a power company raise rates to pay for a plant that is still being built. A no vote would have let the governor's veto stand. The Senate voted 30-18 to override, the House did the same that day, and the bill became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "against",
-     "nay": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1711513,
-   "measure_id": "S 227",
-   "vote_date": "2026-06-24",
-   "review_status": "pending",
-   "yea_description": "Voted yes on Senate Bill 227. Public schools may no longer run a diversity, equity and inclusion office, or teach what the law calls divisive concepts. One banned idea is that one race or sex is better than another. Free speech and normal history teaching are protected. Each school must report every year that it follows the law. A yes vote backed making the bill law over the governor's veto. The House voted 71-47 to override in June 2026, after the Senate did so in July 2025, and the bill became law.",
-   "nay_description": "Voted no on Senate Bill 227. Public schools may no longer run a diversity, equity and inclusion office, or teach what the law calls divisive concepts. One banned idea is that one race or sex is better than another. Free speech and normal history teaching are protected. Each school must report every year that it follows the law. A no vote would have let the governor's veto stand. The House voted 71-47 to override in June 2026, after the Senate did so in July 2025, and the bill became law.",
-   "labels": [
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1599150,
+      "measure_id": "S 266",
+      "vote_date": "2025-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted yes on Senate Bill 266, an energy bill. It erased the rule that big power companies must cut carbon dioxide 70 percent below 2005 levels by 2030. The 2050 goal of no net emissions stays. The law also lets a power company raise rates to pay for a plant that is still being built. A yes vote backed making the bill law over the governor's veto. The House voted 74-46 to override, the Senate did the same that day, and the bill became law.",
+      "nay_description": "Voted no on Senate Bill 266, an energy bill. It erased the rule that big power companies must cut carbon dioxide 70 percent below 2005 levels by 2030. The 2050 goal of no net emissions stays. The law also lets a power company raise rates to pay for a plant that is still being built. A no vote would have let the governor's veto stand. The House voted 74-46 to override, the Senate did the same that day, and the bill became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "against",
-     "nay": "for"
-    }
-   ],
-   "note": "Held out of batch-01: LegiScan omits the House's unaffiliated members from this roll, so its member list shows 71-46 while the official transcript records 71-47. The descriptions quote the official 71-47 so the judge's tally gate blocks approval until the stored tally is corrected."
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "senate",
-   "session": "2189",
-   "roll": 1599164,
-   "measure_id": "S 558",
-   "vote_date": "2025-07-29",
-   "review_status": "approved",
-   "yea_description": "Voted yes on Senate Bill 558. State universities and community colleges may no longer keep a diversity, equity and inclusion office, or employ staff to promote what the law calls divisive concepts. They also may not require a class on those ideas for a degree unless the chancellor agrees. They may not take reports about speech that the First Amendment protects. A yes vote backed making the bill law over the governor's veto. The Senate voted 30-19 to override in July 2025, the House followed in June 2026, and the bill became law.",
-   "nay_description": "Voted no on Senate Bill 558. State universities and community colleges may no longer keep a diversity, equity and inclusion office, or employ staff to promote what the law calls divisive concepts. They also may not require a class on those ideas for a degree unless the chancellor agrees. They may not take reports about speech that the First Amendment protects. A no vote would have let the governor's veto stand. The Senate voted 30-19 to override in July 2025, the House followed in June 2026, and the bill became law.",
-   "labels": [
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1599126,
+      "measure_id": "S 153",
+      "vote_date": "2025-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted yes on Senate Bill 153, the North Carolina Border Protection Act. State law enforcement and prison agencies must sign agreements to have officers do federal immigration work. State agencies must stop giving state-funded benefits and publicly funded housing help to people here without legal permission, though food aid is left alone. A city or county that keeps a sanctuary policy loses its immunity from tort suits if someone here illegally commits a crime there, and UNC campuses may not adopt sanctuary policies. A yes vote backed making the bill law over the governor's veto. The Senate voted 30-19 to override in July 2025, the House followed in June 2026, and the bill became law.",
+      "nay_description": "Voted no on Senate Bill 153, the North Carolina Border Protection Act. State law enforcement and prison agencies must sign agreements to have officers do federal immigration work. State agencies must stop giving state-funded benefits and publicly funded housing help to people here without legal permission, though food aid is left alone. A city or county that keeps a sanctuary policy loses its immunity from tort suits if someone here illegally commits a crime there, and UNC campuses may not adopt sanctuary policies. A no vote would have let the governor's veto stand. The Senate voted 30-19 to override in July 2025, the House followed in June 2026, and the bill became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
     {
-     "slug": "civil_rights",
-     "yea": "against",
-     "nay": "for"
-    }
-   ]
-  },
-  {
-   "jurisdiction": "NC",
-   "chamber": "house",
-   "session": "2189",
-   "roll": 1711515,
-   "measure_id": "S 558",
-   "vote_date": "2026-06-24",
-   "review_status": "pending",
-   "yea_description": "Voted yes on Senate Bill 558. State universities and community colleges may no longer keep a diversity, equity and inclusion office, or employ staff to promote what the law calls divisive concepts. They also may not require a class on those ideas for a degree unless the chancellor agrees. They may not take reports about speech that the First Amendment protects. A yes vote backed making the bill law over the governor's veto. The House voted 71-47 to override in June 2026, after the Senate did so in July 2025, and the bill became law.",
-   "nay_description": "Voted no on Senate Bill 558. State universities and community colleges may no longer keep a diversity, equity and inclusion office, or employ staff to promote what the law calls divisive concepts. They also may not require a class on those ideas for a degree unless the chancellor agrees. They may not take reports about speech that the First Amendment protects. A no vote would have let the governor's veto stand. The House voted 71-47 to override in June 2026, after the Senate did so in July 2025, and the bill became law.",
-   "labels": [
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1711527,
+      "measure_id": "S 153",
+      "vote_date": "2026-06-24",
+      "review_status": "pending",
+      "yea_description": "Voted yes on Senate Bill 153, the Border Protection Act. State police and prison agencies must sign deals to work with federal immigration agents. State agencies must also stop giving state-paid benefits and housing help to people here without legal permission, though food aid is left alone. A city or county with a sanctuary policy can now be sued. A yes vote backed making the bill law over the governor's veto. The House voted 71-47 to override in June 2026, after the Senate did so in July 2025, and the bill became law.",
+      "nay_description": "Voted no on Senate Bill 153, the Border Protection Act. State police and prison agencies must sign deals to work with federal immigration agents. State agencies must also stop giving state-paid benefits and housing help to people here without legal permission, though food aid is left alone. A city or county with a sanctuary policy can now be sued. A no vote would have let the governor's veto stand. The House voted 71-47 to override in June 2026, after the Senate did so in July 2025, and the bill became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "note": "Held out of batch-01: LegiScan omits the House's unaffiliated members from this roll, so its member list shows 71-46 while the official transcript records 71-47. The descriptions quote the official 71-47 so the judge's tally gate blocks approval until the stored tally is corrected."
+    },
     {
-     "slug": "civil_rights",
-     "yea": "against",
-     "nay": "for"
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1599167,
+      "measure_id": "S 227",
+      "vote_date": "2025-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted yes on Senate Bill 227. Public schools may no longer run a diversity, equity and inclusion office, or teach what the law calls divisive concepts. One banned idea is that one race or sex is better than another. Free speech and normal history teaching are protected. Each school must report every year that it follows the law. A yes vote backed making the bill law over the governor's veto. The Senate voted 30-19 to override in July 2025, the House followed in June 2026, and the bill became law.",
+      "nay_description": "Voted no on Senate Bill 227. Public schools may no longer run a diversity, equity and inclusion office, or teach what the law calls divisive concepts. One banned idea is that one race or sex is better than another. Free speech and normal history teaching are protected. Each school must report every year that it follows the law. A no vote would have let the governor's veto stand. The Senate voted 30-19 to override in July 2025, the House followed in June 2026, and the bill became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1711513,
+      "measure_id": "S 227",
+      "vote_date": "2026-06-24",
+      "review_status": "pending",
+      "yea_description": "Voted yes on Senate Bill 227. Public schools may no longer run a diversity, equity and inclusion office, or teach what the law calls divisive concepts. One banned idea is that one race or sex is better than another. Free speech and normal history teaching are protected. Each school must report every year that it follows the law. A yes vote backed making the bill law over the governor's veto. The House voted 71-47 to override in June 2026, after the Senate did so in July 2025, and the bill became law.",
+      "nay_description": "Voted no on Senate Bill 227. Public schools may no longer run a diversity, equity and inclusion office, or teach what the law calls divisive concepts. One banned idea is that one race or sex is better than another. Free speech and normal history teaching are protected. Each school must report every year that it follows the law. A no vote would have let the governor's veto stand. The House voted 71-47 to override in June 2026, after the Senate did so in July 2025, and the bill became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "note": "Held out of batch-01: LegiScan omits the House's unaffiliated members from this roll, so its member list shows 71-46 while the official transcript records 71-47. The descriptions quote the official 71-47 so the judge's tally gate blocks approval until the stored tally is corrected."
+    },
+    {
+      "jurisdiction": "NC",
+      "chamber": "senate",
+      "session": "2189",
+      "roll": 1599164,
+      "measure_id": "S 558",
+      "vote_date": "2025-07-29",
+      "review_status": "approved",
+      "yea_description": "Voted yes on Senate Bill 558. State universities and community colleges may no longer keep a diversity, equity and inclusion office, or employ staff to promote what the law calls divisive concepts. They also may not require a class on those ideas for a degree unless the chancellor agrees. They may not take reports about speech that the First Amendment protects. A yes vote backed making the bill law over the governor's veto. The Senate voted 30-19 to override in July 2025, the House followed in June 2026, and the bill became law.",
+      "nay_description": "Voted no on Senate Bill 558. State universities and community colleges may no longer keep a diversity, equity and inclusion office, or employ staff to promote what the law calls divisive concepts. They also may not require a class on those ideas for a degree unless the chancellor agrees. They may not take reports about speech that the First Amendment protects. A no vote would have let the governor's veto stand. The Senate voted 30-19 to override in July 2025, the House followed in June 2026, and the bill became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "NC",
+      "chamber": "house",
+      "session": "2189",
+      "roll": 1711515,
+      "measure_id": "S 558",
+      "vote_date": "2026-06-24",
+      "review_status": "pending",
+      "yea_description": "Voted yes on Senate Bill 558. State universities and community colleges may no longer keep a diversity, equity and inclusion office, or employ staff to promote what the law calls divisive concepts. They also may not require a class on those ideas for a degree unless the chancellor agrees. They may not take reports about speech that the First Amendment protects. A yes vote backed making the bill law over the governor's veto. The House voted 71-47 to override in June 2026, after the Senate did so in July 2025, and the bill became law.",
+      "nay_description": "Voted no on Senate Bill 558. State universities and community colleges may no longer keep a diversity, equity and inclusion office, or employ staff to promote what the law calls divisive concepts. They also may not require a class on those ideas for a degree unless the chancellor agrees. They may not take reports about speech that the First Amendment protects. A no vote would have let the governor's veto stand. The House voted 71-47 to override in June 2026, after the Senate did so in July 2025, and the bill became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": "for"
+        }
+      ],
+      "note": "Held out of batch-01: LegiScan omits the House's unaffiliated members from this roll, so its member list shows 71-46 while the official transcript records 71-47. The descriptions quote the official 71-47 so the judge's tally gate blocks approval until the stored tally is corrected."
     }
-   ],
-   "note": "Held out of batch-01: LegiScan omits the House's unaffiliated members from this roll, so its member list shows 71-46 while the official transcript records 71-47. The descriptions quote the official 71-47 so the judge's tally gate blocks approval until the stored tally is corrected."
-  }
- ]
+  ]
 }

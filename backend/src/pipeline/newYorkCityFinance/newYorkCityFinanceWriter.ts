@@ -3,6 +3,11 @@ import type { Pool, PoolClient } from "pg";
 import type { NewYorkCityFinanceDirectBreakdown } from "./newYorkCityDirectContributionAggregator.js";
 import type { NewYorkCityOutsideSpendingGroup } from "./newYorkCityOutsideSpendingAggregator.js";
 import type { NewYorkCityOutsideGroupBreakdown } from "./newYorkCityOutsideGroupFunderAggregator.js";
+import {
+  assertLinkWriteNotBlocked,
+  manualProtectedLinkAssignments,
+  type ManualProtectedLinkRow,
+} from "../finance/manualLinkProtection.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type Connectable = Queryable & Pick<Pool, "connect">;
@@ -97,7 +102,48 @@ function validateSnapshot(input: NewYorkCityFinanceSnapshotInput): void {
   }
 }
 
-async function upsertNewYorkCityFinanceLink(input: {
+function canOpenTransaction(db: Queryable): db is Connectable {
+  return (
+    typeof (db as Connectable).connect === "function" &&
+    typeof (db as Partial<PoolClient>).release !== "function"
+  );
+}
+
+async function withTransaction<T>(db: Connectable, work: (tx: Queryable) => Promise<T>): Promise<T> {
+  const client = await db.connect();
+  try {
+    await client.query("BEGIN");
+    const result = await work(client);
+    await client.query("COMMIT");
+    return result;
+  } catch (error) {
+    try {
+      await client.query("ROLLBACK");
+    } catch {
+      // Preserve the original write failure.
+    }
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+export async function upsertNewYorkCityFinanceLink(input: {
+  db: Queryable;
+  link: NewYorkCityFinanceLinkInput;
+}): Promise<string> {
+  // Retire, upsert, and the operator-disabled check are one unit: if the
+  // proposed identity turns out to be a manual row an operator disabled, the
+  // retirement of the candidate's other active link must roll back with the
+  // rejection, or the candidate ends up with no active link. A Pool opens
+  // its own transaction; a client is already inside one (snapshot writes).
+  if (canOpenTransaction(input.db)) {
+    return withTransaction(input.db, (tx) => writeNewYorkCityFinanceLink({ db: tx, link: input.link }));
+  }
+  return writeNewYorkCityFinanceLink(input);
+}
+
+async function writeNewYorkCityFinanceLink(input: {
   db: Queryable;
   link: NewYorkCityFinanceLinkInput;
 }): Promise<string> {
@@ -113,7 +159,7 @@ async function upsertNewYorkCityFinanceLink(input: {
     `,
     [input.link.candidateId, input.link.electionId, input.link.cfbCandidateId, input.link.linkSource]
   );
-  const result = await input.db.query<{ id: string }>(
+  const result = await input.db.query<ManualProtectedLinkRow>(
     `
       INSERT INTO public.nyc_candidate_finance_links (
         candidate_id, election_id, election_year, candidate_name_normalized,
@@ -123,19 +169,14 @@ async function upsertNewYorkCityFinanceLink(input: {
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'active', $9, $10, $11)
       ON CONFLICT (candidate_id, election_id, cfb_candidate_id)
       DO UPDATE SET
-        election_year = EXCLUDED.election_year,
         candidate_name_normalized = EXCLUDED.candidate_name_normalized,
         office_code = EXCLUDED.office_code,
         borough_code = EXCLUDED.borough_code,
         cfb_candidate_name = EXCLUDED.cfb_candidate_name,
-        link_status = 'active',
-        link_source = CASE
-          WHEN nyc_candidate_finance_links.link_source = 'manual' THEN 'manual'
-          ELSE EXCLUDED.link_source
-        END,
+        ${manualProtectedLinkAssignments("nyc_candidate_finance_links")},
         source_url = COALESCE(EXCLUDED.source_url, nyc_candidate_finance_links.source_url),
         last_verified_at = EXCLUDED.last_verified_at
-      RETURNING id::text
+      RETURNING id::text AS id, link_status, link_source, election_year
     `,
     [
       input.link.candidateId,
@@ -151,6 +192,7 @@ async function upsertNewYorkCityFinanceLink(input: {
       input.link.lastVerifiedAt.toISOString(),
     ]
   );
+  assertLinkWriteNotBlocked("NYC", result.rows[0], input.link.linkSource, input.link.electionYear);
   const id = result.rows[0]?.id;
   if (!id) throw new Error("NYC finance link upsert returned no id");
   return id;

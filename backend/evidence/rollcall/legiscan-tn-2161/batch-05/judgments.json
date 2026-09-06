@@ -1,0 +1,200 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1535750,
+   "measure_id": "HB 1060",
+   "vote_date": "2025-04-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1060. It raises from $1 to $3 the fee that a county clerk or other selling agent may add to each hunting or fishing license, permit, tag or registration. The Tennessee House passed it 59-23, and it became law.",
+   "nay_description": "Voted against HB 1060. It raises from $1 to $3 the fee that a county clerk or other selling agent may add to each hunting or fishing license, permit, tag or registration. The Tennessee House passed it 59-23, and it became law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1509575,
+   "measure_id": "HB 120",
+   "vote_date": "2025-03-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 120. It creates the crime of deliberately blocking a member of the state division of protective services from entering, leaving or moving around a location. The division covers the highway patrol, commissioned homeland security officers, and officers supporting their work. The Tennessee House passed it 73-20 (recorded 73-19 in the LegiScan roll, which omits one no vote), and it became law.",
+   "nay_description": "Voted against HB 120. It creates the crime of deliberately blocking a member of the state division of protective services from entering, leaving or moving around a location. The division covers the highway patrol, commissioned homeland security officers, and officers supporting their work. The Tennessee House passed it 73-20 (recorded 73-19 in the LegiScan roll, which omits one no vote), and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1554657,
+   "measure_id": "HB 132",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the final version of HB 132. It lets the General Assembly end a state of emergency that the governor has declared or extended, by passing a joint resolution in both chambers. It applies to emergencies declared after the law took effect. The Tennessee House agreed it 72-23, and it became law.",
+   "nay_description": "Voted against the final version of HB 132. It lets the General Assembly end a state of emergency that the governor has declared or extended, by passing a joint resolution in both chambers. It applies to emergencies declared after the law took effect. The Tennessee House agreed it 72-23, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1547955,
+   "measure_id": "HB 1332",
+   "vote_date": "2025-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1332. It lowers the age to apply for a handgun carry permit from 21 to 18. It also tightens who may get an enhanced permit: an applicant is turned down if they have any conviction for driving under the influence in the past five years, or two or more in the past ten. The Tennessee House passed it 71-21, and it became law.",
+   "nay_description": "Voted against HB 1332. It lowers the age to apply for a handgun carry permit from 21 to 18. It also tightens who may get an enhanced permit: an applicant is turned down if they have any conviction for driving under the influence in the past five years, or two or more in the past ten. The Tennessee House passed it 71-21, and it became law.",
+   "labels": [
+    {
+     "slug": "general"
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1663445,
+   "measure_id": "HB 1665",
+   "vote_date": "2026-03-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1665. It bars health insurers and similar payers from requiring or asking a provider to put certain questions to a minor, such as whether the minor feels normal in their body or identifies as a gender different from their sex. Payers may not tie payment, credentialing or network participation to asking them. The Tennessee House passed it 72-21, and it became law.",
+   "nay_description": "Voted against HB 1665. It bars health insurers and similar payers from requiring or asking a provider to put certain questions to a minor, such as whether the minor feels normal in their body or identifies as a gender different from their sex. Payers may not tie payment, credentialing or network participation to asking them. The Tennessee House passed it 72-21, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1544003,
+   "measure_id": "HB 612",
+   "vote_date": "2025-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 612. It cuts what a permit applicant must do to make up for harm to wetlands and streams. When the only thing keeping a project from a general permit is how much wetland or stream it affects, the state must waive the make-up work for that amount. The Tennessee House passed it 74-20, and it became law.",
+   "nay_description": "Voted against HB 612. It cuts what a permit applicant must do to make up for harm to wetlands and streams. When the only thing keeping a project from a general permit is how much wetland or stream it affects, the state must waive the make-up work for that amount. The Tennessee House passed it 74-20, and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1676934,
+   "measure_id": "SB 1788",
+   "vote_date": "2026-04-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1788. It bars a city or county from moving a homeless person to another jurisdiction unless the receiving jurisdiction agrees in writing, and unless the move is part of a program to reunite the person with a place they have real ties to. The Tennessee House passed it 76-20, and it became law.",
+   "nay_description": "Voted against SB 1788. It bars a city or county from moving a homeless person to another jurisdiction unless the receiving jurisdiction agrees in writing, and unless the move is part of a program to reunite the person with a place they have real ties to. The Tennessee House passed it 76-20, and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1678971,
+   "measure_id": "SB 1840",
+   "vote_date": "2026-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1840. It gives prosecutors ten years from the date of the offense to bring a vehicular homicide case, for offenses committed on or after July 1, 2026. The Tennessee House passed it 58-30, and it became law.",
+   "nay_description": "Voted against SB 1840. It gives prosecutors ten years from the date of the offense to bring a vehicular homicide case, for offenses committed on or after July 1, 2026. The Tennessee House passed it 58-30, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1687339,
+   "measure_id": "SB 1868",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1868. It says a child placed in state custody for treatment stays only as long as the treatment needs, and that the treatment must be evidence-based and given by a qualified provider. Custody is capped at six months, which a court may extend once by six more after a hearing. The Tennessee House passed it 59-25, and it became law.",
+   "nay_description": "Voted against SB 1868. It says a child placed in state custody for treatment stays only as long as the treatment needs, and that the treatment must be evidence-based and given by a qualified provider. Custody is capped at six months, which a court may extend once by six more after a hearing. The Tennessee House passed it 59-25, and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1685056,
+   "measure_id": "SB 1868",
+   "vote_date": "2026-04-15",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1868. It says a child placed in state custody for treatment stays only as long as the treatment needs, and that the treatment must be evidence-based and given by a qualified provider. Custody is capped at six months, which a court may extend once by six more after a hearing. The Tennessee Senate passed it 22-11, and it became law.",
+   "nay_description": "Voted against SB 1868. It says a child placed in state custody for treatment stays only as long as the treatment needs, and that the treatment must be evidence-based and given by a qualified provider. Custody is capped at six months, which a court may extend once by six more after a hearing. The Tennessee Senate passed it 22-11, and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1655106,
+   "measure_id": "SB 218",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 218. It sets a presumption that a person charged with a felony that involved a gun, or that seriously hurt or killed someone, should not be released on their own promise to appear. A judge who finds the presumption is overcome must say why. The Tennessee House passed it 65-25, and it became law.",
+   "nay_description": "Voted against SB 218. It sets a presumption that a person charged with a felony that involved a gun, or that seriously hurt or killed someone, should not be released on their own promise to appear. A judge who finds the presumption is overcome must say why. The Tennessee House passed it 65-25, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

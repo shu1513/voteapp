@@ -1,0 +1,187 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1687331,
+   "measure_id": "HB 1668",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1668. It creates a crime often called jugging. A person breaks the law by following someone along the same route from a store, bank or cash machine, carrying two or more break-in tools, and meaning to steal that person's cash. The Tennessee House passed it 71-21, and it became law.",
+   "nay_description": "Voted against HB 1668. It creates a crime often called jugging. A person breaks the law by following someone along the same route from a store, bank or cash machine, carrying two or more break-in tools, and meaning to steal that person's cash. The Tennessee House passed it 71-21, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1673379,
+   "measure_id": "HB 1971",
+   "vote_date": "2026-03-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1971. It narrows a law that let people ask a court to declare a government action unlawful. The claim now reaches only cities, counties and other local bodies, and can no longer be used to challenge a state law. Other routes to raise constitutional claims are left in place. The Tennessee House passed it 56-38, and it became law.",
+   "nay_description": "Voted against HB 1971. It narrows a law that let people ask a court to declare a government action unlawful. The claim now reaches only cities, counties and other local bodies, and can no longer be used to challenge a state law. Other routes to raise constitutional claims are left in place. The Tennessee House passed it 56-38, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1675799,
+   "measure_id": "HB 1971",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1971. It narrows a law that let people ask a court to declare a government action unlawful. The claim now reaches only cities, counties and other local bodies, and can no longer be used to challenge a state law. Other routes to raise constitutional claims are left in place. The Tennessee Senate passed it 18-13, and it became law.",
+   "nay_description": "Voted against HB 1971. It narrows a law that let people ask a court to declare a government action unlawful. The claim now reaches only cities, counties and other local bodies, and can no longer be used to challenge a state law. Other routes to raise constitutional claims are left in place. The Tennessee Senate passed it 18-13, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1690444,
+   "measure_id": "HB 2175",
+   "vote_date": "2026-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 2175. It requires delivery companies and their drivers to carry set car insurance while the driver is logged on and available for deliveries, and while a delivery is under way. The Tennessee Senate passed it 19-9, and it became law.",
+   "nay_description": "Voted against HB 2175. It requires delivery companies and their drivers to carry set car insurance while the driver is logged on and available for deliveries, and while a delivery is under way. The Tennessee Senate passed it 19-9, and it became law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1543970,
+   "measure_id": "HB 601",
+   "vote_date": "2025-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 601. It opens a late-stage appeal, the writ of error coram nobis, to people who pleaded guilty, no contest or best interest. Before this the route was open only to those convicted at trial, so new evidence of innocence could not be raised the same way. The Tennessee Senate passed it 24-6, and it became law.",
+   "nay_description": "Voted against HB 601. It opens a late-stage appeal, the writ of error coram nobis, to people who pleaded guilty, no contest or best interest. Before this the route was open only to those convicted at trial, so new evidence of innocence could not be raised the same way. The Tennessee Senate passed it 24-6, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1556877,
+   "measure_id": "HB 773",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 773. It requires that a website carrying official legal notices be free to view, with no fee or subscription, and that it be separate from the newspaper's own site and owned by someone else. The Tennessee Senate passed it 23-8, and it became law.",
+   "nay_description": "Voted against HB 773. It requires that a website carrying official legal notices be free to view, with no fee or subscription, and that it be separate from the newspaper's own site and owned by someone else. The Tennessee Senate passed it 23-8, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1550583,
+   "measure_id": "SB 1034",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1034. It adds a city or county government seal to the list of memorials the state's heritage law protects, when the seal carries imagery of a historic conflict, event, figure or organization. Protected memorials cannot be removed or changed without state permission. The Tennessee House passed it 70-24, and it became law.",
+   "nay_description": "Voted against SB 1034. It adds a city or county government seal to the list of memorials the state's heritage law protects, when the seal carries imagery of a historic conflict, event, figure or organization. Protected memorials cannot be removed or changed without state permission. The Tennessee House passed it 70-24, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1687816,
+   "measure_id": "SB 1667",
+   "vote_date": "2026-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1667. It bars the state and county clerks from registering a vehicle for the first time unless the owner shows proof of insurance or other financial responsibility. The Tennessee House passed it 68-22, and it became law.",
+   "nay_description": "Voted against SB 1667. It bars the state and county clerks from registering a vehicle for the first time unless the owner shows proof of insurance or other financial responsibility. The Tennessee House passed it 68-22, and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1661451,
+   "measure_id": "SB 2028",
+   "vote_date": "2026-03-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 2028. It bars cities and counties from setting rules on how wildlife may be taken, including firing a gun while lawfully hunting. Those rules are left to the state wildlife agency. The Tennessee Senate passed it 24-7, and it became law.",
+   "nay_description": "Voted against SB 2028. It bars cities and counties from setting rules on how wildlife may be taken, including firing a gun while lawfully hunting. Those rules are left to the state wildlife agency. The Tennessee Senate passed it 24-7, and it became law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1667628
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1666252,
+   "measure_id": "SB 2364",
+   "vote_date": "2026-03-19",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 2364. It repeals the rules that moved to the attorney general when Tennessee shut down its Human Rights Commission. It also makes discrimination complaints filed with the attorney general, and the records gathered with them, confidential unless a court orders otherwise. The Tennessee House passed it 70-18, and it became law.",
+   "nay_description": "Voted against SB 2364. It repeals the rules that moved to the attorney general when Tennessee shut down its Human Rights Commission. It also makes discrimination complaints filed with the attorney general, and the records gathered with them, confidential unless a court orders otherwise. The Tennessee House passed it 70-18, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

@@ -29,6 +29,7 @@ import { createTrustedClientIpResolver } from "../api/addressApiClientIp.js";
 import { toAddressResolutionDiagnostics, type AddressResolutionDiagnostics } from "../api/addressApiResponses.js";
 import { buildAllowedOrigins } from "../api/apiCors.js";
 import { createApiApp } from "../api/apiServer.js";
+import { attachApiDbPoolErrorHandler, buildApiDbPoolConfig } from "../api/apiDbPool.js";
 import {
   createInMemoryContentReportRateLimiter,
   DEFAULT_CONTENT_REPORT_RATE_LIMIT_MAX_BUCKETS,
@@ -118,6 +119,7 @@ import {
   createSesMembershipChangedSender,
   createSesMembershipStartedSender,
 } from "../api/membership/membershipMailer.js";
+import { readBooleanEnv, readPositiveIntegerEnv } from "../config/envReaders.js";
 
 function readEnv(name: string, fallback?: string): string {
   const value = process.env[name]?.trim() || fallback;
@@ -134,32 +136,6 @@ function readPort(): number {
     throw new Error(`Invalid ADDRESS_API_PORT: ${raw}`);
   }
   return parsed;
-}
-
-function readPositiveIntegerEnv(name: string, fallback: number): number {
-  const raw = process.env[name]?.trim();
-  if (!raw) {
-    return fallback;
-  }
-  const parsed = Number.parseInt(raw, 10);
-  if (!Number.isInteger(parsed) || parsed <= 0) {
-    throw new Error(`Invalid ${name}: ${raw}`);
-  }
-  return parsed;
-}
-
-function readBooleanEnv(name: string, fallback: boolean): boolean {
-  const raw = process.env[name]?.trim().toLowerCase();
-  if (!raw) {
-    return fallback;
-  }
-  if (["1", "true", "yes", "on"].includes(raw)) {
-    return true;
-  }
-  if (["0", "false", "no", "off"].includes(raw)) {
-    return false;
-  }
-  throw new Error(`Invalid ${name}: ${process.env[name]}`);
 }
 
 function readAllowedOrigins(): string[] {
@@ -218,10 +194,18 @@ async function main(): Promise<void> {
   // connection string via fromDatabase — a manual edit there would be
   // silently reverted by the next Blueprint sync. Workers and migrations
   // keep using DATABASE_URL (the owner role).
-  const pool = new Pool({
-    connectionString:
-      readOptionalEnv("API_DATABASE_URL") ?? readEnv("DATABASE_URL", "postgresql://localhost:5432/voteapp"),
-  });
+  // Bounded acquisition + server-side statement deadline (see apiDbPool.ts);
+  // env-tunable so operators can adjust to measured latency without a
+  // code change.
+  const pool = new Pool(
+    buildApiDbPoolConfig({
+      connectionString:
+        readOptionalEnv("API_DATABASE_URL") ?? readEnv("DATABASE_URL", "postgresql://localhost:5432/voteapp"),
+      connectionTimeoutMs: readPositiveIntegerEnv("API_DB_CONNECTION_TIMEOUT_MS", 10_000),
+      statementTimeoutMs: readPositiveIntegerEnv("API_DB_STATEMENT_TIMEOUT_MS", 30_000),
+    })
+  );
+  attachApiDbPoolErrorHandler(pool, captureError);
   const host = process.env.ADDRESS_API_HOST?.trim() || "127.0.0.1";
   const port = readPort();
   const allowedOrigins = readAllowedOrigins();

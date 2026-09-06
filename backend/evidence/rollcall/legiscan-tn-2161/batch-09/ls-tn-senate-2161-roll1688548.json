@@ -1,0 +1,176 @@
+{
+  "jurisdiction": "TN",
+  "sessionId": 2161,
+  "chamber": "senate",
+  "rollNumber": 1688548,
+  "bill": "HB1271",
+  "measureId": "HB 1271",
+  "machineUrl": "https://legiscan.com/TN/rollcall/HB1271/id/1688548",
+  "fetchedAt": "2026-08-27T01:32:24.259Z",
+  "rollCall": {
+    "roll_call_id": 1688548,
+    "bill_id": 1959690,
+    "date": "2026-04-22",
+    "desc": "FLOOR VOTE: Third Consideration",
+    "yea": 24,
+    "nay": 6,
+    "nv": 0,
+    "absent": 0,
+    "total": 30,
+    "passed": 1,
+    "chamber": "S",
+    "chamber_id": 90,
+    "votes": [
+      {
+        "people_id": 7202,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 7271,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 7282,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 7292,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 7298,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 10589,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 12238,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 13706,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 14460,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 15131,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 15132,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 15467,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 16126,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 16127,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17140,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 17141,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 17913,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 18120,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 19609,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 20192,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 21328,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21356,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 21777,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 22266,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 23362,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 24390,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 24391,
+        "vote_id": 2,
+        "vote_text": "Nay"
+      },
+      {
+        "people_id": 25247,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 25248,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      },
+      {
+        "people_id": 25249,
+        "vote_id": 1,
+        "vote_text": "Yea"
+      }
+    ]
+  }
+}

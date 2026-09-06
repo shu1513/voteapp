@@ -1,0 +1,76 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1688548,
+   "measure_id": "HB 1271",
+   "vote_date": "2026-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1271. By January 2027 every city and county must rewrite any ordinance, rule or policy that mentions a person's sex or gender so those words mean the physical traits a person is born with. The Tennessee Senate passed it 24-6, and it became law.",
+   "nay_description": "Voted against HB 1271. By January 2027 every city and county must rewrite any ordinance, rule or policy that mentions a person's sex or gender so those words mean the physical traits a person is born with. The Tennessee Senate passed it 24-6, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1675750,
+   "measure_id": "SB 1619",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1619. It closes the opening that let election offices take private money with approval from the legislative speakers or the secretary of state, so that route is gone. It also requires an election administrator to tell a person why a registration was rejected, and keeps purged registration files open to the public for two years. The Tennessee House passed it 72-23, and it became law.",
+   "nay_description": "Voted against SB 1619. It closes the opening that let election offices take private money with approval from the legislative speakers or the secretary of state, so that route is gone. It also requires an election administrator to tell a person why a registration was rejected, and keeps purged registration files open to the public for two years. The Tennessee House passed it 72-23, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1686750,
+   "measure_id": "SB 1665",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 1665. It widens Tennessee's school pronoun law to cover honorifics such as Mr. or Ms. as well as pronouns. A school employee cannot be required to use a student's or a colleague's preferred pronoun or honorific when it does not match the sex on their record. The Tennessee House passed it 70-18, and it became law.",
+   "nay_description": "Voted against SB 1665. It widens Tennessee's school pronoun law to cover honorifics such as Mr. or Ms. as well as pronouns. A school employee cannot be required to use a student's or a colleague's preferred pronoun or honorific when it does not match the sex on their record. The Tennessee House passed it 70-18, and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1550047,
+   "measure_id": "SB 626",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 626. It lets the state elections coordinator give a county more time to finish counting provisional ballots when the county cannot meet the deadline, up to the third Monday after the election. The Tennessee House passed it 72-22, and it became law.",
+   "nay_description": "Voted against SB 626. It lets the state elections coordinator give a county more time to finish counting provisional ballots when the county cannot meet the deadline, up to the third Monday after the election. The Tennessee House passed it 72-22, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

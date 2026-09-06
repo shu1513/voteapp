@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from "node:crypto";
 
 import { Algorithm, Version, hash as argon2Hash, verify as argon2Verify } from "@node-rs/argon2";
+import { RequestValidationError } from "../utils/requestValidationError.js";
 
 export const AUTH_PASSWORD_MIN_LENGTH = 12;
 export const AUTH_PASSWORD_MAX_LENGTH = 1024;
@@ -26,25 +27,25 @@ function sha256Hex(value: string): string {
 
 function assertPasswordPolicy(password: string): void {
   if (typeof password !== "string") {
-    throw new TypeError("Password must be a string");
+    throw new RequestValidationError("Password must be a string");
   }
   if (password.length < AUTH_PASSWORD_MIN_LENGTH) {
-    throw new TypeError(`Password must be at least ${AUTH_PASSWORD_MIN_LENGTH} characters long`);
+    throw new RequestValidationError(`Password must be at least ${AUTH_PASSWORD_MIN_LENGTH} characters long`);
   }
   if (password.length > AUTH_PASSWORD_MAX_LENGTH) {
-    throw new TypeError(`Password must be at most ${AUTH_PASSWORD_MAX_LENGTH} characters long`);
+    throw new RequestValidationError(`Password must be at most ${AUTH_PASSWORD_MAX_LENGTH} characters long`);
   }
   if (password.trim().length === 0) {
-    throw new TypeError("Password must include at least one non-whitespace character");
+    throw new RequestValidationError("Password must include at least one non-whitespace character");
   }
 }
 
 function assertPasswordVerifiable(password: string): void {
   if (typeof password !== "string") {
-    throw new TypeError("Password must be a string");
+    throw new RequestValidationError("Password must be a string");
   }
   if (password.length > AUTH_PASSWORD_MAX_LENGTH) {
-    throw new TypeError(`Password must be at most ${AUTH_PASSWORD_MAX_LENGTH} characters long`);
+    throw new RequestValidationError(`Password must be at most ${AUTH_PASSWORD_MAX_LENGTH} characters long`);
   }
 }
 
@@ -82,11 +83,11 @@ export function generateAuthToken(): { rawToken: string; tokenHash: string } {
 
 export function hashAuthToken(token: string): string {
   if (typeof token !== "string") {
-    throw new TypeError("Token must be a string");
+    throw new RequestValidationError("Token must be a string");
   }
   const normalized = token.trim();
   if (normalized.length === 0) {
-    throw new TypeError("Token must be a non-empty string");
+    throw new RequestValidationError("Token must be a non-empty string");
   }
   return sha256Hex(normalized);
 }
@@ -97,11 +98,11 @@ export function generateSessionId(): string {
 
 export function hashSessionId(sessionId: string): string {
   if (typeof sessionId !== "string") {
-    throw new TypeError("Session ID must be a string");
+    throw new RequestValidationError("Session ID must be a string");
   }
   const normalized = sessionId.trim();
   if (normalized.length === 0) {
-    throw new TypeError("Session ID must be a non-empty string");
+    throw new RequestValidationError("Session ID must be a non-empty string");
   }
   return sha256Hex(normalized);
 }

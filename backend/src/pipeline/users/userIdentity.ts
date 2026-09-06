@@ -1,6 +1,7 @@
 import type { Pool, PoolClient } from "pg";
 
 import { isUuid } from "../../utils/uuid.js";
+import { RequestValidationError } from "../../utils/requestValidationError.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -9,6 +10,10 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 // terms-reacceptance interstitials. Not gated on email verification — an
 // unverified user must be able to learn that they are unverified.
 export type UserIdentity = {
+  /** Stable account id. Clients compare it to notice an account switch:
+   * an email can be deleted and registered again as a new account, and one
+   * account can change its email. */
+  id: string;
   email: string;
   first_name: string;
   email_verified: boolean;
@@ -45,10 +50,10 @@ export async function setUserFirstName(db: Queryable, userId: string, firstName:
   const normalizedUserId = normalizeUserId(userId);
   const normalizedFirstName = typeof firstName === "string" ? firstName.trim() : "";
   if (normalizedFirstName.length === 0) {
-    throw new TypeError("first_name must be a non-empty string");
+    throw new RequestValidationError("first_name must be a non-empty string");
   }
   if (normalizedFirstName.length > MAX_FIRST_NAME_LENGTH) {
-    throw new TypeError(`first_name must be at most ${MAX_FIRST_NAME_LENGTH} characters`);
+    throw new RequestValidationError(`first_name must be at most ${MAX_FIRST_NAME_LENGTH} characters`);
   }
 
   const result = await db.query<UserIdentity>(
@@ -58,7 +63,7 @@ export async function setUserFirstName(db: Queryable, userId: string, firstName:
           updated_at = now()
       WHERE id = $1::uuid
         AND deleted_at IS NULL
-      RETURNING email, first_name, email_verified, accepted_terms_version,
+      RETURNING id, email, first_name, email_verified, accepted_terms_version,
         (password_hash IS NOT NULL) AS has_password
     `,
     [normalizedUserId, normalizedFirstName]
@@ -69,6 +74,7 @@ export async function setUserFirstName(db: Queryable, userId: string, firstName:
     throw new UserIdentityError("user_not_found", "User not found");
   }
   return {
+    id: row.id,
     email: row.email,
     first_name: row.first_name,
     email_verified: row.email_verified,
@@ -93,7 +99,7 @@ export async function acceptUserTerms(db: Queryable, userId: string, termsVersio
   const normalizedUserId = normalizeUserId(userId);
   const normalizedVersion = typeof termsVersion === "string" ? termsVersion.trim() : "";
   if (normalizedVersion.length === 0) {
-    throw new TypeError("termsVersion must be a non-empty string");
+    throw new RequestValidationError("termsVersion must be a non-empty string");
   }
 
   const result = await db.query<UserIdentity>(
@@ -112,7 +118,7 @@ export async function acceptUserTerms(db: Queryable, userId: string, termsVersio
         SELECT id, accepted_terms_version, 'renewal', accepted_terms_at
         FROM accepted
       )
-      SELECT email, first_name, email_verified, accepted_terms_version, has_password
+      SELECT id, email, first_name, email_verified, accepted_terms_version, has_password
       FROM accepted
     `,
     [normalizedUserId, normalizedVersion]
@@ -123,6 +129,7 @@ export async function acceptUserTerms(db: Queryable, userId: string, termsVersio
     throw new UserIdentityError("user_not_found", "User not found");
   }
   return {
+    id: row.id,
     email: row.email,
     first_name: row.first_name,
     email_verified: row.email_verified,
@@ -136,7 +143,7 @@ export async function getUserIdentity(db: Queryable, userId: string): Promise<Us
 
   const result = await db.query<UserIdentity>(
     `
-      SELECT email, first_name, email_verified, accepted_terms_version,
+      SELECT id, email, first_name, email_verified, accepted_terms_version,
         (password_hash IS NOT NULL) AS has_password
       FROM public.users
       WHERE id = $1::uuid
@@ -150,6 +157,7 @@ export async function getUserIdentity(db: Queryable, userId: string): Promise<Us
     throw new UserIdentityError("user_not_found", "User not found");
   }
   return {
+    id: row.id,
     email: row.email,
     first_name: row.first_name,
     email_verified: row.email_verified,

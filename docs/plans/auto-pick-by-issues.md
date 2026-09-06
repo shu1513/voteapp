@@ -52,9 +52,9 @@ up to 7 issues and drag-rank them. Changes (shipped in PR 1):
 3. **Line in the sand** per issue (`hard_veto`) — "must not oppose". A
    candidate with any record against my direction on that issue is excluded
    outright; a measure that crosses it is answered **No**. For
-   `integrity_and_ethics` the same toggle reads "Skip candidates with any
-   integrity/ethics record" — that is the "no discipline records" control,
-   with no extra schema.
+   `integrity_and_ethics` the same toggle reads "Skip candidate if negative
+   record" — that is the "no discipline records" control, with no extra
+   schema.
 4. **Minimum to run auto-pick: 3 ranked issues.** Below that, ranking has no
    meaning and the button explains what to do. The number is a UX floor, not
    a data threshold — the DB says the candidate side, not the user side, is
@@ -87,7 +87,13 @@ PR 1 replaced the cap and the formula as specified in "Data model changes" and
   Stance is required on every area except `general` and
   `integrity_and_ethics`, where it is forbidden
   (`candidateRecordResearchAreaPolicy.ts`). So an `integrity_and_ethics` tag
-  marks "there is an ethics/discipline record", never a position.
+  marks "there is a NEGATIVE ethics/discipline record" — an adverse action
+  against the candidate by an official body — never a position. Tightened
+  2026-09-06: cleared complaints, unofficial allegations, and the candidate's
+  own reform work are excluded from the tag (see
+  `candidateRecordAreaLabelPrompt.ts` and the manual-research
+  `records-import.md` rule) and a retag pass removed the ones that had
+  slipped in.
 - Measures: `ballot_measure_research_area_tags.stance ∈ {'for','against'}`
   (NOT NULL). 117 of 143 Nov-2026 measures are tagged.
 - Picks: `public.user_election_choices` (migration 203) — one row per
@@ -129,9 +135,10 @@ Consequences baked into the design:
   candidate and says whether they were never researched
   (`candidates.last_records_searched_at IS NULL`) or researched with no stance
   found on the user's issues.
-- `integrity_and_ethics` records range from a bar admonishment to a closed
-  complaint with no violation, so exclusion on that tag is opt-in and every
-  exclusion shows the record it was based on.
+- `integrity_and_ethics` records range from a bar admonishment to a felony
+  conviction (a closed complaint with no violation no longer qualifies —
+  2026-09-06 rule), so exclusion on that tag is opt-in and every exclusion
+  shows the record it was based on.
 
 ## Scoring spec
 

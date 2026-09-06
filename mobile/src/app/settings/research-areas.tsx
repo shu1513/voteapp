@@ -123,7 +123,7 @@ function ResearchAreasBody() {
             // fires on records that SUPPORT the goal, so "who opposes this"
             // would read backwards. Same copy as the web picker.
             const vetoLabel = isEthics
-              ? "Skip candidates with any documented ethics or conviction record"
+              ? "Skip candidates with a negative ethics record (a violation, sanction, or conviction)"
               : "Must: never pick a candidate or measure that goes against my position on this";
             return (
               <View key={id} className="rounded-lg border border-line bg-white px-2 py-2">
@@ -207,7 +207,7 @@ function ResearchAreasBody() {
                     }`}
                   >
                     <Text className={row.hard_veto ? "text-xs text-white" : "text-xs text-ink-soft"}>
-                      {isEthics ? "Skip if negative record" : "Must"}
+                      {isEthics ? "Skip candidate if negative record" : "Must"}
                     </Text>
                   </Pressable>
                 </View>

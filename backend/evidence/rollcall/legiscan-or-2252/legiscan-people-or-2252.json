@@ -1,0 +1,6024 @@
+{
+ "jurisdiction": "OR",
+ "sessionId": 2252,
+ "people": [
+  {
+   "people_id": 6204,
+   "person_hash": "q4t3vb8h",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Sara Gelser Blouin",
+   "first_name": "Sara",
+   "middle_name": "",
+   "last_name": "Gelser Blouin",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-008",
+   "ftm_eid": 13005239,
+   "votesmart_id": 46496,
+   "opensecrets_id": "",
+   "knowwho_pid": 242297,
+   "ballotpedia": "Sara_Gelser",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1708",
+     "district_phone": "",
+     "email": "Sen.SaraGelser@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/gelser",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/gelser.jpg",
+     "ballotpedia": "https://ballotpedia.org/Sara_Gelser",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/46496"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-211",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/SenSaraGelser",
+      "website": "https://www.oregonlegislature.gov/gelser",
+      "youtube": "https://www.youtube.com/@SenatorGelserBlouin"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/SaraGelser",
+      "instagram": "https://www.instagram.com/saraacres/",
+      "linkedin": "https://www.linkedin.com/in/sara-gelser-blouin-397a983b/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 6221,
+   "person_hash": "7rznik4s",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Kim Thatcher",
+   "first_name": "Lona",
+   "middle_name": "Kim",
+   "last_name": "Thatcher",
+   "suffix": "",
+   "nickname": "Kim",
+   "district": "SD-011",
+   "ftm_eid": 5092523,
+   "votesmart_id": 46657,
+   "opensecrets_id": "",
+   "knowwho_pid": 227709,
+   "ballotpedia": "Kim_Thatcher",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1711",
+     "district_phone": "",
+     "email": "Sen.KimThatcher@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/thatcher",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/thatcher.jpg",
+     "ballotpedia": "https://ballotpedia.org/Kim_Thatcher",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/46657"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-307",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "https://www.instagram.com/KimThatcherOregon",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/KimThatcherSD11",
+      "website": "https://www.oregonlegislature.gov/thatcher",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/kim.thatcheroregonlegislator",
+      "instagram": "https://www.instagram.com/kim.thatcher.oregon/",
+      "linkedin": "https://www.linkedin.com/in/kimthatcher/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 6229,
+   "person_hash": "tzp4b4k1",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Lew Frederick",
+   "first_name": "Lew",
+   "middle_name": "",
+   "last_name": "Frederick",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-022",
+   "ftm_eid": 13005395,
+   "votesmart_id": 116854,
+   "opensecrets_id": "",
+   "knowwho_pid": 282474,
+   "ballotpedia": "Lew_Frederick",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1722",
+     "district_phone": "",
+     "email": "Sen.LewFrederick@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/frederick",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/frederick.jpg",
+     "ballotpedia": "https://ballotpedia.org/Lew_Frederick",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/116854"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-419",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/SenLewFrederick",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/frederick",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/lew.frederick",
+      "instagram": "https://www.instagram.com/lewfrederick/",
+      "linkedin": "https://www.linkedin.com/in/lewfrederick/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 6241,
+   "person_hash": "ny0gpltt",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Gregory Smith",
+   "first_name": "Gregory",
+   "middle_name": "V.",
+   "last_name": "Smith",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-057",
+   "ftm_eid": 13005467,
+   "votesmart_id": 46752,
+   "opensecrets_id": "",
+   "knowwho_pid": 205700,
+   "ballotpedia": "Greg_Smith_(Oregon)",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1457",
+     "district_phone": "",
+     "email": "Rep.GregSmith@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/smithg",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/smithg.jpg",
+     "ballotpedia": "https://ballotpedia.org/Greg_Smith_%28Oregon%29",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/46752"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-482",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/repgregsmithOR/",
+      "instagram": "https://www.instagram.com/repgregsmith/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/RepGregSmith",
+      "website": "https://www.oregonlegislature.gov/smithg",
+      "youtube": "https://www.youtube.com/@gregsmith4602"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/repgregsmith",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 6267,
+   "person_hash": "492gxu8h",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Nancy Nathanson",
+   "first_name": "Nancy",
+   "middle_name": "",
+   "last_name": "Nathanson",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-013",
+   "ftm_eid": 6469164,
+   "votesmart_id": 58128,
+   "opensecrets_id": "",
+   "knowwho_pid": 249739,
+   "ballotpedia": "Nancy_Nathanson",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1413",
+     "district_phone": "",
+     "email": "Rep.NancyNathanson@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/nathanson",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/nathanson.jpg",
+     "ballotpedia": "https://ballotpedia.org/Nancy_Nathanson",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/58128"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-279",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "https://www.instagram.com/nancy.nathanson1/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/Rep_NN",
+      "website": "https://www.oregonlegislature.gov/nathanson",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/nancy.nathanson1",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/nancy-nathanson-44440a20/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 6275,
+   "person_hash": "k6ce2ax4",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Fred Girod",
+   "first_name": "Fred",
+   "middle_name": "",
+   "last_name": "Girod",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-009",
+   "ftm_eid": 5281005,
+   "votesmart_id": 69243,
+   "opensecrets_id": "",
+   "knowwho_pid": 249743,
+   "ballotpedia": "Fred_Girod",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1709",
+     "district_phone": "",
+     "email": "Sen.FredGirod@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/girod",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/girod.jpg",
+     "ballotpedia": "https://ballotpedia.org/Fred_Girod",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/69243"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-401",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/SenatorGirod/",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/girod",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/fred.girod.1",
+      "instagram": "https://www.instagram.com/sengirod/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/FredGirod",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 6283,
+   "person_hash": "lng3pr6g",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Floyd Prozanski",
+   "first_name": "Floyd",
+   "middle_name": "F.",
+   "last_name": "Prozanski",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-004",
+   "ftm_eid": 13005177,
+   "votesmart_id": 3024,
+   "opensecrets_id": "",
+   "knowwho_pid": 212095,
+   "ballotpedia": "Floyd_Prozanski",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1704",
+     "district_phone": "",
+     "email": "Sen.FloydProzanski@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/prozanski",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/prozanski.jpg",
+     "ballotpedia": "https://ballotpedia.org/Floyd_Prozanski",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/3024"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-413",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/senprozanski",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/SenProzanski",
+      "website": "https://www.oregonlegislature.gov/prozanski",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 6284,
+   "person_hash": "8jqpyyp9",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Bruce Starr",
+   "first_name": "Bruce",
+   "middle_name": "",
+   "last_name": "Starr",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-012",
+   "ftm_eid": 5128710,
+   "votesmart_id": 23802,
+   "opensecrets_id": "",
+   "knowwho_pid": 198116,
+   "ballotpedia": "Bruce_Starr",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1712",
+     "district_phone": "",
+     "email": "Sen.BruceStarr@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/starr",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/starrb.jpg",
+     "ballotpedia": "https://ballotpedia.org/Bruce_Starr",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/23802"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-323",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/starr",
+      "youtube": "https://www.youtube.com/@BruceStarrOR"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/bruce.starr.31",
+      "instagram": "https://www.instagram.com/bruce.starr/",
+      "linkedin": "https://www.linkedin.com/in/brucewstarr/",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/starr38263",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 10752,
+   "person_hash": "75d9h68d",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Mike McLane",
+   "first_name": "Mike",
+   "middle_name": "",
+   "last_name": "McLane",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-030",
+   "ftm_eid": 5066170,
+   "votesmart_id": 117352,
+   "opensecrets_id": "",
+   "knowwho_pid": 292501,
+   "ballotpedia": "Mike_McLane",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1730",
+     "district_phone": "",
+     "email": "Sen.MikeMcLane@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/mclane",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/mclane.jpg",
+     "ballotpedia": "https://ballotpedia.org/Mike_McLane",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/117352"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-301",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/mclane",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/michael.mclane",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/mikemclane/",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/MikeMcLaneS",
+      "website": "https://lynchmurphy.com/partner/mike-mclane/",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 14772,
+   "person_hash": "xirkfcx3",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "David Gomberg",
+   "first_name": "David",
+   "middle_name": "",
+   "last_name": "Gomberg",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-010",
+   "ftm_eid": 6514531,
+   "votesmart_id": 135192,
+   "opensecrets_id": "",
+   "knowwho_pid": 390756,
+   "ballotpedia": "David_Gomberg",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1410",
+     "district_phone": "",
+     "email": "Rep.DavidGomberg@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/gomberg",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/gomberg.jpg",
+     "ballotpedia": "https://ballotpedia.org/David_Gomberg",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/135192"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-480",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/repgomberg",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/gomberg",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/david.gomberg",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": "https://www.youtube.com/@NeoKiteGuy"
+     }
+    }
+   }
+  },
+  {
+   "people_id": 15768,
+   "person_hash": "pheonukd",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Chris Gorsek",
+   "first_name": "Chris",
+   "middle_name": "",
+   "last_name": "Gorsek",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-025",
+   "ftm_eid": 6440685,
+   "votesmart_id": 46542,
+   "opensecrets_id": "",
+   "knowwho_pid": 401678,
+   "ballotpedia": "Chris_Gorsek",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1725",
+     "district_phone": "",
+     "email": "Sen.ChrisGorsek@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/gorsek",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/gorsek.jpg",
+     "ballotpedia": "https://ballotpedia.org/Chris_Gorsek",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/46542"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-403",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/gorsek",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/chris.gorsek",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/dr-christopher-gorsek-a4bb3530/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://climateintegrity.org/projects/leaders-network/chris-gorsek",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 15769,
+   "person_hash": "9swwbyka",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "John Lively",
+   "first_name": "John",
+   "middle_name": "D.",
+   "last_name": "Lively",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-007",
+   "ftm_eid": 10238475,
+   "votesmart_id": 136777,
+   "opensecrets_id": "",
+   "knowwho_pid": 395942,
+   "ballotpedia": "John_Lively",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1407",
+     "district_phone": "",
+     "email": "Rep.JohnLively@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/lively",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/lively.jpg",
+     "ballotpedia": "https://ballotpedia.org/John_Lively",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/136777"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-481",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/RepJohnLively",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/lively",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/john.lively.35",
+      "instagram": "https://www.instagram.com/john.lively.35/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://culturaltrust.org/staff/rep-john-lively/",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 16808,
+   "person_hash": "h8ryk489",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Paul Evans",
+   "first_name": "Paul",
+   "middle_name": "",
+   "last_name": "Evans",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-020",
+   "ftm_eid": 935961,
+   "votesmart_id": 57891,
+   "opensecrets_id": "",
+   "knowwho_pid": 478101,
+   "ballotpedia": "Paul_Evans_(Oregon)",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1420",
+     "district_phone": "",
+     "email": "Rep.PaulEvans@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/evans",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/evans.jpg",
+     "ballotpedia": "https://ballotpedia.org/Paul_Evans_%28Oregon%29",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/57891"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-471",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/evans",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/evansmonmouth",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/paul-evans-1260968/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 16809,
+   "person_hash": "fola2ze3",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Ken Helm",
+   "first_name": "Ken",
+   "middle_name": "",
+   "last_name": "Helm",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-027",
+   "ftm_eid": 22206757,
+   "votesmart_id": 150835,
+   "opensecrets_id": "",
+   "knowwho_pid": 490809,
+   "ballotpedia": "Ken_Helm",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1427",
+     "district_phone": "",
+     "email": "Rep.KenHelm@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/helm",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/helm.jpg",
+     "ballotpedia": "https://ballotpedia.org/Ken_Helm",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/150835"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-490",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/helm",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/ken.helm.52",
+      "instagram": "https://www.instagram.com/ken.helm/",
+      "linkedin": "https://www.linkedin.com/in/ken-helm-3401393/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 16810,
+   "person_hash": "86d4h2o6",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Susan McLain",
+   "first_name": "Susan",
+   "middle_name": "",
+   "last_name": "McLain",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-029",
+   "ftm_eid": 5181165,
+   "votesmart_id": 151034,
+   "opensecrets_id": "",
+   "knowwho_pid": 490807,
+   "ballotpedia": "Susan_McLain",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1429",
+     "district_phone": "",
+     "email": "Rep.SusanMclain@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/mclain",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/mclain.jpg",
+     "ballotpedia": "https://ballotpedia.org/Susan_McLain",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/151034"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-493",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/SusanMcLainforOregon/",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/mclain",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/susanmclainspeechn",
+      "instagram": "https://www.instagram.com/susancanby/",
+      "linkedin": "https://www.linkedin.com/in/susan-mclain-279166b/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 16811,
+   "person_hash": "0qk8ua62",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Robert Nosse",
+   "first_name": "Robert",
+   "middle_name": "A.",
+   "last_name": "Nosse",
+   "suffix": "Jr.",
+   "nickname": "Rob",
+   "district": "HD-042",
+   "ftm_eid": 14974670,
+   "votesmart_id": 150910,
+   "opensecrets_id": "",
+   "knowwho_pid": 489955,
+   "ballotpedia": "Rob_Nosse",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1442",
+     "district_phone": "",
+     "email": "Rep.RobNosse@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/nosse",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/nosse.jpg",
+     "ballotpedia": "https://ballotpedia.org/Rob_Nosse",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/150910"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-277",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/nosse",
+      "youtube": "https://www.youtube.com/@OfficeOfStateRepresentativeRob"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/rob.nosse",
+      "instagram": "https://www.instagram.com/robnosse/",
+      "linkedin": "https://www.linkedin.com/in/rob-nosse-7472a936/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": "https://www.youtube.com/@robnosse"
+     }
+    }
+   }
+  },
+  {
+   "people_id": 16814,
+   "person_hash": "hmi0k6bg",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Kathleen Taylor",
+   "first_name": "Kathleen",
+   "middle_name": "",
+   "last_name": "Taylor",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-021",
+   "ftm_eid": 4989207,
+   "votesmart_id": 150928,
+   "opensecrets_id": "",
+   "knowwho_pid": 490810,
+   "ballotpedia": "Kathleen_Taylor_(Oregon)",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1721",
+     "district_phone": "",
+     "email": "Sen.KathleenTaylor@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/taylor",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/taylor.jpg",
+     "ballotpedia": "https://ballotpedia.org/Kathleen_Taylor_%28Oregon%29",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/150928"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-209",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/KathleenTaylorforOregon",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/taylor",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/kathleen.taylor.5832",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/kathleen-taylor-b029b846/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": "https://www.youtube.com/@kathleentaylorfororegon707"
+     }
+    }
+   }
+  },
+  {
+   "people_id": 16818,
+   "person_hash": "lh9ymjeq",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Cedric Hayden",
+   "first_name": "Cedric",
+   "middle_name": "Ross",
+   "last_name": "Hayden",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-006",
+   "ftm_eid": 13434002,
+   "votesmart_id": 155196,
+   "opensecrets_id": "",
+   "knowwho_pid": 205692,
+   "ballotpedia": "Cedric_Hayden",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1706",
+     "district_phone": "",
+     "email": "Sen.CedricHayden@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/hayden",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/hayden.jpg",
+     "ballotpedia": "https://ballotpedia.org/Cedric_Hayden",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/155196"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-315",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/hayden",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/cedric.hayden.5",
+      "instagram": "https://www.instagram.com/cedrichaydenor/",
+      "linkedin": "https://www.linkedin.com/in/cedric-ross-hayden-8b71a78a/",
+      "tiktok": "https://www.tiktok.com/@cedrichayden0",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 17567,
+   "person_hash": "89k2prxf",
+   "party_id": "0",
+   "state_id": 37,
+   "party": "",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Rules",
+   "first_name": "",
+   "middle_name": "",
+   "last_name": "",
+   "suffix": "",
+   "nickname": "",
+   "district": "",
+   "ftm_eid": 0,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "",
+   "bioguide_id": "",
+   "committee_sponsor": 1,
+   "committee_id": 1835,
+   "state_federal": 0,
+   "bio": []
+  },
+  {
+   "people_id": 18581,
+   "person_hash": "yvbkzod8",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "David Smith",
+   "first_name": "David",
+   "middle_name": "Brock",
+   "last_name": "Smith",
+   "suffix": "",
+   "nickname": "DB",
+   "district": "SD-001",
+   "ftm_eid": 39434450,
+   "votesmart_id": 168016,
+   "opensecrets_id": "",
+   "knowwho_pid": 573666,
+   "ballotpedia": "David_Smith_(Oregon)",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1701",
+     "district_phone": "",
+     "email": "Sen.DavidBrockSmith@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/smithd",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/smithdb.jpg",
+     "ballotpedia": "https://ballotpedia.org/David_Smith_%28Oregon%29",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/168016"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-316",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/StateSenatorDavidBrockSmith",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/smithd",
+      "youtube": "https://www.youtube.com/@DavidBrockSmith/"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/SenatorDavidBrockSmith",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/david-brock-smith-793282ba/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 18583,
+   "person_hash": "vs0p6s5a",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Julianne Fahey",
+   "first_name": "Julianne",
+   "middle_name": "",
+   "last_name": "Fahey",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-014",
+   "ftm_eid": 39434464,
+   "votesmart_id": 168037,
+   "opensecrets_id": "",
+   "knowwho_pid": 556739,
+   "ballotpedia": "Julie_Fahey",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1414",
+     "district_phone": "",
+     "email": "Rep.JulieFahey@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/fahey",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/fahey.jpg",
+     "ballotpedia": "https://ballotpedia.org/Julie_Fahey",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/168037"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-271",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/profile.php?id=61557576567058",
+      "instagram": "https://www.instagram.com/repfahey/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/RepFahey",
+      "website": "https://www.oregonlegislature.gov/fahey",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/juliefahey",
+      "instagram": "https://www.instagram.com/julie.in.oregon/",
+      "linkedin": "https://www.linkedin.com/in/julie-fahey-bb56651/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 18585,
+   "person_hash": "08xejpca",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Pam Marsh",
+   "first_name": "Pam",
+   "middle_name": "J.",
+   "last_name": "Marsh",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-005",
+   "ftm_eid": 5008202,
+   "votesmart_id": 168022,
+   "opensecrets_id": "",
+   "knowwho_pid": 565345,
+   "ballotpedia": "Pam_Marsh",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1405",
+     "district_phone": "",
+     "email": "Rep.PamMarsh@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/marsh",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/marsh.jpg",
+     "ballotpedia": "https://ballotpedia.org/Pam_Marsh",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/168022"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-474",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/representativepammarsh/",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/PamMarshORHD5",
+      "website": "https://www.oregonlegislature.gov/marsh",
+      "youtube": "https://www.youtube.com/@representativepammarshoreg8824/"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/mcgreeninn",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/pam-marsh-21a8b52a/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 18586,
+   "person_hash": "7gdleb9j",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Mark Meek",
+   "first_name": "Mark",
+   "middle_name": "W.",
+   "last_name": "Meek",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-020",
+   "ftm_eid": 23399532,
+   "votesmart_id": 168081,
+   "opensecrets_id": "",
+   "knowwho_pid": 559263,
+   "ballotpedia": "Mark_Meek",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1720",
+     "district_phone": "",
+     "email": "Sen.MarkMeek@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/meek",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/meek.jpg",
+     "ballotpedia": "https://ballotpedia.org/Mark_Meek",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/168081"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-417",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "https://www.instagram.com/senatormarkmeek/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/meek",
+      "youtube": "https://www.youtube.com/@representativemarkmeek220"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/mark.meek.9822",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/markmeekrealtorsinger/",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/meek_mark",
+      "website": "https://www.avidexecs.com/agents/sample-agent-three/",
+      "youtube": "https://www.youtube.com/@Meekedmark"
+     }
+    }
+   }
+  },
+  {
+   "people_id": 18588,
+   "person_hash": "39hbr9ty",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Tawna Sanchez",
+   "first_name": "Tawna",
+   "middle_name": "",
+   "last_name": "Sanchez",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-043",
+   "ftm_eid": 39434517,
+   "votesmart_id": 168092,
+   "opensecrets_id": "",
+   "knowwho_pid": 560919,
+   "ballotpedia": "Tawna_Sanchez",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1443",
+     "district_phone": "",
+     "email": "Rep.TawnaSanchez@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/sanchez",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/sanchez.jpg",
+     "ballotpedia": "https://ballotpedia.org/Tawna_Sanchez",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/168092"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-273",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/RepTawnaSanchez/",
+      "instagram": "https://www.instagram.com/reptawnasanchez/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/RepTawnaSanchez",
+      "website": "https://www.oregonlegislature.gov/sanchez",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/tawna.sanchez",
+      "instagram": "https://www.instagram.com/tawnasanchez/",
+      "linkedin": "https://www.linkedin.com/in/tawna-sanchez-440aa2b/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 18597,
+   "person_hash": "o05540v8",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "James Manning",
+   "first_name": "James",
+   "middle_name": "I.",
+   "last_name": "Manning",
+   "suffix": "Jr.",
+   "nickname": "",
+   "district": "SD-007",
+   "ftm_eid": 34819276,
+   "votesmart_id": 168035,
+   "opensecrets_id": "",
+   "knowwho_pid": 556737,
+   "ballotpedia": "James_Manning_(Oregon)",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1707",
+     "district_phone": "",
+     "email": "Sen.JamesManning@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/manning",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/manning.jpg",
+     "ballotpedia": "https://ballotpedia.org/James_Manning_%28Oregon%29",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/168035"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-213",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/manning",
+      "youtube": "https://www.youtube.com/@senjamesimanningjr1549"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/profile.php?id=100003368656351",
+      "instagram": "https://www.instagram.com/manningstl/",
+      "linkedin": "https://www.linkedin.com/in/senator-james-i-manning-jr-0822163b/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 18600,
+   "person_hash": "21bsccir",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Werner Reschke",
+   "first_name": "Eric",
+   "middle_name": "Werner",
+   "last_name": "Reschke",
+   "suffix": "",
+   "nickname": "Werner",
+   "district": "HD-055",
+   "ftm_eid": 39434538,
+   "votesmart_id": 168110,
+   "opensecrets_id": "",
+   "knowwho_pid": 573686,
+   "ballotpedia": "E._Werner_Reschke",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1455",
+     "district_phone": "",
+     "email": "Rep.EWernerReschke@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/reschke",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/reschke.jpg",
+     "ballotpedia": "https://ballotpedia.org/E._Werner_Reschke",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/168110"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-383",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/reschke",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "https://www.instagram.com/ewernerreschke/",
+      "linkedin": "https://www.linkedin.com/in/e-werner-reschke-6522a938/",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/EWernerReschke",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 18601,
+   "person_hash": "gfrfz46u",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Janeen Sollman",
+   "first_name": "Janeen",
+   "middle_name": "A.",
+   "last_name": "Sollman",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-015",
+   "ftm_eid": 39434497,
+   "votesmart_id": 168074,
+   "opensecrets_id": "",
+   "knowwho_pid": 573675,
+   "ballotpedia": "Janeen_Sollman",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1715",
+     "district_phone": "",
+     "email": "Sen.JaneenSollman@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/sollman",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/sollman.jpg",
+     "ballotpedia": "https://ballotpedia.org/Janeen_Sollman",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/168074"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-207",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/sollman",
+      "youtube": "https://www.youtube.com/channel/UCpX985CgXpBg6hMtuR3v6rA"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/janeen.sollman",
+      "instagram": "https://www.instagram.com/janeensollman/",
+      "linkedin": "https://www.linkedin.com/in/janeen-sollman-1555216b/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": "https://www.youtube.com/@janeensollman9576"
+     }
+    }
+   }
+  },
+  {
+   "people_id": 19312,
+   "person_hash": "267xnwbj",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Rick Lewis",
+   "first_name": "Rick",
+   "middle_name": "",
+   "last_name": "Lewis",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-018",
+   "ftm_eid": 44284204,
+   "votesmart_id": 176436,
+   "opensecrets_id": "",
+   "knowwho_pid": 617669,
+   "ballotpedia": "Rick_Lewis_(Oregon)",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1418",
+     "district_phone": "",
+     "email": "Rep.RickLewis@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/lewis",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/lewis.jpg",
+     "ballotpedia": "https://ballotpedia.org/Rick_Lewis_%28Oregon%29",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/176436"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-382",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/lewis",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/rick.lewis.52643",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/rick-lewis-14695956/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 19398,
+   "person_hash": "d1m3frmb",
+   "party_id": "0",
+   "state_id": 37,
+   "party": "",
+   "role_id": 3,
+   "role": "Jnt",
+   "name": "Ways and Means",
+   "first_name": "",
+   "middle_name": "",
+   "last_name": "",
+   "suffix": "",
+   "nickname": "",
+   "district": "",
+   "ftm_eid": 0,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "",
+   "bioguide_id": "",
+   "committee_sponsor": 1,
+   "committee_id": 1856,
+   "state_federal": 0,
+   "bio": []
+  },
+  {
+   "people_id": 19542,
+   "person_hash": "zfda3yc7",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Jeff Helfrich",
+   "first_name": "Jeff",
+   "middle_name": "",
+   "last_name": "Helfrich",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-052",
+   "ftm_eid": 44284203,
+   "votesmart_id": 178200,
+   "opensecrets_id": "",
+   "knowwho_pid": 646682,
+   "ballotpedia": "Jeffrey_Helfrich",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1452",
+     "district_phone": "",
+     "email": "Rep.JeffHelfrich@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/helfrich",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/helfrich.jpg",
+     "ballotpedia": "https://ballotpedia.org/Jeffrey_Helfrich",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/178200"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-371",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/JeffHelfrichfororegon",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/helfrich",
+      "youtube": "https://www.youtube.com/@HelfrichForOregon"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/jeff.helfrich.927",
+      "instagram": "https://www.instagram.com/jeff.helfrich.927/",
+      "linkedin": "https://www.linkedin.com/in/jeff-helfrich-0408ab201/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 19566,
+   "person_hash": "e7ybdwjy",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Rob Wagner",
+   "first_name": "Rob",
+   "middle_name": "",
+   "last_name": "Wagner",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-019",
+   "ftm_eid": 16155295,
+   "votesmart_id": 178216,
+   "opensecrets_id": "",
+   "knowwho_pid": 643184,
+   "ballotpedia": "Rob_Wagner",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1600",
+     "district_phone": "",
+     "email": "Sen.RobWagner@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/wagner",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/wagner.jpg",
+     "ballotpedia": "https://ballotpedia.org/Rob_Wagner",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/178216"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-201",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/wagner",
+      "youtube": "https://www.youtube.com/channel/UCH9hnaqShRCD12OPH5yOy7w"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/rob.wagner.754",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/robert-wagner-4b74855",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 20424,
+   "person_hash": "c3ky1e39",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Christine Drazan",
+   "first_name": "Christine",
+   "middle_name": "",
+   "last_name": "Drazan",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-026",
+   "ftm_eid": 44426842,
+   "votesmart_id": 179911,
+   "opensecrets_id": "",
+   "knowwho_pid": 656780,
+   "ballotpedia": "Christine_Drazan",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1726",
+     "district_phone": "",
+     "email": "Sen.ChristineDrazan@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/drazan",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/drazan.jpg",
+     "ballotpedia": "https://ballotpedia.org/Christine_Drazan",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/179911"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-303",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/drazan",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/christine.deboydrazan",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/christine-drazan-3b71516/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 20426,
+   "person_hash": "3o9ao1gh",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Courtney Neron Misslin",
+   "first_name": "Courtney",
+   "middle_name": "",
+   "last_name": "Neron Misslin",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-013",
+   "ftm_eid": 45957456,
+   "votesmart_id": 184580,
+   "opensecrets_id": "",
+   "knowwho_pid": 682550,
+   "ballotpedia": "Courtney_Neron",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1713",
+     "district_phone": "",
+     "email": "Sen.CourtneyNeronMisslin@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/neron",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/neron.jpg",
+     "ballotpedia": "https://ballotpedia.org/Courtney_Neron",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/184580"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-425",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/courtneyneronmisslin",
+      "instagram": "https://www.instagram.com/courtneyneronmisslin/",
+      "linkedin": "https://www.linkedin.com/in/courtney-neron-misslin-9a6ba8217/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 20429,
+   "person_hash": "bwytg0dr",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Jeffrey Golden",
+   "first_name": "Jeffrey",
+   "middle_name": "S.",
+   "last_name": "Golden",
+   "suffix": "",
+   "nickname": "Jeff",
+   "district": "SD-003",
+   "ftm_eid": 44426795,
+   "votesmart_id": 179932,
+   "opensecrets_id": "",
+   "knowwho_pid": 647928,
+   "ballotpedia": "Jeff_Golden_(Oregon)",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1703",
+     "district_phone": "",
+     "email": "Sen.JeffGolden@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/golden",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/golden.jpg",
+     "ballotpedia": "https://ballotpedia.org/Jeff_Golden_%28Oregon%29",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/179932"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-415",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/SenatorGolden",
+      "instagram": "https://www.instagram.com/sen_jeffgolden/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/SenatorGolden",
+      "website": "https://www.oregonlegislature.gov/golden",
+      "youtube": "https://www.youtube.com/@senatorjeffgolden1834"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/immensepossibilities",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/jeff-golden-bba8015/",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/immensepossible",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 20616,
+   "person_hash": "ltkcizwa",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Kimberly Wallan",
+   "first_name": "Kimberly",
+   "middle_name": "D.",
+   "last_name": "Wallan",
+   "suffix": "",
+   "nickname": "Kim",
+   "district": "HD-006",
+   "ftm_eid": 40321730,
+   "votesmart_id": 179875,
+   "opensecrets_id": "",
+   "knowwho_pid": 643271,
+   "ballotpedia": "Kim_Wallan",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1406",
+     "district_phone": "",
+     "email": "Rep.KimWallan@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/wallan",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/wallan.jpg",
+     "ballotpedia": "https://ballotpedia.org/Kim_Wallan",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/179875"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-388",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/wallan",
+      "youtube": "https://www.youtube.com/@kimwallanoregonstaterepres8603"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/kimberly.wallan",
+      "instagram": "https://www.instagram.com/kimwallan/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 20618,
+   "person_hash": "g4myw5yz",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Shelly Boshart Davis",
+   "first_name": "Shelly",
+   "middle_name": "",
+   "last_name": "Boshart Davis",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-015",
+   "ftm_eid": 44581553,
+   "votesmart_id": 179882,
+   "opensecrets_id": "",
+   "knowwho_pid": 657588,
+   "ballotpedia": "Shelly_Boshart_Davis",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1415",
+     "district_phone": "",
+     "email": "Rep.ShellyBoshartDavis@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/boshartdavis",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/davis.jpg",
+     "ballotpedia": "https://ballotpedia.org/Shelly_Boshart_Davis",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/179882"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-389",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/boshartdavis",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/shelly.boshart",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/shelly-boshart-davis-769b2294/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": "https://www.youtube.com/channel/UCVO_yc1nypCCJnpkYAd5sxQ"
+     }
+    }
+   }
+  },
+  {
+   "people_id": 21434,
+   "person_hash": "0e572nc6",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Vikki Breese-Iverson",
+   "first_name": "Vikki",
+   "middle_name": "",
+   "last_name": "Breese-Iverson",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-059",
+   "ftm_eid": 48691439,
+   "votesmart_id": 187078,
+   "opensecrets_id": "",
+   "knowwho_pid": 715128,
+   "ballotpedia": "Vikki_Breese-Iverson",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1459",
+     "district_phone": "",
+     "email": "Rep.VikkiBreeseIverson@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/breese-iverson",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/breeseiverson.jpg",
+     "ballotpedia": "https://ballotpedia.org/Vikki_Breese-Iverson",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/187078"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-386",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/breese-iverson",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/vikki.breeseiverson",
+      "instagram": "https://www.instagram.com/breeseiverson/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.windermere.com/directory/agents/vikki-breeseiverson",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 21542,
+   "person_hash": "inhg51ge",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Mark Owens",
+   "first_name": "Mark",
+   "middle_name": "",
+   "last_name": "Owens",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-060",
+   "ftm_eid": 48691442,
+   "votesmart_id": 189513,
+   "opensecrets_id": "",
+   "knowwho_pid": 722582,
+   "ballotpedia": "Mark_Owens_(Oregon)",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1460",
+     "district_phone": "",
+     "email": "Rep.MarkOwens@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/owens",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/owens.jpg",
+     "ballotpedia": "https://ballotpedia.org/Mark_Owens_%28Oregon%29",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/189513"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-475",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/owens",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/repmarkowens",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/mark-owens-b541bb13/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22306,
+   "person_hash": "0uhx5zbi",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Richard Anderson",
+   "first_name": "Richard",
+   "middle_name": "S.",
+   "last_name": "Anderson",
+   "suffix": "",
+   "nickname": "Dick",
+   "district": "SD-005",
+   "ftm_eid": 39434547,
+   "votesmart_id": 168001,
+   "opensecrets_id": "",
+   "knowwho_pid": 569510,
+   "ballotpedia": "Dick_Anderson_(Oregon)",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1705",
+     "district_phone": "",
+     "email": "Sen.DickAnderson@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/anderson",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/andersond.jpg",
+     "ballotpedia": "https://ballotpedia.org/Dick_Anderson_%28Oregon%29",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/168001"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-311",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/anderson",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/dick.anderson.3194",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/dick-anderson-8a14b515/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22307,
+   "person_hash": "7o12i7ya",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Kayse Jama",
+   "first_name": "Kayse",
+   "middle_name": "M.",
+   "last_name": "Jama",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-024",
+   "ftm_eid": 44283194,
+   "votesmart_id": 179945,
+   "opensecrets_id": "",
+   "knowwho_pid": 643187,
+   "ballotpedia": "Kayse_Jama",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1724",
+     "district_phone": "",
+     "email": "Sen.KayseJama@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/Jama",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/jama.jpg",
+     "ballotpedia": "https://ballotpedia.org/Kayse_Jama",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/179945"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-223",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/SenatorKayseJama",
+      "instagram": "https://www.instagram.com/senatorjama/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/SenatorJama",
+      "website": "https://www.oregonlegislature.gov/Jama",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/kayse.jama",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/kayse-jama-5aa17652/",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/kaysejama",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22308,
+   "person_hash": "lj94yejg",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Katherine Lieber",
+   "first_name": "Katherine",
+   "middle_name": "B.",
+   "last_name": "Lieber",
+   "suffix": "",
+   "nickname": "Kate",
+   "district": "SD-014",
+   "ftm_eid": 39789546,
+   "votesmart_id": 190788,
+   "opensecrets_id": "",
+   "knowwho_pid": 722417,
+   "ballotpedia": "Kate_Lieber",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1714",
+     "district_phone": "",
+     "email": "Sen.KateLieber@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/lieber",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/lieber.jpg",
+     "ballotpedia": "https://ballotpedia.org/Kate_Lieber",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/190788"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-205",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/lieber",
+      "youtube": "https://www.youtube.com/@katefororegon8273"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/kate.lieber.3",
+      "instagram": "https://www.instagram.com/kateb.l/",
+      "linkedin": "https://www.linkedin.com/in/kate-b-lieber-947867132/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22309,
+   "person_hash": "4n3vfxqn",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Deb Patterson",
+   "first_name": "Deb",
+   "middle_name": "",
+   "last_name": "Patterson",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-010",
+   "ftm_eid": 42673580,
+   "votesmart_id": 179938,
+   "opensecrets_id": "",
+   "knowwho_pid": 643180,
+   "ballotpedia": "Deb_Patterson",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1710",
+     "district_phone": "",
+     "email": "Sen.DebPatterson@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/patterson",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/patterson.jpg",
+     "ballotpedia": "https://ballotpedia.org/Deb_Patterson",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/179938"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-411",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/Senator.DebPatterson",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/DebPattersonOR",
+      "website": "https://www.oregonlegislature.gov/patterson",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/deborah.patterson.127",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/deb-patterson-49009162/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22311,
+   "person_hash": "710buo3r",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Wlnsvey Campos",
+   "first_name": "Wlnsvey",
+   "middle_name": "E.",
+   "last_name": "Campos",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-018",
+   "ftm_eid": 49394709,
+   "votesmart_id": 190833,
+   "opensecrets_id": "",
+   "knowwho_pid": 722564,
+   "ballotpedia": "Wlnsvey_Campos",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1718",
+     "district_phone": "",
+     "email": "Sen.WlnsveyCampos@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/campos",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/campos.jpg",
+     "ballotpedia": "https://ballotpedia.org/Wlnsvey_Campos",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/190833"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-215",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/campos",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/wlnsvey.campos",
+      "instagram": "https://www.instagram.com/wlnsvey/",
+      "linkedin": "https://www.linkedin.com/in/wlnsvey-campos-a51948a2/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22312,
+   "person_hash": "f4pyypd0",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Jami Cate",
+   "first_name": "Jami",
+   "middle_name": "J.",
+   "last_name": "Cate",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-011",
+   "ftm_eid": 49394682,
+   "votesmart_id": 190814,
+   "opensecrets_id": "",
+   "knowwho_pid": 722558,
+   "ballotpedia": "Jami_Cate",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1411",
+     "district_phone": "",
+     "email": "Rep.JamiCate@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/cate",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/cate.jpg",
+     "ballotpedia": "https://ballotpedia.org/Jami_Cate",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/190814"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-381",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/cate",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/jami.cate",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22313,
+   "person_hash": "lwovnfl0",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Dacia Grayber",
+   "first_name": "Dacia",
+   "middle_name": "",
+   "last_name": "Grayber",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-028",
+   "ftm_eid": 42160921,
+   "votesmart_id": 190850,
+   "opensecrets_id": "",
+   "knowwho_pid": 731564,
+   "ballotpedia": "Dacia_Grayber",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1428",
+     "district_phone": "",
+     "email": "Rep.DaciaGrayber@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/grayber",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/grayber.jpg",
+     "ballotpedia": "https://ballotpedia.org/Dacia_Grayber",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/190850"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-492",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "https://www.instagram.com/daciafororegon",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/grayber",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/dacia.grayber",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/dacia-grayber-6bbb2936/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22314,
+   "person_hash": "7bcdu08y",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Zach Hudson",
+   "first_name": "Zachary",
+   "middle_name": "T.",
+   "last_name": "Hudson",
+   "suffix": "",
+   "nickname": "Zach",
+   "district": "HD-049",
+   "ftm_eid": 49394745,
+   "votesmart_id": 190877,
+   "opensecrets_id": "",
+   "knowwho_pid": 722581,
+   "ballotpedia": "Zach_Hudson",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1449",
+     "district_phone": "",
+     "email": "Rep.ZachHudson@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/hudson",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/hudson.jpg",
+     "ballotpedia": "https://ballotpedia.org/Zach_Hudson",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/190877"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-284",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/HudsonDist49",
+      "instagram": "https://www.instagram.com/repzachhudson/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/hudson",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/zach.hudson.5686",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/zach-hudson-94318532/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": "https://www.youtube.com/@zhudson/"
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22315,
+   "person_hash": "bh0xjpzq",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Jason Kropf",
+   "first_name": "Jason",
+   "middle_name": "S.",
+   "last_name": "Kropf",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-054",
+   "ftm_eid": 49394753,
+   "votesmart_id": 190883,
+   "opensecrets_id": "",
+   "knowwho_pid": 735117,
+   "ballotpedia": "Jason_Kropf",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1454",
+     "district_phone": "",
+     "email": "Rep.JasonKropf@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/kropf",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/kropf.jpg",
+     "ballotpedia": "https://ballotpedia.org/Jason_Kropf",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/190883"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-491",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/RepresentativeKropf",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/kropf",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22316,
+   "person_hash": "25e8qwtk",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Bobby Levy",
+   "first_name": "Barbara",
+   "middle_name": "L.",
+   "last_name": "Levy",
+   "suffix": "",
+   "nickname": "Bobby",
+   "district": "HD-058",
+   "ftm_eid": 14011343,
+   "votesmart_id": 190888,
+   "opensecrets_id": "",
+   "knowwho_pid": 731588,
+   "ballotpedia": "Bobby_Levy",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1458",
+     "district_phone": "",
+     "email": "Rep.BobbyLevy@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/levy",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/levy.jpg",
+     "ballotpedia": "https://ballotpedia.org/Bobby_Levy",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/190888"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-385",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/levy",
+      "youtube": "https://www.youtube.com/@bobbylevyfororegon"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/bobby.levy.54",
+      "instagram": "https://www.instagram.com/gmabobby/",
+      "linkedin": "https://www.linkedin.com/in/bobby-levy-89737947/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22318,
+   "person_hash": "m20fz4f7",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Khanh Pham",
+   "first_name": "Katherine",
+   "middle_name": "",
+   "last_name": "Pham",
+   "suffix": "",
+   "nickname": "Khanh",
+   "district": "SD-023",
+   "ftm_eid": 49394741,
+   "votesmart_id": 190874,
+   "opensecrets_id": "",
+   "knowwho_pid": 731574,
+   "ballotpedia": "Khanh_Pham",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1723",
+     "district_phone": "",
+     "email": "Sen.KhanhPham@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/pham",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/pham.jpg",
+     "ballotpedia": "https://ballotpedia.org/Khanh_Pham",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/190874"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-407",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/SenKhanhPham",
+      "instagram": "https://www.instagram.com/sen.khanhpham/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/pham",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/vietnamita1",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/khanh-pham-b484522/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22319,
+   "person_hash": "yred8wwu",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Lisa Reynolds",
+   "first_name": "Lisa",
+   "middle_name": "",
+   "last_name": "Reynolds",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-017",
+   "ftm_eid": 42520803,
+   "votesmart_id": 190855,
+   "opensecrets_id": "",
+   "knowwho_pid": 722572,
+   "ballotpedia": "Lisa_Reynolds",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1717",
+     "district_phone": "",
+     "email": "Sen.LisaReynolds@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/reynolds",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/Reynolds.jpg",
+     "ballotpedia": "https://ballotpedia.org/Lisa_Reynolds",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/190855"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-409",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/SenatorLisaReynolds",
+      "instagram": "https://www.instagram.com/senatorlisareynolds/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/reynolds",
+      "youtube": "https://www.youtube.com/@representativelisareynolds526"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/lisa.reynolds.10297",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/lisa-reynolds-a3a8bb190/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.childrens-clinic.com/lisa-reynolds-md/",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22320,
+   "person_hash": "9nrr2zff",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Ricki Ruiz",
+   "first_name": "Ricardo",
+   "middle_name": "",
+   "last_name": "Ruiz",
+   "suffix": "",
+   "nickname": "Ricki",
+   "district": "HD-050",
+   "ftm_eid": 49394747,
+   "votesmart_id": 190879,
+   "opensecrets_id": "",
+   "knowwho_pid": 731582,
+   "ballotpedia": "Ricardo_Ruiz_(Oregon)",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1450",
+     "district_phone": "",
+     "email": "Rep.RickiRuiz@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/ruiz",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/ruiz.jpg",
+     "ballotpedia": "https://ballotpedia.org/Ricardo_Ruiz_%28Oregon%29",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/190879"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-272",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22321,
+   "person_hash": "cqav25ml",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Suzanne Weber",
+   "first_name": "Suzanne",
+   "middle_name": "",
+   "last_name": "Weber",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-016",
+   "ftm_eid": 49394720,
+   "votesmart_id": 190841,
+   "opensecrets_id": "",
+   "knowwho_pid": 731561,
+   "ballotpedia": "Suzanne_Weber",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1716",
+     "district_phone": "",
+     "email": "Sen.SuzanneWeber@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/weber",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/weber.jpg",
+     "ballotpedia": "https://ballotpedia.org/Suzanne_Weber",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/190841"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-405",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/weber",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/suzanne.weber.54",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22322,
+   "person_hash": "mtmc51i0",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Boomer Wright",
+   "first_name": "Gerald",
+   "middle_name": "D.",
+   "last_name": "Wright",
+   "suffix": "",
+   "nickname": "Boomer",
+   "district": "HD-009",
+   "ftm_eid": 49394667,
+   "votesmart_id": 190805,
+   "opensecrets_id": "",
+   "knowwho_pid": 731548,
+   "ballotpedia": "Boomer_Wright",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1409",
+     "district_phone": "",
+     "email": "Rep.BoomerWright@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/wright",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/wright.jpg",
+     "ballotpedia": "https://ballotpedia.org/Boomer_Wright",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/190805"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-372",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/wright",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/boomer.wright.96",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/boomer-wright-7b164266/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22909,
+   "person_hash": "bryldtk9",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Andrea Valderrama",
+   "first_name": "Andrea",
+   "middle_name": "",
+   "last_name": "Valderrama",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-047",
+   "ftm_eid": 54284056,
+   "votesmart_id": 195918,
+   "opensecrets_id": "",
+   "knowwho_pid": 771845,
+   "ballotpedia": "Andrea_Valderrama",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1447",
+     "district_phone": "",
+     "email": "Rep.AndreaValderrama@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/valderrama",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/valderrama.jpg",
+     "ballotpedia": "https://ballotpedia.org/Andrea_Valderrama",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/195918"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-286",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/RepValderrama",
+      "instagram": "https://www.instagram.com/repvalderrama/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/DreaValderrama",
+      "website": "https://www.oregonlegislature.gov/valderrama",
+      "youtube": "https://www.youtube.com/@repvalderrama"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/dreavalderrama",
+      "instagram": "https://www.instagram.com/libros_y_tacos_y_justicia/",
+      "linkedin": "https://www.linkedin.com/in/andrea-valderrama-21801023/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 22950,
+   "person_hash": "xm45ndbb",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Anna Scharf",
+   "first_name": "Anna",
+   "middle_name": "",
+   "last_name": "Scharf",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-023",
+   "ftm_eid": 54453477,
+   "votesmart_id": 197557,
+   "opensecrets_id": "",
+   "knowwho_pid": 780737,
+   "ballotpedia": "Anna_Scharf",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1423",
+     "district_phone": "",
+     "email": "Rep.AnnaScharf@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/scharf",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/scharf.jpg",
+     "ballotpedia": "https://ballotpedia.org/Anna_Scharf",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/197557"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-387",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/scharf",
+      "youtube": "https://www.youtube.com/@repannascharf1015"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/scharfpinot",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/anna-scharf-7b631911/",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/farmspinot",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23063,
+   "person_hash": "knui6k6e",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Travis Nelson",
+   "first_name": "Travis",
+   "middle_name": "",
+   "last_name": "Nelson",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-044",
+   "ftm_eid": 0,
+   "votesmart_id": 201609,
+   "opensecrets_id": "",
+   "knowwho_pid": 796974,
+   "ballotpedia": "Travis_Nelson_(Oregon)",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1444",
+     "district_phone": "",
+     "email": "Rep.TravisNelson@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/nelson",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/nelson.jpg",
+     "ballotpedia": "https://ballotpedia.org/Travis_Nelson_%28Oregon%29",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/201609"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-275",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/RepTravisNelson",
+      "instagram": "https://www.instagram.com/rep.nelsonofficial/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/nelson",
+      "youtube": "https://www.youtube.com/@rep.travisnelson9760/"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/Travis.Nelson.DNCMember",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/travis-e-nelson-656ab738/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23064,
+   "person_hash": "affmvt4c",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Nathan Sosa",
+   "first_name": "Nathan",
+   "middle_name": "",
+   "last_name": "Sosa",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-030",
+   "ftm_eid": 55358267,
+   "votesmart_id": 201864,
+   "opensecrets_id": "",
+   "knowwho_pid": 624780,
+   "ballotpedia": "Nathan_Sosa_(Oregon)",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1430",
+     "district_phone": "",
+     "email": "Rep.NathanSosa@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/sosa",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/sosa.jpg",
+     "ballotpedia": "https://ballotpedia.org/Nathan_Sosa_%28Oregon%29",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/201864"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-280",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/RepresentativeSosa",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/sosa",
+      "youtube": "https://www.youtube.com/@RepNathanSosa"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/nathan.sosa.56829",
+      "instagram": "https://www.instagram.com/_nsosa_/",
+      "linkedin": "https://www.linkedin.com/in/nathan-sosa-2104221a8",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.vameswang.com/nathan-sosa/",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23847,
+   "person_hash": "274st5xa",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Ben Bowman",
+   "first_name": "Benjamin",
+   "middle_name": "W.",
+   "last_name": "Bowman",
+   "suffix": "",
+   "nickname": "Ben",
+   "district": "HD-025",
+   "ftm_eid": 55358257,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Ben_Bowman",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1425",
+     "district_phone": "",
+     "email": "Rep.BenBowman@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/bowman",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/bowman.jpg",
+     "ballotpedia": "https://ballotpedia.org/Ben_Bowman",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-295",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/RepresentativeBenBowman",
+      "instagram": "https://www.instagram.com/rep.benbowman/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/RepBenBowman",
+      "website": "https://www.oregonlegislature.gov/bowman",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/benjaminbowman",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/benjaminwbowman/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23848,
+   "person_hash": "uinzsjcf",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Ed  Diehl",
+   "first_name": "Edwin",
+   "middle_name": "L.",
+   "last_name": "Diehl",
+   "suffix": "III",
+   "nickname": "Ed",
+   "district": "HD-017",
+   "ftm_eid": 55358238,
+   "votesmart_id": 202904,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Ed_Diehl",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1417",
+     "district_phone": "",
+     "email": "Rep.EdDiehl@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/diehl",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/diehl.jpg",
+     "ballotpedia": "https://ballotpedia.org/Ed_Diehl",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/202904"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-378",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "https://www.instagram.com/rep_realeddiehl",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/Real_EdDiehl",
+      "website": "https://www.oregonlegislature.gov/diehl",
+      "youtube": "https://www.youtube.com/@realdiehl"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/ed.diehl.545",
+      "instagram": "https://www.instagram.com/cirrusce/",
+      "linkedin": "https://www.linkedin.com/in/ed-diehl/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23849,
+   "person_hash": "5f2wp8kz",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Mark Gamba",
+   "first_name": "Mark",
+   "middle_name": "F.",
+   "last_name": "Gamba",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-041",
+   "ftm_eid": 55358292,
+   "votesmart_id": 189869,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Mark_Gamba",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1441",
+     "district_phone": "",
+     "email": "Rep.MarkGamba@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/gamba",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/gamba.jpg",
+     "ballotpedia": "https://ballotpedia.org/Mark_Gamba",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/189869"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-274",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/profile.php?id=100091951470476",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/gamba",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/mark.gamba",
+      "instagram": "https://www.instagram.com/mark_gamba",
+      "linkedin": "https://www.linkedin.com/in/markgamba",
+      "tiktok": "https://www.tiktok.com/@mark_gamba",
+      "twitter": "",
+      "website": "https://markgamba.com/about-mark",
+      "youtube": "https://www.youtube.com/@MarkFGamba"
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23850,
+   "person_hash": "vowjen9d",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Annessa Hartman",
+   "first_name": "Annessa",
+   "middle_name": "D.",
+   "last_name": "Hartman",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-040",
+   "ftm_eid": 55358288,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Annessa_Hartman",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1440",
+     "district_phone": "",
+     "email": "Rep.AnnessaHartman@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/hartman",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/hartman.jpg",
+     "ballotpedia": "https://ballotpedia.org/Annessa_Hartman",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+    },
+    "capitol_address": {
+     "address1": "900 Court St. NE",
+     "address2": "Room H-487",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/representative.annessa",
+      "instagram": "https://www.instagram.com/repannessahartman/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/hartman",
+      "youtube": "https://www.youtube.com/@RepAnnessaHartman"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/profile.php?id=100008759670977",
+      "instagram": "https://www.instagram.com/annessadaye/",
+      "linkedin": "https://www.linkedin.com/in/annessahartman/",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/HartmanAnnessa",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23851,
+   "person_hash": "a3yv1zo1",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Cyrus Javadi",
+   "first_name": "Cyrus",
+   "middle_name": "",
+   "last_name": "Javadi",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-032",
+   "ftm_eid": 55358271,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Cyrus_Javadi",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1432",
+     "district_phone": "",
+     "email": "Rep.CyrusJavadi@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/javadi",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/javadi.jpg",
+     "ballotpedia": "https://ballotpedia.org/Cyrus_Javadi",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-373",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/RepCyrusJavadi",
+      "website": "https://www.oregonlegislature.gov/javadi",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/profile.php?id=100009049900461",
+      "instagram": "https://www.instagram.com/javadicyrus/",
+      "linkedin": "https://www.linkedin.com/in/cyrus-javadi-dds/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23852,
+   "person_hash": "mi4qesj7",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Emerson Levy",
+   "first_name": "Emerson",
+   "middle_name": "",
+   "last_name": "Levy",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-053",
+   "ftm_eid": 49394751,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Emerson_Levy",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1453",
+     "district_phone": "",
+     "email": "Rep.EmersonLevy@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/Levye",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/levye.jpg",
+     "ballotpedia": "https://ballotpedia.org/Emerson_Levy",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-486",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "https://www.instagram.com/emerson4or",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/RepEmersonLevy",
+      "website": "https://www.oregonlegislature.gov/Levye",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/emersonlevy",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/emersonjackson/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": "https://www.youtube.com/channel/UC4Ld8z_5Yoc9DVvVlpDqnsQ"
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23853,
+   "person_hash": "0a7n27fr",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Kevin Mannix",
+   "first_name": "Kevin",
+   "middle_name": "L.",
+   "last_name": "Mannix",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-021",
+   "ftm_eid": 5050418,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Kevin_Mannix",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1421",
+     "district_phone": "",
+     "email": "Rep.KevinMannix@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/mannix",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/mannix.jpg",
+     "ballotpedia": "https://ballotpedia.org/Kevin_Mannix",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-384",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "https://www.instagram.com/Kevinmannix21",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/Kevin_Mannix21",
+      "website": "https://www.oregonlegislature.gov/mannix",
+      "youtube": "https://www.youtube.com/@StateRepresentativeKevinMannix"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/profile.php?id=61561020862897",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/kevin-l-mannix-47529525",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/KMannix",
+      "website": "https://mannixlawfirm.com/attorneys/kevin-mannix/",
+      "youtube": "https://www.youtube.com/@kevinmannix3721"
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23854,
+   "person_hash": "s5x7skum",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Virgle Osborne",
+   "first_name": "Virgle",
+   "middle_name": "",
+   "last_name": "Osborne",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-002",
+   "ftm_eid": 55358218,
+   "votesmart_id": 202857,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Virgle_Osborne",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1402",
+     "district_phone": "",
+     "email": "Rep.VirgleOsborne@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/osborne",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/osborne.jpg",
+     "ballotpedia": "https://ballotpedia.org/Virgle_Osborne",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/202857"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-375",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/StateRepVirgleOsborne",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/RepVirgle",
+      "website": "https://www.oregonlegislature.gov/osborne",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/virgle.osborne",
+      "instagram": "https://www.instagram.com/virgleosborne/",
+      "linkedin": "https://www.linkedin.com/in/virgle-osborne-06b83b10",
+      "tiktok": "https://www.tiktok.com/@virgleosborne",
+      "twitter": "https://www.twitter.com/virgle_osborne",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23855,
+   "person_hash": "dqt6c7ib",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Hai Pham",
+   "first_name": "Hai",
+   "middle_name": "T.",
+   "last_name": "Pham",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-036",
+   "ftm_eid": 55358280,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Hai_Pham",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1436",
+     "district_phone": "",
+     "email": "Rep.HaiPham@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/phamh",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/phamh.jpg",
+     "ballotpedia": "https://ballotpedia.org/Hai_Pham",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-282",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/staterephaipham",
+      "instagram": "https://www.instagram.com/rephaipham/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/RepHaiPham",
+      "website": "https://www.oregonlegislature.gov/phamh",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/dr.haipham",
+      "instagram": "https://www.instagram.com/maple_brownie1/",
+      "linkedin": "https://www.linkedin.com/in/drhaipham/",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/hi5dental",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23856,
+   "person_hash": "ph0nqxnu",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Jules Walters",
+   "first_name": "Julianna",
+   "middle_name": "A.",
+   "last_name": "Walters",
+   "suffix": "",
+   "nickname": "Jules",
+   "district": "HD-037",
+   "ftm_eid": 55358282,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Jules_Walters",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1437",
+     "district_phone": "",
+     "email": "Rep.JulesWalters@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/walters",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/walters.jpg",
+     "ballotpedia": "https://ballotpedia.org/Jules_Walters",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-489",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/repjules",
+      "instagram": "https://www.instagram.com/repjuleswalters/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/walters",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/profile.php?id=100092274462546",
+      "instagram": "https://www.instagram.com/julesfilms/",
+      "linkedin": "https://www.linkedin.com/in/juleswaltersoregon/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23867,
+   "person_hash": "vehbb74b",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Emily McIntire",
+   "first_name": "Emily",
+   "middle_name": "G.",
+   "last_name": "McIntire",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-056",
+   "ftm_eid": 55358315,
+   "votesmart_id": 202867,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Emily_McIntire",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1456",
+     "district_phone": "",
+     "email": "Rep.EmilyMcIntire@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/mcintire",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/mcintire.jpg",
+     "ballotpedia": "https://ballotpedia.org/Emily_McIntire",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/202867"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-379",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/mcintire",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/emily.mcintire.963",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23910,
+   "person_hash": "47j0gfki",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Lucetta Elmer",
+   "first_name": "Lucetta",
+   "middle_name": "",
+   "last_name": "Elmer",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-024",
+   "ftm_eid": 55358255,
+   "votesmart_id": 202901,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Lucetta_Elmer",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1424",
+     "district_phone": "",
+     "email": "Rep.LucettaElmer@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/elmer",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/elmer.jpg",
+     "ballotpedia": "https://ballotpedia.org/Lucetta_Elmer",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/202901"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-395",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/RepElmer",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/elmer",
+      "youtube": "https://www.youtube.com/@replucettaelmer/"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/lucetta.elmer",
+      "instagram": "https://www.instagram.com/lucetta4/",
+      "linkedin": "https://www.linkedin.com/in/lucetta-elmer-6390b71b8",
+      "tiktok": "https://www.tiktok.com/@luceanne",
+      "twitter": "https://www.twitter.com/LucettaE",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23912,
+   "person_hash": "b40gfmei",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Thuy Tran",
+   "first_name": "Thuy",
+   "middle_name": "C.",
+   "last_name": "Tran",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-045",
+   "ftm_eid": 55358300,
+   "votesmart_id": 135208,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Thuy_Tran",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1445",
+     "district_phone": "",
+     "email": "Rep.ThuyTran@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/tran",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/tran.jpg",
+     "ballotpedia": "https://ballotpedia.org/Thuy_Tran",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/135208"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-285",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "https://www.instagram.com/rep.thuytran/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/RepThuyTran",
+      "website": "https://www.oregonlegislature.gov/tran",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/dr.thuytran",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/drthuytran/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 23914,
+   "person_hash": "mlxifo4c",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Farrah Chaichi",
+   "first_name": "Farrah",
+   "middle_name": "",
+   "last_name": "Chaichi",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-035",
+   "ftm_eid": 55358277,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Farrah_Chaichi",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1435",
+     "district_phone": "",
+     "email": "Rep.FarrahChaichi@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/chaichi",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/chaichi.jpg",
+     "ballotpedia": "https://ballotpedia.org/Farrah_Chaichi",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-478",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/RepresentativeFarrahChaichi",
+      "instagram": "https://www.instagram.com/repfarrahchaichi/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/FarrahChaichi",
+      "website": "https://www.oregonlegislature.gov/chaichi",
+      "youtube": "https://www.youtube.com/@FarrahChaichi"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/heller22",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 24261,
+   "person_hash": "zrowu594",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Tom Andersen",
+   "first_name": "Thomas",
+   "middle_name": "",
+   "last_name": "Andersen",
+   "suffix": "",
+   "nickname": "Tom",
+   "district": "HD-019",
+   "ftm_eid": 55358241,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Tom_Andersen",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1419",
+     "district_phone": "",
+     "email": "Rep.TomAndersen@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/andersen",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/andersen.jpg",
+     "ballotpedia": "https://ballotpedia.org/Tom_Andersen",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-479",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/RepAndersen",
+      "instagram": "https://www.instagram.com/repandersen/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/RepAndersen",
+      "website": "https://www.oregonlegislature.gov/andersen",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/tom.andersen.7121",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 24263,
+   "person_hash": "ammu5rv0",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Daniel Nguyen",
+   "first_name": "Daniel",
+   "middle_name": "",
+   "last_name": "Nguyen",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-038",
+   "ftm_eid": 44972957,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Daniel_Nguyen",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1438",
+     "district_phone": "",
+     "email": "Rep.DanielNguyen@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/Nguyend",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/nguyend.jpg",
+     "ballotpedia": "https://ballotpedia.org/Daniel_Nguyen",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-283",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/OrRepDanielNguyen",
+      "instagram": "https://www.instagram.com/rep.danielnguyen/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/Nguyend",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/daniel.nguyen.10441",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/daniel-l-nguyen-87a46548/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 24887,
+   "person_hash": "ioh5uek9",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Court Boice",
+   "first_name": "Court",
+   "middle_name": "",
+   "last_name": "Boice",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-001",
+   "ftm_eid": 44426782,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Court_Boice",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1401",
+     "district_phone": "",
+     "email": "Rep.CourtBoice@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/boice",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/boice.jpg",
+     "ballotpedia": "https://ballotpedia.org/Court_Boice",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-476",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/RepBoice",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/boice",
+      "youtube": "https://www.youtube.com/@CourtBoice"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/profile.php?id=1680265771",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": "https://www.youtube.com/@courtboice2994"
+     }
+    }
+   }
+  },
+  {
+   "people_id": 24936,
+   "person_hash": "urq16iqa",
+   "party_id": "0",
+   "state_id": 37,
+   "party": "",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Conduct",
+   "first_name": "",
+   "middle_name": "",
+   "last_name": "",
+   "suffix": "",
+   "nickname": "",
+   "district": "",
+   "ftm_eid": 0,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "",
+   "bioguide_id": "",
+   "committee_sponsor": 1,
+   "committee_id": 4892,
+   "state_federal": 0,
+   "bio": []
+  },
+  {
+   "people_id": 25131,
+   "person_hash": "zwftzepu",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Dwayne Yunker",
+   "first_name": "Dwayne",
+   "middle_name": "",
+   "last_name": "Yunker",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-003",
+   "ftm_eid": 0,
+   "votesmart_id": 214543,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Dwayne_Yunker",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1403",
+     "district_phone": "",
+     "email": "Rep.DwayneYunker@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/yunker",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/yunker.jpg",
+     "ballotpedia": "https://ballotpedia.org/Dwayne_Yunker",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/214543"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-377",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/profile.php?id=61570956041207",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/yunker",
+      "youtube": "https://www.youtube.com/@repdwayneyunker"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/dwayne.yunker",
+      "instagram": "https://www.instagram.com/dwayne_yunker/",
+      "linkedin": "https://www.linkedin.com/in/dwayne-yunker-2b044b71/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.realtor.com/realestateagents/5aa9e8bfb204160017c0a073?msockid=3392f280f38f630d2abfe160f2696247",
+      "youtube": "https://www.youtube.com/@dwayneyunker5940"
+     }
+    }
+   }
+  },
+  {
+   "people_id": 25435,
+   "person_hash": "b0bypn3q",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Shannon Isadore",
+   "first_name": "Shannon",
+   "middle_name": "Jones",
+   "last_name": "Isadore",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-033",
+   "ftm_eid": 59829637,
+   "votesmart_id": 215506,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Shannon_Isadore",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1433",
+     "district_phone": "",
+     "email": "Rep.ShannonIsadore@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/isadore",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/isadore.jpg",
+     "ballotpedia": "https://ballotpedia.org/Shannon_Isadore",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/215506"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-276",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/profile.php?id=61569665397873",
+      "instagram": "https://www.instagram.com/rep.shannonjonesisadore/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/isadore",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/shannon.jones.125760",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/shannon-jones-isadore-4b91b777/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26274,
+   "person_hash": "3b2psh58",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Willy Chotzen",
+   "first_name": "Willy",
+   "middle_name": "",
+   "last_name": "Chotzen",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-046",
+   "ftm_eid": 59829432,
+   "votesmart_id": 215515,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Willy_Chotzen",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1446",
+     "district_phone": "",
+     "email": "Rep.WillyChotzen@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/chotzen",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/chotzen.jpg",
+     "ballotpedia": "https://ballotpedia.org/Willy_Chotzen",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/215515"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-485",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/profile.php?id=61572620953594",
+      "instagram": "https://www.instagram.com/repwillychotzen/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/chotzen",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/willychotzen",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/chotzen/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26275,
+   "person_hash": "azr9s5cl",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Darcey Edwards",
+   "first_name": "Darcey",
+   "middle_name": "",
+   "last_name": "Edwards",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-031",
+   "ftm_eid": 59829374,
+   "votesmart_id": 215501,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Darcey_Edwards",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1431",
+     "district_phone": "",
+     "email": "Rep.DarceyEdwards@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/edwards",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/edwardsda.jpg",
+     "ballotpedia": "https://ballotpedia.org/Darcey_Edwards",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/215501"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-374",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/edwards",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/darcey.edwards",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/darcey-edwards-7b053010/",
+      "tiktok": "https://www.tiktok.com/@ranchchic",
+      "twitter": "https://www.twitter.com/darceyedwards",
+      "website": "",
+      "youtube": "https://www.youtube.com/@darceyedwards6399"
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26276,
+   "person_hash": "3n68dgfj",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Lisa Fragala",
+   "first_name": "Lisa",
+   "middle_name": "",
+   "last_name": "Fragala",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-008",
+   "ftm_eid": 59829583,
+   "votesmart_id": 215488,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Lisa_Fragala",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1408",
+     "district_phone": "",
+     "email": "Rep.LisaFragala@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/fragala",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/fragala.jpg",
+     "ballotpedia": "https://ballotpedia.org/Lisa_Fragala",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/215488"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-484",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26277,
+   "person_hash": "sngbdnrj",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Darin Harbick",
+   "first_name": "Darin",
+   "middle_name": "",
+   "last_name": "Harbick",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-012",
+   "ftm_eid": 55766348,
+   "votesmart_id": 202771,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Darin_Harbick",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1412",
+     "district_phone": "",
+     "email": "Rep.DarinHarbick@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/harbick",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/harbick.jpg",
+     "ballotpedia": "https://ballotpedia.org/Darin_Harbick",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/202771"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-376",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/harbick",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/darin-harbick-8a772184/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": "https://www.youtube.com/@darinharbick3511"
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26278,
+   "person_hash": "n1ecqcbc",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Sarah Finger McDonald",
+   "first_name": "Sarah",
+   "middle_name": "",
+   "last_name": "Finger McDonald",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-016",
+   "ftm_eid": 59829420,
+   "votesmart_id": 215496,
+   "opensecrets_id": "",
+   "knowwho_pid": 869928,
+   "ballotpedia": "Sarah_McDonald",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1416",
+     "district_phone": "",
+     "email": "Rep.SarahFingerMcDonald@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/mcdonald",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/mcdonald.jpg",
+     "ballotpedia": "https://ballotpedia.org/Sarah_McDonald",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/215496"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-477",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/profile.php?id=61573290954731",
+      "instagram": "https://www.instagram.com/rep_sarahfingermcdonald/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/mcdonald",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/sarah.f.mcdonald",
+      "instagram": "https://www.instagram.com/sarah.finger.mcdonald/",
+      "linkedin": "https://www.linkedin.com/in/sarah-finger-mcdonald-209aaa2b5/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26279,
+   "person_hash": "9ct6u9uq",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Lesly Munoz",
+   "first_name": "Lesly",
+   "middle_name": "",
+   "last_name": "Munoz",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-022",
+   "ftm_eid": 59829191,
+   "votesmart_id": 215500,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Lesly_Munoz",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1422",
+     "district_phone": "",
+     "email": "Rep.LeslyMunoz@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/munoz",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/munoz.jpg",
+     "ballotpedia": "https://ballotpedia.org/Lesly_Munoz",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/215500"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-472",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "https://www.instagram.com/rep.leslymunoz/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/munoz",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/leslymagdalena.munoz",
+      "instagram": "https://www.instagram.com/munozleslym/",
+      "linkedin": "https://www.linkedin.com/in/lesly-magdalena-munoz-7090551b1/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26280,
+   "person_hash": "8y90dasb",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Anthony Broadman",
+   "first_name": "Anthony",
+   "middle_name": "",
+   "last_name": "Broadman",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-027",
+   "ftm_eid": 59829561,
+   "votesmart_id": 215437,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Anthony_Broadman",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1727",
+     "district_phone": "",
+     "email": "Sen.AnthonyBroadman@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/broadman",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/broadman.jpg",
+     "ballotpedia": "https://ballotpedia.org/Anthony_Broadman",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/215437"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-423",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/broadman",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/anthony.broadman",
+      "instagram": "https://www.instagram.com/thebroadman/",
+      "linkedin": "https://www.linkedin.com/in/abroadman/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26281,
+   "person_hash": "cw10prto",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Todd Nash",
+   "first_name": "Todd",
+   "middle_name": "",
+   "last_name": "Nash",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-029",
+   "ftm_eid": 59829350,
+   "votesmart_id": 215479,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Todd_Nash",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1729",
+     "district_phone": "",
+     "email": "Sen.ToddNash@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/nash",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/nash.jpg",
+     "ballotpedia": "https://ballotpedia.org/Todd_Nash",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/215479"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-421",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/nash",
+      "youtube": "https://www.youtube.com/@SenToddNash"
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/todd.nash.10",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/todd-nash-4109a6b3/",
+      "tiktok": "",
+      "twitter": "https://www.twitter.com/toddnas80592982",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26282,
+   "person_hash": "v1n58h2u",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "April Dobson",
+   "first_name": "April",
+   "middle_name": "",
+   "last_name": "Dobson",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-039",
+   "ftm_eid": 59829424,
+   "votesmart_id": 215510,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "April_Dobson",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1439",
+     "district_phone": "",
+     "email": "Rep.AprilDobson@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/dobson",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/dobson.jpg",
+     "ballotpedia": "https://ballotpedia.org/April_Dobson",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/215510"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-488",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "https://www.instagram.com/rep.dobson/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/dobson",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/lemondobson",
+      "instagram": "https://www.instagram.com/lemondobson/",
+      "linkedin": "https://www.linkedin.com/in/april-dobson-48641a341/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26283,
+   "person_hash": "7kz63zdp",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Alek Skarlatos",
+   "first_name": "Alek",
+   "middle_name": "",
+   "last_name": "Skarlatos",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-004",
+   "ftm_eid": 59829678,
+   "votesmart_id": 189868,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Alek_Skarlatos",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1404",
+     "district_phone": "",
+     "email": "Rep.AlekSkarlatos@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/skarlatos",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/skarlatos.jpg",
+     "ballotpedia": "https://ballotpedia.org/Alek_Skarlatos",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/189868"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-390",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/profile.php?id=61572402230954",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/skarlatos",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/alek.skarlatos",
+      "instagram": "https://www.instagram.com/alekskarlatos/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26284,
+   "person_hash": "ztxv57mu",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Diane Linthicum",
+   "first_name": "Diane",
+   "middle_name": "",
+   "last_name": "Linthicum",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-028",
+   "ftm_eid": 60445454,
+   "votesmart_id": 215475,
+   "opensecrets_id": "",
+   "knowwho_pid": 791506,
+   "ballotpedia": "Diane_Linthicum",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1728",
+     "district_phone": "",
+     "email": "Sen.DianeLinthicum@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/linthicumd",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/linthicumd.jpg",
+     "ballotpedia": "https://ballotpedia.org/Diane_Linthicum",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/215475"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-305",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/linthicumd",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/diane.prattlinthicum",
+      "instagram": "https://www.instagram.com/dianelinthicum/",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26285,
+   "person_hash": "t76dyavp",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 2,
+   "role": "Sen",
+   "name": "Noah Robinson",
+   "first_name": "Noah",
+   "middle_name": "",
+   "last_name": "Robinson",
+   "suffix": "",
+   "nickname": "",
+   "district": "SD-002",
+   "ftm_eid": 59829172,
+   "votesmart_id": 215468,
+   "opensecrets_id": "",
+   "knowwho_pid": 870158,
+   "ballotpedia": "Noah_Robinson_(Oregon)",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1702",
+     "district_phone": "",
+     "email": "Sen.NoahRobinson@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/robinsonn",
+     "image": "https://www.oregonlegislature.gov/senate/MemberPhotos/robinsonn.jpg",
+     "ballotpedia": "https://ballotpedia.org/Noah_Robinson_%28Oregon%29",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/215468"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room S-309",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/robinsonn",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26384,
+   "person_hash": "8803dsim",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Mari Watanabe",
+   "first_name": "Mari",
+   "middle_name": "",
+   "last_name": "Watanabe",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-034",
+   "ftm_eid": 0,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Mari_Watanabe",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1434",
+     "district_phone": "",
+     "email": "Rep.MariWatanabe@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/watanabe",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/watanabe.jpg",
+     "ballotpedia": "https://ballotpedia.org/Mari_Watanabe",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-483",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "https://www.oregonlegislature.gov/watanabe",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "https://www.facebook.com/mari.watanabe.186590",
+      "instagram": "",
+      "linkedin": "https://www.linkedin.com/in/mari-watanabe-80414a6/",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26475,
+   "person_hash": "o2fq8gt0",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Sue Rieke Smith",
+   "first_name": "Sue",
+   "middle_name": "",
+   "last_name": "Rieke Smith",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-026",
+   "ftm_eid": 0,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Sue_Rieke_Smith",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1426",
+     "district_phone": "",
+     "email": "Rep.SueRiekeSmith@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/riekesmith",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/riekesmith.jpg",
+     "ballotpedia": "https://ballotpedia.org/Sue_Rieke_Smith",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-281",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26617,
+   "person_hash": "odhqg962",
+   "party_id": "2",
+   "state_id": 37,
+   "party": "R",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Matt Bunch",
+   "first_name": "Matt",
+   "middle_name": "",
+   "last_name": "Bunch",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-051",
+   "ftm_eid": 0,
+   "votesmart_id": 0,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Matt_Bunch",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1451",
+     "district_phone": "",
+     "email": "Rep.MattBunch@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/bunch",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/bunch.jpg",
+     "ballotpedia": "https://ballotpedia.org/Matt_Bunch",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-380",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  },
+  {
+   "people_id": 26618,
+   "person_hash": "imymlhnw",
+   "party_id": "1",
+   "state_id": 37,
+   "party": "D",
+   "role_id": 1,
+   "role": "Rep",
+   "name": "Lamar Wise",
+   "first_name": "Lamar",
+   "middle_name": "",
+   "last_name": "Wise",
+   "suffix": "",
+   "nickname": "",
+   "district": "HD-048",
+   "ftm_eid": 0,
+   "votesmart_id": 230525,
+   "opensecrets_id": "",
+   "knowwho_pid": 0,
+   "ballotpedia": "Lamar_Wise",
+   "bioguide_id": "",
+   "committee_sponsor": 0,
+   "committee_id": 0,
+   "state_federal": 0,
+   "bio": {
+    "social": {
+     "capitol_phone": "503-986-1448",
+     "district_phone": "",
+     "email": "Rep.LamarWise@oregonlegislature.gov",
+     "webmail": "",
+     "biography": "https://www.oregonlegislature.gov/wise",
+     "image": "https://www.oregonlegislature.gov/house/MemberPhotos/wise.jpg",
+     "ballotpedia": "https://ballotpedia.org/Lamar_Wise",
+     "votesmart": "https://justfacts.votesmart.org/candidate/biography/230525"
+    },
+    "capitol_address": {
+     "address1": "900 Court St NE",
+     "address2": "Room H-473",
+     "city": "Salem",
+     "state": "OR",
+     "zip": "97301"
+    },
+    "links": {
+     "official": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     },
+     "personal": {
+      "bluesky": "",
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "tiktok": "",
+      "twitter": "",
+      "website": "",
+      "youtube": ""
+     }
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,133 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1672959,
+   "measure_id": "HB 1784",
+   "vote_date": "2026-03-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass HB 1784. It sets January 22 of each year as Sanctity of Life Day in Tennessee. The law says the day is to renew the state's commitment to protect the sanctity of life and to honor unborn children lost to legal abortion. The Tennessee House passed it 69-22, and it became law.",
+   "nay_description": "Voted against HB 1784. It sets January 22 of each year as Sanctity of Life Day in Tennessee. The law says the day is to renew the state's commitment to protect the sanctity of life and to honor unborn children lost to legal abortion. The Tennessee House passed it 69-22, and it became law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1688370,
+   "measure_id": "HB 1886",
+   "vote_date": "2026-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the final version of HB 1886. It requires every school district and public charter school to adopt an internet acceptable use policy, with internet safety lessons built into what students are taught. The Tennessee House agreed it 69-19, and it became law.",
+   "nay_description": "Voted against the final version of HB 1886. It requires every school district and public charter school to adopt an internet acceptable use policy, with internet safety lessons built into what students are taught. The Tennessee House agreed it 69-19, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1681764,
+   "measure_id": "SB 2087",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 2087. When a class has to be cleared because a student is violent, aggressive or severely disruptive, the principal must tell the parent or guardian of every student who was in the room. The Tennessee House passed it 57-32, and it became law.",
+   "nay_description": "Voted against SB 2087. When a class has to be cleared because a student is violent, aggressive or severely disruptive, the principal must tell the parent or guardian of every student who was in the room. The Tennessee House passed it 57-32, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "senate",
+   "session": "2161",
+   "roll": 1556906,
+   "measure_id": "SB 229",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the compromise version of SB 229. It charges political campaign committees a $150 fee each year to help pay for the agency that regulates them, while candidates pay nothing. It also makes a candidate in a local election that crosses county lines file treasurer paperwork with each county's election commission. The Tennessee Senate adopted it 23-6, and it became law.",
+   "nay_description": "Voted against the compromise version of SB 229. It charges political campaign committees a $150 fee each year to help pay for the agency that regulates them, while candidates pay nothing. It also makes a candidate in a local election that crosses county lines file treasurer paperwork with each county's election commission. The Tennessee Senate adopted it 23-6, and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1556907
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1681381,
+   "measure_id": "SB 2441",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 2441. It requires the state to step in when a virtual school keeps failing, up to closing it. That applies when the school lands on the priority list, or shows student growth far below expectations three years running. The Tennessee House passed it 69-21, and it became law.",
+   "nay_description": "Voted against SB 2441. It requires the state to step in when a virtual school keeps failing, up to closing it. That applies when the school lands on the priority list, or shows student growth far below expectations three years running. The Tennessee House passed it 69-21, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1528866,
+   "measure_id": "SB 690",
+   "vote_date": "2025-03-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 690. It requires a school district to let a virtual school student play sports at one of its schools, in cases where the athletic association that school belongs to allows virtual students to take part. The Tennessee House passed it 73-22, and it became law.",
+   "nay_description": "Voted against SB 690. It requires a school district to let a virtual school student play sports at one of its schools, in cases where the athletic association that school belongs to allows virtual students to take part. The Tennessee House passed it 73-22, and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "TN",
+   "chamber": "house",
+   "session": "2161",
+   "roll": 1547660,
+   "measure_id": "SB 799",
+   "vote_date": "2025-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass SB 799. It requires statewide political parties to pick their candidates in primary elections for every partisan office on the August or November ballot. A county where a party used some other method in 2022 or 2024 may keep doing so for most offices. The Tennessee House passed it 60-25, and it became law.",
+   "nay_description": "Voted against SB 799. It requires statewide political parties to pick their candidates in primary elections for every partisan office on the August or November ballot. A county where a party used some other method in 2022 or 2024 may keep doing so for most offices. The Tennessee House passed it 60-25, and it became law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

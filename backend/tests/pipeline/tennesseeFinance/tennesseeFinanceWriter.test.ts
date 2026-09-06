@@ -186,3 +186,24 @@ describe("tennesseeFinanceWriter", () => {
     expect(staleBreakdownDelete?.[1]).toEqual([LINK_ID, 2026, "[]"]);
   });
 });
+
+describe("tennesseeFinanceWriter pool boundary", () => {
+  it("rejects a supplied PoolClient before issuing any statement, so it can never commit an outer transaction", async () => {
+    const client = {
+      query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }),
+      connect: vi.fn(),
+      release: vi.fn(),
+    };
+
+    await expect(
+      replaceTennesseeCandidateFinanceSnapshot({
+        db: client as never,
+        link: baseLink(),
+        syncedAt: new Date("2026-02-03T04:05:06.000Z"),
+        summary: { totalReceipts: 1000 },
+      } as never)
+    ).rejects.toThrow("Tennessee finance snapshot writes must receive a Pool, not a PoolClient");
+    expect(client.query).not.toHaveBeenCalled();
+    expect(client.connect).not.toHaveBeenCalled();
+  });
+});

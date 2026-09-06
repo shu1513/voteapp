@@ -34,8 +34,8 @@ describe("minnesotaFinanceWriter", () => {
 
     const sql = String(db.query.mock.calls[0]?.[0]);
     expect(sql).toContain("INSERT INTO public.mn_candidate_finance_links");
-    expect(sql).toContain("WHEN mn_candidate_finance_links.link_source = 'manual' THEN mn_candidate_finance_links.link_status");
-    expect(sql).toContain("WHEN mn_candidate_finance_links.link_source = 'manual' THEN mn_candidate_finance_links.link_source");
+    expect(sql).toContain("WHEN mn_candidate_finance_links.link_source = 'manual' AND EXCLUDED.link_source <> 'manual' THEN mn_candidate_finance_links.link_status");
+    expect(sql).toContain("WHEN mn_candidate_finance_links.link_source = 'manual' AND EXCLUDED.link_source <> 'manual' THEN mn_candidate_finance_links.link_source");
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       CANDIDATE_ID,
       ELECTION_ID,

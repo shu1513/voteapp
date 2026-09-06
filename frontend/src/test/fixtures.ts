@@ -15,6 +15,7 @@ import type {
 
 export const ME_VERIFIED = {
   user: {
+    id: "user-1",
     email: "voter@example.com",
     first_name: "Sam",
     email_verified: true,
@@ -25,6 +26,7 @@ export const ME_VERIFIED = {
 
 export const ME_UNVERIFIED = {
   user: {
+    id: "user-1",
     email: "voter@example.com",
     first_name: "Sam",
     email_verified: false,
@@ -36,6 +38,7 @@ export const ME_UNVERIFIED = {
 /** A Google-created account: verified at birth, no password yet. */
 export const ME_GOOGLE_NO_PASSWORD = {
   user: {
+    id: "user-1",
     email: "voter@gmail.com",
     first_name: "Sam",
     email_verified: true,

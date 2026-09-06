@@ -11,6 +11,7 @@ import { renderRoutes } from "../test/render";
 // on the session, and renderRoutes seeds nothing — a real useMe would stay
 // loading forever.
 const SIGNED_IN: Me = {
+  id: "user-1",
   email: "voter@example.com",
   first_name: "Vo",
   email_verified: true,

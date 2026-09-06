@@ -1,33 +1,4 @@
-function readBooleanEnv(name: string, fallback: boolean): boolean {
-  const raw = process.env[name];
-  if (!raw || raw.trim().length === 0) {
-    return fallback;
-  }
-  const normalized = raw.trim().toLowerCase();
-  if (["1", "true", "yes", "y", "on"].includes(normalized)) {
-    return true;
-  }
-  if (["0", "false", "no", "n", "off"].includes(normalized)) {
-    return false;
-  }
-  throw new Error(`Invalid boolean env ${name}: ${raw}`);
-}
-
-function readPositiveIntegerEnv(name: string, fallback: number): number {
-  const raw = process.env[name];
-  if (!raw || raw.trim().length === 0) {
-    return fallback;
-  }
-  const normalized = raw.trim();
-  if (!/^[1-9]\d*$/.test(normalized)) {
-    throw new Error(`Invalid positive integer env ${name}: ${raw}`);
-  }
-  const parsed = Number.parseInt(normalized, 10);
-  if (!Number.isFinite(parsed) || parsed <= 0) {
-    throw new Error(`Invalid positive integer env ${name}: ${raw}`);
-  }
-  return parsed;
-}
+import { readBooleanEnv, readPositiveIntegerEnv } from "../../config/envReaders.js";
 
 function toIsoTimestamp(value: string): string {
   const parsed = new Date(value);

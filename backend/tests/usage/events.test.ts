@@ -7,6 +7,7 @@ import {
   parseUsageEvent,
   parseUsageEventsBodyValue,
 } from "../../src/usage/events.js";
+import { RequestValidationError } from "../../src/utils/requestValidationError.js";
 
 const EVENT_ID = "0b1d2f3a-4c5e-4f60-8a71-829394a5b6c7";
 const SESSION_ID = "1c2d3e4f-5a6b-4c7d-8e9f-a0b1c2d3e4f5";
@@ -218,8 +219,8 @@ describe("parseUsageEventsBodyValue", () => {
     expect(parsed.dropped).toBe(1);
   });
 
-  it("rejects an unusable envelope with a TypeError (→ 400)", () => {
-    expect(() => parseUsageEventsBodyValue(null)).toThrow(TypeError);
+  it("rejects an unusable envelope with a RequestValidationError (→ 400)", () => {
+    expect(() => parseUsageEventsBodyValue(null)).toThrow(RequestValidationError);
     expect(() => parseUsageEventsBodyValue({ v: 2, events: [event()] })).toThrow(/v must be 1/);
     expect(() => parseUsageEventsBodyValue({ v: 1, events: [] })).toThrow(/non-empty/);
     expect(() =>
