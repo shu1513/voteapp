@@ -1,0 +1,930 @@
+{
+  "runId": "rollcall-legiscan-fetch-or-2252-20260906T055613Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "OR-2252",
+  "startedAt": "2026-09-06T05:56:13.626Z",
+  "finishedAt": "2026-09-06T05:56:13.806Z",
+  "datasetDir": "~/legiscan-data/or-2252/OR/2026-2026_Regular_Session",
+  "bills": 304,
+  "votes": 724,
+  "people": 93,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "House Third Reading",
+      "count": 150,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4013",
+        "HB4022",
+        "HB4097"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Third Reading",
+      "count": 150,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1520",
+        "SB1527",
+        "SB1518"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments. (Printed A-Eng.)",
+      "count": 46,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 25,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4005",
+        "HB4012",
+        "HB4022"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments. (Printed A-Eng.)",
+      "count": 46,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1527",
+        "SB1518",
+        "SB1547"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass the A-Eng bill",
+      "count": 39,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 25,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4012",
+        "HB4022",
+        "HB4083"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do Pass",
+      "count": 30,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4102",
+        "HB4097",
+        "HB4068"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do Pass the A-Eng bill",
+      "count": 30,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 25,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1518",
+        "SB1547",
+        "SB1507"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass",
+      "count": 25,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1520",
+        "SB1504",
+        "SB1598"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments to the A-Eng bill. (Printed B-Eng.)",
+      "count": 22,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4089",
+        "SB1537",
+        "HB4124"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Ways and Means by prior reference. (Printed A-Eng.)",
+      "count": 21,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 13,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4036",
+        "HB4124",
+        "HB4104"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Third Reading in Concurrence",
+      "count": 14,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4070",
+        "HB4041",
+        "HB4035"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Ways and Means. (Printed A-Eng.)",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4020",
+        "HB4131",
+        "HB4040"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments to the A-Eng bill. (Printed B-Eng.)",
+      "count": 13,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 25,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4128",
+        "HB4035",
+        "SB1567"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Final Reading",
+      "count": 10,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "CR",
+        "JM"
+      ],
+      "sampleBills": [
+        "SCR207",
+        "SCR201",
+        "SCR204"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Be Adopted",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 12,
+      "billTypes": [
+        "CR",
+        "JM"
+      ],
+      "sampleBills": [
+        "HJM201",
+        "HCR201",
+        "SCR204"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Read and Adopted",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "CR",
+        "JM"
+      ],
+      "sampleBills": [
+        "SCR207",
+        "HJM201",
+        "HCR202"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Third Reading in Concurrence",
+      "count": 9,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1570",
+        "SB1590",
+        "SB1594"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do adopt",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "CR",
+        "JM"
+      ],
+      "sampleBills": [
+        "SCR201",
+        "SCR204",
+        "SCR203"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments and requesting referral to Ways and Means. (Printed A-Engrossed.)",
+      "count": 8,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1506",
+        "SB1519",
+        "SB1526"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and rescind subsequent referral to Ways and Means. (Printed A-Eng.)",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4034",
+        "HB4057",
+        "HB4039"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Motion to substitute Minority Report",
+      "count": 6,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1507",
+        "SB1594",
+        "HB4114"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass and be referred to Ways and Means by prior reference",
+      "count": 5,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4050",
+        "HB4144",
+        "HB4047"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Withdraw from Committee",
+      "count": 4,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B",
+        "CR"
+      ],
+      "sampleBills": [
+        "SB1563",
+        "SB1554",
+        "SCR202"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage and be referred to Rules",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 10,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4075",
+        "HB4091",
+        "SB1585"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Motion to Rerefer",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4145",
+        "SB1507",
+        "HB4014"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Motion to substitute Minority Report",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4116",
+        "HB4098",
+        "HB4114"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Motion to Refer",
+      "count": 3,
+      "withoutMemberList": 0,
+      "minTotal": 30,
+      "maxTotal": 30,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1599",
+        "HB4116"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Rules. (Printed A-Eng.)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4058",
+        "HB4059"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Motion to Refer",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4138",
+        "SB1599"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass the B-Eng bill",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4004",
+        "HB4089"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments and requesting referral to Rules. (Printed A-Engrossed.)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 6,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1540",
+        "SB1553"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments. (Printed B-Eng.)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4070",
+        "HB4042"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments. Refer to Ways and Means by prior reference. (Printed A-Eng)",
+      "count": 2,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1567",
+        "SB1541"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Be adopted with amendments. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR202"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass and be referred to Revenue by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4048"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass and rescind subsequent referral to Ways and Means",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4099"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do Pass the B-Eng bill",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4018"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass the bill",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1598"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Revenue and then to Ways and Means both by prior reference. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4084"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Revenue by prior reference. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 11,
+      "maxTotal": 11,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4004"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and be referred to Ways and Means by prior reference. (Printed B-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4084"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments and rescind subsequent referral to Revenue, and be referred to Ways and Means by prior reference. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4139"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments to the A-Eng bill to resolve conflicts. (Printed B-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1594"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments to the B-Eng bill. (Printed C-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 24,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4084"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments to the bill. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 24,
+      "maxTotal": 24,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4062"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass with amendments. (Printed B-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 7,
+      "maxTotal": 7,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4004"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass. Refer to Rules",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4030"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Do pass. Refer to Ways and Means",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 12,
+      "maxTotal": 12,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4062"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Committee Without recommendation as to passage, with amendments, and be referred to Rules. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 8,
+      "maxTotal": 8,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4089"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Special Order",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR201"
+      ]
+    },
+    {
+      "chamber": "house",
+      "desc": "House Withdraw from Committee",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 60,
+      "maxTotal": 60,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4087"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Be adopted with amendments. Refer to Rules by prior reference. (Printed A-Eng)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 6,
+      "maxTotal": 6,
+      "billTypes": [
+        "JR"
+      ],
+      "sampleBills": [
+        "SJR203"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do adopt the A-Eng measure",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "CR"
+      ],
+      "sampleBills": [
+        "HCR202"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass and be referred to Finance and Revenue and to Ways and Means",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1524"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass and refer to Ways and Means by prior reference",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1524"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass and requesting subsequent referral to Ways and Means be rescinded",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1512"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass the bill",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "HB4068"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments to the bill. Refer to Ways and Means by prior reference. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1525"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Do pass with amendments, subsequent referral to Judiciary be rescinded and requesting referral to Rules. (Printed A-Eng.)",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1593"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Committee Without recommendation as to passage and request referral to Ways and Means",
+      "count": 1,
+      "withoutMemberList": 0,
+      "minTotal": 5,
+      "maxTotal": 5,
+      "billTypes": [
+        "B"
+      ],
+      "sampleBills": [
+        "SB1569"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 286,
+    "CR": 13,
+    "JM": 1,
+    "JR": 4
+  },
+  "sessionIds": {
+    "2252": 304
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}

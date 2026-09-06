@@ -605,6 +605,49 @@ const OREGON_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
   /^house withdraw from committee$/,
 ];
 
+// Oregon's 2026 regular session (LegiScan 2252) is its own dataset. Oregon
+// meets every year: 2025 was the long session, 2026 the 35-day short one, and
+// nothing about 2191 carries over automatically.
+//
+// The 2026 vocabulary was surveyed separately, and it is NOT the 2025
+// vocabulary. Two families that carried 2025 measures are simply absent —
+// there is no `Repassed` roll and no conference committee report, because no
+// 2026 measure went to conference. Two families appear that 2025 never
+// printed, and both belong to resolutions rather than bills: `Senate Final
+// Reading` (10 rolls) and `House Read and Adopted` (9 rolls) are how Oregon
+// adopts concurrent resolutions and joint memorials. Every one of those 19
+// rolls sits on a CR or JM measure, so the measure-type filter drops them
+// before any question pattern is consulted, and neither family is listed
+// below.
+//
+// Measured: 724 rolls — 359 committee, 323 kept floor (150 House and 150
+// Senate passage, 14 House and 9 Senate concurrence), 19 on resolution
+// measure types, and 23 excluded questions.
+const OREGON_2026_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Passage: 150 House / 150 Senate.
+  { pattern: /^(?:house|senate) third reading$/, questionClass: "passage" },
+  // Concurring in the other chamber's amendments and repassing in one vote
+  // (14 House / 9 Senate).
+  { pattern: /^(?:house|senate) third reading in concurrence$/, questionClass: "concurrence" },
+];
+
+const OREGON_2026_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // Every committee roll, by its own prefix, and listed first for the same
+  // reason as 2025: Ways and Means seats most of the Senate, so a tally-only
+  // cut would surface its rolls as floor votes.
+  /^(?:house|senate) committee\b/,
+  // Motions about the bill's handling, not about the bill: substituting the
+  // minority committee report (6 Senate / 3 House), referring (3 Senate /
+  // 2 House) and re-referring (3 House).
+  /^(?:house|senate) motion to /,
+  // Pulling a bill out of committee onto the floor calendar. 2025 printed
+  // this in the House only; 2026 prints it in both chambers.
+  /^(?:house|senate) withdraw from committee$/,
+  // Setting a measure for a particular time on the calendar. One roll,
+  // on a concurrent resolution.
+  /^house special order$/,
+];
+
 // Georgia's floor-question vocabulary, shared by the 2023-2024 and 2025-2026
 // regular sessions and the 2023 and 2026 special sessions. All four were
 // surveyed separately and print the same families.
@@ -3374,6 +3417,37 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       1571965: "SB 817 House 2025-05-15: LegiScan reports 37-12, Oregon's journal reports 36-13",
       1595861: "HB 2005 House 2025-06-27: LegiScan reports 39-10, Oregon's journal reports 38-11",
       1594908: "HB 5015 House 2025-06-25: LegiScan reports 40-11, Oregon's journal reports 39-12",
+    },
+  },
+  // Oregon's 2026 regular session — the 35-day short session, sine die
+  // 2026-03-06. A separate dataset from 2191 and a separate config, because
+  // the question vocabulary differs (see the comment above the patterns).
+  //
+  // Pool as measured: 142 of 304 measures were enacted, and 85 floor rolls
+  // over 51 measures are both divided and enacted.
+  //
+  // Roster reach is the same shape as 2025 and it is again the Senate that is
+  // capped: all 60 House seats are on the Nov-2026 ballot, while Oregon
+  // staggers its Senate, so only half those districts are up.
+  "OR-2252": {
+    jurisdiction: "OR",
+    sessionId: 2252,
+    chamberSizes: { house: 60, senate: 30 },
+    keptQuestions: OREGON_2026_KEPT_QUESTIONS,
+    excludedQuestions: OREGON_2026_EXCLUDED_QUESTIONS,
+    // ⚠ One roll where LegiScan and Oregon's own journal disagree. All 85
+    // divided-and-enacted rolls were audited against the tally the bill
+    // history prints, and 84 match exactly.
+    //
+    // The cause here is new. Oregon lets a senator change a recorded vote by
+    // unanimous consent, and the journal prints the tally AFTER the change.
+    // The 2026 session has five such changes and LegiScan applies four of
+    // them; on HB 4116 it kept the pre-change tally instead. That is why the
+    // audit has to run on every roll: the mechanism does not predict which
+    // rolls are wrong.
+    heldRollCallIds: {
+      1655091:
+        "HB 4116 Senate 2026-03-05: LegiScan reports 17-12 with McLane as a yea; Oregon's journal reports 16-13 and names McLane among the thirteen nays, after he was granted unanimous consent to change his vote",
     },
   },
 };
