@@ -19,13 +19,23 @@ operative text instead of the summary changed three descriptions here:
 | SB 86 | suspend or close an account after any reported rule or law breach | only for four **subject uses**: illicit-substance sales or ads, unlawful gun sales, sex trafficking of a minor, sexually exploitative material |
 | HB 1122 | licensed driver must **sit in the driver's seat** | must be aboard, monitoring and able to intervene; the driver's seat only **while hazardous materials are carried** |
 | HB 1235 | jury-trial right for every tenant; remote jury appearance by **phone or video** | **public-housing tenants excluded** (court trial only); remote jury appearance by **video** only |
+| HB 1004 | the state must run a **public education campaign** | no campaign at all — it was in the introduced bill only and was amended out before the first vote |
+| HB 1011 | 60 days' notice before layoffs or enrollment changes | notice only for layoffs or enrollment changes that **follow the takeover** |
+| HB 1079 | (drafted as) the **top hired official** | every staff member who is hired by, reports to and answers to the board |
+| HB 1169 | (drafted as) all local governments; rules for similar housing **nearby** | only places over **2,000 people**; similar housing **anywhere in the same place** |
+| SB 124 | (drafted as) **bigger** nonprofit hospitals | every nonprofit hospital that files the state's yearly hospital report, whatever its size |
+| SB 185 | builders owe a new duty to build homes properly | first buyers are owed the **same** duty courts already give later buyers |
 
 Had the summaries been trusted, three of the eighteen descriptions would have
-carried a false detail. Review of the first import caught four more, all of
-the same kind: a detail the summary carries that the voted print amended away.
-Those four were rewritten from the operative text and re-imported (the
-`rewrite` actions in `import-rerun-report.json`). **Rule for this scope: quote nothing from the summary
-block that is not confirmed in the enacting text.**
+carried a false detail. Two later review passes caught ten more. Four were the
+same defect — a detail the summary carries that the voted print amended away.
+The other six were scope claims the operative text does not support, three of
+them written into the first draft rather than copied from a summary. Every one
+of the eighteen measures has now been read line by line against the print its
+chamber voted, and the corrections were re-imported (the `rewrite` actions in
+`import-rerun-report.json`). **Rule for this scope: quote nothing from the summary
+block that is not confirmed in the enacting text, and check every scope word —
+who is covered, what is excluded — against the operative section.**
 
 ## Conditional wording, enforced by the builder
 
