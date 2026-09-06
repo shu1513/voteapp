@@ -1042,6 +1042,7 @@ export function CandidatePage() {
                         never re-applies a default, so a reader's toggles
                         survive a view switch that reorders the groups. */}
                     <details
+                      className="group"
                       onToggle={(event) =>
                         track("detail_control", {
                           control: "record_group_toggle",
@@ -1049,7 +1050,13 @@ export function CandidatePage() {
                         })
                       }
                     >
-                      <summary className="cursor-pointer select-none">
+                      {/* The app's own chevron on the right (flips open), not
+                          the native left triangle: one disclosure mark
+                          everywhere, and the native one renders tiny on
+                          Safari. list-none + the webkit marker rule hide the
+                          triangle; the hover tint says "button" at rest. */}
+                      <summary className="-mx-2 flex cursor-pointer select-none list-none items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-surface [&::-webkit-details-marker]:hidden">
+                        <span>
                         {/* Title-case ink subheading, one role step below the
                             finance/Track-record h2 tier. Not the eyebrow idiom
                             (small caps, soft gray): that marks static captions,
@@ -1079,6 +1086,14 @@ export function CandidatePage() {
                             · {againstCount} {evaluative ? "unfavorable" : "oppose"}
                           </span>
                         ) : null}
+                        </span>
+                        <svg
+                          aria-hidden="true"
+                          viewBox="0 0 12 12"
+                          className="ml-auto h-3.5 w-3.5 shrink-0 text-ink-soft transition-transform group-open:rotate-180"
+                        >
+                          <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
                       </summary>
                       <ul className="mt-2 space-y-3">
                         {group.records.map((record) => (
