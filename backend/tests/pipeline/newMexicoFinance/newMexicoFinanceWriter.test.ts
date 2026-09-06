@@ -169,29 +169,6 @@ describe("newMexicoFinanceWriter", () => {
     expect(db.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
   });
 
-  it("uses an already-acquired client directly instead of trying to connect it again", async () => {
-    const client = {
-      query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }),
-      connect: vi.fn().mockResolvedValue(undefined),
-      release: vi.fn(),
-    };
-
-    const result = await replaceNewMexicoCandidateFinanceSnapshot({
-      db: client,
-      link: baseLink(),
-      syncedAt: new Date("2026-02-03T04:05:06.000Z"),
-      summary: {
-        totalReceipts: 1000,
-      },
-    });
-
-    expect(result.summaryWritten).toBe(true);
-    expect(client.connect).not.toHaveBeenCalled();
-    expect(client.release).not.toHaveBeenCalled();
-    expect(client.query.mock.calls[0]?.[0]).toBe("BEGIN");
-    expect(client.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
-  });
-
   it("does not delete omitted direct or outside sections", async () => {
     const db = createMockDb();
 
@@ -350,5 +327,26 @@ describe("newMexicoFinanceWriter", () => {
     ).rejects.toThrow("Invalid New Mexico finance election year");
 
     expect(db.query).not.toHaveBeenCalled();
+  });
+});
+
+describe("newMexicoFinanceWriter pool boundary", () => {
+  it("rejects a supplied PoolClient before issuing any statement, so it can never commit an outer transaction", async () => {
+    const client = {
+      query: vi.fn().mockResolvedValue({ rows: [{ id: LINK_ID }], rowCount: 1 }),
+      connect: vi.fn(),
+      release: vi.fn(),
+    };
+
+    await expect(
+      replaceNewMexicoCandidateFinanceSnapshot({
+        db: client as never,
+        link: baseLink(),
+        syncedAt: new Date("2026-02-03T04:05:06.000Z"),
+        summary: { totalReceipts: 1000 },
+      } as never)
+    ).rejects.toThrow("New Mexico finance snapshot writes must receive a Pool, not a PoolClient");
+    expect(client.query).not.toHaveBeenCalled();
+    expect(client.connect).not.toHaveBeenCalled();
   });
 });
