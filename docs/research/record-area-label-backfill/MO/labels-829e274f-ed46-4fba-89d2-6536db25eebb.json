@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "975ca491-1cc1-499c-b5e1-ce36a54b3c90",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "975ca491-1cc1-499c-b5e1-ce36a54b3c90",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "975ca491-1cc1-499c-b5e1-ce36a54b3c90",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  }
+ ]
+}
