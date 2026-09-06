@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router";
 import type {
   BallotRaceType,
@@ -34,20 +34,20 @@ const RESULT_CHIP_CLASSES: Record<ResultChipTone, string> = {
 
 // Statewide races carry a dozen-plus research areas; rendering every one
 // buried the card's actual signal (title, candidates, vote power) under a
-// wall of identical chips. The card is a preview — saved-area matches all
-// show (they are the personal signal), other areas cap out and the election
-// page carries the full set.
-const MAX_UNSAVED_AREA_CHIPS = 3;
+// wall of identical chips. The card is a preview — saved-area matches lead
+// (they are the personal signal), the cap applies to the whole row, and the
+// election page carries the full set.
+const MAX_AREA_CHIPS = 3;
 
 // Research areas render as plain colored text, comma-separated — NOT boxed
 // chips. Boxed/pill styling is reserved for interactive elements; a bordered
 // area "chip" read as a button and invited dead clicks. Saved matches lead
-// AND render semibold — the same double cue (front-of-list + weight) as the
-// candidate page's stance boxes — while the shared green keeps the row
-// reading as one list. Both exported so the election detail page's affects
-// row matches the card's.
+// AND render in purple: purple means "an issue on my list" on every surface
+// (ballot cards, election rows, the candidate page's stance boxes) and is
+// the one hue the stance colors (green/red/amber) and party colors don't
+// use. Both exported so the other surfaces match the card's.
 export const AREA_TEXT_CLASS = "font-medium text-green-900";
-export const SAVED_AREA_TEXT_CLASS = "font-semibold text-green-900";
+export const SAVED_AREA_TEXT_CLASS = "font-semibold text-purple-800";
 
 // An office race with no published candidate list renders a placeholder card
 // ("Candidate list not final") with nothing to read. Ballot measures are
@@ -58,6 +58,49 @@ export const SAVED_AREA_TEXT_CLASS = "font-semibold text-green-900";
 // sinks these races to the end of the payload.
 function isAwaitingCandidates(election: ElectionSummary): boolean {
   return election.race_type !== "ballot_measure" && election.candidate_count === 0 && !election.has_results;
+}
+
+/**
+ * A ballot is built from district rows, and the county row carries every
+ * seat attached to it — so a ward- or precinct-level seat reaches every
+ * county resident, including those who cannot vote in it. The address lookup
+ * has no ward/precinct membership, so the list names the seats' area and
+ * admits it cannot match them, once per run of such seats rather than on
+ * every card. Runs are consecutive (presentational, never reordering) and
+ * break when the parent district changes. Understated ("may not"): in
+ * several states the seat is a residency district voted countywide.
+ */
+function splitSeatRuns(elections: ElectionSummary[]): { district: string | null; elections: ElectionSummary[] }[] {
+  const runs: { district: string | null; elections: ElectionSummary[] }[] = [];
+  for (const election of elections) {
+    const district = election.sub_district_seat ? formatDistrictName(election.district.name) : null;
+    const lastRun = runs[runs.length - 1];
+    if (lastRun && lastRun.district === district) {
+      lastRun.elections.push(election);
+    } else {
+      runs.push({ district, elections: [election] });
+    }
+  }
+  return runs;
+}
+
+function SeatRun({ district, count, children }: { district: string | null; count: number; children: ReactNode }) {
+  if (district === null) {
+    return <>{children}</>;
+  }
+  // Note hugs its cards (tighter gap inside than the list's own spacing) so
+  // it reads as belonging to the run below, not to the card above. A run of
+  // one seat gets the singular.
+  return (
+    <div>
+      <p className="mb-1.5 text-sm text-ink-soft">
+        {count === 1
+          ? `This seat covers part of ${district} — it may not cover your address.`
+          : `These seats each cover part of ${district} — one may not cover your address.`}
+      </p>
+      <div className="space-y-3">{children}</div>
+    </div>
+  );
 }
 
 /**
@@ -174,15 +217,19 @@ export function ElectionList({
               visual hierarchy. */}
           <h2 className="text-heading font-bold text-ink">Elections on {formatElectionDate(group.date)}</h2>
           <div className="mt-2 space-y-3">
-            {group.elections.map((election) => (
-              <ElectionCard
-                key={election.id}
-                election={election}
-                savedAreaWeights={savedAreaWeights}
-                myChoice={choicesByElectionId?.get(election.id)}
-                navState={navState}
-                position={positionById.get(election.id) ?? 1}
-              />
+            {splitSeatRuns(group.elections).map((run) => (
+              <SeatRun key={run.elections[0].id} district={run.district} count={run.elections.length}>
+                {run.elections.map((election) => (
+                  <ElectionCard
+                    key={election.id}
+                    election={election}
+                    savedAreaWeights={savedAreaWeights}
+                    myChoice={choicesByElectionId?.get(election.id)}
+                    navState={navState}
+                    position={positionById.get(election.id) ?? 1}
+                  />
+                ))}
+              </SeatRun>
             ))}
           </div>
         </section>
@@ -197,16 +244,20 @@ export function ElectionList({
               "Elections on {date}" headings above it. */}
           <h2 className="text-heading font-bold text-ink">Elections awaiting candidate information</h2>
           <div className="mt-2 space-y-3">
-            {awaitingCandidates.map((election) => (
-              <ElectionCard
-                key={election.id}
-                election={election}
-                savedAreaWeights={savedAreaWeights}
-                myChoice={choicesByElectionId?.get(election.id)}
-                navState={navState}
-                position={positionById.get(election.id) ?? 1}
-                showDate
-              />
+            {splitSeatRuns(awaitingCandidates).map((run) => (
+              <SeatRun key={run.elections[0].id} district={run.district} count={run.elections.length}>
+                {run.elections.map((election) => (
+                  <ElectionCard
+                    key={election.id}
+                    election={election}
+                    savedAreaWeights={savedAreaWeights}
+                    myChoice={choicesByElectionId?.get(election.id)}
+                    navState={navState}
+                    position={positionById.get(election.id) ?? 1}
+                    showDate
+                  />
+                ))}
+              </SeatRun>
             ))}
           </div>
         </section>
@@ -254,8 +305,11 @@ function ElectionCard({
     election.research_areas,
     savedAreaWeights
   );
-  const visibleOtherAreas = otherAreas.slice(0, MAX_UNSAVED_AREA_CHIPS);
-  const hiddenAreaCount = otherAreas.length - visibleOtherAreas.length;
+  // One cap for the whole row: saved matches lead in the user's rank order and
+  // take the slots first, so the top three saved issues show and everything
+  // else — further saves included — folds into the overflow count.
+  const visibleAreas = [...savedAreas, ...otherAreas].slice(0, MAX_AREA_CHIPS);
+  const hiddenAreaCount = election.research_areas.length - visibleAreas.length;
   // The viewer's planned vote, shown only on upcoming races: a past
   // election's choice is history. Withdrawn picks stay visible with a flag —
   // a silent disappearance would read as data loss. Races WITHOUT a pick show
@@ -320,13 +374,19 @@ function ElectionCard({
           ) : null}
           {election.race_type === "ballot_measure" ? (
             <span className="whitespace-nowrap text-sm text-dem-blue">Ballot Measure</span>
-          ) : (
+          ) : election.candidate_count === 0 && election.candidate_roster_status ? (
             <span className="whitespace-nowrap text-sm text-ink-soft">
-              {election.candidate_count === 0 && election.candidate_roster_status
-                ? formatRosterStatus(election.candidate_roster_status).short
-                : `${election.candidate_count} candidate${election.candidate_count === 1 ? "" : "s"}`}
+              {formatRosterStatus(election.candidate_roster_status).short}
             </span>
-          )}
+          ) : election.candidate_count === 1 ? (
+            // The one count worth showing: a lone name usually means the race
+            // is decided. Stated as a count, not "Uncontested" — the roster
+            // status only exists for empty rosters, so nothing here proves
+            // the list is complete (a mid-import roster shows its first name
+            // alone for a while). Any other count changed nothing about
+            // whether to open the race, so it no longer renders.
+            <span className="whitespace-nowrap text-sm text-ink-soft">1 candidate</span>
+          ) : null}
         </span>
       </div>
       {/* Always show the district: ballot titles are often generic ("Mayor",
@@ -336,20 +396,6 @@ function ElectionCard({
         {formatDistrictName(election.district.name)}
         {showDate ? <> · {formatElectionDate(election.election_date)}</> : null}
       </p>
-      {/* A ballot is built from district rows, and the county row carries every
-          seat attached to it — so a ward- or district-level seat reaches every
-          county resident, including those who cannot vote in it. The address
-          lookup has no ward/precinct membership, so the honest move is to name
-          the seat's own area and admit we cannot match it, rather than imply
-          the ballot was filtered. Deliberately understated ("may not"): in
-          several states the seat is a residency district voted countywide, so
-          the reader may well be eligible. */}
-      {election.sub_district_seat ? (
-        <p className="mt-1 text-xs text-ink-soft">
-          <span className="rounded bg-surface px-1.5 py-0.5 font-medium">{election.sub_district_seat}</span>{" "}
-          <span>— may not cover your address</span>
-        </p>
-      ) : null}
       {hasSignalChips ? (
         <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
           {choiceLabel ? (
@@ -439,7 +485,7 @@ function ElectionCard({
           <span className="font-medium text-ink-soft">Affects:</span>{" "}
           {/* Comma separators live OUTSIDE the area spans as plain text
               nodes, so each span's text stays exactly the area name. */}
-          {[...savedAreas, ...visibleOtherAreas].map((area, index, all) => (
+          {visibleAreas.map((area, index, all) => (
             <Fragment key={area.id}>
               <span className={savedAreas.includes(area) ? SAVED_AREA_TEXT_CLASS : AREA_TEXT_CLASS}>
                 {area.name}
