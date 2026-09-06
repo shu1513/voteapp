@@ -29,10 +29,11 @@ File mode makes **no AI call** (`ai_calls=0` in every run summary). It is additi
 | WA | 534 | 338 | 164 | 32 |
 | AK | 390 | 237 | 124 | 16 |
 | AL | 382 | 201 | 142 | 39 |
+| FL | 271 | 124 | 71 | 74 |
 
 `labels-<candidate_id>.json` is the payload sent to the wrapper. `batch<N>-output.json` holds the full proposal, including the skip reasons and the retire-candidate flags.
 
-A record whose candidate has no office election at all cannot go through the wrapper — it takes `--election-date` and resolves the office allowlist from that election. Those records stay untagged and are listed per state below. AK has 13, across six candidates: Rasmussen, Schuerch, Church, Gettys, Sumner, Hnilicka.
+A record whose candidate has no office election at all cannot go through the wrapper — it takes `--election-date` and resolves the office allowlist from that election. Those records stay untagged and are listed per state below. AK has 13 across six candidates, FL has 2: Rasmussen, Schuerch, Church, Gettys, Sumner, Hnilicka.
 
 ## Label rules tightened during the run
 

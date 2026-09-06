@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "e5e1e968-bf45-4b9b-be6c-eab7d7ec08d3",
+   "research_area_slug": "anti_corruption",
+   "stance": "against"
+  },
+  {
+   "record_id": "238c155a-daf3-41a4-a2e4-3877d199ce94",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "c76fc7fd-c8db-4609-8222-a3a7da20d24f",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "d56baafa-7272-4a05-a1d5-858ce7a39355",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "ad749985-4d1f-416a-bf5e-c512d6850e81",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

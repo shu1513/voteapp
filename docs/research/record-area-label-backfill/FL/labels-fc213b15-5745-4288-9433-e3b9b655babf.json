@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "b30219a2-f47c-4f57-a724-df9c56b0c6f9",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "abf1e25b-1d16-4bd4-84ad-d86dc8fd5058",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "1d88f518-8926-4dbf-825d-432a2b736fea",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  }
+ ]
+}
