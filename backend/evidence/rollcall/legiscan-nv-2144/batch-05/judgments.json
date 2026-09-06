@@ -1,0 +1,292 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1554207,
+   "measure_id": "AB 223",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 223, which would have given renters a faster way to force repairs. A tenant whose landlord did not fix a problem could file a sworn complaint, get a hearing within seven days, and hold back rent until the court decided. It would have added pests, mold, lead paint, working locks and working safety equipment to the list of things a rental must have. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 223, which would have given renters a faster way to force repairs. A tenant whose landlord did not fix a problem could file a sworn complaint, get a hearing within seven days, and hold back rent until the court decided. It would have added pests, mold, lead paint, working locks and working safety equipment to the list of things a rental must have. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1575611,
+   "measure_id": "AB 223",
+   "vote_date": "2025-05-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 223, which would have given renters a faster way to force repairs. A tenant whose landlord did not fix a problem could file a sworn complaint, get a hearing within seven days, and hold back rent until the court decided. It would have added pests, mold, lead paint, working locks and working safety equipment to the list of things a rental must have. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 223, which would have given renters a faster way to force repairs. A tenant whose landlord did not fix a problem could file a sworn complaint, get a hearing within seven days, and hold back rent until the court decided. It would have added pests, mold, lead paint, working locks and working safety equipment to the list of things a rental must have. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1553732,
+   "measure_id": "AB 280",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 280, which would have made landlords refund a rental application fee when they rent the unit to someone else without doing the check they charged for, and banned charging an application fee for a child in the household. Landlords would have had to list every fee, and its purpose, in the lease. A separate part would have capped rent increases at 5 percent through 2026, but only for tenants who were 62 or older or living on Social Security payments. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 280, which would have made landlords refund a rental application fee when they rent the unit to someone else without doing the check they charged for, and banned charging an application fee for a child in the household. Landlords would have had to list every fee, and its purpose, in the lease. A separate part would have capped rent increases at 5 percent through 2026, but only for tenants who were 62 or older or living on Social Security payments. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1575514,
+   "measure_id": "AB 280",
+   "vote_date": "2025-05-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 280, which would have made landlords refund a rental application fee when they rent the unit to someone else without doing the check they charged for, and banned charging an application fee for a child in the household. Landlords would have had to list every fee, and its purpose, in the lease. A separate part would have capped rent increases at 5 percent through 2026, but only for tenants who were 62 or older or living on Social Security payments. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 280, which would have made landlords refund a rental application fee when they rent the unit to someone else without doing the check they charged for, and banned charging an application fee for a child in the household. Landlords would have had to list every fee, and its purpose, in the lease. A separate part would have capped rent increases at 5 percent through 2026, but only for tenants who were 62 or older or living on Social Security payments. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1553745,
+   "measure_id": "AB 283",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 283, which would have rewritten Nevada's fast-track eviction rules so that the landlord, not the tenant, has to file with the court first. The bill would have thrown out a case if the landlord missed the deadline to prove the tenant was served. Commercial tenants, mobile home lot tenants, and federal, tribal and state workers during a shutdown were excluded. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 283, which would have rewritten Nevada's fast-track eviction rules so that the landlord, not the tenant, has to file with the court first. The bill would have thrown out a case if the landlord missed the deadline to prove the tenant was served. Commercial tenants, mobile home lot tenants, and federal, tribal and state workers during a shutdown were excluded. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1576817,
+   "measure_id": "AB 283",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 283, which would have rewritten Nevada's fast-track eviction rules so that the landlord, not the tenant, has to file with the court first. The bill would have thrown out a case if the landlord missed the deadline to prove the tenant was served. Commercial tenants, mobile home lot tenants, and federal, tribal and state workers during a shutdown were excluded. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 283, which would have rewritten Nevada's fast-track eviction rules so that the landlord, not the tenant, has to file with the court first. The bill would have thrown out a case if the landlord missed the deadline to prove the tenant was served. Commercial tenants, mobile home lot tenants, and federal, tribal and state workers during a shutdown were excluded. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1554233,
+   "measure_id": "AB 201",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 201, which would have sealed more eviction court records from public view, so that screening companies and future landlords could not see them. A file would have been sealed automatically if the landlord did not object within seven court days, or after an appeal upheld a dismissal. Cases where a court found a landlord locked a tenant out unlawfully would also have been sealed. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 201, which would have sealed more eviction court records from public view, so that screening companies and future landlords could not see them. A file would have been sealed automatically if the landlord did not object within seven court days, or after an appeal upheld a dismissal. Cases where a court found a landlord locked a tenant out unlawfully would also have been sealed. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1575587,
+   "measure_id": "AB 201",
+   "vote_date": "2025-05-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 201, which would have sealed more eviction court records from public view, so that screening companies and future landlords could not see them. A file would have been sealed automatically if the landlord did not object within seven court days, or after an appeal upheld a dismissal. Cases where a court found a landlord locked a tenant out unlawfully would also have been sealed. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 201, which would have sealed more eviction court records from public view, so that screening companies and future landlords could not see them. A file would have been sealed automatically if the landlord did not object within seven court days, or after an appeal upheld a dismissal. Cases where a court found a landlord locked a tenant out unlawfully would also have been sealed. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1575046,
+   "measure_id": "SB 99",
+   "vote_date": "2025-05-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 99, which would have let a city or county in the Lake Tahoe region charge builders a fee on new homes of 1,000 square feet or more, large additions, and remodels worth over $100,000, and spend the money on affordable housing. The local government would first have had to show a real link between the building and the need for affordable housing. Affordable homes themselves were exempt from the fee. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 99, which would have let a city or county in the Lake Tahoe region charge builders a fee on new homes of 1,000 square feet or more, large additions, and remodels worth over $100,000, and spend the money on affordable housing. The local government would first have had to show a real link between the building and the need for affordable housing. Affordable homes themselves were exempt from the fee. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1552296,
+   "measure_id": "SB 99",
+   "vote_date": "2025-04-18",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 99, which would have let a city or county in the Lake Tahoe region charge builders a fee on new homes of 1,000 square feet or more, large additions, and remodels worth over $100,000, and spend the money on affordable housing. The local government would first have had to show a real link between the building and the need for affordable housing. Affordable homes themselves were exempt from the fee. The Nevada Senate passed it 14-6, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 99, which would have let a city or county in the Lake Tahoe region charge builders a fee on new homes of 1,000 square feet or more, large additions, and remodels worth over $100,000, and spend the money on affordable housing. The local government would first have had to show a real link between the building and the need for affordable housing. Affordable homes themselves were exempt from the fee. The Nevada Senate passed it 14-6, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1553821,
+   "measure_id": "AB 112",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 112, which would have removed the exemption that lets an employer ignore Nevada's family sick leave rule for workers covered by a union contract. Those workers could then use sick leave they had already earned to care for an immediate family member. The change would not have reached union contracts already running until they were renewed. The Nevada Assembly passed it 29-13, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 112, which would have removed the exemption that lets an employer ignore Nevada's family sick leave rule for workers covered by a union contract. Those workers could then use sick leave they had already earned to care for an immediate family member. The change would not have reached union contracts already running until they were renewed. The Nevada Assembly passed it 29-13, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1577060,
+   "measure_id": "AB 112",
+   "vote_date": "2025-05-23",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 112, which would have removed the exemption that lets an employer ignore Nevada's family sick leave rule for workers covered by a union contract. Those workers could then use sick leave they had already earned to care for an immediate family member. The change would not have reached union contracts already running until they were renewed. The Nevada Senate passed it 15-6, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 112, which would have removed the exemption that lets an employer ignore Nevada's family sick leave rule for workers covered by a union contract. Those workers could then use sick leave they had already earned to care for an immediate family member. The change would not have reached union contracts already running until they were renewed. The Nevada Senate passed it 15-6, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1551673,
+   "measure_id": "AB 185",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 185, which would have stopped a homeowners association from banning a licensed child care home caring for 5 to 12 children in a unit the owner lives in, and let renters run one unless the lease says otherwise. The version the Assembly voted also barred state and local licensing rules from refusing a license to such a home for having no outdoor play area, if it sits within a mile of a park. Senior housing was exempt. The Nevada Assembly passed it 32-10, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 185, which would have stopped a homeowners association from banning a licensed child care home caring for 5 to 12 children in a unit the owner lives in, and let renters run one unless the lease says otherwise. The version the Assembly voted also barred state and local licensing rules from refusing a license to such a home for having no outdoor play area, if it sits within a mile of a park. Senior housing was exempt. The Nevada Assembly passed it 32-10, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1578000,
+   "measure_id": "AB 185",
+   "vote_date": "2025-05-23",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 185, which would have stopped a homeowners association from banning a licensed child care home caring for 5 to 12 children, and protected renters as well as owners. The version the Senate voted dropped the licensing changes the Assembly had passed, exempted any community whose units share an interior wall, such as condominiums and townhouses, and let an association cap the number at one for every 200 units. The Nevada Senate passed it 16-4, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 185, which would have stopped a homeowners association from banning a licensed child care home caring for 5 to 12 children, and protected renters as well as owners. The version the Senate voted dropped the licensing changes the Assembly had passed, exempted any community whose units share an interior wall, such as condominiums and townhouses, and let an association cap the number at one for every 200 units. The Nevada Senate passed it 16-4, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1580575,
+   "measure_id": "SB 193",
+   "vote_date": "2025-05-28",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 193, which would have put $10 million into a pilot program to permanently lower the interest rate on 30-year mortgages for first-time buyers. A buyer had to have owned no home for three years and earn no more than 160 percent of the median income for their county, though the Housing Division could waive the income limit. The money had to be spent by September 2027. The Nevada Senate passed it 14-5, but the Assembly never voted on it, so it never became law.",
+   "nay_description": "Voted against Senate Bill 193, which would have put $10 million into a pilot program to permanently lower the interest rate on 30-year mortgages for first-time buyers. A buyer had to have owned no home for three years and earn no more than 160 percent of the median income for their county, though the Housing Division could waive the income limit. The money had to be spent by September 2027. The Nevada Senate passed it 14-5, but the Assembly never voted on it, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1578859,
+   "measure_id": "SB 391",
+   "vote_date": "2025-05-27",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 391, which would have capped at 100 the total number of Nevada homes that all corporations and limited-liability companies together could buy in a calendar year, and made those owning ten or more homes register with the state before each purchase. A county recorder could not record the deed without the registration certificate. New-build homes, apartment buildings and mobile homes were exempt from the cap. Nevada requires a two-thirds majority for a bill that creates a fee, so the 13-8 vote in the Senate was not enough and the bill failed.",
+   "nay_description": "Voted against Senate Bill 391, which would have capped at 100 the total number of Nevada homes that all corporations and limited-liability companies together could buy in a calendar year, and made those owning ten or more homes register with the state before each purchase. A county recorder could not record the deed without the registration certificate. New-build homes, apartment buildings and mobile homes were exempt from the cap. Nevada requires a two-thirds majority for a bill that creates a fee, so the 13-8 vote in the Senate was not enough and the bill failed."
+  }
+ ]
+}

@@ -32,7 +32,7 @@ The naive fix â€” widening the bill-number pattern to allow a trailing letter â€
 is not obviously right. `measure_id` is the key a judgment names and a record
 cites, and `SB 88A` and `SB 88` are two different bills that would then differ
 only by one character. Since no `A`-suffixed bill can ever carry a vote, the
-cost of the current behaviour is one confusing error list.
+cost of the current behavior is one confusing error list.
 
 ## 2. A same-day reconsider-and-revote REVERSES LegiScan's roll id order
 
