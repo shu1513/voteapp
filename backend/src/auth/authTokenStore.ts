@@ -151,6 +151,70 @@ export async function issueUserAuthToken(
   return rowToAuthToken(row);
 }
 
+/**
+ * Resolves a still-valid token to its owner WITHOUT consuming it. Consumers
+ * use this to find which user row to lock before the atomic consume below;
+ * the consume re-checks validity after the lock wait, so a token voided by a
+ * concurrent ownership change (re-registration, Google takeover, password
+ * change) is rejected even though it looked valid here.
+ */
+export async function peekUserAuthToken(
+  db: Queryable,
+  input: ConsumeUserAuthTokenInput
+): Promise<{ userId: string } | null> {
+  const tokenHash = normalizeTokenHash(hashAuthToken(input.token));
+  const purpose = normalizePurpose(input.purpose);
+  const now = normalizeNow(input.now ?? new Date());
+
+  const result = await db.query<{ user_id: string }>(
+    `
+      SELECT user_id::text AS user_id
+      FROM public.user_auth_tokens
+      WHERE token_hash = $1
+        AND purpose = $2
+        AND consumed_at IS NULL
+        AND expires_at > $3::timestamptz
+    `,
+    [tokenHash, purpose, now]
+  );
+
+  const row = result.rows[0];
+  return row ? { userId: row.user_id } : null;
+}
+
+/**
+ * Voids every outstanding (unconsumed) token of the given purposes for a
+ * user. Called inside the transaction of an ownership or credential change —
+ * re-registration of an unverified address, Google takeover, password
+ * reset/change, email verification, email change — after the user row is
+ * locked FOR UPDATE, so links issued under the previous owner or credentials
+ * stop working the moment that change commits. Same lock order as issuance
+ * and the consumers (user row first, then token rows), so the two cannot
+ * deadlock.
+ */
+export async function voidUserAuthTokens(
+  db: Queryable,
+  input: { userId: string; purposes: readonly AuthTokenPurpose[] }
+): Promise<number> {
+  const userId = normalizeUserId(input.userId);
+  if (input.purposes.length === 0) {
+    throw new TypeError("purposes must not be empty");
+  }
+  const purposes = input.purposes.map(normalizePurpose);
+
+  const result = await db.query(
+    `
+      UPDATE public.user_auth_tokens
+      SET consumed_at = now()
+      WHERE user_id = $1::uuid
+        AND purpose = ANY($2::text[])
+        AND consumed_at IS NULL
+    `,
+    [userId, purposes]
+  );
+  return result.rowCount ?? 0;
+}
+
 export async function consumeUserAuthToken(
   db: Queryable,
   input: ConsumeUserAuthTokenInput

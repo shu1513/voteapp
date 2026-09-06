@@ -3,6 +3,8 @@ import { describe, expect, it, vi } from "vitest";
 import {
   consumeUserAuthToken,
   issueUserAuthToken,
+  peekUserAuthToken,
+  voidUserAuthTokens,
 } from "../../src/auth/authTokenStore.js";
 import { generateAuthToken } from "../../src/auth/authPrimitives.js";
 
@@ -201,5 +203,44 @@ describe("userAuthTokenStore", () => {
         expiresAt: new Date("2026-07-01T00:00:00.000Z"),
       })
     ).rejects.toThrow("Token hash must be a SHA-256 hex digest");
+  });
+});
+
+describe("userAuthTokenStore peek and void", () => {
+  it("peeks a still-valid token's owner without writing", async () => {
+    const token = generateAuthToken();
+    const db = createDbMock([{ user_id: userId }]);
+
+    await expect(peekUserAuthToken(db, { token: token.rawToken, purpose: "email_change", now })).resolves.toEqual({
+      userId,
+    });
+    const sql = String(db.query.mock.calls[0]?.[0]);
+    expect(sql).toContain("SELECT user_id::text AS user_id");
+    expect(sql).not.toContain("UPDATE");
+    expect(sql).toContain("consumed_at IS NULL");
+    expect(sql).toContain("expires_at > $3::timestamptz");
+    expect(db.query.mock.calls[0]?.[1]).toEqual([token.tokenHash, "email_change", now]);
+
+    await expect(peekUserAuthToken(createDbMock([]), { token: token.rawToken, purpose: "email_change", now })).resolves.toBeNull();
+  });
+
+  it("voids only the requested purposes' outstanding tokens and reports the count", async () => {
+    const db = { query: vi.fn().mockResolvedValue({ rows: [], rowCount: 2 }) };
+
+    await expect(voidUserAuthTokens(db, { userId, purposes: ["password_reset", "email_change"] })).resolves.toBe(2);
+    const sql = String(db.query.mock.calls[0]?.[0]);
+    expect(sql).toContain("UPDATE public.user_auth_tokens");
+    expect(sql).toContain("SET consumed_at = now()");
+    expect(sql).toContain("purpose = ANY($2::text[])");
+    expect(sql).toContain("consumed_at IS NULL");
+    expect(db.query.mock.calls[0]?.[1]).toEqual([userId, ["password_reset", "email_change"]]);
+
+    await expect(voidUserAuthTokens(db, { userId, purposes: [] })).rejects.toThrow("purposes must not be empty");
+    await expect(
+      voidUserAuthTokens(db, { userId, purposes: ["bogus" as never] })
+    ).rejects.toThrow("Unsupported auth token purpose");
+    await expect(voidUserAuthTokens(db, { userId: "nope", purposes: ["email_verify"] })).rejects.toThrow(
+      "User ID must be a valid UUID"
+    );
   });
 });

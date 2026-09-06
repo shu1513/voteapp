@@ -103,6 +103,15 @@ jobs:
         env:
           DATABASE_URL: postgresql://voteapp:voteapp@localhost:5432/voteapp
 
+      # Auth links issued under a previous owner or credential must stop
+      # working when the ownership change commits, and consumers must lock the
+      # user row before consuming. Whether the void hits the rows a later
+      # consume would accept is row-level behaviour, so it needs a real DB.
+      - name: Auth-token lifecycle
+        run: npx vitest run tests/auth/authTokenLifecycle.db.test.ts
+        env:
+          DATABASE_URL: postgresql://voteapp:voteapp@localhost:5432/voteapp
+
       - name: Manual district queue claim integration
         run: npx vitest run tests/pipeline/address/manualDistrictResearchRequests.test.ts
         env:
