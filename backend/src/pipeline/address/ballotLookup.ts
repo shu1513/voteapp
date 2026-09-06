@@ -93,8 +93,6 @@ import { loadSanDiegoCityCandidateFinanceSummariesByCandidateElection } from "..
 import { loadSanFranciscoCandidateFinanceSummariesByCandidateElection } from "../sanFranciscoFinance/sanFranciscoBallotLookupFinanceLoader.js";
 import { loadSanJoseCandidateFinanceSummariesByCandidateElection } from "../sanJoseFinance/sanJoseBallotLookupFinanceLoader.js";
 import { loadSouthCarolinaCandidateFinanceSummariesByCandidateElection } from "../southCarolinaFinance/southCarolinaBallotLookupFinanceLoader.js";
-import {
-} from "../../config/featureFlags.js";
 
 import {
   electionYear,
