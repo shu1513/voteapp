@@ -18,6 +18,7 @@ import type { RegisterUserPushTokenInput } from "../pipeline/users/userPushToken
 import { CONTENT_REPORT_ENTITY_TYPES, type ContentReportEntityType } from "../pipeline/reports/contentReports.js";
 import { MAX_FIRST_NAME_LENGTH } from "../pipeline/users/userIdentity.js";
 import { UUID_PATTERN, isUuid } from "../utils/uuid.js";
+import { RequestValidationError } from "../utils/requestValidationError.js";
 
 export { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
 export { UUID_PATTERN } from "../utils/uuid.js";
@@ -330,11 +331,11 @@ export type CandidateFollowPayload = UserCandidateFollowInput;
 
 function parseStringField(parsed: unknown, fieldName: string): string {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
   const value = (parsed as Record<string, unknown>)[fieldName];
   if (typeof value !== "string" || value.trim().length === 0) {
-    throw new TypeError(`Request body must include non-empty string field: ${fieldName}`);
+    throw new RequestValidationError(`Request body must include non-empty string field: ${fieldName}`);
   }
   return value.trim();
 }
@@ -342,7 +343,7 @@ function parseStringField(parsed: unknown, fieldName: string): string {
 function parseEmailField(parsed: unknown, fieldName: string): string {
   const email = parseStringField(parsed, fieldName);
   if (email.length > MAX_AUTH_EMAIL_LENGTH) {
-    throw new TypeError(`${fieldName} must be at most ${MAX_AUTH_EMAIL_LENGTH} characters`);
+    throw new RequestValidationError(`${fieldName} must be at most ${MAX_AUTH_EMAIL_LENGTH} characters`);
   }
   return email;
 }
@@ -354,7 +355,7 @@ function parseAutocompleteSessionToken(parsed: unknown): string {
     sessionToken.length > MAX_AUTOCOMPLETE_SESSION_TOKEN_LENGTH ||
     !AUTOCOMPLETE_TOKEN_PATTERN.test(sessionToken)
   ) {
-    throw new TypeError(
+    throw new RequestValidationError(
       `session_token must be ${MIN_AUTOCOMPLETE_SESSION_TOKEN_LENGTH}-${MAX_AUTOCOMPLETE_SESSION_TOKEN_LENGTH} characters of letters, digits, hyphens, or underscores`
     );
   }
@@ -364,10 +365,10 @@ function parseAutocompleteSessionToken(parsed: unknown): string {
 export function parseAutocompleteSuggestBodyValue(parsed: unknown): AddressAutocompleteSuggestPayload {
   const input = parseStringField(parsed, "input");
   if (input.length < MIN_AUTOCOMPLETE_INPUT_LENGTH) {
-    throw new TypeError(`input must be at least ${MIN_AUTOCOMPLETE_INPUT_LENGTH} characters`);
+    throw new RequestValidationError(`input must be at least ${MIN_AUTOCOMPLETE_INPUT_LENGTH} characters`);
   }
   if (input.length > MAX_AUTOCOMPLETE_INPUT_LENGTH) {
-    throw new TypeError(`input supports at most ${MAX_AUTOCOMPLETE_INPUT_LENGTH} characters`);
+    throw new RequestValidationError(`input supports at most ${MAX_AUTOCOMPLETE_INPUT_LENGTH} characters`);
   }
   return {
     input,
@@ -378,12 +379,12 @@ export function parseAutocompleteSuggestBodyValue(parsed: unknown): AddressAutoc
 export function parseAutocompleteRetrieveBodyValue(parsed: unknown): AddressAutocompleteRetrievePayload {
   const placeId = parseStringField(parsed, "place_id");
   if (placeId.length > MAX_AUTOCOMPLETE_PLACE_ID_LENGTH) {
-    throw new TypeError(`place_id must be at most ${MAX_AUTOCOMPLETE_PLACE_ID_LENGTH} characters`);
+    throw new RequestValidationError(`place_id must be at most ${MAX_AUTOCOMPLETE_PLACE_ID_LENGTH} characters`);
   }
   // Same pattern the suggest step filters on, so any place_id we emitted is
   // accepted here.
   if (!GOOGLE_PLACE_ID_PATTERN.test(placeId)) {
-    throw new TypeError("place_id must contain only letters, digits, hyphens, or underscores");
+    throw new RequestValidationError("place_id must contain only letters, digits, hyphens, or underscores");
   }
   return {
     place_id: placeId,
@@ -393,16 +394,16 @@ export function parseAutocompleteRetrieveBodyValue(parsed: unknown): AddressAuto
 
 export function parseAddressBodyValue(parsed: unknown): AddressResolvePayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
 
   const address = (parsed as { address?: unknown }).address;
   if (typeof address !== "string" || address.trim().length === 0) {
-    throw new TypeError("Request body must include non-empty string field: address");
+    throw new RequestValidationError("Request body must include non-empty string field: address");
   }
   const trimmed = address.trim();
   if (trimmed.length > MAX_ADDRESS_INPUT_LENGTH) {
-    throw new TypeError(`address must be at most ${MAX_ADDRESS_INPUT_LENGTH} characters`);
+    throw new RequestValidationError(`address must be at most ${MAX_ADDRESS_INPUT_LENGTH} characters`);
   }
 
   return {
@@ -416,7 +417,7 @@ function parseOptionalCoordinatesField(parsed: unknown): { lat: number; lng: num
     return undefined;
   }
   if (typeof coordinates !== "object" || Array.isArray(coordinates)) {
-    throw new TypeError("coordinates must be an object with numeric lat and lng fields");
+    throw new RequestValidationError("coordinates must be an object with numeric lat and lng fields");
   }
   const { lat, lng } = coordinates as { lat?: unknown; lng?: unknown };
   if (
@@ -429,7 +430,7 @@ function parseOptionalCoordinatesField(parsed: unknown): { lat: number; lng: num
     lng < -180 ||
     lng > 180
   ) {
-    throw new TypeError("coordinates must carry lat in [-90, 90] and lng in [-180, 180]");
+    throw new RequestValidationError("coordinates must carry lat in [-90, 90] and lng in [-180, 180]");
   }
   return { lat, lng };
 }
@@ -438,17 +439,17 @@ export function parsePublicAddressResolveBodyValue(parsed: unknown): PublicAddre
   const { address } = parseAddressBodyValue(parsed);
   const acceptedTermsVersion = (parsed as { accepted_terms_version?: unknown }).accepted_terms_version;
   if (typeof acceptedTermsVersion !== "string" || acceptedTermsVersion.trim().length === 0) {
-    throw new TypeError("Request body must include non-empty string field: accepted_terms_version");
+    throw new RequestValidationError("Request body must include non-empty string field: accepted_terms_version");
   }
 
   const allowPartial = (parsed as { allow_partial?: unknown }).allow_partial;
   if (allowPartial !== undefined && typeof allowPartial !== "boolean") {
-    throw new TypeError("allow_partial must be a boolean when present");
+    throw new RequestValidationError("allow_partial must be a boolean when present");
   }
 
   const regionState = (parsed as { region_state?: unknown }).region_state;
   if (regionState !== undefined && (typeof regionState !== "string" || !/^[A-Za-z]{2}$/.test(regionState))) {
-    throw new TypeError("region_state must be a two-letter state abbreviation when present");
+    throw new RequestValidationError("region_state must be a two-letter state abbreviation when present");
   }
 
   const regionLocality = (parsed as { region_locality?: unknown }).region_locality;
@@ -456,10 +457,10 @@ export function parsePublicAddressResolveBodyValue(parsed: unknown): PublicAddre
     regionLocality !== undefined &&
     (typeof regionLocality !== "string" || regionLocality.trim().length === 0 || regionLocality.length > 120)
   ) {
-    throw new TypeError("region_locality must be a non-empty string of at most 120 characters when present");
+    throw new RequestValidationError("region_locality must be a non-empty string of at most 120 characters when present");
   }
   if (regionLocality !== undefined && regionState === undefined) {
-    throw new TypeError("region_locality requires region_state");
+    throw new RequestValidationError("region_locality requires region_state");
   }
 
   return {
@@ -477,7 +478,7 @@ export function parseAddressPayload(rawBody: string): AddressResolvePayload {
   try {
     parsed = JSON.parse(rawBody);
   } catch {
-    throw new SyntaxError("Request body must be valid JSON");
+    throw new RequestValidationError("Request body must be valid JSON", "invalid_json");
   }
 
   return parseAddressBodyValue(parsed);
@@ -491,7 +492,7 @@ function assertNoUnknownFields(record: Record<string, unknown>, allowedFields: r
   const allowed = new Set(allowedFields);
   const unknown = Object.keys(record).filter((field) => !allowed.has(field));
   if (unknown.length > 0) {
-    throw new TypeError(`Request body contains unknown field: ${unknown[0]}`);
+    throw new RequestValidationError(`Request body contains unknown field: ${unknown[0]}`);
   }
 }
 
@@ -501,7 +502,7 @@ function parseOptionalStringField(record: Record<string, unknown>, fieldName: st
     return null;
   }
   if (typeof value !== "string") {
-    throw new TypeError(`${fieldName} must be a string when provided`);
+    throw new RequestValidationError(`${fieldName} must be a string when provided`);
   }
   const trimmed = value.trim();
   return trimmed.length > 0 ? trimmed : null;
@@ -528,18 +529,18 @@ function parseChatbotAskContext(value: unknown): ChatbotAskContext | null {
     return null;
   }
   if (typeof value !== "object" || Array.isArray(value)) {
-    throw new TypeError("context must be an object when provided");
+    throw new RequestValidationError("context must be an object when provided");
   }
   const record = value as Record<string, unknown>;
   assertNoUnknownFields(record, ["candidate_id", "election_id"]);
   const candidateId = record.candidate_id;
   const electionId = record.election_id;
   if ((candidateId === undefined) === (electionId === undefined)) {
-    throw new TypeError("context must include exactly one of candidate_id or election_id");
+    throw new RequestValidationError("context must include exactly one of candidate_id or election_id");
   }
   const raw = candidateId ?? electionId;
   if (typeof raw !== "string" || !isUuid(raw.trim())) {
-    throw new TypeError("context id must be a valid UUID");
+    throw new RequestValidationError("context id must be a valid UUID");
   }
   return candidateId !== undefined
     ? { kind: "candidate", id: raw.trim() }
@@ -548,19 +549,19 @@ function parseChatbotAskContext(value: unknown): ChatbotAskContext | null {
 
 export function parseChatbotAskBodyValue(parsed: unknown): ChatbotAskPayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
   const record = parsed as Record<string, unknown>;
   assertNoUnknownFields(record, ["question", "previous_question", "context"]);
 
   const question = parseStringField(parsed, "question");
   if (question.length > MAX_CHATBOT_QUESTION_LENGTH) {
-    throw new TypeError(`question must be at most ${MAX_CHATBOT_QUESTION_LENGTH} characters`);
+    throw new RequestValidationError(`question must be at most ${MAX_CHATBOT_QUESTION_LENGTH} characters`);
   }
 
   const previousQuestion = parseOptionalStringField(record, "previous_question");
   if (previousQuestion !== null && previousQuestion.length > MAX_CHATBOT_QUESTION_LENGTH) {
-    throw new TypeError(`previous_question must be at most ${MAX_CHATBOT_QUESTION_LENGTH} characters`);
+    throw new RequestValidationError(`previous_question must be at most ${MAX_CHATBOT_QUESTION_LENGTH} characters`);
   }
 
   return { question, previousQuestion, context: parseChatbotAskContext(record.context) };
@@ -578,25 +579,25 @@ const MAX_CHATBOT_FEEDBACK_TOKEN_LENGTH = 400;
 
 export function parseChatbotFeedbackBodyValue(parsed: unknown): ChatbotFeedbackPayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
   const record = parsed as Record<string, unknown>;
   assertNoUnknownFields(record, ["token", "verdict"]);
 
   const token = parseStringField(parsed, "token");
   if (token.length > MAX_CHATBOT_FEEDBACK_TOKEN_LENGTH) {
-    throw new TypeError(`token must be at most ${MAX_CHATBOT_FEEDBACK_TOKEN_LENGTH} characters`);
+    throw new RequestValidationError(`token must be at most ${MAX_CHATBOT_FEEDBACK_TOKEN_LENGTH} characters`);
   }
   const verdict = record.verdict;
   if (verdict !== "up" && verdict !== "down") {
-    throw new TypeError('verdict must be "up" or "down"');
+    throw new RequestValidationError('verdict must be "up" or "down"');
   }
   return { token, verdict };
 }
 
 export function parseContentReportBodyValue(parsed: unknown): ContentReportPayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
 
   const record = parsed as Record<string, unknown>;
@@ -604,54 +605,54 @@ export function parseContentReportBodyValue(parsed: unknown): ContentReportPaylo
 
   const rawEntityType = record.entity_type;
   if (typeof rawEntityType !== "string") {
-    throw new TypeError("Request body must include string field: entity_type");
+    throw new RequestValidationError("Request body must include string field: entity_type");
   }
   const entityType = rawEntityType.trim();
   if (!(CONTENT_REPORT_ENTITY_TYPES as readonly string[]).includes(entityType)) {
-    throw new TypeError(`entity_type must be one of: ${CONTENT_REPORT_ENTITY_TYPES.join(", ")}`);
+    throw new RequestValidationError(`entity_type must be one of: ${CONTENT_REPORT_ENTITY_TYPES.join(", ")}`);
   }
 
   const rawEntityId = record.entity_id;
   if (typeof rawEntityId !== "string") {
-    throw new TypeError("Request body must include UUID string field: entity_id");
+    throw new RequestValidationError("Request body must include UUID string field: entity_id");
   }
   const entityId = rawEntityId.trim();
   if (!isUuid(entityId)) {
-    throw new TypeError(`entity_id must be a valid UUID: ${entityId}`);
+    throw new RequestValidationError(`entity_id must be a valid UUID: ${entityId}`);
   }
 
   const rawMessage = record.message;
   if (typeof rawMessage !== "string" || rawMessage.trim().length === 0) {
-    throw new TypeError("Request body must include non-empty string field: message");
+    throw new RequestValidationError("Request body must include non-empty string field: message");
   }
   const message = rawMessage.trim();
   if (message.length > MAX_CONTENT_REPORT_MESSAGE_LENGTH) {
-    throw new TypeError(`message must be at most ${MAX_CONTENT_REPORT_MESSAGE_LENGTH} characters`);
+    throw new RequestValidationError(`message must be at most ${MAX_CONTENT_REPORT_MESSAGE_LENGTH} characters`);
   }
 
   const suggestedSourceUrl = parseOptionalStringField(record, "suggested_source_url");
   if (suggestedSourceUrl !== null) {
     if (suggestedSourceUrl.length > MAX_CONTENT_REPORT_SOURCE_URL_LENGTH) {
-      throw new TypeError(`suggested_source_url must be at most ${MAX_CONTENT_REPORT_SOURCE_URL_LENGTH} characters`);
+      throw new RequestValidationError(`suggested_source_url must be at most ${MAX_CONTENT_REPORT_SOURCE_URL_LENGTH} characters`);
     }
     let parsedUrl: URL;
     try {
       parsedUrl = new URL(suggestedSourceUrl);
     } catch {
-      throw new TypeError("suggested_source_url must be a valid http(s) URL");
+      throw new RequestValidationError("suggested_source_url must be a valid http(s) URL");
     }
     if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
-      throw new TypeError("suggested_source_url must be a valid http(s) URL");
+      throw new RequestValidationError("suggested_source_url must be a valid http(s) URL");
     }
   }
 
   const reporterEmail = parseOptionalStringField(record, "reporter_email");
   if (reporterEmail !== null) {
     if (reporterEmail.length > MAX_CONTENT_REPORT_EMAIL_LENGTH) {
-      throw new TypeError(`reporter_email must be at most ${MAX_CONTENT_REPORT_EMAIL_LENGTH} characters`);
+      throw new RequestValidationError(`reporter_email must be at most ${MAX_CONTENT_REPORT_EMAIL_LENGTH} characters`);
     }
     if (!/^\S+@\S+\.\S+$/.test(reporterEmail)) {
-      throw new TypeError("reporter_email must be a valid email address when provided");
+      throw new RequestValidationError("reporter_email must be a valid email address when provided");
     }
   }
 
@@ -666,7 +667,7 @@ export function parseContentReportBodyValue(parsed: unknown): ContentReportPaylo
 
 export function parseAuthRegisterBodyValue(parsed: unknown): AuthRegisterPayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
 
   const email = parseEmailField(parsed, "email");
@@ -675,10 +676,10 @@ export function parseAuthRegisterBodyValue(parsed: unknown): AuthRegisterPayload
   const acceptedTermsVersion = parseStringField(parsed, "accepted_terms_version");
   const firstName = (parsed as { first_name?: unknown }).first_name;
   if (firstName !== undefined && (typeof firstName !== "string" || firstName.trim().length === 0)) {
-    throw new TypeError("first_name must be a non-empty string when provided");
+    throw new RequestValidationError("first_name must be a non-empty string when provided");
   }
   if (typeof firstName === "string" && firstName.trim().length > MAX_FIRST_NAME_LENGTH) {
-    throw new TypeError(`first_name must be at most ${MAX_FIRST_NAME_LENGTH} characters`);
+    throw new RequestValidationError(`first_name must be at most ${MAX_FIRST_NAME_LENGTH} characters`);
   }
 
   return {
@@ -698,20 +699,20 @@ export function parseAuthLoginBodyValue(parsed: unknown): AuthLoginPayload {
 
 export function parseAuthGoogleBodyValue(parsed: unknown): AuthGooglePayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
 
   const credential = parseStringField(parsed, "credential");
   const intent = (parsed as { intent?: unknown }).intent;
   if (intent !== "login" && intent !== "signup") {
-    throw new TypeError('intent must be "login" or "signup"');
+    throw new RequestValidationError('intent must be "login" or "signup"');
   }
   const acceptedTermsVersion = (parsed as { accepted_terms_version?: unknown }).accepted_terms_version;
   if (
     acceptedTermsVersion !== undefined &&
     (typeof acceptedTermsVersion !== "string" || acceptedTermsVersion.trim().length === 0)
   ) {
-    throw new TypeError("accepted_terms_version must be a non-empty string when provided");
+    throw new RequestValidationError("accepted_terms_version must be a non-empty string when provided");
   }
 
   return {
@@ -739,7 +740,7 @@ export function parseAuthVerifyEmailBodyValue(parsed: unknown): AuthVerifyEmailP
 
 export function parseAuthResetPasswordBodyValue(parsed: unknown): AuthResetPasswordPayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
 
   return {
@@ -777,7 +778,7 @@ export function parseMeDeleteBodyValue(parsed: unknown): MeDeletePayload {
 export function parseMeUpdateBodyValue(parsed: unknown): MeUpdatePayload {
   const firstName = parseStringField(parsed, "first_name");
   if (firstName.length > MAX_FIRST_NAME_LENGTH) {
-    throw new TypeError(`first_name must be at most ${MAX_FIRST_NAME_LENGTH} characters`);
+    throw new RequestValidationError(`first_name must be at most ${MAX_FIRST_NAME_LENGTH} characters`);
   }
   return {
     first_name: firstName,
@@ -809,14 +810,14 @@ export type MembershipPortalPayload = {
 
 export function parseMembershipPortalBodyValue(parsed: unknown): MembershipPortalPayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
   const flow = (parsed as Record<string, unknown>).flow;
   if (flow === undefined || flow === null) {
     return { flow: null };
   }
   if (flow !== "payment_method_update") {
-    throw new TypeError("Body field flow must be payment_method_update when present");
+    throw new RequestValidationError("Body field flow must be payment_method_update when present");
   }
   return { flow };
 }
@@ -824,25 +825,25 @@ export function parseMembershipPortalBodyValue(parsed: unknown): MembershipPorta
 function parseMembershipAmountCents(record: Record<string, unknown>): number {
   const amountCents = record.amount_cents;
   if (typeof amountCents !== "number" || !Number.isInteger(amountCents)) {
-    throw new TypeError("Body field amount_cents must be an integer number of cents");
+    throw new RequestValidationError("Body field amount_cents must be an integer number of cents");
   }
   if (amountCents < MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS) {
-    throw new TypeError(`amount_cents must be at least ${MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS} ($5.00)`);
+    throw new RequestValidationError(`amount_cents must be at least ${MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS} ($5.00)`);
   }
   if (amountCents > MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS) {
-    throw new TypeError(`amount_cents must be at most ${MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS} ($1,000.00)`);
+    throw new RequestValidationError(`amount_cents must be at most ${MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS} ($1,000.00)`);
   }
   return amountCents;
 }
 
 export function parseMembershipCheckoutBodyValue(parsed: unknown): MembershipCheckoutPayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
   const record = parsed as Record<string, unknown>;
   const kind = record.kind;
   if (kind !== "one_time" && kind !== "monthly") {
-    throw new TypeError("Body field kind must be one_time or monthly");
+    throw new RequestValidationError("Body field kind must be one_time or monthly");
   }
   return { kind, amount_cents: parseMembershipAmountCents(record) };
 }
@@ -855,33 +856,33 @@ export type MembershipAmountPayload = {
 
 export function parseMembershipAmountBodyValue(parsed: unknown): MembershipAmountPayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
   return { amount_cents: parseMembershipAmountCents(parsed as Record<string, unknown>) };
 }
 
 export function parseInitializeUserDistrictsBodyValue(parsed: unknown): InitializeUserDistrictsPayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
 
   const districtIds = (parsed as { district_ids?: unknown }).district_ids;
   if (!Array.isArray(districtIds)) {
-    throw new TypeError("Request body must include array field: district_ids");
+    throw new RequestValidationError("Request body must include array field: district_ids");
   }
 
   const normalizedDistrictIds: string[] = [];
   const seen = new Set<string>();
   for (const rawDistrictId of districtIds) {
     if (typeof rawDistrictId !== "string") {
-      throw new TypeError("district_ids must contain only UUID strings");
+      throw new RequestValidationError("district_ids must contain only UUID strings");
     }
     const districtId = rawDistrictId.trim();
     if (districtId.length === 0) {
       continue;
     }
     if (!isUuid(districtId)) {
-      throw new TypeError(`district_ids contains invalid UUID: ${districtId}`);
+      throw new RequestValidationError(`district_ids contains invalid UUID: ${districtId}`);
     }
     const dedupeKey = districtId.toLowerCase();
     if (seen.has(dedupeKey)) {
@@ -892,10 +893,10 @@ export function parseInitializeUserDistrictsBodyValue(parsed: unknown): Initiali
   }
 
   if (normalizedDistrictIds.length === 0) {
-    throw new TypeError("district_ids must include at least one district UUID");
+    throw new RequestValidationError("district_ids must include at least one district UUID");
   }
   if (normalizedDistrictIds.length > MAX_INITIALIZE_DISTRICT_IDS) {
-    throw new TypeError(`district_ids supports at most ${MAX_INITIALIZE_DISTRICT_IDS} UUIDs`);
+    throw new RequestValidationError(`district_ids supports at most ${MAX_INITIALIZE_DISTRICT_IDS} UUIDs`);
   }
 
   return {
@@ -908,7 +909,7 @@ export function parseInitializeUserDistrictsBodyValue(parsed: unknown): Initiali
 // fields, mirroring the research-area preferences contract.
 export function parseBallotPreferencesBodyValue(parsed: unknown): UserBallotPreferences {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
 
   // SAVEABLE list, not the full request list: state_baseline is request-only
@@ -919,12 +920,12 @@ export function parseBallotPreferencesBodyValue(parsed: unknown): UserBallotPref
     typeof sort !== "string" ||
     !(SAVEABLE_BALLOT_PREFERENCE_SORTS as readonly string[]).includes(sort.trim())
   ) {
-    throw new TypeError(`Body field sort must be one of: ${SAVEABLE_BALLOT_PREFERENCE_SORTS.join(", ")}`);
+    throw new RequestValidationError(`Body field sort must be one of: ${SAVEABLE_BALLOT_PREFERENCE_SORTS.join(", ")}`);
   }
 
   const followedFirst = (parsed as { followed_first?: unknown }).followed_first;
   if (typeof followedFirst !== "boolean") {
-    throw new TypeError("Body field followed_first must be a boolean");
+    throw new RequestValidationError("Body field followed_first must be a boolean");
   }
 
   return { sort: sort.trim() as BallotSummarySort, followed_first: followedFirst };
@@ -932,13 +933,13 @@ export function parseBallotPreferencesBodyValue(parsed: unknown): UserBallotPref
 
 export function parseEmailPreferencesBodyValue(parsed: unknown): UserEmailPreferences {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
 
   const record = parsed as Record<string, unknown>;
   for (const field of ["email_digest", "email_election_reminders", "email_new_election_alerts", "email_issue_updates", "email_member_newsletter"] as const) {
     if (typeof record[field] !== "boolean") {
-      throw new TypeError(`Body field ${field} must be a boolean`);
+      throw new RequestValidationError(`Body field ${field} must be a boolean`);
     }
   }
 
@@ -953,12 +954,12 @@ export function parseEmailPreferencesBodyValue(parsed: unknown): UserEmailPrefer
 
 export function parseResearchAreaPreferencesBodyValue(parsed: unknown): ResearchAreaPreferencesPayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
 
   const preferences = (parsed as { preferences?: unknown }).preferences;
   if (!Array.isArray(preferences)) {
-    throw new TypeError("Request body must include array field: preferences");
+    throw new RequestValidationError("Request body must include array field: preferences");
   }
 
   const normalizedPreferences: UserResearchAreaPreferenceInput[] = [];
@@ -967,21 +968,21 @@ export function parseResearchAreaPreferencesBodyValue(parsed: unknown): Research
 
   for (const rawPreference of preferences) {
     if (typeof rawPreference !== "object" || rawPreference === null || Array.isArray(rawPreference)) {
-      throw new TypeError("preferences must contain only JSON objects");
+      throw new RequestValidationError("preferences must contain only JSON objects");
     }
 
     const preference = rawPreference as ResearchAreaPreferencePayloadItem;
     if (typeof preference.research_area_id !== "string") {
-      throw new TypeError("preferences[].research_area_id must be a UUID string");
+      throw new RequestValidationError("preferences[].research_area_id must be a UUID string");
     }
 
     const researchAreaId = preference.research_area_id.trim();
     if (!isUuid(researchAreaId)) {
-      throw new TypeError(`preferences contains invalid research_area_id: ${researchAreaId}`);
+      throw new RequestValidationError(`preferences contains invalid research_area_id: ${researchAreaId}`);
     }
     const researchAreaDedupeKey = researchAreaId.toLowerCase();
     if (seenResearchAreaIds.has(researchAreaDedupeKey)) {
-      throw new TypeError(`preferences contains duplicate research_area_id: ${researchAreaId}`);
+      throw new RequestValidationError(`preferences contains duplicate research_area_id: ${researchAreaId}`);
     }
     seenResearchAreaIds.add(researchAreaDedupeKey);
 
@@ -989,22 +990,22 @@ export function parseResearchAreaPreferencesBodyValue(parsed: unknown): Research
     // normalizer for why the bound matters beyond tidiness).
     const rank = preference.rank ?? null;
     if (rank !== null && (!Number.isInteger(rank) || rank < 1 || rank > preferences.length)) {
-      throw new TypeError(`preferences[].rank must be an integer from 1 to ${preferences.length}`);
+      throw new RequestValidationError(`preferences[].rank must be an integer from 1 to ${preferences.length}`);
     }
     if (rank !== null) {
       if (seenRanks.has(rank)) {
-        throw new TypeError(`preferences contains duplicate rank: ${rank}`);
+        throw new RequestValidationError(`preferences contains duplicate rank: ${rank}`);
       }
       seenRanks.add(rank);
     }
 
     const direction = preference.direction;
     if (direction !== undefined && direction !== "support" && direction !== "oppose") {
-      throw new TypeError("preferences[].direction must be 'support' or 'oppose'");
+      throw new RequestValidationError("preferences[].direction must be 'support' or 'oppose'");
     }
     const hardVeto = preference.hard_veto;
     if (hardVeto !== undefined && typeof hardVeto !== "boolean") {
-      throw new TypeError("preferences[].hard_veto must be a boolean");
+      throw new RequestValidationError("preferences[].hard_veto must be a boolean");
     }
 
     normalizedPreferences.push({ researchAreaId, rank, direction, hardVeto });
@@ -1015,7 +1016,7 @@ export function parseResearchAreaPreferencesBodyValue(parsed: unknown): Research
 
 export function parseCandidateFollowBodyValue(parsed: unknown): CandidateFollowPayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
 
   const payload = parsed as {
@@ -1025,20 +1026,20 @@ export function parseCandidateFollowBodyValue(parsed: unknown): CandidateFollowP
     notify_updates?: unknown;
   };
   if (typeof payload.candidate_id !== "string") {
-    throw new TypeError("Request body must include UUID string field: candidate_id");
+    throw new RequestValidationError("Request body must include UUID string field: candidate_id");
   }
   const candidateId = payload.candidate_id.trim();
   if (!isUuid(candidateId)) {
-    throw new TypeError(`candidate_id must be a valid UUID: ${candidateId}`);
+    throw new RequestValidationError(`candidate_id must be a valid UUID: ${candidateId}`);
   }
   if (typeof payload.following !== "boolean") {
-    throw new TypeError("Request body must include boolean field: following");
+    throw new RequestValidationError("Request body must include boolean field: following");
   }
   if (payload.notify_elections !== undefined && typeof payload.notify_elections !== "boolean") {
-    throw new TypeError("notify_elections must be a boolean");
+    throw new RequestValidationError("notify_elections must be a boolean");
   }
   if (payload.notify_updates !== undefined && typeof payload.notify_updates !== "boolean") {
-    throw new TypeError("notify_updates must be a boolean");
+    throw new RequestValidationError("notify_updates must be a boolean");
   }
 
   return {
@@ -1056,7 +1057,7 @@ export type ElectionChoicePayload = UserElectionChoiceInput;
 // race-type check against the actual election happens in the writer.
 export function parseElectionChoiceBodyValue(parsed: unknown): ElectionChoicePayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
 
   const payload = parsed as {
@@ -1066,38 +1067,38 @@ export function parseElectionChoiceBodyValue(parsed: unknown): ElectionChoicePay
     measure_position?: unknown;
   };
   if (typeof payload.election_id !== "string") {
-    throw new TypeError("Request body must include UUID string field: election_id");
+    throw new RequestValidationError("Request body must include UUID string field: election_id");
   }
   const electionId = payload.election_id.trim();
   if (!isUuid(electionId)) {
-    throw new TypeError(`election_id must be a valid UUID: ${electionId}`);
+    throw new RequestValidationError(`election_id must be a valid UUID: ${electionId}`);
   }
 
   const hasCandidate = payload.candidate_id !== undefined;
   const hasMeasure = payload.measure_position !== undefined;
   if (hasCandidate === hasMeasure) {
-    throw new TypeError("Request body must include exactly one of: candidate_id, measure_position");
+    throw new RequestValidationError("Request body must include exactly one of: candidate_id, measure_position");
   }
 
   if (hasCandidate) {
     if (typeof payload.candidate_id !== "string") {
-      throw new TypeError("candidate_id must be a UUID string");
+      throw new RequestValidationError("candidate_id must be a UUID string");
     }
     const candidateId = payload.candidate_id.trim();
     if (!isUuid(candidateId)) {
-      throw new TypeError(`candidate_id must be a valid UUID: ${candidateId}`);
+      throw new RequestValidationError(`candidate_id must be a valid UUID: ${candidateId}`);
     }
     if (typeof payload.chosen !== "boolean") {
-      throw new TypeError("Request body must include boolean field: chosen");
+      throw new RequestValidationError("Request body must include boolean field: chosen");
     }
     return { electionId, candidateId, chosen: payload.chosen };
   }
 
   if (payload.chosen !== undefined) {
-    throw new TypeError("chosen applies only to candidate choices");
+    throw new RequestValidationError("chosen applies only to candidate choices");
   }
   if (payload.measure_position !== null && payload.measure_position !== "yes" && payload.measure_position !== "no") {
-    throw new TypeError("measure_position must be 'yes', 'no', or null");
+    throw new RequestValidationError("measure_position must be 'yes', 'no', or null");
   }
   return { electionId, measurePosition: payload.measure_position };
 }
@@ -1107,39 +1108,39 @@ export function parseElectionChoiceBodyValue(parsed: unknown): ElectionChoicePay
 // window, race type) is per-result work in the engine.
 export function parseAutoPicksBodyValue(parsed: unknown): ApplyAutoPicksInput {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
 
   const payload = parsed as { election_ids?: unknown; mode?: unknown; dry_run?: unknown };
   if (!Array.isArray(payload.election_ids) || payload.election_ids.length === 0) {
-    throw new TypeError("Request body must include non-empty array field: election_ids");
+    throw new RequestValidationError("Request body must include non-empty array field: election_ids");
   }
   if (payload.election_ids.length > MAX_AUTO_PICK_ELECTION_IDS) {
-    throw new TypeError(`election_ids must contain at most ${MAX_AUTO_PICK_ELECTION_IDS} ids`);
+    throw new RequestValidationError(`election_ids must contain at most ${MAX_AUTO_PICK_ELECTION_IDS} ids`);
   }
   const electionIds: string[] = [];
   const seenElectionIds = new Set<string>();
   for (const rawElectionId of payload.election_ids) {
     if (typeof rawElectionId !== "string") {
-      throw new TypeError("election_ids must contain only UUID strings");
+      throw new RequestValidationError("election_ids must contain only UUID strings");
     }
     const electionId = rawElectionId.trim();
     if (!isUuid(electionId)) {
-      throw new TypeError(`election_ids contains an invalid UUID: ${electionId}`);
+      throw new RequestValidationError(`election_ids contains an invalid UUID: ${electionId}`);
     }
     const dedupeKey = electionId.toLowerCase();
     if (seenElectionIds.has(dedupeKey)) {
-      throw new TypeError(`election_ids contains a duplicate: ${electionId}`);
+      throw new RequestValidationError(`election_ids contains a duplicate: ${electionId}`);
     }
     seenElectionIds.add(dedupeKey);
     electionIds.push(electionId);
   }
 
   if (payload.mode !== "fill_empty" && payload.mode !== "replace") {
-    throw new TypeError("mode must be 'fill_empty' or 'replace'");
+    throw new RequestValidationError("mode must be 'fill_empty' or 'replace'");
   }
   if (payload.dry_run !== undefined && typeof payload.dry_run !== "boolean") {
-    throw new TypeError("dry_run must be a boolean");
+    throw new RequestValidationError("dry_run must be a boolean");
   }
 
   return {
@@ -1157,11 +1158,11 @@ const MAX_PUSH_TOKEN_LENGTH = 512;
 function parsePushTokenField(record: Record<string, unknown>): string {
   const raw = record.expo_push_token;
   if (typeof raw !== "string" || raw.trim().length === 0) {
-    throw new TypeError("Request body must include string field: expo_push_token");
+    throw new RequestValidationError("Request body must include string field: expo_push_token");
   }
   const token = raw.trim();
   if (token.length > MAX_PUSH_TOKEN_LENGTH) {
-    throw new TypeError(`expo_push_token must be at most ${MAX_PUSH_TOKEN_LENGTH} characters`);
+    throw new RequestValidationError(`expo_push_token must be at most ${MAX_PUSH_TOKEN_LENGTH} characters`);
   }
   return token;
 }
@@ -1169,7 +1170,7 @@ function parsePushTokenField(record: Record<string, unknown>): string {
 // Parses the POST /api/me/push-tokens body.
 export function parsePushTokenRegisterBodyValue(parsed: unknown): RegisterUserPushTokenInput {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
   const record = parsed as Record<string, unknown>;
 
@@ -1177,16 +1178,16 @@ export function parsePushTokenRegisterBodyValue(parsed: unknown): RegisterUserPu
 
   const platform = record.platform;
   if (platform !== "ios" && platform !== "android") {
-    throw new TypeError('Body field platform must be "ios" or "android"');
+    throw new RequestValidationError('Body field platform must be "ios" or "android"');
   }
 
   const rawNativeToken = record.native_token;
   if (rawNativeToken !== undefined && rawNativeToken !== null && typeof rawNativeToken !== "string") {
-    throw new TypeError("native_token must be a string or null");
+    throw new RequestValidationError("native_token must be a string or null");
   }
   const nativeToken = typeof rawNativeToken === "string" ? rawNativeToken.trim() : "";
   if (nativeToken.length > MAX_PUSH_TOKEN_LENGTH) {
-    throw new TypeError(`native_token must be at most ${MAX_PUSH_TOKEN_LENGTH} characters`);
+    throw new RequestValidationError(`native_token must be at most ${MAX_PUSH_TOKEN_LENGTH} characters`);
   }
 
   return {
@@ -1199,7 +1200,7 @@ export function parsePushTokenRegisterBodyValue(parsed: unknown): RegisterUserPu
 // Parses the DELETE /api/me/push-tokens body.
 export function parsePushTokenDeleteBodyValue(parsed: unknown): { expoPushToken: string } {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
   return { expoPushToken: parsePushTokenField(parsed as Record<string, unknown>) };
 }
@@ -1218,7 +1219,7 @@ export function parseBallotSummaryOptions(
   if (rawSort !== null) {
     const sort = rawSort.trim();
     if (!isBallotSummarySort(sort)) {
-      throw new TypeError(`Query parameter sort must be one of: ${BALLOT_SUMMARY_SORTS.join(", ")}`);
+      throw new RequestValidationError(`Query parameter sort must be one of: ${BALLOT_SUMMARY_SORTS.join(", ")}`);
     }
     options.sort = sort satisfies BallotSummarySort;
   }
@@ -1227,7 +1228,7 @@ export function parseBallotSummaryOptions(
   if (rawFollowedFirst !== null) {
     const value = rawFollowedFirst.trim().toLowerCase();
     if (value !== "true" && value !== "false") {
-      throw new TypeError("Query parameter followed_first must be true or false");
+      throw new RequestValidationError("Query parameter followed_first must be true or false");
     }
     options.followedFirst = value === "true";
   }
@@ -1238,7 +1239,7 @@ export function parseBallotSummaryOptions(
   const rawIncludes = url.searchParams.getAll("include");
   if (rawIncludes.length > 0) {
     if (rawIncludes.some((value) => value.trim() !== "preview")) {
-      throw new TypeError("Query parameter include must be: preview");
+      throw new RequestValidationError("Query parameter include must be: preview");
     }
     options.includePreview = true;
   }
@@ -1250,7 +1251,7 @@ export function parseBallotSummaryOptions(
 export function parseStateResourcesState(url: URL): string {
   const raw = (url.searchParams.get("state") ?? "").trim().toUpperCase();
   if (!/^[A-Z]{2}$/.test(raw)) {
-    throw new TypeError("Query parameter state must be a two-letter state abbreviation");
+    throw new RequestValidationError("Query parameter state must be a two-letter state abbreviation");
   }
   return raw;
 }
@@ -1264,14 +1265,14 @@ export function parseDistrictIds(url: URL): string[] {
 
   const districtIds = [...new Set(rawValues)];
   if (districtIds.length === 0) {
-    throw new TypeError("Query parameter district_ids must include at least one district UUID");
+    throw new RequestValidationError("Query parameter district_ids must include at least one district UUID");
   }
   if (districtIds.length > MAX_BALLOT_DISTRICT_IDS) {
-    throw new TypeError(`Query parameter district_ids supports at most ${MAX_BALLOT_DISTRICT_IDS} UUIDs`);
+    throw new RequestValidationError(`Query parameter district_ids supports at most ${MAX_BALLOT_DISTRICT_IDS} UUIDs`);
   }
   const invalidId = districtIds.find((id) => !isUuid(id));
   if (invalidId) {
-    throw new TypeError(`Query parameter district_ids contains invalid UUID: ${invalidId}`);
+    throw new RequestValidationError(`Query parameter district_ids contains invalid UUID: ${invalidId}`);
   }
   return districtIds;
 }
@@ -1320,13 +1321,13 @@ export function containsNulCharacter(value: unknown): boolean {
 export function parseCandidateSearchQuery(url: URL): string {
   const query = (url.searchParams.get("q") ?? "").trim();
   if (containsNulCharacter(query)) {
-    throw new TypeError("Query parameter q must not contain NUL characters");
+    throw new RequestValidationError("Query parameter q must not contain NUL characters");
   }
   if (query.length < MIN_CANDIDATE_SEARCH_QUERY_LENGTH) {
-    throw new TypeError(`Query parameter q requires at least ${MIN_CANDIDATE_SEARCH_QUERY_LENGTH} characters`);
+    throw new RequestValidationError(`Query parameter q requires at least ${MIN_CANDIDATE_SEARCH_QUERY_LENGTH} characters`);
   }
   if (query.length > MAX_CANDIDATE_SEARCH_QUERY_LENGTH) {
-    throw new TypeError(`Query parameter q supports at most ${MAX_CANDIDATE_SEARCH_QUERY_LENGTH} characters`);
+    throw new RequestValidationError(`Query parameter q supports at most ${MAX_CANDIDATE_SEARCH_QUERY_LENGTH} characters`);
   }
   return query;
 }
@@ -1338,10 +1339,10 @@ export function isCandidateDetailPath(pathname: string): boolean {
 export function parseCandidateId(url: URL): string {
   const candidateId = url.pathname.slice(CANDIDATE_DETAIL_PATH_PREFIX.length).trim();
   if (candidateId.length === 0 || candidateId.includes("/")) {
-    throw new TypeError("Candidate detail path must be /api/candidates/:candidate_id");
+    throw new RequestValidationError("Candidate detail path must be /api/candidates/:candidate_id");
   }
   if (!isUuid(candidateId)) {
-    throw new TypeError(`Candidate detail path contains invalid UUID: ${candidateId}`);
+    throw new RequestValidationError(`Candidate detail path contains invalid UUID: ${candidateId}`);
   }
   return candidateId;
 }
@@ -1362,17 +1363,17 @@ export function isCandidateElectionFinancePath(pathname: string): boolean {
 export function parseCandidateElectionFinancePath(url: URL): { electionId: string; candidateId: string } {
   const match = CANDIDATE_ELECTION_FINANCE_PATH_PATTERN.exec(url.pathname);
   if (!match) {
-    throw new TypeError(
+    throw new RequestValidationError(
       "Candidate election finance path must be /api/elections/:election_id/candidates/:candidate_id/finance"
     );
   }
   const electionId = match[1].trim();
   const candidateId = match[2].trim();
   if (!isUuid(electionId)) {
-    throw new TypeError(`Candidate election finance path contains invalid election UUID: ${electionId}`);
+    throw new RequestValidationError(`Candidate election finance path contains invalid election UUID: ${electionId}`);
   }
   if (!isUuid(candidateId)) {
-    throw new TypeError(`Candidate election finance path contains invalid candidate UUID: ${candidateId}`);
+    throw new RequestValidationError(`Candidate election finance path contains invalid candidate UUID: ${candidateId}`);
   }
   return { electionId, candidateId };
 }
@@ -1389,10 +1390,10 @@ const PICK_CARD_TOKEN_PATTERN = /^[A-Za-z0-9_-]{20,128}$/;
 export function parsePickCardToken(url: URL): string {
   const token = url.pathname.slice(PICK_CARD_PATH_PREFIX.length).trim();
   if (token.length === 0 || token.includes("/")) {
-    throw new TypeError("Pick card path must be /api/pick-cards/:token");
+    throw new RequestValidationError("Pick card path must be /api/pick-cards/:token");
   }
   if (!PICK_CARD_TOKEN_PATTERN.test(token)) {
-    throw new TypeError("Pick card path contains an invalid token");
+    throw new RequestValidationError("Pick card path contains an invalid token");
   }
   return token;
 }
@@ -1409,10 +1410,10 @@ export function isPickCardImagePath(pathname: string): boolean {
 export function parsePickCardImageToken(url: URL): string {
   const token = url.pathname.slice(PICK_CARD_PATH_PREFIX.length, -PICK_CARD_IMAGE_SUFFIX.length).trim();
   if (token.length === 0 || token.includes("/")) {
-    throw new TypeError("Pick card image path must be /api/pick-cards/:token/og-image.png");
+    throw new RequestValidationError("Pick card image path must be /api/pick-cards/:token/og-image.png");
   }
   if (!PICK_CARD_TOKEN_PATTERN.test(token)) {
-    throw new TypeError("Pick card image path contains an invalid token");
+    throw new RequestValidationError("Pick card image path contains an invalid token");
   }
   return token;
 }
@@ -1425,11 +1426,11 @@ const PICK_CARD_ELECTION_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 export function parsePickCardShareBodyValue(parsed: unknown): PickCardSharePayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new TypeError("Request body must be a JSON object");
+    throw new RequestValidationError("Request body must be a JSON object");
   }
   const payload = parsed as { election_date?: unknown };
   if (typeof payload.election_date !== "string") {
-    throw new TypeError("Request body must include string field: election_date");
+    throw new RequestValidationError("Request body must include string field: election_date");
   }
   return { electionDate: assertValidElectionDate(payload.election_date.trim()) };
 }
@@ -1447,7 +1448,7 @@ function assertValidElectionDate(electionDate: string): string {
     !Number.isNaN(parsedDate.getTime()) &&
     parsedDate.toISOString().slice(0, 10) === electionDate;
   if (!isRealDate) {
-    throw new TypeError(`election_date must be a valid YYYY-MM-DD date: ${electionDate}`);
+    throw new RequestValidationError(`election_date must be a valid YYYY-MM-DD date: ${electionDate}`);
   }
   return electionDate;
 }
@@ -1464,10 +1465,10 @@ export function parseAutoPicksClearQuery(url: URL): string | undefined {
 export function parseElectionId(url: URL): string {
   const electionId = url.pathname.slice(ELECTION_DETAIL_PATH_PREFIX.length).trim();
   if (electionId.length === 0 || electionId.includes("/")) {
-    throw new TypeError("Election detail path must be /api/elections/:election_id");
+    throw new RequestValidationError("Election detail path must be /api/elections/:election_id");
   }
   if (!isUuid(electionId)) {
-    throw new TypeError(`Election detail path contains invalid UUID: ${electionId}`);
+    throw new RequestValidationError(`Election detail path contains invalid UUID: ${electionId}`);
   }
   return electionId;
 }
