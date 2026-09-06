@@ -1,5 +1,5 @@
 import { loadProjectEnv } from "../config/env.js";
-import { captureError, describeError, flushSentry, initSentryFromEnv } from "../observability/sentry.js";
+import { captureError, describeError, flushSentry, initSentryFromEnv, scrubText } from "../observability/sentry.js";
 
 /**
  * Shared entrypoint body for the campaign-finance scheduler workers.
@@ -37,9 +37,13 @@ export type FinanceWorkerLike = {
 export type FinanceRunSummary = {
   /** One-line human summary of the known count fields. */
   line: string;
-  /** Candidates (or auto-link attempts) the run could not finish. */
+  /** Candidates, auto-link attempts, or outside-spending years the run could not finish. */
   failureCount: number;
+  /** Bounded, scrubbed `candidateId: error` sample of the failed items, if the result carries them. */
+  failedSample: string[];
 };
+
+const FAILED_SAMPLE_LIMIT = 5;
 
 function readCount(record: Record<string, unknown>, key: string): number | undefined {
   const value = record[key];
@@ -47,15 +51,38 @@ function readCount(record: Record<string, unknown>, key: string): number | undef
 }
 
 /**
+ * Per-candidate outcomes live in `results` (most states) or `candidates`
+ * (Montana, whose items nest the row). Some batch syncs — FEC among them —
+ * only record the error there and never log it, so the degraded line is the
+ * operator's only view of the cause.
+ */
+function readFailedSample(record: Record<string, unknown>): string[] {
+  const items = Array.isArray(record.results) ? record.results : Array.isArray(record.candidates) ? record.candidates : [];
+  const sample: string[] = [];
+  for (const item of items) {
+    if (sample.length >= FAILED_SAMPLE_LIMIT) break;
+    if (!item || typeof item !== "object" || (item as { ok?: unknown }).ok !== false) continue;
+    const entry = item as { candidateId?: unknown; row?: { candidateId?: unknown }; error?: unknown };
+    const candidateId = typeof entry.candidateId === "string" ? entry.candidateId : entry.row?.candidateId;
+    const error = typeof entry.error === "string" ? scrubText(entry.error) : "unknown error";
+    sample.push(`${typeof candidateId === "string" && candidateId ? candidateId : "?"}: ${error}`);
+  }
+  return sample;
+}
+
+/**
  * Reads the count fields the state schedulers agree on. Two shapes exist:
  * selected/synced/failed candidate counts (most states, optionally with
  * auto-link counts) and attempted/succeeded/failed (Montana, South
- * Carolina). Unknown shapes are logged as JSON and never counted as
- * degraded — a missing field is not a failure.
+ * Carolina). Missouri and Montana also refresh outside spending per year
+ * before the direct sync; a failed year is not retried (candidates sync
+ * with `outsideArtifacts: null` and get a fresh `last_synced_at`), so it
+ * counts as a failure too. Unknown shapes are logged as JSON and never
+ * counted as degraded — a missing field is not a failure.
  */
 export function summarizeFinanceRunResult(result: unknown): FinanceRunSummary {
   if (result === null || typeof result !== "object") {
-    return { line: `result=${JSON.stringify(result)}`, failureCount: 0 };
+    return { line: `result=${JSON.stringify(result)}`, failureCount: 0, failedSample: [] };
   }
   const record = result as Record<string, unknown>;
   const parts: string[] = [];
@@ -65,6 +92,8 @@ export function summarizeFinanceRunResult(result: unknown): FinanceRunSummary {
   const failedCandidates = readCount(record, "failedCandidateCount");
   const autoLinkFailed = readCount(record, "autoLinkFailedCount");
   const failedAttempts = readCount(record, "failed");
+  const failedOutsideYears =
+    readCount(record, "failedOutsideArtifactYearCount") ?? readCount(record, "failedOutsideSweepYearCount");
 
   push("selected", readCount(record, "selectedCandidateCount"));
   push("synced", readCount(record, "syncedCandidateCount"));
@@ -76,6 +105,8 @@ export function summarizeFinanceRunResult(result: unknown): FinanceRunSummary {
   push("autoLinkAttempted", readCount(record, "autoLinkAttemptedCount"));
   push("autoLinkLinked", readCount(record, "autoLinkLinkedCount"));
   push("autoLinkFailed", autoLinkFailed);
+  push("outsideYears", readCount(record, "outsideArtifactYearCount") ?? readCount(record, "outsideSweepYearCount"));
+  push("outsideYearsFailed", failedOutsideYears);
   push("totalDueRows", readCount(record, "totalDueRows"));
   if (typeof record.dryRun === "boolean") parts.push(`dryRun=${record.dryRun}`);
   if (typeof record.includeOutside === "boolean") parts.push(`includeOutside=${record.includeOutside}`);
@@ -84,10 +115,11 @@ export function summarizeFinanceRunResult(result: unknown): FinanceRunSummary {
     parts.push(`dataSource=${(dataSource as { mode: string }).mode}`);
   }
 
-  const failureCount = (failedCandidates ?? failedAttempts ?? 0) + (autoLinkFailed ?? 0);
+  const failureCount = (failedCandidates ?? failedAttempts ?? 0) + (autoLinkFailed ?? 0) + (failedOutsideYears ?? 0);
   return {
     line: parts.length > 0 ? parts.join(" ") : `result=${JSON.stringify(result)}`,
     failureCount,
+    failedSample: readFailedSample(record),
   };
 }
 
@@ -120,7 +152,8 @@ export function attachFinanceWorkerReporting(
     const summary = summarizeFinanceRunResult(result);
     const jobId = job.id ?? "unknown";
     if (summary.failureCount > 0) {
-      const message = `${prefix} completed DEGRADED jobId=${jobId} ${summary.line}`;
+      const sample = summary.failedSample.length > 0 ? ` failedSample=[${summary.failedSample.join(" | ")}]` : "";
+      const message = `${prefix} completed DEGRADED jobId=${jobId} ${summary.line}${sample}`;
       deps.error(message);
       deps.capture(new Error(message), { worker: label, event: "degraded", job_id: jobId });
       return;
