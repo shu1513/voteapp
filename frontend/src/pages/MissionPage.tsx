@@ -13,8 +13,13 @@ export const meta: MetaFunction = () =>
     path: "/mission",
   });
 
-const ctaClass =
-  "inline-block rounded-lg bg-rausch px-4 py-2 text-sm font-semibold text-white transition hover:bg-rausch-dark";
+// Distinct colors per ask (user decision): green for membership (same green
+// as the /me/membership "Become an honorary member" button), purple for the
+// one-time contribution (purple-700, picked from a shade lineup). Rausch
+// stays reserved for sign-up/login buttons.
+const ctaBase = "inline-block rounded-lg px-4 py-2 text-sm font-semibold text-white transition";
+const memberCtaClass = `${ctaBase} bg-green-700 hover:bg-green-800`;
+const onceCtaClass = `${ctaBase} bg-purple-700 hover:bg-purple-800`;
 
 // Public mission page: the pitch reads without an account. Payment moved to
 // the kind-specific pages /support/member and /support/once; the buttons here
@@ -77,7 +82,7 @@ export default function MissionPage() {
               affect you.
             </p>
             <p className="mt-2">
-              <Link to="/support/member" className={ctaClass}>
+              <Link to="/support/member" className={memberCtaClass}>
                 See how to become an honorary member
               </Link>
             </p>
@@ -86,7 +91,7 @@ export default function MissionPage() {
             <span className="font-semibold">Make a one-time contribution</span>
             <p className="mt-1">If you’d rather make a one-time contribution.</p>
             <p className="mt-2">
-              <Link to="/support/once" className={ctaClass}>
+              <Link to="/support/once" className={onceCtaClass}>
                 See how to contribute
               </Link>
             </p>
