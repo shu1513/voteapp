@@ -10,11 +10,10 @@ import {
   type AddressSavedNoticeData,
 } from "../components/SavedAddressForm";
 import { ElectionList } from "../components/ElectionCard";
-import { BallotFiltersControl } from "../components/BallotFiltersControl";
 import { RaceTypeTabs } from "../components/RaceTypeTabs";
 import { HowToVoteControl } from "../components/HowToVoteControl";
 import { deriveBallotFilters, railSortForBallotSort, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
-import { useBallotFilterParams } from "../lib/useBallotFilterParams";
+import { useRaceTypeParam } from "../lib/useRaceTypeParam";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useMe } from "@voteapp/api-client";
 import { retryDistrictHandoff, useDistrictHandoffStatus } from "../lib/districtHandoff";
@@ -24,14 +23,13 @@ import { track, useTrackBallotResult } from "../lib/usage";
 
 type SavedBallot = BallotSummary & { matched_address?: string };
 
-// Persisted ordering preferences: unlike the filters' URL params, these
-// save to the account and apply to every future visit. The sort select and
-// the "Followed candidates first" checkbox render in different places (the
-// controls row vs. the Filters disclosure's Order section), so the shared
-// query/mutation plumbing lives in this hook — one instance per control is
-// safe because the mutationKey lock below allows only one save in flight,
-// and each control merges its change from its own pending overlay or the
-// shared cache.
+// Persisted ordering preferences: unlike the race-type tab's URL param,
+// these save to the account and apply to every future visit. The sort select
+// and the "Followed candidates first" checkbox are separate controls, so the
+// shared query/mutation plumbing lives in this hook — one instance per
+// control is safe because the mutationKey lock below allows only one save in
+// flight, and each control merges its change from its own pending overlay
+// or the shared cache.
 function useBallotPreferences() {
   const queryClient = useQueryClient();
   // Optimistic overlay: consecutive changes must merge from the latest view,
@@ -137,8 +135,6 @@ function BallotSortPreference({
   );
 }
 
-// Lives in the Filters disclosure's Order section; persisted, unlike the
-// session-scoped filters above it in the panel.
 function FollowedFirstPreference() {
   const { prefs, update, saving, current, change } = useBallotPreferences();
   if (prefs.isError) {
@@ -188,22 +184,9 @@ export function SavedBallotPage() {
       void navigate(location.pathname, { replace: true, state: null });
     }
   }, [location.pathname, location.state, navigate]);
-  const {
-    weights: savedAreaWeights,
-    savedAreaIds,
-    hasSaved,
-    isLoading: savedAreasLoading,
-  } = useMyResearchAreas();
-  const {
-    issuesRequested,
-    impactRequested,
-    raceTypeRequested,
-    onIssuesFilterChange,
-    onImpactFilterChange,
-    onRaceTypeChange,
-    onShowAll,
-  } = useBallotFilterParams();
-  // ?sort= — the rail's sort carry-over. Session-scoped like the filters:
+  const { weights: savedAreaWeights, savedAreaIds, hasSaved } = useMyResearchAreas();
+  const { raceTypeRequested, onRaceTypeChange } = useRaceTypeParam();
+  // ?sort= — the rail's sort carry-over. Session-scoped like the tab:
   // the explicit param wins over the saved preference server-side
   // ([ballot-personalized-ordering] in apiServer.ts) without touching it.
   // Unknown values read as "no override", like the other params.
@@ -325,15 +308,6 @@ export function SavedBallotPage() {
     );
   }
 
-  // The saved-areas guard mirrors the anonymous ballot page: a ?issues=mine
-  // load must not flash the full ballot while the saved areas are still
-  // unknown. The flag settles on failure too, falling open to the full list
-  // with the request ignored. AFTER the error branch: a ballot error has no
-  // list to withhold, so it must never hide behind this loading notice.
-  if (issuesRequested && savedAreasLoading) {
-    return <LoadingNotice text="Loading your ballot…" />;
-  }
-
   // The ballot arrives already ordered by the saved sort preference; until
   // the preferences query tells the client WHICH sort that was, the cards
   // would stamp no railSort and the detail rail would open in its default
@@ -349,12 +323,14 @@ export function SavedBallotPage() {
   }
 
   const data = ballot.data;
+  // No hide-by-choice filters on the web pages — only the race-type tab
+  // slices the list. The shared derivation still serves mobile's filters.
   const filtersView = deriveBallotFilters({
     elections: data.elections,
     savedAreaIds,
     hasSaved,
-    issuesRequested,
-    impactRequested,
+    issuesRequested: false,
+    impactRequested: null,
     raceTypeRequested,
   });
 
@@ -391,33 +367,19 @@ export function SavedBallotPage() {
           so the list reads the same before and after sign-in. No count
           subtitle. */}
       <h1 className="mb-4 text-title font-bold text-ink">My elections:</h1>
-      {/* Filters and ordering on the left, official how-to-vote links on the
-          right — the same split as the public ballot page, so the resources
-          reach signed-in voters too (their home page redirects here). */}
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex flex-wrap items-start gap-3">
+      {/* Race-type tabs and ordering on the left, official how-to-vote links
+          on the right — the same split as the public ballot page, so the
+          resources reach signed-in voters too (their home page redirects
+          here). */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {/* Offered only when the ballot mixes candidate races and ballot
               measures — a single-type ballot has nothing to switch between. */}
           {filtersView.showRaceTypeTabs ? (
             <RaceTypeTabs raceType={filtersView.raceType} onChange={onRaceTypeChange} />
           ) : null}
-          {/* The Order section makes the disclosure always available here —
-              signed-in viewers always have the followed-first preference even
-              when no filter is offerable. */}
-          <BallotFiltersControl
-            showIssues={filtersView.showIssuesFilter}
-            issuesOn={filtersView.issuesOn}
-            onIssuesChange={onIssuesFilterChange}
-            showImpactHigh={filtersView.showImpactHigh}
-            showImpactMedium={filtersView.showImpactMedium}
-            impactLevel={filtersView.impactLevel}
-            onImpactChange={onImpactFilterChange}
-            activeFilterCount={filtersView.activeFilterCount}
-            hiddenCount={filtersView.hiddenCount}
-            onShowAll={onShowAll}
-            orderSection={<FollowedFirstPreference />}
-          />
           <BallotSortPreference sortOverride={sortOverride} onClearOverride={clearSortOverride} />
+          <FollowedFirstPreference />
         </div>
         <HowToVoteControl states={data.districts.map((district) => district.state)} />
       </div>
@@ -425,14 +387,12 @@ export function SavedBallotPage() {
       {data.elections.length === 0 ? (
         <EmptyNotice text="No upcoming elections found for your districts yet. Check back — new elections are added as they are announced." />
       ) : (
-        // An active filter can empty this list; the "N elections hidden ·
-        // Show all" line in the controls row explains the empty view.
         <ElectionList
           elections={filtersView.visibleElections}
           savedAreaWeights={savedAreaWeights}
           choicesByElectionId={choiceByElectionId}
           // Full query string: the back link must return to this exact
-          // list — the ?issues=/?impact= filters survive the round trip.
+          // list — the ?type= tab and ?sort= override survive the round trip.
           backTo={{ path: location.pathname + location.search, label: "My Elections" }}
           // Tab-unsliced pool + the engaged tab: the detail rail's own
           // race-type tabs start here and can reach the other tab's races.

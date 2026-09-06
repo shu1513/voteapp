@@ -9,7 +9,6 @@ import {
   type BallotSummary,
 } from "@voteapp/api-client";
 import { ElectionList } from "../components/ElectionCard";
-import { BallotFiltersControl } from "../components/BallotFiltersControl";
 import { RaceTypeTabs } from "../components/RaceTypeTabs";
 import { HowToVoteControl } from "../components/HowToVoteControl";
 import {
@@ -25,7 +24,7 @@ import {
   setDraftBallotContext,
   useBallotDraft,
 } from "../lib/ballotDraft";
-import { useBallotFilterParams } from "../lib/useBallotFilterParams";
+import { useRaceTypeParam } from "../lib/useRaceTypeParam";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { useHydrated } from "../lib/useHydrated";
@@ -44,8 +43,7 @@ export function BallotPage() {
   useDocumentTitle("Elections");
   // Signed-in verified visitors get their saved areas listed first (in their
   // own rank order) even on the public ballot; anonymous visitors get an
-  // empty map (no personalization). The same saved areas gate the "Only my
-  // issues" filter, so a verified visitor's one-off search is filterable too.
+  // empty map (no personalization).
   const {
     weights: savedAreaWeights,
     savedAreaIds,
@@ -105,15 +103,7 @@ export function BallotPage() {
   // What the anonymous endpoint is asked for: my_areas is client-side here,
   // so its fetch requests (and caches under) the plain vote_power payload.
   const fetchSort: BallotSort = sort === "my_areas" ? "vote_power" : sort;
-  const {
-    issuesRequested,
-    impactRequested,
-    raceTypeRequested,
-    onIssuesFilterChange,
-    onImpactFilterChange,
-    onRaceTypeChange,
-    onShowAll,
-  } = useBallotFilterParams();
+  const { raceTypeRequested, onRaceTypeChange } = useRaceTypeParam();
 
   const ballot = useQuery({
     queryKey: ["ballot", districtIds.join(","), fetchSort],
@@ -155,24 +145,26 @@ export function BallotPage() {
     );
   }
 
+  // The web pages offer no hide-by-choice filters (the vote_power sort
+  // already surfaces the high-impact races on top); only the race-type tab
+  // slices the list. The shared derivation still serves mobile's filters.
   const filtersView = deriveBallotFilters({
     elections: ballot.data?.elections ?? [],
     savedAreaIds,
     hasSaved,
-    issuesRequested,
-    impactRequested,
+    issuesRequested: false,
+    impactRequested: null,
     raceTypeRequested,
   });
-  // A ?issues=mine (or ?sort=my_areas) load must not flash the full/unsorted
-  // ballot while the saved areas are still unknown (the ballot is one
-  // request; the saved areas are two chained ones, so the ballot usually
-  // lands first). Withhold the list until the flag settles — it settles on
-  // failure too, falling open to the full list with the request ignored: a
-  // ballot app errs toward showing races, and no on-page element claims
-  // filtering or an issue ordering in that state.
-  const awaitingSavedAreas = (issuesRequested || myAreasRequested) && savedAreasLoading;
+  // A ?sort=my_areas load must not flash the unsorted ballot while the saved
+  // areas are still unknown (the ballot is one request; the saved areas are
+  // two chained ones, so the ballot usually lands first). Withhold the list
+  // until the flag settles — it settles on failure too, falling open to the
+  // vote_power order: a ballot app errs toward showing races, and the select
+  // admits the fallback rather than claiming an issue ordering.
+  const awaitingSavedAreas = myAreasRequested && savedAreasLoading;
 
-  // The my_areas re-sort. Runs over the tab/filter-visible list only; the
+  // The my_areas re-sort. Runs over the tab-visible list only; the
   // awaiting-candidates tail needs no special handling because ElectionList
   // splits it into its own closing section regardless of input order (the
   // backend's sink + compare produces the same outcome). The wrapper objects
@@ -221,29 +213,17 @@ export function BallotPage() {
           just-finished elections for BALLOT_PAST_ELECTION_VISIBILITY_DAYS so
           their results stay discoverable, and those are not upcoming. */}
       <h1 className="mb-4 text-title font-bold text-ink">My elections:</h1>
-      {/* Filters and sorting on the left, the "How to vote" resources on the
-          right — the disclosure panels each open inline under their own
+      {/* Race-type tabs and sorting on the left, the "How to vote" resources
+          on the right — its disclosure panel opens inline under its own
           column. The how-to-vote control waits for the ballot response
           because that's where its state abbreviation(s) come from. */}
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex flex-wrap items-start gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {/* Offered only when the ballot mixes candidate races and ballot
               measures — a single-type ballot has nothing to switch between. */}
           {filtersView.showRaceTypeTabs ? (
             <RaceTypeTabs raceType={filtersView.raceType} onChange={onRaceTypeChange} />
           ) : null}
-          <BallotFiltersControl
-            showIssues={filtersView.showIssuesFilter}
-            issuesOn={filtersView.issuesOn}
-            onIssuesChange={onIssuesFilterChange}
-            showImpactHigh={filtersView.showImpactHigh}
-            showImpactMedium={filtersView.showImpactMedium}
-            impactLevel={filtersView.impactLevel}
-            onImpactChange={onImpactFilterChange}
-            activeFilterCount={filtersView.activeFilterCount}
-            hiddenCount={filtersView.hiddenCount}
-            onShowAll={onShowAll}
-          />
           <label className="flex items-center gap-2 text-sm text-ink-soft">
             Sort by
             <select

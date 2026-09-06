@@ -15,9 +15,9 @@ const TABS: { value: BallotRaceType | null; label: string }[] = [
 /**
  * The ballot pages' race-type view switch. The pages render it only when
  * deriveBallotFilters offers it (both race types present — a single-type
- * ballot has nothing to switch between). A view switch, not a filter: it
- * lives outside the Filters disclosure, and the races the tab puts aside
- * are on the other, visibly-labeled tab rather than "hidden".
+ * ballot has nothing to switch between). A view switch, not a filter: the
+ * races the tab puts aside are on the other, visibly-labeled tab rather
+ * than "hidden".
  *
  * Toggle buttons (aria-pressed), not ARIA tabs: the switch re-slices one
  * list in place — there are no separate tab panels to move focus between.

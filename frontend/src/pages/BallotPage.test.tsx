@@ -222,322 +222,6 @@ describe("BallotPage", () => {
     expect(await screen.findByText(/No upcoming elections found for these districts yet/)).toBeInTheDocument();
   });
 
-  describe("ballot filters", () => {
-    const HOUSING = { id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null };
-    const SAVED_HOUSING = {
-      "/api/me": { body: ME_VERIFIED },
-      "/api/me/research-area-preferences": {
-        body: {
-          preferences: [
-            { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null, rank: 1 },
-          ],
-        },
-      },
-    };
-    // A ballot that splits on the saved area: one race on it, one not. Two
-    // elections — far under the long-ballot threshold, so the impact filter
-    // is never offered here.
-    const SPLIT_BALLOT = {
-      body: ballotSummary([
-        electionSummary({ research_areas: [HOUSING] }),
-        electionSummary({ id: "e-2", official_ballot_title: "State Senate" }),
-      ]),
-    };
-    const LOW_POWER = { ...VOTE_POWER, label: "low" as const };
-    const NORMAL_POWER = { ...VOTE_POWER, label: "medium" as const };
-    // 8 elections (past the >7 threshold) splitting on both impact
-    // thresholds: the fixture default label is "high", so Governor and
-    // State Senate sit at the top tier, School Board at Normal, and the
-    // five council seats below. Council seat 1 also carries the saved
-    // area, for the combined-filters case.
-    const LONG_BALLOT = {
-      body: ballotSummary([
-        electionSummary({ research_areas: [HOUSING] }),
-        electionSummary({ id: "e-2", official_ballot_title: "State Senate" }),
-        electionSummary({ id: "e-3", official_ballot_title: "School Board", vote_power: NORMAL_POWER }),
-        ...Array.from({ length: 5 }, (_, seat) =>
-          electionSummary({
-            id: `lo-${seat}`,
-            official_ballot_title: `City Council Seat ${seat + 1}`,
-            vote_power: LOW_POWER,
-            research_areas: seat === 0 ? [HOUSING] : [],
-          })
-        ),
-      ]),
-    };
-
-    it("offers no Filters control on a short ballot without saved areas, even with ?issues=mine", async () => {
-      stubApiRoutes({ ...ANONYMOUS, "/api/ballot": SPLIT_BALLOT });
-      renderBallot("/ballot?d=d-1&issues=mine");
-
-      // The issues request is ignored (the intersection is meaningless
-      // without saved areas) and the impact filter is not offered on a
-      // 2-race ballot, so the whole disclosure has nothing to hold: full
-      // list, no control.
-      expect(await screen.findByText("Governor")).toBeInTheDocument();
-      expect(screen.getByText("State Senate")).toBeInTheDocument();
-      expect(screen.queryByRole("button", { name: /Filters/ })).not.toBeInTheDocument();
-    });
-
-    it("filters to matching races with a hidden count, and Show all restores", async () => {
-      stubApiRoutes({ ...SAVED_HOUSING, "/api/ballot": SPLIT_BALLOT });
-      const user = userEvent.setup();
-      const { router } = renderBallot("/ballot?d=d-1");
-
-      await user.click(await screen.findByRole("button", { name: "Filters" }));
-      await user.click(screen.getByRole("checkbox", { name: "Affects my issues" }));
-      expect(screen.getByText("Governor")).toBeInTheDocument();
-      expect(screen.queryByText("State Senate")).not.toBeInTheDocument();
-      expect(screen.getByText(/1 election hidden/)).toBeInTheDocument();
-      // The badge counts the engaged filter.
-      expect(screen.getByRole("button", { name: "Filters · 1" })).toBeInTheDocument();
-      // URL state like sort, so the choice survives navigation.
-      expect(router.state.location.search).toContain("issues=mine");
-
-      await user.click(screen.getByRole("button", { name: "Show all" }));
-      expect(screen.getByText("State Senate")).toBeInTheDocument();
-      expect(router.state.location.search).not.toContain("issues=mine");
-    });
-
-    it("arrives filtered from a ?issues=mine URL", async () => {
-      stubApiRoutes({ ...SAVED_HOUSING, "/api/ballot": SPLIT_BALLOT });
-      const user = userEvent.setup();
-      renderBallot("/ballot?d=d-1&issues=mine");
-
-      // The hidden-count line proves both async queries (ballot + saved
-      // areas) have landed and the filter engaged; only then is the absence
-      // check race-free.
-      expect(await screen.findByText(/1 election hidden/)).toBeInTheDocument();
-      expect(screen.getByText("Governor")).toBeInTheDocument();
-      expect(screen.queryByText("State Senate")).not.toBeInTheDocument();
-      // The checkbox inside the disclosure arrives checked.
-      await user.click(screen.getByRole("button", { name: "Filters · 1" }));
-      expect(screen.getByRole("checkbox", { name: "Affects my issues" })).toBeChecked();
-    });
-
-    it("offers no Filters control when no race matches the saved areas", async () => {
-      stubApiRoutes({ ...SAVED_HOUSING, "/api/ballot": { body: ballotSummary([electionSummary()]) } });
-      renderBallot("/ballot?d=d-1");
-
-      // Filtering would empty the list, so the (off) toggle has nothing to
-      // offer — and with no other section, the disclosure vanishes too.
-      expect(await screen.findByText("Governor")).toBeInTheDocument();
-      expect(screen.queryByRole("button", { name: /Filters/ })).not.toBeInTheDocument();
-    });
-
-    it("offers no Filters control when every race matches", async () => {
-      stubApiRoutes({
-        ...SAVED_HOUSING,
-        "/api/ballot": { body: ballotSummary([electionSummary({ research_areas: [HOUSING] })]) },
-      });
-      renderBallot("/ballot?d=d-1");
-
-      // Filtering would be a no-op.
-      expect(await screen.findByText("Governor")).toBeInTheDocument();
-      expect(screen.queryByRole("button", { name: /Filters/ })).not.toBeInTheDocument();
-    });
-
-    it("offers the impact thresholds on a long ballot and round-trips the URL", async () => {
-      stubApiRoutes({ ...ANONYMOUS, "/api/ballot": LONG_BALLOT });
-      const user = userEvent.setup();
-      const { router } = renderBallot("/ballot?d=d-1");
-
-      // Anonymous viewer: no saved areas, but the impact filter needs none.
-      await user.click(await screen.findByRole("button", { name: "Filters" }));
-      await user.click(screen.getByRole("checkbox", { name: "High or above" }));
-      expect(screen.getByText("Governor")).toBeInTheDocument();
-      expect(screen.getByText("State Senate")).toBeInTheDocument();
-      expect(screen.queryByText("School Board")).not.toBeInTheDocument();
-      expect(screen.queryByText("City Council Seat 1")).not.toBeInTheDocument();
-      expect(screen.getByText(/6 elections hidden/)).toBeInTheDocument();
-      expect(router.state.location.search).toContain("impact=high");
-
-      await user.click(screen.getByRole("button", { name: "Show all" }));
-      expect(screen.getByText("City Council Seat 1")).toBeInTheDocument();
-      expect(router.state.location.search).not.toContain("impact=high");
-    });
-
-    it("swaps to the Normal-or-above threshold instead of combining", async () => {
-      stubApiRoutes({ ...ANONYMOUS, "/api/ballot": LONG_BALLOT });
-      const user = userEvent.setup();
-      const { router } = renderBallot("/ballot?d=d-1");
-
-      await user.click(await screen.findByRole("button", { name: "Filters" }));
-      await user.click(screen.getByRole("checkbox", { name: "High or above" }));
-      expect(screen.getByText(/6 elections hidden/)).toBeInTheDocument();
-
-      // The thresholds nest, so checking the other one REPLACES the first
-      // rather than combining with it.
-      await user.click(screen.getByRole("checkbox", { name: "Normal or above" }));
-      expect(screen.getByRole("checkbox", { name: "High or above" })).not.toBeChecked();
-      expect(screen.getByRole("checkbox", { name: "Normal or above" })).toBeChecked();
-      expect(screen.getByText("School Board")).toBeInTheDocument();
-      expect(screen.queryByText("City Council Seat 1")).not.toBeInTheDocument();
-      expect(screen.getByText(/5 elections hidden/)).toBeInTheDocument();
-      expect(router.state.location.search).toContain("impact=medium");
-
-      // Unchecking the engaged threshold means "any impact".
-      await user.click(screen.getByRole("checkbox", { name: "Normal or above" }));
-      expect(screen.getByText("City Council Seat 1")).toBeInTheDocument();
-      expect(router.state.location.search).not.toContain("impact=");
-    });
-
-    it("withholds the Normal option when the ballot has no Normal races", async () => {
-      // High and Normal-or-above would keep the same set: offering both
-      // would be two checkboxes doing the same thing.
-      stubApiRoutes({
-        ...ANONYMOUS,
-        "/api/ballot": {
-          body: ballotSummary([
-            electionSummary({ research_areas: [HOUSING] }),
-            electionSummary({ id: "e-2", official_ballot_title: "State Senate" }),
-            ...Array.from({ length: 6 }, (_, seat) =>
-              electionSummary({
-                id: `lo-${seat}`,
-                official_ballot_title: `City Council Seat ${seat + 1}`,
-                vote_power: LOW_POWER,
-              })
-            ),
-          ]),
-        },
-      });
-      const user = userEvent.setup();
-      renderBallot("/ballot?d=d-1");
-
-      await user.click(await screen.findByRole("button", { name: "Filters" }));
-      expect(screen.getByRole("checkbox", { name: "High or above" })).toBeInTheDocument();
-      expect(screen.queryByRole("checkbox", { name: "Normal or above" })).not.toBeInTheDocument();
-    });
-
-    it("applies a ?impact=high URL even on a short ballot", async () => {
-      // The threshold gates the OFFER only: a shared link onto a 2-race
-      // ballot still filters, and the engaged control stays visible.
-      stubApiRoutes({
-        ...ANONYMOUS,
-        "/api/ballot": {
-          body: ballotSummary([
-            electionSummary(),
-            electionSummary({ id: "e-2", official_ballot_title: "City Council", vote_power: LOW_POWER }),
-          ]),
-        },
-      });
-      renderBallot("/ballot?d=d-1&impact=high");
-
-      expect(await screen.findByText(/1 election hidden/)).toBeInTheDocument();
-      expect(screen.getByText("Governor")).toBeInTheDocument();
-      expect(screen.queryByText("City Council")).not.toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "Filters · 1" })).toBeInTheDocument();
-    });
-
-    it("combines both filters into one hidden count, and Show all clears both", async () => {
-      stubApiRoutes({ ...SAVED_HOUSING, "/api/ballot": LONG_BALLOT });
-      const user = userEvent.setup();
-      const { router } = renderBallot("/ballot?d=d-1&issues=mine&impact=high");
-
-      // Only Governor is both on the saved area AND high impact; Council
-      // Seat 1 matches the saved area but not the label, State Senate the
-      // reverse.
-      expect(await screen.findByText(/7 elections hidden/)).toBeInTheDocument();
-      expect(screen.getByText("Governor")).toBeInTheDocument();
-      expect(screen.queryByText("State Senate")).not.toBeInTheDocument();
-      expect(screen.queryByText("City Council Seat 1")).not.toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "Filters · 2" })).toBeInTheDocument();
-
-      // One action clears both params.
-      await user.click(screen.getByRole("button", { name: "Show all" }));
-      expect(screen.getByText("State Senate")).toBeInTheDocument();
-      expect(screen.getByText("City Council Seat 1")).toBeInTheDocument();
-      expect(router.state.location.search).not.toContain("issues=mine");
-      expect(router.state.location.search).not.toContain("impact=high");
-    });
-
-    it("withholds the list on a ?issues=mine load until the saved areas arrive", async () => {
-      // The ballot is one request; the saved areas are two chained ones, so
-      // the ballot usually lands first. The page must not flash the full
-      // unfiltered list in that window.
-      let releasePreferences!: () => void;
-      const preferencesGate = new Promise<void>((resolve) => {
-        releasePreferences = resolve;
-      });
-      stubApiRoutes({
-        "/api/me": { body: ME_VERIFIED },
-        "/api/me/research-area-preferences": async () => {
-          await preferencesGate;
-          return SAVED_HOUSING["/api/me/research-area-preferences"];
-        },
-        "/api/ballot": SPLIT_BALLOT,
-      });
-      renderBallot("/ballot?d=d-1&issues=mine");
-
-      // The ballot payload lands well within this window; no race may
-      // render while the saved areas are still unknown.
-      await expect(screen.findByText("Governor", {}, { timeout: 250 })).rejects.toThrow();
-      expect(screen.queryByText("State Senate")).not.toBeInTheDocument();
-      expect(screen.getByText("Loading your elections…")).toBeInTheDocument();
-
-      releasePreferences();
-      expect(await screen.findByText("Governor")).toBeInTheDocument();
-      expect(screen.queryByText("State Senate")).not.toBeInTheDocument();
-    });
-
-    it("shows a ballot error instead of the withhold notice while saved areas still load", async () => {
-      // A ballot error has no list to withhold: it must win over the
-      // saved-areas gate, not render alongside (or behind) a loading notice.
-      const neverSettles = new Promise<never>(() => {});
-      stubApiRoutes({
-        "/api/me": { body: ME_VERIFIED },
-        "/api/me/research-area-preferences": () => neverSettles,
-        "/api/ballot": apiError(500, "internal_error", "boom"),
-      });
-      renderBallot("/ballot?d=d-1&issues=mine");
-
-      expect(
-        await screen.findByText("The service is having trouble right now. Please try again shortly.")
-      ).toBeInTheDocument();
-      expect(screen.queryByText("Loading your elections…")).not.toBeInTheDocument();
-    });
-
-    it("fails open to the full list when the saved-areas fetch fails", async () => {
-      stubApiRoutes({
-        "/api/me": { body: ME_VERIFIED },
-        "/api/me/research-area-preferences": apiError(500, "internal_error", "boom"),
-        "/api/ballot": SPLIT_BALLOT,
-      });
-      renderBallot("/ballot?d=d-1&issues=mine");
-
-      // Deliberate fail-open, not a spinner: a ballot app errs toward
-      // showing races, and no on-page element claims filtering here — the
-      // request is ignored and the control stays hidden.
-      expect(await screen.findByText("Governor")).toBeInTheDocument();
-      expect(screen.getByText("State Senate")).toBeInTheDocument();
-      expect(screen.queryByRole("button", { name: /Filters/ })).not.toBeInTheDocument();
-    });
-
-    it("keeps an active filter applied and visible when it empties the ballot", async () => {
-      stubApiRoutes({
-        ...SAVED_HOUSING,
-        "/api/ballot": {
-          body: ballotSummary([
-            electionSummary(),
-            electionSummary({ id: "e-2", official_ballot_title: "State Senate" }),
-          ]),
-        },
-      });
-      const user = userEvent.setup();
-      renderBallot("/ballot?d=d-1&issues=mine");
-
-      // No race matches: an active filter must not silently stop applying —
-      // it honestly empties the view, with the hidden count and Show all
-      // explaining the empty list.
-      expect(await screen.findByText(/2 elections hidden/)).toBeInTheDocument();
-      expect(screen.queryByText("Governor")).not.toBeInTheDocument();
-      expect(screen.queryByText("State Senate")).not.toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "Show all" })).toBeInTheDocument();
-      await user.click(screen.getByRole("button", { name: "Filters · 1" }));
-      expect(screen.getByRole("checkbox", { name: "Affects my issues" })).toBeChecked();
-    });
-  });
-
   describe("race-type tabs", () => {
     // A ballot mixing both race types — the only shape that offers the tabs.
     const MIXED_BALLOT = {
@@ -560,7 +244,7 @@ describe("BallotPage", () => {
       await user.click(screen.getByRole("button", { name: "Ballot Measures" }));
       expect(screen.getByText("Measure A")).toBeInTheDocument();
       expect(screen.queryByText("Governor")).not.toBeInTheDocument();
-      // A view switch, not a filter: no hidden count, no Filters badge.
+      // A view switch, not a filter: nothing reads as "hidden".
       expect(screen.queryByText(/hidden/)).not.toBeInTheDocument();
       // URL state like sort, so the tab survives navigating into a race.
       expect(router.state.location.search).toContain("type=ballot_measure");
@@ -794,6 +478,64 @@ describe("BallotPage my_areas sort", () => {
     expect(screen.getByRole("combobox")).toHaveValue("vote_power");
     const options = screen.getAllByRole("option").map((option) => option.textContent);
     expect(options).not.toContain("My issues");
+  });
+
+  it("withholds the list on a ?sort=my_areas load until the saved areas arrive", async () => {
+    // The ballot is one request; the saved areas are two chained ones, so
+    // the ballot usually lands first. The page must not flash the
+    // vote_power order while the saved areas are still unknown.
+    let releasePreferences!: () => void;
+    const preferencesGate = new Promise<void>((resolve) => {
+      releasePreferences = resolve;
+    });
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/research-area-preferences": async () => {
+        await preferencesGate;
+        return SAVED_HOUSING["/api/me/research-area-preferences"];
+      },
+      "/api/ballot": BALLOT,
+    });
+    renderBallot("/ballot?d=d-1&sort=my_areas");
+
+    await expect(screen.findByText("Governor", {}, { timeout: 250 })).rejects.toThrow();
+    expect(screen.getByText("Loading your elections…")).toBeInTheDocument();
+
+    releasePreferences();
+    await screen.findByText("Housing Board");
+    expect(cardOrder()).toEqual(["Housing Board", "Governor"]);
+  });
+
+  it("shows a ballot error instead of the withhold notice while saved areas still load", async () => {
+    // A ballot error has no list to withhold: it must win over the
+    // saved-areas gate, not render alongside (or behind) a loading notice.
+    const neverSettles = new Promise<never>(() => {});
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/research-area-preferences": () => neverSettles,
+      "/api/ballot": apiError(500, "internal_error", "boom"),
+    });
+    renderBallot("/ballot?d=d-1&sort=my_areas");
+
+    expect(
+      await screen.findByText("The service is having trouble right now. Please try again shortly.")
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Loading your elections…")).not.toBeInTheDocument();
+  });
+
+  it("falls open to the vote_power order when the saved-areas fetch fails", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/research-area-preferences": apiError(500, "internal_error", "boom"),
+      "/api/ballot": BALLOT,
+    });
+    renderBallot("/ballot?d=d-1&sort=my_areas");
+
+    // Deliberate fail-open, not a spinner: nothing to score against, so the
+    // payload order shows and the select admits the fallback.
+    await screen.findByText("Housing Board");
+    expect(cardOrder()).toEqual(["Governor", "Housing Board"]);
+    expect(screen.getByRole("combobox")).toHaveValue("vote_power");
   });
 
   it("carries a chosen My issues sort into the URL and seeds the detail rail", async () => {
