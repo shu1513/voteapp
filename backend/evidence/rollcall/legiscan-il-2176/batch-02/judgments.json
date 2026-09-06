@@ -230,8 +230,8 @@
       "measure_id": "HB 460",
       "vote_date": "2025-05-30",
       "review_status": "approved",
-      "yea_description": "Voted to pass House Bill 460. It bars limits on Monetary Award Program college grants for covered students unless state law requires them. Local student-aid rules must allow the widest eligibility for Illinois residents that state law permits. The Illinois Senate passed it 34-18, and it became law.",
-      "nay_description": "Voted against House Bill 460. It bars limits on Monetary Award Program college grants for covered students unless state law requires them. Local student-aid rules must allow the widest eligibility for Illinois residents that state law permits. The Illinois Senate passed it 34-18, and it became law.",
+      "yea_description": "Voted to pass House Bill 460 in the Illinois Senate, the vote that sent it to the governor. Illinois already gives state college aid to residents who cannot get federal aid. That group includes students without lawful permanent residence and transgender students blocked for not registering for selective service. This law extends the same eligibility to student aid offered by city and county governments. It also bars extra caps on those students' Monetary Award Program grants, the state's main college grant, beyond caps state law requires. Eligibility rules must be read to cover as many Illinois residents as the law allows. The Senate passed it 34-18 and it became Public Act 104-164, effective January 1, 2026.",
+      "nay_description": "Voted against House Bill 460 in the Illinois Senate. The bill widened a state law that gives college aid to Illinois residents who cannot get federal aid. That group includes students without lawful permanent residence and transgender students blocked for not registering for selective service. It added student aid offered by city and county governments to what those students may seek. It also barred extra caps on their Monetary Award Program grants, the state's main college grant. The Senate passed it 34-18 and it became Public Act 104-164, effective January 1, 2026.",
       "labels": [
         {
           "slug": "immigration",
@@ -503,8 +503,8 @@
       "measure_id": "HB 5390",
       "vote_date": "2026-04-16",
       "review_status": "approved",
-      "yea_description": "Voted to pass House Bill 5390. Hospitals cannot deny billing protections or uninsured discounts because of immigration status or assets, or force patients to seek public insurance first; they must use one state aid form. Patients get at least 90 days to appeal, approvals last at least 12 months, and bills and collection notices must explain aid in the patient's preferred language. The Illinois House passed it 73-34, and it became law.",
-      "nay_description": "Voted against House Bill 5390. Hospitals cannot deny billing protections or uninsured discounts because of immigration status or assets, or force patients to seek public insurance first; they must use one state aid form. Patients get at least 90 days to appeal, approvals last at least 12 months, and bills and collection notices must explain aid in the patient's preferred language. The Illinois House passed it 73-34, and it became law.",
+      "yea_description": "Voted to pass House Bill 5390. As enacted, hospitals must use only the single financial assistance application form the Attorney General writes by rule, and interested stakeholders may send the Attorney General recommendations on that form by December 31, 2026. Once a patient is approved for financial assistance, the approval lasts at least 12 months from the first service date covered by the application. The Illinois House passed it 73-34, and it became law.",
+      "nay_description": "Voted against House Bill 5390. As enacted, hospitals must use only the single financial assistance application form the Attorney General writes by rule, and interested stakeholders may send the Attorney General recommendations on that form by December 31, 2026. Once a patient is approved for financial assistance, the approval lasts at least 12 months from the first service date covered by the application. The Illinois House passed it 73-34, and it became law.",
       "labels": [
         {
           "slug": "healthcare_affordability",
@@ -521,8 +521,8 @@
       "measure_id": "HB 5390",
       "vote_date": "2026-05-20",
       "review_status": "approved",
-      "yea_description": "Voted to pass House Bill 5390. Hospitals cannot deny billing protections or uninsured discounts because of immigration status or assets, or force patients to seek public insurance first; they must use one state aid form. Patients get at least 90 days to appeal, approvals last at least 12 months, and bills and collection notices must explain aid in the patient's preferred language. The Illinois Senate passed it 39-19, and it became law.",
-      "nay_description": "Voted against House Bill 5390. Hospitals cannot deny billing protections or uninsured discounts because of immigration status or assets, or force patients to seek public insurance first; they must use one state aid form. Patients get at least 90 days to appeal, approvals last at least 12 months, and bills and collection notices must explain aid in the patient's preferred language. The Illinois Senate passed it 39-19, and it became law.",
+      "yea_description": "Voted to pass House Bill 5390. A House amendment cut the bill down before either chamber voted, so the law now makes only two changes: hospitals must use a single financial-assistance application form written by the Attorney General, and an approval for financial assistance stays valid at least 12 months. The earlier language on immigration status, uninsured discounts, public-insurance requirements, appeal rights, and preferred-language notices was dropped. The Illinois Senate passed it 39-19, and it became law.",
+      "nay_description": "Voted against House Bill 5390. A House amendment cut the bill down before either chamber voted, so the law now makes only two changes: hospitals must use a single financial-assistance application form written by the Attorney General, and an approval for financial assistance stays valid at least 12 months. The earlier language on immigration status, uninsured discounts, public-insurance requirements, appeal rights, and preferred-language notices was dropped. The Illinois Senate passed it 39-19, and it became law.",
       "labels": [
         {
           "slug": "healthcare_affordability",
