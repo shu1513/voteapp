@@ -839,6 +839,29 @@ describe("ElectionPage", () => {
     expect(within(row).getByRole("button", { name: "Show less" })).toBeInTheDocument();
   });
 
+  it("starts the affects row collapsed again after a sibling walk", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const areas = [
+      { id: "a-1", slug: "civil_rights", name: "Civil Rights", description: null },
+      { id: "a-2", slug: "environment_and_public_health", name: "Environment and Public Health", description: null },
+      { id: "a-3", slug: "gun_control", name: "Gun Control", description: null },
+      { id: "a-4", slug: "housing_affordability", name: "Housing Affordability", description: null },
+    ];
+    // Same route stays mounted across param changes, so the list's expanded
+    // state would otherwise carry over to the next race.
+    const { router } = renderElection(({ params }) =>
+      electionDetail({ id: params.electionId === "e-2" ? "e-2" : "e-1", research_areas: areas })
+    );
+
+    await user.click(await screen.findByRole("button", { name: "+1 more issues" }));
+    expect(screen.getByRole("button", { name: "Show less" })).toBeInTheDocument();
+
+    await router.navigate("/elections/e-2");
+    expect(await screen.findByRole("button", { name: "+1 more issues" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Show less" })).not.toBeInTheDocument();
+  });
+
   it("renders a legacy duty-list summary (no period-terminated hook) as plain bullets", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>

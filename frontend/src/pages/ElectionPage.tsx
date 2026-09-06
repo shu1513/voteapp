@@ -697,6 +697,10 @@ export function ElectionPage() {
               // like the cards, but here the overflow expands in place — this
               // page is where the full set lives.
               <CappedInlineList
+                // Keyed by election: the route element stays mounted across
+                // sibling walks, and the list's expanded state must not
+                // carry from one race to the next.
+                key={data.id}
                 label="Affects:"
                 noun="issues"
                 className="mt-3 text-sm"
@@ -1081,6 +1085,10 @@ export function ElectionPage() {
                       // point), then the candidate's busiest areas; the rest
                       // expand in place.
                       <CappedInlineList
+                        // Election in the key too: the card is keyed by
+                        // candidate alone, so one person running in two
+                        // sibling races would otherwise keep the list open.
+                        key={`${data.id}:${candidate.candidate_id}`}
                         label="Records:"
                         noun="issues"
                         className="mt-2 text-sm"

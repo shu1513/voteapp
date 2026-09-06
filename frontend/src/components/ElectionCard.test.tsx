@@ -808,8 +808,9 @@ describe("ElectionCard result chip", () => {
     // The wording must not promise a filter the address lookup cannot do.
     const notes = screen.getAllByText(/may not cover your address/);
     expect(notes).toHaveLength(2);
-    expect(notes[0]).toHaveTextContent("These seats each cover part of Alaska");
-    expect(notes[1]).toHaveTextContent("These seats each cover part of Travis County");
+    expect(notes[0]).toHaveTextContent("These seats each cover part of Alaska — one may not cover your address.");
+    // A run of one seat reads in the singular.
+    expect(notes[1]).toHaveTextContent("This seat covers part of Travis County, Texas — it may not cover your address.");
     // The seat name still reads from the title; the card carries no line of its own.
     expect(screen.getByText("Justice of the Peace Ward 3")).toBeInTheDocument();
     expect(screen.queryByText("Ward 3")).not.toBeInTheDocument();

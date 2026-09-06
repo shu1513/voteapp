@@ -83,16 +83,19 @@ function splitSeatRuns(elections: ElectionSummary[]): { district: string | null;
   return runs;
 }
 
-function SeatRun({ district, children }: { district: string | null; children: ReactNode }) {
+function SeatRun({ district, count, children }: { district: string | null; count: number; children: ReactNode }) {
   if (district === null) {
     return <>{children}</>;
   }
   // Note hugs its cards (tighter gap inside than the list's own spacing) so
-  // it reads as belonging to the run below, not to the card above.
+  // it reads as belonging to the run below, not to the card above. A run of
+  // one seat gets the singular.
   return (
     <div>
       <p className="mb-1.5 text-sm text-ink-soft">
-        These seats each cover part of {district} — one may not cover your address.
+        {count === 1
+          ? `This seat covers part of ${district} — it may not cover your address.`
+          : `These seats each cover part of ${district} — one may not cover your address.`}
       </p>
       <div className="space-y-3">{children}</div>
     </div>
@@ -214,7 +217,7 @@ export function ElectionList({
           <h2 className="text-heading font-bold text-ink">Elections on {formatElectionDate(group.date)}</h2>
           <div className="mt-2 space-y-3">
             {splitSeatRuns(group.elections).map((run) => (
-              <SeatRun key={run.elections[0].id} district={run.district}>
+              <SeatRun key={run.elections[0].id} district={run.district} count={run.elections.length}>
                 {run.elections.map((election) => (
                   <ElectionCard
                     key={election.id}
@@ -241,7 +244,7 @@ export function ElectionList({
           <h2 className="text-heading font-bold text-ink">Elections awaiting candidate information</h2>
           <div className="mt-2 space-y-3">
             {splitSeatRuns(awaitingCandidates).map((run) => (
-              <SeatRun key={run.elections[0].id} district={run.district}>
+              <SeatRun key={run.elections[0].id} district={run.district} count={run.elections.length}>
                 {run.elections.map((election) => (
                   <ElectionCard
                     key={election.id}

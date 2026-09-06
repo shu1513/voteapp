@@ -921,6 +921,10 @@ export function CandidatePage() {
         {/* Directly after the summary, before the pick rows — the same order
             as the measure page (explainer boxes, then choice buttons). */}
         <StanceSummary
+          // Keyed by candidate: the route element stays mounted across
+          // sibling walks, and the boxes' expanded state must start fresh
+          // for each person.
+          key={candidate.candidate_id}
           candidateName={candidate.display_name}
           records={candidate.records}
           // Personalized order/emphasis only in the "my issues first" view,
