@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "cb8edfca-847a-4f04-bb83-8fafe2d363d9",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "475c9397-c49f-47cb-8c20-010f3ddd6a6f",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "5990965b-952b-4f68-9d97-cd5651257df6",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

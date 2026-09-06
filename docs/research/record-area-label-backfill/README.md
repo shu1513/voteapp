@@ -31,6 +31,7 @@ File mode makes **no AI call** (`ai_calls=0` in every run summary). It is additi
 | AL | 382 | 201 | 142 | 39 |
 | FL | 271 | 124 | 71 | 74 |
 | AZ | 264 | 124 | 100 | 34 |
+| NC | 231 | 114 | 74 | 42 |
 | CO | 264 | 154 | 101 | 9 |
 
 `labels-<candidate_id>.json` is the payload sent to the wrapper. `batch<N>-output.json` holds the full proposal, including the skip reasons and the retire-candidate flags.

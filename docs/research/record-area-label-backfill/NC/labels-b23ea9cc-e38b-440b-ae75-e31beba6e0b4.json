@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "eb51758f-44d5-401c-8f7b-d250ae804175",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "eb51758f-44d5-401c-8f7b-d250ae804175",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "b0de49a4-f4cf-4ead-b7b1-36e4c68d11c7",
+   "research_area_slug": "womens_reproductive_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "b0de49a4-f4cf-4ead-b7b1-36e4c68d11c7",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "b0de49a4-f4cf-4ead-b7b1-36e4c68d11c7",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  }
+ ]
+}
