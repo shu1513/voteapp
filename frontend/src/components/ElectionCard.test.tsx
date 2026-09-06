@@ -94,18 +94,10 @@ describe("ElectionCard", () => {
     expect(screen.getByText("Alaska")).toBeInTheDocument();
   });
 
-  it("says Uncontested for a lone candidate on a final list, nothing while the list is open", () => {
+  it("shows the count only for a lone candidate — never 'Uncontested', which the payload can't prove", () => {
     renderCard(electionSummary({ candidate_count: 1 }));
-    expect(screen.getByText("Uncontested")).toBeInTheDocument();
-
-    renderCard(
-      electionSummary({
-        id: "e-2",
-        candidate_count: 1,
-        candidate_roster_status: { reason: "awaiting_official_roster", check_after: null },
-      })
-    );
-    expect(screen.getAllByText("Uncontested")).toHaveLength(1);
+    expect(screen.getByText("1 candidate")).toBeInTheDocument();
+    expect(screen.queryByText(/Uncontested/)).not.toBeInTheDocument();
   });
 
   it("color-codes the vote-power badge by level", () => {

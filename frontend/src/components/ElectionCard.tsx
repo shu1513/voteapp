@@ -373,12 +373,14 @@ function ElectionCard({
             <span className="whitespace-nowrap text-sm text-ink-soft">
               {formatRosterStatus(election.candidate_roster_status).short}
             </span>
-          ) : election.candidate_count === 1 && !election.candidate_roster_status ? (
-            // The one count worth a word: a lone candidate on a final list
-            // means the race is decided. Any other count changed nothing
-            // about whether to open the race, so it no longer renders; a
-            // lone name on a not-yet-final list stays silent — more may come.
-            <span className="whitespace-nowrap text-sm text-ink-soft">Uncontested</span>
+          ) : election.candidate_count === 1 ? (
+            // The one count worth showing: a lone name usually means the race
+            // is decided. Stated as a count, not "Uncontested" — the roster
+            // status only exists for empty rosters, so nothing here proves
+            // the list is complete (a mid-import roster shows its first name
+            // alone for a while). Any other count changed nothing about
+            // whether to open the race, so it no longer renders.
+            <span className="whitespace-nowrap text-sm text-ink-soft">1 candidate</span>
           ) : null}
         </span>
       </div>
