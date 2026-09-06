@@ -1,0 +1,202 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1551228,
+   "measure_id": "AB 119",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 119, which would have let the Attorney General investigate and sue to stop private paramilitary groups, meaning three or more people under a command structure who publicly patrol, drill or train while armed. Someone hurt by such a group could also sue for damages. Historical reenactors carrying no ammunition, licensed security firms, school military science classes and the National Guard were all exempt. The Nevada Assembly passed it 27-15, but a Senate committee let it die at a deadline, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 119, which would have let the Attorney General investigate and sue to stop private paramilitary groups, meaning three or more people under a command structure who publicly patrol, drill or train while armed. Someone hurt by such a group could also sue for damages. Historical reenactors carrying no ammunition, licensed security firms, school military science classes and the National Guard were all exempt. The Nevada Assembly passed it 27-15, but a Senate committee let it die at a deadline, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1551571,
+   "measure_id": "AB 306",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 306, which would have required Clark County to run at least 10 mail ballot drop-off locations and Washoe County at least 5, in the days between the end of early voting and a general election. Each had to open at least seven hours a day, and smaller counties could choose whether to open any. Every ballot drop box would also have had to be watched whenever open and locked away when not. The Nevada Assembly passed it 28-14, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 306, which would have required Clark County to run at least 10 mail ballot drop-off locations and Washoe County at least 5, in the days between the end of early voting and a general election. Each had to open at least seven hours a day, and smaller counties could choose whether to open any. Every ballot drop box would also have had to be watched whenever open and locked away when not. The Nevada Assembly passed it 28-14, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1569423,
+   "measure_id": "AB 306",
+   "vote_date": "2025-05-12",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 306, which would have required Clark County to run at least 10 mail ballot drop-off locations and Washoe County at least 5, in the days between the end of early voting and a general election. Each had to open at least seven hours a day, and smaller counties could choose whether to open any. Every ballot drop box would also have had to be watched whenever open and locked away when not. The Nevada Senate passed it 12-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 306, which would have required Clark County to run at least 10 mail ballot drop-off locations and Washoe County at least 5, in the days between the end of early voting and a general election. Each had to open at least seven hours a day, and smaller counties could choose whether to open any. Every ballot drop box would also have had to be watched whenever open and locked away when not. The Nevada Senate passed it 12-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1575936,
+   "measure_id": "SB 155",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 155, which would have created a narrow exception to Nevada's rule that only citizens may hold public jobs. Someone legally authorized to work in the United States who has already served as a police officer in another state could have been hired as a peace officer here. It applied to peace officers only, and every other training and certification requirement still applied. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 155, which would have created a narrow exception to Nevada's rule that only citizens may hold public jobs. Someone legally authorized to work in the United States who has already served as a police officer in another state could have been hired as a peace officer here. It applied to peace officers only, and every other training and certification requirement still applied. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1552223,
+   "measure_id": "SB 155",
+   "vote_date": "2025-04-18",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 155, which would have created a narrow exception to Nevada's rule that only citizens may hold public jobs. Someone legally authorized to work in the United States who has already served as a police officer in another state could have been hired as a peace officer here. It applied to peace officers only, and every other training and certification requirement still applied. The Nevada Senate passed it 13-7, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 155, which would have created a narrow exception to Nevada's rule that only citizens may hold public jobs. Someone legally authorized to work in the United States who has already served as a police officer in another state could have been hired as a peace officer here. It applied to peace officers only, and every other training and certification requirement still applied. The Nevada Senate passed it 13-7, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1582786,
+   "measure_id": "SB 156",
+   "vote_date": "2025-05-31",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 156, which would have made the Attorney General appoint a Special Counsel for the Prevention of Gun Violence to advise on the law, work with researchers, and collect data on arrests and prosecutions under a set of gun statutes. The Special Counsel could have set up a grant program for community violence prevention, but only with money that turned up, because the bill appropriated none. The Nevada Assembly passed it 25-14, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 156, which would have made the Attorney General appoint a Special Counsel for the Prevention of Gun Violence to advise on the law, work with researchers, and collect data on arrests and prosecutions under a set of gun statutes. The Special Counsel could have set up a grant program for community violence prevention, but only with money that turned up, because the bill appropriated none. The Nevada Assembly passed it 25-14, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1580564,
+   "measure_id": "SB 156",
+   "vote_date": "2025-05-28",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 156, which would have made the Attorney General appoint a Special Counsel for the Prevention of Gun Violence to advise on the law, work with researchers, and collect data on arrests and prosecutions under a set of gun statutes. The Special Counsel could have set up a grant program for community violence prevention, but only with money that turned up, because the bill appropriated none. The Nevada Senate passed it 11-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 156, which would have made the Attorney General appoint a Special Counsel for the Prevention of Gun Violence to advise on the law, work with researchers, and collect data on arrests and prosecutions under a set of gun statutes. The Special Counsel could have set up a grant program for community violence prevention, but only with money that turned up, because the bill appropriated none. The Nevada Senate passed it 11-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1552619,
+   "measure_id": "AB 496",
+   "vote_date": "2025-04-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 496, which would have made county and city clerks publish daily counts during an election of mail ballots returned, ballots needing a signature fix, and ballots fixed, along with the name of each voter whose signature was questioned. Clerks would also have had to publish a monthly list of registered voters. The version the Assembly voted also required a voter to print their initials on the mail ballot envelope, which the Senate later removed. The Nevada Assembly passed it 26-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 496, which would have made county and city clerks publish daily counts during an election of mail ballots returned, ballots needing a signature fix, and ballots fixed, along with the name of each voter whose signature was questioned. Clerks would also have had to publish a monthly list of registered voters. The version the Assembly voted also required a voter to print their initials on the mail ballot envelope, which the Senate later removed. The Nevada Assembly passed it 26-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1576711,
+   "measure_id": "AB 496",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 496, which would have made county and city clerks publish daily counts during an election of mail ballots returned, ballots needing a signature fix, and ballots fixed, along with the name of each voter whose signature was questioned. Clerks would also have had to publish a monthly list of registered voters, and mail ballot envelopes would have had a space for a phone number. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 496, which would have made county and city clerks publish daily counts during an election of mail ballots returned, ballots needing a signature fix, and ballots fixed, along with the name of each voter whose signature was questioned. Clerks would also have had to publish a monthly list of registered voters, and mail ballot envelopes would have had a space for a phone number. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1576990,
+   "measure_id": "SB 414",
+   "vote_date": "2025-05-23",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 414, which would have widened what public officials must disclose about their money. It would have required listing any company stock worth $5,000 or more, not just holdings above one percent. The version the Assembly voted went further: it also covered political appointees who hold no elected office, required investment securities over $5,000 to be listed, and removed the rule letting officials leave out-of-state property off the form. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 414, which would have widened what public officials must disclose about their money. It would have required listing any company stock worth $5,000 or more, not just holdings above one percent. The version the Assembly voted went further: it also covered political appointees who hold no elected office, required investment securities over $5,000 to be listed, and removed the rule letting officials leave out-of-state property off the form. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1550646,
+   "measure_id": "SB 414",
+   "vote_date": "2025-04-16",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 414, which would have widened what public officials must disclose about their money. It would have required listing any company stock worth $5,000 or more, not just holdings above one percent. It would also have created reporting rules for inauguration committees and for money raised by a newly elected statewide officer during the transition, and barred foreign nationals from giving to an inauguration committee. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 414, which would have widened what public officials must disclose about their money. It would have required listing any company stock worth $5,000 or more, not just holdings above one percent. It would also have created reporting rules for inauguration committees and for money raised by a newly elected statewide officer during the transition, and barred foreign nationals from giving to an inauguration committee. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  }
+ ]
+}
