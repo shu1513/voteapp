@@ -1,16 +1,8 @@
-import { loadProjectEnv } from "../config/env.js";
 import { createNewYorkCityFinanceSyncWorker } from "../scheduler/newYorkCityCandidateFinanceSyncScheduler.js";
+import { runFinanceSchedulerWorker } from "../scheduler/financeSchedulerWorkerRunner.js";
 
-loadProjectEnv();
-const worker = createNewYorkCityFinanceSyncWorker();
-console.log("NYC candidate finance scheduler worker started");
-worker.on("error", (error) => {
-  console.error("NYC candidate finance scheduler worker error:", error);
+runFinanceSchedulerWorker({
+  label: "NYC candidate finance",
+  isEnabled: () => true,
+  createWorker: createNewYorkCityFinanceSyncWorker,
 });
-
-async function shutdown(): Promise<void> {
-  await worker.close();
-  process.exit(0);
-}
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
