@@ -327,7 +327,7 @@ describe("createAuthService changePassword", () => {
     // Links issued under the old password die with it, inside the same
     // transaction.
     expect(client.query).toHaveBeenCalledWith(
-      expect.stringContaining("SET consumed_at = now()"),
+      expect.stringContaining("SET consumed_at = clock_timestamp()"),
       [USER_ID, ["password_reset", "email_change"]]
     );
     expect(client.query).toHaveBeenCalledWith("COMMIT");
@@ -459,7 +459,7 @@ describe("createAuthService requestEmailChange", () => {
     // The taken path must still disarm older change links: a typo-recovery
     // retry that lands on a taken address may not leave the typo link live.
     const voidCall = client.query.mock.calls.find((call) =>
-      String(call[0]).includes("SET consumed_at = now()")
+      String(call[0]).includes("SET consumed_at = clock_timestamp()")
     );
     expect(voidCall?.[1]).toEqual([USER_ID]);
     expect(client.query).toHaveBeenCalledWith("COMMIT");
@@ -1213,7 +1213,7 @@ describe("createAuthService auth-token lifecycle", () => {
     // The peek never writes; only the consume flips consumed_at.
     expect(sqls[peekAt]).not.toContain("UPDATE");
     // Verification settles ownership: reset / email-change links die with it.
-    expect(client.query).toHaveBeenCalledWith(expect.stringContaining("SET consumed_at = now()"), [
+    expect(client.query).toHaveBeenCalledWith(expect.stringContaining("SET consumed_at = clock_timestamp()"), [
       USER_ID,
       ["password_reset", "email_change"],
     ]);
@@ -1277,7 +1277,7 @@ describe("createAuthService auth-token lifecycle", () => {
       publicBaseUrl: "https://example.com",
     });
     await service.resetPassword({ token: "raw-token", password: "brand-new-password-456" });
-    expect(resetClient.query).toHaveBeenCalledWith(expect.stringContaining("SET consumed_at = now()"), [
+    expect(resetClient.query).toHaveBeenCalledWith(expect.stringContaining("SET consumed_at = clock_timestamp()"), [
       USER_ID,
       ["email_change"],
     ]);
@@ -1300,7 +1300,7 @@ describe("createAuthService auth-token lifecycle", () => {
       publicBaseUrl: "https://example.com",
     });
     await changeService.verifyEmailChange({ token: "raw-token" });
-    expect(changeClient.query).toHaveBeenCalledWith(expect.stringContaining("SET consumed_at = now()"), [
+    expect(changeClient.query).toHaveBeenCalledWith(expect.stringContaining("SET consumed_at = clock_timestamp()"), [
       USER_ID,
       ["email_verify", "password_reset"],
     ]);
@@ -1333,7 +1333,7 @@ describe("createAuthService auth-token lifecycle", () => {
     const sqls = client.query.mock.calls.map((call) => String(call[0]));
     const lockAt = sqls.findIndex((sql) => sql.includes("FOR UPDATE"));
     const voidAt = client.query.mock.calls.findIndex(
-      (call) => String(call[0]).includes("SET consumed_at = now()") && Array.isArray(call[1]?.[1])
+      (call) => String(call[0]).includes("SET consumed_at = clock_timestamp()") && Array.isArray(call[1]?.[1])
     );
     expect(voidAt).toBeGreaterThan(lockAt);
     expect(client.query.mock.calls[voidAt]?.[1]).toEqual([USER_ID, ["password_reset", "email_change"]]);

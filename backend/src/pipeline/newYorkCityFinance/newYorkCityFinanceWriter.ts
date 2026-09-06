@@ -102,7 +102,48 @@ function validateSnapshot(input: NewYorkCityFinanceSnapshotInput): void {
   }
 }
 
+function canOpenTransaction(db: Queryable): db is Connectable {
+  return (
+    typeof (db as Connectable).connect === "function" &&
+    typeof (db as Partial<PoolClient>).release !== "function"
+  );
+}
+
+async function withTransaction<T>(db: Connectable, work: (tx: Queryable) => Promise<T>): Promise<T> {
+  const client = await db.connect();
+  try {
+    await client.query("BEGIN");
+    const result = await work(client);
+    await client.query("COMMIT");
+    return result;
+  } catch (error) {
+    try {
+      await client.query("ROLLBACK");
+    } catch {
+      // Preserve the original write failure.
+    }
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
 export async function upsertNewYorkCityFinanceLink(input: {
+  db: Queryable;
+  link: NewYorkCityFinanceLinkInput;
+}): Promise<string> {
+  // Retire, upsert, and the operator-disabled check are one unit: if the
+  // proposed identity turns out to be a manual row an operator disabled, the
+  // retirement of the candidate's other active link must roll back with the
+  // rejection, or the candidate ends up with no active link. A Pool opens
+  // its own transaction; a client is already inside one (snapshot writes).
+  if (canOpenTransaction(input.db)) {
+    return withTransaction(input.db, (tx) => writeNewYorkCityFinanceLink({ db: tx, link: input.link }));
+  }
+  return writeNewYorkCityFinanceLink(input);
+}
+
+async function writeNewYorkCityFinanceLink(input: {
   db: Queryable;
   link: NewYorkCityFinanceLinkInput;
 }): Promise<string> {

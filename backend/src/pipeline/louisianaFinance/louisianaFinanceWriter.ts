@@ -279,6 +279,23 @@ export async function upsertLouisianaFinanceLink(input: {
   link: LouisianaFinanceLinkInput;
 }): Promise<{ linkId: string }> {
   validateLouisianaFinanceLinkInput(input.link);
+
+  // Retire, upsert, and the operator-disabled check are one unit: if the
+  // proposed identity turns out to be a manual row an operator disabled, the
+  // retirement of the candidate's other active link must roll back with the
+  // rejection, or the candidate ends up with no active link. A Pool (the
+  // auto-linker) opens its own transaction; a client is already inside one
+  // (snapshot writes).
+  if (canOpenTransaction(input.db)) {
+    return withLouisianaFinanceTransaction(input.db, (tx) => writeLouisianaFinanceLink({ db: tx, link: input.link }));
+  }
+  return writeLouisianaFinanceLink(input);
+}
+
+async function writeLouisianaFinanceLink(input: {
+  db: Queryable;
+  link: LouisianaFinanceLinkInput;
+}): Promise<{ linkId: string }> {
   const candidateId = requireNonEmpty(input.link.candidateId, "candidate id");
   const electionId = requireNonEmpty(input.link.electionId, "election id");
   const electionYear = normalizeElectionYear(input.link.electionYear);

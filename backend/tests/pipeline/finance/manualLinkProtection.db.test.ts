@@ -358,6 +358,23 @@ describe.skipIf(!databaseUrl)("finance manual-link protection across writers (re
           });
           expect(rows.filter((row) => row.link_status === "active")).toHaveLength(1);
         });
+
+        it("rejecting an operator-disabled replacement leaves the candidate's other active link alone", async () => {
+          const { linkId: rejected } = await w.upsert(pool, ids, "B", "manual", "active");
+          await disableBySql(w.table, rejected);
+          const { linkId: working } = await w.upsert(pool, ids, "A", w.automaticSource, "active");
+
+          // Automation proposes the disabled identity: the retirement of A it
+          // performs first must roll back with the rejection.
+          await expect(w.upsert(pool, ids, "B", w.automaticSource, "active")).rejects.toThrow(
+            "automatic finance link matches an operator-disabled manual link"
+          );
+
+          expect(await readRows(w.table)).toEqual([
+            { id: rejected, link_status: "inactive", link_source: "manual" },
+            { id: working, link_status: "active", link_source: w.automaticSource },
+          ]);
+        });
       }
     });
   }

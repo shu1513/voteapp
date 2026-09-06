@@ -213,6 +213,22 @@ export async function upsertNewYorkFinanceLink(input: {
 }): Promise<{ linkId: string }> {
   validateNewYorkFinanceLinkInput(input.link);
 
+  // Retire, upsert, and the operator-disabled check are one unit: if the
+  // proposed identity turns out to be a manual row an operator disabled, the
+  // retirement of the candidate's other active link must roll back with the
+  // rejection, or the candidate ends up with no active link. A Pool (the
+  // auto-linker) opens its own transaction; a client is already inside one
+  // (snapshot writes).
+  if (canOpenTransaction(input.db)) {
+    return withNewYorkFinanceTransaction(input.db, (tx) => writeNewYorkFinanceLink({ db: tx, link: input.link }));
+  }
+  return writeNewYorkFinanceLink(input);
+}
+
+async function writeNewYorkFinanceLink(input: {
+  db: Queryable;
+  link: NewYorkFinanceLinkInput;
+}): Promise<{ linkId: string }> {
   // Only one active link may exist per candidate/election (partial unique
   // index). When a candidate switches authorized committees the new filer_id
   // upserts a fresh row, so any other active link must be retired first or
