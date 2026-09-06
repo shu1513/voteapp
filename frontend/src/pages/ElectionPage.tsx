@@ -105,17 +105,14 @@ const PARTY_FILTER_OPTIONS: { bucket: PartyBucket; label: string }[] = [
   { bucket: "other", label: "Other" },
 ];
 
-// The office summary is seeded (seedOffices.ts) as newline-separated lines:
-// the first is a one-sentence hook, the rest are things the office affects.
-// The pre-hook seed was a bare list of gerund duty bullets ("Running the
-// state government"), none ending in a period, and a database can still hold
-// those rows until the seed is re-run — so a first line without a period is
-// treated as a bullet, not a hook, rather than rendering a duty fragment as
-// the office's one-sentence description.
-function splitOfficeSummary(summary: string): { hook: string | null; affects: string[] } {
-  const lines = summary.split("\n").filter((line) => line.trim() !== "");
-  const [first = "", ...rest] = lines;
-  return first.trim().endsWith(".") ? { hook: first, affects: rest } : { hook: null, affects: lines };
+// The office summary is seeded (seedOffices.ts) as newline-separated
+// bullets, rendered as-is under the "About this office" heading. Blank lines
+// are dropped; nothing else is parsed — no hook, no label.
+function officeSummaryLines(summary: string): string[] {
+  return summary
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line !== "");
 }
 
 // Server loader: the election subject arrives in the document HTML so
@@ -283,7 +280,7 @@ export function ElectionPage() {
   // fallbacks cover deploy skew — a not-yet-redeployed backend omits both
   // fields, which must degrade to "no section", not a crash.
   const office = data.office ?? null;
-  const officeSummary = office ? splitOfficeSummary(office.summary) : null;
+  const officeBullets = office ? officeSummaryLines(office.summary) : [];
   const researchAreas = data.research_areas ?? [];
   const orderedAreas = splitResearchAreasBySaved(researchAreas, weights);
   const showOfficeInfo = data.race_type !== "ballot_measure" && (office !== null || researchAreas.length > 0);
@@ -661,28 +658,15 @@ export function ElectionPage() {
         ) : null}
 
         {showOfficeInfo ? (
-          // Description first, then what the election affects — what the office does,
-          // then which issues it touches.
+          // Duties first, then which issues the election touches.
           <section className="mt-6 rounded-xl border border-line bg-white p-4">
             <h2 ref={officeRef} className="text-heading font-semibold">About this office</h2>
-            {officeSummary ? (
-              <>
-                {officeSummary.hook ? <p className="mt-2 text-body text-ink">{officeSummary.hook}</p> : null}
-                {officeSummary.affects.length > 0 ? (
-                  <>
-                    {/* Legacy duty lists have no hook; a "This office affects:"
-                        label over gerund duties would misdescribe them. */}
-                    {officeSummary.hook ? (
-                      <p className="mt-3 text-sm font-medium text-ink">This office affects:</p>
-                    ) : null}
-                    <ul className="mt-1 list-disc space-y-1 pl-5 text-body text-ink">
-                      {officeSummary.affects.map((line, i) => (
-                        <li key={i}>{line}</li>
-                      ))}
-                    </ul>
-                  </>
-                ) : null}
-              </>
+            {officeBullets.length > 0 ? (
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-body text-ink">
+                {officeBullets.map((line, i) => (
+                  <li key={i}>{line}</li>
+                ))}
+              </ul>
             ) : null}
             {researchAreas.length > 0 ? (
               // Same one-list, comma-separated presentation as the ballot

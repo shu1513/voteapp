@@ -3192,6 +3192,13 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     -- prohibited location, possession by a minor, pointing a firearm at
     -- another — are State Court cases. See db/migrations/225.
     ('county', 'Solicitor General', ARRAY['anti_corruption', 'civil_rights', 'gun_control', 'public_safety_and_crime_control']::text[]),
+    -- Kentucky's elected jail administrator: the custody slice of the Sheriff
+    -- set (no patrol, so no gun_control/immigration) plus government_efficiency
+    -- for jail operations and spending.
+    ('county', 'County Jailer', ARRAY['civil_rights', 'government_efficiency', 'public_safety_and_crime_control']::text[]),
+    -- Kentucky fiscal-court district member: a county legislator, so the
+    -- County Commissioner set.
+    ('county', 'Magistrate', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('county', 'Sheriff', ARRAY['civil_rights', 'data_privacy', 'gun_control', 'immigration', 'public_safety_and_crime_control']::text[]),
     ('county', 'Soil and Water Conservation District Supervisor', ARRAY['environment_and_public_health', 'government_efficiency', 'public_infrastructure']::text[]),
     ('place', 'Alderman', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
