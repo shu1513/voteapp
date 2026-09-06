@@ -32,17 +32,17 @@ AB231	failed	house	1556306	1556306	2025-04-22	27-15	1	yes	t	yes		Assembly Final 
 AB237	vetoed	house	1550161	1550161	2025-04-16	27-15	1	yes	t	yes		Assembly Final Passage		Authorizes any county to create the office of registrar of voters. (BDR 20-363)		
 AB237	vetoed	senate	1575645	1575645	2025-05-21	13-8	1	yes	t	yes		Senate Final Passage		Authorizes any county to create the office of registrar of voters. (BDR 20-363)		
 AB238	failed	house	1582293	1582293	2025-05-30	22-20	1	yes	t	yes		Assembly Final Passage		Enacts the Nevada Studio Infrastructure Jobs and Workforce Training Act. (BDR S-63)		
-AB244	vetoed	senate	1575513	1575513	2025-05-21	16-4	1	yes	t	yes		Senate Final Passage		Enacts prohibitions relating to the use of disposable foodware containers containing polys		
+AB244	vetoed	senate	1575513	1575513	2025-05-21	16-4	1	yes	t	yes		Senate Final Passage		Enacts prohibitions relating to the use of disposable foodware containers containing polys	batch-06	environment_and_public_health/for
 AB245	vetoed	house	1554356	1554356	2025-04-22	27-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to firearms. (BDR 15-648)	batch-04	gun_control/for
 AB245	vetoed	senate	1575542	1575542	2025-05-21	12-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to firearms. (BDR 15-648)	batch-04	gun_control/for
-AB259	vetoed	house	1579499	1579499	2025-05-27	27-15	1	yes	t	yes		Assembly Final Passage		Establishes provisions governing prescription drugs. (BDR 40-165)		
-AB259	vetoed	senate	1583311	1583311	2025-06-02	13-8	1	yes	t	yes		Senate Final Passage		Establishes provisions governing prescription drugs. (BDR 40-165)		
+AB259	vetoed	house	1579499	1579499	2025-05-27	27-15	1	yes	t	yes		Assembly Final Passage		Establishes provisions governing prescription drugs. (BDR 40-165)	batch-06	healthcare_affordability/for
+AB259	vetoed	senate	1583311	1583311	2025-06-02	13-8	1	yes	t	yes		Senate Final Passage		Establishes provisions governing prescription drugs. (BDR 40-165)	batch-06	healthcare_affordability/for
 AB278	vetoed	house	1552013	1552013	2025-04-17	28-14	1	yes	t	yes		Assembly Final Passage		Designates the month of July as Muslim American Heritage Month. (BDR 19-924)		
 AB278	vetoed	senate	1575762	1575762	2025-05-21	13-8	1	yes	t	yes		Senate Final Passage		Designates the month of July as Muslim American Heritage Month. (BDR 19-924)		
 AB280	vetoed	house	1553732	1553732	2025-04-22	27-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to housing. (BDR 10-337)	batch-05	housing_affordability/for
 AB280	vetoed	senate	1575514	1575514	2025-05-21	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to housing. (BDR 10-337)	batch-05	housing_affordability/for
-AB282	vetoed	house	1554310	1554310	2025-04-22	26-16	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to billing for health care. (BDR 40-785)		
-AB282	vetoed	senate	1583650	1583650	2025-06-02	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to billing for health care. (BDR 40-785)		
+AB282	vetoed	house	1554310	1554310	2025-04-22	26-16	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to billing for health care. (BDR 40-785)	batch-06	healthcare_affordability/for
+AB282	vetoed	senate	1583650	1583650	2025-06-02	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to billing for health care. (BDR 40-785)	batch-06	healthcare_affordability/for
 AB283	vetoed	house	1553745	1553745	2025-04-22	27-15	1	yes	t	yes		Assembly Final Passage		Revises provisions governing certain actions and proceedings relating to real property. (B	batch-05	housing_affordability/for
 AB283	vetoed	senate	1576817	1576817	2025-05-22	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions governing certain actions and proceedings relating to real property. (B	batch-05	housing_affordability/for
 AB291	failed	house	1553102	1553102	2025-04-21	26-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to records of criminal history. (BDR 14-676)		
@@ -56,10 +56,10 @@ AB346	failed	house	1551721	1551721	2025-04-17	23-19	1	yes	t	yes		Assembly Final 
 AB388	vetoed	house	1581092	1581092	2025-05-29	26-16	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to employment. (BDR 23-1027)	dropped	filter 5, reads two ways: raises paid family leave to 12 weeks at full or 60 percent wages, but section 14 repeals NRS 608.0198, which covers employers of ANY size, and replaces its leave for victims of domestic violence or sexual assault with a right that reaches only employers with 50 or more workers
 AB388	vetoed	senate	1583611	1583611	2025-06-02	11-9	1	yes	t	yes		Senate Final Passage		Revises provisions relating to employment. (BDR 23-1027)	dropped	filter 5, reads two ways: raises paid family leave to 12 weeks at full or 60 percent wages, but section 14 repeals NRS 608.0198, which covers employers of ANY size, and replaces its leave for victims of domestic violence or sexual assault with a right that reaches only employers with 50 or more workers
 AB402	failed	house	1582332	1582332	2025-05-30	27-15	1	yes	t	yes		Assembly Final Passage		Creates a pilot program authorizing the installation and use of automated traffic enforcem		
-AB411	vetoed	house	1554912	1554912	2025-04-21	26-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to prescription drugs. (BDR 54-1100)		
-AB411	vetoed	senate	1575497	1575497	2025-05-21	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to prescription drugs. (BDR 54-1100)		
-AB414	vetoed	house	1581341	1581341	2025-05-29	27-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to occupational safety and health. (BDR 53-666)		
-AB414	vetoed	senate	1583621	1583621	2025-06-02	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to occupational safety and health. (BDR 53-666)		
+AB411	vetoed	house	1554912	1554912	2025-04-21	26-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to prescription drugs. (BDR 54-1100)	batch-06	womens_reproductive_rights/for
+AB411	vetoed	senate	1575497	1575497	2025-05-21	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to prescription drugs. (BDR 54-1100)	batch-06	womens_reproductive_rights/for
+AB414	vetoed	house	1581341	1581341	2025-05-29	27-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to occupational safety and health. (BDR 53-666)	batch-06	environment_and_public_health/for
+AB414	vetoed	senate	1583621	1583621	2025-06-02	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to occupational safety and health. (BDR 53-666)	batch-06	environment_and_public_health/for
 AB416	vetoed	house	1575366	1575366	2025-05-21	29-13	1	yes	t	yes		Assembly Final Passage		Revises provisions concerning access to certain library materials. (BDR 34-925)	batch-04	civil_rights/for
 AB416	vetoed	senate	1583686	1583686	2025-06-02	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions concerning access to certain library materials. (BDR 34-925)	batch-04	civil_rights/for
 AB434	vetoed	house	1554516	1554516	2025-04-22	27-15	1	yes	t	yes		Assembly Final Passage		Prohibits certain employment practices. (BDR 53-188)		
@@ -112,8 +112,8 @@ SB101	failed	senate	1550122	1550122	2025-04-16	13-8	1	yes	t	yes		Senate Final Pa
 SB102	vetoed	house	1575920	1575920	2025-05-22	27-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to elections. (BDR 24-90)		
 SB102	vetoed	senate	1548312	1548312	2025-04-15	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to elections. (BDR 24-90)		
 SB121	vetoed	house	1576014	1576014	2025-05-22	29-13	1	yes	t	yes		Assembly Final Passage		Revises provisions governing common-interest communities. (BDR 10-80)		
-SB128	vetoed	house	1583017	1583017	2025-05-31	23-16	1	yes	t	yes		Assembly Final Passage		Makes changes related to health care. (BDR 57-87)		
-SB128	vetoed	senate	1553538	1553538	2025-04-22	15-6	1	yes	t	yes		Senate Final Passage		Makes changes related to health care. (BDR 57-87)		
+SB128	vetoed	house	1583017	1583017	2025-05-31	23-16	1	yes	t	yes		Assembly Final Passage		Makes changes related to health care. (BDR 57-87)	batch-06	healthcare_affordability/for
+SB128	vetoed	senate	1553538	1553538	2025-04-22	15-6	1	yes	t	yes		Senate Final Passage		Makes changes related to health care. (BDR 57-87)	batch-06	healthcare_affordability/for
 SB141	vetoed	senate	1550566	1550566	2025-04-16	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to local facilities for detention. (BDR 16-241)		
 SB142	vetoed	house	1576706	1576706	2025-05-22	27-15	1	yes	t	yes		Assembly Final Passage		Revises provisions governing property that is exempt from execution. (BDR 2-707)	dropped	filter 5, reads two ways: cuts the share of wages a creditor may take from 18 or 25 percent to 10 or 15 percent and raises the flat bank-account protection from $400 to $5,000, but deletes the old $2,000 protection for an account holding federal benefits and makes the new $5,000 unavailable against an order for the support of any person, so a person living on federal benefits who faces a support order loses an existing protection entirely
 SB142	vetoed	senate	1549333	1549333	2025-04-15	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions governing property that is exempt from execution. (BDR 2-707)	dropped	filter 5, reads two ways: cuts the share of wages a creditor may take from 18 or 25 percent to 10 or 15 percent and raises the flat bank-account protection from $400 to $5,000, but deletes the old $2,000 protection for an account holding federal benefits and makes the new $5,000 unavailable against an order for the support of any person, so a person living on federal benefits who faces a support order loses an existing protection entirely
@@ -126,11 +126,11 @@ SB160	vetoed	senate	1576625	1576625	2025-05-22	13-8	1	yes	t	yes		Senate Final Pa
 SB171	vetoed	house	1576494	1576494	2025-05-22	27-15	1	yes	t	yes		Assembly Final Passage		Enacts a shield law to protect the transgender community. (BDR 54-12)	batch-04	civil_rights/for
 SB171	vetoed	senate	1553489	1553489	2025-04-22	13-8	1	yes	t	yes		Senate Final Passage		Enacts a shield law to protect the transgender community. (BDR 54-12)	batch-04	civil_rights/for
 SB172	failed	senate	1578362	1578362	2025-05-26	13-7	1	yes	t	yes		Senate Final Passage		Prescribes certain rights for agricultural workers. (BDR 53-959)		
-SB173	failed	house	1583676	1583676	2025-06-02	27-15	1	yes	t	yes		Assembly Final Passage		Establishes provisions relating to the environment. (BDR 52-585)		
-SB173	failed	senate	1578609	1578609	2025-05-26	13-7	1	yes	t	yes		Senate Final Passage		Establishes provisions relating to the environment. (BDR 52-585)		
+SB173	failed	house	1583676	1583676	2025-06-02	27-15	1	yes	t	yes		Assembly Final Passage		Establishes provisions relating to the environment. (BDR 52-585)	batch-06	environment_and_public_health/for
+SB173	failed	senate	1578609	1578609	2025-05-26	13-7	1	yes	t	yes		Senate Final Passage		Establishes provisions relating to the environment. (BDR 52-585)	batch-06	environment_and_public_health/for
 SB180	failed	senate	1553510	1553510	2025-04-22	11-10	1	yes	t	yes		Senate Final Passage		Revises provisions relating to motor carriers. (BDR 58-963)		
-SB182	vetoed	house	1583193	1583193	2025-06-02	27-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to the staffing of health care facilities. (BDR 40-33)		
-SB182	vetoed	senate	1576758	1576758	2025-05-22	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to the staffing of health care facilities. (BDR 40-33)		
+SB182	vetoed	house	1583193	1583193	2025-06-02	27-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to the staffing of health care facilities. (BDR 40-33)	batch-06	environment_and_public_health/for
+SB182	vetoed	senate	1576758	1576758	2025-05-22	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to the staffing of health care facilities. (BDR 40-33)	batch-06	environment_and_public_health/for
 SB192	failed	house	1582766	1582766	2025-05-31	23-16	1	yes	t	no		Assembly Final Passage		Revises provisions relating to public health. (BDR 40-86)		
 SB192	failed	house	1583630	1583630	2025-06-02	27-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to public health. (BDR 40-86)		
 SB192	failed	senate	1578490	1578490	2025-05-26	13-7	1	yes	t	yes		Senate Final Passage		Revises provisions relating to public health. (BDR 40-86)		
@@ -148,14 +148,14 @@ SB301	vetoed	senate	1550210	1550210	2025-04-16	15-6	1	yes	t	yes		Senate Final Pa
 SB303	vetoed	senate	1553096	1553096	2025-04-21	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to civil liability to persons using certain premises for recre		
 SB31	failed	senate	1548695	1548695	2025-04-15	15-6	1	yes	t	yes		Senate Final Passage		Revises provisions relating to the adjudication of vested water rights. (BDR 48-260)		
 SB318	failed	senate	1581911	1581911	2025-05-29	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to charter schools. (BDR 34-89)		
-SB324	failed	senate	1552221	1552221	2025-04-18	16-4	1	yes	t	yes		Senate Final Passage		Establishes prohibitions relating to the sale of water in certain disposable plastic bottl		
+SB324	failed	senate	1552221	1552221	2025-04-18	16-4	1	yes	t	yes		Senate Final Passage		Establishes prohibitions relating to the sale of water in certain disposable plastic bottl	batch-06	environment_and_public_health/for
 SB327	vetoed	house	1576613	1576613	2025-05-22	27-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to contractors. (BDR 54-1025)		
 SB334	vetoed	house	1576729	1576729	2025-05-22	27-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to the employment of offenders. (BDR 16-1115)		
 SB334	vetoed	senate	1554176	1554176	2025-04-22	14-7	1	yes	t	yes		Senate Final Passage		Revises provisions relating to the employment of offenders. (BDR 16-1115)		
 SB340	failed	senate	1554701	1554701	2025-04-22	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to governmental administration. (BDR 18-1008)		
 SB350	vetoed	house	1576428	1576428	2025-05-22	28-14	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to the death penalty. (BDR 14-1110)		
 SB350	vetoed	senate	1552803	1552803	2025-04-21	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to the death penalty. (BDR 14-1110)		
-SB352	vetoed	house	1568169	1568169	2025-05-08	26-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to health care. (BDR 57-712)		
+SB352	vetoed	house	1568169	1568169	2025-05-08	26-15	1	yes	t	yes		Assembly Final Passage		Revises provisions relating to health care. (BDR 57-712)	batch-06	civil_rights/for
 SB378	vetoed	house	1583246	1583246	2025-06-02	27-15	1	yes	t	yes		Assembly Final Passage		Makes revisions relating to health care. (BDR 40-705)		
 SB378	vetoed	senate	1579502	1579502	2025-05-27	12-8	1	yes	t	yes		Senate Final Passage		Makes revisions relating to health care. (BDR 40-705)		
 SB391	failed	senate	1578859	1578859	2025-05-27	13-8	1	yes	t	yes		Senate Final Passage		Revises provisions relating to real property. (BDR 10-84)	batch-05	housing_affordability/for
