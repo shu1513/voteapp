@@ -1177,3 +1177,96 @@ describe("createAuthService session epoch revocation", () => {
     expect(storedValue).toBe(`${USER_ID}:7`);
   });
 });
+
+describe("createAuthService verification mail after release", () => {
+  function registerMocks(client: ReturnType<typeof createDbClientMock>) {
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [] }) // user lookup: none
+      .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // INSERT user
+      .mockResolvedValueOnce({ rows: [] }) // INSERT terms acceptance
+      .mockResolvedValueOnce({ rows: [] }) // void outstanding tokens
+      .mockResolvedValueOnce({ rows: [{ id: "token-id" }] }) // INSERT token
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+  }
+
+  it("register releases the pool client before the SES send", async () => {
+    const client = createDbClientMock();
+    registerMocks(client);
+    const order: string[] = [];
+    client.release.mockImplementation(() => order.push("release"));
+    const mailer = createMailerMock();
+    mailer.sendVerificationEmail.mockImplementation(async () => {
+      order.push("send");
+    });
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: {} as never,
+      mailer,
+      publicBaseUrl: "https://example.com",
+    });
+
+    await service.register({
+      email: "new@example.com",
+      password: "correct horse battery staple",
+      acceptedTermsVersion: CURRENT_TERMS_VERSION,
+    });
+
+    expect(order).toEqual(["release", "send"]);
+    expect(mailer.sendVerificationEmail).toHaveBeenCalledWith({
+      email: "new@example.com",
+      linkUrl: expect.stringContaining("https://example.com/verify-email?token="),
+    });
+  });
+
+  it("a mail failure after COMMIT surfaces without a ROLLBACK on the committed transaction", async () => {
+    const client = createDbClientMock();
+    registerMocks(client);
+    const mailer = createMailerMock();
+    mailer.sendVerificationEmail.mockRejectedValue(new Error("ses unavailable"));
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: {} as never,
+      mailer,
+      publicBaseUrl: "https://example.com",
+    });
+
+    await expect(
+      service.register({
+        email: "new@example.com",
+        password: "correct horse battery staple",
+        acceptedTermsVersion: CURRENT_TERMS_VERSION,
+      })
+    ).rejects.toThrow("ses unavailable");
+
+    expect(client.query).toHaveBeenCalledWith("COMMIT");
+    expect(client.query).not.toHaveBeenCalledWith("ROLLBACK");
+    expect(client.release).toHaveBeenCalledTimes(1);
+  });
+
+  it("resendVerification releases the pool client before the SES send", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [] }) // void outstanding same-purpose tokens
+      .mockResolvedValueOnce({ rows: [{ id: "token-id" }] }) // INSERT token
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const order: string[] = [];
+    client.release.mockImplementation(() => order.push("release"));
+    const mailer = createMailerMock();
+    mailer.sendVerificationEmail.mockImplementation(async () => {
+      order.push("send");
+    });
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: {} as never,
+      mailer,
+      publicBaseUrl: "https://example.com",
+    });
+
+    await service.resendVerification({ email: "user@example.com" });
+
+    expect(order).toEqual(["release", "send"]);
+  });
+});
