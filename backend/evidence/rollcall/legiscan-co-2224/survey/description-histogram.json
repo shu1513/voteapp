@@ -1,0 +1,602 @@
+{
+ "runId": "rollcall-legiscan-fetch-co-2224-20260906T055537Z",
+ "importerVersion": "rollcall-legiscan-fetch-v1",
+ "survey": true,
+ "state": "CO-2224",
+ "startedAt": "2026-09-06T05:55:37.894Z",
+ "finishedAt": "2026-09-06T05:55:37.933Z",
+ "datasetDir": "~/legiscan-data/co-2224",
+ "bills": 35,
+ "votes": 173,
+ "people": 99,
+ "fileErrors": [],
+ "rows": [
+  {
+   "chamber": "house",
+   "desc": "House: Third Reading Bill",
+   "count": 11,
+   "withoutMemberList": 0,
+   "minTotal": 64,
+   "maxTotal": 64,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1001",
+    "HB1005",
+    "HB1004"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "desc": "Senate: Third Reading Bill",
+   "count": 11,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "SB002",
+    "SB005",
+    "SB001"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House: Third Reading Perm",
+   "count": 8,
+   "withoutMemberList": 0,
+   "minTotal": 64,
+   "maxTotal": 64,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1002",
+    "SB001",
+    "SB002"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House: Third Reading Prev ?",
+   "count": 5,
+   "withoutMemberList": 0,
+   "minTotal": 64,
+   "maxTotal": 64,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1005",
+    "HB1004",
+    "HB1003"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House: Committee of the Whole Amd (h.001)",
+   "count": 3,
+   "withoutMemberList": 0,
+   "minTotal": 64,
+   "maxTotal": 64,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1005",
+    "SB005",
+    "SB002"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "desc": "Senate: Committee of the Whole Cow * (s.001)",
+   "count": 3,
+   "withoutMemberList": 0,
+   "minTotal": 35,
+   "maxTotal": 35,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "SB002",
+    "HB1001",
+    "SB004"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Appropriations: Postpone House Bill 25B-1017 indefinitely using a reversal of the previous roll call. There was no objection to the use of the reverse roll call, therefore, the bill was postponed indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 11,
+   "maxTotal": 11,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1017"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Appropriations: Refer House Bill 25B-1003, as amended, to the Committee of the Whole.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 11,
+   "maxTotal": 11,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1003"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Appropriations: Refer House Bill 25B-1004, as amended, to the Committee of the Whole.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 11,
+   "maxTotal": 11,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1004"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Appropriations: Refer House Bill 25B-1005, as amended, to the Committee of the Whole.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 11,
+   "maxTotal": 11,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1005"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Appropriations: Refer House Bill 25B-1008, as amended, to the Committee of the Whole.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 11,
+   "maxTotal": 11,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1008"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Appropriations: Refer Senate Bill 25B-004, as amended, to the Committee of the Whole.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 11,
+   "maxTotal": 11,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "SB004"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Business Affairs & Labor: Refer House Bill 25B-1008, as amended, to the Committee on Appropriations.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 13,
+   "maxTotal": 13,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1008"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Health & Human Services: Postpone House Bill 25B-1007 indefinitely using a reversal of the previous roll call. There was no objection to the use of the reverse roll call, therefore, the bill was postponed indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 13,
+   "maxTotal": 13,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1007"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Health & Human Services: Postpone House Bill 25B-1010 indefinitely using a reversal of the previous roll call. There was no objection to the use of the reverse roll call, therefore, the bill was postponed indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 13,
+   "maxTotal": 13,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1010"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Health & Human Services: Postpone House Bill 25B-1011 indefinitely using a reversal of the previous roll call. There was no objection to the use of the reverse roll call, therefore, the bill was postponed indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 13,
+   "maxTotal": 13,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1011"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Health & Human Services: Postpone House Bill 25B-1012 indefinitely using a reversal of the previous roll call. There was no objection to the use of the reverse roll call, therefore, the bill was postponed indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 13,
+   "maxTotal": 13,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1012"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Health & Human Services: Postpone House Bill 25B-1013 indefinitely using a reversal of the previous roll call. There was no objection to the use of the reverse roll call, therefore, the bill was postponed indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 13,
+   "maxTotal": 13,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1013"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Health & Human Services: Postpone House Bill 25B-1014 indefinitely using a reversal of the previous roll call. There was no objection to the use of the reverse roll call, therefore, the bill was postponed indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 13,
+   "maxTotal": 13,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1014"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Health & Human Services: Postpone House Bill 25B-1015 indefinitely using a reversal of the previous roll call. There was no objection to the use of the reverse roll call, therefore, the bill was postponed indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 13,
+   "maxTotal": 13,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1015"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House Health & Human Services: Refer House Bill 25B-1006, as amended, to the Committee on Appropriations.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 13,
+   "maxTotal": 13,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1006"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House State, Civic, Military, & Veterans Affairs: Postpone HCR25B-1001 indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 11,
+   "maxTotal": 11,
+   "billTypes": [
+    "CR"
+   ],
+   "sampleBills": [
+    "HCR1001"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House State, Civic, Military, & Veterans Affairs: Postpone HCR25B-1002 indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 11,
+   "maxTotal": 11,
+   "billTypes": [
+    "CR"
+   ],
+   "sampleBills": [
+    "HCR1002"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House State, Civic, Military, & Veterans Affairs: Postpone House Bill 25B-1018 indefinitely using a reversal of the previous roll call. There was no objection to the use of the reverse roll call, therefore, the bill was postponed indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 11,
+   "maxTotal": 11,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1018"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House State, Civic, Military, & Veterans Affairs: Postpone House Bill 25B-1019 indefinitely using a reversal of the previous roll call. There was no objection to the use of the reverse roll call, therefore, the bill was postponed indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 11,
+   "maxTotal": 11,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1019"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House State, Civic, Military, & Veterans Affairs: Postpone House Bill 25B-1020 indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 11,
+   "maxTotal": 11,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1020"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House State, Civic, Military, & Veterans Affairs: Postpone House Bill 25B-1021 indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 11,
+   "maxTotal": 11,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1021"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House: Senate Amendments Concur",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 64,
+   "maxTotal": 64,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1006",
+    "HB1004"
+   ]
+  },
+  {
+   "chamber": "house",
+   "desc": "House: Senate Amendments Repass",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 64,
+   "maxTotal": 64,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1006",
+    "HB1004"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "desc": "Senate Appropriations: Adopt amendment J.003",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 7,
+   "maxTotal": 7,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1006",
+    "HB1004"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "desc": "Senate Appropriations: Adopt amendment L.011",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 7,
+   "maxTotal": 7,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "SB004",
+    "HB1004"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "desc": "Senate Appropriations: Refer House Bill 25B-1001 to the Committee of the Whole.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 7,
+   "maxTotal": 7,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1001"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "desc": "Senate Appropriations: Refer House Bill 25B-1004, as amended, to the Committee of the Whole.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 7,
+   "maxTotal": 7,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1004"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "desc": "Senate Finance: Refer House Bill 25B-1006, as amended, to the Committee on Appropriations.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 9,
+   "maxTotal": 9,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "HB1006"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "desc": "Senate Health & Human Services: Refer Senate Bill 25B-002, as amended, to the Committee of the Whole.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 9,
+   "maxTotal": 9,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "SB002"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "desc": "Senate Health & Human Services: Refer Senate Bill 25B-003, as amended, to the Committee of the Whole.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 9,
+   "maxTotal": 9,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "SB003"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "desc": "Senate State, Veterans, & Military Affairs: Postpone SCR25B-001 indefinitely using a reversal of the previous roll call. There was no objection to the use of the reverse roll call, therefore, the bill was postponed indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 5,
+   "maxTotal": 5,
+   "billTypes": [
+    "CR"
+   ],
+   "sampleBills": [
+    "SCR001"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "desc": "Senate State, Veterans, & Military Affairs: Postpone Senate Bill 25B-006 indefinitely using a reversal of the previous roll call. There was no objection to the use of the reverse roll call, therefore, the bill was postponed indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 5,
+   "maxTotal": 5,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "SB006"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "desc": "Senate State, Veterans, & Military Affairs: Postpone Senate Bill 25B-007 indefinitely using a reversal of the previous roll call. There was no objection to the use of the reverse roll call, therefore, the bill was postponed indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 5,
+   "maxTotal": 5,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "SB007"
+   ]
+  },
+  {
+   "chamber": "senate",
+   "desc": "Senate State, Veterans, & Military Affairs: Postpone Senate Bill 25B-008 indefinitely using a reversal of the previous roll call. There was no objection to the use of the reverse roll call, therefore, the bill was postponed indefinitely.",
+   "count": 2,
+   "withoutMemberList": 0,
+   "minTotal": 5,
+   "maxTotal": 5,
+   "billTypes": [
+    "B"
+   ],
+   "sampleBills": [
+    "SB008"
+   ]
+  }
+ ],
+ "billTypeCounts": {
+  "B": 30,
+  "CR": 3,
+  "R": 1,
+  "JR": 1
+ },
+ "sessionIds": {
+  "2224": 35
+ },
+ "committeeChamberVotes": 0,
+ "voteParseErrors": []
+}

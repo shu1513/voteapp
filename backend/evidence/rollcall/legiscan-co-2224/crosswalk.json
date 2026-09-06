@@ -1,0 +1,503 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "CO",
+  "session_id": 2224,
+  "note": "people_id -> VoteApp candidate id for the Colorado 2025 First Special Session (LegiScan 2224). The special session was held by the same legislature as the 2025 regular session, so this file reuses that session's reviewed crosswalk: 98 of the 99 members appear in both, and the fresh proposer run agreed with all 51 mapped proposals with no difference. Seats come from LegiScan's `district` field, never its `role` field. Lori Garcia Sander (26066) stays hand-mapped because our roster spells her Lori Sander. Every unmapped entry carries the reason it is null.",
+  "entries": [
+    {
+      "people_id": 3329,
+      "candidate_id": null,
+      "note": "Larry Liston, SD-010 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 15133,
+      "candidate_id": "2424b693-ca75-4089-968c-ae91874ed399",
+      "note": null
+    },
+    {
+      "people_id": 16581,
+      "candidate_id": null,
+      "note": "Faith Winter, SD-025 in the 2025 session; no November 2026 candidacy (other candidates hold the seat on this ballot)"
+    },
+    {
+      "people_id": 16583,
+      "candidate_id": null,
+      "note": "Jessie Danielson, SD-022 in the 2025 session; no November 2026 candidacy (other candidates hold the seat on this ballot)"
+    },
+    {
+      "people_id": 18713,
+      "candidate_id": null,
+      "note": "Dafna Michaelson Jenet, SD-021 in the 2025 session; no November 2026 candidacy (other candidates hold the seat on this ballot)"
+    },
+    {
+      "people_id": 18723,
+      "candidate_id": null,
+      "note": "Michael Weissman, SD-028 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 18939,
+      "candidate_id": null,
+      "note": "James Coleman, SD-033 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 19048,
+      "candidate_id": null,
+      "note": "Jeff Bridges, SD-026 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 19200,
+      "candidate_id": null,
+      "note": "Marc Catlin, SD-005 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 19512,
+      "candidate_id": "491b4b94-5eba-4ee3-ae78-5d1b8a3a3c6f",
+      "note": null
+    },
+    {
+      "people_id": 20024,
+      "candidate_id": "ee418c3b-caad-4618-8626-2e3c7ca8f641",
+      "note": "Emily Sirota, HD-009 in the 2025 session, is running for State Senate District 32 (2024). Party matches and the House seat is either open or held by other candidates on this ballot"
+    },
+    {
+      "people_id": 20025,
+      "candidate_id": null,
+      "note": "Julie McCluskie, HD-013 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 20026,
+      "candidate_id": "873894d5-6d6c-489f-a221-4d7da8b77dcd",
+      "note": null
+    },
+    {
+      "people_id": 20029,
+      "candidate_id": null,
+      "note": "Julie Gonzales, SD-034 in the 2025 session; no November 2026 candidacy (other candidates hold the seat on this ballot)"
+    },
+    {
+      "people_id": 20031,
+      "candidate_id": null,
+      "note": "Robert Rodriguez, SD-032 in the 2025 session; no November 2026 candidacy (other candidates hold the seat on this ballot)"
+    },
+    {
+      "people_id": 20032,
+      "candidate_id": "e4a5adf9-38b6-4b6b-8e9e-dc5f0f632471",
+      "note": null
+    },
+    {
+      "people_id": 20126,
+      "candidate_id": null,
+      "note": "Mark Baisley, SD-004 in the 2025 session; no November 2026 candidacy (other candidates hold the seat on this ballot)"
+    },
+    {
+      "people_id": 20127,
+      "candidate_id": null,
+      "note": "Shannon Bird, HD-029 in the 2025 session; no November 2026 candidacy (other candidates hold the seat on this ballot)"
+    },
+    {
+      "people_id": 20131,
+      "candidate_id": null,
+      "note": "Lisa Cutter, SD-020 in the 2025 session; no November 2026 candidacy (other candidates hold the seat on this ballot)"
+    },
+    {
+      "people_id": 20136,
+      "candidate_id": "479ccd00-cee6-4abc-9ab6-4bbb04a45836",
+      "note": null
+    },
+    {
+      "people_id": 20137,
+      "candidate_id": "3de30913-d867-4d0d-a9d5-2a059a4cad36",
+      "note": null
+    },
+    {
+      "people_id": 20138,
+      "candidate_id": null,
+      "note": "Marc Snyder, SD-012 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 20139,
+      "candidate_id": null,
+      "note": "Matt Soper, HD-054 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 20140,
+      "candidate_id": "b1188f6c-92d1-4715-88a7-75b59e6f7bba",
+      "note": null
+    },
+    {
+      "people_id": 20142,
+      "candidate_id": null,
+      "note": "Brianna Titone, HD-027 in the 2025 session; no November 2026 candidacy (other candidates hold the seat on this ballot)"
+    },
+    {
+      "people_id": 20143,
+      "candidate_id": null,
+      "note": "Alex Valdez, HD-005 in the 2025 session; no November 2026 candidacy (other candidates hold the seat on this ballot)"
+    },
+    {
+      "people_id": 20148,
+      "candidate_id": "8539e9f8-eed8-474d-9a1c-6cfd97a89b03",
+      "note": "Monica Duran, HD-023 in the 2025 session, is running for State Senate District 22 (2024). Party matches and the House seat is either open or held by other candidates on this ballot"
+    },
+    {
+      "people_id": 20159,
+      "candidate_id": null,
+      "note": "Cathy Kipp, SD-014 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 20739,
+      "candidate_id": null,
+      "note": "Meg Froelich, HD-003 in the 2025 session; no November 2026 candidacy (other candidates hold the seat on this ballot)"
+    },
+    {
+      "people_id": 21549,
+      "candidate_id": null,
+      "note": "Steven Woodrow, HD-002 in the 2025 session; no November 2026 candidacy (other candidates hold the seat on this ballot)"
+    },
+    {
+      "people_id": 22219,
+      "candidate_id": null,
+      "note": "Judith Amabile, SD-018 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 22220,
+      "candidate_id": "cb4bc0e1-8bff-46f9-b772-fefe18d14471",
+      "note": null
+    },
+    {
+      "people_id": 22222,
+      "candidate_id": null,
+      "note": "Mary Bradfield, HD-021 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 22223,
+      "candidate_id": null,
+      "note": "Lindsey Daugherty, SD-019 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 22225,
+      "candidate_id": null,
+      "note": "Iman Jodeh, SD-029 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 22226,
+      "candidate_id": null,
+      "note": "Stephanie Luck, HD-060 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 22228,
+      "candidate_id": "70e326d1-9b4e-4466-814a-744fafabf0dc",
+      "note": null
+    },
+    {
+      "people_id": 22231,
+      "candidate_id": "fa19d869-ee4f-41a6-8808-b231bd563d84",
+      "note": null
+    },
+    {
+      "people_id": 22233,
+      "candidate_id": null,
+      "note": "Dan Woog, HD-019 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 22456,
+      "candidate_id": null,
+      "note": "Barbara Kirkmeyer, SD-023 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 22457,
+      "candidate_id": null,
+      "note": "Cleave Simpson, SD-006 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 22458,
+      "candidate_id": null,
+      "note": "Chris Kolker, SD-016 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 22921,
+      "candidate_id": "8fc66435-655b-4a2c-88a1-6c8cfad40154",
+      "note": null
+    },
+    {
+      "people_id": 23046,
+      "candidate_id": null,
+      "note": "Mandy Lindsay, HD-042 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 23104,
+      "candidate_id": null,
+      "note": "Nick Hinrichsen, SD-003 in the 2025 session; no November 2026 candidacy (other candidates hold the seat on this ballot)"
+    },
+    {
+      "people_id": 23948,
+      "candidate_id": null,
+      "note": "Anthony Hartsook, HD-044 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 23949,
+      "candidate_id": "a851cfc1-dfd3-4644-92b4-866cd5e36cd1",
+      "note": null
+    },
+    {
+      "people_id": 23950,
+      "candidate_id": "9ec54b11-3dd1-4182-8a62-3821c779aa03",
+      "note": null
+    },
+    {
+      "people_id": 23952,
+      "candidate_id": "1501e92e-1855-4ccf-b315-aa0df3d82e87",
+      "note": null
+    },
+    {
+      "people_id": 23954,
+      "candidate_id": "215cb16b-4fad-448a-95fb-9fb2d971a2eb",
+      "note": null
+    },
+    {
+      "people_id": 23955,
+      "candidate_id": "639b0ca1-b0d6-4242-9b4a-d33066d1b3de",
+      "note": null
+    },
+    {
+      "people_id": 23956,
+      "candidate_id": "e2e62385-3a8c-494c-9cf0-8cbad2ebc00e",
+      "note": null
+    },
+    {
+      "people_id": 23957,
+      "candidate_id": "df3848f8-91df-4c97-b135-76c999de48a1",
+      "note": null
+    },
+    {
+      "people_id": 23958,
+      "candidate_id": null,
+      "note": "Lisa Frizell, SD-002 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 23959,
+      "candidate_id": null,
+      "note": "Matthew Martinez, HD-062 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 23960,
+      "candidate_id": "133f485f-cf09-4bfc-a3b8-7b6493f51793",
+      "note": null
+    },
+    {
+      "people_id": 23961,
+      "candidate_id": null,
+      "note": "Regina English, HD-017 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 23962,
+      "candidate_id": "7b7b8951-4bc0-4fa9-8267-5af900c4a6c9",
+      "note": null
+    },
+    {
+      "people_id": 23963,
+      "candidate_id": null,
+      "note": "Ron Weinberg, HD-051 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 23964,
+      "candidate_id": null,
+      "note": "Rose Pugliese, HD-014 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 23967,
+      "candidate_id": "d5daa247-860a-4410-801d-3a7b45333369",
+      "note": "Sheila Lieder, HD-028 in the 2025 session, is running for State Senate District 20 (2024). Party matches and the House seat is either open or held by other candidates on this ballot"
+    },
+    {
+      "people_id": 23968,
+      "candidate_id": "d752a592-9ec0-4549-bed2-7ec43bd3c700",
+      "note": null
+    },
+    {
+      "people_id": 23969,
+      "candidate_id": "48f87bc1-726a-4354-8b21-6278d0973d92",
+      "note": "William Lindstedt, HD-033 in the 2025 session, is running for State Senate District 25 (2024). Party matches and the House seat is either open or held by other candidates on this ballot"
+    },
+    {
+      "people_id": 23970,
+      "candidate_id": "1d51e0ce-a6f8-438a-934b-4f003dfbd3eb",
+      "note": null
+    },
+    {
+      "people_id": 23972,
+      "candidate_id": "407ee51c-1f64-47e7-b65d-03c5b4b573c3",
+      "note": null
+    },
+    {
+      "people_id": 23996,
+      "candidate_id": null,
+      "note": "Scott Bottoms, HD-015 in the 2025 session; no November 2026 candidacy (other candidates hold the seat on this ballot)"
+    },
+    {
+      "people_id": 24384,
+      "candidate_id": "bd810784-e61d-49ef-bc2b-ee504b3bb6b8",
+      "note": null
+    },
+    {
+      "people_id": 24385,
+      "candidate_id": "f4fbf049-7c71-45c8-9038-c8deba68bd61",
+      "note": null
+    },
+    {
+      "people_id": 24616,
+      "candidate_id": "baf68554-5831-4d0c-b6eb-0c914f504fc0",
+      "note": null
+    },
+    {
+      "people_id": 24873,
+      "candidate_id": null,
+      "note": "Kyle Brown, HD-012 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 24966,
+      "candidate_id": null,
+      "note": "Manny Rutinel, HD-032 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 25044,
+      "candidate_id": "988a80c9-6e3a-4371-9120-7b8ea9e8287a",
+      "note": null
+    },
+    {
+      "people_id": 26051,
+      "candidate_id": "07f131bc-9227-4be5-a986-fe724e92ca93",
+      "note": null
+    },
+    {
+      "people_id": 26052,
+      "candidate_id": "95947ff2-917f-4b14-9f76-11caebc42a26",
+      "note": null
+    },
+    {
+      "people_id": 26053,
+      "candidate_id": "b06813c3-7e33-4e62-85c7-2248c19b953e",
+      "note": null
+    },
+    {
+      "people_id": 26054,
+      "candidate_id": null,
+      "note": "Sean Camacho, HD-006 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 26055,
+      "candidate_id": "abddf251-6761-41d6-8c78-b7b7799fbba5",
+      "note": null
+    },
+    {
+      "people_id": 26056,
+      "candidate_id": "22142b14-45c5-43e9-ae2f-2de006ff2ca3",
+      "note": null
+    },
+    {
+      "people_id": 26057,
+      "candidate_id": "dd959ee0-e5e6-4a32-b07b-7097ca430f83",
+      "note": null
+    },
+    {
+      "people_id": 26058,
+      "candidate_id": "5e60096b-7759-4266-84cc-d4a83b98c6ca",
+      "note": null
+    },
+    {
+      "people_id": 26059,
+      "candidate_id": "b1a6c0d2-469c-448f-a267-158ab3bd63a4",
+      "note": null
+    },
+    {
+      "people_id": 26060,
+      "candidate_id": "4fb3c062-73c9-4531-964d-f7e834406e37",
+      "note": null
+    },
+    {
+      "people_id": 26061,
+      "candidate_id": null,
+      "note": "Rebecca Keltie, HD-016 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 26062,
+      "candidate_id": "c6789d4e-a431-476c-b09c-6ab0bee6cc6e",
+      "note": null
+    },
+    {
+      "people_id": 26063,
+      "candidate_id": null,
+      "note": "Jacque Phillips, HD-031 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 26064,
+      "candidate_id": "a3fc8e06-ccfe-436b-b478-baf05469d845",
+      "note": null
+    },
+    {
+      "people_id": 26065,
+      "candidate_id": "1309afb2-2123-4421-a964-21027be9944b",
+      "note": null
+    },
+    {
+      "people_id": 26066,
+      "candidate_id": "487dd12f-7aee-4218-b33b-80e3079efd64",
+      "note": "Lori Garcia Sander, HD-065; our roster carries her as Lori Sander, so the proposer could not reach her. Same seat, same party, current office CO State Representative"
+    },
+    {
+      "people_id": 26067,
+      "candidate_id": "d176a1da-6fd0-41b1-a6b3-a7762c537a7f",
+      "note": null
+    },
+    {
+      "people_id": 26068,
+      "candidate_id": "827d0d04-c704-4841-977a-f98f3f928f77",
+      "note": null
+    },
+    {
+      "people_id": 26069,
+      "candidate_id": "c916cb0b-8882-4c56-8abe-93bbdad9b454",
+      "note": null
+    },
+    {
+      "people_id": 26070,
+      "candidate_id": "112d7d46-331d-4135-a097-6b7ef492b76c",
+      "note": null
+    },
+    {
+      "people_id": 26071,
+      "candidate_id": "9abf8f0e-cb85-461f-ad2d-581128fe7f20",
+      "note": null
+    },
+    {
+      "people_id": 26072,
+      "candidate_id": null,
+      "note": "Scott Bright, SD-013 in the 2025 session; no November 2026 candidacy. Colorado staggers its Senate, so only about half the districts are on this ballot"
+    },
+    {
+      "people_id": 26326,
+      "candidate_id": "711a0e46-6fa5-4e1f-8aef-94bcc1974eea",
+      "note": null
+    },
+    {
+      "people_id": 26327,
+      "candidate_id": "f7029bf6-546b-4859-9f38-1d36ecc456d5",
+      "note": null
+    },
+    {
+      "people_id": 26391,
+      "candidate_id": null,
+      "note": "Jamie Jackson, HD-041 in the 2025 session; no November 2026 candidacy and no candidate rows for the seat in our roster"
+    },
+    {
+      "people_id": 26447,
+      "candidate_id": "2d7353c0-947e-415b-b646-848159d8206a",
+      "note": null
+    },
+    {
+      "people_id": 26492,
+      "candidate_id": null,
+      "note": "Lynda Zamora Wilson, SD-009; appointed after Paul Lundeen left the seat, and she is not among our November 2026 candidates. The two candidates our roster carries for Senate District 9 are Terri Carver and William Delano Moses III"
+    }
+  ]
+}
