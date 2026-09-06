@@ -1,0 +1,112 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1635459,
+      "measure_id": "SB 1523",
+      "vote_date": "2026-02-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1523, which stops a landlord making an online portal the only way to rent a home. A landlord who takes applications through a portal must post a printable copy on their website, or send one within seven days of a written request. They must handle applications that come in outside the portal too. If a renter or applicant asks in writing, the landlord may not insist on the portal to prove who they are, to sign agreements, or to hand in papers. A landlord who breaks the rule owes the person their losses or $100, whichever is more. The law also widens the electronic payment fees a landlord may pass on. The Oregon Senate passed it 22-7, and it became law.",
+      "nay_description": "Voted against Senate Bill 1523, which stops a landlord making an online portal the only way to rent a home. A landlord who takes applications through a portal must post a printable copy on their website, or send one within seven days of a written request. They must handle applications that come in outside the portal too. If a renter or applicant asks in writing, the landlord may not insist on the portal to prove who they are, to sign agreements, or to hand in papers. A landlord who breaks the rule owes the person their losses or $100, whichever is more. The law also widens the electronic payment fees a landlord may pass on. The Oregon Senate passed it 22-7, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1649539,
+      "measure_id": "SB 1576",
+      "vote_date": "2026-03-02",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1576, which brings Oregon's rules on housing for disabled people up to date. The head of the state consumer and business agency may set stricter standards than federal law. That power now reaches homes in larger buildings, and other homes, so that all disabled people can use them. Parts of the housing law had been frozen to the federal rules of January 1, 2004. They now follow the rules in force when this Act began. Any rental housing the state housing department pays for must meet the access standards in section 504 of the federal Rehabilitation Act. The Oregon House passed it 34-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 1576, which brings Oregon's rules on housing for disabled people up to date. The head of the state consumer and business agency may set stricter standards than federal law. That power now reaches homes in larger buildings, and other homes, so that all disabled people can use them. Parts of the housing law had been frozen to the federal rules of January 1, 2004. They now follow the rules in force when this Act began. Any rental housing the state housing department pays for must meet the access standards in section 504 of the federal Rehabilitation Act. The Oregon House passed it 34-10, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1655714,
+      "measure_id": "HB 4144",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4144, which makes battery makers pay to collect and recycle what they sell. A covered maker may not sell batteries in Oregon unless it joins a battery producer group. The same goes for products that come with a battery. That group is a nonprofit. Five or more makers set it up to run one statewide collection and recycling program for them all. The state environment agency must sign off on the plan before the program starts. Electronic devices already covered by Oregon's e-waste law are left out. The Oregon Senate passed it 20-8, and it became law.",
+      "nay_description": "Voted against House Bill 4144, which makes battery makers pay to collect and recycle what they sell. A covered maker may not sell batteries in Oregon unless it joins a battery producer group. The same goes for products that come with a battery. That group is a nonprofit. Five or more makers set it up to run one statewide collection and recycling program for them all. The state environment agency must sign off on the plan before the program starts. Electronic devices already covered by Oregon's e-waste law are left out. The Oregon Senate passed it 20-8, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "house",
+      "session": "2252",
+      "roll": 1649903,
+      "measure_id": "SB 1590",
+      "vote_date": "2026-03-02",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1590, which bars Oregon governments from helping sell off federal public land. No public body may spend money to help the federal government sell or hand land in Oregon to a private buyer. Nor may it use data, technology, equipment or staff for that. Nor may it sign an agreement to that end. Transfers to another public body are not covered. Neither are transfers to a recognized tribe in Oregon, or to a body they own. The rule reaches land run by four federal agencies. Land inside an urban growth boundary is exempt. So is land going to a named use, such as a road, a utility or a park. The Oregon House passed it 35-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 1590, which bars Oregon governments from helping sell off federal public land. No public body may spend money to help the federal government sell or hand land in Oregon to a private buyer. Nor may it use data, technology, equipment or staff for that. Nor may it sign an agreement to that end. Transfers to another public body are not covered. Neither are transfers to a recognized tribe in Oregon, or to a body they own. The rule reaches land run by four federal agencies. Land inside an urban growth boundary is exempt. So is land going to a named use, such as a road, a utility or a park. The Oregon House passed it 35-12, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1652724,
+      "measure_id": "SB 1590",
+      "vote_date": "2026-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1590, which bars Oregon governments from helping sell off federal public land. No public body may spend money to help the federal government sell or hand land in Oregon to a private buyer. Nor may it use data, technology, equipment or staff for that. Nor may it sign an agreement to that end. Transfers to another public body are not covered. Neither are transfers to a recognized tribe in Oregon, or to a body they own. The rule reaches land run by four federal agencies. Land inside an urban growth boundary is exempt. So is land going to a named use, such as a road, a utility or a park. The Oregon Senate agreed to the House's changes 19-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 1590, which bars Oregon governments from helping sell off federal public land. No public body may spend money to help the federal government sell or hand land in Oregon to a private buyer. Nor may it use data, technology, equipment or staff for that. Nor may it sign an agreement to that end. Transfers to another public body are not covered. Neither are transfers to a recognized tribe in Oregon, or to a body they own. The rule reaches land run by four federal agencies. Land inside an urban growth boundary is exempt. So is land going to a named use, such as a road, a utility or a park. The Oregon Senate agreed to the House's changes 19-10, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "OR",
+      "chamber": "senate",
+      "session": "2252",
+      "roll": 1651434,
+      "measure_id": "HB 4060",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 4060, which carves holes in Oregon's ban on selling fluorescent lamps, which contain mercury. The ban itself stays. No one may sell a new straight fluorescent tube. Nor a compact one with a pin, screw or bayonet base. But two new groups may keep buying them. One is school districts, for use in school buildings. The other is any owner whose Oregon buildings add up to more than a million square feet. Space held by a parent firm or a subsidiary counts toward that total. The Act also repeals a part of the 2025 law that had set the phase-out. The Oregon Senate passed it 21-8, and it became law.",
+      "nay_description": "Voted against House Bill 4060, which carves holes in Oregon's ban on selling fluorescent lamps, which contain mercury. The ban itself stays. No one may sell a new straight fluorescent tube. Nor a compact one with a pin, screw or bayonet base. But two new groups may keep buying them. One is school districts, for use in school buildings. The other is any owner whose Oregon buildings add up to more than a million square feet. Space held by a parent firm or a subsidiary counts toward that total. The Act also repeals a part of the 2025 law that had set the phase-out. The Oregon Senate passed it 21-8, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    }
+  ]
+}
