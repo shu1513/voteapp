@@ -627,6 +627,60 @@ describe("ElectionPage", () => {
     expect(forChip.closest("p")).toHaveTextContent("Records:");
   });
 
+  it("caps the records row at three, saved issues first in any direction, then busiest areas, and expands in place", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-gun", slug: "gun_control", name: "Gun Control", description: null, rank: 1 },
+            { research_area_id: "a-none", slug: "data_privacy", name: "Data Privacy", description: null, rank: 2 },
+          ],
+        },
+      },
+    });
+    const tagged = (id: string, research_area_id: string, slug: string, name: string, stance: "for" | "against") => ({
+      id,
+      description: "A record.",
+      source_url: "https://example.gov/record",
+      event_date: "2025-01-15",
+      created_at: "2025-02-01T00:00:00.000Z",
+      research_area_tags: [{ research_area_id, slug, name, stance }],
+    });
+    const detail = electionDetail();
+    detail.candidates[0].records = [
+      // Saved #1, all against: leads anyway. Saved #2 has no records, so it
+      // cannot fill a slot. Then Environment (3) beats Civil Rights (2)
+      // beats Housing (1) on volume.
+      tagged("r-1", "a-gun", "gun_control", "Gun Control", "against"),
+      tagged("r-2", "a-env", "environment_and_public_health", "Environment and Public Health", "for"),
+      tagged("r-3", "a-env", "environment_and_public_health", "Environment and Public Health", "for"),
+      tagged("r-4", "a-env", "environment_and_public_health", "Environment and Public Health", "for"),
+      tagged("r-5", "a-civ", "civil_rights", "Civil Rights", "for"),
+      tagged("r-6", "a-civ", "civil_rights", "Civil Rights", "for"),
+      tagged("r-7", "a-hou", "housing_affordability", "Housing Affordability", "for"),
+    ];
+    renderElection(() => detail);
+
+    const gun = await screen.findByText("Gun Control");
+    // Wait for the preferences fetch: the saved cue marks the row re-ordered.
+    await within(gun.closest("span")!).findByText("(saved)");
+    const row = gun.closest("p")!;
+    const names = () =>
+      Array.from(row.querySelectorAll(":scope > span:not(:first-child)")).map((chip) => chip.firstChild?.textContent);
+    expect(names()).toEqual(["Gun Control", "Environment and Public Health", "Civil Rights"]);
+    expect(screen.queryByText("Housing Affordability")).not.toBeInTheDocument();
+    const toggle = within(row).getByRole("button", { name: "+1 more issues" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+
+    await userEvent.click(toggle);
+    expect(names()).toEqual(["Gun Control", "Environment and Public Health", "Civil Rights", "Housing Affordability"]);
+    await userEvent.click(within(row).getByRole("button", { name: "Show less" }));
+    expect(screen.queryByText("Housing Affordability")).not.toBeInTheDocument();
+  });
+
   it("colors measure research-area chips by stance", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>
@@ -761,6 +815,28 @@ describe("ElectionPage", () => {
     const environment = screen.getByText("Environment & Public Health");
     const civilRights = screen.getByText("Civil Rights");
     expect(environment.compareDocumentPosition(civilRights) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("caps the affects row at three issues and expands the rest in place", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        research_areas: [
+          { id: "a-1", slug: "civil_rights", name: "Civil Rights", description: null },
+          { id: "a-2", slug: "environment_and_public_health", name: "Environment and Public Health", description: null },
+          { id: "a-3", slug: "gun_control", name: "Gun Control", description: null },
+          { id: "a-4", slug: "housing_affordability", name: "Housing Affordability", description: null },
+          { id: "a-5", slug: "data_privacy", name: "Data Privacy", description: null },
+        ],
+      })
+    );
+
+    const row = (await screen.findByText("Affects:")).closest("p")!;
+    expect(row.querySelectorAll(":scope > span").length).toBe(4);
+    const toggle = within(row).getByRole("button", { name: "+2 more issues" });
+    await userEvent.click(toggle);
+    expect(row.querySelectorAll(":scope > span").length).toBe(6);
+    expect(within(row).getByRole("button", { name: "Show less" })).toBeInTheDocument();
   });
 
   it("renders a legacy duty-list summary (no period-terminated hook) as plain bullets", async () => {
