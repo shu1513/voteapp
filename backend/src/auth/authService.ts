@@ -1,8 +1,20 @@
 import type { Pool, PoolClient } from "pg";
 
 import { createAuthSession, destroyAuthSession, destroyAuthSessionsByUserId, type AuthSessionRedisClient } from "./authSessionStore.js";
-import { generateAuthToken, hashPassword, validatePasswordPolicy, verifyPassword } from "./authPrimitives.js";
-import { issueUserAuthToken, consumeUserAuthToken } from "./authTokenStore.js";
+import {
+  AUTH_TOKEN_PURPOSES,
+  generateAuthToken,
+  hashPassword,
+  validatePasswordPolicy,
+  verifyPassword,
+  type AuthTokenPurpose,
+} from "./authPrimitives.js";
+import {
+  issueUserAuthToken,
+  consumeUserAuthToken,
+  peekUserAuthToken,
+  voidUserAuthTokens,
+} from "./authTokenStore.js";
 import type { AuthMailer } from "./authMailer.js";
 import { isUuid } from "../utils/uuid.js";
 import { CURRENT_TERMS_VERSION, isAcceptableTermsVersion } from "../constants/legal.js";
@@ -290,6 +302,36 @@ function toPasswordResetLink(baseUrl: URL, token: string): string {
   return buildEmailLink(baseUrl, "/reset-password", token);
 }
 
+/**
+ * Token consumption in the same lock order as issuance and voiding (user row
+ * first, then token rows): resolve the token's owner without consuming, lock
+ * the user row FOR UPDATE, then consume atomically. The consume re-checks
+ * validity after the lock wait, so a token voided by an ownership change
+ * that committed in between (re-registration, Google takeover, password
+ * change) is rejected. Consuming first and locking second would deadlock
+ * against those user-first transactions.
+ */
+async function lockUserAndConsumeToken(
+  client: Queryable,
+  input: { token: string; purpose: AuthTokenPurpose; invalidMessage: string }
+): Promise<NonNullable<Awaited<ReturnType<typeof consumeUserAuthToken>>>> {
+  const now = new Date();
+  const peeked = await peekUserAuthToken(client, { token: input.token, purpose: input.purpose, now });
+  if (!peeked) {
+    throw new RequestValidationError(input.invalidMessage);
+  }
+  const user = await findActiveUserByIdForUpdate(client, peeked.userId);
+  if (!user) {
+    throw new RequestValidationError(input.invalidMessage);
+  }
+  // Fresh clock for the consume: the lock wait may have crossed expires_at.
+  const consumed = await consumeUserAuthToken(client, { token: input.token, purpose: input.purpose });
+  if (!consumed) {
+    throw new RequestValidationError(input.invalidMessage);
+  }
+  return consumed;
+}
+
 const DUMMY_PASSWORD_HASH_PROMISE = hashPassword("auth-login-dummy-password");
 
 function normalizeSessionId(value: string | null | undefined): string | null {
@@ -367,6 +409,12 @@ async function createOrRefreshAuthUser(
       termsVersion: input.acceptedTermsVersion,
       context: "registration",
     });
+    // Ownership changes hands here, so links the pre-registrant requested
+    // must die with their password and sessions: an outstanding email_change
+    // link in THEIR inbox would otherwise still move this account's address
+    // to them after the real owner verifies. (email_verify is re-issued by
+    // the caller, which voids the old one.)
+    await voidUserAuthTokens(client, { userId: row.id, purposes: ["password_reset", "email_change"] });
     return row;
   }
 
@@ -606,6 +654,10 @@ function createLoginWithGoogle(deps: {
           termsVersion: signupTermsVersion,
           context: "registration",
         });
+        //   - every outstanding link the pre-registrant requested dies too
+        //     (an email_change link in their inbox could otherwise still
+        //     move this account's address to them).
+        await voidUserAuthTokens(client, { userId: byEmail.id, purposes: [...AUTH_TOKEN_PURPOSES] });
         await updateLastLoggedIn(client, byEmail.id);
         await client.query("COMMIT");
         return { userId: byEmail.id, sessionEpoch: takeoverEpoch };
@@ -842,14 +894,11 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       const client = await options.db.connect();
       try {
         await client.query("BEGIN");
-        const consumed = await consumeUserAuthToken(client, {
+        const consumed = await lockUserAndConsumeToken(client, {
           token: input.token,
           purpose: "email_verify",
-          now: new Date(),
+          invalidMessage: "Verification token is invalid or expired",
         });
-        if (!consumed) {
-          throw new RequestValidationError("Verification token is invalid or expired");
-        }
 
         // Verification upgrades every session's privileges, so revoke the
         // pre-verification ones (epoch bump): a session created against the
@@ -870,6 +919,12 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         if (updated.rowCount !== 1) {
           throw new Error("Failed to verify user email");
         }
+        // Links requested before verification may sit in a pre-registrant's
+        // inbox; verification settles ownership, so they die here.
+        await voidUserAuthTokens(client, {
+          userId: consumed.userId,
+          purposes: ["password_reset", "email_change"],
+        });
 
         await client.query("COMMIT");
       } catch (error) {
@@ -997,14 +1052,11 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
 
       try {
         await client.query("BEGIN");
-        const consumed = await consumeUserAuthToken(client, {
+        const consumed = await lockUserAndConsumeToken(client, {
           token: input.token,
           purpose: "password_reset",
-          now: new Date(),
+          invalidMessage: "Password reset token is invalid or expired",
         });
-        if (!consumed) {
-          throw new RequestValidationError("Password reset token is invalid or expired");
-        }
 
         // Hash only after the token is proven valid: bogus-token requests
         // must not be able to burn Argon2 work. Hashing inside the
@@ -1029,6 +1081,10 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         if (updated.rowCount !== 1) {
           throw new Error("Failed to update user password");
         }
+        // A new credential invalidates links issued under the old one: an
+        // email_change link requested by whoever held the old password must
+        // not still be able to move the address.
+        await voidUserAuthTokens(client, { userId: consumed.userId, purposes: ["email_change"] });
 
         userIdToInvalidate = consumed.userId;
         await client.query("COMMIT");
@@ -1094,6 +1150,9 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           throw new Error("Failed to update user password");
         }
         newSessionEpoch = bumpedEpoch;
+        // Same rule as resetPassword: links issued under the old credential
+        // (a reset link, an email-change link) die with it.
+        await voidUserAuthTokens(client, { userId, purposes: ["password_reset", "email_change"] });
         await client.query("COMMIT");
       } catch (error) {
         await rollbackQuietly(client);
@@ -1154,7 +1213,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         await client.query(
           `
             UPDATE public.user_auth_tokens
-            SET consumed_at = now()
+            SET consumed_at = clock_timestamp()
             WHERE user_id = $1::uuid
               AND purpose = 'email_change'
               AND consumed_at IS NULL
@@ -1211,12 +1270,12 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       const client = await options.db.connect();
       try {
         await client.query("BEGIN");
-        const consumed = await consumeUserAuthToken(client, {
+        const consumed = await lockUserAndConsumeToken(client, {
           token: input.token,
           purpose: "email_change",
-          now: new Date(),
+          invalidMessage: "Email change token is invalid or expired",
         });
-        if (!consumed || !consumed.newEmail) {
+        if (!consumed.newEmail) {
           throw new RequestValidationError("Email change token is invalid or expired");
         }
 
@@ -1235,6 +1294,12 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         if (updated.rowCount !== 1) {
           throw new Error("Failed to update user email");
         }
+        // Links mailed to the OLD address (verify, reset) must not stay
+        // actionable from a mailbox the account no longer uses.
+        await voidUserAuthTokens(client, {
+          userId: consumed.userId,
+          purposes: ["email_verify", "password_reset"],
+        });
 
         await client.query("COMMIT");
         changedUserId = consumed.userId;

@@ -170,6 +170,7 @@ describe("createAuthService register terms acceptance", () => {
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // existing unverified user
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // UPDATE refresh
       .mockResolvedValueOnce({ rows: [] }) // INSERT terms acceptance
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // void pre-registrant's reset/email-change links
       .mockResolvedValueOnce({ rows: [] }) // void outstanding tokens
       .mockResolvedValueOnce({ rows: [{ id: "token-id" }] }) // INSERT token
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
@@ -300,6 +301,7 @@ describe("createAuthService changePassword", () => {
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
       .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
       .mockResolvedValueOnce({ rows: [{ session_epoch: 2 }], rowCount: 1 }) // UPDATE password_hash + epoch bump
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // void reset/email-change links
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
     const redis = createRedisMock();
 
@@ -322,6 +324,12 @@ describe("createAuthService changePassword", () => {
     // All old sessions die (user-set sweep), fresh session created after.
     expect(redis.sMembers).toHaveBeenCalled();
     expect(redis.setEx).toHaveBeenCalled();
+    // Links issued under the old password die with it, inside the same
+    // transaction.
+    expect(client.query).toHaveBeenCalledWith(
+      expect.stringContaining("SET consumed_at = clock_timestamp()"),
+      [USER_ID, ["password_reset", "email_change"]]
+    );
     expect(client.query).toHaveBeenCalledWith("COMMIT");
   });
 
@@ -451,7 +459,7 @@ describe("createAuthService requestEmailChange", () => {
     // The taken path must still disarm older change links: a typo-recovery
     // retry that lands on a taken address may not leave the typo link live.
     const voidCall = client.query.mock.calls.find((call) =>
-      String(call[0]).includes("SET consumed_at = now()")
+      String(call[0]).includes("SET consumed_at = clock_timestamp()")
     );
     expect(voidCall?.[1]).toEqual([USER_ID]);
     expect(client.query).toHaveBeenCalledWith("COMMIT");
@@ -499,6 +507,8 @@ describe("createAuthService verifyEmailChange", () => {
     const client = createDbClientMock();
     client.query
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ user_id: USER_ID }] }) // peek token owner
+      .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
       .mockResolvedValueOnce({
         rows: [
           {
@@ -514,6 +524,7 @@ describe("createAuthService verifyEmailChange", () => {
         ],
       }) // consume token
       .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // void verify/reset links mailed to the old address
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
 
     const service = createAuthService({
@@ -538,6 +549,8 @@ describe("createAuthService verifyEmailChange", () => {
     const client = createDbClientMock();
     client.query
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ user_id: USER_ID }] }) // peek token owner
+      .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
       .mockResolvedValueOnce({
         rows: [
           {
@@ -553,6 +566,7 @@ describe("createAuthService verifyEmailChange", () => {
         ],
       }) // consume token
       .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // void verify/reset links mailed to the old address
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
     const syncMembershipCustomerEmail = vi.fn().mockResolvedValue(undefined);
 
@@ -574,6 +588,8 @@ describe("createAuthService verifyEmailChange", () => {
       const client = createDbClientMock();
       client.query
         .mockResolvedValueOnce({ rows: [] }) // BEGIN
+        .mockResolvedValueOnce({ rows: [{ user_id: USER_ID }] }) // peek token owner
+        .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
         .mockResolvedValueOnce({
           rows: [
             {
@@ -589,6 +605,7 @@ describe("createAuthService verifyEmailChange", () => {
           ],
         }) // consume token
         .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+        .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // void verify/reset links mailed to the old address
         .mockResolvedValueOnce({ rows: [] }); // COMMIT
       const syncMembershipCustomerEmail = vi.fn().mockRejectedValue(new Error("stripe down"));
 
@@ -607,7 +624,7 @@ describe("createAuthService verifyEmailChange", () => {
       const failClient = createDbClientMock();
       failClient.query
         .mockResolvedValueOnce({ rows: [] }) // BEGIN
-        .mockResolvedValueOnce({ rows: [] }); // consume: nothing
+        .mockResolvedValueOnce({ rows: [] }); // peek: nothing
       const failSync = vi.fn();
       const failService = createAuthService({
         db: createDbMock(failClient) as never,
@@ -629,7 +646,7 @@ describe("createAuthService verifyEmailChange", () => {
     const client = createDbClientMock();
     client.query
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
-      .mockResolvedValueOnce({ rows: [] }); // consume: nothing
+      .mockResolvedValueOnce({ rows: [] }); // peek: nothing
 
     const service = createAuthService({
       db: createDbMock(client) as never,
@@ -646,6 +663,8 @@ describe("createAuthService verifyEmailChange", () => {
     const uniqueViolation = Object.assign(new Error("duplicate key"), { code: "23505" });
     client.query
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ user_id: USER_ID }] }) // peek token owner
+      .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
       .mockResolvedValueOnce({
         rows: [
           {
@@ -659,7 +678,7 @@ describe("createAuthService verifyEmailChange", () => {
             created_at: new Date(),
           },
         ],
-      })
+      }) // consume token
       .mockRejectedValueOnce(uniqueViolation); // UPDATE users hits uq_users_email_active
 
     await expect(service.verifyEmailChange({ token: "raw-token" })).rejects.toThrow(
@@ -1049,8 +1068,11 @@ describe("createAuthService session epoch revocation", () => {
     const client = createDbClientMock();
     client.query
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ user_id: USER_ID }] }) // peek token owner
+      .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
       .mockResolvedValueOnce({ rows: [tokenRow()] }) // consume reset token
       .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // void email-change links
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
     const redis = createRedisMock();
 
@@ -1072,8 +1094,11 @@ describe("createAuthService session epoch revocation", () => {
     const client = createDbClientMock();
     client.query
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ user_id: USER_ID }] }) // peek token owner
+      .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
       .mockResolvedValueOnce({ rows: [tokenRow()] }) // consume reset token
       .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // void email-change links
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
     const redis = createRedisMock();
     redis.sMembers.mockRejectedValue(new Error("redis down"));
@@ -1099,6 +1124,7 @@ describe("createAuthService session epoch revocation", () => {
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // existing unverified FOR UPDATE
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: false, session_epoch: 2 })] }) // refresh UPDATE
       .mockResolvedValueOnce({ rows: [] }) // INSERT terms acceptance
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // void pre-registrant's reset/email-change links
       .mockResolvedValueOnce({ rows: [] }) // void outstanding tokens
       .mockResolvedValueOnce({ rows: [{ id: "token-id" }] }) // issue verification token
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
@@ -1124,6 +1150,8 @@ describe("createAuthService session epoch revocation", () => {
     const client = createDbClientMock();
     client.query
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ user_id: USER_ID }] }) // peek token owner
+      .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // user FOR UPDATE
       .mockResolvedValueOnce({
         rows: [
           {
@@ -1139,6 +1167,7 @@ describe("createAuthService session epoch revocation", () => {
         ],
       }) // consume verify token
       .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // void reset/email-change links
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
 
     const service = createAuthService({
@@ -1175,5 +1204,175 @@ describe("createAuthService session epoch revocation", () => {
 
     const storedValue = redis.setEx.mock.calls[0]?.[2] as string;
     expect(storedValue).toBe(`${USER_ID}:7`);
+  });
+});
+
+describe("createAuthService auth-token lifecycle", () => {
+  function verifyTokenRow() {
+    return {
+      id: "token-1",
+      user_id: USER_ID,
+      token_hash: "hash",
+      purpose: "email_verify",
+      new_email: null,
+      expires_at: new Date(Date.now() + 60_000),
+      consumed_at: null,
+      created_at: new Date(),
+    };
+  }
+
+  it("consumers lock the user row BEFORE consuming the token (same order as issuance and voiding)", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ user_id: USER_ID }] }) // peek
+      .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [verifyTokenRow()] }) // consume
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // void
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await service.verifyEmail({ token: "raw-token" });
+
+    const sqls = client.query.mock.calls.map((call) => String(call[0]));
+    const peekAt = sqls.findIndex((sql) => sql.includes("SELECT user_id::text AS user_id"));
+    const lockAt = sqls.findIndex((sql) => sql.includes("FROM public.users") && sql.includes("FOR UPDATE"));
+    const consumeAt = sqls.findIndex((sql) => sql.includes("SET consumed_at = $3::timestamptz"));
+    expect(peekAt).toBeGreaterThan(0);
+    expect(lockAt).toBeGreaterThan(peekAt);
+    expect(consumeAt).toBeGreaterThan(lockAt);
+    // The peek never writes; only the consume flips consumed_at.
+    expect(sqls[peekAt]).not.toContain("UPDATE");
+    // Verification settles ownership: reset / email-change links die with it.
+    expect(client.query).toHaveBeenCalledWith(expect.stringContaining("SET consumed_at = clock_timestamp()"), [
+      USER_ID,
+      ["password_reset", "email_change"],
+    ]);
+  });
+
+  it("rejects an unknown token before locking anything", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [] }); // peek: nothing
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await expect(service.verifyEmail({ token: "bogus" })).rejects.toThrow("Verification token is invalid or expired");
+    const sqls = client.query.mock.calls.map((call) => String(call[0]));
+    expect(sqls.some((sql) => sql.includes("FOR UPDATE"))).toBe(false);
+    expect(sqls.some((sql) => sql.includes("SET consumed_at"))).toBe(false);
+    expect(client.query).toHaveBeenCalledWith("ROLLBACK");
+  });
+
+  it("rejects a token voided between the peek and the consume (lost the ownership race)", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ user_id: USER_ID }] }) // peek: looked valid
+      .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE (waited on a re-registration)
+      .mockResolvedValueOnce({ rows: [] }); // consume: already voided
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await expect(service.verifyEmailChange({ token: "raw-token" })).rejects.toThrow(
+      "Email change token is invalid or expired"
+    );
+    const sqls = client.query.mock.calls.map((call) => String(call[0]));
+    expect(sqls.some((sql) => sql.includes("SET email ="))).toBe(false);
+    expect(client.query).toHaveBeenCalledWith("ROLLBACK");
+  });
+
+  it("resetPassword voids email-change links; verifyEmailChange voids verify + reset links", async () => {
+    const resetClient = createDbClientMock();
+    resetClient.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ user_id: USER_ID }] }) // peek
+      .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [{ ...verifyTokenRow(), purpose: "password_reset" }] }) // consume
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // void
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const service = createAuthService({
+      db: createDbMock(resetClient) as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+    await service.resetPassword({ token: "raw-token", password: "brand-new-password-456" });
+    expect(resetClient.query).toHaveBeenCalledWith(expect.stringContaining("SET consumed_at = clock_timestamp()"), [
+      USER_ID,
+      ["email_change"],
+    ]);
+
+    const changeClient = createDbClientMock();
+    changeClient.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ user_id: USER_ID }] }) // peek
+      .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+      .mockResolvedValueOnce({
+        rows: [{ ...verifyTokenRow(), purpose: "email_change", new_email: "new@example.com" }],
+      }) // consume
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // void
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const changeService = createAuthService({
+      db: createDbMock(changeClient) as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+    await changeService.verifyEmailChange({ token: "raw-token" });
+    expect(changeClient.query).toHaveBeenCalledWith(expect.stringContaining("SET consumed_at = clock_timestamp()"), [
+      USER_ID,
+      ["email_verify", "password_reset"],
+    ]);
+  });
+
+  it("re-registering an unverified address voids the pre-registrant's reset and email-change links", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // existing unverified FOR UPDATE
+      .mockResolvedValueOnce({ rows: [userRow({ email_verified: false, session_epoch: 2 })] }) // refresh UPDATE
+      .mockResolvedValueOnce({ rows: [] }) // INSERT terms acceptance
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // void pre-registrant links
+      .mockResolvedValueOnce({ rows: [] }) // void same-purpose verify tokens
+      .mockResolvedValueOnce({ rows: [{ id: "token-id" }] }) // issue verification token
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await service.register({
+      email: "user@example.com",
+      password: "brand-new-password-456",
+      acceptedTermsVersion: CURRENT_TERMS_VERSION,
+    });
+
+    const sqls = client.query.mock.calls.map((call) => String(call[0]));
+    const lockAt = sqls.findIndex((sql) => sql.includes("FOR UPDATE"));
+    const voidAt = client.query.mock.calls.findIndex(
+      (call) => String(call[0]).includes("SET consumed_at = clock_timestamp()") && Array.isArray(call[1]?.[1])
+    );
+    expect(voidAt).toBeGreaterThan(lockAt);
+    expect(client.query.mock.calls[voidAt]?.[1]).toEqual([USER_ID, ["password_reset", "email_change"]]);
   });
 });
