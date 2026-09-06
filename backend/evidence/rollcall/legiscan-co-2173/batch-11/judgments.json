@@ -1,0 +1,416 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1563942,
+   "measure_id": "HB 1004",
+   "vote_date": "2025-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1004 and pass it. Some landlords set rents with software that draws on price data from other landlords. The bill would have banned selling or using that kind of software to set rent or occupancy in Colorado. A breach would have counted as an illegal restraint of trade under the state antitrust law. The state would also have had to run a public education campaign about the rule. The Colorado House voted 42-21 to accept those changes and pass the bill, and the governor vetoed it.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1004. Some landlords set rents with software that draws on price data from other landlords. The bill would have banned selling or using that kind of software to set rent or occupancy in Colorado. A breach would have counted as an illegal restraint of trade under the state antitrust law. The state would also have had to run a public education campaign about the rule. The Colorado House voted 42-21 to accept those changes and pass the bill, and the governor vetoed it.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1563941
+   ],
+   "note": "The acknowledged roll is a same-day peer of this vote. Colorado votes twice to take the other chamber's changes, concurring and then repassing the bill the same day; and a chamber can carry two records of one third reading, in which case the roll judged is the one that records every member."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1558937,
+   "measure_id": "HB 1004",
+   "vote_date": "2025-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1004. Some landlords set rents with software that draws on price data from other landlords. The bill would have banned selling or using that kind of software to set rent or occupancy in Colorado. A breach would have counted as an illegal restraint of trade under the state antitrust law. The state would also have had to run a public education campaign about the rule. The Colorado Senate passed it 22-12, and the governor vetoed it.",
+   "nay_description": "Voted against passing House Bill 1004. Some landlords set rents with software that draws on price data from other landlords. The bill would have banned selling or using that kind of software to set rent or occupancy in Colorado. A breach would have counted as an illegal restraint of trade under the state antitrust law. The state would also have had to run a public education campaign about the rule. The Colorado Senate passed it 22-12, and the governor vetoed it.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1506064,
+   "measure_id": "HB 1011",
+   "vote_date": "2025-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1011. The bill would have set rules for child care centers owned by investment firms. A firm counted if it held at least a fifth of a center or chain, and the rules applied only where it owned five or more centers. Each center would have had to post and update its prices on its website. The firm would have had to give 60 days notice before layoffs or changes to who can enroll. The Colorado House passed it 38-23, but the Senate rejected it 16-18 and the bill died.",
+   "nay_description": "Voted against passing House Bill 1011. The bill would have set rules for child care centers owned by investment firms. A firm counted if it held at least a fifth of a center or chain, and the rules applied only where it owned five or more centers. Each center would have had to post and update its prices on its website. The firm would have had to give 60 days notice before layoffs or changes to who can enroll. The Colorado House passed it 38-23, but the Senate rejected it 16-18 and the bill died.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1539510,
+   "measure_id": "HB 1011",
+   "vote_date": "2025-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1011. The bill would have set rules for child care centers owned by investment firms. A firm counted if it held at least a fifth of a center or chain, and the rules applied only where it owned five or more centers. Each center would have had to post and update its prices on its website. The firm would have had to give 60 days notice before layoffs or changes to who can enroll. The measure failed in the Colorado Senate 16-18, and the bill died there.",
+   "nay_description": "Voted against passing House Bill 1011. The bill would have set rules for child care centers owned by investment firms. A firm counted if it held at least a fifth of a center or chain, and the rules applied only where it owned five or more centers. Each center would have had to post and update its prices on its website. The firm would have had to give 60 days notice before layoffs or changes to who can enroll. The measure failed in the Colorado Senate 16-18, and the bill died there.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1563979,
+   "measure_id": "HB 1026",
+   "vote_date": "2025-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1026 and pass it. Colorado makes prisoners pay part of the cost when they ask to see a doctor, dentist, counselor or eye doctor. The bill would have ended that charge. It covered specialist and emergency care too. It would also have barred a fee when a prisoner misses or turns down a visit. The Colorado House voted 43-22 to accept those changes and pass the bill, and the governor vetoed it.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1026. Colorado makes prisoners pay part of the cost when they ask to see a doctor, dentist, counselor or eye doctor. The bill would have ended that charge. It covered specialist and emergency care too. It would also have barred a fee when a prisoner misses or turns down a visit. The Colorado House voted 43-22 to accept those changes and pass the bill, and the governor vetoed it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1563978
+   ],
+   "note": "The acknowledged roll is a same-day peer of this vote. Colorado votes twice to take the other chamber's changes, concurring and then repassing the bill the same day; and a chamber can carry two records of one third reading, in which case the roll judged is the one that records every member."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1561745,
+   "measure_id": "HB 1026",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1026. Colorado makes prisoners pay part of the cost when they ask to see a doctor, dentist, counselor or eye doctor. The bill would have ended that charge. It covered specialist and emergency care too. It would also have barred a fee when a prisoner misses or turns down a visit. The Colorado Senate passed it 23-12, and the governor vetoed it.",
+   "nay_description": "Voted against passing House Bill 1026. Colorado makes prisoners pay part of the cost when they ask to see a doctor, dentist, counselor or eye doctor. The bill would have ended that charge. It covered specialist and emergency care too. It would also have barred a fee when a prisoner misses or turns down a visit. The Colorado Senate passed it 23-12, and the governor vetoed it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1559492,
+   "measure_id": "HB 1079",
+   "vote_date": "2025-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1079. Colorado has an ethics board that hears complaints about public officials. School boards and special districts sit outside its reach. The bill would have brought them in, so the board could hear complaints, make findings and set penalties. Only board members and the top hired official would have counted. The Colorado House passed it 41-23, but a Senate committee never sent it to the floor and it died when the session ended.",
+   "nay_description": "Voted against passing House Bill 1079. Colorado has an ethics board that hears complaints about public officials. School boards and special districts sit outside its reach. The bill would have brought them in, so the board could hear complaints, make findings and set penalties. Only board members and the top hired official would have counted. The Colorado House passed it 41-23, but a Senate committee never sent it to the floor and it died when the session ended.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1565818,
+   "measure_id": "HB 1122",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1122. The bill would have barred a self-driving system from operating a commercial truck alone. Someone holding a commercial driver's license would have had to sit in the driver's seat, watch the driving and step in when needed. A first conviction would have cost $1,000 and a second $2,000, with the penalty doubling after that. The rule would have started in July 2027. The Colorado Senate passed it 27-8, and the governor vetoed it.",
+   "nay_description": "Voted against passing House Bill 1122. The bill would have barred a self-driving system from operating a commercial truck alone. Someone holding a commercial driver's license would have had to sit in the driver's seat, watch the driving and step in when needed. A first conviction would have cost $1,000 and a second $2,000, with the penalty doubling after that. The rule would have started in July 2027. The Colorado Senate passed it 27-8, and the governor vetoed it.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1555160,
+   "measure_id": "HB 1147",
+   "vote_date": "2025-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1147 and pass it. Colorado city courts can jail people for city offenses. The bill would have capped those jail terms at what state law allows for the same conduct. It would have confirmed a right to a lawyer, and given city defense lawyers the same access to their clients and case files as state ones have. It would also have required city court hearings to be open to the public. The Colorado House voted 41-22 to accept those changes and pass the bill, and the governor vetoed it.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1147. Colorado city courts can jail people for city offenses. The bill would have capped those jail terms at what state law allows for the same conduct. It would have confirmed a right to a lawyer, and given city defense lawyers the same access to their clients and case files as state ones have. It would also have required city court hearings to be open to the public. The Colorado House voted 41-22 to accept those changes and pass the bill, and the governor vetoed it.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1555159
+   ],
+   "note": "The acknowledged roll is a same-day peer of this vote. Colorado votes twice to take the other chamber's changes, concurring and then repassing the bill the same day; and a chamber can carry two records of one third reading, in which case the roll judged is the one that records every member."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1537260,
+   "measure_id": "HB 1147",
+   "vote_date": "2025-04-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1147. Colorado city courts can jail people for city offenses. The bill would have capped those jail terms at what state law allows for the same conduct. It would have confirmed a right to a lawyer, and given city defense lawyers the same access to their clients and case files as state ones have. It would also have required city court hearings to be open to the public. The Colorado Senate passed it 24-11, and the governor vetoed it.",
+   "nay_description": "Voted against passing House Bill 1147. Colorado city courts can jail people for city offenses. The bill would have capped those jail terms at what state law allows for the same conduct. It would have confirmed a right to a lawyer, and given city defense lawyers the same access to their clients and case files as state ones have. It would also have required city court hearings to be open to the public. The Colorado Senate passed it 24-11, and the governor vetoed it.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1537033
+   ],
+   "note": "The acknowledged roll is a same-day peer of this vote. Colorado votes twice to take the other chamber's changes, concurring and then repassing the bill the same day; and a chamber can carry two records of one third reading, in which case the roll judged is the one that records every member."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1547497,
+   "measure_id": "HB 1158",
+   "vote_date": "2025-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1158. Schools buy digital research collections for students to use. The bill would have made a contract signed or renewed from July 2026 treat targeted ads, other banned ads and embedded links as a broken contract. The vendor would have had 30 days after notice to take them out. From the 2026-27 school year schools would have had to tell parents each year that these collections must be free of them. The measure failed in the Colorado House 31-33, and the bill died there.",
+   "nay_description": "Voted against passing House Bill 1158. Schools buy digital research collections for students to use. The bill would have made a contract signed or renewed from July 2026 treat targeted ads, other banned ads and embedded links as a broken contract. The vendor would have had 30 days after notice to take them out. From the 2026-27 school year schools would have had to tell parents each year that these collections must be free of them. The measure failed in the Colorado House 31-33, and the bill died there.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1518352,
+   "measure_id": "HB 1169",
+   "vote_date": "2025-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1169. The bill would have made local governments allow homes on land owned by faith groups and schools. From the end of 2026 those projects would have gone through a simple administrative approval. A city could not have refused a project on height grounds if it was no more than three stories or 45 feet. It also could not have applied rules stricter than the ones it uses for similar housing nearby. The Colorado House passed it 40-23, but the Senate put off its second reading again and again until the session ended.",
+   "nay_description": "Voted against passing House Bill 1169. The bill would have made local governments allow homes on land owned by faith groups and schools. From the end of 2026 those projects would have gone through a simple administrative approval. A city could not have refused a project on height grounds if it was no more than three stories or 45 feet. It also could not have applied rules stricter than the ones it uses for similar housing nearby. The Colorado House passed it 40-23, but the Senate put off its second reading again and again until the session ended.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1561762,
+   "measure_id": "HB 1235",
+   "vote_date": "2025-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1235. Colorado decides eviction cases without a jury. The bill would have given both the landlord and the tenant a right to a jury trial. Someone would have had to try to hand the papers to the tenant in person on two separate days before posting them on the door. It would also have let people take part by phone or video when a disability makes coming to court hard. The Colorado House passed it 33-32, but a Senate committee killed it.",
+   "nay_description": "Voted against passing House Bill 1235. Colorado decides eviction cases without a jury. The bill would have given both the landlord and the tenant a right to a jury trial. Someone would have had to try to hand the papers to the tenant in person on two separate days before posting them on the door. It would also have let people take part by phone or video when a disability makes coming to court hard. The Colorado House passed it 33-32, but a Senate committee killed it.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1534099,
+   "measure_id": "HB 1277",
+   "vote_date": "2025-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1277. The bill would have required a warning label on fuel sold at Colorado pumps and store displays from July 2026. In English and Spanish, it would have said that using the product releases air pollutants and greenhouse gases the state links to serious health effects and to global heating. Selling fuel without the label would have counted as a deceptive trade practice. The Colorado House passed it 33-30, but a Senate committee killed it.",
+   "nay_description": "Voted against passing House Bill 1277. The bill would have required a warning label on fuel sold at Colorado pumps and store displays from July 2026. In English and Spanish, it would have said that using the product releases air pollutants and greenhouse gases the state links to serious health effects and to global heating. Selling fuel without the label would have counted as a deceptive trade practice. The Colorado House passed it 33-30, but a Senate committee killed it.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1520872,
+   "measure_id": "HB 1282",
+   "vote_date": "2025-03-19",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1282. Shops pay card networks a fee on every card payment, worked out on the whole bill. The bill would have barred charging that fee on the sales tax or the tip. It would have banned a network from fixing those fees with the banks that issue cards. It would also have stopped a network making a shop accept every card an issuer offers. The Colorado House passed it 43-21, but a Senate committee killed it.",
+   "nay_description": "Voted against passing House Bill 1282. Shops pay card networks a fee on every card payment, worked out on the whole bill. The bill would have barred charging that fee on the sales tax or the tip. It would have banned a network from fixing those fees with the banks that issue cards. It would also have stopped a network making a shop accept every card an issuer offers. The Colorado House passed it 43-21, but a Senate committee killed it.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1567160,
+   "measure_id": "HB 1291",
+   "vote_date": "2025-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1291. The bill would have set new rules for ride-hailing companies. A driver could not have worked more than 10 hours in a row. The company would have had to run a fingerprint background check before a driver starts, and again every six months. Before each ride it would have had to confirm the driver is the one it approved, and it would have had to give a rider who complains the ride's data, photos and video. The Colorado Senate passed it 22-13, and the governor vetoed it.",
+   "nay_description": "Voted against passing House Bill 1291. The bill would have set new rules for ride-hailing companies. A driver could not have worked more than 10 hours in a row. The company would have had to run a fingerprint background check before a driver starts, and again every six months. Before each ride it would have had to confirm the driver is the one it approved, and it would have had to give a rider who complains the ride's data, photos and video. The Colorado Senate passed it 22-13, and the governor vetoed it.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1531213,
+   "measure_id": "SB 77",
+   "vote_date": "2025-03-31",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 77. Colorado's open records law expects a government to answer a records request in three working days. The bill would have stretched that to five days for everyone but the press, which would have kept three. In hard cases the extra time allowed would have grown from seven days to ten. Agencies would also have had to post their records rules and how to ask for records. The Colorado House passed it 45-19, and the governor vetoed it.",
+   "nay_description": "Voted against passing Senate Bill 77. Colorado's open records law expects a government to answer a records request in three working days. The bill would have stretched that to five days for everyone but the press, which would have kept three. In hard cases the extra time allowed would have grown from seven days to ten. Agencies would also have had to post their records rules and how to ask for records. The Colorado House passed it 45-19, and the governor vetoed it.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1530965,
+   "measure_id": "SB 86",
+   "vote_date": "2025-03-31",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 86. The bill would have set duties for social media companies. Each would have had to publish its platform's rules and report to the state each year on breaches of them. After a report that a user broke the law or those rules, the company would have had 48 hours to decide whether the report was false. Where more digging was needed it would have had to suspend the account, finish within 10 days, and close the account within 24 hours of finding a breach. The Colorado House passed it 46-18. The governor vetoed it, the Senate voted to override, and the House never took up the question, so the veto stood.",
+   "nay_description": "Voted against passing Senate Bill 86. The bill would have set duties for social media companies. Each would have had to publish its platform's rules and report to the state each year on breaches of them. After a report that a user broke the law or those rules, the company would have had 48 hours to decide whether the report was false. Where more digging was needed it would have had to suspend the account, finish within 10 days, and close the account within 24 hours of finding a breach. The Colorado House passed it 46-18. The governor vetoed it, the Senate voted to override, and the House never took up the question, so the veto stood.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2173",
+   "roll": 1565837,
+   "measure_id": "SB 124",
+   "vote_date": "2025-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 124. Nonprofit hospitals buy some drugs at a deep federal discount, then get paid more for them. The bill would have made bigger nonprofit hospitals spend at least 80 percent of that gain on care for low-income patients. They could not have spent it on executive pay, lobbying, image ads, gifts or board costs. They would also have had to report what they buy and earn under the program. The Colorado House passed it 42-23, but the Senate refused to accept the House's changes on the session's last day and the bill died.",
+   "nay_description": "Voted against passing Senate Bill 124. Nonprofit hospitals buy some drugs at a deep federal discount, then get paid more for them. The bill would have made bigger nonprofit hospitals spend at least 80 percent of that gain on care for low-income patients. They could not have spent it on executive pay, lobbying, image ads, gifts or board costs. They would also have had to report what they buy and earn under the program. The Colorado House passed it 42-23, but the Senate refused to accept the House's changes on the session's last day and the bill died.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1507054,
+   "measure_id": "SB 141",
+   "vote_date": "2025-03-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 141. Colorado makes a town that enforces a building code also adopt an energy code for homes. The bill would have excused towns with fewer than 2,500 residents from that duty. Those towns could have kept their building code without the energy rules. The Colorado Senate passed it 19-13, but a House committee killed it.",
+   "nay_description": "Voted against passing Senate Bill 141. Colorado makes a town that enforces a building code also adopt an energy code for homes. The bill would have excused towns with fewer than 2,500 residents from that duty. Those towns could have kept their building code without the energy rules. The Colorado Senate passed it 19-13, but a House committee killed it.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1533293,
+   "measure_id": "SB 157",
+   "vote_date": "2025-04-01",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 157. To sue over a scam in Colorado, a person must show it harmed the public, not just them. The bill would have made that test easier for people who get targeted most. It named anyone 60 or older, troops and veterans, gold star spouses, people with a disability and pregnant people. They could have met the test by showing the practice breaks state trade law or could hurt others. The measure failed in the Colorado Senate 16-19, and the bill died there.",
+   "nay_description": "Voted against passing Senate Bill 157. To sue over a scam in Colorado, a person must show it harmed the public, not just them. The bill would have made that test easier for people who get targeted most. It named anyone 60 or older, troops and veterans, gold star spouses, people with a disability and pregnant people. They could have met the test by showing the practice breaks state trade law or could hurt others. The measure failed in the Colorado Senate 16-19, and the bill died there.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2173",
+   "roll": 1524524,
+   "measure_id": "SB 185",
+   "vote_date": "2025-03-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 185. A rule called the economic loss rule can stop a homeowner suing a builder over defects when a contract already covers the work. The bill would have said builders owe a separate legal duty to build homes properly. That duty would have been owed to the first buyer and to anyone who buys the home later. The Colorado Senate passed it 23-11, but the House put off its third reading until the session ended.",
+   "nay_description": "Voted against passing Senate Bill 185. A rule called the economic loss rule can stop a homeowner suing a builder over defects when a contract already covers the work. The bill would have said builders owe a separate legal duty to build homes properly. That duty would have been owed to the first buyer and to anyone who buys the home later. The Colorado Senate passed it 23-11, but the House put off its third reading until the session ended.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
