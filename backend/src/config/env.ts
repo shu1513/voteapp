@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { DEFAULT_AI_CANDIDATE } from "../ai/aiCandidates.js";
 import type { AiProvider } from "../ai/types.js";
 import { readCensusApiKeysFromEnv } from "./censusApi.js";
+import { readPositiveIntegerEnv } from "./envReaders.js";
 
 export type PipelineEnv = {
   DATABASE_URL: string;
@@ -99,15 +100,6 @@ function readAiProvider(): AiProvider {
   }
 
   throw new Error(`Invalid AI_PROVIDER: ${raw}. Expected one of: openai, claude, gemini`);
-}
-
-function readPositiveIntegerEnv(name: string, fallback: number): number {
-  const raw = readEnv(name, String(fallback));
-  const parsed = Number.parseInt(raw, 10);
-  if (!Number.isFinite(parsed) || parsed <= 0) {
-    throw new Error(`Invalid ${name}: ${raw}. Expected a positive integer.`);
-  }
-  return parsed;
 }
 
 /**

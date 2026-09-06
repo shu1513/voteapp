@@ -1,17 +1,7 @@
+import { readPositiveIntegerEnv } from "../../config/envReaders.js";
+
 function toIsoDate(value: Date): string {
   return value.toISOString().slice(0, 10);
-}
-
-function readPositiveIntegerEnv(name: string, fallback: number): number {
-  const raw = process.env[name];
-  if (!raw || raw.trim().length === 0) {
-    return fallback;
-  }
-  const parsed = Number.parseInt(raw, 10);
-  if (!Number.isFinite(parsed) || parsed <= 0) {
-    throw new Error(`Invalid ${name}: ${raw}. Expected a positive integer.`);
-  }
-  return parsed;
 }
 
 export type ElectionsSearchPolicy = {
