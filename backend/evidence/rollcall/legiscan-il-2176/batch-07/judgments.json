@@ -116,8 +116,8 @@
       "measure_id": "HB 3385",
       "vote_date": "2025-05-31",
       "review_status": "approved",
-      "yea_description": "Voted to accept the Senate version of House Bill 3385. House Bill 3385 covers mental health staffing at public colleges and universities. Each must employ at least three licensed mental health professionals for students, or the smaller number its enrollment benchmark calls for. The House agreed to that version 91-24, and it became law.",
-      "nay_description": "Voted against accepting the Senate version of House Bill 3385. House Bill 3385 covers mental health staffing at public colleges and universities. Each must employ at least three licensed mental health professionals for students, or the smaller number its enrollment benchmark calls for. The House agreed to that version 91-24, and it became law.",
+      "yea_description": "Voted to accept the Senate version of House Bill 3385. House Bill 3385 covers mental health staffing at public colleges and universities. Each must give students access to at least three licensed mental health professionals, or the smaller number its enrollment benchmark calls for, whether they work part-time on campus or full-time on or off campus. The House agreed to that version 91-24, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 3385. House Bill 3385 covers mental health staffing at public colleges and universities. Each must give students access to at least three licensed mental health professionals, or the smaller number its enrollment benchmark calls for, whether they work part-time on campus or full-time on or off campus. The House agreed to that version 91-24, and it became law.",
       "labels": [
         {
           "slug": "public_education_quality",
@@ -170,8 +170,8 @@
       "measure_id": "HB 3564",
       "vote_date": "2026-04-08",
       "review_status": "approved",
-      "yea_description": "Voted to accept the Senate version of House Bill 3564. House Bill 3564 limits what a landlord may charge a renter up front. Move-in fees are banned, and a background check fee may not be more than the real cost or $20, whichever is less. Fees a renter cannot avoid must be shown clearly in the listing. The House agreed to that version 64-40, and it became law.",
-      "nay_description": "Voted against accepting the Senate version of House Bill 3564. House Bill 3564 limits what a landlord may charge a renter up front. Move-in fees are banned, and a background check fee may not be more than the real cost or $20, whichever is less. Fees a renter cannot avoid must be shown clearly in the listing. The House agreed to that version 64-40, and it became law.",
+      "yea_description": "Voted to accept the Senate version of House Bill 3564. House Bill 3564 limits the fees a landlord may charge a renter. Every required fee must appear in the listing and on the first page of the lease, or the renter does not owe it. Application and background check fees are capped at $50 unless the landlord bills a documented higher third-party cost, and fees for lease renewals, after-hours repair calls, and pest control the renter did not cause are banned. Owner-occupied buildings with six or fewer units are exempt. The House agreed to that version 64-40, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 3564. House Bill 3564 limits the fees a landlord may charge a renter. Every required fee must appear in the listing and on the first page of the lease, or the renter does not owe it. Application and background check fees are capped at $50 unless the landlord bills a documented higher third-party cost, and fees for lease renewals, after-hours repair calls, and pest control the renter did not cause are banned. Owner-occupied buildings with six or fewer units are exempt. The House agreed to that version 64-40, and it became law.",
       "labels": [
         {
           "slug": "housing_affordability",
@@ -188,8 +188,8 @@
       "measure_id": "HB 3564",
       "vote_date": "2025-10-30",
       "review_status": "approved",
-      "yea_description": "Voted to pass House Bill 3564. House Bill 3564 limits what a landlord may charge a renter up front. Move-in fees are banned, and a background check fee may not be more than the real cost or $20, whichever is less. Fees a renter cannot avoid must be shown clearly in the listing. The Senate passed it 39-16, and it became law.",
-      "nay_description": "Voted against House Bill 3564. House Bill 3564 limits what a landlord may charge a renter up front. Move-in fees are banned, and a background check fee may not be more than the real cost or $20, whichever is less. Fees a renter cannot avoid must be shown clearly in the listing. The Senate passed it 39-16, and it became law.",
+      "yea_description": "Voted to pass House Bill 3564. House Bill 3564 limits the fees a landlord may charge a renter. Every required fee must appear in the listing and on the first page of the lease, or the renter does not owe it. Application and background check fees are capped at $50 unless the landlord bills a documented higher third-party cost, and fees for lease renewals, after-hours repair calls, and pest control the renter did not cause are banned. Owner-occupied buildings with six or fewer units are exempt. The Senate passed it 39-16, and it became law.",
+      "nay_description": "Voted against House Bill 3564. House Bill 3564 limits the fees a landlord may charge a renter. Every required fee must appear in the listing and on the first page of the lease, or the renter does not owe it. Application and background check fees are capped at $50 unless the landlord bills a documented higher third-party cost, and fees for lease renewals, after-hours repair calls, and pest control the renter did not cause are banned. Owner-occupied buildings with six or fewer units are exempt. The Senate passed it 39-16, and it became law.",
       "labels": [
         {
           "slug": "housing_affordability",
@@ -224,8 +224,8 @@
       "measure_id": "HB 3709",
       "vote_date": "2025-05-31",
       "review_status": "approved",
-      "yea_description": "Voted to accept the Senate version of House Bill 3709. House Bill 3709 covers student health services at public colleges and universities. Each must give enrolled students access to one or more health care workers who together can prescribe and hand out birth control, or prescribe medication abortion. The House agreed to that version 78-39, and it became law.",
-      "nay_description": "Voted against accepting the Senate version of House Bill 3709. House Bill 3709 covers student health services at public colleges and universities. Each must give enrolled students access to one or more health care workers who together can prescribe and hand out birth control, or prescribe medication abortion. The House agreed to that version 78-39, and it became law.",
+      "yea_description": "Voted to accept the Senate version of House Bill 3709. House Bill 3709 covers student health services at public colleges and universities. Each must give enrolled students access to health care workers who can prescribe and hand out birth control, and also to health care workers who can prescribe medication abortion. A campus with a pharmacy must make both available on campus. The House agreed to that version 78-39, and it became law.",
+      "nay_description": "Voted against accepting the Senate version of House Bill 3709. House Bill 3709 covers student health services at public colleges and universities. Each must give enrolled students access to health care workers who can prescribe and hand out birth control, and also to health care workers who can prescribe medication abortion. A campus with a pharmacy must make both available on campus. The House agreed to that version 78-39, and it became law.",
       "labels": [
         {
           "slug": "womens_reproductive_rights",
@@ -242,8 +242,8 @@
       "measure_id": "HB 3709",
       "vote_date": "2025-05-30",
       "review_status": "approved",
-      "yea_description": "Voted to pass House Bill 3709. House Bill 3709 covers student health services at public colleges and universities. Each must give enrolled students access to one or more health care workers who together can prescribe and hand out birth control, or prescribe medication abortion. The Senate passed it 37-19, and it became law.",
-      "nay_description": "Voted against House Bill 3709. House Bill 3709 covers student health services at public colleges and universities. Each must give enrolled students access to one or more health care workers who together can prescribe and hand out birth control, or prescribe medication abortion. The Senate passed it 37-19, and it became law.",
+      "yea_description": "Voted to pass House Bill 3709. House Bill 3709 covers student health services at public colleges and universities. Each must give enrolled students access to health care workers who can prescribe and hand out birth control, and also to health care workers who can prescribe medication abortion. A campus with a pharmacy must make both available on campus. The Senate passed it 37-19, and it became law.",
+      "nay_description": "Voted against House Bill 3709. House Bill 3709 covers student health services at public colleges and universities. Each must give enrolled students access to health care workers who can prescribe and hand out birth control, and also to health care workers who can prescribe medication abortion. A campus with a pharmacy must make both available on campus. The Senate passed it 37-19, and it became law.",
       "labels": [
         {
           "slug": "womens_reproductive_rights",

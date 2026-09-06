@@ -260,8 +260,8 @@
       "measure_id": "SB 3917",
       "vote_date": "2026-05-22",
       "review_status": "approved",
-      "yea_description": "Voted to pass Senate Bill 3917. Senate Bill 3917 covers water pollution permits for the largest sewage treatment plants. State and federal agencies decide which plants count as major. Every permit for those plants must now carry a set of minimum rules, whether the plant is publicly or privately owned. The House passed it 64-34, and it became law.",
-      "nay_description": "Voted against Senate Bill 3917. Senate Bill 3917 covers water pollution permits for the largest sewage treatment plants. State and federal agencies decide which plants count as major. Every permit for those plants must now carry a set of minimum rules, whether the plant is publicly or privately owned. The House passed it 64-34, and it became law.",
+      "yea_description": "Voted to pass Senate Bill 3917. Senate Bill 3917 requires testing for PFAS, the so-called forever chemicals, under state water pollution permits. Every major sewage treatment plant, public or private, must regularly test what flows in, what flows out, and its sludge, and every other major industrial discharger must test what flows out. Sludge or biosolids may not be spread on land under a state permit unless they are tested for PFAS too. The House passed it 64-34, and it became law.",
+      "nay_description": "Voted against Senate Bill 3917. Senate Bill 3917 requires testing for PFAS, the so-called forever chemicals, under state water pollution permits. Every major sewage treatment plant, public or private, must regularly test what flows in, what flows out, and its sludge, and every other major industrial discharger must test what flows out. Sludge or biosolids may not be spread on land under a state permit unless they are tested for PFAS too. The House passed it 64-34, and it became law.",
       "labels": [
         {
           "slug": "environment_and_public_health",
