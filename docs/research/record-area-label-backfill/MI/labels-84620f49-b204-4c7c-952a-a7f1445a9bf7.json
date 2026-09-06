@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "59ee064c-aad2-43b2-9fec-802aec65c608",
+   "research_area_slug": "legal_competence",
+   "stance": "for"
+  },
+  {
+   "record_id": "b9b1610d-f112-47a5-b65e-31aa7e96c67d",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "b9b1610d-f112-47a5-b65e-31aa7e96c67d",
+   "research_area_slug": "legal_competence",
+   "stance": "for"
+  }
+ ]
+}

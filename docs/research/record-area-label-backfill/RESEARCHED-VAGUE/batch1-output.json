@@ -1,0 +1,504 @@
+{"proposals": [
+ {
+  "candidate_id": "001cc7a2-f9f7-4834-bd08-e142b9877a3d",
+  "labels": [],
+  "skipped": [
+   {"record_id": "75816e76-e05f-432a-9efc-0ff29781bdc5", "reason": "study resolution, no policy direction", "found": "HJ39 only asks for an interim study of Montana wildland firefighting costs; it changes no law and takes no side (Montana Free Press capitol tracker, MT legislature bill page)."},
+   {"record_id": "eec06cc8-d50f-4a4c-ae41-45e0ed2250c2", "reason": "no vote on a spending bill with no stated alternative", "found": "HB 5 is Montana's routine long-range building program appropriation; nothing in the record or the bill history says Gist wanted less money or a different project list, so the no vote is not a spending-cut claim."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0025645c-8a3f-497b-8e2a-262ec991b53d",
+  "labels": [
+   {"record_id": "98e71605-bcac-4cf4-a0fb-4c17f025b06b", "research_area_slug": "government_spending_reduction", "stance": "for", "found": "Chalkbeat Chicago reported the board voted to add $5 million to plan a $150 million Near South high school; Revuluri voted no and asked 'Why now? And where is the money coming from?' amid falling enrollment."},
+   {"record_id": "db9702cc-0fb9-44b4-bf3d-9a5c8b17ec21", "research_area_slug": "government_spending_reduction", "stance": "for", "found": "Same September 28, 2022 meeting: the land swap with the Chicago Housing Authority passed 4-3 for the same $150 million school project Revuluri opposed on cost and enrollment grounds (Chalkbeat Chicago)."}
+  ],
+  "skipped": [
+   {"record_id": "cded130a-aa2e-4164-a90c-6f9ff6e21417", "reason": "could not determine which way the replacement policy moved", "found": "The June 2019 CPS board proceedings show a failed first motion on replacing the accountability policy with the School Quality Rating Policy; no source I found says whether the new policy tightened or loosened school accountability, and Revuluri's reason is not recorded."},
+   {"record_id": "4d6d40c4-2007-49b9-a0d4-cd41b9d202b5", "reason": "temporary COVID test waiver, no lasting direction", "found": "The August 2020 vote waived the Illinois Assessment of Readiness score requirement for accelerated placement only because the test was not given during COVID-19; it is a one-year administrative fix, not a change in who gets accelerated."},
+   {"record_id": "9653be2e-8c7d-4599-9fd8-bc43f31cbbd2", "reason": "no vote on emergency authority with no stated alternative", "found": "The June 2022 resolution extended FY2023 COVID emergency spending and administrative authority; the minutes do not record why Revuluri was the lone no, so I cannot say he wanted less spending rather than more board oversight."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "004f83e7-7f84-4eff-a620-6991b3a3a9f3",
+  "labels": [],
+  "skipped": [
+   {"record_id": "edeb91d6-27c3-4eb2-b29a-1f19ed4523c5", "reason": "court housekeeping, no direction a voter can weigh", "found": "Georgia's 2026 general-statutes summary describes HB 999 (Act 707) as raising the magistrate court civil claim limit from $15,000 to $25,000 and reworking how those courts collect filing fees; it does not raise or lower what people pay in any way I could confirm."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "005f9cd9-07fc-4396-b9e8-b88bbb9596c7",
+  "labels": [],
+  "skipped": [
+   {"record_id": "c152b593-dde4-4635-a196-b02ee1dd80d2", "reason": "legal opinion about a law, direction unclear", "found": "The AP story confirms Georgia passed a law making some Atlanta-area district attorney races nonpartisan and that critics called it unconstitutional; whether removing party labels helps or hurts election integrity is genuinely contested, and this record is a statement rather than an action."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "006dae43-1e27-4c30-b694-1dcf54ebca91",
+  "labels": [],
+  "skipped": [
+   {"record_id": "cc58b84b-54c6-40e2-a6ce-8e4806c343bf", "reason": "graduation-ceremony housekeeping, no direction", "found": "Policy IKFB covers graduation ceremony conduct; the minutes record the change and the waiver of the two-reading rule but no source states what the policy now requires."},
+   {"record_id": "7a0c6446-4665-4941-bc1a-c40152c190fd", "reason": "approving an outside group's agenda, contents not stated", "found": "The meeting packet records approval of the Arizona School Boards Association 2026 political agenda but does not list what that agenda asks for, so there is no direction to label."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0099a19b-1209-43a8-9d47-145c993298fa",
+  "labels": [],
+  "skipped": [
+   {"record_id": "f4cbbd86-cae8-4da1-ac43-e886ae2a86ca", "reason": "single-parcel business rezoning, no allowed area fits", "found": "Rowan County minutes show approval of rezoning petition Z 01-25 for MBE Cylinder Heads; it is one industrial parcel with no stated effect on housing, health, or infrastructure."},
+   {"record_id": "c42b2d79-2313-4e32-b23f-6f80c1cf4298", "reason": "single-parcel rezoning, effect on housing supply not stated", "found": "The minutes show a 3-acre Parks Road parcel moved from manufactured home park to rural agricultural so the owner could subdivide; nothing says homes were lost or added."},
+   {"record_id": "a6bd977a-9763-43ad-a532-e32689e37946", "reason": "could not determine what the update changed", "found": "The August 2025 Rowan County minutes record an update to the local opioid-settlement spending authorization but I could not find which uses were added or dropped. Settlement money is also not an appropriation."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "00f7fac6-1868-4cd3-af0b-ba2bfbd54698",
+  "labels": [],
+  "skipped": [
+   {"record_id": "d34241f9-2183-497e-8108-de8b00640fc0", "reason": "technical conforming changes, no direction", "found": "The NY Senate page for S752 (Chapter 109 of 2025) shows it folds early mail ballots into the existing drop box definition and drop-off location authority; it neither adds nor removes drop boxes."},
+   {"record_id": "6e531f9b-2b81-4f58-824a-49d4296ce3ca", "reason": "local siting objection, no allowed area fits", "found": "Times Union and Mid Hudson News report Maher told ICE the Chester warehouse site was wrong because of its closeness to homes and weak infrastructure, and ICE then dropped it; his stated objection was location, not immigration or civil-rights policy."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0226160a-a47d-4fc7-8ec3-68a5b27fe5a4",
+  "labels": [],
+  "skipped": [
+   {"record_id": "3fdb508b-854b-4a44-a816-d8f0483cebba", "reason": "no allowed research area matches", "found": "The ordinance restructures the county Commission on Human Relations. Civil rights is not in the allowed list for this office and no other area fits."},
+   {"record_id": "769d0ecd-d488-4b6e-bc8d-8b0b24c7c2bf", "reason": "could not determine whether collection went up or down", "found": "I could not find the 2022 St. Louis County ordinance text or reporting saying whether required trash pickup got more or less frequent."},
+   {"record_id": "c15531b3-13ea-4501-948b-d51243baeb4d", "reason": "could not determine whether the substitute loosened or tightened zoning", "found": "The county voting record lists a failed 3-4 motion on a substitute marijuana-facility zoning ordinance, but I found no text or reporting on what the substitute changed."},
+   {"record_id": "8e5f93be-3736-4a42-a9e8-0b271753327d", "reason": "could not determine whether licensing got stricter or looser", "found": "St. Louis County does license tobacco and electronic smoking device sellers, but I found no record of what the 2023 amendment changed, so a no vote could mean either direction."},
+   {"record_id": "bdfaac50-f9c6-4bb5-a1f2-72aff7080b20", "reason": "no vote on a budget with no stated alternative", "found": "The record is a no vote on the Bi-State Development FY2026 operating and capital budget and its transit sales tax conditions; nothing states that Clancy wanted less transit money rather than different conditions."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "022c7d72-d5db-484d-a5e0-11fc2dea690b",
+  "labels": [
+   {"record_id": "6213a20b-70cc-4fff-b1f3-fdd41e4abf6e", "research_area_slug": "gun_control", "stance": "for", "found": "Oregon Capital Chronicle and Everytown describe HB 4145 as the bill that finally makes Measure 114's permit-to-purchase system workable: it sets where people apply, adds a violent-misdemeanor disqualifier, keeps permit data confidential, and gives agencies to 2028 to launch it."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0265eaea-6119-4f67-bc8d-e5c5157abfac",
+  "labels": [
+   {"record_id": "cec3a520-078f-4fb9-9f5f-5bff63dad77b", "research_area_slug": "government_efficiency", "stance": "for", "found": "The House Judiciary bill analysis for HB 2471 says the bill drops the separate state background check for buyers holding a Washington concealed pistol license issued after July 22, 2011, because the federal government had accepted those licenses as a NICS alternative. It removes a duplicate check rather than a real one, which is why it passed 96-2."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "028e08a5-abbb-4eff-b6eb-383fe57719cd",
+  "labels": [],
+  "skipped": [
+   {"record_id": "8020e823-04f1-419f-946b-a856764bf8c8", "reason": "no vote on a budget with no stated alternative", "found": "H966 was the 2019 NC budget that Governor Cooper later vetoed over the lack of Medicaid expansion. Russell campaigns on Medicaid expansion, but I found no source tying his specific no vote to that reason, so I will not put words in the record."},
+   {"record_id": "bac37434-b70c-464d-9b27-f182bcc84f33", "reason": "could not determine what the measure did", "found": "The 2019 NC roll call is real but S681 changed titles and contents several times that session; I could not confirm what the rural health and local sales tax version actually did."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "032ef9fa-7515-474b-96ec-a49f6cf5d0a8",
+  "labels": [],
+  "skipped": [
+   {"record_id": "9459665d-1f88-4310-9445-82a96a5bb7ac", "reason": "local salary bill, direction unclear", "found": "HB 410 sets the Limestone County sheriff's pay at a flat $149,000 instead of a share of a judge's salary. I could not confirm whether that is more or less than the old formula produced, so it is not clearly a spending increase or cut."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0339c5b1-7cdc-482e-b5bf-ae0d1f79ecff",
+  "labels": [],
+  "skipped": [
+   {"record_id": "f745f9d9-3eed-4083-adb4-46c7822f8e8f", "reason": "could not determine whether the immunity grew or shrank", "found": "HB 4949 amends Michigan's 1989 Sport Shooting Ranges Act, which already shields ranges from noise suits and later local ordinances. The introduced bill is the only text online and no summary says whether Wortz widens or narrows that shield."},
+   {"record_id": "79626a68-62b0-44a4-be3c-5bb4aa3c8693", "reason": "could not determine which side the fee change helps", "found": "HB 5900 is paired with HB 5901 on bad-faith condemnation offers, which points toward helping property owners, but I found no summary of HB 5900 itself, so I cannot say whether it makes it easier or harder for owners to recover legal fees."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "035e25ed-2d39-4d1c-93c4-3ce612f59916",
+  "labels": [
+   {"record_id": "a32d1421-0089-40e9-9c86-ea8e5840a48b", "research_area_slug": "public_education_quality", "stance": "for", "found": "LegiScan and Chalkbeat Indiana show HB 1001 (Public Law 127) widened both programs: Education Scholarship Accounts now reach siblings of students with disabilities, and Career Scholarship Account money can cover driver's license and transportation costs, with a longer application window."},
+   {"record_id": "a32d1421-0089-40e9-9c86-ea8e5840a48b", "research_area_slug": "government_spending_reduction", "stance": "against", "found": "The same law extends publicly funded scholarship accounts to more students and more expenses, which raises state outlays."}
+  ],
+  "skipped": [
+   {"record_id": "6b66fe77-8fb1-43ea-b83c-547b6d45c354", "reason": "failed amendment, contents not stated", "found": "The roll call PDF records a 28-65 defeat of an amendment to HB 1032, Indiana's mid-decade congressional redistricting bill, but neither the roll call nor the bill page says what the amendment would have done."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0416b407-4d94-4f13-8ded-02751086f245",
+  "labels": [],
+  "skipped": [
+   {"record_id": "3e065239-0318-400b-ae77-3141bed2a8c3", "reason": "fee housekeeping, direction unclear", "found": "The Washington bill summary page for HB 2543 shows a county-clerk fee bill enacted as Chapter 33 of the 2026 Laws, but I could not confirm whether it raises, lowers, or only reshuffles what clerks charge."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "041e2717-7540-4222-b901-04d3c5f0c0e4",
+  "labels": [],
+  "skipped": [
+   {"record_id": "dde16979-8fe1-45f7-be7d-95ee0ecfc399", "reason": "no clear direction for school quality", "found": "I could not find text or coverage of Georgia HB 908 beyond the House calendar. As described, it lets students who already met diploma requirements stop taking classes, which is more student choice but less instruction time. Neither side is clearly better for school quality."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "04397c0b-5e89-4490-b315-1a33da29eff3",
+  "labels": [],
+  "skipped": [
+   {"record_id": "0eecc0c2-3bba-4479-88a5-bd32e3c1cc2b", "reason": "local salary bill, direction unclear", "found": "LegiScan confirms HB 430 (2024) reset compensation for the Houston County sheriff and was enacted, but the amount and whether it was a raise are not stated in any source I found."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "045d5c63-3319-454f-867c-4780d2505d43",
+  "labels": [],
+  "skipped": [
+   {"record_id": "35c9236b-dfc0-4210-903e-c45c99701788", "reason": "policy terms not stated", "found": "The 2016 special meeting minutes record approval of amended school-nutrition and charged-meal policies but do not say what changed, and 'charged meals' rules can be made either friendlier or harsher to families with unpaid balances."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "056602ae-3ded-474c-8559-f16d80cf1349",
+  "labels": [
+   {"record_id": "241f5c96-3a00-4083-a305-c729e056079b", "research_area_slug": "public_education_quality", "stance": "against", "found": "Portland Press Herald coverage says LD 2226 is Maine's first school funding formula rewrite in twenty years: it adds about $70.7 million, updates the regional salary adjustment, adds a variable mill rate tied to property wealth and poverty, and raises the weight for economically disadvantaged students, with roughly two-thirds of districts gaining money. Bagshaw voted no."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "05d57c38-68d3-449f-85fd-04d14f8ceb96",
+  "labels": [],
+  "skipped": [
+   {"record_id": "47feaef1-dfbc-4170-bb5d-81a389918364", "reason": "four bills in one record, directions not established", "found": "The House journal confirms Bush filed HB 1925-1928 on opening day, but I could not retrieve text or summaries for any of the four, so I cannot say which way the foam, citizenship-question, psychiatric pre-approval, or home-safety bills push."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "06f45f00-bcbb-49cb-8890-27d1b310abaf",
+  "labels": [
+   {"record_id": "4ee358d8-b87c-4abf-bd21-b3c3de432037", "research_area_slug": "corporate_accountability", "stance": "for", "found": "Littler and other employment-law firms describe A8590-A / S8034-A, signed September 5, 2025, as letting New York's Public Employment Relations Board take jurisdiction over private-sector labor disputes when the federal NLRB cannot act. It gives workers and unions a forum against employers that would otherwise be unavailable."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "078fe7ae-cebd-4287-a8e0-709e9d1ab3be",
+  "labels": [],
+  "skipped": [
+   {"record_id": "1cdd3c0d-c84e-4ed1-93bb-0402a422405e", "reason": "district map approval, no allowed area fits", "found": "The minutes record approval of Walton County's ten-year school board district map 23A. Election administration is not in the allowed list for this office and the map itself carries no education-policy direction."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "07f131bc-9227-4be5-a986-fe724e92ca93",
+  "labels": [],
+  "skipped": [
+   {"record_id": "94fd4608-eeb3-4112-a67e-e3ddd7d2bbcb", "reason": "procedural vote on three bills whose contents are not stated", "found": "The committee vote page records only whether three interim-committee drafts move to the 2026 session. The drafts on the youthful offender program, addiction-treatment payment and crisis transport, and the insanity defense have no published direction, and a vote not to forward is a process vote, not opposition to the policy."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "083ad4df-5200-4366-95c4-515e16d4767e",
+  "labels": [
+   {"record_id": "80ce780c-48a6-44b3-bd0b-49c5aa9e6d04", "research_area_slug": "corporate_accountability", "stance": "for", "found": "Michigan's Uniform Unclaimed Property Act as amended by 2016 PA 312 (MCL 567.256a) now makes unclaimed-property locators register with the state, pay a $1,200 fee every four years, wait 24 months before getting account data, and bars them from reselling that data to anyone but the owner. It puts rules on a business that profits from people's lost money."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "09308c14-2798-4a63-a755-85d6f42fb3a3",
+  "labels": [],
+  "skipped": [
+   {"record_id": "54fccffb-3254-4211-b214-cb6f3a92e459", "reason": "attendance-boundary vote, no direction", "found": "The Stanly News & Journal story confirms the board approved an elementary redistricting plan over Almond's objection, but neither the story nor the minutes say what she wanted instead, and redrawing attendance lines has no built-in direction."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0949477d-be6d-4f31-ad85-bd53aa94814e",
+  "labels": [],
+  "skipped": [
+   {"record_id": "ee42c6f2-8a2b-4f26-b8ad-c10e97c7f880", "reason": "technical tax cleanup, and not a personal income tax", "found": "The final bill report for SSB 5314 (Chapter 409, 2025 Laws) shows definitions cleanup, a new credit so the same gain is not taxed twice under the B&O tax, 1099-B reporting by brokers, spousal aggregation rules, and CPI indexing. It does not raise or cut the rate, and Washington's capital gains tax is not a personal income tax."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "098e06b7-30c1-4b07-8db7-e49c2b9c35e0",
+  "labels": [],
+  "skipped": [
+   {"record_id": "e76953ea-4a35-43a9-ba94-c861ad475101", "reason": "comment at a meeting, no direction on school quality", "found": "The Cherokee County agenda records the public meeting on school reorganization. Consolidating small high schools cuts costs but shortens bus rides for some and lengthens them for others; there is no settled direction, and no source states Raper's reasoning."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0a61037c-d876-41ca-bcbe-00e334fc0637",
+  "labels": [
+   {"record_id": "48b2e433-8caf-49c2-9ff3-2a91f90ad6a3", "research_area_slug": "election_integrity", "stance": "for", "found": "The Illinois General Assembly status page for HB 2911 says a driver's license or ID application serves as a dual-purpose voter registration when the applicant shows qualifying identification, requires the Secretary of State to check each applicant's current registration and address, and blocks the dual-purpose path for anyone whose documents show they are not a citizen. It registers more eligible voters while keeping non-citizens out."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0a93ee87-601e-4729-b9ba-b7a833b56310",
+  "labels": [],
+  "skipped": [
+   {"record_id": "aae96cf6-d43e-4c63-a828-e141da738213", "reason": "amendment contents not stated", "found": "MichiganVotes confirms HB 4360 became 2024 PA 64 and deals with emergency-services authorities covering part of a municipality, but the site does not describe Klinefelt's adopted amendment, so there is no direction to label."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0aca627a-1282-4db7-9a1e-3686199c7618",
+  "labels": [
+   {"record_id": "e959b5d2-93a4-41d5-822b-e76e58b39aec", "research_area_slug": "environment_and_public_health", "stance": "against", "found": "The Senate bill report for 2SHB 1975 (Chapter 320, 2025 Laws) shows it tightens the Climate Commitment Act's cap-and-invest program: it adjusts price containment and ceiling prices, lets Ecology amend rules to link with other carbon markets, and adds ongoing market monitoring. MacEwen was one of three no votes."}
+  ],
+  "skipped": [
+   {"record_id": "21bd4d00-040d-4c13-8cf3-98cef54ac8a3", "reason": "could not determine what the funding change did", "found": "E2SHB 2207 passed the Washington House 97-0 in 2014 on basic-education funding, but I could not find a bill report saying whether it added money, moved money, or only changed reporting. A unanimous vote suggests housekeeping."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0b027a13-1590-4f87-82a0-5b131169cef2",
+  "labels": [
+   {"record_id": "8bd7638d-c3d5-4988-a20f-c5288f395ba7", "research_area_slug": "corporate_accountability", "stance": "against", "found": "Georgia law-firm analyses of HB 1371 say it shields property owners from premises-liability claims when someone is hurt by a third party's crime and the injured person was on the land without invitation or to commit a crime. It narrows when a business can be sued. (It passed the House but the Senate tabled it, so it did not become law.)"},
+   {"record_id": "56c11196-3583-40ac-abac-ccc4c6c63449", "research_area_slug": "government_spending_reduction", "stance": "against", "found": "Georgia Recorder and Capitol Beat report HB 86 reset official pay: the governor goes from $182,000 to $250,000, several statewide officials to $200,000, and appellate judges' pay is pegged to federal district judges' salaries, raising several judicial salaries."}
+  ],
+  "skipped": [
+   {"record_id": "952a53e1-db8e-41fe-8284-1e58eb264243", "reason": "pushes both ways at once", "found": "The signed text of HB 1172 strips the public trust doctrine language from Georgia's water rights chapter while writing into statute that the public may use all navigable streams for passage, hunting, and fishing between low-water marks. It weakens one legal theory of public ownership and strengthens a specific public right, so there is no single direction."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0b8e774a-a82f-40b6-9d9b-5ecc6bc101be",
+  "labels": [
+   {"record_id": "b72ce7aa-7867-43bb-9d2f-bf7595dcd0f6", "research_area_slug": "data_privacy", "stance": "against", "found": "TrackBill and privacy-law write-ups say HB 2866 would make Public Act 103-769 retroactive to BIPA suits already pending on August 2, 2024. That 2024 act counts repeated scans of the same person as one violation and caps liability at one violation per person, so applying it to pending cases shrinks what companies owe people whose biometrics were mishandled. It stalled in Rules."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0c82a25e-5dbc-4a54-8b7c-eb846c11a2bf",
+  "labels": [],
+  "skipped": [
+   {"record_id": "91ad6913-ca6b-4556-9f30-7b270452e331", "reason": "general comment, no position on the policy", "found": "The public-meeting notice records Staheli saying the district should recognize and appreciate teachers locally during a discussion of Utah's merit-pay proposal. He does not say he supports or opposes merit pay."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0d1840e4-1e87-407d-a7c0-ab9acfd0c83a",
+  "labels": [],
+  "skipped": [
+   {"record_id": "bf4f3d76-a368-4712-a68a-879c9da2be39", "reason": "agreement terms not stated", "found": "The Williamson County minutes record an 11-0 vote approving updated recommendations from collaborative conferencing with teachers, and the minutes themselves say the terms are not listed. No other source publishes them."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0da82b09-5f8a-4845-88a0-aca6a6d45bf2",
+  "labels": [
+   {"record_id": "8b24f1d2-c7af-4dfe-8212-ad75524cf8a6", "research_area_slug": "civil_rights", "stance": "against", "found": "The text of HCR 2042 at azleg.gov would amend Article II, Section 36 of the Arizona Constitution to bar public bodies from any preferential treatment by race, sex, color, ethnicity, or national origin, bar requiring anyone to endorse such treatment, and bar spending public money on any public-college office that promotes it. Arizona Mirror reported it as part of the Republican push against DEI programs. It ends race-conscious remedies in hiring, admissions, and contracting."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0db6461d-1258-4c17-972d-76aea3647894",
+  "labels": [],
+  "skipped": [
+   {"record_id": "7000fa74-23b0-4f29-a422-6ecef11c0b8c", "reason": "procurement paperwork, no allowed area fits", "found": "MRSC and the Association of Washington Cities describe 2SHB 1549 (Chapter 63, 2025 Laws) as requiring bidders already covered by apprentice rules to file an apprentice utilization plan before a notice to proceed, with agency exemptions and an L&I template. It is a bidding-paperwork change, not a change to what gets built or what it costs."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0ed13980-7bdb-431a-9f81-24444d9736cb",
+  "labels": [
+   {"record_id": "2ede26cb-5892-490f-ab92-eeb17ac0357b", "research_area_slug": "corporate_accountability", "stance": "against", "found": "Michigan Municipal League and the enrolled text of HB 4002 (2025 PA 2) show it scaled the Earned Sick Time Act back before it took effect: small employers cap paid sick leave at 40 hours a year, new hires can be made to wait 120 days before using any, and small businesses got until October to comply. It lightens what employers owe workers."}
+  ],
+  "skipped": [
+   {"record_id": "df142626-45ac-4cb1-9a46-f967be393fc2", "reason": "could not determine the direction of the tax change", "found": "HB 4675 (2024 PA 204) amends sections 4, 13, and 14 of the Land Bank Fast Track Act on the taxable status of land bank property, but no summary I found says whether more or less of that property becomes taxable."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0eed119b-b0ef-44f2-baa6-45edefa9e9b4",
+  "labels": [
+   {"record_id": "5943861c-1c17-4f2f-a1ce-452ebbe7b385", "research_area_slug": "public_education_quality", "stance": "against", "found": "WNDU reported the South Bend board rejected aides on every bus and instead put them on about 25 buses carrying students with greater needs; Costello voted for the smaller plan, so fewer students get an adult on board."},
+   {"record_id": "5943861c-1c17-4f2f-a1ce-452ebbe7b385", "research_area_slug": "government_spending_reduction", "stance": "for", "found": "The narrower plan staffs roughly 25 buses instead of the whole fleet, which is the cheaper of the two options the board weighed."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0efbd842-b64f-43da-aa32-41d99431e85f",
+  "labels": [],
+  "skipped": [
+   {"record_id": "4fc1dca6-b06e-4657-99ca-4ec5f9f86bf6", "reason": "budget pushes both ways and his own vote is not recorded", "found": "The agenda packet shows the FY27 plan raises every teacher $2,095 but also cuts 24 jobs, spends $4.2 million of savings, and orders another $1 million in cuts. The record says only that Huddlestone served on the board, not how he voted."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0f38486f-3a26-4e29-a0a2-74acbd8e3e59",
+  "labels": [
+   {"record_id": "e6b35b67-90e9-4bb8-a064-fa94016e67be", "research_area_slug": "public_safety_and_crime_control", "stance": "for", "found": "Alabama Reflector's session roundup and the engrossed text show HB 442 lets Calhoun County and its cities permit and limit halfway houses, rehab facilities, and sober-living homes, including caps on size, location, and tenants per room, and bars registered sex offenders from court-ordered facilities."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0f96023d-f40f-44fa-9759-a2a0de3abd18",
+  "labels": [],
+  "skipped": [
+   {"record_id": "c5e82e89-82de-40e5-9695-7eae18acd28c", "reason": "swaps one program for another, no direction", "found": "The Senate Republican wrap confirms SB 683 lets districts run Law Enforcement Against Drugs and Violence instead of D.A.R.E. Both are police-taught prevention programs; the law adds an option rather than adding or cutting instruction."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0f964722-6671-41ff-bef7-f38802ea4efa",
+  "labels": [
+   {"record_id": "d04374c1-b1e4-43a8-950d-23953cac99eb", "research_area_slug": "public_education_quality", "stance": "for", "found": "MichiganVotes says 2022 SB 1022 rewrote the property-tax authorization for area career and technical education programs so more than one district can jointly run a program. It makes shared CTE programs easier to operate."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "0faaceae-8163-477a-80a8-360e2bd9b551",
+  "labels": [],
+  "skipped": [
+   {"record_id": "44adf5f5-8c0c-4489-a2e9-435e488ab487", "reason": "membership housekeeping, no direction", "found": "The Arkansas bill page for HB 1785 (Act 525) shows it only fills a gap: where the treasurer and collector jobs have merged, the county governing body names another elected officer as the third depository board member. It does not change how banks are chosen or who is accountable."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "1029b26e-2e95-4229-b5e2-85086d8f1152",
+  "labels": [
+   {"record_id": "4e36f5ca-0404-4b26-890a-62d6b3d0e589", "research_area_slug": "civil_rights", "stance": "against", "found": "Alabama Reflector reported in August 2025 that Allen pre-filed a bill raising the Memorial Preservation Act penalty from a one-time $25,000 fine to $5,000 for every day a monument stays moved. The 2017 law has been used mainly against cities that took down Confederate monuments, and a daily fine makes local removal far more costly."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "1101d3e6-be88-46df-bab6-d25bd9f039b6",
+  "labels": [
+   {"record_id": "26adc00d-1738-45af-a87c-74b1a123f301", "research_area_slug": "housing_affordability", "stance": "for", "found": "The final bill report for HB 1003 (Chapter 44, 2025 Laws) says eviction notices mailed to a tenant must go by certified mail from inside Washington to the last known address, and the wait before the landlord can file rises from one day to five. Tenants get proof of mailing and more time."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "112d7d46-331d-4135-a097-6b7ef492b76c",
+  "labels": [
+   {"record_id": "9f834755-5d1b-4bbe-be24-34c1c4d9a576", "research_area_slug": "public_education_quality", "stance": "against", "found": "The Colorado bill page for HB25-1071 shows it would empty four dedicated funds, including the public school capital construction assistance fund, and split the money half evenly across 64 counties and 2 tribal governments and half by population. School construction money would stop being awarded by need. House Finance killed it 10-1."},
+   {"record_id": "9f834755-5d1b-4bbe-be24-34c1c4d9a576", "research_area_slug": "housing_affordability", "stance": "against", "found": "The same bill would break up the affordable housing financing fund the same way, ending targeted housing awards in favor of a flat county split."}
+  ],
+  "skipped": [
+   {"record_id": "91973cd1-5971-4669-8d06-34f3752eb193", "reason": "appointment criteria, no direction", "found": "The Colorado bill page for HB25B-1007 shows it only sets who may be appointed to the Health Insurance Affordability Enterprise Board; it does not change premiums, subsidies, or coverage. It was postponed indefinitely."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "11973d5b-8546-465a-9cff-93560025baa0",
+  "labels": [
+   {"record_id": "6dbd1760-e2fe-4eb2-b37d-cde71100a667", "research_area_slug": "social_programs_and_welfare", "stance": "for", "found": "The Maryland General Assembly page for HB 450 says the Maryland Transit Administration must automatically renew Disability Reduced Fare Program certification for riders who are permanently disabled, so they stop having to reapply."},
+   {"record_id": "1a4eeb91-7950-4985-8e0a-6fb72113ad8d", "research_area_slug": "housing_affordability", "stance": "for", "found": "Chapter 564 (HB 1076), codified at Real Property 8-221, requires a landlord to give written notice at least 24 hours before entering and to enter only between 7 a.m. and 7 p.m. Monday through Saturday, with an emergency exception. It is a new tenant protection."},
+   {"record_id": "4c67b39c-fe20-4d13-ad6f-aa3d29cf47fa", "research_area_slug": "healthcare_affordability", "stance": "for", "found": "Maryland Health Department materials on Chapter 738 (HB 1315) say insurers, Medicaid, and nonprofit plans must keep covering every vaccine the CDC's ACIP recommended as of December 31, 2024, protecting coverage from federal rollbacks."},
+   {"record_id": "4c67b39c-fe20-4d13-ad6f-aa3d29cf47fa", "research_area_slug": "environment_and_public_health", "stance": "for", "found": "The same law lets pharmacists vaccinate children as young as 3 for flu and COVID and during a public health emergency, widening where families can get shots."}
+  ],
+  "skipped": [
+   {"record_id": "d0e831f9-4462-484b-aa32-99b935775486", "reason": "renaming only", "found": "The Maryland page for HB 439 (Chapter 655) shows it renames the Office of Deaf and Hard of Hearing and its advisory council. Nothing about services or funding changes."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "11bb7c04-1ba8-4de4-b929-8f93df6f3343",
+  "labels": [],
+  "skipped": [
+   {"record_id": "d71f3e97-c489-4a7a-b0ad-eab6000b11ad", "reason": "lone no vote with no stated reason", "found": "The Arizona Corporation Commission meeting highlights record the 4-1 approval of the sale of the failing Flagstaff Ranch Water Company to Cactus State Utility Operating Company plus the new owner's certificate to serve. The page does not say why Walden objected, so I cannot tell whether she wanted a different buyer, different rates, or no sale."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "11c78da6-51c2-4340-9bd1-8b0c081841d2",
+  "labels": [],
+  "skipped": [
+   {"record_id": "e6b5d727-26f6-4465-a5ad-3799d67680d1", "reason": "routine unanimous approvals, contents not stated", "found": "The minutes record a 5-0 vote adopting the intermediate district's preliminary budget resolution and a batch of NEOLA model policy updates. Neither the dollar direction nor the policy contents appear in the minutes."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "1251844b-d225-4718-aea7-7c8becc78359",
+  "labels": [],
+  "skipped": [
+   {"record_id": "aefc2178-8b0a-4c09-858d-9a864e2c5959", "reason": "narrow industry coverage fix, direction unclear", "found": "The Washington bill summary for HB 1469 (Chapter 80, 2013) covers industrial insurance for horse racing employment; no report I found says whether coverage widened or narrowed."},
+   {"record_id": "43808cbe-4b6f-4d51-8454-d059318e3d0b", "reason": "definition change, direction unclear", "found": "SHB 1727 (Chapter 158, 2015) redefines 'health care facility' for where nursing assistants may practice, but no summary states whether the list of settings grew or shrank."},
+   {"record_id": "b5cfdd3b-c8e9-4ada-b106-c76cf1c6b32a", "reason": "operational rules, direction unclear", "found": "SHB 1625 (Chapter 255, 2015) governs supplying drugs to ambulance and aid services; I found no summary saying whether it eased or tightened that supply."},
+   {"record_id": "e1bdc0dd-c943-4fa6-ae67-62908e144507", "reason": "funding mechanism change, direction unclear", "found": "SHB 1415 (Chapter 220, 2019) changes how the medical marijuana authorization database is funded, but no source says whether the database got more money or a different fee source."},
+   {"record_id": "4b926314-7d96-4f45-b6b8-c8d46b9443f5", "reason": "admission criteria change, direction unclear", "found": "Chapter 278 of the 2020 Laws changes who may be admitted to enhanced services facilities for adults with serious behavioral health needs, but I could not confirm whether it widened or narrowed eligibility."},
+   {"record_id": "06d7b515-d1d3-4176-b385-40d81eceedb4", "reason": "narrow procedural exception, direction unclear", "found": "SHB 1902 (Chapter 269, 2022) creates an exception in the process for reopening a timely workers' compensation claim; whether that helps or hurts injured workers is not stated in any summary I found."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "127181ea-45ec-4e83-8ef9-bd375629343d",
+  "labels": [
+   {"record_id": "2d99eab3-829d-4921-a0a0-87ae9efbf389", "research_area_slug": "public_safety_and_crime_control", "stance": "for", "found": "Alabama Reflector reported SB 199 lets a parole or probation officer bar an adult convicted of a child sex offense from using a post office box or any internet-capable device, and lets the Bureau of Pardons and Paroles require sex offender treatment including periodic polygraphs. It passed nearly unanimously."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "1275a371-33ed-47cc-9698-f7b2b1cca3f9",
+  "labels": [],
+  "skipped": [
+   {"record_id": "fa901965-b479-4811-9ba0-d762e80329bd", "reason": "could not determine the direction", "found": "The Arkansas page for SB 178 (Act 202) confirms it extends the Healthcare Decisions Act to a surrogate's access to financial records, but not whether that access is being granted or limited, so I cannot say if it helps patients or exposes their records."},
+   {"record_id": "c0aaebf6-addf-4ae9-812d-06281e251467", "reason": "could not determine whether deadlines got longer or shorter", "found": "The Arkansas page and LegiScan confirm SB 291 became Act 279 and amends complaints and deadlines for election-law violations, but no source states the new deadlines, and shortening versus lengthening them points opposite ways."},
+   {"record_id": "2d8e78d3-f200-42aa-934f-03554f0851d0", "reason": "creates an office, no funding or policy direction stated", "found": "The Arkansas page for HB 1607 (Act 318) shows it sets up an Office of Outdoor Recreation inside the Parks, Heritage and Tourism Department. The act does not state an appropriation and no allowed area covers tourism promotion."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "127713cd-9565-4851-a7a3-eb3dce33dcb5",
+  "labels": [],
+  "skipped": [
+   {"record_id": "6f27d0b5-83f0-4c1b-b5de-f9a6631b8830", "reason": "directs an agency to consider federal guidance, no direction", "found": "The Illinois status page for HB 1311 says the Department of Labor must consider IRS guidance when deciding worker classification under the Employee Classification Act. Whether that makes it easier or harder to call someone an independent contractor depends on the IRS guidance, not the bill."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "1298cd56-fc8b-4cd4-9142-296d6fd9a7b3",
+  "labels": [],
+  "skipped": [
+   {"record_id": "75e1851e-5b74-47b9-b20a-d841e2bdee55", "reason": "could not determine whether the threshold rose or fell", "found": "The Arkansas bill page confirms Act 815 (HB 1633) changed the vehicle-damage amount that triggers a required law-enforcement accident report; current law sits at $1,000, but no source states the old figure, so I cannot say whether more or fewer crashes now get reported."},
+   {"record_id": "70bd6dd6-c04d-4014-a6bb-ab3205644961", "reason": "could not determine whether passing rules got stricter or looser", "found": "The Arkansas bill page confirms Act 816 (HB 1635) amended the rules on overtaking and passing on the left, but the change itself is not summarized anywhere I could reach."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "12d46fad-7139-45ba-99f1-0f3a298fb742",
+  "labels": [],
+  "skipped": [
+   {"record_id": "c22ea57d-9787-477f-8466-42e608b570ea", "reason": "the resolution pushes both ways", "found": "Michigan Public and the Legislature's page for HJR U show it would move attorney general and secretary of state nominations from party conventions to primary ballots, which gives voters more say, while replacing elected University of Michigan, Michigan State, and Wayne State boards with governor appointments, which gives voters less say. A no vote cannot be read one way."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "12dddc7b-a5f1-487b-bf20-9af963f4fdf1",
+  "labels": [
+   {"record_id": "e836fd3b-f6e7-44a3-91b3-c7cecea3cf5a", "research_area_slug": "public_education_quality", "stance": "for", "found": "The final bill report for ESSB 6260 (Chapter 267, 2026 Laws) lists cuts: Running Start funding drops from 1.4 to 1.2 full-time equivalents, districts may charge sliding-scale fees for transitional kindergarten, and inflation increases for National Board bonuses end. Manjarrez voted against those cuts."}
+  ],
+  "skipped": [
+   {"record_id": "900bd4fe-5008-4159-aa0e-0718ba4373bd", "reason": "technical tax cleanup, and not a personal income tax", "found": "The final bill report for SSB 5314 shows definitions cleanup, a credit against double taxation with the B&O tax, broker 1099-B reporting, spousal aggregation, and CPI indexing. No rate change, and Washington's capital gains tax is not a personal income tax."},
+   {"record_id": "270c6094-cd46-43bb-af7b-c565e06e314b", "reason": "the bill pushes both ways", "found": "The Senate bill report for ESSB 5181 shows it rewrites the voter-approved parents' rights initiative: records access shifts to the federal FERPA timeline instead of ten days, but fees for inspecting records are barred and prior notice of medical services is written in. Some parental rights shrink and others grow."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "12e61f18-99fe-4b31-9327-ac9bdc0b3866",
+  "labels": [
+   {"record_id": "e14630bd-5d6d-4e46-8122-d73f9ae06882", "research_area_slug": "public_safety_and_crime_control", "stance": "for", "found": "Washington Courts materials and public-defender comments show the proposed CrR 3.2 change would replace the 'likely failure to appear' test with 'high likelihood of willful flight' and require at least one missed court date before bail can be set under that prong. Hayes filed a comment opposing it, so she is arguing courts should keep more power to hold or bond people before trial."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ }
+]}

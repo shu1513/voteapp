@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "f71c33c6-cf28-45af-bb7b-2650dfefc1f2",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "164280ca-78a5-4ce3-87d5-6d69fd23c864",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "03c0df6b-2d26-4811-85fc-95e9653950f3",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "1d97c6cc-fe4a-4ab9-b370-2b476c3a0dbe",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  },
+  {
+   "record_id": "df1f79f1-b92e-437f-b3b6-00e15627a099",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "9696bd8a-2507-4d52-9874-1df52945150e",
+   "research_area_slug": "housing_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "1bd64b5d-33ba-4f88-91f8-48971df20957",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

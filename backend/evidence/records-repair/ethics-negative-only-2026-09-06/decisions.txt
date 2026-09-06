@@ -1,0 +1,864 @@
+# idx|decision|note   decision: K=keep  U=untag  A:for / A:against = untag + add anti_corruption stance
+0|U|budget record; not ethics
+1|K|federal indictment pending
+2|K|pleaded not guilty, case pending
+3|U|already anti_corruption:for; reform bill
+4|U|review board finding overruled by chief; final determination justified (edge)
+5|U|court dismissed claims against him
+6|U|board appointment
+7|U|complaint he filed against opponent
+8|U|state found no violation
+9|U|media finding, no official action
+10|K|arrested
+11|U|board of inquiry found no misconduct
+12|U|policy blocked by judge; not personal conduct
+13|U|court ruled official instruction unlawful; policy dispute
+14|U|sanction awarded TO him
+15|U|disclosed a coding error
+16|U|complied with court order
+17|U|accepted responsibility for typo
+18|K|ethics board declined to waive late fees; fees assessed
+19|U|committee appointment
+20|U|statement responding to OCR finding against district
+21|U|PDC found no violation
+22|U|PDC no evidence of violation
+23|U|unrelated bill
+24|K|PDC violation, $250 penalty
+25|K|PDC violation, $5,000 penalty
+26|K|PDC violation, $30,000 fines
+27|K|barred from commission meetings for rule violations
+28|U|his department searched others; action against others
+29|U|duplicate of 28
+30|U|reinstatement ruled unlawful; personnel/policy ruling
+31|K|rebuffed oversight subpoenas (edge: documented non-compliance)
+32|K|bar admonishment + probation
+33|U|disputed endorsement claim, no official action
+34|U|signed open letter
+35|U|contested party reorganization
+36|A:against|voted against campaign-contribution/disclosure bill
+37|U|routine pay law
+38|U|action against another member
+39|K|$20,355 in assessed fines
+40|U|court ruling on policy order
+41|U|endorsement received
+42|U|disqualification affidavit denied; allegations unsubstantiated
+43|K|Commissioner found her office failed to respond promptly (edge: office-level finding)
+44|U|staff reports, no official action
+45|U|supervised office; scrutiny only
+46|K|House Ethics Committee found rule violation
+47|U|complaint filed, no finding
+48|U|social post, residents complained, no official action
+49|U|judicial philosophy statement
+50|U|formal protest over rules
+51|U|led votes
+52|U|referred allegations about someone else
+53|U|electoral-vote objection; a vote, not conduct finding
+54|K|did not comply with congressional subpoena per final report (edge)
+55|A:for|voted for Epstein Files Transparency Act
+56|A:for|his fraud-prevention accountability act passed
+57|U|lost a First Amendment challenge he brought
+58|K|court order restricting filings after abusive litigation
+59|K|court sanction for frivolous filings
+60|U|AG review reported, no finding (edge)
+61|U|FEC dismissed / no violation
+62|U|fistfight reported, no official action (edge)
+63|U|court affirmed dismissal of claims
+64|U|called for investigation of someone else
+65|U|impeachment vote on someone else
+66|K|formal reprimand by Rules and Ethics Committee
+67|U|unrelated bill
+68|K|Judicial Conduct Commission charged; suspension
+69|K|suspended without pay
+70|U|FEC dismissed
+71|K|dismissal from medical school for lack of professionalism upheld
+72|U|inquiry reported no concerns
+73|U|administrative bar suspension not characterized as misconduct
+74|U|lawyer in a case
+75|K|employment ended after disciplinary hearing; Brady list
+76|U|Ethics Committee dismissed complaint
+77|U|indicted but charges later dismissed (see 79)
+78|K|Senate President revoked equipment access for misuse
+79|U|charges dismissed
+80|U|endorsement listing
+81|U|court dismissed complaint against him
+82|U|called for someone else's resignation
+83|U|represented a child in appeal
+84|U|co-sponsored unrelated bill
+85|U|co-sponsored unrelated bill
+86|U|commission membership
+87|U|co-sponsored unrelated law
+88|U|media report of donations and committee inaction; no official action
+89|U|aide's firm; report said no law broken
+90|U|asked for an audit of a program
+91|A:for|voted for transparency/oversight of directed funds
+92|K|nine criminal cases incl. battery and child neglect charges in court records
+93|A:for|wrote law barring campaign funds for felony legal costs
+94|U|ethics guidance requested and received
+95|U|ethics commission permitted pro bono work
+96|U|already anti_corruption:for; enacted ethics ordinance
+97|K|attorney-discipline reprimand
+98|U|chaired meeting, directed disclosures
+99|K|censured and fined $1
+100|K|indefinite attorney suspension
+101|K|public reprimand
+102|K|indefinite suspension
+103|K|disbarred
+104|U|appointed judge
+105|U|retained by voters
+106|U|retained by voters
+107|U|acquitted of all charges
+108|U|mandamus action dismissed
+109|U|chaired committee investigating someone else
+110|U|resolution honoring term limits
+111|U|already anti_corruption:for
+112|U|unrelated bill
+113|U|constituent complaint filed, no action
+114|U|summary judgment in his favor
+115|U|unrelated bill
+116|K|PDC written warning for late reports (edge: minor)
+117|A:for|voted for ethics-rule tightening
+118|A:for|voted for ethics-rule strengthening
+119|U|FEC dismissed
+120|U|he sued and won against a false report
+121|U|sued by another, no outcome
+122|U|media report of posts, no official action
+123|U|unrelated bill
+124|U|impeachment-court vote on someone else
+125|U|requested AG opinion
+126|K|suspended 30 days by Supreme Court
+127|K|found guilty of assault
+128|U|unrelated bill
+129|U|county settled; jury finding not attributed to him personally (edge)
+130|A:for|co-sponsored blind-trust ethics bill
+131|U|appointed to Conduct Committee
+132|U|motion at board meeting
+133|K|ethics board declined to waive late fee
+134|U|personal bankruptcy; not ethics
+135|U|already anti_corruption:against; records ruling
+136|K|ombudsman substantiated three complaints incl. purchasing-code violations
+137|U|settlement without adjudication
+138|K|public reprimand for DUI-related misconduct
+139|U|requested advisory opinion
+140|U|FEC closed, no penalty
+141|K|repaid improperly used courthouse funds (edge: admission)
+142|U|spoke at council
+143|U|court ruled for him
+144|U|PDC dismissed, no penalty
+145|K|admitted late C-1, $200 penalty
+146|U|sued to block records release
+147|U|court ordered records released; not a misconduct finding
+148|U|posted own records
+149|K|one-day suspension
+150|K|one-day suspension
+151|K|10-day suspension
+152|K|council condemned him and removed chair positions
+153|U|chaired ballot-measure committee
+154|K|Article 15 nonjudicial punishment
+155|A:for|sponsored judicial-conduct transparency law
+156|K|reassigned and privileges restricted as discipline
+157|U|PDC closed for lack of jurisdiction
+158|U|county settled without admitting liability
+159|U|policy support
+160|K|Ethics Board found per se conflict of interest
+161|U|complaint rejected by committee
+162|U|committee assignment
+163|U|committee appointment
+164|U|PDC found no violation
+165|U|behind on a loan; not ethics
+166|U|plaintiff in dismissed constitutional challenge
+167|U|complaints dismissed
+168|U|court ruled for county
+169|U|award
+170|K|censured by House
+171|U|indicted but charges later dropped (see 172)
+172|U|charges dropped
+173|K|fined for disclosure omission
+174|U|signed opinion disciplining someone else
+175|K|ethics panel found campaign-conduct violation
+176|U|valuations upheld
+177|K|Florida Bar public reprimand
+178|K|~$20,000 late-report fines, later paid
+179|U|court reversed her office's disqualification
+180|K|no-contest plea, probation and fines
+181|K|guilty plea to assault; vacated after plea terms (diversion, edge)
+182|U|named defendant, appeal dismissed
+183|U|licensing bill
+184|U|unrelated law
+185|U|already anti_corruption:for
+186|K|judicial conduct admonishment
+187|K|ethics board declined to waive late fee
+188|U|recused from vote
+189|A:for|lead sponsor of Anti-Corruption Act
+190|U|praise statement
+191|K|charged with misdemeanor trespassing
+192|U|questionnaire answer
+193|U|cleared to run
+194|U|declined to endorse
+195|U|investigation of court backlog; no finding against him
+196|U|policy argument
+197|U|statement
+198|U|statement
+199|U|statement
+# idx|decision|note
+43|U|REVISED: office-level finding about response times, not personal (edge)
+200|U|statement
+201|K|state letter of noncompliance to feedlot he co-owns (edge: personal business)
+202|A:for|urged public release of investigation report
+203|A:for|moved to release council emails to Ethics Commission
+204|U|appointed parliamentarian
+205|U|committee roles
+206|K|House reprimand
+207|U|software vote
+208|U|accusations against someone else
+209|U|open letter
+210|U|award
+211|U|unrelated bill
+212|U|complaint dismissed, no prima facie violation
+213|K|settled quo warranto over hiring stepdaughter with binding conditions (edge)
+214|U|hire reversed with apology, no official action
+215|U|testimony
+216|U|joined appeal
+217|U|proposal defeated
+218|U|conflict alleged, said complied; no finding
+219|U|critics alleged conflict; no finding
+220|U|bio
+221|U|bio
+222|U|bio
+223|K|FPPC settlement, $27,000 combined fine
+224|U|statement
+225|U|won court ruling
+226|U|letter about someone else
+227|U|charge dismissed, no finding of guilt
+228|A:for|expanded financial-disclosure bill
+229|K|final-notice fine letter for late filing
+230|U|impeachment vote on someone else
+231|U|nonprofit sued; most claims dismissed
+232|U|PDC reminder, no violation
+233|U|PDC dismissed
+234|U|PDC dismissed
+235|U|testimony
+236|A:for|sponsored lobbyist-regulation bill
+237|U|FOIA petition he filed
+238|K|charged with assault and impersonating an officer
+239|K|arrested for DUI
+240|K|no-contest plea to DUI, fine
+241|U|amendment
+242|A:for|contractor contribution-disclosure amendment
+243|U|ruling reversed on legal question
+244|U|vote
+245|U|recognition
+246|U|summary judgment for her
+247|K|federal bribery charges; case pending under DPA (see 249)
+248|K|mistrial; case still pending (see 249)
+249|K|deferred prosecution; admitted false statement, fine
+250|K|board publicly found ethical violations
+251|U|recall petition dismissed
+252|U|body-level Brown Act violation acknowledged by city; not personal (edge)
+253|U|conflict questions raised, no violation
+254|U|motion to dismiss granted
+255|U|testimony
+256|U|policy
+257|U|testimony
+258|U|policy
+259|U|testimony
+260|U|complaint dismissed as unfounded
+261|U|property-fraud bill; not government corruption
+262|U|already anti_corruption:against; ballot-language ruling
+263|U|ballot-language ruling
+264|U|editorial criticism
+265|K|Ethics Commission found he broke state law
+266|U|public-comment request
+267|U|his allegation; found permissible
+268|A:for|public salary-record resolution
+269|U|committee action
+270|U|committee action
+271|U|unrelated law
+272|K|$500 late fee assessed
+273|K|$150 penalty assessed
+274|K|removed from all committees by Speaker
+275|K|charged with two misdemeanors; acknowledged
+276|U|records request he made
+277|U|AG decision against the board, obtained by her
+278|U|his appeal dismissed
+279|K|Board of Elections violation, $25 penalty
+280|U|recall blocked
+281|U|action as AG
+282|U|petition he filed
+283|U|petition he filed
+284|U|petition he filed
+285|K|formal PDC written warning (edge: minor)
+286|U|disclosure
+287|U|dismissal in her favor
+288|U|PDC dismissed
+289|U|PDC dismissed
+290|K|board voted to ask him to resign (edge)
+291|U|judgment for county
+292|A:for|introduced Drain the Swamp Act
+293|U|accreditation
+294|U|statement
+295|U|statement
+296|U|his allegation
+297|K|state audit found no competitive selection and chief of staff's daughter retained in his office (edge)
+298|U|statement
+299|U|statement
+300|U|recusal
+301|U|vote to censure someone else
+302|U|impeachment vote
+303|U|introduced impeachment of someone else
+304|U|sponsored trip, no finding
+305|K|jury found against her for breach of fiduciary duty
+306|K|judgment affirmed
+307|U|bankruptcy; financial
+308|U|apology, no official action (edge)
+309|A:for|voted to release harassment-settlement records
+310|U|suit dismissed
+311|K|repaid unlawfully raised salary; reported in audit (edge)
+312|U|motion
+313|U|unrelated bill
+314|U|testimony
+315|U|Ethics Committee found shortcomings, no sanction, no pattern (edge)
+316|U|appointment
+317|U|opinion
+318|U|proposal
+319|U|statement
+320|K|charged with felonies
+321|K|guilty plea, fine
+322|K|removed from student presidency after impeachment counts sustained
+323|K|removal upheld
+324|U|fired after union drive; charge filed on his behalf
+325|K|public censure
+326|K|public censure
+327|U|county settled collision suit; not ethics
+328|U|platform removed his company's campaign; no official body (edge)
+329|U|indicted but case dismissed (see 331)
+330|U|plea; case dismissed (see 331)
+331|U|case dismissed
+332|U|indicted but dismissed with prejudice (see 333)
+333|U|indictment dismissed with prejudice
+334|K|felony charge pending
+335|K|$2,960 late fees
+336|U|calls for consequences, no action
+337|K|Fifth Circuit struck his petition and criticized it (edge: minor)
+338|U|lawyer doubted any crime; no action
+339|U|endorsement
+340|U|complaint dismissed
+341|U|unrelated bill
+342|U|complaint she filed
+343|U|her case
+344|U|present at Capitol; no evidence of violence, no charge
+345|U|bills
+346|K|$16,000 fine
+347|U|party censure; not an official body (edge)
+348|U|resignation
+349|K|felony probation
+350|K|public censure
+351|K|three-year suspension
+352|K|probation revoked
+353|U|reinstated
+354|K|suspension + probation
+355|K|public censure
+356|K|disbarred
+357|U|tax sale; financial
+358|U|tax sale; financial
+359|U|PDC dismissed
+360|U|vote; already tagged spending
+361|U|already anti_corruption:against
+362|K|House Ethics found impermissible gift; ordered disclosure and repayment
+363|U|PDC no violation
+364|U|letter he wrote
+365|K|minor violation, written warning
+366|K|judicial admonishment
+367|K|30-day suspension
+368|U|already anti_corruption:for
+369|U|bill
+370|U|bill
+371|U|bill
+372|K|barred from chamber by Speaker
+373|U|award
+374|U|complaint dismissed
+375|U|apology, no official action (edge)
+376|K|suspended jail term
+377|K|convicted
+378|K|sentenced
+379|U|bill
+380|U|FEC no reason to believe
+381|U|vote
+382|U|present at Capitol as observer; no charge
+383|K|Sunshine Task Force found violation
+384|U|audits
+385|U|already anti_corruption:for
+386|K|AG found reason to believe violation; warned (edge: no sanction)
+387|U|already anti_corruption:for
+388|U|dismissal in her favor
+389|U|settlement talks
+390|U|honor
+391|U|advocacy
+392|U|his discovery proceeding
+393|U|his claim
+394|U|his settlement
+395|K|indicted (see 396)
+396|K|guilty plea to misdemeanor bribery; probation
+397|U|ombudsman bill; already efficiency
+398|U|bill
+399|U|bill
+400|U|already anti_corruption:for
+401|U|already anti_corruption:for
+402|A:for|public-notice-and-comment bill
+403|U|already anti_corruption:for
+404|U|arrested; DA declined to charge (edge)
+405|K|felony indictment pending
+406|K|four-week unpaid suspension
+407|U|complaints dismissed
+408|U|released own records
+409|U|already anti_corruption:for; complaint he filed
+410|U|FEC dismissed
+411|U|vote
+412|K|FEC civil penalty
+413|U|complaint dismissed
+414|U|already anti_corruption:for
+415|K|suspension + censure
+416|K|temporary suspension
+417|K|two-year suspension
+418|U|suspension dissolved
+419|K|public censure
+420|K|one-year suspension
+421|U|reinstated
+422|K|guilty plea
+423|U|recusal
+424|K|admitted six violations, penalty
+425|A:for|Public Access Counselor bill
+426|A:for|Open Meetings Act enforcement bill
+427|A:for|revolving-door bill
+428|U|newspaper-of-record law
+429|U|unrelated law
+430|U|auditor finding about city staff cash handling; operational, not personal (edge)
+431|U|witness; not accused
+432|U|already anti_corruption:for
+433|U|pardon granted
+434|U|police found no threat
+435|U|complaint dismissed
+436|U|statement
+437|U|partial fee award after dismissal; no finding of bad faith stated (edge)
+438|K|Speaker removed staff and committee seat
+439|U|vote
+440|U|office settlement involving an aide
+441|U|recusal
+442|A:for|proposed ordinance barring funding to officer-owned orgs
+443|U|complaint dismissed
+444|U|his allegation
+445|U|vote on censuring someone else
+446|U|already anti_corruption:for
+447|U|vote
+448|U|oath
+449|K|public censure and resignation
+450|U|already anti_corruption:for
+451|U|bill
+452|U|innovation
+453|U|already anti_corruption:for
+454|U|report
+455|U|already anti_corruption:for
+456|K|written warning for reports up to 129 days late
+457|U|unrelated law
+458|U|certification
+459|U|executive order
+460|U|motion
+461|U|honor
+462|K|FPPC fine
+463|U|resigned amid criticism; no finding
+464|K|$37,000 ethics fine
+465|K|violation, $50 penalty
+466|U|settlement, no fault
+467|U|dismissed
+468|K|arrested and charged
+469|K|fined $200
+470|K|reprimand + fine
+471|U|already anti_corruption:against; impeached but acquitted (edge)
+472|K|pretrial agreement with restitution and ethics education on felony charges (edge)
+473|U|disciplinary case dismissed as moot
+474|K|court found his office retaliated against whistleblowers who reported him
+475|U|media report; lawyers said may break law; no action (edge)
+476|K|public censure
+477|U|already anti_corruption:for
+478|U|hearing
+479|U|hearing
+480|U|injunction she sought dismissed
+481|K|judge ruled he unlawfully blocked a journalist as a public official (edge)
+482|K|$100 penalty
+483|U|criticism; sued, no outcome
+484|U|reminder; substantially compliant
+485|K|council referred ethics complaint and removed her from committee (see 487)
+486|K|written warning
+487|K|council found she violated code of ethics
+488|U|appointment
+489|U|report
+490|U|testimony
+491|U|recusal
+492|U|dismissed on immunity
+493|K|letter of reprimand acknowledged; resigned
+494|U|contact reported; no finding (edge)
+495|K|$1,000 sanction
+496|K|civil contempt
+497|K|ordered CLE for discovery violations
+498|U|lawsuit against him dismissed
+499|U|she dismissed a prosecution
+# idx|decision|note
+500|U|her lawsuit
+501|U|injunction she won
+502|U|fees awarded to her
+503|U|records produced
+504|K|county review found she had not filed the return she said she filed; returned grant (edge)
+505|U|administrative registration suspension, not discipline
+506|K|hearings board found landfill he operated violated its permit (edge: business)
+507|K|Ecology named him potentially liable; found he operated unpermitted landfill
+508|K|public censure
+509|K|contempt, fine, suspended jail
+510|K|second contempt, fine
+511|U|election voided over ballot errors, not his conduct
+512|U|judgment for him
+513|K|fired after timesheet audit; records sent to DA (edge)
+514|U|disclosed relationship and reassigned case
+515|U|cleared by Ethics Board
+516|U|ordinance motion
+517|U|judgment for her
+518|K|ethics board ordered penalties for unfiled reports
+519|U|opinion
+520|U|union local recordkeeping violation; not personal finding (edge)
+521|U|AG found no violation
+522|U|letter about someone else
+523|U|testimony
+524|U|comment
+525|U|omission alleged; no finding (edge)
+526|U|vote
+527|U|chair vote ruled invalid on another member's term
+528|A:against|voted against whistleblower reporting bill
+529|U|vote
+530|A:against|voted against prohibited-acts ethics rules
+531|U|vote
+532|U|vote
+533|U|vote
+534|U|vote
+535|U|vote
+536|U|vote
+537|U|vote
+538|U|vote
+539|U|vote
+540|A:against|voted against referring ethics investigation to prosecutors (edge)
+541|U|vote
+542|U|court rejected her legal position
+543|U|complaint dismissed
+544|U|recusal
+545|K|criminal-sexual-conduct convictions affirmed
+546|U|opinion
+547|U|statement
+548|K|three pending misdemeanor charges
+549|U|appellate review of her ruling
+550|U|participation
+551|U|service
+552|K|Senate censure
+553|U|activity
+554|K|fines upheld
+555|U|vote on someone else
+556|U|vote
+557|U|vote
+558|U|vote
+559|K|attorney-fee sanctions
+560|U|citation dismissed (edge)
+561|U|letter
+562|U|reminder
+563|U|appointment
+564|U|disqualification denied
+565|U|court vacated judges' entry; institutional
+566|U|bankruptcy
+567|U|bankruptcy
+568|K|his foundation lost tax-exempt status and faced dissolution for noncompliance (edge)
+569|U|review closed, no violation
+570|K|felony forgery conviction, later pardoned (edge)
+571|U|his lawsuit
+572|K|board censure
+573|U|inquiry closed, no charges
+574|U|cleared
+575|U|guidance
+576|U|opposition resolution
+577|K|guilty plea OWI
+578|K|sentence
+579|U|no violation
+580|U|reminder
+581|U|reminder
+582|U|donations
+583|U|donations
+584|U|kept donation; no finding
+585|U|court ruling against House; institutional
+586|U|caucus removal; party body (edge)
+587|U|exposed opponent's data; no adverse ruling (edge)
+588|U|office audit rated good
+589|U|statement
+590|U|resolution against someone else
+591|U|motion
+592|U|order against city officials; institutional
+593|K|$1,000 penalty
+594|K|law-license suspension
+595|U|reminder, dismissed
+596|U|denied; no finding
+597|K|violation, $500 penalty
+598|K|reprimand
+599|K|written warning, minor violation
+600|K|sentenced for wire fraud
+601|K|conviction affirmed
+602|U|complaint dismissed
+603|U|recusal
+604|U|lawsuit dismissed
+605|U|appointed someone else
+606|K|arrest orders and convictions in absence in traffic cases (edge)
+607|U|testimony
+608|U|testimony
+609|U|her lawsuit
+610|U|post; no official action (edge)
+611|U|post; no official action (edge)
+612|U|exoneration work
+613|U|acknowledged affair; no official action (edge)
+614|U|conviction he prosecuted vacated
+615|U|statement
+616|U|recusal
+617|K|jury found he defamed; $2.3M damages
+618|U|award against him vacated
+619|K|default judgment after false payment representations
+620|K|court ruled statements false and defamatory
+621|U|settlement
+622|U|attendance
+623|K|fine
+624|U|compensation report
+625|U|no evidence found
+626|U|reminder
+627|U|reminder, no penalty (edge)
+628|K|$200 penalty
+629|K|court found violated reporting law
+630|U|no evidence
+631|K|violation, $250 penalty
+632|K|written warning
+633|K|violation, $500 penalty
+634|A:for|wrote financial-disclosure law
+635|A:for|wrote gift-rules law
+636|U|reminder
+637|U|no evidence
+638|U|complaint against someone else
+639|K|formal written warning
+640|U|advisory opinion
+641|A:for|signed ordinance for charter ethics code
+642|K|written warning, over-limit contributions
+643|K|acknowledged violations
+644|U|challenge to registration rejected
+645|K|formal written warning
+646|U|challenge dismissed
+647|U|bill about pardoned people
+648|U|service
+649|K|murder and home-invasion convictions
+650|K|Ethics Commission finding, $1,000 penalty
+651|K|finding, $500 penalty
+652|K|finding, $500 penalty
+653|K|finding, $500 penalty
+654|U|ruling reversed
+655|U|motion about someone else
+656|U|vote about someone else
+657|U|testimony
+658|U|apology; no official action
+659|K|ordered to pay costs in attorney-discipline matter
+660|K|Ethics Board violation, $2,000 penalty
+661|U|already anti_corruption:for
+662|U|no violation
+663|U|no charges
+664|U|bill
+665|A:for|resolution to hand auditor Senate records
+666|K|tribunal found misconduct; reprimand and 30-day suspension
+667|U|already anti_corruption:for
+668|U|private accreditation suspension, settled (edge)
+669|K|formal warning
+670|U|cleared
+671|U|technical correction, no fine
+672|K|bribery conviction
+673|K|sentenced
+674|K|completed prison sentence for bribery
+675|U|complaint he filed
+676|U|overstated record; media
+677|U|voting record
+678|K|arrested at protest, forfeited collateral (edge: civil disobedience; Ethics Committee closed)
+679|U|already anti_corruption:for
+680|U|already anti_corruption:for
+681|U|already anti_corruption:for
+682|U|apology
+683|U|amendment
+684|U|award
+685|K|shoplifting charge
+686|K|accelerated rehabilitation, probation; committee removal
+687|U|request rejected as vague
+688|U|no actual conflict
+689|U|plaintiff
+690|U|no evidence
+691|K|judicial reprimand
+692|U|plaintiff
+693|U|her election contest dismissed
+694|K|FPPC warning for undisclosed holdings
+695|U|law he co-sponsored
+696|A:for|open-government law
+697|A:for|dual-office ban law
+698|U|recall rejected
+699|U|stock sale before vote; no finding (edge)
+700|U|indicted but acquitted (see 701)
+701|U|acquitted
+702|U|records ruling against office; institutional (edge)
+703|K|public reprimand
+704|U|lawsuit filed; no finding
+705|U|listing
+706|K|$100 penalty
+707|K|formal written warning for public-resource use
+708|U|vote about someone else
+709|K|DUI charge; lost posts
+710|U|resigned to cure conflict
+711|K|three-day suspension
+712|U|no violation
+713|K|$1,000 penalty
+714|U|agreement
+715|K|ousted as board president by board vote (edge)
+716|U|action as AG
+717|K|guilty plea theft
+718|K|FEC penalty
+719|U|voting record
+720|K|protective order after judge found abuse
+721|K|suspension
+722|A:for|nonprofit records-transparency bill
+723|K|penalties
+724|K|reprimand
+725|K|suspension
+726|U|fraudulent signatures by gatherer; investigation opened, no charge (edge)
+727|U|statement
+728|U|lawsuits thrown out
+729|U|opposition
+730|K|IG found his order caused $2.2M overpayments and he did not notify (edge)
+731|U|claims dismissed
+732|U|hotline
+733|U|party censure (edge)
+734|U|dismissed
+735|U|vote fell short of finding; no penalty (edge)
+736|U|apology; no official action
+737|U|no probable cause
+738|U|asked for investigation of someone else
+739|U|call on others
+740|K|judicial misconduct finding
+741|U|statement
+742|U|statement
+743|U|report
+744|K|$250 penalty
+745|U|complaints dismissed
+746|U|vote
+747|U|litigation over his phone
+748|U|he flagged the problem
+749|U|statement
+750|U|statement
+751|U|shareholder proposal
+752|U|policy vote
+753|U|resolution
+754|U|chaired committee
+755|U|questionnaire
+756|U|dismissed
+757|U|bill
+758|K|Ethics Board found violation
+759|U|opinion
+760|U|statement
+761|U|motion
+762|U|motion
+763|U|bill
+764|U|referral of someone else
+765|U|no violation
+766|U|closed with reminder
+767|U|vote
+768|K|nine-month suspension
+769|U|bill
+770|U|bill
+771|U|convictions reversed
+772|U|statement
+773|U|candidacy reinstated
+774|U|testimony
+775|K|Ethics Committee finding and censure
+776|U|no violation
+777|U|office-level audit finding (edge)
+778|U|office-level audit finding (edge)
+779|U|already anti_corruption:for
+780|U|bill
+781|U|bill
+782|U|already anti_corruption:for
+783|K|DUI and drunkenness convictions
+784|K|ordered to repay city; barred from travel
+785|K|recalled from office by voters (edge)
+786|A:against|sued to overturn donor-disclosure law (edge)
+787|U|vote
+788|U|policy
+789|U|already anti_corruption:for
+790|K|STOCK Act violation
+791|U|already anti_corruption:for
+792|U|disclosed trips; no violation
+793|U|indictment dismissed
+794|U|claims dismissed
+795|K|120-day suspension
+796|U|recusal
+797|U|no conflict found
+798|K|violation, $150 penalties
+799|U|bill
+800|U|impeachment articles against someone else
+801|U|bill
+802|U|appointment
+803|U|statement
+804|U|letter
+805|K|criminal-sexual-conduct conviction
+806|K|conviction affirmed
+807|U|his complaint dismissed
+808|U|AG allowed lawsuit; no finding (edge)
+809|U|abstained
+810|A:for|coroner financial-disclosure law
+811|K|House censure
+812|U|judgment for defendants
+813|K|felony charges
+814|K|not-guilty plea, pending
+815|K|felony charges, pending
+816|U|complaint dismissed
+817|U|vote
+818|U|already anti_corruption:against; vote
+819|K|STOCK Act violation
+820|K|$400 penalty
+821|U|action against others
+822|U|bill
+823|U|no penalty, minor error fixed
+824|U|recall thrown out
+825|K|ethics investigation opened (see 826)
+826|K|probable cause found; letterhead rules
+827|K|$195 penalty
+828|U|dismissed
+829|U|business failure
+830|U|bill
+831|U|bill
+832|U|agenda
+833|U|resigned under pressure; no formal finding (edge)
+834|U|order against office; institutional
+835|U|bill
+836|U|disavowal
+837|U|letter
+838|K|reprimand and suspension
+839|K|Senate censure
+840|U|her injunction dismissed
+841|U|acknowledged false award on 2006 application; no official action (edge)
+842|K|ordered to pay after protest case (edge)
+843|U|tribal banishment rescinded (edge)
+844|K|protective order granted against him
+845|K|felony no-contest plea
+846|U|guidance
+847|U|complaint dismissed
+848|U|dismissed
+849|U|bill
+850|U|law
+851|U|already anti_corruption:for
+852|A:for|SCAMS Act fraud task force (edge)
+853|U|already anti_corruption:for
+854|U|plan
+855|U|already anti_corruption:for
+856|U|residency questions
+857|K|barred from floor by disciplinary vote (edge)
+858|U|her lawsuit
+859|U|lawsuit dismissed as moot

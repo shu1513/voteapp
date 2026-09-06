@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "aeb4da27-a7b6-4d0b-b83a-2ebbb2aba6f1",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "aeb4da27-a7b6-4d0b-b83a-2ebbb2aba6f1",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "dc43f024-81bf-4858-bcaf-148c60166ff5",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "184f1a8c-02dd-4a1d-9275-cbb3563f627e",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "against"
+  }
+ ]
+}

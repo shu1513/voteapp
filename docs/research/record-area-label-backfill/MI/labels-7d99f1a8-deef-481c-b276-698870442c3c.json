@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "29d552c0-19fb-4bfd-a873-b2251462835f",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "90ffe121-1db6-407b-a05a-95524b5c34c7",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "90ffe121-1db6-407b-a05a-95524b5c34c7",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "2e88f3c2-5fa9-44e8-a530-502909bc9ded",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "2e88f3c2-5fa9-44e8-a530-502909bc9ded",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

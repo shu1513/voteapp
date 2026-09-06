@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "66e602a1-7547-4221-aaa6-5a1d0e616ce1",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "f71ed4ac-daeb-4138-abbc-96288ecf6ed5",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "f71ed4ac-daeb-4138-abbc-96288ecf6ed5",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "6062e613-32cd-4092-82a9-619fbfe5d8c3",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "f7c8f4b8-0b90-4c34-b833-fe10cbc6603c",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "f75bafd2-a106-4868-9e51-1a6b7a40dd67",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "79900219-ca5d-4839-92f0-a2c07461267b",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "79900219-ca5d-4839-92f0-a2c07461267b",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "af1afbd1-d9b9-49dc-b536-8f56a8dd4408",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "af1afbd1-d9b9-49dc-b536-8f56a8dd4408",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "05c89f0b-3d56-49e0-98a5-945383a73de1",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "fdaab779-39f4-4c73-bd38-f858b5fe49a5",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "27d60c00-2e08-42c8-a32f-7511a7ace225",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "e1e25182-8a48-45ab-803e-66fc7144ccd9",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "e7c59e67-9256-4d08-837d-1a2b2ed5c098",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "698270b2-5021-4df2-9a4b-6fa76e4c286b",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "8c3c3765-7874-4074-a395-4835309f2be3",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  },
+  {
+   "record_id": "8c3c3765-7874-4074-a395-4835309f2be3",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "ae1910d9-bed7-4dc8-b585-cb2bb871bd53",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

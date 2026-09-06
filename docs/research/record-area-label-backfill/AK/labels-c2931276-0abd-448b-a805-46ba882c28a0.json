@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "75908fb6-3301-43ca-8757-5b37b9b8e110",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "fb81d5f3-27c1-419b-bd94-7f755c8307c3",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "49cc9874-4000-4dbe-bbfb-a3856598a285",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  },
+  {
+   "record_id": "e477d2b7-00c6-4179-bd47-440a99215ac8",
+   "research_area_slug": "anti_corruption",
+   "stance": "against"
+  },
+  {
+   "record_id": "a825610c-d378-4a92-b72f-6224a63ddbfa",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "d30b8829-fa6d-4a67-ad87-6306579f1c52",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "49657fda-6fc5-49fe-aac0-db7f679101ef",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "8c6ca3ee-c8f8-419c-9640-a1d07fdceb1d",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "a515c8cb-2e3b-468a-b2ea-605282403aed",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "6bd30d2f-6ef3-4f1e-9a07-272a02a39d41",
+   "research_area_slug": "personal_income_tax_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "6bd30d2f-6ef3-4f1e-9a07-272a02a39d41",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  }
+ ]
+}

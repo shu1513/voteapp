@@ -1,0 +1,34 @@
+{
+ "labels": [
+  {
+   "record_id": "ed812588-9075-4828-8e68-a1af40dd178f",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "ed812588-9075-4828-8e68-a1af40dd178f",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "1bd9606a-fd20-41a7-8e73-85e0c5f5bf80",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "2d1aa569-6448-4074-8058-b6be20e552c2",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "7610a7a1-48f5-41f6-870b-45c9c9867667",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "7a0c9082-8846-4c44-870b-9c11728fa798",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  }
+ ]
+}

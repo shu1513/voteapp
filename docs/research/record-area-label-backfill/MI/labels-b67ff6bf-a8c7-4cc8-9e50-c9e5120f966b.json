@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "4546cb72-ca08-40ae-a46f-65fe886ef4db",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "128a3e40-2956-4ccc-9f72-82d5c62fd418",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "8759e12c-15df-425d-8b21-322145c998f4",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  }
+ ]
+}

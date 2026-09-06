@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "0d7e4df5-0548-49f0-94bb-241b40035de2",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "d48eb5e2-660e-4fae-b823-5747b9802901",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "bc2de8a4-0987-4fd1-8bcd-91de4998b9b3",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "22ba8d0d-157d-4c62-a85c-d40a8579822d",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "d28d5443-a563-45ac-8f0c-76d5ec66cf54",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "c22cd698-5844-41a5-b39a-5fed461b06ea",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "ad9ba036-5298-4417-a0ae-2a06534ce186",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

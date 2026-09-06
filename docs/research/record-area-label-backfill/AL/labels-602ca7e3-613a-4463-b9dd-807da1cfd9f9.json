@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "7ee7f29f-17e9-4404-9208-946b13bf2060",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "469a4ad7-a87e-4962-b0be-59f630de3091",
+   "research_area_slug": "immigration",
+   "stance": "against"
+  },
+  {
+   "record_id": "162a7678-2df6-473c-8696-96a83c37a2bd",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "162a7678-2df6-473c-8696-96a83c37a2bd",
+   "research_area_slug": "peaceful_foreign_policy",
+   "stance": "for"
+  }
+ ]
+}

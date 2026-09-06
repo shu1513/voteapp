@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "555cb14c-ac77-4993-b7e8-51d4cf6f0e0a",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "b66ac238-b72b-43ca-8c71-e8f938d47378",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "e1542118-e6f9-4e5b-b2b4-3af2f66138fd",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "e1542118-e6f9-4e5b-b2b4-3af2f66138fd",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

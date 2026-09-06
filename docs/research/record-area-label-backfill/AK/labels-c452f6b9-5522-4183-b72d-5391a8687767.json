@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "69edb9eb-d9dd-4e8c-afd3-870392d83fec",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "e6fb2bcc-617a-416a-8ffb-369a98ae1d1b",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "168c07df-a90f-450b-87be-f5582b13a4da",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

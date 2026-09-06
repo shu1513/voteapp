@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "373dafc4-c786-4043-accc-473aea3d8229",
+   "research_area_slug": "womens_reproductive_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "f501c025-f339-4de3-96a0-b9a7f2901407",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "d9891b00-f2c8-481f-9dfa-f2c326e10c37",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  }
+ ]
+}

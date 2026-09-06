@@ -1,0 +1,301 @@
+{
+ "decisions": [
+  {
+   "vote_id": "6e093ba1-6846-4f25-a763-b94e06e015ff",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about fairness to permit holders and their crews rather than any view on protecting ocean wildlife."
+    }
+   ]
+  },
+  {
+   "vote_id": "af6a0750-45d6-4aaa-899a-edd537593bf4",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about regulator overreach or duplicate oversight, not a general view on holding companies to account."
+    }
+   ]
+  },
+  {
+   "vote_id": "1a2e10fd-ac74-422c-a164-25ed24707049",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about how the contract language is drafted or its effect on arbitration law generally."
+    }
+   ]
+  },
+  {
+   "vote_id": "9fdff8eb-7050-4422-99d5-c36fa17be99b",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote here can be about protecting historic districts or local control, which says nothing about housing costs overall."
+    }
+   ]
+  },
+  {
+   "vote_id": "0ababac3-73b1-47d6-a9f4-230c4dae743e",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about new reporting paperwork or the merger-notice rules, not about health care costs in general."
+    }
+   ]
+  },
+  {
+   "vote_id": "624463ab-76c5-4f8b-b16e-a740b3f923ac",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about state grant eligibility rules or the urgency clause, not a position on immigration."
+    }
+   ]
+  },
+  {
+   "vote_id": "13e9071d-383b-4594-916b-84d661b0c5dc",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote here can be about protecting historic districts or local control, which says nothing about housing costs overall."
+    }
+   ]
+  },
+  {
+   "vote_id": "15583c6b-f46c-4cbb-96a6-07a9589b3f02",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about new reporting paperwork or the merger-notice rules, not about health care costs in general."
+    }
+   ]
+  },
+  {
+   "vote_id": "c6fca1cb-20ce-4668-a5a4-7425c92d21a0",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about the cost and burden on police agencies, which cuts both ways on public safety."
+    }
+   ]
+  },
+  {
+   "vote_id": "3734e41e-5543-40e2-97b8-04d5d62271ed",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about the new criminal penalties or the burden on lawful buyers, not only about gun policy direction."
+    }
+   ]
+  },
+  {
+   "vote_id": "04de6f7c-77c1-402c-87c5-f4b36e096e75",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about how the contract language is drafted or its effect on arbitration law generally."
+    }
+   ]
+  },
+  {
+   "vote_id": "b1fb5226-4c63-47db-9985-5ea564fb48e7",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about the mandate on local agencies or the Attorney General's role, not a stance on immigration itself."
+    }
+   ]
+  },
+  {
+   "vote_id": "e6cee985-2e8c-4d29-a73a-e476b7e38da7",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about the effect on landlords or the court process, not about benefits programs as a whole."
+    }
+   ]
+  },
+  {
+   "vote_id": "e647d2ce-afd0-408d-b3fc-f22cf284182b",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about the cost to transit agencies of scrapping usable equipment rather than a view on pollution."
+    }
+   ]
+  },
+  {
+   "vote_id": "556b0a83-5228-48ce-b257-beaab47a5238",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about state grant eligibility rules or the urgency clause, not a position on immigration."
+    }
+   ]
+  },
+  {
+   "vote_id": "2b234026-a2f3-4edb-92ae-faa0cb6ccc9d",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about creating a new state bureau, its cost, or its genetic-data handling, not about civil rights generally."
+    }
+   ]
+  },
+  {
+   "vote_id": "e3a04390-bbb1-4f5a-a114-ae6d8ae8f4e1",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about taking power away from cities rather than a view on helping homeless people."
+    }
+   ]
+  },
+  {
+   "vote_id": "3de16890-9c78-43ba-9384-4679af41e2af",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about dropping the training requirement or the liability shield, not about public health overall."
+    }
+   ]
+  },
+  {
+   "vote_id": "d3659513-ee66-4501-9c9c-3c004d961001",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about officer safety or state power over federal agents, which is itself a public safety argument."
+    }
+   ]
+  },
+  {
+   "vote_id": "e4e44fd1-edd8-4d3f-a9d9-6c29b4da8660",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about the new criminal penalties or the burden on lawful buyers, not only about gun policy direction."
+    }
+   ]
+  },
+  {
+   "vote_id": "fd7b2e6f-af3b-4387-92e9-66c4ae019dce",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about the cost to transit agencies of scrapping usable equipment rather than a view on pollution."
+    }
+   ]
+  },
+  {
+   "vote_id": "3ae0a177-8f0d-4ade-a46f-6d7cb2ae0282",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about added landlord costs raising rents, which is also a housing affordability argument."
+    }
+   ]
+  },
+  {
+   "vote_id": "0cde3d85-85d9-4970-9bd0-b05b581c616a",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about the cost and burden on police agencies, which cuts both ways on public safety."
+    }
+   ]
+  },
+  {
+   "vote_id": "609aa96e-6016-4e9b-ab39-0c4e3b0d4ef3",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about extending a pandemic-era rule past the pandemic, not a general view on employer accountability."
+    }
+   ]
+  },
+  {
+   "vote_id": "5c3b5462-2962-4a30-86a1-8500e730aff2",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about freezing federal rules in place or the burden on businesses, not about wildlife protection as such."
+    }
+   ]
+  },
+  {
+   "vote_id": "4df30a5b-7a22-49eb-8577-06eb5e730f6b",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about the mandate on local agencies or the Attorney General's role, not a stance on immigration itself."
+    }
+   ]
+  },
+  {
+   "vote_id": "6b571275-8db3-4c2d-bbb3-fd9d39526a5a",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null,
+     "why": "A no vote could be about employer training investment or the new right to sue, not about corporate accountability broadly."
+    }
+   ]
+  }
+ ]
+}

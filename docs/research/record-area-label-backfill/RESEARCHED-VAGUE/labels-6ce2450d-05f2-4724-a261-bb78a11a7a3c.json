@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "0e4c0f8a-95c7-4e48-870c-ea241f63108f",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "473a6203-f776-4c2a-b864-6eda5eccd293",
+   "research_area_slug": "housing_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "473a6203-f776-4c2a-b864-6eda5eccd293",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "bd9cf12b-55cb-4898-8699-939096dff865",
+   "research_area_slug": "gun_control",
+   "stance": "against"
+  },
+  {
+   "record_id": "86a13ae7-d965-4238-a722-7b1c36cddb73",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

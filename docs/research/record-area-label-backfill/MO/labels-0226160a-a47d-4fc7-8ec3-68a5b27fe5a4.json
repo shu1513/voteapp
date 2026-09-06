@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "5b615a07-1b37-4457-bc92-14783b81d38a",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "b1b3aa0c-908e-4c7a-b2df-9b9c2f5b828c",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "348562bb-0903-435f-8dbe-aecccd53d4eb",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "cfea7466-f58e-4fa0-8596-3a1b1e5a5bff",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "582b724c-8ecc-4c13-aebc-7fdc87e1f5a3",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "067197bc-304d-4112-b170-ddd2bf21ad10",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "d98008d8-c6c7-4b25-9e46-1b7e416598ef",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  }
+ ]
+}

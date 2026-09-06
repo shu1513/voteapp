@@ -1048,6 +1048,21 @@ export class OfficeMatcher {
         exactOfficeId = undefined;
       }
     }
+    if (
+      exactOfficeId &&
+      input.discoveryContestFamily === "judicial_office" &&
+      isJudicialCompatibleTitle(titleMatcherKey)
+    ) {
+      // Mirror of the guard above: a learned alias can point at a non-judge
+      // office. Kentucky's fiscal-court magistrates teach "magistrate" ->
+      // Magistrate (a county legislator), and a Georgia magistrate judge then
+      // hits that alias exactly. The entry's judicial family is authoritative:
+      // drop the alias and let the judge route below take the title.
+      const aliasTarget = (await this.loadOffices(input.scope)).find((office) => office.id === exactOfficeId);
+      if (aliasTarget && !isJudicialOfficeCanonicalName(aliasTarget.canonicalName)) {
+        exactOfficeId = undefined;
+      }
+    }
     if (exactOfficeId && isCourtClerkTitle(titleMatcherKey)) {
       // Runs already learned the mis-scored alias ("county clerk of the
       // district court" -> County Clerk), and an exact alias hit outranks the

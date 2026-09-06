@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "ef67adb9-80ed-4e84-a01e-ccb1bb51c55a",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "ef67adb9-80ed-4e84-a01e-ccb1bb51c55a",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "c2a61139-7416-4281-9737-1b50a27db13f",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  }
+ ]
+}

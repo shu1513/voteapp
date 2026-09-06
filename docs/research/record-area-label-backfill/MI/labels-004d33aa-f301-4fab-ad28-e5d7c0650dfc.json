@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "a266c16d-123f-452e-8dfc-a20cf944cc86",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "a266c16d-123f-452e-8dfc-a20cf944cc86",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  },
+  {
+   "record_id": "d2586e77-4541-44ea-8700-c1f27d984d30",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "db70d1a0-94bb-4c8b-bb48-f0de9f8e992b",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "2acb6b5b-0614-480b-944b-dbc505e898ec",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "2acb6b5b-0614-480b-944b-dbc505e898ec",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  },
+  {
+   "record_id": "e9e1dad5-0d79-475a-a761-e0fcf7abd386",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "e9e1dad5-0d79-475a-a761-e0fcf7abd386",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

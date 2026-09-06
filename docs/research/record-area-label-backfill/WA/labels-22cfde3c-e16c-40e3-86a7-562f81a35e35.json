@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "a364c11c-b314-4955-8ec5-5878d66ec1a6",
+   "research_area_slug": "legal_competence",
+   "stance": "for"
+  },
+  {
+   "record_id": "a364c11c-b314-4955-8ec5-5878d66ec1a6",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "14d2306d-620d-44ba-90ef-d86f36cf0d5d",
+   "research_area_slug": "legal_competence",
+   "stance": "for"
+  },
+  {
+   "record_id": "14d2306d-620d-44ba-90ef-d86f36cf0d5d",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

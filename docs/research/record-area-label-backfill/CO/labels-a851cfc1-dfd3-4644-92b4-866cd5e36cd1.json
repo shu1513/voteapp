@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "e25a7ebf-fe63-4b36-bcdb-ec1f7004abc5",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "c169812b-48bd-425d-8140-86113267db45",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  },
+  {
+   "record_id": "e744b07e-ea7c-4715-84e0-828ac58208c2",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "462cf685-71e6-43f4-9ad7-e7dd0a77f3fe",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "e04d9f9e-b541-4c10-bfc1-14826a753525",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "95886c95-a42a-424e-b6f0-1761c5ab7f39",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "fd7a9695-a216-44ef-8967-12272204db6d",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "8d09c2d1-7f96-4ce9-898e-5ba512ca1af5",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  }
+ ]
+}

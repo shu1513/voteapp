@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "9d58a269-d7ab-48f0-a4e6-0d9cc4d1ab8e",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "db250281-98eb-4c1e-bef3-7c4fb96e5cd4",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "d40d911f-7fe4-40ca-8ff1-05698a97d047",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

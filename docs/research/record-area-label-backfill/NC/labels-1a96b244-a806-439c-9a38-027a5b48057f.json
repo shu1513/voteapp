@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "1b516074-202a-4ae9-9de3-12f66b4bfb98",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "c2eacd74-f444-40b8-acb5-f5d6aca76bbf",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "6247a49c-c04e-41ae-a1e4-9801e327506f",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "b77cd06a-3be8-4f17-8cfa-f20282799c80",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "ce94d32b-c872-4f96-934c-5343334a975d",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "ce94d32b-c872-4f96-934c-5343334a975d",
+   "research_area_slug": "data_privacy",
+   "stance": "against"
+  },
+  {
+   "record_id": "eea72fff-51a2-42fe-92f9-d3d8f6d96c2b",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "eea72fff-51a2-42fe-92f9-d3d8f6d96c2b",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

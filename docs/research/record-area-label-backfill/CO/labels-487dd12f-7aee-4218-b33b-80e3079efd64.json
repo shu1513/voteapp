@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "9f00e443-45a8-4ed1-bc3f-4dc5bfc88636",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "76919abb-3263-446e-afc2-2865e3035bab",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "80bd1876-b908-4ea8-a6a4-23293c00897c",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "92e70328-554b-4182-b149-c5c38466c360",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  }
+ ]
+}

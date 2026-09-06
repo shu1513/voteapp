@@ -1,0 +1,419 @@
+{"proposals": [
+ {"candidate_id": "0013f2ba-090f-4192-9cda-6bd042938522",
+  "labels": [
+   {"record_id": "2d27a836-241a-49f0-88e2-dfe7979ddc94", "research_area_slug": "environment_and_public_health", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "0025645c-8a3f-497b-8e2a-262ec991b53d",
+  "labels": [
+   {"record_id": "eab92ecf-6521-40cb-bec1-21a5b578b49a", "research_area_slug": "government_spending_reduction", "stance": "against"},
+   {"record_id": "2d106b72-ee47-41c4-a333-5a9eda4df935", "research_area_slug": "public_safety_and_crime_control", "stance": "for"},
+   {"record_id": "e73f7882-d1c7-49d0-9fe8-0dfffd9a6196", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "cded130a-aa2e-4164-a90c-6f9ff6e21417", "reason": "voted against a policy change with no stated alternative"},
+   {"record_id": "4d6d40c4-2007-49b9-a0d4-cd41b9d202b5", "reason": "direction of effect on education quality is not clear from the text"},
+   {"record_id": "90c6c444-be2a-4fc3-af79-960439d2c4f8", "reason": "administrative lease-term change; no allowed area is directly affected"},
+   {"record_id": "3b2cc285-e00d-4ae8-8551-b42328283f1b", "reason": "personnel appointment, no stance on an allowed area"},
+   {"record_id": "b8f430a5-95e6-4a80-9d77-81247d736712", "reason": "no allowed research area matches"},
+   {"record_id": "9653be2e-8c7d-4599-9fd8-bc43f31cbbd2", "reason": "voted against spending authority with no stated alternative"},
+   {"record_id": "98e71605-bcac-4cf4-a0fb-4c17f025b06b", "reason": "voted against spending with no stated alternative"},
+   {"record_id": "db9702cc-0fb9-44b4-bf3d-9a5c8b17ec21", "reason": "voted against a project with no stated alternative"}
+  ],
+  "retire_candidates": [
+   {"record_id": "ec7e6eff-401a-4935-89da-82e6851d3706", "reason": "bio filler"}
+  ]},
+
+ {"candidate_id": "09d5a792-ed89-4aad-bde0-0315e830ae91",
+  "labels": [
+   {"record_id": "8db85d62-84c8-4090-9d64-c9b22de9ac81", "research_area_slug": "gun_control", "stance": "against"},
+   {"record_id": "3f7afcf9-746c-49e9-8b61-a6be141ba377", "research_area_slug": "public_safety_and_crime_control", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "09e0ce53-52cd-4cd7-b3e9-7f4cca072848",
+  "labels": [
+   {"record_id": "cd274eab-56b7-4658-b4ce-978e43b85b44", "research_area_slug": "public_safety_and_crime_control", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "0a61037c-d876-41ca-bcbe-00e334fc0637",
+  "labels": [],
+  "skipped": [
+   {"record_id": "48b2e433-8caf-49c2-9ff3-2a91f90ad6a3", "reason": "text does not say which direction the registration rule change goes"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "0b8e774a-a82f-40b6-9d9b-5ecc6bc101be",
+  "labels": [],
+  "skipped": [
+   {"record_id": "b72ce7aa-7867-43bb-9d2f-bf7595dcd0f6", "reason": "text does not say which way the biometric privacy change cuts"},
+   {"record_id": "7299e6da-fd34-4669-aeb2-b6f2bb97940a", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "0e6aa522-2be1-4bd8-bcd4-7fa4fd76a3d3",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "aa784dda-48b1-448b-9190-6eb4cc189ea1", "reason": "committee appointment, gives a voter nothing to decide on"}
+  ]},
+
+ {"candidate_id": "127713cd-9565-4851-a7a3-eb3dce33dcb5",
+  "labels": [
+   {"record_id": "97357f03-829c-4f00-88d4-9620534b1694", "research_area_slug": "social_programs_and_welfare", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "6f27d0b5-83f0-4c1b-b5de-f9a6631b8830", "reason": "text does not state the direction of the effect"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "12bd67e8-c2d5-4933-be6c-1bb885e81ca6",
+  "labels": [
+   {"record_id": "c3f87a74-a2f6-4a5a-8093-bdb93f5a3568", "research_area_slug": "government_spending_reduction", "stance": "against"},
+   {"record_id": "5aca12ca-e392-4740-a2fa-7d12e4dba960", "research_area_slug": "public_safety_and_crime_control", "stance": "for"},
+   {"record_id": "0b462eaa-0354-499e-bd18-f0d0c570dd27", "research_area_slug": "public_safety_and_crime_control", "stance": "for"},
+   {"record_id": "79fb4279-fc58-44f3-9077-1cdba70b1529", "research_area_slug": "public_infrastructure", "stance": "for"},
+   {"record_id": "79fb4279-fc58-44f3-9077-1cdba70b1529", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "14837c8d-5cab-41b4-bf9a-89fd28372df3",
+  "labels": [
+   {"record_id": "13099399-18b8-4377-92d6-987510634b75", "research_area_slug": "public_education_quality", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "14ac58ec-7365-4b8a-b05f-19cf864f1e9f",
+  "labels": [
+   {"record_id": "8d999c04-779d-4b9e-a6f0-d4b7dfca43d9", "research_area_slug": "public_safety_and_crime_control", "stance": "for"},
+   {"record_id": "15753940-20a8-4f05-aa6b-a44cc7e70d54", "research_area_slug": "government_efficiency", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "16cc03ea-a01d-4da5-9333-a3643ba846e0",
+  "labels": [
+   {"record_id": "452e0b55-70fd-4353-ac66-929452d56f43", "research_area_slug": "public_safety_and_crime_control", "stance": "for"},
+   {"record_id": "452e0b55-70fd-4353-ac66-929452d56f43", "research_area_slug": "government_spending_reduction", "stance": "against"},
+   {"record_id": "e4bc65eb-7a4d-4ad7-aefe-d3ac46aba708", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "3913cecd-cffc-43cb-939c-c1070ea03809", "reason": "leadership election and prior-service bio filler"}
+  ]},
+
+ {"candidate_id": "17fe11f0-ce03-4c43-a9b5-92251f903fbf",
+  "labels": [],
+  "skipped": [
+   {"record_id": "ff5e2878-aaf3-401f-9fd8-f64be0e316f5", "reason": "no allowed research area matches; objection was about ballot language and legal cost"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "195e7513-67a9-4187-9c72-79850fc936f7",
+  "labels": [
+   {"record_id": "c3d956e4-b03b-425f-85bb-786a5fc8f6a6", "research_area_slug": "healthcare_affordability", "stance": "for"},
+   {"record_id": "974ec314-830c-4910-ae00-82c39d0a34b0", "research_area_slug": "social_programs_and_welfare", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "1bb95f31-23bb-4995-a88c-5e948811a7f2",
+  "labels": [],
+  "skipped": [
+   {"record_id": "7d243250-3d41-437e-8e3b-c7d51880c22f", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "1fea9b2e-67a2-45de-a65d-14db9928c7fe",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "18d3bad9-292f-4e71-8f62-e194e6b0792d", "reason": "pure election result, no decision content"}
+  ]},
+
+ {"candidate_id": "232d1743-0d08-452a-9d5b-2dbb3f193dfa",
+  "labels": [
+   {"record_id": "6f7d08e7-4561-4476-95be-684b14435caa", "research_area_slug": "government_efficiency", "stance": "for"},
+   {"record_id": "cebca5dd-6dba-496a-87e5-6682714f177e", "research_area_slug": "government_efficiency", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "30e8f018-0919-4ec7-928a-573b23920459", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "24f69b0a-67ff-47cf-97f2-3e09aa75231d",
+  "labels": [
+   {"record_id": "e2ec6dd9-4920-4ca6-8980-c38f9fa84e34", "research_area_slug": "government_efficiency", "stance": "for"},
+   {"record_id": "e30ccc22-bb52-4b1b-a414-c49c8af85044", "research_area_slug": "healthcare_affordability", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "b793804a-3e7a-49bb-811d-966944427636", "reason": "commemorative day designation; no allowed research area matches"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "297964ac-c476-418b-afd1-778a87e78248",
+  "labels": [
+   {"record_id": "80381036-e215-4035-a1ce-3ecb8206d63f", "research_area_slug": "environment_and_public_health", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "2b1262d5-e3d6-4570-8140-70ac24b1a8fa",
+  "labels": [
+   {"record_id": "fec15a34-0b2b-4d67-a18a-23336ce09d09", "research_area_slug": "public_safety_and_crime_control", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "07b57bbf-0667-437f-b610-cb146ab34d54", "reason": "committee appointment, bio filler"},
+   {"record_id": "a2931916-1b2d-4298-a7a6-e59034f6aead", "reason": "board office election, bio filler"},
+   {"record_id": "bdc9bb2f-050a-4244-bd43-57d91c143946", "reason": "committee membership, bio filler"},
+   {"record_id": "9da6994f-f170-450c-8b75-dd2350bd3e73", "reason": "alternate seat assignment, bio filler"}
+  ]},
+
+ {"candidate_id": "2b417235-1e67-4c28-86d7-f3b0af571fb2",
+  "labels": [
+   {"record_id": "cf150dda-3e7b-4f53-bef1-3037bb52bd25", "research_area_slug": "environment_and_public_health", "stance": "for"},
+   {"record_id": "cf150dda-3e7b-4f53-bef1-3037bb52bd25", "research_area_slug": "government_spending_reduction", "stance": "against"},
+   {"record_id": "fe7c81f3-bf26-48cf-805e-d1b60bf70d93", "research_area_slug": "public_infrastructure", "stance": "for"},
+   {"record_id": "fe7c81f3-bf26-48cf-805e-d1b60bf70d93", "research_area_slug": "government_spending_reduction", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "2f2962aa-df32-48ab-bf20-862eea0d9f29",
+  "labels": [
+   {"record_id": "02455a09-f4c9-4873-b1c6-8f06a170066e", "research_area_slug": "foreign_trade", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "35a12992-7b2f-4857-a02c-2829698cbd6b",
+  "labels": [
+   {"record_id": "14ce1e66-5186-4632-8378-ff456a77afc9", "research_area_slug": "government_efficiency", "stance": "for"},
+   {"record_id": "14ce1e66-5186-4632-8378-ff456a77afc9", "research_area_slug": "anti_corruption", "stance": "for"},
+   {"record_id": "3e2f3ec4-4ff7-4141-bd23-c801a01e23e5", "research_area_slug": "corporate_accountability", "stance": "for"},
+   {"record_id": "3e2f3ec4-4ff7-4141-bd23-c801a01e23e5", "research_area_slug": "environment_and_public_health", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "5778e23d-7bfc-43d6-ab51-57ace9a1efa9", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "35fd746a-08aa-4739-8e1d-c230e562b683",
+  "labels": [
+   {"record_id": "51365a12-94fb-4fa7-80b3-1dea13820c93", "research_area_slug": "public_education_quality", "stance": "against"}
+  ],
+  "skipped": [
+   {"record_id": "2a238bf3-f272-4d37-a4b1-6516a1e8d772", "reason": "direction of effect is not clear from the text"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "3b6dcccb-3306-47fc-819b-76a0f0c3ce1a",
+  "labels": [
+   {"record_id": "71f25686-4fbf-4561-aa70-2c34c90188c4", "research_area_slug": "housing_affordability", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "4be2bad5-b47b-460a-9383-b32eb6a377b4",
+  "labels": [],
+  "skipped": [
+   {"record_id": "66a89621-b807-4b63-b83d-2644c6bf6cd4", "reason": "direction of effect of the licensing change is not clear from the text"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "4c082198-f1da-45af-bec8-0e2fc7851295",
+  "labels": [
+   {"record_id": "f63b82aa-c926-4c94-a132-ca349ab58af5", "research_area_slug": "public_education_quality", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "4da879db-54d7-4dc6-a7d5-d7c056d03b0f",
+  "labels": [
+   {"record_id": "7f909c7a-38b0-49a5-9404-1a890bf7098b", "research_area_slug": "government_efficiency", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "abc1a54e-21f4-4990-a192-f065b836efd9", "reason": "business filing fee cut; personal income tax area does not apply and no other allowed area fits"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "4fb78088-2e37-434b-99b9-79f07e56fa0c",
+  "labels": [
+   {"record_id": "c42c7af3-28d3-4984-82e5-8626be457edc", "research_area_slug": "social_programs_and_welfare", "stance": "for"},
+   {"record_id": "bd3517a4-691a-4679-b586-d94c6f85f94b", "research_area_slug": "public_education_quality", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "50691131-72d1-425d-a825-a2c2f70b8195",
+  "labels": [
+   {"record_id": "850b5150-3317-4e22-9508-95b0cc3a7739", "research_area_slug": "environment_and_public_health", "stance": "for"},
+   {"record_id": "850b5150-3317-4e22-9508-95b0cc3a7739", "research_area_slug": "government_spending_reduction", "stance": "against"},
+   {"record_id": "1a3b66a5-0452-4d30-b012-6d4a85bd72af", "research_area_slug": "housing_affordability", "stance": "for"},
+   {"record_id": "1a3b66a5-0452-4d30-b012-6d4a85bd72af", "research_area_slug": "corporate_accountability", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "5220da2f-f9cb-4220-bd9c-3a1e65468d1b",
+  "labels": [
+   {"record_id": "b762421f-d521-4362-8339-9d685cb49112", "research_area_slug": "housing_affordability", "stance": "for"},
+   {"record_id": "b762421f-d521-4362-8339-9d685cb49112", "research_area_slug": "social_programs_and_welfare", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "535e777f-917a-49c2-b8fa-3c89fe074d5e",
+  "labels": [
+   {"record_id": "9c459809-610b-40ce-a5f4-241530f90fe8", "research_area_slug": "environment_and_public_health", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "5564bdd1-8d10-44d8-95fd-76e41e3c992e",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "750ef76a-51fa-493a-a1fc-ada58498153e", "reason": "appointment to a pension board, bio filler"}
+  ]},
+
+ {"candidate_id": "5624a619-1be7-4e7e-90f3-3b65156d8cf3",
+  "labels": [
+   {"record_id": "70ba036f-a969-432b-8936-20f50b80ed54", "research_area_slug": "corporate_accountability", "stance": "for"},
+   {"record_id": "70ba036f-a969-432b-8936-20f50b80ed54", "research_area_slug": "government_spending_reduction", "stance": "for"},
+   {"record_id": "8808ecee-cb5e-4294-94d4-66c82a883318", "research_area_slug": "housing_affordability", "stance": "for"},
+   {"record_id": "8808ecee-cb5e-4294-94d4-66c82a883318", "research_area_slug": "social_programs_and_welfare", "stance": "for"},
+   {"record_id": "6829540e-a5e1-409f-bd29-e3ec45b1a419", "research_area_slug": "environment_and_public_health", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "5693571b-39ff-4968-90e7-dab0c3662590",
+  "labels": [],
+  "skipped": [
+   {"record_id": "7ffbbe5c-d799-4a3f-8621-3c4961bbfb85", "reason": "administrative deadline change for a pension board election; no allowed area matches"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "5977010b-d172-4d82-9096-be58c63e24ff",
+  "labels": [
+   {"record_id": "4cf060be-551e-4410-9c69-d4a822bc8088", "research_area_slug": "civil_rights", "stance": "for"},
+   {"record_id": "150b7695-b1bd-470e-9906-f86c20e32196", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "ab26b55b-2439-4f17-aada-6bd98c947c70", "reason": "committee assignment list, bio filler"}
+  ]},
+
+ {"candidate_id": "5b820d61-4223-42af-b84d-49ccd54c9bf9",
+  "labels": [
+   {"record_id": "7fad9800-9774-4af6-b989-2f22630fa15a", "research_area_slug": "government_efficiency", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "5c09157d-87f5-456a-b2b4-044f800434b1",
+  "labels": [
+   {"record_id": "ff0af38d-d2a2-4fd1-aa45-a3367ba35f63", "research_area_slug": "public_safety_and_crime_control", "stance": "for"},
+   {"record_id": "ff0af38d-d2a2-4fd1-aa45-a3367ba35f63", "research_area_slug": "data_privacy", "stance": "against"},
+   {"record_id": "9ecb417d-e427-4acf-b2b5-91e02183a54a", "research_area_slug": "civil_rights", "stance": "for"}
+  ],
+  "skipped": [
+   {"record_id": "9623679f-c3bd-4687-b784-44613c9eca7a", "reason": "text does not say what the bill did or which direction it goes"},
+   {"record_id": "d9771939-272c-497d-9d4c-54268dd99078", "reason": "text does not say what the bill did or which direction it goes"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "5d1e8cc2-d2cf-47b6-8f72-00fb2a69270b",
+  "labels": [
+   {"record_id": "d59d9301-ebf3-4a5f-a869-e91a373064d8", "research_area_slug": "data_privacy", "stance": "for"},
+   {"record_id": "a5d5ffcd-a056-4a16-8a64-fef7b95020af", "research_area_slug": "healthcare_affordability", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "5f9f2328-d248-4382-b341-e96fe4e173c6",
+  "labels": [],
+  "skipped": [
+   {"record_id": "73d46b85-5ce8-4046-91c4-72b01e203c1d", "reason": "outside group endorsement, not the candidate's own action"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "609b0ddc-972c-4cd6-8877-47535a524e54",
+  "labels": [
+   {"record_id": "b94eca6e-e67e-4635-b1b3-8e9e58f707e6", "research_area_slug": "public_safety_and_crime_control", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "6152c862-d3b3-47c3-9961-804eed44b700",
+  "labels": [
+   {"record_id": "417a3c30-c8c2-4021-8b98-e6d248a4d76b", "research_area_slug": "government_efficiency", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "63693ad9-f145-464d-8a08-9231b96f94ed",
+  "labels": [
+   {"record_id": "4717194b-d890-4f17-a987-faa66824bc8b", "research_area_slug": "public_safety_and_crime_control", "stance": "against"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "63bef7d4-6bdc-48ac-9014-52de946352d6",
+  "labels": [
+   {"record_id": "80cd8e00-6063-43cc-ad80-e1b9a90c39a5", "research_area_slug": "public_education_quality", "stance": "for"}
+  ],
+  "skipped": [],
+  "retire_candidates": []},
+
+ {"candidate_id": "65fcaa25-c534-4e3f-8d39-67d34a5c7b4a",
+  "labels": [],
+  "skipped": [
+   {"record_id": "3efb0ac8-a037-4f65-8178-8821a1e60f10", "reason": "direction of effect of the new license is not clear from the text"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "66a327d9-ed86-4d28-b7ec-1a77b8d0dd10",
+  "labels": [],
+  "skipped": [],
+  "retire_candidates": [
+   {"record_id": "1aebd87e-2815-4b95-93c9-791054883638", "reason": "resume summary of past roles and programs, bio filler"}
+  ]},
+
+ {"candidate_id": "67e4e0cc-44f2-4724-be99-075660162504",
+  "labels": [],
+  "skipped": [
+   {"record_id": "a2ccd24b-efc7-4ab6-a66b-cdbd89bbd20c", "reason": "voted against a permit with no stated reason or alternative"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "6a80ac3d-f713-4b70-a766-8bf68915bd35",
+  "labels": [],
+  "skipped": [
+   {"record_id": "caafcb5e-2a86-4ad2-b7f1-ca3a2d4d4b3b", "reason": "no allowed research area matches"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "6c92f0e1-9c5d-4ef7-8533-78a60cc731ce",
+  "labels": [],
+  "skipped": [
+   {"record_id": "d580d6b4-c90d-4f20-9032-94b3ff745537", "reason": "text does not say why the data-center pause was sought"}
+  ],
+  "retire_candidates": []},
+
+ {"candidate_id": "6d65b1bf-44c1-4cee-b61c-4ce7f3310683",
+  "labels": [],
+  "skipped": [
+   {"record_id": "c460ef36-8608-4864-b910-52236a4a2fb0", "reason": "voted against a property-tax levy with no stated alternative; property tax is outside the personal income tax area"}
+  ],
+  "retire_candidates": []}
+]}

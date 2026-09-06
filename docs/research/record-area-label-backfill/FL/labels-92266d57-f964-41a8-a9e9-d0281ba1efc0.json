@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "fdb1bc4b-6f1a-4267-94ef-e8a705c284fe",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "fdb1bc4b-6f1a-4267-94ef-e8a705c284fe",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  },
+  {
+   "record_id": "e26f1b6c-6522-4971-b0fe-0f12bdfa60a1",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "e26f1b6c-6522-4971-b0fe-0f12bdfa60a1",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

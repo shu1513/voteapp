@@ -460,9 +460,10 @@ const COLORADO_EXCLUDED_QUESTIONS: readonly RegExp[] = [
   // the kept concurrence votes, so they must be excluded first.
   /^(?:house|senate): (?:senate|house) amendments (?:not concur|not cncr|adhere)/,
   // Conference-report motions that are not the report itself: whether the
-  // report exceeds the conference's scope (`Byd Scp`), rejecting it, and
-  // appointing a second conference committee.
-  /^(?:house|senate): conference committee report (?:byd scp|reject|2nd committee)/,
+  // report exceeds the conference's scope (`Byd Scp`), rejecting it,
+  // appointing a second conference committee, and adhering to the chamber's
+  // own position instead of adopting the report (one Senate roll in 2026).
+  /^(?:house|senate): conference committee report (?:byd scp|reject|2nd committee|adhere)/,
   // Resolutions, memorials and housekeeping calendars, plus the House's
   // laid-over veto question.
   /^(?:house|senate): (?:resolutions|misc|memorials|veto lo|consideration of)/,
@@ -3407,6 +3408,16 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   "CO-2224": {
     jurisdiction: "CO",
     sessionId: 2224,
+    chamberSizes: { house: 65, senate: 35 },
+    keptQuestions: COLORADO_KEPT_QUESTIONS,
+    excludedQuestions: COLORADO_EXCLUDED_QUESTIONS,
+  },
+  // Colorado's 2026 Regular Session, 14 January to 13 May 2026. Same chamber
+  // sizes and the same vote-description grammar as 2025, so it reuses both
+  // pattern lists; the survey over this dataset left no description unmatched.
+  "CO-2243": {
+    jurisdiction: "CO",
+    sessionId: 2243,
     chamberSizes: { house: 65, senate: 35 },
     keptQuestions: COLORADO_KEPT_QUESTIONS,
     excludedQuestions: COLORADO_EXCLUDED_QUESTIONS,

@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "f761fc7c-3b49-48b7-8b17-d17a43f62976",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "cb619fc0-4100-481d-bae4-dd22fdf787b1",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "cb619fc0-4100-481d-bae4-dd22fdf787b1",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "d93ba3b1-ad99-4c5f-a99a-73b623563553",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "70a9f705-a482-4d8c-81e1-16747165bcf5",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "8cd44184-bd02-4367-a93a-e484ee055fe8",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "6f1c2a5b-1378-46a8-b651-e070b904f315",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "27c68f77-baf1-4734-811d-cc0f99b486a0",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "ecc558aa-e930-4cc9-8667-277e0c4563c2",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "54bf368e-c6b7-4d8a-aca5-b727e2725f11",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "1f599e76-dc26-40d2-9e4d-536349530c4f",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  }
+ ]
+}

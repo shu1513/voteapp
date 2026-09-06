@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "3c789279-df89-42ff-8143-afb3c2ef2d3d",
+   "research_area_slug": "anti_corruption",
+   "stance": "against"
+  },
+  {
+   "record_id": "94cb4653-afe7-4c6b-b17e-b25dab93efb2",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "d3b4362e-63db-437a-9b2f-6ac5fd212e3d",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

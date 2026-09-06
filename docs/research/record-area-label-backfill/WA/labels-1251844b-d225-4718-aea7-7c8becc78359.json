@@ -1,0 +1,59 @@
+{
+ "labels": [
+  {
+   "record_id": "fa7005f5-6341-4bb3-8f1c-aae79c76cc6f",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "959b5575-9200-4b71-9f2c-501df01872aa",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "against"
+  },
+  {
+   "record_id": "31699543-4f69-45b0-bfcf-a78a70a1037b",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "38ff9281-2129-4af4-8287-f5bca89e1c98",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "1ab82d3c-3dd5-45f8-b8fe-b7285d25d903",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "9ae65d76-8986-4232-b374-20379fa137de",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "e1d36e45-acb6-4310-8081-52acafa25bd0",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "b9abcb0b-580d-424e-8c5b-c20317bdfb6b",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "8a567f10-5f48-42c9-b5ff-e8505382e18d",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "21ebe676-9f63-4174-a402-701000c0e1bb",
+   "research_area_slug": "anti_corruption",
+   "stance": "against"
+  },
+  {
+   "record_id": "8a294c3e-d465-4d40-8278-b053a5b7babf",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

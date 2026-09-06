@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "7be954c3-ec1a-4e3d-9ece-c82336afcaea",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "da5a5b6e-4d49-4abb-b39f-63509397576e",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "da5a5b6e-4d49-4abb-b39f-63509397576e",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  },
+  {
+   "record_id": "40419c0f-150e-4498-a738-9aaf6f405121",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

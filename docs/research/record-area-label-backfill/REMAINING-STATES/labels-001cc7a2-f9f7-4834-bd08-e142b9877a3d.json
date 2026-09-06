@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "f235457a-9338-43be-a46d-81fa2bef0fc1",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "317ba0b3-1478-4f1a-b1f3-2b52868006a0",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "f70cd6d8-5d7b-42f8-8b06-f29ecd06be90",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "e38a0644-27a1-414c-8c03-8872c482144a",
+   "research_area_slug": "housing_affordability",
+   "stance": "against"
+  }
+ ]
+}

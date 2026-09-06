@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "b5332971-ca3a-4073-9cf0-40f1b788f97d",
+   "research_area_slug": "gun_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "7e1d86b8-b598-4e26-9623-b605e9781d4b",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "7e1d86b8-b598-4e26-9623-b605e9781d4b",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  }
+ ]
+}

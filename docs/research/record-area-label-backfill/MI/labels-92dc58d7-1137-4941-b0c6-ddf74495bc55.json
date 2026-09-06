@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "015786a2-1e52-444c-bba3-fc58fb8393c5",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "bacdb056-ed99-40e5-8aa0-3b0ae3876160",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "b666c6b3-7144-4dc1-aefe-81228fe5c7e8",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "af3aad1d-5493-462f-ad2b-1e0fe3c84f50",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "85fb80ae-7464-4bc1-adc0-4022bf4465da",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

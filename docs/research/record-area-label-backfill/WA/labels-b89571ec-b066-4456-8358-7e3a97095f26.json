@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "10cd6cab-cba1-4a5e-8735-e7778c276498",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "6c64bcfd-22b1-44f0-902e-499c3f45e14e",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "c8fb6703-ed2f-471f-a061-84fe1ee73cf0",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  }
+ ]
+}

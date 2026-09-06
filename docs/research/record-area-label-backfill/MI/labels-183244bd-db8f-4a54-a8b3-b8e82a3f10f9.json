@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "b4124067-051f-44cb-84e7-990dbc7cb66a",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "dec2313b-c535-49ce-96ca-2ec09163dc71",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  },
+  {
+   "record_id": "625c223d-8dbd-4ea1-bd36-441ddae308f7",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  }
+ ]
+}

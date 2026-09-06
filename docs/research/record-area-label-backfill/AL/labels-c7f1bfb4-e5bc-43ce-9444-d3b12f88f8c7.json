@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "d2d670cd-4471-46e3-b175-cdb2ce8d3050",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "5a6f37f0-0f05-4e2c-9180-678eed3ca098",
+   "research_area_slug": "personal_income_tax_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "11d5dd22-5f65-45e9-a642-d659e83476e4",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

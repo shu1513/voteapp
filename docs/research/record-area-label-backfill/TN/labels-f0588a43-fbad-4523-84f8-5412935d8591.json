@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "fbc68c17-7870-468b-a75f-33f10b66092c",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "1daf8e34-64f1-413e-997d-c899e56eb478",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "1daf8e34-64f1-413e-997d-c899e56eb478",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

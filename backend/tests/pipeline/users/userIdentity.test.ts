@@ -10,6 +10,7 @@ import {
 
 const USER_ID = "11111111-1111-4111-8111-111111111111";
 const IDENTITY = {
+  id: USER_ID,
   email: "voter@example.com",
   first_name: "Val",
   email_verified: true,
@@ -18,10 +19,10 @@ const IDENTITY = {
 };
 
 describe("userIdentity", () => {
-  it("getUserIdentity returns email, first_name, email_verified, and accepted_terms_version", async () => {
+  it("getUserIdentity returns id, email, first_name, email_verified, and accepted_terms_version", async () => {
     const query = vi.fn().mockResolvedValue({ rows: [IDENTITY], rowCount: 1 });
 
-    await expect(getUserIdentity({ query } as never, USER_ID)).resolves.toEqual(IDENTITY);
+    await expect(getUserIdentity({ query } as never, USER_ID)).resolves.toStrictEqual(IDENTITY);
     expect(String(query.mock.calls[0][0])).toContain("deleted_at IS NULL");
     expect(String(query.mock.calls[0][0])).toContain("accepted_terms_version");
     // Google-created accounts have no password; Settings reads this flag.

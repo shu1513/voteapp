@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "e9130832-6ba1-43b5-b51f-119093bd9871",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "e132ecab-16e5-496e-872a-f491312aaa6d",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "214016c6-51d2-4687-9521-0ee120d4c769",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "5176a0b9-972f-4253-af4c-b27b4670f4d4",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "f9605606-8a82-47c7-8c1b-83b9957df5f9",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "against"
+  },
+  {
+   "record_id": "d9102517-ecc2-4724-b56b-5eedc1334847",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "9fa7fa8a-afd0-462d-8522-28003f1c7711",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "89ca55cb-48fa-4fd5-84ef-c6399061f264",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,89 @@
+{
+ "labels": [
+  {
+   "record_id": "3474690d-6f15-4e6c-9d14-eccbf7606ce6",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "7620110d-6313-402c-81f1-feb9c99308e6",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "54a03dc4-665a-4fa2-a83d-b7f06f9b56af",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "54a03dc4-665a-4fa2-a83d-b7f06f9b56af",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "97056ad5-4f67-4eeb-aa8a-d207e39f8b89",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "83cef4e1-fd9f-4da3-8ae5-f22d7a3f6b17",
+   "research_area_slug": "data_privacy",
+   "stance": "against"
+  },
+  {
+   "record_id": "4dd6cc23-b6e3-439c-9d50-af752bc25b58",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "4dd6cc23-b6e3-439c-9d50-af752bc25b58",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "ee1047f6-080a-43c9-93c2-0a1116f06f93",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "0c050ebb-c40f-4985-b41b-00d92df20840",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "79e7b392-b184-43e9-a06f-a82b01d2600b",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "5289e85e-b5f2-4663-9249-e0869ec846ba",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "442fe89b-b1ab-4fb7-b5c8-15f2dd85b06e",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "bdd12ccc-37cb-40c3-98fd-c31f5be80eed",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "878c3855-ee76-4068-855a-648fcedc5c7f",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "878c3855-ee76-4068-855a-648fcedc5c7f",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "7cf5d713-6931-4387-a5e8-73affd19f9d1",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

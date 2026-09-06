@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "a353ce97-75bf-4c1e-9a92-a8db6ebfef37",
+   "research_area_slug": "national_defense",
+   "stance": "for"
+  },
+  {
+   "record_id": "b53b78b3-32c4-431e-8b8b-fae65e2a5f62",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "d0c40395-4a39-44b9-8c5c-d1e21ea4cfa8",
+   "research_area_slug": "national_defense",
+   "stance": "for"
+  }
+ ]
+}

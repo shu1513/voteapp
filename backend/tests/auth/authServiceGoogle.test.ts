@@ -243,6 +243,7 @@ describe("createAuthService loginWithGoogle", () => {
       .mockResolvedValueOnce({ rows: [googleUserRow({ email_verified: false, session_epoch: 4 })] }) // email lookup
       .mockResolvedValueOnce({ rows: [{ session_epoch: 5 }] }) // takeover UPDATE
       .mockResolvedValueOnce({ rows: [] }) // terms acceptance
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // void every outstanding link
       .mockResolvedValueOnce({ rows: [] }) // last_logged_in
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
     const { service, redis } = createService({ client });
@@ -264,6 +265,11 @@ describe("createAuthService loginWithGoogle", () => {
     expect(ledgerCall?.[1]).toEqual([USER_ID, CURRENT_TERMS_VERSION, "registration"]);
     // Session rides the BUMPED epoch, so pre-takeover sessions are dead.
     expect(redis.setEx).toHaveBeenCalledWith(expect.any(String), expect.any(Number), `${USER_ID}:5`);
+    // ...and so is every link the pre-registrant requested (all purposes).
+    expect(client.query).toHaveBeenCalledWith(expect.stringContaining("SET consumed_at = clock_timestamp()"), [
+      USER_ID,
+      ["email_verify", "password_reset", "email_change"],
+    ]);
   });
 
   it("rejects an unverified-row login intent with needs_signup", async () => {

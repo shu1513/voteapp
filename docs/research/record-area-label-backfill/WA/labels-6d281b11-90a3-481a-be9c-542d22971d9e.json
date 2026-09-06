@@ -1,0 +1,34 @@
+{
+ "labels": [
+  {
+   "record_id": "70143fe5-2068-4dea-b657-e2486165dbc1",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "7e84d172-4a1c-48bd-8128-70eb2ca97242",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "c8213984-ea82-4f4d-bca6-67198cf7f660",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "823e03bd-5102-48e3-a9a7-47b18b75f3c4",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "b74bd6bd-cafb-47ee-9fc4-3ad73b14bede",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "7b6ac1f7-e43c-417c-974a-c2ddbb94bab5",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

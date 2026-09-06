@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "ea01c168-774d-4ad5-ae2e-a61b154cbbe2",
+   "research_area_slug": "personal_income_tax_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "ea01c168-774d-4ad5-ae2e-a61b154cbbe2",
+   "research_area_slug": "public_infrastructure",
+   "stance": "against"
+  },
+  {
+   "record_id": "0332d2db-987a-48a7-a858-6141b383ad4d",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "0332d2db-987a-48a7-a858-6141b383ad4d",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "98fef758-ea26-45a2-8a8b-33428ab8bf75",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "d81ce6c5-bbdb-4776-9669-5cf29ac48e3d",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "fe2041d8-6ddb-4c7c-b6c7-e4b9cbe3f6cc",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "30b5fd8e-d63a-4e96-8207-fb3420e93f50",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  }
+ ]
+}

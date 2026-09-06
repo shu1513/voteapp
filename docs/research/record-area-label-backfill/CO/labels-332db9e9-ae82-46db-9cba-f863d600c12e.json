@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "775d0769-7f12-4608-a5be-c5d5f5abb950",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "c14ad578-bc60-4052-896d-123125dfd887",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "15f2d753-bee4-475f-8a88-2c812498e8c2",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "dfaab48b-b5b8-4e18-a543-dee9818f6074",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

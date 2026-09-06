@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "cdb3b518-c23e-4adc-8f13-a15d7e27bde0",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "cdb3b518-c23e-4adc-8f13-a15d7e27bde0",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "ddc16109-d32d-4baa-9d3f-27f94fc2cd03",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "75813e83-84db-4a6e-b3e6-c26bea9ba242",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,49 @@
+{
+ "labels": [
+  {
+   "record_id": "106c7bff-385d-4c01-bf0e-52229d68655c",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "fdcb6c72-6509-40cb-8bcc-fc6431c3b109",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "fdcb6c72-6509-40cb-8bcc-fc6431c3b109",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "ad5b948c-be40-470c-9405-8410e2ba43e6",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "c3680202-cc74-48a5-9599-7d21e2b672d9",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "c3680202-cc74-48a5-9599-7d21e2b672d9",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "29f8c185-2fd2-4f71-bbfd-3c7ffb28a87e",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "ec892566-c0cc-4bce-be6b-bb0cf3d7f275",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "ec892566-c0cc-4bce-be6b-bb0cf3d7f275",
+   "research_area_slug": "data_privacy",
+   "stance": "against"
+  }
+ ]
+}

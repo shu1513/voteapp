@@ -1,0 +1,129 @@
+{
+ "labels": [
+  {
+   "record_id": "a3a40f3b-bb81-45a3-a5e9-228a488e5916",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "820d436a-c05a-40ec-ba11-488092ee0cc5",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "4baef92b-4b80-43ef-94c0-6a4335d6241f",
+   "research_area_slug": "data_privacy",
+   "stance": "against"
+  },
+  {
+   "record_id": "4baef92b-4b80-43ef-94c0-6a4335d6241f",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "4061e3c9-a435-4de7-8014-979a2f51031e",
+   "research_area_slug": "public_infrastructure",
+   "stance": "against"
+  },
+  {
+   "record_id": "4061e3c9-a435-4de7-8014-979a2f51031e",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "08f6f53c-304c-448b-a276-bf5450b761d9",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "402101ca-7c06-42de-a39b-f44cebe0bf90",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "7d349935-c082-4d82-9eb5-6820c579d999",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "d664ef19-0e39-4fc8-9a60-0c1a6bd941a4",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "eccb6035-261a-4ee3-8673-c04a96229f14",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "6ca168d2-89ab-4d30-a62e-b8fffaf3616e",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "0e55d1c6-4dd0-4f6b-9d28-9145407e10ac",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "17a5c32a-b65f-4562-afa9-9b50dc92067e",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "6bdb1dca-6c76-4899-97ba-32d9fe40664f",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "1d118b86-e68c-4653-84de-2bbe578d50b1",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  },
+  {
+   "record_id": "1d118b86-e68c-4653-84de-2bbe578d50b1",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "a7a0b42e-f958-4b9b-982e-f87a43fd0117",
+   "research_area_slug": "gun_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "40bca3c1-d556-4688-a80e-b9e278d75833",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "a29d5786-9873-4d13-a6b1-d51a1c4ab38d",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "a29d5786-9873-4d13-a6b1-d51a1c4ab38d",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "fc391807-0476-4682-832f-0d5d880e54e5",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "8b1390b4-e8d0-4ed6-b994-c22963403605",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "50c631e0-72fa-4583-a66e-bd7b380bd16e",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "b3d32201-301b-4480-86d5-484cb824aa1a",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

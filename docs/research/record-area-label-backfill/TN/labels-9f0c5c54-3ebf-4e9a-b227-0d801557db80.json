@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "0119a546-5d4b-41f2-84b1-39040249a661",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "2920580c-6c01-4e3d-acdf-4812a90127cb",
+   "research_area_slug": "data_privacy",
+   "stance": "against"
+  },
+  {
+   "record_id": "4487cb5a-1fc6-4b16-b6fd-b20601ff9fc7",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "1315b9df-ee64-473d-995b-5096aecf29e2",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  }
+ ]
+}

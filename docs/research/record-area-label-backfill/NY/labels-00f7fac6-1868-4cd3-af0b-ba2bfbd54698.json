@@ -1,0 +1,74 @@
+{
+ "labels": [
+  {
+   "record_id": "b8dc9111-a035-4bec-8126-a547d25195f2",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "7420b939-4f3d-4846-b0fa-f390607cd742",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "0a0c0c1a-e5ad-4487-987f-31e9c425d534",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "51bceb3d-401c-4158-972e-084660f826d4",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "9c689c3e-2d40-4965-bfbc-1128ea797151",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "f4dac1e5-dcb9-45e6-a1c1-91a516859d95",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "910c566f-642c-4a8a-8b8b-7fb176790446",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  },
+  {
+   "record_id": "cb1dbbd1-4e97-4155-8f52-e004df64bdad",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "dff257e5-5379-402f-a540-9352e36a7cde",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "187b61ca-9ae0-48f5-b222-24d6cb2a1526",
+   "research_area_slug": "anti_corruption",
+   "stance": "against"
+  },
+  {
+   "record_id": "9c62fd8c-1601-4461-b7a1-8d3b69079f5a",
+   "research_area_slug": "womens_reproductive_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "a657044f-ae8f-4a5c-bb4e-c2b558c9ffeb",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "fa28fc8a-e1cf-483d-8dcb-9dbb05ae597f",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "4f962145-0cd5-4468-806c-7e5716604cf6",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

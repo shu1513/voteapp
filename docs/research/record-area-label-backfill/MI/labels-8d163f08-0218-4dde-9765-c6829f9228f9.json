@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "008efa44-ffda-41f3-8454-8df3e15b485f",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "85798c63-8856-41d8-a74c-38034dcfa6e2",
+   "research_area_slug": "public_infrastructure",
+   "stance": "against"
+  },
+  {
+   "record_id": "85798c63-8856-41d8-a74c-38034dcfa6e2",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  }
+ ]
+}

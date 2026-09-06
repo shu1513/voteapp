@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "7d7cd616-412a-4931-a59f-bf536926b763",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "75bd3a88-2472-4fbb-9685-08bda0946e78",
+   "research_area_slug": "gun_control",
+   "stance": "against"
+  },
+  {
+   "record_id": "75bd3a88-2472-4fbb-9685-08bda0946e78",
+   "research_area_slug": "corporate_accountability",
+   "stance": "against"
+  }
+ ]
+}

@@ -3,6 +3,12 @@ import type { Pool, PoolClient } from "pg";
 import type { FinanceLabelClassification } from "./financeLabelClassifier.js";
 import { upsertFinanceLabelClassification } from "./financeIndustryClassificationService.js";
 import type { StandardStateFinanceTables } from "./standardStateFinanceBallotLookupLoader.js";
+import {
+  MANUAL_PROTECTED_LINK_RETURNING,
+  assertLinkWriteNotBlocked,
+  manualProtectedLinkAssignments,
+  type ManualProtectedLinkRow,
+} from "./manualLinkProtection.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type PoolLikeQueryable = Queryable & {
@@ -453,7 +459,7 @@ export function createStandardStateFinanceSnapshotWriter<
       ? `\n      WHERE ${tables.links}.link_source <> 'manual' OR EXCLUDED.link_source = 'manual'`
       : "";
 
-    const result = await input.db.query<{ id: string }>(
+    const result = await input.db.query<ManualProtectedLinkRow>(
       `
       INSERT INTO public.${tables.links} (
         candidate_id,
@@ -472,22 +478,14 @@ export function createStandardStateFinanceSnapshotWriter<
       VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12::timestamptz)
       ON CONFLICT (candidate_id, election_id, ${linkIdColumn})
       DO UPDATE SET
-        election_year = EXCLUDED.election_year,
         candidate_name_normalized = EXCLUDED.candidate_name_normalized,
         office_name = EXCLUDED.office_name,
         district = EXCLUDED.district,
         ${linkNameColumn} = EXCLUDED.${linkNameColumn},
-        link_status = CASE
-          WHEN ${tables.links}.link_source = 'manual' THEN ${tables.links}.link_status
-          ELSE EXCLUDED.link_status
-        END,
-        link_source = CASE
-          WHEN ${tables.links}.link_source = 'manual' THEN ${tables.links}.link_source
-          ELSE EXCLUDED.link_source
-        END,
+        ${manualProtectedLinkAssignments(tables.links)},
         source_url = EXCLUDED.source_url,
         last_verified_at = EXCLUDED.last_verified_at${protectedUpsertWhere}
-      RETURNING id
+      RETURNING ${MANUAL_PROTECTED_LINK_RETURNING}
     `,
       [
         candidateId,
@@ -505,6 +503,7 @@ export function createStandardStateFinanceSnapshotWriter<
       ]
     );
 
+    assertLinkWriteNotBlocked(label, result.rows[0], linkSource, electionYear);
     const linkId = result.rows[0]?.id;
     if (!linkId) {
       if (manualLinkProtection) {

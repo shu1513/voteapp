@@ -1,0 +1,331 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1578338,
+   "measure_id": "AB 105",
+   "vote_date": "2025-05-26",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 105, which would have made it a crime to carry a gun at a polling place, a ballot counting place, or a ballot drop box, or within 100 feet of an entrance to one. Police officers, hired security guards, a gun left inside a vehicle, and a gun in a home or business inside that zone were all exempt. The Nevada Assembly passed it 27-14, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 105, which would have made it a crime to carry a gun at a polling place, a ballot counting place, or a ballot drop box, or within 100 feet of an entrance to one. Police officers, hired security guards, a gun left inside a vehicle, and a gun in a home or business inside that zone were all exempt. The Nevada Assembly passed it 27-14, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1582218,
+   "measure_id": "AB 105",
+   "vote_date": "2025-05-30",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 105, which would have made it a crime to carry a gun at a polling place, a ballot counting place, or a ballot drop box, or within 100 feet of an entrance to one. Police officers, hired security guards, a gun left inside a vehicle, and a gun in a home or business inside that zone were all exempt. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 105, which would have made it a crime to carry a gun at a polling place, a ballot counting place, or a ballot drop box, or within 100 feet of an entrance to one. Police officers, hired security guards, a gun left inside a vehicle, and a gun in a home or business inside that zone were all exempt. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1581111,
+   "measure_id": "AB 204",
+   "vote_date": "2025-05-29",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 204, which would have limited how hospitals, doctors and debt collectors can collect a medical debt. It would have banned threatening arrest, putting a lien on a person's main home, taking a federal tax refund, and seizing a bank account. Collectors would have had to wait 180 days after the first bill, and give 30 days written notice, before other harsh steps. The Nevada Assembly passed it 28-14, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 204, which would have limited how hospitals, doctors and debt collectors can collect a medical debt. It would have banned threatening arrest, putting a lien on a person's main home, taking a federal tax refund, and seizing a bank account. Collectors would have had to wait 180 days after the first bill, and give 30 days written notice, before other harsh steps. The Nevada Assembly passed it 28-14, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1583619,
+   "measure_id": "AB 204",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 204, which would have limited how hospitals, doctors and debt collectors can collect a medical debt. It would have banned threatening arrest, putting a lien on a person's main home, taking a federal tax refund, and seizing a bank account. Collectors would have had to wait 180 days after the first bill, and give 30 days written notice, before other harsh steps. The Nevada Senate passed it 12-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 204, which would have limited how hospitals, doctors and debt collectors can collect a medical debt. It would have banned threatening arrest, putting a lien on a person's main home, taking a federal tax refund, and seizing a bank account. Collectors would have had to wait 180 days after the first bill, and give 30 days written notice, before other harsh steps. The Nevada Senate passed it 12-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1554356,
+   "measure_id": "AB 245",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 245, which would have barred people under 21 from having a semiautomatic shotgun or a semiautomatic centerfire rifle, and made selling one to them a felony. People aged 18 to 20 could still use these guns at a shooting range, in an organized competition, and while hunting or trapping. Military members and police officers were exempt. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 245, which would have barred people under 21 from having a semiautomatic shotgun or a semiautomatic centerfire rifle, and made selling one to them a felony. People aged 18 to 20 could still use these guns at a shooting range, in an organized competition, and while hunting or trapping. Military members and police officers were exempt. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1575542,
+   "measure_id": "AB 245",
+   "vote_date": "2025-05-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 245, which would have barred people under 21 from having a semiautomatic shotgun or a semiautomatic centerfire rifle, and made selling one to them a felony. People aged 18 to 20 could still use these guns at a shooting range, in an organized competition, and while hunting or trapping. Military members and police officers were exempt. The Nevada Senate passed it 12-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 245, which would have barred people under 21 from having a semiautomatic shotgun or a semiautomatic centerfire rifle, and made selling one to them a felony. People aged 18 to 20 could still use these guns at a shooting range, in an organized competition, and while hunting or trapping. Military members and police officers were exempt. The Nevada Senate passed it 12-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1575366,
+   "measure_id": "AB 416",
+   "vote_date": "2025-05-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 416, which would have stopped school districts, charter schools and public libraries from removing, hiding or defacing library materials because of their content. Only a court could order a book taken out of circulation, and only if it found the book obscene. The bill also protected library staff from being fired or disciplined for lawful work. The Nevada Assembly passed it 29-13, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 416, which would have stopped school districts, charter schools and public libraries from removing, hiding or defacing library materials because of their content. Only a court could order a book taken out of circulation, and only if it found the book obscene. The bill also protected library staff from being fired or disciplined for lawful work. The Nevada Assembly passed it 29-13, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1583686,
+   "measure_id": "AB 416",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 416, which would have stopped school districts, charter schools and public libraries from removing, hiding or defacing library materials because of their content. Only a court could order a book taken out of circulation, and only if it found the book obscene. The bill also protected library staff from being fired or disciplined for lawful work. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 416, which would have stopped school districts, charter schools and public libraries from removing, hiding or defacing library materials because of their content. Only a court could order a book taken out of circulation, and only if it found the book obscene. The bill also protected library staff from being fired or disciplined for lawful work. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1553750,
+   "measure_id": "AB 44",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 44, which would have made it an illegal restraint of trade to manipulate the price of an essential good or service, such as food, housing, fuel, medicine or utilities. Resort hotels and rideshare companies were exempt, and the new rule gave no one a private right to sue. The Assembly voted the first reprint, before the Senate added a requirement that the seller intend to mislead buyers. The Nevada Assembly passed it 24-18, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 44, which would have made it an illegal restraint of trade to manipulate the price of an essential good or service, such as food, housing, fuel, medicine or utilities. Resort hotels and rideshare companies were exempt, and the new rule gave no one a private right to sue. The Assembly voted the first reprint, before the Senate added a requirement that the seller intend to mislead buyers. The Nevada Assembly passed it 24-18, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1576924,
+   "measure_id": "AB 44",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 44, which would have made it an illegal restraint of trade to manipulate the price of an essential good or service, such as food, housing, fuel, medicine or utilities. The seller had to be committing a deceptive trade practice and to intend to mislead buyers or move the market. Resort hotels and rideshare companies were exempt, and the new rule gave no one a private right to sue. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 44, which would have made it an illegal restraint of trade to manipulate the price of an essential good or service, such as food, housing, fuel, medicine or utilities. The seller had to be committing a deceptive trade practice and to intend to mislead buyers or move the market. Resort hotels and rideshare companies were exempt, and the new rule gave no one a private right to sue. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "acknowledge_later_rolls": [
+    1576925
+   ]
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1552732,
+   "measure_id": "AB 445",
+   "vote_date": "2025-04-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 445, which would have given school library staff and public library staff immunity from criminal and civil liability for good faith acts of providing or helping with access to library materials. The bill did not say what counts as good faith, and set no other limit. The Nevada Assembly passed it 32-9, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 445, which would have given school library staff and public library staff immunity from criminal and civil liability for good faith acts of providing or helping with access to library materials. The bill did not say what counts as good faith, and set no other limit. The Nevada Assembly passed it 32-9, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1576634,
+   "measure_id": "AB 445",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 445, which would have given school library staff and public library staff immunity from criminal and civil liability for good faith acts of providing or helping with access to library materials. The bill did not say what counts as good faith, and set no other limit. The Nevada Senate passed it 14-7, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 445, which would have given school library staff and public library staff immunity from criminal and civil liability for good faith acts of providing or helping with access to library materials. The bill did not say what counts as good faith, and set no other limit. The Nevada Senate passed it 14-7, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1554734,
+   "measure_id": "AB 480",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 480, which would have written the disparate impact standard into Nevada's fair housing law. That means a housing practice could be found illegal because of the harm it causes a protected group, even when nobody meant to discriminate. A landlord could still defend the practice by proving it was necessary and that no less harmful alternative existed. The Nevada Assembly passed it 30-12, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 480, which would have written the disparate impact standard into Nevada's fair housing law. That means a housing practice could be found illegal because of the harm it causes a protected group, even when nobody meant to discriminate. A landlord could still defend the practice by proving it was necessary and that no less harmful alternative existed. The Nevada Assembly passed it 30-12, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1575651,
+   "measure_id": "AB 480",
+   "vote_date": "2025-05-21",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Assembly Bill 480, which would have written the disparate impact standard into Nevada's fair housing law. That means a housing practice could be found illegal because of the harm it causes a protected group, even when nobody meant to discriminate. A landlord could still defend the practice by proving it was necessary and that no less harmful alternative existed. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Assembly Bill 480, which would have written the disparate impact standard into Nevada's fair housing law. That means a housing practice could be found illegal because of the harm it causes a protected group, even when nobody meant to discriminate. A landlord could still defend the practice by proving it was necessary and that no less harmful alternative existed. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1576494,
+   "measure_id": "SB 171",
+   "vote_date": "2025-05-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 171, which would have stopped Nevada licensing boards from punishing anyone for providing medically necessary gender-affirming health care that is lawful in Nevada. It would also have barred state agencies from helping another state investigate that care, and barred the governor from handing a person over to another state for it unless the person was in that state when the alleged crime happened and then fled. Care for a minor was covered only with a parent's consent, unless Nevada law let the minor consent. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 171, which would have stopped Nevada licensing boards from punishing anyone for providing medically necessary gender-affirming health care that is lawful in Nevada. It would also have barred state agencies from helping another state investigate that care, and barred the governor from handing a person over to another state for it unless the person was in that state when the alleged crime happened and then fled. Care for a minor was covered only with a parent's consent, unless Nevada law let the minor consent. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1553489,
+   "measure_id": "SB 171",
+   "vote_date": "2025-04-22",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 171, which would have stopped Nevada licensing boards from punishing anyone for providing medically necessary gender-affirming health care that is lawful in Nevada. It would also have barred state agencies from helping another state investigate that care, and barred the governor from handing a person over to another state for it unless the person was in that state when the alleged crime happened and then fled. Care for a minor was covered only with a parent's consent, unless Nevada law let the minor consent. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 171, which would have stopped Nevada licensing boards from punishing anyone for providing medically necessary gender-affirming health care that is lawful in Nevada. It would also have barred state agencies from helping another state investigate that care, and barred the governor from handing a person over to another state for it unless the person was in that state when the alleged crime happened and then fled. Care for a minor was covered only with a parent's consent, unless Nevada law let the minor consent. The Nevada Senate passed it 13-8, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "house",
+   "session": "2144",
+   "roll": 1583891,
+   "measure_id": "SB 217",
+   "vote_date": "2025-06-02",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 217, which would have barred state and local governments from singling out assisted reproduction, such as in vitro fertilization, for rules that substantially burden it. It would also have required most large health plans to cover infertility treatment and fertility preservation, and said an embryo before implantation is not a person. Small employers, and insurers affiliated with a religious organization that objected, were exempt. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 217, which would have barred state and local governments from singling out assisted reproduction, such as in vitro fertilization, for rules that substantially burden it. It would also have required most large health plans to cover infertility treatment and fertility preservation, and said an embryo before implantation is not a person. Small employers, and insurers affiliated with a religious organization that objected, were exempt. The Nevada Assembly passed it 27-15, but the governor vetoed the bill, so it never became law."
+  },
+  {
+   "jurisdiction": "NV",
+   "chamber": "senate",
+   "session": "2144",
+   "roll": 1578514,
+   "measure_id": "SB 217",
+   "vote_date": "2025-05-26",
+   "review_status": "approved",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "yea_description": "Voted for Senate Bill 217, which would have barred state and local governments from singling out assisted reproduction, such as in vitro fertilization, for rules that substantially burden it. It would also have required most large health plans to cover infertility treatment and fertility preservation, and said an embryo before implantation is not a person. Small employers, and insurers affiliated with a religious organization that objected, were exempt. The Nevada Senate passed it 15-5, but the governor vetoed the bill, so it never became law.",
+   "nay_description": "Voted against Senate Bill 217, which would have barred state and local governments from singling out assisted reproduction, such as in vitro fertilization, for rules that substantially burden it. It would also have required most large health plans to cover infertility treatment and fertility preservation, and said an embryo before implantation is not a person. Small employers, and insurers affiliated with a religious organization that objected, were exempt. The Nevada Senate passed it 15-5, but the governor vetoed the bill, so it never became law."
+  }
+ ]
+}

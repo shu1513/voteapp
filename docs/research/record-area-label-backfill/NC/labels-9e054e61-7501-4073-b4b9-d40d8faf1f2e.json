@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "578142c9-c95c-4bbf-9c30-ff934abbf08f",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "02085ea4-a98b-4803-9fd6-5e781bf42a91",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "e178a2ab-f04e-48b3-861f-d09333a02706",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "665ff8b5-f14f-4cb5-9a82-1c307f403108",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

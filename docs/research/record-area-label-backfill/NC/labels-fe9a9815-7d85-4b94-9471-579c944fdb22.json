@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "e4a28594-e012-498f-8058-472e3d01b60c",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "e4a28594-e012-498f-8058-472e3d01b60c",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "3e45d432-3227-4c99-b785-1861f9bd13b8",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  }
+ ]
+}

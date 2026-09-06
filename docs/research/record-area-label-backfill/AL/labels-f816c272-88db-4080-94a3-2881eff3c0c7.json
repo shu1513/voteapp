@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "e80210c4-1274-4581-b591-066c6247c037",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "e80210c4-1274-4581-b591-066c6247c037",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  },
+  {
+   "record_id": "a29548f5-fc94-4fb6-8759-ff6a13f594a4",
+   "research_area_slug": "personal_income_tax_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "a29548f5-fc94-4fb6-8759-ff6a13f594a4",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  }
+ ]
+}

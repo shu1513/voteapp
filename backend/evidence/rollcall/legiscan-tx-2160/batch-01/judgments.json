@@ -323,13 +323,13 @@
       "measure_id": "SB 13",
       "vote_date": "2025-05-31",
       "review_status": "approved",
-      "yea_description": "Voted to accept the final House-Senate deal on Senate Bill 13. It gives elected school boards final approval of library books after at least 30 days of public review. Parents may block their child from certain books, and a challenged book stays unavailable to students until the district decides. The bill became law after the Texas House approved it 81-48.",
-      "nay_description": "Voted against the final House-Senate deal on Senate Bill 13. It gives elected school boards final approval of library books after at least 30 days of public review. Parents may block their child from certain books, and a challenged book stays unavailable to students until the district decides. The bill became law after the Texas House approved it 81-48.",
+      "yea_description": "Voted to approve the final, negotiated version of Senate Bill 13, a school library law. Elected school boards must vote in an open meeting on every book a district adds to its libraries. Proposed titles must be open for public review for at least 30 days first. A parent can give the district a list of books their own child may not check out. When anyone challenges a book, the district must block students from it until it acts. The Texas House approved the report 81-48 and the law took effect September 1, 2025.",
+      "nay_description": "Voted against the final, negotiated version of Senate Bill 13, a school library law. Elected school boards must vote in an open meeting on every book a district adds to its libraries. Proposed titles must be open for public review for at least 30 days first. A parent can give the district a list of books their own child may not check out. When anyone challenges a book, the district must block students from it until it acts. The Texas House approved the report 81-48 and the law took effect September 1, 2025.",
       "labels": [
         {
           "slug": "civil_rights",
           "yea": "against",
-          "nay": null
+          "nay": "for"
         }
       ]
     },
@@ -401,11 +401,13 @@
       "measure_id": "SB 17",
       "vote_date": "2025-05-29",
       "review_status": "approved",
-      "yea_description": "Voted to accept the final House-Senate deal on Senate Bill 17. It bars governments, companies, and some people tied to countries named as security threats from buying Texas property. United States citizens and green-card holders are exempt; a covered person who buys on purpose can face the lowest felony level and a forced sale. The bill became law after the Texas House approved it 85-57.",
-      "nay_description": "Voted against the final House-Senate deal on Senate Bill 17. It bars governments, companies, and some people tied to countries named as security threats from buying Texas property. United States citizens and green-card holders are exempt; a covered person who buys on purpose can face the lowest felony level and a forced sale. The bill became law after the Texas House approved it 85-57.",
+      "yea_description": "Voted yes on the final version of Senate Bill 17. The Texas House adopted the House-Senate compromise 85-57. The law bars governments, companies, and certain people tied to countries named as security threats from buying Texas property. U.S. citizens and green-card holders are exempt. A covered person who knowingly buys anyway commits a state jail felony, the lowest felony level in Texas. The attorney general may sue, and a court can have the property sold. The governor signed it and it took effect September 1, 2025.",
+      "nay_description": "Voted no on the final version of Senate Bill 17. The Texas House adopted the House-Senate compromise 85-57 anyway. The law bars governments, companies, and certain people tied to countries named as security threats from buying Texas property. U.S. citizens and green-card holders are exempt. A covered person who knowingly buys anyway commits a state jail felony, the lowest felony level in Texas. The attorney general may sue, and a court can have the property sold. The governor signed it and it took effect September 1, 2025.",
       "labels": [
         {
-          "slug": "general"
+          "slug": "general",
+          "yea": null,
+          "nay": null
         }
       ]
     },
@@ -436,11 +438,13 @@
       "measure_id": "SB 37",
       "vote_date": "2025-05-31",
       "review_status": "approved",
-      "yea_description": "Voted to accept the final House-Senate deal on Senate Bill 37. Public college boards must review basic required courses every five years and may reverse course changes or some senior hires. Only boards may create faculty senates, which can only give advice; a governor-chosen official handles college complaints. The bill became law after the Texas House approved it 83-47.",
-      "nay_description": "Voted against the final House-Senate deal on Senate Bill 37. Public college boards must review basic required courses every five years and may reverse course changes or some senior hires. Only boards may create faculty senates, which can only give advice; a governor-chosen official handles college complaints. The bill became law after the Texas House approved it 83-47.",
+      "yea_description": "Voted yes, 83-47, to adopt the final House-Senate compromise on Senate Bill 37, the last House vote on the bill. The law requires each public university's governing board to review the required core courses at least every five years. Boards may overturn campus decisions that change those courses. Boards must approve or deny provost hires and may overturn the hiring of a vice president or dean. Only a board may create a faculty senate, and that senate can only give advice. The law also creates a state higher education ombudsman, a complaint officer named by the governor. The governor signed it and it took effect September 1, 2025.",
+      "nay_description": "Voted no, 83-47, on the final House-Senate compromise version of Senate Bill 37, which the House adopted anyway. The law gives university governing boards more control over campus decisions. Boards must review the required core courses at least every five years and may reverse course changes. Boards also rule on hires of provosts, vice presidents, and deans. Faculty senates become advice-only groups that only the board may create. A governor-named ombudsman takes complaints about schools. The governor signed the bill, and it took effect September 1, 2025.",
       "labels": [
         {
-          "slug": "general"
+          "slug": "general",
+          "yea": null,
+          "nay": null
         }
       ]
     },

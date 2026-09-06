@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "c096719f-757c-4fac-8a6c-8fd6175fad49",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "01efae3a-7bb0-455d-b012-824f5c6d4814",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "ec9302ce-475a-4762-9f75-fef28f47cc60",
+   "research_area_slug": "immigration",
+   "stance": "against"
+  },
+  {
+   "record_id": "ec9302ce-475a-4762-9f75-fef28f47cc60",
+   "research_area_slug": "national_defense",
+   "stance": "for"
+  },
+  {
+   "record_id": "d7ff2fbf-46b1-4a36-8ae4-322fa36bbad5",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  }
+ ]
+}

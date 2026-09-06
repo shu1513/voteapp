@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "a79e2aab-e49c-43cd-a228-2667f1af290c",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "a79e2aab-e49c-43cd-a228-2667f1af290c",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "bd0f323d-3cfd-4a8e-a411-cfad18cee201",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "f1a2e7e7-bdac-46a5-a367-0e1d69747327",
+   "research_area_slug": "public_infrastructure",
+   "stance": "against"
+  }
+ ]
+}

@@ -1,0 +1,479 @@
+{"proposals": [
+ {
+  "candidate_id": "40fd32b4-4614-4684-a342-1f25140496fc",
+  "labels": [
+   {"record_id": "fe83d501-cb9b-41d7-a28f-5dd3efcdcabe", "research_area_slug": "public_safety_and_crime_control", "stance": "for", "found": "House Enrolled Act 1165 raises animal cruelty to a Level 6 felony without a prior offense, makes killing a law enforcement animal a Level 5 felony, and shields people who break into a car to rescue an animal (Indiana Public Media and News & Tribune coverage, March 2026)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "42575f69-0bc3-4ac8-969e-4938e1cb04ff",
+  "labels": [
+   {"record_id": "60c7c278-93c7-49d3-b94f-5d3c461bd95a", "research_area_slug": "public_infrastructure", "stance": "for", "found": "HB 97 revises the road facilities small counties must list in the capital improvements element; the Florida House bill page carries Rep. Grow's own explanation that it strengthens transportation concurrency requirements. It died in committee."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "42aea154-57f1-4ac4-9a81-e76ab0f9ca58",
+  "labels": [
+   {"record_id": "089f0bd5-9591-4152-b671-ba7fc4945332", "research_area_slug": "public_education_quality", "stance": "for", "found": "The June 2025 House Republican K-12 budget he voted against cut about $1.4 billion from schools and dropped funding for universal school meals, at-risk programming and after-school programs (Chalkbeat, June 11 2025; Michigan Education Association)."},
+   {"record_id": "089f0bd5-9591-4152-b671-ba7fc4945332", "research_area_slug": "government_spending_reduction", "stance": "against", "found": "Same vote: he opposed a budget that reduced school aid spending, so his vote worked against spending reduction."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "42ce09f7-1ca7-4ece-a97f-244d01399940",
+  "labels": [],
+  "skipped": [
+   {"record_id": "56117325-9e8d-4a82-9986-681c6f8b3f6a", "reason": "The plan cut 648 positions for about $30.8 million in net savings, but Everett's stated objection was that the vote lacked answers, a process complaint rather than a position on the service or the spending.", "found": "Spectrum News 1 (Feb 14 and Feb 16, 2026) reports the 5-2 vote eliminated 648 positions, created 254 and saved $30.8 million net, and that Everett voted no because the board did not have answers."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "44208755-3bd3-4685-b1e9-87fff33ef3ab",
+  "labels": [
+   {"record_id": "c450dbea-4481-4fe4-9d29-2c145165e69f", "research_area_slug": "personal_income_tax_reduction", "stance": "for", "found": "Act 802 treats a qualifying rollover from an Arkansas 529 plan to a Roth IRA as a tax-free distribution for state income tax purposes, lowering what savers owe (BillTrack50 summary and the DFA fiscal impact note)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "442732ad-df7a-4eb6-a21a-bffd46962752",
+  "labels": [],
+  "skipped": [
+   {"record_id": "e939e1b5-ca43-4a72-a208-c69576ce63a1", "reason": "The bill only orders a legislative study. A study has no direction a voter can weigh.", "found": "HB 1563 directs an interim study of tribal land taxation; the record itself and the North Dakota sponsor page confirm it changes no tax rule."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "44816671-604a-4196-a867-5ffbd24a6aff",
+  "labels": [
+   {"record_id": "3a2e182e-4c52-4b1d-9ba5-08202e05aded", "research_area_slug": "public_education_quality", "stance": "for", "found": "The co-sponsorship memo for HB 2594 says Act 47 of 2025 blocked some students from enrolling in cyber charter schools without a judge's approval, and the bill would restore the parents' right to pick any public school option."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "452d2412-3077-4add-88e4-3d89a49ab2e1",
+  "labels": [
+   {"record_id": "913b387a-668b-4b6b-bb6f-82408d6071b3", "research_area_slug": "public_infrastructure", "stance": "for", "found": "LD 1731 would have required the Maine State Ferry Service to consult its advisory board on budget, strategic planning and major operating decisions after a summer of service failures; Gov. Mills vetoed it and the Senate override failed 16-16 (Maine Morning Star, June 2025)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "48b35ce1-84aa-48c3-bbee-3965c893e69c",
+  "labels": [
+   {"record_id": "86aeb7a9-c14d-4d52-b465-9c1db5ca81a5", "research_area_slug": "social_programs_and_welfare", "stance": "for", "found": "Chapter 595 makes the state education department find and help scholarship applicants who qualify for pre-K, Head Start or Early Head Start, caps copays for certain families, and made families experiencing homelessness eligible (LegiScan summary and the Maryland Office of Early Childhood program page)."}
+  ],
+  "skipped": [
+   {"record_id": "461122fc-191e-4daf-a7bd-785551f8b799", "reason": "The bill's actual effect conflicts with the record's wording and is housekeeping either way, so I could not give it an honest direction.", "found": "The Maryland General Assembly page and LegiScan both say HB0094 (2024, Chapter 888) REPEALED the Division of Correction's authority to put inmates to work in agriculture at the Queen Anne's County camp; the record text says it authorized such work. Retiring an unused camp authority gives a voter no direction."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "48e2ba01-c1e6-4688-8069-03e572f7d4ab",
+  "labels": [],
+  "skipped": [
+   {"record_id": "d405dd85-2d9a-4d64-b849-f113a9b6334f", "reason": "I could not determine the direction.", "found": "The Georgia legislature page for HB 1386 would not load for automated fetching and LegiScan returned 403; no news coverage or summary of the bill exists in search results, so I could not learn who the change helps or hurts."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "48f87bc1-726a-4354-8b21-6278d0973d92",
+  "labels": [],
+  "skipped": [
+   {"record_id": "511cb414-c780-4e4e-b795-28450def7656", "reason": "The change is a procedural rewrite of a county collection process, not a policy move a voter can weigh under an allowed area.", "found": "SB 26-144 replaces the 2024 pre-deed auction with one modeled on public trustee foreclosures, so the right to a treasurer's deed is sold at online auction instead of handed to the lien holder, and it restates treasurer fee amounts (Colorado General Assembly bill page and the SB 26-144 fiscal note)."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "495de7ae-507d-4c6d-8bfc-0dd67c7bffff",
+  "labels": [],
+  "skipped": [
+   {"record_id": "29db045c-6bd4-43b2-aced-e8e7a17d1885", "reason": "A narrow permission with no direction a voter can weigh.", "found": "Alabama Reflector's 2026 session roundups describe the measure as letting the transit authority in counties over 600,000 people join business organizations tied to transit operations and land acquisition. It only adds a power; it does not expand or restrict transit service."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "49da75b0-5d67-4701-9ec0-6239aacc1574",
+  "labels": [],
+  "skipped": [
+   {"record_id": "8df77f7d-080d-4b0d-8d01-16c718b4c859", "reason": "An administrative reshuffle of who receives a report; no clear direction.", "found": "Chapter 225 moves insurer fire-loss reports from the State Patrol to the Insurance Commissioner, sets a 90-day deadline after a claim closes, and adds confidentiality and civil immunity (Senate and House bill reports, Office of the Insurance Commissioner rulemaking page)."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4b000f55-490d-4aab-bfa4-928afc811f57",
+  "labels": [],
+  "skipped": [
+   {"record_id": "4c8d1f65-34bb-47c4-a934-cd29b4a3419b", "reason": "A notice requirement only; procedural, no stance.", "found": "Committee testimony on HB 1508 says the point is to let state legislators know about coming development on state highways so they can tell constituents. It changes no permit standard."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4b137258-23d0-45fb-a778-e21309f4e402",
+  "labels": [
+   {"record_id": "23ec946e-b8f2-49a5-b4b9-b66594234354", "research_area_slug": "civil_rights", "stance": "against", "found": "SB 1062 would have broadened Arizona's religious-freedom defense so businesses could invoke it to refuse service; it drew national opposition as a licence to turn away gay customers and Gov. Brewer vetoed it (Arizona Legislature third-reading record and the contemporaneous 2014 coverage)."}
+  ],
+  "skipped": [
+   {"record_id": "99943f7f-3ecf-445c-86ac-0d7859e0ad35", "reason": "A no vote whose direction on health coverage is genuinely ambiguous.", "found": "CNN's May 2017 breakdown and Biggs's own statement say he voted no because the AHCA left the ACA framework in place and he wanted a clean repeal, so the vote neither defends nor attacks affordable coverage on its face."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4b1b966d-4ef3-4964-a4c1-97b138a667b6",
+  "labels": [],
+  "skipped": [
+   {"record_id": "11ee643a-8183-4027-8ae7-710a3ed836ad", "reason": "A feasibility study and pilot for a prison work program; the benefit to voters is indirect and the bill never took effect.", "found": "HB 2579 directed Corrections to study and plan a wild horse training and farrier program at Coyote Ridge to give inmates job skills; Inslee vetoed it as one of 147 COVID budget vetoes in April 2020 (Lewiston Tribune; Rep. Dye's own release)."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4be2bad5-b47b-460a-9383-b32eb6a377b4",
+  "labels": [
+   {"record_id": "66a89621-b807-4b63-b83d-2644c6bf6cd4", "research_area_slug": "reduce_wealth_gap", "stance": "for", "found": "Public Act 104-0478 drops the required school hours for barber, cosmetology, esthetics and nail licences and lets people qualify through a paid apprenticeship instead, so workers can train without paying for school (Institute for Justice release; Illinois Policy)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4ccdcc4f-e9a9-4319-83a3-7975f768642d",
+  "labels": [
+   {"record_id": "555f349c-31af-41e7-aa09-248573a62f46", "research_area_slug": "housing_affordability", "stance": "for", "found": "I read the text of Act 101: it lets any ISO/IEC 17011-accredited body certify modular buildings, not just one named service. Its own emergency clause says the old limit restricted competition and that the change will decrease costs to consumers."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4d606c48-ca4d-4a2c-bdf5-6773df9bd01f",
+  "labels": [
+   {"record_id": "a29188f1-5f7c-4926-b8eb-20cf17774ee5", "research_area_slug": "public_safety_and_crime_control", "stance": "against", "found": "HB 110 doubled the intrastate air-mile radius in Alabama Code 32-9A-6 from 75 to 150 miles, so more truck drivers fall under the looser hours-of-service exemption (Justia code note and J.J. Keller's Alabama hours-of-service summary)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4d705521-63b8-45ea-a07f-8b809c07073c",
+  "labels": [],
+  "skipped": [
+   {"record_id": "932275db-c052-4561-a17b-1bfb7eaccacb", "reason": "A no vote on a property-tax millage cap; the record does not say whether he wanted a higher or lower rate, and property tax is not personal income tax.", "found": "The Deltona agenda item is Resolution 2025-84 setting the maximum millage rate for FY 2025-26, adopted 4-3. Nothing in the record states his preferred rate."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4d8afc63-aa0d-48f5-b67d-7477888238b5",
+  "labels": [
+   {"record_id": "6230a8c2-2472-40a7-88bc-085b50cb35f7", "research_area_slug": "civil_rights", "stance": "for", "found": "Public Act 42 of 2024 repealed the three-year ban on getting a licence after repeat driving violations and removed the citizenship requirement, making more than 3,000 residents eligible right away (Michigan Secretary of State statement; Michigan Legislature bill page)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4e5496ce-4009-40e0-8a6f-e79865e6f584",
+  "labels": [
+   {"record_id": "c38c99f8-570d-4cd6-868f-b8b38c4f6fa3", "research_area_slug": "anti_corruption", "stance": "for", "found": "SF 2331 requires a statewide searchable public-notice website with free email alerts and makes newspapers post public notices online without a paywall, so government notices are easier for the public to see (Iowa Legislature bill text; Iowa Capital Dispatch)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4f6d9397-02cc-4ce8-8179-c2df02a2ba76",
+  "labels": [],
+  "skipped": [
+   {"record_id": "47e1c64c-282b-41fd-9c0b-5e4d5a629336", "reason": "The two concrete positions do not land in an allowed area: Amendment 3 is a property-tax measure, not personal income tax, and support for vouchers on its own does not show a direct effect on public school quality.", "found": "The August 2026 WBBH interview is a statement of campaign positions, not an action on a bill, and gives no detail on what either position would change."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "4fa6453c-1ea4-450b-a09f-7dcd2248abec",
+  "labels": [],
+  "skipped": [
+   {"record_id": "3063f912-17e0-4782-937c-be477fd5c20c", "reason": "A no vote on a compromise bill, with no statement of what she wanted instead.", "found": "SB 1432 (2023) tightened assured-water-supply proof for subdivisions and small housing permits in active management areas and set up standpipe district agreements that expired in 2026 (Arizona Department of Water Resources SB 1432 page and the Senate fact sheet). It drew support and criticism from both directions."},
+   {"record_id": "756f017d-bc0b-4c1b-a4ac-7c795e62a18d", "reason": "A no vote with no stated alternative, on a bill whose aim is victim protection rather than user age-gating.", "found": "The 2026 bill is HB 2133: it makes commercial sites that publish sexual material verify that everyone shown is 18 and consented, and take steps against non-consensual uploads. It passed the Senate 16-12 on June 9, 2026 and the governor vetoed it (LegiScan; Arizona Senate fact sheet)."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "509dbe31-d479-4b29-9509-0e7c2fb4dffb",
+  "labels": [
+   {"record_id": "9b6f8b7c-53dd-448f-93aa-fac20a70f334", "research_area_slug": "anti_corruption", "stance": "for", "found": "I read the HB 2669 text: it makes ballot-measure committees disclose their four largest funding sources, flags out-of-state contributors, and makes independent-expenditure committees name their three largest donors and notify the targeted candidate within 24 hours. (It also tightened voter ID, but no election area is allowed for this office.)"},
+   {"record_id": "a2778048-c70e-4804-8ee4-fe43c01954fe", "research_area_slug": "anti_corruption", "stance": "against", "found": "I read SCR 1017: it grows the Independent Redistricting Commission from five to eight members and has legislative leaders pick six of the eight, putting politicians in charge of a commission voters set up to be independent."}
+  ],
+  "skipped": [
+   {"record_id": "7a4c2a99-a7c6-4ecb-b5d1-a477c5631c7b", "reason": "Housekeeping with no direction.", "found": "I read HB 2124: it renames the appointing organisation for constable board seats and changes when training certificates must be sent in. No power or standard changes."},
+   {"record_id": "9e735bcc-54a3-41af-a4c6-c02b198ef241", "reason": "Procedural allocation rule, no stance.", "found": "I read SB 1377: it lets one candidate combine fundraising for old campaign debt with a current campaign and splits contributions evenly between the two unless the committees say otherwise. Contribution limits are unchanged."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "511f4731-3ba1-41f9-9f89-077b7977175f",
+  "labels": [
+   {"record_id": "0a6250f9-f912-4bdd-b681-fdde284c741a", "research_area_slug": "election_integrity", "stance": "for", "found": "MichiganVotes records that Carter's March 9, 2022 amendment would have tied HB 5268 to HB 5515, which required the state to prepay postage on absentee ballot return envelopes; the amendment failed on a voice vote."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "519d7e73-da03-4bb8-b997-e25ebcf7b658",
+  "labels": [],
+  "skipped": [
+   {"record_id": "537829aa-6190-4623-ac06-8b56540d7757", "reason": "No allowed research area matches.", "found": "Act 589 extended Arkansas's name, image and likeness law to high school athletes once they are accepted to or have signed with an Arkansas college (Arkansas Advocate and Arkansas Democrat-Gazette, March 2023). It expands athletes' earning rights, which none of the allowed areas covers."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "51acdec1-434b-49c1-b2fc-0173323fe8c1",
+  "labels": [],
+  "skipped": [
+   {"record_id": "dfdb8be3-2bf9-4992-9e87-7cfd962e1c19", "reason": "A no vote on a bill that both created a drug benefit and barred Medicare from negotiating prices; the record does not say what he wanted instead.", "found": "The November 22, 2003 House vote created Medicare Part D. Democratic opponents objected to the negotiation ban and insurer subsidies rather than to a drug benefit, so the vote's effect on affordability is not one-directional."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "52116dfa-8bf3-449f-a6e3-ac1006ae3ea4",
+  "labels": [],
+  "skipped": [
+   {"record_id": "71073e79-2b29-48ab-a9e5-8da81da25555", "reason": "I could not determine the direction.", "found": "Nevada's 2011 archives only confirm AB 169 existed and died at deadline; no summary, text or coverage of what it changed about charter school contracting is available online."},
+   {"record_id": "f2995b57-befc-4ff9-a66c-b19d11399fcb", "reason": "I could not determine the direction.", "found": "Searches surfaced only a passing note that a 2015 Nevada SB 92 dealt with ending last-in-first-out teacher layoffs, with no reliable bill summary and nothing on the transfer or evaluation provisions, so I could not say who it helps or hurts."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "52bbcfdb-9e7d-42a4-9638-a3222db32be1",
+  "labels": [
+   {"record_id": "ec3d14fa-fc34-4d0e-9423-21b2bd357644", "research_area_slug": "corporate_accountability", "stance": "against", "found": "HB 4002 rewrote the voter-passed Earned Sick Time Act before it took effect: small employers owe 40 hours instead of 72, new hires can be made to wait 120 days, and employer obligations and enforcement were loosened (Michigan Municipal League; Sommers Schwartz; Lansing Chamber FAQ)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "530dba1f-4eec-4309-8af4-a0fd7b787193",
+  "labels": [
+   {"record_id": "74b63686-dc48-4f77-8c8c-62df6c365a1a", "research_area_slug": "government_spending_reduction", "stance": "for", "found": "WSOC and Burke County Public Schools say moving Hallyburton Academy into a secure wing of Draughn High saves the district about $400,000 a year, while the school keeps its name, principal, buses and separate graduation."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "539140c6-7881-4a89-9074-ad48cfd802a9",
+  "labels": [],
+  "skipped": [
+   {"record_id": "84a4fe44-68de-4e71-9dd1-5a3176ba9036", "reason": "A renaming, which the research rules say stays skipped.", "found": "TrackBill's text of SB 978 and its companion HB 157 shows the act only changes every reference in Tennessee code from 'adult day care' to 'adult day services'. No standard, benefit or penalty changes."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "54155825-c27a-4b9a-8d44-590bddb03cba",
+  "labels": [],
+  "skipped": [
+   {"record_id": "d269bc5f-edb9-4b91-877e-ac9bfa737276", "reason": "A deadline change only; too small to claim a position on school quality.", "found": "Act 563 moved the school-choice transfer request deadline from May 1 to June 1, with the receiving district answering by July 1 (Arkansas DESE school choice FAQ and legislative guide)."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "57520014-5562-4e6b-bd64-242bd165774d",
+  "labels": [],
+  "skipped": [
+   {"record_id": "906c7d92-9107-4624-a5d2-59a904258745", "reason": "I could not determine the direction.", "found": "HB 2778 concerns bail for people charged with breaking a condition of release from the Texas Department of Criminal Justice. It was filed and referred to Criminal Jurisprudence and went no further, and no analysis exists saying whether it loosens or tightens release."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "57ff149d-358c-4fc6-8819-3e37777a8033",
+  "labels": [
+   {"record_id": "71e9e627-49a1-4b42-b400-d173546d27cf", "research_area_slug": "social_programs_and_welfare", "stance": "for", "found": "Chapter 82 adds the Social Security Administration's disability determination letter to the proof accepted for the disability property-tax exemption, so people already found disabled by SSA no longer need separate certification (Arizona Senate fact sheet for HB 2120)."},
+   {"record_id": "9426fa7a-ce86-4d7e-aede-64a600c612fa", "research_area_slug": "civil_rights", "stance": "for", "found": "Chapter 195 bars courts from making defendants repay the county for public defender services and blocks fees for juries in criminal cases, appeal transcripts and appellate filing (LegiScan summary; National Coalition for a Civil Right to Counsel bill page)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "5843ac62-f68b-4fc7-92d5-9111c4702042",
+  "labels": [],
+  "skipped": [
+   {"record_id": "ab2049e6-fe2f-44dc-b557-5bfcfb40c3a0", "reason": "I could not determine the direction.", "found": "Searches confirm HB 1253 became Act 498 and created the State Government Employee Retirement Protection Act, but no summary, news story or accessible text explains what it requires; LegiScan blocked fetching. An ALEC model law of the same name exists, but I could not verify Arkansas copied it."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "58d0d9bb-3938-4be3-8f78-2fa7bed338a2",
+  "labels": [
+   {"record_id": "c85d8125-2cc5-4dc6-9287-2f0adbcfd9b5", "research_area_slug": "election_integrity", "stance": "against", "found": "Act 236 raised the number of counties where initiative and referendum signatures must be gathered from 15 to 50, making it much harder to qualify a citizen measure for the ballot (Arkansas House session summary; Ballotpedia's Arkansas initiative laws page)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "58da696c-0edd-40e6-8ce4-ccac25f5c22c",
+  "labels": [
+   {"record_id": "24c25a7f-db27-407c-ac05-08029e4330d4", "research_area_slug": "corporate_accountability", "stance": "for", "found": "Act 974 replaces the general liability requirement for licensed home inspectors with professional liability or errors-and-omissions cover of at least $100,000, so homebuyers can recover for a bad inspection (Insurance Business; American Society of Home Inspectors)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "5a37b1a2-8a26-4e7f-a67f-5f5b617f6498",
+  "labels": [
+   {"record_id": "82c01df3-6a87-4e14-ac1d-472b08da0ce0", "research_area_slug": "healthcare_affordability", "stance": "against", "found": "The November 2025 resolution asks the legislature to exempt Williamson County from the state rule that proceeds from selling a public hospital must go to health-related obligations, so the money could fund non-health county projects (Williamson Herald; Williamson Scene; follow-on Senate Bill 2194)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "5a64fecb-f8d4-40b3-a0c2-a99e7b4dfbc6",
+  "labels": [],
+  "skipped": [
+   {"record_id": "2d75a942-700e-4047-b96d-2bf4da349df9", "reason": "I could not determine the direction.", "found": "Davis School District policy 6F-105 is not published in any searchable source and the board packet link gives no text, so I could not tell whether the policy makes the district more or less willing to give up tax increment revenue."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "5b088da8-a634-4a21-9018-c5d7941e1034",
+  "labels": [
+   {"record_id": "0cd0e6a4-bda9-43a3-af32-b1011e7e7636", "research_area_slug": "civil_rights", "stance": "for", "found": "LD 785 as enacted exempts Wabanaki members' tribal wages from Maine income tax wherever they live, exempts new manufactured homes on tribal land from sales tax, and gives the Mi'kmaq Nation a seat in the State House (Maine Morning Star, April 2026; Central Maine; Wabanaki Alliance FAQ)."},
+   {"record_id": "0cd0e6a4-bda9-43a3-af32-b1011e7e7636", "research_area_slug": "personal_income_tax_reduction", "stance": "for", "found": "Same law: it creates a Maine individual income tax subtraction for compensation Wabanaki members earn working for their tribe."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "5b443bf6-3e66-4151-a1e7-db4df9a45aa2",
+  "labels": [],
+  "skipped": [
+   {"record_id": "50f66611-6c4e-4b45-8437-4d961a764331", "reason": "No allowed research area matches a local annexation repeal.", "found": "The 2026 bills repeal the 2025 law that let wet municipalities annex at least 250 acres of dry-county land for a resort community development district, which had brought part of Cullman County into the City of Cullman for a proposed $275 million Smith Lake resort (Alabama Reflector, January 2026; Cullman Tribune)."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "5b618bc9-f44d-4465-8c10-84dd680b1bb9",
+  "labels": [],
+  "skipped": [
+   {"record_id": "6e439e5b-b8f5-4605-82f3-12801edd3061", "reason": "The change is narrow and I could not confirm it from a primary source.", "found": "The bill amends the workers' compensation rule on when firefighters are treated as on duty while commuting, apparently narrowing 'firefighter' to paid city, town, county and fire district staff. The only description I could find was an automated bill summary, not the Legislature's own fact sheet."},
+   {"record_id": "19916a21-9740-4d47-8ba9-8bb99799144f", "reason": "The bill moves in two directions at once.", "found": "Chapter 191 ends late-filing penalties for income-tax returns where no tax is owed but raises the minimum late penalties for sales and use tax filings (Law360 Tax Authority; Senate engrossed text of HB 2016). Sales tax is outside the allowed personal income tax area."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "5c01fa77-c294-45e3-bfd6-21fe638e0f84",
+  "labels": [
+   {"record_id": "246f56f9-4cb8-493b-93eb-1e4db8a74c66", "research_area_slug": "public_infrastructure", "stance": "for", "found": "ESHB 1736 would have had the Department of Licensing gather odometer readings at registration to prepare a per-mile road charge to replace the fuel tax for road funding; Inslee vetoed it on May 15, 2023 saying the Legislature should weigh other funding options first (Seattle Times; Planetizen)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "5c09157d-87f5-456a-b2b4-044f800434b1",
+  "labels": [
+   {"record_id": "9623679f-c3bd-4687-b784-44613c9eca7a", "research_area_slug": "corporate_accountability", "stance": "for", "found": "Public Act 104-0023 puts government employers on the same workers' compensation deadlines as private ones, adds sewer camera inspection work to prevailing wage coverage, and fines contractors up to $1,000 then $2,000 for failing to file certified payroll (National Law Review; Perkins Coie 2025 Illinois roundup)."},
+   {"record_id": "d9771939-272c-497d-9d4c-54268dd99078", "research_area_slug": "corporate_accountability", "stance": "for", "found": "Public Act 104-0145 brings online auctions and estate sale services under the Auction License Act, so businesses running them need a state licence, while people selling their own property, nonprofits and court-appointed fiduciaries are exempt (LegiScan text; Illinois General Assembly public act page)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "5c1358fb-a57f-41fc-bbc6-971067dccc73",
+  "labels": [],
+  "skipped": [
+   {"record_id": "0b49df59-ef61-4183-82c0-8c873d35e3dd", "reason": "I could not determine the direction.", "found": "The North Dakota archive returns SB 2152 from 2023 and 2025 on unrelated subjects, and no text, summary or coverage of the 2015 SB 2152 on suspending school employees is available online, so I could not tell whether it made suspension easier or harder."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "5d46c96c-6e5c-4271-a2a9-6292ad0aeed7",
+  "labels": [
+   {"record_id": "5754e3ed-b6bb-400a-9c6c-83759e36ce61", "research_area_slug": "healthcare_affordability", "stance": "for", "found": "Act 303 tightens what insurers' private review agents must do before questioning medical necessity, requiring real efforts to reach the treating provider and a prompt clinical-peer discussion, which makes denials harder (Georgia Code Title 33 Chapter 46 as amended; 2025 session summaries)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "5d47320e-83ce-45ed-ae44-e3dc7ba472fd",
+  "labels": [
+   {"record_id": "024c4d0e-2b9c-410e-abc6-a06f42caeb87", "research_area_slug": "corporate_accountability", "stance": "for", "found": "Chapter 167 sets civil penalties up to $16,035 for child labor violations and up to $72,876 for willfully or repeatedly putting a minor in hazardous work, and it builds a state backstop for private-sector organizing rights if federal protection lapses (Ogletree and National Law Review summaries; Maryland bill page)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "5e60096b-7759-4266-84cc-d4a83b98c6ca",
+  "labels": [
+   {"record_id": "82c2fedb-3a04-4899-b822-f2859cf07946", "research_area_slug": "public_education_quality", "stance": "for", "found": "SB 26-145 makes a district ask its charter schools for their building needs before putting a capital construction question on the ballot, say whether it will include them, and give a charter representative a seat on the long-range planning committee (Chalkbeat Colorado; CPR; Colorado General Assembly bill page)."}
+  ],
+  "skipped": [
+   {"record_id": "52a5dedf-e620-4d0a-b340-a9eb3568f928", "reason": "A sunset continuation plus licence housekeeping; no direction.", "found": "HB 26-1307 keeps the Colorado Medical Board alive to 2035 and, from 2027, lets it grant an administrative licence to physicians doing non-treating work, following the state's 2025 sunset review (Colorado Division of Professions and Occupations legislative update)."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "60eb147f-d2ae-425b-8d09-7c0823152c0f",
+  "labels": [
+   {"record_id": "7a8c4a5d-dc41-4db6-be3c-4ceac226d0de", "research_area_slug": "healthcare_affordability", "stance": "for", "found": "HB 1529 raised the Medicaid cap for home health aides for medically fragile children from 8 to 12 hours a day and up to 40 hours a week, and asked federal permission to leave family caregivers' pay out of Medicaid eligibility (Florida House staff analysis; Home Care Association of Florida; Florida Politics)."},
+   {"record_id": "7a8c4a5d-dc41-4db6-be3c-4ceac226d0de", "research_area_slug": "government_spending_reduction", "stance": "against", "found": "Same bill: raising the Medicaid reimbursement cap increases state program spending."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "6305a620-eb60-446e-9237-5b2c7cf3c368",
+  "labels": [
+   {"record_id": "9b273a21-d81e-4d33-83f0-a454e1ab5583", "research_area_slug": "environment_and_public_health", "stance": "for", "found": "HB 344 establishes an opioid litigation settlement fund so Alaska's settlement money is held and directed to treatment, recovery, remediation and education (Alaska Legislature bill detail for HB 344; state opioid settlement trackers)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "64408078-73fc-435b-a619-57b73d97223e",
+  "labels": [],
+  "skipped": [
+   {"record_id": "29ca6676-16cb-46bf-85fc-5113bf6c6a8d", "reason": "No allowed area covers oil and gas property tax, and personal income tax reduction may not be used for business or production taxes.", "found": "HB 153 is titled an act relating to oil and gas exploration, production and pipeline transportation property taxes; it stalled in House Community and Regional Affairs (Alaska Legislature bill history)."},
+   {"record_id": "d3b31dfa-adc4-4911-aeb0-9cc5a3e8fea0", "reason": "I could not determine the direction.", "found": "HB 348 is titled 'Minimum Veto Amount' and sets a floor for the governor's line-item veto while touching the appropriation limit and statutory budget reserve, but no source says whether the spending limit was tightened or loosened, and the bill died in House Judiciary."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "65510527-10bd-4839-99d2-df2be105b647",
+  "labels": [
+   {"record_id": "6955df64-d74e-45ad-b86c-884e8bf729e6", "research_area_slug": "environment_and_public_health", "stance": "against", "found": "HB 656 reclassifies coal mine expansions under 320 acres as minor amendments, so they get limited DEQ review and no public notice or comment; it was written to help the Rosebud strip mine reach new coal (Flathead Beacon; Daily Montanan; Sierra Club, which notes federal regulators later rejected part of it)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "65fcaa25-c534-4e3f-8d39-67d34a5c7b4a",
+  "labels": [],
+  "skipped": [
+   {"record_id": "3efb0ac8-a037-4f65-8178-8821a1e60f10", "reason": "The direction is genuinely mixed and no allowed area fits cleanly.", "found": "HB 788 creates the Textured Hair Licensing Act, licensing 'cirrologists' after a 600-hour school program, and repeals the hair braiding licence entirely (LegiScan text). It recognises a new speciality but replaces a lighter licence with a heavier one."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "673f2686-d1b6-4c43-9916-cf9c11b7173a",
+  "labels": [
+   {"record_id": "59cf075a-4367-41e0-9f8b-e804e36da912", "research_area_slug": "government_efficiency", "stance": "for", "found": "HB 500 replaces one constable per each of Mobile County's 80 voting precincts with three constables for each of its nine House districts, cutting the county from 80 elected constables to 27 starting in 2029 (Lagniappe; NBC 15; Alabama Reflector session roundup)."}
+  ],
+  "skipped": [
+   {"record_id": "95e5cc65-7f02-4804-857b-6a0694ab49ad", "reason": "Enabling authority only, with no direction of its own.", "found": "HB 499 simply lets a county's local legislators change the number of constables, redraw the areas they cover, and set when a constable is treated as having vacated the office (Alabama Reflector, April 2026)."}
+  ],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "67e4e0cc-44f2-4724-be99-075660162504",
+  "labels": [
+   {"record_id": "a2ccd24b-efc7-4ab6-a66b-cdbd89bbd20c", "research_area_slug": "environment_and_public_health", "stance": "for", "found": "The 17-10 vote approved a CyrusOne data center on 280 acres of farmland in rural Talkington Township; residents who spoke against it raised environmental and economic concerns, while supporters were mainly union construction workers (NPR Illinois, April 7 2026; Illinois Times)."}
+  ],
+  "skipped": [],
+  "retire_candidates": []
+ },
+ {
+  "candidate_id": "689d8982-f161-46ea-95f0-170fe277403a",
+  "labels": [],
+  "skipped": [
+   {"record_id": "4e0a3d08-768f-41aa-bff4-13e20ef039a6", "reason": "A no vote on a technical change, with no stated alternative.", "found": "HB 4948 only rewords a sentencing guideline entry to match a companion bill that keeps the National Precursor Log Exchange funded and lets pseudoephedrine be sold by curbside or online pickup with in-person ID checks (Michigan Legislature bill page; House Fiscal Agency analysis of the two-bill package)."}
+  ],
+  "retire_candidates": []
+ }
+]}

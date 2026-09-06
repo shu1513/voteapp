@@ -1,0 +1,53 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MO",
+   "chamber": "house",
+   "session": "2169",
+   "roll": 1551715,
+   "measure_id": "HJR 73",
+   "vote_date": "2025-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted for House Joint Resolution 73, which would repeal the reproductive-freedom right Missouri voters added to the state constitution in 2024. It would allow abortion only for a medical emergency, a fetal anomaly, rape or incest, and only through 12 weeks of pregnancy in cases of rape or incest. It would let the legislature regulate abortion providers and facilities, bar public funding except for a medical emergency, rape or incest, and require consent from both a minor and a parent. It would also ban gender transition surgery, cross-sex hormones and puberty blockers for anyone under 18. The Missouri House passed it 103-51. It takes effect only if Missouri voters approve it; a joint resolution needs no governor's signature.",
+   "nay_description": "Voted against House Joint Resolution 73, which would repeal the reproductive-freedom right Missouri voters added to the state constitution in 2024. It would allow abortion only for a medical emergency, a fetal anomaly, rape or incest, and only through 12 weeks of pregnancy in cases of rape or incest. It would let the legislature regulate abortion providers and facilities, bar public funding except for a medical emergency, rape or incest, and require consent from both a minor and a parent. It would also ban gender transition surgery, cross-sex hormones and puberty blockers for anyone under 18. The Missouri House passed it 103-51. It takes effect only if Missouri voters approve it; a joint resolution needs no governor's signature.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1551714
+   ]
+  },
+  {
+   "jurisdiction": "MO",
+   "chamber": "senate",
+   "session": "2169",
+   "roll": 1578547,
+   "measure_id": "HJR 73",
+   "vote_date": "2025-05-14",
+   "review_status": "approved",
+   "yea_description": "Voted for House Joint Resolution 73, which would repeal the reproductive-freedom right Missouri voters added to the state constitution in 2024. It would allow abortion only for a medical emergency, a fetal anomaly, rape or incest, and only through 12 weeks of pregnancy in cases of rape or incest. It would let the legislature regulate abortion providers and facilities, bar public funding except for a medical emergency, rape or incest, and require consent from both a minor and a parent. It would also ban gender transition surgery, cross-sex hormones and puberty blockers for anyone under 18. The Missouri Senate passed it 21-11. It takes effect only if Missouri voters approve it; a joint resolution needs no governor's signature.",
+   "nay_description": "Voted against House Joint Resolution 73, which would repeal the reproductive-freedom right Missouri voters added to the state constitution in 2024. It would allow abortion only for a medical emergency, a fetal anomaly, rape or incest, and only through 12 weeks of pregnancy in cases of rape or incest. It would let the legislature regulate abortion providers and facilities, bar public funding except for a medical emergency, rape or incest, and require consent from both a minor and a parent. It would also ban gender transition surgery, cross-sex hormones and puberty blockers for anyone under 18. The Missouri Senate passed it 21-11. It takes effect only if Missouri voters approve it; a joint resolution needs no governor's signature.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "against",
+     "nay": null
+    },
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

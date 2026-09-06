@@ -1,0 +1,34 @@
+{
+ "labels": [
+  {
+   "record_id": "326321d2-9208-4f28-ba94-02ea7f147a89",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "326321d2-9208-4f28-ba94-02ea7f147a89",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "ce1d9a09-e0e5-478a-a913-0315f185cb84",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "ae92782e-83c7-43df-bfbe-a4c647b6cfd4",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "ae92782e-83c7-43df-bfbe-a4c647b6cfd4",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "cc3b31af-2365-4c8b-b4b8-dca4ce2dc000",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

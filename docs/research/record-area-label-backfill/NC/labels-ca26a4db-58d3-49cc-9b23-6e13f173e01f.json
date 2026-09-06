@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "6fd89f58-f445-4283-9fa8-9aafe4010711",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "6728e533-788c-4bc4-aaa2-897fd6bb23c9",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  },
+  {
+   "record_id": "6728e533-788c-4bc4-aaa2-897fd6bb23c9",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

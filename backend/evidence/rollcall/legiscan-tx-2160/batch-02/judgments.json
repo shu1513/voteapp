@@ -29,8 +29,8 @@
       "measure_id": "HB 493",
       "vote_date": "2025-06-01",
       "review_status": "approved",
-      "yea_description": "Voted to accept the final House-Senate deal on House Bill 493. It bars people finally convicted of first- or second-degree felonies, the two most serious levels, from serving as poll watchers. Texas already barred people with an election-related felony, and appointees must now swear in writing that they have no covered conviction. The bill became law after the Texas Senate approved the compromise 23-8.",
-      "nay_description": "Voted against the final House-Senate deal on House Bill 493. It bars people finally convicted of first- or second-degree felonies, the two most serious levels, from serving as poll watchers. Texas already barred people with an election-related felony, and appointees must now swear in writing that they have no covered conviction. The bill became law after the Texas Senate approved the compromise 23-8.",
+      "yea_description": "Voted to approve the final, negotiated version of House Bill 493 in the Texas Senate. The law bars anyone finally convicted of a first- or second-degree felony from serving as a poll watcher. Those are the two most serious felony levels. A poll watcher is a person a party or candidate sends to observe voting. Texas already barred people convicted of an election-related felony. Appointees must now swear in writing that they have no such conviction. The Senate adopted the report 23-8 and the law took effect September 1, 2025.",
+      "nay_description": "Voted against the final, negotiated version of House Bill 493 in the Texas Senate. The law bars anyone finally convicted of a first- or second-degree felony from serving as a poll watcher. Those are the two most serious felony levels. A poll watcher is a person a party or candidate sends to observe voting. Texas already barred people convicted of an election-related felony. Appointees must now swear in writing that they have no such conviction. The Senate adopted the report 23-8 and the law took effect September 1, 2025.",
       "labels": [
         {
           "slug": "election_integrity",
@@ -318,8 +318,8 @@
       "measure_id": "SB 1257",
       "vote_date": "2025-05-12",
       "review_status": "approved",
-      "yea_description": "Voted to pass Senate Bill 1257. Health plans that cover or once covered a patient's gender transition procedure must also cover side effects, yearly checks, and care to manage or reverse it. Coverage applies even if the patient joined the plan later, while employer plans that pay claims themselves are exempt. The bill became law after the Texas House passed it 87-58.",
-      "nay_description": "Voted against Senate Bill 1257. Health plans that cover or once covered a patient's gender transition procedure must also cover side effects, yearly checks, and care to manage or reverse it. Coverage applies even if the patient joined the plan later, while employer plans that pay claims themselves are exempt. The bill became law after the Texas House passed it 87-58.",
+      "yea_description": "Voted to pass Senate Bill 1257 in the Texas House, the last vote before it went to the governor. Health plans that cover a gender transition procedure must also cover its side effects and any reversal. That includes yearly monitoring, and care for people who joined the plan after the procedure. Plans that large employers pay for themselves are not covered. The House passed it 87-58 and the law took effect September 1, 2025.",
+      "nay_description": "Voted against passing Senate Bill 1257 in the Texas House on the vote that sent it to the governor. Health plans that cover a gender transition procedure must also cover its side effects and any reversal. That includes yearly monitoring, and care for people who joined the plan after the procedure. Plans that large employers pay for themselves are not covered. The House passed it 87-58 and the law took effect September 1, 2025.",
       "labels": [
         {
           "slug": "healthcare_affordability",

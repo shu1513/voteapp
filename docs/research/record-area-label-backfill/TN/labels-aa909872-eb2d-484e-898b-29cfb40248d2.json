@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "de02ec97-ce7f-4693-9b89-f9f6ad9fbaea",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "de02ec97-ce7f-4693-9b89-f9f6ad9fbaea",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "252a8b2e-afcd-4b0d-adec-e73cc4a94258",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "252a8b2e-afcd-4b0d-adec-e73cc4a94258",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "85cd96a8-778a-4d40-8043-7bb229c3876f",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

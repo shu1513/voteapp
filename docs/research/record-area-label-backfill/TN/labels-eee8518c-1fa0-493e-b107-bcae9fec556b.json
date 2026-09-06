@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "c8d68faa-064f-44c4-847e-b0fc0870e225",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "da470ede-ab36-4df3-b704-32bd398e18f7",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "36ea0791-13c6-476e-9f22-7daecbc1161d",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "c1e5f251-4b45-4188-b6b3-64263e9460f4",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  }
+ ]
+}

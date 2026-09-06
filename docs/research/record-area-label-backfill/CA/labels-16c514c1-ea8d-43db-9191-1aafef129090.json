@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "ca1884b7-6aac-4db3-9aeb-a363fe9cfd74",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "775c7318-7ca2-4b66-b52c-dace418c5597",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "775c7318-7ca2-4b66-b52c-dace418c5597",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "775c7318-7ca2-4b66-b52c-dace418c5597",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  },
+  {
+   "record_id": "83b95725-21c1-4763-887e-069ed982ea29",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}

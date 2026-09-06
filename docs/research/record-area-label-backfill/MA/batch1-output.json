@@ -1,0 +1,482 @@
+{
+ "proposals": [
+  {
+   "candidate_id": "00dbd67c-1c1b-469b-ad8b-137e01d8b30b",
+   "labels": [
+    {
+     "record_id": "bc999cf9-7f31-4748-9525-512c4e5348f2",
+     "research_area_slug": "civil_rights",
+     "stance": "against"
+    },
+    {
+     "record_id": "bc999cf9-7f31-4748-9525-512c4e5348f2",
+     "research_area_slug": "public_education_quality",
+     "stance": "against"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "08bc5964-647b-418f-a037-084cbbf216d1",
+   "labels": [
+    {
+     "record_id": "22fe1177-bb57-46d6-9a1b-09def122d520",
+     "research_area_slug": "civil_rights",
+     "stance": "for"
+    },
+    {
+     "record_id": "87c67537-6a0e-4e38-b796-df1b809de476",
+     "research_area_slug": "social_programs_and_welfare",
+     "stance": "for"
+    },
+    {
+     "record_id": "87c67537-6a0e-4e38-b796-df1b809de476",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "against"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "0dabf96f-cc5b-4122-ac1d-1751573feb7f",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "ee81e217-2b5b-4964-99ee-dfa3815d8e49",
+     "reason": "bio filler"
+    },
+    {
+     "record_id": "8c0ea3c5-778d-4f21-8fc9-d24c8bf84390",
+     "reason": "pure candidacy"
+    }
+   ]
+  },
+  {
+   "candidate_id": "0f402275-f33e-490d-82f6-f3378a2e84bb",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "d7e234ab-c89e-40bc-8c79-1c6c93fa58b6",
+     "reason": "bio filler"
+    }
+   ]
+  },
+  {
+   "candidate_id": "1949e0ba-92a3-44de-a1aa-c2c66d215735",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "128d49c9-b5ff-40fb-9702-1b53d8c3cd61",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "25cb8d0a-ccbe-45f9-812f-4c142e5ddb0c",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "fc1ba9e9-add7-46fd-b8bf-ac23c2ed5b22",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "2e432a7a-5cd9-405c-bd37-bc657f3228d8",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "9c3fffbf-d5f2-43f1-a6f7-d544f9ac79dc",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": [
+    {
+     "record_id": "2414af35-56da-4e97-acde-1d0ebb95f2c7",
+     "reason": "bio filler"
+    }
+   ]
+  },
+  {
+   "candidate_id": "2fcd439d-4038-44bc-b096-b9f396af388c",
+   "labels": [
+    {
+     "record_id": "7998f023-2e25-4700-9b0b-1258b2d71d96",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "against"
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "d5f0d5c0-bf9c-402d-81ea-1b8bef77dced",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "35638177-e59b-47b0-adaf-a3b6bccd8fbc",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "64ea9bf0-5c47-4a9d-b8a6-4c525303f02f",
+     "reason": "bio filler"
+    }
+   ]
+  },
+  {
+   "candidate_id": "3b2005b9-49dd-4c07-99e4-670299e1c6b1",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "de06ad34-8fce-42bf-ad29-810dbb93b6c1",
+     "reason": "bio filler"
+    },
+    {
+     "record_id": "fcc65a7b-b9ea-4a52-87ad-2f574fe3f202",
+     "reason": "pure candidacy"
+    }
+   ]
+  },
+  {
+   "candidate_id": "407c34ae-3b7d-4cb9-ac7a-4a6426652032",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "394bc1f9-80f9-424f-ba58-7606dce8656a",
+     "reason": "pure candidacy"
+    }
+   ]
+  },
+  {
+   "candidate_id": "45091489-8daa-423b-a7c5-327ead0dece8",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "260d07ee-8420-484a-be74-272de3548c7b",
+     "reason": "routine prosecutor duty announcing charges; not a stance on the area"
+    }
+   ],
+   "retire_candidates": [
+    {
+     "record_id": "f15e8ab6-60d1-406d-b6a4-420a8ca7274a",
+     "reason": "trivia"
+    }
+   ]
+  },
+  {
+   "candidate_id": "45a19d5c-c27c-499f-b145-23904e98c63a",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "7e2d0c5e-9962-4887-a665-7715c78895f6",
+     "reason": "trivia"
+    }
+   ]
+  },
+  {
+   "candidate_id": "55da6e3f-900a-4131-a46e-df6ad576f10b",
+   "labels": [
+    {
+     "record_id": "afb0ac19-c0c6-4de6-a18f-1755422af578",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for"
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "aa972c29-6908-4b24-bde6-33b91e2862f6",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "581100d2-df25-4ea2-9d0d-82b11f3ef44f",
+   "labels": [
+    {
+     "record_id": "faba60b1-7109-4d2d-934b-8086876079c3",
+     "research_area_slug": "immigration",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "68f0be3f-966b-468e-91e2-9d6249b36ca7",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "8d805424-4adb-40f8-af1f-54da3ea9702b",
+     "reason": "pure candidacy"
+    },
+    {
+     "record_id": "3c53bfe9-be54-4b5e-8ae3-2113b4d9cd42",
+     "reason": "bio filler"
+    }
+   ]
+  },
+  {
+   "candidate_id": "6bc13111-5443-481b-ab19-345a605d356f",
+   "labels": [
+    {
+     "record_id": "7baaa353-5f9d-41c2-a041-635cfc74cbd8",
+     "research_area_slug": "social_programs_and_welfare",
+     "stance": "against"
+    },
+    {
+     "record_id": "7baaa353-5f9d-41c2-a041-635cfc74cbd8",
+     "research_area_slug": "housing_affordability",
+     "stance": "against"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6c596cf4-0076-4456-af5b-c47fb9c908a6",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "7c1107a8-1d01-4ce1-b0f2-e889df80f36d",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "721206b5-dd99-40f6-97dd-b3b768cc28e8",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "2e0c6d95-3d6e-4e55-a152-c72040154dac",
+     "reason": "pure candidacy"
+    }
+   ]
+  },
+  {
+   "candidate_id": "767d8d08-35ac-45f2-a692-b955650f7061",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "8f0f99cb-436a-4def-8dbc-a3545ccf0bf0",
+     "reason": "pure candidacy"
+    },
+    {
+     "record_id": "b9294ece-3339-4350-85c4-a086c7be22dc",
+     "reason": "bio filler"
+    }
+   ]
+  },
+  {
+   "candidate_id": "78f27eb6-fdd9-4f93-832e-8a383aa3055c",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "a3e19a51-0481-4b8f-b152-9ca5d1fb868d",
+     "reason": "bio filler"
+    }
+   ]
+  },
+  {
+   "candidate_id": "794905a9-7e50-4dbd-8b39-3531aef5024c",
+   "labels": [
+    {
+     "record_id": "2ed859b7-2bb5-40fe-9262-72d6b0cb27e6",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for"
+    },
+    {
+     "record_id": "470017e2-9edc-4513-9c52-5e8b70a945ce",
+     "research_area_slug": "housing_affordability",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7cd085d8-b17c-467b-9b0c-083dcbd8d7ce",
+   "labels": [
+    {
+     "record_id": "9ddf6b32-888b-4604-a655-7277475d8bcc",
+     "research_area_slug": "corporate_accountability",
+     "stance": "for"
+    },
+    {
+     "record_id": "9ddf6b32-888b-4604-a655-7277475d8bcc",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "935d8591-8a2c-4e31-9c26-59ac8b73232f",
+   "labels": [
+    {
+     "record_id": "13fde0d9-64e0-4858-8c57-f041aa4d4c1e",
+     "research_area_slug": "womens_reproductive_rights",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "b6b4c29c-83d8-4e4c-a129-791c688d39a6",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "0732fe4a-720e-4aab-9bef-edde2ff094fa",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": [
+    {
+     "record_id": "b667f0f4-d6e7-4df9-867d-3fb0f547a790",
+     "reason": "trivia"
+    }
+   ]
+  },
+  {
+   "candidate_id": "c169f46d-2cdb-41d7-8b7b-50d780b3d4dc",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "096b8e73-7072-4346-9dba-037136310517",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": [
+    {
+     "record_id": "89b58dd9-2c03-4f2e-876d-217f2cabe9a4",
+     "reason": "bio filler"
+    }
+   ]
+  },
+  {
+   "candidate_id": "c7b6ab4f-3c08-4f6e-99ca-07b2b6459f9d",
+   "labels": [
+    {
+     "record_id": "8cc76d9a-3531-4231-ba7f-d9b248c9d86f",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for"
+    },
+    {
+     "record_id": "8cc76d9a-3531-4231-ba7f-d9b248c9d86f",
+     "research_area_slug": "womens_reproductive_rights",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "d2034cc2-bd27-434f-bf5d-3caa2cf203c5",
+   "labels": [
+    {
+     "record_id": "cd872e7c-7241-4139-9485-1a12f49d81f8",
+     "research_area_slug": "public_infrastructure",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "d856ef81-c127-4483-969e-7f70634772b6",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "9bdd74b3-4a5e-4f88-b401-329b7ca6d2bf",
+     "reason": "bio filler"
+    },
+    {
+     "record_id": "71a20811-7d63-4442-9f16-898ac8f5b214",
+     "reason": "bio filler"
+    }
+   ]
+  },
+  {
+   "candidate_id": "d875c017-1503-4714-9aa1-ca2d10ea666a",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "112b8357-d5f0-4f6a-8543-1a6b6b8d889d",
+     "reason": "bio filler"
+    }
+   ]
+  },
+  {
+   "candidate_id": "db4a5132-9737-4951-831b-9ed7c901794d",
+   "labels": [
+    {
+     "record_id": "9117e2f7-61b4-4d6f-b3c4-e21b63713d57",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "e59b2f8e-04d5-46c8-945c-7620dff1b48d",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "10f634a4-a69c-420b-a271-42dc3d97fc17",
+     "reason": "no allowed research area matches"
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "ec134f4b-9b59-4036-b2c0-147cea8f4a94",
+   "labels": [
+    {
+     "record_id": "93c18adf-4613-48a4-8b2c-8d24fc4d3c93",
+     "research_area_slug": "womens_reproductive_rights",
+     "stance": "for"
+    },
+    {
+     "record_id": "93c18adf-4613-48a4-8b2c-8d24fc4d3c93",
+     "research_area_slug": "civil_rights",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "efe76639-1775-47e4-9a1c-60dfd91149f6",
+   "labels": [
+    {
+     "record_id": "dcad52ba-7def-4a25-b511-aba659315cde",
+     "research_area_slug": "anti_corruption",
+     "stance": "for"
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  }
+ ]
+}

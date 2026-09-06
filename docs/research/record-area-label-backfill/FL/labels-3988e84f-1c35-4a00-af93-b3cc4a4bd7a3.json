@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "62ce6eca-e4b4-43cc-80c6-5aa98046efc8",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "6bb9d702-b1a3-4e39-b496-4fdf67660228",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "6bb9d702-b1a3-4e39-b496-4fdf67660228",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  },
+  {
+   "record_id": "69e6ccb5-1cc4-40f3-a2c4-84157f83ef7c",
+   "research_area_slug": "anti_corruption",
+   "stance": "against"
+  },
+  {
+   "record_id": "69e6ccb5-1cc4-40f3-a2c4-84157f83ef7c",
+   "research_area_slug": "data_privacy",
+   "stance": "for"
+  }
+ ]
+}

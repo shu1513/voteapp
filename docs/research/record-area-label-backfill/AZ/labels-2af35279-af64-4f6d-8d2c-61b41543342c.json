@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "128ab0a3-786d-47e8-b5d5-0d3639d413f1",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "128ab0a3-786d-47e8-b5d5-0d3639d413f1",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "7928ab10-7cf4-4d12-a05d-f41ea493cb1f",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "71df7672-b0bf-4209-8162-4f6bd474b6f9",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "0ce82ae9-5e3a-44ee-a420-e5bc2f7c0375",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}

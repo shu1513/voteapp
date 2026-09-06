@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "1a94b9a6-b72a-46f0-98a5-3f56aa971d72",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "1a94b9a6-b72a-46f0-98a5-3f56aa971d72",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "1a94b9a6-b72a-46f0-98a5-3f56aa971d72",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

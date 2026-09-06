@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "43465a52-b4c1-4068-978f-7b8aca22432d",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "091f1db3-ac98-4c90-b16f-3db671c0397d",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "e01ee534-60ce-48ee-964f-b09191423edc",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  },
+  {
+   "record_id": "d3d41516-a89b-4d15-864a-bb68601f0c57",
+   "research_area_slug": "public_education_quality",
+   "stance": "for"
+  }
+ ]
+}

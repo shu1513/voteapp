@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "b8c9e5f3-1c8d-445e-9b53-e615c19501a9",
+   "research_area_slug": "anti_corruption",
+   "stance": "against"
+  },
+  {
+   "record_id": "21680fe4-8795-4f0f-88d5-6503b7195898",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "21680fe4-8795-4f0f-88d5-6503b7195898",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  }
+ ]
+}

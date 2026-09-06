@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "f89024dd-7d1c-4d2f-a66d-da887a79965e",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "612baa8e-5502-4d49-90bb-8477da7a3ffe",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "against"
+  },
+  {
+   "record_id": "d03c0f78-b920-41ab-890a-f9292490d2ac",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "47230d84-da76-4d05-b5ee-774f96f94eb3",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  },
+  {
+   "record_id": "47230d84-da76-4d05-b5ee-774f96f94eb3",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "523c6883-731d-49c1-bf45-03af0b6a6155",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "376b6232-b537-422c-b5f4-ea2eddcc6e78",
+   "research_area_slug": "civil_rights",
+   "stance": "against"
+  },
+  {
+   "record_id": "c2a66cbf-588f-4eff-a741-9a7f292e7125",
+   "research_area_slug": "public_education_quality",
+   "stance": "against"
+  }
+ ]
+}

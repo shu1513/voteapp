@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "6f9eb423-c76b-4023-adc9-aa7f70879bbb",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "for"
+  },
+  {
+   "record_id": "6f9eb423-c76b-4023-adc9-aa7f70879bbb",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "against"
+  },
+  {
+   "record_id": "975e15fe-9873-4a2d-be9c-79a69c993b0f",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  },
+  {
+   "record_id": "ba59e37f-eb16-4fe9-a4b3-68858c742815",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "45700e0b-3d84-4a44-a931-df5b359f4bec",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

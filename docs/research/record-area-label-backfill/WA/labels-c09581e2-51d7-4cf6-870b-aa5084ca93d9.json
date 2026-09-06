@@ -1,0 +1,44 @@
+{
+ "labels": [
+  {
+   "record_id": "27fe5160-6aa9-433b-b7a3-35148654febe",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "2a7bda29-65c6-42d9-b2db-3272dffc9e30",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "93121dbf-531c-4173-9a77-8de9b9e6de29",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "93121dbf-531c-4173-9a77-8de9b9e6de29",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "3e9c6386-02bb-4c7c-b60f-38b6080a7ab1",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "6e062790-9a2a-4319-a448-71b0532cd897",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "13ed4d5a-bb90-4453-8d85-c8793cfead35",
+   "research_area_slug": "reduce_wealth_gap",
+   "stance": "for"
+  },
+  {
+   "record_id": "13ed4d5a-bb90-4453-8d85-c8793cfead35",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

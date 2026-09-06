@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "efa2c91f-3d22-4528-b206-9a52f734a866",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "3f2d89ca-80f3-4b2d-ac41-b67ff3e35b41",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "c029604e-ae42-441f-ab3d-baba5897a721",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "985376fb-09fe-4c86-9e2e-19be04439dc2",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  },
+  {
+   "record_id": "7b8dd6d0-607a-4e66-b8e7-b32959032af5",
+   "research_area_slug": "public_safety_and_crime_control",
+   "stance": "for"
+  }
+ ]
+}

@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "842cda27-0f74-4202-82b6-59d824de3273",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "512da539-dc5e-42f9-96fe-89cc7ea0b8ef",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "26d4c0fa-0f03-4a9f-b981-5a0cc2443edb",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "26d4c0fa-0f03-4a9f-b981-5a0cc2443edb",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  },
+  {
+   "record_id": "6ce0c158-1a10-4c57-ba2f-97a85e531dc7",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  }
+ ]
+}

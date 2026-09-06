@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "a7d7cbbe-836b-4aee-9832-51d0eb866418",
+   "research_area_slug": "government_efficiency",
+   "stance": "against"
+  },
+  {
+   "record_id": "bb588dc9-6b8a-42a5-b1e4-37bcc27584a7",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "0a881094-8812-40b7-a252-9c5296d947a0",
+   "research_area_slug": "election_integrity",
+   "stance": "against"
+  },
+  {
+   "record_id": "0a881094-8812-40b7-a252-9c5296d947a0",
+   "research_area_slug": "civil_rights",
+   "stance": "for"
+  },
+  {
+   "record_id": "58abee33-3e74-4b1f-b675-a25b6d398a2b",
+   "research_area_slug": "election_integrity",
+   "stance": "for"
+  }
+ ]
+}

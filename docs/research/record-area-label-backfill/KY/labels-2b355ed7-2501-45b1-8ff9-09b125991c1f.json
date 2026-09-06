@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "66edab22-2da9-4e4a-983a-e1184328f1db",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "ced22ab4-9201-4c53-9d54-05280a7d28b6",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "ced22ab4-9201-4c53-9d54-05280a7d28b6",
+   "research_area_slug": "anti_corruption",
+   "stance": "against"
+  }
+ ]
+}

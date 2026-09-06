@@ -1,0 +1,29 @@
+{
+ "labels": [
+  {
+   "record_id": "49a77c9d-4165-4319-ae58-0cb6fe8cb39b",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "49a77c9d-4165-4319-ae58-0cb6fe8cb39b",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "7221876b-db87-4703-8d77-d0589cf23f37",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "7221876b-db87-4703-8d77-d0589cf23f37",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  },
+  {
+   "record_id": "7221876b-db87-4703-8d77-d0589cf23f37",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

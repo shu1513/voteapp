@@ -40,7 +40,7 @@ function electionRow(overrides: Partial<FakeElectionRow> = {}): FakeElectionRow 
 
 function fakeClient(
   row?: FakeElectionRow,
-  input: { aliasOfficeId?: string } = {}
+  input: { aliasOfficeId?: string; aliasKey?: string } = {}
 ) {
   const statements: { text: string; values?: unknown[] }[] = [];
   const query = vi.fn(async (text: string, values?: unknown[]) => {
@@ -52,7 +52,7 @@ function fakeClient(
           ? [
               {
                 office_id: input.aliasOfficeId,
-                normalized_alias: "bernalillo county probate judge",
+                normalized_alias: input.aliasKey ?? "bernalillo county probate judge",
               },
             ]
           : [],
@@ -207,10 +207,31 @@ describe("runElectionContestFamilyCorrection", () => {
     expect(statements.at(-1)?.text).toBe("ROLLBACK");
   });
 
-  it("refuses a non-judge office resolved under the judicial family", async () => {
+  it("lets the matcher discard a mis-learned non-judge alias for a judge title", async () => {
+    // The matcher itself now ignores a learned alias that points at a
+    // non-judge office when the judicial family carries a judge title, so the
+    // correction resolves the judge office instead of refusing.
     const { client, statements } = fakeClient(electionRow(), {
       aliasOfficeId: OTHER_OFFICE_ID,
     });
+
+    const result = await runElectionContestFamilyCorrection(client, options());
+
+    expect(result).toMatchObject({
+      officeId: JUDGE_OFFICE_ID,
+      officeBackfilled: true,
+      matchMethod: "deterministic_fallback",
+    });
+    expect(statements.at(-1)?.text).toBe("COMMIT");
+  });
+
+  it("refuses a non-judge office resolved under the judicial family", async () => {
+    // A title with no judge word gives the matcher nothing to redirect, so
+    // the alias stands and the script's own canonical-name check must catch it.
+    const { client, statements } = fakeClient(
+      electionRow({ official_ballot_title: "Bernalillo County Recorder" }),
+      { aliasOfficeId: OTHER_OFFICE_ID, aliasKey: "bernalillo county recorder" }
+    );
 
     await expect(runElectionContestFamilyCorrection(client, options())).rejects.toThrow(
       /judicial_office resolved incompatible office County Recorder/
