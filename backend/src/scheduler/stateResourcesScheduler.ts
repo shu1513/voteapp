@@ -10,6 +10,7 @@ import { runStateResourcesValidator } from "../pipeline/validators/stateResource
 import { runStateResourcesWriter } from "../pipeline/writers/stateResourcesWriter.js";
 import { runStateResourcesRetrySweeper } from "../pipeline/retries/stateResourcesRetry.js";
 import { STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION } from "../contracts/stateResourceEnrichmentContract.js";
+import { readPositiveIntegerEnv } from "../config/envReaders.js";
 
 export const STATE_RESOURCES_REFRESH_JOB_NAME = "state_resources_refresh";
 // Legacy persisted scheduler key; keep value stable to avoid duplicate recurring schedulers.
@@ -58,19 +59,6 @@ type StateResourceStageCounts = {
   rejected: number;
   written: number;
 };
-
-function readPositiveIntegerEnv(name: string, fallback: number): number {
-  const raw = process.env[name];
-  if (!raw || raw.trim().length === 0) {
-    return fallback;
-  }
-
-  const parsed = Number.parseInt(raw, 10);
-  if (!Number.isFinite(parsed) || parsed <= 0) {
-    throw new Error(`Invalid ${name}: ${raw}. Expected a positive integer.`);
-  }
-  return parsed;
-}
 
 function readSchedulerRuntimeConfig(): SchedulerRuntimeConfig {
   return {

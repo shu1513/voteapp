@@ -54,6 +54,7 @@ import {
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import { WALL_CLOCK_FORCE_EXIT_GRACE_MS, withWallClockTimeout } from "./wallClockTimeout.js";
+import { readPositiveIntegerEnv } from "../config/envReaders.js";
 export type ManualPresidentialCandidateRecordsOptions = {
   candidateId: string;
   presidentialCycleId: string;
@@ -194,14 +195,6 @@ function requireEnv(name: string): string {
     throw new Error(`${name} is required for manual presidential candidate records write`);
   }
   return value;
-}
-
-function readPositiveIntegerEnv(name: string, fallback: number): number {
-  const raw = process.env[name]?.trim() || String(fallback);
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name}: ${raw}. Expected a positive integer.`);
-  }
-  return Number(raw);
 }
 
 function manualKey(options: ManualPresidentialCandidateRecordsOptions): string {

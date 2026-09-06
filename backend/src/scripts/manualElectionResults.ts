@@ -39,6 +39,7 @@ import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 import { usLatestLocalDateIso } from "../utils/usLocalDate.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
+import { readPositiveIntegerEnv } from "../config/envReaders.js";
 
 // Manual (no AI provider) election-results workflow, mirroring the automated
 // election_result_search pipeline: the same context loader, payload contract,
@@ -99,14 +100,6 @@ function requireEnv(name: string): string {
     throw new Error(`${name} is required for manual election results`);
   }
   return value;
-}
-
-function readPositiveIntegerEnv(name: string, fallback: number): number {
-  const raw = process.env[name]?.trim() || String(fallback);
-  if (!/^[1-9]\d*$/.test(raw)) {
-    throw new Error(`Invalid ${name}: ${raw}. Expected a positive integer.`);
-  }
-  return Number(raw);
 }
 
 type DueRow = {
