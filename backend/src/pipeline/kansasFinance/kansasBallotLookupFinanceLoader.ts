@@ -4,7 +4,9 @@
 // refunds). Buckets come from Schedules A/B of e-filed reports, so a paper
 // filer whose covers were transcribed has totals and no buckets. Outside
 // totals come from transcribed independent-expenditure statements and stay
-// null until a statement names the candidate.
+// null until a statement names the candidate. A transcribed paper cover has
+// receipts but no donor total, and receipts include loans and refunds, so
+// "raised" stays unknown for those rows instead of borrowing receipts.
 
 import type { Pool, PoolClient } from "pg";
 
@@ -46,6 +48,7 @@ export async function loadKansasCandidateFinanceSummariesByCandidateElection(
     enabled: isKansasCampaignFinanceEnabled,
     isEligibleElection: (row) => isKansasFinanceEligibleOffice(officeInputFromElectionRow(row)),
     directCoverageNote: KANSAS_DIRECT_COVERAGE_NOTE,
+    raisedFallsBackToReceipts: false,
     outsideCoverageNote: KANSAS_OUTSIDE_COVERAGE_NOTE,
     tables: {
       links: "ks_candidate_finance_links",

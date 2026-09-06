@@ -184,6 +184,13 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
    */
   directCoverageNote?: string;
   /**
+   * Whether "Raised" may fall back to total_receipts when the summary row has
+   * no direct_contribution_total. Default true. Kansas passes false: a paper
+   * cover gives known receipts but an unknown donor total, and receipts
+   * include loans and refunds, so the card must show Raised as unknown.
+   */
+  raisedFallsBackToReceipts?: boolean;
+  /**
    * Extra summary money columns to select and publish, for sources whose
    * table carries them (Denver: public matching from the Fair Elections
    * Fund, plus candidate loans). Omit — the default — and the query and the
@@ -210,6 +217,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
     "outside-group name"
   );
   const summaryVariant = input.summaryVariant ?? "totals";
+  const raisedFallsBackToReceipts = input.raisedFallsBackToReceipts ?? true;
   const evidenceLabelTypes = assertEvidenceLabelTypes(input.evidenceLabelTypes ?? STANDARD_EVIDENCE_LABEL_TYPES);
   const evidenceLabelTypeList = evidenceLabelTypes.map((value) => `'${value}'`).join(", ");
   const directCategoryTypes = assertDirectCategoryTypes(
@@ -704,7 +712,8 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
             total_raised:
               summaryVariant === "illinoisD2"
                 ? parseFinanceAmount(row.total_receipts) ?? parseFinanceAmount(row.direct_contribution_total)
-                : parseFinanceAmount(row.direct_contribution_total) ?? parseFinanceAmount(row.total_receipts),
+                : parseFinanceAmount(row.direct_contribution_total) ??
+                  (raisedFallsBackToReceipts ? parseFinanceAmount(row.total_receipts) : null),
             total_spent: parseFinanceAmount(row.total_disbursements),
             cash_on_hand: parseFinanceAmount(row.cash_on_hand),
             debts_owed: summaryVariant === "illinoisD2" ? parseFinanceAmount(row.debts_owed) : null,
