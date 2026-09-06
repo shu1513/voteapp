@@ -192,34 +192,19 @@ check what each roll's text actually was before importing it.**
 | [batch-01](batch-01/PLAN.md) | 22 | 11 | 1,364 | 132 |
 | [batch-02](batch-02/PLAN.md) | 54 | 29 | 3,319 | 132 |
 | [batch-03](batch-03/JUDGING.md) — the date-skew holds | 3 | 3 | 157 | 126 |
+| [batch-04](batch-04/JUDGING.md) — first 25 of the unbatched pool | 14 | 10 | 984 | 132 |
 
-**Illinois total: 4,840 records across 132 candidates, local `voteapp` only.**
+**Illinois total: 5,824 records across 132 candidates, local `voteapp` only.**
 **Migration 257 (`official_vote_date`) is local only — prod needs it, alongside
 251 and 252, before any Illinois promotion.**
 
 ## What is left
 
-`survey/divided-enacted-worklist.tsv` is the resumable ledger, and after
-batch-02 **every one of its 427 rolls carries a disposition**:
+`survey/divided-enacted-worklist.tsv` is the resumable ledger. batch-04 read the
+first 25 measures of the unbatched pool, so **165 of the original 204 rolls
+still carry `candidate:unbatched`**; everything else is judged or screened.
 
-| disposition | rolls |
-|---|---|
-| `candidate:unbatched` — passes the synopsis screen, awaiting judging capacity | 204 |
-| `judged:batch-02` | 54 |
-| `screened:no-defensible-stance` | 42 |
-| `screened:technical-or-omnibus` | 36 |
-| `screened:contested-direction` | 26 |
-| `judged:batch-01` | 22 |
-| `screened:appropriations-or-bonds` | 14 |
-| `screened:local-or-narrow` | 14 |
-| `screened:superseded-roll` | 5 |
-| `screened:mixed-direction` | 4 |
-| `screened:version-split` | 3 |
-| `judged:batch-03` | 3 |
-
-**Nothing is left `pending`.** Every roll is judged or screened.
-
-A `screened:*` verdict is a decision not to import, with the reason recorded in
-the row. `candidate:unbatched` is a positive triage result from reading the
-measure's Legislative Reference Bureau synopsis — those 204 rolls are the
-resume point, and no further triage is needed to pick them up.
+Read the pool in bill-number order and keep the batch tooling under
+`/Users/shu/legiscan-data/il-work/` — `ilga.py` fetches and digests the
+BillStatus XML, and `ilga-ca.pem` carries the Sectigo intermediate that
+`ftp.ilga.gov` omits.
