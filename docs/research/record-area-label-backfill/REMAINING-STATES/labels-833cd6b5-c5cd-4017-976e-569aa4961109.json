@@ -1,0 +1,19 @@
+{
+ "labels": [
+  {
+   "record_id": "03a06a14-7f62-496e-9813-6dc95727113f",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "03a06a14-7f62-496e-9813-6dc95727113f",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "03a06a14-7f62-496e-9813-6dc95727113f",
+   "research_area_slug": "government_spending_reduction",
+   "stance": "against"
+  }
+ ]
+}

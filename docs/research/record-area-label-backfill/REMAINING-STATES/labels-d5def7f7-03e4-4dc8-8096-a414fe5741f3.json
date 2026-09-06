@@ -1,0 +1,39 @@
+{
+ "labels": [
+  {
+   "record_id": "7054a735-b6bf-4ae4-81a2-c32c3d3d2359",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "22878ae1-e48c-4afc-afc7-acf7460e45c2",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "ce2eea6a-bc4a-4be6-a7f9-29fe3c2f92a4",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "4c7b4949-d1cf-434b-9af6-b6a004ff9f8e",
+   "research_area_slug": "public_infrastructure",
+   "stance": "for"
+  },
+  {
+   "record_id": "e822f692-e1ac-4467-ad64-47b6706a9bfc",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "against"
+  },
+  {
+   "record_id": "10342aea-f4fc-4032-9fe3-66ff8715a053",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "b8537736-6c5d-4bfd-8c4a-922115d881e5",
+   "research_area_slug": "corporate_accountability",
+   "stance": "for"
+  }
+ ]
+}

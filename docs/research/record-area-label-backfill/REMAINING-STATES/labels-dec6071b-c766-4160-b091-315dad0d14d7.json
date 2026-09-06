@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "8b2c6f12-61b8-4625-b26a-251d6cf55a17",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "8b2c6f12-61b8-4625-b26a-251d6cf55a17",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  },
+  {
+   "record_id": "275f0aef-3c61-42ed-b92f-3c94a42f934b",
+   "research_area_slug": "anti_corruption",
+   "stance": "for"
+  },
+  {
+   "record_id": "275f0aef-3c61-42ed-b92f-3c94a42f934b",
+   "research_area_slug": "government_efficiency",
+   "stance": "for"
+  }
+ ]
+}
