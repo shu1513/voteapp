@@ -25,24 +25,52 @@ export type Me = {
 };
 
 /**
+ * The login/logout purges only run in THIS tab's callbacks. When another tab
+ * on a shared browser signs out, or signs in as someone else, the cookie
+ * changes underneath this tab and its next GET /api/me returns the new
+ * identity — while ["me","ballot"], ["me","districts"], ["me",
+ * "election-choices"] … still hold the previous account's private data
+ * (staleTime never expires an entry, and disabled hooks keep reading
+ * query.data). So the identity fetch itself purges on a transition, BEFORE
+ * its result reaches the cache: no render can ever pair the new identity
+ * with the old account's data (an effect-based purge would paint one such
+ * frame first). `Me` exposes no id, so email is the identity; an email
+ * change on the same account costs one harmless refetch.
+ */
+function purgeIfIdentityChanged(queryClient: QueryClient, next: Me | null): void {
+  const previous = queryClient.getQueryData<Me | null>(["me"]);
+  if (previous === undefined || previous === null) {
+    return;
+  }
+  if (next === null || next.email !== previous.email) {
+    purgeAccountScopedQueries(queryClient);
+  }
+}
+
+/**
  * Session state for the whole app. `me` is undefined while loading, null when
  * logged out (401), and the user otherwise. GET /api/me is the only identity
  * endpoint that works for unverified users, so email_verified drives the
  * verification interstitial.
  */
 export function useMe() {
+  const queryClient = useQueryClient();
   const query = useQuery<Me | null>({
     queryKey: ["me"],
     queryFn: async () => {
+      let next: Me | null;
       try {
         const response = await apiRequest<{ user: Me }>("/api/me");
-        return response.user;
+        next = response.user;
       } catch (error) {
         if (error instanceof ApiError && error.status === 401) {
-          return null;
+          next = null;
+        } else {
+          throw error;
         }
-        throw error;
       }
+      purgeIfIdentityChanged(queryClient, next);
+      return next;
     },
     retry: false,
     staleTime: 60_000,
