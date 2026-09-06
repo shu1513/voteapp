@@ -52,7 +52,8 @@ describe("louisianaFinanceWriter", () => {
     expect(db.query).toHaveBeenCalledTimes(2);
     expect(String(db.query.mock.calls[0]?.[0])).toContain("UPDATE public.la_candidate_finance_links");
     expect(String(db.query.mock.calls[0]?.[0])).toContain("link_status = 'inactive'");
-    expect(db.query.mock.calls[0]?.[1]).toEqual([CANDIDATE_ID, ELECTION_ID, "12345"]);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("(link_source IS DISTINCT FROM 'manual' OR $4 = 'manual')");
+    expect(db.query.mock.calls[0]?.[1]).toEqual([CANDIDATE_ID, ELECTION_ID, "12345", "la_ethics_search"]);
     expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.la_candidate_finance_links");
     expect(String(db.query.mock.calls[1]?.[0])).toContain("ON CONFLICT (candidate_id, election_id, filer_number)");
     expect(db.query.mock.calls[1]?.[1]).toEqual([
