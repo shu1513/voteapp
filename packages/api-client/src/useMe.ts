@@ -15,6 +15,9 @@ export function purgeAccountScopedQueries(queryClient: QueryClient): void {
 }
 
 export type Me = {
+  /** Stable account id — the identity for cache purges. An email can be
+   * deleted and registered again as a new account. */
+  id: string;
   email: string;
   first_name: string;
   email_verified: boolean;
@@ -34,15 +37,16 @@ export type Me = {
  * query.data). So the identity fetch itself purges on a transition, BEFORE
  * its result reaches the cache: no render can ever pair the new identity
  * with the old account's data (an effect-based purge would paint one such
- * frame first). `Me` exposes no id, so email is the identity; an email
- * change on the same account costs one harmless refetch.
+ * frame first). The account id is the identity, not the email: an email
+ * can be deleted and registered again as a NEW account (same email, other
+ * person's data must not survive), and one account may change its email.
  */
 function purgeIfIdentityChanged(queryClient: QueryClient, next: Me | null): void {
   const previous = queryClient.getQueryData<Me | null>(["me"]);
   if (previous === undefined || previous === null) {
     return;
   }
-  if (next === null || next.email !== previous.email) {
+  if (next === null || next.id !== previous.id) {
     purgeAccountScopedQueries(queryClient);
   }
 }
