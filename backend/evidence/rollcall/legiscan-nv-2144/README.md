@@ -116,16 +116,34 @@ The full 1,332-file evidence set and the dataset itself live outside the
 repository at `/Users/shu/legiscan-data/nv-2144*`, following the precedent set
 by Texas. Only the curated subset is committed.
 
-## Batch status — complete
+## Batch status
+
+### The enacted pool is complete
 
 All 104 divided rolls in `survey/divided-enacted-worklist.tsv` carry a disposition and a
-reason. Nothing in session 2144 is left to judge.
+reason. 50 rolls were dropped, 12 excluded as appropriations or procedural, and 3
+superseded.
 
-| batch | measures | rolls | records | area tags |
+### The non-enacted pool is open, and includes vetoed bills
+
+Nevada's remaining 187 divided floor rolls sit on 114 bills that did not become law.
+Almost none of them fit the campaign's standing exception to filter 2 — the Pennsylvania
+batch-02 scope of "one chamber passed it, the other never voted" reaches only 29 Nevada
+measures. The bulk is a class no earlier state took: **79 measures the Legislature passed
+through both chambers and the governor vetoed.**
+
+On the user's direction that pool is open. Dispositions for all 187 rolls are in
+`survey/divided-not-enacted-worklist.tsv`. Every description on a non-enacted measure says
+the bill never became law and describes it with "would have".
+
+| batch | pool | measures | rolls | records |
 | --- | --- | --- | --- | --- |
-| batch-01 | 10 | 18 | 387 | 274 |
-| batch-02 | 11 | 14 | 265 | 189 |
-| batch-03 | 7 | 7 | 94 | 69 |
-| **total** | **28** | **39** | **746** | **532** |
+| batch-01 | enacted | 10 | 18 | 387 |
+| batch-02 | enacted | 11 | 14 | 265 |
+| batch-03 | enacted | 7 | 7 | 94 |
+| batch-04 | vetoed | 9 | 18 | 364 |
+| **total** | | **37** | **57** | **1,110** |
 
-50 rolls were dropped, 12 excluded as appropriations or procedural, and 3 superseded.
+One hand-written duplicate was retired during the batch-04 sweep, and a wording defect in
+batches 01 to 03 — 645 records whose closing clause began with a lowercase word — was
+fixed at source and rewritten in place. Both are recorded in `batch-04/JUDGING.md`.

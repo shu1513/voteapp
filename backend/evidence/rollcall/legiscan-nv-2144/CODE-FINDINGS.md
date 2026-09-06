@@ -44,10 +44,35 @@ call id.** Verified against the Legislature's own action history:
 |---|---|---|---|
 | AB 123 (Senate, 2025-05-31) | 13-8, roll 1582878 | yes | **14-7, roll 1582877** |
 | AB 451 (Senate, 2025-05-22) | 16-5, roll 1576767 | yes | **15-6, roll 1576766** |
+| AB 44 (Senate, 2025-05-22) | 14-7, roll 1576925 | yes | **13-8, roll 1576924** |
 
 So ordering Nevada's same-day rolls by id picks the wrong vote, every time.
 The bill history is the only authority: look for `Action of passage
 reconsidered` followed by a second `Read third time. Passed.` line.
+
+### ⚠ AB 44 shows the history line can be MISSING (found 2026-09-06, batch-04)
+
+AB 44 has the same double-roll shape but **its history carries no
+`Action of passage reconsidered` line and only one third-reading line**, so the
+test above returns nothing and a reader can conclude, wrongly, that the history
+disagrees with the roll data. It does not; it is incomplete.
+
+Two other sources settle it, and both should be used whenever the history is
+silent:
+
+1. **NELIS lists a bill's votes in chronological order.** Proved on AB 123 and
+   AB 451, whose histories do spell the reconsideration out: for both, the page
+   lists the first vote first. AB 44's page
+   (`.../83rd2025/Bill/11833/Votes`, rendered by JavaScript, so read it with a
+   browser rather than a plain fetch) lists 14-7 then 13-8, so 13-8 is the vote
+   that stands.
+2. **The single tally the history does print is the one that stands.** AB 44's
+   only third-reading line reads `(Yeas: 13, Nays: 8.)`.
+
+Both agree with the lower-id rule in the table, so the rule held even where the
+history did not. NELIS also names the printed version of each vote
+("Senate (2nd Reprint)"), which is the cheapest independent check on the
+version resolver.
 
 The superseded-stage gate in `rollcall:judge` scans by date and cannot see
 within-day order, so it flags the roll that stands as if it were the earlier
