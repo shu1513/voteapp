@@ -67,13 +67,24 @@ total, run-stamp predicate, table delta — and sweeps clean for duplicates.
    votes are hand-written records citing the official page (the Alabama HB 95
    precedent); the rolls stay. Run that audit before judging future batches.
 
-## Open for the operator
+## Settled by the operator, 2026-09-06 — batch-10
 
 **HB 7003** (redraws the congressional districts, H 64-25) and **HB 7002**
 (deletes the sentence barring changes between apportionments, H 66-24 / S 22-8)
-are dropped under filter 5 and need a decision on direction. The Georgia maps
+were dropped under filter 5 and needed a decision on direction. The Georgia maps
 in `../legiscan-ga-2114/` could carry `civil_rights / for` because a federal
 court had ruled the prior maps unlawful and these were the remedy. Tennessee's
 was a mid-decade redraw with no court order, and the act is 141,000 characters
 of census-block tables, so any direction would be an assertion about who the map
 favors rather than something the text settles.
+
+**The user directed that both be imported with a neutral description and no
+stance** — a bare `general` label, matching Missouri HB 1 and New York
+A 10710 / A 10711. Done in [batch-10](batch-10/JUDGING.md): 3 rolls, **137
+records**. HB 7002 is Public Chapter 1, HB 7003 is Public Chapter 3.
+
+**New finding:** HB 7002's Senate roll resolves 30 members to **zero**
+candidates. Tennessee's Senate is in South Carolina's position — those seats are
+not on the November 2026 ballot in numbers the roster covers — so no Senate roll
+in this session writes a record. The judgment and evidence are kept; only the
+records are absent.
