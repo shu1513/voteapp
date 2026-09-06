@@ -92,6 +92,35 @@ it does not have.
 
 Do not hand-tag a `rollcall_import` record. `syncRollCallRecordTags` makes a record's tags exactly the roll call's labels for its side, so anything added by hand is deleted on the next import of that roll call. Fix the judgment instead.
 
+## Web-research pass over the vague descriptions
+
+628 records had been skipped for one reason: the description says a law was
+"amended", "revised" or "changed" without saying which way. Eight agents
+researched what each bill actually did — the record's own source first, then
+the state legislature, LegiScan, Ballotpedia or news, escalating to a browser
+when a site blocked plain fetching. 262 of 626 (41%) converted into real
+labels. Rules and per-record findings are in `RESEARCHED-VAGUE/`; every label
+and skip carries a `found` note saying what the bill did and where that came
+from.
+
+What the remaining 364 are, in order of size: bills that really are direction-
+free once read (fee schedules, definition swaps, renamings, sunset extensions,
+board membership counts); "voted against X" with no stated alternative; bills
+that genuinely cut both ways; and a small tail whose text is simply not online
+any more.
+
+The research also surfaced defects no label pass would have caught:
+
+- Maryland HB0094: the stored description states the opposite of what the bill
+  did — it repealed inmate farm-labor authority.
+- Record `370abb0e`: cites Maine LD 274 as an emergency-services bill; LD 274
+  of the 131st Legislature is about municipal firefighting water costs.
+- Arkansas Act 715 is titled as strengthening nursing-home staffing but removed
+  the penalties for understaffing.
+- Georgia HB 844 and HB 1274 never became law, which their descriptions omit.
+
+Fixing those needs a description repair, which a label pass is not allowed to do.
+
 ## Label rules tightened during the run
 
 - `personal_income_tax_reduction` covers personal income tax only. Sales, property, business and production tax records do not belong there.

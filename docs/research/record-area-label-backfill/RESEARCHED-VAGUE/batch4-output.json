@@ -1,0 +1,868 @@
+{
+ "proposals": [
+  {
+   "candidate_id": "6a9761f1-5971-498f-9310-6f3c876c05d7",
+   "labels": [
+    {
+     "record_id": "a1be68af-2a8a-4f75-9bd5-3c4992ad8079",
+     "research_area_slug": "public_infrastructure",
+     "stance": "for",
+     "found": "Oregon HB 2415 (2025 Ch. 148) removed the hard $50,000 cap on Port Planning and Marketing Fund grants and let Business Oregon set a higher maximum, which it set at $75,000, so ports can get larger planning grants (enrolled bill text on OLIS plus the Business Oregon PPMF page)."
+    },
+    {
+     "record_id": "a1be68af-2a8a-4f75-9bd5-3c4992ad8079",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "against",
+     "found": "Same bill: it raises the size of state grants that can be paid out of the Port Planning and Marketing Fund."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6b4ca6f0-8e5a-4965-bc0e-f83a10cebe11",
+   "labels": [
+    {
+     "record_id": "b9ea56a6-2e19-48b9-b7d5-78110df4da09",
+     "research_area_slug": "corporate_accountability",
+     "stance": "for",
+     "found": "WA ESHB 2076 (2022, Ch. 281) gave rideshare drivers a per-mile and per-minute pay floor, paid sick time, workers' comp coverage, a driver resource center, and just-cause protection against deactivation; it also locked in independent-contractor status and blocked new local rules (Final Bill Report ESHB 2076)."
+    },
+    {
+     "record_id": "b9ea56a6-2e19-48b9-b7d5-78110df4da09",
+     "research_area_slug": "social_programs_and_welfare",
+     "stance": "for",
+     "found": "Same law: it extended paid sick leave and workers' compensation coverage to rideshare drivers who previously had neither."
+    },
+    {
+     "record_id": "153eab9d-ed37-4d13-93df-8439d67a0893",
+     "research_area_slug": "social_programs_and_welfare",
+     "stance": "for",
+     "found": "WA HB 2264 (2026, Ch. 150) lets a worker who volunteers for an announced layoff still count as jobless through no fault of their own, so they qualify for unemployment benefits; it passed 94-0 and 48-0 (Senate Bill Report HB 2264)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6b4dcfde-182d-4839-a53a-922d32b63411",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "e5f91579-a095-48bc-a2b6-47b269801599",
+     "reason": "could not determine the direction",
+     "found": "Currituck County's meeting page returns 403 and the county documents I could reach cover a different lot-of-record amendment adopted in September 2025, not the June 2025 family-subdivision text amendment, so I could not tell whether the amendment loosened or tightened family lot splits."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6c92f0e1-9c5d-4ef7-8533-78a60cc731ce",
+   "labels": [
+    {
+     "record_id": "d580d6b4-c90d-4f20-9032-94b3ff745537",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for",
+     "found": "The record itself is clear: the committee voted 5-0 to pause new data-center applications in unincorporated Lake County and send a longer moratorium to a public hearing, which slows large power- and water-using development."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6cbb2712-0ae7-4267-844f-9aa47dcdca72",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "3dfdc105-9f8a-4487-af7b-fdecb1015475",
+     "reason": "property tax rate vote; personal_income_tax_reduction covers personal income tax only and no other allowed area fits",
+     "found": "Court Order 143848 set the Tarrant County property tax rate for tax year 2024."
+    },
+    {
+     "record_id": "3e8637ea-b51c-4407-9148-76766ca0c122",
+     "reason": "property tax rate vote, and a no vote alone does not say what he wanted instead",
+     "found": "Court Order 143850 adopted the Tarrant County Hospital District property tax rate of $0.1825 per $100."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6ce2450d-05f2-4724-a261-bb78a11a7a3c",
+   "labels": [
+    {
+     "record_id": "0e4c0f8a-95c7-4e48-870c-ea241f63108f",
+     "research_area_slug": "corporate_accountability",
+     "stance": "for",
+     "found": "FL HB 1305 (2021) would have made leased construction workers count as the leasing company's employees for workers' compensation and required notice and continued coverage when a leasing contract ended; it died in committee (Florida Senate bill page)."
+    },
+    {
+     "record_id": "473a6203-f776-4c2a-b864-6eda5eccd293",
+     "research_area_slug": "housing_affordability",
+     "stance": "against",
+     "found": "FL HB 991 (2025) would have banned new community redevelopment agencies, frozen existing boundaries and wound them all down by 2045, cutting a main local tool for redevelopment and affordable housing; it was laid on the table for the Senate bill (Florida Senate bill page and Florida Politics)."
+    },
+    {
+     "record_id": "473a6203-f776-4c2a-b864-6eda5eccd293",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "for",
+     "found": "Same bill: winding down community redevelopment agencies ends their tax-increment spending."
+    },
+    {
+     "record_id": "bd9cf12b-55cb-4898-8699-939096dff865",
+     "research_area_slug": "gun_control",
+     "stance": "against",
+     "found": "FL HB 383 (2025), Chapter 2025-120, lets police, corrections, probation officers and servicemembers skip Florida's three-day waiting period and take a gun home the same day, and widens off-duty carry (Florida House bill page and Chapter 2025-120)."
+    },
+    {
+     "record_id": "86a13ae7-d965-4238-a722-7b1c36cddb73",
+     "research_area_slug": "public_safety_and_crime_control",
+     "stance": "for",
+     "found": "FL HB 189 (2026) raised several gambling offenses to felonies, added new felonies for betting on rigged contests, and defined internet gambling broadly to reach unlicensed online operators; the House laid it on the table for the Senate version, which passed (Florida Senate bill page and Florida Politics)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6d281b11-90a3-481a-be9c-542d22971d9e",
+   "labels": [
+    {
+     "record_id": "c6952135-d4b2-4587-83a6-e7ae5bb7883c",
+     "research_area_slug": "government_efficiency",
+     "stance": "for",
+     "found": "WA HB 2540 (2026, Ch. 11) keeps three-year EMT recertification for most, but lets anyone certified in Washington 10 years or more recertify every six years, cutting repeat paperwork; it passed 92-0 (House Bill Report HB 2540)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6d3248d7-17f2-4970-a5c2-584e367372fa",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "70af0e2b-b8f3-4030-aaa8-43f0f9e5d8c5",
+     "reason": "a no vote on a staffing reshuffle; the record does not say what he wanted instead",
+     "found": "The amendment would have cut the deputy police chief post and added patrol officers; his no vote alone does not show a direction on police staffing or on spending."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6d65b1bf-44c1-4cee-b61c-4ce7f3310683",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "c460ef36-8608-4864-b910-52236a4a2fb0",
+     "reason": "property-tax levy vote, and a no vote alone does not say what he wanted instead",
+     "found": "The vote was on the Chicago Public Schools December 2025 property-tax levy amendment, which the board adopted over his objection."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6ebbe892-8f84-4793-8dd8-a79b5c68bff5",
+   "labels": [
+    {
+     "record_id": "899b8348-c29a-4dcc-9567-a0b3c7d3830d",
+     "research_area_slug": "government_efficiency",
+     "stance": "for",
+     "found": "WA HB 1899 (2025, Ch. 160) dropped the statutory requirement that the homeless point-in-time count happen every year and let Commerce set the schedule to match federal rules, while still publishing the results; it passed 95-0 (Final Bill Report SHB 1899)."
+    },
+    {
+     "record_id": "a97b7322-6df3-44c6-a61b-48ebcffacbc5",
+     "research_area_slug": "housing_affordability",
+     "stance": "for",
+     "found": "WA HB 2228 (2026, Ch. 4) orders the State Building Code Council to study and recommend allowing scissor stairs to satisfy the two-stairway rule for some apartment buildings in the 2027 code, which would make small-lot apartments easier to build (bill summary at app.leg.wa.gov and Sightline)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6ef9c67d-6c72-4862-9c35-61bb5745b82f",
+   "labels": [
+    {
+     "record_id": "947b9e78-293f-4d6c-a443-eeec4c731010",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "against",
+     "found": "WA HJM 4004 (2026) asks Congress to loosen the federal Marine Mammal Protection Act so states and tribes can manage seals and sea lions, including limited lethal removal, to protect salmon runs; it passed the House 80-16 and died in the Senate (House Bill Report HJM 4004)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6f58fe5b-4df5-4ecf-a592-e0ad1370b830",
+   "labels": [
+    {
+     "record_id": "8f2adaaa-5610-4c77-9d07-7303b6b7ed48",
+     "research_area_slug": "public_infrastructure",
+     "stance": "for",
+     "found": "The meeting approved a bid to replace the HVAC system at George Washington Elementary plus a budget amendment; the record itself states the actions."
+    },
+    {
+     "record_id": "8f2adaaa-5610-4c77-9d07-7303b6b7ed48",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "against",
+     "found": "Same meeting: the board committed money for the HVAC replacement and amended the 2025-26 budget."
+    },
+    {
+     "record_id": "a3ad82fd-778b-487c-a7a0-ffd078137279",
+     "research_area_slug": "public_education_quality",
+     "stance": "for",
+     "found": "The meeting accepted a state literacy-materials grant, approved applied-behavior-analysis service agreements for students, and accepted a hospital donation; the record itself states the actions."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6f8dbb04-1d44-4d7f-b3e4-22ccc46b482d",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "30ed468b-7d87-4101-b8bf-0c42ef6bf547",
+     "reason": "a no vote on a comprehensive plan; the record does not say what he wanted instead",
+     "found": "Ketchum adopted the comprehensive plan on the mayor's tie-breaking vote; the article does not state what change he was seeking, so the direction is unclear."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "727194df-d347-4ada-999d-d158671e4f82",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "25c3d408-76f9-4c74-b53c-f064049f7f74",
+     "reason": "adds board approval and public posting of sex-education materials; that is a control and transparency change with no clear direction on education quality",
+     "found": "Indiana SB 128 (2024) would have made school boards approve every sex-education lesson and material and post the list online; it died in the House (Indiana General Assembly bill page)."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "72b405e1-1411-4acb-9e81-34ab78e8d6b3",
+   "labels": [
+    {
+     "record_id": "c5e8d1bf-915d-42b7-a594-b7fc0828e7ab",
+     "research_area_slug": "corporate_accountability",
+     "stance": "for",
+     "found": "Illinois HB 24, Public Act 104-0033 (2025), makes any attorney-fee clause in a home repair or remodeling contract apply to both sides, so contractors can no longer write one-way fee clauses and a winning homeowner can recover fees (Public Act 104-0033)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "73b08d1a-47ee-491c-bd9e-bd7b41103ad2",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "27550d44-21b8-4f6a-bd96-fbc1c25fd59c",
+     "reason": "an appointment to a task force, not an action a voter can weigh",
+     "found": "The record is the governor naming him to the Illinois Elections and Infrastructure Integrity Task Force; no decision or vote of his own is described."
+    }
+   ]
+  },
+  {
+   "candidate_id": "775c7139-e5dc-401c-a491-54fb04b947cb",
+   "labels": [
+    {
+     "record_id": "e2ef5f27-7966-414d-9f3d-d0e39a652591",
+     "research_area_slug": "corporate_accountability",
+     "stance": "against",
+     "found": "PA HB 677 (2025) would replace the four-supervisors-per-apprentice rule with ratios set by job hazard, let small firms use 1:1 for their first three apprentices, and let non-union programs use whatever lower ratios union contracts allow; it is still in committee (PA bill page and sponsor memo)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "783125fa-61e5-48a2-886b-fe3a1ae5604b",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "90964677-d99f-444f-bfed-a16429e539e3",
+     "reason": "money moved between two supportive housing projects, so there is no net direction on housing supply",
+     "found": "The resolution shifted $611,800 of regional housing trust fund money from the Kenmore project to the Redmond project; one project gains what the other loses."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "79640a68-cc06-42d6-96aa-cccc91eea918",
+   "labels": [
+    {
+     "record_id": "5973a890-9bda-4cf1-975b-4f96d13d608d",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for",
+     "found": "Russellville Ordinance 2024-03 uses the authority in KRS 218B.130 to allow cannabis business operations in the city, with hours and signage limits, rather than banning them, so medical cannabis patients can buy locally (text of the ordinance posted on the Kentucky Medical Cannabis Program site)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7970021b-8e2c-42e2-959e-e333f824be1a",
+   "labels": [
+    {
+     "record_id": "9f7a6a7a-a317-4619-94d7-08ad8d6a88e9",
+     "research_area_slug": "data_privacy",
+     "stance": "for",
+     "found": "Ohio HB 251 makes drone evidence inadmissible in criminal cases unless police had a warrant or an emergency applied, and bars government from buying drones made by foreign adversaries; it was signed and takes effect October 6, 2026 (Ohio Legislature HB 251)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "79bf1863-0a08-45f1-8b4d-181e4bd40a92",
+   "labels": [
+    {
+     "record_id": "10ce5be9-5634-4b5f-94c1-374ea848db3b",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for",
+     "found": "The record itself is her stated opposition to a hyperscale data center in Howell Township, a project type that draws heavily on local power and water."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7b1528be-ec4e-4fba-9ad4-39a64ee8a6de",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "ebe8a885-cf63-4ad2-b8cb-bb1bfefdfeb9",
+     "reason": "procedural, no stance",
+     "found": "The ruling denied a change of venue for a retrial; it is a courtroom procedure decision, not a position on any policy area."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7b7b8951-4bc0-4fa9-8267-5af900c4a6c9",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "218c6a16-4e7e-4ad9-b6ba-b5f5920763f2",
+     "reason": "a delay in moving a program into managed care; no clear direction for a voter",
+     "found": "Colorado SB 25-294 kept youth residential mental health treatment outside Medicaid managed care until July 2026, a timing change in how care is paid for."
+    },
+    {
+     "record_id": "94415c12-b1be-4909-b70d-9ff1320c13a5",
+     "reason": "a payment-structure change; no clear direction for a voter",
+     "found": "Colorado SB 26-188 moves residential mental health care for children in county custody into managed care starting by July 2027; whether that helps or hurts access is not stated."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7c741a6a-3c3e-4d53-9852-f37682d70a6a",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "5296403e-8eed-4825-aaac-70f3b103bdb6",
+     "reason": "one-line technical change with no direction a voter could weigh",
+     "found": "Arkansas Act 954 of 2025 simply adds the state Drug Director to the list of officials who may receive confidential State Crime Laboratory records; it neither opens nor closes public access (Act 954 text)."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7d8e24f7-1196-48cb-80d4-e801eb37b451",
+   "labels": [
+    {
+     "record_id": "943e91b3-4152-49e8-8288-e9fa76ae52c7",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "against",
+     "found": "The record itself is a vote adopting Bothell's 2025-2026 mid-biennium budget amendments."
+    },
+    {
+     "record_id": "d7d113cc-3204-4439-a1ce-556fdbe1d760",
+     "research_area_slug": "public_infrastructure",
+     "stance": "for",
+     "found": "The record itself is a vote adopting updated transportation impact fees in Bothell Municipal Code Title 17, which fund road capacity from new development."
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "c993f890-a09c-43fd-af82-7fb1e47ff1db",
+     "reason": "housekeeping change to the salary commission code with no stated direction",
+     "found": "The ordinance amended the chapter governing Bothell's independent salary commission; the minutes do not say what changed or which way."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8060a7e1-0426-4b95-a3ce-53f72a74a8fc",
+   "labels": [
+    {
+     "record_id": "ef5f48c7-dabe-4d55-804f-39a31774094e",
+     "research_area_slug": "government_efficiency",
+     "stance": "for",
+     "found": "The record itself: he moved polling places out of four senior-care facilities before the March 2020 primary during the coronavirus outbreak so the election could go ahead safely."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8206c1b1-7c72-469c-96ad-71bd07c77b87",
+   "labels": [],
+   "skipped": [],
+   "retire_candidates": [
+    {
+     "record_id": "9fc1bb44-059e-4611-815a-f2ce63411e0c",
+     "reason": "ceremonial mention at a bill signing, not an action a voter can weigh",
+     "found": "The record is the governor thanking him and handing him a ceremonial pen; no act of his own is described."
+    }
+   ]
+  },
+  {
+   "candidate_id": "82470e0c-d37d-410b-81db-5d39890f5aec",
+   "labels": [
+    {
+     "record_id": "12f39030-54f4-44d1-ab91-87bea96e799b",
+     "research_area_slug": "housing_affordability",
+     "stance": "against",
+     "found": "The record itself: he asked the Troy council to oppose state bills that would take zoning power from local governments, which is the power used to block added housing."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "82937afb-9562-422f-8a79-aacd09e63765",
+   "labels": [
+    {
+     "record_id": "3f511a0f-afa9-4ea7-a779-59518f560035",
+     "research_area_slug": "housing_affordability",
+     "stance": "for",
+     "found": "Florida CS/CS/HB 691 (2026) lets owners of farm parcels surrounded by development get them certified as agricultural enclaves and build housing without a comprehensive plan amendment, with deadlines, automatic approval if missed, and limits on stricter local rules (Florida House bill page and Senate summary)."
+    },
+    {
+     "record_id": "3f511a0f-afa9-4ea7-a779-59518f560035",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "against",
+     "found": "Same bill: it strips local governments of the power to slow or condition development on those farm parcels."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "830c4b45-1946-468e-aea8-74128566906b",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "946ef040-2c5a-4df4-bc80-07f3a2f864be",
+     "reason": "a lawsuit over a budget veto; the record does not say what spending level she wanted",
+     "found": "She joined litigation challenging the county executive's full veto of the legislature's 2025 budget; the dispute was over who holds veto power, not over more or less spending."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "83bb302e-0030-46de-9e76-74e89f492d0e",
+   "labels": [
+    {
+     "record_id": "01a8b8c2-1841-4a46-9a4c-a95e0859d375",
+     "research_area_slug": "public_education_quality",
+     "stance": "against",
+     "found": "Indiana HB 1137 (2024, signed March 13, 2024) requires a principal to release a student for off-campus religious instruction on a parent's written notice, up to 120 minutes a week, and lets high schools grant credit for it, taking scheduling discretion from schools and class time from students (Indiana General Assembly bill page)."
+    },
+    {
+     "record_id": "01a8b8c2-1841-4a46-9a4c-a95e0859d375",
+     "research_area_slug": "civil_rights",
+     "stance": "for",
+     "found": "Same law: it makes release for religious instruction a parental right the school must honor."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "840f56e4-672d-42ac-b6bd-b671a5f37066",
+   "labels": [
+    {
+     "record_id": "bd71d239-e45b-40f7-8f74-9e6915a4d8a9",
+     "research_area_slug": "election_integrity",
+     "stance": "for",
+     "found": "Ohio HB 197 would move the presidential-year primary from mid-March to Ohio's normal May date so the primary date is the same every year; it is still in committee (Ohio HB 197 page and the sponsors' announcement)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "85f10274-e87f-43ee-8e9a-b4a96c051144",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "ee57ceff-bcb6-4ed5-b220-4177c9c3d732",
+     "reason": "a no vote on an impeachment resolution; the record does not state a policy position",
+     "found": "H. Res. 863 impeached Homeland Security Secretary Mayorkas and was adopted 214-213; a vote against impeachment does not by itself state a position on immigration policy."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "865112bb-87a3-4ca7-a40d-480bb6437199",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "05e933e3-eafb-401d-b97f-9ed911ba1df0",
+     "reason": "annual residency checks are an enrollment-control step with no clear direction on any allowed area",
+     "found": "PA SB 1383 would make public and charter schools verify each student's residency every year; the bill page gives no stated effect beyond the checks themselves."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "87ba2bf5-812a-4c66-911e-5face2e525da",
+   "labels": [
+    {
+     "record_id": "9e888dd6-c768-45ba-a599-dbd3bd9c7be7",
+     "research_area_slug": "reduce_wealth_gap",
+     "stance": "for",
+     "found": "Alabama HB 152 (2025) removed the 4% state sales tax from diapers, wipes, formula, bottles, breast pumps, maternity clothes and menstrual products from September 2025 through August 2028, cutting the cost of basics for families (Alabama Reflector and the Department of Revenue notice)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "880af1fb-b0fa-4f97-8a58-b8f2bb4a57de",
+   "labels": [
+    {
+     "record_id": "f1f79033-3b26-43bb-826e-db0d6e3749a6",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "against",
+     "found": "WA ESHB 1521 (2021, Ch. 83) created the warehousing and manufacturing job center assistance program and moved state general fund money each July 1 from 2021 to 2026 to cities that lost sales tax revenue when sourcing rules changed (bill text and summary at app.leg.wa.gov)."
+    },
+    {
+     "record_id": "f1f79033-3b26-43bb-826e-db0d6e3749a6",
+     "research_area_slug": "public_infrastructure",
+     "stance": "for",
+     "found": "Same law: the transfers go to warehouse- and factory-heavy city budgets that carry the road and service costs of those job centers."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "883217e0-5e23-40cc-9d2f-3a0207bbf62e",
+   "labels": [
+    {
+     "record_id": "3fa2b28a-58dd-4575-9bba-444391283c99",
+     "research_area_slug": "public_safety_and_crime_control",
+     "stance": "for",
+     "found": "Alabama HB 192 (2026) makes someone claiming self-defense preserve the weapon and hand it to police, and strips the automatic justification presumption if the weapon is altered, hidden or destroyed; stand-your-ground is untouched and it passed the House 104-0 (Alabama Reflector and Alabama Daily News)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "694ff44e-f471-4eab-baa3-1bfd6ff0ec8a",
+   "labels": [
+    {
+     "record_id": "3eed66d6-396b-4abd-bb15-1568cb955876",
+     "research_area_slug": "government_efficiency",
+     "stance": "against",
+     "found": "The roll call was on 2019 House Bill 5141, Public Act 95 of 2020, which lets clerks form joint county absentee counting boards so absentee ballots can be counted together and faster; she was one of only two no votes (MichiganVotes HB 5141 and the House Fiscal Agency analysis)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6c3fbf59-2dc3-44e1-abfc-592bd23cb9c4",
+   "labels": [
+    {
+     "record_id": "f9f3cc79-0fcd-4277-baa4-bba419b7edc8",
+     "research_area_slug": "public_education_quality",
+     "stance": "for",
+     "found": "His version of Georgia HB 127 raised paid personal and professional leave for school staff from three days to five; the Senate later swapped in a diversity, equity and inclusion ban and the bill never became law (Georgia General Assembly bill page)."
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "61cc0ac7-c4f6-4959-992e-081fd86d77e3",
+     "reason": "procedural, no stance",
+     "found": "Georgia HB 155 (2025) changed deadlines for naming annexation arbitration panelists and gave cities and counties mirror-image rights to strike each other's officials, so neither side gains (Georgia Municipal Association bill tracker)."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7a3f48b9-396a-428d-b380-a04d5e00a0b3",
+   "labels": [
+    {
+     "record_id": "f28747c2-e352-460c-b1ee-022e7f67c757",
+     "research_area_slug": "healthcare_affordability",
+     "stance": "for",
+     "found": "Georgia HB 844 (2024) would have replaced the Dietetics Practice Act and added a second license type, licensed nutritionist, opening a legal path for nutrition professionals who could not be licensed before; it died in the Senate, and the same idea passed later as HB 185 (BillTrack50 and the National Association of Nutrition Professionals)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7b5e231f-d5f6-4377-8f31-c2b819c774a2",
+   "labels": [
+    {
+     "record_id": "d3c67f0f-78f0-42df-be62-2442ed4084b2",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "against",
+     "found": "Georgia HB 1274 (2024) would have raised the veterinary loan repayment to about $25,000 a year on a guaranteed three-year schedule and widened eligible rural counties from under 35,000 people to under 50,000; it passed the House and was tabled in the Senate (LegiScan and the Gold Dome Report)."
+    },
+    {
+     "record_id": "ac099c77-8f18-4715-9b4e-b8465f2ece62",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "against",
+     "found": "Georgia HB 172 (2025), Act 119, raised the lifetime cap from $80,000 to $90,000 and the yearly rate from $20,000 to $30,000 and widened eligible counties, while limiting the program to food-animal vets with 10 years or less in that specialty (enrolled HB 172 text from the governor's office)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "82738d14-9803-491b-8a56-47d0aa3b61ba",
+   "labels": [
+    {
+     "record_id": "76afaa7b-6e4d-475c-9158-d3ca29486d2f",
+     "research_area_slug": "public_infrastructure",
+     "stance": "for",
+     "found": "Michigan SB 722 of 2025, Public Act 35 of 2026, extends commercial rehabilitation exemption certificates to the end of 2035, clarifies which properties qualify and widens the state education tax exclusion, so the tax break for rehabilitating older commercial buildings gets bigger and lasts longer (Michigan Legislature SB 722)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "84f4436a-871c-40b2-a00f-6638b9249bb9",
+   "labels": [
+    {
+     "record_id": "1b2f1a9d-2eed-485f-9bba-dbd69655d15f",
+     "research_area_slug": "public_education_quality",
+     "stance": "against",
+     "found": "Michigan HB 5797, Public Act 15 of 2026, lets districts in counties under the governor's emergency orders count up to four cancelled days as instruction; her amendment added the counties covering the May 2026 Oakland County water main break, so those students lose up to four school days (Michigan Legislature HB 5797 and the governor's press release)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "880e6566-0e4a-4043-9fe9-4f9f7cf3adfc",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "73ee8aa0-7a66-4e94-93bf-8f35552ac241",
+     "reason": "technical index swap with no direction a voter could weigh",
+     "found": "The federal government stopped publishing the Detroit consumer price index after December 2024, so Michigan HB 4543 swapped in the national index to keep the home heating credit adjusting at all; it neither raises nor lowers the credit on purpose (House Fiscal Agency analysis of HB 4543)."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6d7e34ed-d8c3-41cd-b0a7-5a883b6e3b8e",
+   "labels": [
+    {
+     "record_id": "b9cc23e2-3eaa-451c-a8d5-50f33faefc1d",
+     "research_area_slug": "gun_control",
+     "stance": "for",
+     "found": "Kansas HB 2036 (2019) was a bill to repeal the existing ban on using state appropriated money to lobby on gun control, so state agencies and universities could speak for gun laws again (Kansas Legislature HB 2036 measure page)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "6f75d78a-d7d5-488e-8c08-56d5f6af12c7",
+   "labels": [
+    {
+     "record_id": "7fe9f3d2-ecf7-4127-b702-e1bb2c92e999",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "against",
+     "found": "Arkansas Act 715 of 2021 replaced the fixed nursing home staff-to-resident ratios with a different standard and dropped the state's financial penalties for falling short, so residents lost an enforceable staffing minimum (Arkansas legislature bill page and KNWA's Act 715 explainer)."
+    },
+    {
+     "record_id": "7fe9f3d2-ecf7-4127-b702-e1bb2c92e999",
+     "research_area_slug": "corporate_accountability",
+     "stance": "against",
+     "found": "Same act: it removed the penalties the state could impose on nursing home operators that failed to meet staffing requirements."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "72f9c7d7-f2d6-49a6-8382-40d75d2961c8",
+   "labels": [
+    {
+     "record_id": "ed65374e-5ac1-43c4-9189-9e5c6c455d0a",
+     "research_area_slug": "public_safety_and_crime_control",
+     "stance": "for",
+     "found": "Montana HB 255 (2023) capped non-dealers at one detached catalytic converter sold per day, limited cash payment to $30, forced a 72-hour wait before payment, tightened records, and made transporting more than one converter without an acquisition record a crime, all aimed at converter theft (HB 255 text and MCA 30-22-104)."
+    },
+    {
+     "record_id": "9c09a560-bb64-49ff-9628-0dd87e7493fe",
+     "research_area_slug": "public_education_quality",
+     "stance": "for",
+     "found": "Montana HB 382 (2023) set up state base funding plus matching performance grants for the state's seven career and technical student organizations such as FFA, DECA and SkillsUSA (MCA 20-7-320 and the Montana Free Press bill tracker)."
+    },
+    {
+     "record_id": "9c09a560-bb64-49ff-9628-0dd87e7493fe",
+     "research_area_slug": "government_spending_reduction",
+     "stance": "against",
+     "found": "Same law: it commits about $350,000 in state money to those student organization grants."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "75d97c90-8948-4efb-85c9-7fc71f22bbf8",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "a43f416c-9cfc-4321-b815-bbb72b7c481f",
+     "reason": "could not determine the direction",
+     "found": "The city's action report names the Section 8 Administrative Plan revisions but not their content, and I found no summary of what the 2009 revisions changed for voucher holders, so I cannot say whether they widened or narrowed access."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "75f33d16-bb46-444c-98c1-58f1f4a87897",
+   "labels": [
+    {
+     "record_id": "e6fd824b-9191-4b10-ab93-10869493f6c6",
+     "research_area_slug": "public_safety_and_crime_control",
+     "stance": "for",
+     "found": "Ordinance BC-3513 replaced Overland Park's 2018 residential code with the 2024 International Residential Code, raising construction standards, with a Kansas-required carve-out letting new single-family homes under 2,500 square feet still be built to the 2018 code (Overland Park Municipal Code 16.310.100, history note Ord. No. BC-3513)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7bbdfa51-4430-436d-a145-29cde21a4501",
+   "labels": [
+    {
+     "record_id": "61a275fd-bdb0-406f-b1fe-7be992d0a612",
+     "research_area_slug": "public_education_quality",
+     "stance": "for",
+     "found": "The official Missouri House summary says HB 3482 repeals the rule barring Access Missouri grants from being used for theology or divinity degrees, so more students qualify and none lose eligibility; it never got a hearing (House bill summary HB3482I)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7bed75f9-793d-4737-98fa-59a25a898039",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "781c698a-2358-4f6b-815d-a2e768524cfe",
+     "reason": "could not determine the direction",
+     "found": "Missouri HB 777 (2013) would have let a city hospital with 250 or more beds that took no city money for 20 years become a nonprofit corporation by board vote or citywide vote, with guardrails on bonds, donated assets and any later for-profit sale; it moves control from the city to a nonprofit board, and no source says whether patients gain or lose. It died in committee (Missouri House bill summary HB0777I)."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7c96265c-d2f4-4adb-a5a6-37347cd66d0e",
+   "labels": [
+    {
+     "record_id": "d99f2ee5-f398-468c-859f-26d5af4b9067",
+     "research_area_slug": "social_programs_and_welfare",
+     "stance": "for",
+     "found": "Maine LD 2018 became Chapter 686 on April 13, 2026; it bars employers with self-insured private paid family and medical leave plans from pooling risk with other employers, while still letting them share administrative costs, so each employer must back its own benefits with a bond (enrolled bill text at legislature.maine.gov)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7cf81eef-af57-4bec-8032-3ea36ee7646c",
+   "labels": [
+    {
+     "record_id": "3d40f0b9-b2db-44ad-95fc-72b12a27b795",
+     "research_area_slug": "government_efficiency",
+     "stance": "against",
+     "found": "Maine LD 1751 trims what local comprehensive plans must inventory, lets towns skip the place-types model, lets small towns use state data instead of their own studies, and points plans toward the state Climate Action Plan; he signed the majority ought-not-to-pass report, but the minority report carried and it was signed June 20, 2025 as Public Law Chapter 393 (Maine Legislature LD 1751 status page)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "7edd58e2-1d49-43c3-bfa2-c5c7a6793d9e",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "5722d9e6-20d0-4bab-b2d5-2226763dc08f",
+     "reason": "technical hiring change with no direction a voter could weigh",
+     "found": "Maryland HB 621 (2026), Chapter 256, now lets the lawyer for a county election board be a registered voter anywhere in Maryland instead of in that county, which just widens the hiring pool for small counties (Maryland General Assembly HB 621)."
+    }
+   ],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8233c5b9-9485-4fb4-86f5-4f3c53ed6217",
+   "labels": [
+    {
+     "record_id": "687af2ab-e925-4daa-9250-9819440811f0",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for",
+     "found": "Arizona HB 2818 (2020) would have let owners of wells found to sit in a river's subflow zone file new or amended claims and seek surface water rights, reopening settled priority in the Gila River adjudication in favor of well pumpers; he voted no and the bill failed on the floor 29-31 (House Bill Summary HB2818)."
+    },
+    {
+     "record_id": "9f29782c-2ecb-4e7e-8361-f2b65fb0b094",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "against",
+     "found": "Arizona HB 2828 (2020) would have banned solar panels and electric vehicle batteries from landfills, required recycling at approved sites, and charged $5 per panel to pay for it; he voted no in committee (House Bill Summary HB2828 and Resource Recycling)."
+    },
+    {
+     "record_id": "3241edce-eb70-453b-968e-9f852a5b33f8",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for",
+     "found": "Arizona HB 2880 (2020) would have barred the water resources director from treating a change in the number of lots as a material change to a platted subdivision in the Pinal active management area, letting developers add homes without a fresh assured-water-supply review; he voted no (House and Senate summaries of HB2880)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "8499c1e2-9452-40f7-9dfa-367b929e129d",
+   "labels": [
+    {
+     "record_id": "4453f047-e876-4540-b593-b7cbe98d070e",
+     "research_area_slug": "public_safety_and_crime_control",
+     "stance": "for",
+     "found": "Arizona HB 2114 (2026) requires at least one registered owner of a motorcycle to hold a motorcycle license before the registration can be renewed after 2026, with a 30-day temporary registration for people enrolled in training, and it keeps the $1 registration contribution dedicated to the Motorcycle Safety Fund with scholarships for rural and low-income riders (LegiScan AZ HB2114 and the Senate engrossed text)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  },
+  {
+   "candidate_id": "87ef3ba2-8eeb-46f8-a70e-071926417139",
+   "labels": [
+    {
+     "record_id": "2b7cb29e-c3e9-42f8-a32b-055176447f57",
+     "research_area_slug": "corporate_accountability",
+     "stance": "for",
+     "found": "Arizona HB 2846 (2025) widened the grounds for discipline and extended them to chiropractic assistants and business entities, required fingerprint clearance for all license applicants from 2026, made chiropractors stay on site while assistants treat patients, and added new unprofessional conduct rules on soliciting vulnerable patients and sexual misconduct (House Bill Summary HB2846)."
+    }
+   ],
+   "skipped": [],
+   "retire_candidates": []
+  }
+ ]
+}

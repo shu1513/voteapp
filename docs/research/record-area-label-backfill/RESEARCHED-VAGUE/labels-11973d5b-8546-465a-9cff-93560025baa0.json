@@ -1,0 +1,24 @@
+{
+ "labels": [
+  {
+   "record_id": "6dbd1760-e2fe-4eb2-b37d-cde71100a667",
+   "research_area_slug": "social_programs_and_welfare",
+   "stance": "for"
+  },
+  {
+   "record_id": "1a4eeb91-7950-4985-8e0a-6fb72113ad8d",
+   "research_area_slug": "housing_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "4c67b39c-fe20-4d13-ad6f-aa3d29cf47fa",
+   "research_area_slug": "healthcare_affordability",
+   "stance": "for"
+  },
+  {
+   "record_id": "4c67b39c-fe20-4d13-ad6f-aa3d29cf47fa",
+   "research_area_slug": "environment_and_public_health",
+   "stance": "for"
+  }
+ ]
+}
