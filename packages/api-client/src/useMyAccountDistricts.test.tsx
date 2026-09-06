@@ -33,6 +33,7 @@ function renderWithSession(me: Me | null) {
 }
 
 const VERIFIED: Me = {
+  id: "user-a",
   email: "a@example.com",
   first_name: "A",
   email_verified: true,
