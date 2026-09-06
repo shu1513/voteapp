@@ -268,9 +268,12 @@ function WhyThisPickPanel({
 
 /**
  * Per-date fill + clear for the My Draft date cards: "Auto-fill empty picks
- * by my issues" runs fill_empty over THAT date's undecided races only, and
- * once the date has engine-owned rows a "Clear auto picks" button removes
- * them (date-scoped, so other dates' auto picks survive). No result list
+ * by my issues" runs fill_empty over THAT date's undecided races only. Once
+ * the date has engine-owned rows the fill button gives way to a "Clear auto
+ * picks" button that removes them (date-scoped, so other dates' auto picks
+ * survive) — never both at once: a rerun over the races the engine already
+ * left open repeats the same "not enough evidence", so Clear → fill again is
+ * the useful path (same rule as the web control). No result list
  * here: the caller gets the per-election results via onResults and
  * annotates its own race rows; per-race "why" details live on each election
  * screen's panel.
@@ -302,6 +305,7 @@ export function AutoPickFillControl({
     .filter((election) => !isDecidedChoice(choiceByElectionId?.get(election.id)))
     .map((election) => election.id);
   const clearable = hasClearableAutoPicks(choices, date);
+  const fillable = emptyElectionIds.length > 0 && !clearable;
 
   function onFill() {
     // Same rule as AutoPickControl: the issue-floor prompt only fires on a
@@ -315,7 +319,7 @@ export function AutoPickFillControl({
     fill.mutate(emptyElectionIds);
   }
 
-  if (emptyElectionIds.length === 0 && !clearable) {
+  if (!fillable && !clearable) {
     return null;
   }
 
@@ -323,7 +327,7 @@ export function AutoPickFillControl({
   return (
     <View className="mt-2">
       <View className="flex-row flex-wrap items-center gap-2">
-        {emptyElectionIds.length > 0 ? (
+        {fillable ? (
           <Pressable
             disabled={fillDisabled}
             onPress={onFill}
@@ -350,10 +354,14 @@ export function AutoPickFillControl({
           </Pressable>
         ) : null}
       </View>
-      <Text className="mt-1 text-xs text-ink-soft">
-        Picks the best match for your ranked issues in each race you haven&apos;t decided. Your own picks are never
-        changed.
-      </Text>
+      {fillable ? (
+        // Describes the fill button, so it leaves with it; the Auto chips on
+        // the rows say what Clear removes.
+        <Text className="mt-1 text-xs text-ink-soft">
+          Picks the best match for your ranked issues in each race you haven&apos;t decided. Your own picks are never
+          changed.
+        </Text>
+      ) : null}
       {prompt ? (
         <View className="mt-2">
           <RankIssuesPrompt plural />

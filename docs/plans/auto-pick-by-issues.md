@@ -24,7 +24,11 @@ Two entry points, one engine:
 - **My Picks page** (`/me/picks`, the signed-in "My Draft") — each election
   date's card (and ballot-view sheet) carries its own "Auto-pick my empty
   picks by my issues" button that runs the engine over THAT date's undecided
-  races only, plus a date-scoped "Clear auto picks" once engine rows exist.
+  races only; once engine rows exist for that date the fill button gives way
+  to a date-scoped "Clear auto picks" (never both at once — a rerun over the
+  races the engine already left open repeats the same "not enough evidence",
+  so Clear → fill again is the useful path, and it also recomputes the
+  earlier auto picks after the user re-ranks issues; 2026-09-06).
   Filling never changes an existing pick (manual or auto); "Clear auto
   picks" removes only that date's auto-origin rows. No separate result list: each still-open
   race row gets the one-line reason ("auto pick: not enough evidence")

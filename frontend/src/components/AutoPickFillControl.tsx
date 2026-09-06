@@ -19,9 +19,13 @@ import { countBucket, currentAttribution, errorCategoryOf, track } from "../lib/
 // only — the ballot preview imitates a paper ballot and stays free of app
 // machinery) gets its own "Auto-fill empty picks by my issues" button that
 // runs POST /api/me/auto-picks in fill_empty mode over THAT date's undecided
-// races only, and — once that date has engine-owned rows — a "Clear auto
-// picks" button that DELETEs with ?election_date= so other dates' auto picks
-// survive. The mutations, chunking, and reason copy live in
+// races only. Once that date has engine-owned rows the fill button gives way
+// to a "Clear auto picks" button that DELETEs with ?election_date= so other
+// dates' auto picks survive: the two never show together, because a rerun
+// over the races the engine already left open returns the same "not enough
+// evidence" (same issues, same data), so the only useful next step is Clear
+// → fill again, which also recomputes the earlier auto picks after the user
+// re-ranks issues. The mutations, chunking, and reason copy live in
 // @voteapp/api-client (shared with the mobile port). No result list here:
 // the caller gets the per-election results via onResults and annotates its
 // own race rows ("auto pick: not enough evidence"); per-race "why" details
@@ -56,6 +60,7 @@ export function AutoPickFillControl({
     .filter((election) => !isDecidedChoice(choiceByElectionId?.get(election.id)))
     .map((election) => election.id);
   const clearable = hasClearableAutoPicks(choices, date);
+  const fillable = emptyElectionIds.length > 0 && !clearable;
 
   const fill = useAutoPickFill(onResults);
   const clear = useClearAutoPicks(onResults);
@@ -89,14 +94,14 @@ export function AutoPickFillControl({
     );
   }
 
-  if (emptyElectionIds.length === 0 && !clearable) {
+  if (!fillable && !clearable) {
     return null;
   }
 
   return (
     <div className="mt-2 print:hidden">
       <div className="flex flex-wrap items-center gap-2">
-        {emptyElectionIds.length > 0 ? (
+        {fillable ? (
           <button
             type="button"
             disabled={saving || preferencesLoading}
@@ -117,10 +122,14 @@ export function AutoPickFillControl({
           </button>
         ) : null}
       </div>
-      <p className="mt-1 text-xs text-ink-soft">
-        Picks the best match for your ranked issues in each race you haven't decided. Your own picks
-        are never changed.
-      </p>
+      {fillable ? (
+        // Describes the fill button, so it leaves with it; the Auto chips on
+        // the rows say what Clear removes.
+        <p className="mt-1 text-xs text-ink-soft">
+          Picks the best match for your ranked issues in each race you haven't decided. Your own
+          picks are never changed.
+        </p>
+      ) : null}
       {prompt ? (
         <p role="status" className="mt-2 rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-mid">
           Rank at least {MIN_AUTO_PICK_ISSUES} issues first, so the picks reflect what matters to you.{" "}
