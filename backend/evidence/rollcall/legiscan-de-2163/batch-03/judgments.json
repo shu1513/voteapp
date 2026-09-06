@@ -1,0 +1,360 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1668823,
+      "measure_id": "HB 150",
+      "vote_date": "2026-03-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 150, which bars civil arrests at Delaware courthouses. A civil arrest is one that is not for a crime and not ordered by a judge. The ban covers people going to, attending, or leaving a court case. It also covers the Industrial Accident Board, which hears workers' compensation cases. It reaches the sidewalks, parking areas, and grounds next to those buildings. Officers may still make a civil arrest inside if they give the judge written notice first. A person arrested in breach of the law may sue for false imprisonment. The Delaware House passed it 25-13, and it became law.",
+      "nay_description": "Voted against House Bill 150, which bars civil arrests at Delaware courthouses. A civil arrest is one that is not for a crime and not ordered by a judge. The ban covers people going to, attending, or leaving a court case. It also covers the Industrial Accident Board, which hears workers' compensation cases. It reaches the sidewalks, parking areas, and grounds next to those buildings. Officers may still make a civil arrest inside if they give the judge written notice first. A person arrested in breach of the law may sue for false imprisonment. The Delaware House passed it 25-13, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1713105,
+      "measure_id": "HB 233",
+      "vote_date": "2026-06-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 233, which makes very large power users pay their own way. A large energy use facility is a site that draws huge amounts of electricity, such as a data center. Before it can open, state regulators must approve an electric service agreement with the utility. The law says other homes and businesses should not carry the cost or risk of hooking up these sites. Regulators must set a separate rate class for them. Utilities must also write a plan that cuts power to these sites first in an emergency. A site can escape that rule if it builds matching new clean generation. The Delaware Senate passed it 15-6, and it became law.",
+      "nay_description": "Voted against House Bill 233, which makes very large power users pay their own way. A large energy use facility is a site that draws huge amounts of electricity, such as a data center. Before it can open, state regulators must approve an electric service agreement with the utility. The law says other homes and businesses should not carry the cost or risk of hooking up these sites. Regulators must set a separate rate class for them. Utilities must also write a plan that cuts power to these sites first in an emergency. A site can escape that rule if it builds matching new clean generation. The Delaware Senate passed it 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1713106,
+      "measure_id": "HB 233",
+      "vote_date": "2026-07-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 233, which makes very large power users pay their own way. A large energy use facility is a site that draws huge amounts of electricity, such as a data center. Before it can open, state regulators must approve an electric service agreement with the utility. The law says other homes and businesses should not carry the cost or risk of hooking up these sites. Regulators must set a separate rate class for them. Utilities must also write a plan that cuts power to these sites first in an emergency. A site can escape that rule if it builds matching new clean generation. The Delaware House passed it 27-8, and it became law.",
+      "nay_description": "Voted against House Bill 233, which makes very large power users pay their own way. A large energy use facility is a site that draws huge amounts of electricity, such as a data center. Before it can open, state regulators must approve an electric service agreement with the utility. The law says other homes and businesses should not carry the cost or risk of hooking up these sites. Regulators must set a separate rate class for them. Utilities must also write a plan that cuts power to these sites first in an emergency. A site can escape that rule if it builds matching new clean generation. The Delaware House passed it 27-8, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1713349,
+      "measure_id": "HB 310",
+      "vote_date": "2026-06-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 310, which takes a business tax break away from very large power users. Delaware gives tax credits and lower fees to firms that build or grow a site and add jobs. A large energy use facility is a site that draws huge amounts of power, such as a data center. The act says those sites no longer count for the tax break. A site can still get it if all of its yearly power comes from clean or nuclear sources in or near Delaware. The Delaware Senate passed it 15-6, and it became law.",
+      "nay_description": "Voted against House Bill 310, which takes a business tax break away from very large power users. Delaware gives tax credits and lower fees to firms that build or grow a site and add jobs. A large energy use facility is a site that draws huge amounts of power, such as a data center. The act says those sites no longer count for the tax break. A site can still get it if all of its yearly power comes from clean or nuclear sources in or near Delaware. The Delaware Senate passed it 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1713350,
+      "measure_id": "HB 310",
+      "vote_date": "2026-07-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 310, which takes a business tax break away from very large power users. Delaware gives tax credits and lower fees to firms that build or grow a site and add jobs. A large energy use facility is a site that draws huge amounts of power, such as a data center. The act says those sites no longer count for the tax break. A site can still get it if all of its yearly power comes from clean or nuclear sources in or near Delaware. The Delaware House passed it 26-11, and it became law.",
+      "nay_description": "Voted against House Bill 310, which takes a business tax break away from very large power users. Delaware gives tax credits and lower fees to firms that build or grow a site and add jobs. A large energy use facility is a site that draws huge amounts of power, such as a data center. The act says those sites no longer count for the tax break. A site can still get it if all of its yearly power comes from clean or nuclear sources in or near Delaware. The Delaware House passed it 26-11, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1709867,
+      "measure_id": "HB 368",
+      "vote_date": "2026-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 368, which limits how Delaware police work with federal immigration agents. Police may not hold someone just because agents ask them to on a form no judge signed. They may still hold people convicted of a violent felony or of two or more drunk driving charges. The same goes for registered sex offenders and domestic violence offenders. Police may not stop or search a person only over their immigration status. They may not ask about that status unless it bears on a serious crime they are looking into. They may not help with raids, hand people to agents, or warn agents about a release. Police must still enforce state criminal law and obey court orders. Each agency must report once a year to the Attorney General. The Delaware House passed it 23-13, and it became law.",
+      "nay_description": "Voted against House Bill 368, which limits how Delaware police work with federal immigration agents. Police may not hold someone just because agents ask them to on a form no judge signed. They may still hold people convicted of a violent felony or of two or more drunk driving charges. The same goes for registered sex offenders and domestic violence offenders. Police may not stop or search a person only over their immigration status. They may not ask about that status unless it bears on a serious crime they are looking into. They may not help with raids, hand people to agents, or warn agents about a release. Police must still enforce state criminal law and obey court orders. Each agency must report once a year to the Attorney General. The Delaware House passed it 23-13, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1711977,
+      "measure_id": "HB 368",
+      "vote_date": "2026-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 368, which limits how Delaware police work with federal immigration agents. Police may not hold someone just because agents ask them to on a form no judge signed. They may still hold people convicted of a violent felony or of two or more drunk driving charges. The same goes for registered sex offenders and domestic violence offenders. Police may not stop or search a person only over their immigration status. They may not ask about that status unless it bears on a serious crime they are looking into. They may not help with raids, hand people to agents, or warn agents about a release. Police must still enforce state criminal law and obey court orders. Each agency must report once a year to the Attorney General. The Delaware Senate passed it 15-6, and it became law.",
+      "nay_description": "Voted against House Bill 368, which limits how Delaware police work with federal immigration agents. Police may not hold someone just because agents ask them to on a form no judge signed. They may still hold people convicted of a violent felony or of two or more drunk driving charges. The same goes for registered sex offenders and domestic violence offenders. Police may not stop or search a person only over their immigration status. They may not ask about that status unless it bears on a serious crime they are looking into. They may not help with raids, hand people to agents, or warn agents about a release. Police must still enforce state criminal law and obey court orders. Each agency must report once a year to the Attorney General. The Delaware Senate passed it 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1698281,
+      "measure_id": "HB 369",
+      "vote_date": "2026-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 369, which puts the Office of Gun Violence Prevention and Community Safety into state law. The governor set up the office by order in May 2025. A later governor could undo an order, but not a law. The office sits in the Department of Safety and Homeland Security. Its director ties together state, county, and city work on gun violence. The director also tells the secretary about problems that keep coming back. State agencies that work on this must help the office. The Delaware House passed it 27-12, and it became law.",
+      "nay_description": "Voted against House Bill 369, which puts the Office of Gun Violence Prevention and Community Safety into state law. The governor set up the office by order in May 2025. A later governor could undo an order, but not a law. The office sits in the Department of Safety and Homeland Security. Its director ties together state, county, and city work on gun violence. The director also tells the secretary about problems that keep coming back. State agencies that work on this must help the office. The Delaware House passed it 27-12, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1710252,
+      "measure_id": "HB 369",
+      "vote_date": "2026-06-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 369, which puts the Office of Gun Violence Prevention and Community Safety into state law. The governor set up the office by order in May 2025. A later governor could undo an order, but not a law. The office sits in the Department of Safety and Homeland Security. Its director ties together state, county, and city work on gun violence. The director also tells the secretary about problems that keep coming back. State agencies that work on this must help the office. The Delaware Senate passed it 15-4, and it became law.",
+      "nay_description": "Voted against House Bill 369, which puts the Office of Gun Violence Prevention and Community Safety into state law. The governor set up the office by order in May 2025. A later governor could undo an order, but not a law. The office sits in the Department of Safety and Homeland Security. Its director ties together state, county, and city work on gun violence. The director also tells the secretary about problems that keep coming back. State agencies that work on this must help the office. The Delaware Senate passed it 15-4, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1701182,
+      "measure_id": "HB 380",
+      "vote_date": "2026-05-21",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 380, which widens Delaware's personal data privacy law. That law gives people rights over data companies hold about them. Before, it covered firms handling data on 35,000 or more Delawareans. The act lowers that to 10,000, so many more firms are covered. For firms that make over a fifth of their money selling data, the line drops from 10,000 to 5,000. Outside companies that receive personal data are now covered too and must follow the contract terms. Banks and insurers keep a narrower exemption than before. The changes start on January 1, 2027. The Delaware House passed it 30-9, and it became law.",
+      "nay_description": "Voted against House Bill 380, which widens Delaware's personal data privacy law. That law gives people rights over data companies hold about them. Before, it covered firms handling data on 35,000 or more Delawareans. The act lowers that to 10,000, so many more firms are covered. For firms that make over a fifth of their money selling data, the line drops from 10,000 to 5,000. Outside companies that receive personal data are now covered too and must follow the contract terms. Banks and insurers keep a narrower exemption than before. The changes start on January 1, 2027. The Delaware House passed it 30-9, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1709692,
+      "measure_id": "HB 380",
+      "vote_date": "2026-06-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 380, which widens Delaware's personal data privacy law. That law gives people rights over data companies hold about them. Before, it covered firms handling data on 35,000 or more Delawareans. The act lowers that to 10,000, so many more firms are covered. For firms that make over a fifth of their money selling data, the line drops from 10,000 to 5,000. Outside companies that receive personal data are now covered too and must follow the contract terms. Banks and insurers keep a narrower exemption than before. The changes start on January 1, 2027. The Delaware Senate passed it 15-6, and it became law.",
+      "nay_description": "Voted against House Bill 380, which widens Delaware's personal data privacy law. That law gives people rights over data companies hold about them. Before, it covered firms handling data on 35,000 or more Delawareans. The act lowers that to 10,000, so many more firms are covered. For firms that make over a fifth of their money selling data, the line drops from 10,000 to 5,000. Outside companies that receive personal data are now covered too and must follow the contract terms. Banks and insurers keep a narrower exemption than before. The changes start on January 1, 2027. The Delaware Senate passed it 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1708860,
+      "measure_id": "HB 418",
+      "vote_date": "2026-06-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 418, which gives owners of unmarked guns a way to comply with Delaware's ghost gun ban. A ghost gun has no serial number, so it cannot be traced. The act keeps the ban in place. People who legally owned such a gun before the law took effect get six months to act. They must either have a licensed dealer stamp a serial number on it or make it permanently unusable. Getting it back after stamping counts as a transfer and requires a background check. The act also spells out what permanently unusable means. The Delaware House passed it 28-8, and it became law.",
+      "nay_description": "Voted against House Bill 418, which gives owners of unmarked guns a way to comply with Delaware's ghost gun ban. A ghost gun has no serial number, so it cannot be traced. The act keeps the ban in place. People who legally owned such a gun before the law took effect get six months to act. They must either have a licensed dealer stamp a serial number on it or make it permanently unusable. Getting it back after stamping counts as a transfer and requires a background check. The act also spells out what permanently unusable means. The Delaware House passed it 28-8, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1713220,
+      "measure_id": "HB 418",
+      "vote_date": "2026-07-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 418, which gives owners of unmarked guns a way to comply with Delaware's ghost gun ban. A ghost gun has no serial number, so it cannot be traced. The act keeps the ban in place. People who legally owned such a gun before the law took effect get six months to act. They must either have a licensed dealer stamp a serial number on it or make it permanently unusable. Getting it back after stamping counts as a transfer and requires a background check. The act also spells out what permanently unusable means. The Delaware Senate passed it 15-6, and it became law.",
+      "nay_description": "Voted against House Bill 418, which gives owners of unmarked guns a way to comply with Delaware's ghost gun ban. A ghost gun has no serial number, so it cannot be traced. The act keeps the ban in place. People who legally owned such a gun before the law took effect get six months to act. They must either have a licensed dealer stamp a serial number on it or make it permanently unusable. Getting it back after stamping counts as a transfer and requires a background check. The act also spells out what permanently unusable means. The Delaware Senate passed it 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1684513,
+      "measure_id": "HB 94",
+      "vote_date": "2026-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 94, which keeps Delaware police out of federal immigration actions at certain places. The places are schools and other child-serving sites, colleges, places of worship, and health care sites. Police may not help federal agents arrest, detain, or search at those places. The one exception is an urgent risk to someone's safety. Police may still help with criminal immigration cases under a valid court order. When the urgent exception is used, the agency must file a written report within two days. The state must gather those reports and send them to the governor and lawmakers twice a year. The Delaware House passed it 27-14, and it became law.",
+      "nay_description": "Voted against House Bill 94, which keeps Delaware police out of federal immigration actions at certain places. The places are schools and other child-serving sites, colleges, places of worship, and health care sites. Police may not help federal agents arrest, detain, or search at those places. The one exception is an urgent risk to someone's safety. Police may still help with criminal immigration cases under a valid court order. When the urgent exception is used, the agency must file a written report within two days. The state must gather those reports and send them to the governor and lawmakers twice a year. The Delaware House passed it 27-14, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1711976,
+      "measure_id": "HB 94",
+      "vote_date": "2026-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 94, which keeps Delaware police out of federal immigration actions at certain places. The places are schools and other child-serving sites, colleges, places of worship, and health care sites. Police may not help federal agents arrest, detain, or search at those places. The one exception is an urgent risk to someone's safety. Police may still help with criminal immigration cases under a valid court order. When the urgent exception is used, the agency must file a written report within two days. The state must gather those reports and send them to the governor and lawmakers twice a year. The Delaware Senate passed it 15-6, and it became law.",
+      "nay_description": "Voted against House Bill 94, which keeps Delaware police out of federal immigration actions at certain places. The places are schools and other child-serving sites, colleges, places of worship, and health care sites. Police may not help federal agents arrest, detain, or search at those places. The one exception is an urgent risk to someone's safety. Police may still help with criminal immigration cases under a valid court order. When the urgent exception is used, the agency must file a written report within two days. The state must gather those reports and send them to the governor and lawmakers twice a year. The Delaware Senate passed it 15-6, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "house",
+      "session": "2163",
+      "roll": 1712097,
+      "measure_id": "SB 300",
+      "vote_date": "2026-06-25",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 300, which requires gun dealers in Delaware to hold a state license. The license comes from the Delaware State Police and sits on top of the federal one. It costs $300 at first and $250 to renew. A dealer must fit an alarm and a camera system that records sales and storage areas. Staff must take a course on spotting straw buyers and gun trafficking. Employees must pass background checks, and the state police may inspect the shop. The state must revoke the license of a dealer convicted of a felony or of gun trafficking. The rules apply to sellers who move more than ten guns a year. The Delaware House passed it 27-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 300, which requires gun dealers in Delaware to hold a state license. The license comes from the Delaware State Police and sits on top of the federal one. It costs $300 at first and $250 to renew. A dealer must fit an alarm and a camera system that records sales and storage areas. Staff must take a course on spotting straw buyers and gun trafficking. Employees must pass background checks, and the state police may inspect the shop. The state must revoke the license of a dealer convicted of a felony or of gun trafficking. The rules apply to sellers who move more than ten guns a year. The Delaware House passed it 27-11, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "DE",
+      "chamber": "senate",
+      "session": "2163",
+      "roll": 1712692,
+      "measure_id": "SB 300",
+      "vote_date": "2026-06-30",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 300, which requires gun dealers in Delaware to hold a state license. The license comes from the Delaware State Police and sits on top of the federal one. It costs $300 at first and $250 to renew. A dealer must fit an alarm and a camera system that records sales and storage areas. Staff must take a course on spotting straw buyers and gun trafficking. Employees must pass background checks, and the state police may inspect the shop. The state must revoke the license of a dealer convicted of a felony or of gun trafficking. The rules apply to sellers who move more than ten guns a year. The Delaware Senate passed it 14-7, and it became law.",
+      "nay_description": "Voted against Senate Bill 300, which requires gun dealers in Delaware to hold a state license. The license comes from the Delaware State Police and sits on top of the federal one. It costs $300 at first and $250 to renew. A dealer must fit an alarm and a camera system that records sales and storage areas. Staff must take a course on spotting straw buyers and gun trafficking. Employees must pass background checks, and the state police may inspect the shop. The state must revoke the license of a dealer convicted of a felony or of gun trafficking. The rules apply to sellers who move more than ten guns a year. The Delaware Senate passed it 14-7, and it became law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
