@@ -65,10 +65,10 @@ describe("ResearchAreaPicker", () => {
     await user.click(screen.getByRole("button", { name: /Must.*Healthcare/ }));
     expect(onChange).toHaveBeenLastCalledWith([{ ...ranked[0], hard_veto: true }, ranked[1]]);
 
-    // Ethics: no direction control (an ethics record is always a strike),
-    // and the must reads as "skip anyone with such a record".
+    // Ethics: no direction control (a negative ethics record is always a
+    // strike), and the must reads as "skip anyone with such a record".
     expect(screen.getAllByRole("button", { name: "Support" })).toHaveLength(1);
-    await user.click(screen.getByRole("button", { name: /Skip candidates with any documented ethics or conviction record/ }));
+    await user.click(screen.getByRole("button", { name: /Skip candidates with a negative ethics record/ }));
     expect(onChange).toHaveBeenLastCalledWith([ranked[0], { ...ranked[1], hard_veto: true }]);
 
     await user.click(screen.getByRole("button", { name: "Remove Healthcare Affordability" }));

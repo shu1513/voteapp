@@ -163,8 +163,14 @@ function issueWeights(issues: readonly AutoPickIssue[]): Map<string, number> {
 /**
  * Effective stance of one record tag under the user's direction on that
  * issue: +1 agrees with the user's position, −1 conflicts. An
- * integrity_and_ethics tag means "an ethics/discipline record exists" (stance
- * is forbidden there) and always counts −1. Returns null for tags that carry
+ * integrity_and_ethics tag means "a NEGATIVE ethics record exists" — an
+ * adverse action against the candidate personally by an official body
+ * (conviction, charge, censure, fine, suspension, substantiated finding) —
+ * so it always counts −1 (stance is forbidden there). The tagging rule
+ * (candidateRecordAreaLabelPrompt.ts, manual-research records-import.md)
+ * keeps cleared complaints, unofficial allegations, and the candidate's own
+ * reform work OUT of this tag; the 2026-09-06 retag pass removed the ones
+ * that had slipped in. Returns null for tags that carry
  * no signal (stance NULL on a stanced area — the tagging policy forbids it,
  * but stored data is not trusted to be clean).
  */
