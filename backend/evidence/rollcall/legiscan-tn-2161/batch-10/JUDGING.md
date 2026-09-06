@@ -13,9 +13,10 @@ database.
 | HB 7002 | senate 1695421 | 22-8 | same act |
 | HB 7003 | house 1695538 | 64-25 | redraws the congressional district lines set earlier in 2026 |
 
-HB 7002 is **Public Chapter 1**, signed 2026-07-27. HB 7003 is **Public Chapter
-3**, signed 2026-06-03. Both were confirmed on the General Assembly's own bill
-pages, not from the dataset.
+Both were signed by the Governor on 2026-05-07, the day they passed. HB 7002 is
+**Public Chapter 1** (chapter assigned 2026-07-27) and HB 7003 is **Public
+Chapter 3** (assigned 2026-06-03). Both were confirmed on the General Assembly's
+own bill pages, not from the dataset.
 
 ## Why no stance, in the state's own terms
 

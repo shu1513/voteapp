@@ -8,8 +8,8 @@ route on 2026-09-06**: import with a neutral description and no stance
 
 | measure | roll | tally | act | what it did |
 |---|---|---|---|---|
-| S 933 | house 1697896 | 59-48 | Act 200 | sets legislator pay at $15,000 plus a $32,500 in-district allowance, adjusted for inflation every two years, capped at 5% |
-| S 508 | house 1698173 | 79-28 | Act 224 | widens which monuments may not be moved; only the General Assembly may act, by joint resolution; a registered nonprofit may sue to stop a forbidden action |
+| S 933 | house 1697896 | 59-48 | Act 200 | sets legislator pay at $15,000 plus a $32,500 in-district allowance, adjusted for inflation every two years, capped at 5%; a member must accept the raise in writing or keep the old pay (§ 2-3-20(D)) |
+| S 508 | house 1698173 | 79-28 | Act 224 | widens which monuments may not be moved; only the General Assembly may act, by joint resolution; a registered heritage ("affinity") or monument-preservation nonprofit with a record of that work may sue to stop a forbidden action (§ 10-1-165(A), (F)) |
 | H 3558 | house 1711985 | 74-27 | Act 247 | sets who may serve as a South Carolina commissioner at an Article V convention, and their appointment, oath and duties |
 
 Every act number, ratification and veto date was read from
@@ -55,3 +55,19 @@ South Carolina scope that does not exist yet.
 
 South Carolina now holds **897 roll-call records**, local `voteapp` only.
 Production still has none.
+
+## Review fixes (2026-09-06)
+
+PR review read the enacted texts and caught two omissions, both fixed by
+re-applying the judgments (`rollcall:judge`: 2 updated, 1 unchanged) and
+re-importing (`import-dry-run-rerun-report.json` then
+`import-rerun-report.json`: **201 `rewrite`, 95 `unchanged`**):
+
+- **S 933** — § 2-3-20(D): a member of the 128th General Assembly gets the
+  raise only after filing a written acceptance with the chamber clerk;
+  otherwise they keep 126th-General-Assembly pay. Both sentences now say so
+  (100 records rewritten).
+- **S 508** — § 10-1-165(A) and (F): the right to sue belongs to a defined
+  "affinity organization" or "monument preservation organization" — a
+  registered nonprofit established for that purpose with a demonstrable
+  record — not any registered nonprofit (101 records rewritten).
