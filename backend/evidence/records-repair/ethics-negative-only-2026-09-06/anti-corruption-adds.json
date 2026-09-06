@@ -1,0 +1,362 @@
+[
+ {
+  "idx": 36,
+  "record_id": "4f9fccc2-63b1-4d3b-8465-301925e4e5b2",
+  "candidate_id": "b5ebfc1a-e9dd-4cb9-a91c-cb32501dcd99",
+  "candidate_name": "Allison Pickard",
+  "stance": "against",
+  "other_tags": null,
+  "upcoming": "77c587f1-ad79-4b51-be08-054d15471152|2026-11-03|County Executive",
+  "desc": "Voted against Bill 23-26, which would have prohibited certain campaign contributions and required de"
+ },
+ {
+  "idx": 55,
+  "record_id": "edccea16-03ee-4fd0-8ed0-0b72e88d7f8e",
+  "candidate_id": "4b137258-23d0-45fb-a778-e21309f4e402",
+  "candidate_name": "Andy Biggs",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Biggs voted for the Epstein Files Transparency Act, which passed the U.S. House."
+ },
+ {
+  "idx": 56,
+  "record_id": "7ed13bdf-6456-49f9-afd1-a1e362e379d5",
+  "candidate_id": "4b137258-23d0-45fb-a778-e21309f4e402",
+  "candidate_name": "Andy Biggs",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "The U.S. House unanimously passed Biggs's TRUE Accountability Act requiring agencies to use Governme"
+ },
+ {
+  "idx": 91,
+  "record_id": "91b0186e-6d03-4c68-9c7a-94fd9a123a0f",
+  "candidate_id": "53d056c5-ade6-4000-a500-a1f59e4ffb99",
+  "candidate_name": "Arnold Jensen",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": "b380e958-61d1-4bdf-b3aa-3a8baecd06d5|2026-11-03|State Lower Chamber Legislator",
+  "desc": "Voted for HB 5039, adding transparency, reporting, and oversight requirements for legislatively dire"
+ },
+ {
+  "idx": 93,
+  "record_id": "544fead5-58c0-49a1-a519-544c49b542d2",
+  "candidate_id": "16c514c1-ea8d-43db-9191-1aafef129090",
+  "candidate_name": "Avelino Valencia",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": "eaec1bcb-1c8a-49f5-8e61-252a7a1d9277|2026-11-03|State Senator",
+  "desc": "Wrote a California law, signed in September 2024, barring candidates and officeholders from using ca"
+ },
+ {
+  "idx": 117,
+  "record_id": "701e3a04-c9ca-4701-a84a-32639632fc9c",
+  "candidate_id": "cb53cd69-6a4e-46f6-9ae9-3b8153d96641",
+  "candidate_name": "Bishop, Click",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Voted for House Bill 44 tightening legislative ethics, conflict-of-interest, and per-diem rules; the"
+ },
+ {
+  "idx": 118,
+  "record_id": "d58ff911-347d-4777-a2f2-0a97838c1213",
+  "candidate_id": "cb53cd69-6a4e-46f6-9ae9-3b8153d96641",
+  "candidate_name": "Bishop, Click",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Voted for Senate Bill 89 strengthening legislative ethics and conflict-of-interest rules; the bill b"
+ },
+ {
+  "idx": 130,
+  "record_id": "0dd2a971-2d7b-4314-8eae-d6b18a53705a",
+  "candidate_id": "abad9574-495b-46b9-b285-6f3c50fb57cb",
+  "candidate_name": "Brian J. Feldman",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": "aacfd4ed-f13e-4bd3-9de0-88a430d94f5b|2026-11-03|State Senator",
+  "desc": "Co-sponsored SB0723, Public Ethics\u2014Conflicts of Interest and Blind Trust\u2014Governor, requiring specifi"
+ },
+ {
+  "idx": 155,
+  "record_id": "eea0c45f-0946-418b-b4b9-474208dc21ff",
+  "candidate_id": "c822311b-69a1-4989-8c83-c07fe2bdaee8",
+  "candidate_name": "Charlane Oliver",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Oliver sponsored SB 944, enacted in 2023 to require the Board of Judicial Conduct to notify complain"
+ },
+ {
+  "idx": 189,
+  "record_id": "cff1f219-a457-46a8-8512-fd249e357a44",
+  "candidate_id": "6295d98a-db16-4bf4-8bb0-c62387b27d25",
+  "candidate_name": "Dani Isaacsohn",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": "95d84245-d665-4845-a26c-c0f5836f057a|2026-11-03|State Lower Chamber Legislator",
+  "desc": "Was a joint lead sponsor of Ohio House Bill 250, the Ohio Anti-Corruption Act, introduced April 29, "
+ },
+ {
+  "idx": 202,
+  "record_id": "0aa9f63e-64f5-4116-a4bc-4693b03ab210",
+  "candidate_id": "6ec403a6-b1b3-4235-aece-26017b36e277",
+  "candidate_name": "David Bartholomew",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": "f4a6acfe-5db9-49ea-b144-71550d21d0d0|2026-11-03|County Supervisor",
+  "desc": "On 2024-03-27, David Bartholomew emailed Beaufort County Council colleagues urging the county to wai"
+ },
+ {
+  "idx": 203,
+  "record_id": "5a10ecf6-4d14-4add-8337-4c292cee074d",
+  "candidate_id": "6ec403a6-b1b3-4235-aece-26017b36e277",
+  "candidate_name": "David Bartholomew",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": "f4a6acfe-5db9-49ea-b144-71550d21d0d0|2026-11-03|County Supervisor",
+  "desc": "On 2025-01-13, David Bartholomew moved for Beaufort County Council to waive attorney-client privileg"
+ },
+ {
+  "idx": 228,
+  "record_id": "14540680-f9bd-4a72-bb35-4547e3d3c9d9",
+  "candidate_id": "84f4436a-871c-40b2-a00f-6638b9249bb9",
+  "candidate_name": "Donni Steele",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Secured committee support for House Bill 5901, expanding Michigan public-financial-disclosure requir"
+ },
+ {
+  "idx": 236,
+  "record_id": "df40859f-f791-452b-8c7b-3aadf525a567",
+  "candidate_id": "4fb3c062-73c9-4531-964d-f7e834406e37",
+  "candidate_name": "Dusty Johnson",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": "c6a40c5e-0768-4ecc-8f59-bec3d612ae37|2026-11-03|State Lower Chamber Legislator",
+  "desc": "Sponsored SB26-147, which regulated lobbyists; the governor vetoed the bill."
+ },
+ {
+  "idx": 242,
+  "record_id": "0226f18c-600b-43a3-a474-f48275351fef",
+  "candidate_id": "46c392f0-36ae-4c40-9760-8a543df3bef4",
+  "candidate_name": "Edward DeLaney",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": "c57d1e8c-cef1-41a9-aa01-97953a9061ff|2026-11-03|State Lower Chamber Legislator",
+  "desc": "On 2026-02-12, State Rep. Ed DeLaney offered an amendment to Senate Bill 226 requiring state contrac"
+ },
+ {
+  "idx": 268,
+  "record_id": "3163f9a1-ec8a-4a0b-b18c-53b43bbb48b6",
+  "candidate_id": "e5453938-a313-408d-94f2-e8932e5a030c",
+  "candidate_name": "Frederick A Larson",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": "d695d1e1-2e62-469a-90f9-77a9c98371e4|2026-11-03|County Supervisor",
+  "desc": "Frederick Larson signed Chautauqua County Resolution 100-26, directing the Legislature clerk to publ"
+ },
+ {
+  "idx": 292,
+  "record_id": "6dabb328-8b9d-4213-a18a-d101fc8017fc",
+  "candidate_id": "f263073f-4bf8-4002-9663-d3ce33440be7",
+  "candidate_name": "Greg Landsman",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": "7ee0e08c-b72c-4bc7-8b7f-8451808f05a3|2026-11-03|United States Representative",
+  "desc": "On June 9, 2026, Greg Landsman introduced H.R. 9222, the Drain the Swamp Act, a package of anti-corr"
+ },
+ {
+  "idx": 309,
+  "record_id": "75ee6c00-72eb-4e4b-8954-eeab8afb1942",
+  "candidate_id": "fd9f5a81-b2d1-4d13-8734-e74306ef175d",
+  "candidate_name": "Harriet Hageman",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "On June 30, 2026, voted yes on a resolution telling the House Ethics Committee to preserve and publi"
+ },
+ {
+  "idx": 402,
+  "record_id": "d25c33bc-2cad-4df8-8731-eab96d05b459",
+  "candidate_id": "b87b0ff2-0f46-4dc6-979b-a4f1d4e0e980",
+  "candidate_name": "John Bryant",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Authored HB 5350 in the Texas House, a bill to require notice and a chance for public comment before"
+ },
+ {
+  "idx": 425,
+  "record_id": "54e7168f-42f7-4d94-82e1-cfba55eca5a9",
+  "candidate_id": "84845804-c783-479c-a550-0370cbb62290",
+  "candidate_name": "John Pfeiffer",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "On 2025-03-26, authored House Bill 2163, which passed the Oklahoma House and proposed a Public Acces"
+ },
+ {
+  "idx": 426,
+  "record_id": "c3403dda-42a5-47e3-aecd-04e03a8c1975",
+  "candidate_id": "84845804-c783-479c-a550-0370cbb62290",
+  "candidate_name": "John Pfeiffer",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "On 2026-03-12, authored House Bill 3278, which passed the Oklahoma House 82-4 and strengthened enfor"
+ },
+ {
+  "idx": 427,
+  "record_id": "053cd385-61cd-4e40-b393-7b3fda3bde40",
+  "candidate_id": "84845804-c783-479c-a550-0370cbb62290",
+  "candidate_name": "John Pfeiffer",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "On 2026-03-12, authored House Bill 3279, which passed the Oklahoma House 80-10 and prohibited certai"
+ },
+ {
+  "idx": 442,
+  "record_id": "7e3b051c-0e24-436c-bce1-227fd637217a",
+  "candidate_id": "a3fb4585-7e9a-4219-a8bb-51fbb7ced3a0",
+  "candidate_name": "Joshua Wostal",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Joshua Wostal proposed directing staff to draft an ordinance barring county funding for organization"
+ },
+ {
+  "idx": 528,
+  "record_id": "5b29d812-fcc7-4aa1-8138-b4eb843c7bfb",
+  "candidate_id": "0226160a-a47d-4fc7-8ec3-68a5b27fe5a4",
+  "candidate_name": "Lisa Clancy",
+  "stance": "against",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Voted against a bill changing county whistleblower reporting rules for mismanagement or legal violat"
+ },
+ {
+  "idx": 530,
+  "record_id": "45118a63-1173-42cb-bfde-29839e80f9b5",
+  "candidate_id": "0226160a-a47d-4fc7-8ec3-68a5b27fe5a4",
+  "candidate_name": "Lisa Clancy",
+  "stance": "against",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Voted against an ordinance creating prohibited-acts rules for county employees, elected and appointe"
+ },
+ {
+  "idx": 540,
+  "record_id": "4663a12b-1f7d-4b5d-8f42-50589f0e7d0a",
+  "candidate_id": "0226160a-a47d-4fc7-8ec3-68a5b27fe5a4",
+  "candidate_name": "Lisa Clancy",
+  "stance": "against",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Cast the lone vote against referring the council Ethics Committee's investigation of County Executiv"
+ },
+ {
+  "idx": 634,
+  "record_id": "7d32e940-d7ed-4859-ab0d-3d56b3a7b1dd",
+  "candidate_id": "d06d7e92-a10e-4233-b574-077df9acffe0",
+  "candidate_name": "Moss, Jeremy",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Wrote the law requiring certain public officers to file personal financial disclosure reports. Senat"
+ },
+ {
+  "idx": 635,
+  "record_id": "cb75c997-d6cb-4084-9b65-d9a208720c42",
+  "candidate_id": "d06d7e92-a10e-4233-b574-077df9acffe0",
+  "candidate_name": "Moss, Jeremy",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Wrote the law tightening what counts as a gift for public officials and setting one standard reporti"
+ },
+ {
+  "idx": 641,
+  "record_id": "2fa878a1-af35-40cb-b303-8c3715fb193e",
+  "candidate_id": "131d365f-0123-41e6-a2f0-fee60ad385fb",
+  "candidate_name": "Nick Maddox",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": "7f859595-87b9-40de-a2cf-18333d7d6871|2026-11-03|County Commissioner",
+  "desc": "Signed Leon County Ordinance 2018-06 as board chairman after the commission adopted it on April 10, "
+ },
+ {
+  "idx": 665,
+  "record_id": "35d72330-13cb-4d70-9dc7-ba7d1be379ec",
+  "candidate_id": "6c799b40-da06-433b-aaba-e7a444d5543e",
+  "candidate_name": "Paul Richard Feeney",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Sponsored a resolution, adopted by the Massachusetts Senate 33-6, agreeing to hand the state auditor"
+ },
+ {
+  "idx": 696,
+  "record_id": "3d1cfd75-5168-419a-bacf-33d58f91fc36",
+  "candidate_id": "4286f4d2-1a33-48ec-b1c6-f156fa476494",
+  "candidate_name": "Richard M. Briggs",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Briggs sponsored Senate Bill 623, enacted in 2025, requiring the Office of Open Records Counsel to f"
+ },
+ {
+  "idx": 697,
+  "record_id": "c1d81699-0b9b-4b5a-8b10-8b3b65700e47",
+  "candidate_id": "4286f4d2-1a33-48ec-b1c6-f156fa476494",
+  "candidate_name": "Richard M. Briggs",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "Briggs sponsored Senate Bill 624, enacted in 2026, generally prohibiting a local elected official fr"
+ },
+ {
+  "idx": 722,
+  "record_id": "203cdef7-4172-4dbe-94fe-0cf73573d087",
+  "candidate_id": "4b000f55-490d-4aab-bfa4-928afc811f57",
+  "candidate_name": "Ryan Nawrocki",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": "0cf173f1-8315-4a13-b0c2-9bfdf15ac626|2026-11-03|State Lower Chamber Legislator",
+  "desc": "Co-sponsored a Maryland bill proposing to let the public request records from nonprofit groups that "
+ },
+ {
+  "idx": 786,
+  "record_id": "31ed747b-3fa2-4ca6-9887-591e20d63d1a",
+  "candidate_id": "0da82b09-5f8a-4845-88a0-aca6a6d45bf2",
+  "candidate_name": "Steve Montenegro",
+  "stance": "against",
+  "other_tags": null,
+  "upcoming": null,
+  "desc": "As House Speaker, sued to overturn Arizona's voter-approved campaign donor disclosure law, Propositi"
+ },
+ {
+  "idx": 810,
+  "record_id": "ec6906d1-bc9c-4536-bbf4-368240ee5973",
+  "candidate_id": "baf68554-5831-4d0c-b6eb-0c914f504fc0",
+  "candidate_name": "Tisha Mauro",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": "0d11a4a7-2cca-4659-9eec-f5a9358d141d|2026-11-03|State Lower Chamber Legislator",
+  "desc": "Co-sponsored SB26-105, which required county-coroner financial-interest disclosures and became law."
+ },
+ {
+  "idx": 852,
+  "record_id": "ed9011e6-1c9c-4d1e-af8e-add34ceafc1b",
+  "candidate_id": "e09eec63-d287-4b69-967e-5a01500b1721",
+  "candidate_name": "Young Kim",
+  "stance": "for",
+  "other_tags": null,
+  "upcoming": "f3b67a05-3f5b-4283-a77e-addd3145cc12|2026-11-03|United States Representative",
+  "desc": "Introduced the SCAMS Act to establish a federal interagency task force to investigate fraud involvin"
+ }
+]

@@ -32,8 +32,12 @@ describe("buildCandidateRecordAreaLabelPrompt", () => {
       'Allowed research area slugs for this candidate/election context (use only these): ["general","integrity_and_ethics","government_efficiency","public_safety_and_crime_control"]'
     );
     expect(prompt).toContain(
-      "Special non-stance areas: use research_area_slug='general' when no specific allowed area applies; use research_area_slug='integrity_and_ethics' for documented criminal convictions"
+      "Special non-stance areas: use research_area_slug='general' when no specific allowed area applies. Use research_area_slug='integrity_and_ethics' ONLY for a NEGATIVE record about the candidate personally"
     );
+    // The tag is a strike in auto-pick, so the prompt must keep cleared
+    // complaints and the candidate's own reform work out of it.
+    expect(prompt).toContain("NEVER use it for: a complaint that was dismissed or found no violation");
+    expect(prompt).toContain("is 'anti_corruption' with a stance, never 'integrity_and_ethics'");
     expect(prompt).toContain("When research_area_slug is 'general' or 'integrity_and_ethics', omit stance.");
     expect(prompt).toContain("For all other research_area_slug values, stance is required and must be for|against.");
     expect(prompt).toContain('"stance": "for | against"');
