@@ -127,8 +127,10 @@ describe("CandidatePage", () => {
     expect(groupState("Housing")).toBe(false);
     expect(groupState("Privacy")).toBe(false);
     // Collapsed groups still state their size, so the closed profile reads
-    // as an index of which issues carry a record.
-    expect(screen.getAllByText("· 1 record")).toHaveLength(4);
+    // as an index of which issues carry a record. Every record here has a
+    // stance, so the tally IS the size — no separate "1 record" count.
+    expect(screen.getAllByText("· 1 support")).toHaveLength(4);
+    expect(screen.queryByText("· 1 record")).not.toBeInTheDocument();
     // The group heading sits OUTSIDE the disclosure (a heading inside
     // <summary> can drop out of screen-reader heading navigation), same
     // pattern as the campaign-finance section.
@@ -194,8 +196,10 @@ describe("CandidatePage", () => {
     expect(summaryText("Gun Control")).toContain("· 3 support");
     expect(summaryText("Gun Control")).toContain("· 1 oppose");
     // Housing has no supporting record; a "0 support" would be pure noise.
+    // Its one record is the one oppose, so the total is dropped too.
     expect(summaryText("Housing Affordability")).toContain("· 1 oppose");
     expect(summaryText("Housing Affordability")).not.toContain("support");
+    expect(summaryText("Housing Affordability")).not.toContain("record");
     expect(summaryText("Impartiality")).toContain("· 1 unfavorable");
   });
 
@@ -379,6 +383,29 @@ describe("CandidatePage", () => {
       const supportsBox = screen.getByRole("heading", { name: "Supports" }).closest("div") as HTMLElement;
       const bolded = [...supportsBox.querySelectorAll("p .font-semibold")].map((el) => el.textContent);
       expect(bolded).toEqual(["Gun Control (1 record)"]);
+      // Purple is the saved-issue color on every surface.
+      expect(supportsBox.querySelector("p .font-semibold")?.className).toContain("text-purple-800");
+    });
+
+    it("caps each box at three issues and expands the rest in place", async () => {
+      stubApiRoutes({ ...ANONYMOUS });
+      renderCandidate(() =>
+        candidateDetail({
+          records: [
+            record("r-1", [{ areaId: "a-1", slug: "healthcare_affordability", name: "Healthcare Affordability", stance: "for" }]),
+            record("r-2", [{ areaId: "a-2", slug: "gun_control", name: "Gun Control", stance: "for" }]),
+            record("r-3", [{ areaId: "a-3", slug: "housing_affordability", name: "Housing Affordability", stance: "for" }]),
+            record("r-4", [{ areaId: "a-4", slug: "data_privacy", name: "Data Privacy", stance: "for" }]),
+          ],
+        })
+      );
+
+      await screen.findByRole("heading", { name: "Jordan Voter" });
+      const supportsBox = screen.getByRole("heading", { name: "Supports" }).closest("div") as HTMLElement;
+      expect(boxText("Supports")).not.toContain("Data Privacy");
+      await userEvent.click(within(supportsBox).getByRole("button", { name: "+1 more issues" }));
+      expect(boxText("Supports")).toContain("Data Privacy (1 record)");
+      expect(within(supportsBox).getByRole("button", { name: "Show less" })).toBeInTheDocument();
     });
   });
 
@@ -715,7 +742,7 @@ describe("CandidatePage", () => {
     expect(screen.queryByRole("button", { name: "Follow" })).not.toBeInTheDocument();
   });
 
-  it("shows the follow button as Unfollow once the follows list confirms it", async () => {
+  it("shows the follow button as Following once the follows list confirms it", async () => {
     // The anonymous loader payload always carries is_following=false; the
     // button must reflect the client-fetched follows list, not the payload.
     stubApiRoutes({
@@ -725,7 +752,36 @@ describe("CandidatePage", () => {
     });
     renderCandidate(() => candidateDetail());
 
-    expect(await screen.findByRole("button", { name: "Unfollow" })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "Following" })).toBeInTheDocument();
+  });
+
+  it("asks before unfollowing: Cancel sends nothing, Unfollow sends following:false", async () => {
+    const fetchMock = stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
+      "/api/me/candidate-follows": (_url, init) =>
+        init?.method === "PUT" ? { body: { follow: null } } : { body: { follows: [candidateFollow()] } },
+    });
+    const user = userEvent.setup();
+    renderCandidate(() => candidateDetail());
+
+    const following = await screen.findByRole("button", { name: "Following" });
+    // Hover previews the action the click will ask about.
+    await user.hover(following);
+    expect(following).toHaveTextContent("Unfollow");
+    await user.click(following);
+    const dialog = await screen.findByRole("dialog", { name: "Unfollow Jordan Voter?" });
+    await user.click(within(dialog).getByRole("button", { name: "Cancel" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(fetchMock.mock.calls.find(([, init]) => init?.method === "PUT")).toBeUndefined();
+
+    await user.click(screen.getByRole("button", { name: /Following|Unfollow/ }));
+    await user.click(within(await screen.findByRole("dialog")).getByRole("button", { name: "Unfollow" }));
+    await waitFor(() => {
+      const put = fetchMock.mock.calls.find(([, init]) => init?.method === "PUT");
+      expect(put).toBeDefined();
+      expect(JSON.parse(String(put![1]!.body))).toEqual({ candidate_id: "c-1", following: false });
+    });
   });
 
   it("lets logged-out visitors pick from the sticky bar straight into the local ballot draft", async () => {

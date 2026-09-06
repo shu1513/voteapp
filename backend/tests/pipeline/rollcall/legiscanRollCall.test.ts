@@ -1384,11 +1384,21 @@ describe("getLegiscanStateConfig", () => {
       "NM",
       "NM-2251",
       "NM-2227",
+      "NM-2126",
+      "NM-2030",
+      "NM-1961",
+      "NM-1977",
+      "NM-1812",
+      "NM-1830",
+      "NM-1967",
+      "NM-1750",
+      "NM-1731",
       "KS",
       "DE",
       "AR",
       "AZ",
       "CO",
+      "CO-2224",
       "MN",
       "MN-2217",
       "OR",
@@ -1466,11 +1476,21 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("NM").sessionId).toBe(2187);
     expect(getLegiscanStateConfig("NM-2251")).toMatchObject({ jurisdiction: "NM", sessionId: 2251 });
     expect(getLegiscanStateConfig("NM-2227")).toMatchObject({ jurisdiction: "NM", sessionId: 2227 });
+    expect(getLegiscanStateConfig("NM-2126")).toMatchObject({ jurisdiction: "NM", sessionId: 2126 });
+    expect(getLegiscanStateConfig("NM-2030")).toMatchObject({ jurisdiction: "NM", sessionId: 2030 });
+    expect(getLegiscanStateConfig("NM-1961")).toMatchObject({ jurisdiction: "NM", sessionId: 1961 });
+    expect(getLegiscanStateConfig("NM-1977")).toMatchObject({ jurisdiction: "NM", sessionId: 1977 });
+    expect(getLegiscanStateConfig("NM-1812")).toMatchObject({ jurisdiction: "NM", sessionId: 1812 });
+    expect(getLegiscanStateConfig("NM-1830")).toMatchObject({ jurisdiction: "NM", sessionId: 1830 });
+    expect(getLegiscanStateConfig("NM-1967")).toMatchObject({ jurisdiction: "NM", sessionId: 1967 });
+    expect(getLegiscanStateConfig("NM-1750")).toMatchObject({ jurisdiction: "NM", sessionId: 1750 });
+    expect(getLegiscanStateConfig("NM-1731")).toMatchObject({ jurisdiction: "NM", sessionId: 1731 });
     expect(getLegiscanStateConfig("KS").sessionId).toBe(2178);
     expect(getLegiscanStateConfig("DE").sessionId).toBe(2163);
     expect(getLegiscanStateConfig("AR").sessionId).toBe(2162);
     expect(getLegiscanStateConfig("AZ").sessionId).toBe(2155);
     expect(getLegiscanStateConfig("CO").sessionId).toBe(2173);
+    expect(getLegiscanStateConfig("CO-2224")).toMatchObject({ jurisdiction: "CO", sessionId: 2224 });
     expect(getLegiscanStateConfig("MN").sessionId).toBe(2151);
     expect(getLegiscanStateConfig("MN-2217")).toMatchObject({ jurisdiction: "MN", sessionId: 2217 });
     expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
@@ -2258,6 +2278,32 @@ describe("getLegiscanStateConfig", () => {
     }
     expect(LEGISCAN_STATE_CONFIGS["NM-2251"]!.excludedQuestions).toHaveLength(0);
     expect(LEGISCAN_STATE_CONFIGS["NM-2227"]!.excludedQuestions).toHaveLength(0);
+  });
+
+  it("reads every earlier New Mexico session with the same two rules", () => {
+    // Nine earlier sessions, surveyed 2026-09-05, all printing the same two
+    // descriptions and nothing else. They share one definition so a future
+    // vocabulary change surfaces in one place rather than nine.
+    const keys = ["NM-2126", "NM-2030", "NM-1961", "NM-1977", "NM-1812", "NM-1830", "NM-1967", "NM-1750", "NM-1731"] as const;
+    for (const key of keys) {
+      const config = LEGISCAN_STATE_CONFIGS[key]!;
+      // Same object as the 2025 regular session, not a copy of it.
+      expect(config.keptQuestions).toBe(LEGISCAN_STATE_CONFIGS.NM!.keptQuestions);
+      expect(config.excludedQuestions).toHaveLength(0);
+      expect(config.chamberSizes).toEqual({ house: 70, senate: 42 });
+      const nm = (desc: string, total: number, chamber: "house" | "senate" = "house") =>
+        classifyLegiscanRollCall({ desc, total, chamber, billType: "B", config });
+      expect(nm("House Final Passage", 70)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+      expect(nm("Senate Final Passage", 42, "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+      // The 2022 regular session is the only one with 69-member House rolls.
+      expect(nm("House Final Passage", 69)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+      expect(nm("House Third Reading", 70).isFloorVote).toBeNull();
+    }
+    // Three New Mexico sessions are deliberately absent: none holds a divided
+    // roll on an enacted measure, so none can ever produce a record.
+    for (const absent of ["NM-2150", "NM-1788", "NM-2232"]) {
+      expect(LEGISCAN_STATE_CONFIGS[absent]).toBeUndefined();
+    }
   });
 
   it("classifies Arizona's real desc vocabulary as surveyed", () => {

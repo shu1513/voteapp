@@ -39,6 +39,7 @@ import { useHydrated } from "../lib/useHydrated";
 import { pageMeta } from "../lib/pageMeta";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { AREA_TEXT_CLASS, SAVED_AREA_TEXT_CLASS } from "../components/ElectionCard";
+import { CappedInlineList } from "../components/CappedInlineList";
 import { AutoPickControl } from "../components/AutoPickControl";
 import { CandidatePickButton, MeasureChoiceButtons, StrandedPicksNotice } from "../components/ElectionChoiceControls";
 import { PostPickActions } from "../components/PostPickActions";
@@ -686,22 +687,27 @@ export function ElectionPage() {
             {researchAreas.length > 0 ? (
               // Same one-list, comma-separated presentation as the ballot
               // cards: saved matches lead in semibold, with a screen-reader-
-              // only "(saved)" cue keeping the distinction audible.
-              <p className="mt-3 text-sm">
-                {/* Same verb label as the ballot cards — see ElectionCard. */}
-                <span className="font-medium text-ink-soft">Affects:</span>{" "}
-                {/* Comma separators live outside the spans as plain text
-                    nodes, so each span's text stays exactly the area name. */}
-                {[...orderedAreas.saved, ...orderedAreas.others].map((area, index, all) => (
-                  <Fragment key={area.id}>
+              // only "(saved)" cue keeping the distinction audible. Capped
+              // like the cards, but here the overflow expands in place — this
+              // page is where the full set lives.
+              <CappedInlineList
+                // Keyed by election: the route element stays mounted across
+                // sibling walks, and the list's expanded state must not
+                // carry from one race to the next.
+                key={data.id}
+                label="Affects:"
+                noun="issues"
+                className="mt-3 text-sm"
+                items={[...orderedAreas.saved, ...orderedAreas.others].map((area) => ({
+                  key: area.id,
+                  node: (
                     <span className={orderedAreas.saved.includes(area) ? SAVED_AREA_TEXT_CLASS : AREA_TEXT_CLASS}>
                       {area.name}
                       {orderedAreas.saved.includes(area) ? <span className="sr-only"> (saved)</span> : null}
                     </span>
-                    {index < all.length - 1 ? ", " : null}
-                  </Fragment>
-                ))}
-              </p>
+                  ),
+                }))}
+              />
             ) : null}
           </section>
         ) : null}
@@ -735,7 +741,7 @@ export function ElectionPage() {
                       <span className="font-medium text-ink-soft">{label}</span>{" "}
                       {tags.map((tag, index, all) => (
                         <Fragment key={tag.research_area_id}>
-                          <span className={tagClass}>
+                          <span className={savedAreaIds.has(tag.research_area_id) ? SAVED_AREA_TEXT_CLASS : tagClass}>
                             {tag.name}
                             {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
                           </span>
@@ -753,9 +759,7 @@ export function ElectionPage() {
                       .map((tag, index, all) => (
                         <Fragment key={tag.research_area_id}>
                           <span
-                            className={
-                              savedAreaIds.has(tag.research_area_id) ? "font-medium text-green-900" : "text-ink-soft"
-                            }
+                            className={savedAreaIds.has(tag.research_area_id) ? SAVED_AREA_TEXT_CLASS : "text-ink-soft"}
                           >
                             {tag.name}
                             {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
@@ -1066,49 +1070,63 @@ export function ElectionPage() {
                       // >= 1 — aggregateRecordAreaStances drops
                       // neutral/untagged records — so "against == 0" can only
                       // mean all-for.
-                      <p className="mt-2 text-sm">
-                        {/* Without a label the row was a bare "Housing
-                            Affordability +1" — an issue name and a number with
-                            nothing saying what was counted. "Records:" names
-                            the source, matching the "Affects:" row on
-                            the election cards. */}
-                        <span className="font-medium text-ink-soft">Records:</span>{" "}
-                        {stances.map((stance, index, all) => (
-                          <Fragment key={stance.research_area_id}>
+                      // Without a label the row was a bare "Housing
+                      // Affordability +1" — an issue name and a number with
+                      // nothing saying what was counted. "Records:" names the
+                      // source, matching the "Affects:" row. Capped at three:
+                      // the viewer's saved issues first (their own rank, any
+                      // direction — an against-record on a top issue is the
+                      // point), then the candidate's busiest areas; the rest
+                      // expand in place.
+                      <CappedInlineList
+                        // Election in the key too: the card is keyed by
+                        // candidate alone, so one person running in two
+                        // sibling races would otherwise keep the list open.
+                        key={`${data.id}:${candidate.candidate_id}`}
+                        label="Records:"
+                        noun="issues"
+                        className="mt-2 text-sm"
+                        items={orderStancesForRow(stances, weights).map((stance) => ({
+                          key: stance.research_area_id,
+                          node: (
                             <span
+                              // Saved issues take the shared purple; the +N/-N
+                              // counts (and the sr-only "for/against") still
+                              // carry the direction the color otherwise would.
                               className={
-                                stance.against_count === 0
-                                  ? "font-medium text-green-900"
-                                  : stance.for_count === 0
-                                    ? "font-medium text-red-900"
-                                    : "font-medium text-amber-900"
+                                savedAreaIds.has(stance.research_area_id)
+                                  ? SAVED_AREA_TEXT_CLASS
+                                  : stance.against_count === 0
+                                    ? "font-medium text-green-900"
+                                    : stance.for_count === 0
+                                      ? "font-medium text-red-900"
+                                      : "font-medium text-amber-900"
                               }
                             >
-                            {stance.name}{" "}
-                            <span aria-hidden="true">
-                              {[
-                                stance.for_count > 0 ? `+${stance.for_count}` : null,
-                                stance.against_count > 0 ? `-${stance.against_count}` : null,
-                              ]
-                                .filter(Boolean)
-                                .join(" ")}
-                            </span>
-                            <span className="sr-only">
-                              {[
-                                stance.for_count > 0 ? `${stance.for_count} for` : null,
-                                stance.against_count > 0 ? `${stance.against_count} against` : null,
-                              ]
-                                .filter(Boolean)
-                                .join(", ")}
-                            </span>
+                              {stance.name}{" "}
+                              <span aria-hidden="true">
+                                {[
+                                  stance.for_count > 0 ? `+${stance.for_count}` : null,
+                                  stance.against_count > 0 ? `-${stance.against_count}` : null,
+                                ]
+                                  .filter(Boolean)
+                                  .join(" ")}
+                              </span>
+                              <span className="sr-only">
+                                {[
+                                  stance.for_count > 0 ? `${stance.for_count} for` : null,
+                                  stance.against_count > 0 ? `${stance.against_count} against` : null,
+                                ]
+                                  .filter(Boolean)
+                                  .join(", ")}
+                              </span>
                               {savedAreaIds.has(stance.research_area_id) ? (
                                 <span className="sr-only"> (saved)</span>
                               ) : null}
                             </span>
-                            {index < all.length - 1 ? ", " : null}
-                          </Fragment>
-                        ))}
-                      </p>
+                          ),
+                        }))}
+                      />
                     ) : null}
                     {/* Visible affordance: at rest nothing said the card was
                         a link (hover styling only). Underlined navy, not
@@ -1288,6 +1306,25 @@ function isGovernmentUrl(url: string): boolean {
 // order — the sort is stable over the original sequence. Relevance, not
 // agreement: against-only records on a saved issue still count as a track
 // record on it (scoreStanceRelevance), matching the direction-neutral label.
+/**
+ * Row order for a candidate's record stances: the viewer's saved issues
+ * first by their own rank, then everything else by record volume, slug as
+ * the tiebreak. Direction never affects placement — a top saved issue shows
+ * whether the candidate is for or against it.
+ */
+function orderStancesForRow(
+  stances: ReturnType<typeof aggregateRecordAreaStances>,
+  weights: ReturnType<typeof useMyResearchAreas>["weights"]
+): ReturnType<typeof aggregateRecordAreaStances> {
+  return [...stances].sort(
+    (a, b) =>
+      (weights.get(a.research_area_id)?.rank ?? Number.POSITIVE_INFINITY) -
+        (weights.get(b.research_area_id)?.rank ?? Number.POSITIVE_INFINITY) ||
+      b.for_count + b.against_count - (a.for_count + a.against_count) ||
+      (a.slug < b.slug ? -1 : a.slug > b.slug ? 1 : 0)
+  );
+}
+
 function sortCandidatesByStance(
   candidates: ElectionDetail["candidates"],
   sort: CandidateSort,

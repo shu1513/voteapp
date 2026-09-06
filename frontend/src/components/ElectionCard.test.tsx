@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import { ElectionList } from "./ElectionCard";
 import { renderRoutes } from "../test/render";
-import { electionSummary, VOTE_POWER } from "../test/fixtures";
+import { DISTRICT, electionSummary, VOTE_POWER } from "../test/fixtures";
 import { buildResearchAreaWeights } from "@voteapp/api-client";
 import type { ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 
@@ -82,15 +82,22 @@ afterEach(() => {
 });
 
 describe("ElectionCard", () => {
-  it("puts vote power and the candidate count on the title row, with the district below", () => {
+  it("puts vote power on the title row, with the district below, and no candidate count", () => {
     renderCard(electionSummary());
 
     const row = screen.getByRole("heading", { name: "Governor" }).parentElement;
     expect(row).toHaveTextContent("My vote power: High");
-    expect(row).toHaveTextContent("2 candidates");
+    // A contested race's headcount changed nothing about opening it.
+    expect(row).not.toHaveTextContent(/candidate/);
     // Every card names its district — generic titles ("Mayor", "Governor")
     // don't say where the race is.
     expect(screen.getByText("Alaska")).toBeInTheDocument();
+  });
+
+  it("shows the count only for a lone candidate — never 'Uncontested', which the payload can't prove", () => {
+    renderCard(electionSummary({ candidate_count: 1 }));
+    expect(screen.getByText("1 candidate")).toBeInTheDocument();
+    expect(screen.queryByText(/Uncontested/)).not.toBeInTheDocument();
   });
 
   it("color-codes the vote-power badge by level", () => {
@@ -107,7 +114,7 @@ describe("ElectionCard", () => {
     // "low" displays as "Below average" — the label map and color map key on
     // the same wire value, so both must hold at once.
     renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "low" } }));
-    expect(screen.getByText("My vote power: Below average").className).toContain("text-purple-700");
+    expect(screen.getByText("My vote power: Below average").className).toContain("text-gray-600");
 
     renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "very_low" } }));
     expect(screen.getByText("My vote power: Very low").className).toContain("text-gray-500");
@@ -117,7 +124,7 @@ describe("ElectionCard", () => {
     renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "unknown" } }));
 
     expect(screen.queryByText(/My vote power:/)).not.toBeInTheDocument();
-    expect(screen.getByText("2 candidates")).toBeInTheDocument();
+    expect(screen.getByText("Alaska")).toBeInTheDocument();
   });
 
   it("shows the district name on every card", () => {
@@ -258,11 +265,39 @@ describe("ElectionCard", () => {
     const chipTexts = Array.from(label.parentElement?.children ?? [])
       .map((chip) => chip.textContent)
       .filter((text) => text !== "Affects:");
+    // Three saved matches fill the cap, so the unsaved area only counts.
     expect(chipTexts).toEqual([
       "Civil Rights (saved)",
       "Environment and Public Health (saved)",
       "Gun Control (saved)",
-      "Immigration",
+      "+1 more issue",
+    ]);
+  });
+
+  it("caps saved matches at three by the user's ranking and counts the rest", () => {
+    renderCard(
+      electionSummary({
+        research_areas: [
+          area("a-1", "Civil Rights", "civil_rights"),
+          area("a-2", "Gun Control", "gun_control"),
+          area("a-3", "Immigration", "immigration"),
+          area("a-4", "Housing Affordability", "housing_affordability"),
+          area("a-5", "Data Privacy", "data_privacy"),
+          area("a-6", "Foreign Trade", "foreign_trade"),
+        ],
+      }),
+      // Ranked out of payload order: the user's rank picks which three show.
+      { "a-1": 3, "a-2": 1, "a-3": 4, "a-4": 2 }
+    );
+    const label = screen.getByText("Affects:");
+    const chipTexts = Array.from(label.parentElement?.children ?? [])
+      .map((chip) => chip.textContent)
+      .filter((text) => text !== "Affects:");
+    expect(chipTexts).toEqual([
+      "Gun Control (saved)",
+      "Housing Affordability (saved)",
+      "Civil Rights (saved)",
+      "+3 more issues",
     ]);
   });
 
@@ -748,25 +783,46 @@ describe("ElectionCard result chip", () => {
     expect(screen.getByText("Result: Won")).toBeInTheDocument();
   });
 
-  it("flags a seat whose electorate is smaller than the district row", () => {
-    renderCard(
-      electionSummary({
-        official_ballot_title: "Justice of the Peace Justice of the Peace Ward 3",
-        sub_district_seat: "Ward 3",
-      })
+  it("flags a run of seats smaller than the district row with one note, not one per card", () => {
+    const seat = (id: string, title: string, seat: string, district = DISTRICT) =>
+      electionSummary({ id, official_ballot_title: title, sub_district_seat: seat, district });
+    const county = { ...DISTRICT, id: "d-county", district_type: "county", name: "Travis County, Texas" };
+    renderRoutes(
+      [
+        {
+          path: "/",
+          element: (
+            <ElectionList
+              elections={[
+                electionSummary({ id: "e-plain" }),
+                seat("e-1", "Justice of the Peace Ward 3", "Ward 3"),
+                seat("e-2", "Justice of the Peace Ward 5", "Ward 5"),
+                seat("e-3", "County Commissioner, Precinct 2", "Precinct 2", county),
+              ]}
+            />
+          ),
+        },
+      ],
+      "/"
     );
-    expect(screen.getByText("Ward 3")).toBeInTheDocument();
     // The wording must not promise a filter the address lookup cannot do.
-    expect(screen.getByText("— may not cover your address")).toBeInTheDocument();
+    const notes = screen.getAllByText(/may not cover your address/);
+    expect(notes).toHaveLength(2);
+    expect(notes[0]).toHaveTextContent("These seats each cover part of Alaska — one may not cover your address.");
+    // A run of one seat reads in the singular.
+    expect(notes[1]).toHaveTextContent("This seat covers part of Travis County, Texas — it may not cover your address.");
+    // The seat name still reads from the title; the card carries no line of its own.
+    expect(screen.getByText("Justice of the Peace Ward 3")).toBeInTheDocument();
+    expect(screen.queryByText("Ward 3")).not.toBeInTheDocument();
   });
 
   it("leaves ordinary races unflagged, including on a backend that predates the field", () => {
     renderCard(electionSummary({ sub_district_seat: null }));
-    expect(screen.queryByText("— may not cover your address")).not.toBeInTheDocument();
+    expect(screen.queryByText(/may not cover your address/)).not.toBeInTheDocument();
 
     // Deploy skew: a backend that predates the field omits it entirely.
     renderCard(electionSummary({ id: "e-2" }));
-    expect(screen.queryByText("— may not cover your address")).not.toBeInTheDocument();
+    expect(screen.queryByText(/may not cover your address/)).not.toBeInTheDocument();
   });
 
   it("shows the current-cycle rating chip instead of the historic one when both arrive", () => {

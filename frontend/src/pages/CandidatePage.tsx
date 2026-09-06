@@ -16,7 +16,9 @@ import {
   sortCandidateRailEntries,
   type CandidateRailSortKey,
 } from "@voteapp/api-client";
+import { CappedInlineList } from "../components/CappedInlineList";
 import { DetailPager } from "../components/DetailPager";
+import { SAVED_AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { DetailRail } from "../components/DetailRail";
 import {
   pagerNeighbors,
@@ -312,8 +314,8 @@ function StanceSummary({
   if (supports.length === 0 && opposes.length === 0 && mixed.length === 0) {
     return null;
   }
-  // The viewer's saved areas render semibold so their issues stand out from
-  // the rest of the list, mirroring the front-of-list ordering.
+  // The viewer's saved areas render in the shared saved-issue purple so they
+  // stand out from the rest of the list, mirroring the front-of-list ordering.
   const savedAreaIds = new Set(preferences.map((preference) => preference.research_area_id));
   // Comma-separated text, not boxed chips (boxes read as buttons — same
   // rule as the roster rows). Name and count stay one text node so an
@@ -322,7 +324,7 @@ function StanceSummary({
   const areaWithCount = (area: RecordAreaStance) => {
     const count = area.for_count + area.against_count;
     const text = `${area.name} (${count} record${count === 1 ? "" : "s"})`;
-    return savedAreaIds.has(area.research_area_id) ? <span className="font-semibold">{text}</span> : text;
+    return savedAreaIds.has(area.research_area_id) ? <span className={SAVED_AREA_TEXT_CLASS}>{text}</span> : text;
   };
   const sideBox = (side: "supports" | "opposes", areas: RecordAreaStance[]) =>
     areas.length === 0 ? null : (
@@ -342,14 +344,11 @@ function StanceSummary({
         >
           {side === "supports" ? "Supports" : "Opposes"}
         </h3>
-        <p className="mt-1 text-sm text-ink">
-          {areas.map((area, index) => (
-            <Fragment key={area.research_area_id}>
-              {index > 0 ? ", " : null}
-              {areaWithCount(area)}
-            </Fragment>
-          ))}
-        </p>
+        <CappedInlineList
+          noun="issues"
+          className="mt-1 text-sm text-ink"
+          items={areas.map((area) => ({ key: area.research_area_id, node: areaWithCount(area) }))}
+        />
       </div>
     );
   return (
@@ -372,23 +371,19 @@ function StanceSummary({
       {mixed.length > 0 ? (
         <div className="mt-3 rounded border border-amber-200 bg-amber-50 p-3">
           <h3 className="text-subheading font-semibold text-amber-900">Mixed record</h3>
-          <p className="mt-1 text-sm text-ink">
-            {/* Same "N support · N oppose" phrasing as the record group
-                headers, so the two surfaces can't drift apart. */}
-            {mixed.map((area, index) => {
+          {/* Same "N support · N oppose" phrasing as the record group
+              headers, so the two surfaces can't drift apart. */}
+          <CappedInlineList
+            noun="issues"
+            className="mt-1 text-sm text-ink"
+            items={mixed.map((area) => {
               const text = `${area.name} (${area.for_count} support · ${area.against_count} oppose)`;
-              return (
-                <Fragment key={area.research_area_id}>
-                  {index > 0 ? ", " : null}
-                  {savedAreaIds.has(area.research_area_id) ? (
-                    <span className="font-semibold">{text}</span>
-                  ) : (
-                    text
-                  )}
-                </Fragment>
-              );
+              return {
+                key: area.research_area_id,
+                node: savedAreaIds.has(area.research_area_id) ? <span className={SAVED_AREA_TEXT_CLASS}>{text}</span> : text,
+              };
             })}
-          </p>
+          />
         </div>
       ) : null}
     </section>
@@ -876,6 +871,7 @@ export function CandidatePage() {
                 // this one's button.
                 key={candidate.candidate_id}
                 candidateId={candidate.candidate_id}
+                candidateName={candidate.display_name}
                 isFollowing={isFollowing}
               />
             ) : me === null ? (
@@ -925,6 +921,10 @@ export function CandidatePage() {
         {/* Directly after the summary, before the pick rows — the same order
             as the measure page (explainer boxes, then choice buttons). */}
         <StanceSummary
+          // Keyed by candidate: the route element stays mounted across
+          // sibling walks, and the boxes' expanded state must start fresh
+          // for each person.
+          key={candidate.candidate_id}
           candidateName={candidate.display_name}
           records={candidate.records}
           // Personalized order/emphasis only in the "my issues first" view,
@@ -1046,6 +1046,7 @@ export function CandidatePage() {
                         never re-applies a default, so a reader's toggles
                         survive a view switch that reorders the groups. */}
                     <details
+                      className="group"
                       onToggle={(event) =>
                         track("detail_control", {
                           control: "record_group_toggle",
@@ -1053,7 +1054,15 @@ export function CandidatePage() {
                         })
                       }
                     >
-                      <summary className="cursor-pointer select-none">
+                      {/* The app's own chevron right after the text (flips
+                          open), not the native left triangle: one disclosure
+                          mark everywhere, and the native one renders tiny on
+                          Safari. Hugs the label rather than the row's far
+                          edge, which on a wide screen put it a screen-width
+                          away. list-none + the webkit marker rule hide the
+                          triangle; the hover tint says "button" at rest. */}
+                      <summary className="-mx-2 flex cursor-pointer select-none list-none items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-surface [&::-webkit-details-marker]:hidden">
+                        <span>
                         {/* Title-case ink subheading, one role step below the
                             finance/Track-record h2 tier. Not the eyebrow idiom
                             (small caps, soft gray): that marks static captions,
@@ -1061,9 +1070,16 @@ export function CandidatePage() {
                         <span className="text-subheading font-semibold text-ink">
                           {group.areaName}
                         </span>{" "}
-                        <span className="text-xs text-ink-soft">
-                          · {group.records.length} record{group.records.length === 1 ? "" : "s"}
-                        </span>
+                        {/* The total is redundant when every record in the
+                            group has a stance — "2 records · 2 support" said
+                            the same thing twice. It stays for stance-less
+                            groups (General, Other) and when neutral records
+                            make the tallies fall short of the total. */}
+                        {forCount + againstCount !== group.records.length ? (
+                          <span className="text-xs text-ink-soft">
+                            · {group.records.length} record{group.records.length === 1 ? "" : "s"}
+                          </span>
+                        ) : null}
                         {forCount > 0 ? (
                           <span className="text-xs font-medium text-green-900">
                             {" "}
@@ -1076,6 +1092,14 @@ export function CandidatePage() {
                             · {againstCount} {evaluative ? "unfavorable" : "oppose"}
                           </span>
                         ) : null}
+                        </span>
+                        <svg
+                          aria-hidden="true"
+                          viewBox="0 0 12 12"
+                          className="h-3.5 w-3.5 shrink-0 text-ink-soft transition-transform group-open:rotate-180"
+                        >
+                          <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
                       </summary>
                       <ul className="mt-2 space-y-3">
                         {group.records.map((record) => (

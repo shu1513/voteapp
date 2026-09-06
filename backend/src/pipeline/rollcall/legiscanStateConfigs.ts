@@ -2838,6 +2838,119 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     keptQuestions: NEW_MEXICO_KEPT_QUESTIONS,
     excludedQuestions: [],
   },
+  // New Mexico's earlier sessions, all registered under `NM-<sessionId>`
+  // because the plain `NM` key belongs to the 2025 regular session. Every one
+  // was surveyed on 2026-09-05 and prints THE SAME TWO DESCRIPTIONS AND
+  // NOTHING ELSE, so they share this state's one vocabulary definition.
+  //
+  // Across all nine: 0 committee votes, 0 parse errors, 0 rolls missing a
+  // member list. House tallies total exactly 70 and Senate tallies exactly 42
+  // everywhere except the 2022 regular session, where House rolls range 69 to
+  // 70. The final-passage-only hazard is the same in every one of them: there
+  // is no concurrence vote anywhere, so a chamber's only recorded vote can be
+  // on text that is not the text that became law, and every selected roll
+  // needs its own version check against nmlegis.gov.
+  //
+  // ⚠ Two New Mexico sessions have already produced a roll whose stored tally
+  // disagrees with the state's official sheet while staying internally
+  // consistent (SB 3 in 2187, SB 151 in 2251). A clean parse proves nothing
+  // about a New Mexico tally, so every roll picked for a batch is checked
+  // against its official sheet before judging.
+  //
+  // NOT registered, because neither holds a divided roll on an enacted measure
+  // and so neither can ever produce a record: the 2024 1st Special Session
+  // (2150), the 2020 2nd Special Session (1788), and the 2025 2nd Special
+  // Session (2232).
+  // New Mexico Legislature, 2024 Regular Session (the 30-day even-year session).
+  // Surveyed 2026-09-05: 777 bills, 211 roll calls, 112 people.
+  // 19 divided-and-enacted House rolls.
+  "NM-2126": {
+    jurisdiction: "NM",
+    sessionId: 2126,
+    chamberSizes: { house: 70, senate: 42 },
+    keptQuestions: NEW_MEXICO_KEPT_QUESTIONS,
+    excludedQuestions: [],
+  },
+  // New Mexico Legislature, 2023 Regular Session (the 60-day odd-year session, and the largest New Mexico pool in this registry at 758 roll calls).
+  // Surveyed 2026-09-05: 1,294 bills, 758 roll calls, 112 people.
+  // 36 divided-and-enacted House rolls.
+  "NM-2030": {
+    jurisdiction: "NM",
+    sessionId: 2030,
+    chamberSizes: { house: 70, senate: 42 },
+    keptQuestions: NEW_MEXICO_KEPT_QUESTIONS,
+    excludedQuestions: [],
+  },
+  // New Mexico Legislature, 2022 Regular Session (the 30-day even-year session).
+  // Surveyed 2026-09-05: 641 bills, 214 roll calls, 113 people.
+  // 11 divided-and-enacted House rolls.
+  "NM-1961": {
+    jurisdiction: "NM",
+    sessionId: 1961,
+    chamberSizes: { house: 70, senate: 42 },
+    keptQuestions: NEW_MEXICO_KEPT_QUESTIONS,
+    excludedQuestions: [],
+  },
+  // New Mexico Legislature, 2022 3rd Special Session (a one-day October session).
+  // Surveyed 2026-09-05: 3 bills, 6 roll calls, 112 people.
+  // 1 divided-and-enacted House rolls.
+  "NM-1977": {
+    jurisdiction: "NM",
+    sessionId: 1977,
+    chamberSizes: { house: 70, senate: 42 },
+    keptQuestions: NEW_MEXICO_KEPT_QUESTIONS,
+    excludedQuestions: [],
+  },
+  // New Mexico Legislature, 2021 Regular Session (the 60-day odd-year session).
+  // Surveyed 2026-09-05: 916 bills, 497 roll calls, 113 people.
+  // 28 divided-and-enacted House rolls.
+  "NM-1812": {
+    jurisdiction: "NM",
+    sessionId: 1812,
+    chamberSizes: { house: 70, senate: 42 },
+    keptQuestions: NEW_MEXICO_KEPT_QUESTIONS,
+    excludedQuestions: [],
+  },
+  // New Mexico Legislature, 2021 1st Special Session.
+  // Surveyed 2026-09-05: 10 bills, 8 roll calls, 112 people.
+  // 3 divided-and-enacted House rolls.
+  "NM-1830": {
+    jurisdiction: "NM",
+    sessionId: 1830,
+    chamberSizes: { house: 70, senate: 42 },
+    keptQuestions: NEW_MEXICO_KEPT_QUESTIONS,
+    excludedQuestions: [],
+  },
+  // New Mexico Legislature, 2021 2nd Special Session.
+  // Surveyed 2026-09-05: 31 bills, 18 roll calls, 112 people.
+  // 2 divided-and-enacted House rolls.
+  "NM-1967": {
+    jurisdiction: "NM",
+    sessionId: 1967,
+    chamberSizes: { house: 70, senate: 42 },
+    keptQuestions: NEW_MEXICO_KEPT_QUESTIONS,
+    excludedQuestions: [],
+  },
+  // New Mexico Legislature, 2020 1st Special Session.
+  // Surveyed 2026-09-05: 45 bills, 20 roll calls, 112 people.
+  // 5 divided-and-enacted House rolls.
+  "NM-1750": {
+    jurisdiction: "NM",
+    sessionId: 1750,
+    chamberSizes: { house: 70, senate: 42 },
+    keptQuestions: NEW_MEXICO_KEPT_QUESTIONS,
+    excludedQuestions: [],
+  },
+  // New Mexico Legislature, 2020 Regular Session (the 30-day even-year session).
+  // Surveyed 2026-09-05: 914 bills, 328 roll calls, 112 people.
+  // 18 divided-and-enacted House rolls.
+  "NM-1731": {
+    jurisdiction: "NM",
+    sessionId: 1731,
+    chamberSizes: { house: 70, senate: 42 },
+    keptQuestions: NEW_MEXICO_KEPT_QUESTIONS,
+    excludedQuestions: [],
+  },
   // Kansas Legislature, 2025-2026 Regular Session. Kansas files both years
   // of the biennium in ONE LegiScan dataset (session 2178, dated
   // 2026-06-28), so this single entry covers the whole current term; there
@@ -3240,6 +3353,17 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   CO: {
     jurisdiction: "CO",
     sessionId: 2173,
+    chamberSizes: { house: 65, senate: 35 },
+    keptQuestions: COLORADO_KEPT_QUESTIONS,
+    excludedQuestions: COLORADO_EXCLUDED_QUESTIONS,
+  },
+  // Colorado's 2025 First Special Session, called in August 2025. The chamber
+  // sizes and the vote-description grammar are the same as the regular
+  // session, so it reuses both pattern lists; the survey over this dataset
+  // left no description unmatched.
+  "CO-2224": {
+    jurisdiction: "CO",
+    sessionId: 2224,
     chamberSizes: { house: 65, senate: 35 },
     keptQuestions: COLORADO_KEPT_QUESTIONS,
     excludedQuestions: COLORADO_EXCLUDED_QUESTIONS,

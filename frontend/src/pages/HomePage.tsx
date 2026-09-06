@@ -315,7 +315,7 @@ export function HomePage() {
                 field carries both reassurances — privacy, and that a ZIP or
                 city is enough — so the visitor who won't type where they
                 live learns the escape hatch BEFORE giving up. */}
-            <label htmlFor="address" className="block text-sm font-medium text-ink">
+            <label htmlFor="address" className="block text-sm font-semibold text-ink-soft">
               Enter address to see which elections you can vote in:
             </label>
             <AddressAutocomplete
