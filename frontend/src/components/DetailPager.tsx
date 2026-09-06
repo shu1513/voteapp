@@ -18,8 +18,11 @@ type PagerLink = { path: string; label: string };
  *
  * The up-level slot always renders (it carries the deep-link fallback);
  * prev/next render only when a validated sibling sequence contains the
- * current page. With no siblings at all the bar collapses to the single
- * centered back slot. Arrows are visual only; screen readers get
+ * current page. With no siblings at all the bar collapses to a single
+ * left-aligned "← label" link, the same shape as the split-detail rail's
+ * exit link: the "Back to:" caption earns its place only when Prev and
+ * Next flank it, and one centered link floated alone in an empty strip.
+ * Arrows are visual only; screen readers get
  * "Previous/Next: {label}" and "Back to {label}" (aria-label, since
  * adjacent-node text runs together in accessible-name computation).
  *
@@ -73,11 +76,23 @@ export function DetailPager({
     </p>
   );
   if (prev === null && next === null) {
-    // No sequence to walk (deep link, single-entry list): just the back
-    // slot, centered.
+    // No sequence to walk (deep link, single-entry list, the draft page):
+    // one arrowed link at the left edge, where a back link is expected.
     return (
       <nav aria-label={ariaLabel} className="-mt-4 mb-6 border-b border-line pb-3 text-sm">
-        {backSlot}
+        <p className="min-w-0 truncate">
+          <Link
+            to={backTo.path}
+            state={backToState}
+            aria-label={`Back to ${backTo.label}`}
+            title={backTo.label}
+            onClick={() => track("detail_control", { control: "pager_back", value: "none" })}
+            className={linkClass}
+          >
+            <span aria-hidden="true">← </span>
+            {backTo.label}
+          </Link>
+        </p>
       </nav>
     );
   }
