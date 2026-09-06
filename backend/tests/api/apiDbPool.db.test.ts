@@ -42,11 +42,24 @@ describe.skipIf(!databaseUrl)("API DB pool deadlines (requires DATABASE_URL)", (
     await expect(pool.query<{ ok: number }>("SELECT 1 AS ok")).resolves.toMatchObject({ rows: [{ ok: 1 }] });
   });
 
-  it("cancels a statement server-side at the statement deadline and keeps the client reusable", async () => {
-    const started = Date.now();
-    await expect(pool.query("SELECT pg_sleep(5)")).rejects.toMatchObject({ code: "57014" }); // query_canceled
-    expect(Date.now() - started).toBeLessThan(2_000);
-    // Same (only) client: still usable, no dangling transaction state.
+  it("cancels a statement server-side at the statement deadline and leaves the same client reusable", async () => {
+    // Hold ONE client: pool.query() would discard an errored client and open a
+    // replacement, so only a held client can show that the cancel left this
+    // connection usable. The BEGIN/ROLLBACK mirrors the authService
+    // transaction path, where the timeout fires mid-transaction.
+    const client = await pool.connect();
+    try {
+      const { rows: before } = await client.query<{ pid: number }>("SELECT pg_backend_pid() AS pid");
+      await client.query("BEGIN");
+      const started = Date.now();
+      await expect(client.query("SELECT pg_sleep(5)")).rejects.toMatchObject({ code: "57014" }); // query_canceled
+      expect(Date.now() - started).toBeLessThan(2_000);
+      await client.query("ROLLBACK");
+      const { rows: after } = await client.query<{ pid: number }>("SELECT pg_backend_pid() AS pid");
+      expect(after[0].pid).toBe(before[0].pid);
+    } finally {
+      client.release();
+    }
     await expect(pool.query<{ ok: number }>("SELECT 2 AS ok")).resolves.toMatchObject({ rows: [{ ok: 2 }] });
     expect(pool.totalCount).toBe(1);
   });
