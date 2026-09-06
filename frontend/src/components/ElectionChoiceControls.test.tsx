@@ -18,6 +18,7 @@ import { renderRoutes } from "../test/render";
 // useMe would leave `me` undefined (loading) for the whole test. Mocking it
 // pins the fork deterministically per test.
 const SIGNED_IN: Me = {
+  id: "user-1",
   email: "voter@example.com",
   first_name: "Vo",
   email_verified: true,

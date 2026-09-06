@@ -22,6 +22,7 @@ describe("useLogout", () => {
     const queryClient = new QueryClient();
     // Simulate a logged-in session with cached account data.
     queryClient.setQueryData(["me"], {
+      id: "user-a",
       email: "a@example.com",
       first_name: "A",
       email_verified: true,

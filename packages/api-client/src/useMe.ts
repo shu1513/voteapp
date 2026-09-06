@@ -15,6 +15,9 @@ export function purgeAccountScopedQueries(queryClient: QueryClient): void {
 }
 
 export type Me = {
+  /** Stable account id — the identity for cache purges. An email can be
+   * deleted and registered again as a new account. */
+  id: string;
   email: string;
   first_name: string;
   email_verified: boolean;
@@ -25,24 +28,53 @@ export type Me = {
 };
 
 /**
+ * The login/logout purges only run in THIS tab's callbacks. When another tab
+ * on a shared browser signs out, or signs in as someone else, the cookie
+ * changes underneath this tab and its next GET /api/me returns the new
+ * identity — while ["me","ballot"], ["me","districts"], ["me",
+ * "election-choices"] … still hold the previous account's private data
+ * (staleTime never expires an entry, and disabled hooks keep reading
+ * query.data). So the identity fetch itself purges on a transition, BEFORE
+ * its result reaches the cache: no render can ever pair the new identity
+ * with the old account's data (an effect-based purge would paint one such
+ * frame first). The account id is the identity, not the email: an email
+ * can be deleted and registered again as a NEW account (same email, other
+ * person's data must not survive), and one account may change its email.
+ */
+function purgeIfIdentityChanged(queryClient: QueryClient, next: Me | null): void {
+  const previous = queryClient.getQueryData<Me | null>(["me"]);
+  if (previous === undefined || previous === null) {
+    return;
+  }
+  if (next === null || next.id !== previous.id) {
+    purgeAccountScopedQueries(queryClient);
+  }
+}
+
+/**
  * Session state for the whole app. `me` is undefined while loading, null when
  * logged out (401), and the user otherwise. GET /api/me is the only identity
  * endpoint that works for unverified users, so email_verified drives the
  * verification interstitial.
  */
 export function useMe() {
+  const queryClient = useQueryClient();
   const query = useQuery<Me | null>({
     queryKey: ["me"],
     queryFn: async () => {
+      let next: Me | null;
       try {
         const response = await apiRequest<{ user: Me }>("/api/me");
-        return response.user;
+        next = response.user;
       } catch (error) {
         if (error instanceof ApiError && error.status === 401) {
-          return null;
+          next = null;
+        } else {
+          throw error;
         }
-        throw error;
       }
+      purgeIfIdentityChanged(queryClient, next);
+      return next;
     },
     retry: false,
     staleTime: 60_000,
