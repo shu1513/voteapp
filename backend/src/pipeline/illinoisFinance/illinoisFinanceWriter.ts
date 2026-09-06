@@ -2,6 +2,12 @@ import type { Pool, PoolClient } from "pg";
 
 import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
 import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
+import {
+  MANUAL_PROTECTED_LINK_RETURNING,
+  assertLinkWriteNotBlocked,
+  manualProtectedLinkAssignments,
+  type ManualProtectedLinkRow,
+} from "../finance/manualLinkProtection.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type PoolLikeQueryable = Queryable & {
@@ -252,7 +258,7 @@ export async function upsertIllinoisFinanceLink(input: {
 }): Promise<{ linkId: string }> {
   validateIllinoisFinanceLinkInput(input.link);
 
-  const result = await input.db.query<{ id: string }>(
+  const result = await input.db.query<ManualProtectedLinkRow>(
     `
       INSERT INTO public.il_candidate_finance_links (
         candidate_id,
@@ -275,44 +281,36 @@ export async function upsertIllinoisFinanceLink(input: {
       VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16::timestamptz)
       ON CONFLICT (candidate_id, election_id, committee_key)
       DO UPDATE SET
-        election_year = EXCLUDED.election_year,
         candidate_name_normalized = EXCLUDED.candidate_name_normalized,
         office_name = EXCLUDED.office_name,
         district = EXCLUDED.district,
         sbe_candidate_id = CASE
-          WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.sbe_candidate_id
+          WHEN il_candidate_finance_links.link_source = 'manual' AND EXCLUDED.link_source <> 'manual' THEN il_candidate_finance_links.sbe_candidate_id
           ELSE EXCLUDED.sbe_candidate_id
         END,
         sbe_district_type = CASE
-          WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.sbe_district_type
+          WHEN il_candidate_finance_links.link_source = 'manual' AND EXCLUDED.link_source <> 'manual' THEN il_candidate_finance_links.sbe_district_type
           ELSE EXCLUDED.sbe_district_type
         END,
         sbe_office = CASE
-          WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.sbe_office
+          WHEN il_candidate_finance_links.link_source = 'manual' AND EXCLUDED.link_source <> 'manual' THEN il_candidate_finance_links.sbe_office
           ELSE EXCLUDED.sbe_office
         END,
         is_at_large = CASE
-          WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.is_at_large
+          WHEN il_candidate_finance_links.link_source = 'manual' AND EXCLUDED.link_source <> 'manual' THEN il_candidate_finance_links.is_at_large
           ELSE EXCLUDED.is_at_large
         END,
         committee_name = EXCLUDED.committee_name,
-        link_status = CASE
-          WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.link_status
-          ELSE EXCLUDED.link_status
-        END,
-        link_source = CASE
-          WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.link_source
-          ELSE EXCLUDED.link_source
-        END,
+        ${manualProtectedLinkAssignments("il_candidate_finance_links")},
         source_url = CASE
-          WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.source_url
+          WHEN il_candidate_finance_links.link_source = 'manual' AND EXCLUDED.link_source <> 'manual' THEN il_candidate_finance_links.source_url
           ELSE EXCLUDED.source_url
         END,
         last_verified_at = CASE
-          WHEN il_candidate_finance_links.link_source = 'manual' THEN il_candidate_finance_links.last_verified_at
+          WHEN il_candidate_finance_links.link_source = 'manual' AND EXCLUDED.link_source <> 'manual' THEN il_candidate_finance_links.last_verified_at
           ELSE EXCLUDED.last_verified_at
         END
-      RETURNING id
+      RETURNING ${MANUAL_PROTECTED_LINK_RETURNING}
     `,
     [
       requireNonEmpty(input.link.candidateId, "candidate id"),
@@ -334,6 +332,7 @@ export async function upsertIllinoisFinanceLink(input: {
     ]
   );
 
+  assertLinkWriteNotBlocked("Illinois", result.rows[0], input.link.linkSource ?? "manual", input.link.electionYear);
   const linkId = result.rows[0]?.id;
   if (!linkId) {
     throw new Error("Illinois finance link upsert did not return an id");

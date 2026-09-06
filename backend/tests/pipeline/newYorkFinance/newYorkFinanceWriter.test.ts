@@ -34,7 +34,8 @@ describe("newYorkFinanceWriter", () => {
     const [deactivateSql, deactivateParams] = db.query.mock.calls[0];
     expect(String(deactivateSql)).toContain("SET link_status = 'inactive'");
     expect(String(deactivateSql)).toContain("filer_id <> $3");
-    expect(deactivateParams).toEqual([CANDIDATE_ID, ELECTION_ID, "16851"]);
+    expect(String(deactivateSql)).toContain("(link_source IS DISTINCT FROM 'manual' OR $4 = 'manual')");
+    expect(deactivateParams).toEqual([CANDIDATE_ID, ELECTION_ID, "16851", "ny_soda_api"]);
 
     expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.ny_candidate_finance_links");
     expect(String(db.query.mock.calls[1]?.[0])).toContain("ON CONFLICT (candidate_id, election_id, filer_id)");

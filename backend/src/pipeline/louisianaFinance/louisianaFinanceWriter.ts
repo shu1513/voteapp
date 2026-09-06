@@ -2,6 +2,13 @@ import type { Pool, PoolClient } from "pg";
 
 import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
 import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
+import {
+  MANUAL_PROTECTED_LINK_RETURNING,
+  assertLinkWriteNotBlocked,
+  manualProtectedLinkAssignments,
+  manualProtectedRetireCondition,
+  type ManualProtectedLinkRow,
+} from "../finance/manualLinkProtection.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
@@ -272,6 +279,23 @@ export async function upsertLouisianaFinanceLink(input: {
   link: LouisianaFinanceLinkInput;
 }): Promise<{ linkId: string }> {
   validateLouisianaFinanceLinkInput(input.link);
+
+  // Retire, upsert, and the operator-disabled check are one unit: if the
+  // proposed identity turns out to be a manual row an operator disabled, the
+  // retirement of the candidate's other active link must roll back with the
+  // rejection, or the candidate ends up with no active link. A Pool (the
+  // auto-linker) opens its own transaction; a client is already inside one
+  // (snapshot writes).
+  if (canOpenTransaction(input.db)) {
+    return withLouisianaFinanceTransaction(input.db, (tx) => writeLouisianaFinanceLink({ db: tx, link: input.link }));
+  }
+  return writeLouisianaFinanceLink(input);
+}
+
+async function writeLouisianaFinanceLink(input: {
+  db: Queryable;
+  link: LouisianaFinanceLinkInput;
+}): Promise<{ linkId: string }> {
   const candidateId = requireNonEmpty(input.link.candidateId, "candidate id");
   const electionId = requireNonEmpty(input.link.electionId, "election id");
   const electionYear = normalizeElectionYear(input.link.electionYear);
@@ -287,12 +311,13 @@ export async function upsertLouisianaFinanceLink(input: {
           AND election_id = $2::uuid
           AND filer_number <> $3
           AND link_status = 'active'
+          AND ${manualProtectedRetireCondition("$4")}
       `,
-      [candidateId, electionId, filerNumber]
+      [candidateId, electionId, filerNumber, input.link.linkSource ?? "manual"]
     );
   }
 
-  const result = await input.db.query<{ id: string }>(
+  const result = await input.db.query<ManualProtectedLinkRow>(
     `
       INSERT INTO public.la_candidate_finance_links (
         candidate_id,
@@ -311,16 +336,14 @@ export async function upsertLouisianaFinanceLink(input: {
       VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12::timestamptz)
       ON CONFLICT (candidate_id, election_id, filer_number)
       DO UPDATE SET
-        election_year = EXCLUDED.election_year,
         candidate_name_normalized = EXCLUDED.candidate_name_normalized,
         office_name = EXCLUDED.office_name,
         district = EXCLUDED.district,
         filer_name = EXCLUDED.filer_name,
-        link_status = EXCLUDED.link_status,
-        link_source = EXCLUDED.link_source,
+        ${manualProtectedLinkAssignments("la_candidate_finance_links")},
         source_url = EXCLUDED.source_url,
         last_verified_at = EXCLUDED.last_verified_at
-      RETURNING id
+      RETURNING ${MANUAL_PROTECTED_LINK_RETURNING}
     `,
     [
       candidateId,
@@ -338,6 +361,7 @@ export async function upsertLouisianaFinanceLink(input: {
     ]
   );
 
+  assertLinkWriteNotBlocked("Louisiana", result.rows[0], input.link.linkSource ?? "manual", input.link.electionYear);
   const linkId = result.rows[0]?.id;
   if (!linkId) {
     throw new Error("Louisiana finance link upsert did not return an id");

@@ -2,6 +2,12 @@ import type { Pool, PoolClient } from "pg";
 
 import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
 import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
+import {
+  MANUAL_PROTECTED_LINK_RETURNING,
+  assertLinkWriteNotBlocked,
+  manualProtectedLinkAssignments,
+  type ManualProtectedLinkRow,
+} from "../finance/manualLinkProtection.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
@@ -208,7 +214,7 @@ export async function upsertWashingtonFinanceLink(input: {
 }): Promise<{ linkId: string }> {
   validateWashingtonFinanceLinkInput(input.link);
 
-  const result = await input.db.query<{ id: string }>(
+  const result = await input.db.query<ManualProtectedLinkRow>(
     `
       INSERT INTO public.wa_candidate_finance_links (
         candidate_id,
@@ -229,18 +235,16 @@ export async function upsertWashingtonFinanceLink(input: {
       VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14::timestamptz)
       ON CONFLICT (candidate_id, election_id, filer_id)
       DO UPDATE SET
-        election_year = EXCLUDED.election_year,
         candidate_name_normalized = EXCLUDED.candidate_name_normalized,
         office_name = EXCLUDED.office_name,
         district = EXCLUDED.district,
         committee_id = EXCLUDED.committee_id,
         committee_name = EXCLUDED.committee_name,
         candidacy_id = EXCLUDED.candidacy_id,
-        link_status = EXCLUDED.link_status,
-        link_source = EXCLUDED.link_source,
+        ${manualProtectedLinkAssignments("wa_candidate_finance_links")},
         source_url = EXCLUDED.source_url,
         last_verified_at = EXCLUDED.last_verified_at
-      RETURNING id
+      RETURNING ${MANUAL_PROTECTED_LINK_RETURNING}
     `,
     [
       requireNonEmpty(input.link.candidateId, "candidate id"),
@@ -260,6 +264,7 @@ export async function upsertWashingtonFinanceLink(input: {
     ]
   );
 
+  assertLinkWriteNotBlocked("Washington", result.rows[0], input.link.linkSource ?? "manual", input.link.electionYear);
   const linkId = result.rows[0]?.id;
   if (!linkId) {
     throw new Error("Washington finance link upsert did not return an id");
