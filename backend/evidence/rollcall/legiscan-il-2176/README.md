@@ -194,15 +194,16 @@ check what each roll's text actually was before importing it.**
 | [batch-03](batch-03/JUDGING.md) — the date-skew holds | 3 | 3 | 157 | 126 |
 | [batch-04](batch-04/JUDGING.md) — first 25 of the unbatched pool | 14 | 10 | 984 | 132 |
 | [batch-05](batch-05/JUDGING.md) — measures 26-50 | 23 | 15 | 1,567 | 132 |
+| [batch-06](batch-06/JUDGING.md) — measures 51-75, two more date skews | 13 | 10 | 994 | 132 |
 
-**Illinois total: 7,391 records across 132 candidates, local `voteapp` only.**
+**Illinois total: 8,385 records across 132 candidates, local `voteapp` only.**
 **Migration 257 (`official_vote_date`) is local only — prod needs it, alongside
 251 and 252, before any Illinois promotion.**
 
 ## What is left
 
-`survey/divided-enacted-worklist.tsv` is the resumable ledger. batches 04 and 05 read the
-first 50 measures of the unbatched pool, so **126 of the original 204 rolls
+`survey/divided-enacted-worklist.tsv` is the resumable ledger. batches 04 through 06 read the
+first 75 measures of the unbatched pool, so **93 of the original 204 rolls
 still carry `candidate:unbatched`**; everything else is judged or screened.
 
 Read the pool in bill-number order and keep the batch tooling under
