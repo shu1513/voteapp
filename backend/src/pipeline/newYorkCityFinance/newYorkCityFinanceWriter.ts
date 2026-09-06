@@ -3,6 +3,11 @@ import type { Pool, PoolClient } from "pg";
 import type { NewYorkCityFinanceDirectBreakdown } from "./newYorkCityDirectContributionAggregator.js";
 import type { NewYorkCityOutsideSpendingGroup } from "./newYorkCityOutsideSpendingAggregator.js";
 import type { NewYorkCityOutsideGroupBreakdown } from "./newYorkCityOutsideGroupFunderAggregator.js";
+import {
+  assertLinkWriteNotBlocked,
+  manualProtectedLinkAssignments,
+  type ManualProtectedLinkRow,
+} from "../finance/manualLinkProtection.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type Connectable = Queryable & Pick<Pool, "connect">;
@@ -97,7 +102,7 @@ function validateSnapshot(input: NewYorkCityFinanceSnapshotInput): void {
   }
 }
 
-async function upsertNewYorkCityFinanceLink(input: {
+export async function upsertNewYorkCityFinanceLink(input: {
   db: Queryable;
   link: NewYorkCityFinanceLinkInput;
 }): Promise<string> {
@@ -113,7 +118,7 @@ async function upsertNewYorkCityFinanceLink(input: {
     `,
     [input.link.candidateId, input.link.electionId, input.link.cfbCandidateId, input.link.linkSource]
   );
-  const result = await input.db.query<{ id: string }>(
+  const result = await input.db.query<ManualProtectedLinkRow>(
     `
       INSERT INTO public.nyc_candidate_finance_links (
         candidate_id, election_id, election_year, candidate_name_normalized,
@@ -128,14 +133,10 @@ async function upsertNewYorkCityFinanceLink(input: {
         office_code = EXCLUDED.office_code,
         borough_code = EXCLUDED.borough_code,
         cfb_candidate_name = EXCLUDED.cfb_candidate_name,
-        link_status = 'active',
-        link_source = CASE
-          WHEN nyc_candidate_finance_links.link_source = 'manual' THEN 'manual'
-          ELSE EXCLUDED.link_source
-        END,
+        ${manualProtectedLinkAssignments("nyc_candidate_finance_links")},
         source_url = COALESCE(EXCLUDED.source_url, nyc_candidate_finance_links.source_url),
         last_verified_at = EXCLUDED.last_verified_at
-      RETURNING id::text
+      RETURNING id::text AS id, link_status, link_source
     `,
     [
       input.link.candidateId,
@@ -151,6 +152,7 @@ async function upsertNewYorkCityFinanceLink(input: {
       input.link.lastVerifiedAt.toISOString(),
     ]
   );
+  assertLinkWriteNotBlocked("NYC", result.rows[0], input.link.linkSource);
   const id = result.rows[0]?.id;
   if (!id) throw new Error("NYC finance link upsert returned no id");
   return id;

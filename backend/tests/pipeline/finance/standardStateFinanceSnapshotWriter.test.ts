@@ -349,7 +349,7 @@ describe("createStandardStateFinanceSnapshotWriter config options", () => {
 
     const linkSql = String(db.query.mock.calls[0]?.[0]);
     expect(linkSql).toContain(
-      `WHEN ${TABLES.links}.link_source = 'manual' THEN ${TABLES.links}.link_source`
+      `WHEN ${TABLES.links}.link_source = 'manual' AND EXCLUDED.link_source <> 'manual' THEN ${TABLES.links}.link_source`
     );
     expect(linkSql).toContain("ELSE EXCLUDED.link_source");
     expect(linkSql).not.toContain("link_source = EXCLUDED.link_source");
@@ -357,7 +357,7 @@ describe("createStandardStateFinanceSnapshotWriter config options", () => {
     // an unguarded status would let automation reactivate an operator-disabled
     // manual row.
     expect(linkSql).toContain(
-      `WHEN ${TABLES.links}.link_source = 'manual' THEN ${TABLES.links}.link_status`
+      `WHEN ${TABLES.links}.link_source = 'manual' AND EXCLUDED.link_source <> 'manual' THEN ${TABLES.links}.link_status`
     );
     expect(linkSql).toContain("ELSE EXCLUDED.link_status");
     expect(linkSql).not.toContain("link_status = EXCLUDED.link_status");

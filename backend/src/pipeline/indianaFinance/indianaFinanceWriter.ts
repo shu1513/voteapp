@@ -1,4 +1,10 @@
 import type { Pool, PoolClient } from "pg";
+import {
+  MANUAL_PROTECTED_LINK_RETURNING,
+  assertLinkWriteNotBlocked,
+  manualProtectedLinkAssignments,
+  type ManualProtectedLinkRow,
+} from "../finance/manualLinkProtection.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
@@ -165,7 +171,7 @@ export async function upsertIndianaFinanceLink(input: {
 }): Promise<{ linkId: string }> {
   validateIndianaFinanceLinkInput(input.link);
 
-  const result = await input.db.query<{ id: string }>(
+  const result = await input.db.query<ManualProtectedLinkRow>(
     `
       INSERT INTO public.in_candidate_finance_links (
         candidate_id,
@@ -189,14 +195,10 @@ export async function upsertIndianaFinanceLink(input: {
         office_name = EXCLUDED.office_name,
         district = EXCLUDED.district,
         committee_name = EXCLUDED.committee_name,
-        link_status = EXCLUDED.link_status,
-        link_source = CASE
-          WHEN in_candidate_finance_links.link_source = 'manual' THEN in_candidate_finance_links.link_source
-          ELSE EXCLUDED.link_source
-        END,
+        ${manualProtectedLinkAssignments("in_candidate_finance_links")},
         source_url = EXCLUDED.source_url,
         last_verified_at = EXCLUDED.last_verified_at
-      RETURNING id
+      RETURNING ${MANUAL_PROTECTED_LINK_RETURNING}
     `,
     [
       requireNonEmpty(input.link.candidateId, "candidate id"),
@@ -214,6 +216,7 @@ export async function upsertIndianaFinanceLink(input: {
     ]
   );
 
+  assertLinkWriteNotBlocked("Indiana", result.rows[0], input.link.linkSource ?? "manual");
   const linkId = result.rows[0]?.id;
   if (!linkId) {
     throw new Error("Indiana finance link upsert did not return an id");

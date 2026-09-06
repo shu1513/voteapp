@@ -2,6 +2,13 @@ import type { Pool, PoolClient } from "pg";
 
 import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
 import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
+import {
+  MANUAL_PROTECTED_LINK_RETURNING,
+  assertLinkWriteNotBlocked,
+  manualProtectedLinkAssignments,
+  manualProtectedRetireCondition,
+  type ManualProtectedLinkRow,
+} from "../finance/manualLinkProtection.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
@@ -287,12 +294,13 @@ export async function upsertLouisianaFinanceLink(input: {
           AND election_id = $2::uuid
           AND filer_number <> $3
           AND link_status = 'active'
+          AND ${manualProtectedRetireCondition("$4")}
       `,
-      [candidateId, electionId, filerNumber]
+      [candidateId, electionId, filerNumber, input.link.linkSource ?? "manual"]
     );
   }
 
-  const result = await input.db.query<{ id: string }>(
+  const result = await input.db.query<ManualProtectedLinkRow>(
     `
       INSERT INTO public.la_candidate_finance_links (
         candidate_id,
@@ -316,11 +324,10 @@ export async function upsertLouisianaFinanceLink(input: {
         office_name = EXCLUDED.office_name,
         district = EXCLUDED.district,
         filer_name = EXCLUDED.filer_name,
-        link_status = EXCLUDED.link_status,
-        link_source = EXCLUDED.link_source,
+        ${manualProtectedLinkAssignments("la_candidate_finance_links")},
         source_url = EXCLUDED.source_url,
         last_verified_at = EXCLUDED.last_verified_at
-      RETURNING id
+      RETURNING ${MANUAL_PROTECTED_LINK_RETURNING}
     `,
     [
       candidateId,
@@ -338,6 +345,7 @@ export async function upsertLouisianaFinanceLink(input: {
     ]
   );
 
+  assertLinkWriteNotBlocked("Louisiana", result.rows[0], input.link.linkSource ?? "manual");
   const linkId = result.rows[0]?.id;
   if (!linkId) {
     throw new Error("Louisiana finance link upsert did not return an id");

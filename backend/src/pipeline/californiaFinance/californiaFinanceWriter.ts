@@ -2,6 +2,12 @@ import type { Pool, PoolClient } from "pg";
 
 import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
 import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
+import {
+  MANUAL_PROTECTED_LINK_RETURNING,
+  assertLinkWriteNotBlocked,
+  manualProtectedLinkAssignments,
+  type ManualProtectedLinkRow,
+} from "../finance/manualLinkProtection.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
@@ -171,7 +177,7 @@ export async function upsertCaliforniaFinanceLink(input: {
   db: Queryable;
   link: CaliforniaFinanceLinkInput;
 }): Promise<{ linkId: string }> {
-  const result = await input.db.query<{ id: string }>(
+  const result = await input.db.query<ManualProtectedLinkRow>(
     `
       INSERT INTO public.ca_candidate_finance_links (
         candidate_id,
@@ -193,11 +199,10 @@ export async function upsertCaliforniaFinanceLink(input: {
         candidate_name_normalized = EXCLUDED.candidate_name_normalized,
         office_name = EXCLUDED.office_name,
         controlled_committee_name = EXCLUDED.controlled_committee_name,
-        link_status = EXCLUDED.link_status,
-        link_source = EXCLUDED.link_source,
+        ${manualProtectedLinkAssignments("ca_candidate_finance_links")},
         source_url = EXCLUDED.source_url,
         last_verified_at = EXCLUDED.last_verified_at
-      RETURNING id
+      RETURNING ${MANUAL_PROTECTED_LINK_RETURNING}
     `,
     [
       requireNonEmpty(input.link.candidateId, "candidate id"),
@@ -214,6 +219,7 @@ export async function upsertCaliforniaFinanceLink(input: {
     ]
   );
 
+  assertLinkWriteNotBlocked("California", result.rows[0], input.link.linkSource ?? "manual");
   const linkId = result.rows[0]?.id;
   if (!linkId) {
     throw new Error("California finance link upsert did not return an id");

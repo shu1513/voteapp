@@ -112,6 +112,14 @@ jobs:
         env:
           DATABASE_URL: postgresql://voteapp:voteapp@localhost:5432/voteapp
 
+      # Same-identity manual-link protection is an ON CONFLICT CASE plus a
+      # pre-INSERT retire step per writer; what those leave in the row is
+      # Postgres behaviour, so every writer is exercised against a real table.
+      - name: Finance manual-link protection across writers
+        run: npx vitest run tests/pipeline/finance/manualLinkProtection.db.test.ts
+        env:
+          DATABASE_URL: postgresql://voteapp:voteapp@localhost:5432/voteapp
+
       - name: Manual district queue claim integration
         run: npx vitest run tests/pipeline/address/manualDistrictResearchRequests.test.ts
         env:

@@ -2,6 +2,12 @@ import type { Pool, PoolClient } from "pg";
 
 import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
 import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
+import {
+  MANUAL_PROTECTED_LINK_RETURNING,
+  assertLinkWriteNotBlocked,
+  manualProtectedLinkAssignments,
+  type ManualProtectedLinkRow,
+} from "../finance/manualLinkProtection.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
@@ -209,7 +215,7 @@ export async function upsertHawaiiFinanceLink(input: {
 }): Promise<{ linkId: string }> {
   validateHawaiiFinanceLinkInput(input.link);
 
-  const result = await input.db.query<{ id: string }>(
+  const result = await input.db.query<ManualProtectedLinkRow>(
     `
       INSERT INTO public.hi_candidate_finance_links (
         candidate_id,
@@ -235,11 +241,10 @@ export async function upsertHawaiiFinanceLink(input: {
         district = EXCLUDED.district,
         committee_name = EXCLUDED.committee_name,
         election_period = EXCLUDED.election_period,
-        link_status = EXCLUDED.link_status,
-        link_source = EXCLUDED.link_source,
+        ${manualProtectedLinkAssignments("hi_candidate_finance_links")},
         source_url = EXCLUDED.source_url,
         last_verified_at = EXCLUDED.last_verified_at
-      RETURNING id
+      RETURNING ${MANUAL_PROTECTED_LINK_RETURNING}
     `,
     [
       requireNonEmpty(input.link.candidateId, "candidate id"),
@@ -258,6 +263,7 @@ export async function upsertHawaiiFinanceLink(input: {
     ]
   );
 
+  assertLinkWriteNotBlocked("Hawaii", result.rows[0], input.link.linkSource ?? "manual");
   const linkId = result.rows[0]?.id;
   if (!linkId) {
     throw new Error("Hawaii finance link upsert did not return an id");

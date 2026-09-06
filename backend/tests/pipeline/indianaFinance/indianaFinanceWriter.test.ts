@@ -43,7 +43,7 @@ describe("indianaFinanceWriter", () => {
     expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.in_candidate_finance_links");
     expect(String(db.query.mock.calls[0]?.[0])).toContain("ON CONFLICT (candidate_id, election_id, committee_id)");
     expect(String(db.query.mock.calls[0]?.[0])).toContain(
-      "WHEN in_candidate_finance_links.link_source = 'manual' THEN in_candidate_finance_links.link_source"
+      "WHEN in_candidate_finance_links.link_source = 'manual' AND EXCLUDED.link_source <> 'manual' THEN in_candidate_finance_links.link_source"
     );
     expect(String(db.query.mock.calls[0]?.[0])).toContain("RETURNING id");
     expect(db.query.mock.calls[0]?.[1]).toEqual([
