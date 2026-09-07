@@ -709,6 +709,114 @@ const GEORGIA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
     /^h[bjr]s? \d/,
 ];
 
+// West Virginia's floor-question vocabulary, measured from the survey
+// histograms of BOTH sessions in scope (2025 Regular = LegiScan 2196,
+// 2026 Regular = 2254) and shared by their two entries, which print the same
+// families. The two surveys are committed under
+// evidence/rollcall/legiscan-wv-2196/survey and .../legiscan-wv-2254/survey.
+//
+// Two facts about West Virginia shape everything here.
+//
+// First, WEST VIRGINIA PUBLISHES NO COMMITTEE VOTES AT ALL. Both surveys
+// report committeeChamberVotes = 0, and every roll's `total` equals the full
+// chamber (100 House / 34 Senate, and 99 / 33 in 2026 where a seat was
+// vacant). The floor-versus-committee tally inference therefore has nothing
+// to separate here, and the chamberSizes serve only as that check's
+// denominator.
+//
+// Second, WEST VIRGINIA VOTES A BILL'S EFFECTIVE DATE SEPARATELY FROM THE
+// BILL. `Effective from passage` alone is 378 of the 2,629 roll calls on
+// kept-type bills across the two sessions, with dated variants beside it.
+// Those votes need a two-thirds majority, so the minority can and does defeat
+// them, which makes them frequently divided: 14 are both divided and on a
+// bill that became law. They are NOT votes on the bill's substance and are
+// excluded. Anything selecting on the divided gate alone would pull them in.
+const WEST_VIRGINIA_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Ordinary passage in either chamber, including the Senate's
+  // `Passed Senate with amended title`. Also matches the few rolls whose
+  // printed roll number carries a stray trailing space
+  // (`Passed House (Roll No. 234 )`), because the pattern never reaches the
+  // parenthesis.
+  { pattern: /\bpassed (?:house|senate)\b/, questionClass: "passage" },
+  // Failed passage. Kept rather than dropped so a rejection is dispositioned
+  // in the worklist instead of disappearing: the Illinois precedent is that a
+  // failed motion's tally reads exactly like a passing one, so it must be
+  // recorded and screened, never dropped silently. `passed` is 0 on these
+  // rolls and the enacted filter removes them from any batch.
+  { pattern: /^(?:house rejected|rejected by senate)\b/, questionClass: "passage" },
+  // Joint resolutions, which West Virginia adopts rather than passes. These
+  // are its proposed constitutional amendments, which go to the voters rather
+  // than to the Governor, so none can reach status 4 and none is in the
+  // divided-and-enacted pool today. Anchored at the start so that
+  // `Amendment adopted` and `Floor amendment adopted` never match.
+  { pattern: /^adopted by (?:house|senate)\b/, questionClass: "passage" },
+  // The one veto override in either session (2025 SB 369).
+  { pattern: /\brepassed bill as result of governor's veto\b/, questionClass: "veto_override" },
+  { pattern: /\badopted conference report and passed bill\b/, questionClass: "conference_report" },
+  // Concurrence. West Virginia spells this at least fourteen ways across the
+  // two sessions, including ones the clerk mistyped
+  // (`...and and title amendmentpassed bill`), so the pattern keys on the
+  // stem `concur in` / `concurred in` / `concurs in` rather than on any full
+  // caption. `refused to concur` is excluded below and reaches this list only
+  // because the exclusions are checked first.
+  { pattern: /\bconcur(?:red|s)?[ -]in\b/, questionClass: "concurrence" },
+  // The Senate's wording when it amends the House's amendment and passes the
+  // bill in one motion, which never contains the word `concur`.
+  { pattern: /\b(?:amended|amends) house amendment and passed bill\b/, questionClass: "concurrence" },
+  // A chamber receding from its own amendment and passing the other chamber's
+  // text. `House receded` on its own, with no `and passed`, is deliberately
+  // NOT matched: it appears twice in 2025 and the caption does not say what
+  // was passed, so it is surfaced as an unknown question rather than guessed.
+  { pattern: /\breceded and passed\b/, questionClass: "concurrence" },
+  // Reconsideration that ends in passage. `House reconsidered effective date
+  // and passage` is a vote on both at once and is a genuine passage vote, so
+  // it is kept here rather than caught by the effective-date exclusion, which
+  // is anchored at the start of the caption for exactly this reason.
+  { pattern: /\breconsidered\b.*\b(?:passed bill|and passage)\b/, questionClass: "passage" },
+];
+
+// Checked BEFORE the kept list. Twelve rules, verified to classify all 2,629
+// roll calls on kept-type bills identically to a longer seventeen-rule draft,
+// so none of these is redundant.
+const WEST_VIRGINIA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // The separate effective-date vote, in every spelling the two sessions
+  // print: `Effective from passage`, `Effective July 1, 2026`,
+  // `Effective 6/30/2025`, the mistyped `Effective July, 1, 2026`,
+  // `Effective date rejected` and `Effective July 1, 2027 Rejected`.
+  // ANCHORED AT THE START so that `House reconsidered effective date and
+  // passage`, which is a passage vote, is not swept up with them.
+  /^effective\b/,
+  // The House concurring in the Senate's effective date only, which is not a
+  // vote on the bill.
+  /\bconcurred in senate effective date\b/,
+  // Procedural motions: previous question, discharge, refer, table, limit
+  // debate, lay over, reject the bill. The lookahead protects
+  // `Motion to concur in House amendments adopted`, which is a real
+  // concurrence and the only motion in either session that is one.
+  /^motion (?!to concur\b)/,
+  // Amendment votes, including the sponsor-named ones West Virginia prints
+  // with no fixed prefix (`Takubo #2 floor amendments adopted`,
+  // `Garcia amends to com. amendment rejected`,
+  // `Tarr amend. to House amends rejected`). The leading lookahead is
+  // load-bearing: without it this rule also swallowed
+  // `Motion to concur in House amendments adopted` and
+  // `House concur in Senate amendment and title amendment rejected`, both of
+  // which are concurrence votes on the measure.
+  /^(?!.*\b(?:concur|passed|repassed|receded)\b).*\bamend(?:s|\.|ed|ment|ments)? (?:adopted|rejected)\b/,
+  /\bamended on 3rd reading\b/,
+  // Suspending or dispensing with the constitutional rule that a bill be read
+  // on three separate days, and the related second-reference motions.
+  /\b(?:constitutional )?rules? suspen/,
+  /\bdispensed with\b/,
+  /\breference dispensed\b/,
+  /\bruling of chair\b/,
+  /\bsuspend rules\b/,
+  /\bpostpone\b/,
+  // A chamber refusing to concur. It contains the word `concur` and must not
+  // reach the concurrence pattern.
+  /\brefused to concur\b/,
+];
+
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
   // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
   // die 2026-04-03). Vocabulary measured from the full dataset survey
@@ -3611,6 +3719,35 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       1649476:
         "SB 1571 House 2026-03-02: LegiScan reports 37-7; Oregon's journal reports 36-8 and names Lewis among the nays, whom LegiScan records as a yea",
     },
+  },
+  // West Virginia, both sessions in scope. The 2025 Regular Session (2196) and
+  // the 2026 Regular Session (2254) are separate LegiScan datasets and get
+  // separate entries, sharing one measured vocabulary.
+  //
+  // Pool as measured across the two sessions: 46 measures and 79 floor rolls
+  // are both divided and enacted, over 61 measure-chamber slots. That is a
+  // small pool for the size of the legislature, and the supermajority is the
+  // reason: only 10.2 percent of 2025 floor rolls and 4.6 percent of 2026
+  // floor rolls are divided at all, against 33 percent in Texas and 14
+  // percent in Ohio. A party-line bill here passes far outside the gate.
+  //
+  // Roster reach: all 100 House of Delegates seats are on the Nov-2026
+  // ballot, and 17 of the 34 Senate seats. The default --scope-from of
+  // 2026-11-01 is correct for West Virginia, because every office election in
+  // scope is dated 2026-11-03 and the May 2026 primary is already past.
+  "WV": {
+    jurisdiction: "WV",
+    sessionId: 2196,
+    chamberSizes: { house: 100, senate: 34 },
+    keptQuestions: WEST_VIRGINIA_KEPT_QUESTIONS,
+    excludedQuestions: WEST_VIRGINIA_EXCLUDED_QUESTIONS,
+  },
+  "WV-2254": {
+    jurisdiction: "WV",
+    sessionId: 2254,
+    chamberSizes: { house: 100, senate: 34 },
+    keptQuestions: WEST_VIRGINIA_KEPT_QUESTIONS,
+    excludedQuestions: WEST_VIRGINIA_EXCLUDED_QUESTIONS,
   },
 };
 
