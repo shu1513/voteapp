@@ -79,3 +79,28 @@ SB 1371, each a worker protection against a public employer, where the
 
 House rolls reach 124-130 candidates, Senate rolls 27-29. Median Flesch-Kincaid
 grade **7.2**, worst **8.3**, no sentence over 45 words, no British spellings.
+
+## Corrections from the review of #1232
+
+**HB 8002 became law, and the record now says so.** The dataset's history ended at
+"Immediate Transmittal to the Senate" on 2025-11-12, so the description said the
+Senate never voted. The state's own bill page shows the Senate rejected all six of
+its amendments and passed the House text *in concurrence* on 2025-11-13, and the
+Governor signed it as **Public Act 25-1** on 2025-11-26. The House's 90-56 roll is
+therefore the House's vote on the enacted law. Both descriptions were rewritten in
+the past tense, re-judged and re-imported in place (128 records `rewrite`, 988
+`unchanged`, stamp `2026-09-07T03:46:56.674Z`), and the roll now sits in
+`../survey/divided-enacted-worklist.tsv` as batch-04. **The lesson:** LegiScan's
+Connecticut history was stale for the November 2025 special session even in a
+dataset cut nine months later; check the state page for any bill whose history
+ends in transmittal.
+
+**SB 1355 is withdrawn.** Senate Amendment Schedule A struck everything after the
+enacting clause and substituted a Department of Consumer Protection feasibility
+study on compounding levonorgestrel, mifepristone and misoprostol. As voted it is a
+study, and a study carries no direction under this campaign's screening rule; the
+reproductive-rights stance rested on a mandate the voted text no longer contained.
+Its 28 records are retired (`review-retirements.json`), the judgment removed, the
+review-queue row returned to pending, and the worklist row is `dropped:filter-3`.
+
+Connecticut now holds **4034 live records**.

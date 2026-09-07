@@ -149,8 +149,8 @@
       "measure_id": "HB 8002",
       "vote_date": "2025-11-12",
       "review_status": "approved",
-      "yea_description": "Voted to pass HB 8002. It would require every town to adopt a housing growth plan and let towns create priority housing development zones with looser zoning rules. It would also create a first-time homebuyer savings account with a state tax break and set up a Council on Housing Development. The Connecticut House passed it 90-56. The Senate did not vote on it, so it did not become law.",
-      "nay_description": "Voted against HB 8002. It would require every town to adopt a housing growth plan and let towns create priority housing development zones with looser zoning rules. It would also create a first-time homebuyer savings account with a state tax break and set up a Council on Housing Development. The Connecticut House passed it 90-56. The Senate did not vote on it, so it did not become law.",
+      "yea_description": "Voted to pass HB 8002. It requires every town to adopt a housing growth plan and lets towns create priority housing development zones with looser zoning rules. It also creates a first-time homebuyer savings account with a state tax break and sets up a Council on Housing Development. The Connecticut House passed it 90-56 in the November 2025 special session. The Senate passed it unchanged, and the Governor signed it as Public Act 25-1.",
+      "nay_description": "Voted against HB 8002. It requires every town to adopt a housing growth plan and lets towns create priority housing development zones with looser zoning rules. It also creates a first-time homebuyer savings account with a state tax break and sets up a Council on Housing Development. The Connecticut House passed it 90-56 in the November 2025 special session. The Senate passed it unchanged, and the Governor signed it as Public Act 25-1.",
       "labels": [
         {
           "slug": "housing_affordability",
@@ -252,29 +252,6 @@
           "yea": "for",
           "nay": null
         }
-      ]
-    },
-    {
-      "jurisdiction": "CT",
-      "chamber": "senate",
-      "session": "2174",
-      "roll": 1574418,
-      "measure_id": "SB 1355",
-      "vote_date": "2025-05-20",
-      "review_status": "approved",
-      "yea_description": "Voted to pass SB 1355. It would order rules so that pharmacies allowed to mix their own nonsterile drugs may make products that contain levonorgestrel, mifepristone or misoprostol. Those are the drugs used for emergency birth control and for ending a pregnancy with medication. The Connecticut Senate passed it 24-11. The House did not vote on it, so it did not become law.",
-      "nay_description": "Voted against SB 1355. It would order rules so that pharmacies allowed to mix their own nonsterile drugs may make products that contain levonorgestrel, mifepristone or misoprostol. Those are the drugs used for emergency birth control and for ending a pregnancy with medication. The Connecticut Senate passed it 24-11. The House did not vote on it, so it did not become law.",
-      "labels": [
-        {
-          "slug": "womens_reproductive_rights",
-          "yea": "for",
-          "nay": null
-        }
-      ],
-      "acknowledge_later_rolls": [
-        1574419,
-        1574420,
-        1574421
       ]
     },
     {

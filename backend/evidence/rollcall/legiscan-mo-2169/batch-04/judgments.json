@@ -182,24 +182,6 @@
           "nay": null
         }
       ]
-    },
-    {
-      "jurisdiction": "MO",
-      "chamber": "house",
-      "session": "2169",
-      "roll": 1553946,
-      "measure_id": "HB 952",
-      "vote_date": "2025-04-22",
-      "review_status": "approved",
-      "yea_description": "Voted to pass HB 952. It would have limited what a jury may hear about who actually paid an injured person's medical bills, and changed how tort payments are handled for insurers. The House rejected it 37-107, so it did not become law.",
-      "nay_description": "Voted against HB 952. It would have limited what a jury may hear about who actually paid an injured person's medical bills, and changed how tort payments are handled for insurers. The House rejected it 37-107, so it did not become law.",
-      "labels": [
-        {
-          "slug": "corporate_accountability",
-          "yea": "against",
-          "nay": null
-        }
-      ]
     }
   ]
 }

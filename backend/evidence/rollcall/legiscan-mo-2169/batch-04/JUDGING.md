@@ -58,3 +58,22 @@ journal.
 
 Median Flesch-Kincaid grade **6.4**, worst **9.1**, no sentence over 45 words,
 no British spellings.
+
+## Correction from the review of #1232
+
+**HB 952 is withdrawn.** The record described the collateral-source evidence limits
+as the bill's change; they are existing RSMo 490.715, unchanged. Missouri prints new
+matter in bold and `pdftotext` discards bold, so only bracketed deletions survive
+a plain dump — the bill's actual addition, a new subsection 3, was invisible. It bars
+a plaintiff from recovering again what a defendant already reimbursed to the
+plaintiff's insurer before a liability claim was filed. That is a no-double-recovery
+rule with no defensible `corporate_accountability` direction, so the measure is
+dropped under filter 5 rather than re-described. Its 98 records are retired
+(`../../legiscan-ct-2174/batch-04/review-retirements.json`, shared with the
+Connecticut correction), the judgment removed, the row returned to pending, and the
+worklist row is `dropped:filter-5`.
+
+**Rule for Missouri from here on:** diff the bill text against the current section
+on `revisor.mo.gov` before describing any "modifies provisions" bill. HB 437 was
+re-checked the same way and its description stands. Session 2169 now holds
+**2475 live records**; Missouri across both sessions **2704**.

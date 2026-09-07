@@ -163,7 +163,7 @@ Substitute / Enrolled) and `amendments[]` with an `adopted` flag.
 `survey/divided-not-enacted-worklist.tsv` is now committed and every one of its
 108 rolls carries a disposition: 16 imported (5 in batch-03, 11 in
 [batch-04](batch-04/JUDGING.md)), the rest screened or dropped.
-**Session 2169 total: 2,573 records; Missouri across both sessions: 2,802, local only.**
+**Session 2169 total: 2475 live records; Missouri across both sessions: 2704, local only** (98 retired on review, see batch-04).
 
 **Audit every roll against the history's own passage tally before judging.** It
 caught HB 416, whose divided 101-47 roll is not the passage vote the history
