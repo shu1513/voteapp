@@ -3612,6 +3612,111 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
         "SB 1571 House 2026-03-02: LegiScan reports 37-7; Oregon's journal reports 36-8 and names Lewis among the nays, whom LegiScan records as a yea",
     },
   },
+  ND: {
+    jurisdiction: "ND",
+    sessionId: 2140,
+    chamberSizes: { house: 94, senate: 47 },
+    keptQuestions: [
+      // North Dakota takes its recorded vote on passage at the SECOND
+      // reading. There is no third reading. Confirmed from the state's own
+      // record rather than assumed: North Dakota prints the tally in its
+      // bill-history action lines, so every roll in the dataset was matched
+      // to a history line on the same date with the same yea-nay. The
+      // matches are `Second reading, passed` (1,217), `Second reading,
+      // failed to pass` (395), `Second reading, passed as amended` (348) and
+      // `Second reading, passed ... Emergency clause carried` (120).
+      //
+      // All four wear the SAME description, the bare `House Second reading`
+      // / `Senate Second reading` — the desc names the reading, never the
+      // outcome and never the question. Two consequences:
+      //
+      // 1. A failed vote is spelled exactly like a passing one. 395 of these
+      //    rolls are defeats. Nothing in the desc separates them, so
+      //    selection must read `passed` and the bill history, never the
+      //    caption (the Alaska HB 110 and Arizona failed-reading shape).
+      // 2. The emergency clause is NOT a separate question here. North
+      //    Dakota carries it on the passage vote itself (`Second reading,
+      //    passed, yeas 63 nays 30, Emergency clause carried`), unlike
+      //    Arkansas, which votes it separately and excludes it. So these 120
+      //    rolls are passage votes and are kept.
+      { pattern: /^(house|senate) second reading$/, questionClass: "passage" },
+      // The veto family, five rolls in the session: `Senate Passed over
+      // veto` (1) and `Veto sustained` (2 House, 2 Senate). The sustained
+      // ones are failed overrides, kept for the same reason Montana keeps
+      // its failed third readings — so a chamber's whole record on the
+      // question is visible to the audit trail and the superseded-stage
+      // gate. These descriptions DO carry the tally inline, so the pattern
+      // tolerates it.
+      {
+        pattern: /^(house|senate) (passed over veto|veto sustained), yeas \d+ nays \d+$/,
+        questionClass: "veto_override",
+      },
+    ],
+    excludedQuestions: [
+      // ⚠ The committee cut by TALLY does not work in North Dakota, so this
+      // exclusion is load-bearing rather than cosmetic. These 44 rolls carry
+      // a FULL-CHAMBER member list and a full-chamber tally (for example
+      // 91-0 of 94) while the description quotes the committee's own vote in
+      // the trailing three numbers (`... place on calendar 14 0 0`). The
+      // shared floor-vs-committee check reads `total`, so it would classify
+      // every one of them as a floor vote. They must be excluded on the
+      // literal phrase instead. None is divided, so none could reach a
+      // batch, but they must be dispositioned deliberately rather than left
+      // to a threshold that cannot see them.
+      /^(house|senate) reported back, do (pass, place|not pass, placed) on calendar \d+ \d+ \d+$/,
+    ],
+    // ⚠⚠ TWO DEFECT CLASSES, BOTH FOUND BY AUDITING ALL 2,087 SECOND-READING
+    // ROLLS ON KEPT BILL TYPES AGAINST NORTH DAKOTA'S OWN HISTORY TALLIES
+    // (2,076 exact, 11 wrong). The audit was NOT bounded by the divided gate,
+    // per the Oregon SB 1565 lesson that a tally error can itself decide
+    // whether a roll is in the pool.
+    //
+    // Class 1 — A DIVISION OR AMENDMENT VOTE STORED AS THE SECOND READING.
+    // North Dakota can divide a bill and vote the divisions separately, and
+    // it takes recorded votes on floor amendments. LegiScan sometimes files
+    // one of those under the plain second-reading caption. On SB 2018 the
+    // history reads `Division D passed / Division E passed / Division F
+    // passed / Second reading, passed as amended, yeas 61 nays 31` and the
+    // feed stores 51-41; on SB 2158 the feed stores the 12-35 FAILED floor
+    // amendment where the reading passed 38-9. These are not wrong tallies —
+    // they are the wrong question.
+    //
+    // Class 2 — ONE ROLL'S MEMBER LIST COPIED ONTO OTHER BILLS. Four bills
+    // record a byte-identical 86-7 member list on 2025-03-18. Only SB 2157
+    // (roll 1520590) actually voted 86-7; its history says so. The other
+    // three contradict their own histories (HB 1080 93-0, HB 1551 89-4,
+    // SB 2290 88-5) and are copies. Same class as the Kansas SB 63 and North
+    // Carolina H244 findings, but propagated across bills rather than within
+    // one.
+    //
+    // Only one of the eleven (SB 2274) sits inside the usable pool; the rest
+    // are already out on other filters. All eleven are held anyway, because a
+    // later batch or a widened scope would otherwise reach them.
+    heldRollCallIds: {
+      1474097:
+        "SB 2158 Senate 2025-01-23: the feed stores 12-35, which is the floor amendment North Dakota's history records as failed that day; the second reading passed 38-9 with the emergency clause carried",
+      1479374:
+        "SB 2251 Senate 2025-02-03: the feed stores a tied 23-23 with passed=0, which is one of the divisions North Dakota voted that day (`Division A lost`); the second reading passed 42-4",
+      1490641:
+        "HB 1038 Senate 2025-02-14: the feed stores 15-29, which is the lost `Division A`; the second reading passed as amended 40-4",
+      1490668:
+        "SB 2274 Senate 2025-02-14: the feed stores 13-31; North Dakota's history records the second reading passing 42-2 and no vote at 13-31. This is the only held roll that would otherwise sit inside the usable pool",
+      1494017:
+        "SB 2380 Senate 2025-02-19: the feed stores 46-1; the history records the second reading passing 47-0 after the amendment was adopted",
+      1520236:
+        "SB 2290 House 2025-03-18: the feed stores 86-7 with a member list byte-identical to SB 2157 roll 1520590; North Dakota's history records this reading passing 88-5",
+      1520370:
+        "HB 1551 House 2025-03-18: the feed stores the same copied 86-7 member list; North Dakota's history records this reading passing 89-4",
+      1520595:
+        "HB 1080 House 2025-03-18: the feed stores the same copied 86-7 member list; North Dakota's history records this reading passing 93-0, a unanimous vote the copy turns into a divided one",
+      1544632:
+        "SB 2243 House 2025-04-10: the feed stores 72-20; the history records `Division A passed / Division B passed` and the second reading passing as amended 66-26",
+      1557863:
+        "SB 2018 House 2025-04-24: the feed stores 51-41; the history records three divisions passing and the second reading passing as amended 61-31. The bill then went to a conference committee",
+      1558336:
+        "HB 1168 Senate 2025-04-25: the feed stores 41-4; the history records the second reading passing as amended 45-0 with the emergency clause carried",
+    },
+  },
 };
 
 export const LEGISCAN_CONFIG_KEYS: readonly string[] = Object.keys(LEGISCAN_STATE_CONFIGS);
