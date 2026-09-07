@@ -1,0 +1,718 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "ND",
+  "session_id": 2140,
+  "note": "people_id -> VoteApp candidate id for the North Dakota 2025-2026 Regular Session (LegiScan 2140). Seats are LegiScan's `district` field, which is correct for all 142 members here and is read in preference to `role`. The 23 committee sponsor pseudo-people in the people file (blank district, committee_id set) are excluded, the Maryland shape. 48 of 142 members map to a candidate: 47 proposed and accepted, 1 hand-added. The 94 nulls are dominated by North Dakota's four-year staggered terms: 62 of them sit in a district that is not on the November 2026 ballot at all, which is expected and is not a coverage gap. The other 32 hold a seat that is up but are not seeking it. Every unmatched member was checked by surname and by district against every unmatched candidate; only Mike Dwyer was a real miss.",
+  "entries": [
+    {
+      "people_id": 7707,
+      "candidate_id": null,
+      "note": "Dan Ruby, house HD-038 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 7736,
+      "candidate_id": "671dc87a-68a9-4540-bd00-9f0bbb7c4cc6",
+      "note": "Keith Kempenich, house HD-039 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 7737,
+      "candidate_id": "e8a12b9c-65cb-496c-8433-6730214ef269",
+      "note": "Karen Karls, house HD-035 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 7738,
+      "candidate_id": null,
+      "note": "Lisa Meier, house HD-032 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 7741,
+      "candidate_id": null,
+      "note": "Lawrence Klemin, house HD-047 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 7747,
+      "candidate_id": "e7701edf-7544-4998-bc42-5de3da1bf8a8",
+      "note": "Bob Martinson, house HD-035 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 7749,
+      "candidate_id": null,
+      "note": "Robin Weisz, house HD-014 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 7754,
+      "candidate_id": null,
+      "note": "Todd Porter, house HD-034 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 7758,
+      "candidate_id": "11be45fb-a804-4396-9466-1a8cff4178e4",
+      "note": "Craig Headland, house HD-029 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 7762,
+      "candidate_id": "a8985b57-903e-440b-adbb-c0c2987c6562",
+      "note": "Mike Schatz, house HD-039 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 7764,
+      "candidate_id": null,
+      "note": "Donald Vigesaa, house HD-029 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 7769,
+      "candidate_id": "8eda173f-a517-4d78-a8bc-5fc04f688617",
+      "note": "Mary Schneider, house HD-021 in the 2025 session, running for State Senate District 21 in November 2026. North Dakota gives a district one senator and two representatives under the same number, so this is a chamber switch inside the member's own district, not a move to a different seat."
+    },
+    {
+      "people_id": 7776,
+      "candidate_id": null,
+      "note": "Mike Nathe, house HD-030 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 7780,
+      "candidate_id": null,
+      "note": "Patrick Hatlestad, house HD-001 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 7785,
+      "candidate_id": null,
+      "note": "James Kasper, house HD-046 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 7795,
+      "candidate_id": "e0bd6128-856c-4f6f-8d15-b5000ef19736",
+      "note": "David Monson, house HD-019 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 7798,
+      "candidate_id": null,
+      "note": "Michael Brandenburg, house HD-028 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 7806,
+      "candidate_id": "89bcc91b-3c5a-4b7a-9764-9a94d14b7d23",
+      "note": "Judy Lee, senate SD-013 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 7812,
+      "candidate_id": null,
+      "note": "Jerry Klein, senate SD-014 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 7813,
+      "candidate_id": "84ee89fe-fb5e-40e8-9f99-abc7fecee5a1",
+      "note": "Terry Wanzek, senate SD-029 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 7821,
+      "candidate_id": null,
+      "note": "Dick Dever, senate SD-032 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 7826,
+      "candidate_id": null,
+      "note": "David Hogue, senate SD-038 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 7840,
+      "candidate_id": null,
+      "note": "Richard Marcellais, senate SD-009 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 7844,
+      "candidate_id": "d9736a33-26f4-4b5d-8c1e-938a6044f6f8",
+      "note": "Tim Mathern, senate SD-011 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 7848,
+      "candidate_id": null,
+      "note": "Robert Erbele, senate SD-028 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 10426,
+      "candidate_id": "dd9554f4-3a67-485f-adc3-420a1cf35794",
+      "note": "Mark Sanford, house HD-017 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 10428,
+      "candidate_id": "59455c4b-5cd4-42f9-9a37-97f7995a8219",
+      "note": "Larry Luick, senate SD-025 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 10885,
+      "candidate_id": null,
+      "note": "Jon Nelson, house HD-014 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 10887,
+      "candidate_id": "ed88ceba-c984-4ad7-8d2a-b83f9974ac40",
+      "note": "Ronald Sorvaag, senate SD-045 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 10889,
+      "candidate_id": "9f40c97c-c131-401b-af51-44909bde727a",
+      "note": "Scott Louser, house HD-005 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 10893,
+      "candidate_id": "5c1358fb-a57f-41fc-bbc6-971067dccc73",
+      "note": "Donald Schaible, senate SD-031 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 10894,
+      "candidate_id": "a4781aee-5df8-4bc7-b205-e9066e395910",
+      "note": "Vicky Steiner, house HD-037 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 10895,
+      "candidate_id": "baf1e8ce-09e7-43c9-b155-a09b5344841e",
+      "note": "Karen Rohr, house HD-031 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 10900,
+      "candidate_id": null,
+      "note": "Randall Burckhard, senate SD-005 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 10902,
+      "candidate_id": null,
+      "note": "Dick Anderson, house HD-006 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 10905,
+      "candidate_id": null,
+      "note": "Kathy Hogan, senate SD-021 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 14239,
+      "candidate_id": null,
+      "note": "Jason Dockter, house HD-007 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 14240,
+      "candidate_id": null,
+      "note": "Diane Larson, senate SD-030 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 14243,
+      "candidate_id": null,
+      "note": "Nathan Toman, house HD-034 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 14461,
+      "candidate_id": null,
+      "note": "Ben Koppelman, house HD-016 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 14801,
+      "candidate_id": null,
+      "note": "Joshua Boschee, senate SD-044 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 14804,
+      "candidate_id": null,
+      "note": "Dwight Kiefert, house HD-024 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 16369,
+      "candidate_id": "10c75c2a-2b34-457a-9e9d-61eb16f291f7",
+      "note": "Alisa Mitskog, house HD-025 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 16371,
+      "candidate_id": null,
+      "note": "Cynthia Schreiber-Beck, house HD-025 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 16372,
+      "candidate_id": "33e751ec-6e4f-4b81-86e0-b540e49737e1",
+      "note": "Brad Bekkedahl, senate SD-001 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 16382,
+      "candidate_id": null,
+      "note": "Mike Lefor, house HD-037 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 16597,
+      "candidate_id": "a0cb064b-5235-4790-a339-cfc5fb3a5807",
+      "note": "Kyle Davison, senate SD-041 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 16602,
+      "candidate_id": null,
+      "note": "Bert Anderson, house HD-002 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 18111,
+      "candidate_id": null,
+      "note": "Glenn Bosch, house HD-030 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 18112,
+      "candidate_id": null,
+      "note": "Brandy Pyle, house HD-022 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 18117,
+      "candidate_id": null,
+      "note": "Andrew Marschall, house HD-016 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 18118,
+      "candidate_id": null,
+      "note": "Scott Meyer, senate SD-018 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 18119,
+      "candidate_id": null,
+      "note": "Bernie Satrom, house HD-012 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 18121,
+      "candidate_id": null,
+      "note": "Emily O'Brien, house HD-042 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 18408,
+      "candidate_id": null,
+      "note": "Gretchen Dobervich, house HD-011 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 18409,
+      "candidate_id": null,
+      "note": "Donald Longmuir, house HD-002 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 18414,
+      "candidate_id": null,
+      "note": "David Clemens, senate SD-016 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 18415,
+      "candidate_id": null,
+      "note": "Matthew Ruby, house HD-040 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 18417,
+      "candidate_id": null,
+      "note": "Jeffery Magrum, senate SD-008 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 18471,
+      "candidate_id": null,
+      "note": "Jim Grueneich, house HD-028 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 18472,
+      "candidate_id": null,
+      "note": "Patrick Heinert, house HD-032 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 18474,
+      "candidate_id": "bbe0ce6c-1ab8-466a-9e24-cd0ac5007153",
+      "note": "Janne Myrdal, senate SD-019 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 18477,
+      "candidate_id": null,
+      "note": "Daniel Johnston, house HD-024 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 18483,
+      "candidate_id": null,
+      "note": "Steve Vetter, house HD-018 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 19598,
+      "candidate_id": null,
+      "note": "Karla Hanson, house HD-044 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 19946,
+      "candidate_id": "f58e4b78-80f6-4cfe-962e-3f287cf94944",
+      "note": "Mike Dwyer, senate SD-047 in the 2025 session; hand-added. The candidate row's name is byte-identical to LegiScan's `name` field and the seat agrees, but LegiScan puts the legal first name `Michael` in `first_name` and the working name `Mike` in `nickname`, and the proposer reads neither `name` nor `nickname`. Neither `michael` nor `mike` is a prefix of the other, so the first-name prefix rule cannot reach it. Same class as the Pennsylvania, Connecticut, North Carolina, Indiana, Kentucky, Alabama, South Carolina and Oregon hand-adds."
+    },
+    {
+      "people_id": 19947,
+      "candidate_id": "9ba2f231-0781-4cb3-aa2a-57c29322e989",
+      "note": "Kristin Roers, senate SD-027 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 19949,
+      "candidate_id": null,
+      "note": "Jeff Hoverson, house HD-003 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 19950,
+      "candidate_id": "ff8bcb44-4031-4f2e-b3a9-4ff9fed90839",
+      "note": "Austen Schauer, house HD-013 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 19952,
+      "candidate_id": "ba77e819-7961-4cf9-8005-729a18106e31",
+      "note": "Bob Paulson, senate SD-003 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 19958,
+      "candidate_id": null,
+      "note": "Dale Patten, senate SD-026 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 20035,
+      "candidate_id": null,
+      "note": "Clayton Fegley, house HD-004 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 20036,
+      "candidate_id": "a2e956c4-eb19-4539-91de-c74243107bf1",
+      "note": "Jay Fisher, house HD-005 in the 2025 session, running for State Senate District 5 in November 2026. North Dakota gives a district one senator and two representatives under the same number, so this is a chamber switch inside the member's own district, not a move to a different seat."
+    },
+    {
+      "people_id": 20037,
+      "candidate_id": null,
+      "note": "Bill Tveit, house HD-033 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 20163,
+      "candidate_id": "52ae714c-7048-4c91-afe6-80c970227aa9",
+      "note": "David Richter, house HD-001 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 20174,
+      "candidate_id": "4baf6e9c-44e5-41af-91f3-1485a68efaf8",
+      "note": "Lauriebeth Hager, house HD-021 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 21344,
+      "candidate_id": null,
+      "note": "Randy Lemm, senate SD-020 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 21441,
+      "candidate_id": null,
+      "note": "Claire Cory, senate SD-042 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 21634,
+      "candidate_id": null,
+      "note": "Mitch Ostlie, house HD-012 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 21919,
+      "candidate_id": null,
+      "note": "Mike Beltz, house HD-020 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 22121,
+      "candidate_id": null,
+      "note": "Zachary Ista, house HD-043 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 22122,
+      "candidate_id": null,
+      "note": "Paul Thomas, senate SD-006 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 22123,
+      "candidate_id": null,
+      "note": "Mark Weber, senate SD-022 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 22174,
+      "candidate_id": null,
+      "note": "Jared Hagert, house HD-020 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 22213,
+      "candidate_id": null,
+      "note": "Cole Conley, senate SD-012 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 22216,
+      "candidate_id": "621642b6-ae7f-4aca-8798-9ce7872f99f0",
+      "note": "Greg Stemen, house HD-027 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 22217,
+      "candidate_id": null,
+      "note": "Mike Wobbema, senate SD-024 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 22902,
+      "candidate_id": null,
+      "note": "Dori Hauck, house HD-036 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 23158,
+      "candidate_id": "a7abf6f7-d057-4170-880d-f3eb0163f61c",
+      "note": "Jonathan Sickler, senate SD-017 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23700,
+      "candidate_id": null,
+      "note": "Liz Conmy, house HD-011 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 23701,
+      "candidate_id": null,
+      "note": "Matthew Heilman, house HD-007 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 23702,
+      "candidate_id": null,
+      "note": "Jorin Johnson, house HD-041 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 23703,
+      "candidate_id": "5772eaa7-9847-48a9-a589-9e8d498bdcca",
+      "note": "Jim Jonas, house HD-013 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23704,
+      "candidate_id": "e5de7f75-d6bf-49b0-a013-a197d41fc659",
+      "note": "Carrie McLeod, house HD-045 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23705,
+      "candidate_id": "913e8cdd-c22e-4223-9b26-5ce3bde2a9ec",
+      "note": "Michael Motschenbacher, house HD-047 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23706,
+      "candidate_id": null,
+      "note": "Eric Murphy, house HD-043 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 23707,
+      "candidate_id": "19b9f0c8-7c18-4080-992b-ebfe6d5bbbe6",
+      "note": "Anna Novak, house HD-033 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23708,
+      "candidate_id": null,
+      "note": "Jeremy Olson, house HD-026 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 23709,
+      "candidate_id": null,
+      "note": "SuAnn Olson, house HD-008 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 23711,
+      "candidate_id": null,
+      "note": "Nico Rios, house HD-023 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 23712,
+      "candidate_id": null,
+      "note": "Steve Swiontek, house HD-010 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 23713,
+      "candidate_id": "4a1a808f-6399-487f-a8c3-ac82dc87760b",
+      "note": "Scott Wagner, house HD-045 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23714,
+      "candidate_id": null,
+      "note": "Jonathan Warrey, house HD-022 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 23715,
+      "candidate_id": "528392a6-4e62-421f-914a-5f031ac476c9",
+      "note": "Michelle Axtman, senate SD-007 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23716,
+      "candidate_id": "27936c3d-8d82-46ed-a619-2734c8c63f67",
+      "note": "Jeff Barta, senate SD-043 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23717,
+      "candidate_id": "9df0f7f3-5a76-47e5-9dbe-1320c6bd6a4a",
+      "note": "Todd Beard, senate SD-023 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23718,
+      "candidate_id": "81248c9e-8fda-430e-b524-2f8b3d0d18d7",
+      "note": "Keith Boehm, senate SD-033 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23719,
+      "candidate_id": "81c63a2f-fcfd-4661-9d2e-bd2946ab2eac",
+      "note": "Sean Cleary, senate SD-035 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23720,
+      "candidate_id": "14335811-8723-4905-84cf-57b3281da1ca",
+      "note": "Dean Rummel, senate SD-037 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23792,
+      "candidate_id": "d23dd88a-e05f-4418-b27a-71ae534e9474",
+      "note": "Karen Anderson, house HD-019 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23793,
+      "candidate_id": null,
+      "note": "Landon Bahl, house HD-017 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 23794,
+      "candidate_id": null,
+      "note": "Josh Christy, house HD-027 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 23796,
+      "candidate_id": "442732ad-df7a-4eb6-a21a-bffd46962752",
+      "note": "Jayme Davis, house HD-009 in the 2025 session, running for State Senate District 9 in November 2026. North Dakota gives a district one senator and two representatives under the same number, so this is a chamber switch inside the member's own district, not a move to a different seat."
+    },
+    {
+      "people_id": 23798,
+      "candidate_id": null,
+      "note": "Lisa Finley-Deville, house HD-004 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 23799,
+      "candidate_id": "32cad872-c70d-40e9-b8bf-1ce6d049e8de",
+      "note": "Kathy Frelich, house HD-015 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23800,
+      "candidate_id": null,
+      "note": "Donna Henderson, house HD-015 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 23801,
+      "candidate_id": "46f9367c-a9dd-4a4d-82de-a1134d14e5b5",
+      "note": "Dawson Holle, house HD-031 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23803,
+      "candidate_id": null,
+      "note": "Lori VanWinkle, house HD-003 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 23804,
+      "candidate_id": null,
+      "note": "Ryan Braunberger, senate SD-010 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 23806,
+      "candidate_id": "075afb8c-c980-4b05-a80b-2a2d2e5023f0",
+      "note": "Greg Kessel, senate SD-039 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 23807,
+      "candidate_id": null,
+      "note": "Kent Weston, senate SD-015 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 24960,
+      "candidate_id": null,
+      "note": "Justin Gerhardt, senate SD-034 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 25628,
+      "candidate_id": "2055826a-9824-4a07-9c74-a7da55a96f15",
+      "note": "Dennis Nehring, house HD-023 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 25681,
+      "candidate_id": null,
+      "note": "Mike Berg, house HD-008 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 25682,
+      "candidate_id": null,
+      "note": "Macy Bolinske, house HD-040 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 25683,
+      "candidate_id": "2c3adc97-3582-4b87-a82d-14df3c6f2029",
+      "note": "Collette Brown, house HD-009 in the 2025 session; name and seat both agree with the candidate row."
+    },
+    {
+      "people_id": 25684,
+      "candidate_id": null,
+      "note": "Nels Christianson, house HD-018 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 25685,
+      "candidate_id": null,
+      "note": "Ty Dressler, house HD-036 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 25686,
+      "candidate_id": null,
+      "note": "Austin Foss, house HD-044 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 25687,
+      "candidate_id": null,
+      "note": "Karen Grindberg, house HD-041 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 25688,
+      "candidate_id": null,
+      "note": "Jared Hendrix, house HD-010 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 25689,
+      "candidate_id": null,
+      "note": "Roger Maki, house HD-026 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 25690,
+      "candidate_id": null,
+      "note": "Desiree Morton, house HD-046 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 25691,
+      "candidate_id": null,
+      "note": "Doug Osowski, house HD-042 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    },
+    {
+      "people_id": 25692,
+      "candidate_id": null,
+      "note": "Dan Vollmer, house HD-006 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 25693,
+      "candidate_id": null,
+      "note": "Christina Wolff, house HD-038 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 25694,
+      "candidate_id": null,
+      "note": "Jose Castaneda, senate SD-040 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 25695,
+      "candidate_id": null,
+      "note": "Mark Enget, senate SD-002 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 25696,
+      "candidate_id": null,
+      "note": "Michelle Powers, senate SD-046 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 25697,
+      "candidate_id": null,
+      "note": "Desiree Van Oosting, senate SD-036 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 25698,
+      "candidate_id": null,
+      "note": "Chuck Walen, senate SD-004 in the 2025 session; that seat is NOT on the November 2026 ballot. North Dakota serves four-year staggered terms and elects its odd-numbered districts in 2026, so this is structural, not a roster gap."
+    },
+    {
+      "people_id": 26430,
+      "candidate_id": null,
+      "note": "TJ Brown, house HD-027 in the 2025 session; the seat IS on the November 2026 ballot but this member has no candidate row, so they are not seeking it. No candidate in that district matches the name."
+    }
+  ]
+}

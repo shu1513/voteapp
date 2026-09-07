@@ -1,0 +1,1453 @@
+{
+ "importerVersion": "rollcall-legiscan-resolve-v1",
+ "startedAt": "2026-09-07T18:43:46.477Z",
+ "finishedAt": "2026-09-07T18:43:47.254Z",
+ "jurisdiction": "ND",
+ "sessionId": 2140,
+ "evidenceDir": "~/legiscan-data/nd-2140-evidence",
+ "scopeFrom": "2026-11-01",
+ "peopleSource": "~/legiscan-data/nd-2140",
+ "peopleMembers": 142,
+ "candidatePool": 127,
+ "crosswalkFile": "~/legiscan-data/nd-2140-evidence/crosswalk.json",
+ "crosswalkEntries": 142,
+ "crosswalkPeopleNotInSnapshot": [],
+ "proposals": [
+  {
+   "peopleId": 7736,
+   "rosterName": "Keith Kempenich",
+   "rosterSeat": "house HD-039",
+   "candidateId": "671dc87a-68a9-4540-bd00-9f0bbb7c4cc6",
+   "candidateName": "Keith Kempenich",
+   "candidacy": "state_lower: State House District 39 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 7737,
+   "rosterName": "Karen Karls",
+   "rosterSeat": "house HD-035",
+   "candidateId": "e8a12b9c-65cb-496c-8433-6730214ef269",
+   "candidateName": "Karen Karls",
+   "candidacy": "state_lower: State House District 35 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 7747,
+   "rosterName": "Bob Martinson",
+   "rosterSeat": "house HD-035",
+   "candidateId": "e7701edf-7544-4998-bc42-5de3da1bf8a8",
+   "candidateName": "Bob Martinson",
+   "candidacy": "state_lower: State House District 35 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 7758,
+   "rosterName": "Craig Headland",
+   "rosterSeat": "house HD-029",
+   "candidateId": "11be45fb-a804-4396-9466-1a8cff4178e4",
+   "candidateName": "Craig Headland",
+   "candidacy": "state_lower: State House District 29 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 7762,
+   "rosterName": "Mike Schatz",
+   "rosterSeat": "house HD-039",
+   "candidateId": "a8985b57-903e-440b-adbb-c0c2987c6562",
+   "candidateName": "Mike Schatz",
+   "candidacy": "state_lower: State House District 39 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 7769,
+   "rosterName": "Mary Schneider",
+   "rosterSeat": "house HD-021",
+   "candidateId": "8eda173f-a517-4d78-a8bc-5fc04f688617",
+   "candidateName": "Mary Schneider",
+   "candidacy": "state_upper: State Senate District 21 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 7795,
+   "rosterName": "David Monson",
+   "rosterSeat": "house HD-019",
+   "candidateId": "e0bd6128-856c-4f6f-8d15-b5000ef19736",
+   "candidateName": "David Monson",
+   "candidacy": "state_lower: State House District 19 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 7806,
+   "rosterName": "Judy Lee",
+   "rosterSeat": "senate SD-013",
+   "candidateId": "89bcc91b-3c5a-4b7a-9764-9a94d14b7d23",
+   "candidateName": "Judy Lee",
+   "candidacy": "state_upper: State Senate District 13 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 7813,
+   "rosterName": "Terry Wanzek",
+   "rosterSeat": "senate SD-029",
+   "candidateId": "84ee89fe-fb5e-40e8-9f99-abc7fecee5a1",
+   "candidateName": "Terry Wanzek",
+   "candidacy": "state_upper: State Senate District 29 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 7844,
+   "rosterName": "Tim Mathern",
+   "rosterSeat": "senate SD-011",
+   "candidateId": "d9736a33-26f4-4b5d-8c1e-938a6044f6f8",
+   "candidateName": "Tim Mathern",
+   "candidacy": "state_upper: State Senate District 11 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 10426,
+   "rosterName": "Mark Sanford",
+   "rosterSeat": "house HD-017",
+   "candidateId": "dd9554f4-3a67-485f-adc3-420a1cf35794",
+   "candidateName": "Mark Sanford",
+   "candidacy": "state_lower: State House District 17 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 10428,
+   "rosterName": "Larry Luick",
+   "rosterSeat": "senate SD-025",
+   "candidateId": "59455c4b-5cd4-42f9-9a37-97f7995a8219",
+   "candidateName": "Larry Luick",
+   "candidacy": "state_upper: State Senate District 25 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 10887,
+   "rosterName": "Ronald Sorvaag",
+   "rosterSeat": "senate SD-045",
+   "candidateId": "ed88ceba-c984-4ad7-8d2a-b83f9974ac40",
+   "candidateName": "Ronald Sorvaag",
+   "candidacy": "state_upper: State Senate District 45 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 10889,
+   "rosterName": "Scott Louser",
+   "rosterSeat": "house HD-005",
+   "candidateId": "9f40c97c-c131-401b-af51-44909bde727a",
+   "candidateName": "Scott Louser",
+   "candidacy": "state_lower: State House District 5 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 10893,
+   "rosterName": "Donald Schaible",
+   "rosterSeat": "senate SD-031",
+   "candidateId": "5c1358fb-a57f-41fc-bbc6-971067dccc73",
+   "candidateName": "Donald Schaible",
+   "candidacy": "state_upper: State Senate District 31 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 10894,
+   "rosterName": "Vicky Steiner",
+   "rosterSeat": "house HD-037",
+   "candidateId": "a4781aee-5df8-4bc7-b205-e9066e395910",
+   "candidateName": "Vicky Steiner",
+   "candidacy": "state_lower: State House District 37 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 10895,
+   "rosterName": "Karen Rohr",
+   "rosterSeat": "house HD-031",
+   "candidateId": "baf1e8ce-09e7-43c9-b155-a09b5344841e",
+   "candidateName": "Karen Rohr",
+   "candidacy": "state_lower: State House District 31 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 16369,
+   "rosterName": "Alisa Mitskog",
+   "rosterSeat": "house HD-025",
+   "candidateId": "10c75c2a-2b34-457a-9e9d-61eb16f291f7",
+   "candidateName": "Alisa Mitskog",
+   "candidacy": "state_lower: State House District 25 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 16372,
+   "rosterName": "Brad Bekkedahl",
+   "rosterSeat": "senate SD-001",
+   "candidateId": "33e751ec-6e4f-4b81-86e0-b540e49737e1",
+   "candidateName": "Brad Bekkedahl",
+   "candidacy": "state_upper: State Senate District 1 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 16597,
+   "rosterName": "Kyle Davison",
+   "rosterSeat": "senate SD-041",
+   "candidateId": "a0cb064b-5235-4790-a339-cfc5fb3a5807",
+   "candidateName": "Kyle Davison",
+   "candidacy": "state_upper: State Senate District 41 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 18474,
+   "rosterName": "Janne Myrdal",
+   "rosterSeat": "senate SD-019",
+   "candidateId": "bbe0ce6c-1ab8-466a-9e24-cd0ac5007153",
+   "candidateName": "Janne Myrdal",
+   "candidacy": "state_upper: State Senate District 19 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 19947,
+   "rosterName": "Kristin Roers",
+   "rosterSeat": "senate SD-027",
+   "candidateId": "9ba2f231-0781-4cb3-aa2a-57c29322e989",
+   "candidateName": "Kristin Roers",
+   "candidacy": "state_upper: State Senate District 27 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 19950,
+   "rosterName": "Austen Schauer",
+   "rosterSeat": "house HD-013",
+   "candidateId": "ff8bcb44-4031-4f2e-b3a9-4ff9fed90839",
+   "candidateName": "Austen Schauer",
+   "candidacy": "state_lower: State House District 13 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 19952,
+   "rosterName": "Bob Paulson",
+   "rosterSeat": "senate SD-003",
+   "candidateId": "ba77e819-7961-4cf9-8005-729a18106e31",
+   "candidateName": "Bob Paulson",
+   "candidacy": "state_upper: State Senate District 3 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20036,
+   "rosterName": "Jay Fisher",
+   "rosterSeat": "house HD-005",
+   "candidateId": "a2e956c4-eb19-4539-91de-c74243107bf1",
+   "candidateName": "Jay Fisher",
+   "candidacy": "state_upper: State Senate District 5 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 20163,
+   "rosterName": "David Richter",
+   "rosterSeat": "house HD-001",
+   "candidateId": "52ae714c-7048-4c91-afe6-80c970227aa9",
+   "candidateName": "David Richter",
+   "candidacy": "state_lower: State House District 1 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 20174,
+   "rosterName": "Lauriebeth Hager",
+   "rosterSeat": "house HD-021",
+   "candidateId": "4baf6e9c-44e5-41af-91f3-1485a68efaf8",
+   "candidateName": "LaurieBeth Hager",
+   "candidacy": "state_lower: State House District 21 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 22216,
+   "rosterName": "Greg Stemen",
+   "rosterSeat": "house HD-027",
+   "candidateId": "621642b6-ae7f-4aca-8798-9ce7872f99f0",
+   "candidateName": "Greg Stemen",
+   "candidacy": "state_lower: State House District 27 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23158,
+   "rosterName": "Jonathan Sickler",
+   "rosterSeat": "senate SD-017",
+   "candidateId": "a7abf6f7-d057-4170-880d-f3eb0163f61c",
+   "candidateName": "Jonathan Sickler",
+   "candidacy": "state_upper: State Senate District 17 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23703,
+   "rosterName": "Jim Jonas",
+   "rosterSeat": "house HD-013",
+   "candidateId": "5772eaa7-9847-48a9-a589-9e8d498bdcca",
+   "candidateName": "Jim Jonas",
+   "candidacy": "state_lower: State House District 13 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23704,
+   "rosterName": "Carrie McLeod",
+   "rosterSeat": "house HD-045",
+   "candidateId": "e5de7f75-d6bf-49b0-a013-a197d41fc659",
+   "candidateName": "Carrie McLeod",
+   "candidacy": "state_lower: State House District 45 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23705,
+   "rosterName": "Michael Motschenbacher",
+   "rosterSeat": "house HD-047",
+   "candidateId": "913e8cdd-c22e-4223-9b26-5ce3bde2a9ec",
+   "candidateName": "Michael Motschenbacher",
+   "candidacy": "state_lower: State House District 47 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23707,
+   "rosterName": "Anna Novak",
+   "rosterSeat": "house HD-033",
+   "candidateId": "19b9f0c8-7c18-4080-992b-ebfe6d5bbbe6",
+   "candidateName": "Anna S (Garrett) Novak",
+   "candidacy": "state_lower: State House District 33 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23713,
+   "rosterName": "Scott Wagner",
+   "rosterSeat": "house HD-045",
+   "candidateId": "4a1a808f-6399-487f-a8c3-ac82dc87760b",
+   "candidateName": "Scott Wagner",
+   "candidacy": "state_lower: State House District 45 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23715,
+   "rosterName": "Michelle Axtman",
+   "rosterSeat": "senate SD-007",
+   "candidateId": "528392a6-4e62-421f-914a-5f031ac476c9",
+   "candidateName": "Michelle Axtman",
+   "candidacy": "state_upper: State Senate District 7 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23716,
+   "rosterName": "Jeff Barta",
+   "rosterSeat": "senate SD-043",
+   "candidateId": "27936c3d-8d82-46ed-a619-2734c8c63f67",
+   "candidateName": "Jeff Barta",
+   "candidacy": "state_upper: State Senate District 43 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23717,
+   "rosterName": "Todd Beard",
+   "rosterSeat": "senate SD-023",
+   "candidateId": "9df0f7f3-5a76-47e5-9dbe-1320c6bd6a4a",
+   "candidateName": "Todd Beard",
+   "candidacy": "state_upper: State Senate District 23 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23718,
+   "rosterName": "Keith Boehm",
+   "rosterSeat": "senate SD-033",
+   "candidateId": "81248c9e-8fda-430e-b524-2f8b3d0d18d7",
+   "candidateName": "Keith Boehm",
+   "candidacy": "state_upper: State Senate District 33 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23719,
+   "rosterName": "Sean Cleary",
+   "rosterSeat": "senate SD-035",
+   "candidateId": "81c63a2f-fcfd-4661-9d2e-bd2946ab2eac",
+   "candidateName": "Sean Cleary",
+   "candidacy": "state_upper: State Senate District 35 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23720,
+   "rosterName": "Dean Rummel",
+   "rosterSeat": "senate SD-037",
+   "candidateId": "14335811-8723-4905-84cf-57b3281da1ca",
+   "candidateName": "Dean Rummel",
+   "candidacy": "state_upper: State Senate District 37 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23792,
+   "rosterName": "Karen Anderson",
+   "rosterSeat": "house HD-019",
+   "candidateId": "d23dd88a-e05f-4418-b27a-71ae534e9474",
+   "candidateName": "Karen A Anderson",
+   "candidacy": "state_lower: State House District 19 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23796,
+   "rosterName": "Jayme Davis",
+   "rosterSeat": "house HD-009",
+   "candidateId": "442732ad-df7a-4eb6-a21a-bffd46962752",
+   "candidateName": "Jayme Davis",
+   "candidacy": "state_upper: State Senate District 9 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": false
+  },
+  {
+   "peopleId": 23799,
+   "rosterName": "Kathy Frelich",
+   "rosterSeat": "house HD-015",
+   "candidateId": "32cad872-c70d-40e9-b8bf-1ce6d049e8de",
+   "candidateName": "Kathy Frelich",
+   "candidacy": "state_lower: State House District 15 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23801,
+   "rosterName": "Dawson Holle",
+   "rosterSeat": "house HD-031",
+   "candidateId": "46f9367c-a9dd-4a4d-82de-a1134d14e5b5",
+   "candidateName": "Dawson Holle",
+   "candidacy": "state_lower: State House District 31 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 23806,
+   "rosterName": "Greg Kessel",
+   "rosterSeat": "senate SD-039",
+   "candidateId": "075afb8c-c980-4b05-a80b-2a2d2e5023f0",
+   "candidateName": "Greg Kessel",
+   "candidacy": "state_upper: State Senate District 39 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25628,
+   "rosterName": "Dennis Nehring",
+   "rosterSeat": "house HD-023",
+   "candidateId": "2055826a-9824-4a07-9c74-a7da55a96f15",
+   "candidateName": "Dennis Nehring",
+   "candidacy": "state_lower: State House District 23 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  },
+  {
+   "peopleId": 25683,
+   "rosterName": "Collette Brown",
+   "rosterSeat": "house HD-009",
+   "candidateId": "2c3adc97-3582-4b87-a82d-14df3c6f2029",
+   "candidateName": "Collette Brown",
+   "candidacy": "state_lower: State House District 9 (2024); North Dakota",
+   "confidence": "first_and_last",
+   "seatAgrees": true
+  }
+ ],
+ "unmatchedPeople": [
+  {
+   "peopleId": 10885,
+   "name": "Jon Nelson",
+   "seat": "house HD-014"
+  },
+  {
+   "peopleId": 10900,
+   "name": "Randall Burckhard",
+   "seat": "senate SD-005"
+  },
+  {
+   "peopleId": 10902,
+   "name": "Dick Anderson",
+   "seat": "house HD-006"
+  },
+  {
+   "peopleId": 10905,
+   "name": "Kathy Hogan",
+   "seat": "senate SD-021"
+  },
+  {
+   "peopleId": 14239,
+   "name": "Jason Dockter",
+   "seat": "house HD-007"
+  },
+  {
+   "peopleId": 14240,
+   "name": "Diane Larson",
+   "seat": "senate SD-030"
+  },
+  {
+   "peopleId": 14243,
+   "name": "Nathan Toman",
+   "seat": "house HD-034"
+  },
+  {
+   "peopleId": 14461,
+   "name": "Ben Koppelman",
+   "seat": "house HD-016"
+  },
+  {
+   "peopleId": 14801,
+   "name": "Joshua Boschee",
+   "seat": "senate SD-044"
+  },
+  {
+   "peopleId": 14804,
+   "name": "Dwight Kiefert",
+   "seat": "house HD-024"
+  },
+  {
+   "peopleId": 16371,
+   "name": "Cynthia Schreiber-Beck",
+   "seat": "house HD-025"
+  },
+  {
+   "peopleId": 16382,
+   "name": "Mike Lefor",
+   "seat": "house HD-037"
+  },
+  {
+   "peopleId": 16602,
+   "name": "Bert Anderson",
+   "seat": "house HD-002"
+  },
+  {
+   "peopleId": 18111,
+   "name": "Glenn Bosch",
+   "seat": "house HD-030"
+  },
+  {
+   "peopleId": 18112,
+   "name": "Brandy Pyle",
+   "seat": "house HD-022"
+  },
+  {
+   "peopleId": 18117,
+   "name": "Andrew Marschall",
+   "seat": "house HD-016"
+  },
+  {
+   "peopleId": 18118,
+   "name": "Scott Meyer",
+   "seat": "senate SD-018"
+  },
+  {
+   "peopleId": 18119,
+   "name": "Bernie Satrom",
+   "seat": "house HD-012"
+  },
+  {
+   "peopleId": 18121,
+   "name": "Emily O'Brien",
+   "seat": "house HD-042"
+  },
+  {
+   "peopleId": 18408,
+   "name": "Gretchen Dobervich",
+   "seat": "house HD-011"
+  },
+  {
+   "peopleId": 18409,
+   "name": "Donald Longmuir",
+   "seat": "house HD-002"
+  },
+  {
+   "peopleId": 18414,
+   "name": "David Clemens",
+   "seat": "senate SD-016"
+  },
+  {
+   "peopleId": 18415,
+   "name": "Matthew Ruby",
+   "seat": "house HD-040"
+  },
+  {
+   "peopleId": 18417,
+   "name": "Jeffery Magrum",
+   "seat": "senate SD-008"
+  },
+  {
+   "peopleId": 18471,
+   "name": "Jim Grueneich",
+   "seat": "house HD-028"
+  },
+  {
+   "peopleId": 18472,
+   "name": "Patrick Heinert",
+   "seat": "house HD-032"
+  },
+  {
+   "peopleId": 18477,
+   "name": "Daniel Johnston",
+   "seat": "house HD-024"
+  },
+  {
+   "peopleId": 18483,
+   "name": "Steve Vetter",
+   "seat": "house HD-018"
+  },
+  {
+   "peopleId": 19598,
+   "name": "Karla Hanson",
+   "seat": "house HD-044"
+  },
+  {
+   "peopleId": 19946,
+   "name": "Mike Dwyer",
+   "seat": "senate SD-047"
+  },
+  {
+   "peopleId": 19949,
+   "name": "Jeff Hoverson",
+   "seat": "house HD-003"
+  },
+  {
+   "peopleId": 19958,
+   "name": "Dale Patten",
+   "seat": "senate SD-026"
+  },
+  {
+   "peopleId": 20035,
+   "name": "Clayton Fegley",
+   "seat": "house HD-004"
+  },
+  {
+   "peopleId": 20037,
+   "name": "Bill Tveit",
+   "seat": "house HD-033"
+  },
+  {
+   "peopleId": 21344,
+   "name": "Randy Lemm",
+   "seat": "senate SD-020"
+  },
+  {
+   "peopleId": 21441,
+   "name": "Claire Cory",
+   "seat": "senate SD-042"
+  },
+  {
+   "peopleId": 21634,
+   "name": "Mitch Ostlie",
+   "seat": "house HD-012"
+  },
+  {
+   "peopleId": 21919,
+   "name": "Mike Beltz",
+   "seat": "house HD-020"
+  },
+  {
+   "peopleId": 22121,
+   "name": "Zachary Ista",
+   "seat": "house HD-043"
+  },
+  {
+   "peopleId": 22122,
+   "name": "Paul Thomas",
+   "seat": "senate SD-006"
+  },
+  {
+   "peopleId": 22123,
+   "name": "Mark Weber",
+   "seat": "senate SD-022"
+  },
+  {
+   "peopleId": 22174,
+   "name": "Jared Hagert",
+   "seat": "house HD-020"
+  },
+  {
+   "peopleId": 22213,
+   "name": "Cole Conley",
+   "seat": "senate SD-012"
+  },
+  {
+   "peopleId": 22217,
+   "name": "Mike Wobbema",
+   "seat": "senate SD-024"
+  },
+  {
+   "peopleId": 22902,
+   "name": "Dori Hauck",
+   "seat": "house HD-036"
+  },
+  {
+   "peopleId": 23700,
+   "name": "Liz Conmy",
+   "seat": "house HD-011"
+  },
+  {
+   "peopleId": 23701,
+   "name": "Matthew Heilman",
+   "seat": "house HD-007"
+  },
+  {
+   "peopleId": 23702,
+   "name": "Jorin Johnson",
+   "seat": "house HD-041"
+  },
+  {
+   "peopleId": 23706,
+   "name": "Eric Murphy",
+   "seat": "house HD-043"
+  },
+  {
+   "peopleId": 23708,
+   "name": "Jeremy Olson",
+   "seat": "house HD-026"
+  },
+  {
+   "peopleId": 23709,
+   "name": "SuAnn Olson",
+   "seat": "house HD-008"
+  },
+  {
+   "peopleId": 23711,
+   "name": "Nico Rios",
+   "seat": "house HD-023"
+  },
+  {
+   "peopleId": 23712,
+   "name": "Steve Swiontek",
+   "seat": "house HD-010"
+  },
+  {
+   "peopleId": 23714,
+   "name": "Jonathan Warrey",
+   "seat": "house HD-022"
+  },
+  {
+   "peopleId": 23793,
+   "name": "Landon Bahl",
+   "seat": "house HD-017"
+  },
+  {
+   "peopleId": 23794,
+   "name": "Josh Christy",
+   "seat": "house HD-027"
+  },
+  {
+   "peopleId": 23798,
+   "name": "Lisa Finley-Deville",
+   "seat": "house HD-004"
+  },
+  {
+   "peopleId": 23800,
+   "name": "Donna Henderson",
+   "seat": "house HD-015"
+  },
+  {
+   "peopleId": 23803,
+   "name": "Lori VanWinkle",
+   "seat": "house HD-003"
+  },
+  {
+   "peopleId": 23804,
+   "name": "Ryan Braunberger",
+   "seat": "senate SD-010"
+  },
+  {
+   "peopleId": 23807,
+   "name": "Kent Weston",
+   "seat": "senate SD-015"
+  },
+  {
+   "peopleId": 24960,
+   "name": "Justin Gerhardt",
+   "seat": "senate SD-034"
+  },
+  {
+   "peopleId": 25681,
+   "name": "Mike Berg",
+   "seat": "house HD-008"
+  },
+  {
+   "peopleId": 25682,
+   "name": "Macy Bolinske",
+   "seat": "house HD-040"
+  },
+  {
+   "peopleId": 25684,
+   "name": "Nels Christianson",
+   "seat": "house HD-018"
+  },
+  {
+   "peopleId": 25685,
+   "name": "Ty Dressler",
+   "seat": "house HD-036"
+  },
+  {
+   "peopleId": 25686,
+   "name": "Austin Foss",
+   "seat": "house HD-044"
+  },
+  {
+   "peopleId": 25687,
+   "name": "Karen Grindberg",
+   "seat": "house HD-041"
+  },
+  {
+   "peopleId": 25688,
+   "name": "Jared Hendrix",
+   "seat": "house HD-010"
+  },
+  {
+   "peopleId": 25689,
+   "name": "Roger Maki",
+   "seat": "house HD-026"
+  },
+  {
+   "peopleId": 25690,
+   "name": "Desiree Morton",
+   "seat": "house HD-046"
+  },
+  {
+   "peopleId": 25691,
+   "name": "Doug Osowski",
+   "seat": "house HD-042"
+  },
+  {
+   "peopleId": 25692,
+   "name": "Dan Vollmer",
+   "seat": "house HD-006"
+  },
+  {
+   "peopleId": 25693,
+   "name": "Christina Wolff",
+   "seat": "house HD-038"
+  },
+  {
+   "peopleId": 25694,
+   "name": "Jose Castaneda",
+   "seat": "senate SD-040"
+  },
+  {
+   "peopleId": 25695,
+   "name": "Mark Enget",
+   "seat": "senate SD-002"
+  },
+  {
+   "peopleId": 25696,
+   "name": "Michelle Powers",
+   "seat": "senate SD-046"
+  },
+  {
+   "peopleId": 25697,
+   "name": "Desiree Van Oosting",
+   "seat": "senate SD-036"
+  },
+  {
+   "peopleId": 25698,
+   "name": "Chuck Walen",
+   "seat": "senate SD-004"
+  },
+  {
+   "peopleId": 26430,
+   "name": "TJ Brown",
+   "seat": "house HD-027"
+  },
+  {
+   "peopleId": 7707,
+   "name": "Dan Ruby",
+   "seat": "house HD-038"
+  },
+  {
+   "peopleId": 7738,
+   "name": "Lisa Meier",
+   "seat": "house HD-032"
+  },
+  {
+   "peopleId": 7741,
+   "name": "Lawrence Klemin",
+   "seat": "house HD-047"
+  },
+  {
+   "peopleId": 7749,
+   "name": "Robin Weisz",
+   "seat": "house HD-014"
+  },
+  {
+   "peopleId": 7754,
+   "name": "Todd Porter",
+   "seat": "house HD-034"
+  },
+  {
+   "peopleId": 7764,
+   "name": "Donald Vigesaa",
+   "seat": "house HD-029"
+  },
+  {
+   "peopleId": 7776,
+   "name": "Mike Nathe",
+   "seat": "house HD-030"
+  },
+  {
+   "peopleId": 7780,
+   "name": "Patrick Hatlestad",
+   "seat": "house HD-001"
+  },
+  {
+   "peopleId": 7785,
+   "name": "James Kasper",
+   "seat": "house HD-046"
+  },
+  {
+   "peopleId": 7798,
+   "name": "Michael Brandenburg",
+   "seat": "house HD-028"
+  },
+  {
+   "peopleId": 7812,
+   "name": "Jerry Klein",
+   "seat": "senate SD-014"
+  },
+  {
+   "peopleId": 7821,
+   "name": "Dick Dever",
+   "seat": "senate SD-032"
+  },
+  {
+   "peopleId": 7826,
+   "name": "David Hogue",
+   "seat": "senate SD-038"
+  },
+  {
+   "peopleId": 7840,
+   "name": "Richard Marcellais",
+   "seat": "senate SD-009"
+  },
+  {
+   "peopleId": 7848,
+   "name": "Robert Erbele",
+   "seat": "senate SD-028"
+  }
+ ],
+ "unmatchedCandidates": [
+  {
+   "candidateId": "c90ecf79-b6c8-4b3c-a04b-09ebd1988519",
+   "name": "Alex Johnson",
+   "scope": "state_lower",
+   "districtName": "State House District 1 (2024); North Dakota"
+  },
+  {
+   "candidateId": "5a6ae773-e550-4351-bc85-43099667242c",
+   "name": "Anastassiya (Stass) Andrianova",
+   "scope": "state_lower",
+   "districtName": "State House District 11 (2024); North Dakota"
+  },
+  {
+   "candidateId": "12c34f10-c50d-4e44-8a81-c7fb317f0c0d",
+   "name": "Andrew Alexis Varvel",
+   "scope": "state_lower",
+   "districtName": "State House District 47 (2024); North Dakota"
+  },
+  {
+   "candidateId": "569baff0-93e5-4755-880e-4ecf84666749",
+   "name": "Bill Patrie",
+   "scope": "state_upper",
+   "districtName": "State Senate District 47 (2024); North Dakota"
+  },
+  {
+   "candidateId": "ebe672e0-bcf6-41b0-83d8-f6403ce2cc99",
+   "name": "Blaine DesLauriers",
+   "scope": "state_lower",
+   "districtName": "State House District 3 (2024); North Dakota"
+  },
+  {
+   "candidateId": "704c9d2f-803c-4372-b1da-a370f39b49f6",
+   "name": "Bob Heitkamp",
+   "scope": "state_upper",
+   "districtName": "State Senate District 25 (2024); North Dakota"
+  },
+  {
+   "candidateId": "1e020c5c-7512-4acb-a6a7-041f286cbf90",
+   "name": "Brenda Jo Gillund",
+   "scope": "state_lower",
+   "districtName": "State House District 13 (2024); North Dakota"
+  },
+  {
+   "candidateId": "e3922ad6-c6d0-4151-bb62-af0d0b6b2a83",
+   "name": "Brent Schwan",
+   "scope": "state_lower",
+   "districtName": "State House District 26 (2024); North Dakota"
+  },
+  {
+   "candidateId": "02e75c53-1853-4235-9a28-82da6ca8f0ad",
+   "name": "Cara Cody-Braun",
+   "scope": "state_lower",
+   "districtName": "State House District 11 (2024); North Dakota"
+  },
+  {
+   "candidateId": "9adcd923-b6e1-4caa-98bb-57373b31b1c7",
+   "name": "Chris Tiongson",
+   "scope": "state_lower",
+   "districtName": "State House District 41 (2024); North Dakota"
+  },
+  {
+   "candidateId": "b4626d7d-61ba-4995-b8b2-f03b1d70a961",
+   "name": "Christine O'Riley",
+   "scope": "state_upper",
+   "districtName": "State Senate District 11 (2024); North Dakota"
+  },
+  {
+   "candidateId": "2a6ea1df-ea7a-41e4-bdc1-64b5610245c7",
+   "name": "Cole Montoya",
+   "scope": "state_lower",
+   "districtName": "State House District 47 (2024); North Dakota"
+  },
+  {
+   "candidateId": "ff563401-dffa-4b76-92d5-767a899f1096",
+   "name": "Connie Osowski",
+   "scope": "state_lower",
+   "districtName": "State House District 42 (2024); North Dakota"
+  },
+  {
+   "candidateId": "fcc9a914-611e-4d27-b22a-2ca416cd29a3",
+   "name": "Corey Johnson",
+   "scope": "state_lower",
+   "districtName": "State House District 23 (2024); North Dakota"
+  },
+  {
+   "candidateId": "40f7bc66-0987-40df-8aa8-c2060edc2dfd",
+   "name": "Corry Kenner",
+   "scope": "state_lower",
+   "districtName": "State House District 15 (2024); North Dakota"
+  },
+  {
+   "candidateId": "7989f5f2-17b3-4fa0-a513-f68f722fd316",
+   "name": "Dale Pittman",
+   "scope": "state_upper",
+   "districtName": "State Senate District 35 (2024); North Dakota"
+  },
+  {
+   "candidateId": "2e89ac12-1201-4276-aa06-26b3845c46a5",
+   "name": "Dan Mitchell",
+   "scope": "state_upper",
+   "districtName": "State Senate District 45 (2024); North Dakota"
+  },
+  {
+   "candidateId": "2e0dd82c-c5ee-49f9-a325-550f3e77a598",
+   "name": "David Rustebakke",
+   "scope": "state_lower",
+   "districtName": "State House District 20 (2024); North Dakota"
+  },
+  {
+   "candidateId": "e3f75ef6-efe7-4c10-bce7-054994541c04",
+   "name": "Dianne Norris",
+   "scope": "state_lower",
+   "districtName": "State House District 29 (2024); North Dakota"
+  },
+  {
+   "candidateId": "5a42044a-de96-4339-9516-3993c04f5e52",
+   "name": "Don Aandal",
+   "scope": "state_lower",
+   "districtName": "State House District 17 (2024); North Dakota"
+  },
+  {
+   "candidateId": "753dd588-1b36-4194-a91a-a9eb1817bf6c",
+   "name": "Don Lippert",
+   "scope": "state_lower",
+   "districtName": "State House District 45 (2024); North Dakota"
+  },
+  {
+   "candidateId": "68d119df-866c-41ea-badb-ff0a4bdcfe9b",
+   "name": "Doug Sharbono",
+   "scope": "state_lower",
+   "districtName": "State House District 11 (2024); North Dakota"
+  },
+  {
+   "candidateId": "5356d956-cb4c-4505-9ce5-df8b08a06f87",
+   "name": "Duane Poitra",
+   "scope": "state_lower",
+   "districtName": "State House District 9 (2024); North Dakota"
+  },
+  {
+   "candidateId": "3b90752a-37d9-408d-a179-bff621d803be",
+   "name": "Frances Drury",
+   "scope": "state_lower",
+   "districtName": "State House District 15 (2024); North Dakota"
+  },
+  {
+   "candidateId": "306330d2-657e-4c50-828a-02f2a1eb1227",
+   "name": "Greg Vetter",
+   "scope": "state_lower",
+   "districtName": "State House District 7 (2024); North Dakota"
+  },
+  {
+   "candidateId": "2296524a-f582-47e8-83bc-4c631742bb41",
+   "name": "Jason Thoms",
+   "scope": "state_lower",
+   "districtName": "State House District 7 (2024); North Dakota"
+  },
+  {
+   "candidateId": "07678902-dc5f-48e3-93bf-9847e0361258",
+   "name": "Jefferey Hermanson",
+   "scope": "state_upper",
+   "districtName": "State Senate District 19 (2024); North Dakota"
+  },
+  {
+   "candidateId": "96c0041f-1396-40c4-aee2-7353786d7adf",
+   "name": "Jennifer Benson",
+   "scope": "state_lower",
+   "districtName": "State House District 41 (2024); North Dakota"
+  },
+  {
+   "candidateId": "2f12c8e7-4f5d-4b41-8f43-8de77a578db5",
+   "name": "Jill T Chandler",
+   "scope": "state_lower",
+   "districtName": "State House District 43 (2024); North Dakota"
+  },
+  {
+   "candidateId": "5df01e36-54f3-4a4b-884c-b8ce4051d979",
+   "name": "John Kelly",
+   "scope": "state_upper",
+   "districtName": "State Senate District 29 (2024); North Dakota"
+  },
+  {
+   "candidateId": "94fcad03-1dd2-4078-b378-24d8671e68c5",
+   "name": "Jolene Bruce",
+   "scope": "state_lower",
+   "districtName": "State House District 27 (2024); North Dakota"
+  },
+  {
+   "candidateId": "21e4d558-11e7-4918-bfcd-0f7d2165aaf8",
+   "name": "Jolene L Hermanson",
+   "scope": "state_lower",
+   "districtName": "State House District 19 (2024); North Dakota"
+  },
+  {
+   "candidateId": "d8613d73-5733-4d19-8c50-5a2d95577334",
+   "name": "Jon Lee",
+   "scope": "state_lower",
+   "districtName": "State House District 47 (2024); North Dakota"
+  },
+  {
+   "candidateId": "b02566c5-4ee7-4da6-9420-00b41af8ffa0",
+   "name": "Kathy Skroch",
+   "scope": "state_lower",
+   "districtName": "State House District 25 (2024); North Dakota"
+  },
+  {
+   "candidateId": "b6ecec1d-9a07-496e-9971-c7d61512503e",
+   "name": "Katie Benton",
+   "scope": "state_upper",
+   "districtName": "State Senate District 17 (2024); North Dakota"
+  },
+  {
+   "candidateId": "9c5cee12-449a-4185-924a-f9fda4547be4",
+   "name": "Kelly Spilman",
+   "scope": "state_upper",
+   "districtName": "State Senate District 31 (2024); North Dakota"
+  },
+  {
+   "candidateId": "bd260ed3-6834-4bbe-8ede-62589f0e01fc",
+   "name": "Kevin Horneman",
+   "scope": "state_upper",
+   "districtName": "State Senate District 7 (2024); North Dakota"
+  },
+  {
+   "candidateId": "50daa8aa-c341-44d0-8e77-9e092ccea773",
+   "name": "Kevin Wolsky",
+   "scope": "state_lower",
+   "districtName": "State House District 29 (2024); North Dakota"
+  },
+  {
+   "candidateId": "ffd9bade-f663-4634-831f-097a06c76acf",
+   "name": "Kimball Banks",
+   "scope": "state_lower",
+   "districtName": "State House District 33 (2024); North Dakota"
+  },
+  {
+   "candidateId": "ec3c91d1-70c1-46f8-ae6c-a2230ed8674f",
+   "name": "Kristin Kenner",
+   "scope": "state_upper",
+   "districtName": "State Senate District 15 (2024); North Dakota"
+  },
+  {
+   "candidateId": "bf07ea5c-81bd-4b9f-a26f-5f0027e49d89",
+   "name": "Kylan Klauzer",
+   "scope": "state_lower",
+   "districtName": "State House District 37 (2024); North Dakota"
+  },
+  {
+   "candidateId": "2810b937-4651-4f97-8c1d-721f4e4fb725",
+   "name": "Kyle Erickson",
+   "scope": "state_lower",
+   "districtName": "State House District 5 (2024); North Dakota"
+  },
+  {
+   "candidateId": "7b123fa1-89f7-44b8-b597-50ff450665fa",
+   "name": "Landis Larson",
+   "scope": "state_upper",
+   "districtName": "State Senate District 13 (2024); North Dakota"
+  },
+  {
+   "candidateId": "ed9356d0-45a4-4b80-bab8-3a915bb433d2",
+   "name": "Laura Dronen",
+   "scope": "state_lower",
+   "districtName": "State House District 21 (2024); North Dakota"
+  },
+  {
+   "candidateId": "e33fb692-7f71-47ec-81f2-98e1e1177909",
+   "name": "Laurie Garbel",
+   "scope": "state_lower",
+   "districtName": "State House District 1 (2024); North Dakota"
+  },
+  {
+   "candidateId": "2fc71ea8-67e3-4f52-9854-8d39360d686a",
+   "name": "Lukas Arthur Maughan",
+   "scope": "state_lower",
+   "districtName": "State House District 43 (2024); North Dakota"
+  },
+  {
+   "candidateId": "9a52b8f6-d14a-4882-ba62-d45316795aef",
+   "name": "Lynne M Lafer-Halvorson",
+   "scope": "state_lower",
+   "districtName": "State House District 35 (2024); North Dakota"
+  },
+  {
+   "candidateId": "523597ec-6e7c-4fd1-a5a0-410be2fab873",
+   "name": "Maggi Gadaire",
+   "scope": "state_lower",
+   "districtName": "State House District 13 (2024); North Dakota"
+  },
+  {
+   "candidateId": "a762a3bc-c004-4a5b-95c9-1309a8c98e30",
+   "name": "Mary Adams",
+   "scope": "state_upper",
+   "districtName": "State Senate District 43 (2024); North Dakota"
+  },
+  {
+   "candidateId": "a77d96c6-4bf3-45b6-97b1-0c34cced8f2d",
+   "name": "Michael Thiesen",
+   "scope": "state_upper",
+   "districtName": "State Senate District 3 (2024); North Dakota"
+  },
+  {
+   "candidateId": "f58e4b78-80f6-4cfe-962e-3f287cf94944",
+   "name": "Mike Dwyer",
+   "scope": "state_upper",
+   "districtName": "State Senate District 47 (2024); North Dakota"
+  },
+  {
+   "candidateId": "40643054-6f9d-491c-b553-474bd93e6b4e",
+   "name": "Mike Heger",
+   "scope": "state_lower",
+   "districtName": "State House District 33 (2024); North Dakota"
+  },
+  {
+   "candidateId": "3c87ada3-fc16-48de-bd0e-8c5f2d988abf",
+   "name": "Mike Holmes",
+   "scope": "state_lower",
+   "districtName": "State House District 43 (2024); North Dakota"
+  },
+  {
+   "candidateId": "71a35a95-0cac-4bd0-8a12-179beea8d82c",
+   "name": "Natalie Mclaughlin",
+   "scope": "state_lower",
+   "districtName": "State House District 3 (2024); North Dakota"
+  },
+  {
+   "candidateId": "65ba2cde-a13f-4348-893e-36e905047e40",
+   "name": "Nicole Derenne",
+   "scope": "state_lower",
+   "districtName": "State House District 42 (2024); North Dakota"
+  },
+  {
+   "candidateId": "fd88590b-ad95-492f-9e34-c3c17d03b896",
+   "name": "Nikolaus Groenewold",
+   "scope": "state_lower",
+   "districtName": "State House District 20 (2024); North Dakota"
+  },
+  {
+   "candidateId": "2a542292-4e32-4d89-bf9d-a00efb481fb4",
+   "name": "Nyamal Dei",
+   "scope": "state_upper",
+   "districtName": "State Senate District 41 (2024); North Dakota"
+  },
+  {
+   "candidateId": "531478e8-0616-4804-949e-2a5cc9dbab64",
+   "name": "Reed Johnson",
+   "scope": "state_lower",
+   "districtName": "State House District 17 (2024); North Dakota"
+  },
+  {
+   "candidateId": "272e7028-a077-4384-aede-6e421ded4db5",
+   "name": "Rich Slagle",
+   "scope": "state_lower",
+   "districtName": "State House District 41 (2024); North Dakota"
+  },
+  {
+   "candidateId": "17163fd8-d933-4c94-8a03-0a446e75a03e",
+   "name": "Rissa M Williams",
+   "scope": "state_lower",
+   "districtName": "State House District 31 (2024); North Dakota"
+  },
+  {
+   "candidateId": "574d7af9-a8cd-44e0-8c08-0b53cc1a92a9",
+   "name": "Roger Brabandt",
+   "scope": "state_lower",
+   "districtName": "State House District 5 (2024); North Dakota"
+  },
+  {
+   "candidateId": "5582b805-aa2a-4aa7-bea1-8d94346ade39",
+   "name": "Rosann Jacobs-Fode",
+   "scope": "state_lower",
+   "districtName": "State House District 47 (2024); North Dakota"
+  },
+  {
+   "candidateId": "d82cae02-7880-433a-9431-8702b430c001",
+   "name": "Ross Lockhart",
+   "scope": "state_lower",
+   "districtName": "State House District 45 (2024); North Dakota"
+  },
+  {
+   "candidateId": "a03bf423-e068-4d31-8c94-09bb45e3e43b",
+   "name": "Sandy Baertsch",
+   "scope": "state_lower",
+   "districtName": "State House District 39 (2024); North Dakota"
+  },
+  {
+   "candidateId": "30adf246-9ca6-4ab8-9874-b5a12064ad62",
+   "name": "Shawn Kessel",
+   "scope": "state_lower",
+   "districtName": "State House District 27 (2024); North Dakota"
+  },
+  {
+   "candidateId": "4e262db7-dce8-4a42-b89d-06542e7f6944",
+   "name": "Shelley Lenz",
+   "scope": "state_lower",
+   "districtName": "State House District 37 (2024); North Dakota"
+  },
+  {
+   "candidateId": "ed2bbcc0-b052-49e3-9889-236b0722ff51",
+   "name": "Signe Snortland",
+   "scope": "state_upper",
+   "districtName": "State Senate District 33 (2024); North Dakota"
+  },
+  {
+   "candidateId": "f452a493-b10b-4233-9f15-3c0743c2177c",
+   "name": "Stacie Kruckenberg",
+   "scope": "state_lower",
+   "districtName": "State House District 33 (2024); North Dakota"
+  },
+  {
+   "candidateId": "cbc7d3ad-1285-4c18-b79f-6fded5034920",
+   "name": "Stacy Heidenreich",
+   "scope": "state_lower",
+   "districtName": "State House District 41 (2024); North Dakota"
+  },
+  {
+   "candidateId": "ff84e053-d1e1-485d-9e22-aea13e24ccff",
+   "name": "Steve Sauter",
+   "scope": "state_lower",
+   "districtName": "State House District 7 (2024); North Dakota"
+  },
+  {
+   "candidateId": "a0f66e31-295c-45d3-ae23-dd64344cd2e6",
+   "name": "Steve Thoring",
+   "scope": "state_lower",
+   "districtName": "State House District 1 (2024); North Dakota"
+  },
+  {
+   "candidateId": "377a0739-ee71-48d6-9cc6-ab38f025d13f",
+   "name": "Susan Josephson",
+   "scope": "state_lower",
+   "districtName": "State House District 37 (2024); North Dakota"
+  },
+  {
+   "candidateId": "5c287a45-3464-4367-85ea-5bfb8cbcc4cf",
+   "name": "Tara Hiatt",
+   "scope": "state_lower",
+   "districtName": "State House District 3 (2024); North Dakota"
+  },
+  {
+   "candidateId": "2433e757-dff5-4abf-acfb-39a51732b3da",
+   "name": "Taylor Johnson",
+   "scope": "state_lower",
+   "districtName": "State House District 35 (2024); North Dakota"
+  },
+  {
+   "candidateId": "7fb76ef1-2d5a-4bc1-83ad-3649f7f0c753",
+   "name": "Terry Goerger",
+   "scope": "state_lower",
+   "districtName": "State House District 25 (2024); North Dakota"
+  },
+  {
+   "candidateId": "151cbb1f-a7bd-4d86-88cc-a9d579731d49",
+   "name": "Tiffany Williams-Rice",
+   "scope": "state_lower",
+   "districtName": "State House District 7 (2024); North Dakota"
+  },
+  {
+   "candidateId": "48ecdafb-6fa5-4053-ae87-b424d67cd842",
+   "name": "Tim Spilman",
+   "scope": "state_lower",
+   "districtName": "State House District 31 (2024); North Dakota"
+  },
+  {
+   "candidateId": "3d81fd62-0cf5-488b-ac62-d005f0df3979",
+   "name": "Timothy Mihalick",
+   "scope": "state_lower",
+   "districtName": "State House District 3 (2024); North Dakota"
+  },
+  {
+   "candidateId": "1d044849-1105-4805-9646-e45dee71db1b",
+   "name": "Tyler York",
+   "scope": "state_lower",
+   "districtName": "State House District 43 (2024); North Dakota"
+  },
+  {
+   "candidateId": "be57c055-a939-4dc2-8317-3016ee26ce09",
+   "name": "Zach Raknerud",
+   "scope": "state_lower",
+   "districtName": "State House District 5 (2024); North Dakota"
+  }
+ ],
+ "files": 2131,
+ "fileErrors": 0,
+ "note": "Proposals and unmatched lists only. The full resolve report carries per-roll member resolution for all 2,131 rolls and is 9.5 MB, so it is deliberately not committed (the Texas and Pennsylvania precedent).",
+ "counts": {
+  "unmatched_reviewed": 98477,
+  "matched": 50177
+ }
+}
