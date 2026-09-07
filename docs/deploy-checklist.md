@@ -91,8 +91,10 @@ and `voteapp-notifications-prune` services in `render.yaml` (live since
 2026-09-06). Before the first day-before reminder (Nov 2, 2026 for the
 general): count opt-ins read-only (`users.email_election_reminders` where
 verified and not deleted) so the first live send has an expected number, and
-on Nov 1 run `notifications:reminders` without `--live` to see the real Nov 2
-recipient list. A completed digest or alert job that had per-recipient
+on Nov 2 run `notifications:reminders` without `--live` to see the real
+recipient list. The script always targets "tomorrow" (US-latest local date +
+1), so the rehearsal must run on Nov 2 itself, between 10:00 UTC (when
+Honolulu rolls to Nov 2) and the 15:00 UTC scheduled send. A completed digest or alert job that had per-recipient
 failures is reported to Sentry as `completed_with_failures`; the reminder job
 fails itself so BullMQ retries.
 

@@ -1,3 +1,4 @@
+import { pathToFileURL } from "node:url";
 import type { Worker } from "bullmq";
 
 import { captureError, describeError, flushSentry, initSentryFromEnv } from "../observability/sentry.js";
@@ -128,10 +129,15 @@ async function main(): Promise<void> {
   });
 }
 
-main().catch((error) => {
-  console.error("notification scheduler workers crashed:", describeError(error));
-  captureError(error, { worker: "notification_workers", event: "crashed" });
-  void flushSentry().finally(() => {
-    process.exit(1);
+// Only boot when run directly: tests import countJobFailures and must not
+// connect to Redis or start live consumers.
+const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+if (entrypoint === import.meta.url) {
+  main().catch((error) => {
+    console.error("notification scheduler workers crashed:", describeError(error));
+    captureError(error, { worker: "notification_workers", event: "crashed" });
+    void flushSentry().finally(() => {
+      process.exit(1);
+    });
   });
-});
+}
