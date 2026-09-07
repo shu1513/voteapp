@@ -1,0 +1,65 @@
+{
+  "runId": "rollcall-legiscan-fetch-id-20260907T182731Z",
+  "importerVersion": "rollcall-legiscan-fetch-v1",
+  "survey": true,
+  "state": "ID",
+  "startedAt": "2026-09-07T18:27:31.249Z",
+  "finishedAt": "2026-09-07T18:27:31.594Z",
+  "datasetDir": "~/legiscan-data/id-2168/ID/2025-2025_Regular_Session",
+  "bills": 790,
+  "votes": 854,
+  "people": 129,
+  "fileErrors": [],
+  "rows": [
+    {
+      "chamber": "house",
+      "desc": "House Third Reading",
+      "count": 455,
+      "withoutMemberList": 0,
+      "minTotal": 70,
+      "maxTotal": 70,
+      "billTypes": [
+        "B",
+        "CR",
+        "JM",
+        "JR",
+        "R"
+      ],
+      "sampleBills": [
+        "HCR002",
+        "H0003",
+        "H0006"
+      ]
+    },
+    {
+      "chamber": "senate",
+      "desc": "Senate Third Reading",
+      "count": 399,
+      "withoutMemberList": 0,
+      "minTotal": 35,
+      "maxTotal": 35,
+      "billTypes": [
+        "B",
+        "CR",
+        "JR"
+      ],
+      "sampleBills": [
+        "H0003",
+        "SCR102",
+        "S1006"
+      ]
+    }
+  ],
+  "billTypeCounts": {
+    "B": 708,
+    "CR": 32,
+    "JM": 13,
+    "JR": 7,
+    "R": 30
+  },
+  "sessionIds": {
+    "2168": 790
+  },
+  "committeeChamberVotes": 0,
+  "voteParseErrors": []
+}
