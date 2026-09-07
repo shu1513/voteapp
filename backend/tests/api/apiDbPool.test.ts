@@ -1,9 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  API_DB_HEALTH_DEADLINE_MS,
   API_DB_QUERY_TIMEOUT_MARGIN_MS,
   attachApiDbPoolErrorHandler,
   buildApiDbPoolConfig,
+  checkApiDbPoolHealth,
 } from "../../src/api/apiDbPool.js";
 
 describe("buildApiDbPoolConfig", () => {
@@ -62,5 +64,35 @@ describe("attachApiDbPoolErrorHandler", () => {
       () => undefined
     );
     expect(() => listener?.(new Error("boom"))).not.toThrow();
+  });
+});
+
+describe("checkApiDbPoolHealth", () => {
+  it("resolves when SELECT 1 answers inside the deadline", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [{ "?column?": 1 }] });
+    await expect(checkApiDbPoolHealth({ query }, 1_000)).resolves.toBeUndefined();
+    expect(query).toHaveBeenCalledWith("SELECT 1");
+  });
+
+  it("rejects with the pool's error when the query fails", async () => {
+    const query = vi.fn().mockRejectedValue(new Error("connection terminated"));
+    await expect(checkApiDbPoolHealth({ query }, 1_000)).rejects.toThrow("connection terminated");
+  });
+
+  it("rejects once the deadline passes even if the query never settles", async () => {
+    vi.useFakeTimers();
+    try {
+      const query = vi.fn(() => new Promise(() => {}));
+      const pending = checkApiDbPoolHealth({ query }, 250);
+      const assertion = expect(pending).rejects.toThrow("exceeded 250ms");
+      await vi.advanceTimersByTimeAsync(251);
+      await assertion;
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("keeps the default deadline under the platform's 5 s probe timeout", () => {
+    expect(API_DB_HEALTH_DEADLINE_MS).toBeLessThan(5_000);
   });
 });

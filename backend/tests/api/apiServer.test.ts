@@ -5060,3 +5060,47 @@ describe("chatbot feedback endpoint", () => {
     expect(badVerdict.statusCode).toBe(400);
   });
 });
+
+describe("GET /api/healthz", () => {
+  it("answers 200 when the database probe resolves, without consulting the rate limiter", async () => {
+    const checkDatabaseHealth = vi.fn().mockResolvedValue(undefined);
+    const rateLimit = vi.fn(() => ({ allowed: false, retryAfterSeconds: 30 }));
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress: vi.fn(), checkDatabaseHealth, rateLimit }),
+      { method: "GET", path: "/api/healthz" }
+    );
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ ok: true });
+    expect(response.headers["cache-control"]).toBe("no-store");
+    expect(checkDatabaseHealth).toHaveBeenCalledTimes(1);
+    expect(rateLimit).not.toHaveBeenCalled();
+  });
+
+  it("answers 503 when the probe rejects, without echoing the error", async () => {
+    const checkDatabaseHealth = vi.fn().mockRejectedValue(new Error("connect ECONNREFUSED 10.0.0.5:5432"));
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn(), checkDatabaseHealth }), {
+        method: "GET",
+        path: "/api/healthz",
+      });
+      expect(response.statusCode).toBe(503);
+      expect(response.body).toEqual({ ok: false, reason: "database_unavailable" });
+      expect(response.rawBody).not.toContain("ECONNREFUSED");
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining("ECONNREFUSED"));
+    } finally {
+      warn.mockRestore();
+    }
+  });
+
+  it("answers 503 when no database probe is configured, and 405 for non-GET", async () => {
+    const app = createApiApp({ resolveAddress: vi.fn() });
+    const unconfigured = await invokeExpressApp(app, { method: "GET", path: "/api/healthz" });
+    expect(unconfigured.statusCode).toBe(503);
+    expect(unconfigured.body).toEqual({ ok: false, reason: "database_check_not_configured" });
+
+    const post = await invokeExpressApp(app, { method: "POST", path: "/api/healthz" });
+    expect(post.statusCode).toBe(405);
+    expect(post.headers.allow).toBe("GET");
+  });
+});

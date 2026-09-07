@@ -29,7 +29,7 @@ import { createTrustedClientIpResolver } from "../api/addressApiClientIp.js";
 import { toAddressResolutionDiagnostics, type AddressResolutionDiagnostics } from "../api/addressApiResponses.js";
 import { buildAllowedOrigins } from "../api/apiCors.js";
 import { createApiApp } from "../api/apiServer.js";
-import { attachApiDbPoolErrorHandler, buildApiDbPoolConfig } from "../api/apiDbPool.js";
+import { attachApiDbPoolErrorHandler, buildApiDbPoolConfig, checkApiDbPoolHealth } from "../api/apiDbPool.js";
 import {
   createInMemoryContentReportRateLimiter,
   DEFAULT_CONTENT_REPORT_RATE_LIMIT_MAX_BUCKETS,
@@ -796,6 +796,7 @@ async function main(): Promise<void> {
     lookupElectionDetail: (electionId) => lookupElectionDetailById(pool, electionId),
     lookupCandidateElectionFinance: (electionId, candidateId) =>
       lookupCandidateElectionFinanceSummaryById(pool, electionId, candidateId),
+    checkDatabaseHealth: () => checkApiDbPoolHealth(pool),
     listResearchAreas: () => listSelectableResearchAreas(pool),
     getStateVotingResources: (stateAbbreviation) => getStateVotingResources(pool, stateAbbreviation),
     listAuthenticatedCandidateFollows: (userId) => listUserCandidateFollows(pool, userId),

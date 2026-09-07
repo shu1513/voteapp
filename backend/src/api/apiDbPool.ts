@@ -20,6 +20,14 @@ import type { Pool, PoolConfig } from "pg";
  */
 export const API_DB_QUERY_TIMEOUT_MARGIN_MS = 5_000;
 
+/**
+ * Default deadline for the /api/healthz database probe. Render's HTTP probe
+ * gives up after 5 s, and the pool's own limits (10 s to acquire a client,
+ * 30 s per statement) are far past that, so the probe needs its own shorter
+ * clock or a slow database reads as a dead instance.
+ */
+export const API_DB_HEALTH_DEADLINE_MS = 3_000;
+
 export type ApiDbPoolConfig = Pick<
   PoolConfig,
   "connectionString" | "connectionTimeoutMillis" | "statement_timeout" | "query_timeout"
@@ -58,6 +66,26 @@ export function buildApiDbPoolConfig(input: {
  * the pool has already discarded the broken client and the next checkout
  * simply opens a new connection. Log and capture it; keep serving.
  */
+/**
+ * Runs `SELECT 1` on the pool and rejects if it has not answered within
+ * `deadlineMs`. The query itself is left to finish (or hit the pool's own
+ * statement_timeout) in the background; the timer only bounds the caller.
+ */
+export async function checkApiDbPoolHealth(
+  pool: Pick<Pool, "query">,
+  deadlineMs = API_DB_HEALTH_DEADLINE_MS
+): Promise<void> {
+  let timer: NodeJS.Timeout | undefined;
+  const deadline = new Promise<never>((_resolve, reject) => {
+    timer = setTimeout(() => reject(new Error(`database health check exceeded ${deadlineMs}ms`)), deadlineMs);
+  });
+  try {
+    await Promise.race([pool.query("SELECT 1"), deadline]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export function attachApiDbPoolErrorHandler(
   pool: Pick<Pool, "on">,
   capture: (error: unknown, tags: Record<string, string>) => void,

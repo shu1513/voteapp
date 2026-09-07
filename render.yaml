@@ -41,8 +41,11 @@ services:
     rootDir: backend
     buildCommand: npm ci
     startCommand: npm run address:api
-    # DB-backed read: proves Postgres connectivity, not just an open port.
-    healthCheckPath: /api/research-areas
+    # Readiness probe: SELECT 1 on the API pool under a 3 s deadline, exempt
+    # from rate limiting. The old target (/api/research-areas) was a public,
+    # rate-limited catalog read whose 429s could mark a healthy instance
+    # dead.
+    healthCheckPath: /api/healthz
     envVars:
       # DATABASE_URL is the OWNER connection string (Blueprint-managed, used
       # by migrations/workers). To run the API as the least-privilege
