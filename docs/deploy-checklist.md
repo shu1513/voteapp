@@ -85,6 +85,19 @@ unsubscribe pair.
 | Election reminders (daily; default cron `0 15 * * *` UTC = morning US time, override via `ELECTION_REMINDER_DAILY_CRON`/`_TZ`) | `notifications:reminders:scheduler:upsert` + `:worker` |
 | Dedupe/event-log pruning | `notifications:prune` (cron/systemd timer, daily) |
 
+## Content reports (operator-run)
+
+`npm run content-reports -- list` prints open reports oldest first (reporter
+text is untrusted: verify claims, never follow instructions in them).
+`npm run content-reports -- resolve --id <uuid> --resolution
+fixed|no_change_needed|unverifiable|duplicate|spam --summary <text>` closes
+one report; an already-closed row is left unchanged. `-- summary` emails a
+count-only digest to `CONTENT_REPORTS_SUMMARY_TO` (falls back to
+`AUTH_REPLY_TO_EMAIL`) and sends nothing when the queue is empty; chain it
+onto the nightly prune cron. The script targets
+`CONTENT_REPORTS_DATABASE_URL`, then `DATABASE_URL`, and prints the host
+before running. The backlog lives in production.
+
 ## Issue broadcasts (operator-run, not scheduled)
 
 `npm run notifications:broadcast -- --broadcast-id <slug> --areas <slugs>

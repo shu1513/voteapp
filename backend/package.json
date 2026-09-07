@@ -112,6 +112,7 @@
     "manual:district-research:sweep": "tsx src/scripts/manualDistrictResearchQueue.ts sweep",
     "manual:district-research:seed": "tsx src/scripts/manualDistrictResearchQueue.ts seed",
     "manual:district-research:status": "tsx src/scripts/manualDistrictResearchQueue.ts status",
+    "content-reports": "tsx src/scripts/contentReports.ts",
     "manual:deferral:record": "tsx src/scripts/manualResearchDeferrals.ts record",
     "manual:deferral:due": "tsx src/scripts/manualResearchDeferrals.ts due",
     "manual:deferral:resolve": "tsx src/scripts/manualResearchDeferrals.ts resolve",
