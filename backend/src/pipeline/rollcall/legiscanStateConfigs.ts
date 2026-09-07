@@ -709,6 +709,60 @@ const GEORGIA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
     /^h[bjr]s? \d/,
 ];
 
+// Idaho's floor-question vocabulary, shared by the 2025 and 2026 Regular
+// Sessions below. Both sessions were surveyed separately (2026-09-07) and
+// print exactly the SAME two strings and nothing else, so they share one
+// definition rather than two copies that could drift apart.
+//
+// Idaho prints the smallest vocabulary measured in this campaign: 854 roll
+// calls in 2025 and 852 in 2026 carry two descriptions between them, and
+// neither names the question.
+//
+//   2025 (session 2168): House Third Reading 455, Senate Third Reading 399
+//   2026 (session 2246): House Third Reading 461, Senate Third Reading 391
+//
+// That is the Delaware shape, and it means the same words cover a passage
+// vote, a vote on an amended bill, and a resolution adoption. What Idaho's
+// own bill history calls `Read Third Time in Full -- PASSED 36-34-0` and
+// `Read third time in full as amended -- PASSED 35-33-2` reach this feed
+// spelled identically. So `questionClass: "passage"` on an Idaho row is
+// LegiScan's claim, not Idaho's.
+//
+// Ground truth is the bill history line, which prints the question AND the
+// tally on the same line. Matching a roll to that line on (date, chamber)
+// resolves the question for 707 of 854 rolls in 2025 and 643 of 852 in 2026;
+// the remainder are resolution adoptions worded `ADOPTED` plus rolls whose
+// same-day history line is procedural. That match is a selection-time step in
+// the batch recipe, not something a description pattern can do, and a roll it
+// cannot place is left unselected rather than guessed.
+//
+// Nothing is excluded here because nothing exists to exclude: a config
+// exclusion can only read the description, and the description is identical
+// on every question. Excluding either spelling would throw away every real
+// passage vote in that chamber.
+//
+// There are no committee votes in either dataset. Every roll's `total` is
+// exactly the chamber size (70 House, 35 Senate), so the tally-based
+// floor-versus-committee cut has nothing to decide and nothing surfaces.
+//
+// ⚠ Idaho takes NO recorded vote on concurrence. `House Concurred in Senate
+// Amendments` appears 30 times in 2025 and 18 in 2026 with no tally anywhere,
+// so a chamber's only recorded vote can sit on text the other chamber later
+// amended (the Nevada shape). Every selected measure needs a per-roll version
+// check against the enrolled act; the feed cannot help, because all 3,562 of
+// Idaho's bill texts are dated `0000-00-00` and the version stack cannot be
+// ordered by date. Use the action history, which is correctly dated.
+//
+// ⚠ Do NOT carry the Montana/Arizona/Colorado `passed`-flag hazard here on
+// the strength of a vote count. Eight rolls across the two sessions pass with
+// fewer than half the seats voting yea, and all eight are genuine passages:
+// Idaho's constitution requires a majority of the members PRESENT, not of the
+// members elected, and Idaho's own history calls every one of them PASSED.
+const IDAHO_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  { pattern: /^house third reading$/, questionClass: "passage" },
+  { pattern: /^senate third reading$/, questionClass: "passage" },
+];
+
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
   // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
   // die 2026-04-03). Vocabulary measured from the full dataset survey
@@ -3611,6 +3665,72 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       1649476:
         "SB 1571 House 2026-03-02: LegiScan reports 37-7; Oregon's journal reports 36-8 and names Lewis among the nays, whom LegiScan records as a yea",
     },
+  },
+  // Idaho Legislature, 2025 Regular Session (68th Legislature, first regular
+  // session; dataset cut 2025-12-07). Surveyed 2026-09-07: 790 bills, 854
+  // roll calls, 129 people for 70 House and 35 Senate seats. Vocabulary,
+  // question-class caveat, concurrence gap and the `passed`-flag note are all
+  // documented on IDAHO_KEPT_QUESTIONS above.
+  //
+  // Feed health is the cleanest tier in both sessions: 0 repeated
+  // roll_call_ids, 0 identity duplicates, 0 rolls without a member list, 0
+  // disagreements between the stored tally and the stored member list, and 0
+  // vote parse errors. The Texas duplicate-id fix is a verified no-op here.
+  //
+  // Pool measured before any selection: 297 divided rolls, 286 of them on
+  // kept bill types, and 212 divided AND enacted across 128 measures (103
+  // House, 109 Senate), 79 of which are divided in both chambers. Every one
+  // is bill type B. The minority-to-majority ratio runs 0.25 to 0.94 with a
+  // median near 0.42, so these are real splits. A Republican supermajority
+  // does not produce a thin pool in Idaho, because the divisions run inside
+  // the majority caucus rather than between the parties.
+  //
+  // Constitutional amendments ride JOINT RESOLUTIONS, which is a kept bill
+  // type, so the Georgia resolution gap does not recur.
+  ID: {
+    jurisdiction: "ID",
+    sessionId: 2168,
+    chamberSizes: { house: 70, senate: 35 },
+    keptQuestions: IDAHO_KEPT_QUESTIONS,
+    excludedQuestions: [],
+    // The tally audit was run over EVERY roll in the session, not only the
+    // ones the feed reports as divided, because a tally error can itself
+    // decide whether a roll passes the divided gate (the Oregon SB 1565
+    // lesson). 703 of 707 rolls carrying a tallied history line match Idaho
+    // exactly.
+    //
+    // Three of the four exceptions differ ONLY in the not-voting count and
+    // are left queueable, because the yea and nay sides are identical and
+    // those are the only sides the fan-out writes: H0056 roll 1478778 (feed
+    // 68-0 with 2 absent, Idaho 68-0-0), S1148 roll 1525657 (feed 35-30 with
+    // 5 absent, Idaho 35-30-4) and H0098 roll 1487890 (feed 40-29 with 1
+    // absent, Idaho 40-29-0). No divided-and-enacted roll in either session
+    // has a member on the wrong side.
+    heldRollCallIds: {
+      1498007:
+        "H0230 House 2025-02-27: LegiScan reports 55-10 where Idaho's own history reports 54-11, so one member is recorded on the wrong side. The roll is outside the current pool (the bill did not become law, and neither tally clears the divided gate), and it is held so that it cannot be queued if the not-enacted scope is opened later",
+    },
+  },
+  // Idaho Legislature, 2026 Regular Session (dataset cut 2026-06-28, after
+  // the session adjourned). Surveyed 2026-09-07: 817 bills, 852 roll calls,
+  // 129 people. A second session for one state needs its own registry entry,
+  // because the entry above pins sessionId 2168 and flipping it would strand
+  // the 2025 batches.
+  //
+  // The 2026 vocabulary is IDENTICAL to 2025 — the same two strings, nothing
+  // unmatched — so both entries share IDAHO_KEPT_QUESTIONS rather than
+  // holding two copies that could drift apart.
+  //
+  // Pool: 273 divided rolls, 264 on kept bill types, and 196 divided AND
+  // enacted across 115 measures (99 House, 97 Senate), 77 divided in both
+  // chambers. The tally audit found ZERO disagreements with Idaho's own
+  // history in this session, so no roll is held.
+  "ID-2246": {
+    jurisdiction: "ID",
+    sessionId: 2246,
+    chamberSizes: { house: 70, senate: 35 },
+    keptQuestions: IDAHO_KEPT_QUESTIONS,
+    excludedQuestions: [],
   },
 };
 
