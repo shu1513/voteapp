@@ -1,0 +1,320 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1627955,
+   "measure_id": "HB 1003",
+   "vote_date": "2026-02-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1003. Colorado set up a small business loan fund to help firms recover from the pandemic. The act keeps it going for problems that come later, not just for COVID-19. It loosens the rule that private money had to be committed first at a four-to-one ratio. The fund may still only lend directly if bank regulators stop banks from doing it. The Colorado House passed it 50-15 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1003. Colorado set up a small business loan fund to help firms recover from the pandemic. The act keeps it going for problems that come later, not just for COVID-19. It loosens the rule that private money had to be committed first at a four-to-one ratio. The fund may still only lend directly if bank regulators stop banks from doing it. The Colorado House passed it 50-15 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1688707,
+   "measure_id": "HB 1003",
+   "vote_date": "2026-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1003. Colorado set up a small business loan fund to help firms recover from the pandemic. The act keeps it going for problems that come later, not just for COVID-19. It loosens the rule that private money had to be committed first at a four-to-one ratio. The fund may still only lend directly if bank regulators stop banks from doing it. The Colorado Senate passed it 28-7 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1003. Colorado set up a small business loan fund to help firms recover from the pandemic. The act keeps it going for problems that come later, not just for COVID-19. It loosens the rule that private money had to be committed first at a four-to-one ratio. The fund may still only lend directly if bank regulators stop banks from doing it. The Colorado Senate passed it 28-7 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1693062,
+   "measure_id": "HB 1004",
+   "vote_date": "2026-05-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1004. Colorado gives back half of what a person or business donates to a child care center. That credit was due to end after the 2027 tax year. The act runs it to the end of 2037. The findings say about 18,000 people used it in 2022 and it raised $60 million for providers. The Colorado House passed it 51-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1004. Colorado gives back half of what a person or business donates to a child care center. That credit was due to end after the 2027 tax year. The act runs it to the end of 2037. The findings say about 18,000 people used it in 2022 and it raised $60 million for providers. The Colorado House passed it 51-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1692957,
+   "measure_id": "HB 1008",
+   "vote_date": "2026-05-04",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1008 and pass it. Colorado's outdoor economy is worth about $66 billion a year. The act gives the parks and wildlife division a formal job of planning and coordinating outdoor recreation. It must work toward the goals in the state outdoors strategy and report on its planning. The act adds accessible experiences as a defined aim and does not change water rights. The Colorado House voted 46-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1008. Colorado's outdoor economy is worth about $66 billion a year. The act gives the parks and wildlife division a formal job of planning and coordinating outdoor recreation. It must work toward the goals in the state outdoors strategy and report on its planning. The act adds accessible experiences as a defined aim and does not change water rights. The Colorado House voted 46-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1692956
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1689917,
+   "measure_id": "HB 1008",
+   "vote_date": "2026-04-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1008. Colorado's outdoor economy is worth about $66 billion a year. The act gives the parks and wildlife division a formal job of planning and coordinating outdoor recreation. It must work toward the goals in the state outdoors strategy and report on its planning. The act adds accessible experiences as a defined aim and does not change water rights. The Colorado Senate passed it 27-7 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1008. Colorado's outdoor economy is worth about $66 billion a year. The act gives the parks and wildlife division a formal job of planning and coordinating outdoor recreation. It must work toward the goals in the state outdoors strategy and report on its planning. The act adds accessible experiences as a defined aim and does not change water rights. The Colorado Senate passed it 27-7 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1689916
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1675632,
+   "measure_id": "HB 1011",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1011 and pass it. Puppies sold in pet shops often come from large breeding operations. From January 2028 a pet store may not sell, lease, barter or auction a dog or cat. Brokers face the same ban. Shelters and rescues may still show animals for adoption in a shop, so long as the shop takes no fee and the animal is neutered. The Colorado House voted 43-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1011. Puppies sold in pet shops often come from large breeding operations. From January 2028 a pet store may not sell, lease, barter or auction a dog or cat. Brokers face the same ban. Shelters and rescues may still show animals for adoption in a shop, so long as the shop takes no fee and the animal is neutered. The Colorado House voted 43-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1675631
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1672756,
+   "measure_id": "HB 1011",
+   "vote_date": "2026-03-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1011. Puppies sold in pet shops often come from large breeding operations. From January 2028 a pet store may not sell, lease, barter or auction a dog or cat. Brokers face the same ban. Shelters and rescues may still show animals for adoption in a shop, so long as the shop takes no fee and the animal is neutered. The Colorado Senate passed it 19-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1011. Puppies sold in pet shops often come from large breeding operations. From January 2028 a pet store may not sell, lease, barter or auction a dog or cat. Brokers face the same ban. Shelters and rescues may still show animals for adoption in a shop, so long as the shop takes no fee and the animal is neutered. The Colorado Senate passed it 19-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697234,
+   "measure_id": "HB 1016",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1016 and pass it. Open educational resources are course materials students get free. The state's yearly report on them was due to stop after 2026. The act keeps it running to the end of 2031. The report must now count courses that cost students nothing for textbooks, not just those using open materials. The Colorado House voted 49-15 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1016. Open educational resources are course materials students get free. The state's yearly report on them was due to stop after 2026. The act keeps it running to the end of 2031. The report must now count courses that cost students nothing for textbooks, not just those using open materials. The Colorado House voted 49-15 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697233
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1644360,
+   "measure_id": "HB 1017",
+   "vote_date": "2026-02-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1017. A court can order someone convicted of a crime to repay their victim. Insurers had been claiming through that process for money they paid out on a policy. The act says restitution must go first to the direct victim, and insurers should use other remedies. An insurer that was itself the target of a crime can still claim. The Colorado House passed it 44-20 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1017. A court can order someone convicted of a crime to repay their victim. Insurers had been claiming through that process for money they paid out on a policy. The act says restitution must go first to the direct victim, and insurers should use other remedies. An insurer that was itself the target of a crime can still claim. The Colorado House passed it 44-20 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1664050,
+   "measure_id": "HB 1017",
+   "vote_date": "2026-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1017. A court can order someone convicted of a crime to repay their victim. Insurers had been claiming through that process for money they paid out on a policy. The act says restitution must go first to the direct victim, and insurers should use other remedies. An insurer that was itself the target of a crime can still claim. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1017. A court can order someone convicted of a crime to repay their victim. Insurers had been claiming through that process for money they paid out on a policy. The act says restitution must go first to the direct victim, and insurers should use other remedies. An insurer that was itself the target of a crime can still claim. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697519,
+   "measure_id": "HB 1033",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1033 and pass it. Colorado's cottage food law let people sell home-cooked food only if it could sit safely at room temperature. The act, titled the Tamale Act, lets a home cook sell packaged food needing heat or chilling. That covers tamales, burritos and tortas. A cook may sell one such product with up to five variations, and must list them for the health department. The Colorado House voted 46-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1033. Colorado's cottage food law let people sell home-cooked food only if it could sit safely at room temperature. The act, titled the Tamale Act, lets a home cook sell packaged food needing heat or chilling. That covers tamales, burritos and tortas. A cook may sell one such product with up to five variations, and must list them for the health department. The Colorado House voted 46-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697518
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1640723,
+   "measure_id": "HB 1070",
+   "vote_date": "2026-02-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1070. Dentists sign a discount rate with one insurer and find other firms using it too. The act says a third party may reach those agreed discounts only with the dentist's written consent. The consent has to be clear, readily understood and signed. Ticking a box counts as a signature where the law allows it. The Colorado House passed it 48-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1070. Dentists sign a discount rate with one insurer and find other firms using it too. The act says a third party may reach those agreed discounts only with the dentist's written consent. The consent has to be clear, readily understood and signed. Ticking a box counts as a signature where the law allows it. The Colorado House passed it 48-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697237,
+   "measure_id": "HB 1100",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1100 and pass it. An adult under guardianship loses the right to make many of their own decisions. The act writes a bill of rights for them into Colorado law. It covers dignity, privacy, freedom from abuse, staying as independent as possible, and respect for religion and gender identity. It also gives the right to take part in decisions about care, home and daily life. The Colorado House voted 51-13 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1100. An adult under guardianship loses the right to make many of their own decisions. The act writes a bill of rights for them into Colorado law. It covers dignity, privacy, freedom from abuse, staying as independent as possible, and respect for religion and gender identity. It also gives the right to take part in decisions about care, home and daily life. The Colorado House voted 51-13 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697236
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1687474,
+   "measure_id": "HB 1342",
+   "vote_date": "2026-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1342. Feeding bears was already a Colorado offense, but only where the person meant to lure one. The act makes it enough that a person knowingly leaves food out where a bear is likely to come. A first offense still brings a warning. The fine for a third or later offense rises from $2,000 to $5,000, and farming is exempt. The Colorado House passed it 40-25 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1342. Feeding bears was already a Colorado offense, but only where the person meant to lure one. The act makes it enough that a person knowingly leaves food out where a bear is likely to come. A first offense still brings a warning. The fine for a third or later offense rises from $2,000 to $5,000, and farming is exempt. The Colorado House passed it 40-25 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1695910,
+   "measure_id": "HB 1342",
+   "vote_date": "2026-05-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1342. Feeding bears was already a Colorado offense, but only where the person meant to lure one. The act makes it enough that a person knowingly leaves food out where a bear is likely to come. A first offense still brings a warning. The fine for a third or later offense rises from $2,000 to $5,000, and farming is exempt. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1342. Feeding bears was already a Colorado offense, but only where the person meant to lure one. The act makes it enough that a person knowingly leaves food out where a bear is likely to come. A first offense still brings a warning. The fine for a third or later offense rises from $2,000 to $5,000, and farming is exempt. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697273,
+   "measure_id": "HB 1345",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1345 and pass it. Colorado shares state money among its public colleges by formula. The act adds co-located degree partnerships, where a student stays on their own campus while enrolled at a partner college that offers the degree. That lets rural campuses keep the students and the funding. The act follows the recommendations of the state's funding formula report. The Colorado House voted 51-13 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1345. Colorado shares state money among its public colleges by formula. The act adds co-located degree partnerships, where a student stays on their own campus while enrolled at a partner college that offers the degree. That lets rural campuses keep the students and the funding. The act follows the recommendations of the state's funding formula report. The Colorado House voted 51-13 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697272
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  }
+ ]
+}
