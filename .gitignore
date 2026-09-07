@@ -20,3 +20,9 @@ scratch/montana-campaign-finance/
 # contributor PII under K.S.A. 25-4154(d)) — never commit.
 scratch/kansas-campaign-finance/
 scratch/idaho-campaign-finance/
+
+# Python bytecode. The roll-call audits are scripts, but one of them gets
+# imported as a module when another script reuses its helpers, which writes a
+# __pycache__ beside it — and a directory-wide `git add` then commits the .pyc.
+__pycache__/
+*.pyc
