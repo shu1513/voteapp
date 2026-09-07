@@ -1,0 +1,351 @@
+{
+ "proposals": [
+  {
+   "candidate_id": "005efd52-d200-4269-96cf-982a50deebd3",
+   "name": "Leanord \"Bubba\" Powell",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "d9f34ed4-b930-4b4e-9383-58187e84cb16",
+     "reason": "a lower property-tax rate is not a spending cut; the record says nothing about the spending side of the budget, and property tax has no allowed area"
+    }
+   ]
+  },
+  {
+   "candidate_id": "00d15615-6308-4c9f-a8fa-552737cedc42",
+   "name": "Chad Wes Dean",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "5f058822-2bef-4bc3-86d5-34d2844def3e",
+     "reason": "routine listing as counsel of record on an appeal; nothing for a voter"
+    },
+    {
+     "record_id": "fb85a2b4-2786-4254-82a8-ef57a84e36a1",
+     "reason": "appellate finding about the judge's performance, not a for/against stance; a stance tag would render as opposing legal competence"
+    }
+   ]
+  },
+  {
+   "candidate_id": "014b9336-1af4-4f8d-a09f-533319bf6275",
+   "name": "JESSICA NATION HOLTMAN",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "41bfec02-5bbb-4f5b-bed3-cdcd53063059",
+     "reason": "law review comment on custody standing; a civil_rights stance would overclaim"
+    },
+    {
+     "record_id": "9ce8a2ed-52d1-4476-8675-5249760fcd9f",
+     "reason": "routine court-appointed counsel work; no stance by the candidate"
+    },
+    {
+     "record_id": "84b08ff4-f53e-40d8-bf21-c2aba3f202f9",
+     "reason": "routine court-appointed counsel work; no stance by the candidate"
+    }
+   ]
+  },
+  {
+   "candidate_id": "021d4ecb-6837-416f-8caa-e860c54e04a3",
+   "name": "Brandy Mueller",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "23cc3575-51ec-4cd7-8876-1850b1ccc961",
+     "reason": "judicial sentencing act; no stance on an allowed area"
+    }
+   ]
+  },
+  {
+   "candidate_id": "02cfc46a-ba0a-43ae-9b1a-c9125e1a33eb",
+   "name": "David A. Cole",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "99106ffa-7ab3-44cc-9bff-388876bc67b1",
+     "reason": "procedural motion to sign settlement paperwork; no stance"
+    },
+    {
+     "record_id": "f7ca8ef3-9a61-486a-a620-7dc9cd526fb2",
+     "reason": "denied a pipeline permit with no stated reason; direction unclear"
+    }
+   ]
+  },
+  {
+   "candidate_id": "02dca883-7b71-4260-a0ae-ffaf9f804a39",
+   "name": "Travis Ransom",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "f67897b6-91cd-4863-b12e-e0f31a05da75",
+     "reason": "administrative disaster declaration; no stance"
+    }
+   ]
+  },
+  {
+   "candidate_id": "03746a2a-7283-497e-b5c3-05ead088ae18",
+   "name": "Bill Whitmire",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "5bb9828c-b741-4cf8-aba1-7967d7e867db",
+     "reason": "cancelled a solar tax break; no allowed area covers economic development or energy"
+    }
+   ]
+  },
+  {
+   "candidate_id": "04a55468-29d3-419b-8908-37220558aa5b",
+   "name": "Leo Hung",
+   "labels": [
+    {
+     "record_id": "bcb08843-9c16-45d7-89a8-914ad371f74a",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for"
+    },
+    {
+     "record_id": "20ddc486-3ba7-4a3c-b70d-a282a7e5e916",
+     "research_area_slug": "environment_and_public_health",
+     "stance": "for"
+    }
+   ],
+   "skipped": []
+  },
+  {
+   "candidate_id": "065f2e73-a446-4343-b16d-2cadc7e6350f",
+   "name": "Lindsey Brown",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "f9193b45-c60b-4edf-95bb-d341baf368ec",
+     "reason": "routine election administration (setting hourly pay); the record shows no position on election security, accuracy, or access"
+    }
+   ]
+  },
+  {
+   "candidate_id": "06b3991e-5058-46db-aa93-8170a8e70002",
+   "name": "Remie A. Ramos",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "5d29df80-6956-4330-ac27-1c730ec6fb1b",
+     "reason": "mixed direction: against paying farmers to fallow, for irrigation efficiency"
+    }
+   ]
+  },
+  {
+   "candidate_id": "071a16e7-e724-4a3e-8304-78131980cd1f",
+   "name": "Katie Kam",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "1969e12f-40bc-43b9-be2d-191f0fa57400",
+     "reason": "opposed a lab-grown meat sales ban; no allowed research area matches"
+    },
+    {
+     "record_id": "53c3d3d4-7ae8-49da-8925-7d63d93c7aac",
+     "reason": "opposed a lab-grown meat sales ban; no allowed research area matches"
+    }
+   ]
+  },
+  {
+   "candidate_id": "0777c131-39f4-4dc8-8ef6-591c23baf257",
+   "name": "Sharon Chesser",
+   "labels": [
+    {
+     "record_id": "4a1b134b-9c35-4252-8e92-7c72d5ca36f6",
+     "research_area_slug": "social_programs_and_welfare",
+     "stance": "for"
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "ed824e43-2ef7-40ca-ba66-795e4b9cfab0",
+     "reason": "procedural dispute over a salary survey; no stance on an allowed area"
+    }
+   ]
+  },
+  {
+   "candidate_id": "07feb709-767c-42f8-9e2e-4ba6d18a1bb5",
+   "name": "Steven Knobloch",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "0196200a-442e-433b-884d-65498b627fbf",
+     "reason": "conditional resolution welcoming a plant but asking for another site; direction mixed"
+    }
+   ]
+  },
+  {
+   "candidate_id": "08eda754-77fe-4d0e-8409-459ff9a53166",
+   "name": "Brian Carson",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "03dafe2f-4322-43e3-9ab5-271f7c2db85b",
+     "reason": "routine procurement of an architect; no stance"
+    },
+    {
+     "record_id": "cd84cf03-5314-47e9-94e2-c704c436e1de",
+     "reason": "routine equipment lease; no stance"
+    }
+   ]
+  },
+  {
+   "candidate_id": "0919d172-5121-4ac1-92b8-69bed8427d5d",
+   "name": "Kim Sealy",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "2825c474-2373-4a7a-8be8-e7e8931bfe2d",
+     "reason": "solar tax abatement; no allowed area covers economic development or energy"
+    },
+    {
+     "record_id": "52c607d9-34d6-4547-937d-655ff09d0bca",
+     "reason": "solar tax abatement; no allowed area covers economic development or energy"
+    },
+    {
+     "record_id": "35a7b4e4-12dc-47b3-86c6-8cd208f3c219",
+     "reason": "solar reinvestment zone; no allowed area covers economic development or energy"
+    },
+    {
+     "record_id": "4bfa5851-9c9a-42fd-8176-bb976238cc4d",
+     "reason": "solar tax abatement; no allowed area covers economic development or energy"
+    }
+   ]
+  },
+  {
+   "candidate_id": "0a207077-22b4-4fc0-9f45-ab2998e7285d",
+   "name": "Henry Chisholm",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "27397f75-0b80-4c33-bb89-5bcf0a2072e1",
+     "reason": "wind tax abatement talks; no allowed area covers economic development or energy"
+    },
+    {
+     "record_id": "e6a44baa-2a51-4f80-94fd-616ef69bdeab",
+     "reason": "wind tax abatement plus a separate hotel-tax resolution; main action has no allowed area match"
+    },
+    {
+     "record_id": "8b68e8f1-b9f6-4d7e-850b-06b677050d02",
+     "reason": "routine courthouse roof bid; no stance"
+    }
+   ]
+  },
+  {
+   "candidate_id": "0acbe940-3e6b-4802-943c-53f483fa1e62",
+   "name": "Frank M. Reilly",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "37e011dc-4bd5-42c3-8ce8-dcd0d543a1c1",
+     "reason": "routine listing as counsel of record; nothing for a voter"
+    },
+    {
+     "record_id": "0140baa2-bcbf-4fb7-a8a2-247293780af8",
+     "reason": "nonprofit property tax exemption; no allowed research area matches"
+    }
+   ]
+  },
+  {
+   "candidate_id": "4423f7de-af84-43a8-8a5c-b62d0e5cfbc9",
+   "name": "Damon Beierle",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "bff4f3cf-ae20-4895-be70-1867132c9285",
+     "reason": "election_integrity is not in this county office's allowed areas (catalog gap)"
+    },
+    {
+     "record_id": "217ab87c-d296-4459-b823-e7dd6a1414df",
+     "reason": "mixed direction: voted against the budget after asking to add a staff position"
+    },
+    {
+     "record_id": "6162b84a-1140-4c56-a1ff-8c7cbc1d5c35",
+     "reason": "voted against an ambulance provider letter with no stated reason; direction unclear"
+    },
+    {
+     "record_id": "c75b9bef-b187-411d-a236-34dce9e0b30d",
+     "reason": "opposed one transmission line; an against stance would render as opposing public infrastructure"
+    }
+   ]
+  },
+  {
+   "candidate_id": "96ae35de-856a-4fa9-b679-0b44951c3373",
+   "name": "Julie C. Bauknight",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "a97270c6-a08f-4fcd-9790-6ae5861bc729",
+     "reason": "judicial sentencing act; no stance on an allowed area"
+    }
+   ]
+  },
+  {
+   "candidate_id": "9fdb4b02-5937-450e-93b7-1031509eaffc",
+   "name": "Starr Bauer",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "da53d314-dfbb-459d-8807-984d9178bc20",
+     "reason": "judicial contempt order; no stance on an allowed area"
+    }
+   ]
+  },
+  {
+   "candidate_id": "a0d304e2-bb26-4344-bd97-0fc7d8dc4411",
+   "name": "Brandon Young Bell",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "951d46bb-fdd8-4376-b774-4b54222125bc",
+     "reason": "mixed direction: lower rate than last year but the highest allowed without a vote"
+    },
+    {
+     "record_id": "2f59a3aa-57c0-4d98-be86-df88c6c16e08",
+     "reason": "procedural motion to sign settlement paperwork; no stance"
+    }
+   ]
+  },
+  {
+   "candidate_id": "cb6da1be-43f9-4639-b83d-99657ee902d6",
+   "name": "Micah Anderson",
+   "labels": [
+    {
+     "record_id": "e440137c-76c7-4586-ace3-8b15c32530dd",
+     "research_area_slug": "public_safety_and_crime_control",
+     "stance": "for"
+    }
+   ],
+   "skipped": [
+    {
+     "record_id": "1605aeb0-34bb-4a23-9c4a-71987526ae26",
+     "reason": "backed herbicide spraying over resident objections; an against stance would render as opposing environment and public health"
+    },
+    {
+     "record_id": "2f4204d3-2984-4f01-8234-9b84d4278c35",
+     "reason": "routine collections contract; no stance"
+    }
+   ]
+  },
+  {
+   "candidate_id": "f201f023-bf32-439e-af7b-4075264afb0f",
+   "name": "Greg Anglin",
+   "labels": [],
+   "skipped": [
+    {
+     "record_id": "f62605e8-ea1c-43c5-8f4d-4ed6798c78d7",
+     "reason": "election_integrity is not in this county office's allowed areas (catalog gap)"
+    },
+    {
+     "record_id": "f70c5c5b-c1ab-4194-af16-18996002b86a",
+     "reason": "solar abatement and reinvestment zone; no allowed area covers economic development or energy"
+    },
+    {
+     "record_id": "b9a7b025-1b36-4f23-99e6-c6d3e3885959",
+     "reason": "election_integrity is not in this county office's allowed areas (catalog gap)"
+    }
+   ]
+  }
+ ]
+}

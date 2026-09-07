@@ -1,0 +1,16 @@
+[
+ {
+  "recordId": "d9f34ed4-b930-4b4e-9383-58187e84cb16",
+  "researchAreaSlug": "government_spending_reduction",
+  "expectedStance": "for",
+  "expectedDescription": "Voted for Newton County's 2026 budget and the 2025 property tax rate on September 23, 2025. No member voted against. The adopted rate of $0.696645 per $100 of value was lower than the prior year's rate, and the county collected $2,861 less in property tax than the year before.",
+  "reason": "a lower property-tax rate is not a spending cut; the record says nothing about the spending side of the budget, and property tax has no allowed area"
+ },
+ {
+  "recordId": "f9193b45-c60b-4edf-95bb-d341baf368ec",
+  "researchAreaSlug": "election_integrity",
+  "expectedStance": "for",
+  "expectedDescription": "Asked the Gillespie County Commissioners Court on October 10, 2022 to set pay for election workers, the first year the county put them on its payroll. She proposed $10.25 an hour for new election clerks, $11.25 for experienced clerks, and $11.50 for election judges. The court approved her rates and added a 5 percent raise for bilingual clerks and judges.",
+  "reason": "routine election administration (setting hourly pay); the record shows no position on election security, accuracy, or access"
+ }
+]
