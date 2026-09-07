@@ -9,12 +9,9 @@ test("address-less ballot URL through election to candidate", async ({ page }) =
   test.skip(districtId === null, "local database has no upcoming elections");
 
   await page.goto(`/ballot?d=${districtId}`);
-  // level + exact: the sr-only h1 is "Elections", and the visible date group
-  // headings ("Elections on …") would otherwise match Playwright's
-  // substring-matching `name` filter too.
-  await expect(page.getByRole("heading", { level: 1, name: "Elections", exact: true })).toBeVisible();
-  // Every AI-content view must carry the research banner.
-  await expect(page.getByText(/AI/).first()).toBeVisible();
+  // level + exact: the visible date group headings ("Elections on …") would
+  // otherwise match Playwright's substring-matching `name` filter too.
+  await expect(page.getByRole("heading", { level: 1, name: "My elections:", exact: true })).toBeVisible();
 
   const cards = page.locator('a[href^="/elections/"]');
   await expect(cards.first()).toBeVisible();

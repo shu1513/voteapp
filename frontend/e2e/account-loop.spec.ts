@@ -11,9 +11,11 @@ test("register, verify by emailed link, log in, land on the saved ballot", async
 
   try {
     await page.goto("/register");
-    await page.getByLabel(/First name/).fill("Smoke");
+    await page.getByLabel(/First Name/).fill("Smoke");
     await page.getByLabel("Email").fill(email);
-    await page.getByLabel("Password").fill(E2E_PASSWORD);
+    // exact: "Password" would otherwise also match "Confirm password".
+    await page.getByLabel("Password", { exact: true }).fill(E2E_PASSWORD);
+    await page.getByLabel("Confirm password").fill(E2E_PASSWORD);
     await page.getByRole("checkbox").check();
     await page.getByRole("button", { name: "Create account" }).click();
     await expect(page.getByRole("heading", { name: "Check your email" })).toBeVisible();
@@ -25,7 +27,7 @@ test("register, verify by emailed link, log in, land on the saved ballot", async
 
     await page.getByRole("link", { name: "Log in" }).first().click();
     await page.getByLabel("Email").fill(email);
-    await page.getByLabel("Password").fill(E2E_PASSWORD);
+    await page.getByLabel("Password", { exact: true }).fill(E2E_PASSWORD);
     await page.getByRole("button", { name: "Log in" }).click();
     await expect(page.getByText("Hi Smoke")).toBeVisible();
 

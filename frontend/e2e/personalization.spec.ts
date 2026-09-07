@@ -21,36 +21,54 @@ test("saved research areas drive the ballot default sort and the rank editor", a
 
     // Pick the first two areas from the catalog in the settings UI.
     await page.goto("/me/settings");
-    await expect(page.getByText(/Nothing selected yet/)).toBeVisible();
+    await expect(page.getByText("Tap an issue to add it here.")).toBeVisible();
 
     const catalog = await (await page.request.get("/api/research-areas")).json();
     const [firstArea, secondArea] = catalog.research_areas;
-    await page.getByRole("button", { name: firstArea.name, exact: true }).click();
+    // Settings saves every edit, and the picker is disabled (drags ignored)
+    // while that PUT is in flight, so each step waits for its save to land.
+    const savedPreferences = () =>
+      page.waitForResponse(
+        (response) =>
+          response.url().includes("/api/me/research-area-preferences") && response.request().method() === "PUT"
+      );
+    await Promise.all([savedPreferences(), page.getByRole("button", { name: firstArea.name, exact: true }).click()]);
     await expect(page.getByLabel(`${firstArea.name}, rank 1. Drag to reorder.`)).toBeVisible();
-    await page.getByRole("button", { name: secondArea.name, exact: true }).click();
+    await Promise.all([savedPreferences(), page.getByRole("button", { name: secondArea.name, exact: true }).click()]);
     await expect(page.getByLabel(`${secondArea.name}, rank 2. Drag to reorder.`)).toBeVisible();
 
-    // Reorder by mouse drag (the primary drag surface). MouseSensor arms
-    // after 4px of movement, so move in steps from row 1's center to below
-    // row 2's center before releasing.
-    const firstRow = page.getByLabel(`${firstArea.name}, rank 1. Drag to reorder.`);
-    const secondRow = page.getByLabel(`${secondArea.name}, rank 2. Drag to reorder.`);
-    const from = (await firstRow.boundingBox())!;
-    const to = (await secondRow.boundingBox())!;
-    await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2);
-    await page.mouse.down();
-    await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2 + 8, { steps: 3 });
-    await page.mouse.move(to.x + to.width / 2, to.y + to.height * 0.9, { steps: 12 });
-    await page.mouse.up();
+    // Reorder with the keyboard: focus row 1's ⠿ handle, Space picks it up,
+    // ArrowDown moves it below row 2, Space drops it. This is the documented
+    // accessible path (dnd-kit KeyboardSensor + sortableKeyboardCoordinates)
+    // and is deterministic. A mouse drag (mousedown on the row, move past the
+    // 4px activation distance, mouseup) never activated the MouseSensor under
+    // headless Chromium here — the live region stayed empty — so it is not
+    // used as the reorder oracle; check mouse reordering by hand when the
+    // picker changes.
+    // Each key waits for dnd-kit's live-region announcement before the next,
+    // so the drop cannot outrun the pickup. The region is aria-atomic, and
+    // "Picked up …" is overwritten at once by "… was moved over" the row
+    // itself, so both waits key on the "moved over" line and its target id.
+    const firstHandle = page.getByLabel(`${firstArea.name}, rank 1. Drag to reorder.`);
+    const announcements = page.locator('[id^="DndLiveRegion"]');
+    // savedPreferences() resolves on response headers; the picker stays
+    // disabled (aria-disabled on the handle) until the body is parsed and
+    // the mutation settles. focus() + press() do no enabled check, unlike
+    // click(), so wait for it here or Space lands on a dead handle.
+    await expect(firstHandle).toBeEnabled();
+    await firstHandle.focus();
+    await page.keyboard.press("Space");
+    await expect(announcements).toContainText(`was moved over droppable area ${firstArea.id}`);
+    await page.keyboard.press("ArrowDown");
+    await expect(announcements).toContainText(`was moved over droppable area ${secondArea.id}`);
+    await Promise.all([savedPreferences(), page.keyboard.press("Space")]);
     await expect(page.getByLabel(`${firstArea.name}, rank 2. Drag to reorder.`)).toBeVisible();
     await expect(page.getByLabel(`${secondArea.name}, rank 1. Drag to reorder.`)).toBeVisible();
 
     // With saved areas and no explicit sort choice, the saved ballot defaults
-    // to my_areas — the subtitle carries its description.
+    // to my_areas — the sort control shows the order the list is in.
     await page.goto("/me/ballot");
-    await expect(
-      page.getByText("ordered by how much each race affects the issues you care about", { exact: false })
-    ).toBeVisible();
+    await expect(page.getByLabel("Sort by")).toHaveValue("my_areas");
   } finally {
     await deleteAccount(page.request).catch((error) => {
       console.warn("account cleanup skipped:", error);
