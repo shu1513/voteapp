@@ -83,7 +83,18 @@ unsubscribe pair.
 | Candidate-follow digest (daily) | `notifications:digest:scheduler:upsert` + `:worker` |
 | New-election alerts (daily) | `notifications:new-elections:scheduler:upsert` + `:worker` |
 | Election reminders (daily; default cron `0 15 * * *` UTC = morning US time, override via `ELECTION_REMINDER_DAILY_CRON`/`_TZ`) | `notifications:reminders:scheduler:upsert` + `:worker` |
-| Dedupe/event-log pruning | `notifications:prune` (cron/systemd timer, daily) |
+| Dedupe/event-log pruning | `notifications:prune -- --live` (cron/systemd timer, daily; dry run without `--live`) |
+| Election-result emails | NOT scheduled. Run `notifications:election-results -- --live` by hand after each results sweep (skill `voteapp-election-results-refresh`, step 7). Recipients = district users with `email_digest` on |
+
+On Render the worker and the prune cron are the `voteapp-notification-workers`
+and `voteapp-notifications-prune` services in `render.yaml` (live since
+2026-09-06). Before the first day-before reminder (Nov 2, 2026 for the
+general): count opt-ins read-only (`users.email_election_reminders` where
+verified and not deleted) so the first live send has an expected number, and
+on Nov 1 run `notifications:reminders` without `--live` to see the real Nov 2
+recipient list. A completed digest or alert job that had per-recipient
+failures is reported to Sentry as `completed_with_failures`; the reminder job
+fails itself so BullMQ retries.
 
 ## Issue broadcasts (operator-run, not scheduled)
 

@@ -2,6 +2,7 @@ import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
+import { captureError, flushSentry, initSentryFromEnv } from "../observability/sentry.js";
 import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 import { US_LATEST_LOCAL_DATE_SQL } from "../utils/usLocalDate.js";
 
@@ -154,6 +155,7 @@ export async function pruneNotificationEvents(
 
 async function main(): Promise<void> {
   loadProjectEnv();
+  initSentryFromEnv("worker");
   const options = parsePruneNotificationEventsArgs(process.argv.slice(2));
   const connectionString = process.env.DATABASE_URL?.trim();
   if (!connectionString) {
@@ -183,9 +185,13 @@ async function main(): Promise<void> {
 
 const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
 if (entrypoint === import.meta.url) {
-  main().catch((error) => {
+  main().catch(async (error) => {
     const message = error instanceof Error ? error.message : String(error);
     console.error("notification event prune failed:", message);
+    // This runs as an unattended nightly cron: without a capture here a
+    // failing prune only shows up in a log nobody reads.
+    captureError(error, { worker: "notifications_prune", event: "crashed" });
+    await flushSentry();
     process.exitCode = 1;
   });
 }

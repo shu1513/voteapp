@@ -52,6 +52,15 @@ const FACTORIES: readonly NamedWorkerFactory[] = [
   },
 ];
 
+/** Number of per-user failures a completed job reported; 0 for any other result shape. */
+export function countJobFailures(result: unknown): number {
+  if (typeof result !== "object" || result === null) {
+    return 0;
+  }
+  const failures = (result as { failures?: unknown }).failures;
+  return Array.isArray(failures) ? failures.length : 0;
+}
+
 function wireWorkerEvents(workerName: string, worker: Worker<never, unknown, string> | Worker): void {
   worker.on("ready", () => {
     console.log(`${workerName} scheduler worker ready`);
@@ -61,6 +70,18 @@ function wireWorkerEvents(workerName: string, worker: Worker<never, unknown, str
   });
   worker.on("completed", (job, result) => {
     console.log(`${workerName} scheduler worker completed jobId=${job.id} result=${JSON.stringify(result)}`);
+    // The digest and new-election jobs complete even when some recipients
+    // failed (their backlog persists and the next run retries), so a
+    // "completed" event alone does not mean everyone was delivered to.
+    // Surface those partial failures without changing the retry model.
+    const failureCount = countJobFailures(result);
+    if (failureCount > 0) {
+      captureError(new Error(`${workerName} job completed with ${failureCount} per-user failure(s)`), {
+        worker: workerName,
+        event: "completed_with_failures",
+        job_id: job.id ?? "unknown",
+      });
+    }
   });
   worker.on("failed", (job, error) => {
     console.error(`${workerName} scheduler worker failed jobId=${job?.id ?? "unknown"}:`, describeError(error));

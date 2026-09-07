@@ -361,44 +361,54 @@ services:
   # ------------------------------------------------------------- workers ----
   # One process runs all three notification scheduler workers and re-asserts
   # their recurring BullMQ jobs on every boot (idempotent upserts).
-  # COMMENTED OUT for the card-less free-tier launch: background workers and
-  # cron jobs require a paid plan. Uncomment (and re-sync the blueprint) once
-  # billing is set up. Until then no digest/alert/reminder emails send — SES
-  # is still sandboxed at launch anyway.
-  # - name: voteapp-notification-workers
-  #   type: worker
-  #   runtime: node
-  #   region: ohio
-  #   plan: starter
-  #   rootDir: backend
-  #   buildCommand: npm ci
-  #   startCommand: npm run notifications:workers
-  #   envVars:
-  #     - key: DATABASE_URL
-  #       fromDatabase:
-  #         name: voteapp-db
-  #         property: connectionString
-  #     - key: REDIS_URL
-  #       fromService:
-  #         name: voteapp-redis
-  #         type: keyvalue
-  #         property: connectionString
-  #     - key: AUTH_FROM_EMAIL
-  #       value: noreply@electionssimplified.com
-  #     - key: AUTH_REPLY_TO_EMAIL
-  #       value: contact@electionssimplified.com
-  #     - key: AUTH_SES_REGION
-  #       value: us-east-2
-  #     - key: AUTH_PUBLIC_BASE_URL
-  #       value: https://electionssimplified.com
-  #     - key: NOTIFICATIONS_UNSUBSCRIBE_URL
-  #       value: https://electionssimplified.com/api/email/unsubscribe
-  #     - key: DEPLOY_ENV
-  #       value: production
-  #     - fromGroup: voteapp-shared
+  # Enabled 2026-09-06 (docs/plans/review-gaps-2026-09-06.md item 1): billing
+  # has existed since 2026-08-08 and SES is in production mode. Election
+  # result emails are NOT here — they stay manual
+  # (`notifications:election-results -- --live` after each results sweep).
+  # SENTRY_DSN is dashboard-managed (docs/deploy-checklist.md); set it on this
+  # service and the prune cron when enabling monitoring.
+  - name: voteapp-notification-workers
+    type: worker
+    runtime: node
+    region: ohio
+    plan: starter
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm run notifications:workers
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: voteapp-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: voteapp-redis
+          type: keyvalue
+          property: connectionString
+      - key: AUTH_FROM_EMAIL
+        value: noreply@electionssimplified.com
+      - key: AUTH_REPLY_TO_EMAIL
+        value: contact@electionssimplified.com
+      - key: AUTH_SES_REGION
+        value: us-east-2
+      - key: AUTH_PUBLIC_BASE_URL
+        value: https://electionssimplified.com
+      - key: NOTIFICATIONS_UNSUBSCRIBE_URL
+        value: https://electionssimplified.com/api/email/unsubscribe
+      - key: DEPLOY_ENV
+        value: production
+      # Candidate-follow digest goes out monthly: 10:00 ET on the 1st, after
+      # the manual monthly records refresh (voteapp-followed-records-refresh
+      # skill) has landed. The scheduler default is daily 14:00 UTC.
+      - key: CANDIDATE_FOLLOW_DIGEST_DAILY_CRON
+        value: "0 10 1 * *"
+      - key: CANDIDATE_FOLLOW_DIGEST_DAILY_TZ
+        value: America/New_York
+      - fromGroup: voteapp-shared
 
   # ------------------------------------------------------------------ cron ----
-  # COMMENTED OUT with the worker above (paid plan required).
+  # The San Francisco finance cron below stays COMMENTED OUT (separate
+  # decision); the notification prune cron is live.
   #
   # San Francisco finance v1 scheduling choice (plan-san-francisco-finance.md
   # Phase 7): a one-shot daily cron at 16:30 UTC (09:30 PDT / 08:30 PST —
@@ -422,19 +432,23 @@ services:
   #       value: "true"
   #     - key: SAN_FRANCISCO_CAMPAIGN_FINANCE_SYNC_ENABLED
   #       value: "true"
-  # - name: voteapp-notifications-prune
-  #   type: cron
-  #   runtime: node
-  #   region: ohio
-  #   schedule: "0 6 * * *"
-  #   rootDir: backend
-  #   buildCommand: npm ci
-  #   startCommand: npm run notifications:prune
-  #   envVars:
-  #     - key: DATABASE_URL
-  #       fromDatabase:
-  #         name: voteapp-db
-  #         property: connectionString
+  - name: voteapp-notifications-prune
+    type: cron
+    runtime: node
+    region: ohio
+    schedule: "0 6 * * *"
+    rootDir: backend
+    buildCommand: npm ci
+    # --live: the script is a dry run by default (it only counts), so without
+    # the flag this cron would delete nothing every night.
+    startCommand: npm run notifications:prune -- --live
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: voteapp-db
+          property: connectionString
+      - key: DEPLOY_ENV
+        value: production
 
   # ------------------------------------------------------- chatbot (Ask) ----
   # ENABLED 2026-08-12 (docs/plans/chatbot-rag.md; spot-check passed): the TEI
