@@ -139,6 +139,13 @@ export type AddressApiServerOptions = {
    * feedback_token the ask response carried. Wired together with askChatbot
    * (404 when absent). "invalid_token" → 400. */
   submitChatbotFeedback?: (token: string, verdict: "up" | "down") => Promise<"ok" | "invalid_token">;
+  /**
+   * Readiness probe for /api/healthz: resolves when the database answers a
+   * trivial query within the probe's own deadline, rejects otherwise. Left
+   * unset, the route answers 503 so a misconfigured deployment cannot look
+   * healthy.
+   */
+  checkDatabaseHealth?: () => Promise<void>;
   listResearchAreas?: () => Promise<ResearchAreaCatalogResult>;
   /** GET /api/state-resources?state=CA — public official how-to-vote links
    * for one state. null = state not in state_resources (404). */

@@ -20,6 +20,14 @@ import type { Pool, PoolConfig } from "pg";
  */
 export const API_DB_QUERY_TIMEOUT_MARGIN_MS = 5_000;
 
+/**
+ * Default deadline for the /api/healthz database probe. Render's HTTP probe
+ * gives up after 5 s, and the pool's own limits (10 s to acquire a client,
+ * 30 s per statement) are far past that, so the probe needs its own shorter
+ * clock or a slow database reads as a dead instance.
+ */
+export const API_DB_HEALTH_DEADLINE_MS = 3_000;
+
 export type ApiDbPoolConfig = Pick<
   PoolConfig,
   "connectionString" | "connectionTimeoutMillis" | "statement_timeout" | "query_timeout"
@@ -52,12 +60,47 @@ export function buildApiDbPoolConfig(input: {
 }
 
 /**
+ * Builds the /api/healthz probe: `SELECT 1` on the pool, rejecting if it has
+ * not answered within `deadlineMs`. Concurrent probes share one in-flight
+ * query, and the slot stays taken until that query settles, even after every
+ * caller's deadline has passed. The path skips the rate limiter, so without
+ * this each probe in a burst would queue its own pool checkout ahead of real
+ * requests. The timer only bounds the caller; the query itself runs on to
+ * completion or the pool's own statement_timeout.
+ */
+export function createApiDbPoolHealthCheck(
+  pool: Pick<Pool, "query">,
+  deadlineMs = API_DB_HEALTH_DEADLINE_MS
+): () => Promise<void> {
+  let inFlight: Promise<unknown> | undefined;
+  const clear = () => {
+    inFlight = undefined;
+  };
+  return async () => {
+    if (!inFlight) {
+      inFlight = pool.query("SELECT 1");
+      inFlight.then(clear, clear);
+    }
+    let timer: NodeJS.Timeout | undefined;
+    const deadline = new Promise<never>((_resolve, reject) => {
+      timer = setTimeout(() => reject(new Error(`database health check exceeded ${deadlineMs}ms`)), deadlineMs);
+    });
+    try {
+      await Promise.race([inFlight, deadline]);
+    } finally {
+      clearTimeout(timer);
+    }
+  };
+}
+
+/**
  * pg-pool emits "error" when an IDLE client's connection fails (server
  * restart, network drop). Without a listener that is an unhandled
  * EventEmitter error → uncaughtException → the process exits, even though
  * the pool has already discarded the broken client and the next checkout
  * simply opens a new connection. Log and capture it; keep serving.
  */
+
 export function attachApiDbPoolErrorHandler(
   pool: Pick<Pool, "on">,
   capture: (error: unknown, tags: Record<string, string>) => void,

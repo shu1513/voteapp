@@ -102,6 +102,7 @@ import {
   parseInitializeUserDistrictsBodyValue,
   parseResearchAreaPreferencesBodyValue,
   parseStateResourcesState,
+  API_HEALTH_PATH,
   RESEARCH_AREAS_PATH,
   SITE_SITEMAP_PATH,
   STATE_RESOURCES_PATH,
@@ -153,6 +154,7 @@ const STATE_RESOURCES_CACHE_CONTROL = "public, max-age=3600";
 
 function isKnownApiPath(pathname: string): boolean {
   return (
+    pathname === API_HEALTH_PATH ||
     pathname === ADDRESS_AUTOCOMPLETE_PATH ||
     pathname === ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH ||
     pathname === ADDRESS_RESOLVE_PATH ||
@@ -417,6 +419,13 @@ function createRateLimitMiddleware(options: AddressApiServerOptions) {
       next();
       return;
     }
+    // The health probe is exempt too: the platform polls it every few
+    // seconds from its own addresses, and a 429 here would read as "instance
+    // down" and pull traffic from a healthy process.
+    if (request.path === API_HEALTH_PATH) {
+      next();
+      return;
+    }
     if (!options.rateLimit) {
       next();
       return;
@@ -628,6 +637,34 @@ async function dispatchApiRequest(
 ): Promise<void> {
   const url = new URL(request.url, "http://localhost");
   const corsHeaders = getCorsHeaders(response);
+
+  if (url.pathname === API_HEALTH_PATH) {
+    if (request.method !== "GET") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET /api/healthz", { ...corsHeaders, allow: "GET" })
+      );
+      return;
+    }
+    // Readiness, not liveness: the platform's health check should follow the
+    // database, because an API that cannot reach Postgres serves nothing
+    // useful. The probe is bounded by its own deadline (see
+    // checkApiDbPoolHealth) so a slow query cannot outlast the platform's
+    // 5 s probe timeout. Body stays tiny and never echoes the error detail.
+    if (!options.checkDatabaseHealth) {
+      sendApiResponse(response, toJsonResponse(503, { ok: false, reason: "database_check_not_configured" }, corsHeaders));
+      return;
+    }
+    try {
+      await options.checkDatabaseHealth();
+    } catch (error) {
+      console.warn(`healthz database check failed: ${error instanceof Error ? error.message : String(error)}`);
+      sendApiResponse(response, toJsonResponse(503, { ok: false, reason: "database_unavailable" }, corsHeaders));
+      return;
+    }
+    sendApiResponse(response, toJsonResponse(200, { ok: true }, corsHeaders));
+    return;
+  }
 
   if (url.pathname === SITE_SITEMAP_PATH) {
     if (request.method !== "GET") {

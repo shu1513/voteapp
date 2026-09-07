@@ -169,6 +169,7 @@ export function parseEmailUnsubscribeFormBody(body: unknown): { isForm: boolean;
       : [];
   return { isForm: record.form === "1", preferenceValues };
 }
+export const API_HEALTH_PATH = "/api/healthz";
 export const RESEARCH_AREAS_PATH = "/api/research-areas";
 export const STATE_RESOURCES_PATH = "/api/state-resources";
 export const SITE_SITEMAP_PATH = "/sitemap.xml";
