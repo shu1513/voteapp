@@ -1,0 +1,938 @@
+measure	chamber	roll	date	yeas	nays	status	bill_status	title	note
+HB1001	H	1662258	2026-03-13	40	24	divided	4	Housing Developments on Qualifying Properties	
+HB1001	S	1661326	2026-03-12	22	13	divided	4	Housing Developments on Qualifying Properties	
+HB1002	H	1654489	2026-03-05	51	13	divided	4	Provider Participation in Health Insurance	
+HB1002	S	1674730	2026-04-01	30	5	superseded	4	Provider Participation in Health Insurance	
+HB1003	H	1627955	2026-02-10	50	15	divided	4	Small Business Recovery Modifications	
+HB1003	S	1688707	2026-04-23	28	7	divided	4	Small Business Recovery Modifications	
+HB1004	H	1693062	2026-05-04	51	13	divided	4	Continuation of Child Care Contribution Tax Credit	
+HB1004	S	1695894	2026-05-08	31	3	superseded	4	Continuation of Child Care Contribution Tax Credit	
+HB1005	H	1657025	2026-03-09	42	22	divided	5	Worker Protection Collective Bargaining	
+HB1005	S	1692371	2026-05-01	23	12	divided	5	Worker Protection Collective Bargaining	
+HB1006	H	1693108	2026-05-04	43	22	divided	4	Thriving Institution Designations for Higher Education	
+HB1006	S	1692370	2026-05-01	26	9	divided	4	Thriving Institution Designations for Higher Education	
+HB1007	H	1681640	2026-04-14	45	18	divided	4	Improve Customer Use Distributed Energy Resources	
+HB1007	S	1675629	2026-04-02	29	4	superseded	4	Improve Customer Use Distributed Energy Resources	
+HB1008	H	1692957	2026-05-04	46	19	divided	4	Colorado Outdoor Opportunities Act	
+HB1008	S	1689917	2026-04-27	27	7	divided	4	Colorado Outdoor Opportunities Act	
+HB1009	H	1656975	2026-03-09	62	2	superseded	4	Colorado Mandatory Lethality Assessment Act	
+HB1009	S	1689941	2026-04-27	32	2	superseded	4	Colorado Mandatory Lethality Assessment Act	
+HB1010	H	1695572	2026-05-07	46	18	divided	4	Older Adult Support & Representation in Workforce	
+HB1010	S	1692805	2026-05-04	23	12	divided	4	Older Adult Support & Representation in Workforce	
+HB1011	H	1675632	2026-04-02	43	20	divided	4	Transfers of Certain Pet Animals	
+HB1011	S	1672756	2026-03-30	19	16	divided	4	Transfers of Certain Pet Animals	
+HB1013	H	1661323	2026-03-12	41	22	divided	4	Ratio Utility Billing Systems	
+HB1013	S	1658153	2026-03-10	23	12	divided	4	Ratio Utility Billing Systems	
+HB1014	H	1697250	2026-05-12	53	8	superseded	4	Extend Colorado Job Growth Incentive Tax Credit	
+HB1014	S	1695905	2026-05-08	32	2	superseded	4	Extend Colorado Job Growth Incentive Tax Credit	
+HB1015	H	1702684	2026-04-30	47	16	divided	4	Colorado Homeless Contribution Tax Credit Extension	
+HB1015	S	1702686	2026-05-07	33	2	superseded	4	Colorado Homeless Contribution Tax Credit Extension	
+HB1016	H	1697234	2026-05-12	49	15	divided	4	Continuation of Open Educational Resources Program	
+HB1016	S	1696221	2026-05-11	33	2	superseded	4	Continuation of Open Educational Resources Program	
+HB1017	H	1644360	2026-02-25	44	20	divided	4	Criminal Restitution Prohibited for Insurers	
+HB1017	S	1664050	2026-03-17	22	12	divided	4	Criminal Restitution Prohibited for Insurers	
+HB1019	H	1692869	2026-05-04	45	20	divided	4	Kidney Screening Mandatory Preventive Coverage	
+HB1019	S	1690295	2026-04-28	32	2	superseded	4	Kidney Screening Mandatory Preventive Coverage	
+HB1020	H	1628031	2026-02-10	65	0	superseded	4	Colorimetric Field Drug Tests in Drug Possessions	
+HB1020	S	1656009	2026-03-06	33	0	superseded	4	Colorimetric Field Drug Tests in Drug Possessions	
+HB1023	H	1646015	2026-02-26	65	0	superseded	4	Political Party Liability for Accessibility Requirements	
+HB1023	S	1674762	2026-04-01	35	0	superseded	4	Political Party Liability for Accessibility Requirements	
+HB1024	H	1645955	2026-02-26	65	0	superseded	4	Raising Age of Voluntary Relinquishment of Child	
+HB1024	S	1674711	2026-04-01	35	0	superseded	4	Raising Age of Voluntary Relinquishment of Child	
+HB1025	H	1636571	2026-02-18	60	0	superseded	4	Exempt Auctioneers Charitable Solicitation Requirements	
+HB1025	S	1658170	2026-03-10	35	0	superseded	4	Exempt Auctioneers Charitable Solicitation Requirements	
+HB1026	H	1692915	2026-05-04	51	14	divided	4	Expanding Plan Options for PERA	
+HB1026	S	1688725	2026-04-23	31	4	superseded	4	Expanding Plan Options for PERA	
+HB1027	H	1622854	2026-02-04	52	10	superseded	4	Board of Cooperative Services Definition & Executive Director	
+HB1027	S	1638916	2026-02-19	27	3	superseded	4	Board of Cooperative Services Definition & Executive Director	
+HB1028	H	1695690	2026-05-07	47	17	divided	4	Second Language Educational Program for High School Students	
+HB1028	S	1694726	2026-05-06	28	6	superseded	4	Second Language Educational Program for High School Students	
+HB1029	H	1695593	2026-05-07	47	17	divided	4	Student Representation Commission on Higher Education	
+HB1029	S	1697156	2026-05-12	29	6	superseded	4	Student Representation Commission on Higher Education	
+HB1031	H	1646533	2026-02-26	65	0	superseded	4	Protections for Agricultural Products Grown in Colorado	
+HB1031	S	1665283	2026-03-18	34	0	superseded	4	Protections for Agricultural Products Grown in Colorado	
+HB1033	H	1697519	2026-05-13	46	19	divided	4	Expanding the Colorado Cottage Foods Act	
+HB1033	S	1697340	2026-05-12	34	1	superseded	4	Expanding the Colorado Cottage Foods Act	
+HB1034	H	1675593	2026-04-02	63	0	superseded	4	Modifications to Standards for Irrigation Equipment	
+HB1034	S	1669614	2026-03-25	35	0	superseded	4	Modifications to Standards for Irrigation Equipment	
+HB1035	H	1627740	2026-02-10	59	6	superseded	4	Enactment of Colorado Revised Statutes 2025	
+HB1035	S	1648906	2026-03-02	31	3	superseded	4	Enactment of Colorado Revised Statutes 2025	
+HB1038	H	1686652	2026-04-21	41	23	divided	4	County Commissioner Redistricting	
+HB1038	S	1680796	2026-04-13	24	11	divided	4	County Commissioner Redistricting	
+HB1039	H	1650587	2026-03-03	46	16	divided	4	Adding Municipal Jails to County Jail Oversight Requirements	
+HB1039	S	1668639	2026-03-24	23	11	divided	4	Adding Municipal Jails to County Jail Oversight Requirements	
+HB1040	H	1661249	2026-03-12	61	2	superseded	4	Sterilization Rights of Person with Disabilities	
+HB1040	S	1659700	2026-03-11	35	0	superseded	4	Sterilization Rights of Person with Disabilities	
+HB1041	H	1625530	2026-02-06	59	0	superseded	4	Electronic Vehicle Records	
+HB1041	S	1658249	2026-03-10	35	0	superseded	4	Electronic Vehicle Records	
+HB1042	H	1636970	2026-02-18	59	0	superseded	4	Dry Needling by Occupational Therapists	
+HB1042	S	1664048	2026-03-17	33	0	superseded	4	Dry Needling by Occupational Therapists	
+HB1043	H	1694758	2026-05-06	46	18	divided	4	Transportation Network Company Discriminatory Practices	
+HB1043	S	1696255	2026-05-11	24	11	divided	4	Transportation Network Company Discriminatory Practices	
+HB1044	H	1681554	2026-04-14	48	15	divided	4	Measures to Improve Black Maternal Health Equity	
+HB1044	S	1676799	2026-04-06	30	5	superseded	4	Measures to Improve Black Maternal Health Equity	
+HB1045	H	1622850	2026-02-04	40	23	divided	4	Disabilities Housing Protections	
+HB1045	S	1682173	2026-04-14	23	12	divided	4	Disabilities Housing Protections	
+HB1050	H	1675612	2026-04-02	58	5	superseded	4	Optional Individualized Readiness Plan for School	
+HB1050	S	1673539	2026-03-31	34	1	superseded	4	Optional Individualized Readiness Plan for School	
+HB1051	H	1648689	2026-03-02	59	6	superseded	4	Continue Microgrid Community Resilience Grant Program	
+HB1051	S	1688741	2026-04-23	32	3	superseded	4	Continue Microgrid Community Resilience Grant Program	
+HB1052	H	1687461	2026-04-22	65	0	superseded	4	Rights for Victims of Certain Crimes	
+HB1052	S	1692052	2026-04-30	35	0	superseded	4	Rights for Victims of Certain Crimes	
+HB1053	H	1693090	2026-05-04	65	0	superseded	4	Motor Vehicle Regulation Administration	
+HB1053	S	1689927	2026-04-27	34	0	superseded	4	Motor Vehicle Regulation Administration	
+HB1054	H	1693949	2026-05-05	42	23	divided	2	Protections for Worker Safety	
+HB1054	S	1697533	2026-05-13	17	18	divided	2	Protections for Worker Safety	
+HB1058	H	1675608	2026-04-02	54	9	superseded	4	Protections for Minors Featured in Digital Content	
+HB1058	S	1674724	2026-04-01	33	2	superseded	4	Protections for Minors Featured in Digital Content	
+HB1059	H	1693048	2026-05-04	61	4	superseded	4	Cost Recovery Cash Fund Consolidation	
+HB1059	S	1696229	2026-05-11	34	1	superseded	4	Cost Recovery Cash Fund Consolidation	
+HB1063	H	1696018	2026-05-09	63	0	superseded	4	Treating People with Behavioral Health Disorder	
+HB1063	S	1697146	2026-05-12	35	0	superseded	4	Treating People with Behavioral Health Disorder	
+HB1064	H	1661351	2026-03-12	42	21	divided	4	Youthful Offender System Updates	
+HB1064	S	1648850	2026-03-02	23	12	divided	4	Youthful Offender System Updates	
+HB1065	H	1702696	2026-05-13	44	21	divided	4	Transit and Housing Investment Zones	
+HB1065	S	1702694	2026-05-12	22	13	divided	4	Transit and Housing Investment Zones	
+HB1067	H	1637002	2026-02-18	58	1	superseded	4	Diseased Livestock Indemnity Fund	
+HB1067	S	1658152	2026-03-10	35	0	superseded	4	Diseased Livestock Indemnity Fund	
+HB1068	H	1623439	2026-02-04	62	0	superseded	4	Remote Participation Policies for Joint Committees	
+HB1068	S	1657149	2026-03-09	31	3	superseded	4	Remote Participation Policies for Joint Committees	
+HB1069	H	1695558	2026-05-07	64	0	superseded	4	Availability of Emergency Medical Services	
+HB1069	S	1694747	2026-05-06	35	0	superseded	4	Availability of Emergency Medical Services	
+HB1070	H	1640723	2026-02-23	48	12	divided	4	Third-Party Network Agreements for Dental Services	
+HB1070	S	1669590	2026-03-25	33	2	superseded	4	Third-Party Network Agreements for Dental Services	
+HB1071	H	1640686	2026-02-23	37	22	divided	2	Local Government Vehicle Identification System on Interstate Highways	
+HB1075	H	1686857	2026-04-21	59	4	superseded	4	Child Welfare Prevention Services Funding	
+HB1075	S	1696207	2026-05-11	32	3	superseded	4	Child Welfare Prevention Services Funding	
+HB1076	H	1695585	2026-05-07	42	22	divided	4	Transportation Statutory Clean-Up	
+HB1076	S	1693774	2026-05-05	28	7	divided	4	Transportation Statutory Clean-Up	
+HB1077	H	1697196	2026-05-12	42	22	divided	4	Average Market Rate of Unprocessed Retail Marijuana	
+HB1077	S	1696225	2026-05-11	21	14	divided	4	Average Market Rate of Unprocessed Retail Marijuana	
+HB1078	H	1695640	2026-05-07	55	9	superseded	4	Off-Campus Courses & Concurrent Enrollment Programs	
+HB1078	S	1694739	2026-05-06	32	3	superseded	4	Off-Campus Courses & Concurrent Enrollment Programs	
+HB1079	H	1662290	2026-03-13	64	0	superseded	4	Drive Motorcycle Written Permission	
+HB1079	S	1677385	2026-04-07	34	0	superseded	4	Drive Motorcycle Written Permission	
+HB1081	H	1681689	2026-04-14	44	19	divided	4	Optimize Colorado Electric Transmission System	
+HB1081	S	1678715	2026-04-08	30	4	superseded	4	Optimize Colorado Electric Transmission System	
+HB1084	H	1695677	2026-05-07	41	22	divided	4	Voter Transparency in Ballot Measures	
+HB1084	S	1692156	2026-04-30	23	12	divided	4	Voter Transparency in Ballot Measures	
+HB1088	H	1692955	2026-05-04	65	0	superseded	4	Business Entity Filing Secretary of State	
+HB1088	S	1689854	2026-04-27	34	0	superseded	4	Business Entity Filing Secretary of State	
+HB1089	H	1659716	2026-03-11	63	1	superseded	4	Uniform Mortgage Modification Act	
+HB1089	S	1673519	2026-03-31	35	0	superseded	4	Uniform Mortgage Modification Act	
+HB1090	H	1659701	2026-03-11	65	0	superseded	4	Teacher Licensing Requirements	
+HB1090	S	1671721	2026-03-27	34	0	superseded	4	Teacher Licensing Requirements	
+HB1095	H	1682164	2026-04-14	63	0	superseded	4	Digital Publication for Legal Notice	
+HB1095	S	1673520	2026-03-31	35	0	superseded	4	Digital Publication for Legal Notice	
+HB1096	H	1641305	2026-02-23	40	22	divided	6	Colorado Medicaid Access to Primary Care Services	
+HB1098	H	1675642	2026-04-02	62	0	superseded	4	Public Trustee Act Foreclosure Procedures	
+HB1098	S	1668476	2026-03-24	34	0	superseded	4	Public Trustee Act Foreclosure Procedures	
+HB1099	H	1646491	2026-02-26	39	26	divided	4	Protect Financial Condition of Homeowners Associations	
+HB1099	S	1669595	2026-03-25	23	12	divided	4	Protect Financial Condition of Homeowners Associations	
+HB1100	H	1697237	2026-05-12	51	13	divided	4	Guardianship for Incapacitated Adults	
+HB1100	S	1696227	2026-05-11	33	2	superseded	4	Guardianship for Incapacitated Adults	
+HB1101	H	1671728	2026-03-27	54	7	superseded	4	Criminal Offenses Related to Critical Infrastructure Metals	
+HB1101	S	1677559	2026-04-07	33	2	superseded	4	Criminal Offenses Related to Critical Infrastructure Metals	
+HB1102	H	1697523	2026-05-13	42	23	divided	4	Funding for Colorado DRIVES Account	
+HB1102	S	1697143	2026-05-12	23	12	divided	4	Funding for Colorado DRIVES Account	
+HB1103	H	1675588	2026-04-02	61	0	superseded	4	Report Child Sexual Assault & Courtroom Testimony	
+HB1103	S	1664045	2026-03-17	34	0	superseded	4	Report Child Sexual Assault & Courtroom Testimony	
+HB1107	H	1661261	2026-03-12	45	18	divided	4	Health Care in Regulated Facilities	
+HB1107	S	1677394	2026-04-07	23	12	divided	4	Health Care in Regulated Facilities	
+HB1109	H	1695643	2026-05-07	45	19	divided	4	Sign Language Consumer Protection Study	
+HB1109	S	1692908	2026-05-04	24	11	divided	4	Sign Language Consumer Protection Study	
+HB1110	H	1686688	2026-04-21	54	10	superseded	4	Vulnerable Adult Financial Exploitation Banking	
+HB1110	S	1685434	2026-04-20	33	0	superseded	4	Vulnerable Adult Financial Exploitation Banking	
+HB1111	H	1697183	2026-05-12	41	20	divided	4	Pesticide Product Disposal & Container Recycling	
+HB1111	S	1695913	2026-05-08	29	5	superseded	4	Pesticide Product Disposal & Container Recycling	
+HB1112	H	1696220	2026-05-11	51	14	divided	6	Regulation of Underground Injection Control Wells	
+HB1113	H	1695579	2026-05-07	42	22	divided	4	Modifications to Elections	
+HB1113	S	1692884	2026-05-04	23	12	divided	4	Modifications to Elections	
+HB1114	H	1644217	2026-02-25	38	26	divided	6	Allowed Minimum Lot Size for Subject Jurisdictions	
+HB1115	H	1661376	2026-03-12	47	16	divided	4	Prepaid Wireless Telecom Services Modifications	
+HB1115	S	1656981	2026-03-09	30	4	superseded	4	Prepaid Wireless Telecom Services Modifications	
+HB1116	H	1663637	2026-03-16	59	3	superseded	4	Process for People with Behavioral Health Disorder	
+HB1116	S	1682150	2026-04-14	33	2	superseded	4	Process for People with Behavioral Health Disorder	
+HB1117	H	1694959	2026-05-06	33	31	divided	6	Temporary Marijuana Hospitality Permit	
+HB1120	H	1682155	2026-04-14	42	21	divided	4	Mobile Home Property Taxation	
+HB1120	S	1675614	2026-04-02	30	3	superseded	4	Mobile Home Property Taxation	
+HB1123	H	1695598	2026-05-07	42	22	divided	4	Preventing Sexual Abuse in Jails	
+HB1123	S	1693755	2026-05-05	27	8	divided	4	Preventing Sexual Abuse in Jails	
+HB1126	H	1667134	2026-03-20	34	28	divided	4	Requirements for Firearms Dealers	
+HB1126	S	1681614	2026-04-14	20	15	divided	4	Requirements for Firearms Dealers	
+HB1127	H	1675849	2026-04-02	42	21	divided	4	Reporting After Fatal Car Crash	
+HB1127	S	1673585	2026-03-31	33	2	superseded	4	Reporting After Fatal Car Crash	
+HB1130	H	1689528	2026-04-24	35	28	divided	6	Public Restroom Baby Diaper Changing Station	
+HB1132	H	1695625	2026-05-07	44	20	divided	4	Practices to Support Pollinators	
+HB1132	S	1694687	2026-05-06	24	11	divided	4	Practices to Support Pollinators	
+HB1133	H	1648623	2026-03-02	43	22	divided	4	Traveling Animal Protection Act Environmental Education Program	
+HB1133	S	1672682	2026-03-30	22	13	divided	4	Traveling Animal Protection Act Environmental Education Program	
+HB1134	H	1650575	2026-03-03	43	19	divided	4	Fairness & Transparency in Municipal Court	
+HB1134	S	1673586	2026-03-31	24	11	divided	4	Fairness & Transparency in Municipal Court	
+HB1135	H	1682149	2026-04-14	44	19	divided	4	Transparency of Chemicals Used in Hair Products	
+HB1135	S	1677438	2026-04-07	24	10	divided	4	Transparency of Chemicals Used in Hair Products	
+HB1136	H	1640637	2026-02-23	40	21	divided	4	Create Department of Personnel Program Pathways to Public Service	
+HB1136	S	1666899	2026-03-20	20	12	divided	4	Create Department of Personnel Program Pathways to Public Service	
+HB1137	H	1658137	2026-03-10	26	35	divided	1	Requirements for Campaign Consultants	
+HB1138	H	1696340	2026-05-11	50	14	divided	4	Retail Theft Prevention Program	
+HB1138	S	1697352	2026-05-12	32	3	superseded	4	Retail Theft Prevention Program	
+HB1139	H	1663334	2026-03-16	47	15	divided	4	Use of Artificial Intelligence in Health Care	
+HB1139	S	1696238	2026-05-11	32	3	superseded	4	Use of Artificial Intelligence in Health Care	
+HB1141	H	1697594	2026-05-13	43	22	divided	4	Discriminatory Practices in Public Schools	
+HB1141	S	1697595	2026-05-13	23	12	divided	4	Discriminatory Practices in Public Schools	
+HB1142	H	1640804	2026-02-23	62	0	superseded	4	Child Advocacy Centers	
+HB1142	S	1665262	2026-03-18	34	0	superseded	4	Child Advocacy Centers	
+HB1143	H	1687488	2026-04-22	42	22	divided	4	Non-Employment Educational Opportunities Background Check Information	
+HB1143	S	1692913	2026-05-04	23	12	divided	4	Non-Employment Educational Opportunities Background Check Information	
+HB1144	H	1675598	2026-04-02	40	23	divided	4	Prohibit Three-Dimensional Printing Firearms & Components	
+HB1144	S	1672564	2026-03-30	23	12	divided	4	Prohibit Three-Dimensional Printing Firearms & Components	
+HB1145	H	1654379	2026-03-05	42	22	divided	4	Mobile Home Park Water Quality	
+HB1145	S	1675596	2026-04-02	25	8	divided	4	Mobile Home Park Water Quality	
+HB1146	H	1644314	2026-02-25	53	12	superseded	4	Allow Approved Facility Schools Participate in Public Employees' Retirement Asso	
+HB1146	S	1663347	2026-03-16	27	7	divided	4	Allow Approved Facility Schools Participate in Public Employees' Retirement Asso	
+HB1147	H	1697247	2026-05-12	44	20	divided	4	Host Home for People with Intellectual & Developmental Disabilities	
+HB1147	S	1696240	2026-05-11	28	7	divided	4	Host Home for People with Intellectual & Developmental Disabilities	
+HB1150	H	1631409	2026-02-12	58	5	superseded	4	Department of Agriculture Supplemental	
+HB1150	S	1639723	2026-02-20	32	1	superseded	4	Department of Agriculture Supplemental	
+HB1151	H	-	-	0	0	unusable	4	Department of Corrections Supplemental	no storable roll: the feed tally disagrees with its own member list
+HB1151	S	1639967	2026-02-20	32	0	superseded	4	Department of Corrections Supplemental	
+HB1152	H	1631772	2026-02-12	43	20	divided	4	Department of Early Childhood Supplemental	
+HB1152	S	1639709	2026-02-20	31	2	superseded	4	Department of Early Childhood Supplemental	
+HB1153	H	1631834	2026-02-12	51	12	superseded	4	Department of Education Supplemental	
+HB1153	S	1639683	2026-02-20	32	1	superseded	4	Department of Education Supplemental	
+HB1154	H	1632161	2026-02-12	45	17	divided	4	Department of Governor, Lt. Governor, and Office of State Planning & Budgeting S	
+HB1154	S	1639672	2026-02-20	32	1	superseded	4	Department of Governor, Lt. Governor, and Office of State Planning & Budgeting S	
+HB1155	H	1631791	2026-02-12	40	23	divided	4	Department of Health Care Policy & Financing Supplemental	
+HB1155	S	1639955	2026-02-20	20	13	divided	4	Department of Health Care Policy & Financing Supplemental	
+HB1156	H	1631795	2026-02-12	42	21	divided	4	Department of Higher Education Supplemental	
+HB1156	S	1639735	2026-02-20	22	11	divided	4	Department of Higher Education Supplemental	
+HB1157	H	1631787	2026-02-12	50	13	divided	4	Department of Human Services Supplemental	
+HB1157	S	1639728	2026-02-20	31	2	superseded	4	Department of Human Services Supplemental	
+HB1158	H	1632403	2026-02-12	56	7	superseded	4	Judicial Department Supplemental	
+HB1158	S	1639663	2026-02-20	32	1	superseded	4	Judicial Department Supplemental	
+HB1159	H	1631878	2026-02-12	53	10	superseded	4	Department of Labor & Employment Supplemental	
+HB1159	S	1639699	2026-02-20	31	2	superseded	4	Department of Labor & Employment Supplemental	
+HB1160	H	1631955	2026-02-12	54	9	superseded	4	Department of Law Supplemental	
+HB1160	S	1639978	2026-02-20	32	1	superseded	4	Department of Law Supplemental	
+HB1161	H	1632363	2026-02-12	56	7	superseded	4	Department of Local Affairs Supplemental	
+HB1161	S	1639732	2026-02-20	31	2	superseded	4	Department of Local Affairs Supplemental	
+HB1162	H	1632424	2026-02-12	63	0	superseded	4	Department of Military Affairs Supplemental	
+HB1162	S	1639692	2026-02-20	33	0	superseded	4	Department of Military Affairs Supplemental	
+HB1163	H	1631905	2026-02-12	62	1	superseded	4	Department of Natural Resources Supplemental	
+HB1163	S	1640047	2026-02-20	33	0	superseded	4	Department of Natural Resources Supplemental	
+HB1164	H	1632394	2026-02-12	43	20	divided	4	Department of Personnel Supplemental	
+HB1164	S	1639662	2026-02-20	32	1	superseded	4	Department of Personnel Supplemental	
+HB1165	H	1631732	2026-02-12	41	22	divided	4	Department of Public Health & Environment Supplemental	
+HB1165	S	1640055	2026-02-20	21	12	divided	4	Department of Public Health & Environment Supplemental	
+HB1166	H	1644779	2026-02-25	62	2	superseded	4	Department of Public Safety Supplemental	
+HB1166	S	1640051	2026-02-20	33	0	superseded	4	Department of Public Safety Supplemental	
+HB1167	H	1632413	2026-02-12	43	20	divided	4	Department of Regulatory Agencies Supplemental	
+HB1167	S	1639731	2026-02-20	24	9	divided	4	Department of Regulatory Agencies Supplemental	
+HB1168	H	1631965	2026-02-12	49	14	divided	4	Department of Revenue Supplemental	
+HB1168	S	1639988	2026-02-20	31	2	superseded	4	Department of Revenue Supplemental	
+HB1169	H	1632480	2026-02-12	43	20	divided	4	Department of State Supplemental	
+HB1169	S	1639725	2026-02-20	31	2	superseded	4	Department of State Supplemental	
+HB1170	H	1632291	2026-02-12	56	7	superseded	4	Department of Transportation Supplemental	
+HB1170	S	1639664	2026-02-20	32	1	superseded	4	Department of Transportation Supplemental	
+HB1171	H	1631808	2026-02-12	46	17	divided	4	Department of Treasury Supplemental	
+HB1171	S	1639975	2026-02-20	31	2	superseded	4	Department of Treasury Supplemental	
+HB1172	H	1631843	2026-02-12	55	8	superseded	4	Capital Construction Supplemental	
+HB1172	S	1639682	2026-02-20	31	2	superseded	4	Capital Construction Supplemental	
+HB1173	H	1632382	2026-02-12	60	3	superseded	4	Capital Construction Information Technology	
+HB1173	S	1639686	2026-02-20	31	2	superseded	4	Capital Construction Information Technology	
+HB1174	H	1631750	2026-02-12	54	8	superseded	4	School Finance Mid-Year Adjustments	
+HB1174	S	1639703	2026-02-20	32	1	superseded	4	School Finance Mid-Year Adjustments	
+HB1175	H	1631749	2026-02-12	63	0	superseded	4	State Education Fund Reading to Ensure Academic Development Act & Colorado Teach	
+HB1175	S	1639744	2026-02-20	33	0	superseded	4	State Education Fund Reading to Ensure Academic Development Act & Colorado Teach	
+HB1176	H	1631790	2026-02-12	63	0	superseded	4	Modify Fourth-Year Innovation Pilot Program	
+HB1176	S	1639693	2026-02-20	33	0	superseded	4	Modify Fourth-Year Innovation Pilot Program	
+HB1177	H	1631789	2026-02-12	60	3	superseded	4	End Nursing Provider Wage Enhancement Payments	
+HB1177	S	1639753	2026-02-20	33	0	superseded	4	End Nursing Provider Wage Enhancement Payments	
+HB1178	H	1631728	2026-02-12	44	19	divided	4	Expenditures in Excess of Appropriations	
+HB1178	S	1639704	2026-02-20	32	1	superseded	4	Expenditures in Excess of Appropriations	
+HB1179	H	1631887	2026-02-12	58	5	superseded	4	General Fund Transfer to Information Technology Capital Account	
+HB1179	S	1639689	2026-02-20	32	1	superseded	4	General Fund Transfer to Information Technology Capital Account	
+HB1180	H	1644760	2026-02-25	65	0	superseded	4	Sunset Business Intelligence Center Advisory Board	
+HB1180	S	1668530	2026-03-24	34	0	superseded	4	Sunset Business Intelligence Center Advisory Board	
+HB1181	H	1667359	2026-03-23	51	13	divided	4	Sunset Barber & Cosmetologist Act	
+HB1181	S	1687431	2026-04-22	28	6	superseded	4	Sunset Barber & Cosmetologist Act	
+HB1182	H	1640784	2026-02-23	62	0	superseded	4	Sunset Veterinary Pharmaceutical Advisory Committee	
+HB1182	S	1658102	2026-03-10	35	0	superseded	4	Sunset Veterinary Pharmaceutical Advisory Committee	
+HB1183	H	1692895	2026-05-04	43	22	divided	4	Sunset Pet Animal Care & Facilities Act	
+HB1183	S	1687470	2026-04-22	24	10	divided	4	Sunset Pet Animal Care & Facilities Act	
+HB1184	H	1697370	2026-05-12	50	15	divided	4	Sunset Process Forest Health Council	
+HB1184	S	1695935	2026-05-08	27	7	divided	4	Sunset Process Forest Health Council	
+HB1185	H	1658094	2026-03-10	61	0	superseded	4	Sunset Cold Case Task Force	
+HB1185	S	1666972	2026-03-20	32	0	superseded	4	Sunset Cold Case Task Force	
+HB1186	H	1667335	2026-03-23	61	3	superseded	4	Sunset Regulation of Cash-Bonding Agents	
+HB1186	S	1676761	2026-04-06	34	1	superseded	4	Sunset Regulation of Cash-Bonding Agents	
+HB1187	H	1663393	2026-03-16	53	9	superseded	4	Sunset Fire Suppression Programs	
+HB1187	S	1687443	2026-04-22	28	6	superseded	4	Sunset Fire Suppression Programs	
+HB1188	H	1669508	2026-03-25	43	21	divided	4	Sunset Process Securities Regulation	
+HB1188	S	1687444	2026-04-22	26	8	divided	4	Sunset Process Securities Regulation	
+HB1189	H	1650870	2026-03-03	61	1	superseded	4	Uniform Community Property Disposition Death Act	
+HB1189	S	1668535	2026-03-24	34	0	superseded	4	Uniform Community Property Disposition Death Act	
+HB1191	H	1659781	2026-03-11	65	0	superseded	4	Examination of School District Records	
+HB1191	S	1667347	2026-03-23	32	0	superseded	4	Examination of School District Records	
+HB1192	H	1657388	2026-03-09	45	17	divided	4	Homeless Prevention Activities Program Restructure	
+HB1192	S	1668521	2026-03-24	26	8	divided	4	Homeless Prevention Activities Program Restructure	
+HB1193	H	1671710	2026-03-27	40	22	divided	4	Vision Tests for Pre-Kindergarten Students	
+HB1193	S	1692040	2026-04-30	23	12	divided	4	Vision Tests for Pre-Kindergarten Students	
+HB1194	H	1693100	2026-05-04	53	12	superseded	4	Sunset Combative Sports Office & Commission	
+HB1194	S	1687434	2026-04-22	24	10	divided	4	Sunset Combative Sports Office & Commission	
+HB1195	H	1697222	2026-05-12	64	0	superseded	4	Psychotherapy Artificial Intelligence Restrictions	
+HB1195	S	1696245	2026-05-11	33	2	superseded	4	Psychotherapy Artificial Intelligence Restrictions	
+HB1196	H	1686626	2026-04-21	40	23	divided	4	Tenant Data Information	
+HB1196	S	1694706	2026-05-06	22	12	divided	4	Tenant Data Information	
+HB1197	H	1669535	2026-03-25	55	10	superseded	4	Sunset Water Vessel Registration Program	
+HB1197	S	1687442	2026-04-22	28	6	superseded	4	Sunset Water Vessel Registration Program	
+HB1198	H	1675627	2026-04-02	63	0	superseded	4	Access to Veterinary Care	
+HB1198	S	1673566	2026-03-31	35	0	superseded	4	Access to Veterinary Care	
+HB1200	H	1661262	2026-03-12	63	0	superseded	4	Armed Services Member Motor Vehicle Taxes & Fees	
+HB1200	S	1672732	2026-03-30	35	0	superseded	4	Armed Services Member Motor Vehicle Taxes & Fees	
+HB1202	H	1656959	2026-03-09	38	23	divided	4	Strategy to Reduce & Prevent Homelessness	
+HB1202	S	1702698	2026-04-17	23	12	divided	4	Strategy to Reduce & Prevent Homelessness	
+HB1203	H	1663371	2026-03-16	35	27	divided	6	Modification of County Commissioner Elections	
+HB1205	H	1654898	2026-03-05	63	1	superseded	4	Colorado State Forest Service Good Neighbor Authority	
+HB1205	S	1669505	2026-03-25	35	0	superseded	4	Colorado State Forest Service Good Neighbor Authority	
+HB1206	H	1690716	2026-04-28	42	21	divided	2	Improved Funding to Support Development	
+HB1206	S	1696249	2026-05-11	23	12	divided	2	Improved Funding to Support Development	
+HB1207	H	1695576	2026-05-07	42	22	divided	4	Disclosure of Demographic Workforce Data	
+HB1207	S	1693604	2026-05-05	23	12	divided	4	Disclosure of Demographic Workforce Data	
+HB1208	H	1663311	2026-03-16	43	19	divided	4	Sunset Compliance Advisory Panel Air Pollution	
+HB1208	S	1678607	2026-04-08	22	12	divided	4	Sunset Compliance Advisory Panel Air Pollution	
+HB1210	H	1695688	2026-05-07	41	23	divided	5	Prohibit Surveillance Price & Wage Setting	
+HB1210	S	1694728	2026-05-06	19	15	divided	5	Prohibit Surveillance Price & Wage Setting	
+HB1213	H	1658124	2026-03-10	61	0	superseded	4	Sunset Biomass Utilization Grant Program	
+HB1213	S	1681601	2026-04-14	35	0	superseded	4	Sunset Biomass Utilization Grant Program	
+HB1214	H	1692959	2026-05-04	43	22	divided	4	Sunset Substance Abuse Treatment Program Licensing	
+HB1214	S	1692003	2026-04-30	29	6	superseded	4	Sunset Substance Abuse Treatment Program Licensing	
+HB1215	H	1657290	2026-03-09	62	0	superseded	4	Technical Revision Online Marketplaces Requirement	
+HB1215	S	1677368	2026-04-07	34	0	superseded	4	Technical Revision Online Marketplaces Requirement	
+HB1216	H	1657385	2026-03-09	62	0	superseded	4	Correcting Defects in Statutes Administered by Department of Revenue	
+HB1216	S	1677356	2026-04-07	34	0	superseded	4	Correcting Defects in Statutes Administered by Department of Revenue	
+HB1217	H	1656986	2026-03-09	62	0	superseded	4	Correct Child Support Guidelines Statutory Cites	
+HB1217	S	1677383	2026-04-07	34	0	superseded	4	Correct Child Support Guidelines Statutory Cites	
+HB1218	H	1657532	2026-03-09	59	3	superseded	4	Clarifying Validity of Common Law Marriage	
+HB1218	S	1677352	2026-04-07	34	0	superseded	4	Clarifying Validity of Common Law Marriage	
+HB1219	H	1657273	2026-03-09	62	0	superseded	4	Battery Assessment Submission Deadline Change	
+HB1219	S	1677374	2026-04-07	34	0	superseded	4	Battery Assessment Submission Deadline Change	
+HB1220	H	1657431	2026-03-09	62	0	superseded	4	Update Behavioral Health License Terminology	
+HB1220	S	1677370	2026-04-07	34	0	superseded	4	Update Behavioral Health License Terminology	
+HB1221	H	1692862	2026-05-04	42	23	divided	6	Tax Expenditure Adjustments	
+HB1222	H	1692841	2026-05-04	42	23	divided	6	Modify Tax Expenditures	
+HB1223	H	1697812	2026-05-13	36	29	divided	4	Modifying Certain Tax Expenditures	
+HB1223	S	1697531	2026-05-13	22	13	divided	4	Modifying Certain Tax Expenditures	
+HB1224	H	1684246	2026-04-16	40	22	divided	4	Protections for Mobile Home Park Residents	
+HB1224	S	1694756	2026-05-06	22	12	divided	4	Protections for Mobile Home Park Residents	
+HB1225	H	1697220	2026-05-12	45	18	divided	4	Distributed Energy Resources Requirements	
+HB1225	S	1695903	2026-05-08	34	0	superseded	4	Distributed Energy Resources Requirements	
+HB1226	H	1695660	2026-05-07	41	23	divided	4	Manage Emissions from Electric Generating Units	
+HB1226	S	1693803	2026-05-05	22	13	divided	4	Manage Emissions from Electric Generating Units	
+HB1227	H	1686848	2026-04-21	45	18	divided	4	Minors' Rights in Dependency & Neglect Proceedings	
+HB1227	S	1694837	2026-05-06	28	7	divided	4	Minors' Rights in Dependency & Neglect Proceedings	
+HB1228	H	1655967	2026-03-06	62	0	superseded	4	Marriage & Family Therapy Clinical Requirements	
+HB1228	S	1681582	2026-04-14	35	0	superseded	4	Marriage & Family Therapy Clinical Requirements	
+HB1229	H	1662369	2026-03-13	55	8	superseded	4	Supporting the Human-Animal Bond	
+HB1229	S	1679581	2026-04-09	30	3	superseded	4	Supporting the Human-Animal Bond	
+HB1230	H	1693740	2026-05-05	58	7	superseded	4	Extend Conservation Easement Tax Credit	
+HB1230	S	1696248	2026-05-11	34	1	superseded	4	Extend Conservation Easement Tax Credit	
+HB1232	H	1675625	2026-04-02	45	18	divided	4	Court Costs Assessed to Juveniles	
+HB1232	S	1671718	2026-03-27	24	10	divided	4	Court Costs Assessed to Juveniles	
+HB1233	H	1697258	2026-05-12	42	22	divided	4	Property Tax Proceedings for Nonresidential Property	
+HB1233	S	1695897	2026-05-08	22	12	divided	4	Property Tax Proceedings for Nonresidential Property	
+HB1234	H	1667459	2026-03-23	64	0	superseded	4	Access to Records of Child Abuse or Neglect	
+HB1234	S	1676855	2026-04-06	34	0	superseded	4	Access to Records of Child Abuse or Neglect	
+HB1235	H	1684217	2026-04-16	44	18	divided	4	Updates to Medicaid	
+HB1235	S	1692780	2026-05-04	31	4	superseded	4	Updates to Medicaid	
+HB1236	H	1697864	2026-05-13	33	32	divided	5	Arbitration Reform	
+HB1236	S	1697490	2026-05-13	19	16	divided	5	Arbitration Reform	
+HB1237	H	1661288	2026-03-12	63	0	superseded	4	Transportation Safety Modifications	
+HB1237	S	1678850	2026-04-08	32	0	superseded	4	Transportation Safety Modifications	
+HB1238	H	1661302	2026-03-12	63	0	superseded	4	Designating Emergency Medical Services Essential Services	
+HB1238	S	1677414	2026-04-07	34	0	superseded	4	Designating Emergency Medical Services Essential Services	
+HB1239	H	1686669	2026-04-21	54	10	superseded	4	County Enforcement Authority	
+HB1239	S	1678676	2026-04-08	29	3	superseded	4	County Enforcement Authority	
+HB1241	H	1668560	2026-03-24	56	9	superseded	6	Carrier to Notify Provider Material Change Contract	
+HB1242	H	1669575	2026-03-25	56	8	superseded	4	Interlock Device for Impaired Drivers	
+HB1242	S	1692022	2026-04-30	33	2	superseded	4	Interlock Device for Impaired Drivers	
+HB1244	H	1662311	2026-03-13	62	2	superseded	4	Department of Public Health and Environment Nursing Home Penalty Fund	
+HB1244	S	1679610	2026-04-09	33	0	superseded	4	Department of Public Health and Environment Nursing Home Penalty Fund	
+HB1245	H	1686670	2026-04-21	27	37	divided	1	Theft by Contractor	
+HB1250	H	1696946	2026-05-12	64	1	superseded	4	Procedures Related to Civil Asset Forfeiture	
+HB1250	S	1697544	2026-05-13	33	2	superseded	4	Procedures Related to Civil Asset Forfeiture	
+HB1252	H	1695591	2026-05-07	52	12	superseded	4	Updates to State Emergency Response Departments & Divisions	
+HB1252	S	1692832	2026-05-04	33	2	superseded	4	Updates to State Emergency Response Departments & Divisions	
+HB1253	H	1664096	2026-03-17	48	11	superseded	4	Disconnection from Statutory Municipality	
+HB1253	S	1675665	2026-04-02	31	2	superseded	4	Disconnection from Statutory Municipality	
+HB1255	H	1697616	2026-05-13	35	30	divided	5	Social Media Duty to Report & Search Warrants	
+HB1255	S	1697617	2026-05-13	18	17	divided	5	Social Media Duty to Report & Search Warrants	
+HB1256	H	1690856	2026-04-28	56	7	superseded	4	Procedures & Data Individual's Release from Department of Corrections	
+HB1256	S	1695898	2026-05-08	23	11	divided	4	Procedures & Data Individual's Release from Department of Corrections	
+HB1257	H	1675616	2026-04-02	63	0	superseded	4	Local Regulation of Massage Facilities	
+HB1257	S	1673537	2026-03-31	35	0	superseded	4	Local Regulation of Massage Facilities	
+HB1258	H	1697202	2026-05-12	64	0	superseded	4	Changes to Practices Relating to Death	
+HB1258	S	1695943	2026-05-08	34	0	superseded	4	Changes to Practices Relating to Death	
+HB1259	H	1675686	2026-04-02	44	19	divided	4	Department of Early Childhood Clean-Up	
+HB1259	S	1674696	2026-04-01	32	3	superseded	4	Department of Early Childhood Clean-Up	
+HB1260	H	1693019	2026-05-04	65	0	superseded	4	Updates to Child Care Assistance Programs	
+HB1260	S	1692053	2026-04-30	35	0	superseded	4	Updates to Child Care Assistance Programs	
+HB1262	H	1686799	2026-04-21	64	0	superseded	4	Patient Access to Compounded Medical Items	
+HB1262	S	1685054	2026-04-17	35	0	superseded	4	Patient Access to Compounded Medical Items	
+HB1263	H	1697180	2026-05-12	42	22	divided	4	Conversational Artificial Intelligence Service Operator Requirements	
+HB1263	S	1696247	2026-05-11	24	11	divided	4	Conversational Artificial Intelligence Service Operator Requirements	
+HB1265	H	1656946	2026-03-09	39	23	divided	4	Law Enforcement National Electronic Tracing System & Share Program	
+HB1265	S	1681609	2026-04-14	23	12	divided	4	Law Enforcement National Electronic Tracing System & Share Program	
+HB1268	H	1681617	2026-04-14	44	19	divided	4	Renewable Energy Development on Disturbed Lands	
+HB1268	S	1680251	2026-04-10	24	7	divided	4	Renewable Energy Development on Disturbed Lands	
+HB1269	H	1697290	2026-05-12	42	22	divided	4	Transit Access	
+HB1269	S	1695916	2026-05-08	23	11	divided	4	Transit Access	
+HB1272	H	1697867	2026-05-13	43	22	divided	4	Extreme Temperatures Worker Protections	
+HB1272	S	1697598	2026-05-13	21	14	divided	4	Extreme Temperatures Worker Protections	
+HB1273	H	1696345	2026-05-11	38	26	divided	6	Transportation Network Company Maximum Percent Fare Retention	
+HB1274	H	1696024	2026-05-09	44	19	divided	4	State Agency Payments to Grant Recipients	
+HB1274	S	1697347	2026-05-12	23	12	divided	4	State Agency Payments to Grant Recipients	
+HB1276	H	1697198	2026-05-12	42	22	divided	4	Protect Safety of Individuals Who Are Immigrants	
+HB1276	S	1696244	2026-05-11	23	12	divided	4	Protect Safety of Individuals Who Are Immigrants	
+HB1277	H	1655152	2026-03-05	64	0	superseded	4	Sunset Kidney Disease Prevention Education Task Force	
+HB1277	S	1673560	2026-03-31	35	0	superseded	4	Sunset Kidney Disease Prevention Education Task Force	
+HB1280	H	1663429	2026-03-16	45	17	divided	4	Sunset Regulation of Hemodialysis Treatment	
+HB1280	S	1687457	2026-04-22	29	5	superseded	4	Sunset Regulation of Hemodialysis Treatment	
+HB1281	H	1691591	2026-04-29	33	32	divided	2	Homicide Criminal Offenses	
+HB1282	H	1692045	2026-04-30	55	8	superseded	4	Eliminate Duplicative Regulation of School Child Care Centers	
+HB1282	S	1694847	2026-05-06	32	3	superseded	4	Eliminate Duplicative Regulation of School Child Care Centers	
+HB1283	H	1692946	2026-05-04	43	22	divided	4	Protections Regarding Seizures of Identification Documents	
+HB1283	S	1692002	2026-04-30	23	12	divided	4	Protections Regarding Seizures of Identification Documents	
+HB1286	H	1696019	2026-05-09	59	4	superseded	5	Automated Driving System Commercial Vehicles	
+HB1286	S	1697348	2026-05-12	27	8	divided	5	Automated Driving System Commercial Vehicles	
+HB1287	H	1689549	2026-04-24	49	14	divided	4	Sunset Division of Real Estate	
+HB1287	S	1695888	2026-05-08	30	4	superseded	4	Sunset Division of Real Estate	
+HB1288	H	1684106	2026-04-16	52	10	superseded	4	Jury Selection Requirements	
+HB1288	S	1690077	2026-04-27	23	11	divided	4	Jury Selection Requirements	
+HB1289	H	1697835	2026-05-13	37	25	divided	4	Modification of Certain Tax Expenditures	
+HB1289	S	1697567	2026-05-13	22	13	divided	4	Modification of Certain Tax Expenditures	
+HB1290	H	1686666	2026-04-21	63	0	superseded	4	Criminal Offense of Assault	
+HB1290	S	1692014	2026-04-30	35	0	superseded	4	Criminal Offense of Assault	
+HB1293	H	1657269	2026-03-09	62	0	superseded	4	Modernization of Requirements for Ballot Information Booklet	
+HB1293	S	1677366	2026-04-07	34	0	superseded	4	Modernization of Requirements for Ballot Information Booklet	
+HB1294	H	1657288	2026-03-09	62	0	superseded	4	Fix Incorrect Citation Compact Military Children	
+HB1294	S	1677377	2026-04-07	34	0	superseded	4	Fix Incorrect Citation Compact Military Children	
+HB1295	H	1657369	2026-03-09	62	0	superseded	4	Repeal of Obsolete Statutory Requirements	
+HB1295	S	1677595	2026-04-07	34	0	superseded	4	Repeal of Obsolete Statutory Requirements	
+HB1296	H	1657298	2026-03-09	62	0	superseded	4	Revision to Nurse & Nurse Aide Practice Act	
+HB1296	S	1677372	2026-04-07	34	0	superseded	4	Revision to Nurse & Nurse Aide Practice Act	
+HB1297	H	1663331	2026-03-16	62	0	superseded	4	Uniform Language for Misdemeanor Traffic Offense	
+HB1297	S	1677367	2026-04-07	34	0	superseded	4	Uniform Language for Misdemeanor Traffic Offense	
+HB1298	H	1686884	2026-04-21	63	0	superseded	4	Background Checks for Child Welfare Placements	
+HB1298	S	1696202	2026-05-11	35	0	superseded	4	Background Checks for Child Welfare Placements	
+HB1299	H	1667098	2026-03-20	63	0	superseded	4	Reducing Regulatory Burden on Education Providers	
+HB1299	S	1692816	2026-05-04	35	0	superseded	4	Reducing Regulatory Burden on Education Providers	
+HB1300	H	1675727	2026-04-02	43	20	divided	6	Health Service District Affordable Housing Service	
+HB1302	H	1675676	2026-04-02	42	21	divided	4	Colorado Bureau of Investigation Firearms InstaCheck Unit Operating Hours	
+HB1302	S	1681591	2026-04-14	22	13	divided	4	Colorado Bureau of Investigation Firearms InstaCheck Unit Operating Hours	
+HB1303	H	1663316	2026-03-16	62	0	superseded	4	Technical Changes to Energy & Carbon Management Statutes	
+HB1303	S	1677398	2026-04-07	34	0	superseded	4	Technical Changes to Energy & Carbon Management Statutes	
+HB1304	H	1675691	2026-04-02	63	0	superseded	4	History Colorado to Dispose of Mineral Rights	
+HB1304	S	1689531	2026-04-24	33	0	superseded	4	History Colorado to Dispose of Mineral Rights	
+HB1305	H	1685273	2026-04-17	63	0	superseded	4	Licensing of Behavioral Health Facilities	
+HB1305	S	1681651	2026-04-14	35	0	superseded	4	Licensing of Behavioral Health Facilities	
+HB1306	H	1697537	2026-05-13	55	10	superseded	4	Wild Horse License Plate	
+HB1306	S	1697349	2026-05-12	26	9	divided	4	Wild Horse License Plate	
+HB1307	H	1695670	2026-05-07	63	1	superseded	4	Sunset Colorado Medical Board	
+HB1307	S	1697230	2026-05-12	35	0	superseded	4	Sunset Colorado Medical Board	
+HB1308	H	1668482	2026-03-24	39	26	divided	6	Lot Splitting Approval by Subject Jurisdictions	
+HB1309	H	1697843	2026-05-13	43	22	divided	4	Abuse in Cases of Separation	
+HB1309	S	1697569	2026-05-13	23	12	divided	4	Abuse in Cases of Separation	
+HB1311	H	1667444	2026-03-23	55	9	superseded	4	Retainage Surety Bond Construction Contracts	
+HB1311	S	1677416	2026-04-07	33	2	superseded	4	Retainage Surety Bond Construction Contracts	
+HB1312	H	1693615	2026-05-04	47	18	divided	4	Peace Officers Standards & Training Board Changes	
+HB1312	S	1692374	2026-05-01	29	6	superseded	4	Peace Officers Standards & Training Board Changes	
+HB1313	H	1693112	2026-05-04	47	18	divided	4	Adjust Requirements Statewide Affordable Housing Fund	
+HB1313	S	1692020	2026-04-30	33	2	superseded	4	Adjust Requirements Statewide Affordable Housing Fund	
+HB1314	H	1686883	2026-04-21	46	18	divided	4	Family Stability & Kinship Care	
+HB1314	S	1694829	2026-05-06	29	6	superseded	4	Family Stability & Kinship Care	
+HB1315	H	1697463	2026-05-13	65	0	superseded	4	Accurate Documents for Parole Determinations	
+HB1315	S	1697274	2026-05-12	35	0	superseded	4	Accurate Documents for Parole Determinations	
+HB1317	H	1695673	2026-05-07	56	8	superseded	4	Unified Postsecondary Talent Development System	
+HB1317	S	1694716	2026-05-06	33	2	superseded	4	Unified Postsecondary Talent Development System	
+HB1318	H	1692871	2026-05-04	46	19	divided	4	Traffic Safety Near Schools	
+HB1318	S	1691398	2026-04-29	33	1	superseded	4	Traffic Safety Near Schools	
+HB1320	H	1692990	2026-05-04	43	22	divided	4	Accessible Language Statutory Ballot Title Requirements	
+HB1320	S	1689874	2026-04-27	23	11	divided	4	Accessible Language Statutory Ballot Title Requirements	
+HB1321	H	1686667	2026-04-21	42	21	divided	6	Modify School Security Grant Program	
+HB1322	H	1695567	2026-05-07	41	23	divided	4	Civil Actions for Conversion Therapy Survivors	
+HB1322	S	1693775	2026-05-05	23	12	divided	4	Civil Actions for Conversion Therapy Survivors	
+HB1324	H	1697509	2026-05-13	44	21	divided	4	Sunset Division of Professions & Occupations	
+HB1324	S	1697134	2026-05-12	29	6	superseded	4	Sunset Division of Professions & Occupations	
+HB1325	H	1697860	2026-05-13	56	9	superseded	4	Natural Medicine	
+HB1325	S	1697599	2026-05-13	30	5	superseded	4	Natural Medicine	
+HB1326	H	1697541	2026-05-13	43	22	divided	4	Sunset Public Utilities Commission	
+HB1326	S	1697351	2026-05-12	25	10	divided	4	Sunset Public Utilities Commission	
+HB1327	H	1693760	2026-05-05	35	30	divided	6	Large Employer Worker Health-Care Support	
+HB1328	H	1697212	2026-05-12	55	9	superseded	4	Medicaid Nonemergency Medical Transportation	
+HB1328	S	1696228	2026-05-11	32	3	superseded	4	Medicaid Nonemergency Medical Transportation	
+HB1330	H	1675630	2026-04-02	32	31	divided	1	Alcohol Beverages Entertainment Districts	
+HB1331	H	1681638	2026-04-14	59	4	superseded	4	Modify 2026 Interim Committees	
+HB1331	S	1680613	2026-04-13	33	2	superseded	4	Modify 2026 Interim Committees	
+HB1332	H	1682162	2026-04-14	63	0	superseded	4	Legislative Department Cash Fund	
+HB1332	S	1680611	2026-04-13	35	0	superseded	4	Legislative Department Cash Fund	
+HB1333	H	1681619	2026-04-14	63	0	superseded	4	Fiscal Year 2026-27 Legislative Appropriation Bill	
+HB1333	S	1680829	2026-04-13	35	0	superseded	4	Fiscal Year 2026-27 Legislative Appropriation Bill	
+HB1335	H	1689933	2026-04-27	41	22	divided	4	Abortion Medication Access on College Campuses	
+HB1335	S	1697568	2026-05-13	23	12	divided	4	Abortion Medication Access on College Campuses	
+HB1336	H	1695623	2026-05-07	57	7	superseded	4	Increase Access to Pharmacy Services	
+HB1336	S	1694673	2026-05-06	33	2	superseded	4	Increase Access to Pharmacy Services	
+HB1338	H	1686359	2026-04-21	54	9	superseded	4	2026 Water Projects Bill	
+HB1338	S	1694686	2026-05-06	34	1	superseded	4	2026 Water Projects Bill	
+HB1339	H	1672738	2026-03-30	59	0	superseded	4	Change Cesar Chavez Day to Farm Workers Day	
+HB1339	S	1672739	2026-03-30	34	0	superseded	4	Change Cesar Chavez Day to Farm Workers Day	
+HB1340	H	1697216	2026-05-12	58	6	superseded	4	Revegetate or Dry Farm Formerly Irrigated Agricultural Land	
+HB1340	S	1696246	2026-05-11	32	3	superseded	4	Revegetate or Dry Farm Formerly Irrigated Agricultural Land	
+HB1341	H	1691074	2026-04-28	63	0	superseded	4	Colorado Agricultural Development Authority Bond Allocation Service Period	
+HB1341	S	1695270	2026-05-07	35	0	superseded	4	Colorado Agricultural Development Authority Bond Allocation Service Period	
+HB1342	H	1687474	2026-04-22	40	25	divided	4	Negligently Luring Bears	
+HB1342	S	1695910	2026-05-08	23	11	divided	4	Negligently Luring Bears	
+HB1343	H	1695716	2026-05-07	64	0	superseded	4	Electronic Process in Competency & Administrative Hearings	
+HB1343	S	1692875	2026-05-04	35	0	superseded	4	Electronic Process in Competency & Administrative Hearings	
+HB1344	H	1687445	2026-04-22	51	14	divided	4	Sunset Podiatry Board	
+HB1344	S	1694842	2026-05-06	30	5	superseded	4	Sunset Podiatry Board	
+HB1345	H	1697273	2026-05-12	51	13	divided	4	Higher Education Funding Allocation Model Changes	
+HB1345	S	1696260	2026-05-11	32	3	superseded	4	Higher Education Funding Allocation Model Changes	
+HB1346	H	1695562	2026-05-07	41	23	divided	4	Transfer of Unsold Insurance Premium Tax Credits	
+HB1346	S	1692810	2026-05-04	23	12	divided	4	Transfer of Unsold Insurance Premium Tax Credits	
+HB1347	H	1689866	2026-04-27	62	1	superseded	4	Federal Disability Benefits for Foster Care Youth	
+HB1347	S	1694836	2026-05-06	31	4	superseded	4	Federal Disability Benefits for Foster Care Youth	
+HB1348	H	1680391	2026-04-11	55	3	superseded	4	Changes to Broadband Infrastructure Cash Fund	
+HB1348	S	1684102	2026-04-16	32	3	superseded	4	Changes to Broadband Infrastructure Cash Fund	
+HB1349	H	1680424	2026-04-11	54	6	superseded	4	Funding for Prevention Services Programs Colorado Department of Early Childhood	
+HB1349	S	1684196	2026-04-16	33	2	superseded	4	Funding for Prevention Services Programs Colorado Department of Early Childhood	
+HB1350	H	1680394	2026-04-11	49	11	superseded	4	Appropriations to Legacy School Food Programs	
+HB1350	S	1684147	2026-04-16	33	2	superseded	4	Appropriations to Legacy School Food Programs	
+HB1351	H	1680431	2026-04-11	52	8	superseded	4	Healthy School Meals for All State Education Fund	
+HB1351	S	1684062	2026-04-16	33	2	superseded	4	Healthy School Meals for All State Education Fund	
+HB1352	H	1680393	2026-04-11	60	0	superseded	4	Reducing Frequency of Colorado Reading to Ensure Academic Development Act Indepe	
+HB1352	S	1684097	2026-04-16	35	0	superseded	4	Reducing Frequency of Colorado Reading to Ensure Academic Development Act Indepe	
+HB1353	H	1680446	2026-04-11	42	18	divided	4	Student State Assessment in Social Studies	
+HB1353	S	1684156	2026-04-16	25	10	divided	4	Student State Assessment in Social Studies	
+HB1354	H	1680420	2026-04-11	58	2	superseded	4	Repeal Science Teacher Professional Development Program	
+HB1354	S	1684095	2026-04-16	34	1	superseded	4	Repeal Science Teacher Professional Development Program	
+HB1355	H	1680447	2026-04-11	45	15	divided	5	Reduce Appropriation Out-of-School Time Grant Program	
+HB1355	S	1684086	2026-04-16	34	1	superseded	5	Reduce Appropriation Out-of-School Time Grant Program	
+HB1356	H	1680406	2026-04-11	58	2	superseded	4	Repeal Local Accountability System	
+HB1356	S	1684109	2026-04-16	35	0	superseded	4	Repeal Local Accountability System	
+HB1357	H	1690953	2026-04-28	63	0	superseded	4	Phase-Out of Teacher Recruitment Education and Preparation Program	
+HB1357	S	1690054	2026-04-27	35	0	superseded	4	Phase-Out of Teacher Recruitment Education and Preparation Program	
+HB1358	H	1680419	2026-04-11	60	0	superseded	4	Reduce Academic Accelerator Grant Program Appropriation	
+HB1358	S	1684099	2026-04-16	35	0	superseded	4	Reduce Academic Accelerator Grant Program Appropriation	
+HB1359	H	1680445	2026-04-11	44	16	divided	4	Credit State Public School Fund from Natural Resources	
+HB1359	S	1684201	2026-04-16	28	7	divided	4	Credit State Public School Fund from Natural Resources	
+HB1360	H	1680417	2026-04-11	39	22	divided	4	Affordable Housing Financing Fund	
+HB1360	S	1684194	2026-04-16	27	8	divided	4	Affordable Housing Financing Fund	
+HB1361	H	1680390	2026-04-11	62	0	superseded	4	Pay for Success Program Repeal	
+HB1361	S	1684119	2026-04-16	35	0	superseded	4	Pay for Success Program Repeal	
+HB1362	H	1680425	2026-04-11	62	0	superseded	4	Repeal Decarbonization Tax Credits Administration Fund	
+HB1362	S	1684104	2026-04-16	35	0	superseded	4	Repeal Decarbonization Tax Credits Administration Fund	
+HB1363	H	1697457	2026-05-13	43	21	divided	4	Temporarily Reduce General Fund Reserve	
+HB1363	S	1684092	2026-04-16	24	11	divided	4	Temporarily Reduce General Fund Reserve	
+HB1364	H	1680432	2026-04-11	41	17	divided	4	2025 Consumer Price Index Calculation	
+HB1364	S	1684157	2026-04-16	29	6	superseded	4	2025 Consumer Price Index Calculation	
+HB1366	H	1680396	2026-04-11	42	16	divided	4	Denver Health Federal Funds for Physician Services	
+HB1366	S	1684145	2026-04-16	33	2	superseded	4	Denver Health Federal Funds for Physician Services	
+HB1367	H	1680457	2026-04-11	47	12	divided	4	COVID Increased Medicaid Match to General Fund	
+HB1367	S	1684113	2026-04-16	33	2	superseded	4	COVID Increased Medicaid Match to General Fund	
+HB1368	H	1680454	2026-04-11	59	0	superseded	4	Eliminate Limited Gaming Fund Transfer	
+HB1368	S	1684171	2026-04-16	35	0	superseded	4	Eliminate Limited Gaming Fund Transfer	
+HB1369	H	1680414	2026-04-11	59	0	superseded	4	Repeal of Contract for Online Platform Use	
+HB1369	S	1684197	2026-04-16	35	0	superseded	4	Repeal of Contract for Online Platform Use	
+HB1370	H	1680407	2026-04-11	59	1	superseded	4	Limited Gaming Fund Transfers to Other Cash Funds	
+HB1370	S	1684125	2026-04-16	35	0	superseded	4	Limited Gaming Fund Transfers to Other Cash Funds	
+HB1371	H	1680456	2026-04-11	51	9	superseded	4	Adding Repeal Dates for Certain Higher Education Programs	
+HB1371	S	1684141	2026-04-16	34	1	superseded	4	Adding Repeal Dates for Certain Higher Education Programs	
+HB1372	H	1680409	2026-04-11	60	0	superseded	4	Appropriations to Auraria Higher Education Center	
+HB1372	S	1684139	2026-04-16	35	0	superseded	4	Appropriations to Auraria Higher Education Center	
+HB1373	H	1685242	2026-04-17	44	18	divided	4	Subsidy Limits in Assistance Programs for Children	
+HB1373	S	1684166	2026-04-16	33	2	superseded	4	Subsidy Limits in Assistance Programs for Children	
+HB1374	H	1680435	2026-04-11	43	18	divided	4	Kinship Care Funding Provisions	
+HB1374	S	1684199	2026-04-16	30	5	superseded	4	Kinship Care Funding Provisions	
+HB1375	H	1680415	2026-04-11	61	0	superseded	4	Repeal County Administration Funding Model	
+HB1375	S	1684096	2026-04-16	34	1	superseded	4	Repeal County Administration Funding Model	
+HB1376	H	1680422	2026-04-11	60	2	superseded	4	Federal Adoption Money Cash Fund Updates	
+HB1376	S	1684117	2026-04-16	35	0	superseded	4	Federal Adoption Money Cash Fund Updates	
+HB1377	H	1680448	2026-04-11	44	17	divided	4	Managed Care Entity Payments	
+HB1377	S	1684105	2026-04-16	33	2	superseded	4	Managed Care Entity Payments	
+HB1378	H	1680416	2026-04-11	50	11	superseded	4	Repeal Behavioral Health Resources	
+HB1378	S	1684164	2026-04-16	34	1	superseded	4	Repeal Behavioral Health Resources	
+HB1379	H	1680411	2026-04-11	61	0	superseded	4	Fix Incorrect Citation Judicial Stabilization Fund	
+HB1379	S	1684094	2026-04-16	35	0	superseded	4	Fix Incorrect Citation Judicial Stabilization Fund	
+HB1380	H	1691080	2026-04-28	63	0	superseded	4	Repeal Office of Judicial Discipline Ombudsman	
+HB1380	S	1689702	2026-04-24	33	0	superseded	4	Repeal Office of Judicial Discipline Ombudsman	
+HB1381	H	1680451	2026-04-11	61	0	superseded	4	Eliminate Cash Balance Requirement in Judicial Cash Fund	
+HB1381	S	1684195	2026-04-16	35	0	superseded	4	Eliminate Cash Balance Requirement in Judicial Cash Fund	
+HB1382	H	1680444	2026-04-11	56	5	superseded	4	Support of Coloradans with Disabilities	
+HB1382	S	1684058	2026-04-16	33	2	superseded	4	Support of Coloradans with Disabilities	
+HB1383	H	1680442	2026-04-11	61	0	superseded	4	Repeal Employment Support Job Retention Program	
+HB1383	S	1684091	2026-04-16	35	0	superseded	4	Repeal Employment Support Job Retention Program	
+HB1384	H	1680403	2026-04-11	43	18	divided	4	Direct Transfers for Colorado Department of Labor & Employment School-to-Work Pr	
+HB1384	S	1684044	2026-04-16	31	4	superseded	4	Direct Transfers for Colorado Department of Labor & Employment School-to-Work Pr	
+HB1385	H	1680404	2026-04-11	43	18	divided	4	Public Defender & Prosecutor Behavioral Health Program	
+HB1385	S	1684126	2026-04-16	27	8	divided	4	Public Defender & Prosecutor Behavioral Health Program	
+HB1386	H	1680430	2026-04-11	61	0	superseded	4	Colorado National Guard Tuition Waiver Funding	
+HB1386	S	1684069	2026-04-16	35	0	superseded	4	Colorado National Guard Tuition Waiver Funding	
+HB1387	H	1680438	2026-04-11	43	18	divided	4	Severance Tax Fund Expenditures	
+HB1387	S	1684175	2026-04-16	30	5	superseded	4	Severance Tax Fund Expenditures	
+HB1388	H	1680421	2026-04-11	61	0	superseded	4	Repeal Bond Assistance Program Fund Transfer	
+HB1388	S	1684085	2026-04-16	35	0	superseded	4	Repeal Bond Assistance Program Fund Transfer	
+HB1389	H	1680449	2026-04-11	61	0	superseded	4	Comprehensive Human Sexuality Education Grant Appropriation	
+HB1389	S	1684118	2026-04-16	35	0	superseded	4	Comprehensive Human Sexuality Education Grant Appropriation	
+HB1390	H	1680450	2026-04-11	61	0	superseded	4	Health Disparities & Community Grant Evaluation	
+HB1390	S	1684103	2026-04-16	35	0	superseded	4	Health Disparities & Community Grant Evaluation	
+HB1391	H	1680413	2026-04-11	50	11	superseded	4	Safe Drinking Water in Child Care Centers & Schools	
+HB1391	S	1684037	2026-04-16	33	2	superseded	4	Safe Drinking Water in Child Care Centers & Schools	
+HB1392	H	1680463	2026-04-11	61	0	superseded	4	Digital Trunked Radio System Support	
+HB1392	S	1684115	2026-04-16	35	0	superseded	4	Digital Trunked Radio System Support	
+HB1393	H	1680433	2026-04-11	55	6	superseded	4	Maximum Reserve Requirement for Certain Cash Funds	
+HB1393	S	1684122	2026-04-16	33	2	superseded	4	Maximum Reserve Requirement for Certain Cash Funds	
+HB1394	H	1680410	2026-04-11	57	4	superseded	4	Change Motorcycle Operator Fund to Annual Appropriation	
+HB1394	S	1684110	2026-04-16	32	3	superseded	4	Change Motorcycle Operator Fund to Annual Appropriation	
+HB1395	H	1680412	2026-04-11	48	13	divided	4	Repeal Wildfire Resilient Homes Grant Program	
+HB1395	S	1684120	2026-04-16	35	0	superseded	4	Repeal Wildfire Resilient Homes Grant Program	
+HB1396	H	1680461	2026-04-11	45	16	divided	4	Disaster Emergency Fund Changes	
+HB1396	S	1684154	2026-04-16	30	5	superseded	4	Disaster Emergency Fund Changes	
+HB1397	H	1680405	2026-04-11	51	10	superseded	4	Multiple Employer Health Trust Funding	
+HB1397	S	1684089	2026-04-16	30	5	superseded	4	Multiple Employer Health Trust Funding	
+HB1398	H	1680395	2026-04-11	43	18	divided	4	Retail Delivery Fee Revenue Allocation	
+HB1398	S	1684208	2026-04-16	32	3	superseded	4	Retail Delivery Fee Revenue Allocation	
+HB1399	H	1690802	2026-04-28	54	9	superseded	4	Eliminate General Fund Transfer to Multimodal Transportation Fund	
+HB1399	S	1689690	2026-04-24	32	1	superseded	4	Eliminate General Fund Transfer to Multimodal Transportation Fund	
+HB1400	H	1680464	2026-04-11	59	2	superseded	4	Adjust Public Employees' Retirement Association's Allocations to Trust Funds	
+HB1400	S	1684202	2026-04-16	35	0	superseded	4	Adjust Public Employees' Retirement Association's Allocations to Trust Funds	
+HB1401	H	1680423	2026-04-11	40	19	divided	4	Transfers from Unclaimed Property Trust Fund	
+HB1401	S	1684129	2026-04-16	24	11	divided	4	Transfers from Unclaimed Property Trust Fund	
+HB1402	H	1680428	2026-04-11	58	1	superseded	4	Transfer to Capital Construction Fund	
+HB1402	S	1684210	2026-04-16	35	0	superseded	4	Transfer to Capital Construction Fund	
+HB1403	H	1680408	2026-04-11	56	3	superseded	4	Information Technology Depreciation Lease Payments	
+HB1403	S	1684158	2026-04-16	33	2	superseded	4	Information Technology Depreciation Lease Payments	
+HB1404	H	1680439	2026-04-11	53	6	superseded	4	Transfer Tobacco Education Fund to Preschool Program Fund	
+HB1404	S	1684116	2026-04-16	32	3	superseded	4	Transfer Tobacco Education Fund to Preschool Program Fund	
+HB1405	H	1691092	2026-04-28	41	22	divided	4	Cash Fund Transfers to General Fund	
+HB1405	S	1689713	2026-04-24	31	2	superseded	4	Cash Fund Transfers to General Fund	
+HB1406	H	1685187	2026-04-17	57	5	superseded	4	Repeal Capital Construction Funding Requirements	
+HB1406	S	1684111	2026-04-16	35	0	superseded	4	Repeal Capital Construction Funding Requirements	
+HB1407	H	1680398	2026-04-11	43	16	divided	4	State Money Used to Refinance American Rescue Plan Money	
+HB1407	S	1684142	2026-04-16	33	2	superseded	4	State Money Used to Refinance American Rescue Plan Money	
+HB1408	H	1680418	2026-04-11	59	0	superseded	4	Processes to Determine State Budget Requests	
+HB1408	S	1684204	2026-04-16	35	0	superseded	4	Processes to Determine State Budget Requests	
+HB1409	H	1690824	2026-04-28	43	20	divided	4	Marijuana Tax Cash Fund Distributions	
+HB1409	S	1689708	2026-04-24	29	4	superseded	4	Marijuana Tax Cash Fund Distributions	
+HB1410	H	1690719	2026-04-28	40	21	divided	4	2026-27 Long Appropriations Bill	
+HB1410	S	1690308	2026-04-28	23	11	divided	4	2026-27 Long Appropriations Bill	
+HB1411	H	1690770	2026-04-28	41	20	divided	4	Changes to Cover All Coloradans Program	
+HB1411	S	1690325	2026-04-28	32	2	superseded	4	Changes to Cover All Coloradans Program	
+HB1412	H	1690838	2026-04-28	63	0	superseded	4	Department of Health Care Policy & Financing Statistical Sampling & Extrapolatio	
+HB1412	S	1689676	2026-04-24	33	0	superseded	4	Department of Health Care Policy & Financing Statistical Sampling & Extrapolatio	
+HB1413	H	1680443	2026-04-11	61	1	superseded	4	Sick & Military Leave for Certain Public Servants	
+HB1413	S	1684128	2026-04-16	34	1	superseded	4	Sick & Military Leave for Certain Public Servants	
+HB1414	H	1692036	2026-04-30	45	18	divided	4	Medical Record Requests	
+HB1414	S	1695915	2026-05-08	24	10	divided	4	Medical Record Requests	
+HB1416	H	1696031	2026-05-09	55	8	superseded	4	Transfers to General Fund & Colorado Economic Development Fund	
+HB1416	S	1697501	2026-05-13	32	3	superseded	4	Transfers to General Fund & Colorado Economic Development Fund	
+HB1417	H	1692147	2026-04-30	61	2	superseded	4	Colorado Anti-Discrimination Act Testing Entities	
+HB1417	S	1696219	2026-05-11	34	1	superseded	4	Colorado Anti-Discrimination Act Testing Entities	
+HB1418	H	1698132	2026-05-13	38	26	divided	5	Online Add-on Transaction Fee Youth Service Enterprise	
+HB1418	S	1697491	2026-05-13	18	17	divided	5	Online Add-on Transaction Fee Youth Service Enterprise	
+HB1419	H	1697336	2026-05-12	41	23	divided	4	Over-Refund of Excess State Revenues	
+HB1419	S	1696203	2026-05-11	20	15	divided	4	Over-Refund of Excess State Revenues	
+HB1420	H	1692055	2026-04-30	63	0	superseded	4	Wind Energy Facilities Light-Mitigating Technology	
+HB1420	S	1695339	2026-05-07	35	0	superseded	4	Wind Energy Facilities Light-Mitigating Technology	
+HB1421	H	1697260	2026-05-12	53	11	superseded	4	Fee Sharing with Nonlawyers in Legal Practice	
+HB1421	S	1696241	2026-05-11	33	2	superseded	4	Fee Sharing with Nonlawyers in Legal Practice	
+HB1422	H	1696033	2026-05-09	46	17	divided	4	Security Measures for Certain Government Entities	
+HB1422	S	1697612	2026-05-13	28	7	divided	4	Security Measures for Certain Government Entities	
+HB1423	H	1693073	2026-05-04	65	0	superseded	4	Community Corrections Budget Request & Data Information	
+HB1423	S	1695276	2026-05-07	35	0	superseded	4	Community Corrections Budget Request & Data Information	
+HB1424	H	1697851	2026-05-13	43	21	divided	4	Transportation Network Company Consumer Protection	
+HB1424	S	1697583	2026-05-13	23	12	divided	4	Transportation Network Company Consumer Protection	
+HB1425	H	1695606	2026-05-07	45	19	divided	4	Applied Behavior Analysis Services	
+HB1425	S	1697521	2026-05-13	32	3	superseded	4	Applied Behavior Analysis Services	
+HB1426	H	1697858	2026-05-13	46	19	divided	4	Department of Law Legislative Report	
+HB1426	S	1697597	2026-05-13	25	10	divided	4	Department of Law Legislative Report	
+HB1427	H	1695603	2026-05-07	55	9	superseded	4	Uniform Antitrust Pre-Merger Notification Update	
+HB1427	S	1697364	2026-05-12	32	3	superseded	4	Uniform Antitrust Pre-Merger Notification Update	
+HB1428	H	1697368	2026-05-12	56	8	superseded	4	Administration of Publicly Funded Education Programs	
+HB1428	S	1695893	2026-05-08	31	3	superseded	4	Administration of Publicly Funded Education Programs	
+HB1429	H	1696049	2026-05-09	54	9	superseded	4	County Administration Public Assistance Programs	
+HB1429	S	1697525	2026-05-13	32	3	superseded	4	County Administration Public Assistance Programs	
+HB1430	H	1697826	2026-05-13	42	20	divided	4	Transportation Funding Adjustments	
+HB1430	S	1697828	2026-05-13	22	13	divided	4	Transportation Funding Adjustments	
+HB1431	H	1696012	2026-05-09	62	1	superseded	4	Competency for Occupational Licensure Portability	
+HB1431	S	1697153	2026-05-12	35	0	superseded	4	Competency for Occupational Licensure Portability	
+HB1432	H	1696040	2026-05-09	63	0	superseded	4	Health-Care Payment Programs	
+HB1432	S	1697152	2026-05-12	35	0	superseded	4	Health-Care Payment Programs	
+HB1433	H	1696004	2026-05-09	61	2	superseded	4	Funding to Sustain Fire-Related Services	
+HB1433	S	1697564	2026-05-13	33	2	superseded	4	Funding to Sustain Fire-Related Services	
+SB001	H	1658150	2026-03-10	53	10	superseded	4	Workforce Housing & Housing Tax Credit	
+SB001	S	1660243	2026-03-11	28	6	superseded	4	Workforce Housing & Housing Tax Credit	
+SB002	H	1696980	2026-05-12	40	23	divided	4	Energy Affordability	
+SB002	S	1697559	2026-05-13	23	12	divided	4	Energy Affordability	
+SB003	H	1696905	2026-05-12	49	16	divided	4	End-of-Life Management of Electric Vehicle Batteries	
+SB003	S	1697562	2026-05-13	32	3	superseded	4	End-of-Life Management of Electric Vehicle Batteries	
+SB004	H	1667110	2026-03-20	39	24	divided	4	Expand List of Petitioners for Protection Order	
+SB004	S	1621587	2026-02-03	20	13	divided	4	Expand List of Petitioners for Protection Order	
+SB005	H	1695619	2026-05-07	41	22	divided	5	Rights Violation in Immigration Enforcement Remedy	
+SB005	S	1642411	2026-02-24	20	11	divided	5	Rights Violation in Immigration Enforcement Remedy	
+SB006	H	1694961	2026-05-06	48	16	divided	4	Parity for Non-Opioid Pain Management Drugs	
+SB006	S	1695949	2026-05-08	28	6	superseded	4	Parity for Non-Opioid Pain Management Drugs	
+SB007	H	1658183	2026-03-10	49	12	superseded	4	Medical Marijuana Use in Health Facilities	
+SB007	S	1638813	2026-02-19	25	5	superseded	4	Medical Marijuana Use in Health Facilities	
+SB009	H	1675850	2026-04-02	43	21	divided	4	Charitable Organization State Sales & Use Tax	
+SB009	S	1676719	2026-04-06	28	7	divided	4	Charitable Organization State Sales & Use Tax	
+SB010	H	1640694	2026-02-23	61	0	superseded	4	Agricultural Property Tax Definitions	
+SB010	S	1621658	2026-02-03	33	0	superseded	4	Agricultural Property Tax Definitions	
+SB011	H	1663363	2026-03-16	57	5	superseded	4	Search Warrants Provided to Covered Platforms	
+SB011	S	1665323	2026-03-18	32	2	superseded	4	Search Warrants Provided to Covered Platforms	
+SB012	H	1692839	2026-05-04	59	6	superseded	4	Compensable Losses for Tribal Members	
+SB012	S	1695327	2026-05-07	33	2	superseded	4	Compensable Losses for Tribal Members	
+SB013	H	1659710	2026-03-11	46	19	divided	4	Exclude Cohabitation from Elements of Bigamy	
+SB013	S	1662424	2026-03-13	27	7	divided	4	Exclude Cohabitation from Elements of Bigamy	
+SB014	H	1675609	2026-04-02	44	19	divided	4	Modification to Defense of Not Guilty by Reason of Insanity	
+SB014	S	1676686	2026-04-06	23	12	divided	4	Modification to Defense of Not Guilty by Reason of Insanity	
+SB015	H	1696334	2026-05-11	64	1	superseded	4	Commercial Sexual Activity with a Child Offenses	
+SB015	S	1697605	2026-05-13	35	0	superseded	4	Commercial Sexual Activity with a Child Offenses	
+SB016	H	1664174	2026-03-17	41	18	divided	4	Prohibit Discharge Preproduction Plastic Materials	
+SB016	S	1665257	2026-03-18	22	12	divided	4	Prohibit Discharge Preproduction Plastic Materials	
+SB017	H	1695628	2026-05-07	63	1	superseded	4	Out-of-Network Health Insurance Dispute Resolution	
+SB017	S	1692030	2026-04-30	35	0	superseded	4	Out-of-Network Health Insurance Dispute Resolution	
+SB018	H	1675942	2026-04-02	42	22	divided	4	Legal Protections for Dignity of Minors	
+SB018	S	1642381	2026-02-24	20	11	divided	4	Legal Protections for Dignity of Minors	
+SB019	H	1686636	2026-04-21	45	18	divided	4	Early Childhood Local System Consolidation	
+SB019	S	1631319	2026-02-12	31	3	superseded	4	Early Childhood Local System Consolidation	
+SB020	H	1695653	2026-05-07	48	16	divided	4	Child Care Provider Licensing & Quality	
+SB020	S	1695958	2026-05-08	32	2	superseded	4	Child Care Provider Licensing & Quality	
+SB021	H	1675962	2026-04-02	48	16	divided	4	Clean Fleet Enterprise Replace Aging Diesel Trucks	
+SB021	S	1676698	2026-04-06	31	4	superseded	4	Clean Fleet Enterprise Replace Aging Diesel Trucks	
+SB023	H	1696961	2026-05-12	57	8	superseded	4	School Finance Act	
+SB023	S	1697579	2026-05-13	32	3	superseded	4	School Finance Act	
+SB025	H	1675617	2026-04-02	62	1	superseded	4	Monument Records Placement Submission Maintenance	
+SB025	S	1642340	2026-02-24	31	0	superseded	4	Monument Records Placement Submission Maintenance	
+SB026	H	1675958	2026-04-02	64	0	superseded	4	Weight for Vehicles with Child Restraint System	
+SB026	S	1650568	2026-03-03	35	0	superseded	4	Weight for Vehicles with Child Restraint System	
+SB031	H	1675898	2026-04-02	62	1	superseded	4	Use of Prescription Product with Controlled Substance	
+SB031	S	1676797	2026-04-06	35	0	superseded	4	Use of Prescription Product with Controlled Substance	
+SB032	H	1663504	2026-03-16	43	19	divided	4	Promoting Immunization Access	
+SB032	S	1665260	2026-03-18	22	12	divided	4	Promoting Immunization Access	
+SB034	H	1659713	2026-03-11	43	21	divided	4	Auraria Board Student & Faculty Participation	
+SB034	S	1635078	2026-02-17	19	11	divided	4	Auraria Board Student & Faculty Participation	
+SB035	H	1696935	2026-05-12	35	30	divided	4	Increase of Traffic Violation Penalties	
+SB035	S	1697529	2026-05-13	32	3	superseded	4	Increase of Traffic Violation Penalties	
+SB036	H	1695614	2026-05-07	41	23	divided	4	Prison Population Management Measures	
+SB036	S	1695962	2026-05-08	22	12	divided	4	Prison Population Management Measures	
+SB037	H	1664239	2026-03-17	59	0	superseded	4	Modification of Bond Hearing Officer Process	
+SB037	S	1646480	2026-02-26	33	0	superseded	4	Modification of Bond Hearing Officer Process	
+SB039	H	1667427	2026-03-23	63	1	superseded	4	Fire and Police Pension Association Disability and Survivor Benefits	
+SB039	S	1668600	2026-03-24	34	0	superseded	4	Fire and Police Pension Association Disability and Survivor Benefits	
+SB040	H	1686615	2026-04-21	44	20	divided	4	Affordable Home Ownership Program	
+SB040	S	1688738	2026-04-23	33	1	superseded	4	Affordable Home Ownership Program	
+SB042	H	1696022	2026-05-09	43	20	divided	4	Revenue Classification Taxpayers Bill of Rights	
+SB042	S	1697554	2026-05-13	23	12	divided	4	Revenue Classification Taxpayers Bill of Rights	
+SB043	S	1648851	2026-03-02	18	16	divided	2	Record Keeping & Regulation of Sale of Firearm Barrel	
+SB045	S	1691402	2026-04-29	30	4	superseded	6	Nuclear Workforce Development & Education Program	
+SB046	H	1661298	2026-03-12	63	0	superseded	4	Property Tax Administrative Procedures	
+SB046	S	1644367	2026-02-25	32	0	superseded	4	Property Tax Administrative Procedures	
+SB047	H	1675682	2026-04-02	43	20	divided	4	Colorado Firefighter Safety Act Petition Elections	
+SB047	S	1659791	2026-03-11	23	12	divided	4	Colorado Firefighter Safety Act Petition Elections	
+SB048	H	1694967	2026-05-06	41	23	divided	3	Remove Exception to Marry with Judicial Approval	
+SB048	S	1697549	2026-05-13	11	24	divided	3	Remove Exception to Marry with Judicial Approval	
+SB050	H	1667410	2026-03-23	56	8	superseded	4	Child Care Center Required Policy Disclosures	
+SB050	S	1650564	2026-03-03	32	3	superseded	4	Child Care Center Required Policy Disclosures	
+SB051	H	1692127	2026-04-30	40	23	divided	4	Age Attestation on Computing Devices	
+SB051	S	1692423	2026-05-01	33	0	superseded	4	Age Attestation on Computing Devices	REJECTED ROLL WAS LATER: this is the last STORABLE vote
+SB052	H	1641012	2026-02-23	45	17	divided	4	Coal Transition Community Investment	
+SB052	S	1642182	2026-02-24	29	2	superseded	4	Coal Transition Community Investment	
+SB053	H	1675896	2026-04-02	51	13	divided	4	Colorado Housing and Finance Authority Mortgage POST Officers First Responders	
+SB053	S	1676704	2026-04-06	32	3	superseded	4	Colorado Housing and Finance Authority Mortgage POST Officers First Responders	
+SB054	H	1675974	2026-04-02	64	0	superseded	4	Security Deposits & Post-Closing Occupancy Agreements	
+SB054	S	1639056	2026-02-19	30	0	superseded	4	Security Deposits & Post-Closing Occupancy Agreements	
+SB059	H	1687430	2026-04-22	34	28	divided	4	Multiple Elected Offices Prohibited for General Assembly	
+SB059	S	1650201	2026-03-03	26	9	divided	4	Multiple Elected Offices Prohibited for General Assembly	
+SB060	H	1686351	2026-04-21	51	12	superseded	4	Mental Health Training in Concussion Education	
+SB060	S	1688713	2026-04-23	33	1	superseded	4	Mental Health Training in Concussion Education	
+SB061	H	1675690	2026-04-02	64	0	superseded	4	Publication Counties Without Legal Newspapers	
+SB061	S	1651036	2026-03-03	35	0	superseded	4	Publication Counties Without Legal Newspapers	
+SB062	S	1665272	2026-03-18	22	12	divided	6	Rodenticide Use Restrictions	
+SB064	H	1659778	2026-03-11	65	0	superseded	4	Modify Colorado Agricultural Future Loan Program	
+SB064	S	1629488	2026-02-11	30	2	superseded	4	Modify Colorado Agricultural Future Loan Program	
+SB066	S	1685112	2026-04-17	20	15	divided	6	Regulation of Compounded Weight-Loss Medication	
+SB072	H	1697448	2026-05-13	61	4	superseded	4	Increased Penalty for Vehicular Homicide & Assault	
+SB072	S	1680306	2026-04-10	31	0	superseded	4	Increased Penalty for Vehicular Homicide & Assault	
+SB074	H	1664066	2026-03-17	59	0	superseded	4	Clarify Excessive Public Construction Bond Claim Penalty	
+SB074	S	1666226	2026-03-19	34	0	superseded	4	Clarify Excessive Public Construction Bond Claim Penalty	
+SB076	H	1675887	2026-04-02	63	0	superseded	4	Certification & Practice of Certified Public Accountants	
+SB076	S	1637154	2026-02-18	33	0	superseded	4	Certification & Practice of Certified Public Accountants	
+SB077	H	1675693	2026-04-02	57	6	superseded	4	Epilepsy-Related Mortality Awareness	
+SB077	S	1676702	2026-04-06	33	2	superseded	4	Epilepsy-Related Mortality Awareness	
+SB078	H	1696921	2026-05-12	63	2	superseded	4	Changes to Institutions of Higher Education Statutes	
+SB078	S	1697535	2026-05-13	35	0	superseded	4	Changes to Institutions of Higher Education Statutes	
+SB080	H	1697630	2026-05-13	41	24	divided	6	Cradle to Career Grant Program Creation	
+SB080	S	1697886	2026-05-13	30	5	superseded	6	Cradle to Career Grant Program Creation	
+SB083	H	1686910	2026-04-21	49	14	divided	4	Rule Review Bill	
+SB083	S	1668494	2026-03-24	32	2	superseded	4	Rule Review Bill	
+SB084	H	1667321	2026-03-23	42	22	divided	4	No Waiver for Legal Privileges State Auditor Documents	
+SB084	S	1668545	2026-03-24	32	2	superseded	4	No Waiver for Legal Privileges State Auditor Documents	
+SB085	H	1686874	2026-04-21	63	0	superseded	4	Military Protection Orders	
+SB085	S	1688747	2026-04-23	35	0	superseded	4	Military Protection Orders	
+SB087	H	1675948	2026-04-02	33	31	divided	2	Create Legislative Leave Job Protection for General Assembly Members	
+SB087	S	1663328	2026-03-16	23	11	divided	2	Create Legislative Leave Job Protection for General Assembly Members	
+SB088	H	1675707	2026-04-02	62	1	superseded	4	Funding for Memorials on State Capitol Grounds	
+SB088	S	1663320	2026-03-16	34	0	superseded	4	Funding for Memorials on State Capitol Grounds	
+SB090	S	1684183	2026-04-16	22	13	divided	6	Exempt Critical Infrastructure from Right to Repair	
+SB091	S	1691401	2026-04-29	26	8	divided	6	Exclusion of Newspaper Deliverers as Employees	
+SB092	H	1691081	2026-04-28	57	6	superseded	4	Modification of County Elected Officer Salary Categories	
+SB092	S	1692171	2026-04-30	32	3	superseded	4	Modification of County Elected Officer Salary Categories	
+SB093	H	1696016	2026-05-09	44	19	divided	4	Workers' Compensation Insurance Coverage Verification	
+SB093	S	1697577	2026-05-13	23	12	divided	4	Workers' Compensation Insurance Coverage Verification	
+SB095	H	1689691	2026-04-24	58	2	superseded	4	Measures to Support Victim-Survivors of Crimes	
+SB095	S	1690119	2026-04-27	35	0	superseded	4	Measures to Support Victim-Survivors of Crimes	
+SB098	S	1665308	2026-03-18	30	4	superseded	6	State & Local Noise Abatement Authority	
+SB101	H	1692123	2026-04-30	62	1	superseded	4	Local Government Landfill Methane Emission Reduction Regulations	
+SB101	S	1685446	2026-04-20	34	0	superseded	4	Local Government Landfill Methane Emission Reduction Regulations	
+SB103	H	1697022	2026-05-12	43	22	divided	4	At-Risk Public School Program & Public School Accountability	
+SB103	S	1678545	2026-04-08	22	12	divided	4	At-Risk Public School Program & Public School Accountability	
+SB104	H	1684585	2026-04-16	42	20	divided	4	Require Key Boxes at Schools	
+SB104	S	1662269	2026-03-13	32	2	superseded	4	Require Key Boxes at Schools	
+SB105	H	1684130	2026-04-16	62	0	superseded	4	County Executive Officer Disclosures	
+SB105	S	1685189	2026-04-17	35	0	superseded	4	County Executive Officer Disclosures	
+SB109	H	1686355	2026-04-21	41	22	divided	4	Building Code Accessibility	
+SB109	S	1688736	2026-04-23	25	10	divided	4	Building Code Accessibility	
+SB110	H	1668489	2026-03-24	65	0	superseded	4	Revised Public Assistance Final Disposition Expense Terms	
+SB110	S	1650197	2026-03-03	35	0	superseded	4	Revised Public Assistance Final Disposition Expense Terms	
+SB113	H	1694753	2026-05-06	48	16	divided	4	Require Recovery Residences to Obtain Behavioral Health Administration License	
+SB113	S	1695955	2026-05-08	28	6	superseded	4	Require Recovery Residences to Obtain Behavioral Health Administration License	
+SB114	H	1696293	2026-05-11	61	3	superseded	4	Spirituous Liquor Manufacturer Sales Rooms & Other Alcohol	
+SB114	S	1691383	2026-04-29	31	3	superseded	4	Spirituous Liquor Manufacturer Sales Rooms & Other Alcohol	
+SB115	H	1696055	2026-05-09	42	21	divided	4	Post-Conviction Relief for Certain Offenders	
+SB115	S	1697517	2026-05-13	18	17	divided	4	Post-Conviction Relief for Certain Offenders	
+SB116	H	1696324	2026-05-11	39	26	divided	4	Property Tax Modifications	
+SB116	S	1689858	2026-04-27	23	11	divided	4	Property Tax Modifications	
+SB117	H	1696206	2026-05-11	43	21	divided	4	Permissible Methods of Selling Lottery Tickets	
+SB117	S	1688694	2026-04-23	22	13	divided	4	Permissible Methods of Selling Lottery Tickets	
+SB118	H	1671689	2026-03-27	54	8	superseded	4	Legacy Giving to Charitable Organizations	
+SB118	S	1663343	2026-03-16	32	2	superseded	4	Legacy Giving to Charitable Organizations	
+SB120	H	1690124	2026-04-27	60	3	superseded	4	Missing Person Training & Higher Education Reporting	
+SB120	S	1663422	2026-03-16	34	0	superseded	4	Missing Person Training & Higher Education Reporting	
+SB121	H	1684215	2026-04-16	33	32	divided	4	Overtime Threshold for Agricultural Employees	
+SB121	S	1685199	2026-04-17	19	16	divided	4	Overtime Threshold for Agricultural Employees	
+SB122	H	1684189	2026-04-16	62	0	superseded	4	Fuel Standards & Liability of Petroleum Storage Tank Fund	
+SB122	S	1668543	2026-03-24	34	0	superseded	4	Fuel Standards & Liability of Petroleum Storage Tank Fund	
+SB124	H	1692365	2026-05-01	43	19	divided	4	Colorado Survivor Justice Act	
+SB124	S	1687456	2026-04-22	25	9	divided	4	Colorado Survivor Justice Act	
+SB125	H	1697622	2026-05-13	47	18	divided	4	Disability Rights Protections in Public Schools	
+SB125	S	1697890	2026-05-13	24	11	divided	4	Disability Rights Protections in Public Schools	
+SB126	H	1675859	2026-04-02	64	0	superseded	4	Licensure for Experienced Out-of-State Teachers	
+SB126	S	1676696	2026-04-06	35	0	superseded	4	Licensure for Experienced Out-of-State Teachers	
+SB128	H	1684077	2026-04-16	46	15	divided	4	Sales & Use Tax Destination Management Company	
+SB128	S	1685259	2026-04-17	28	7	divided	4	Sales & Use Tax Destination Management Company	
+SB131	H	1696017	2026-05-09	50	13	divided	4	Sports Betting Protections	
+SB131	S	1697586	2026-05-13	20	15	divided	4	Sports Betting Protections	
+SB132	H	1692160	2026-04-30	62	1	superseded	4	Voluntary Alcohol Breath Test	
+SB132	S	1692450	2026-05-01	33	0	superseded	4	Voluntary Alcohol Breath Test	
+SB133	H	1702701	2026-05-11	49	15	divided	4	Colorado Artist Companies	
+SB133	S	1702703	2026-05-13	33	2	superseded	4	Colorado Artist Companies	
+SB134	H	1694755	2026-05-06	44	20	divided	5	Payment Card Networks' Fees	
+SB134	S	1692373	2026-05-01	18	17	divided	5	Payment Card Networks' Fees	
+SB135	H	1696052	2026-05-09	42	21	divided	3	State Public K-12 Education Funding	
+SB135	S	1696818	2026-05-12	23	12	divided	3	State Public K-12 Education Funding	
+SB136	H	1689574	2026-04-24	63	0	superseded	4	Reporting of Lost or Stolen Livestock	
+SB136	S	1678612	2026-04-08	32	0	superseded	4	Reporting of Lost or Stolen Livestock	
+SB137	H	1690731	2026-04-28	55	8	superseded	4	Measures to Reduce Administrative Burdens	
+SB137	S	1680575	2026-04-13	35	0	superseded	4	Measures to Reduce Administrative Burdens	
+SB138	H	1695611	2026-05-07	49	15	divided	4	Reducing Administrative Burdens on Health Care	
+SB138	S	1695966	2026-05-08	30	4	superseded	4	Reducing Administrative Burdens on Health Care	
+SB140	S	1680586	2026-04-13	20	15	divided	6	Exempt Drugs from Prescription Drug Affordability Board Reviews	
+SB141	H	1693064	2026-05-04	49	16	divided	4	Wildlife Collision Prevention	
+SB141	S	1680617	2026-04-13	28	7	divided	4	Wildlife Collision Prevention	
+SB142	H	1692859	2026-05-04	55	10	superseded	4	Development of Thermal Energy Resources	
+SB142	S	1693759	2026-05-05	25	7	divided	4	Development of Thermal Energy Resources	
+SB143	H	1692364	2026-05-01	43	19	divided	4	Rename Colorado Youth Advisory Council Review Committee	
+SB143	S	1680733	2026-04-13	23	12	divided	4	Rename Colorado Youth Advisory Council Review Committee	
+SB144	H	1686365	2026-04-21	61	2	superseded	4	Modify Property Tax Lien Sales Treasurer Deeds & Fees	
+SB144	S	1688692	2026-04-23	34	0	superseded	4	Modify Property Tax Lien Sales Treasurer Deeds & Fees	
+SB145	H	1696044	2026-05-09	52	11	superseded	4	Charter School Involvement in Local Ballot Questions	
+SB145	S	1685070	2026-04-17	34	1	superseded	4	Charter School Involvement in Local Ballot Questions	
+SB146	H	1694942	2026-05-06	39	25	divided	5	Restrict Single-Use Food Serviceware Distribution	
+SB146	S	1691386	2026-04-29	20	14	divided	5	Restrict Single-Use Food Serviceware Distribution	
+SB147	H	1694974	2026-05-06	62	2	superseded	5	Lobbyist Regulation	
+SB147	S	1687438	2026-04-22	30	4	superseded	5	Lobbyist Regulation	
+SB149	H	1695665	2026-05-07	64	0	superseded	4	Pathways for Individuals with Mental Health Disorder	
+SB149	S	1696252	2026-05-11	34	0	superseded	4	Pathways for Individuals with Mental Health Disorder	
+SB150	H	1692849	2026-05-04	39	26	divided	4	Modernizing Regional Transportation District	
+SB150	S	1693796	2026-05-05	19	13	divided	4	Modernizing Regional Transportation District	
+SB151	H	1692987	2026-05-04	52	13	divided	4	Modify Public Employees Retirement Association Allowed Affiliation and Board of 	
+SB151	S	1685542	2026-04-20	28	5	superseded	4	Modify Public Employees Retirement Association Allowed Affiliation and Board of 	
+SB152	H	1697030	2026-05-12	51	14	divided	4	Changes Automated Vehicle Identification System Usage	
+SB152	S	1697610	2026-05-13	32	3	superseded	4	Changes Automated Vehicle Identification System Usage	
+SB153	H	1686858	2026-04-21	54	9	superseded	4	Licensed School Counselor Credit Hour Requirements	
+SB153	S	1679594	2026-04-09	33	0	superseded	4	Licensed School Counselor Credit Hour Requirements	
+SB154	H	1696035	2026-05-09	63	0	superseded	4	Modify Colorado Channel Authority Board Appointments	
+SB154	S	1691394	2026-04-29	34	0	superseded	4	Modify Colorado Channel Authority Board Appointments	
+SB155	H	1696989	2026-05-12	43	22	divided	4	Increase Access Homeowner's Insurance Enterprise	
+SB155	S	1697543	2026-05-13	23	12	divided	4	Increase Access Homeowner's Insurance Enterprise	
+SB156	H	1696213	2026-05-11	47	17	divided	4	Change Practices of Work Force Development Council	
+SB156	S	1691407	2026-04-29	32	2	superseded	4	Change Practices of Work Force Development Council	
+SB157	H	1696298	2026-05-09	63	0	superseded	4	Determination of Town Abandonment	
+SB157	S	1691647	2026-04-29	34	0	superseded	4	Determination of Town Abandonment	
+SB158	H	1692028	2026-04-30	45	18	divided	4	Youthful Offender Early Parole Procedure	
+SB158	S	1685552	2026-04-20	23	11	divided	4	Youthful Offender Early Parole Procedure	
+SB159	H	1692121	2026-04-30	40	23	divided	4	Inmate Earned Time Formula for Sentence to Department of Corrections	
+SB159	S	1685460	2026-04-20	22	12	divided	4	Inmate Earned Time Formula for Sentence to Department of Corrections	
+SB160	H	1694057	2026-05-05	42	22	divided	4	Personal Protective Equipment & Meatpackers	
+SB160	S	1694824	2026-05-06	24	10	divided	4	Personal Protective Equipment & Meatpackers	
+SB162	S	1691421	2026-04-29	29	5	superseded	6	Sensitive Test Results in Health Care	
+SB163	H	1694947	2026-05-06	45	19	divided	4	Regulation of Gaming & Sports Betting	
+SB163	S	1695953	2026-05-08	29	5	superseded	4	Regulation of Gaming & Sports Betting	
+SB165	H	1696008	2026-05-09	61	2	superseded	4	Species Conservation Measures	
+SB165	S	1697447	2026-05-13	34	1	superseded	4	Species Conservation Measures	
+SB166	S	1691056	2026-04-28	21	13	divided	6	School Board Member Disqualifying Convictions	
+SB167	H	1696058	2026-05-09	48	15	divided	4	Prescription Drug Out-of-Pocket Expense Credit	
+SB167	S	1694700	2026-05-06	29	6	superseded	4	Prescription Drug Out-of-Pocket Expense Credit	
+SB169	H	1697452	2026-05-13	65	0	superseded	4	Revisor's Bill	
+SB169	S	1697809	2026-05-13	35	0	superseded	4	Revisor's Bill	
+SB170	H	1697618	2026-05-13	38	27	divided	4	Task Force to Expand Effective Public Schools	
+SB170	S	1692019	2026-04-30	33	2	superseded	4	Task Force to Expand Effective Public Schools	
+SB171	H	1696047	2026-05-09	55	8	superseded	4	Disposal of Preproduction Plastic Materials	
+SB171	S	1692134	2026-04-30	33	2	superseded	4	Disposal of Preproduction Plastic Materials	
+SB172	H	1696039	2026-05-09	47	16	divided	4	Front Range Passenger Rail District	
+SB172	S	1697505	2026-05-13	25	10	divided	4	Front Range Passenger Rail District	
+SB173	H	1696322	2026-05-11	65	0	superseded	4	Barre & Pilates Teacher Training Regulatory Exemptions	
+SB173	S	1692004	2026-04-30	35	0	superseded	4	Barre & Pilates Teacher Training Regulatory Exemptions	
+SB174	H	1695719	2026-05-07	51	13	divided	4	Prohibit Lead Generation Legal Marketing	
+SB174	S	1692024	2026-04-30	31	4	superseded	4	Prohibit Lead Generation Legal Marketing	
+SB175	H	1696041	2026-05-09	63	0	superseded	4	Adjust Experience Modification Factor in Workers' Compensation	
+SB175	S	1692814	2026-05-04	35	0	superseded	4	Adjust Experience Modification Factor in Workers' Compensation	
+SB177	H	1695620	2026-05-07	43	21	divided	4	Access Adjoining Property to Repair or Maintain	
+SB177	S	1695951	2026-05-08	23	11	divided	4	Access Adjoining Property to Repair or Maintain	
+SB178	H	1697014	2026-05-12	43	22	divided	4	Health Insurance Affordability Measures	
+SB178	S	1695921	2026-05-08	23	10	divided	4	Health Insurance Affordability Measures	
+SB181	H	1696364	2026-05-11	46	18	divided	4	Works Program Reserves & Cost of Living Adjustment	
+SB181	S	1694789	2026-05-06	33	2	superseded	4	Works Program Reserves & Cost of Living Adjustment	
+SB182	H	1695686	2026-05-07	59	5	superseded	4	Updated Clean Energy Plan Municipally Owned Utility	
+SB182	S	1692867	2026-05-04	32	3	superseded	4	Updated Clean Energy Plan Municipally Owned Utility	
+SB183	S	1696205	2026-05-11	33	2	superseded	6	State Funding for Colorado School of Mines Capital Construction Costs	
+SB184	H	1696916	2026-05-12	42	23	divided	5	Firefighter Cancer Benefits & Workers' Compensation	
+SB184	S	1697574	2026-05-13	23	12	divided	5	Firefighter Cancer Benefits & Workers' Compensation	
+SB185	H	1697453	2026-05-13	64	1	superseded	4	Enhance Security of Office of Information Technology	
+SB185	S	1695890	2026-05-08	34	0	superseded	4	Enhance Security of Office of Information Technology	
+SB186	H	1697041	2026-05-12	65	0	superseded	4	Update Workers' Compensation Statutes Allow Electronic Filing	
+SB186	S	1695269	2026-05-07	35	0	superseded	4	Update Workers' Compensation Statutes Allow Electronic Filing	
+SB187	H	1696366	2026-05-11	45	19	divided	4	Establishing Commission on Medicaid	
+SB187	S	1697497	2026-05-13	31	4	superseded	4	Establishing Commission on Medicaid	
+SB188	H	1697063	2026-05-12	53	12	superseded	4	Residential Treatment for Members in Colorado Department of Human Services Custo	
+SB188	S	1695235	2026-05-07	33	2	superseded	4	Residential Treatment for Members in Colorado Department of Human Services Custo	
+SB189	H	1696045	2026-05-09	57	6	superseded	4	Automated Decision-Making Technology	
+SB189	S	1696808	2026-05-12	34	1	superseded	4	Automated Decision-Making Technology	
+SB190	H	1697449	2026-05-13	45	20	divided	4	Release Information About Peace Officer Use of Force	
+SB190	S	1696212	2026-05-11	23	12	divided	4	Release Information About Peace Officer Use of Force	
+SB191	H	1697046	2026-05-12	47	18	divided	4	Gifts Grants & Donations for Nursing Facilities	
+SB191	S	1695248	2026-05-07	32	3	superseded	4	Gifts Grants & Donations for Nursing Facilities	
+SB192	S	1696897	2026-05-12	21	12	divided	2	Producer Responsibility Dues Appeals Process	
+SB193	H	1698144	2026-05-13	60	1	superseded	4	Local Ordinances & State Employees	
+SB193	S	1698146	2026-05-13	33	2	superseded	4	Local Ordinances & State Employees	

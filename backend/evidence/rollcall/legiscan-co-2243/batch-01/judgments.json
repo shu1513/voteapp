@@ -1,0 +1,410 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1662258,
+   "measure_id": "HB 1001",
+   "vote_date": "2026-03-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1001 and pass it. Some Colorado land is owned by school districts, colleges, housing authorities, transit districts and nonprofits that build affordable homes. From the end of 2027 the act makes towns over 2,000 people allow homes on those lots, up to five acres. A town cannot say no on height grounds if the tallest building is three stories or 38 feet. It can still say no where the fire service cannot reach three stories, or in a historic district. The Colorado House voted 40-24 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1001. Some Colorado land is owned by school districts, colleges, housing authorities, transit districts and nonprofits that build affordable homes. From the end of 2027 the act makes towns over 2,000 people allow homes on those lots, up to five acres. A town cannot say no on height grounds if the tallest building is three stories or 38 feet. It can still say no where the fire service cannot reach three stories, or in a historic district. The Colorado House voted 40-24 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1662257
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1661326,
+   "measure_id": "HB 1001",
+   "vote_date": "2026-03-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1001. Some Colorado land is owned by school districts, colleges, housing authorities, transit districts and nonprofits that build affordable homes. From the end of 2027 the act makes towns over 2,000 people allow homes on those lots, up to five acres. A town cannot say no on height grounds if the tallest building is three stories or 38 feet. It can still say no where the fire service cannot reach three stories, or in a historic district. The Colorado Senate passed it 22-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1001. Some Colorado land is owned by school districts, colleges, housing authorities, transit districts and nonprofits that build affordable homes. From the end of 2027 the act makes towns over 2,000 people allow homes on those lots, up to five acres. A town cannot say no on height grounds if the tallest building is three stories or 38 feet. It can still say no where the fire service cannot reach three stories, or in a historic district. The Colorado Senate passed it 22-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1667134,
+   "measure_id": "HB 1126",
+   "vote_date": "2026-03-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1126. Colorado makes firearms dealers hold a state permit. The act extends that permit to anyone moving firearms into or out of the state. It also sets out who counts as an employee, covering unpaid helpers and contractors who can reach the guns. Someone with no way to unlock the store's gun storage is left out. The Colorado House passed it 34-28 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1126. Colorado makes firearms dealers hold a state permit. The act extends that permit to anyone moving firearms into or out of the state. It also sets out who counts as an employee, covering unpaid helpers and contractors who can reach the guns. Someone with no way to unlock the store's gun storage is left out. The Colorado House passed it 34-28 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1681614,
+   "measure_id": "HB 1126",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1126. Colorado makes firearms dealers hold a state permit. The act extends that permit to anyone moving firearms into or out of the state. It also sets out who counts as an employee, covering unpaid helpers and contractors who can reach the guns. Someone with no way to unlock the store's gun storage is left out. The Colorado Senate passed it 20-15 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1126. Colorado makes firearms dealers hold a state permit. The act extends that permit to anyone moving firearms into or out of the state. It also sets out who counts as an employee, covering unpaid helpers and contractors who can reach the guns. Someone with no way to unlock the store's gun storage is left out. The Colorado Senate passed it 20-15 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1650575,
+   "measure_id": "HB 1134",
+   "vote_date": "2026-03-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1134. Colorado city courts run their own cases and jails. The act makes a city court hold a hearing within 48 hours when someone is held only on a city hold. It confirms a right to a lawyer for defendants who cannot pay for one. It limits flat-fee contracts for those lawyers, unless the fee pays at least the state's hourly rate. The Colorado House passed it 43-19 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1134. Colorado city courts run their own cases and jails. The act makes a city court hold a hearing within 48 hours when someone is held only on a city hold. It confirms a right to a lawyer for defendants who cannot pay for one. It limits flat-fee contracts for those lawyers, unless the fee pays at least the state's hourly rate. The Colorado House passed it 43-19 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1673586,
+   "measure_id": "HB 1134",
+   "vote_date": "2026-03-31",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1134. Colorado city courts run their own cases and jails. The act makes a city court hold a hearing within 48 hours when someone is held only on a city hold. It confirms a right to a lawyer for defendants who cannot pay for one. It limits flat-fee contracts for those lawyers, unless the fee pays at least the state's hourly rate. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1134. Colorado city courts run their own cases and jails. The act makes a city court hold a hearing within 48 hours when someone is held only on a city hold. It confirms a right to a lawyer for defendants who cannot pay for one. It limits flat-fee contracts for those lawyers, unless the fee pays at least the state's hourly rate. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1663334,
+   "measure_id": "HB 1139",
+   "vote_date": "2026-03-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1139. Health insurers use artificial intelligence to review whether to cover care. The act says such a system must judge from the patient's own medical history, not from group data alone. It must not discriminate, and the insurer has to keep audit records and check how well it works. Insurers must tell the state whether a person has to sign off on a denial. They also cannot be paid for therapy given by a machine. The Colorado House passed it 47-15 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1139. Health insurers use artificial intelligence to review whether to cover care. The act says such a system must judge from the patient's own medical history, not from group data alone. It must not discriminate, and the insurer has to keep audit records and check how well it works. Insurers must tell the state whether a person has to sign off on a denial. They also cannot be paid for therapy given by a machine. The Colorado House passed it 47-15 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1675598,
+   "measure_id": "HB 1144",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1144 and pass it. The act makes it a crime to knowingly 3-D print or mill a working gun or gun part. A first offense is a misdemeanor. A second is a felony. The parts covered are unfinished frames, large-capacity magazines and rapid-fire devices. Licensed makers and gunsmithing classes are exempt, and props and non-working items are not covered. The Colorado House voted 40-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1144. The act makes it a crime to knowingly 3-D print or mill a working gun or gun part. A first offense is a misdemeanor. A second is a felony. The parts covered are unfinished frames, large-capacity magazines and rapid-fire devices. Licensed makers and gunsmithing classes are exempt, and props and non-working items are not covered. The Colorado House voted 40-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1675597
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1672564,
+   "measure_id": "HB 1144",
+   "vote_date": "2026-03-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1144. The act makes it a crime to knowingly 3-D print or mill a working gun or gun part. A first offense is a misdemeanor. A second is a felony. The parts covered are unfinished frames, large-capacity magazines and rapid-fire devices. Licensed makers and gunsmithing classes are exempt, and props and non-working items are not covered. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1144. The act makes it a crime to knowingly 3-D print or mill a working gun or gun part. A first offense is a misdemeanor. A second is a felony. The parts covered are unfinished frames, large-capacity magazines and rapid-fire devices. Licensed makers and gunsmithing classes are exempt, and props and non-working items are not covered. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697180,
+   "measure_id": "HB 1263",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1263 and pass it. The act sets rules for chatbots that hold conversations with the public. An operator has to make a reasonable effort to work out whether a user is a child. It then owes extra duties to those users. It also has to publish disclosures and report to the state each year. Shopping assistants, business tools and developer software are left out. The Colorado House voted 42-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1263. The act sets rules for chatbots that hold conversations with the public. An operator has to make a reasonable effort to work out whether a user is a child. It then owes extra duties to those users. It also has to publish disclosures and report to the state each year. Shopping assistants, business tools and developer software are left out. The Colorado House voted 42-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697179
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1696247,
+   "measure_id": "HB 1263",
+   "vote_date": "2026-05-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1263. The act sets rules for chatbots that hold conversations with the public. An operator has to make a reasonable effort to work out whether a user is a child. It then owes extra duties to those users. It also has to publish disclosures and report to the state each year. Shopping assistants, business tools and developer software are left out. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1263. The act sets rules for chatbots that hold conversations with the public. An operator has to make a reasonable effort to work out whether a user is a child. It then owes extra duties to those users. It also has to publish disclosures and report to the state each year. Shopping assistants, business tools and developer software are left out. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697198,
+   "measure_id": "HB 1276",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1276 and pass it. The act adds state oversight of places that hold people for immigration cases. A county or district public health agency may inspect or examine such a facility. The state health department gets matching powers and a fund for the work. The act also frees users of Colorado's court e-filing system from a records certification rule. The Colorado House voted 42-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1276. The act adds state oversight of places that hold people for immigration cases. A county or district public health agency may inspect or examine such a facility. The state health department gets matching powers and a fund for the work. The act also frees users of Colorado's court e-filing system from a records certification rule. The Colorado House voted 42-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697197
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1696244,
+   "measure_id": "HB 1276",
+   "vote_date": "2026-05-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1276. The act adds state oversight of places that hold people for immigration cases. A county or district public health agency may inspect or examine such a facility. The state health department gets matching powers and a fund for the work. The act also frees users of Colorado's court e-filing system from a records certification rule. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1276. The act adds state oversight of places that hold people for immigration cases. A county or district public health agency may inspect or examine such a facility. The state health department gets matching powers and a fund for the work. The act also frees users of Colorado's court e-filing system from a records certification rule. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1692946,
+   "measure_id": "HB 1283",
+   "vote_date": "2026-05-04",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1283 and pass it. Some workers are asked to hand over a government ID card and do not get it back. The act bars an employer from demanding or keeping a worker's ID card. An employer may hold it only long enough to check work eligibility and copy it, and never more than 10 hours. The employer has to explain the rule in writing, in the worker's own language where the employer knows it. The Colorado House voted 43-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1283. Some workers are asked to hand over a government ID card and do not get it back. The act bars an employer from demanding or keeping a worker's ID card. An employer may hold it only long enough to check work eligibility and copy it, and never more than 10 hours. The employer has to explain the rule in writing, in the worker's own language where the employer knows it. The Colorado House voted 43-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1692945
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1692002,
+   "measure_id": "HB 1283",
+   "vote_date": "2026-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1283. Some workers are asked to hand over a government ID card and do not get it back. The act bars an employer from demanding or keeping a worker's ID card. An employer may hold it only long enough to check work eligibility and copy it, and never more than 10 hours. The employer has to explain the rule in writing, in the worker's own language where the employer knows it. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1283. Some workers are asked to hand over a government ID card and do not get it back. The act bars an employer from demanding or keeping a worker's ID card. An employer may hold it only long enough to check work eligibility and copy it, and never more than 10 hours. The employer has to explain the rule in writing, in the worker's own language where the employer knows it. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695567,
+   "measure_id": "HB 1322",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1322 and pass it. Conversion therapy tries to change a person's sexual orientation or gender identity. The act sets out that someone harmed by it can sue the licensed therapist for damages, with no time limit. Damages can cover money lost, harm suffered and, where the conduct was willful, extra damages. Supportive or neutral counseling that does not push a set outcome is not covered. The Colorado House voted 41-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1322. Conversion therapy tries to change a person's sexual orientation or gender identity. The act sets out that someone harmed by it can sue the licensed therapist for damages, with no time limit. Damages can cover money lost, harm suffered and, where the conduct was willful, extra damages. Supportive or neutral counseling that does not push a set outcome is not covered. The Colorado House voted 41-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1695566
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1693775,
+   "measure_id": "HB 1322",
+   "vote_date": "2026-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1322. Conversion therapy tries to change a person's sexual orientation or gender identity. The act sets out that someone harmed by it can sue the licensed therapist for damages, with no time limit. Damages can cover money lost, harm suffered and, where the conduct was willful, extra damages. Supportive or neutral counseling that does not push a set outcome is not covered. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1322. Conversion therapy tries to change a person's sexual orientation or gender identity. The act sets out that someone harmed by it can sue the licensed therapist for damages, with no time limit. Damages can cover money lost, harm suffered and, where the conduct was willful, extra damages. Supportive or neutral counseling that does not push a set outcome is not covered. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1689933,
+   "measure_id": "HB 1335",
+   "vote_date": "2026-04-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1335. Colorado colleges that run a student health center must give students access to abortion medication. The rule starts in August 2027. A center with no pharmacy on site can write a prescription to fill elsewhere, or have its own staff hand out the drug. The college cannot give out a student's named health records unless federal law or a state court order makes it. The Colorado House passed it 41-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1335. Colorado colleges that run a student health center must give students access to abortion medication. The rule starts in August 2027. A center with no pharmacy on site can write a prescription to fill elsewhere, or have its own staff hand out the drug. The college cannot give out a student's named health records unless federal law or a state court order makes it. The Colorado House passed it 41-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697568,
+   "measure_id": "HB 1335",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1335. Colorado colleges that run a student health center must give students access to abortion medication. The rule starts in August 2027. A center with no pharmacy on site can write a prescription to fill elsewhere, or have its own staff hand out the drug. The college cannot give out a student's named health records unless federal law or a state court order makes it. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1335. Colorado colleges that run a student health center must give students access to abortion medication. The rule starts in August 2027. A center with no pharmacy on site can write a prescription to fill elsewhere, or have its own staff hand out the drug. The college cannot give out a student's named health records unless federal law or a state court order makes it. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "womens_reproductive_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697851,
+   "measure_id": "HB 1424",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1424 and pass it. Ride-hailing drivers had to get their own background check once every five years. The act moves that duty to the company and makes it every six months. The check has to cover national, state and county records and the national sex offender list. The act also targets imposter drivers, who drive using someone else's account. The Colorado House voted 43-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1424. Ride-hailing drivers had to get their own background check once every five years. The act moves that duty to the company and makes it every six months. The check has to cover national, state and county records and the national sex offender list. The act also targets imposter drivers, who drive using someone else's account. The Colorado House voted 43-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697850
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697583,
+   "measure_id": "HB 1424",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1424. Ride-hailing drivers had to get their own background check once every five years. The act moves that duty to the company and makes it every six months. The check has to cover national, state and county records and the national sex offender list. The act also targets imposter drivers, who drive using someone else's account. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1424. Ride-hailing drivers had to get their own background check once every five years. The act moves that duty to the company and makes it every six months. The check has to cover national, state and county records and the national sex offender list. The act also targets imposter drivers, who drive using someone else's account. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
