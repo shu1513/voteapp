@@ -177,11 +177,17 @@ Two standing reasons to come back:
    need no re-fetch, since they are already pending in `legislative_votes`. **20 divided
    rolls across 11 bills are still genuinely waiting on the Governor.**
 
-   **Re-checked 2026-09-06: none of the eleven has been signed.** HB 133, HB 145,
-   HB 180, HB 222, HB 35, HB 355, HB 430, SB 232, SB 249, SB 26 and SB 3 all still
-   end their action log short of a `Signed by Governor` line, so batch-04 has
-   nothing to import yet. The checker is
-   `/Users/shu/legiscan-data/de-2163-work/recheck.py`.
+   **Re-checked 2026-09-06, and the eleven are two different things.** Seven are
+   ordinary bills genuinely waiting on the Governor — HB 133, HB 145, HB 222, HB 355,
+   SB 232, SB 249 and SB 26 — and none of the seven has been signed, so batch-04 has
+   nothing to import yet. **The other four are first-stage constitutional amendments
+   and will never be signed**: HB 35 (bars the death penalty), HB 180, HB 430 and
+   SB 3 (all Article V, voting). A Delaware amendment needs a two-thirds vote in two
+   consecutive General Assemblies and is exempt from the Governor's approval
+   (Constitution, Article XVI, §§1 and 4). Their trigger is a second passage by the
+   **154th General Assembly (2027-2028)**, not a signature; until then they are not
+   law and stay out of the enacted-only import. The checker is
+   `/Users/shu/legiscan-data/de-2163-work/recheck.py`, and it now names the four.
 
    **The endpoint moved, and the form batch-03 documented now returns a 404 page.**
    A plain `GET .../GetRecentReportsByLegislationId?legislationId=<id>` redirects to
