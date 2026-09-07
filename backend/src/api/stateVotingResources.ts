@@ -4,13 +4,15 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 
 /**
  * The slice of state_resources the "How to vote" UI needs: the official
- * polling-place lookup plus the official mail-ballot request destination
- * (with its type and request deadline). Row shape mirrors the table columns
- * so the frontend vocabulary stays identical to the researched data.
+ * voter-registration page, the polling-place lookup, and the mail-ballot
+ * request destination (with its type and request deadline). Row shape
+ * mirrors the table columns so the frontend vocabulary stays identical to
+ * the researched data.
  */
 export type StateVotingResources = {
   state_abbreviation: string;
   state_name: string;
+  voter_registration_url: string;
   polling_place_url: string;
   mail_voting_available: boolean;
   mail_ballot_request_url: string | null;
@@ -31,6 +33,7 @@ export async function getStateVotingResources(
       SELECT
         state_abbreviation,
         state_name,
+        voter_registration_url,
         polling_place_url,
         mail_voting_available,
         mail_ballot_request_url,

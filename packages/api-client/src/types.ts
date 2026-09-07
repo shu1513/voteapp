@@ -242,6 +242,10 @@ export type BallotSummary = {
 export type StateVotingResources = {
   state_abbreviation: string;
   state_name: string;
+  // Optional on the client only: an SSR build and an API deploy can be
+  // minutes apart in either direction, so the UI renders the block only
+  // when the field arrives.
+  voter_registration_url?: string;
   polling_place_url: string;
   mail_voting_available: boolean;
   mail_ballot_request_url: string | null;

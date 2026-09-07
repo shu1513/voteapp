@@ -1427,6 +1427,7 @@ describe("createApiApp", () => {
     const stateResources = {
       state_abbreviation: "WA",
       state_name: "Washington",
+      voter_registration_url: "https://voter.votewa.gov/WhereToVote.aspx",
       polling_place_url: "https://voter.votewa.gov",
       mail_voting_available: true,
       mail_ballot_request_url:
