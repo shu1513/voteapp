@@ -1,0 +1,351 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1681640,
+   "measure_id": "HB 1007",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1007 and pass it. A small plug-in solar panel can sit on a balcony and feed power into a wall outlet. For a panel of up to 1,920 watts, the act bars a utility from charging a fee or making the customer ask permission. From 2027 a homeowners association cannot unfairly ban these panels, but it can set safety rules. Utilities must also allow meter collar adapters, which save the cost of a new panel box. The Colorado House voted 45-18 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1007. A small plug-in solar panel can sit on a balcony and feed power into a wall outlet. For a panel of up to 1,920 watts, the act bars a utility from charging a fee or making the customer ask permission. From 2027 a homeowners association cannot unfairly ban these panels, but it can set safety rules. Utilities must also allow meter collar adapters, which save the cost of a new panel box. The Colorado House voted 45-18 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1681639
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1681689,
+   "measure_id": "HB 1081",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1081 and pass it. Building new power lines takes years. The act pushes utilities toward gear that carries more power on the lines already standing. A utility's ten-year plan must now weigh better wire and other grid-boosting tools. Projects that use them have to pay prevailing wages and take on apprentices. The Colorado House voted 44-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1081. Building new power lines takes years. The act pushes utilities toward gear that carries more power on the lines already standing. A utility's ten-year plan must now weigh better wire and other grid-boosting tools. Projects that use them have to pay prevailing wages and take on apprentices. The Colorado House voted 44-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1681688
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697183,
+   "measure_id": "HB 1111",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1111 and pass it. Farmers and commercial sprayers often have no safe place to take leftover pesticide. The act creates a state-run disposal and container recycling program that starts in 2027. It is paid for by fees on the sprayers who use it and on companies that register pesticides for sale in Colorado. Using the program is voluntary, and only those who use it pay the disposal fee. The Colorado House voted 41-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1111. Farmers and commercial sprayers often have no safe place to take leftover pesticide. The act creates a state-run disposal and container recycling program that starts in 2027. It is paid for by fees on the sprayers who use it and on companies that register pesticides for sale in Colorado. Using the program is voluntary, and only those who use it pay the disposal fee. The Colorado House voted 41-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697182
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695625,
+   "measure_id": "HB 1132",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1132 and pass it. Native plants feed bees, butterflies and birds whose numbers are falling. The act tells four state agencies, including transportation and natural resources, to favor native plants on state land projects where it is workable. Each agency has to set five-year and ten-year goals, buy seed together to cut costs, and train staff. Agencies must also mark pollinator zones along roads and stop mowing them except for safety. The Colorado House voted 44-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1132. Native plants feed bees, butterflies and birds whose numbers are falling. The act tells four state agencies, including transportation and natural resources, to favor native plants on state land projects where it is workable. Each agency has to set five-year and ten-year goals, buy seed together to cut costs, and train staff. Agencies must also mark pollinator zones along roads and stop mowing them except for safety. The Colorado House voted 44-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1695624
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1694687,
+   "measure_id": "HB 1132",
+   "vote_date": "2026-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1132. Native plants feed bees, butterflies and birds whose numbers are falling. The act tells four state agencies, including transportation and natural resources, to favor native plants on state land projects where it is workable. Each agency has to set five-year and ten-year goals, buy seed together to cut costs, and train staff. Agencies must also mark pollinator zones along roads and stop mowing them except for safety. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1132. Native plants feed bees, butterflies and birds whose numbers are falling. The act tells four state agencies, including transportation and natural resources, to favor native plants on state land projects where it is workable. Each agency has to set five-year and ten-year goals, buy seed together to cut costs, and train staff. Agencies must also mark pollinator zones along roads and stop mowing them except for safety. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697220,
+   "measure_id": "HB 1225",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1225 and pass it. A community solar garden lets people without a good roof buy a share and get a credit on their bill. The act lets a project hold that credit steady for low-income members. Other members get a credit that shifts each year. A utility also cannot bill a project for hookup work more than 30 days before it spends the money. The Colorado House voted 45-18 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1225. A community solar garden lets people without a good roof buy a share and get a credit on their bill. The act lets a project hold that credit steady for low-income members. Other members get a credit that shifts each year. A utility also cannot bill a project for hookup work more than 30 days before it spends the money. The Colorado House voted 45-18 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697219
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695660,
+   "measure_id": "HB 1226",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1226 and pass it. Some Colorado power plants still burn coal and put out large amounts of smog-forming and acid-forming gases. The act tells the state to write emission limits for units that gave off 200 tons or more in 2024. A unit that plans to keep running past the end of 2034 has to fit pollution controls and meet those limits. A unit that closes or switches to gas by then is left out. The Colorado House voted 41-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1226. Some Colorado power plants still burn coal and put out large amounts of smog-forming and acid-forming gases. The act tells the state to write emission limits for units that gave off 200 tons or more in 2024. A unit that plans to keep running past the end of 2034 has to fit pollution controls and meet those limits. A unit that closes or switches to gas by then is left out. The Colorado House voted 41-23 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1695659
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1693803,
+   "measure_id": "HB 1226",
+   "vote_date": "2026-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1226. Some Colorado power plants still burn coal and put out large amounts of smog-forming and acid-forming gases. The act tells the state to write emission limits for units that gave off 200 tons or more in 2024. A unit that plans to keep running past the end of 2034 has to fit pollution controls and meet those limits. A unit that closes or switches to gas by then is left out. The Colorado Senate passed it 22-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1226. Some Colorado power plants still burn coal and put out large amounts of smog-forming and acid-forming gases. The act tells the state to write emission limits for units that gave off 200 tons or more in 2024. A unit that plans to keep running past the end of 2034 has to fit pollution controls and meet those limits. A unit that closes or switches to gas by then is left out. The Colorado Senate passed it 22-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1681617,
+   "measure_id": "HB 1268",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1268 and pass it. Old mines, closed landfills and finished oil and gas sites sit idle across Colorado. The act lets a city or county mark such land as a renewable energy reinvestment area. It can then put future growth in property tax there toward a solar, wind or storage project. The state energy office must publish a plain guide to siting by September 2027. The Colorado House voted 44-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1268. Old mines, closed landfills and finished oil and gas sites sit idle across Colorado. The act lets a city or county mark such land as a renewable energy reinvestment area. It can then put future growth in property tax there toward a solar, wind or storage project. The state energy office must publish a plain guide to siting by September 2027. The Colorado House voted 44-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1681616
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1680251,
+   "measure_id": "HB 1268",
+   "vote_date": "2026-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1268. Old mines, closed landfills and finished oil and gas sites sit idle across Colorado. The act lets a city or county mark such land as a renewable energy reinvestment area. It can then put future growth in property tax there toward a solar, wind or storage project. The state energy office must publish a plain guide to siting by September 2027. The Colorado Senate passed it 24-7 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1268. Old mines, closed landfills and finished oil and gas sites sit idle across Colorado. The act lets a city or county mark such land as a renewable energy reinvestment area. It can then put future growth in property tax there toward a solar, wind or storage project. The state energy office must publish a plain guide to siting by September 2027. The Colorado Senate passed it 24-7 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1696905,
+   "measure_id": "SB 3",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 3. An electric car battery holds valuable metals and can catch fire if it is thrown away. The act makes the companies that supply those batteries take back used ones and pay to collect them. Putting a car battery in a landfill is banned. From July 2029 each battery needs a label listing what is in it. The Colorado House passed it 49-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 3. An electric car battery holds valuable metals and can catch fire if it is thrown away. The act makes the companies that supply those batteries take back used ones and pay to collect them. Putting a car battery in a landfill is banned. From July 2029 each battery needs a label listing what is in it. The Colorado House passed it 49-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1664174,
+   "measure_id": "SB 16",
+   "vote_date": "2026-03-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 16. Plastic is shipped as tiny raw pellets, and spills wash into rivers and streams. The act bars any facility in Colorado from discharging plastic pellets, flakes, fibers or powders into state waters or onto land. The state cannot issue a permit allowing such a discharge. The ban takes effect in August 2027. The Colorado House passed it 41-18 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 16. Plastic is shipped as tiny raw pellets, and spills wash into rivers and streams. The act bars any facility in Colorado from discharging plastic pellets, flakes, fibers or powders into state waters or onto land. The state cannot issue a permit allowing such a discharge. The ban takes effect in August 2027. The Colorado House passed it 41-18 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1665257,
+   "measure_id": "SB 16",
+   "vote_date": "2026-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 16 and pass it. Plastic is shipped as tiny raw pellets, and spills wash into rivers and streams. The act bars any facility in Colorado from discharging plastic pellets, flakes, fibers or powders into state waters or onto land. The state cannot issue a permit allowing such a discharge. The ban takes effect in August 2027. The Colorado Senate voted 22-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 16. Plastic is shipped as tiny raw pellets, and spills wash into rivers and streams. The act bars any facility in Colorado from discharging plastic pellets, flakes, fibers or powders into state waters or onto land. The state cannot issue a permit allowing such a discharge. The ban takes effect in August 2027. The Colorado Senate voted 22-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1665256
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1675962,
+   "measure_id": "SB 21",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 21. Colorado's clean fleet enterprise pays part of the cost when a fleet buys cleaner vehicles. The act lets it also help small fleets trade an old diesel truck from 2009 or earlier for a truck from 2018 or later. The old truck has to be scrapped by the dealer, with a hole cut through the engine block. Only fleets of 50 or fewer heavy trucks under $100 million in revenue can apply, and the program ends in 2032. The Colorado House passed it 48-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 21. Colorado's clean fleet enterprise pays part of the cost when a fleet buys cleaner vehicles. The act lets it also help small fleets trade an old diesel truck from 2009 or earlier for a truck from 2018 or later. The old truck has to be scrapped by the dealer, with a hole cut through the engine block. Only fleets of 50 or fewer heavy trucks under $100 million in revenue can apply, and the program ends in 2032. The Colorado House passed it 48-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1675963,
+    1675961
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1693064,
+   "measure_id": "SB 141",
+   "vote_date": "2026-05-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 141. Colorado records thousands of crashes with wildlife each year, and they have killed drivers and passengers. The act adds an optional $5 fee when a driver registers a vehicle. Three quarters of the money goes to wildlife crossing structures and a quarter to keeping habitat connected. A driver can decline the fee, and declining cannot stop the registration. The Colorado House passed it 49-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 141. Colorado records thousands of crashes with wildlife each year, and they have killed drivers and passengers. The act adds an optional $5 fee when a driver registers a vehicle. Three quarters of the money goes to wildlife crossing structures and a quarter to keeping habitat connected. A driver can decline the fee, and declining cannot stop the registration. The Colorado House passed it 49-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1680617,
+   "measure_id": "SB 141",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 141. Colorado records thousands of crashes with wildlife each year, and they have killed drivers and passengers. The act adds an optional $5 fee when a driver registers a vehicle. Three quarters of the money goes to wildlife crossing structures and a quarter to keeping habitat connected. A driver can decline the fee, and declining cannot stop the registration. The Colorado Senate passed it 28-7 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 141. Colorado records thousands of crashes with wildlife each year, and they have killed drivers and passengers. The act adds an optional $5 fee when a driver registers a vehicle. Three quarters of the money goes to wildlife crossing structures and a quarter to keeping habitat connected. A driver can decline the fee, and declining cannot stop the registration. The Colorado Senate passed it 28-7 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1693759,
+   "measure_id": "SB 142",
+   "vote_date": "2026-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 142 and pass it. A thermal energy network heats and cools a whole neighborhood from shared pipes underground. The law did not say clearly whether a town could run one, which added legal cost to every project. The act says a town may join its own buildings with private ones and hire a private operator. It may sign deals of up to 25 years, and doing so does not make it a regulated utility. The Colorado Senate voted 25-7 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 142. A thermal energy network heats and cools a whole neighborhood from shared pipes underground. The law did not say clearly whether a town could run one, which added legal cost to every project. The act says a town may join its own buildings with private ones and hire a private operator. It may sign deals of up to 25 years, and doing so does not make it a regulated utility. The Colorado Senate voted 25-7 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1693758
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  }
+ ]
+}
