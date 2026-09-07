@@ -66,6 +66,11 @@ export function AutoPickControl({
 
   const areaNames = new Map(preferences.map((preference) => [preference.research_area_id, preference.name]));
   const areaName = (researchAreaId: string) => areaNames.get(researchAreaId) ?? "one of your issues";
+  // Highest priority first (explicit ranks, then legacy unranked) — the
+  // same order the engine scores in.
+  const issueOrder = [...preferences]
+    .sort((a, b) => (a.rank ?? Number.MAX_SAFE_INTEGER) - (b.rank ?? Number.MAX_SAFE_INTEGER))
+    .map((preference) => preference.research_area_id);
 
   // Still-resolving (undefined) sessions render nothing, so neither the
   // button nor the teaser flashes at a user who is about to be signed in.
@@ -198,6 +203,7 @@ export function AutoPickControl({
           result={result}
           seatsToFill={seatsToFill}
           areaName={areaName}
+          issueOrder={issueOrder}
           onDismiss={() => setResult(null)}
         />
       ) : null}
@@ -209,43 +215,107 @@ type WhyThisPickPanelProps = {
   result: AutoPickElectionResult;
   seatsToFill: number | null;
   areaName: (researchAreaId: string) => string;
+  /** The user's ranked issue ids, highest priority first. Orders every
+   * list below and supplies the "of your N issues" denominator. */
+  issueOrder: string[];
   onDismiss: () => void;
 };
 
-function PerIssueChips({
+// Per-issue alignment, summarized: "aligned on 13 of your 16 issues", the
+// exceptions (conflicts / mixed) named right away because that is what a
+// voter needs to check, and the full grouped list behind a toggle. The old
+// form listed every issue with its own "· aligned" — sixteen repeats of the
+// same word was a wall. Every list keeps the user's priority order.
+function IssueAlignment({
   perIssue,
+  issueOrder,
   areaName,
 }: {
   perIssue: { research_area_id: string; net: number }[];
+  issueOrder: string[];
   areaName: (id: string) => string;
 }) {
-  if (perIssue.length === 0) {
-    return null;
-  }
+  const [open, setOpen] = useState(false);
+  const rank = new Map(issueOrder.map((id, index) => [id, index]));
+  const byRank = (a: { research_area_id: string }, b: { research_area_id: string }) =>
+    (rank.get(a.research_area_id) ?? issueOrder.length) - (rank.get(b.research_area_id) ?? issueOrder.length);
+  const names = (issues: { research_area_id: string }[]) =>
+    [...issues].sort(byRank).map((issue) => areaName(issue.research_area_id));
+  const aligned = names(perIssue.filter((issue) => issue.net > 0));
+  const conflicts = names(perIssue.filter((issue) => issue.net < 0));
+  const mixed = names(perIssue.filter((issue) => issue.net === 0));
+  const total = issueOrder.length;
+  const headline =
+    total === 0
+      ? `aligned on ${aligned.length} issue${aligned.length === 1 ? "" : "s"}`
+      : aligned.length === total
+        ? `aligned on all ${total} of your issues`
+        : `aligned on ${aligned.length} of your ${total} issues`;
   return (
-    <span>
-      {perIssue.map((issue, index) => (
-        <span key={issue.research_area_id}>
-          <span
-            className={
-              issue.net > 0
-                ? "font-medium text-green-900"
-                : issue.net < 0
-                  ? "font-medium text-red-900"
-                  : "font-medium text-amber-900"
-            }
-          >
-            {areaName(issue.research_area_id)}{" "}
-            {issue.net > 0 ? "· aligned" : issue.net < 0 ? "· conflicts" : "· mixed"}
-          </span>
-          {index < perIssue.length - 1 ? ", " : null}
+    <>
+      {/* The headline is the toggle: click it (or the chevron) to see the
+          issue names. One target, no orphan "Show issues" link line. */}
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={() => setOpen((previous) => !previous)}
+        className="inline-flex items-center gap-1 font-semibold text-green-900 hover:underline decoration-dotted underline-offset-2"
+      >
+        {headline}
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 20 20"
+          className={`h-4 w-4 shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M5 8l5 5 5-5" />
+        </svg>
+      </button>
+      {conflicts.length > 0 || mixed.length > 0 ? (
+        <span className="mt-1 block">
+          {conflicts.length > 0 ? (
+            <>
+              <span className="font-medium text-red-900">Conflicts:</span> {joinNames(conflicts)}
+            </>
+          ) : null}
+          {conflicts.length > 0 && mixed.length > 0 ? <span className="text-ink-soft"> · </span> : null}
+          {mixed.length > 0 ? (
+            <>
+              <span className="font-medium text-amber-900">Mixed:</span> {joinNames(mixed)}
+            </>
+          ) : null}
         </span>
-      ))}
-    </span>
+      ) : null}
+      {open ? (
+        // Each group in its own color, same tier as the headline — the names
+        // are the payload here, not a footnote.
+        <span className="mt-1 block text-sm font-medium leading-relaxed">
+          {aligned.length > 0 ? (
+            <span className="block text-green-700">
+              <span className="font-semibold text-green-900">Aligned:</span> {aligned.join(", ")}
+            </span>
+          ) : null}
+          {conflicts.length > 0 ? (
+            <span className="block text-red-700">
+              <span className="font-semibold text-red-900">Conflicts:</span> {conflicts.join(", ")}
+            </span>
+          ) : null}
+          {mixed.length > 0 ? (
+            <span className="block text-amber-700">
+              <span className="font-semibold text-amber-900">Mixed:</span> {mixed.join(", ")}
+            </span>
+          ) : null}
+        </span>
+      ) : null}
+    </>
   );
 }
 
-function WhyThisPickPanel({ result, seatsToFill, areaName, onDismiss }: WhyThisPickPanelProps) {
+function WhyThisPickPanel({ result, seatsToFill, areaName, issueOrder, onDismiss }: WhyThisPickPanelProps) {
   const pickedReports = result.picked_candidate_ids
     .map((id) => result.candidates.find((report) => report.candidate_id === id))
     .filter((report): report is AutoPickCandidateReport => report !== undefined);
@@ -269,7 +339,7 @@ function WhyThisPickPanel({ result, seatsToFill, areaName, onDismiss }: WhyThisP
       {result.race_type === "ballot_measure" && result.measure_per_issue.length > 0 ? (
         <p className="mt-2">
           <span className="font-medium text-ink-soft">On your issues:</span>{" "}
-          <PerIssueChips perIssue={result.measure_per_issue} areaName={areaName} />
+          <IssueAlignment perIssue={result.measure_per_issue} issueOrder={issueOrder} areaName={areaName} />
         </p>
       ) : null}
       {pickedReports.map((report) => (
@@ -278,7 +348,7 @@ function WhyThisPickPanel({ result, seatsToFill, areaName, onDismiss }: WhyThisP
           {report.per_issue.length > 0 ? (
             <>
               {" — "}
-              <PerIssueChips perIssue={report.per_issue} areaName={areaName} />
+              <IssueAlignment perIssue={report.per_issue} issueOrder={issueOrder} areaName={areaName} />
             </>
           ) : (
             <span className="text-ink-soft"> — no records on your issues (picked by elimination)</span>

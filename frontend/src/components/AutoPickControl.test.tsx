@@ -1,4 +1,4 @@
-import { act, screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Link } from "react-router";
@@ -183,7 +183,14 @@ describe("AutoPickControl", () => {
     await clickPickForMe();
     const panel = await screen.findByRole("region", { name: "Why this pick" });
     expect(panel).toHaveTextContent("Picked Alice Alvarez — the best match for your issues.");
-    expect(panel).toHaveTextContent("Housing · aligned");
+    // Summary first; the per-issue names sit behind a toggle, in the user's
+    // priority order. Issues with no records on this candidate are not
+    // listed — the "N of M" count already says how many were compared.
+    expect(panel).toHaveTextContent("Alice Alvarez — aligned on 1 of your 3 issues");
+    expect(panel).not.toHaveTextContent("Aligned: Housing");
+    await userEvent.click(within(panel).getByRole("button", { name: "aligned on 1 of your 3 issues" }));
+    expect(panel).toHaveTextContent("Aligned: Housing");
+    expect(panel).not.toHaveTextContent("Taxes");
     expect(panel).toHaveTextContent("Bob Boone (not researched yet)");
     const call = fetchMock.mock.calls.find(([input]) => String(input).includes("auto-picks"));
     expect(JSON.parse(String(call?.[1]?.body))).toEqual({
@@ -363,7 +370,8 @@ describe("AutoPickControl", () => {
     await clickPickForMe();
     const panel = await screen.findByRole("region", { name: "Why this pick" });
     expect(panel).toHaveTextContent("Vote No — this measure goes against an issue you drew a line on.");
-    expect(panel).toHaveTextContent("Climate · conflicts");
+    expect(panel).toHaveTextContent("aligned on 0 of your 3 issues");
+    expect(panel).toHaveTextContent("Conflicts: Climate");
   });
 
   // The two measure no-answer flavors are distinct outcomes with distinct
@@ -425,8 +433,8 @@ describe("AutoPickControl", () => {
     expect(panel).toHaveTextContent(
       "No answer — this measure helps some of your issues and hurts others about equally, so it's your call."
     );
-    expect(panel).toHaveTextContent("Housing · aligned");
-    expect(panel).toHaveTextContent("Climate · conflicts");
+    expect(panel).toHaveTextContent("aligned on 1 of your 3 issues");
+    expect(panel).toHaveTextContent("Conflicts: Climate");
   });
 
   // Race-type-independent reasons must survive the measure branch: a
