@@ -2,7 +2,8 @@
 
 58 measures read, **11 kept: 11 rolls / 1,107 records.** With batch-03's five,
 every roll in `../survey/divided-not-enacted-worklist.tsv` now carries a
-disposition. Missouri holds **2,573 roll-call records**, local `voteapp` only.
+disposition. Session 2169 now holds **2,573 roll-call records** and Missouri as a whole **2,802** across
+both sessions, local `voteapp` only.
 
 All eleven passed the House and died in the Senate — the Pennsylvania class.
 
