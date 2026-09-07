@@ -1,0 +1,97 @@
+  AK-1397 left: HB115, HB159, HB16, HB168, HB195, HB267, HB285, HB286, HB287, HB331, HB355, HB44, HB57, SB104, SB105, SB142, SB23, SB26, SB37, SB51, SB54, SB83
+  AR-2242 left: HB1100, SB75
+  CO-2243 left: HB1342, HB1344, HB1345, HB1346, HB1353, HB1359, HB1360, HB1363, HB1364, HB1366, HB1367, HB1374, HB1377, HB1384, HB1385, HB1387, HB1395, HB1396, HB1398, HB1401, HB1405, HB1407, HB1409, HB1410, HB1411, HB1414, HB1419, HB1422, HB1424, HB1425, HB1426, HB1430
+  MO-2216 left: SB1
+  NM-1731 left: HB118, HB17, HB21, HB386, SB116, SB136
+  NM-1812 left: HB10, HB235, SB133, SB144, SB160, SB303, SB84
+  NM-1961 left: HB167, SB123, SB213, SJR10
+  NM-2030 left: HB201, HB269, HB287, HB306, HB379, HB400, HB459, SB143, SB205, SB242, SB92
+  NM-2126 left: SB176, SB6, SJR1
+session    cfg rolls  left  tie?   reach  name
+AK-1397      ~    28    28     2   1/63  30th Legislature  <-- rolls not in any evidence  (unregistered; measured with the state's patterns)
+AK-2171      y    30     0     1   0/0   34th Legislature
+AL-1621      y    14     0     0   0/0   Regular Session 2019
+AL-1661      ~     0     0     0   0/0   First Special Session 2019  (unregistered; measured with the state's patterns)
+AL-1706      y     2     0     0   0/0   Regular Session 2020
+AL-1756      y    15     0     0   0/0   Regular Session 2021
+AL-1836      y    18     0     0   0/0   Regular Session 2022
+AL-1854      y     5     0     0   0/0   First Special Session 2021
+AL-1857      y     9     0     0   0/0   Second Special Session 2021
+AL-1972      ~     0     0     0   0/0   First Special Session 2022  (unregistered; measured with the state's patterns)
+AL-2014      y    14     0     1   0/0   Regular Session 2023
+AL-2048      ~     0     0     0   0/0   First Special Session 2023  (unregistered; measured with the state's patterns)
+AL-2060      y     1     0     0   0/0   Second Special Session 2023
+AL-2103      y     9     0     0   0/0   Regular Session 2024
+AL-2148      y    13     0     0   0/0   2025 Regular Session
+AL-2218      y    12     0     1   0/0   2026 Regular Session
+AL-2262      y     3     0     0   0/0   First Special Session 2026
+AR-2162      y    99     0     1   0/0   95th General Assembly (2025 Regula
+AR-2242      ~     2     2     0  84/99  95th General Assembly (2026 Fiscal  <-- rolls not in any evidence  (unregistered; measured with the state's patterns)
+AR-2261      ~     0     0     0   0/0   95th General Assembly (2026 Specia  (unregistered; measured with the state's patterns)
+AZ-2155      y   133     0    38   0/0   Fifty-seventh Legislature - First 
+CA-2172      y   279     0     6   0/0   2025-2026 Regular Session
+CO-2173      y   358     0    44   0/0   2025 Regular Session
+CO-2224      y    19     0     0   0/0   2025 First Special Session
+CO-2243      y   275    46    55  52/100 2026 Regular Session  <-- rolls not in any evidence
+CT-2174      y    50     0    11   0/0   2025 General Assembly
+DE-2163      y    84     0     0   0/0   153rd General Assembly
+FL-2135      y    25     0     0   0/0   2025 Regular Session
+GA-2008      y    81     0     1   0/0   2023-2024 Regular Session
+GA-2114      y     6     0     0   0/0   2023 Special Session
+GA-2167      y    82     0     1   0/0   2025-2026 Regular Session
+GA-2268      y     2     0     0   0/0   2026 Special Session
+IN-2143      y    97     0     0   0/0   2025 Regular Session
+IN-2234      y    64     0     0   0/0   2026 Regular Session
+KS-2178      y   154     0     0   0/0   2025-2026 Regular Session
+KY-2179      y    22     0     0   0/0   2025 Regular Session
+KY-2247      y    16     0     0   0/0   2026 Regular Session
+MD-2164      y   263     0     1   0/0   2025 Regular Session
+MD-2240      y   277     0     0   0/0   2026 Regular Session
+MN-2151      y    17     0     0   0/0   94th Legislature 2025-2026
+MN-2217      y    25     0     0   0/0   94th Legislature 2025 1st Special 
+MO-2169      y    33     0     7   0/0   2025 Regular Session
+MO-2216      ~     1     1     0   5/33  2025 1st Special Session  <-- rolls not in any evidence  (unregistered; measured with the state's patterns)
+MO-2226      y     4     0     0   0/0   2025 2nd Special Session
+MT-2159      y   537     0     0   0/0   2025 Regular Session
+NC-2189      y    82     0     0   0/0   2025-2026 Session
+NM-1731      y    34     6     0   0/42  2020 Regular Session  <-- rolls not in any evidence
+NM-1750      y     8     0     0   0/0   2020 1st Special Session
+NM-1788      ~     0     0     0   0/0   2020 2nd Special Session  (unregistered; measured with the state's patterns)
+NM-1812      y    56     7     0   0/42  2021 Regular Session  <-- rolls not in any evidence
+NM-1830      y     7     0     0   0/0   2021 1st Special Session
+NM-1961      y    21     4     0   0/42  2022 Regular Session  <-- rolls not in any evidence
+NM-1967      y     5     0     0   0/0   2021 2nd Special Session
+NM-1977      y     1     0     0   0/0   2022 3rd Special Session
+NM-2030      y    73    11     0   0/42  2023 Regular Session  <-- rolls not in any evidence
+NM-2126      y    36     3     0   0/42  2024 Regular Session  <-- rolls not in any evidence
+NM-2150      ~     0     0     0   0/0   2024 1st Special Session  (unregistered; measured with the state's patterns)
+NM-2187      y    78     0     0   0/0   2025 Regular Session
+NM-2227      y     5     0     0   0/0   2025 1st Special Session
+NM-2232      ~     0     0     0   0/0   2025 2nd Special Session  (unregistered; measured with the state's patterns)
+NM-2251      y    45     0     1   0/0   2026 Regular Session
+NV-2144      y   100     0     0   0/0   83rd Legislature (2025)
+NY-2188      y   336     0     0   0/0   2025-2026 General Assembly
+OR-2191      y   353     0     0   0/0   2025 Legislative Measures
+OR-2252      y    76     0     0   0/0   2026 Legislative Measures
+PA-2192      y    23     0     0   0/0   2025-2026 Regular Session
+SC-2194      y    24     0     0   0/0   126th General Assembly
+TN-2161      y   243     0    58   0/0   114th General Assembly
+
+rolls    = the chamber's last kept roll on an enacted measure is divided
+left     = of those, whose roll id AND bill number appear nowhere in the state's evidence
+tie?     = same-day rolls disagree on being divided; order unknown, not counted
+
+sessions with rolls left to read:
+  AR-2242      2 rolls, 84 of 99 voters are current candidates (unregistered)
+  CO-2243     46 rolls, 52 of 100 voters are current candidates
+  MO-2216      1 rolls, 5 of 33 voters are current candidates (unregistered)
+  AK-1397     28 rolls, 1 of 63 voters are current candidates (unregistered)
+  NM-1731      6 rolls, 0 of 42 voters are current candidates
+  NM-1812      7 rolls, 0 of 42 voters are current candidates
+  NM-1961      4 rolls, 0 of 42 voters are current candidates
+  NM-2030     11 rolls, 0 of 42 voters are current candidates
+  NM-2126      3 rolls, 0 of 42 voters are current candidates
+
+A count here means 'worth reading', not 'worth importing'. Filter 5 —
+whether the measure carries a defensible for-and-against stance — is a
+human read, and money-only measures pass every gate above it.

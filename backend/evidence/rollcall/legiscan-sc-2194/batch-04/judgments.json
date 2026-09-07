@@ -1,0 +1,25 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "SC",
+      "chamber": "house",
+      "session": "2194",
+      "roll": 1700319,
+      "measure_id": "H 5683",
+      "vote_date": "2026-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass House Bill 5683, which would have redrawn South Carolina's seven U.S. House districts and repealed the map already in state law. State boards and commissions whose members are chosen by congressional district would have kept using the old lines. Because a new map would have arrived late in the election year, the bill would also have reopened candidate filing for June 1 to 5, 2026, and set a special primary for August 18. The South Carolina House passed it 74-37. The Senate voted to continue the bill, so it has not passed and is not law.",
+      "nay_description": "Voted against passing House Bill 5683, which would have redrawn South Carolina's seven U.S. House districts and repealed the map already in state law. State boards and commissions whose members are chosen by congressional district would have kept using the old lines. Because a new map would have arrived late in the election year, the bill would also have reopened candidate filing for June 1 to 5, 2026, and set a special primary for August 18. The South Carolina House passed it 74-37. The Senate voted to continue the bill, so it has not passed and is not law.",
+      "labels": [
+        {
+          "slug": "general",
+          "yea": null,
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1700318
+      ]
+    }
+  ]
+}
