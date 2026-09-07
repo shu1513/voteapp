@@ -33,7 +33,7 @@ import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
 import { RegisterToFollowButton } from "../components/RegisterToFollowButton";
 import { ShareButton } from "../components/ShareButton";
-import { CandidatePickButton, CandidatePickRow } from "../components/ElectionChoiceControls";
+import { CandidatePickButton, CandidatePickRow, MeasureChoiceButtons } from "../components/ElectionChoiceControls";
 import { draftChoicesByElectionId, isDecidedChoice, useBallotDraft } from "../lib/ballotDraft";
 import { useMyDistricts } from "../lib/useMyDistricts";
 import { AddressNudge } from "../components/AddressNudge";
@@ -41,7 +41,7 @@ import { PostPickActions } from "../components/PostPickActions";
 import { useElectionChoices } from "@voteapp/api-client";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
-import { formatDistrictName, formatElectionDate } from "@voteapp/api-client";
+import { formatDistrictName, formatElectionDate, isJudicialRetentionTitle } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
 import { pageMeta } from "../lib/pageMeta";
 import { useHydrated } from "../lib/useHydrated";
@@ -632,14 +632,16 @@ export function CandidatePage() {
   // button carries no race name, so with several races it can't say which
   // one it would pick; those pages rely on the self-describing rows below.
   const primaryPickElection = pickableElections.length === 1 ? pickableElections[0] : null;
-  // Whether THIS candidate holds (one of) the pick(s) for the card's race —
-  // gates the card's post-pick actions. True on arrival too, not only right
-  // after clicking: the "where to next" links are just as useful when a
-  // reader returns to a candidate they already picked.
-  const isPrimaryPicked = primaryPickElection !== null &&
-    (choiceForElection(primaryPickElection.election_id)?.picks ?? []).some(
-      (pick) => pick.candidate_id === candidate.candidate_id
-    );
+  // Whether THIS candidate holds (one of) the pick(s) for the card's race, or
+  // the race's Yes/No answer is recorded (judicial retention) — gates the
+  // card's post-pick actions. True on arrival too, not only right after
+  // clicking: the "where to next" links are just as useful when a reader
+  // returns to a candidate they already picked.
+  const primaryChoice = primaryPickElection ? choiceForElection(primaryPickElection.election_id) : undefined;
+  const isPrimaryPicked =
+    primaryChoice !== undefined &&
+    (primaryChoice.measure_position !== null ||
+      primaryChoice.picks.some((pick) => pick.candidate_id === candidate.candidate_id));
   const location = useLocation();
   const hydrated = useHydrated();
   // Same hydration gate as the election page: location.state survives
@@ -948,21 +950,37 @@ export function CandidatePage() {
             Single-race pages leave picking to the sticky bar alone. */}
         {primaryPickElection === null && pickableElections.length > 0 ? (
           <div className="mt-4 space-y-2">
-            {pickableElections.map((election) => (
-              /* Always names the election: several concurrent races (and past
-                 ones) exist, and the pick must land on the right one. */
-              <CandidatePickRow
-                key={election.candidate_election_id}
-                electionId={election.election_id}
-                candidateId={candidate.candidate_id}
-                candidateName={candidate.display_name}
-                raceName={election.official_ballot_title}
-                dateLabel={formatElectionDate(election.election_date)}
-                electionDate={election.election_date}
-                choice={choiceForElection(election.election_id)}
-                seatsToFill={election.seats_to_fill ?? null}
-              />
-            ))}
+            {pickableElections.map((election) =>
+              isJudicialRetentionTitle(election.official_ballot_title) ? (
+                // Retention race: answered Yes/No, never by picking the judge.
+                <div key={election.candidate_election_id} className="rounded-lg border border-line p-3">
+                  <p className="mb-2 text-sm text-ink">
+                    {election.official_ballot_title} · {formatElectionDate(election.election_date)}
+                  </p>
+                  <MeasureChoiceButtons
+                    electionId={election.election_id}
+                    raceTitle={election.official_ballot_title}
+                    electionDate={election.election_date}
+                    choice={choiceForElection(election.election_id)}
+                    raceType="office"
+                  />
+                </div>
+              ) : (
+                /* Always names the election: several concurrent races (and past
+                   ones) exist, and the pick must land on the right one. */
+                <CandidatePickRow
+                  key={election.candidate_election_id}
+                  electionId={election.election_id}
+                  candidateId={candidate.candidate_id}
+                  candidateName={candidate.display_name}
+                  raceName={election.official_ballot_title}
+                  dateLabel={formatElectionDate(election.election_date)}
+                  electionDate={election.election_date}
+                  choice={choiceForElection(election.election_id)}
+                  seatsToFill={election.seats_to_fill ?? null}
+                />
+              )
+            )}
           </div>
         ) : null}
 
@@ -1194,22 +1212,39 @@ export function CandidatePage() {
             data-sticky-pick-cta=""
             className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg"
           >
-            <CandidatePickButton
-              // Remount on candidate change, like the Follow button above:
-              // the route element stays mounted across roster navigation,
-              // and without the key a failed save's error from the previous
-              // candidate would linger under this one's button.
-              key={candidate.candidate_id}
-              electionId={primaryPickElection.election_id}
-              candidateId={candidate.candidate_id}
-              candidateName={candidate.display_name}
-              raceTitle={primaryPickElection.official_ballot_title}
-              electionDate={primaryPickElection.election_date}
-              choice={choiceForElection(primaryPickElection.election_id)}
-              seatsToFill={primaryPickElection.seats_to_fill ?? null}
-              fullWidth
-              surface="candidate_card"
-            />
+            {isJudicialRetentionTitle(primaryPickElection.official_ballot_title) ? (
+              // Retention race: the sticky card asks Yes/No on keeping the
+              // judge instead of offering a candidate pick.
+              <>
+                <p className="mb-2 text-sm text-ink-soft">Yes keeps this judge in office. No removes them.</p>
+                <MeasureChoiceButtons
+                  key={candidate.candidate_id}
+                  electionId={primaryPickElection.election_id}
+                  raceTitle={primaryPickElection.official_ballot_title}
+                  electionDate={primaryPickElection.election_date}
+                  choice={choiceForElection(primaryPickElection.election_id)}
+                  raceType="office"
+                  fullWidth
+                />
+              </>
+            ) : (
+              <CandidatePickButton
+                // Remount on candidate change, like the Follow button above:
+                // the route element stays mounted across roster navigation,
+                // and without the key a failed save's error from the previous
+                // candidate would linger under this one's button.
+                key={candidate.candidate_id}
+                electionId={primaryPickElection.election_id}
+                candidateId={candidate.candidate_id}
+                candidateName={candidate.display_name}
+                raceTitle={primaryPickElection.official_ballot_title}
+                electionDate={primaryPickElection.election_date}
+                choice={choiceForElection(primaryPickElection.election_id)}
+                seatsToFill={primaryPickElection.seats_to_fill ?? null}
+                fullWidth
+                surface="candidate_card"
+              />
+            )}
             {/* "Back to election" only for election arrivals: a My-Picks
                 arrival would get a back link and a draft link to the same
                 place (see PostPickActions). */}

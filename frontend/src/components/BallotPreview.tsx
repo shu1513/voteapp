@@ -1,6 +1,6 @@
 import type {
   AutoPickElectionResult, ElectionChoice, ElectionPreviewCandidate, ElectionSummary } from "@voteapp/api-client";
-import { formatElectionDate } from "@voteapp/api-client";
+import { formatElectionDate, isJudicialRetentionTitle } from "@voteapp/api-client";
 import { reasonLabel } from "./AutoPickFillControl";
 
 // Ballot preview of My Picks / My Ballot Draft: a paper-ballot-shaped render of
@@ -37,12 +37,11 @@ function voteInstruction(seatsToFill: number | null): string {
 
 // Judicial retention races are stored as race_type "office" with the judge as
 // the single candidate, but the paper ballot prints them as a Yes/No question
+// and the app records the answer as measure_position (shared helper:
+// isJudicialRetentionTitle in @voteapp/api-client).
 // — an oval next to the judge's name would tell the voter to mark the wrong
 // shape. Mirrors the backend's isJudicialRetentionTitle
 // (backend/src/ai/electionPartisanshipPolicy.ts); keep the regexes in sync.
-function isRetentionTitle(title: string): boolean {
-  return /\b(retention|retain(?:ed|ing)?|be retained)\b/i.test(title);
-}
 
 function YesNoRows({ pickedPosition }: { pickedPosition: "yes" | "no" | null }) {
   return (
@@ -118,10 +117,11 @@ function ContestBox({
           "Auto pick: remaining seats tied — your call."
         : null;
   const isMeasure = election.race_type === "ballot_measure";
-  const isRetention = !isMeasure && isRetentionTitle(election.official_ballot_title);
-  // Picking the judge in a retention race means voting to keep them — the app
-  // has no "vote no" mechanic, so No is never pre-filled.
+  const isRetention = !isMeasure && isJudicialRetentionTitle(election.official_ballot_title);
+  // The answer is measure_position, same as a measure: Yes keeps the judge,
+  // No removes them. A legacy judge pick (candidate row) still reads as Yes.
   const retentionJudge = isRetention && preview?.candidates.length === 1 ? preview.candidates[0] : null;
+  const retentionPosition: "yes" | "no" | null = choice?.measure_position ?? (pickedIds.size > 0 ? "yes" : null);
   return (
     <section className="break-inside-avoid border border-ink">
       <header className="border-b-2 border-ink bg-surface px-3 py-1.5">
@@ -158,7 +158,7 @@ function ContestBox({
           {retentionJudge ? (
             <p className="border-t border-line px-3 py-1.5 text-sm text-ink">{retentionJudge.display_name}</p>
           ) : null}
-          <YesNoRows pickedPosition={pickedIds.size > 0 ? "yes" : null} />
+          <YesNoRows pickedPosition={retentionPosition} />
         </>
       ) : (preview?.candidates.length ?? 0) > 0 ? (
         <ul>

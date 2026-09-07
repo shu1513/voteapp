@@ -46,7 +46,7 @@ import { PostPickActions } from "../components/PostPickActions";
 import { draftChoicesByElectionId, isDecidedChoice, useBallotDraft } from "../lib/ballotDraft";
 import { useMyDistricts } from "../lib/useMyDistricts";
 import { AddressNudge } from "../components/AddressNudge";
-import { splitResearchAreasBySaved, useElectionChoices } from "@voteapp/api-client";
+import { isRetentionRace, splitResearchAreasBySaved, useElectionChoices } from "@voteapp/api-client";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
 import { APP_NAME } from "@voteapp/api-client";
 import { useMe } from "@voteapp/api-client";
@@ -284,6 +284,10 @@ export function ElectionPage() {
   const researchAreas = data.research_areas ?? [];
   const orderedAreas = splitResearchAreasBySaved(researchAreas, weights);
   const showOfficeInfo = data.race_type !== "ballot_measure" && (office !== null || researchAreas.length > 0);
+  // Judicial retention: an office race the ballot asks as Yes/No. The judge
+  // card gets no pick button; the answer lives in the sticky Yes/No pair
+  // below, and auto pick leaves it open (reason "retention").
+  const retention = isRetentionRace(data);
   // The nav bar exists only for in-app arrivals: router state carries where
   // "back" goes and the ballot sequence. Deep links (shares, search
   // engines) have neither — they get no bar at all, by product choice.
@@ -940,7 +944,7 @@ export function ElectionPage() {
                 ignores the party filter (whole roster), so a pick clears
                 it: otherwise "Democrats" + auto-pick could choose a
                 Republican whose card stays hidden. */}
-            {data.candidates.length > 0 && showChoiceControls && data.race_type !== "ballot_measure" ? (
+            {data.candidates.length > 0 && showChoiceControls && data.race_type !== "ballot_measure" && !retention ? (
               <div className="mt-3">
                 <AutoPickControl
                   key={data.id}
@@ -1013,6 +1017,7 @@ export function ElectionPage() {
                           rejects withdrawn/lost — don't render a button whose
                           only outcome is an error. */}
                       {showChoiceControls &&
+                      !retention &&
                       candidate.status !== "withdrawn" &&
                       candidate.status !== "lost" ? (
                         // z-10 lifts the button above the card's stretched
@@ -1208,7 +1213,7 @@ export function ElectionPage() {
             still TBD) — the old inline buttons lived inside the measure
             section and so never rendered there, and a Yes/No pair with no
             explanation of what either vote means would be worse. */}
-        {measure !== null && data.race_type === "ballot_measure" && showChoiceControls ? (
+        {((measure !== null && data.race_type === "ballot_measure") || retention) && showChoiceControls ? (
           // The measure page's ONE pick control, mirroring the candidate
           // page's sticky card: a measure has no deeper detail page — the
           // decision happens here — so the Yes/No pair pins to the viewport
@@ -1216,16 +1221,22 @@ export function ElectionPage() {
           // lifts the chatbot launcher clear of it). No caption naming the
           // measure: this page's h1 IS the measure — one subject, zero
           // ambiguity — and the "My pick:" prefix already says the buttons
-          // record a plan.
+          // record a plan. A retention race shares the card; its one caption
+          // says what the sides mean, because the h1 names a judge, not a
+          // question a voter can answer without knowing the stakes.
           <div
             data-sticky-pick-cta=""
             className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg"
           >
+            {retention ? (
+              <p className="mb-2 text-sm text-ink-soft">Yes keeps this judge in office. No removes them.</p>
+            ) : null}
             <MeasureChoiceButtons
               electionId={data.id}
               raceTitle={data.official_ballot_title}
               electionDate={data.election_date}
               choice={myChoice}
+              raceType={retention ? "office" : "ballot_measure"}
               fullWidth
             />
             {/* Back link only for election-list arrivals — a My-Picks

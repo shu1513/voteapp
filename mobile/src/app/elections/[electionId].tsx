@@ -1,5 +1,5 @@
 import type { ElectionDetail, PartyBucket } from "@voteapp/api-client";
-import { partyColorClass } from "@voteapp/api-client";
+import { isRetentionRace, partyColorClass } from "@voteapp/api-client";
 import {
   aggregateRecordAreaStances,
   ApiError,
@@ -169,6 +169,9 @@ export default function ElectionScreen() {
   // never lock someone out of changing it.
   const isGuest = me === null;
   const myChoice = choiceByElectionId?.get(data.id);
+  // Judicial retention: an office race answered Yes/No (same as the web
+  // page). No pick button on the judge card; the footer pair answers it.
+  const retention = isRetentionRace(data);
   const choicesSettled = canChoose && choiceByElectionId !== undefined;
   const isUpcoming = data.election_date >= usLatestLocalDate();
   const showChoiceControls =
@@ -383,7 +386,7 @@ export default function ElectionScreen() {
               result) would surface under the next one. length: in the
               stranded-only state (section open, every candidacy withdrawn)
               the engine has nobody to pick. */}
-          {data.candidates.length > 0 && showChoiceControls && data.race_type !== "ballot_measure" ? (
+          {data.candidates.length > 0 && showChoiceControls && data.race_type !== "ballot_measure" && !retention ? (
             <View className="mt-2">
               <AutoPickControl key={data.id} electionId={data.id} seatsToFill={data.seats_to_fill ?? null} />
             </View>
@@ -491,7 +494,7 @@ export default function ElectionScreen() {
                   // upcoming races, but the writer also rejects
                   // withdrawn/lost — don't render a button whose only
                   // outcome is an error. Same guard as the web page.
-                  showChoiceControls && candidate.status !== "withdrawn" && candidate.status !== "lost" ? (
+                  showChoiceControls && !retention && candidate.status !== "withdrawn" && candidate.status !== "lost" ? (
                     <CandidatePickButton
                       electionId={data.id}
                       candidateId={candidate.candidate_id}
@@ -561,11 +564,14 @@ export default function ElectionScreen() {
           election can exist before its ballot-measure row (details TBD), and
           a Yes/No pair with no explanation of what either vote means would
           be worse than none. */}
-      {measure !== null && data.race_type === "ballot_measure" && showChoiceControls ? (
+      {((measure !== null && data.race_type === "ballot_measure") || retention) && showChoiceControls ? (
         <View
           className="border-t border-line bg-white px-4 pt-3"
           style={{ paddingBottom: Math.max(insets.bottom, 12) }}
         >
+          {retention ? (
+            <Text className="mb-2 text-sm text-ink-soft">Yes keeps this judge in office. No removes them.</Text>
+          ) : null}
           <MeasureChoiceButtons electionId={data.id} choice={myChoice} />
           {/* Post-pick continuation: back to the list this race came from.
               Only after a recorded position (the "added to cart" moment) and

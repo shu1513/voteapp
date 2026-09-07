@@ -238,3 +238,87 @@ describe("setUserElectionChoice", () => {
     expect(client.release).toHaveBeenCalledOnce();
   });
 });
+
+describe("setUserElectionChoice on judicial retention races", () => {
+  const retentionElection = {
+    id: electionId,
+    race_type: "office",
+    official_ballot_title: "Shall Judge Pat Example be retained in office?",
+    election_date: "2026-11-03",
+    seats_to_fill: 1,
+    is_upcoming: true,
+  };
+
+  it("accepts a No answer, clearing any judge pick first", async () => {
+    const { db, client } = createMockTransactionalDb();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ id: userId }] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [retentionElection] }) // readElection
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // delete candidate rows
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // measure upsert
+      .mockResolvedValueOnce({ rows: [] }) // read-back
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+
+    await setUserElectionChoice(db, userId, { electionId, measurePosition: "no" });
+
+    const calls = client.query.mock.calls.map((call) => ({ sql: String(call[0]), params: call[1] }));
+    expect(calls[3].sql).toContain("DELETE FROM public.user_election_choices");
+    expect(calls[3].sql).toContain("candidate_id IS NOT NULL");
+    expect(calls[4].sql).toContain("INSERT INTO public.user_election_choices (user_id, election_id, measure_position)");
+    expect(calls[4].params).toEqual([userId, electionId, "no", ["office"]]);
+    expect(calls.at(-1)?.sql).toBe("COMMIT");
+  });
+
+  it("translates a judge pick from an older client into a Yes answer", async () => {
+    const { db, client } = createMockTransactionalDb();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ id: userId }] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [retentionElection] }) // readElection
+      .mockResolvedValueOnce({ rows: [{ candidate_id: candidateId }] }) // candidacy pre-check
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // delete candidate rows
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // measure upsert
+      .mockResolvedValueOnce({ rows: [] }) // read-back
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+
+    await setUserElectionChoice(db, userId, { electionId, candidateId, chosen: true });
+
+    const calls = client.query.mock.calls.map((call) => ({ sql: String(call[0]), params: call[1] }));
+    expect(calls[3].sql).toContain("FROM public.candidate_elections");
+    expect(calls[5].params).toEqual([userId, electionId, "yes", ["office"]]);
+    // No candidate row is ever inserted for a retention race.
+    expect(calls.some((call) => call.sql.includes("(user_id, election_id, candidate_id)"))).toBe(false);
+  });
+
+  it("clears both a judge pick and a Yes/No answer when the position is set to null", async () => {
+    const { db, client } = createMockTransactionalDb();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ id: userId }] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [retentionElection] }) // readElection
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // delete all rows for the race
+      .mockResolvedValueOnce({ rows: [] }) // read-back
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+
+    await setUserElectionChoice(db, userId, { electionId, measurePosition: null });
+
+    const deleteCall = String(client.query.mock.calls[3][0]);
+    expect(deleteCall).toContain("DELETE FROM public.user_election_choices");
+    expect(deleteCall).not.toContain("IS NOT NULL");
+  });
+
+  it("still rejects a Yes/No answer on an ordinary office race", async () => {
+    const { db, client } = createMockTransactionalDb();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ id: userId }] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [{ ...retentionElection, official_ballot_title: "State Senator, District 4" }] })
+      .mockResolvedValueOnce({ rows: [] }); // ROLLBACK
+
+    await expect(setUserElectionChoice(db, userId, { electionId, measurePosition: "yes" })).rejects.toMatchObject({
+      code: "invalid_choice_input",
+    });
+    expect(client.query.mock.calls.map((call) => String(call[0])).at(-1)).toBe("ROLLBACK");
+  });
+});

@@ -22,6 +22,7 @@ export * from "./railSort";
 export * from "./rankedResearchAreas";
 export * from "./researchAreaPriority";
 export * from "./researchAreaScoring";
+export * from "./retention";
 export * from "./resultBadges";
 export * from "./useAddressSuggestions";
 export * from "./useCandidateSearch";

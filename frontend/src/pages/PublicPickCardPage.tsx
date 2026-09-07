@@ -186,7 +186,8 @@ export function PublicPickCardPage() {
                           : "font-semibold text-red-900"
                       }
                     >
-                      {entry.measure_position === "yes" ? "Yes" : "No"} on this measure
+                      {entry.measure_position === "yes" ? "Yes" : "No"} on{" "}
+                      {entry.race_type === "office" ? "keeping this judge" : "this measure"}
                       {/* Certified measure result first; before it lands, the
                           canonical result row's election-night passed/failed
                           fills in — same fallback as the owner's card. */}

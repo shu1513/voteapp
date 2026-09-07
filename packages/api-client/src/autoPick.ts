@@ -30,6 +30,7 @@ const REASON_LABELS: Record<AutoPickReason, string> = {
   by_elimination: "picked by elimination",
   too_few_issues: `fewer than ${MIN_AUTO_PICK_ISSUES} ranked issues`,
   election_closed: "no longer open",
+  retention: "a yes/no on keeping a judge — your call",
 };
 
 /** One-phrase reason for the inline race-row annotations ("auto pick: not
@@ -85,6 +86,9 @@ export function summarizeAutoPick(result: AutoPickElectionResult, seatsToFill: n
   }
   if (result.reason === "election_closed") {
     return "This election is no longer open for picks.";
+  }
+  if (result.reason === "retention") {
+    return "No pick: this is a yes/no question on keeping a judge, and that call is yours.";
   }
   const shortlist = joinNames(result.shortlist_candidate_ids.map((id) => candidateName(result, id)));
   if (result.race_type === "ballot_measure") {

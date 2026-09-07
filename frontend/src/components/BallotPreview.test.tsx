@@ -63,6 +63,26 @@ describe("BallotPreviewSheets retention races", () => {
     expect(within(contest).getByText("Denise M. Porter")).toBeInTheDocument();
   });
 
+  it("marks No when the voter answered no on retention", () => {
+    render(
+      <BallotPreviewSheets
+        elections={[
+          electionSummary({
+            official_ballot_title: "Shall Judge Pat Example be retained in office?",
+            preview: { seats_to_fill: null, candidates: [previewCandidate()], measure: null },
+          }),
+        ]}
+        choiceByElectionId={new Map([["e-1", { ...choice(), picks: [], measure_position: "no" }]])}
+        today="2026-08-01"
+      />
+    );
+
+    const noRow = screen.getByText("No").closest("li")!;
+    expect(within(noRow).getByText("My pick")).toBeInTheDocument();
+    const yesRow = screen.getByText("Yes").closest("li")!;
+    expect(within(yesRow).queryByText("My pick")).not.toBeInTheDocument();
+  });
+
   it("leaves both retention ovals unmarked without a pick", () => {
     render(
       <BallotPreviewSheets

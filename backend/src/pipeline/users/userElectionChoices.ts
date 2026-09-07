@@ -2,6 +2,7 @@ import type { Pool, PoolClient } from "pg";
 
 import { isUuid } from "../../utils/uuid.js";
 import { US_LATEST_LOCAL_DATE_SQL } from "../../utils/usLocalDate.js";
+import { isJudicialRetentionTitle } from "../../ai/electionPartisanshipPolicy.js";
 import { loadCanonicalElectionResults } from "../electionResults/canonicalElectionResults.js";
 import type { CanonicalElectionResultWinner } from "../electionResults/canonicalElectionResults.js";
 
@@ -98,10 +99,52 @@ type ChoiceRow = {
 type ElectionRow = {
   id: string;
   race_type: "office" | "ballot_measure";
+  official_ballot_title: string;
   election_date: string;
   seats_to_fill: number | null;
   is_upcoming: boolean;
 };
+
+/**
+ * Judicial retention races are catalogued as office races with the judge as
+ * the single candidate, but the ballot asks Yes/No ("Shall Judge X be
+ * retained?"). Voters answer them with measure_position: "yes" keeps the
+ * judge, "no" removes them. A candidate pick from an older client is
+ * translated to "yes" (that is what the printed preview always showed for
+ * it) so exactly one representation exists per retention race.
+ */
+function isRetentionRace(election: Pick<ElectionRow, "race_type" | "official_ballot_title">): boolean {
+  return (
+    election.race_type === "office" &&
+    typeof election.official_ballot_title === "string" &&
+    isJudicialRetentionTitle(election.official_ballot_title)
+  );
+}
+
+type ChoiceRowKind = "candidate" | "measure" | "all";
+
+async function deleteChoiceRows(
+  client: Queryable,
+  normalizedUserId: string,
+  normalizedElectionId: string,
+  kind: ChoiceRowKind
+): Promise<void> {
+  const kindClause =
+    kind === "candidate"
+      ? "AND candidate_id IS NOT NULL"
+      : kind === "measure"
+        ? "AND measure_position IS NOT NULL"
+        : "";
+  await client.query(
+    `
+      DELETE FROM public.user_election_choices
+      WHERE user_id = $1::uuid
+        AND election_id = $2::uuid
+        ${kindClause}
+    `,
+    [normalizedUserId, normalizedElectionId]
+  );
+}
 
 function normalizeUserId(userId: string): string {
   const normalized = userId.trim();
@@ -305,6 +348,7 @@ async function readElection(db: Queryable, normalizedElectionId: string): Promis
       SELECT
         id::text AS id,
         race_type,
+        official_ballot_title,
         election_date::text AS election_date,
         seats_to_fill,
         election_date >= ${US_LATEST_LOCAL_DATE_SQL} AS is_upcoming
@@ -326,6 +370,71 @@ async function readElection(db: Queryable, normalizedElectionId: string): Promis
   return election;
 }
 
+async function assertCandidacyAvailable(
+  client: Queryable,
+  normalizedCandidateId: string,
+  normalizedElectionId: string
+): Promise<void> {
+  const candidacy = await client.query<{ candidate_id: string }>(
+    `
+      SELECT candidate_election.candidate_id::text AS candidate_id
+      FROM public.candidate_elections AS candidate_election
+      JOIN public.candidates AS candidate
+        ON candidate.id = candidate_election.candidate_id
+       AND candidate.deleted_at IS NULL
+       AND candidate.merged_into_candidate_id IS NULL
+      WHERE candidate_election.candidate_id = $1::uuid
+        AND candidate_election.election_id = $2::uuid
+        AND candidate_election.status NOT IN ('withdrawn', 'lost')
+    `,
+    [normalizedCandidateId, normalizedElectionId]
+  );
+  if (candidacy.rows.length === 0) {
+    throw new UserElectionChoicesError("candidacy_not_available", "Candidate is not an active candidate in this election");
+  }
+}
+
+/**
+ * Upserts the user's Yes/No answer. Same-statement gate as the candidate
+ * pick insert: the election window and race type are re-asserted under the
+ * INSERT's own snapshot. `retention` widens the race-type gate to office
+ * rows (the title check happened in this transaction) and first removes
+ * any candidate row for the race, because the two partial unique indexes
+ * are independent and would otherwise let a judge pick and a No answer
+ * coexist.
+ */
+async function writeMeasurePosition(
+  client: Queryable,
+  normalizedUserId: string,
+  normalizedElectionId: string,
+  position: "yes" | "no",
+  retention: boolean
+): Promise<void> {
+  if (retention) {
+    await deleteChoiceRows(client, normalizedUserId, normalizedElectionId, "candidate");
+  }
+  const inserted = await client.query(
+    `
+      INSERT INTO public.user_election_choices (user_id, election_id, measure_position)
+      SELECT $1::uuid, election.id, $3
+      FROM public.elections AS election
+      WHERE election.id = $2::uuid
+        AND election.race_type = ANY($4::text[])
+        AND election.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
+      ON CONFLICT (user_id, election_id) WHERE measure_position IS NOT NULL
+      DO UPDATE SET measure_position = EXCLUDED.measure_position, origin = 'manual', updated_at = now()
+    `,
+    [normalizedUserId, normalizedElectionId, position, retention ? ["office"] : ["ballot_measure"]]
+  );
+  if ((inserted.rowCount ?? 0) === 0) {
+    // readElection throws election_not_found / election_closed as
+    // appropriate; a same-transaction race_type flip is the only other way
+    // through, and the closed-window error is the honest fallback.
+    await readElection(client, normalizedElectionId);
+    throw new UserElectionChoicesError("election_closed", "Choices can only be changed for upcoming elections");
+  }
+}
+
 export async function setUserElectionChoice(
   db: TransactionalDb,
   userId: string,
@@ -342,6 +451,8 @@ export async function setUserElectionChoice(
     await assertActiveUser(client, normalizedUserId, true);
     const election = await readElection(client, normalizedElectionId);
 
+    const retention = isRetentionRace(election);
+
     if ("candidateId" in input) {
       if (election.race_type !== "office") {
         throw new UserElectionChoicesError(
@@ -354,7 +465,18 @@ export async function setUserElectionChoice(
         throw new UserElectionChoicesError("invalid_choice_input", "chosen must be a boolean");
       }
 
-      if (!input.chosen) {
+      if (retention) {
+        // Older clients and guest-draft sync still send candidate picks for
+        // retention races. Keep accepting them, but store the answer the
+        // way the UI now asks it: picking the judge = "yes", unpicking =
+        // cleared. Never reject an old client.
+        if (!input.chosen) {
+          await deleteChoiceRows(client, normalizedUserId, normalizedElectionId, "all");
+        } else {
+          await assertCandidacyAvailable(client, normalizedCandidateId, normalizedElectionId);
+          await writeMeasurePosition(client, normalizedUserId, normalizedElectionId, "yes", true);
+        }
+      } else if (!input.chosen) {
         await client.query(
           `
             DELETE FROM public.user_election_choices
@@ -370,26 +492,7 @@ export async function setUserElectionChoice(
         // seat-cap work below; the INSERT further down re-asserts the same
         // eligibility predicate in its own statement, which is the enforced
         // boundary if the candidacy changes between here and there.
-        const candidacy = await client.query<{ candidate_id: string }>(
-          `
-            SELECT candidate_election.candidate_id::text AS candidate_id
-            FROM public.candidate_elections AS candidate_election
-            JOIN public.candidates AS candidate
-              ON candidate.id = candidate_election.candidate_id
-             AND candidate.deleted_at IS NULL
-             AND candidate.merged_into_candidate_id IS NULL
-            WHERE candidate_election.candidate_id = $1::uuid
-              AND candidate_election.election_id = $2::uuid
-              AND candidate_election.status NOT IN ('withdrawn', 'lost')
-          `,
-          [normalizedCandidateId, normalizedElectionId]
-        );
-        if (candidacy.rows.length === 0) {
-          throw new UserElectionChoicesError(
-            "candidacy_not_available",
-            "Candidate is not an active candidate in this election"
-          );
-        }
+        await assertCandidacyAvailable(client, normalizedCandidateId, normalizedElectionId);
 
         // NULL seats_to_fill means "seat count never recorded", which the
         // product renders as a single seat everywhere; the cap follows suit.
@@ -476,51 +579,21 @@ export async function setUserElectionChoice(
         }
       }
     } else {
-      if (election.race_type !== "ballot_measure") {
+      if (election.race_type !== "ballot_measure" && !retention) {
         throw new UserElectionChoicesError(
           "invalid_choice_input",
           "measure_position applies to ballot-measure elections; use candidate_id for office races"
         );
       }
       if (input.measurePosition === null) {
-        await client.query(
-          `
-            DELETE FROM public.user_election_choices
-            WHERE user_id = $1::uuid
-              AND election_id = $2::uuid
-              AND measure_position IS NOT NULL
-          `,
-          [normalizedUserId, normalizedElectionId]
-        );
+        // A retention race may still hold a candidate row from an older
+        // client; clearing means clearing the whole answer.
+        await deleteChoiceRows(client, normalizedUserId, normalizedElectionId, retention ? "all" : "measure");
       } else {
         if (input.measurePosition !== "yes" && input.measurePosition !== "no") {
           throw new UserElectionChoicesError("invalid_choice_input", "measure_position must be 'yes', 'no', or null");
         }
-        // Same-statement gate as the candidate-pick insert above: re-assert
-        // the election window and race type under the INSERT's own snapshot.
-        const inserted = await client.query(
-          `
-            INSERT INTO public.user_election_choices (user_id, election_id, measure_position)
-            SELECT $1::uuid, election.id, $3
-            FROM public.elections AS election
-            WHERE election.id = $2::uuid
-              AND election.race_type = 'ballot_measure'
-              AND election.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
-            ON CONFLICT (user_id, election_id) WHERE measure_position IS NOT NULL
-            DO UPDATE SET measure_position = EXCLUDED.measure_position, origin = 'manual', updated_at = now()
-          `,
-          [normalizedUserId, normalizedElectionId, input.measurePosition]
-        );
-        if ((inserted.rowCount ?? 0) === 0) {
-          // readElection throws election_not_found / election_closed as
-          // appropriate; a same-transaction race_type flip is the only other
-          // way through, and the closed-window error is the honest fallback.
-          await readElection(client, normalizedElectionId);
-          throw new UserElectionChoicesError(
-            "election_closed",
-            "Choices can only be changed for upcoming elections"
-          );
-        }
+        await writeMeasurePosition(client, normalizedUserId, normalizedElectionId, input.measurePosition, retention);
       }
     }
 
