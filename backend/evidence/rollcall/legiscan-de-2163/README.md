@@ -176,6 +176,25 @@ Two standing reasons to come back:
    is to read the Delaware action log directly — see batch-03/JUDGING.md — and the rolls
    need no re-fetch, since they are already pending in `legislative_votes`. **20 divided
    rolls across 11 bills are still genuinely waiting on the Governor.**
+
+   **Re-checked 2026-09-06: none of the eleven has been signed.** HB 133, HB 145,
+   HB 180, HB 222, HB 35, HB 355, HB 430, SB 232, SB 249, SB 26 and SB 3 all still
+   end their action log short of a `Signed by Governor` line, so batch-04 has
+   nothing to import yet. The checker is
+   `/Users/shu/legiscan-data/de-2163-work/recheck.py`.
+
+   **The endpoint moved, and the form batch-03 documented now returns a 404 page.**
+   A plain `GET .../GetRecentReportsByLegislationId?legislationId=<id>` redirects to
+   "Page not found". The call that works is a **POST** to the same path with
+   `legislationId=<id>&sort=&page=1&pageSize=200&group=&filter=` and an
+   `X-Requested-With: XMLHttpRequest` header. Rows come back under `Data`, the text
+   in `ActionDescription` and the date in `OccuredAtDateTime`.
+
+   **The negative result was proved, not assumed.** A checker that never fires looks
+   exactly like one that passes, so the same run was pointed at three bills batch-03
+   had already found signed — HB 380, HB 150 and HB 94 — and it reported
+   `Signed by Governor` for all three, dated 9/2/26 and 9/3/26. Delaware is still
+   signing; these eleven are simply not among them.
 2. **15 of the 41 House districts are still unrostered.** A House roll reaches 19 or 20
    candidates today; with a full roster it would reach about 40. Re-importing after the
    roster campaign finishes adds those members without re-judging anything — which is
