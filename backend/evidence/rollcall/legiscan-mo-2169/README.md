@@ -170,3 +170,57 @@ caught HB 416, whose divided 101-47 roll is not the passage vote the history
 records at 112-20. Four Senate rolls (HB 343, HB 546, HB 758, HB 958) sit on
 bills whose histories record no floor passage, so what was voted cannot be
 confirmed; they are held rather than guessed at.
+
+## Bold-text audit of batches 01-03 (2026-09-07, revised after review of #1234)
+
+The HB 952 defect found on review of #1232 — a description that restated existing
+law because `pdftotext` discards the bold type Missouri uses for new matter — was
+audited across every measure in batches 01, 02 and 03.
+
+Tool: [`bold-text-audit.py`](bold-text-audit.py). Missouri marks new matter in bold
+and deleted matter in `[brackets]`; `pdftotext` keeps the brackets and loses the
+bold. So the tool reports every bracketed span in a bill section as a **deletion**
+(no statute needed, valid for enacted bills too), and reports as **additions**
+whatever remains in the section after the brackets are removed and is absent from
+the current section on `revisor.mo.gov`. It strips margin line numbers line by line
+before flattening, so numbers inside provisions survive; it takes section headings
+from the bill's own Section A list, so a section number cited inside another
+section is never mistaken for a heading; and it diffs at word level with no length
+floor, so a one-word change such as `[ten] twenty` is reported. The first version
+committed with #1234 had none of those properties and could not have found what
+the audit claimed — its conclusions came from hand-run diffs. The review caught
+that, and the rewritten tool reproduces all of them on its own.
+
+**One description was wrong and is corrected in place. One was right, was wrongly
+"corrected", and is now restored with a qualification. No records were retired.**
+
+- **HB 565** (batch-03) said the bill would widen the equine and livestock
+  liability shield by "covering more people and more situations". Its **only**
+  change — the tool reports one deletion and no addition, at 0.987 similarity to
+  current law — is to strike ordinary carelessness from the list of *exceptions* to
+  the shield, so a sponsor could be sued only for what remains: intentional injury,
+  willful disregard, a known hidden danger. Direction and label were right, the
+  mechanism was not. 105 records rewritten.
+- **SB 152** (batch-01) originally said "committee officers can be held personally
+  liable". The first pass of this audit removed that as unsupported. **It was
+  supported**: §130.188.3(2) and 4 make "the directors, officers, or executive
+  members … liable in their personal capacity, jointly and severally" when the
+  committee cannot refund or disgorge the money. The grep looked for the phrase
+  "personally liable" and missed the statute's wording. The sentence is restored
+  with that qualification. 101 records rewritten, twice.
+
+**Everything else held**, now by the tool's own output: HB 544's one addition is the
+federal-label rule; HB 68 changes `[ten]` to `twenty` years for childhood sexual
+abuse claims and adds the two-year rule for personal injury actions; HB 595's
+preemption of local renter protections is new matter.
+
+### Two limits, worth knowing before relying on it
+
+1. **Additions only have force on bills that did NOT become law.** For an enacted
+   bill `revisor.mo.gov` already shows the bill's own text, so the addition list is
+   empty by construction; the deletion list still works. Batches 01 and 02 are
+   entirely enacted, batch-03 entirely non-enacted.
+2. **The tally check does not reach Senate bills.** Missouri's history prints
+   `AYES`/`NOES` on House-bill actions but not on a Senate bill's House reading. SB 152
+   and SB 71 each have two same-day House rolls with identical descriptions; both
+   were resolved by the ascending-roll-id convention and both original picks stand.
