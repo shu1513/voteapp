@@ -51,6 +51,11 @@ test("saved research areas drive the ballot default sort and the rank editor", a
     // itself, so both waits key on the "moved over" line and its target id.
     const firstHandle = page.getByLabel(`${firstArea.name}, rank 1. Drag to reorder.`);
     const announcements = page.locator('[id^="DndLiveRegion"]');
+    // savedPreferences() resolves on response headers; the picker stays
+    // disabled (aria-disabled on the handle) until the body is parsed and
+    // the mutation settles. focus() + press() do no enabled check, unlike
+    // click(), so wait for it here or Space lands on a dead handle.
+    await expect(firstHandle).toBeEnabled();
     await firstHandle.focus();
     await page.keyboard.press("Space");
     await expect(announcements).toContainText(`was moved over droppable area ${firstArea.id}`);
