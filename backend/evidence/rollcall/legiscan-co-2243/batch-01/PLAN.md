@@ -5,15 +5,15 @@ Eleven measures, 21 roll calls, 579 candidate records across 55 candidates.
 | measure | what it does | area | a yes vote is |
 |---|---|---|---|
 | HB 1001 | homes allowed on land owned by school districts, colleges, housing authorities and housing nonprofits | housing affordability | for |
-| HB 1126 | state firearms-dealer permit extended to transfers across the state line | gun control | for |
+| HB 1126 | dealers need the state permit to move firearms across the state line too | gun control | for |
 | HB 1134 | 48-hour hearings, counsel for those who cannot pay, limits on flat-fee defense contracts | civil rights | for |
-| HB 1139 | rules for artificial intelligence used to review insurance claims | healthcare affordability | for |
+| HB 1139 | AI claim reviews must be individual; a clinician must approve denials; no cover for AI therapy | healthcare affordability | for |
 | HB 1144 | crime to 3-D print or mill a working gun or gun part | gun control | for |
 | HB 1263 | duties for chatbots, and extra duties toward child users | data privacy | for |
 | HB 1276 | health agencies may inspect immigration detention facilities | immigration | for |
 | HB 1283 | employers barred from keeping a worker's ID card | immigration | for |
 | HB 1322 | damages and no time limit for people harmed by conversion therapy | civil rights | for |
-| HB 1335 | student health centers must provide abortion medication from August 2027 | women's reproductive rights | for |
+| HB 1335 | student health centers must provide abortion medication from August 2027; no records to other states seeking to punish it | women's reproductive rights | for |
 | HB 1424 | ride-hailing background checks become the company's job, every six months | corporate accountability | for |
 
 ## Three 2025 measures came back — and all three changed

@@ -6,7 +6,7 @@ That discipline is the direct result of the review of Colorado batch-11, which
 found ten of eighteen descriptions needed correcting because they rested on
 summary text or quietly widened a bill's scope.
 
-It paid for itself immediately. **Five claims I was ready to write turned out to
+It paid for itself immediately. **Four claims I was ready to write turned out to
 be wrong**, and each was caught by reading the operative text:
 
 | I was going to say | the act says |
@@ -15,7 +15,6 @@ be wrong**, and each was caught by reading the operative text:
 | HB 1001 protects buildings up to 45 feet | **38 feet** |
 | HB 1134 caps municipal jail terms at the state equivalent | it does not; that was the vetoed 2025 bill. This one sets 48-hour hearings, counsel for defendants who cannot pay, and flat-fee limits |
 | HB 1424 requires fingerprint background checks | it does not; that was the vetoed 2025 bill. This one moves the existing check to the company, every six months |
-| HB 1139 requires a person to approve a denial of care | it requires the insurer to **disclose whether** a person must approve one |
 
 ## HB 1322 says outright that it creates nothing new
 
@@ -72,3 +71,37 @@ First draft measured a Flesch-Kincaid median of 7.7; after rewriting the four
 hardest measures it is 7.5. The plain-language lint reports 0 warnings across
 all 42 descriptions. Reading grade is computed separately, because the lint only
 counts words per sentence.
+
+## Review correction, 2026-09-07: three descriptions were wrong and are rewritten
+
+A review of the merged-pending PR found three claims that the enrolled acts do
+not support. Each was checked against the act before anything was changed, and
+each was confirmed.
+
+- **HB 1126.** The description said the permit extends to "anyone moving
+  firearms into or out of the state." Section 18-12-401.5 (1)(a) begins "Every
+  **dealer** must obtain a state permit" — the extension is to a dealer's
+  transfers across the state line, not to ordinary gun owners. 52 records
+  rewritten.
+- **HB 1139.** Two errors, one of them mine to own twice over. The description
+  said insurers "cannot be paid for therapy given by a machine"; subsection (6)
+  bars insurers from **covering** AI-delivered psychotherapy, and new 25.5-1-209
+  bars Medicaid and the children's health plan from paying for it. Worse, this
+  file's table of "claims I caught" said the act only requires an insurer to
+  disclose whether a human approves a denial. That was subsection (4)(c). I
+  missed subsection (5)(b), which requires that a medical-necessity denial not
+  issue "solely on the output of an artificial intelligence system without
+  human review and approval" by a licensed clinician. The act does require human
+  approval; my catch was the error. That row is removed from the table and the
+  count above is now four. 39 records rewritten.
+- **HB 1335.** The description said a college cannot disclose named health
+  records unless federal law or a court order requires it. Subsection (5) is
+  narrower: the bar applies to "a request from another state seeking to impose
+  liability for the legally protected health-care activity." Ordinary
+  authorized disclosures are untouched. 55 records rewritten.
+
+The judge updated the five affected roll-call rows; the importer's dry run
+planned exactly 146 rewrites and 433 unchanged; the real run did the same, in
+place, keeping every row id and tag. Totals are unchanged at 7,442 records, 55
+candidates and 5,173 tags, and no row carries the old wording. The original
+`import-report.json` is preserved; the re-run wrote `import-rerun-report.json`.
