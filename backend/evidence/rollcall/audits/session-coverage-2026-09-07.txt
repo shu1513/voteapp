@@ -1,0 +1,79 @@
+session    cfg done rolls reach  name
+AK-1397      ~    -    33   1/63  30th Legislature  <-- unworked  (unregistered; measured with the state's patterns)
+AK-2171      y    y    39   6/62  34th Legislature
+AL-1621      y    y     0   0/0   Regular Session 2019
+AL-1661      ~    -     0   0/0   First Special Session 2019  (unregistered; measured with the state's patterns)
+AL-1706      y    y     0   0/0   Regular Session 2020
+AL-1756      y    y     0   0/0   Regular Session 2021
+AL-1836      y    y     0   0/0   Regular Session 2022
+AL-1854      y    y     0   0/0   First Special Session 2021
+AL-1857      y    y     0   0/0   Second Special Session 2021
+AL-1972      ~    -     0   0/0   First Special Session 2022  (unregistered; measured with the state's patterns)
+AL-2014      y    y     0   0/0   Regular Session 2023
+AL-2048      ~    -     0   0/0   First Special Session 2023  (unregistered; measured with the state's patterns)
+AL-2060      y    y     0   0/0   Second Special Session 2023
+AL-2103      y    y     0   0/0   Regular Session 2024
+AL-2148      y    y    14 118/139 2025 Regular Session
+AL-2218      y    y    14 122/140 2026 Regular Session
+AL-2262      y    y     3 122/140 First Special Session 2026
+AR-2162      y    y    99  96/135 95th General Assembly (2025 Regula
+AR-2242      ~    -     2  84/99  95th General Assembly (2026 Fiscal  <-- unworked  (unregistered; measured with the state's patterns)
+AR-2261      ~    -     0   0/0   95th General Assembly (2026 Specia  (unregistered; measured with the state's patterns)
+AZ-2155      y    y   209  54/91  Fifty-seventh Legislature - First 
+CA-2172      y    y   168  11/40  2025-2026 Regular Session
+CO-2173      y    y   401  52/101 2025 Regular Session
+CO-2224      y    y    19  52/99  2025 First Special Session
+CO-2243      y    -   328  52/101 2026 Regular Session  <-- unworked
+CT-2174      y    y    60 160/187 2025 General Assembly
+DE-2163      y    y    84  29/63  153rd General Assembly
+FL-2135      y    y    25  63/159 2025 Regular Session
+GA-2008      y    y    83 182/240 2023-2024 Regular Session
+GA-2114      y    y     6 180/236 2023 Special Session
+GA-2167      y    y    82 208/242 2025-2026 Regular Session
+GA-2268      y    y     2 211/234 2026 Special Session
+IN-2143      y    y    97 103/150 2025 Regular Session
+IN-2234      y    y    64 104/150 2026 Regular Session
+KS-2178      y    y   166  75/171 2025-2026 Regular Session
+KY-2179      y    y    22 107/138 2025 Regular Session
+KY-2247      y    y    16 106/138 2026 Regular Session
+MD-2164      y    y   264 160/188 2025 Regular Session
+MD-2240      y    y   277 163/189 2026 Regular Session
+MN-2151      y    y    17 160/201 94th Legislature 2025-2026
+MN-2217      y    y    25 159/200 94th Legislature 2025 1st Special 
+MO-2169      y    y    34 119/196 2025 Regular Session
+MO-2216      ~    -     1   5/33  2025 1st Special Session  <-- unworked  (unregistered; measured with the state's patterns)
+MO-2226      y    y     4 119/193 2025 2nd Special Session
+MT-2159      y    y   537  87/151 2025 Regular Session
+NC-2189      y    y    82 151/176 2025-2026 Session
+NM-1731      y    y    35  24/112 2020 Regular Session
+NM-1750      y    y    10  24/112 2020 1st Special Session
+NM-1788      ~    -     0   0/0   2020 2nd Special Session  (unregistered; measured with the state's patterns)
+NM-1812      y    y    58  31/113 2021 Regular Session
+NM-1830      y    y     7  31/112 2021 1st Special Session
+NM-1961      y    y    22  34/112 2022 Regular Session
+NM-1967      y    y     6  32/112 2021 2nd Special Session
+NM-1977      y    y     1  34/70  2022 3rd Special Session
+NM-2030      y    y    76  48/112 2023 Regular Session
+NM-2126      y    y    36  49/112 2024 Regular Session
+NM-2150      ~    -     0   0/0   2024 1st Special Session  (unregistered; measured with the state's patterns)
+NM-2187      y    y    81  63/128 2025 Regular Session
+NM-2227      y    y     5  63/112 2025 1st Special Session
+NM-2232      ~    -     0   0/0   2025 2nd Special Session  (unregistered; measured with the state's patterns)
+NM-2251      y    y    47  63/112 2026 Regular Session
+NV-2144      y    y   101  41/63  83rd Legislature (2025)
+NY-2188      y    y   338  55/219 2025-2026 General Assembly
+OR-2191      y    y   353  61/91  2025 Legislative Measures
+OR-2252      y    y     0   0/0   2026 Legislative Measures
+PA-2192      y    y     0   0/0   2025-2026 Regular Session
+SC-2194      y    y    24 116/174 126th General Assembly
+TN-2161      y    y   287  99/133 114th General Assembly
+
+sessions with rolls left to read:
+  AR-2242      2 rolls, 84 of 99 voters are current candidates (unregistered)
+  CO-2243    328 rolls, 52 of 101 voters are current candidates
+  MO-2216      1 rolls, 5 of 33 voters are current candidates (unregistered)
+  AK-1397     33 rolls, 1 of 63 voters are current candidates (unregistered)
+
+A count here means 'worth reading', not 'worth importing'. Filter 5 —
+whether the measure carries a defensible for-and-against stance — is a
+human read, and money-only measures pass every gate above it.
