@@ -96,8 +96,8 @@ describe("DraftPage", () => {
     });
     renderDraft();
 
-    expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Draft" })).toBeInTheDocument();
-    expect(screen.getByText("1 of 2 races decided")).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "November 3, 2026" })).toBeInTheDocument();
+    expect(screen.getByRole("progressbar", { name: "1 of 2 races decided" })).toBeInTheDocument();
     // Not finished: no milestone, no seen marker.
     expect(screen.queryByRole("region", { name: /election draft milestone/ })).not.toBeInTheDocument();
     expect(window.localStorage.getItem("voteapp_draft_complete_seen")).toBeNull();
@@ -134,7 +134,7 @@ describe("DraftPage", () => {
       },
     });
     renderDraft();
-    expect(await screen.findByText("1 of 2 races decided")).toBeInTheDocument();
+    expect(await screen.findByRole("progressbar", { name: "1 of 2 races decided" })).toBeInTheDocument();
     expect(readBallotDraft().target).toEqual({ election_date: "2026-11-03", election_ids: ["e-1", "e-2"] });
     expect(readBallotDraft().district_ids).toEqual(["dddddddd-1111-4111-8111-111111111111"]);
   });
@@ -195,7 +195,7 @@ describe("DraftPage", () => {
       },
     });
     renderDraft();
-    expect(await screen.findByText("2 of 2 races decided")).toBeInTheDocument();
+    expect(await screen.findByRole("progressbar", { name: "2 of 2 races decided" })).toBeInTheDocument();
     expect(screen.queryByRole("region", { name: /election draft milestone/ })).not.toBeInTheDocument();
     // Still exactly one sign-up button — the page's own, since the
     // milestone (which would carry it) stays away.

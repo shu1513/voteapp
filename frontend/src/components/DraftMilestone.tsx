@@ -9,7 +9,7 @@ import { track } from "../lib/usage";
 // caller decides via useShowDraftMilestone, which also marks the day as
 // seen for the header notice. Not persistent on purpose (owner's rule:
 // persistent = nag; the header already reads "My Draft ✓" and the card
-// keeps its "N of M races decided" line).
+// keeps its "N / M" progress bar).
 
 export function DraftMilestone({
   show,

@@ -211,7 +211,7 @@ describe("App account nav", () => {
     // Both consumers settled: the page's date card AND the header counter
     // computed off the same payload (1 race, 1 picked → the earned label).
     expect(
-      await screen.findByRole("heading", { name: "My November 3, 2026 Election Draft" })
+      await screen.findByRole("heading", { name: "November 3, 2026" })
     ).toBeInTheDocument();
     expect(await screen.findByRole("link", { name: "My Draft ✓" })).toBeInTheDocument();
 
