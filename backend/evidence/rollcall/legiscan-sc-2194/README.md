@@ -118,3 +118,13 @@ the bill. Descriptions therefore say the House "passed it" and never name a read
 - `/Users/shu/legiscan-data/sc_vercheck.py` — compares a printed version with the ratified act
 - `/Users/shu/legiscan-data/sc_crosswalk.py` — builds the crosswalk from proposals plus review
 - `/Users/shu/legiscan-data/sc-2194-STATE.md` — run state and where to resume
+
+## batch-04 (2026-09-07) — H 5683
+
+The congressional redraw batch-03 left behind. One roll, 105 records, recorded with
+no stance (`general`) like the other mid-decade redistricting measures. The House
+passed it on third reading 74-37; the Senate continued the bill on 2026-05-26 and
+never passed it. The session is still sitting, so the description claims no finality.
+**South Carolina now has no unworked rolls in either the enacted or the non-enacted
+scope.**
+
