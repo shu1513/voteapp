@@ -87,7 +87,12 @@ function createDbMock(fixtures: {
       return { rows: [], rowCount: fixtures.orphanCount ?? 0 };
     }
     if (sql.includes("FROM public.users AS u")) {
-      return { rows: fixtures.users, rowCount: fixtures.users.length };
+      // Mirror the real query's paging contract: honor the batch size and
+      // the already-attempted exclusion list.
+      const batchSize = params?.[0] as number;
+      const excluded = new Set(params?.[1] as string[]);
+      const rows = fixtures.users.filter((user) => !excluded.has(user.id)).slice(0, batchSize);
+      return { rows, rowCount: rows.length };
     }
     if (sql.includes("e.event_type")) {
       const userId = params?.[0] as string;
@@ -267,6 +272,51 @@ describe("sendCandidateFollowDigests", () => {
       electionDate: "2026-11-03",
     });
     expect(db.markedEventIds).toEqual([["e1", "e2"], ["e3"]]);
+  });
+
+  it("loops through batches until every eligible user is processed in one run", async () => {
+    const db = createDbMock({
+      users: [
+        { id: USER_ALPHA, email: "a@example.com", first_name: "A" },
+        { id: USER_BETA, email: "b@example.com", first_name: "B" },
+      ],
+      pendingByUser: {
+        [USER_ALPHA]: [pendingRow("e1", "Jane Doe")],
+        [USER_BETA]: [pendingRow("e2", "John Smith")],
+      },
+    });
+    const mailer = createMailerMock();
+
+    const result = await sendCandidateFollowDigests(db as never, mailer, { ...options, maxUsers: 1 });
+
+    expect(result.usersEmailedCount).toBe(2);
+    expect(db.markedEventIds).toEqual([["e1"], ["e2"]]);
+    // Three selection calls: batch of 1, batch of 1, empty terminator.
+    const selectionCalls = db.query.mock.calls.filter((call) => String(call[0]).includes("FROM public.users AS u"));
+    expect(selectionCalls).toHaveLength(3);
+  });
+
+  it("terminates when a failed send leaves a user unmarked instead of retrying them forever", async () => {
+    const db = createDbMock({
+      users: [
+        { id: USER_ALPHA, email: "fail@example.com", first_name: "A" },
+        { id: USER_BETA, email: "b@example.com", first_name: "B" },
+      ],
+      pendingByUser: {
+        [USER_ALPHA]: [pendingRow("e1", "Jane Doe")],
+        [USER_BETA]: [pendingRow("e2", "John Smith")],
+      },
+    });
+    const mailer = createMailerMock("fail@example.com");
+
+    // maxUsers: 1 forces the failing user into their own batch; without the
+    // attempted-user exclusion the next selection would return them again
+    // (their events stay unmarked) and the loop would never end.
+    const result = await sendCandidateFollowDigests(db as never, mailer, { ...options, maxUsers: 1 });
+
+    expect(result.failures).toEqual([{ userId: USER_ALPHA, stage: "send", reason: "SES exploded" }]);
+    expect(result.usersEmailedCount).toBe(1);
+    expect(db.markedEventIds).toEqual([["e2"]]);
   });
 
   it("isolates a failed send: records the failure, does not mark, continues to the next user", async () => {

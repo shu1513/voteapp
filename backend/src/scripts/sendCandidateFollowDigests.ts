@@ -37,6 +37,12 @@ export const DEFAULT_DIGEST_MAX_ITEMS_PER_EMAIL = 20;
 
 export type SendCandidateFollowDigestsOptions = {
   live: boolean;
+  /**
+   * Selection batch size, not a total cap: the run loops until every
+   * eligible user is processed. The job runs monthly, so a user deferred to
+   * the "next run" would wait a month, and with steady new events the same
+   * first batch would fill up every time.
+   */
   maxUsers: number;
   maxItemsPerEmail: number;
   /** Per-user signed unsubscribe link builder; omit to send without one. */
@@ -50,10 +56,10 @@ export type SendCandidateFollowDigestsResult = {
   /**
    * Events resolved (or countable as resolvable in dry run) without email.
    * Always table-wide: orphan cleanup is global housekeeping, deliberately
-   * independent of --max-users, which caps only the email batch below.
+   * independent of --max-users, which only sizes the email batches below.
    */
   resolvedWithoutEmailCount: number;
-  /** Users with at least one valid pending event this run examined (capped by --max-users). */
+  /** Users with at least one valid pending event this run examined. */
   eligibleUserCount: number;
   /** Valid pending events found across eligible users. */
   eventsPendingCount: number;
@@ -156,7 +162,15 @@ type EligibleUserRow = {
   first_name: string;
 };
 
-async function selectEligibleUsers(db: Queryable, maxUsers: number): Promise<EligibleUserRow[]> {
+async function selectEligibleUsers(
+  db: Queryable,
+  batchSize: number,
+  excludedUserIds: readonly string[]
+): Promise<EligibleUserRow[]> {
+  // excludedUserIds carries the users this run already attempted. Marking
+  // alone cannot page past them: a failed send (or any dry run) leaves the
+  // events unmarked, so without the exclusion the same users would be
+  // re-selected forever.
   const result = await db.query<EligibleUserRow>(
     `
       SELECT u.id, u.email, u.first_name
@@ -164,6 +178,7 @@ async function selectEligibleUsers(db: Queryable, maxUsers: number): Promise<Eli
       WHERE u.deleted_at IS NULL
         AND u.email_verified = true
         AND u.email_digest = true
+        AND u.id <> ALL($2::uuid[])
         AND EXISTS (
           -- Mirrors the deliverability joins in selectPendingEvents so a user
           -- whose only unsent events are orphaned (unfollowed, notify flag
@@ -192,7 +207,7 @@ async function selectEligibleUsers(db: Queryable, maxUsers: number): Promise<Eli
       ORDER BY u.id
       LIMIT $1::int
     `,
-    [maxUsers]
+    [batchSize, excludedUserIds]
   );
   return result.rows;
 }
@@ -305,64 +320,74 @@ export async function sendCandidateFollowDigests(
   // events (in live mode; the dry run only counts them).
   result.resolvedWithoutEmailCount = await resolveOrphanedEvents(db, options.live);
 
-  const users = await selectEligibleUsers(db, options.maxUsers);
-  for (const user of users) {
-    const pendingEvents = await selectPendingEvents(db, user.id);
-    if (pendingEvents.length === 0) {
-      // Only orphaned events (dry run) or nothing left; no email due.
-      continue;
+  // Every selected user joins attemptedUserIds no matter how their send
+  // went, and the selection excludes those ids, so each non-empty batch
+  // strictly shrinks the remaining set and the loop always terminates.
+  const attemptedUserIds: string[] = [];
+  for (;;) {
+    const users = await selectEligibleUsers(db, options.maxUsers, attemptedUserIds);
+    if (users.length === 0) {
+      break;
     }
-    result.eligibleUserCount += 1;
-    result.eventsPendingCount += pendingEvents.length;
-    if (!options.live) {
-      continue;
-    }
+    for (const user of users) {
+      attemptedUserIds.push(user.id);
+      const pendingEvents = await selectPendingEvents(db, user.id);
+      if (pendingEvents.length === 0) {
+        // Only orphaned events (dry run) or nothing left; no email due.
+        continue;
+      }
+      result.eligibleUserCount += 1;
+      result.eventsPendingCount += pendingEvents.length;
+      if (!options.live) {
+        continue;
+      }
 
-    try {
-      const unsubscribeUrl = options.buildUnsubscribeUrl?.(user.id);
-      await mailer.sendDigestEmail({
-        email: user.email,
-        firstName: user.first_name,
-        items: pendingEvents.slice(0, options.maxItemsPerEmail).map(toDigestItem),
-        totalEventCount: pendingEvents.length,
-        ...(unsubscribeUrl ? { unsubscribeUrl } : {}),
-      });
-    } catch (error) {
-      const reason = error instanceof Error ? error.message : String(error);
-      result.failures.push({ userId: user.id, stage: "send", reason });
-      continue;
-    }
-    result.usersEmailedCount += 1;
-
-    // Summary push to the user's registered devices. After the email (the
-    // durable channel) and before marking: a crash here re-sends both next
-    // run (at-least-once), and a push failure never blocks marking.
-    if (options.pushClient) {
       try {
-        const pushed = await sendUserPushNotification(db, options.pushClient, user.id, {
-          title: APP_NAME,
-          body: buildDigestSubjectLine(pendingEvents.length),
-          url: "/follows",
+        const unsubscribeUrl = options.buildUnsubscribeUrl?.(user.id);
+        await mailer.sendDigestEmail({
+          email: user.email,
+          firstName: user.first_name,
+          items: pendingEvents.slice(0, options.maxItemsPerEmail).map(toDigestItem),
+          totalEventCount: pendingEvents.length,
+          ...(unsubscribeUrl ? { unsubscribeUrl } : {}),
         });
-        result.pushTokensRevokedCount += pushed.revokedTokenCount;
-        if (pushed.sentCount > 0) {
-          result.usersPushedCount += 1;
-        }
       } catch (error) {
         const reason = error instanceof Error ? error.message : String(error);
-        result.failures.push({ userId: user.id, stage: "push_send", reason });
+        result.failures.push({ userId: user.id, stage: "send", reason });
+        continue;
       }
-    }
+      result.usersEmailedCount += 1;
 
-    try {
-      await markEventsNotified(
-        db,
-        pendingEvents.map((event) => event.id)
-      );
-      result.eventsDeliveredCount += pendingEvents.length;
-    } catch (error) {
-      const reason = error instanceof Error ? error.message : String(error);
-      result.failures.push({ userId: user.id, stage: "mark_after_send", reason });
+      // Summary push to the user's registered devices. After the email (the
+      // durable channel) and before marking: a crash here re-sends both next
+      // run (at-least-once), and a push failure never blocks marking.
+      if (options.pushClient) {
+        try {
+          const pushed = await sendUserPushNotification(db, options.pushClient, user.id, {
+            title: APP_NAME,
+            body: buildDigestSubjectLine(pendingEvents.length),
+            url: "/follows",
+          });
+          result.pushTokensRevokedCount += pushed.revokedTokenCount;
+          if (pushed.sentCount > 0) {
+            result.usersPushedCount += 1;
+          }
+        } catch (error) {
+          const reason = error instanceof Error ? error.message : String(error);
+          result.failures.push({ userId: user.id, stage: "push_send", reason });
+        }
+      }
+
+      try {
+        await markEventsNotified(
+          db,
+          pendingEvents.map((event) => event.id)
+        );
+        result.eventsDeliveredCount += pendingEvents.length;
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error);
+        result.failures.push({ userId: user.id, stage: "mark_after_send", reason });
+      }
     }
   }
 
