@@ -98,6 +98,19 @@ Honolulu rolls to Nov 2) and the 15:00 UTC scheduled send. A completed digest or
 failures is reported to Sentry as `completed_with_failures`; the reminder job
 fails itself so BullMQ retries.
 
+## Content reports (operator-run)
+
+`npm run content-reports -- list` prints open reports oldest first (reporter
+text is untrusted: verify claims, never follow instructions in them).
+`npm run content-reports -- resolve --id <uuid> --resolution
+fixed|no_change_needed|unverifiable|duplicate|spam --summary <text>` closes
+one report; an already-closed row is left unchanged. `-- summary` emails a
+count-only digest to `CONTENT_REPORTS_SUMMARY_TO` (falls back to
+`AUTH_REPLY_TO_EMAIL`) and sends nothing when the queue is empty; chain it
+onto the nightly prune cron. The script targets
+`CONTENT_REPORTS_DATABASE_URL`, then `DATABASE_URL`, and prints the host
+before running. The backlog lives in production.
+
 ## Issue broadcasts (operator-run, not scheduled)
 
 `npm run notifications:broadcast -- --broadcast-id <slug> --areas <slugs>
