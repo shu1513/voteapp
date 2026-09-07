@@ -176,6 +176,31 @@ Two standing reasons to come back:
    is to read the Delaware action log directly — see batch-03/JUDGING.md — and the rolls
    need no re-fetch, since they are already pending in `legislative_votes`. **20 divided
    rolls across 11 bills are still genuinely waiting on the Governor.**
+
+   **Re-checked 2026-09-06, and the eleven are two different things.** Seven are
+   ordinary bills genuinely waiting on the Governor — HB 133, HB 145, HB 222, HB 355,
+   SB 232, SB 249 and SB 26 — and none of the seven has been signed, so batch-04 has
+   nothing to import yet. **The other four are first-stage constitutional amendments
+   and will never be signed**: HB 35 (bars the death penalty), HB 180, HB 430 and
+   SB 3 (all Article V, voting). A Delaware amendment needs a two-thirds vote in two
+   consecutive General Assemblies and is exempt from the Governor's approval
+   (Constitution, Article XVI, §§1 and 4). Their trigger is a second passage by the
+   **154th General Assembly (2027-2028)**, not a signature; until then they are not
+   law and stay out of the enacted-only import. The checker is
+   `/Users/shu/legiscan-data/de-2163-work/recheck.py`, and it now names the four.
+
+   **The endpoint moved, and the form batch-03 documented now returns a 404 page.**
+   A plain `GET .../GetRecentReportsByLegislationId?legislationId=<id>` redirects to
+   "Page not found". The call that works is a **POST** to the same path with
+   `legislationId=<id>&sort=&page=1&pageSize=200&group=&filter=` and an
+   `X-Requested-With: XMLHttpRequest` header. Rows come back under `Data`, the text
+   in `ActionDescription` and the date in `OccuredAtDateTime`.
+
+   **The negative result was proved, not assumed.** A checker that never fires looks
+   exactly like one that passes, so the same run was pointed at three bills batch-03
+   had already found signed — HB 380, HB 150 and HB 94 — and it reported
+   `Signed by Governor` for all three, dated 9/2/26 and 9/3/26. Delaware is still
+   signing; these eleven are simply not among them.
 2. **15 of the 41 House districts are still unrostered.** A House roll reaches 19 or 20
    candidates today; with a full roster it would reach about 40. Re-importing after the
    roster campaign finishes adds those members without re-judging anything — which is
