@@ -1,0 +1,372 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1686652,
+   "measure_id": "HB 1038",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the conference committee's report on House Bill 1038 and pass it. Bigger Colorado counties elect some commissioners from districts. Those district lines were still drawn by the sitting commissioners, who may run in them. The act moves that job to independent county redistricting commissions. It also spells out what makes a district competitive. The Colorado House voted 41-23 to adopt that report and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against adopting the conference committee's report on House Bill 1038. Bigger Colorado counties elect some commissioners from districts. Those district lines were still drawn by the sitting commissioners, who may run in them. The act moves that job to independent county redistricting commissions. It also spells out what makes a district competitive. The Colorado House voted 41-23 to adopt that report and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1686651
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1680796,
+   "measure_id": "HB 1038",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the conference committee's report on House Bill 1038 and pass it. Bigger Colorado counties elect some commissioners from districts. Those district lines were still drawn by the sitting commissioners, who may run in them. The act moves that job to independent county redistricting commissions. It also spells out what makes a district competitive. The Colorado Senate voted 24-11 to adopt that report and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against adopting the conference committee's report on House Bill 1038. Bigger Colorado counties elect some commissioners from districts. Those district lines were still drawn by the sitting commissioners, who may run in them. The act moves that job to independent county redistricting commissions. It also spells out what makes a district competitive. The Colorado Senate voted 24-11 to adopt that report and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1680795
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695677,
+   "measure_id": "HB 1084",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the conference committee's report on House Bill 1084 and pass it. A ballot measure that cuts state tax revenue has to carry a warning in its title. The act softens that wording to say the cut will likely reduce funding, not that it will. It also widens what the ballot booklet's cost statement must cover. Backers who name the programs to be cut still have them printed in the title. The Colorado House voted 41-22 to adopt that report and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against adopting the conference committee's report on House Bill 1084. A ballot measure that cuts state tax revenue has to carry a warning in its title. The act softens that wording to say the cut will likely reduce funding, not that it will. It also widens what the ballot booklet's cost statement must cover. Backers who name the programs to be cut still have them printed in the title. The Colorado House voted 41-22 to adopt that report and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1695676
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1692156,
+   "measure_id": "HB 1084",
+   "vote_date": "2026-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to adopt the conference committee's report on House Bill 1084 and pass it. A ballot measure that cuts state tax revenue has to carry a warning in its title. The act softens that wording to say the cut will likely reduce funding, not that it will. It also widens what the ballot booklet's cost statement must cover. Backers who name the programs to be cut still have them printed in the title. The Colorado Senate voted 23-12 to adopt that report and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against adopting the conference committee's report on House Bill 1084. A ballot measure that cuts state tax revenue has to carry a warning in its title. The act softens that wording to say the cut will likely reduce funding, not that it will. It also widens what the ballot booklet's cost statement must cover. Backers who name the programs to be cut still have them printed in the title. The Colorado Senate voted 23-12 to adopt that report and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1692155
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697812,
+   "measure_id": "HB 1223",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1223 and pass it. The act adds a state income tax credit for families with children, on top of two credits already in law. It starts in the 2027 tax year. The credit is smaller for children aged six and over, and shrinks as family income rises. To help pay for it, the act taxes computer software whether or not it arrives on a disc. The Colorado House voted 36-29 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1223. The act adds a state income tax credit for families with children, on top of two credits already in law. It starts in the 2027 tax year. The credit is smaller for children aged six and over, and shrinks as family income rises. To help pay for it, the act taxes computer software whether or not it arrives on a disc. The Colorado House voted 36-29 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697811
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697531,
+   "measure_id": "HB 1223",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1223. The act adds a state income tax credit for families with children, on top of two credits already in law. It starts in the 2027 tax year. The credit is smaller for children aged six and over, and shrinks as family income rises. To help pay for it, the act taxes computer software whether or not it arrives on a disc. The Colorado Senate passed it 22-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1223. The act adds a state income tax credit for families with children, on top of two credits already in law. It starts in the 2027 tax year. The credit is smaller for children aged six and over, and shrinks as family income rises. To help pay for it, the act taxes computer software whether or not it arrives on a disc. The Colorado Senate passed it 22-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697530
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697290,
+   "measure_id": "HB 1269",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1269 and pass it. Riders often cannot tell what a bus or train costs or where it goes. From mid-2027 an agency carrying at least a million trips a year must post clear maps at rail and bus stations. It must also show fares and discount rules online, in vehicles and at sheltered stops. A link or QR code counts, and no agency has to replace signs just for this. The Colorado House voted 42-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1269. Riders often cannot tell what a bus or train costs or where it goes. From mid-2027 an agency carrying at least a million trips a year must post clear maps at rail and bus stations. It must also show fares and discount rules online, in vehicles and at sheltered stops. A link or QR code counts, and no agency has to replace signs just for this. The Colorado House voted 42-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697289
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1695916,
+   "measure_id": "HB 1269",
+   "vote_date": "2026-05-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1269. Riders often cannot tell what a bus or train costs or where it goes. From mid-2027 an agency carrying at least a million trips a year must post clear maps at rail and bus stations. It must also show fares and discount rules online, in vehicles and at sheltered stops. A link or QR code counts, and no agency has to replace signs just for this. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1269. Riders often cannot tell what a bus or train costs or where it goes. From mid-2027 an agency carrying at least a million trips a year must post clear maps at rail and bus stations. It must also show fares and discount rules online, in vehicles and at sheltered stops. A link or QR code counts, and no agency has to replace signs just for this. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1692871,
+   "measure_id": "HB 1318",
+   "vote_date": "2026-05-04",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1318 and pass it. A school zone doubles traffic fines but Colorado never fixed its size. The act sets a school zone as every road within 1,000 feet of school grounds. State highways are in only if the transport department agrees. A local government may shrink a zone, but never below 200 feet, and signs must say the penalties double. The Colorado House voted 46-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1318. A school zone doubles traffic fines but Colorado never fixed its size. The act sets a school zone as every road within 1,000 feet of school grounds. State highways are in only if the transport department agrees. A local government may shrink a zone, but never below 200 feet, and signs must say the penalties double. The Colorado House voted 46-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1692870
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1692990,
+   "measure_id": "HB 1320",
+   "vote_date": "2026-05-04",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1320 and pass it. The title board writes the question voters see on a ballot measure. The act says a title must use plain words the widest possible audience can follow. The board must avoid titles where the effect of a yes or no vote is unclear. Set wording about tax cuts may now sit anywhere in the title, not just at the start. The Colorado House voted 43-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1320. The title board writes the question voters see on a ballot measure. The act says a title must use plain words the widest possible audience can follow. The board must avoid titles where the effect of a yes or no vote is unclear. Set wording about tax cuts may now sit anywhere in the title, not just at the start. The Colorado House voted 43-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1692989
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1689874,
+   "measure_id": "HB 1320",
+   "vote_date": "2026-04-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1320. The title board writes the question voters see on a ballot measure. The act says a title must use plain words the widest possible audience can follow. The board must avoid titles where the effect of a yes or no vote is unclear. Set wording about tax cuts may now sit anywhere in the title, not just at the start. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1320. The title board writes the question voters see on a ballot measure. The act says a title must use plain words the widest possible audience can follow. The board must avoid titles where the effect of a yes or no vote is unclear. Set wording about tax cuts may now sit anywhere in the title, not just at the start. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1687430,
+   "measure_id": "SB 59",
+   "vote_date": "2026-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 59. Some Colorado legislators also hold a city or county seat. From the 76th General Assembly a member may not hold another elected office while serving. A special district seat is exempt. So is a member with under a year left in either post when they are sworn in. The Colorado House passed it 34-28 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 59. Some Colorado legislators also hold a city or county seat. From the 76th General Assembly a member may not hold another elected office while serving. A special district seat is exempt. So is a member with under a year left in either post when they are sworn in. The Colorado House passed it 34-28 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1650201,
+   "measure_id": "SB 59",
+   "vote_date": "2026-03-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 59. Some Colorado legislators also hold a city or county seat. From the 76th General Assembly a member may not hold another elected office while serving. A special district seat is exempt. So is a member with under a year left in either post when they are sworn in. The Colorado Senate passed it 26-9 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 59. Some Colorado legislators also hold a city or county seat. From the 76th General Assembly a member may not hold another elected office while serving. A special district seat is exempt. So is a member with under a year left in either post when they are sworn in. The Colorado Senate passed it 26-9 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1692849,
+   "measure_id": "SB 150",
+   "vote_date": "2026-05-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 150. The Denver region's transit district is run by fifteen elected directors. From the 2028 election that becomes five elected seats. The governor appoints four more members, who need Senate approval. Directors face a two-term, eight-year limit. The district must also pay for an outside study of its service for disabled riders by mid-2027. The Colorado House passed it 39-26 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 150. The Denver region's transit district is run by fifteen elected directors. From the 2028 election that becomes five elected seats. The governor appoints four more members, who need Senate approval. Directors face a two-term, eight-year limit. The district must also pay for an outside study of its service for disabled riders by mid-2027. The Colorado House passed it 39-26 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1693796,
+   "measure_id": "SB 150",
+   "vote_date": "2026-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 150 and pass it. The Denver region's transit district is run by fifteen elected directors. From the 2028 election that becomes five elected seats. The governor appoints four more members, who need Senate approval. Directors face a two-term, eight-year limit. The district must also pay for an outside study of its service for disabled riders by mid-2027. The Colorado Senate voted 19-13 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 150. The Denver region's transit district is run by fifteen elected directors. From the 2028 election that becomes five elected seats. The governor appoints four more members, who need Senate approval. Directors face a two-term, eight-year limit. The district must also pay for an outside study of its service for disabled riders by mid-2027. The Colorado Senate voted 19-13 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1693795
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697030,
+   "measure_id": "SB 152",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 152. Colorado towns use cameras to catch speeding and red-light running. The act defines a mobile camera as one that can be moved between sites and fitted in a vehicle. A camera on a trailer counts as mobile only if it moves within 72 hours or sits in a work or school zone. The act also states these systems do not include license plate readers. The Colorado House passed it 51-14 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 152. Colorado towns use cameras to catch speeding and red-light running. The act defines a mobile camera as one that can be moved between sites and fitted in a vehicle. A camera on a trailer counts as mobile only if it moves within 72 hours or sits in a work or school zone. The act also states these systems do not include license plate readers. The Colorado House passed it 51-14 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1696039,
+   "measure_id": "SB 172",
+   "vote_date": "2026-05-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 172. The front range passenger rail district covers land from Wyoming to New Mexico. Its boundary was drawn by county and planning-region lines, which cut through towns. The act redraws it as a named list of whole municipalities plus defined county areas. The district's purpose and powers are unchanged. The Colorado House passed it 47-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 172. The front range passenger rail district covers land from Wyoming to New Mexico. Its boundary was drawn by county and planning-region lines, which cut through towns. The act redraws it as a named list of whole municipalities plus defined county areas. The district's purpose and powers are unchanged. The Colorado House passed it 47-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697505,
+   "measure_id": "SB 172",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 172 and pass it. The front range passenger rail district covers land from Wyoming to New Mexico. Its boundary was drawn by county and planning-region lines, which cut through towns. The act redraws it as a named list of whole municipalities plus defined county areas. The district's purpose and powers are unchanged. The Colorado Senate voted 25-10 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 172. The front range passenger rail district covers land from Wyoming to New Mexico. Its boundary was drawn by county and planning-region lines, which cut through towns. The act redraws it as a named list of whole municipalities plus defined county areas. The district's purpose and powers are unchanged. The Colorado Senate voted 25-10 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697504
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  }
+ ]
+}
