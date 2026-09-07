@@ -1,0 +1,436 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1650587,
+   "measure_id": "HB 1039",
+   "vote_date": "2026-03-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1039. County jails have to meet state standards, but city jails did not. From July 2027 a city jail must meet the same standards and follow the state jail statute. A city jail cannot use restraints on someone it reasonably believes is in labor. It must let a pregnant person held on a city charge go if labor starts, and offer a ride to hospital. The Colorado House passed it 46-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1039. County jails have to meet state standards, but city jails did not. From July 2027 a city jail must meet the same standards and follow the state jail statute. A city jail cannot use restraints on someone it reasonably believes is in labor. It must let a pregnant person held on a city charge go if labor starts, and offer a ride to hospital. The Colorado House passed it 46-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1668639,
+   "measure_id": "HB 1039",
+   "vote_date": "2026-03-24",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1039. County jails have to meet state standards, but city jails did not. From July 2027 a city jail must meet the same standards and follow the state jail statute. A city jail cannot use restraints on someone it reasonably believes is in labor. It must let a pregnant person held on a city charge go if labor starts, and offer a ride to hospital. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1039. County jails have to meet state standards, but city jails did not. From July 2027 a city jail must meet the same standards and follow the state jail statute. A city jail cannot use restraints on someone it reasonably believes is in labor. It must let a pregnant person held on a city charge go if labor starts, and offer a ride to hospital. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1661351,
+   "measure_id": "HB 1064",
+   "vote_date": "2026-03-12",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1064 and pass it. The youthful offender system is a separate prison track for younger people. The act rewrites what it is for, putting treatment and a safe return to the community first. Everyone in it now gets an assessment, a written plan, and a case manager who meets them each month. The act also says people with disabilities must be treated the same at sentencing. The Colorado House voted 42-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1064. The youthful offender system is a separate prison track for younger people. The act rewrites what it is for, putting treatment and a safe return to the community first. Everyone in it now gets an assessment, a written plan, and a case manager who meets them each month. The act also says people with disabilities must be treated the same at sentencing. The Colorado House voted 42-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1661350
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1648850,
+   "measure_id": "HB 1064",
+   "vote_date": "2026-03-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1064. The youthful offender system is a separate prison track for younger people. The act rewrites what it is for, putting treatment and a safe return to the community first. Everyone in it now gets an assessment, a written plan, and a case manager who meets them each month. The act also says people with disabilities must be treated the same at sentencing. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1064. The youthful offender system is a separate prison track for younger people. The act rewrites what it is for, putting treatment and a safe return to the community first. Everyone in it now gets an assessment, a written plan, and a case manager who meets them each month. The act also says people with disabilities must be treated the same at sentencing. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695598,
+   "measure_id": "HB 1123",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1123 and pass it. The act limits when jail staff may strip search someone. It is allowed at intake, when two staff believe something is hidden, or under a written policy after a past incident. The search must be filmed on a body camera and never on a ceiling camera. Staff need written approval to watch that film, jails must report each year, and a search for revenge is banned. The Colorado House voted 42-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1123. The act limits when jail staff may strip search someone. It is allowed at intake, when two staff believe something is hidden, or under a written policy after a past incident. The search must be filmed on a body camera and never on a ceiling camera. Staff need written approval to watch that film, jails must report each year, and a search for revenge is banned. The Colorado House voted 42-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1695597
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1693755,
+   "measure_id": "HB 1123",
+   "vote_date": "2026-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1123. The act limits when jail staff may strip search someone. It is allowed at intake, when two staff believe something is hidden, or under a written policy after a past incident. The search must be filmed on a body camera and never on a ceiling camera. Staff need written approval to watch that film, jails must report each year, and a search for revenge is banned. The Colorado Senate passed it 27-8 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1123. The act limits when jail staff may strip search someone. It is allowed at intake, when two staff believe something is hidden, or under a written policy after a past incident. The search must be filmed on a body camera and never on a ceiling camera. Staff need written approval to watch that film, jails must report each year, and a search for revenge is banned. The Colorado Senate passed it 27-8 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1693754
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1696340,
+   "measure_id": "HB 1138",
+   "vote_date": "2026-05-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1138. Theft rings hit stores across several towns, so no single force sees the whole picture. The act sets up a board and a grant fund for retail theft inside the state's criminal justice division. Police, district attorneys and joint task forces can apply for the money. It aims at theft of $2,000 or more and at gift card fraud. The model is the one Colorado used to bring down car theft. The Colorado House passed it 50-14 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1138. Theft rings hit stores across several towns, so no single force sees the whole picture. The act sets up a board and a grant fund for retail theft inside the state's criminal justice division. Police, district attorneys and joint task forces can apply for the money. It aims at theft of $2,000 or more and at gift card fraud. The model is the one Colorado used to bring down car theft. The Colorado House passed it 50-14 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1675625,
+   "measure_id": "HB 1232",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1232 and pass it. Colorado stopped charging court fees to children in 2021, but courts kept assessing them. The act says a court cannot charge a time payment fee to a child or their parent. It also bars collecting any court cost ordered against a child since July 2021. Being over 18 by the time of the hearing, or having the case moved to adult court, does not bring the fees back. The Colorado House voted 45-18 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1232. Colorado stopped charging court fees to children in 2021, but courts kept assessing them. The act says a court cannot charge a time payment fee to a child or their parent. It also bars collecting any court cost ordered against a child since July 2021. Being over 18 by the time of the hearing, or having the case moved to adult court, does not bring the fees back. The Colorado House voted 45-18 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1675624
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1671718,
+   "measure_id": "HB 1232",
+   "vote_date": "2026-03-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1232. Colorado stopped charging court fees to children in 2021, but courts kept assessing them. The act says a court cannot charge a time payment fee to a child or their parent. It also bars collecting any court cost ordered against a child since July 2021. Being over 18 by the time of the hearing, or having the case moved to adult court, does not bring the fees back. The Colorado Senate passed it 24-10 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1232. Colorado stopped charging court fees to children in 2021, but courts kept assessing them. The act says a court cannot charge a time payment fee to a child or their parent. It also bars collecting any court cost ordered against a child since July 2021. Being over 18 by the time of the hearing, or having the case moved to adult court, does not bring the fees back. The Colorado Senate passed it 24-10 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1656946,
+   "measure_id": "HB 1265",
+   "vote_date": "2026-03-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1265. Guns used in crimes often cross city and state lines before police find them. By September 2026 every Colorado police force must join the federal gun tracing system and share its data. When a force takes in a gun it has 90 days to send the details to the national tracing center. A force already covered through another agency or the state patrol is left out. The Colorado House passed it 39-23 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1265. Guns used in crimes often cross city and state lines before police find them. By September 2026 every Colorado police force must join the federal gun tracing system and share its data. When a force takes in a gun it has 90 days to send the details to the national tracing center. A force already covered through another agency or the state patrol is left out. The Colorado House passed it 39-23 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1681609,
+   "measure_id": "HB 1265",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1265. Guns used in crimes often cross city and state lines before police find them. By September 2026 every Colorado police force must join the federal gun tracing system and share its data. When a force takes in a gun it has 90 days to send the details to the national tracing center. A force already covered through another agency or the state patrol is left out. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1265. Guns used in crimes often cross city and state lines before police find them. By September 2026 every Colorado police force must join the federal gun tracing system and share its data. When a force takes in a gun it has 90 days to send the details to the national tracing center. A force already covered through another agency or the state patrol is left out. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1675676,
+   "measure_id": "HB 1302",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1302. The state bureau had to keep its gun background check desk open at least 12 hours a day. The act drops that number and lets the bureau set hours that match demand. The reason given is the three-day wait added in 2023. Requests can still be filed every day but Thanksgiving and Christmas, and go into the queue at once. The Colorado House passed it 42-21 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1302. The state bureau had to keep its gun background check desk open at least 12 hours a day. The act drops that number and lets the bureau set hours that match demand. The reason given is the three-day wait added in 2023. Requests can still be filed every day but Thanksgiving and Christmas, and go into the queue at once. The Colorado House passed it 42-21 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1681591,
+   "measure_id": "HB 1302",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1302. The state bureau had to keep its gun background check desk open at least 12 hours a day. The act drops that number and lets the bureau set hours that match demand. The reason given is the three-day wait added in 2023. Requests can still be filed every day but Thanksgiving and Christmas, and go into the queue at once. The Colorado Senate passed it 22-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1302. The state bureau had to keep its gun background check desk open at least 12 hours a day. The act drops that number and lets the bureau set hours that match demand. The reason given is the three-day wait added in 2023. Requests can still be filed every day but Thanksgiving and Christmas, and go into the queue at once. The Colorado Senate passed it 22-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697843,
+   "measure_id": "HB 1309",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1309 and pass it. Family courts decide who a child lives with when parents split up. The act spells out what coercive control means, covering money control, tracking, threats and cutting a person off from family. Where a court finds abuse more likely than not, it cannot order shared decisions over the other parent's objection. It may only do so if it makes specific findings that this is safe. Safety of the child and the abused parent comes first in setting parenting time. The Colorado House voted 43-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1309. Family courts decide who a child lives with when parents split up. The act spells out what coercive control means, covering money control, tracking, threats and cutting a person off from family. Where a court finds abuse more likely than not, it cannot order shared decisions over the other parent's objection. It may only do so if it makes specific findings that this is safe. Safety of the child and the abused parent comes first in setting parenting time. The Colorado House voted 43-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697842
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697569,
+   "measure_id": "HB 1309",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1309. Family courts decide who a child lives with when parents split up. The act spells out what coercive control means, covering money control, tracking, threats and cutting a person off from family. Where a court finds abuse more likely than not, it cannot order shared decisions over the other parent's objection. It may only do so if it makes specific findings that this is safe. Safety of the child and the abused parent comes first in setting parenting time. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1309. Family courts decide who a child lives with when parents split up. The act spells out what coercive control means, covering money control, tracking, threats and cutting a person off from family. Where a court finds abuse more likely than not, it cannot order shared decisions over the other parent's objection. It may only do so if it makes specific findings that this is safe. Safety of the child and the abused parent comes first in setting parenting time. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1693615,
+   "measure_id": "HB 1312",
+   "vote_date": "2026-05-04",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1312 and pass it. Police recruits in Colorado train under academy rules set by a state board. The act tells the attorney general to send that board a plan to update academy training by the end of 2030. If the board says no, another plan is due within a year. The board itself grows from 24 to 28 members. The Colorado House voted 47-18 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1312. Police recruits in Colorado train under academy rules set by a state board. The act tells the attorney general to send that board a plan to update academy training by the end of 2030. If the board says no, another plan is due within a year. The board itself grows from 24 to 28 members. The Colorado House voted 47-18 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1693126,
+    1693127
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1667110,
+   "measure_id": "SB 4",
+   "vote_date": "2026-03-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 4. An extreme risk protection order takes guns from someone a court finds dangerous. Only certain people could ask for one. The act adds crisis workers who met the person in the past six months. It widens who counts as a teacher to cover community and technical colleges. It also lets the school, hospital or treatment center that employs those people ask on its own behalf. The Colorado House passed it 39-24 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 4. An extreme risk protection order takes guns from someone a court finds dangerous. Only certain people could ask for one. The act adds crisis workers who met the person in the past six months. It widens who counts as a teacher to cover community and technical colleges. It also lets the school, hospital or treatment center that employs those people ask on its own behalf. The Colorado House passed it 39-24 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1621587,
+   "measure_id": "SB 4",
+   "vote_date": "2026-02-03",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 4. An extreme risk protection order takes guns from someone a court finds dangerous. Only certain people could ask for one. The act adds crisis workers who met the person in the past six months. It widens who counts as a teacher to cover community and technical colleges. It also lets the school, hospital or treatment center that employs those people ask on its own behalf. The Colorado Senate passed it 20-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 4. An extreme risk protection order takes guns from someone a court finds dangerous. Only certain people could ask for one. The act adds crisis workers who met the person in the past six months. It widens who counts as a teacher to cover community and technical colleges. It also lets the school, hospital or treatment center that employs those people ask on its own behalf. The Colorado Senate passed it 20-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1675609,
+   "measure_id": "SB 14",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 14. A person found not guilty by reason of insanity is committed for treatment rather than punished. At a hearing to end that commitment for good, the act puts the burden on the defendant. If evidence is raised that they do not qualify, they must show they do. A court that finds them not ready keeps them on conditional release and tells the district attorney. The Colorado House passed it 44-19 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 14. A person found not guilty by reason of insanity is committed for treatment rather than punished. At a hearing to end that commitment for good, the act puts the burden on the defendant. If evidence is raised that they do not qualify, they must show they do. A court that finds them not ready keeps them on conditional release and tells the district attorney. The Colorado House passed it 44-19 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1676686,
+   "measure_id": "SB 14",
+   "vote_date": "2026-04-06",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 14 and pass it. A person found not guilty by reason of insanity is committed for treatment rather than punished. At a hearing to end that commitment for good, the act puts the burden on the defendant. If evidence is raised that they do not qualify, they must show they do. A court that finds them not ready keeps them on conditional release and tells the district attorney. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 14. A person found not guilty by reason of insanity is committed for treatment rather than punished. At a hearing to end that commitment for good, the act puts the burden on the defendant. If evidence is raised that they do not qualify, they must show they do. A court that finds them not ready keeps them on conditional release and tells the district attorney. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1676685
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697449,
+   "measure_id": "SB 190",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 190. Colorado already makes police release body camera footage of misconduct complaints within 21 days. The act sets a separate track when police use of force kills someone. Once the internal inquiry, the outside investigation and any court case are over, the film of the death goes to the family on request. The force must make real efforts to find that family. Family here means a partner, child, parent, sibling or guardian. The Colorado House passed it 45-20 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 190. Colorado already makes police release body camera footage of misconduct complaints within 21 days. The act sets a separate track when police use of force kills someone. Once the internal inquiry, the outside investigation and any court case are over, the film of the death goes to the family on request. The force must make real efforts to find that family. Family here means a partner, child, parent, sibling or guardian. The Colorado House passed it 45-20 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1696212,
+   "measure_id": "SB 190",
+   "vote_date": "2026-05-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 190. Colorado already makes police release body camera footage of misconduct complaints within 21 days. The act sets a separate track when police use of force kills someone. Once the internal inquiry, the outside investigation and any court case are over, the film of the death goes to the family on request. The force must make real efforts to find that family. Family here means a partner, child, parent, sibling or guardian. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 190. Colorado already makes police release body camera footage of misconduct complaints within 21 days. The act sets a separate track when police use of force kills someone. Once the internal inquiry, the outside investigation and any court case are over, the film of the death goes to the family on request. The force must make real efforts to find that family. Family here means a partner, child, parent, sibling or guardian. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1696208,
+    1696209,
+    1696210,
+    1696211
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  }
+ ]
+}
