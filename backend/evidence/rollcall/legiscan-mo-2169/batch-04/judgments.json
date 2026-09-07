@@ -1,0 +1,205 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "MO",
+      "chamber": "house",
+      "session": "2169",
+      "roll": 1548018,
+      "measure_id": "HB 126",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 126. It would end no-excuse absentee voting in Missouri. A voter would again have to give one of the reasons the law lists to vote absentee, and a voter casting a ballot in person during the absentee period would have to show photo identification. The Missouri House passed it 85-64. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 126. It would end no-excuse absentee voting in Missouri. A voter would again have to give one of the reasons the law lists to vote absentee, and a voter casting a ballot in person during the absentee period would have to show photo identification. The Missouri House passed it 85-64. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MO",
+      "chamber": "house",
+      "session": "2169",
+      "roll": 1528972,
+      "measure_id": "HB 1175",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 1175. It would bring back the Second Amendment Preservation Act. The act declares certain federal gun laws invalid in Missouri and penalizes state and local police who help enforce them. A federal court had struck down the earlier version. The Missouri House passed it 100-51. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 1175. It would bring back the Second Amendment Preservation Act. The act declares certain federal gun laws invalid in Missouri and penalizes state and local police who help enforce them. A federal court had struck down the earlier version. The Missouri House passed it 100-51. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1528971
+      ]
+    },
+    {
+      "jurisdiction": "MO",
+      "chamber": "house",
+      "session": "2169",
+      "roll": 1554351,
+      "measure_id": "HB 1264",
+      "vote_date": "2025-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 1264. It would give a city or county thirty days to approve or deny a building permit request. If no answer came in thirty days the request would count as approved, and the local government could not then add requirements to it. The Missouri House passed it 96-37. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 1264. It would give a city or county thirty days to approve or deny a building permit request. If no answer came in thirty days the request would count as approved, and the local government could not then add requirements to it. The Missouri House passed it 96-37. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MO",
+      "chamber": "house",
+      "session": "2169",
+      "roll": 1529743,
+      "measure_id": "HB 195",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 195. It would create the Born-Alive Abortion Survivors Protection Act. A child born alive during or after an abortion would have the same rights as any other newborn, and a health care provider present would owe that child specific duties of care. The Missouri House passed it 109-32. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 195. It would create the Born-Alive Abortion Survivors Protection Act. A child born alive during or after an abortion would have the same rights as any other newborn, and a health care provider present would owe that child specific duties of care. The Missouri House passed it 109-32. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MO",
+      "chamber": "house",
+      "session": "2169",
+      "roll": 1501822,
+      "measure_id": "HB 269",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 269. It would create three tax credits for child care: one for people and businesses that donate to a child care provider, one for employers that help staff pay for child care, and one for the providers themselves. Credits would be aimed at child care deserts, meaning areas with high poverty or few providers. The Missouri House passed it 120-34. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 269. It would create three tax credits for child care: one for people and businesses that donate to a child care provider, one for employers that help staff pay for child care, and one for the providers themselves. Credits would be aimed at child care deserts, meaning areas with high poverty or few providers. The Missouri House passed it 120-34. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MO",
+      "chamber": "house",
+      "session": "2169",
+      "roll": 1543852,
+      "measure_id": "HB 344",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 344. It would give the state sole control over the rules for selling tobacco, nicotine and vaping products. Local ordinances on ingredients, licensing, product bans, or a purchase age above twenty-one would be overridden. The Missouri House passed it 108-29. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 344. It would give the state sole control over the rules for selling tobacco, nicotine and vaping products. Local ordinances on ingredients, licensing, product bans, or a purchase age above twenty-one would be overridden. The Missouri House passed it 108-29. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MO",
+      "chamber": "house",
+      "session": "2169",
+      "roll": 1529752,
+      "measure_id": "HB 437",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 437. It would rewrite the rules for settlement demands in injury and wrongful death claims. It sets what a demand must contain and when an insurer that turns one down can be made to pay more than the policy limit. The Missouri House passed it 96-52. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 437. It would rewrite the rules for settlement demands in injury and wrongful death claims. It sets what a demand must contain and when an insurer that turns one down can be made to pay more than the policy limit. The Missouri House passed it 96-52. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MO",
+      "chamber": "house",
+      "session": "2169",
+      "roll": 1539350,
+      "measure_id": "HB 493",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 493. It would exempt certain used personal property from state sales tax. The Missouri House passed it 104-41. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 493. It would exempt certain used personal property from state sales tax. The Missouri House passed it 104-41. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MO",
+      "chamber": "house",
+      "session": "2169",
+      "roll": 1535595,
+      "measure_id": "HB 794",
+      "vote_date": "2025-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 794. It would bar foreign nationals, foreign governments and foreign-owned entities from giving money to campaigns for or against Missouri ballot measures, including for polling, drafting and other preliminary work. It would also let each party name a challenger to watch absentee voting and ballot counting. The Missouri House passed it 99-48. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 794. It would bar foreign nationals, foreign governments and foreign-owned entities from giving money to campaigns for or against Missouri ballot measures, including for polling, drafting and other preliminary work. It would also let each party name a challenger to watch absentee voting and ballot counting. The Missouri House passed it 99-48. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MO",
+      "chamber": "house",
+      "session": "2169",
+      "roll": 1501819,
+      "measure_id": "HB 875",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 875. It would stop a public college or university from denying recognition, registration, funding or the use of its facilities to a student group because of the group's religious, political or ideological beliefs. The Missouri House passed it 108-47. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 875. It would stop a public college or university from denying recognition, registration, funding or the use of its facilities to a student group because of the group's religious, political or ideological beliefs. The Missouri House passed it 108-47. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "MO",
+      "chamber": "house",
+      "session": "2169",
+      "roll": 1553946,
+      "measure_id": "HB 952",
+      "vote_date": "2025-04-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 952. It would have limited what a jury may hear about who actually paid an injured person's medical bills, and changed how tort payments are handled for insurers. The House rejected it 37-107, so it did not become law.",
+      "nay_description": "Voted against HB 952. It would have limited what a jury may hear about who actually paid an injured person's medical bills, and changed how tort payments are handled for insurers. The House rejected it 37-107, so it did not become law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
