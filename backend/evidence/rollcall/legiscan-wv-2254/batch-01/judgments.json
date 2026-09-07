@@ -1,0 +1,76 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2254",
+   "roll": 1656964,
+   "measure_id": "HB 4005",
+   "vote_date": "2026-03-09",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4005, the Workforce Development Act of 2026, which deletes West Virginia's own list of seventeen jobs closed to workers under 18 and instead follows what federal law allows. The deleted list covered mining, logging and sawmilling, explosives, demolition, excavation, roofing above ground level, meat packing and several power-driven machines. The act also lets workers aged 16 and over do hazardous farm work that federal law permits, and it removes the rule limiting student apprentices to using such machinery for no more than five percent of their training hours. The Senate passed it 27-7 and it became law.",
+   "nay_description": "Voted against House Bill 4005, the Workforce Development Act of 2026, which deletes West Virginia's own list of seventeen jobs closed to workers under 18 and instead follows what federal law allows. The deleted list covered mining, logging and sawmilling, explosives, demolition, excavation, roofing above ground level, meat packing and several power-driven machines. The act also lets workers aged 16 and over do hazardous farm work that federal law permits, and it removes the rule limiting student apprentices to using such machinery for no more than five percent of their training hours. The Senate passed it 27-7 and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "house",
+   "session": "2254",
+   "roll": 1661410,
+   "measure_id": "SB 586",
+   "vote_date": "2026-03-12",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 586, which bars West Virginia's health secretary from requiring a public water system to have a low-hazard backflow prevention assembly inspected more often than once every three years. A backflow assembly stops used water from being drawn back into drinking water pipes. The act defines a low-hazard assembly as one that could cause only aesthetic or secondary quality problems, and it keeps yearly inspection for high-hazard assemblies, which are those that could let disease organisms or harmful substances into the supply. The House passed it 68-27 and it became law.",
+   "nay_description": "Voted against Senate Bill 586, which bars West Virginia's health secretary from requiring a public water system to have a low-hazard backflow prevention assembly inspected more often than once every three years. A backflow assembly stops used water from being drawn back into drinking water pipes. The act defines a low-hazard assembly as one that could cause only aesthetic or secondary quality problems, and it keeps yearly inspection for high-hazard assemblies, which are those that could let disease organisms or harmful substances into the supply. The House passed it 68-27 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "house",
+   "session": "2254",
+   "roll": 1661373,
+   "measure_id": "SB 641",
+   "vote_date": "2026-03-12",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 641, which narrows which aboveground storage tanks West Virginia regulates under the law it wrote after the 2014 chemical spill that left 300,000 people without safe tap water. It exempts tanks holding 10,000 gallons or less that sit inside a permitted mining area, outside a zone of critical concern, and hold none of the substances the act lists as harmful. It also gives a tank owner notice before an existing tank is reclassified when the state draws a new protection zone, and allows remote inspection methods instead of sending a person into a confined space. The House passed it 58-34 and it became law.",
+   "nay_description": "Voted against Senate Bill 641, which narrows which aboveground storage tanks West Virginia regulates under the law it wrote after the 2014 chemical spill that left 300,000 people without safe tap water. It exempts tanks holding 10,000 gallons or less that sit inside a permitted mining area, outside a zone of critical concern, and hold none of the substances the act lists as harmful. It also gives a tank owner notice before an existing tank is reclassified when the state draws a new protection zone, and allows remote inspection methods instead of sending a person into a confined space. The House passed it 58-34 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2254",
+   "roll": 1662807,
+   "measure_id": "SB 641",
+   "vote_date": "2026-03-13",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 641, which narrows which aboveground storage tanks West Virginia regulates under the law it wrote after the 2014 chemical spill that left 300,000 people without safe tap water. It exempts tanks holding 10,000 gallons or less that sit inside a permitted mining area, outside a zone of critical concern, and hold none of the substances the act lists as harmful. It also gives a tank owner notice before an existing tank is reclassified when the state draws a new protection zone, and allows remote inspection methods instead of sending a person into a confined space. The Senate agreed to the House version 25-8 and it became law.",
+   "nay_description": "Voted against Senate Bill 641, which narrows which aboveground storage tanks West Virginia regulates under the law it wrote after the 2014 chemical spill that left 300,000 people without safe tap water. It exempts tanks holding 10,000 gallons or less that sit inside a permitted mining area, outside a zone of critical concern, and hold none of the substances the act lists as harmful. It also gives a tank owner notice before an existing tank is reclassified when the state draws a new protection zone, and allows remote inspection methods instead of sending a person into a confined space. The Senate agreed to the House version 25-8 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
