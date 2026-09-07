@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { Link, useLocation, useSearchParams } from "react-router";
+import type { MetaFunction } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest, useMe } from "@voteapp/api-client";
+import { APP_NAME, apiRequest, useMe } from "@voteapp/api-client";
 import {
   BALLOT_SORTS,
   PUBLIC_BALLOT_SORTS,
@@ -27,6 +28,11 @@ import {
 import { useRaceTypeParam } from "../lib/useRaceTypeParam";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
+import { pageMeta } from "../lib/pageMeta";
+
+// Same title as useDocumentTitle below, but in the server-rendered HTML. No
+// path: a ballot URL is district-specific, so no canonical or og:url here.
+export const meta: MetaFunction = () => pageMeta({ title: `Elections · ${APP_NAME}` });
 import { useHydrated } from "../lib/useHydrated";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { useTrackBallotResult, track } from "../lib/usage";

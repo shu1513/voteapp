@@ -3,6 +3,10 @@ import { meta as rootMeta } from "../root";
 import { meta as termsMeta } from "../routes/terms";
 import { meta as privacyMeta } from "../routes/privacy";
 import { meta as disclaimerMeta } from "../routes/disclaimer";
+import { meta as homeMeta } from "../pages/HomePage";
+import { meta as ballotMeta } from "../pages/BallotPage";
+import { meta as draftMeta } from "../pages/DraftPage";
+import { loader as notFoundLoader, meta as notFoundMeta } from "../pages/NotFoundPage";
 import { DEFAULT_DESCRIPTION, pageMeta, SITE_ORIGIN } from "./pageMeta";
 
 type Descriptor = Record<string, unknown>;
@@ -22,7 +26,39 @@ const ROUTE_METAS: Array<[string, Descriptor[]]> = [
   ["terms", (termsMeta as unknown as () => Descriptor[])()],
   ["privacy", (privacyMeta as unknown as () => Descriptor[])()],
   ["disclaimer", (disclaimerMeta as unknown as () => Descriptor[])()],
+  ["home", (homeMeta as unknown as () => Descriptor[])()],
+  ["ballot", (ballotMeta as unknown as () => Descriptor[])()],
+  ["draft", (draftMeta as unknown as () => Descriptor[])()],
+  ["not-found", (notFoundMeta as unknown as () => Descriptor[])()],
 ];
+
+function canonical(descriptors: Descriptor[]): string | undefined {
+  return descriptors.find((entry) => entry.tagName === "link" && entry.rel === "canonical")?.href as
+    | string
+    | undefined;
+}
+
+describe("canonical links", () => {
+  it("follows og:url on routes that know their path", () => {
+    const home = (homeMeta as unknown as () => Descriptor[])();
+    expect(canonical(home)).toBe(`${SITE_ORIGIN}/`);
+    expect(canonical(pageMeta({ title: "x", path: "/mission" }))).toBe(`${SITE_ORIGIN}/mission`);
+  });
+
+  it("is omitted for the ballot and the draft, which are personalised", () => {
+    expect(canonical((ballotMeta as unknown as () => Descriptor[])())).toBeUndefined();
+    expect(canonical((draftMeta as unknown as () => Descriptor[])())).toBeUndefined();
+    expect(byProperty((ballotMeta as unknown as () => Descriptor[])(), "og:url")).toBeUndefined();
+  });
+});
+
+describe("not-found route", () => {
+  it("answers 404 without throwing, so the page still renders", () => {
+    const result = notFoundLoader() as unknown as { data: unknown; init?: { status?: number } };
+    expect(result.data).toBeNull();
+    expect(result.init?.status).toBe(404);
+  });
+});
 
 describe("every route that sets meta ships a share card", () => {
   it.each(ROUTE_METAS)("%s has a title and description", (_name, descriptors) => {
