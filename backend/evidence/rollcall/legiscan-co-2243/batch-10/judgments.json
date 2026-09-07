@@ -1,0 +1,372 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1675849,
+   "measure_id": "HB 1127",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1127 and pass it. Colorado tracks how many road deaths involve drink or drugs. Coroners used to send a monthly written report of every crash death. The act replaces that with an electronic report each quarter, sent when the transport department asks. It must carry blood alcohol readings and drug screen results for everyone who died. The Colorado House voted 42-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1127. Colorado tracks how many road deaths involve drink or drugs. Coroners used to send a monthly written report of every crash death. The act replaces that with an electronic report each quarter, sent when the transport department asks. It must carry blood alcohol readings and drug screen results for everyone who died. The Colorado House voted 42-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1675848
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1687488,
+   "measure_id": "HB 1143",
+   "vote_date": "2026-04-22",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1143. Clinical placements, internships and volunteer roles often demand a social security number for a background check. People who lawfully do not have one are shut out. The act says a check for a non-work educational chance may not require one. A taxpayer identification number or a name-based or fingerprint check must be accepted instead. The Colorado House passed it 42-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1143. Clinical placements, internships and volunteer roles often demand a social security number for a background check. People who lawfully do not have one are shut out. The act says a check for a non-work educational chance may not require one. A taxpayer identification number or a name-based or fingerprint check must be accepted instead. The Colorado House passed it 42-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1692913,
+   "measure_id": "HB 1143",
+   "vote_date": "2026-05-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1143. Clinical placements, internships and volunteer roles often demand a social security number for a background check. People who lawfully do not have one are shut out. The act says a check for a non-work educational chance may not require one. A taxpayer identification number or a name-based or fingerprint check must be accepted instead. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1143. Clinical placements, internships and volunteer roles often demand a social security number for a background check. People who lawfully do not have one are shut out. The act says a check for a non-work educational chance may not require one. A taxpayer identification number or a name-based or fingerprint check must be accepted instead. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1695898,
+   "measure_id": "HB 1256",
+   "vote_date": "2026-05-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1256. A person leaving a Colorado prison gets $100, a sum unchanged since 1972. The act does not raise it, but bars the state from taking any of it for restitution, fees, clothing or the ride home. A ride home anywhere in Colorado becomes a duty rather than an option. Everyone eligible is now enrolled in the state ID program unless they opt out. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1256. A person leaving a Colorado prison gets $100, a sum unchanged since 1972. The act does not raise it, but bars the state from taking any of it for restitution, fees, clothing or the ride home. A ride home anywhere in Colorado becomes a duty rather than an option. Everyone eligible is now enrolled in the state ID program unless they opt out. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1659710,
+   "measure_id": "SB 13",
+   "vote_date": "2026-03-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 13. Colorado's bigamy law made it a crime for a married person to live with someone else. The act removes living together from the offense. Bigamy now means marrying or entering a civil union while already married or in one. The old definition of cohabitation is repealed. The Colorado House passed it 46-19 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 13. Colorado's bigamy law made it a crime for a married person to live with someone else. The act removes living together from the offense. Bigamy now means marrying or entering a civil union while already married or in one. The old definition of cohabitation is repealed. The Colorado House passed it 46-19 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1659709,
+    1659711
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1662424,
+   "measure_id": "SB 13",
+   "vote_date": "2026-03-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 13 and pass it. Colorado's bigamy law made it a crime for a married person to live with someone else. The act removes living together from the offense. Bigamy now means marrying or entering a civil union while already married or in one. The old definition of cohabitation is repealed. The Colorado Senate voted 27-7 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 13. Colorado's bigamy law made it a crime for a married person to live with someone else. The act removes living together from the offense. Bigamy now means marrying or entering a civil union while already married or in one. The old definition of cohabitation is repealed. The Colorado Senate voted 27-7 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1662423
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1675942,
+   "measure_id": "SB 18",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 18. A name change petition is a public court record, including the old and new name. From July 2026 the record is sealed when the person filing is under 18. The court may never publish either name online. Someone who filed before that date can ask for their record to be sealed and the court must agree. The Colorado House passed it 42-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 18. A name change petition is a public court record, including the old and new name. From July 2026 the record is sealed when the person filing is under 18. The court may never publish either name online. Someone who filed before that date can ask for their record to be sealed and the court must agree. The Colorado House passed it 42-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1642381,
+   "measure_id": "SB 18",
+   "vote_date": "2026-02-24",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 18. A name change petition is a public court record, including the old and new name. From July 2026 the record is sealed when the person filing is under 18. The court may never publish either name online. Someone who filed before that date can ask for their record to be sealed and the court must agree. The Colorado Senate passed it 20-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 18. A name change petition is a public court record, including the old and new name. From July 2026 the record is sealed when the person filing is under 18. The court may never publish either name online. Someone who filed before that date can ask for their record to be sealed and the court must agree. The Colorado Senate passed it 20-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1696935,
+   "measure_id": "SB 35",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 35. Speeding is behind hundreds of Colorado road deaths a year. The act adds license points on top of the usual ones for repeat serious speeding. A second offense in a year adds two points, a third in two years adds four, and a fifth in five years adds eight. Driving at 100 miles an hour or more adds four points on its own. The Colorado House passed it 35-30 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 35. Speeding is behind hundreds of Colorado road deaths a year. The act adds license points on top of the usual ones for repeat serious speeding. A second offense in a year adds two points, a third in two years adds four, and a fifth in five years adds eight. Driving at 100 miles an hour or more adds four points on its own. The Colorado House passed it 35-30 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695614,
+   "measure_id": "SB 36",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 36. Colorado has rules that kick in when prison beds run short, but they made little difference. The trigger moves from a three percent vacancy rate to four percent. When it trips, the department has 48 hours to tell a much longer list, now including sheriffs, probation chiefs, public defenders and community corrections boards. Each of them has to confirm in writing that they got the notice. The Colorado House passed it 41-23 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 36. Colorado has rules that kick in when prison beds run short, but they made little difference. The trigger moves from a three percent vacancy rate to four percent. When it trips, the department has 48 hours to tell a much longer list, now including sheriffs, probation chiefs, public defenders and community corrections boards. Each of them has to confirm in writing that they got the notice. The Colorado House passed it 41-23 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1695962,
+   "measure_id": "SB 36",
+   "vote_date": "2026-05-08",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 36 and pass it. Colorado has rules that kick in when prison beds run short, but they made little difference. The trigger moves from a three percent vacancy rate to four percent. When it trips, the department has 48 hours to tell a much longer list, now including sheriffs, probation chiefs, public defenders and community corrections boards. Each of them has to confirm in writing that they got the notice. The Colorado Senate voted 22-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 36. Colorado has rules that kick in when prison beds run short, but they made little difference. The trigger moves from a three percent vacancy rate to four percent. When it trips, the department has 48 hours to tell a much longer list, now including sheriffs, probation chiefs, public defenders and community corrections boards. Each of them has to confirm in writing that they got the notice. The Colorado Senate voted 22-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1695961
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1684585,
+   "measure_id": "SB 104",
+   "vote_date": "2026-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 104. Firefighters and police forcing a school door waste time in an emergency. By July 2030 every Colorado school must fit at least one outside key box. The box has to meet a national safety standard and hold keys or access cards for the local police. Home schools are not covered. The Colorado House passed it 42-20 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 104. Firefighters and police forcing a school door waste time in an emergency. By July 2030 every Colorado school must fit at least one outside key box. The box has to meet a national safety standard and hold keys or access cards for the local police. Home schools are not covered. The Colorado House passed it 42-20 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1696055,
+   "measure_id": "SB 115",
+   "vote_date": "2026-05-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 115. Some people in Colorado prisons are old and have served decades. The act lets someone aged 60 or over who has served at least 20 years ask the sentencing court to look again. The window to file runs three years. Sex offenses, human trafficking, life without parole, crimes against a child under 12 and crimes against on-duty responders are all barred. The Colorado House passed it 42-21 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 115. Some people in Colorado prisons are old and have served decades. The act lets someone aged 60 or over who has served at least 20 years ask the sentencing court to look again. The window to file runs three years. Sex offenses, human trafficking, life without parole, crimes against a child under 12 and crimes against on-duty responders are all barred. The Colorado House passed it 42-21 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1696054,
+    1696056
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697517,
+   "measure_id": "SB 115",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 115 and pass it. Some people in Colorado prisons are old and have served decades. The act lets someone aged 60 or over who has served at least 20 years ask the sentencing court to look again. The window to file runs three years. Sex offenses, human trafficking, life without parole, crimes against a child under 12 and crimes against on-duty responders are all barred. The Colorado Senate voted 18-17 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 115. Some people in Colorado prisons are old and have served decades. The act lets someone aged 60 or over who has served at least 20 years ask the sentencing court to look again. The window to file runs three years. Sex offenses, human trafficking, life without parole, crimes against a child under 12 and crimes against on-duty responders are all barred. The Colorado Senate voted 18-17 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697516
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1692028,
+   "measure_id": "SB 158",
+   "vote_date": "2026-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 158. A young offender who finishes a special prison program could ask the governor for early parole. Only the governor could grant it. The act lets the state parole board grant it too. The board must still weigh victim statements and find that release fits public safety. The Colorado House passed it 45-18 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 158. A young offender who finishes a special prison program could ask the governor for early parole. Only the governor could grant it. The act lets the state parole board grant it too. The board must still weigh victim statements and find that release fits public safety. The Colorado House passed it 45-18 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1685552,
+   "measure_id": "SB 158",
+   "vote_date": "2026-04-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 158. A young offender who finishes a special prison program could ask the governor for early parole. Only the governor could grant it. The act lets the state parole board grant it too. The board must still weigh victim statements and find that release fits public safety. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 158. A young offender who finishes a special prison program could ask the governor for early parole. Only the governor could grant it. The act lets the state parole board grant it too. The board must still weigh victim statements and find that release fits public safety. The Colorado Senate passed it 23-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1692121,
+   "measure_id": "SB 159",
+   "vote_date": "2026-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 159. Colorado lets inmates cut their sentence by earning time for good behavior. The act raises the monthly cap from 12 days to 14 for most inmates. Those convicted of listed serious crimes, including sexual assault and felony car theft, stay at 12. Achievement time of up to 60 days a milestone is unchanged. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 159. Colorado lets inmates cut their sentence by earning time for good behavior. The act raises the monthly cap from 12 days to 14 for most inmates. Those convicted of listed serious crimes, including sexual assault and felony car theft, stay at 12. Achievement time of up to 60 days a milestone is unchanged. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1685460,
+   "measure_id": "SB 159",
+   "vote_date": "2026-04-20",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 159. Colorado lets inmates cut their sentence by earning time for good behavior. The act raises the monthly cap from 12 days to 14 for most inmates. Those convicted of listed serious crimes, including sexual assault and felony car theft, stay at 12. Achievement time of up to 60 days a milestone is unchanged. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 159. Colorado lets inmates cut their sentence by earning time for good behavior. The act raises the monthly cap from 12 days to 14 for most inmates. Those convicted of listed serious crimes, including sexual assault and felony car theft, stay at 12. Achievement time of up to 60 days a milestone is unchanged. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695719,
+   "measure_id": "SB 174",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 174. Some marketing firms collect people's legal problems and sell the details to law firms. The act says the caller often sounds like a lawyer but is not one. It makes lead generation marketing for legal services a deceptive trade practice. That opens it to state enforcement and penalties. The Colorado House passed it 51-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 174. Some marketing firms collect people's legal problems and sell the details to law firms. The act says the caller often sounds like a lawyer but is not one. It makes lead generation marketing for legal services a deceptive trade practice. That opens it to state enforcement and penalties. The Colorado House passed it 51-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

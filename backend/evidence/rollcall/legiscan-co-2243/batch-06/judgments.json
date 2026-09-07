@@ -1,0 +1,330 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1693108,
+   "measure_id": "HB 1006",
+   "vote_date": "2026-05-04",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1006 and pass it. Some Colorado colleges serve mostly rural, low-income or first-generation students. The act lets the state name such a college a thriving institution when it does well by those students. An advisory group helps the state set what doing well means. One of the measures is how much graduates go on to earn. The Colorado House voted 43-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1006. Some Colorado colleges serve mostly rural, low-income or first-generation students. The act lets the state name such a college a thriving institution when it does well by those students. An advisory group helps the state set what doing well means. One of the measures is how much graduates go on to earn. The Colorado House voted 43-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1693107
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1692370,
+   "measure_id": "HB 1006",
+   "vote_date": "2026-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1006. Some Colorado colleges serve mostly rural, low-income or first-generation students. The act lets the state name such a college a thriving institution when it does well by those students. An advisory group helps the state set what doing well means. One of the measures is how much graduates go on to earn. The Colorado Senate passed it 26-9 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1006. Some Colorado colleges serve mostly rural, low-income or first-generation students. The act lets the state name such a college a thriving institution when it does well by those students. An advisory group helps the state set what doing well means. One of the measures is how much graduates go on to earn. The Colorado Senate passed it 26-9 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695690,
+   "measure_id": "HB 1028",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1028 and pass it. A seal of biliteracy on a diploma shows a graduate can use English and another language. Only 55 of Colorado's 179 school districts offered it. The act widens how a student can show the skill, through class work, tests or other proof. It also adds a second, lower seal for speaking and listening alone. The Colorado House voted 47-17 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1028. A seal of biliteracy on a diploma shows a graduate can use English and another language. Only 55 of Colorado's 179 school districts offered it. The act widens how a student can show the skill, through class work, tests or other proof. It also adds a second, lower seal for speaking and listening alone. The Colorado House voted 47-17 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1695689
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697594,
+   "measure_id": "HB 1141",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1141 and pass it. Colorado law bars unfair treatment by places open to the public. The act spells out how that applies to schools and colleges. A school breaks it by shutting a student out of a program on protected grounds. It also breaks it by knowing of a hostile setting and failing to act. The Colorado House voted 43-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1141. Colorado law bars unfair treatment by places open to the public. The act spells out how that applies to schools and colleges. A school breaks it by shutting a student out of a program on protected grounds. It also breaks it by knowing of a hostile setting and failing to act. The Colorado House voted 43-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697593
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697595,
+   "measure_id": "HB 1141",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1141. Colorado law bars unfair treatment by places open to the public. The act spells out how that applies to schools and colleges. A school breaks it by shutting a student out of a program on protected grounds. It also breaks it by knowing of a hostile setting and failing to act. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1141. Colorado law bars unfair treatment by places open to the public. The act spells out how that applies to schools and colleges. A school breaks it by shutting a student out of a program on protected grounds. It also breaks it by knowing of a hostile setting and failing to act. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1671710,
+   "measure_id": "HB 1193",
+   "vote_date": "2026-03-27",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1193. Colorado schools test children's sight and hearing in set grades. The list started at kindergarten. The act adds pre-kindergarten to the grades where sight is tested. A parent can still opt out on religious or personal grounds. The Colorado House passed it 40-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1193. Colorado schools test children's sight and hearing in set grades. The list started at kindergarten. The act adds pre-kindergarten to the grades where sight is tested. A parent can still opt out on religious or personal grounds. The Colorado House passed it 40-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1692040,
+   "measure_id": "HB 1193",
+   "vote_date": "2026-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1193. Colorado schools test children's sight and hearing in set grades. The list started at kindergarten. The act adds pre-kindergarten to the grades where sight is tested. A parent can still opt out on religious or personal grounds. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1193. Colorado schools test children's sight and hearing in set grades. The list started at kindergarten. The act adds pre-kindergarten to the grades where sight is tested. A parent can still opt out on religious or personal grounds. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1686848,
+   "measure_id": "HB 1227",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1227. When the state takes a child into care, a judge decides what happens next. The act confirms the child is a party in their own right, all the way through appeal. If the county asks to drop the case and the child's lawyer objects, the court must hold a hearing. The county then has to show a fair reason, or the case goes on. The Colorado House passed it 45-18 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1227. When the state takes a child into care, a judge decides what happens next. The act confirms the child is a party in their own right, all the way through appeal. If the county asks to drop the case and the child's lawyer objects, the court must hold a hearing. The county then has to show a fair reason, or the case goes on. The Colorado House passed it 45-18 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1694837,
+   "measure_id": "HB 1227",
+   "vote_date": "2026-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1227. When the state takes a child into care, a judge decides what happens next. The act confirms the child is a party in their own right, all the way through appeal. If the county asks to drop the case and the child's lawyer objects, the court must hold a hearing. The county then has to show a fair reason, or the case goes on. The Colorado Senate passed it 28-7 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1227. When the state takes a child into care, a judge decides what happens next. The act confirms the child is a party in their own right, all the way through appeal. If the county asks to drop the case and the child's lawyer objects, the court must hold a hearing. The county then has to show a fair reason, or the case goes on. The Colorado Senate passed it 28-7 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1675686,
+   "measure_id": "HB 1259",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1259 and pass it. The act makes several changes to Colorado's early childhood programs. Preschool providers and the state must keep child records private. They cannot hand out data that would name a child. The state education fund may pay for universal preschool, and a tribal-licensed child care home no longer needs a state license too. The Colorado House voted 44-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1259. The act makes several changes to Colorado's early childhood programs. Preschool providers and the state must keep child records private. They cannot hand out data that would name a child. The state education fund may pay for universal preschool, and a tribal-licensed child care home no longer needs a state license too. The Colorado House voted 44-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1675685
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1686883,
+   "measure_id": "HB 1314",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1314. Children removed from home do better with relatives than with strangers. The act makes counties write down the effort they make to find and use kin. It also keeps a grandparent's right to ask for family time after the child's parent dies. Before, that death could end the right. The Colorado House passed it 46-18 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1314. Children removed from home do better with relatives than with strangers. The act makes counties write down the effort they make to find and use kin. It also keeps a grandparent's right to ask for family time after the child's parent dies. Before, that death could end the right. The Colorado House passed it 46-18 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1686636,
+   "measure_id": "SB 19",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 19. Early childhood councils plan child care and family services in each part of the state. The act scraps the old rules and rebuilds the councils as one statewide system. From July 2026 each council works to a plan agreed with the state. Both the plan and the measures used to judge it are reviewed each year. The Colorado House passed it 45-18 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 19. Early childhood councils plan child care and family services in each part of the state. The act scraps the old rules and rebuilds the councils as one statewide system. From July 2026 each council works to a plan agreed with the state. Both the plan and the measures used to judge it are reviewed each year. The Colorado House passed it 45-18 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695653,
+   "measure_id": "SB 20",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 20. Child care licensing checks in Colorado were often done by outside contractors. From July 2026 the state must start phasing that out where it can. It has to rely on its own licensing specialists instead. Licensed facilities must also keep staff records current in the state's professional development system. The Colorado House passed it 48-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 20. Child care licensing checks in Colorado were often done by outside contractors. From July 2026 the state must start phasing that out where it can. It has to rely on its own licensing specialists instead. Licensed facilities must also keep staff records current in the state's professional development system. The Colorado House passed it 48-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697022,
+   "measure_id": "SB 103",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 103. A community school ties a school to health clinics, legal help and family services. Colorado law offered that mainly as a last resort after a school was already failing. By July 2027 every district, charter and school board must adopt and publish a written policy sending help to at-risk students. The policy may set up ties with community groups. The Colorado House passed it 43-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 103. A community school ties a school to health clinics, legal help and family services. Colorado law offered that mainly as a last resort after a school was already failing. By July 2027 every district, charter and school board must adopt and publish a written policy sending help to at-risk students. The policy may set up ties with community groups. The Colorado House passed it 43-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1678545,
+   "measure_id": "SB 103",
+   "vote_date": "2026-04-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 103. A community school ties a school to health clinics, legal help and family services. Colorado law offered that mainly as a last resort after a school was already failing. By July 2027 every district, charter and school board must adopt and publish a written policy sending help to at-risk students. The policy may set up ties with community groups. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 103. A community school ties a school to health clinics, legal help and family services. Colorado law offered that mainly as a last resort after a school was already failing. By July 2027 every district, charter and school board must adopt and publish a written policy sending help to at-risk students. The policy may set up ties with community groups. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697622,
+   "measure_id": "SB 125",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 125. Students with disabilities have leaned on federal law for the right to a suitable free education. The act writes those core protections into Colorado law. It covers how schools find and assess such students and what a district owes them. The stated reason is to hold the rights steady whatever the federal government enforces. The Colorado House passed it 47-18 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 125. Students with disabilities have leaned on federal law for the right to a suitable free education. The act writes those core protections into Colorado law. It covers how schools find and assess such students and what a district owes them. The stated reason is to hold the rights steady whatever the federal government enforces. The Colorado House passed it 47-18 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697890,
+   "measure_id": "SB 125",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 125 and pass it. Students with disabilities have leaned on federal law for the right to a suitable free education. The act writes those core protections into Colorado law. It covers how schools find and assess such students and what a district owes them. The stated reason is to hold the rights steady whatever the federal government enforces. The Colorado Senate voted 24-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 125. Students with disabilities have leaned on federal law for the right to a suitable free education. The act writes those core protections into Colorado law. It covers how schools find and assess such students and what a district owes them. The stated reason is to hold the rights steady whatever the federal government enforces. The Colorado Senate voted 24-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697889
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  }
+ ]
+}

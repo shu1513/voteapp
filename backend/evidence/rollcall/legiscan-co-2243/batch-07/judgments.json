@@ -1,0 +1,433 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695572,
+   "measure_id": "HB 1010",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1010 and pass it. The state workforce council plans job training and hiring programs. The act says at least one of the governor's picks must be 55 or older and speak for older workers. From 2027 the council has to meet the state aging commission twice a year. It must also gather data on how older adults do at work and report on it. The Colorado House voted 46-18 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1010. The state workforce council plans job training and hiring programs. The act says at least one of the governor's picks must be 55 or older and speak for older workers. From 2027 the council has to meet the state aging commission twice a year. It must also gather data on how older adults do at work and report on it. The Colorado House voted 46-18 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1695571
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1692805,
+   "measure_id": "HB 1010",
+   "vote_date": "2026-05-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1010. The state workforce council plans job training and hiring programs. The act says at least one of the governor's picks must be 55 or older and speak for older workers. From 2027 the council has to meet the state aging commission twice a year. It must also gather data on how older adults do at work and report on it. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1010. The state workforce council plans job training and hiring programs. The act says at least one of the governor's picks must be 55 or older and speak for older workers. From 2027 the council has to meet the state aging commission twice a year. It must also gather data on how older adults do at work and report on it. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1694758,
+   "measure_id": "HB 1043",
+   "vote_date": "2026-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1043. Ride-hailing drivers must carry a rider's service animal, but some refuse. The act makes the company train every driver on that duty. A driver has six months from joining to finish it or lose use of the app. The company must also write a policy against unfair treatment, give it to drivers, and post it online. The Colorado House passed it 46-18 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1043. Ride-hailing drivers must carry a rider's service animal, but some refuse. The act makes the company train every driver on that duty. A driver has six months from joining to finish it or lose use of the app. The company must also write a policy against unfair treatment, give it to drivers, and post it online. The Colorado House passed it 46-18 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1696255,
+   "measure_id": "HB 1043",
+   "vote_date": "2026-05-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1043. Ride-hailing drivers must carry a rider's service animal, but some refuse. The act makes the company train every driver on that duty. A driver has six months from joining to finish it or lose use of the app. The company must also write a policy against unfair treatment, give it to drivers, and post it online. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1043. Ride-hailing drivers must carry a rider's service animal, but some refuse. The act makes the company train every driver on that duty. A driver has six months from joining to finish it or lose use of the app. The company must also write a policy against unfair treatment, give it to drivers, and post it online. The Colorado Senate passed it 24-11 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1682149,
+   "measure_id": "HB 1135",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1135 and pass it. Hair relaxers and hairpieces can carry chemicals linked to cancer or birth defects. From July 2027 a maker cannot sell such a product in Colorado without a clear warning label. The label must be at least 12-point type and name which harm is at issue. Breaking the rule counts as a deceptive trade practice. The Colorado House voted 44-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1135. Hair relaxers and hairpieces can carry chemicals linked to cancer or birth defects. From July 2027 a maker cannot sell such a product in Colorado without a clear warning label. The label must be at least 12-point type and name which harm is at issue. Breaking the rule counts as a deceptive trade practice. The Colorado House voted 44-19 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1682148
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1677438,
+   "measure_id": "HB 1135",
+   "vote_date": "2026-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1135. Hair relaxers and hairpieces can carry chemicals linked to cancer or birth defects. From July 2027 a maker cannot sell such a product in Colorado without a clear warning label. The label must be at least 12-point type and name which harm is at issue. Breaking the rule counts as a deceptive trade practice. The Colorado Senate passed it 24-10 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1135. Hair relaxers and hairpieces can carry chemicals linked to cancer or birth defects. From July 2027 a maker cannot sell such a product in Colorado without a clear warning label. The label must be at least 12-point type and name which harm is at issue. Breaking the rule counts as a deceptive trade practice. The Colorado Senate passed it 24-10 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695576,
+   "measure_id": "HB 1207",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1207 and pass it. Large employers already send the federal government a count of staff by race, sex and job type. From July 2027 they must file the same figures with the Colorado secretary of state. The duty covers private firms with 100 or more workers. Government and school employers are left out, and the duty stands even if the federal form goes away. The Colorado House voted 42-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1207. Large employers already send the federal government a count of staff by race, sex and job type. From July 2027 they must file the same figures with the Colorado secretary of state. The duty covers private firms with 100 or more workers. Government and school employers are left out, and the duty stands even if the federal form goes away. The Colorado House voted 42-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1695575
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1693604,
+   "measure_id": "HB 1207",
+   "vote_date": "2026-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1207. Large employers already send the federal government a count of staff by race, sex and job type. From July 2027 they must file the same figures with the Colorado secretary of state. The duty covers private firms with 100 or more workers. Government and school employers are left out, and the duty stands even if the federal form goes away. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1207. Large employers already send the federal government a count of staff by race, sex and job type. From July 2027 they must file the same figures with the Colorado secretary of state. The duty covers private firms with 100 or more workers. Government and school employers are left out, and the duty stands even if the federal form goes away. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697867,
+   "measure_id": "HB 1272",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1272 and pass it. Workers who labor in extreme heat or cold can fall ill or die. The act does not set a heat rule employers must follow. It tells the state labor division to gather data from health records, injury claims and a public reporting page. By July 2028 the division must publish a model plan. The plan covers water, rest breaks, training, and easing new workers into the heat. The Colorado House voted 43-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1272. Workers who labor in extreme heat or cold can fall ill or die. The act does not set a heat rule employers must follow. It tells the state labor division to gather data from health records, injury claims and a public reporting page. By July 2028 the division must publish a model plan. The plan covers water, rest breaks, training, and easing new workers into the heat. The Colorado House voted 43-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697866
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697598,
+   "measure_id": "HB 1272",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1272. Workers who labor in extreme heat or cold can fall ill or die. The act does not set a heat rule employers must follow. It tells the state labor division to gather data from health records, injury claims and a public reporting page. By July 2028 the division must publish a model plan. The plan covers water, rest breaks, training, and easing new workers into the heat. The Colorado Senate passed it 21-14 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1272. Workers who labor in extreme heat or cold can fall ill or die. The act does not set a heat rule employers must follow. It tells the state labor division to gather data from health records, injury claims and a public reporting page. By July 2028 the division must publish a model plan. The plan covers water, rest breaks, training, and easing new workers into the heat. The Colorado Senate passed it 21-14 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1675682,
+   "measure_id": "SB 47",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 47. Colorado firefighters can win collective bargaining rights by a vote of local residents. That vote had to fall at a general election, which limited when it could happen. The act adds coordinated elections to the list. It also fixes the petition threshold to the last regular municipal or district election. The Colorado House passed it 43-20 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 47. Colorado firefighters can win collective bargaining rights by a vote of local residents. That vote had to fall at a general election, which limited when it could happen. The act adds coordinated elections to the list. It also fixes the petition threshold to the last regular municipal or district election. The Colorado House passed it 43-20 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1659791,
+   "measure_id": "SB 47",
+   "vote_date": "2026-03-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 47. Colorado firefighters can win collective bargaining rights by a vote of local residents. That vote had to fall at a general election, which limited when it could happen. The act adds coordinated elections to the list. It also fixes the petition threshold to the last regular municipal or district election. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 47. Colorado firefighters can win collective bargaining rights by a vote of local residents. That vote had to fall at a general election, which limited when it could happen. The act adds coordinated elections to the list. It also fixes the petition threshold to the last regular municipal or district election. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1692127,
+   "measure_id": "SB 51",
+   "vote_date": "2026-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 51. Apps often have no reliable way to tell whether a user is a child. From July 2028 an app store must ask, at account setup, for the age or age range of the person using the device. It then passes that as a signal to apps that ask. Only the least needed may be sent, and it cannot go to anyone else. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 51. Apps often have no reliable way to tell whether a user is a child. From July 2028 an app store must ask, at account setup, for the age or age range of the person using the device. It then passes that as a signal to apps that ask. Only the least needed may be sent, and it cannot go to anyone else. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1641012,
+   "measure_id": "SB 52",
+   "vote_date": "2026-02-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 52. Colorado coal plants are closing and the towns around them are losing work. From 2027 railroads, utilities, power plants and new factories in those towns must give former coal workers first shot at a job. That applies only to workers who meet the job's needs. The business may still hire someone else if no such worker applies. The Colorado House passed it 45-17 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 52. Colorado coal plants are closing and the towns around them are losing work. From 2027 railroads, utilities, power plants and new factories in those towns must give former coal workers first shot at a job. That applies only to workers who meet the job's needs. The business may still hire someone else if no such worker applies. The Colorado House passed it 45-17 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1696016,
+   "measure_id": "SB 93",
+   "vote_date": "2026-05-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 93. Some builders carry no injury insurance, leaving hurt workers with nothing. For a building permit on a job over $1 million, the applicant must file a signed statement before work starts. It swears that everyone on the job, including subcontractors, is covered. Anyone may complain to the state if they think the cover is missing. The Colorado House passed it 44-19 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 93. Some builders carry no injury insurance, leaving hurt workers with nothing. For a building permit on a job over $1 million, the applicant must file a signed statement before work starts. It swears that everyone on the job, including subcontractors, is covered. Anyone may complain to the state if they think the cover is missing. The Colorado House passed it 44-19 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697577,
+   "measure_id": "SB 93",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 93 and pass it. Some builders carry no injury insurance, leaving hurt workers with nothing. For a building permit on a job over $1 million, the applicant must file a signed statement before work starts. It swears that everyone on the job, including subcontractors, is covered. Anyone may complain to the state if they think the cover is missing. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 93. Some builders carry no injury insurance, leaving hurt workers with nothing. For a building permit on a job over $1 million, the applicant must file a signed statement before work starts. It swears that everyone on the job, including subcontractors, is covered. Anyone may complain to the state if they think the cover is missing. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697576
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1684215,
+   "measure_id": "SB 121",
+   "vote_date": "2026-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 121. Colorado farm workers get overtime pay only after long hours. From 2027 an agricultural employer must pay the overtime rate after 56 hours in a week. Workers herding livestock on the open range are left out. So are certain salaried year-round managers and family members of the owner. The Colorado House passed it 33-32 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 121. Colorado farm workers get overtime pay only after long hours. From 2027 an agricultural employer must pay the overtime rate after 56 hours in a week. Workers herding livestock on the open range are left out. So are certain salaried year-round managers and family members of the owner. The Colorado House passed it 33-32 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1685199,
+   "measure_id": "SB 121",
+   "vote_date": "2026-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 121 and pass it. Colorado farm workers get overtime pay only after long hours. From 2027 an agricultural employer must pay the overtime rate after 56 hours in a week. Workers herding livestock on the open range are left out. So are certain salaried year-round managers and family members of the owner. The Colorado Senate voted 19-16 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 121. Colorado farm workers get overtime pay only after long hours. From 2027 an agricultural employer must pay the overtime rate after 56 hours in a week. Workers herding livestock on the open range are left out. So are certain salaried year-round managers and family members of the owner. The Colorado Senate voted 19-16 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1685197,
+    1685198
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1696017,
+   "measure_id": "SB 131",
+   "vote_date": "2026-05-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 131. Sports betting apps push alerts to get people betting again. The act bans an online sportsbook from pushing a notice that asks for a bet or a deposit. It also caps deposits at six a day per person. Operators must report odd betting to the sport's governing body at the same time as the state. The Colorado House passed it 50-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 131. Sports betting apps push alerts to get people betting again. The act bans an online sportsbook from pushing a notice that asks for a bet or a deposit. It also caps deposits at six a day per person. Operators must report odd betting to the sport's governing body at the same time as the state. The Colorado House passed it 50-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697586,
+   "measure_id": "SB 131",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 131 and pass it. Sports betting apps push alerts to get people betting again. The act bans an online sportsbook from pushing a notice that asks for a bet or a deposit. It also caps deposits at six a day per person. Operators must report odd betting to the sport's governing body at the same time as the state. The Colorado Senate voted 20-15 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 131. Sports betting apps push alerts to get people betting again. The act bans an online sportsbook from pushing a notice that asks for a bet or a deposit. It also caps deposits at six a day per person. Operators must report odd betting to the sport's governing body at the same time as the state. The Colorado Senate voted 20-15 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697585
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1694057,
+   "measure_id": "SB 160",
+   "vote_date": "2026-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 160. The act stops an employer from taking the cost of safety gear out of a worker's pay. Ordinary clothing, sunscreen and everyday boots are not counted as safety gear. It also bars a meat plant with 500 or more Colorado workers from unfairly refusing a toilet break on paid time. The fine is $100 a worker, capped at $200 a week. The Colorado House passed it 42-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 160. The act stops an employer from taking the cost of safety gear out of a worker's pay. Ordinary clothing, sunscreen and everyday boots are not counted as safety gear. It also bars a meat plant with 500 or more Colorado workers from unfairly refusing a toilet break on paid time. The fine is $100 a worker, capped at $200 a week. The Colorado House passed it 42-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1694824,
+   "measure_id": "SB 160",
+   "vote_date": "2026-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 160 and pass it. The act stops an employer from taking the cost of safety gear out of a worker's pay. Ordinary clothing, sunscreen and everyday boots are not counted as safety gear. It also bars a meat plant with 500 or more Colorado workers from unfairly refusing a toilet break on paid time. The fine is $100 a worker, capped at $200 a week. The Colorado Senate voted 24-10 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 160. The act stops an employer from taking the cost of safety gear out of a worker's pay. Ordinary clothing, sunscreen and everyday boots are not counted as safety gear. It also bars a meat plant with 500 or more Colorado workers from unfairly refusing a toilet break on paid time. The fine is $100 a worker, capped at $200 a week. The Colorado Senate voted 24-10 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1694823
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  }
+ ]
+}

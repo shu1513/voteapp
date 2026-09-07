@@ -1,0 +1,26 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697630,
+   "measure_id": "SB 80",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 80. The act sets up a cradle to career grant program in the state human services department. Grants go to towns, schools, colleges, tribes and community nonprofits in areas with high poverty. The money pays for help that links early childhood, school and the step into work. The aim is to open a way out of poverty for children and young people under 25. The Colorado House passed it 41-24 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 80. The act sets up a cradle to career grant program in the state human services department. Grants go to towns, schools, colleges, tribes and community nonprofits in areas with high poverty. The money pays for help that links early childhood, school and the step into work. The aim is to open a way out of poverty for children and young people under 25. The Colorado House passed it 41-24 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "reduce_wealth_gap",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697631
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  }
+ ]
+}

@@ -1,0 +1,296 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1693949,
+   "measure_id": "HB 1054",
+   "vote_date": "2026-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1054. Colorado has no state workplace safety law of its own and relies on the federal one. The bill would have created a Colorado Worker Safety Act. It would have set a general duty to keep a workplace free of known hazards. That duty would have been read the way federal regulators read theirs in September 2025. Government employers would have been left out. The Colorado House voted 42-23 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1054. Colorado has no state workplace safety law of its own and relies on the federal one. The bill would have created a Colorado Worker Safety Act. It would have set a general duty to keep a workplace free of known hazards. That duty would have been read the way federal regulators read theirs in September 2025. Government employers would have been left out. The Colorado House voted 42-23 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1640686,
+   "measure_id": "HB 1071",
+   "vote_date": "2026-02-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1071. Colorado limits where a speed or red light camera ticket may be issued. The list covers school zones, residential streets, work zones and streets by a park. The bill would have added stretches of state highway that a local government designates. The existing conditions on camera use would have stayed. The Colorado House voted 37-22 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1071. Colorado limits where a speed or red light camera ticket may be issued. The list covers school zones, residential streets, work zones and streets by a park. The bill would have added stretches of state highway that a local government designates. The existing conditions on camera use would have stayed. The Colorado House voted 37-22 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1694959,
+   "measure_id": "HB 1117",
+   "vote_date": "2026-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1117. Colorado licenses marijuana hospitality businesses where people may consume on site. The bill would have let one hold a time-limited event away from its own premises. Stores, growers and product makers could have taken part for consumption, but not for sales. The state licensing authority would have had to write rules for the permits. The Colorado House voted 33-31 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1117. Colorado licenses marijuana hospitality businesses where people may consume on site. The bill would have let one hold a time-limited event away from its own premises. Stores, growers and product makers could have taken part for consumption, but not for sales. The state licensing authority would have had to write rules for the permits. The Colorado House voted 33-31 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1658137,
+   "measure_id": "HB 1137",
+   "vote_date": "2026-03-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1137. Campaign consultants sometimes work for candidates running against each other. The bill would have barred a consultant or firm from taking on opposing candidates. Both candidates' written consent after full disclosure would have been the only exception. It would also have barred passing one client's information to benefit an opponent. The Colorado House rejected it 26-35, and the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1137. Campaign consultants sometimes work for candidates running against each other. The bill would have barred a consultant or firm from taking on opposing candidates. Both candidates' written consent after full disclosure would have been the only exception. It would also have barred passing one client's information to benefit an opponent. The Colorado House rejected it 26-35, and the bill did not become law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1663371,
+   "measure_id": "HB 1203",
+   "vote_date": "2026-03-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1203. Colorado counties over 70,000 people may have three or five commissioners. The bill would have made five the rule, sparing home rule counties that already elect most commissioners by district. Where a board kept three members, all three would have been elected by their own district's voters. The old route between three and five members would have been replaced. The Colorado House voted 35-27 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1203. Colorado counties over 70,000 people may have three or five commissioners. The bill would have made five the rule, sparing home rule counties that already elect most commissioners by district. Where a board kept three members, all three would have been elected by their own district's voters. The old route between three and five members would have been replaced. The Colorado House voted 35-27 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1686670,
+   "measure_id": "HB 1245",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1245. Building customers pay contractors up front and sometimes the money goes elsewhere. The bill would have made it theft when a contractor carelessly spent advance payment on something unrelated. The money would also have had to cause unfair delay or a stoppage on the job. It would have sat beside the forms of theft already in Colorado law. The Colorado House rejected it 27-37, and the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1245. Building customers pay contractors up front and sometimes the money goes elsewhere. The bill would have made it theft when a contractor carelessly spent advance payment on something unrelated. The money would also have had to cause unfair delay or a stoppage on the job. It would have sat beside the forms of theft already in Colorado law. The Colorado House rejected it 27-37, and the bill did not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1696345,
+   "measure_id": "HB 1273",
+   "vote_date": "2026-05-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1273. Ride-hailing companies keep a share of each fare, called the take rate. The bill would have capped that share at 20 percent of the customer fare. The driver would have had to receive at least 80 percent, and all pass-through amounts in full. A company could not have charged the driver a fee that pushed its share past 20 percent. The Colorado House voted 38-26 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1273. Ride-hailing companies keep a share of each fare, called the take rate. The bill would have capped that share at 20 percent of the customer fare. The driver would have had to receive at least 80 percent, and all pass-through amounts in full. A company could not have charged the driver a fee that pushed its share past 20 percent. The Colorado House voted 38-26 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1691591,
+   "measure_id": "HB 1281",
+   "vote_date": "2026-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1281. Causing one death through extreme indifference is first degree murder in Colorado. The bill would have narrowed that charge to cases where more than one person died. It would also have kept it for the death of a child under 12, of an on-duty responder, or of one person with two more badly hurt by a weapon. A single death by extreme indifference would have dropped to second degree murder. The bill would also have created aggravated vehicular homicide for repeat or fleeing drivers. The Colorado House voted 33-32 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1281. Causing one death through extreme indifference is first degree murder in Colorado. The bill would have narrowed that charge to cases where more than one person died. It would also have kept it for the death of a child under 12, of an on-duty responder, or of one person with two more badly hurt by a weapon. A single death by extreme indifference would have dropped to second degree murder. The bill would also have created aggravated vehicular homicide for repeat or fleeing drivers. The Colorado House voted 33-32 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1686667,
+   "measure_id": "HB 1321",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1321. Colorado pays nonprofits to train schools in responding to a safety incident. The bill would have limited that money to Colorado-based nonprofits. It would have widened the work to cover violence prevention and behavioral health. Applicants would also have been able to name local police as the partner, not only other first responders. The Colorado House voted 42-21 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1321. Colorado pays nonprofits to train schools in responding to a safety incident. The bill would have limited that money to Colorado-based nonprofits. It would have widened the work to cover violence prevention and behavioral health. Applicants would also have been able to name local police as the partner, not only other first responders. The Colorado House voted 42-21 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1648851,
+   "measure_id": "SB 43",
+   "vote_date": "2026-03-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 43. A gun barrel can be bought without a background check because it is not a firearm. The bill would have made selling or transferring one unlawful unless a federally licensed dealer did it in person. A first offense would have been a misdemeanor carrying up to $500 and 30 days in jail. Holding a barrel with intent to sell, outside a licensed dealer, would also have been unlawful. The Colorado Senate voted 18-16 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing Senate Bill 43. A gun barrel can be bought without a background check because it is not a firearm. The bill would have made selling or transferring one unlawful unless a federally licensed dealer did it in person. A first offense would have been a misdemeanor carrying up to $500 and 30 days in jail. Holding a barrel with intent to sell, outside a licensed dealer, would also have been unlawful. The Colorado Senate voted 18-16 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1694967,
+   "measure_id": "SB 48",
+   "vote_date": "2026-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 48. Colorado lets a 16 or 17 year old marry with a juvenile court's approval. There is no limit on how much older the other party may be. The bill would have barred the court approving a marriage where the age gap is more than ten years. It would have applied to licenses issued after it took effect. The Colorado House voted 41-23 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing Senate Bill 48. Colorado lets a 16 or 17 year old marry with a juvenile court's approval. There is no limit on how much older the other party may be. The bill would have barred the court approving a marriage where the age gap is more than ten years. It would have applied to licenses issued after it took effect. The Colorado House voted 41-23 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697549,
+   "measure_id": "SB 48",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 48 and pass it. Colorado lets a 16 or 17 year old marry with a juvenile court's approval. There is no limit on how much older the other party may be. The bill would have barred the court approving a marriage where the age gap is more than ten years. It would have applied to licenses issued after it took effect. The Colorado Senate had agreed to those changes 18-17, but then rejected the bill 11-24 on the vote to pass it again, and it did not become law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 48. Colorado lets a 16 or 17 year old marry with a juvenile court's approval. There is no limit on how much older the other party may be. The bill would have barred the court approving a marriage where the age gap is more than ten years. It would have applied to licenses issued after it took effect. The Colorado Senate had agreed to those changes 18-17, but then rejected the bill 11-24 on the vote to pass it again, and it did not become law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697548
+   ],
+   "note": "The acknowledged roll is a same-day peer of this vote. Colorado votes twice to take the other chamber's changes, concurring and then repassing the bill the same day; and a chamber can carry two records of one third reading, in which case the roll judged is the one that records every member."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1675948,
+   "measure_id": "SB 87",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 87. Serving in the Colorado legislature pays too little to live on, so most members hold another job. The bill would have given members a right to legislative leave from that job during session. The employer could have made the leave paid, unpaid or part paid. An outside employer could not have fired a member for taking it. The Colorado House voted 33-31 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing Senate Bill 87. Serving in the Colorado legislature pays too little to live on, so most members hold another job. The bill would have given members a right to legislative leave from that job during session. The employer could have made the leave paid, unpaid or part paid. An outside employer could not have fired a member for taking it. The Colorado House voted 33-31 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1663328,
+   "measure_id": "SB 87",
+   "vote_date": "2026-03-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 87. Serving in the Colorado legislature pays too little to live on, so most members hold another job. The bill would have given members a right to legislative leave from that job during session. The employer could have made the leave paid, unpaid or part paid. An outside employer could not have fired a member for taking it. The Colorado Senate voted 23-11 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing Senate Bill 87. Serving in the Colorado legislature pays too little to live on, so most members hold another job. The bill would have given members a right to legislative leave from that job during session. The employer could have made the leave paid, unpaid or part paid. An outside employer could not have fired a member for taking it. The Colorado Senate voted 23-11 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1684183,
+   "measure_id": "SB 90",
+   "vote_date": "2026-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 90. Colorado's repair law makes makers supply parts and tools to independent repairers. The bill would have added critical infrastructure to the gear left out of that duty. The term would have carried the meaning federal law gives it. Game consoles and quantum computing gear were already left out. The Colorado Senate voted 22-13 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing Senate Bill 90. Colorado's repair law makes makers supply parts and tools to independent repairers. The bill would have added critical infrastructure to the gear left out of that duty. The term would have carried the meaning federal law gives it. Game consoles and quantum computing gear were already left out. The Colorado Senate voted 22-13 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1691401,
+   "measure_id": "SB 91",
+   "vote_date": "2026-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 91. Whether a newspaper deliverer is an employee decides who pays unemployment insurance. The bill would have said the ordinary demands of the round do not alone make someone an employee. Those demands include a pickup point, a set route, deadlines and quality standards. The general test would otherwise have stayed the same. The Colorado Senate voted 26-8 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing Senate Bill 91. Whether a newspaper deliverer is an employee decides who pays unemployment insurance. The bill would have said the ordinary demands of the round do not alone make someone an employee. Those demands include a pickup point, a set route, deadlines and quality standards. The general test would otherwise have stayed the same. The Colorado Senate voted 26-8 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

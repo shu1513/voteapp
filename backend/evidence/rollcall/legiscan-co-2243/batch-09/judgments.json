@@ -1,0 +1,290 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1646491,
+   "measure_id": "HB 1099",
+   "vote_date": "2026-02-26",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1099. A homeowners association inherits the upkeep of shared roofs, roads and pools from the builder. Before handing control over, a builder must now pay for a reserve study looking 30 years ahead. It has to price keeping, fixing and replacing everything the association will own. The study must be done by someone with no business tie to the builder. The Colorado House passed it 39-26 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1099. A homeowners association inherits the upkeep of shared roofs, roads and pools from the builder. Before handing control over, a builder must now pay for a reserve study looking 30 years ahead. It has to price keeping, fixing and replacing everything the association will own. The study must be done by someone with no business tie to the builder. The Colorado House passed it 39-26 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1669595,
+   "measure_id": "HB 1099",
+   "vote_date": "2026-03-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1099. A homeowners association inherits the upkeep of shared roofs, roads and pools from the builder. Before handing control over, a builder must now pay for a reserve study looking 30 years ahead. It has to price keeping, fixing and replacing everything the association will own. The study must be done by someone with no business tie to the builder. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1099. A homeowners association inherits the upkeep of shared roofs, roads and pools from the builder. Before handing control over, a builder must now pay for a reserve study looking 30 years ahead. It has to price keeping, fixing and replacing everything the association will own. The study must be done by someone with no business tie to the builder. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697247,
+   "measure_id": "HB 1147",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1147 and pass it. A host home is a private house where an adult with a developmental disability lives with a paid carer. These homes need no state license, so nobody had a full list of them. The act makes the state build a list of such homes, set risk criteria and open a complaint route. Provider agencies must file the details and the state must keep the list current. The Colorado House voted 44-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1147. A host home is a private house where an adult with a developmental disability lives with a paid carer. These homes need no state license, so nobody had a full list of them. The act makes the state build a list of such homes, set risk criteria and open a complaint route. Provider agencies must file the details and the state must keep the list current. The Colorado House voted 44-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697246
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1696240,
+   "measure_id": "HB 1147",
+   "vote_date": "2026-05-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1147. A host home is a private house where an adult with a developmental disability lives with a paid carer. These homes need no state license, so nobody had a full list of them. The act makes the state build a list of such homes, set risk criteria and open a complaint route. Provider agencies must file the details and the state must keep the list current. The Colorado Senate passed it 28-7 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1147. A host home is a private house where an adult with a developmental disability lives with a paid carer. These homes need no state license, so nobody had a full list of them. The act makes the state build a list of such homes, set risk criteria and open a complaint route. Provider agencies must file the details and the state must keep the list current. The Colorado Senate passed it 28-7 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1696239
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1657388,
+   "measure_id": "HB 1192",
+   "vote_date": "2026-03-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1192. The homeless prevention program was steered by a three-person advisory committee. The act removes that committee. The state housing division now runs the program and sets and enforces its standards itself. The money must still go to nonprofit agencies for direct help to clients. The Colorado House passed it 45-17 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1192. The homeless prevention program was steered by a three-person advisory committee. The act removes that committee. The state housing division now runs the program and sets and enforces its standards itself. The money must still go to nonprofit agencies for direct help to clients. The Colorado House passed it 45-17 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1668521,
+   "measure_id": "HB 1192",
+   "vote_date": "2026-03-24",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1192. The homeless prevention program was steered by a three-person advisory committee. The act removes that committee. The state housing division now runs the program and sets and enforces its standards itself. The money must still go to nonprofit agencies for direct help to clients. The Colorado Senate passed it 26-8 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1192. The homeless prevention program was steered by a three-person advisory committee. The act removes that committee. The state housing division now runs the program and sets and enforces its standards itself. The money must still go to nonprofit agencies for direct help to clients. The Colorado Senate passed it 26-8 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1656959,
+   "measure_id": "HB 1202",
+   "vote_date": "2026-03-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1202. Colorado has no single plan for preventing and ending homelessness. The act makes the local affairs department present one in January 2027. The plan must name the gaps in help, list state housing and how fully it is used, and suggest funding. The act also lets nearby local governments set up a joint body to tackle homelessness. The Colorado House passed it 38-23 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1202. Colorado has no single plan for preventing and ending homelessness. The act makes the local affairs department present one in January 2027. The plan must name the gaps in help, list state housing and how fully it is used, and suggest funding. The act also lets nearby local governments set up a joint body to tackle homelessness. The Colorado House passed it 38-23 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1702698,
+   "measure_id": "HB 1202",
+   "vote_date": "2026-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1202. Colorado has no single plan for preventing and ending homelessness. The act makes the local affairs department present one in January 2027. The plan must name the gaps in help, list state housing and how fully it is used, and suggest funding. The act also lets nearby local governments set up a joint body to tackle homelessness. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1202. Colorado has no single plan for preventing and ending homelessness. The act makes the local affairs department present one in January 2027. The plan must name the gaps in help, list state housing and how fully it is used, and suggest funding. The act also lets nearby local governments set up a joint body to tackle homelessness. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1684217,
+   "measure_id": "HB 1235",
+   "vote_date": "2026-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1235. Congress added work and volunteering rules to Medicaid. The act tells the state board to write the Colorado rules so people keep cover with the least paperwork. From March 2027 the state must post monthly figures on approvals and denials. It must also show how many people come back within 90 days of being turned down. Medical ride brokers must report rides asked for, given, dropped and complained about. The Colorado House passed it 44-18 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1235. Congress added work and volunteering rules to Medicaid. The act tells the state board to write the Colorado rules so people keep cover with the least paperwork. From March 2027 the state must post monthly figures on approvals and denials. It must also show how many people come back within 90 days of being turned down. Medical ride brokers must report rides asked for, given, dropped and complained about. The Colorado House passed it 44-18 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1692036,
+   "measure_id": "HB 1414",
+   "vote_date": "2026-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1414. Getting a copy of your own medical records can cost hundreds of dollars. The act caps what a hospital may charge a patient's lawyer at $400 for a record over 664 pages. Below that page count the ordinary reasonable fee still applies. The cap is adjusted for inflation every two years from 2028. The Colorado House passed it 45-18 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1414. Getting a copy of your own medical records can cost hundreds of dollars. The act caps what a hospital may charge a patient's lawyer at $400 for a record over 664 pages. Below that page count the ordinary reasonable fee still applies. The cap is adjusted for inflation every two years from 2028. The Colorado House passed it 45-18 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1695915,
+   "measure_id": "HB 1414",
+   "vote_date": "2026-05-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1414. Getting a copy of your own medical records can cost hundreds of dollars. The act caps what a hospital may charge a patient's lawyer at $400 for a record over 664 pages. Below that page count the ordinary reasonable fee still applies. The cap is adjusted for inflation every two years from 2028. The Colorado Senate passed it 24-10 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1414. Getting a copy of your own medical records can cost hundreds of dollars. The act caps what a hospital may charge a patient's lawyer at $400 for a record over 664 pages. Below that page count the ordinary reasonable fee still applies. The cap is adjusted for inflation every two years from 2028. The Colorado Senate passed it 24-10 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1696989,
+   "measure_id": "SB 155",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 155. Hail, wind and wildfire have pushed up home insurance and driven insurers out of Colorado. The act sets up a state body to pay grants for making homes stand up to that weather. It is paid for by a yearly fee on insurers worth half a percent of home premiums. The insurer must swallow the fee and cannot pass it to customers. The Colorado House passed it 43-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 155. Hail, wind and wildfire have pushed up home insurance and driven insurers out of Colorado. The act sets up a state body to pay grants for making homes stand up to that weather. It is paid for by a yearly fee on insurers worth half a percent of home premiums. The insurer must swallow the fee and cannot pass it to customers. The Colorado House passed it 43-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697543,
+   "measure_id": "SB 155",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 155 and pass it. Hail, wind and wildfire have pushed up home insurance and driven insurers out of Colorado. The act sets up a state body to pay grants for making homes stand up to that weather. It is paid for by a yearly fee on insurers worth half a percent of home premiums. The insurer must swallow the fee and cannot pass it to customers. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 155. Hail, wind and wildfire have pushed up home insurance and driven insurers out of Colorado. The act sets up a state body to pay grants for making homes stand up to that weather. It is paid for by a yearly fee on insurers worth half a percent of home premiums. The insurer must swallow the fee and cannot pass it to customers. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697542
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695620,
+   "measure_id": "SB 177",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 177. Fixing your own wall sometimes means standing on the neighbor's land. If the neighbor says no, or ignores a certified letter for 60 days, the act lets the owner ask a district court for access. It applies to single-family homes, including row houses sharing a wall. The court decides the terms. The Colorado House passed it 43-21 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 177. Fixing your own wall sometimes means standing on the neighbor's land. If the neighbor says no, or ignores a certified letter for 60 days, the act lets the owner ask a district court for access. It applies to single-family homes, including row houses sharing a wall. The court decides the terms. The Colorado House passed it 43-21 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1695951,
+   "measure_id": "SB 177",
+   "vote_date": "2026-05-08",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 177 and pass it. Fixing your own wall sometimes means standing on the neighbor's land. If the neighbor says no, or ignores a certified letter for 60 days, the act lets the owner ask a district court for access. It applies to single-family homes, including row houses sharing a wall. The court decides the terms. The Colorado Senate voted 23-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 177. Fixing your own wall sometimes means standing on the neighbor's land. If the neighbor says no, or ignores a certified letter for 60 days, the act lets the owner ask a district court for access. It applies to single-family homes, including row houses sharing a wall. The court decides the terms. The Colorado Senate voted 23-11 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1695950
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  }
+ ]
+}

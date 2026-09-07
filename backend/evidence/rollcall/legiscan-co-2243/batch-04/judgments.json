@@ -1,0 +1,394 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1661323,
+   "measure_id": "HB 1013",
+   "vote_date": "2026-03-12",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1013 and pass it. Some landlords split one utility bill among tenants by a formula rather than by meter. The act allows that, but only under four rules. The total billed cannot beat the utility's own bill and no markup may be added. Common areas must be left out, and the method must be written into the lease. Buildings permitted from July 2027 need a real meter or submeter for each home. The Colorado House voted 41-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1013. Some landlords split one utility bill among tenants by a formula rather than by meter. The act allows that, but only under four rules. The total billed cannot beat the utility's own bill and no markup may be added. Common areas must be left out, and the method must be written into the lease. Buildings permitted from July 2027 need a real meter or submeter for each home. The Colorado House voted 41-22 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1661322
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1658153,
+   "measure_id": "HB 1013",
+   "vote_date": "2026-03-10",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1013. Some landlords split one utility bill among tenants by a formula rather than by meter. The act allows that, but only under four rules. The total billed cannot beat the utility's own bill and no markup may be added. Common areas must be left out, and the method must be written into the lease. Buildings permitted from July 2027 need a real meter or submeter for each home. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1013. Some landlords split one utility bill among tenants by a formula rather than by meter. The act allows that, but only under four rules. The total billed cannot beat the utility's own bill and no markup may be added. Common areas must be left out, and the method must be written into the lease. Buildings permitted from July 2027 need a real meter or submeter for each home. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1702684,
+   "measure_id": "HB 1015",
+   "vote_date": "2026-04-30",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1015. Colorado gives a tax credit worth a quarter of what a person or business donates to approved homelessness charities. The credit was due to end after the 2026 tax year. The act runs it through the 2030 tax year. The findings say the first year drew 8,320 donations worth about $20.5 million. The Colorado House passed it 47-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1015. Colorado gives a tax credit worth a quarter of what a person or business donates to approved homelessness charities. The credit was due to end after the 2026 tax year. The act runs it through the 2030 tax year. The findings say the first year drew 8,320 donations worth about $20.5 million. The Colorado House passed it 47-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1622850,
+   "measure_id": "HB 1045",
+   "vote_date": "2026-02-04",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1045. A renter with a disability can ask a landlord to allow an assistance animal. Federal guidance on how that works was pulled, leaving both sides guessing. The act writes the old guidance into Colorado law. Saying yes is taken to be reasonable, a blanket ban is taken to be unfair, and the animal's presence alone is not a threat. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1045. A renter with a disability can ask a landlord to allow an assistance animal. Federal guidance on how that works was pulled, leaving both sides guessing. The act writes the old guidance into Colorado law. Saying yes is taken to be reasonable, a blanket ban is taken to be unfair, and the animal's presence alone is not a threat. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1682173,
+   "measure_id": "HB 1045",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1045. A renter with a disability can ask a landlord to allow an assistance animal. Federal guidance on how that works was pulled, leaving both sides guessing. The act writes the old guidance into Colorado law. Saying yes is taken to be reasonable, a blanket ban is taken to be unfair, and the animal's presence alone is not a threat. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1045. A renter with a disability can ask a landlord to allow an assistance animal. Federal guidance on how that works was pulled, leaving both sides guessing. The act writes the old guidance into Colorado law. Saying yes is taken to be reasonable, a blanket ban is taken to be unfair, and the animal's presence alone is not a threat. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1702696,
+   "measure_id": "HB 1065",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1065 and pass it. Most Colorado transit stations have too few homes near them to fill the trains and buses. The act maps zones within two miles of a station. Inside a zone the state may put the growth in its own sales tax back into sidewalks, crossings and other works near the station. That can run for up to 30 years. The act also adds a tax credit of up to $8.3 million a year for cheaper homes built in those zones. The Colorado House voted 44-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1065. Most Colorado transit stations have too few homes near them to fill the trains and buses. The act maps zones within two miles of a station. Inside a zone the state may put the growth in its own sales tax back into sidewalks, crossings and other works near the station. That can run for up to 30 years. The act also adds a tax credit of up to $8.3 million a year for cheaper homes built in those zones. The Colorado House voted 44-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1702695
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1702694,
+   "measure_id": "HB 1065",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1065. Most Colorado transit stations have too few homes near them to fill the trains and buses. The act maps zones within two miles of a station. Inside a zone the state may put the growth in its own sales tax back into sidewalks, crossings and other works near the station. That can run for up to 30 years. The act also adds a tax credit of up to $8.3 million a year for cheaper homes built in those zones. The Colorado Senate passed it 22-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1065. Most Colorado transit stations have too few homes near them to fill the trains and buses. The act maps zones within two miles of a station. Inside a zone the state may put the growth in its own sales tax back into sidewalks, crossings and other works near the station. That can run for up to 30 years. The act also adds a tax credit of up to $8.3 million a year for cheaper homes built in those zones. The Colorado Senate passed it 22-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1682155,
+   "measure_id": "HB 1120",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1120 and pass it. When mobile home taxes go unpaid, the county used to seize and sell the home itself. From July 2026 the county sells a tax lien instead, the way it does for a house. The owner gets at least 60 days' warning and then a year to pay up, longer where the county holds the lien. Notices must be written in English and Spanish and say where to get an interpreter. The Colorado House voted 42-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1120. When mobile home taxes go unpaid, the county used to seize and sell the home itself. From July 2026 the county sells a tax lien instead, the way it does for a house. The owner gets at least 60 days' warning and then a year to pay up, longer where the county holds the lien. Notices must be written in English and Spanish and say where to get an interpreter. The Colorado House voted 42-21 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1682154
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1654379,
+   "measure_id": "HB 1145",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1145. The state tests drinking water in mobile home parks and can order a park owner to fix it. The act adds new grounds to step in: harm to a household's money, or water not fit for cooking and washing. A park owner who does not confirm that residents were told can be ordered to do it. The cost of the fix still cannot be passed to residents. The Colorado House passed it 42-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1145. The state tests drinking water in mobile home parks and can order a park owner to fix it. The act adds new grounds to step in: harm to a household's money, or water not fit for cooking and washing. A park owner who does not confirm that residents were told can be ordered to do it. The cost of the fix still cannot be passed to residents. The Colorado House passed it 42-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1675596,
+   "measure_id": "HB 1145",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1145. The state tests drinking water in mobile home parks and can order a park owner to fix it. The act adds new grounds to step in: harm to a household's money, or water not fit for cooking and washing. A park owner who does not confirm that residents were told can be ordered to do it. The cost of the fix still cannot be passed to residents. The Colorado Senate passed it 25-8 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1145. The state tests drinking water in mobile home parks and can order a park owner to fix it. The act adds new grounds to step in: harm to a household's money, or water not fit for cooking and washing. A park owner who does not confirm that residents were told can be ordered to do it. The cost of the fix still cannot be passed to residents. The Colorado Senate passed it 25-8 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1686626,
+   "measure_id": "HB 1196",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1196. People applying to rent often do not know what a landlord will look up about them. From 2027 every rental application must say what data the landlord will pull. It must also list what is weighed, such as credit, rental history, income and any criminal record. If a screening company is used, it must be named. In eviction filings a landlord must black out social security, bank and card numbers. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1196. People applying to rent often do not know what a landlord will look up about them. From 2027 every rental application must say what data the landlord will pull. It must also list what is weighed, such as credit, rental history, income and any criminal record. If a screening company is used, it must be named. In eviction filings a landlord must black out social security, bank and card numbers. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1694706,
+   "measure_id": "HB 1196",
+   "vote_date": "2026-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1196. People applying to rent often do not know what a landlord will look up about them. From 2027 every rental application must say what data the landlord will pull. It must also list what is weighed, such as credit, rental history, income and any criminal record. If a screening company is used, it must be named. In eviction filings a landlord must black out social security, bank and card numbers. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1196. People applying to rent often do not know what a landlord will look up about them. From 2027 every rental application must say what data the landlord will pull. It must also list what is weighed, such as credit, rental history, income and any criminal record. If a screening company is used, it must be named. In eviction filings a landlord must black out social security, bank and card numbers. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1684246,
+   "measure_id": "HB 1224",
+   "vote_date": "2026-04-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1224. Mobile home residents own the home but rent the ground under it. A landlord may now end a tenancy for breaking a local rule only after a government has ruled that it happened. Where rent rises are barred for a time, the landlord must tell residents within 14 days and say why. Parks where the landlord owns all the homes are now covered too. The Colorado House passed it 40-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1224. Mobile home residents own the home but rent the ground under it. A landlord may now end a tenancy for breaking a local rule only after a government has ruled that it happened. Where rent rises are barred for a time, the landlord must tell residents within 14 days and say why. Parks where the landlord owns all the homes are now covered too. The Colorado House passed it 40-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1694756,
+   "measure_id": "HB 1224",
+   "vote_date": "2026-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1224. Mobile home residents own the home but rent the ground under it. A landlord may now end a tenancy for breaking a local rule only after a government has ruled that it happened. Where rent rises are barred for a time, the landlord must tell residents within 14 days and say why. Parks where the landlord owns all the homes are now covered too. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1224. Mobile home residents own the home but rent the ground under it. A landlord may now end a tenancy for breaking a local rule only after a government has ruled that it happened. Where rent rises are barred for a time, the landlord must tell residents within 14 days and say why. Parks where the landlord owns all the homes are now covered too. The Colorado Senate passed it 22-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1696980,
+   "measure_id": "SB 2",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 2. The act makes every investor-owned gas and electric utility run a percentage-of-income payment plan. A household on a low income pays a set share of its income, between two and six percent. The rest of the bill turns into a credit. A late or part payment cannot on its own throw a household out of the plan. The act also delays new pollution limits on propane and mobile home furnaces and water heaters until 2031. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 2. The act makes every investor-owned gas and electric utility run a percentage-of-income payment plan. A household on a low income pays a set share of its income, between two and six percent. The rest of the bill turns into a credit. A late or part payment cannot on its own throw a household out of the plan. The act also delays new pollution limits on propane and mobile home furnaces and water heaters until 2031. The Colorado House passed it 40-23 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697559,
+   "measure_id": "SB 2",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 2 and pass it. The act makes every investor-owned gas and electric utility run a percentage-of-income payment plan. A household on a low income pays a set share of its income, between two and six percent. The rest of the bill turns into a credit. A late or part payment cannot on its own throw a household out of the plan. The act also delays new pollution limits on propane and mobile home furnaces and water heaters until 2031. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 2. The act makes every investor-owned gas and electric utility run a percentage-of-income payment plan. A household on a low income pays a set share of its income, between two and six percent. The rest of the bill turns into a credit. A late or part payment cannot on its own throw a household out of the plan. The act also delays new pollution limits on propane and mobile home furnaces and water heaters until 2031. The Colorado Senate voted 23-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697558
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1686615,
+   "measure_id": "SB 40",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 40. Colorado's affordable housing fund helps first-time buyers with a down payment. The act widens who can be helped. The housing payment may now take up to 38 percent of monthly income, up from 35. Land banking may support homes for buyers earning up to 120 percent of the area's middle income. Tribal governments may set their own limits without handing over private data. The Colorado House passed it 44-20 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 40. Colorado's affordable housing fund helps first-time buyers with a down payment. The act widens who can be helped. The housing payment may now take up to 38 percent of monthly income, up from 35. Land banking may support homes for buyers earning up to 120 percent of the area's middle income. Tribal governments may set their own limits without handing over private data. The Colorado House passed it 44-20 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1686614,
+    1686616
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1675896,
+   "measure_id": "SB 53",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 53. The state housing authority buys home loans so lenders will make them. Those loans had to go to low or moderate income families. The act adds families of first responders earning up to 110 percent of the usual limit. First responder means a police officer, firefighter or paramedic. The list also reaches dispatchers, corrections officers and wildlife officers. The Colorado House passed it 51-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 53. The state housing authority buys home loans so lenders will make them. Those loans had to go to low or moderate income families. The act adds families of first responders earning up to 110 percent of the usual limit. First responder means a police officer, firefighter or paramedic. The list also reaches dispatchers, corrections officers and wildlife officers. The Colorado House passed it 51-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1675895,
+    1675897
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1686355,
+   "measure_id": "SB 109",
+   "vote_date": "2026-04-21",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 109. Colorado makes bigger housing projects build a share of homes a disabled person can use. The act points the rule at the 2017 national standard instead of an older one. It rewrites what counts as a home and as an accessible floor. It adds a lower tier, the visitable home, worth one point toward a project's score. The Colorado House passed it 41-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 109. Colorado makes bigger housing projects build a share of homes a disabled person can use. The act points the rule at the 2017 national standard instead of an older one. It rewrites what counts as a home and as an accessible floor. It adds a lower tier, the visitable home, worth one point toward a project's score. The Colorado House passed it 41-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1688736,
+   "measure_id": "SB 109",
+   "vote_date": "2026-04-23",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 109 and pass it. Colorado makes bigger housing projects build a share of homes a disabled person can use. The act points the rule at the 2017 national standard instead of an older one. It rewrites what counts as a home and as an accessible floor. It adds a lower tier, the visitable home, worth one point toward a project's score. The Colorado Senate voted 25-10 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 109. Colorado makes bigger housing projects build a share of homes a disabled person can use. The act points the rule at the 2017 national standard instead of an older one. It rewrites what counts as a home and as an accessible floor. It adds a lower tier, the visitable home, worth one point toward a project's score. The Colorado Senate voted 25-10 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1688735
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  }
+ ]
+}

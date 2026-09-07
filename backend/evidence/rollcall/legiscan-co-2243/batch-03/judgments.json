@@ -1,0 +1,289 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1654489,
+   "measure_id": "HB 1002",
+   "vote_date": "2026-03-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1002. People looking for a therapist often find that the insurer's list is out of date. From 2027 an insurer must check each year whether a quiet mental health provider is still in the network. It then has five working days to correct the list. The act also brings those providers under the state's sign-up deadlines, which used to cover only doctors. An insurer must pay for care a trainee gives under a licensed provider's watch. The Colorado House passed it 51-13 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1002. People looking for a therapist often find that the insurer's list is out of date. From 2027 an insurer must check each year whether a quiet mental health provider is still in the network. It then has five working days to correct the list. The act also brings those providers under the state's sign-up deadlines, which used to cover only doctors. An insurer must pay for care a trainee gives under a licensed provider's watch. The Colorado House passed it 51-13 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1692869,
+   "measure_id": "HB 1019",
+   "vote_date": "2026-05-04",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1019 and pass it. Kidney disease usually has no symptoms early on, and most people who have it do not know. The act makes health plans cover a yearly kidney check at no charge to the patient. The check covers a blood test for kidney function and a urine test for protein. Large employer plans start in 2027 and individual and small group plans in 2028. The Colorado House voted 45-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1019. Kidney disease usually has no symptoms early on, and most people who have it do not know. The act makes health plans cover a yearly kidney check at no charge to the patient. The check covers a blood test for kidney function and a urine test for protein. Large employer plans start in 2027 and individual and small group plans in 2028. The Colorado House voted 45-20 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1692868
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1681554,
+   "measure_id": "HB 1044",
+   "vote_date": "2026-04-14",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1044 and pass it. Some parents report being ignored or badly treated while giving birth. From 2027 a hospital must hand every birthing parent a written notice of what respectful care means. It covers the right to say yes or no, to privacy, and to have someone at your side. It also lists where to complain about unfair treatment, unsafe care or a rights violation. The Colorado House voted 48-15 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1044. Some parents report being ignored or badly treated while giving birth. From 2027 a hospital must hand every birthing parent a written notice of what respectful care means. It covers the right to say yes or no, to privacy, and to have someone at your side. It also lists where to complain about unfair treatment, unsafe care or a rights violation. The Colorado House voted 48-15 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1681553
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1661261,
+   "measure_id": "HB 1107",
+   "vote_date": "2026-03-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1107. Families choosing a dementia care home have little to compare. The state must build a form by July 2027 that every licensed dementia home has to fill in. It covers staff training, use of restraints, security, and when a resident can be moved out. It also explains how fees work. A home must post the form on its website and show it to inspectors, or be cited. The Colorado House passed it 45-18 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1107. Families choosing a dementia care home have little to compare. The state must build a form by July 2027 that every licensed dementia home has to fill in. It covers staff training, use of restraints, security, and when a resident can be moved out. It also explains how fees work. A home must post the form on its website and show it to inspectors, or be cited. The Colorado House passed it 45-18 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1677394,
+   "measure_id": "HB 1107",
+   "vote_date": "2026-04-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1107. Families choosing a dementia care home have little to compare. The state must build a form by July 2027 that every licensed dementia home has to fill in. It covers staff training, use of restraints, security, and when a resident can be moved out. It also explains how fees work. A home must post the form on its website and show it to inspectors, or be cited. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1107. Families choosing a dementia care home have little to compare. The state must build a form by July 2027 that every licensed dementia home has to fill in. It covers staff training, use of restraints, security, and when a resident can be moved out. It also explains how fees work. A home must post the form on its website and show it to inspectors, or be cited. The Colorado Senate passed it 23-12 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695606,
+   "measure_id": "HB 1425",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1425. Applied behavior analysis is a therapy used mostly with autistic children. Anyone practicing it in Colorado will need a state license from a new board. To get one you must hold a national certificate in good standing and pass a fingerprint check. A helper without a license may still work under supervision. That helper has to use a plainer title, such as behavior technician. The Colorado House passed it 45-19 and the governor signed it into law.",
+   "nay_description": "Voted against passing House Bill 1425. Applied behavior analysis is a therapy used mostly with autistic children. Anyone practicing it in Colorado will need a state license from a new board. To get one you must hold a national certificate in good standing and pass a fingerprint check. A helper without a license may still work under supervision. That helper has to use a plainer title, such as behavior technician. The Colorado House passed it 45-19 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1695604,
+    1695605,
+    1695607,
+    1695608
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1694961,
+   "measure_id": "SB 6",
+   "vote_date": "2026-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 6. Insurers have often made non-opioid pain drugs harder to get than opioids. The act says the hurdles for a non-opioid pain drug cannot be tighter than for an opioid. The patient's share of the cost cannot be higher either. From 2027 smaller plans must carry at least one non-opioid choice. Large employer plans follow in 2028. The Colorado House passed it 48-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 6. Insurers have often made non-opioid pain drugs harder to get than opioids. The act says the hurdles for a non-opioid pain drug cannot be tighter than for an opioid. The patient's share of the cost cannot be higher either. From 2027 smaller plans must carry at least one non-opioid choice. Large employer plans follow in 2028. The Colorado House passed it 48-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1694960,
+    1694962
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1663504,
+   "measure_id": "SB 32",
+   "vote_date": "2026-03-16",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 32. Colorado law used to let a federal panel decide which vaccines are advised here. The act has the state board of health set its own list of shots for adults. The board weighs the federal panel and the main doctors' groups. The act also widens the HPV shot coverage rule from women to everyone the list covers. The Colorado House passed it 43-19 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 32. Colorado law used to let a federal panel decide which vaccines are advised here. The act has the state board of health set its own list of shots for adults. The board weighs the federal panel and the main doctors' groups. The act also widens the HPV shot coverage rule from women to everyone the list covers. The Colorado House passed it 43-19 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1665260,
+   "measure_id": "SB 32",
+   "vote_date": "2026-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 32 and pass it. Colorado law used to let a federal panel decide which vaccines are advised here. The act has the state board of health set its own list of shots for adults. The board weighs the federal panel and the main doctors' groups. The act also widens the HPV shot coverage rule from women to everyone the list covers. The Colorado Senate voted 22-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 32. Colorado law used to let a federal panel decide which vaccines are advised here. The act has the state board of health set its own list of shots for adults. The board weighs the federal panel and the main doctors' groups. The act also widens the HPV shot coverage rule from women to everyone the list covers. The Colorado Senate voted 22-12 to accept those changes and pass the bill, and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1665259
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1694753,
+   "measure_id": "SB 113",
+   "vote_date": "2026-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 113. A recovery residence is a shared home for people staying sober while they rebuild their lives. From July 2027 running one without a state license is unlawful, with a daily fine. The rule leaves out family homes, treatment centers, shelters and long-term supported housing. It also leaves out reentry programs open to people with no such diagnosis. The Colorado House passed it 48-16 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 113. A recovery residence is a shared home for people staying sober while they rebuild their lives. From July 2027 running one without a state license is unlawful, with a daily fine. The rule leaves out family homes, treatment centers, shelters and long-term supported housing. It also leaves out reentry programs open to people with no such diagnosis. The Colorado House passed it 48-16 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695611,
+   "measure_id": "SB 138",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 138. Colorado hospitals must offer discounted care to patients on low incomes, but the paperwork put people off. The act sets one uniform application that every facility has to use. A hospital must tell the patient the answer, the income band it used, and the most it can ask for each month. A patient turned down gets an appeal, or a statement that nothing is owed. The Colorado House passed it 49-15 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 138. Colorado hospitals must offer discounted care to patients on low incomes, but the paperwork put people off. The act sets one uniform application that every facility has to use. A hospital must tell the patient the answer, the income band it used, and the most it can ask for each month. A patient turned down gets an appeal, or a statement that nothing is owed. The Colorado House passed it 49-15 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1695610,
+    1695612
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1696058,
+   "measure_id": "SB 167",
+   "vote_date": "2026-05-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 167. Some drugs cost less paid for straight out, but that money used not to count. From 2028 an insurer must count what a patient paid a pharmacy directly. It goes toward the patient's yearly cap on what they pay. The patient has 90 days to send proof, and the credit stops at the in-network price. The Colorado House passed it 48-15 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 167. Some drugs cost less paid for straight out, but that money used not to count. From 2028 an insurer must count what a patient paid a pharmacy directly. It goes toward the patient's yearly cap on what they pay. The patient has 90 days to send proof, and the credit stops at the in-network price. The Colorado House passed it 48-15 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697014,
+   "measure_id": "SB 178",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 178. Colorado uses a fee on insurers and hospitals to hold down premiums on the individual market. The act lets the program borrow, issuing up to $100 million in bonds from 2027. It sets how the money must be split. At least half goes to the backup fund that holds premiums down. A study due by July 2027 must ask whether a basic health plan would work better. The Colorado House passed it 43-22 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 178. Colorado uses a fee on insurers and hospitals to hold down premiums on the individual market. The act lets the program borrow, issuing up to $100 million in bonds from 2027. It sets how the money must be split. At least half goes to the backup fund that holds premiums down. A study due by July 2027 must ask whether a basic health plan would work better. The Colorado House passed it 43-22 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1695921,
+   "measure_id": "SB 178",
+   "vote_date": "2026-05-08",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 178. Colorado uses a fee on insurers and hospitals to hold down premiums on the individual market. The act lets the program borrow, issuing up to $100 million in bonds from 2027. It sets how the money must be split. At least half goes to the backup fund that holds premiums down. A study due by July 2027 must ask whether a basic health plan would work better. The Colorado Senate passed it 23-10 and the governor signed it into law.",
+   "nay_description": "Voted against passing Senate Bill 178. Colorado uses a fee on insurers and hospitals to hold down premiums on the individual market. The act lets the program borrow, issuing up to $100 million in bonds from 2027. It sets how the money must be split. At least half goes to the backup fund that holds premiums down. A study due by July 2027 must ask whether a basic health plan would work better. The Colorado Senate passed it 23-10 and the governor signed it into law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1695920
+   ],
+   "note": "Colorado votes twice to take the other chamber's changes: it concurs, then repasses the bill the same day. The acknowledged roll is that same-day concurrence vote, which precedes this repassage."
+  }
+ ]
+}

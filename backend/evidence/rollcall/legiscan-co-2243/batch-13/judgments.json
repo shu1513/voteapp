@@ -1,0 +1,366 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1657025,
+   "measure_id": "HB 1005",
+   "vote_date": "2026-03-09",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1005. Colorado is the only state that makes a second vote before workers can agree a union security clause. That vote needs a majority of everyone eligible, or three quarters of those voting. The bill would have scrapped that second election. It would also have rewritten the Labor Peace Act's stated aims around good faith bargaining and fair pay. The Colorado House voted 42-22 to pass it, but the governor vetoed the bill.",
+   "nay_description": "Voted against passing House Bill 1005. Colorado is the only state that makes a second vote before workers can agree a union security clause. That vote needs a majority of everyone eligible, or three quarters of those voting. The bill would have scrapped that second election. It would also have rewritten the Labor Peace Act's stated aims around good faith bargaining and fair pay. The Colorado House voted 42-22 to pass it, but the governor vetoed the bill.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1692371,
+   "measure_id": "HB 1005",
+   "vote_date": "2026-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1005. Colorado is the only state that makes a second vote before workers can agree a union security clause. That vote needs a majority of everyone eligible, or three quarters of those voting. The bill would have scrapped that second election. It would also have rewritten the Labor Peace Act's stated aims around good faith bargaining and fair pay. The Colorado Senate voted 23-12 to pass it, but the governor vetoed the bill.",
+   "nay_description": "Voted against passing House Bill 1005. Colorado is the only state that makes a second vote before workers can agree a union security clause. That vote needs a majority of everyone eligible, or three quarters of those voting. The bill would have scrapped that second election. It would also have rewritten the Labor Peace Act's stated aims around good faith bargaining and fair pay. The Colorado Senate voted 23-12 to pass it, but the governor vetoed the bill.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695688,
+   "measure_id": "HB 1210",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1210 and pass it. Firms can set a different price for each customer using data gathered about them. The bill would have banned setting a price or a wage that way. A firm could still have charged different prices where it showed its own cost differed. Breaking the rule would have counted as a deceptive trade practice. The Colorado House voted 41-23 to accept those changes and pass the bill, but the governor vetoed it.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1210. Firms can set a different price for each customer using data gathered about them. The bill would have banned setting a price or a wage that way. A firm could still have charged different prices where it showed its own cost differed. Breaking the rule would have counted as a deceptive trade practice. The Colorado House voted 41-23 to accept those changes and pass the bill, but the governor vetoed it.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1695687
+   ],
+   "note": "The acknowledged roll is a same-day peer of this vote. Colorado votes twice to take the other chamber's changes, concurring and then repassing the bill the same day; and a chamber can carry two records of one third reading, in which case the roll judged is the one that records every member."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1694728,
+   "measure_id": "HB 1210",
+   "vote_date": "2026-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1210. Firms can set a different price for each customer using data gathered about them. The bill would have banned setting a price or a wage that way. A firm could still have charged different prices where it showed its own cost differed. Breaking the rule would have counted as a deceptive trade practice. The Colorado Senate voted 19-15 to pass it, but the governor vetoed the bill.",
+   "nay_description": "Voted against passing House Bill 1210. Firms can set a different price for each customer using data gathered about them. The bill would have banned setting a price or a wage that way. A firm could still have charged different prices where it showed its own cost differed. Breaking the rule would have counted as a deceptive trade practice. The Colorado Senate voted 19-15 to pass it, but the governor vetoed the bill.",
+   "labels": [
+    {
+     "slug": "data_privacy",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697864,
+   "measure_id": "HB 1236",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1236 and pass it. Arbitration clauses can leave a worker or shopper facing fees far above court fees. The bill would have made such a clause void, letting the person go to court instead. It would also have barred an arbitrator from running a case where they had a conflict. The rules could not have been signed away in advance. The Colorado House voted 33-32 to accept those changes and pass the bill, but the governor vetoed it.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1236. Arbitration clauses can leave a worker or shopper facing fees far above court fees. The bill would have made such a clause void, letting the person go to court instead. It would also have barred an arbitrator from running a case where they had a conflict. The rules could not have been signed away in advance. The Colorado House voted 33-32 to accept those changes and pass the bill, but the governor vetoed it.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697863
+   ],
+   "note": "The acknowledged roll is a same-day peer of this vote. Colorado votes twice to take the other chamber's changes, concurring and then repassing the bill the same day; and a chamber can carry two records of one third reading, in which case the roll judged is the one that records every member."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697490,
+   "measure_id": "HB 1236",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1236. Arbitration clauses can leave a worker or shopper facing fees far above court fees. The bill would have made such a clause void, letting the person go to court instead. It would also have barred an arbitrator from running a case where they had a conflict. The rules could not have been signed away in advance. The Colorado Senate voted 19-16 to pass it, but the governor vetoed the bill.",
+   "nay_description": "Voted against passing House Bill 1236. Arbitration clauses can leave a worker or shopper facing fees far above court fees. The bill would have made such a clause void, letting the person go to court instead. It would also have barred an arbitrator from running a case where they had a conflict. The rules could not have been signed away in advance. The Colorado Senate voted 19-16 to pass it, but the governor vetoed the bill.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1697616,
+   "measure_id": "HB 1255",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1255 and pass it. Police serving a search warrant on a social media company can wait for an answer. The bill would have made a platform with a million monthly users staff a hotline at all times. It would have had to confirm a warrant within set time limits. It would also have had to tell local police within 24 hours whenever it acted against a user. Content that counts as protected health care would have been left out. The Colorado House voted 35-30 to accept those changes and pass the bill, but the governor vetoed it.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1255. Police serving a search warrant on a social media company can wait for an answer. The bill would have made a platform with a million monthly users staff a hotline at all times. It would have had to confirm a warrant within set time limits. It would also have had to tell local police within 24 hours whenever it acted against a user. Content that counts as protected health care would have been left out. The Colorado House voted 35-30 to accept those changes and pass the bill, but the governor vetoed it.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697615
+   ],
+   "note": "The acknowledged roll is a same-day peer of this vote. Colorado votes twice to take the other chamber's changes, concurring and then repassing the bill the same day; and a chamber can carry two records of one third reading, in which case the roll judged is the one that records every member."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697617,
+   "measure_id": "HB 1255",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1255. Police serving a search warrant on a social media company can wait for an answer. The bill would have made a platform with a million monthly users staff a hotline at all times. It would have had to confirm a warrant within set time limits. It would also have had to tell local police within 24 hours whenever it acted against a user. Content that counts as protected health care would have been left out. The Colorado Senate voted 18-17 to pass it, but the governor vetoed the bill.",
+   "nay_description": "Voted against passing House Bill 1255. Police serving a search warrant on a social media company can wait for an answer. The bill would have made a platform with a million monthly users staff a hotline at all times. It would have had to confirm a warrant within set time limits. It would also have had to tell local police within 24 hours whenever it acted against a user. Content that counts as protected health care would have been left out. The Colorado Senate voted 18-17 to pass it, but the governor vetoed the bill.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697348,
+   "measure_id": "HB 1286",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1286. Self-driving systems are being fitted to heavy trucks. For a truck rated over 26,000 pounds, the bill would have required a licensed commercial driver in the cab. That driver would have had to watch the road and step in when needed. For hazardous loads the driver would have had to sit in the driver's seat. The Colorado Senate voted 27-8 to pass it, but the governor vetoed the bill.",
+   "nay_description": "Voted against passing House Bill 1286. Self-driving systems are being fitted to heavy trucks. For a truck rated over 26,000 pounds, the bill would have required a licensed commercial driver in the cab. That driver would have had to watch the road and step in when needed. For hazardous loads the driver would have had to sit in the driver's seat. The Colorado Senate voted 27-8 to pass it, but the governor vetoed the bill.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1698132,
+   "measure_id": "HB 1418",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the Senate's changes to House Bill 1418 and pass it. Online games sell add-ons that give a player an advantage or change the game. The bill would have set up a youth mental health body paid for by a fee on those sales. The fee would have started at five percent. Buying the game itself would not have been charged. The money would have paid for youth mental health grants and after-school programs. The Colorado House voted 38-26 to accept those changes and pass the bill, but the governor vetoed it.",
+   "nay_description": "Voted against accepting the Senate's changes to House Bill 1418. Online games sell add-ons that give a player an advantage or change the game. The bill would have set up a youth mental health body paid for by a fee on those sales. The fee would have started at five percent. Buying the game itself would not have been charged. The money would have paid for youth mental health grants and after-school programs. The Colorado House voted 38-26 to accept those changes and pass the bill, but the governor vetoed it.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1698131
+   ],
+   "note": "The acknowledged roll is a same-day peer of this vote. Colorado votes twice to take the other chamber's changes, concurring and then repassing the bill the same day; and a chamber can carry two records of one third reading, in which case the roll judged is the one that records every member."
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697491,
+   "measure_id": "HB 1418",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1418. Online games sell add-ons that give a player an advantage or change the game. The bill would have set up a youth mental health body paid for by a fee on those sales. The fee would have started at five percent. Buying the game itself would not have been charged. The money would have paid for youth mental health grants and after-school programs. The Colorado Senate voted 18-17 to pass it, but the governor vetoed the bill.",
+   "nay_description": "Voted against passing House Bill 1418. Online games sell add-ons that give a player an advantage or change the game. The bill would have set up a youth mental health body paid for by a fee on those sales. The fee would have started at five percent. Buying the game itself would not have been charged. The money would have paid for youth mental health grants and after-school programs. The Colorado Senate voted 18-17 to pass it, but the governor vetoed the bill.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1695619,
+   "measure_id": "SB 5",
+   "vote_date": "2026-05-07",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 5. Immigration officers are hard to sue when they break a person's rights. The bill would have let a person sue in state court over rights broken during civil immigration work. A winning claimant would have had their legal costs paid. It would have stripped immunity defenses as far as federal law allows. The Colorado House voted 41-22 to pass it, but the governor vetoed the bill.",
+   "nay_description": "Voted against passing Senate Bill 5. Immigration officers are hard to sue when they break a person's rights. The bill would have let a person sue in state court over rights broken during civil immigration work. A winning claimant would have had their legal costs paid. It would have stripped immunity defenses as far as federal law allows. The Colorado House voted 41-22 to pass it, but the governor vetoed the bill.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1642411,
+   "measure_id": "SB 5",
+   "vote_date": "2026-02-24",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 5. Immigration officers are hard to sue when they break a person's rights. The bill would have let a person sue in state court over rights broken during civil immigration work. A winning claimant would have had their legal costs paid. It would have stripped immunity defenses as far as federal law allows. The Colorado Senate voted 20-11 to pass it, but the governor vetoed the bill.",
+   "nay_description": "Voted against passing Senate Bill 5. Immigration officers are hard to sue when they break a person's rights. The bill would have let a person sue in state court over rights broken during civil immigration work. A winning claimant would have had their legal costs paid. It would have stripped immunity defenses as far as federal law allows. The Colorado Senate voted 20-11 to pass it, but the governor vetoed the bill.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1694755,
+   "measure_id": "SB 134",
+   "vote_date": "2026-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 134. Card networks charge a shop a percentage of the whole sale, including the sales tax. The bill would have barred a network from charging that fee on the tax part. It would also have barred raising other fees to make up the difference. Small card issuers would have been left out and could not have been punished for it. The Colorado House voted 44-20 to pass it, but the governor vetoed the bill.",
+   "nay_description": "Voted against passing Senate Bill 134. Card networks charge a shop a percentage of the whole sale, including the sales tax. The bill would have barred a network from charging that fee on the tax part. It would also have barred raising other fees to make up the difference. Small card issuers would have been left out and could not have been punished for it. The Colorado House voted 44-20 to pass it, but the governor vetoed the bill.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1692373,
+   "measure_id": "SB 134",
+   "vote_date": "2026-05-01",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 134. Card networks charge a shop a percentage of the whole sale, including the sales tax. The bill would have barred a network from charging that fee on the tax part. It would also have barred raising other fees to make up the difference. Small card issuers would have been left out and could not have been punished for it. The Colorado Senate voted 18-17 to pass it, but the governor vetoed the bill.",
+   "nay_description": "Voted against passing Senate Bill 134. Card networks charge a shop a percentage of the whole sale, including the sales tax. The bill would have barred a network from charging that fee on the tax part. It would also have barred raising other fees to make up the difference. Small card issuers would have been left out and could not have been punished for it. The Colorado Senate voted 18-17 to pass it, but the governor vetoed the bill.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1694942,
+   "measure_id": "SB 146",
+   "vote_date": "2026-05-06",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 146. Takeaway meals arrive with cutlery and sauce packets nobody asked for. The bill would have made a restaurant or delivery app ask first before handing over single-use serviceware. Only the items a customer asked for or confirmed could have been given. Bundled packs holding more than one kind of item would have been barred. The Colorado House voted 39-25 to pass it, but the governor vetoed the bill.",
+   "nay_description": "Voted against passing Senate Bill 146. Takeaway meals arrive with cutlery and sauce packets nobody asked for. The bill would have made a restaurant or delivery app ask first before handing over single-use serviceware. Only the items a customer asked for or confirmed could have been given. Bundled packs holding more than one kind of item would have been barred. The Colorado House voted 39-25 to pass it, but the governor vetoed the bill.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1691386,
+   "measure_id": "SB 146",
+   "vote_date": "2026-04-29",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 146. Takeaway meals arrive with cutlery and sauce packets nobody asked for. The bill would have made a restaurant or delivery app ask first before handing over single-use serviceware. Only the items a customer asked for or confirmed could have been given. Bundled packs holding more than one kind of item would have been barred. The Colorado Senate voted 20-14 to pass it, but the governor vetoed the bill.",
+   "nay_description": "Voted against passing Senate Bill 146. Takeaway meals arrive with cutlery and sauce packets nobody asked for. The bill would have made a restaurant or delivery app ask first before handing over single-use serviceware. Only the items a customer asked for or confirmed could have been given. Bundled packs holding more than one kind of item would have been barred. The Colorado Senate voted 20-14 to pass it, but the governor vetoed the bill.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1696916,
+   "measure_id": "SB 184",
+   "vote_date": "2026-05-12",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 184. A firefighter with cancer has to prove the job caused it. The bill would have flipped that, treating a covered firefighter's cancer as caused by the job. An employer could have argued back only with clear and convincing medical evidence. Smoking, family history or a missed pre-hire medical would not on their own have been enough. The Colorado House voted 42-23 to pass it, but the governor vetoed the bill.",
+   "nay_description": "Voted against passing Senate Bill 184. A firefighter with cancer has to prove the job caused it. The bill would have flipped that, treating a covered firefighter's cancer as caused by the job. An employer could have argued back only with clear and convincing medical evidence. Smoking, family history or a missed pre-hire medical would not on their own have been enough. The Colorado House voted 42-23 to pass it, but the governor vetoed the bill.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1697574,
+   "measure_id": "SB 184",
+   "vote_date": "2026-05-13",
+   "review_status": "approved",
+   "yea_description": "Voted to accept the House's changes to Senate Bill 184 and pass it. A firefighter with cancer has to prove the job caused it. The bill would have flipped that, treating a covered firefighter's cancer as caused by the job. An employer could have argued back only with clear and convincing medical evidence. Smoking, family history or a missed pre-hire medical would not on their own have been enough. The Colorado Senate voted 23-12 to accept those changes and pass the bill, but the governor vetoed it.",
+   "nay_description": "Voted against accepting the House's changes to Senate Bill 184. A firefighter with cancer has to prove the job caused it. The bill would have flipped that, treating a covered firefighter's cancer as caused by the job. An employer could have argued back only with clear and convincing medical evidence. Smoking, family history or a missed pre-hire medical would not on their own have been enough. The Colorado Senate voted 23-12 to accept those changes and pass the bill, but the governor vetoed it.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1697573
+   ],
+   "note": "The acknowledged roll is a same-day peer of this vote. Colorado votes twice to take the other chamber's changes, concurring and then repassing the bill the same day; and a chamber can carry two records of one third reading, in which case the roll judged is the one that records every member."
+  }
+ ]
+}
