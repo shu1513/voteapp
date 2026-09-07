@@ -538,6 +538,32 @@ describe("applyAutoPicks", () => {
     expect(db.query).toHaveBeenCalledTimes(4);
   });
 
+  it("reports an answered retention race as skipped_existing in fill_empty mode", async () => {
+    const { db } = createMockDb();
+    db.query
+      .mockResolvedValueOnce(userRow)
+      .mockResolvedValueOnce({ rows: [{ id: ELECTION_ID }] }) // prevalidate election ids
+      .mockResolvedValueOnce(threeIssueRows)
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: ELECTION_ID,
+            race_type: "office",
+            official_ballot_title: "Retention of District Court Judge Pat Example",
+            seats_to_fill: 1,
+            is_upcoming: true,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [{ count: "1" }] }); // countExistingPicks: the Yes/No row
+    const result = await applyAutoPicks(db, USER_ID, {
+      electionIds: [ELECTION_ID],
+      mode: "fill_empty",
+      dryRun: true,
+    });
+    expect(result.results[0]).toMatchObject({ outcome: "skipped_existing", reason: null });
+  });
+
   it("reports election_closed for a past election", async () => {
     const { db } = createMockDb();
     db.query

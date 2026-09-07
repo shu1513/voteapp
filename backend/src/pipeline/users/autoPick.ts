@@ -964,19 +964,21 @@ async function computeOne(
   if (!election.is_upcoming) {
     return emptyResult(election.id, election.race_type, "no_pick", "election_closed");
   }
+  if (mode === "fill_empty" && (await countExistingPicks(db, normalizedUserId, normalizedElectionId)) > 0) {
+    return emptyResult(election.id, election.race_type, "skipped_existing", null);
+  }
   // Retention races are catalogued as office races with the judge as the
   // only candidate, but the ballot asks Yes/No on keeping them. Whether an
   // issue match should ever mean "retain" is its own decision rule, not an
-  // office-race fill, so the engine leaves these open and says why.
+  // office-race fill, so the engine leaves these open and says why. After
+  // the fill_empty check: an answered retention race is "already picked",
+  // not "your call".
   if (
     election.race_type === "office" &&
     typeof election.official_ballot_title === "string" &&
     isJudicialRetentionTitle(election.official_ballot_title)
   ) {
     return emptyResult(election.id, election.race_type, "no_pick", "retention");
-  }
-  if (mode === "fill_empty" && (await countExistingPicks(db, normalizedUserId, normalizedElectionId)) > 0) {
-    return emptyResult(election.id, election.race_type, "skipped_existing", null);
   }
   if (issues.length < MIN_AUTO_PICK_ISSUES) {
     return emptyResult(election.id, election.race_type, "no_pick", "too_few_issues");

@@ -1213,26 +1213,7 @@ export function ElectionPage() {
             still TBD) — the old inline buttons lived inside the measure
             section and so never rendered there, and a Yes/No pair with no
             explanation of what either vote means would be worse. */}
-        {retention && showChoiceControls ? (
-          // Retention: same sticky Yes/No pair as a measure. One line says
-          // what the sides mean, because the h1 names a judge, not a
-          // question a voter can answer without knowing the stakes.
-          <div
-            data-sticky-pick-cta=""
-            className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg"
-          >
-            <p className="mb-2 text-sm text-ink-soft">Yes keeps this judge in office. No removes them.</p>
-            <MeasureChoiceButtons
-              electionId={data.id}
-              raceTitle={data.official_ballot_title}
-              electionDate={data.election_date}
-              choice={myChoice}
-              raceType="office"
-              fullWidth
-            />
-          </div>
-        ) : null}
-        {measure !== null && data.race_type === "ballot_measure" && showChoiceControls ? (
+        {((measure !== null && data.race_type === "ballot_measure") || retention) && showChoiceControls ? (
           // The measure page's ONE pick control, mirroring the candidate
           // page's sticky card: a measure has no deeper detail page — the
           // decision happens here — so the Yes/No pair pins to the viewport
@@ -1240,16 +1221,22 @@ export function ElectionPage() {
           // lifts the chatbot launcher clear of it). No caption naming the
           // measure: this page's h1 IS the measure — one subject, zero
           // ambiguity — and the "My pick:" prefix already says the buttons
-          // record a plan.
+          // record a plan. A retention race shares the card; its one caption
+          // says what the sides mean, because the h1 names a judge, not a
+          // question a voter can answer without knowing the stakes.
           <div
             data-sticky-pick-cta=""
             className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg"
           >
+            {retention ? (
+              <p className="mb-2 text-sm text-ink-soft">Yes keeps this judge in office. No removes them.</p>
+            ) : null}
             <MeasureChoiceButtons
               electionId={data.id}
               raceTitle={data.official_ballot_title}
               electionDate={data.election_date}
               choice={myChoice}
+              raceType={retention ? "office" : "ballot_measure"}
               fullWidth
             />
             {/* Back link only for election-list arrivals — a My-Picks

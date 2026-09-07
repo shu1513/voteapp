@@ -632,14 +632,16 @@ export function CandidatePage() {
   // button carries no race name, so with several races it can't say which
   // one it would pick; those pages rely on the self-describing rows below.
   const primaryPickElection = pickableElections.length === 1 ? pickableElections[0] : null;
-  // Whether THIS candidate holds (one of) the pick(s) for the card's race —
-  // gates the card's post-pick actions. True on arrival too, not only right
-  // after clicking: the "where to next" links are just as useful when a
-  // reader returns to a candidate they already picked.
-  const isPrimaryPicked = primaryPickElection !== null &&
-    (choiceForElection(primaryPickElection.election_id)?.picks ?? []).some(
-      (pick) => pick.candidate_id === candidate.candidate_id
-    );
+  // Whether THIS candidate holds (one of) the pick(s) for the card's race, or
+  // the race's Yes/No answer is recorded (judicial retention) — gates the
+  // card's post-pick actions. True on arrival too, not only right after
+  // clicking: the "where to next" links are just as useful when a reader
+  // returns to a candidate they already picked.
+  const primaryChoice = primaryPickElection ? choiceForElection(primaryPickElection.election_id) : undefined;
+  const isPrimaryPicked =
+    primaryChoice !== undefined &&
+    (primaryChoice.measure_position !== null ||
+      primaryChoice.picks.some((pick) => pick.candidate_id === candidate.candidate_id));
   const location = useLocation();
   const hydrated = useHydrated();
   // Same hydration gate as the election page: location.state survives

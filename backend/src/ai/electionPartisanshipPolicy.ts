@@ -322,8 +322,11 @@ export function isJudicialOfficeTitle(title: string, state?: string): boolean {
   );
 }
 
+/** Copy of packages/api-client/src/retention.ts isJudicialRetentionTitle — keep identical. */
 export function isJudicialRetentionTitle(title: string): boolean {
-  return /\b(retention|retain(?:ed|ing)?|be retained)\b/i.test(title);
+  // Both halves required: the retention verb alone would also catch a
+  // non-judicial office such as "Water Retention District Director".
+  return /\b(retention|retain(?:ed|ing)?)\b/i.test(title) && /\b(judge|justice|court|judicial|magistrate)\b/i.test(title);
 }
 
 function isJudicialContest(

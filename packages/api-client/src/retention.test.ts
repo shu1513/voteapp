@@ -13,6 +13,11 @@ describe("isJudicialRetentionTitle", () => {
     expect(isJudicialRetentionTitle("State Senator, District 4")).toBe(false);
     expect(isJudicialRetentionTitle("Proposition 1: Road and Bridge Bond")).toBe(false);
   });
+
+  it("needs a judicial noun, not just the retention verb", () => {
+    expect(isJudicialRetentionTitle("Water Retention District Director")).toBe(false);
+    expect(isJudicialRetentionTitle("Shall Pat Example be retained as Fire Chief?")).toBe(false);
+  });
 });
 
 describe("isRetentionRace", () => {
