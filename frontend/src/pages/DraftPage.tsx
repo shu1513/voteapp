@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router";
+import type { MetaFunction } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest, formatElectionDate, useMe } from "@voteapp/api-client";
+import { APP_NAME, apiRequest, formatElectionDate, useMe } from "@voteapp/api-client";
 import type { BallotSummary, ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
 import { DetailPager } from "../components/DetailPager";
@@ -18,6 +19,11 @@ import {
 } from "../lib/ballotDraft";
 import { PickDateCard } from "./PicksPage";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
+import { pageMeta } from "../lib/pageMeta";
+
+// Same title as useDocumentTitle below, in the server-rendered HTML. No path:
+// the draft is per-browser, so no canonical or og:url.
+export const meta: MetaFunction = () => pageMeta({ title: `My Ballot Draft · ${APP_NAME}` });
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { countBucket, track } from "../lib/usage";
 import { useShowDraftMilestone } from "../lib/useShowDraftMilestone";

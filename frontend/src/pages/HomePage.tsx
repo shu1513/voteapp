@@ -1,9 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
+import type { MetaFunction } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { APP_NAME, apiRequest } from "@voteapp/api-client";
 import type { AddressLocation, AddressResolution } from "@voteapp/api-client";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
+import { pageMeta } from "../lib/pageMeta";
+
+// Server-rendered head for the home page: the same title useDocumentTitle
+// sets after hydration, so crawlers and share scrapers see it in the HTML
+// rather than the root's bare brand.
+export const meta: MetaFunction = () =>
+  pageMeta({ title: `Find what's on your ballot · ${APP_NAME}`, path: "/" });
 import { FullAddressExplanation } from "../components/FullAddressExplanation";
 import { PreSearchTermsDialog } from "../components/PreSearchTermsDialog";
 import { ErrorNotice } from "../components/Status";

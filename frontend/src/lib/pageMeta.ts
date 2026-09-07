@@ -59,7 +59,17 @@ export function pageMeta({ title, description = DEFAULT_DESCRIPTION, path, image
     { property: "og:site_name", content: APP_NAME },
     { property: "og:title", content: title },
     { property: "og:description", content: description },
-    ...(path ? [{ property: "og:url", content: `${SITE_ORIGIN}${path}` }] : []),
+    ...(path
+      ? [
+          { property: "og:url", content: `${SITE_ORIGIN}${path}` },
+          // Canonical for the same routes that know their own URL: crawlers
+          // otherwise index each query-string variant separately. Routes
+          // without a path (the ballot, a draft) get none on purpose —
+          // whether personalised pages should be indexed at all is a
+          // separate decision.
+          { tagName: "link" as const, rel: "canonical", href: `${SITE_ORIGIN}${path}` },
+        ]
+      : []),
     { property: "og:image", content: imageUrl },
     // Declared so the card reserves the right space before the image loads,
     // and so scrapers that refuse unsized images still render it large.
