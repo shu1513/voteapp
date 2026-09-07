@@ -1,5 +1,5 @@
 import { ApiError, useFollowSaving, useSetFollow } from "@voteapp/api-client";
-import { Alert, Pressable, Text } from "react-native";
+import { Alert, Platform, Pressable, Text } from "react-native";
 import { registerForPushRequestingPermission } from "../lib/pushNotifications";
 
 // Follow/unfollow toggle. Rendered only for verified users (callers gate on
@@ -15,6 +15,33 @@ import { registerForPushRequestingPermission } from "../lib/pushNotifications";
 // is allowed to appear (the other: saving a ballot) — the user just asked to
 // be notified about someone, so the ask is in context, per the plan's
 // "not on launch" rule.
+//
+// react-native-web's Alert.alert is an empty function, so on the Expo web
+// build both dialogs fall back to the browser's own alert/confirm — without
+// that, the confirm step would silently swallow every unfollow there.
+
+const isWeb = Platform.OS === "web";
+
+function showError(title: string, message: string) {
+  if (isWeb) {
+    globalThis.alert?.(`${title}\n${message}`);
+    return;
+  }
+  Alert.alert(title, message);
+}
+
+function confirm(title: string, message: string, onConfirm: () => void) {
+  if (isWeb) {
+    if (globalThis.confirm?.(`${title}\n${message}`)) {
+      onConfirm();
+    }
+    return;
+  }
+  Alert.alert(title, message, [
+    { text: "Cancel", style: "cancel" },
+    { text: "Unfollow", style: "destructive", onPress: onConfirm },
+  ]);
+}
 
 type FollowButtonProps = {
   candidateId: string;
@@ -42,7 +69,7 @@ export function FollowButton({ candidateId, candidateName, isFollowing, size = "
         // user-readable server message) — a silent no-op button reads as
         // broken. Mirrors the web component's error line.
         onError: (error) => {
-          Alert.alert(
+          showError(
             "Could not save",
             error instanceof ApiError && error.status < 500
               ? error.message
@@ -54,10 +81,7 @@ export function FollowButton({ candidateId, candidateName, isFollowing, size = "
   }
 
   function confirmUnfollow() {
-    Alert.alert(`Unfollow ${candidateName}?`, "You'll stop getting updates about them.", [
-      { text: "Cancel", style: "cancel" },
-      { text: "Unfollow", style: "destructive", onPress: () => submit(false) },
-    ]);
+    confirm(`Unfollow ${candidateName}?`, "You'll stop getting updates about them.", () => submit(false));
   }
 
   return (
