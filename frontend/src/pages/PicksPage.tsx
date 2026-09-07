@@ -286,6 +286,34 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
   );
 }
 
+// One line for the whole fill run, instead of "auto pick: …" on every row the
+// engine left open (34 races → 30 identical notes was clutter). Counts what
+// landed and groups the open rows by reason; skipped_existing rows (already
+// decided by hand) are not the run's story. Per-race detail stays on each
+// election page's panel.
+function autoFillSummary(results: Map<string, AutoPickElectionResult>): string | null {
+  const all = [...results.values()];
+  const picked = all.filter((result) => result.outcome === "picked").length;
+  const open = all.filter((result) => result.outcome === "no_pick");
+  if (picked === 0 && open.length === 0) {
+    return null;
+  }
+  const byReason = new Map<string, number>();
+  for (const result of open) {
+    const label = reasonLabel(result.reason);
+    byReason.set(label, (byReason.get(label) ?? 0) + 1);
+  }
+  const reasons = [...byReason.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([label, count]) => (byReason.size > 1 ? `${label} (${count})` : label))
+    .join(", ");
+  const parts = [`Auto-fill picked ${picked} race${picked === 1 ? "" : "s"}`];
+  if (open.length > 0) {
+    parts.push(`${open.length} left open: ${reasons}`);
+  }
+  return parts.join(" · ");
+}
+
 // Exported for the guest /draft page, which renders the same card from the
 // localStorage ballot draft: share off (the share API is account-only and
 // the card would leak a mintable URL promise it can't keep), and its own
@@ -308,9 +336,10 @@ export function PickDateCard({
   /** All stored choices; presence turns on this card's auto-pick controls
    * (My Picks only — the guest draft page reuses the card without them). */
   autoPickChoices?: ElectionChoice[];
-  /** This date's last fill run, keyed by election id — feeds the per-row
-   * "auto pick: …" annotations below. Lives in PicksPage (not here) so the
-   * ballot view shares it and a view toggle doesn't discard it. */
+  /** This date's last fill run, keyed by election id — feeds the one-line
+   * run summary and the partial-tie note below. Lives in PicksPage (not
+   * here) so the ballot view shares it and a view toggle doesn't discard
+   * it. */
   autoResults?: Map<string, AutoPickElectionResult> | null;
   onAutoResults?: (byElectionId: Map<string, AutoPickElectionResult> | null) => void;
 }) {
@@ -321,18 +350,39 @@ export function PickDateCard({
   // few days so results can land on them); once the date passes, "no pick
   // yet" would invite an action that's no longer possible.
   const isPast = date < usLatestLocalDate();
+  const raceNoun = `race${elections.length === 1 ? "" : "s"}`;
+  const progressLabel = `${pickedCount} of ${elections.length} ${raceNoun} decided`;
+  const progressPercent = elections.length === 0 ? 0 : Math.round((pickedCount / elections.length) * 100);
+  const summary = autoResults ? autoFillSummary(autoResults) : null;
   return (
     <section className="rounded-xl border border-line bg-white p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h3 className="text-heading font-semibold text-ink">My {formatElectionDate(date)} Election Draft</h3>
+        {/* Date only: the page h1 already says "My Election Draft". */}
+        <h3 className="text-heading font-semibold text-ink">{formatElectionDate(date)}</h3>
         {/* Mint-on-demand: no share row (and no live public URL) exists until
             the user asks for one. Hidden entirely while the card has zero
             picks — the backend refuses to mint for an empty card anyway. */}
         {share && pickedCount > 0 ? <ShareCardControl electionDate={date} /> : null}
       </div>
-      <p className="mt-0.5 text-xs text-ink-soft">
-        {pickedCount} of {elections.length} race{elections.length === 1 ? "" : "s"} decided
-      </p>
+      {/* Progress bar + "N / M" instead of a grey sentence: the count is a
+          status, and a bar is the shape people already read as one. The
+          full sentence stays as the bar's accessible name. Green = the
+          "decided" color the pick names and Won chips already use. */}
+      <div className="mt-2 flex items-center gap-3">
+        <div
+          role="progressbar"
+          aria-label={progressLabel}
+          aria-valuemin={0}
+          aria-valuemax={elections.length}
+          aria-valuenow={pickedCount}
+          className="h-2 flex-1 overflow-hidden rounded-full bg-surface"
+        >
+          <div className="h-full rounded-full bg-green-700" style={{ width: `${progressPercent}%` }} />
+        </div>
+        <span className="text-sm font-semibold tabular-nums text-ink">
+          {pickedCount} / {elections.length}
+        </span>
+      </div>
       {autoPickChoices !== undefined && !isPast ? (
         <AutoPickFillControl
           date={date}
@@ -342,41 +392,58 @@ export function PickDateCard({
           onResults={onAutoResults}
         />
       ) : null}
-      <ul className="mt-3 space-y-2">
+      {summary !== null ? (
+        <p role="status" className="mt-2 text-xs text-ink-soft">
+          {summary}
+        </p>
+      ) : null}
+      {/* Two aligned columns, race | my pick (a grid, not a table: no cell
+          borders, just hairline row dividers). Long titles wrap inside
+          their column; the pick stays aligned on the right. Below sm the
+          columns stack so a phone reads title-over-pick. */}
+      <div
+        aria-hidden="true"
+        className="mt-3 hidden gap-x-6 border-b border-line pb-1 text-xs font-semibold uppercase tracking-wide text-ink-soft sm:grid sm:grid-cols-2"
+      >
+        <span>Race</span>
+        <span>My pick</span>
+      </div>
+      <ul className="mt-3 border-t border-line sm:mt-0 sm:border-t-0">
         {elections.map((election) => {
           const choice = choiceByElectionId?.get(election.id);
           const autoResult = autoResults?.get(election.id);
+          const decided = hasRenderablePick(choice);
           return (
-            <li key={election.id} className="text-sm">
-              {hasRenderablePick(choice) ? (
-                <>
-                  <Link to={`/elections/${election.id}`} state={navState} className="text-ink hover:text-rausch">
-                    {election.official_ballot_title}
-                  </Link>
-                  <span className="text-ink-soft"> — </span>
-                  <PickedLine choice={choice} election={election} navState={navState} />
-                  {autoResult?.outcome === "picked" &&
-                  autoResult.reason === "tie" &&
-                  (choice?.picks.length ?? 0) < (choice?.seats_to_fill ?? 1) ? (
-                    // Partial fill: some seats landed, the rest tied. Gated
-                    // on a live vacancy so the note retires the moment the
-                    // user fills the remaining seats by hand.
-                    <span className="text-ink-soft"> · auto pick: remaining seats tied — your call</span>
-                  ) : null}
-                </>
-              ) : (
-                // Undecided: the whole line is the quiet call to action —
-                // grey, clickable, straight to the race. After a fill run,
-                // the one-line reason the engine left it open rides along.
+            <li key={election.id} className="grid gap-x-6 border-b border-line/60 py-2 text-sm sm:grid-cols-2">
+              <div className="min-w-0 font-[430]">
+                {/* Undecided rows carry "no pick yet" for screen readers
+                    only: sighted users read the empty pick column. */}
                 <Link
                   to={`/elections/${election.id}`}
                   state={navState}
-                  className="text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink"
+                  aria-label={
+                    decided ? undefined : `${election.official_ballot_title} — ${isPast ? "no pick" : "no pick yet"}`
+                  }
+                  className="text-ink hover:text-rausch"
                 >
-                  {election.official_ballot_title} — {isPast ? "no pick" : "no pick yet"}
-                  {autoResult?.outcome === "no_pick" ? ` · auto pick: ${reasonLabel(autoResult.reason)}` : ""}
+                  {election.official_ballot_title}
                 </Link>
-              )}
+              </div>
+              <div className="min-w-0">
+                {decided ? (
+                  <>
+                    <PickedLine choice={choice} election={election} navState={navState} />
+                    {autoResult?.outcome === "picked" &&
+                    autoResult.reason === "tie" &&
+                    (choice?.picks.length ?? 0) < (choice?.seats_to_fill ?? 1) ? (
+                      // Partial fill: some seats landed, the rest tied. Gated
+                      // on a live vacancy so the note retires the moment the
+                      // user fills the remaining seats by hand.
+                      <span className="text-xs text-ink-soft"> · remaining seats tied — your call</span>
+                    ) : null}
+                  </>
+                ) : null}
+              </div>
             </li>
           );
         })}
