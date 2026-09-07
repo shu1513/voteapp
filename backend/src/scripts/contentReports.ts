@@ -18,6 +18,7 @@ import {
   createSesContentReportSummaryMailer,
   type ContentReportSummaryMailer,
 } from "../pipeline/reports/contentReportSummaryMailer.js";
+import { assertKnownCliFlags, type CliFlagSpec } from "./manualCliFlags.js";
 
 // Operator CLI for content_reports. Three commands, no queue machinery:
 //   list     open reports, oldest first (prints reporter text for a human)
@@ -53,12 +54,29 @@ function usage(): string {
   ].join("\n");
 }
 
+// This CLI writes to production, so every token must be understood: an
+// unknown flag (--dry-run), the "=" form this parser cannot read (--to=x),
+// or an unquoted multi-word value (--summary fixed the date) must fail
+// before any database or email call instead of silently doing nothing.
+const FLAG_SPECS: Record<ContentReportsCommand["command"], readonly CliFlagSpec[]> = {
+  list: [
+    { name: "--status", value: "space" },
+    { name: "--limit", value: "space" },
+  ],
+  resolve: [
+    { name: "--id", value: "space" },
+    { name: "--resolution", value: "space" },
+    { name: "--summary", value: "space" },
+  ],
+  summary: [{ name: "--to", value: "space" }],
+};
+
 function parseFlags(argv: readonly string[]): Map<string, string> {
   const flags = new Map<string, string>();
   for (let i = 0; i < argv.length; i += 1) {
     const token = argv[i];
     if (!token.startsWith("--")) {
-      continue;
+      throw new Error(`Unexpected argument: ${token} (quote values that contain spaces)`);
     }
     const key = token.slice(2);
     const next = argv[i + 1];
@@ -82,6 +100,10 @@ function requireFlag(flags: Map<string, string>, name: string): string {
 
 export function parseContentReportsArgs(argv: readonly string[]): ContentReportsCommand {
   const [command, ...rest] = argv;
+  if (command !== "list" && command !== "resolve" && command !== "summary") {
+    throw new Error(`${command ? `Unknown command: ${command}` : "Missing command"}\n\n${usage()}`);
+  }
+  assertKnownCliFlags(`content-reports ${command}`, rest, FLAG_SPECS[command]);
   const flags = parseFlags(rest);
   switch (command) {
     case "list": {
@@ -118,8 +140,6 @@ export function parseContentReportsArgs(argv: readonly string[]): ContentReports
       }
       return { command: "summary", ...(to ? { to } : {}) };
     }
-    default:
-      throw new Error(`${command ? `Unknown command: ${command}` : "Missing command"}\n\n${usage()}`);
   }
 }
 

@@ -36,6 +36,18 @@ describe("parseContentReportsArgs", () => {
     expect(() => parseContentReportsArgs(["claim"])).toThrow(/Unknown command/);
     expect(() => parseContentReportsArgs([])).toThrow(/Missing command/);
   });
+
+  it("rejects flags and syntax the parser would otherwise silently drop", () => {
+    expect(() =>
+      parseContentReportsArgs(["resolve", "--id", REPORT_ID, "--resolution", "fixed", "--summary", "x", "--dry-run"])
+    ).toThrow(/unknown flag --dry-run/);
+    expect(() => parseContentReportsArgs(["summary", "--dry-run"])).toThrow(/unknown flag --dry-run/);
+    expect(() => parseContentReportsArgs(["summary", "--to=preview@example.com"])).toThrow(/--to takes its value as the next argument/);
+    expect(() =>
+      parseContentReportsArgs(["resolve", "--id", REPORT_ID, "--resolution", "fixed", "--summary", "fixed", "the", "date"])
+    ).toThrow(/Unexpected argument: the/);
+    expect(() => parseContentReportsArgs(["list", "--limit", "5", "--to", "x"])).toThrow(/unknown flag --to/);
+  });
 });
 
 describe("describeDatabaseTarget", () => {
