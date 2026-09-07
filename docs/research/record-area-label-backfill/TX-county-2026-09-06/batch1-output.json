@@ -3,14 +3,13 @@
   {
    "candidate_id": "005efd52-d200-4269-96cf-982a50deebd3",
    "name": "Leanord \"Bubba\" Powell",
-   "labels": [
+   "labels": [],
+   "skipped": [
     {
      "record_id": "d9f34ed4-b930-4b4e-9383-58187e84cb16",
-     "research_area_slug": "government_spending_reduction",
-     "stance": "for"
+     "reason": "a lower property-tax rate is not a spending cut; the record says nothing about the spending side of the budget, and property tax has no allowed area"
     }
-   ],
-   "skipped": []
+   ]
   },
   {
    "candidate_id": "00d15615-6308-4c9f-a8fa-552737cedc42",
@@ -114,14 +113,13 @@
   {
    "candidate_id": "065f2e73-a446-4343-b16d-2cadc7e6350f",
    "name": "Lindsey Brown",
-   "labels": [
+   "labels": [],
+   "skipped": [
     {
      "record_id": "f9193b45-c60b-4edf-95bb-d341baf368ec",
-     "research_area_slug": "election_integrity",
-     "stance": "for"
+     "reason": "routine election administration (setting hourly pay); the record shows no position on election security, accuracy, or access"
     }
-   ],
-   "skipped": []
+   ]
   },
   {
    "candidate_id": "06b3991e-5058-46db-aa93-8170a8e70002",
