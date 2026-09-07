@@ -164,6 +164,7 @@ const CATALOG: Record<string, { required: Record<string, PropRule>; optional?: R
         "close",
         "mail",
         "polling",
+        "registration",
         "other"
       ),
     },

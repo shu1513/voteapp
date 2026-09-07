@@ -13,7 +13,15 @@ function linkHost(url: string): string | null {
   }
 }
 
-function OfficialLink({ url, label, kind }: { url: string; label: string; kind: "mail" | "polling" }) {
+function OfficialLink({
+  url,
+  label,
+  kind,
+}: {
+  url: string;
+  label: string;
+  kind: "mail" | "polling" | "registration";
+}) {
   const host = linkHost(url);
   return (
     <p className="text-sm">
@@ -88,11 +96,23 @@ function StateResourcesSection({ state, showStateName }: { state: string; showSt
 
   const resources = query.data.state_resources;
   const hasMail = resources.mail_voting_available && resources.mail_ballot_request_url !== null;
+  // Registration leads: it is the prerequisite for both ways of voting. The
+  // field is optional on the client type (older API builds omit it), so the
+  // block renders only when a URL actually arrived.
+  const registrationUrl = resources.voter_registration_url?.trim() || null;
 
   return (
     <div className="flex flex-col gap-2">
       {showStateName ? (
         <p className="text-sm font-medium text-ink">{resources.state_name}</p>
+      ) : null}
+      {registrationUrl ? (
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-ink-soft">Register to vote</p>
+          <div className="mt-1">
+            <OfficialLink url={registrationUrl} label="Register or check your registration" kind="registration" />
+          </div>
+        </div>
       ) : null}
       <MailSection resources={resources} />
       {hasMail ? <p className="text-xs font-medium uppercase tracking-wide text-ink-soft">or</p> : null}
@@ -108,7 +128,7 @@ function StateResourcesSection({ state, showStateName }: { state: string; showSt
 
 /**
  * "How to vote in WA" disclosure for the elections list: official state links
- * for voting by mail first, then in person. Inline disclosure — no portal or
+ * for registering first, then voting by mail, then in person. Inline disclosure — no portal or
  * outside-click machinery. This is informational content, not a list
  * control, so the trigger is a quiet text link with an info glyph rather
  * than a bordered button (py-1.5 keeps it level with the toolbar row it

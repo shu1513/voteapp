@@ -78,6 +78,20 @@ describe("parseUsageEvent", () => {
     expect(parseUsageEvent(event({ name: "page_time", props: { visible_ms: 12.5 } }))).toBeNull();
   });
 
+  it("accepts every how-to-vote link kind the panel can emit", () => {
+    for (const value of ["mail", "polling", "registration"]) {
+      expect(
+        parseUsageEvent(event({ name: "list_control", route: "ballot", props: { control: "how_to_vote_link", value } }))
+          ?.props
+      ).toEqual({ control: "how_to_vote_link", value });
+    }
+    expect(
+      parseUsageEvent(
+        event({ name: "list_control", route: "ballot", props: { control: "how_to_vote_link", value: "donate" } })
+      )
+    ).toBeNull();
+  });
+
   it("accepts optional props only when valid", () => {
     const base = { outcome: "error", latency_ms: 500 };
     expect(parseUsageEvent(event({ name: "address_result", props: base }))?.props).toEqual(base);
