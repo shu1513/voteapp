@@ -1,0 +1,242 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1641305,
+   "measure_id": "HB 1096",
+   "vote_date": "2026-02-23",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1096. Direct primary care means paying a doctor a flat monthly fee instead of per visit. Medicaid does not cover it, and some members were told they could not buy it themselves. The bill would have barred the state from stopping a Medicaid member doing so. The doctor could not have billed Medicaid for the same care, and the member would have signed a form saying so. The Colorado House voted 40-22 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1096. Direct primary care means paying a doctor a flat monthly fee instead of per visit. Medicaid does not cover it, and some members were told they could not buy it themselves. The bill would have barred the state from stopping a Medicaid member doing so. The doctor could not have billed Medicaid for the same care, and the member would have signed a form saying so. The Colorado House voted 40-22 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1696220,
+   "measure_id": "HB 1112",
+   "vote_date": "2026-05-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1112. Injection wells push liquid underground and are regulated by the federal government. The bill would have let Colorado's energy commission apply to run that job itself for three classes of well. It would have set fees to cover the cost of doing so. The stated aims include aquifer recharge and a single permitting route where state and federal rules now overlap. The Colorado House voted 51-14 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1112. Injection wells push liquid underground and are regulated by the federal government. The bill would have let Colorado's energy commission apply to run that job itself for three classes of well. It would have set fees to cover the cost of doing so. The stated aims include aquifer recharge and a single permitting route where state and federal rules now overlap. The Colorado House voted 51-14 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1644217,
+   "measure_id": "HB 1114",
+   "vote_date": "2026-02-25",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1114. Local rules on minimum lot size can make a small starter home impossible to build. From October 2031 the bill would have stopped larger jurisdictions demanding more than 2,000 square feet for a single family home. It would also have blocked frontage, setback and coverage rules that had the same effect. Exempt lots would have stayed outside it. The Colorado House voted 38-26 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1114. Local rules on minimum lot size can make a small starter home impossible to build. From October 2031 the bill would have stopped larger jurisdictions demanding more than 2,000 square feet for a single family home. It would also have blocked frontage, setback and coverage rules that had the same effect. Exempt lots would have stayed outside it. The Colorado House voted 38-26 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1689528,
+   "measure_id": "HB 1130",
+   "vote_date": "2026-04-24",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1130. A parent with a baby often finds no place to change a diaper in a public building. From January 2028 the bill would have required a changing table on each floor of a building with a public restroom. One in a restroom for each gender, or one in a single or multi-stall unisex restroom, would have satisfied it. Small businesses and certified historic buildings would have been exempt. The Colorado House voted 35-28 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1130. A parent with a baby often finds no place to change a diaper in a public building. From January 2028 the bill would have required a changing table on each floor of a building with a public restroom. One in a restroom for each gender, or one in a single or multi-stall unisex restroom, would have satisfied it. Small businesses and certified historic buildings would have been exempt. The Colorado House voted 35-28 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1690716,
+   "measure_id": "HB 1206",
+   "vote_date": "2026-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1206. Colorado is short roughly 106,000 homes, and 134,000 of them for the poorest renters. The bill would have let a public housing authority put a sales tax to its own voters. The money would have gone to building deeply affordable housing. The tax would have needed a majority at a general or coordinated election. The Colorado House voted 42-21 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1206. Colorado is short roughly 106,000 homes, and 134,000 of them for the poorest renters. The bill would have let a public housing authority put a sales tax to its own voters. The money would have gone to building deeply affordable housing. The tax would have needed a majority at a general or coordinated election. The Colorado House voted 42-21 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1696249,
+   "measure_id": "HB 1206",
+   "vote_date": "2026-05-11",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1206. Colorado is short roughly 106,000 homes, and 134,000 of them for the poorest renters. The bill would have let a public housing authority put a sales tax to its own voters. The money would have gone to building deeply affordable housing. The tax would have needed a majority at a general or coordinated election. The Colorado Senate voted 23-12 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1206. Colorado is short roughly 106,000 homes, and 134,000 of them for the poorest renters. The bill would have let a public housing authority put a sales tax to its own voters. The money would have gone to building deeply affordable housing. The tax would have needed a majority at a general or coordinated election. The Colorado Senate voted 23-12 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1675727,
+   "measure_id": "HB 1300",
+   "vote_date": "2026-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1300. A health service district provides local medical care under an approved service plan. The bill would have let one add or drop affordable housing services without that counting as a major change to the plan. A majority of the district board would have had to vote for it. The work would have had to be done alongside local housing authorities and agencies. The Colorado House voted 43-20 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1300. A health service district provides local medical care under an approved service plan. The bill would have let one add or drop affordable housing services without that counting as a major change to the plan. A majority of the district board would have had to vote for it. The work would have had to be done alongside local housing authorities and agencies. The Colorado House voted 43-20 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1668482,
+   "measure_id": "HB 1308",
+   "vote_date": "2026-03-24",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1308. Splitting one house lot into two is usually a slow discretionary decision. From the end of 2027 the bill would have made larger jurisdictions approve a split administratively where set conditions were met. Neither new lot could be under 1,200 square feet, and the smaller had to be at least 30 percent of the original. A lot could only have been split once, and both new lots had to have access and utilities. The Colorado House voted 39-26 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1308. Splitting one house lot into two is usually a slow discretionary decision. From the end of 2027 the bill would have made larger jurisdictions approve a split administratively where set conditions were met. Neither new lot could be under 1,200 square feet, and the smaller had to be at least 30 percent of the original. A lot could only have been split once, and both new lots had to have access and utilities. The Colorado House voted 39-26 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "housing_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "house",
+   "session": "2243",
+   "roll": 1693760,
+   "measure_id": "HB 1327",
+   "vote_date": "2026-05-05",
+   "review_status": "approved",
+   "yea_description": "Voted to pass House Bill 1327. Some large employers hold staff below 30 hours a week, leaving them on state Medicaid. The bill would have created a state body charging a fee to employers with 500 or more such workers. Those employers would have had to report each worker's hours and pay each year. The money would have supported workers' access to care and repaid employers who let staff buy into a company plan. The Colorado House voted 35-30 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing House Bill 1327. Some large employers hold staff below 30 hours a week, leaving them on state Medicaid. The bill would have created a state body charging a fee to employers with 500 or more such workers. Those employers would have had to report each worker's hours and pay each year. The money would have supported workers' access to care and repaid employers who let staff buy into a company plan. The Colorado House voted 35-30 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1665272,
+   "measure_id": "SB 62",
+   "vote_date": "2026-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 62. Second-generation rat poisons stay in the food chain and poison pets, owls and hawks. Poison centers link them to about 3,100 human exposures over five years, three quarters of them children under five. From July 2027 the bill would have made four of these poisons restricted-use pesticides. Selling or using one against that restriction would have been unlawful. The Colorado Senate voted 22-12 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing Senate Bill 62. Second-generation rat poisons stay in the food chain and poison pets, owls and hawks. Poison centers link them to about 3,100 human exposures over five years, three quarters of them children under five. From July 2027 the bill would have made four of these poisons restricted-use pesticides. Selling or using one against that restriction would have been unlawful. The Colorado Senate voted 22-12 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1685112,
+   "measure_id": "SB 66",
+   "vote_date": "2026-04-17",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 66. Compounded weight-loss drugs are custom-mixed and are not approved by federal regulators. The bill would have barred selling one unless the seller confirmed several things about it. Those included that it was made at a plant inspected in the past two years and checked for purity and dose. Labels would have had to list every ingredient and its quantity. The Colorado Senate voted 20-15 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing Senate Bill 66. Compounded weight-loss drugs are custom-mixed and are not approved by federal regulators. The bill would have barred selling one unless the seller confirmed several things about it. Those included that it was made at a plant inspected in the past two years and checked for purity and dose. Labels would have had to list every ingredient and its quantity. The Colorado Senate voted 20-15 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1680586,
+   "measure_id": "SB 140",
+   "vote_date": "2026-04-13",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 140. Colorado's drug affordability board can review a drug's price and cap what is paid for it. The bill would have put two more kinds of drug outside that power. Those are drugs the federal regulator designates for rare diseases, and licensed products made from human blood or plasma. Drugs derived from cannabis were already exempt. The Colorado Senate voted 20-15 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing Senate Bill 140. Colorado's drug affordability board can review a drug's price and cap what is paid for it. The bill would have put two more kinds of drug outside that power. Those are drugs the federal regulator designates for rare diseases, and licensed products made from human blood or plasma. Drugs derived from cannabis were already exempt. The Colorado Senate voted 20-15 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "CO",
+   "chamber": "senate",
+   "session": "2243",
+   "roll": 1691056,
+   "measure_id": "SB 166",
+   "vote_date": "2026-04-28",
+   "review_status": "approved",
+   "yea_description": "Voted to pass Senate Bill 166. Colorado bars anyone convicted of a sexual offense against a child from serving on a school board. The bill would have added two more bars, each lasting ten years after a sentence is fully served. They cover a crime of violence and a felony drug offense involving distribution, manufacture or sale. The person would have had to be 18 or older at the time of the offense. The Colorado Senate voted 21-13 to pass it, but the bill did not become law.",
+   "nay_description": "Voted against passing Senate Bill 166. Colorado bars anyone convicted of a sexual offense against a child from serving on a school board. The bill would have added two more bars, each lasting ten years after a sentence is fully served. They cover a crime of violence and a felony drug offense involving distribution, manufacture or sale. The person would have had to be 18 or older at the time of the offense. The Colorado Senate voted 21-13 to pass it, but the bill did not become law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ],
+   "acknowledge_later_rolls": [
+    1690323
+   ],
+   "note": "The acknowledged roll is a same-day peer of this vote. Colorado votes twice to take the other chamber's changes, concurring and then repassing the bill the same day; and a chamber can carry two records of one third reading, in which case the roll judged is the one that records every member."
+  }
+ ]
+}
