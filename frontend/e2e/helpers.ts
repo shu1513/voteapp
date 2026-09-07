@@ -106,7 +106,10 @@ export async function registerVerifiedUser(request: APIRequestContext): Promise<
 /** Deletes (soft-deletes, per backend design) the account owning the
  * request context's session. */
 export async function deleteAccount(request: APIRequestContext): Promise<void> {
-  const response = await request.delete("/api/me", { data: { password: E2E_PASSWORD } });
+  // Bounded: this runs in a finally block after a failure has often already
+  // used up the test's clock, and an unbounded call then times out a second
+  // time instead of cleaning up.
+  const response = await request.delete("/api/me", { data: { password: E2E_PASSWORD }, timeout: 10_000 });
   if (!response.ok()) {
     throw new Error(`account cleanup failed: ${response.status()} ${await response.text()}`);
   }
