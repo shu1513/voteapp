@@ -1,0 +1,338 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "CT",
+      "chamber": "house",
+      "session": "2174",
+      "roll": 1579228,
+      "measure_id": "HB 5002",
+      "vote_date": "2025-05-27",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 5002. It would rewrite parts of Connecticut's housing and zoning law. Towns would have to allow middle housing, meaning small multi-unit buildings, as of right on land already zoned for business use. Housing authorities would have to publish a yearly inventory of their units and vacancies. It also carried new supports for homeless people. The Connecticut House passed it 84-67. The Governor vetoed it, so it did not become law.",
+      "nay_description": "Voted against HB 5002. It would rewrite parts of Connecticut's housing and zoning law. Towns would have to allow middle housing, meaning small multi-unit buildings, as of right on land already zoned for business use. Housing authorities would have to publish a yearly inventory of their units and vacancies. It also carried new supports for homeless people. The Connecticut House passed it 84-67. The Governor vetoed it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1579229,
+        1579230,
+        1579231,
+        1579232,
+        1579233,
+        1579234,
+        1579235,
+        1579236,
+        1579237
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "senate",
+      "session": "2174",
+      "roll": 1582313,
+      "measure_id": "HB 5002",
+      "vote_date": "2025-05-31",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 5002. It would rewrite parts of Connecticut's housing and zoning law. Towns would have to allow middle housing, meaning small multi-unit buildings, as of right on land already zoned for business use. Housing authorities would have to publish a yearly inventory of their units and vacancies. It also carried new supports for homeless people. The Connecticut Senate passed it 20-15. The Governor vetoed it, so it did not become law.",
+      "nay_description": "Voted against HB 5002. It would rewrite parts of Connecticut's housing and zoning law. Towns would have to allow middle housing, meaning small multi-unit buildings, as of right on land already zoned for business use. Housing authorities would have to publish a yearly inventory of their units and vacancies. It also carried new supports for homeless people. The Connecticut Senate passed it 20-15. The Governor vetoed it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1582314,
+        1582315,
+        1582316,
+        1582317,
+        1582318,
+        1582319,
+        1582320,
+        1582321
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "house",
+      "session": "2174",
+      "roll": 1567355,
+      "measure_id": "HB 6907",
+      "vote_date": "2025-05-07",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 6907. It would limit the production quotas that large warehouse distribution centers set for workers. Starting July 1, 2026, an employer would have to give each worker a written description of any quota and what happens if they miss it. No quota could cut into meal periods or bathroom use, and break time would not count against a quota. The Connecticut House passed it 97-48. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 6907. It would limit the production quotas that large warehouse distribution centers set for workers. Starting July 1, 2026, an employer would have to give each worker a written description of any quota and what happens if they miss it. No quota could cut into meal periods or bathroom use, and break time would not count against a quota. The Connecticut House passed it 97-48. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1567356,
+        1567357,
+        1567358
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "house",
+      "session": "2174",
+      "roll": 1574717,
+      "measure_id": "HB 7035",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 7035. It would bar any Connecticut town from banning multifamily housing or duplexes outright. The Connecticut House passed it 94-54. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 7035. It would bar any Connecticut town from banning multifamily housing or duplexes outright. The Connecticut House passed it 94-54. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1574718,
+        1574719
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "house",
+      "session": "2174",
+      "roll": 1572537,
+      "measure_id": "HB 7158",
+      "vote_date": "2025-05-15",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 7158. It would let a health care provider send a minor patient's safety plan to the child's school through a secure messaging system. That could happen only with written consent from a parent, or from the patient if sixteen or older. Only school staff the district names, such as a nurse, counselor, social worker or psychologist, could open it. The Connecticut House passed it 105-42. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 7158. It would let a health care provider send a minor patient's safety plan to the child's school through a secure messaging system. That could happen only with written consent from a parent, or from the patient if sixteen or older. Only school staff the district names, such as a nurse, counselor, social worker or psychologist, could open it. The Connecticut House passed it 105-42. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "house",
+      "session": "2174",
+      "roll": 1571795,
+      "measure_id": "HB 7248",
+      "vote_date": "2025-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 7248. It would let the Commissioner of Public Health put rules on cross connections between water supplies into effect while formal regulations are still being written. It would also let a local health authority share the results of a private well water test with the state environmental agency. The Connecticut House passed it 101-46. The Senate did not vote on it, so it did not become law.",
+      "nay_description": "Voted against HB 7248. It would let the Commissioner of Public Health put rules on cross connections between water supplies into effect while formal regulations are still being written. It would also let a local health authority share the results of a private well water test with the state environmental agency. The Connecticut House passed it 101-46. The Senate did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1571796
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "house",
+      "session": "2174",
+      "roll": 1609277,
+      "measure_id": "HB 8002",
+      "vote_date": "2025-11-12",
+      "review_status": "approved",
+      "yea_description": "Voted to pass HB 8002. It requires every town to adopt a housing growth plan and lets towns create priority housing development zones with looser zoning rules. It also creates a first-time homebuyer savings account with a state tax break and sets up a Council on Housing Development. The Connecticut House passed it 90-56 in the November 2025 special session. The Senate passed it unchanged, and the Governor signed it as Public Act 25-1.",
+      "nay_description": "Voted against HB 8002. It requires every town to adopt a housing growth plan and lets towns create priority housing development zones with looser zoning rules. It also creates a first-time homebuyer savings account with a state tax break and sets up a Council on Housing Development. The Connecticut House passed it 90-56 in the November 2025 special session. The Senate passed it unchanged, and the Governor signed it as Public Act 25-1.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1609278,
+        1609279,
+        1609280
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "senate",
+      "session": "2174",
+      "roll": 1570619,
+      "measure_id": "SB 6",
+      "vote_date": "2025-05-13",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 6. It would expand state supports for children from birth to age five and for young people who are out of school and out of work. It would set new reporting duties on the Early Childhood Care and Education Fund and a regular report on disconnected youth. The Connecticut Senate passed it 22-12. The House did not vote on it, so it did not become law.",
+      "nay_description": "Voted against SB 6. It would expand state supports for children from birth to age five and for young people who are out of school and out of work. It would set new reporting duties on the Early Childhood Care and Education Fund and a regular report on disconnected youth. The Connecticut Senate passed it 22-12. The House did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1570620,
+        1570621,
+        1570622,
+        1570623
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "senate",
+      "session": "2174",
+      "roll": 1576677,
+      "measure_id": "SB 7",
+      "vote_date": "2025-05-22",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 7. It would protect access to health care in Connecticut if federal rules weaken. Hospital emergency rooms would have to treat a patient whose life or health is at serious risk, including care for complications of pregnancy that is legal in the state. Hospitals could not transfer such a patient for non-medical reasons. It would also keep fluoride in large public water systems and set up state funds for public health emergencies. The Connecticut Senate passed it 25-10. The House later passed a changed version and the Senate never took it up again, so it did not become law.",
+      "nay_description": "Voted against SB 7. It would protect access to health care in Connecticut if federal rules weaken. Hospital emergency rooms would have to treat a patient whose life or health is at serious risk, including care for complications of pregnancy that is legal in the state. Hospitals could not transfer such a patient for non-medical reasons. It would also keep fluoride in large public water systems and set up state funds for public health emergencies. The Connecticut Senate passed it 25-10. The House later passed a changed version and the Senate never took it up again, so it did not become law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1576678,
+        1576679,
+        1576680
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "house",
+      "session": "2174",
+      "roll": 1581838,
+      "measure_id": "SB 7",
+      "vote_date": "2025-05-29",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 7 as amended by the House. It would protect access to health care in Connecticut if federal rules weaken. Hospital emergency rooms would have to treat a patient whose life or health is at serious risk, including care for complications of pregnancy that is legal in the state. Hospitals could not transfer such a patient for non-medical reasons. It would also keep fluoride in large public water systems and set up state funds for public health emergencies. The Connecticut House passed it 92-55. The Senate never took up the House's changes, so it did not become law.",
+      "nay_description": "Voted against SB 7 as amended by the House. It would protect access to health care in Connecticut if federal rules weaken. Hospital emergency rooms would have to treat a patient whose life or health is at serious risk, including care for complications of pregnancy that is legal in the state. Hospitals could not transfer such a patient for non-medical reasons. It would also keep fluoride in large public water systems and set up state funds for public health emergencies. The Connecticut House passed it 92-55. The Senate never took up the House's changes, so it did not become law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1581839,
+        1581840,
+        1581841,
+        1581842,
+        1581843
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "senate",
+      "session": "2174",
+      "roll": 1580237,
+      "measure_id": "SB 8",
+      "vote_date": "2025-05-28",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 8. It would let workers who are off the job because of a strike claim unemployment benefits, once that strike has run for fourteen days. It would apply to strikes that begin on or after December 14, 2026. Connecticut law now bars benefits for the whole of a strike. The Connecticut Senate passed it 24-11. The Governor vetoed it, so it did not become law.",
+      "nay_description": "Voted against SB 8. It would let workers who are off the job because of a strike claim unemployment benefits, once that strike has run for fourteen days. It would apply to strikes that begin on or after December 14, 2026. Connecticut law now bars benefits for the whole of a strike. The Connecticut Senate passed it 24-11. The Governor vetoed it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "reduce_wealth_gap",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "senate",
+      "session": "2174",
+      "roll": 1571145,
+      "measure_id": "SB 1356",
+      "vote_date": "2025-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 1356. It would widen Connecticut's consumer data privacy law. More companies would be covered and fewer would be exempt. It would add duties for social media platforms, data brokers and connected vehicle services, including rules aimed at cyberbullying on social media. The Connecticut Senate passed it 26-9. The House did not vote on it, so it did not become law.",
+      "nay_description": "Voted against SB 1356. It would widen Connecticut's consumer data privacy law. More companies would be covered and fewer would be exempt. It would add duties for social media platforms, data brokers and connected vehicle services, including rules aimed at cyberbullying on social media. The Connecticut Senate passed it 26-9. The House did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1571146,
+        1571147
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "senate",
+      "session": "2174",
+      "roll": 1568447,
+      "measure_id": "SB 1427",
+      "vote_date": "2025-05-08",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 1427. It would open Connecticut's paid family and medical leave program to school workers who do not hold a teaching license, including staff at private schools. The Connecticut Senate passed it 24-11. The House later passed a changed version and the Senate never took it up again, so it did not become law.",
+      "nay_description": "Voted against SB 1427. It would open Connecticut's paid family and medical leave program to school workers who do not hold a teaching license, including staff at private schools. The Connecticut Senate passed it 24-11. The House later passed a changed version and the Senate never took it up again, so it did not become law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ],
+      "acknowledge_later_rolls": [
+        1568448,
+        1568449
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "senate",
+      "session": "2174",
+      "roll": 1574542,
+      "measure_id": "SB 1481",
+      "vote_date": "2025-05-20",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 1481. It would require a provider paid by Medicaid to agree in writing not to discriminate against people whose rights state law protects, as a condition of being paid. The Connecticut Senate passed it 24-11. The House did not vote on it, so it did not become law.",
+      "nay_description": "Voted against SB 1481. It would require a provider paid by Medicaid to agree in writing not to discriminate against people whose rights state law protects, as a condition of being paid. The Connecticut Senate passed it 24-11. The House did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "CT",
+      "chamber": "senate",
+      "session": "2174",
+      "roll": 1572240,
+      "measure_id": "SB 1488",
+      "vote_date": "2025-05-14",
+      "review_status": "approved",
+      "yea_description": "Voted to pass SB 1488. It would let the state Comptroller withhold payment from a contractor or subcontractor when the Labor Commissioner has issued a stop work order for a prevailing wage violation. The Connecticut Senate passed it 27-8. The House did not vote on it, so it did not become law.",
+      "nay_description": "Voted against SB 1488. It would let the state Comptroller withhold payment from a contractor or subcontractor when the Labor Commissioner has issued a stop work order for a prevailing wage violation. The Connecticut Senate passed it 27-8. The House did not vote on it, so it did not become law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

@@ -160,3 +160,15 @@ it to a CA bundle, and pass `--cacert`. Never disable verification.
 The dataset itself and all 842 evidence JSONs live OUTSIDE the repo at `/Users/shu/legiscan-data/ct-2174*`.
 
 **Local `voteapp` only. Prod holds no Connecticut roll-call records.**
+
+## The non-enacted pool is finished (batch-04, 2026-09-07)
+
+`survey/divided-not-enacted-worklist.tsv` is now committed and every one of its
+106 rolls carries a disposition: 23 imported (7 in batch-03, 16 in
+[batch-04](batch-04/JUDGING.md)), 63 screened as an earlier roll in the same
+chamber, 20 dropped. **Connecticut total: 4034 live records, local only** (28 retired on review, see batch-04). Two
+tooling notes: `www.cga.ct.gov` works with plain `curl` once the GoDaddy
+`gdig2` intermediate is added to the CA bundle
+(`/Users/shu/legiscan-data/ct-work/ct-ca.pem`), and the judge gate orders
+Connecticut rolls by id where the state orders them by printed vote number —
+see batch-04.
