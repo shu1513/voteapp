@@ -140,3 +140,24 @@ describe("summarizeAutoPick", () => {
     expect(summary).toBe("It's a tie between Jane Doe and John Roe on your issues — your call between them.");
   });
 });
+
+describe("retention no-pick copy", () => {
+  it("says the yes/no on a judge is the voter's call", () => {
+    expect(reasonLabel("retention")).toBe("a yes/no on keeping a judge — your call");
+    const result = {
+      election_id: "e-1",
+      race_type: "office",
+      outcome: "no_pick",
+      reason: "retention",
+      picked_candidate_ids: [],
+      measure_position: null,
+      shortlist_candidate_ids: [],
+      candidates: [],
+      unresearched: [],
+      measure_per_issue: [],
+    } as unknown as AutoPickElectionResult;
+    expect(summarizeAutoPick(result, 1)).toBe(
+      "No pick: this is a yes/no question on keeping a judge, and that call is yours."
+    );
+  });
+});

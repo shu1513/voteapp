@@ -452,6 +452,9 @@ type MeasureChoiceButtonsProps = {
   choice: ElectionChoice | undefined;
   /** Stretch the pair across the container (the sticky measure card). */
   fullWidth?: boolean;
+  /** "office" for a judicial retention race (a Yes/No answered office race);
+   * stored on guest draft rows so the row keeps the catalog's race type. */
+  raceType?: "office" | "ballot_measure";
 };
 
 /**
@@ -468,6 +471,7 @@ export function MeasureChoiceButtons({
   electionDate,
   choice,
   fullWidth = false,
+  raceType = "ballot_measure",
 }: MeasureChoiceButtonsProps) {
   const { me } = useMe();
   const isGuest = me === null;
@@ -486,7 +490,7 @@ export function MeasureChoiceButtons({
       change: next === null ? "removed" : position === null ? "added" : "changed",
     };
     if (isGuest) {
-      setDraftMeasureChoice({ electionId, raceTitle, electionDate, position: next });
+      setDraftMeasureChoice({ electionId, raceTitle, electionDate, position: next, raceType });
       recordPick(pickBase, null);
       return;
     }

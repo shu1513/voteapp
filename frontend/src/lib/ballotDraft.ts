@@ -361,11 +361,13 @@ export function setDraftCandidateChoice(
   putRow(draft, { ...row, picks });
 }
 
+/** raceType defaults to a ballot measure; judicial retention races are
+ * office races answered Yes/No, so their rows must keep race_type "office". */
 export function setDraftMeasureChoice(
-  input: DraftRaceContext & { position: "yes" | "no" | null }
+  input: DraftRaceContext & { position: "yes" | "no" | null; raceType?: "office" | "ballot_measure" }
 ): void {
   const draft = currentDraft();
-  const row = baseRow(draft, input, "ballot_measure", null);
+  const row = baseRow(draft, input, input.raceType ?? "ballot_measure", null);
   putRow(draft, { ...row, measure_position: input.position });
 }
 

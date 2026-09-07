@@ -973,6 +973,31 @@ describe("ElectionPage", () => {
     );
   });
 
+  it("asks Yes/No on a judicial retention race instead of offering a judge pick (guest draft keeps race_type office)", async () => {
+    clearBallotDraft();
+    setDraftBallotContext([DISTRICT.id], null);
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({ official_ballot_title: "Shall Judge Jordan Voter be retained in office?" })
+    );
+
+    // The sticky pair is the one control (it appears once the district gate
+    // settles): no candidate pick button on the judge card, no auto-pick
+    // teaser.
+    const no = await screen.findByRole("button", { name: "No" });
+    expect(screen.getAllByRole("button", { name: "No" })).toHaveLength(1);
+    expect(screen.getByText("Yes keeps this judge in office. No removes them.")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Make my pick/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /match your values/ })).not.toBeInTheDocument();
+    await userEvent.setup().click(no);
+
+    expect(await screen.findByRole("button", { name: "✓ No" })).toBeInTheDocument();
+    const row = readBallotDraft().choices["e-1"];
+    expect(row.measure_position).toBe("no");
+    expect(row.race_type).toBe("office");
+    expect(row.picks).toEqual([]);
+  });
+
   it("shows no Yes/No card on a measure election whose measure details are still TBD", async () => {
     // Upcoming measure elections can exist before their ballot-measure row;
     // a Yes/No pair with no explanation of what either vote means must not

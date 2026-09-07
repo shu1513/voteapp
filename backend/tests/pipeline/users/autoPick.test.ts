@@ -506,6 +506,38 @@ describe("applyAutoPicks", () => {
     ]);
   });
 
+  it("leaves a judicial retention race open with reason retention and writes nothing", async () => {
+    const { db } = createMockDb();
+    db.query
+      .mockResolvedValueOnce(userRow)
+      .mockResolvedValueOnce({ rows: [{ id: ELECTION_ID }] }) // prevalidate election ids
+      .mockResolvedValueOnce(threeIssueRows)
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: ELECTION_ID,
+            race_type: "office",
+            official_ballot_title: "Retention of District Court Judge Pat Example",
+            seats_to_fill: 1,
+            is_upcoming: true,
+          },
+        ],
+      });
+    const result = await applyAutoPicks(db, USER_ID, {
+      electionIds: [ELECTION_ID],
+      mode: "replace",
+      dryRun: true,
+    });
+    expect(result.results[0]).toMatchObject({
+      outcome: "no_pick",
+      reason: "retention",
+      picked_candidate_ids: [],
+      measure_position: null,
+    });
+    // Nothing past loadElection: no candidate load, no tag load, no write.
+    expect(db.query).toHaveBeenCalledTimes(4);
+  });
+
   it("reports election_closed for a past election", async () => {
     const { db } = createMockDb();
     db.query

@@ -2,6 +2,7 @@ import type { Pool, PoolClient } from "pg";
 
 import { isUuid } from "../../utils/uuid.js";
 import { US_LATEST_LOCAL_DATE_SQL } from "../../utils/usLocalDate.js";
+import { isJudicialRetentionTitle } from "../../ai/electionPartisanshipPolicy.js";
 import { researchAreaWeightForRank } from "./userResearchAreaScoring.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -35,7 +36,9 @@ export type AutoPickReason =
   | "all_vetoed"
   | "veto"
   | "too_few_issues"
-  | "election_closed";
+  | "election_closed"
+  /** Judicial retention: a Yes/No on keeping a judge, never auto-answered. */
+  | "retention";
 
 export type AutoPickIssue = {
   researchAreaId: string;
@@ -514,6 +517,7 @@ async function loadIssues(db: Queryable, normalizedUserId: string): Promise<Auto
 type ElectionRow = {
   id: string;
   race_type: "office" | "ballot_measure";
+  official_ballot_title: string;
   seats_to_fill: number | null;
   office_id: string | null;
   is_upcoming: boolean;
@@ -525,6 +529,7 @@ async function loadElection(db: Queryable, normalizedElectionId: string): Promis
       SELECT
         id::text AS id,
         race_type,
+        official_ballot_title,
         seats_to_fill,
         office_id::text AS office_id,
         election_date >= ${US_LATEST_LOCAL_DATE_SQL} AS is_upcoming
@@ -958,6 +963,17 @@ async function computeOne(
   const election = await loadElection(db, normalizedElectionId);
   if (!election.is_upcoming) {
     return emptyResult(election.id, election.race_type, "no_pick", "election_closed");
+  }
+  // Retention races are catalogued as office races with the judge as the
+  // only candidate, but the ballot asks Yes/No on keeping them. Whether an
+  // issue match should ever mean "retain" is its own decision rule, not an
+  // office-race fill, so the engine leaves these open and says why.
+  if (
+    election.race_type === "office" &&
+    typeof election.official_ballot_title === "string" &&
+    isJudicialRetentionTitle(election.official_ballot_title)
+  ) {
+    return emptyResult(election.id, election.race_type, "no_pick", "retention");
   }
   if (mode === "fill_empty" && (await countExistingPicks(db, normalizedUserId, normalizedElectionId)) > 0) {
     return emptyResult(election.id, election.race_type, "skipped_existing", null);
