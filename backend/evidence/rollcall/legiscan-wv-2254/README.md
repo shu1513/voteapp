@@ -26,8 +26,8 @@ report's description histogram and from nothing else.
 
 Classification of this session, confirmed by a dry-run fetch:
 
-- 1033 floor votes kept
-- 0 roll calls surfaced as an unknown question (never queued)
+- 1,027 floor votes kept
+- 6 roll calls surfaced and never queued: the unknown questions plus the 6 rolls held by the tally audit
 - 22 roll calls on excluded measure types (simple and concurrent resolutions)
 - 0 committee votes
 - 0 unrecorded votes, 0 duplicate roll-call identities, 0 parse errors, 0 file errors
@@ -51,3 +51,16 @@ bill passes far outside the divided gate rather than near it.
 
 17 measures and 24 floor roll calls are both closely divided and on a
 bill that became law, over 21 measure-chamber slots.
+
+## Tally audit
+
+Every floor roll on an enacted bill in this session was checked against West
+Virginia's own vote sheet, which the dataset links from each vote's
+`state_link`. The audit covers all such rolls, not only the closely divided
+ones, because a tally error can itself decide whether a roll counts as closely
+divided.
+
+Across both sessions 1,412 of 1,423 rolls match exactly. The 6 that fail in
+this session are pinned in `heldRollCallIds` in the state configuration, which
+stores and surfaces them but never lets them be approved. The reason for each
+is written out there.

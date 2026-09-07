@@ -3735,12 +3735,46 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // ballot, and 17 of the 34 Senate seats. The default --scope-from of
   // 2026-11-01 is correct for West Virginia, because every office election in
   // scope is dated 2026-11-03 and the May 2026 primary is already past.
+  //
+  // TALLY AUDIT, run over EVERY floor roll on an enacted bill in BOTH sessions
+  // and not only the ones the divided gate selects: 1,412 of 1,423 match West
+  // Virginia's own vote record exactly. The audit is deliberately not bounded
+  // by the divided gate, because a tally error can itself decide whether a
+  // roll passes that gate.
+  //
+  // The ground truth is West Virginia's own per-roll vote sheet, which the
+  // dataset links from each vote's `state_link`. It prints the bill number,
+  // the question, the tally and both member lists, so it settles which bill a
+  // roll belongs to.
+  //
+  // Eleven rolls fail, in two kinds.
+  //
+  // EIGHT are filed under the WRONG BILL. West Virginia numbers its roll calls
+  // per chamber per session, and LegiScan attaches some of those numbers to a
+  // second, unrelated bill as well. In every one of the eight the same vote is
+  // ALSO filed correctly under its real bill, with its own roll_call_id, so
+  // holding the wrong copy loses nothing.
+  //
+  // THREE have a tally short by one member against the official sheet. None of
+  // the three changes the divided gate.
   "WV": {
     jurisdiction: "WV",
     sessionId: 2196,
     chamberSizes: { house: 100, senate: 34 },
     keptQuestions: WEST_VIRGINIA_KEPT_QUESTIONS,
     excludedQuestions: WEST_VIRGINIA_EXCLUDED_QUESTIONS,
+    heldRollCallIds: {
+      1546755:
+        "SB 474 Senate 2025-04-12: filed as Senate roll 605, but West Virginia's own vote sheet for Senate roll 605 is HB 2451. That vote is filed correctly under HB 2451 as roll_call_id 1547653",
+      1537425:
+        "SB 828 House 2025-04-04: filed as House roll 394, but West Virginia's own vote sheet for House roll 394 is HB 3519. The same 90-7 vote is filed correctly under HB 3519 as roll_call_id 1537188",
+      1546593:
+        "SB 712 Senate 2025-04-12: filed as Senate roll 555, but West Virginia's own vote sheet for Senate roll 555 is SB 837. The same 28-6 vote is filed correctly under SB 837 as roll_call_id 1546766",
+      1546776:
+        "HB 2054 House 2025-04-12: filed as House roll 634, but West Virginia's own vote sheet for House roll 634 is HB 3513. The same 71-27 vote is filed correctly under HB 3513 as roll_call_id 1546749",
+      1546783:
+        "HB 2451 House 2025-04-12: filed as House roll 631, but West Virginia's own vote sheet for House roll 631 is HB 3125. That vote is filed correctly under HB 3125 as roll_call_id 1546759, where it is 97-0",
+    },
   },
   "WV-2254": {
     jurisdiction: "WV",
@@ -3748,6 +3782,20 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     chamberSizes: { house: 100, senate: 34 },
     keptQuestions: WEST_VIRGINIA_KEPT_QUESTIONS,
     excludedQuestions: WEST_VIRGINIA_EXCLUDED_QUESTIONS,
+    heldRollCallIds: {
+      1662567:
+        "SJR 9 House 2026-03-13: filed as House roll 510, but West Virginia's own vote sheet for House roll 510 is SB 29. The same 92-2 vote is filed correctly under SB 29 as roll_call_id 1662284",
+      1663276:
+        "HB 4755 House 2026-03-14: filed as House roll 688, but West Virginia's own vote sheet for House roll 688 is HB 4106. The same 85-8 vote is filed correctly under HB 4106 as roll_call_id 1663098",
+      1661856:
+        "SB 581 House 2026-03-12: filed as House roll 427, but West Virginia's own vote sheet for House roll 427 is SB 574. The same 93-0 vote is filed correctly under SB 574 as roll_call_id 1661868",
+      1652612:
+        "HB 5323 House roll 304, 2026-03-04: LegiScan reports 61-31; West Virginia's own vote sheet reports 61-32, so one no vote is missing. This does not change the divided gate, which 61-31 and 61-32 both pass, but it would put a wrong tally in a candidate's record",
+      1650379:
+        "HB 5458 House roll 268, 2026-03-03: LegiScan reports 92-0; West Virginia's own vote sheet reports 93-0, so one yes vote is missing. Not divided either way",
+      1660050:
+        "HB 5692 House roll 405, 2026-03-11: LegiScan reports 91-2; West Virginia's own vote sheet reports 92-2, so one yes vote is missing. Not divided either way",
+    },
   },
 };
 
