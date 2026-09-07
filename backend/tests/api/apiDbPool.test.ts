@@ -5,7 +5,7 @@ import {
   API_DB_QUERY_TIMEOUT_MARGIN_MS,
   attachApiDbPoolErrorHandler,
   buildApiDbPoolConfig,
-  checkApiDbPoolHealth,
+  createApiDbPoolHealthCheck,
 } from "../../src/api/apiDbPool.js";
 
 describe("buildApiDbPoolConfig", () => {
@@ -67,26 +67,94 @@ describe("attachApiDbPoolErrorHandler", () => {
   });
 });
 
-describe("checkApiDbPoolHealth", () => {
+describe("createApiDbPoolHealthCheck", () => {
+  function deferredQuery() {
+    let resolve!: (value: unknown) => void;
+    let reject!: (error: unknown) => void;
+    const query = vi.fn(
+      () =>
+        new Promise((res, rej) => {
+          resolve = res;
+          reject = rej;
+        })
+    );
+    return { query, resolve: (value: unknown = { rows: [] }) => resolve(value), reject: (error: unknown) => reject(error) };
+  }
+
   it("resolves when SELECT 1 answers inside the deadline", async () => {
     const query = vi.fn().mockResolvedValue({ rows: [{ "?column?": 1 }] });
-    await expect(checkApiDbPoolHealth({ query }, 1_000)).resolves.toBeUndefined();
+    await expect(createApiDbPoolHealthCheck({ query }, 1_000)()).resolves.toBeUndefined();
     expect(query).toHaveBeenCalledWith("SELECT 1");
   });
 
   it("rejects with the pool's error when the query fails", async () => {
     const query = vi.fn().mockRejectedValue(new Error("connection terminated"));
-    await expect(checkApiDbPoolHealth({ query }, 1_000)).rejects.toThrow("connection terminated");
+    await expect(createApiDbPoolHealthCheck({ query }, 1_000)()).rejects.toThrow("connection terminated");
   });
 
   it("rejects once the deadline passes even if the query never settles", async () => {
     vi.useFakeTimers();
     try {
       const query = vi.fn(() => new Promise(() => {}));
-      const pending = checkApiDbPoolHealth({ query }, 250);
+      const pending = createApiDbPoolHealthCheck({ query }, 250)();
       const assertion = expect(pending).rejects.toThrow("exceeded 250ms");
       await vi.advanceTimersByTimeAsync(251);
       await assertion;
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("shares one in-flight query across concurrent probes, then starts fresh once it settles", async () => {
+    const db = deferredQuery();
+    const check = createApiDbPoolHealthCheck(db, 1_000);
+    const first = check();
+    const second = check();
+    expect(db.query).toHaveBeenCalledTimes(1);
+    db.resolve();
+    await expect(first).resolves.toBeUndefined();
+    await expect(second).resolves.toBeUndefined();
+    const third = check();
+    expect(db.query).toHaveBeenCalledTimes(2);
+    db.resolve();
+    await expect(third).resolves.toBeUndefined();
+  });
+
+  it("keeps sharing a pending query after a caller's deadline passes, so timed-out probes cannot pile up", async () => {
+    vi.useFakeTimers();
+    try {
+      const db = deferredQuery();
+      const check = createApiDbPoolHealthCheck(db, 250);
+      const timedOut = expect(check()).rejects.toThrow("exceeded 250ms");
+      await vi.advanceTimersByTimeAsync(251);
+      await timedOut;
+      const next = check();
+      expect(db.query).toHaveBeenCalledTimes(1);
+      db.resolve();
+      await expect(next).resolves.toBeUndefined();
+      const fresh = check();
+      expect(db.query).toHaveBeenCalledTimes(2);
+      db.resolve();
+      await expect(fresh).resolves.toBeUndefined();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("does not leave a rejected shared query as an unhandled rejection when no probe is waiting", async () => {
+    vi.useFakeTimers();
+    try {
+      const db = deferredQuery();
+      const check = createApiDbPoolHealthCheck(db, 250);
+      const timedOut = expect(check()).rejects.toThrow("exceeded 250ms");
+      await vi.advanceTimersByTimeAsync(251);
+      await timedOut;
+      db.reject(new Error("connection terminated"));
+      await vi.advanceTimersByTimeAsync(0);
+      const fresh = check();
+      expect(db.query).toHaveBeenCalledTimes(2);
+      db.resolve();
+      await expect(fresh).resolves.toBeUndefined();
     } finally {
       vi.useRealTimers();
     }
