@@ -170,3 +170,42 @@ caught HB 416, whose divided 101-47 roll is not the passage vote the history
 records at 112-20. Four Senate rolls (HB 343, HB 546, HB 758, HB 958) sit on
 bills whose histories record no floor passage, so what was voted cannot be
 confirmed; they are held rather than guessed at.
+
+## Bold-text audit of batches 01-03 (2026-09-07)
+
+The HB 952 defect found on review of #1232 — a description that restated existing
+law because `pdftotext` discards the bold type Missouri uses for new matter — was
+audited across every measure in batches 01, 02 and 03. Tool:
+[`bold-text-audit.py`](bold-text-audit.py), which diffs the bill's version of each
+repealed-and-re-enacted section against the current section on `revisor.mo.gov`.
+It reproduces the HB 952 finding exactly, which is how it was validated.
+
+**Two descriptions were wrong. Both are corrected in place; no records were retired.**
+
+- **HB 565** (batch-03) said the bill would widen the equine and livestock
+  liability shield by "covering more people and more situations". It does widen the
+  shield, but not that way: its **only** change is to delete ordinary carelessness
+  from the list of *exceptions* to the shield, so a sponsor could be sued only for
+  what remains — intentional injury, willful disregard, a known hidden danger.
+  Direction and label were right, the mechanism was not. 105 records rewritten.
+- **SB 152** (batch-01) said "committee officers can be held personally liable".
+  The act puts liability on a committee, person or entity with the burden of proof
+  on the Attorney General; nothing makes officers personally liable. Replaced with
+  what the text supports. 101 records rewritten.
+
+**Everything else held.** HB 544's federal-label rule, HB 68's ten-to-twenty year
+change for childhood sexual abuse claims, and HB 595's preemption of local renter
+protections are all genuinely new matter, confirmed against the current statute.
+
+### Two limits of this audit, worth knowing before relying on it
+
+1. **It only works on bills that did NOT become law.** For an enacted bill,
+   `revisor.mo.gov` already shows the bill's own text, so the diff is empty by
+   construction. Batches 01 and 02 are entirely enacted measures; batch-03 is
+   entirely non-enacted, which is where the method has real force. The two enacted
+   corrections above were found by reading the bill text directly, not by the diff.
+2. **The tally check does not reach Senate bills.** Missouri's history prints
+   `AYES`/`NOES` on House-bill actions but not on a Senate bill's House reading
+   (`H Third Read and Passed`, no numbers). SB 152 and SB 71 each have two House
+   rolls on one day with identical descriptions; both were resolved by the
+   ascending-roll-id convention, not by tally, and both original picks stand.
