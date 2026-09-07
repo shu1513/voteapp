@@ -90,6 +90,17 @@ describe("ballotDraft store", () => {
     expect(readBallotDraft().choices.m1).toBeUndefined();
   });
 
+  it("a Yes/No answer replaces a legacy judge pick on the same race, so clearing it clears the row", () => {
+    pickJane();
+    setDraftMeasureChoice({ ...RACE, position: "no", raceType: "office" });
+    const row = readBallotDraft().choices.e1;
+    expect(row.picks).toEqual([]);
+    expect(row.measure_position).toBe("no");
+    expect(row.race_type).toBe("office");
+    setDraftMeasureChoice({ ...RACE, position: null, raceType: "office" });
+    expect(readBallotDraft().choices.e1).toBeUndefined();
+  });
+
   it("treats corrupt or foreign storage as an empty draft", () => {
     seedStorage("{not json");
     expect(readBallotDraft()).toEqual({ v: 1, district_ids: [], target: null, choices: {} });

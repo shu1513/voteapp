@@ -368,7 +368,10 @@ export function setDraftMeasureChoice(
 ): void {
   const draft = currentDraft();
   const row = baseRow(draft, input, input.raceType ?? "ballot_measure", null);
-  putRow(draft, { ...row, measure_position: input.position });
+  // A retention row saved by an older build may still hold the judge as a
+  // candidate pick; the Yes/No answer replaces it (the server does the same),
+  // otherwise clearing "No" would leave that pick to flush as a "Yes".
+  putRow(draft, { ...row, picks: [], measure_position: input.position });
 }
 
 // The server's verdict on ONE row, as opposed to a failure of the pass:

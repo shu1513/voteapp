@@ -6,7 +6,7 @@ import type {
   RecordAreaStance,
   ResearchAreaPreference,
 } from "@voteapp/api-client";
-import { partyColorClass, profilePartyLabel } from "@voteapp/api-client";
+import { isJudicialRetentionTitle, partyColorClass, profilePartyLabel } from "@voteapp/api-client";
 import {
   ApiError,
   apiRequest,
@@ -35,6 +35,7 @@ import {
   CandidatePickButton,
   CandidatePickRow,
   LogInToPlanLine,
+  MeasureChoiceButtons,
 } from "../../components/ElectionChoiceControls";
 import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
 import { SAVED_AREA_TEXT_CLASS } from "../../components/ElectionCard";
@@ -393,14 +394,15 @@ export default function CandidateScreen() {
   // race, so with several races the screen relies on the self-describing
   // inline rows instead.
   const primaryPickElection = pickableElections.length === 1 ? pickableElections[0] : null;
-  // Whether THIS candidate holds (one of) the pick(s) for the card's race —
-  // gates the card's post-pick back link. True on arrival too, not only
-  // right after tapping.
+  // Whether THIS candidate holds (one of) the pick(s) for the card's race, or
+  // the race's Yes/No answer is recorded (judicial retention) — gates the
+  // card's post-pick back link. True on arrival too, not only right after
+  // tapping.
+  const primaryChoice = primaryPickElection ? choiceForElection(primaryPickElection.election_id) : undefined;
   const isPrimaryPicked =
-    primaryPickElection !== null &&
-    (choiceForElection(primaryPickElection.election_id)?.picks ?? []).some(
-      (pick) => pick.candidate_id === candidate.candidate_id
-    );
+    primaryChoice !== undefined &&
+    (primaryChoice.measure_position !== null ||
+      primaryChoice.picks.some((pick) => pick.candidate_id === candidate.candidate_id));
   const viewOptions = [
     { value: "my_issues" as const, label: "My issues first" },
     { value: "newest" as const, label: "Newest first" },
@@ -490,18 +492,28 @@ export default function CandidateScreen() {
           Single-race screens leave picking to the footer card alone. */}
       {primaryPickElection === null && pickableElections.length > 0 ? (
         <View className="mt-4 gap-2">
-          {pickableElections.map((election) => (
-            <CandidatePickRow
-              key={election.candidate_election_id}
-              electionId={election.election_id}
-              candidateId={candidate.candidate_id}
-              candidateName={candidate.display_name}
-              raceName={election.official_ballot_title}
-              dateLabel={formatElectionDate(election.election_date)}
-              choice={choiceForElection(election.election_id)}
-              seatsToFill={election.seats_to_fill ?? null}
-            />
-          ))}
+          {pickableElections.map((election) =>
+            isJudicialRetentionTitle(election.official_ballot_title) ? (
+              // Retention race: answered Yes/No, never by picking the judge.
+              <View key={election.candidate_election_id} className="rounded-lg border border-line p-3">
+                <Text className="mb-2 text-sm text-ink">
+                  {election.official_ballot_title} · {formatElectionDate(election.election_date)}
+                </Text>
+                <MeasureChoiceButtons electionId={election.election_id} choice={choiceForElection(election.election_id)} />
+              </View>
+            ) : (
+              <CandidatePickRow
+                key={election.candidate_election_id}
+                electionId={election.election_id}
+                candidateId={candidate.candidate_id}
+                candidateName={candidate.display_name}
+                raceName={election.official_ballot_title}
+                dateLabel={formatElectionDate(election.election_date)}
+                choice={choiceForElection(election.election_id)}
+                seatsToFill={election.seats_to_fill ?? null}
+              />
+            )
+          )}
         </View>
       ) : null}
 
@@ -609,14 +621,23 @@ export default function CandidateScreen() {
           className="border-t border-line bg-white px-4 pt-3"
           style={{ paddingBottom: Math.max(insets.bottom, 12) }}
         >
-          <CandidatePickButton
-            electionId={primaryPickElection.election_id}
-            candidateId={candidate.candidate_id}
-            candidateName={candidate.display_name}
-            choice={choiceForElection(primaryPickElection.election_id)}
-            seatsToFill={primaryPickElection.seats_to_fill ?? null}
-            fullWidth
-          />
+          {isJudicialRetentionTitle(primaryPickElection.official_ballot_title) ? (
+            // Retention race: the footer card asks Yes/No on keeping the
+            // judge instead of offering a candidate pick (same as the web).
+            <>
+              <Text className="mb-2 text-sm text-ink-soft">Yes keeps this judge in office. No removes them.</Text>
+              <MeasureChoiceButtons electionId={primaryPickElection.election_id} choice={primaryChoice} />
+            </>
+          ) : (
+            <CandidatePickButton
+              electionId={primaryPickElection.election_id}
+              candidateId={candidate.candidate_id}
+              candidateName={candidate.display_name}
+              choice={primaryChoice}
+              seatsToFill={primaryPickElection.seats_to_fill ?? null}
+              fullWidth
+            />
+          )}
           {/* Post-pick continuation: back to where this candidate came from
               (election roster or ballot list). Only once THIS candidate
               holds a pick, and only when there is somewhere to go back to
