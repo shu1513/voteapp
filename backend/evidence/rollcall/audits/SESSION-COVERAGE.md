@@ -50,12 +50,46 @@ not on principle; if Alaska's roster fills out for old incumbents, re-run the au
 
 ## Colorado 2026 Regular Session (CO-2243) — in progress elsewhere
 
-328 rolls, 52 of 101 voters are current candidates. By far the largest pool left. A
-parallel session was judging it while this note was written, so it is untouched here.
+46 rolls still unaccounted for at the time of this run, down from 328 as the parallel
+session judging it commits its batches. 52 of 100 voters are current candidates. It is
+untouched here.
 **The local database is shared between worktrees: check `legislative_votes` before
 judging anything in Colorado.**
 
-## Sessions that report zero, and why that is trustworthy now
+## New Mexico's residue is the Senate, and the Senate is not on the ballot
+
+Five older New Mexico sessions show 31 rolls that no ledger names. Every one is a Senate
+roll, and every one reaches zero current candidates, because New Mexico senators serve
+four-year terms elected in 2024. There is nothing to read for the 2026 ballot.
+
+## What a review round changed in the audit (2026-09-07)
+
+Four findings on the first version were all real, and fixing them surfaced a fifth.
+
+- **Config lists named with digits** (`ALABAMA_2019_2022_KEPT_QUESTIONS`,
+  `OREGON_2026_KEPT_QUESTIONS`) did not parse, so those sessions got zero patterns and
+  were reported as measured. Alabama 2021 read 0; it has 15. An unresolved name is now
+  an error.
+- **Anchoring.** The shipped classifier lower-cases, collapses whitespace and calls
+  `RegExp.test`, a search. The audit forced `^` and dropped every sponsor-prefixed
+  Alabama concurrence (`Drummond Concur In and Adopt`). It now mirrors the classifier.
+- **Same-day ties cannot be ordered.** LegiScan has no sequence field and roll ids run
+  backwards in some states — Connecticut SB 1506's Vote 111 (11-24) has a higher id than
+  Vote 112 (35-0), the unanimous passage that followed. Colorado alone has 300 same-day
+  groups where the rolls disagree. When they disagree the answer is unknown and is
+  counted in a `tie?` column, never guessed.
+- **A README made a session "done".** "Worked" is gone. A roll is accounted for if its
+  id appears as an evidence file or in any ledger, or — because most states screened by
+  measure from a synopsis — its bill number is named in a registered session's ledgers.
+  The fallback is not applied to an unregistered session, whose bill numbers would
+  otherwise collide with a sibling session's ("SB 1" exists in every Missouri session).
+- **The fifth:** filtering on `status == 4` alone counts every adopted resolution as
+  law, because LegiScan gives an adopted commendation the same status as an enacted
+  bill. The audit now applies the fetcher's own instrument list, read from source.
+
+The bill-number fallback can over-credit a short number that appears in passing, which
+hides work rather than inventing it. That is why the roll-id check runs first.
+
 
 The audit used to report zero for any session with no config entry, which is how a whole
 Alabama session once hid in plain sight. It now falls back to the state's base patterns

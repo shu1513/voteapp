@@ -51,21 +51,44 @@ def config_text() -> str:
     return open(CONFIG).read()
 
 
+def kept_bill_types() -> set[str]:
+    """The fetcher's own instrument filter, read from source rather than copied.
+    LegiScan marks an ADOPTED resolution status 4, the same as an enacted bill,
+    so filtering on status alone counts every commendation and memorial as law.
+    That is what the first run of this audit did: nearly all of its residue was
+    Alaska concurrent resolutions, Arizona memorials and Tennessee House
+    resolutions."""
+    src = open("backend/src/pipeline/rollcall/legiscanRollCall.ts").read()
+    m = re.search(r"LEGISCAN_KEPT_BILL_TYPES[^=]*=\s*\[([^\]]*)\]", src)
+    if not m:
+        raise SystemExit("LEGISCAN_KEPT_BILL_TYPES not found in legiscanRollCall.ts")
+    return set(re.findall(r'"([A-Z]+)"', m.group(1)))
+
+
 def shared_lists(text: str) -> dict[str, str]:
     return dict(
-        re.findall(r"const ([A-Z_]+_(?:KEPT|EXCLUDED)_QUESTIONS)[^=]*=\s*\[([\s\S]*?)\n\];", text)
+        re.findall(r"const ([A-Z][A-Z0-9_]*_(?:KEPT|EXCLUDED)_QUESTIONS)[^=]*=\s*\[([\s\S]*?)\n\];", text)
     )
 
 
 def patterns(block: str) -> list[re.Pattern[str]]:
-    """Every `pattern:` regex in a config block. Multi-line entries included — a
-    one-line regex silently drops Missouri's House third-reading rule."""
-    out = []
-    for m in re.finditer(r"pattern:\s*/(.+?)/[a-z]*\s*,", block):
-        body = m.group(1)
-        out.append(re.compile("^" + body.lstrip("^"), re.I) if not body.endswith("$")
-                   else re.compile("^" + body.lstrip("^").rstrip("$") + "$", re.I))
-    return out
+    """Every `pattern:` regex in a config block, exactly as shipped. Multi-line
+    entries included — a one-line regex silently drops Missouri's House
+    third-reading rule. Anchors are NOT added: many shipped rules are deliberately
+    unanchored (`\\bconcur in\\b`, `floor:.*final passage$`) because a description
+    may carry a sponsor prefix, and forcing `^` dropped Alabama concurrences."""
+    return [re.compile(m.group(1)) for m in re.finditer(r"pattern:\s*/(.+?)/[a-z]*\s*,", block)]
+
+
+def normalize(desc: str) -> str:
+    """The classifier's own normalization: lower-case, whitespace collapsed, trimmed."""
+    return re.sub(r"\s+", " ", (desc or "").lower()).strip()
+
+
+def matches(pats, desc: str) -> bool:
+    """JavaScript `RegExp.test` semantics — a search, not an anchored match."""
+    d = normalize(desc)
+    return any(x.search(d) for x in pats)
 
 
 def kept_patterns(text: str, key: str):
@@ -73,8 +96,13 @@ def kept_patterns(text: str, key: str):
     if not m:
         return None
     body = m.group(1)
-    named = re.search(r"keptQuestions:\s*([A-Z_]+)\s*,", body)
-    return patterns(shared_lists(text)[named.group(1)]) if named else patterns(body)
+    named = re.search(r"keptQuestions:\s*([A-Z][A-Z0-9_]*)\s*,", body)
+    if named:
+        lists = shared_lists(text)
+        if named.group(1) not in lists:
+            raise SystemExit(f"{key}: keptQuestions names {named.group(1)}, which was not found")
+        return patterns(lists[named.group(1)])
+    return patterns(body)
 
 
 def config_keys(text: str) -> dict[tuple[str, int], str]:
@@ -110,18 +138,89 @@ def crosswalk_people(jur: str) -> set[int]:
     return ids
 
 
-def worked(jur: str, sid: int) -> bool:
-    """Has this session been judged? Evidence may live in a sibling session's
-    directory — Minnesota's 2217 sits inside legiscan-mn-2151 — so look for the
-    session id in any of the state's roll evidence filenames, not for a dir."""
-    if glob.glob(f"{EVIDENCE}/legiscan-{jur.lower()}-{sid}/*"):
-        return True
-    return bool(glob.glob(f"{EVIDENCE}/legiscan-{jur.lower()}-*/*/ls-{jur.lower()}-*-{sid}-roll*.json"))
+_ACCOUNTED: dict[str, set[int]] = {}
+
+
+def accounted_rolls(jur: str) -> set[int]:
+    """Cached per state: New Mexico has fifteen sessions and California a hundred
+    report files, so reading the evidence once per session is what made a run
+    take minutes."""
+    if jur not in _ACCOUNTED:
+        _ACCOUNTED[jur] = _read_accounted_rolls(jur)
+    return _ACCOUNTED[jur]
+
+
+_LEDGER_TEXT: dict[str, str] = {}
+
+
+def ledger_text(jur: str) -> str:
+    """Every ledger, worklist, README and report for the state, as one string —
+    everything except the per-roll evidence files. Cached per state."""
+    if jur not in _LEDGER_TEXT:
+        parts = []
+        for path in glob.glob(f"{EVIDENCE}/legiscan-{jur.lower()}-*/**/*", recursive=True):
+            if (os.path.isfile(path) and path.endswith((".tsv", ".md", ".json", ".txt", ".csv"))
+                    and not os.path.basename(path).startswith("ls-")):
+                try:
+                    parts.append(open(path).read())
+                except (OSError, UnicodeDecodeError):
+                    pass
+        _LEDGER_TEXT[jur] = "\n".join(parts)
+    return _LEDGER_TEXT[jur]
+
+
+_MEASURE_TOKENS: dict[str, set[str]] = {}
+
+
+def ledger_measures(jur: str) -> set[str]:
+    """Every bill-number-shaped token in the state's ledgers, normalised to
+    `PREFIX NUMBER` with leading zeros dropped, computed once per state."""
+    if jur not in _MEASURE_TOKENS:
+        found = re.findall(r"\b([A-Z]{1,4}) ?0*(\d{1,5})\b", ledger_text(jur))
+        _MEASURE_TOKENS[jur] = {f"{p} {n}" for p, n in found}
+    return _MEASURE_TOKENS[jur]
+
+
+def measure_accounted(jur: str, bill_number: str) -> bool:
+    """Most states screened by MEASURE, not by roll: a synopsis read drops a bill and
+    the ledger records the bill number, never its roll ids. New York, Maryland,
+    Kansas and Georgia name every one of their leftover measures this way.
+    Caveat: short numbers like `SB 1` can match a passing mention, so this can
+    over-credit a little — in the direction of hiding work, which is why the
+    roll-id check runs first and this is only a fallback."""
+    m = re.match(r"([A-Z]+)0*(\d+)$", bill_number)
+    key = f"{m.group(1)} {m.group(2)}" if m else bill_number
+    return key in ledger_measures(jur)
+
+
+def _read_accounted_rolls(jur: str) -> set[int]:
+    """Every roll id the state's committed evidence knows about: an imported roll
+    has an `ls-*-roll<id>.json` file, and a dropped or superseded one is listed by
+    id in a worklist, ledger or report — TSV, Markdown or JSON; Maryland keeps no
+    TSV at all. Ledgers come in a dozen layouts, so the ids are read as bare
+    7-digit tokens from every evidence file rather than by column. Evidence may
+    live in a sibling session's directory — Minnesota's 2217 sits inside
+    legiscan-mn-2151 — so every directory of the state is read. A README alone
+    accounts for nothing, which is the point: "started" is not "finished"."""
+    ids: set[int] = set()
+    for path in glob.glob(f"{EVIDENCE}/legiscan-{jur.lower()}-*/**/*", recursive=True):
+        if not os.path.isfile(path):
+            continue
+        m = re.search(r"roll(\d+)\.json$", path)
+        if m:
+            ids.add(int(m.group(1)))
+        if path.endswith((".tsv", ".md", ".json", ".txt", ".csv")):
+            try:
+                ids.update(int(x) for x in re.findall(r"\b(\d{7})\b", open(path).read()))
+            except (OSError, UnicodeDecodeError):
+                pass
+    return ids
 
 
 def main() -> None:
     text = config_text()
     keys = config_keys(text)
+    kept_types = kept_bill_types()
     rows = []
     for path in sorted(glob.glob(f"{DATA}/??-[0-9]*")):
         name = os.path.basename(path)
@@ -156,43 +255,68 @@ def main() -> None:
                 except (OSError, ValueError):
                     continue
                 bill = bills.get(rc["bill_id"])
-                if not bill or bill["status"] != 4:
+                if not bill or bill["status"] != 4 or bill.get("bill_type") not in kept_types:
                     continue
-                if not any(x.match((rc.get("desc") or "").strip()) for x in pats):
+                if not matches(pats, rc.get("desc")):
                     continue
                 by_chamber[(bill["bill_number"], rc["chamber"])].append(rc)
-        keep, kept_measures = [], set()
+        # The chamber's LAST kept roll decides. Same-day rolls cannot be ordered:
+        # LegiScan has no sequence field and roll ids run backwards in some states
+        # (Connecticut SB 1506: Vote 111, 11-24, has a HIGHER id than Vote 112,
+        # 35-0, the unanimous passage that followed it). So when the same-day
+        # rolls disagree about being divided, the answer is unknown and is counted
+        # separately rather than guessed.
+        keep, ambiguous, kept_measures = [], [], set()
         for (bill_number, _chamber), rolls in by_chamber.items():
-            last = max(rolls, key=lambda r: (r["date"], r["roll_call_id"]))
-            if is_divided(last["yea"], last["nay"]):
-                keep.append(last)
+            last_day = max(r["date"] for r in rolls)
+            same_day = [r for r in rolls if r["date"] == last_day]
+            verdicts = {is_divided(r["yea"], r["nay"]) for r in same_day}
+            if verdicts == {True}:
+                keep.append(same_day[0])
                 kept_measures.add(bill_number)
+            elif verdicts == {True, False}:
+                ambiguous.append(same_day[0])
         mapped = crosswalk_people(jur)
-        voters = {int(v["people_id"]) for r in keep for v in (r.get("votes") or [])}
+        known = accounted_rolls(jur)
+        bill_of = {r["roll_call_id"]: bills[r["bill_id"]]["bill_number"] for r in keep}
+        # The measure fallback only applies to a REGISTERED session: an unregistered
+        # one has no ledger, and its bill numbers collide with sibling sessions'
+        # ("SB 1" exists in every Missouri session), which silently credited
+        # Arkansas 2242 and Missouri 2216 to ledgers that never mention them.
+        unaccounted = [r for r in keep
+                       if r["roll_call_id"] not in known
+                       and not (registered and measure_accounted(jur, bill_of[r["roll_call_id"]]))]
+        if os.environ.get("SHOW_LEFT") and unaccounted:
+            print(f"  {jur}-{sid} left: " + ", ".join(sorted({bill_of[r['roll_call_id']] for r in unaccounted})))
+        voters = {int(v["people_id"]) for r in unaccounted for v in (r.get("votes") or [])}
         rows.append({
             "session": f"{jur}-{sid}", "name": session_name[:34],
             "registered": registered, "borrowed": borrowed,
-            "worked": worked(jur, sid), "unmeasurable": pats is None,
-            "rolls": len(keep),
-            "measures": len(kept_measures),
+            "unmeasurable": pats is None,
+            "rolls": len(keep), "measures": len(kept_measures),
+            "unaccounted": len(unaccounted), "ambiguous": len(ambiguous),
             "reach": len(voters & mapped), "voters": len(voters),
         })
 
-    print(f"{'session':10s} {'cfg':>3s} {'done':>4s} {'rolls':>5s} {'reach':>5s}  name")
+    print(f"{'session':10s} {'cfg':>3s} {'rolls':>5s} {'left':>5s} {'tie?':>5s} {'reach':>7s}  name")
     todo = []
     for r in rows:
-        flag = "" if (r["worked"] or not r["rolls"]) else "  <-- unworked"
+        flag = ""
         if r["unmeasurable"]:
             flag = "  <-- NO CONFIG, NOT MEASURED"
-        elif r["borrowed"]:
+        elif r["unaccounted"]:
+            flag = "  <-- rolls not in any evidence"
+        if r["borrowed"]:
             flag += "  (unregistered; measured with the state's patterns)"
         cfg = "y" if r["registered"] else ("~" if r["borrowed"] else "-")
-        print(f"{r['session']:10s} {cfg:>3s} "
-              f"{'y' if r['worked'] else '-':>4s} {r['rolls']:5d} "
-              f"{r['reach']:>3d}/{r['voters']:<3d} {r['name']}{flag}")
-        if (r["rolls"] and not r["worked"]) or r["unmeasurable"]:
+        print(f"{r['session']:10s} {cfg:>3s} {r['rolls']:5d} {r['unaccounted']:5d} "
+              f"{r['ambiguous']:5d} {r['reach']:>3d}/{r['voters']:<3d} {r['name']}{flag}")
+        if r["unaccounted"] or r["unmeasurable"]:
             todo.append(r)
 
+    print("\nrolls    = the chamber's last kept roll on an enacted measure is divided")
+    print("left     = of those, whose roll id AND bill number appear nowhere in the state's evidence")
+    print("tie?     = same-day rolls disagree on being divided; order unknown, not counted")
     print("\nsessions with rolls left to read:")
     if not todo:
         print("  (none)")
@@ -201,7 +325,7 @@ def main() -> None:
             print(f"  {r['session']:10s} NO CONFIG for this state at all — measure by hand")
             continue
         note = " (unregistered)" if r["borrowed"] else ""
-        print(f"  {r['session']:10s} {r['rolls']:3d} rolls, {r['reach']} of {r['voters']} "
+        print(f"  {r['session']:10s} {r['unaccounted']:3d} rolls, {r['reach']} of {r['voters']} "
               f"voters are current candidates{note}")
     print("\nA count here means 'worth reading', not 'worth importing'. Filter 5 —"
           "\nwhether the measure carries a defensible for-and-against stance — is a"
