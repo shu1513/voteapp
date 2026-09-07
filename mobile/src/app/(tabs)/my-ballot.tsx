@@ -16,7 +16,6 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { AccountGate } from "../../components/AccountGate";
 import { BallotFiltersControl } from "../../components/BallotFiltersControl";
-import { Checkbox } from "../../components/Checkbox";
 import { ElectionCard } from "../../components/ElectionCard";
 import { SavedAddressForm } from "../../components/SavedAddressForm";
 import { SortChips } from "../../components/SortChips";
@@ -30,12 +29,12 @@ type SavedBallot = BallotSummary & { matched_address?: string };
 
 // Persisted ordering preferences, ported from the web SavedBallotPage:
 // unlike the filters' local state, these save to the account and apply to
-// every future visit. The sort chips and the "Followed candidates first"
-// checkbox render in different places (in flow vs. the Filters
-// disclosure's Order section), so the shared query/mutation plumbing lives
-// in this hook — one instance per control is safe because the mutationKey
-// lock below allows only one save in flight, and each control merges its
-// change from its own pending overlay or the shared cache.
+// every future visit. Only the sort chips render a control now — the
+// "Followed candidates first" checkbox is gone, as on the web, but the
+// saved followed_first value is untouched: the sort control still
+// round-trips it in the full-object PUT, and the API keeps applying it.
+// The plumbing stays in a hook with a mutationKey lock (one save in flight)
+// and a pending overlay so consecutive changes merge from the latest view.
 function useBallotPreferences() {
   const queryClient = useQueryClient();
   // Optimistic overlay: consecutive changes must merge from the latest view,
@@ -108,29 +107,6 @@ function BallotSortPreference() {
   );
 }
 
-// Lives in the Filters disclosure's Order section; persisted, unlike the
-// session-scoped filters above it in the panel.
-function FollowedFirstPreference() {
-  const { prefs, update, saving, current, change } = useBallotPreferences();
-  if (prefs.isError) {
-    return <ErrorNotice error={prefs.error} />;
-  }
-  if (!current) {
-    return null;
-  }
-  return (
-    <View className="gap-2">
-      <Checkbox
-        label="Followed candidates first"
-        checked={current.followed_first}
-        disabled={saving}
-        onChange={(followed_first) => change({ followed_first })}
-      />
-      {update.isError ? <ErrorNotice error={update.error} /> : null}
-    </View>
-  );
-}
-
 // Anonymous-to-account handoff, ported from the web with one extra state:
 // AsyncStorage reads are async, so "checking" covers the initial read that
 // sessionStorage answered synchronously on the web.
@@ -144,7 +120,7 @@ function SavedBallotBody({ email }: { email: string }) {
     queryFn: () => apiRequest<BallotPreferences>("/api/me/ballot-preferences"),
     staleTime: 60_000,
   });
-  const { savedAreaIds, hasSaved } = useMyResearchAreas();
+  const { savedAreaIds, weights, hasSaved } = useMyResearchAreas();
   // The viewer's picks, for the cards' "My pick" chips — progress at a
   // glance down the saved-ballot list. Cards render without waiting for
   // this: a late chip appearing beats blocking the ballot on it.
@@ -303,7 +279,6 @@ function SavedBallotBody({ email }: { email: string }) {
           setOnlyMyIssues(false);
           setImpactLevel(null);
         }}
-        orderSection={<FollowedFirstPreference />}
       />
 
       {data.elections.length === 0 ? (
@@ -316,7 +291,7 @@ function SavedBallotBody({ email }: { email: string }) {
             <ElectionCard
               key={election.id}
               election={election}
-              savedAreaIds={savedAreaIds}
+              savedAreaWeights={weights}
               myChoice={choiceByElectionId?.get(election.id)}
             />
           ))}

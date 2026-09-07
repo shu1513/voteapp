@@ -35,7 +35,7 @@ export default function BallotScreen() {
   // location, and the partial label must survive remounts — same reasoning
   // as the web's partial=1 URL param.
   const isPartialBallot = params.partial === "1";
-  const { savedAreaIds, hasSaved } = useMyResearchAreas();
+  const { savedAreaIds, weights, hasSaved } = useMyResearchAreas();
   const [sort, setSort] = useState<BallotSort>("vote_power");
   // Filters: local state like sort — the screen stays mounted under a stack
   // push, so the choices survive navigating into an election and back (the
@@ -224,7 +224,7 @@ export default function BallotScreen() {
             // Show all" line above explains the empty view.
             <View className="mt-4 gap-3">
               {filtersView.visibleElections.map((election) => (
-                <ElectionCard key={election.id} election={election} savedAreaIds={savedAreaIds} />
+                <ElectionCard key={election.id} election={election} savedAreaWeights={weights} />
               ))}
             </View>
           )}

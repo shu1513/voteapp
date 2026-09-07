@@ -37,6 +37,7 @@ import {
   LogInToPlanLine,
 } from "../../components/ElectionChoiceControls";
 import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
+import { SAVED_AREA_TEXT_CLASS } from "../../components/ElectionCard";
 import { FollowButton } from "../../components/FollowButton";
 import { NotFoundNotice } from "../../components/NotFoundNotice";
 import { ShareButton } from "../../components/ShareButton";
@@ -233,8 +234,9 @@ function StanceSummary({
   if (supports.length === 0 && opposes.length === 0 && mixed.length === 0) {
     return null;
   }
-  // The viewer's saved areas render semibold so their issues stand out from
-  // the rest of the list, mirroring the front-of-list ordering.
+  // The viewer's saved areas render in purple semibold so their issues stand
+  // out from the rest of the list — purple means "an issue on my list" on
+  // every surface, same as the ballot cards and election screen.
   const savedAreaIds = new Set(preferences.map((preference) => preference.research_area_id));
   // Comma-separated text, not boxed chips (boxes read as buttons — same
   // rule as the web summary and the roster rows).
@@ -242,7 +244,7 @@ function StanceSummary({
     areas.map((area, index) => (
       <Text
         key={area.research_area_id}
-        className={savedAreaIds.has(area.research_area_id) ? "font-semibold" : undefined}
+        className={savedAreaIds.has(area.research_area_id) ? SAVED_AREA_TEXT_CLASS : undefined}
       >
         {index > 0 ? ", " : ""}
         {label(area)}
@@ -423,6 +425,7 @@ export default function CandidateScreen() {
         {canFollow && follows ? (
           <FollowButton
             candidateId={candidate.candidate_id}
+            candidateName={candidate.display_name}
             isFollowing={follows.some((follow) => follow.candidate_id === candidate.candidate_id)}
           />
         ) : null}

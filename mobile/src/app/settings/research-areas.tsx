@@ -221,7 +221,9 @@ function ResearchAreasBody() {
 
       <Text className="mt-6 text-sm font-medium text-ink">
         Add issues{" "}
-        <Text className="font-normal text-ink-soft">({ranked.length} selected)</Text>
+        <Text className="font-normal text-ink-soft">
+          ({ranked.length > 0 ? `${ranked.length} selected \u00b7 no limit` : "no limit"})
+        </Text>
       </Text>
       <View className="mt-2 flex-row flex-wrap gap-2">
         {sortByResearchAreaPriority(catalog.data.research_areas.filter((area) => !selectedSet.has(area.id))).map(

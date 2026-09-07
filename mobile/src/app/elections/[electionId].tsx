@@ -17,6 +17,7 @@ import {
   isDecidedChoice,
   partyBucket,
   scoreStanceRelevance,
+  splitResearchAreasBySaved,
   useElectionChoices,
   useFollows,
   useMe,
@@ -26,12 +27,14 @@ import {
 import type { CandidateResultBadge } from "@voteapp/api-client";
 import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { votePowerTextClass } from "../../lib/votePowerText";
 import { AddressNudge } from "../../components/AddressNudge";
 import { AutoPickControl } from "../../components/AutoPickControls";
 import { DraftCompleteNotice } from "../../components/DraftCompleteNotice";
+import { AREA_TEXT_CLASS, SAVED_AREA_TEXT_CLASS } from "../../components/ElectionCard";
 import {
   CandidatePickButton,
   LogInToPlanLine,
@@ -254,7 +257,8 @@ export default function ElectionScreen() {
       </Text>
       <View className="mt-2 flex-row flex-wrap gap-2">
         {data.vote_power.label !== "unknown" ? (
-          <Text className="rounded bg-rausch/10 px-2 py-0.5 text-xs text-rausch-dark">
+          // Colored text, not a tinted pill — same scale as the ballot cards.
+          <Text className={`text-xs font-medium ${votePowerTextClass(data.vote_power.label)}`}>
             My vote power: {formatVotePowerLabel(data.vote_power.label)}
           </Text>
         ) : null}
@@ -270,6 +274,14 @@ export default function ElectionScreen() {
         <Text className="mt-1 text-xs text-ink-soft">{competitiveness.description}</Text>
       ) : null}
 
+      {/* Measure elections skip this: the measure section shows the same
+          areas with their stance. key: this mounted screen can render
+          another race after a push, and the "+N more" expansion must not
+          carry from one race to the next (same as the web page). */}
+      {data.race_type !== "ballot_measure" ? (
+        <OfficeInfo key={data.id} office={data.office ?? null} researchAreas={data.research_areas ?? []} weights={weights} />
+      ) : null}
+
       {measure ? (
         <View className="mt-6 rounded-xl border border-line bg-white p-4">
           <Text className="text-lg font-semibold text-ink">Ballot measure</Text>
@@ -280,7 +292,7 @@ export default function ElectionScreen() {
                   key={tag.research_area_id}
                   className={
                     savedAreaIds.has(tag.research_area_id)
-                      ? "rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 text-xs font-medium text-rausch-dark"
+                      ? "rounded border border-purple-300 bg-purple-50 px-2 py-0.5 text-xs font-semibold text-purple-800"
                       : "rounded bg-surface px-2 py-0.5 text-xs text-ink-soft"
                   }
                 >
@@ -468,6 +480,7 @@ export default function ElectionScreen() {
                   canFollow && follows ? (
                     <FollowButton
                       candidateId={candidate.candidate_id}
+                      candidateName={candidate.display_name}
                       isFollowing={followedIds.has(candidate.candidate_id)}
                       size="sm"
                     />
@@ -573,6 +586,85 @@ export default function ElectionScreen() {
   );
 }
 
+// Same cap as the ballot cards; here the overflow expands in place — this
+// screen is where the full set lives.
+const MAX_AFFECTS_AREAS = 3;
+
+// The office summary is seeded as newline-separated bullets, rendered as-is
+// under the "About this office" heading. Blank lines are dropped; nothing
+// else is parsed — no hook, no label. Port of the web ElectionPage.
+function officeSummaryLines(summary: string): string[] {
+  return summary
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line !== "");
+}
+
+/**
+ * Duties first, then which issues the election touches. Renders nothing
+ * when the payload carries neither (the ?? fallbacks at the call site cover
+ * deploy skew — a not-yet-redeployed backend omits both fields, which must
+ * degrade to "no section", not a crash).
+ */
+function OfficeInfo({
+  office,
+  researchAreas,
+  weights,
+}: {
+  office: ElectionDetail["office"];
+  researchAreas: ElectionDetail["research_areas"];
+  weights: ReturnType<typeof useMyResearchAreas>["weights"];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const bullets = office ? officeSummaryLines(office.summary) : [];
+  if (office === null && researchAreas.length === 0) {
+    return null;
+  }
+  // Saved matches lead in the user's rank order, in purple; the rest follow
+  // in green. Same split and colors as the ballot cards.
+  const { saved, others } = splitResearchAreasBySaved(researchAreas, weights);
+  const ordered = [...saved, ...others];
+  const visible = expanded ? ordered : ordered.slice(0, MAX_AFFECTS_AREAS);
+  const hiddenCount = ordered.length - visible.length;
+  const showToggle = ordered.length > MAX_AFFECTS_AREAS;
+  return (
+    <View className="mt-6 rounded-xl border border-line bg-white p-4">
+      <Text className="text-lg font-semibold text-ink">About this office</Text>
+      {bullets.length > 0 ? (
+        <View className="mt-2 gap-1">
+          {bullets.map((line, index) => (
+            <View key={index} className="flex-row gap-2">
+              <Text className="text-sm text-ink">{"\u2022"}</Text>
+              <Text className="flex-1 text-sm text-ink">{line}</Text>
+            </View>
+          ))}
+        </View>
+      ) : null}
+      {researchAreas.length > 0 ? (
+        <Text className="mt-3 text-sm">
+          <Text className="font-medium text-ink-soft">Affects:</Text>{" "}
+          {visible.map((area, index) => (
+            <Fragment key={area.id}>
+              <Text className={saved.includes(area) ? SAVED_AREA_TEXT_CLASS : AREA_TEXT_CLASS}>{area.name}</Text>
+              {index < visible.length - 1 || showToggle ? ", " : null}
+            </Fragment>
+          ))}
+          {showToggle ? (
+            <Text
+              className="font-medium text-ink underline"
+              accessibilityRole="button"
+              accessibilityState={{ expanded }}
+              onPress={() => setExpanded((value) => !value)}
+            >
+              {expanded ? "Show less" : `+${hiddenCount} more issue${hiddenCount === 1 ? "" : "s"}`}
+            </Text>
+          ) : null}
+        </Text>
+      ) : null}
+    </View>
+  );
+}
+
 function CandidateCard({
   candidate,
   stances,
@@ -652,7 +744,7 @@ function CandidateCard({
                 key={stance.research_area_id}
                 className={
                   savedAreaIds.has(stance.research_area_id)
-                    ? "rounded border border-rausch/40 bg-rausch/10 px-2 py-0.5 text-xs font-medium text-rausch-dark"
+                    ? "rounded border border-purple-300 bg-purple-50 px-2 py-0.5 text-xs font-semibold text-purple-800"
                     : "rounded bg-surface px-2 py-0.5 text-xs text-ink-soft"
                 }
               >
