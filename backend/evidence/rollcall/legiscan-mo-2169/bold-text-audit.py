@@ -13,12 +13,61 @@ Fixes from the review: margin line numbers are stripped per line before the text
 flattened, so numbers inside provisions ("within 30 days", "$500") survive; a section
 is cut at the next section heading, not at 20,000 characters; the diff is word-level
 with no length floor, so `[ten] twenty` and a one-clause deletion are reported.
-"""
-import sys, re, os, subprocess, difflib, html
-sys.path.insert(0, '/Users/shu/legiscan-data/mo-work')
-import mo
 
-CACHE = '/Users/shu/legiscan-data/mo-work/rsmo'
+Running it needs three things outside this repository:
+  * the LegiScan bulk dataset for Missouri session 2169, unzipped, so that
+    <dataset dir>/MO/<session>/bill/HB952.json exists
+      — set LEGISCAN_MO_DATASET   (default ~/legiscan-data/mo-2169)
+  * a writable cache directory for bill PDFs, their text, and statute text
+      — set MO_AUDIT_CACHE         (default ~/legiscan-data/mo-work)
+  * `curl` and `pdftotext` (poppler) on PATH, and network access to
+    documents.house.mo.gov / senate.mo.gov and revisor.mo.gov.
+
+    python3 bold-text-audit.py HB565 2025-04-10
+"""
+import sys, re, os, glob, json, subprocess, difflib, html
+
+DATASET = os.path.expanduser(os.environ.get('LEGISCAN_MO_DATASET', '~/legiscan-data/mo-2169'))
+WORK = os.path.expanduser(os.environ.get('MO_AUDIT_CACHE', '~/legiscan-data/mo-work'))
+CACHE = os.path.join(WORK, 'rsmo')
+DOCS = os.path.join(WORK, 'docs')
+for d in (CACHE, DOCS):
+    os.makedirs(d, exist_ok=True)
+
+# ---- the slice of the session's bill records this audit needs (was mo.py) ----
+BILLS = {}
+for _p in glob.glob(os.path.join(DATASET, 'MO', '*', 'bill', '*.json')):
+    _d = json.load(open(_p))['bill']
+    BILLS[_d['bill_number']] = _d
+if not BILLS:
+    sys.exit(f'no bill records under {DATASET}/MO/*/bill/ — set LEGISCAN_MO_DATASET to the unzipped '
+             f'LegiScan Missouri 2169 dataset')
+
+def norm(b):
+    m = re.match(r'([A-Z]+)0*(\d+)$', b.replace(' ', '').upper())
+    return f"{m.group(1)}{int(m.group(2))}"
+
+def _fetch_text(url, name):
+    pdf = os.path.join(DOCS, name + '.pdf'); txt = os.path.join(DOCS, name + '.txt')
+    if os.path.exists(txt) and os.path.getsize(txt) > 200:
+        return open(txt, encoding='utf-8', errors='replace').read()
+    if not os.path.exists(pdf) or os.path.getsize(pdf) < 1000:
+        r = subprocess.run(['curl', '-sSL', '-o', pdf, '-w', '%{http_code}', url], capture_output=True, text=True)
+        if r.stdout.strip() != '200':
+            raise RuntimeError(f'{name}: HTTP {r.stdout.strip()} {url}')
+    subprocess.run(['pdftotext', '-layout', pdf, txt], check=True, capture_output=True)
+    return open(txt, encoding='utf-8', errors='replace').read()
+
+def voted_text(bill, date):
+    """The last text printed on or before the vote date — the perfected or engrossed print."""
+    b = BILLS[norm(bill)]
+    ts = [t for t in b['texts'] if t['date'] <= date] or b['texts']
+    return ts[-1]
+
+def docs(bill, date):
+    t = voted_text(bill, date)
+    return t, _fetch_text(t['state_link'], f"{norm(bill)}-{t['type'].replace(' ', '')}-{t['doc_id']}")
+
 os.makedirs(CACHE, exist_ok=True)
 SEC = r'\d+[A-Z]?\.\d+'
 
@@ -52,7 +101,7 @@ def bill_sections(bill, date):
     section the occurrence followed by "1." or "(1)" is the heading; if there is
     none (a section with no subsections), the first occurrence is.
     """
-    _, raw = mo.docs(bill, date)
+    _, raw = docs(bill, date)
     t = strip_layout(raw)
     m = re.search(r'Section A\.(.*?)to read as follows', t, flags=re.S)
     listed = []
@@ -109,9 +158,9 @@ def additions(cur, body):
 
 def audit(bill, date, enacted=None):
     secs = bill_sections(bill, date)
-    b = mo.BILLS[mo.norm(bill)]
+    b = BILLS[norm(bill)]
     enacted = (b['status'] == 4) if enacted is None else enacted
-    print(f"{'='*72}\n{mo.norm(bill)}  status={b['status']}  {'ENACTED — ADDED is empty by construction; DELETED still valid' if enacted else 'not enacted — full test'}")
+    print(f"{'='*72}\n{norm(bill)}  status={b['status']}  {'ENACTED — ADDED is empty by construction; DELETED still valid' if enacted else 'not enacted — full test'}")
     for sec, body in secs.items():
         dels = deletions(body)
         cur = statute(sec)
