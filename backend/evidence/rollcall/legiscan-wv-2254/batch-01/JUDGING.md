@@ -61,13 +61,27 @@ Narrows which aboveground storage tanks West Virginia regulates under the tank
 law it wrote after the 2014 chemical spill on the Elk River that left about
 300,000 people without safe tap water.
 
-The act adds an exemption, paragraph (O) of the definition, for devices holding
+The act adds a carve-out, paragraph (O) of the definition, for devices holding
 10,000 gallons or less that sit inside a permit issued under the surface mining
-article, are outside a zone of critical concern, and hold none of the substances
-listed in subdivision (13)(B). It gives owners a defined notice period before an
-existing tank is reclassified when a new zone of critical concern or zone of
-peripheral concern is drawn. It allows remote non-destructive examination in
-place of a person entering a confined space.
+article, are certified under §22-12-8 (the groundwater certification in the
+Groundwater Protection Act), are outside a zone of critical concern, and hold
+none of the substances listed in subdivision (13)(B). Paragraph (O) then says
+such devices "shall meet the registration, notice, and signage requirements of
+this article". It gives owners a defined notice period before an existing tank
+is reclassified when a new zone of critical concern or zone of peripheral
+concern is drawn. It allows remote non-destructive examination in place of a
+person entering a confined space.
+
+**Review fix, 2026-09-08.** The first description called these tanks "exempt"
+and omitted two limits that paragraph (O) states: the groundwater certification,
+and the proviso that the tanks must still be registered, give notice and post
+signs. Read cold, "exempt" suggested the whole tank law fell away. Both
+descriptions were rewritten to say what is carved out and what is kept, the
+judgments were re-run, and all 83 records were rewritten in place
+(`import-review-fixes-report.json`, 83 rewrite and 86 unchanged), followed by a
+convergence run reporting all 169 unchanged. The rewritten text runs to five
+short sentences rather than four; the extra sentence is the retained duties, and
+the longest sentence is 41 words.
 
 `environment_and_public_health`, a yes vote was against, `nay` null.
 
