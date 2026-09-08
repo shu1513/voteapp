@@ -10,7 +10,7 @@ dropped with a recorded reason.
 | House Bill 136 | 246 | house | 52-18 | corporate accountability | for |
 | House Bill 146 | 153 | senate | 18-15 | environment and public health | for |
 | Senate Bill 1099 | 171 | senate | 25-10 | public safety and crime control | for |
-| Senate Bill 1139 | 182 | house | 49-15 | public safety and crime control | for |
+| Senate Bill 1139 | 182 | house | 49-15 | public safety and crime control | against |
 | Senate Bill 1211 | 334 | senate | 25-9 | environment and public health | against |
 
 House Bill 146's Senate roll, 18 to 15, is the closest vote in any Idaho batch.

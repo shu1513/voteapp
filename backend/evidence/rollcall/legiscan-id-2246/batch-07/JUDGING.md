@@ -31,7 +31,12 @@ against.
 Repeals the statute allowing Idaho to issue a commercial learner's permit or
 commercial driver's license to someone domiciled in a foreign country or in
 another state, and strikes the definition and references. Immigration, a yes
-vote is for.
+vote is against, corrected in review for the same reason as House Bill 135 in
+batch-01: the research area is defined as welcoming lawful immigration, and a
+bill that closes a licensing route to people domiciled abroad restricts it.
+Re-judged and re-imported in place; the text was unchanged and the stance was
+synced through the tag path, then checked in the database. Ledger:
+`import-review-fixes-report.json`.
 
 ## House Bill 706 — chapter 320, single stairway apartments
 

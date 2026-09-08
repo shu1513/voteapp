@@ -24,8 +24,9 @@ and treatment of communicable diseases, prenatal care, postnatal care in the
 first year, and food assistance for a child under eighteen all lose their
 exemption. The community-services exemption narrows to short-term shelters.
 Emergency medical treatment stays exempt and a federal-law exemption is added.
-Two strands, so two labels: immigration, a yes vote is for; social programs and
-welfare, a yes vote is against.
+Two strands, so two labels: immigration, a yes vote is against; social programs
+and welfare, a yes vote is against. The immigration direction was corrected in
+review, see the note at the end.
 
 ## House Bill 245 — chapter 142
 
@@ -127,3 +128,14 @@ Three ways, all 872.
 
 20 rolls imported, 0 errors, 88 distinct candidates. Fan-out ran 57 in the House
 and 30 in the Senate, as the crosswalk validation predicted.
+
+## Review round
+
+The pull request review caught that the immigration label was pointing the
+wrong way. The app defines that research area as welcoming immigration through
+a lawful, orderly and humane system, and every restrictive bill judged in other
+states carries `against`. House Bill 135 removes exemptions so that fewer people
+without proof of lawful presence can receive benefits; a yes vote is against.
+Re-judged and re-imported in place. The record text was already correct, so the
+importer reported 872 unchanged and synced the stance through the tag path; the
+database was checked directly afterwards. Ledger: `import-review-fixes-report.json`.

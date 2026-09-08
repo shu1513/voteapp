@@ -57,7 +57,7 @@ bill page at legislature.idaho.gov before selection:
 | measure | chapter | house | senate | research area | a yes vote is |
 | --- | --- | --- | --- | --- | --- |
 | House Bill 7 | 7 | 54-14 | 27-8 | public safety and crime control | for |
-| House Bill 135 | 275 | 46-22 | 26-9 | immigration; social programs and welfare | for; against |
+| House Bill 135 | 275 | 46-22 | 26-9 | immigration; social programs and welfare | against; against |
 | House Bill 245 | 142 | 53-17 | 21-14 | social programs and welfare | for |
 | House Bill 253 | 298 | 45-24 | 25-9 | anti-corruption | against |
 | House Bill 271 | 252 | 50-20 | 24-10 | public safety and crime control | for |

@@ -54,9 +54,16 @@ vote is for.
 Replaces a blanket bar on certifying anyone convicted of a felony with a bar
 limited to felonies listed in section 18-310(2) of Idaho Code and comparable
 out-of-state offenses, leaving the council discretion elsewhere, including where
-a felony was set aside, expunged, pardoned, dismissed or reduced. Public safety
-and crime control, a yes vote is for. The description says the automatic bar
-narrows, because that is the part a reader may weigh differently.
+a felony was set aside, expunged, pardoned, dismissed or reduced.
+
+Corrected in review. The first description opened by saying the act "tightens"
+who may be certified, which contradicted both the act and the description's own
+later sentences, and the label said a yes vote was for public safety. The act
+relaxes the bar: people with felony convictions who could not be certified
+before now can be, at the council's discretion. The research area's definition
+includes accountability, so the defensible direction is against. Public safety
+and crime control, a yes vote is against. Re-judged and re-imported in place,
+53 records rewritten. Ledger: `import-review-fixes-report.json`.
 
 ## Senate Bill 1211 — chapter 334, ivermectin
 

@@ -7,18 +7,24 @@ it.
 
 ## House Bill 508 — chapter 299, bike lanes and sidewalks
 
-Limits improvements to bicycle and pedestrian facilities to three cases: as a
-secondary benefit of a highway project, where federal money pays for that
-purpose, or where federal law requires it. A standalone state or local bike lane
-or sidewalk project no longer fits the statute. Public infrastructure, a yes vote
-is against.
+Corrected in review; the first reading had the act backwards. The rule that a
+bicycle or pedestrian facility may be improved only as a secondary benefit of a
+highway project, or for safety near a school or park, already existed. It came
+from Senate Bill 1144 of 2025, which this campaign dropped as unrecognizable
+without reading it closely, so the marked text here was read as if the whole
+rule were new. The act adds a third case, work paid for by federal funds or a
+grant, and keeps the two existing ones. It widens what may be built. Public
+infrastructure, a yes vote is for. Re-judged and re-imported in place.
 
 ## House Bill 583 — chapter 22, short-term rentals
 
 Extends the existing ban on local prohibition to any type of short-term rental,
-and cuts the grounds for local regulation from public health, safety, general
-welfare and neighborhood character down to public health alone. Also limits the
-tax duties that may be placed on a rental marketplace. Housing affordability, a
+keeps public health and safety as the grounds for local rules while dropping
+general welfare and neighborhood character, and adds a new limit that a local
+rule may not treat a short-term rental differently from an ordinary house. Also
+limits the tax duties that may be placed on a rental marketplace. Corrected in
+review: the first description said only public health survived, missing the
+reinserted "and safety". Housing affordability, a
 yes vote is against, because it removes local tools for protecting housing stock
 in residential neighborhoods.
 
@@ -60,17 +66,18 @@ yes vote is for.
 
 ## Senate Bill 1352 — chapter 264, starter home subdivisions
 
-Bars cities from banning compact single-family subdivisions from residential
-zones and requires every city to rewrite its plan and zoning by February 2027,
+Bars cities with more than ten thousand residents from banning compact
+single-family subdivisions from residential zones and requires each of them to
+rewrite its plan and zoning by February 2027,
 with caps on the minimum lot size, setbacks, lot widths, lot depths and fees a
 city may impose. Historic districts are exempt. Housing affordability, a yes vote
 is for.
 
 ## Senate Bill 1354 — chapter 265, accessory dwelling units
 
-Bars cities from banning accessory dwelling units from residential zones and
-requires every city to allow one internal or one detached unit per single-family
-lot by February 2027, with limits on parking requirements and fees. Historic
+Bars cities with more than ten thousand residents from banning accessory
+dwelling units from residential zones and requires each of them to allow one
+internal or one detached unit per single-family lot by February 2027, with limits on parking requirements and fees. Historic
 districts are exempt. Housing affordability, a yes vote is for.
 
 ## Checks run
@@ -90,3 +97,13 @@ districts are exempt. Housing affordability, a yes vote is for.
 | crosswalk-matched members summed over the 16 rolls | 712 |
 
 16 rolls imported, 0 errors. Idaho now holds 2,792 records across 91 candidates.
+
+## Review round
+
+Four of the eight measures were corrected after the pull request review and
+re-imported in place: House Bill 508's direction and reading, House Bill 583's
+wording on the surviving grounds for local rules, and the population threshold
+that both housing acts carry in their final subsection and the first descriptions
+omitted. Senate Bill 1352 and Senate Bill 1354 apply only to cities above ten
+thousand residents; the descriptions had said every city. 358 records rewritten,
+354 unchanged. Ledger: `import-review-fixes-report.json`.

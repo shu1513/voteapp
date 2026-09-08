@@ -80,3 +80,11 @@ against.
 
 12 rolls imported, 0 errors. Idaho now holds 1,388 roll-call records across 88
 candidates, from 32 rolls in two batches.
+
+## Review round
+
+The descriptions for Senate Bill 1069 and Senate Bill 1198 read "Senate Bill
+69" and "Senate Bill 198" in the prose. The judge had rejected the same error in
+the machine-readable ids and those were fixed, but the sentence text was not.
+Corrected, re-judged, and re-imported in place: 176 records rewritten, 340
+unchanged. Ledger: `import-review-fixes-report.json`.

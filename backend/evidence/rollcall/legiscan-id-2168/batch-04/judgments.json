@@ -80,12 +80,12 @@
       "measure_id": "S 1139",
       "vote_date": "2025-03-19",
       "review_status": "approved",
-      "yea_description": "Voted for Senate Bill 1139, which tightens who may be certified as a police officer in Idaho. The Peace Officer Standards and Training Council had to reject any applicant convicted of a felony. The act narrows the automatic bar to felonies listed in section 18-310(2) of Idaho Code, or comparable offenses from another state, and gives the council discretion in the remaining cases. It may also reject an applicant whose felony was set aside, expunged, pardoned, dismissed, or reduced to a misdemeanor. The council keeps its existing discretion to reject an applicant convicted of a misdemeanor. The Idaho House passed it 49-15, and it became law.",
-      "nay_description": "Voted against Senate Bill 1139, which tightens who may be certified as a police officer in Idaho. The Peace Officer Standards and Training Council had to reject any applicant convicted of a felony. The act narrows the automatic bar to felonies listed in section 18-310(2) of Idaho Code, or comparable offenses from another state, and gives the council discretion in the remaining cases. It may also reject an applicant whose felony was set aside, expunged, pardoned, dismissed, or reduced to a misdemeanor. The council keeps its existing discretion to reject an applicant convicted of a misdemeanor. The Idaho House passed it 49-15, and it became law.",
+      "yea_description": "Voted for Senate Bill 1139, which narrows the felony bar on becoming a police officer in Idaho. The Peace Officer Standards and Training Council had to reject any applicant convicted of a felony. The act limits that automatic bar to the serious felonies listed in section 18-310(2) of Idaho Code, or comparable offenses from another state. For any other felony the council now has discretion to certify the applicant. It may also reject an applicant whose felony was set aside, expunged, pardoned, dismissed, or reduced to a misdemeanor. The council keeps its existing discretion to reject an applicant convicted of a misdemeanor. The Idaho House passed it 49-15, and it became law.",
+      "nay_description": "Voted against Senate Bill 1139, which narrows the felony bar on becoming a police officer in Idaho. The Peace Officer Standards and Training Council had to reject any applicant convicted of a felony. The act limits that automatic bar to the serious felonies listed in section 18-310(2) of Idaho Code, or comparable offenses from another state. For any other felony the council now has discretion to certify the applicant. It may also reject an applicant whose felony was set aside, expunged, pardoned, dismissed, or reduced to a misdemeanor. The council keeps its existing discretion to reject an applicant convicted of a misdemeanor. The Idaho House passed it 49-15, and it became law.",
       "labels": [
         {
           "slug": "public_safety_and_crime_control",
-          "yea": "for",
+          "yea": "against",
           "nay": null
         }
       ]

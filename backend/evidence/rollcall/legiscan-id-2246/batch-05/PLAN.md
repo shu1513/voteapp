@@ -5,7 +5,7 @@ Eight measures, sixteen roll calls, 712 candidate records. First batch from the
 
 | measure | chapter | house | senate | research area | a yes vote is |
 | --- | --- | --- | --- | --- | --- |
-| House Bill 508 | 299 | 39-29 | 19-16 | public infrastructure | against |
+| House Bill 508 | 299 | 39-29 | 19-16 | public infrastructure | for |
 | House Bill 583 | 22 | 54-16 | 23-12 | housing affordability | against |
 | House Bill 752 | 263 | 54-15 | 28-7 | civil rights | against |
 | House Bill 776 | 276 | 49-18 | 27-8 | social programs and welfare | for |

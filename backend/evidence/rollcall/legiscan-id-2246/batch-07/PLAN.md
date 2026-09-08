@@ -8,7 +8,7 @@ survived the appropriations exclusion is now imported or dropped with a reason.
 | --- | --- | --- | --- | --- | --- |
 | House Bill 542 | 268 | senate | 21-14 | data privacy | for |
 | House Bill 561 | 260 | senate | 26-8 | civil rights | against |
-| House Bill 667 | 167 | house | 46-21 | immigration | for |
+| House Bill 667 | 167 | house | 46-21 | immigration | against |
 | House Bill 706 | 320 | senate | 18-17 | housing affordability | for |
 | House Bill 723 | 139 | house | 42-25 | social programs and welfare | for |
 | House Bill 822 | 340 | senate | 27-8 | civil rights | against |
