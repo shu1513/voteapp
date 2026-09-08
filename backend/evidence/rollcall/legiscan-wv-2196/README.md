@@ -92,3 +92,12 @@ is the one sanctioned exception to the "became law" filter, and it is used only
 because the enacted pool is exhausted. Every description in it is written in the
 conditional and says what stage the measure reached. See `batch-02/PLAN.md` for
 the method and `batch-02/dispositions.tsv` for all 36 slots in this session.
+
+**Batch 03** is one measure, SB 587. Batch 01 deferred it rather than guessing at
+a direction, because it is a 40,000 character rewrite of the competitive bidding
+law. The section-by-section read has now been done and the measure is judged. See
+`batch-03/`.
+
+With batch 03, West Virginia is complete. All 115 measure-chamber slots in the
+state whose final roll call is closely divided — 57 on measures that became law
+and 58 on measures that did not — carry a written disposition.

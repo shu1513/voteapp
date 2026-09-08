@@ -1,0 +1,22 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2196",
+   "roll": 1546665,
+   "measure_id": "SB 587",
+   "vote_date": "2025-04-12",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 587, which changes how West Virginia governments buy construction work. It doubles the point at which a state agency, city, county or school board must seek competing bids, from $25,000 to $50,000. For projects of $20 million or more it creates a new track that picks a builder from a shortlist of at least three firms on an overall best-value score rather than the lowest bid. The Senate agreed to the House version 27-7 and it became law.",
+   "nay_description": "Voted against Senate Bill 587, which changes how West Virginia governments buy construction work. It doubles the point at which a state agency, city, county or school board must seek competing bids, from $25,000 to $50,000. For projects of $20 million or more it creates a new track that picks a builder from a shortlist of at least three firms on an overall best-value score rather than the lowest bid. The Senate agreed to the House version 27-7 and it became law.",
+   "labels": [
+    {
+     "slug": "government_efficiency",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

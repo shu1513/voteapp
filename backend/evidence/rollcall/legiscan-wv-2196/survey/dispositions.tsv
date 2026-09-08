@@ -55,8 +55,8 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	disposition	reason	t
 2196	HB2222	S	126	1519626	2025-03-18	34	0	screened	final-roll-not-divided	Relating to authorizing certain agencies of the Department of Administration to promulgate legislative rules.
 2196	HB2233	H	62	1515788	2025-03-12	82	14	screened	final-roll-not-divided	Authorizing the Department of Environmental Protection to promulgate legislative rules
 2196	HB2233	S	310	1537061	2025-04-04	31	2	screened	final-roll-not-divided	Authorizing the Department of Environmental Protection to promulgate legislative rules
-2196	HB2267	H	625	1546781	2025-04-12	73	25	not-selected	filter 5: an omnibus authorisation of many unrelated legislative rules	Authorizing Department of Revenue to Promulgate Legislative Rules
-2196	HB2267	S	600	1546779	2025-04-12	25	8	not-selected	filter 5: an omnibus authorisation of many unrelated legislative rules	Authorizing Department of Revenue to Promulgate Legislative Rules
+2196	HB2267	H	625	1546781	2025-04-12	73	25	not-selected	filter 5: an omnibus authorization of many unrelated legislative rules	Authorizing Department of Revenue to Promulgate Legislative Rules
+2196	HB2267	S	600	1546779	2025-04-12	25	8	not-selected	filter 5: an omnibus authorization of many unrelated legislative rules	Authorizing Department of Revenue to Promulgate Legislative Rules
 2196	HB2331	H	369	1536081	2025-04-03	98	0	screened	final-roll-not-divided	Relating to authorizing certain agencies of the Department of Commerce to promulgate legislative rules
 2196	HB2331	S	326	1538123	2025-04-07	34	0	screened	final-roll-not-divided	Relating to authorizing certain agencies of the Department of Commerce to promulgate legislative rules
 2196	HB2344	H	586	1546666	2025-04-12	74	18	screened	final-roll-not-divided	Relating generally to traffic safety
@@ -406,7 +406,7 @@ session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	disposition	reason	t
 2196	SB586	H	629	1546737	2025-04-12	96	0	screened	final-roll-not-divided	Relating to requirements for filling vacancies in certain elected federal, state, and county offices
 2196	SB586	S	611	1546739	2025-04-12	33	0	screened	final-roll-not-divided	Relating to requirements for filling vacancies in certain elected federal, state, and county offices
 2196	SB587	H	513	1545929	2025-04-11	92	1	screened	final-roll-not-divided	Relating generally to government contracting
-2196	SB587	S	553	1546665	2025-04-12	27	7	not-selected	deferred: a 40,000 character rewrite of the competitive bidding statute. Stating one honest direction would need a section by section read, so it is left for a later batch rather than guessed at	Relating generally to government contracting
+2196	SB587	S	553	1546665	2025-04-12	27	7	imported	batch-03: the section by section read was done. Doubles the competitive bidding threshold from $25,000 to $50,000 and adds a best-value track for projects of $20 million or more. government_efficiency, yes for	Relating generally to government contracting
 2196	SB615	H	402	1538145	2025-04-07	98	0	screened	final-roll-not-divided	Eliminating accelerated tax payment requirements
 2196	SB615	S	148	1524051	2025-03-21	34	0	screened	final-roll-not-divided	Eliminating accelerated tax payment requirements
 2196	SB617	H	433	1541382	2025-04-09	88	9	screened	final-roll-not-divided	Discouraging gang activity
