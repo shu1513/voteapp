@@ -768,11 +768,13 @@ const WEST_VIRGINIA_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
   // NOT matched: it appears twice in 2025 and the caption does not say what
   // was passed, so it is surfaced as an unknown question rather than guessed.
   { pattern: /\breceded and passed\b/, questionClass: "concurrence" },
-  // Reconsideration that ends in passage. `House reconsidered effective date
-  // and passage` is a vote on both at once and is a genuine passage vote, so
-  // it is kept here rather than caught by the effective-date exclusion, which
-  // is anchored at the start of the caption for exactly this reason.
-  { pattern: /\breconsidered\b.*\b(?:passed bill|and passage)\b/, questionClass: "passage" },
+  // Reconsideration that ends in passage. Only the `passed bill` spelling is
+  // kept. `House reconsidered effective date and passage` LOOKS like a vote on
+  // both, and a first draft kept it, but West Virginia's own vote sheets for
+  // both such rolls (HB 3356 roll 616 and HB 3357 roll 617, 2025) print the
+  // question as EFFECT FROM PASSAGE. It is an effective-date vote and the
+  // exclusion below catches it.
+  { pattern: /\breconsidered\b.*\bpassed bill\b/, questionClass: "passage" },
 ];
 
 // Checked BEFORE the kept list. Twelve rules, verified to classify all 2,629
@@ -783,12 +785,12 @@ const WEST_VIRGINIA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"]
   // print: `Effective from passage`, `Effective July 1, 2026`,
   // `Effective 6/30/2025`, the mistyped `Effective July, 1, 2026`,
   // `Effective date rejected` and `Effective July 1, 2027 Rejected`.
-  // ANCHORED AT THE START so that `House reconsidered effective date and
-  // passage`, which is a passage vote, is not swept up with them.
   /^effective\b/,
-  // The House concurring in the Senate's effective date only, which is not a
-  // vote on the bill.
-  /\bconcurred in senate effective date\b/,
+  // Effective-date votes the caption does not open with: the House concurring
+  // in the Senate's effective date only, and the House reconsidering an
+  // effective date. Neither is a vote on the bill. No kept caption in either
+  // session contains the words `effective date`.
+  /\beffective date\b/,
   // Procedural motions: previous question, discharge, refer, table, limit
   // debate, lay over, reject the bill. The lookahead protects
   // `Motion to concur in House amendments adopted`, which is a real
@@ -3747,7 +3749,8 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // the question, the tally and both member lists, so it settles which bill a
   // roll belongs to.
   //
-  // Eleven rolls fail, in two kinds.
+  // The audit compares the bill number, the tally and the QUESTION the sheet
+  // prints. Fourteen rolls fail, in three kinds.
   //
   // EIGHT are filed under the WRONG BILL. West Virginia numbers its roll calls
   // per chamber per session, and LegiScan attaches some of those numbers to a
@@ -3757,6 +3760,13 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   //
   // THREE have a tally short by one member against the official sheet. None of
   // the three changes the divided gate.
+  //
+  // THREE carry a CAPTION that names a different question from the one the
+  // sheet prints: two captioned as concurrence-and-passage that were votes on
+  // the effective date, and one captioned as a rejected concurrence that was a
+  // vote on a title amendment. A caption error cannot be fixed by a pattern,
+  // because the same caption is correct on hundreds of other rolls, so these
+  // are held by id. All three are lopsided and none could have reached a batch.
   "WV": {
     jurisdiction: "WV",
     sessionId: 2196,
@@ -3774,6 +3784,12 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
         "HB 2054 House 2025-04-12: filed as House roll 634, but West Virginia's own vote sheet for House roll 634 is HB 3513. The same 71-27 vote is filed correctly under HB 3513 as roll_call_id 1546749",
       1546783:
         "HB 2451 House 2025-04-12: filed as House roll 631, but West Virginia's own vote sheet for House roll 631 is HB 3125. That vote is filed correctly under HB 3125 as roll_call_id 1546759, where it is 97-0",
+      1541383:
+        "SB 650 House roll 428, 2025-04-09, 98-0: captioned 'House concurred in Senate amendment and passed bill', but West Virginia's own vote sheet prints the question as EFFECT FROM PASSAGE. It is the effective-date vote, and the dataset carries no House concurrence roll for this bill at all",
+      1546639:
+        "HB 3209 House roll 608, 2025-04-12, 96-0: captioned 'House concurred in Senate amendment and passed bill', but West Virginia's own vote sheet prints the question as EFFECT Jul 01, 2025. It is the effective-date vote, and the dataset carries no House concurrence roll for this bill at all",
+      1546708:
+        "HB 2451 House roll 591, 2025-04-12, 37-58: captioned 'House Concur in Senate Amendment and Title Amendment rejected', but West Virginia's own vote sheet prints the question as TITLE AMENDMENT. It is a vote on an amendment, not on the measure",
     },
   },
   "WV-2254": {

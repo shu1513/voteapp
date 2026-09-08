@@ -936,6 +936,75 @@ describe("South Carolina's measured desc vocabulary", () => {
   });
 });
 
+describe("West Virginia's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.WV!;
+  const wv = (desc: string, chamber: "house" | "senate" = "house", rollCallId?: number) =>
+    classifyLegiscanRollCall({ desc, total: chamber === "house" ? 100 : 34, chamber, billType: "B", config, rollCallId });
+
+  it("keeps passage, concurrence in every spelling, and reconsideration that ends in passage", () => {
+    expect(wv("Passed House (Roll No. 183)")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(wv("Passed Senate with amended title (Roll No. 12)", "senate")).toMatchObject({ questionClass: "passage" });
+    expect(wv("House concurred in Senate amendment and passed bill (Roll No. 634)")).toMatchObject({
+      questionClass: "concurrence",
+    });
+    // The clerk's typo, kept because the pattern keys on the stem `concurred in`.
+    expect(wv("House concurred in Senate amendment and and title amendmentpassed bill (Roll No. 5)")).toMatchObject({
+      questionClass: "concurrence",
+    });
+    // The one motion in either session that is a real concurrence, and the
+    // caption that contains "amendments adopted" but is a vote on the measure.
+    expect(wv("Motion to concur in House amendments adopted(Roll No. 474)", "senate")).toMatchObject({
+      questionClass: "concurrence",
+    });
+    expect(wv("Senate reconsidered action and passed bill (Roll No. 668)", "senate")).toMatchObject({
+      questionClass: "passage",
+    });
+  });
+
+  it("excludes the separate effective-date vote in every caption shape", () => {
+    // West Virginia votes a bill's effective date apart from the bill, and the
+    // vote needs two thirds, so it is often divided. None of these is a vote on
+    // the measure. The reconsideration caption looks like a passage vote but
+    // the state's own sheets for both such rolls print EFFECT FROM PASSAGE.
+    for (const desc of [
+      "Effective from passage (Roll No. 386)",
+      "Effective July, 1, 2026 (Roll No. 9)",
+      "Effective date rejected (Roll No. 2)",
+      "House concurred in Senate effective date (Roll No. 7)",
+      "House reconsidered effective date and passage (Roll No. 616)",
+    ]) {
+      expect(wv(desc)).toMatchObject({ isFloorVote: false, reason: "excluded_question" });
+    }
+  });
+
+  it("excludes amendments and procedure without swallowing captions that mention concurrence", () => {
+    for (const desc of [
+      "Amendment rejected (Roll No. 25)",
+      "Takubo #2 floor amendments adopted (Roll No. 40)",
+      "Tarr amend. to House amends rejected (Roll No. 3)",
+      "Motion for previous question adopted (Roll No. 1)",
+      "Constitutional Rule Suspended (Roll No. 1)",
+      "House refused to concur and requested Senate to recede (Roll No. 562)",
+    ]) {
+      expect(wv(desc)).toMatchObject({ isFloorVote: false });
+    }
+    // `House receded` alone does not say what was passed: surfaced, never guessed.
+    expect(wv("House receded (Roll No. 602)")).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
+  });
+
+  it("holds a roll whose caption names a different question from the state's sheet", () => {
+    // Captioned as concurrence-and-passage; the sheet says EFFECT FROM PASSAGE.
+    expect(wv("House concurred in Senate amendment and passed bill (Roll No. 428)", "house", 1541383)).toMatchObject({
+      isFloorVote: null,
+    });
+    // The same caption on any other roll is a real concurrence.
+    expect(wv("House concurred in Senate amendment and passed bill (Roll No. 428)", "house", 1)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+  });
+});
+
 describe("Alabama's 2023 desc vocabulary", () => {
   const config = LEGISCAN_STATE_CONFIGS["AL-2014"]!;
   const al23 = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
