@@ -1,0 +1,292 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1664924,
+      "measure_id": "H 508",
+      "vote_date": "2026-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 508, which widens when Idaho highway districts may build bike lanes and sidewalks. Idaho law already said a bicycle or pedestrian facility could be improved only as a secondary benefit of a highway project, or where needed for safety near a school, a park, or another designated area. The act adds a third case: such a facility may be improved when federal funds or a grant pay for that purpose. The two existing cases stay in place. The act makes the same addition to the definition of a project built mainly for motor vehicles, so federally funded bike and pedestrian work can be included in one. The Idaho House passed it 39-29, and it became law.",
+      "nay_description": "Voted against House Bill 508, which widens when Idaho highway districts may build bike lanes and sidewalks. Idaho law already said a bicycle or pedestrian facility could be improved only as a secondary benefit of a highway project, or where needed for safety near a school, a park, or another designated area. The act adds a third case: such a facility may be improved when federal funds or a grant pay for that purpose. The two existing cases stay in place. The act makes the same addition to the definition of a project built mainly for motor vehicles, so federally funded bike and pedestrian work can be included in one. The Idaho House passed it 39-29, and it became law.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1674240,
+      "measure_id": "H 508",
+      "vote_date": "2026-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 508, which widens when Idaho highway districts may build bike lanes and sidewalks. Idaho law already said a bicycle or pedestrian facility could be improved only as a secondary benefit of a highway project, or where needed for safety near a school, a park, or another designated area. The act adds a third case: such a facility may be improved when federal funds or a grant pay for that purpose. The two existing cases stay in place. The act makes the same addition to the definition of a project built mainly for motor vehicles, so federally funded bike and pedestrian work can be included in one. The Idaho Senate passed it 19-16, and it became law.",
+      "nay_description": "Voted against House Bill 508, which widens when Idaho highway districts may build bike lanes and sidewalks. Idaho law already said a bicycle or pedestrian facility could be improved only as a secondary benefit of a highway project, or where needed for safety near a school, a park, or another designated area. The act adds a third case: such a facility may be improved when federal funds or a grant pay for that purpose. The two existing cases stay in place. The act makes the same addition to the definition of a project built mainly for motor vehicles, so federally funded bike and pedestrian work can be included in one. The Idaho Senate passed it 19-16, and it became law.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1631851,
+      "measure_id": "H 583",
+      "vote_date": "2026-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 583, which narrows what cities and counties may do about short-term rentals. Idaho already barred a local government from banning short-term rentals outright. The act extends that to any type of short-term rental, closing the gap where a city banned one kind while allowing another. It also narrows the grounds for local rules. A city or county could regulate to protect public health, safety, and general welfare and to protect the character of residential neighborhoods. The act keeps public health and safety as the grounds but drops general welfare and neighborhood character. It also adds a new limit: a local rule may not put any restriction or duty on a short-term rental that it does not put on an ordinary house. It also limits the tax collection duties a state or local government may place on a short-term rental marketplace. The Idaho House passed it 54-16, and it became law.",
+      "nay_description": "Voted against House Bill 583, which narrows what cities and counties may do about short-term rentals. Idaho already barred a local government from banning short-term rentals outright. The act extends that to any type of short-term rental, closing the gap where a city banned one kind while allowing another. It also narrows the grounds for local rules. A city or county could regulate to protect public health, safety, and general welfare and to protect the character of residential neighborhoods. The act keeps public health and safety as the grounds but drops general welfare and neighborhood character. It also adds a new limit: a local rule may not put any restriction or duty on a short-term rental that it does not put on an ordinary house. It also limits the tax collection duties a state or local government may place on a short-term rental marketplace. The Idaho House passed it 54-16, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1657406,
+      "measure_id": "H 583",
+      "vote_date": "2026-03-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 583, which narrows what cities and counties may do about short-term rentals. Idaho already barred a local government from banning short-term rentals outright. The act extends that to any type of short-term rental, closing the gap where a city banned one kind while allowing another. It also narrows the grounds for local rules. A city or county could regulate to protect public health, safety, and general welfare and to protect the character of residential neighborhoods. The act keeps public health and safety as the grounds but drops general welfare and neighborhood character. It also adds a new limit: a local rule may not put any restriction or duty on a short-term rental that it does not put on an ordinary house. It also limits the tax collection duties a state or local government may place on a short-term rental marketplace. The Idaho Senate passed it 23-12, and it became law.",
+      "nay_description": "Voted against House Bill 583, which narrows what cities and counties may do about short-term rentals. Idaho already barred a local government from banning short-term rentals outright. The act extends that to any type of short-term rental, closing the gap where a city banned one kind while allowing another. It also narrows the grounds for local rules. A city or county could regulate to protect public health, safety, and general welfare and to protect the character of residential neighborhoods. The act keeps public health and safety as the grounds but drops general welfare and neighborhood character. It also adds a new limit: a local rule may not put any restriction or duty on a short-term rental that it does not put on an ordinary house. It also limits the tax collection duties a state or local government may place on a short-term rental marketplace. The Idaho Senate passed it 23-12, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1663815,
+      "measure_id": "H 752",
+      "vote_date": "2026-03-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 752, which makes it a crime to use a restroom or changing room meant for the opposite sex. Knowingly entering one in a government building or a place of public accommodation is a misdemeanor carrying up to a year in county jail. A second conviction within five years is a felony carrying up to five years in state prison. The act lists exceptions, including cleaning or maintenance work, giving medical or law enforcement help, aid during a disaster, coaching at an athletic event, and accompanying someone who needs assistance. A person may also use a single-user room or, in dire need, the only room reasonably available. Sex here means biological sex. The Idaho House passed it 54-15, and it became law.",
+      "nay_description": "Voted against House Bill 752, which makes it a crime to use a restroom or changing room meant for the opposite sex. Knowingly entering one in a government building or a place of public accommodation is a misdemeanor carrying up to a year in county jail. A second conviction within five years is a felony carrying up to five years in state prison. The act lists exceptions, including cleaning or maintenance work, giving medical or law enforcement help, aid during a disaster, coaching at an athletic event, and accompanying someone who needs assistance. A person may also use a single-user room or, in dire need, the only room reasonably available. Sex here means biological sex. The Idaho House passed it 54-15, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1671823,
+      "measure_id": "H 752",
+      "vote_date": "2026-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 752, which makes it a crime to use a restroom or changing room meant for the opposite sex. Knowingly entering one in a government building or a place of public accommodation is a misdemeanor carrying up to a year in county jail. A second conviction within five years is a felony carrying up to five years in state prison. The act lists exceptions, including cleaning or maintenance work, giving medical or law enforcement help, aid during a disaster, coaching at an athletic event, and accompanying someone who needs assistance. A person may also use a single-user room or, in dire need, the only room reasonably available. Sex here means biological sex. The Idaho Senate passed it 28-7, and it became law.",
+      "nay_description": "Voted against House Bill 752, which makes it a crime to use a restroom or changing room meant for the opposite sex. Knowingly entering one in a government building or a place of public accommodation is a misdemeanor carrying up to a year in county jail. A second conviction within five years is a felony carrying up to five years in state prison. The act lists exceptions, including cleaning or maintenance work, giving medical or law enforcement help, aid during a disaster, coaching at an athletic event, and accompanying someone who needs assistance. A person may also use a single-user room or, in dire need, the only room reasonably available. Sex here means biological sex. The Idaho Senate passed it 28-7, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1665847,
+      "measure_id": "H 776",
+      "vote_date": "2026-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 776, which speeds up child protection checks on babies in risky homes. When a mandatory reporter contacts the Department of Health and Welfare about a child under one year old, the department must check within twelve hours whether a listed risk factor applies to the caregiver. The risk factors are an entry in the child protection central registry within the past ten years, a conviction for injury to a child, an earlier termination of parental rights, or a baby born with neonatal abstinence syndrome. If a risk factor is confirmed, the department must open its highest priority response and write a full safety assessment. That assessment must cover the caregiver's compliance with any court-ordered conditions and the child's living environment. The Idaho House passed it 49-18, and it became law.",
+      "nay_description": "Voted against House Bill 776, which speeds up child protection checks on babies in risky homes. When a mandatory reporter contacts the Department of Health and Welfare about a child under one year old, the department must check within twelve hours whether a listed risk factor applies to the caregiver. The risk factors are an entry in the child protection central registry within the past ten years, a conviction for injury to a child, an earlier termination of parental rights, or a baby born with neonatal abstinence syndrome. If a risk factor is confirmed, the department must open its highest priority response and write a full safety assessment. That assessment must cover the caregiver's compliance with any court-ordered conditions and the child's living environment. The Idaho House passed it 49-18, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1673035,
+      "measure_id": "H 776",
+      "vote_date": "2026-03-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 776, which speeds up child protection checks on babies in risky homes. When a mandatory reporter contacts the Department of Health and Welfare about a child under one year old, the department must check within twelve hours whether a listed risk factor applies to the caregiver. The risk factors are an entry in the child protection central registry within the past ten years, a conviction for injury to a child, an earlier termination of parental rights, or a baby born with neonatal abstinence syndrome. If a risk factor is confirmed, the department must open its highest priority response and write a full safety assessment. That assessment must cover the caregiver's compliance with any court-ordered conditions and the child's living environment. The Idaho Senate passed it 27-8, and it became law.",
+      "nay_description": "Voted against House Bill 776, which speeds up child protection checks on babies in risky homes. When a mandatory reporter contacts the Department of Health and Welfare about a child under one year old, the department must check within twelve hours whether a listed risk factor applies to the caregiver. The risk factors are an entry in the child protection central registry within the past ten years, a conviction for injury to a child, an earlier termination of parental rights, or a baby born with neonatal abstinence syndrome. If a risk factor is confirmed, the department must open its highest priority response and write a full safety assessment. That assessment must cover the caregiver's compliance with any court-ordered conditions and the child's living environment. The Idaho Senate passed it 27-8, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1667235,
+      "measure_id": "H 930",
+      "vote_date": "2026-03-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 930, which tightens how campaign money must be held in Idaho. A candidate's campaign or a political committee that files reports must keep at least one checking account, and all money it receives must go into that account. Campaign funds must be kept apart from every other account and may not be mixed with them. They may be held only in certificates of deposit, money market accounts, or similar cash accounts, and may not be put into stocks or other equity investments. A candidate who lends their campaign more than one thousand dollars of their own money must move it into the campaign account. The treasurer keeps the duty to record every contribution and expense within seven days, becomes the official contact for the Secretary of State, and is responsible for filing the reports. The Idaho House passed it 36-34, and it became law.",
+      "nay_description": "Voted against House Bill 930, which tightens how campaign money must be held in Idaho. A candidate's campaign or a political committee that files reports must keep at least one checking account, and all money it receives must go into that account. Campaign funds must be kept apart from every other account and may not be mixed with them. They may be held only in certificates of deposit, money market accounts, or similar cash accounts, and may not be put into stocks or other equity investments. A candidate who lends their campaign more than one thousand dollars of their own money must move it into the campaign account. The treasurer keeps the duty to record every contribution and expense within seven days, becomes the official contact for the Secretary of State, and is responsible for filing the reports. The Idaho House passed it 36-34, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1675495,
+      "measure_id": "H 930",
+      "vote_date": "2026-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 930, which tightens how campaign money must be held in Idaho. A candidate's campaign or a political committee that files reports must keep at least one checking account, and all money it receives must go into that account. Campaign funds must be kept apart from every other account and may not be mixed with them. They may be held only in certificates of deposit, money market accounts, or similar cash accounts, and may not be put into stocks or other equity investments. A candidate who lends their campaign more than one thousand dollars of their own money must move it into the campaign account. The treasurer keeps the duty to record every contribution and expense within seven days, becomes the official contact for the Secretary of State, and is responsible for filing the reports. The Idaho Senate passed it 19-14, and it became law.",
+      "nay_description": "Voted against House Bill 930, which tightens how campaign money must be held in Idaho. A candidate's campaign or a political committee that files reports must keep at least one checking account, and all money it receives must go into that account. Campaign funds must be kept apart from every other account and may not be mixed with them. They may be held only in certificates of deposit, money market accounts, or similar cash accounts, and may not be put into stocks or other equity investments. A candidate who lends their campaign more than one thousand dollars of their own money must move it into the campaign account. The treasurer keeps the duty to record every contribution and expense within seven days, becomes the official contact for the Secretary of State, and is responsible for filing the reports. The Idaho Senate passed it 19-14, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1668904,
+      "measure_id": "S 1288",
+      "vote_date": "2026-03-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1288, which creates a state fund to help schools pay for very expensive special education. A high-needs student is one whose individual education program costs a school more than thirty thousand dollars a year, after Medicaid and other funding is counted. The fund reimburses school districts and independent charter schools for eligible costs above that line. Eligible costs are those tied directly to the education program, such as nursing, interpreting, speech therapy, occupational and physical therapy, personal care, specialized equipment, and extended school year services. Ordinary classroom costs, basic supplies, and standard transportation do not count. The law gives rural districts and rural charter schools their own place in the arrangement. The Idaho House passed it 49-21, and it became law.",
+      "nay_description": "Voted against Senate Bill 1288, which creates a state fund to help schools pay for very expensive special education. A high-needs student is one whose individual education program costs a school more than thirty thousand dollars a year, after Medicaid and other funding is counted. The fund reimburses school districts and independent charter schools for eligible costs above that line. Eligible costs are those tied directly to the education program, such as nursing, interpreting, speech therapy, occupational and physical therapy, personal care, specialized equipment, and extended school year services. Ordinary classroom costs, basic supplies, and standard transportation do not count. The law gives rural districts and rural charter schools their own place in the arrangement. The Idaho House passed it 49-21, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1646485,
+      "measure_id": "S 1288",
+      "vote_date": "2026-02-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1288, which creates a state fund to help schools pay for very expensive special education. A high-needs student is one whose individual education program costs a school more than thirty thousand dollars a year, after Medicaid and other funding is counted. The fund reimburses school districts and independent charter schools for eligible costs above that line. Eligible costs are those tied directly to the education program, such as nursing, interpreting, speech therapy, occupational and physical therapy, personal care, specialized equipment, and extended school year services. Ordinary classroom costs, basic supplies, and standard transportation do not count. The law gives rural districts and rural charter schools their own place in the arrangement. The Idaho Senate passed it 22-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 1288, which creates a state fund to help schools pay for very expensive special education. A high-needs student is one whose individual education program costs a school more than thirty thousand dollars a year, after Medicaid and other funding is counted. The fund reimburses school districts and independent charter schools for eligible costs above that line. Eligible costs are those tied directly to the education program, such as nursing, interpreting, speech therapy, occupational and physical therapy, personal care, specialized equipment, and extended school year services. Ordinary classroom costs, basic supplies, and standard transportation do not count. The law gives rural districts and rural charter schools their own place in the arrangement. The Idaho Senate passed it 22-12, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1671400,
+      "measure_id": "S 1352",
+      "vote_date": "2026-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1352, which requires Idaho cities to allow small starter home subdivisions. A starter home subdivision is a development of at least four acres of detached single-family houses on compact lots of no more than one thousand five hundred square feet each. The act applies only to cities with more than ten thousand residents. Such a city may not ban them from a residential zone, and by February 2027 it must change its comprehensive plan and zoning rules to permit them, except in historic districts and on historic properties. Cities may not demand lots larger than the compact size, front or rear setbacks over fifteen feet, side setbacks over five feet, lot fronts over thirty feet, or lot depths over seventy feet, unless the land or the infrastructure makes that impossible. They also may not charge higher permit, impact, or utility connection fees than for other single-family subdivisions. The Idaho House passed it 36-34, and it became law.",
+      "nay_description": "Voted against Senate Bill 1352, which requires Idaho cities to allow small starter home subdivisions. A starter home subdivision is a development of at least four acres of detached single-family houses on compact lots of no more than one thousand five hundred square feet each. The act applies only to cities with more than ten thousand residents. Such a city may not ban them from a residential zone, and by February 2027 it must change its comprehensive plan and zoning rules to permit them, except in historic districts and on historic properties. Cities may not demand lots larger than the compact size, front or rear setbacks over fifteen feet, side setbacks over five feet, lot fronts over thirty feet, or lot depths over seventy feet, unless the land or the infrastructure makes that impossible. They also may not charge higher permit, impact, or utility connection fees than for other single-family subdivisions. The Idaho House passed it 36-34, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1666704,
+      "measure_id": "S 1352",
+      "vote_date": "2026-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1352, which requires Idaho cities to allow small starter home subdivisions. A starter home subdivision is a development of at least four acres of detached single-family houses on compact lots of no more than one thousand five hundred square feet each. The act applies only to cities with more than ten thousand residents. Such a city may not ban them from a residential zone, and by February 2027 it must change its comprehensive plan and zoning rules to permit them, except in historic districts and on historic properties. Cities may not demand lots larger than the compact size, front or rear setbacks over fifteen feet, side setbacks over five feet, lot fronts over thirty feet, or lot depths over seventy feet, unless the land or the infrastructure makes that impossible. They also may not charge higher permit, impact, or utility connection fees than for other single-family subdivisions. The Idaho Senate passed it 25-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 1352, which requires Idaho cities to allow small starter home subdivisions. A starter home subdivision is a development of at least four acres of detached single-family houses on compact lots of no more than one thousand five hundred square feet each. The act applies only to cities with more than ten thousand residents. Such a city may not ban them from a residential zone, and by February 2027 it must change its comprehensive plan and zoning rules to permit them, except in historic districts and on historic properties. Cities may not demand lots larger than the compact size, front or rear setbacks over fifteen feet, side setbacks over five feet, lot fronts over thirty feet, or lot depths over seventy feet, unless the land or the infrastructure makes that impossible. They also may not charge higher permit, impact, or utility connection fees than for other single-family subdivisions. The Idaho Senate passed it 25-10, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1671344,
+      "measure_id": "S 1354",
+      "vote_date": "2026-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1354, which requires Idaho cities to allow accessory dwelling units. An accessory dwelling unit is a self-contained home with its own kitchen, sleeping area, and bathroom on the same lot as a single-family house. It may be inside the house, attached to it, or standing separately, but not a camper, a motorhome, or a home on wheels. The act applies only to cities with more than ten thousand residents. Such a city may not ban them from a residential zone, and by February 2027 it must change its plan and zoning rules to allow one internal or one detached unit per lot, except in historic districts. Cities generally may not require extra off-street parking for the unit, and may not charge higher impact or utility connection fees than for other single-family homes. The act also rewrites the rule barring homeowner associations from banning these units. The Idaho House passed it 47-23, and it became law.",
+      "nay_description": "Voted against Senate Bill 1354, which requires Idaho cities to allow accessory dwelling units. An accessory dwelling unit is a self-contained home with its own kitchen, sleeping area, and bathroom on the same lot as a single-family house. It may be inside the house, attached to it, or standing separately, but not a camper, a motorhome, or a home on wheels. The act applies only to cities with more than ten thousand residents. Such a city may not ban them from a residential zone, and by February 2027 it must change its plan and zoning rules to allow one internal or one detached unit per lot, except in historic districts. Cities generally may not require extra off-street parking for the unit, and may not charge higher impact or utility connection fees than for other single-family homes. The act also rewrites the rule barring homeowner associations from banning these units. The Idaho House passed it 47-23, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1667128,
+      "measure_id": "S 1354",
+      "vote_date": "2026-03-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1354, which requires Idaho cities to allow accessory dwelling units. An accessory dwelling unit is a self-contained home with its own kitchen, sleeping area, and bathroom on the same lot as a single-family house. It may be inside the house, attached to it, or standing separately, but not a camper, a motorhome, or a home on wheels. The act applies only to cities with more than ten thousand residents. Such a city may not ban them from a residential zone, and by February 2027 it must change its plan and zoning rules to allow one internal or one detached unit per lot, except in historic districts. Cities generally may not require extra off-street parking for the unit, and may not charge higher impact or utility connection fees than for other single-family homes. The act also rewrites the rule barring homeowner associations from banning these units. The Idaho Senate passed it 25-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 1354, which requires Idaho cities to allow accessory dwelling units. An accessory dwelling unit is a self-contained home with its own kitchen, sleeping area, and bathroom on the same lot as a single-family house. It may be inside the house, attached to it, or standing separately, but not a camper, a motorhome, or a home on wheels. The act applies only to cities with more than ten thousand residents. Such a city may not ban them from a residential zone, and by February 2027 it must change its plan and zoning rules to allow one internal or one detached unit per lot, except in historic districts. Cities generally may not require extra off-street parking for the unit, and may not charge higher impact or utility connection fees than for other single-family homes. The act also rewrites the rule barring homeowner associations from banning these units. The Idaho Senate passed it 25-10, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

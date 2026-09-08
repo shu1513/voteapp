@@ -3,9 +3,14 @@
 Sixty-eighth Legislature, first regular session. Dataset cut 2025-12-07:
 790 bills, 854 roll calls, 129 people for 70 House and 35 Senate seats.
 
-This directory holds the survey, the reviewed crosswalk and the worklist.
-**No Idaho roll call has been judged or imported yet.** Production holds zero
-Idaho roll-call records, and so does the local database.
+This directory holds the survey, the reviewed crosswalk, the worklist and four
+imported batches. **The session is worked out:** every divided and enacted roll
+that survived the appropriations exclusion is imported or dropped with a reason
+in `survey/divided-enacted-worklist.tsv`.
+
+34 measures, 50 roll calls, 2,080 candidate records in the local database.
+46 chamber rows dropped. Production holds zero Idaho roll-call records; the
+promotion is a separate step.
 
 ## Why the config excludes nothing
 

@@ -1,0 +1,148 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1667122,
+      "measure_id": "H 542",
+      "vote_date": "2026-03-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 542, the Stop Harms from Addictive Social Media Act, which puts parents in control of a child's social media account. A platform must ask every applicant for a birth date and must estimate the age of existing account holders, treating anyone it cannot place above sixteen as a child. It may not open or change a child's account without verifiable parental consent, and it must delete the information gathered to get that consent. A child's account must start with the most private settings, which cannot be changed without the parent agreeing again. The parent must be offered a password that lets them see how long the child spends on the platform and set daily and weekly limits and times of day. A platform may not show a child addictive interface features or advertising targeted from their profile. The Idaho Senate passed it 21-14, and it became law.",
+      "nay_description": "Voted against House Bill 542, the Stop Harms from Addictive Social Media Act, which puts parents in control of a child's social media account. A platform must ask every applicant for a birth date and must estimate the age of existing account holders, treating anyone it cannot place above sixteen as a child. It may not open or change a child's account without verifiable parental consent, and it must delete the information gathered to get that consent. A child's account must start with the most private settings, which cannot be changed without the parent agreeing again. The parent must be offered a password that lets them see how long the child spends on the platform and set daily and weekly limits and times of day. A platform may not show a child addictive interface features or advertising targeted from their profile. The Idaho Senate passed it 21-14, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1669385,
+      "measure_id": "H 561",
+      "vote_date": "2026-03-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 561, which tightens the flag rules Idaho passed in 2025 and adds a fine. The list of flags a government body may fly on its property is rewritten. A city or county flag qualifies only if it was official before 2023, and a college may fly its own flag only if policy names exactly one. Foreign flags may be flown to mark an occasion or a historic tie, but not those of countries the United States is fighting. The act says property includes land, buildings, parks, roads, and boulevards, and it allows banners on poles and streetlights that are not political, religious, or ideological. A body that breaks the rule faces a civil penalty of two thousand dollars per flag per day. The attorney general must enforce it, after giving ten days to take a flag down. The Idaho Senate passed it 26-8, and it became law.",
+      "nay_description": "Voted against House Bill 561, which tightens the flag rules Idaho passed in 2025 and adds a fine. The list of flags a government body may fly on its property is rewritten. A city or county flag qualifies only if it was official before 2023, and a college may fly its own flag only if policy names exactly one. Foreign flags may be flown to mark an occasion or a historic tie, but not those of countries the United States is fighting. The act says property includes land, buildings, parks, roads, and boulevards, and it allows banners on poles and streetlights that are not political, religious, or ideological. A body that breaks the rule faces a civil penalty of two thousand dollars per flag per day. The attorney general must enforce it, after giving ten days to take a flag down. The Idaho Senate passed it 26-8, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1650920,
+      "measure_id": "H 667",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 667, which ends Idaho's non-domiciled commercial driver's license program. That program let Idaho issue a commercial learner's permit or commercial driver's license to someone living in a foreign country, or in another state that could not issue one. The act repeals the statute that allowed it, removes the definition from the code, and strikes the references in the licensing law. A commercial driver in Idaho must now qualify through the ordinary route open to residents. The Idaho House passed it 46-21, and it became law.",
+      "nay_description": "Voted against House Bill 667, which ends Idaho's non-domiciled commercial driver's license program. That program let Idaho issue a commercial learner's permit or commercial driver's license to someone living in a foreign country, or in another state that could not issue one. The act repeals the statute that allowed it, removes the definition from the code, and strikes the references in the licensing law. A commercial driver in Idaho must now qualify through the ordinary route open to residents. The Idaho House passed it 46-21, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1675360,
+      "measure_id": "H 706",
+      "vote_date": "2026-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 706, which lets Idaho cities allow apartment buildings with a single stairway. Building codes normally require two separate stairways in a multi-story apartment building, which forces a long central corridor and rules out smaller lots. The act lets a local government adopt an exception permitting one stairway in qualifying buildings. It also adjusts the rule on how local governments adopt and enforce building codes so that the exception fits within it. The change is permissive, so a city that wants two stairways may keep requiring them. The Idaho Senate passed it 18-17, and it became law.",
+      "nay_description": "Voted against House Bill 706, which lets Idaho cities allow apartment buildings with a single stairway. Building codes normally require two separate stairways in a multi-story apartment building, which forces a long central corridor and rules out smaller lots. The act lets a local government adopt an exception permitting one stairway in qualifying buildings. It also adjusts the rule on how local governments adopt and enforce building codes so that the exception fits within it. The change is permissive, so a city that wants two stairways may keep requiring them. The Idaho Senate passed it 18-17, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1651383,
+      "measure_id": "H 723",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 723, which adds oversight to licensed children's residential care facilities in Idaho. The Department of Health and Welfare gains a quality of care oversight and inspection duty over these facilities. Each child must have an individual service plan, and the act sets out what that planning must cover. A youth bill of rights is written into law for children living in a licensed facility. Facilities must report critical incidents to the department, and the act sets licensing and documentation requirements they must meet. The Idaho House passed it 42-25, and it became law.",
+      "nay_description": "Voted against House Bill 723, which adds oversight to licensed children's residential care facilities in Idaho. The Department of Health and Welfare gains a quality of care oversight and inspection duty over these facilities. Each child must have an individual service plan, and the act sets out what that planning must cover. A youth bill of rights is written into law for children living in a licensed facility. Facilities must report critical incidents to the department, and the act sets licensing and documentation requirements they must meet. The Idaho House passed it 42-25, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1673263,
+      "measure_id": "H 822",
+      "vote_date": "2026-03-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 822, the Pediatric Secretive Transitions Parental Rights Act, which requires schools and clinicians to tell parents. A school, child care provider, or medical, behavioral, or mental health provider may not help a child under eighteen with a sex transition procedure or a social transition without informing the parents and getting their consent. Social transition is defined as living as a gender different from the child's sex, including a change of name, pronouns, appearance, or dress. A sex transition procedure means one already barred by Idaho law for minors. A parent may sue over a violation, and the attorney general may enforce the act. The Idaho Senate passed it 27-8, and it became law.",
+      "nay_description": "Voted against House Bill 822, the Pediatric Secretive Transitions Parental Rights Act, which requires schools and clinicians to tell parents. A school, child care provider, or medical, behavioral, or mental health provider may not help a child under eighteen with a sex transition procedure or a social transition without informing the parents and getting their consent. Social transition is defined as living as a gender different from the child's sex, including a change of name, pronouns, appearance, or dress. A sex transition procedure means one already barred by Idaho law for minors. A parent may sue over a violation, and the attorney general may enforce the act. The Idaho Senate passed it 27-8, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1667035,
+      "measure_id": "H 929",
+      "vote_date": "2026-03-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 929, which lets an insured patient pay cash and still get credit toward their deductible. An insurer may not stop a doctor or hospital from offering a patient the provider's discounted cash price. A patient may choose to pay out of pocket for a covered service. If the patient negotiates a price below what the plan would have allowed and pays it themselves, the insurer must count the whole amount toward the deductible and the yearly out-of-pocket maximum. That credit applies where the service is covered by the plan, is medically necessary, and the patient sends the insurer the required paperwork. The rule starts at the beginning of 2027. The Idaho House passed it 49-21, and it became law.",
+      "nay_description": "Voted against House Bill 929, which lets an insured patient pay cash and still get credit toward their deductible. An insurer may not stop a doctor or hospital from offering a patient the provider's discounted cash price. A patient may choose to pay out of pocket for a covered service. If the patient negotiates a price below what the plan would have allowed and pays it themselves, the insurer must count the whole amount toward the deductible and the yearly out-of-pocket maximum. That credit applies where the service is covered by the plan, is medically necessary, and the patient sends the insurer the required paperwork. The rule starts at the beginning of 2027. The Idaho House passed it 49-21, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1666665,
+      "measure_id": "S 1297",
+      "vote_date": "2026-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1297, the Conversational AI Safety Act, which sets rules for chatbots used in Idaho. If a reasonable person could think they were talking to a human, the operator must say clearly that the service is artificial intelligence. The operator must have a protocol that points a user who raises suicidal thoughts to a crisis line or similar help, and may not program the service to claim it provides professional mental health care. For a user known to be a minor, the disclosure must be a standing notice or must repeat at the start of each session and at least every three hours. The operator may not use unpredictable rewards to keep a minor engaged. It must take reasonable steps to stop the service producing sexual material about a minor or claiming to be human or sentient. The Idaho Senate passed it 21-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 1297, the Conversational AI Safety Act, which sets rules for chatbots used in Idaho. If a reasonable person could think they were talking to a human, the operator must say clearly that the service is artificial intelligence. The operator must have a protocol that points a user who raises suicidal thoughts to a crisis line or similar help, and may not program the service to claim it provides professional mental health care. For a user known to be a minor, the disclosure must be a standing notice or must repeat at the start of each session and at least every three hours. The operator may not use unpredictable rewards to keep a minor engaged. It must take reasonable steps to stop the service producing sexual material about a minor or claiming to be human or sentient. The Idaho Senate passed it 21-12, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

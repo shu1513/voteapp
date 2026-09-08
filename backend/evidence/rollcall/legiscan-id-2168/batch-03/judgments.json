@@ -1,0 +1,220 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1476384,
+      "measure_id": "H 32",
+      "vote_date": "2025-01-29",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 32, which bans mask mandates in Idaho. No state agency, county, city, school district, public health district, or other local body may require a person to wear a mask, face shield, or face covering to slow the spread of a contagious disease. No official may impose such a rule, and none may be set as a condition of entry, education, employment, or any other service. If a public body recommends a mask, it must say plainly that the advice is not a requirement. Hospitals and health care facilities are not covered by the ban, and neither are workplaces where protective gear is required for the job. The Idaho House passed it 52-16, and it became law.",
+      "nay_description": "Voted against House Bill 32, which bans mask mandates in Idaho. No state agency, county, city, school district, public health district, or other local body may require a person to wear a mask, face shield, or face covering to slow the spread of a contagious disease. No official may impose such a rule, and none may be set as a condition of entry, education, employment, or any other service. If a public body recommends a mask, it must say plainly that the advice is not a requirement. Hospitals and health care facilities are not covered by the ban, and neither are workplaces where protective gear is required for the job. The Idaho House passed it 52-16, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1504438,
+      "measure_id": "H 40",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 40, which cuts Idaho income taxes. The rate on individuals, trusts, estates, and corporations falls from 5.695 percent to 5.3 percent. Gains and losses from selling precious metal bullion no longer count toward Idaho taxable income. Military retirement pay becomes deductible at any age, where before a retiree had to be sixty-five, or sixty-two and disabled. A military retiree under sixty-two who is not disabled must have earned enough from work that year to owe a federal return. The changes apply back to the start of the tax year. The Idaho Senate passed it 27-8, and it became law.",
+      "nay_description": "Voted against House Bill 40, which cuts Idaho income taxes. The rate on individuals, trusts, estates, and corporations falls from 5.695 percent to 5.3 percent. Gains and losses from selling precious metal bullion no longer count toward Idaho taxable income. Military retirement pay becomes deductible at any age, where before a retiree had to be sixty-five, or sixty-two and disabled. A military retiree under sixty-two who is not disabled must have earned enough from work that year to owe a federal return. The changes apply back to the start of the tax year. The Idaho Senate passed it 27-8, and it became law.",
+      "labels": [
+        {
+          "slug": "personal_income_tax_reduction",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1506523,
+      "measure_id": "H 86",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 86, which bars Idaho governments from requiring electric vehicle charging in new buildings. Neither the state nor any local government may make a building plan include a charging station, a marked charging parking space, upgraded electrical conduit, or other wiring meant for charging. The ban overrides any city or county ordinance or rule that already requires those things. Nothing stops a builder or owner from installing charging equipment by choice. The Idaho Senate passed it 28-7, and it became law.",
+      "nay_description": "Voted against House Bill 86, which bars Idaho governments from requiring electric vehicle charging in new buildings. Neither the state nor any local government may make a building plan include a charging station, a marked charging parking space, upgraded electrical conduit, or other wiring meant for charging. The ban overrides any city or county ordinance or rule that already requires those things. Nothing stops a builder or owner from installing charging equipment by choice. The Idaho Senate passed it 28-7, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1527882,
+      "measure_id": "H 96",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 96, which limits the flags an Idaho government body may fly. A state agency, county, city, or special district may display only a short list of flags. That list is the United States flag, the body's own official flag, the flag of any state, and the flags of the armed forces. It also covers the POW and MIA flag, the flags of Indian tribes, and the flags of Idaho colleges, universities, and public schools. Flags of other countries may be flown to mark a special occasion. Any other flag, such as a political or cause flag, may not be displayed. Schools, colleges, and universities are outside the definition of a government body, so the rule does not reach them. The Idaho Senate passed it 20-11, and it became law.",
+      "nay_description": "Voted against House Bill 96, which limits the flags an Idaho government body may fly. A state agency, county, city, or special district may display only a short list of flags. That list is the United States flag, the body's own official flag, the flag of any state, and the flags of the armed forces. It also covers the POW and MIA flag, the flags of Indian tribes, and the flags of Idaho colleges, universities, and public schools. Flags of other countries may be flown to mark a special occasion. Any other flag, such as a political or cause flag, may not be displayed. Schools, colleges, and universities are outside the definition of a government body, so the rule does not reach them. The Idaho Senate passed it 20-11, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1519034,
+      "measure_id": "H 134",
+      "vote_date": "2025-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 134, which makes health plans in Idaho pay for extra breast cancer screening. A plan must cover one supplemental breast screening a year for a person at higher risk of breast cancer. Higher risk includes a personal or family history of breast cancer, a genetic predisposition, past chest radiation therapy, certain breast tissue findings, or a lifetime risk above twenty percent. Supplemental screening means magnetic resonance imaging, a contrast mammogram, or an ultrasound where those are not possible, when the treating doctor recommends it. The plan must cover every cost of that screening. The rule reaches insurance companies, hospital service corporations, managed care organizations, fraternal benefit societies, and exchange plans. The Idaho Senate passed it 25-10, and it became law.",
+      "nay_description": "Voted against House Bill 134, which makes health plans in Idaho pay for extra breast cancer screening. A plan must cover one supplemental breast screening a year for a person at higher risk of breast cancer. Higher risk includes a personal or family history of breast cancer, a genetic predisposition, past chest radiation therapy, certain breast tissue findings, or a lifetime risk above twenty percent. Supplemental screening means magnetic resonance imaging, a contrast mammogram, or an ultrasound where those are not possible, when the treating doctor recommends it. The plan must cover every cost of that screening. The rule reaches insurance companies, hospital service corporations, managed care organizations, fraternal benefit societies, and exchange plans. The Idaho Senate passed it 25-10, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1509492,
+      "measure_id": "H 149",
+      "vote_date": "2025-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 149, which restricts the use of mortgage trigger leads. When someone applies for a home loan, credit bureaus can sell that fact to rival lenders, who then call and write to the applicant. Under the act a lender using such a lead must say up front that it is not connected to the lender the person applied to, and that it bought the person's information from a credit bureau without that lender's knowledge. It must also make a firm offer of credit, as federal law requires. Using a trigger lead to contact someone who has opted out of prescreened credit offers, or who is on a do-not-call list, is barred. The Idaho Senate passed it 26-9, and it became law.",
+      "nay_description": "Voted against House Bill 149, which restricts the use of mortgage trigger leads. When someone applies for a home loan, credit bureaus can sell that fact to rival lenders, who then call and write to the applicant. Under the act a lender using such a lead must say up front that it is not connected to the lender the person applied to, and that it bought the person's information from a credit bureau without that lender's knowledge. It must also make a firm offer of credit, as federal law requires. Using a trigger lead to contact someone who has opted out of prescreened credit offers, or who is on a do-not-call list, is barred. The Idaho Senate passed it 26-9, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1504827,
+      "measure_id": "H 240",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 240, which sets free speech rules for Idaho's public colleges. The outdoor areas of a campus become open to speech for students, staff, and their invited guests, so a college may not confine protest to a designated free speech zone. A college may still set reasonable limits on time, place, and manner. Harassment is narrowed to speech so severe and pervasive that it denies a student equal access to education. A college may not set a security fee based on the views of a speaker. Colleges must teach students the policy and report on it, and a person whose rights are violated may sue. The Idaho House passed it 55-15, and it became law.",
+      "nay_description": "Voted against House Bill 240, which sets free speech rules for Idaho's public colleges. The outdoor areas of a campus become open to speech for students, staff, and their invited guests, so a college may not confine protest to a designated free speech zone. A college may still set reasonable limits on time, place, and manner. Harassment is narrowed to speech so severe and pervasive that it denies a student equal access to education. A college may not set a security fee based on the views of a speaker. Colleges must teach students the policy and report on it, and a person whose rights are violated may sue. The Idaho House passed it 55-15, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1531006,
+      "measure_id": "H 339",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 339, which builds a monthly data feed to clean Idaho's voter rolls. By about the twenty-fifth of each month, the Department of Health and Welfare must send the Secretary of State a list of Idaho residents who died in the past month. The Department of Transportation must send driver's license and identification card changes and new issues, with photographs and digital signatures. The Department of Correction must send names, conviction status, and probation or parole data for people in its custody. Each feed also carries dates of birth, social security numbers, addresses, and citizenship information where the agency holds it. Once a year the Secretary of State must also request tax commission records, including homestead exemptions. The Idaho Senate passed it 27-7, and it became law.",
+      "nay_description": "Voted against House Bill 339, which builds a monthly data feed to clean Idaho's voter rolls. By about the twenty-fifth of each month, the Department of Health and Welfare must send the Secretary of State a list of Idaho residents who died in the past month. The Department of Transportation must send driver's license and identification card changes and new issues, with photographs and digital signatures. The Department of Correction must send names, conviction status, and probation or parole data for people in its custody. Each feed also carries dates of birth, social security numbers, addresses, and citizenship information where the agency holds it. Once a year the Secretary of State must also request tax commission records, including homestead exemptions. The Idaho Senate passed it 27-7, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1502341,
+      "measure_id": "S 1007",
+      "vote_date": "2025-02-28",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1007, which widens what the public may say at a school board meeting. Idaho law let a board confine public comment to items already on the meeting agenda. The act removes that limit, so a resident of the district may speak on school and education matters generally. A board must still hear public comment before it acts on an agenda item. Boards keep the power to set reasonable rules for the comment period, including time limits and standards of conduct. Comment on matters that would allow the board to go into closed session is still not permitted. The Idaho Senate passed it 25-9, and it became law.",
+      "nay_description": "Voted against Senate Bill 1007, which widens what the public may say at a school board meeting. Idaho law let a board confine public comment to items already on the meeting agenda. The act removes that limit, so a resident of the district may speak on school and education matters generally. A board must still hear public comment before it acts on an agenda item. Boards keep the power to set reasonable rules for the comment period, including time limits and standards of conduct. Comment on matters that would allow the board to go into closed session is still not permitted. The Idaho Senate passed it 25-9, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1501482,
+      "measure_id": "S 1046",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1046, which requires a fetal development lesson in Idaho public schools. From the 2025-2026 school year, every district, charter school, and specially chartered district serving grades five through twelve must teach human growth and development. The lesson must include a high-definition ultrasound video of at least three minutes showing the brain, heart, sex organs, and other organs developing in early pregnancy. It must also include a computer-generated animation of fertilization and of every week of development in the womb until birth. The same material must be included in any class that covers human biology, contraception, or sexually transmitted infections. The Idaho Senate passed it 27-8, and it became law.",
+      "nay_description": "Voted against Senate Bill 1046, which requires a fetal development lesson in Idaho public schools. From the 2025-2026 school year, every district, charter school, and specially chartered district serving grades five through twelve must teach human growth and development. The lesson must include a high-definition ultrasound video of at least three minutes showing the brain, heart, sex organs, and other organs developing in early pregnancy. It must also include a computer-generated animation of fertilization and of every week of development in the womb until birth. The same material must be included in any class that covers human biology, contraception, or sexually transmitted infections. The Idaho Senate passed it 27-8, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1518096,
+      "measure_id": "S 1141",
+      "vote_date": "2025-03-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1141, which bans camping and sleeping in public places across Idaho. No city or countywide highway district may allow a person to camp or sleep on public land, public building grounds, or roads and rights of way. Camping or sleeping means lodging outdoors for a prolonged time, shown by a tent, a car, a recreational vehicle, bedding, cooking gear, a heat source, or stored belongings. Recreational camping in places set aside for it, permitted events, and authorized overnight parking at rest areas or businesses are not covered. The attorney general may sue a city or highway district that knowingly allows it, and recover costs and legal fees. The Idaho Senate passed it 27-8, and it became law.",
+      "nay_description": "Voted against Senate Bill 1141, which bans camping and sleeping in public places across Idaho. No city or countywide highway district may allow a person to camp or sleep on public land, public building grounds, or roads and rights of way. Camping or sleeping means lodging outdoors for a prolonged time, shown by a tent, a car, a recreational vehicle, bedding, cooking gear, a heat source, or stored belongings. Recreational camping in places set aside for it, permitted events, and authorized overnight parking at rest areas or businesses are not covered. The attorney general may sue a city or highway district that knowingly allows it, and recover costs and legal fees. The Idaho Senate passed it 27-8, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1537326,
+      "measure_id": "S 1210",
+      "vote_date": "2025-04-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1210, the Idaho Medical Freedom Act, which bars almost every medical requirement in the state. Idaho law already banned Covid vaccine mandates. The act replaces that with a ban covering any medical intervention, meaning any procedure, treatment, device, drug, injection, or medication used to diagnose, prevent, or cure disease or to change how a person's body works. A business may not refuse service or make it a condition of a job, and a ticket seller may not turn away a ticket holder. A school at any level, from preschool through university, public or private, may not require one to attend or to work there. State and local government may not require one for a benefit, service, license, public building, transport, or job. Federal law, some foreign travel for work, and existing school immunization law are the exceptions. The Idaho House passed it 44-23, and it became law.",
+      "nay_description": "Voted against Senate Bill 1210, the Idaho Medical Freedom Act, which bars almost every medical requirement in the state. Idaho law already banned Covid vaccine mandates. The act replaces that with a ban covering any medical intervention, meaning any procedure, treatment, device, drug, injection, or medication used to diagnose, prevent, or cure disease or to change how a person's body works. A business may not refuse service or make it a condition of a job, and a ticket seller may not turn away a ticket holder. A school at any level, from preschool through university, public or private, may not require one to attend or to work there. State and local government may not require one for a benefit, service, license, public building, transport, or job. Federal law, some foreign travel for work, and existing school immunization law are the exceptions. The Idaho House passed it 44-23, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

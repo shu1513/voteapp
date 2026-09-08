@@ -1,0 +1,240 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1482442,
+      "measure_id": "H 79",
+      "vote_date": "2025-02-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 79, which lets Idaho community colleges charge more in tuition. State law caps what a community college may charge a student who lives in its district. That ceiling was two thousand five hundred dollars a year. The act raises it to three thousand two hundred fifty dollars a year, an increase of thirty percent. The rule that tuition may rise by no more than ten percent in any one year stays in place, as does the floor of three hundred fifty dollars. Fees for laboratories, night school, summer school and other special courses are set separately and are not capped. The Idaho House passed it 52-17, and it became law.",
+      "nay_description": "Voted against House Bill 79, which lets Idaho community colleges charge more in tuition. State law caps what a community college may charge a student who lives in its district. That ceiling was two thousand five hundred dollars a year. The act raises it to three thousand two hundred fifty dollars a year, an increase of thirty percent. The rule that tuition may rise by no more than ten percent in any one year stays in place, as does the floor of three hundred fifty dollars. Fees for laboratories, night school, summer school and other special courses are set separately and are not capped. The Idaho House passed it 52-17, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1505054,
+      "measure_id": "H 79",
+      "vote_date": "2025-03-04",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 79, which lets Idaho community colleges charge more in tuition. State law caps what a community college may charge a student who lives in its district. That ceiling was two thousand five hundred dollars a year. The act raises it to three thousand two hundred fifty dollars a year, an increase of thirty percent. The rule that tuition may rise by no more than ten percent in any one year stays in place, as does the floor of three hundred fifty dollars. Fees for laboratories, night school, summer school and other special courses are set separately and are not capped. The Idaho Senate passed it 26-9, and it became law.",
+      "nay_description": "Voted against House Bill 79, which lets Idaho community colleges charge more in tuition. State law caps what a community college may charge a student who lives in its district. That ceiling was two thousand five hundred dollars a year. The act raises it to three thousand two hundred fifty dollars a year, an increase of thirty percent. The rule that tuition may rise by no more than ten percent in any one year stays in place, as does the floor of three hundred fifty dollars. Fees for laboratories, night school, summer school and other special courses are set separately and are not capped. The Idaho Senate passed it 26-9, and it became law.",
+      "labels": [
+        {
+          "slug": "cost_of_living_reduction",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1531141,
+      "measure_id": "H 109",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 109, which seeks to stop food stamps from being spent on candy and soda. It orders the director of the Department of Health and Welfare to ask the United States Department of Agriculture for a waiver removing candy and soda from the list of foods the program covers. If the waiver is granted, the director must bar those purchases. If it is refused, the director must ask again every year until it is granted. Candy is defined as a sweetened confection, and does not include anything more than one tenth flour by weight or anything needing refrigeration. Soda is any sweetened nonalcoholic drink, and does not include drinks with milk, drinks more than half juice, or powders and concentrates. The Idaho House passed it 48-20, and it became law.",
+      "nay_description": "Voted against House Bill 109, which seeks to stop food stamps from being spent on candy and soda. It orders the director of the Department of Health and Welfare to ask the United States Department of Agriculture for a waiver removing candy and soda from the list of foods the program covers. If the waiver is granted, the director must bar those purchases. If it is refused, the director must ask again every year until it is granted. Candy is defined as a sweetened confection, and does not include anything more than one tenth flour by weight or anything needing refrigeration. Soda is any sweetened nonalcoholic drink, and does not include drinks with milk, drinks more than half juice, or powders and concentrates. The Idaho House passed it 48-20, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        },
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1527820,
+      "measure_id": "H 109",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 109, which seeks to stop food stamps from being spent on candy and soda. It orders the director of the Department of Health and Welfare to ask the United States Department of Agriculture for a waiver removing candy and soda from the list of foods the program covers. If the waiver is granted, the director must bar those purchases. If it is refused, the director must ask again every year until it is granted. Candy is defined as a sweetened confection, and does not include anything more than one tenth flour by weight or anything needing refrigeration. Soda is any sweetened nonalcoholic drink, and does not include drinks with milk, drinks more than half juice, or powders and concentrates. The Idaho Senate passed it 25-10, and it became law.",
+      "nay_description": "Voted against House Bill 109, which seeks to stop food stamps from being spent on candy and soda. It orders the director of the Department of Health and Welfare to ask the United States Department of Agriculture for a waiver removing candy and soda from the list of foods the program covers. If the waiver is granted, the director must bar those purchases. If it is refused, the director must ask again every year until it is granted. Candy is defined as a sweetened confection, and does not include anything more than one tenth flour by weight or anything needing refrigeration. Soda is any sweetened nonalcoholic drink, and does not include drinks with milk, drinks more than half juice, or powders and concentrates. The Idaho Senate passed it 25-10, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        },
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1536653,
+      "measure_id": "H 180",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 180, which puts city and county decisions on broadband and cell equipment on a clock. A local government must approve, approve with changes, or deny a siting application within a set time. The limit runs from sixty days for a broadband permit to one hundred fifty days for a new tower that is not a small wireless facility. If the deadline passes, the application counts as approved, provided the applicant gave every required public notice and told the city or county the time had run out. A local government has ten business days to say an application is incomplete, and thirty days to ask a court to review a deemed approval. The act also rewrites the rules for attaching equipment to utility poles. The Idaho House passed it 48-20, and it became law.",
+      "nay_description": "Voted against House Bill 180, which puts city and county decisions on broadband and cell equipment on a clock. A local government must approve, approve with changes, or deny a siting application within a set time. The limit runs from sixty days for a broadband permit to one hundred fifty days for a new tower that is not a small wireless facility. If the deadline passes, the application counts as approved, provided the applicant gave every required public notice and told the city or county the time had run out. A local government has ten business days to say an application is incomplete, and thirty days to ask a court to review a deemed approval. The act also rewrites the rules for attaching equipment to utility poles. The Idaho House passed it 48-20, and it became law.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1533289,
+      "measure_id": "H 180",
+      "vote_date": "2025-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 180, which puts city and county decisions on broadband and cell equipment on a clock. A local government must approve, approve with changes, or deny a siting application within a set time. The limit runs from sixty days for a broadband permit to one hundred fifty days for a new tower that is not a small wireless facility. If the deadline passes, the application counts as approved, provided the applicant gave every required public notice and told the city or county the time had run out. A local government has ten business days to say an application is incomplete, and thirty days to ask a court to review a deemed approval. The act also rewrites the rules for attaching equipment to utility poles. The Idaho Senate passed it 24-9, and it became law.",
+      "nay_description": "Voted against House Bill 180, which puts city and county decisions on broadband and cell equipment on a clock. A local government must approve, approve with changes, or deny a siting application within a set time. The limit runs from sixty days for a broadband permit to one hundred fifty days for a new tower that is not a small wireless facility. If the deadline passes, the application counts as approved, provided the applicant gave every required public notice and told the city or county the time had run out. A local government has ten business days to say an application is incomplete, and thirty days to ask a court to review a deemed approval. The act also rewrites the rules for attaching equipment to utility poles. The Idaho Senate passed it 24-9, and it became law.",
+      "labels": [
+        {
+          "slug": "public_infrastructure",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1498343,
+      "measure_id": "H 187",
+      "vote_date": "2025-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 187, which sets out what people on felony probation and parole must be told and must agree to. A judge placing someone on felony probation must explain the conditions, the penalties for breaking them, and the rewards for following them. The act then writes into law that a person released on parole gives up their Fourth Amendment protection against warrantless searches. Officers may search that person, their home, their vehicle, and their phone or other devices at any hour, with or without cause. A parolee must sign an acceptance of those terms, and someone who refuses cannot be released on parole. Officers may not search solely to harass. The Idaho House passed it 47-18, and it became law.",
+      "nay_description": "Voted against House Bill 187, which sets out what people on felony probation and parole must be told and must agree to. A judge placing someone on felony probation must explain the conditions, the penalties for breaking them, and the rewards for following them. The act then writes into law that a person released on parole gives up their Fourth Amendment protection against warrantless searches. Officers may search that person, their home, their vehicle, and their phone or other devices at any hour, with or without cause. A parolee must sign an acceptance of those terms, and someone who refuses cannot be released on parole. Officers may not search solely to harass. The Idaho House passed it 47-18, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1517454,
+      "measure_id": "H 187",
+      "vote_date": "2025-03-13",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 187, which sets out what people on felony probation and parole must be told and must agree to. A judge placing someone on felony probation must explain the conditions, the penalties for breaking them, and the rewards for following them. The act then writes into law that a person released on parole gives up their Fourth Amendment protection against warrantless searches. Officers may search that person, their home, their vehicle, and their phone or other devices at any hour, with or without cause. A parolee must sign an acceptance of those terms, and someone who refuses cannot be released on parole. Officers may not search solely to harass. The Idaho Senate passed it 24-8, and it became law.",
+      "nay_description": "Voted against House Bill 187, which sets out what people on felony probation and parole must be told and must agree to. A judge placing someone on felony probation must explain the conditions, the penalties for breaking them, and the rewards for following them. The act then writes into law that a person released on parole gives up their Fourth Amendment protection against warrantless searches. Officers may search that person, their home, their vehicle, and their phone or other devices at any hour, with or without cause. A parolee must sign an acceptance of those terms, and someone who refuses cannot be released on parole. Officers may not search solely to harass. The Idaho Senate passed it 24-8, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1514666,
+      "measure_id": "S 1069",
+      "vote_date": "2025-03-11",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1069, which changes how Idaho trains teachers to teach reading. The state Department of Education used to owe districts and schools professional development on literacy instruction. The act replaces that with a duty to train every teacher and elementary administrator who works with children from kindergarten through grade three, spread over several years and paid for only if the legislature funds it. The training must be based on the science of reading and must include coaching on the job. It must cover reading data, the statewide reading test, and the state literacy plan. The act also broadens the reporting on the intervention program to cover public charter schools alongside districts. The Idaho House passed it 40-30, and it became law.",
+      "nay_description": "Voted against Senate Bill 1069, which changes how Idaho trains teachers to teach reading. The state Department of Education used to owe districts and schools professional development on literacy instruction. The act replaces that with a duty to train every teacher and elementary administrator who works with children from kindergarten through grade three, spread over several years and paid for only if the legislature funds it. The training must be based on the science of reading and must include coaching on the job. It must cover reading data, the statewide reading test, and the state literacy plan. The act also broadens the reporting on the intervention program to cover public charter schools alongside districts. The Idaho House passed it 40-30, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1498505,
+      "measure_id": "S 1069",
+      "vote_date": "2025-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1069, which changes how Idaho trains teachers to teach reading. The state Department of Education used to owe districts and schools professional development on literacy instruction. The act replaces that with a duty to train every teacher and elementary administrator who works with children from kindergarten through grade three, spread over several years and paid for only if the legislature funds it. The training must be based on the science of reading and must include coaching on the job. It must cover reading data, the statewide reading test, and the state literacy plan. The act also broadens the reporting on the intervention program to cover public charter schools alongside districts. The Idaho Senate passed it 22-13, and it became law.",
+      "nay_description": "Voted against Senate Bill 1069, which changes how Idaho trains teachers to teach reading. The state Department of Education used to owe districts and schools professional development on literacy instruction. The act replaces that with a duty to train every teacher and elementary administrator who works with children from kindergarten through grade three, spread over several years and paid for only if the legislature funds it. The training must be based on the science of reading and must include coaching on the job. It must cover reading data, the statewide reading test, and the state literacy plan. The act also broadens the reporting on the intervention program to cover public charter schools alongside districts. The Idaho Senate passed it 22-13, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1536661,
+      "measure_id": "S 1198",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1198, which bans diversity, equity, and inclusion work at Idaho's public colleges and universities. A school may not run a diversity, equity, or inclusion office or employ an officer for that purpose. It may not require such training of students or staff, and may not require a course on those subjects for a degree. It may not run a bias reporting system that collects reports about protected student speech. The definition reaches programs that promote named concepts such as implicit bias, systemic racism, intersectionality, and gender theory. Work an attorney certifies as needed to obey a court order or a state or federal law is exempt. The attorney general may enforce the ban, and a student or employee may sue over a violation. The Idaho House passed it 52-17, and it became law.",
+      "nay_description": "Voted against Senate Bill 1198, which bans diversity, equity, and inclusion work at Idaho's public colleges and universities. A school may not run a diversity, equity, or inclusion office or employ an officer for that purpose. It may not require such training of students or staff, and may not require a course on those subjects for a degree. It may not run a bias reporting system that collects reports about protected student speech. The definition reaches programs that promote named concepts such as implicit bias, systemic racism, intersectionality, and gender theory. Work an attorney certifies as needed to obey a court order or a state or federal law is exempt. The attorney general may enforce the ban, and a student or employee may sue over a violation. The Idaho House passed it 52-17, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1537403,
+      "measure_id": "S 1198",
+      "vote_date": "2025-04-04",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1198, which bans diversity, equity, and inclusion work at Idaho's public colleges and universities. A school may not run a diversity, equity, or inclusion office or employ an officer for that purpose. It may not require such training of students or staff, and may not require a course on those subjects for a degree. It may not run a bias reporting system that collects reports about protected student speech. The definition reaches programs that promote named concepts such as implicit bias, systemic racism, intersectionality, and gender theory. Work an attorney certifies as needed to obey a court order or a state or federal law is exempt. The attorney general may enforce the ban, and a student or employee may sue over a violation. The Idaho Senate passed it 23-12, and it became law.",
+      "nay_description": "Voted against Senate Bill 1198, which bans diversity, equity, and inclusion work at Idaho's public colleges and universities. A school may not run a diversity, equity, or inclusion office or employ an officer for that purpose. It may not require such training of students or staff, and may not require a course on those subjects for a degree. It may not run a bias reporting system that collects reports about protected student speech. The definition reaches programs that promote named concepts such as implicit bias, systemic racism, intersectionality, and gender theory. Work an attorney certifies as needed to obey a court order or a state or federal law is exempt. The attorney general may enforce the ban, and a student or employee may sue over a violation. The Idaho Senate passed it 23-12, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

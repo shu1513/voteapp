@@ -1,0 +1,112 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1475188,
+      "measure_id": "H 35",
+      "vote_date": "2025-01-27",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 35, which requires stronger login security across Idaho state government. The legislature, the courts, the elected constitutional officers, and their staffs must all use multifactor identification. That means a second proof of identity beyond a password. It is required for any access, from the office or remotely, to email accounts, cloud storage, web applications, networks, databases, and servers. The act also puts the Office of Information Technology Services in charge of directing, rather than merely recommending, how state agencies buy and install telecommunications equipment, and tells it to see that cybersecurity best practices are put in place. The Idaho House passed it 54-16, and it became law.",
+      "nay_description": "Voted against House Bill 35, which requires stronger login security across Idaho state government. The legislature, the courts, the elected constitutional officers, and their staffs must all use multifactor identification. That means a second proof of identity beyond a password. It is required for any access, from the office or remotely, to email accounts, cloud storage, web applications, networks, databases, and servers. The act also puts the Office of Information Technology Services in charge of directing, rather than merely recommending, how state agencies buy and install telecommunications equipment, and tells it to see that cybersecurity best practices are put in place. The Idaho House passed it 54-16, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1527851,
+      "measure_id": "H 136",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 136, which makes hospitals and clinics report what they earn from a federal discount drug program. The 340B program lets certain providers buy drugs at a deep discount, and they may keep the difference when a patient's insurer pays the ordinary price. Every year by April 1, a participating provider must report to the state what it paid for those drugs and what it was paid for them. The report must also cover what it paid contract pharmacies, how many claims were involved, and how it used the savings, including any spent on charity care. The figures must be broken out by commercial, Medicaid, and Medicare payers. Each provider's own report stays confidential, and the state controller publishes only a combined total each November. The Idaho House passed it 52-18, and it became law.",
+      "nay_description": "Voted against House Bill 136, which makes hospitals and clinics report what they earn from a federal discount drug program. The 340B program lets certain providers buy drugs at a deep discount, and they may keep the difference when a patient's insurer pays the ordinary price. Every year by April 1, a participating provider must report to the state what it paid for those drugs and what it was paid for them. The report must also cover what it paid contract pharmacies, how many claims were involved, and how it used the savings, including any spent on charity care. The figures must be broken out by commercial, Medicaid, and Medicare payers. Each provider's own report stays confidential, and the state controller publishes only a combined total each November. The Idaho House passed it 52-18, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1516255,
+      "measure_id": "H 146",
+      "vote_date": "2025-03-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 146, which aims to turn off the blinking red lights on Idaho wind turbines at night. A light-mitigating system uses radar to keep the aviation warning lights dark until an aircraft comes near. From July 2025 no new wind farm may start operating unless its owner has asked the Federal Aviation Administration to approve such a system, and once approved it must be installed within twenty-four months. From January 2026 the owner of a wind farm already running must make the same request, with sixty months to install after approval. The requirement is to apply and then install if the federal agency agrees, so a refusal by that agency does not stop the wind farm. The Idaho Senate passed it 18-15, and it became law.",
+      "nay_description": "Voted against House Bill 146, which aims to turn off the blinking red lights on Idaho wind turbines at night. A light-mitigating system uses radar to keep the aviation warning lights dark until an aircraft comes near. From July 2025 no new wind farm may start operating unless its owner has asked the Federal Aviation Administration to approve such a system, and once approved it must be installed within twenty-four months. From January 2026 the owner of a wind farm already running must make the same request, with sixty months to install after approval. The requirement is to apply and then install if the federal agency agrees, so a refusal by that agency does not stop the wind farm. The Idaho Senate passed it 18-15, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1502103,
+      "measure_id": "S 1099",
+      "vote_date": "2025-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1099, which raises the penalty for vehicular manslaughter by a repeat drunk driver. Killing someone while driving under the influence carried up to fifteen years and a fifteen thousand dollar fine. The act keeps that for a first offender and creates a higher tier for a driver with a previous conviction for driving under the influence, in Idaho or a comparable offense elsewhere. The act also makes a court tell a defendant at sentencing that a later conviction can carry the higher penalty. That warning must be given in both misdemeanor and felony driving under the influence cases. The Idaho Senate passed it 25-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 1099, which raises the penalty for vehicular manslaughter by a repeat drunk driver. Killing someone while driving under the influence carried up to fifteen years and a fifteen thousand dollar fine. The act keeps that for a first offender and creates a higher tier for a driver with a previous conviction for driving under the influence, in Idaho or a comparable offense elsewhere. The act also makes a court tell a defendant at sentencing that a later conviction can carry the higher penalty. That warning must be given in both misdemeanor and felony driving under the influence cases. The Idaho Senate passed it 25-10, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1522104,
+      "measure_id": "S 1139",
+      "vote_date": "2025-03-19",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1139, which narrows the felony bar on becoming a police officer in Idaho. The Peace Officer Standards and Training Council had to reject any applicant convicted of a felony. The act limits that automatic bar to the serious felonies listed in section 18-310(2) of Idaho Code, or comparable offenses from another state. For any other felony the council now has discretion to certify the applicant. It may also reject an applicant whose felony was set aside, expunged, pardoned, dismissed, or reduced to a misdemeanor. The council keeps its existing discretion to reject an applicant convicted of a misdemeanor. The Idaho House passed it 49-15, and it became law.",
+      "nay_description": "Voted against Senate Bill 1139, which narrows the felony bar on becoming a police officer in Idaho. The Peace Officer Standards and Training Council had to reject any applicant convicted of a felony. The act limits that automatic bar to the serious felonies listed in section 18-310(2) of Idaho Code, or comparable offenses from another state. For any other felony the council now has discretion to certify the applicant. It may also reject an applicant whose felony was set aside, expunged, pardoned, dismissed, or reduced to a misdemeanor. The council keeps its existing discretion to reject an applicant convicted of a misdemeanor. The Idaho House passed it 49-15, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1537329,
+      "measure_id": "S 1211",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1211, which lets people buy ivermectin in Idaho without a prescription. Ivermectin is a drug approved to treat parasites, and some people took it for Covid-19 despite federal regulators advising against that use. The act says that ivermectin made for human use may be sold and bought over the counter in Idaho. No prescription is needed, and no consultation with a doctor, pharmacist, or any other health care professional is needed. The change took effect immediately on the governor's signature. The Idaho Senate passed it 25-9, and it became law.",
+      "nay_description": "Voted against Senate Bill 1211, which lets people buy ivermectin in Idaho without a prescription. Ivermectin is a drug approved to treat parasites, and some people took it for Covid-19 despite federal regulators advising against that use. The act says that ivermectin made for human use may be sold and bought over the counter in Idaho. No prescription is needed, and no consultation with a doctor, pharmacist, or any other health care professional is needed. The change took effect immediately on the governor's signature. The Idaho Senate passed it 25-9, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

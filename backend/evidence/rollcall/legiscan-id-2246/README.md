@@ -59,6 +59,16 @@ Hand-added here: Ted Hill, Dave Lent and Scott Grow for the same reasons as
 prefix of `annie`) and **Michael Veile** HD-035A (our roster has Mike).
 Deliberately not linked: Mark Sauter HD-001A.
 
+## Status
+
+Worked out. Three batches, 24 measures, 40 roll calls, 1,730 candidate records
+in the local database, and 52 chamber rows dropped with a reason in
+`survey/divided-enacted-worklist.tsv`. Zero rows are left unbatched.
+
+Together with the 2025 session the Idaho campaign holds 3,810 records from 90
+rolls across 58 measures and 91 candidates. Production holds none of it; the
+promotion is a separate step.
+
 ## Version work
 
 **99 of the 115 divided-and-enacted measures have no engrossed print.** 16 carry
