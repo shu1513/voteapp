@@ -1,0 +1,27 @@
+{
+  "jurisdiction": "ID",
+  "sessionId": 2168,
+  "startedAt": "2026-09-07T18:44:59.212Z",
+  "finishedAt": "2026-09-07T18:44:59.566Z",
+  "scopeFrom": "2026-11-01",
+  "peopleMembers": 105,
+  "candidatePool": 202,
+  "crosswalkFile": "~/legiscan-data/id-2168-resolve/crosswalk.json",
+  "crosswalkEntries": 105,
+  "crosswalkPeopleNotInSnapshot": [],
+  "files": 830,
+  "fileErrors": 0,
+  "counts": {
+    "matched": 36058,
+    "unmatched_reviewed": 6993
+  },
+  "note": "Summary of the full crosswalk validation run over every stored roll call. The per-roll detail is omitted on purpose: it is one entry per roll and runs to several megabytes without adding evidence. The counts here cover every roll.",
+  "rollsValidated": 830,
+  "zeroMatchRolls": 0,
+  "fanOut": {
+    "houseMedian": 57,
+    "houseMax": 58,
+    "senateMedian": 30,
+    "senateMax": 30
+  }
+}

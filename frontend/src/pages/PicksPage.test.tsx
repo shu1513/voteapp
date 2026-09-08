@@ -108,7 +108,7 @@ describe("PicksPage", () => {
       })
     );
     renderPicks();
-    expect(await screen.findByText("2 of 2 races decided")).toBeInTheDocument();
+    expect(await screen.findByRole("progressbar", { name: "2 of 2 races decided" })).toBeInTheDocument();
     expect(screen.queryByRole("region", { name: /election draft milestone/ })).not.toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "Support this work" })).not.toBeInTheDocument();
   });
@@ -177,7 +177,7 @@ describe("PicksPage", () => {
     window.localStorage.clear();
     stubApiRoutes(verifiedRoutes());
     renderPicks();
-    expect(await screen.findByText("1 of 2 races decided")).toBeInTheDocument();
+    expect(await screen.findByRole("progressbar", { name: "1 of 2 races decided" })).toBeInTheDocument();
     expect(screen.queryByRole("region", { name: /election draft milestone/ })).not.toBeInTheDocument();
     expect(window.localStorage.getItem("voteapp_draft_complete_seen")).toBeNull();
   });
@@ -369,8 +369,8 @@ describe("PicksPage", () => {
     renderPicks();
 
     // Date card heading + decided count.
-    expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Draft" })).toBeInTheDocument();
-    expect(screen.getByText("1 of 2 races decided")).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "November 3, 2026" })).toBeInTheDocument();
+    expect(screen.getByRole("progressbar", { name: "1 of 2 races decided" })).toBeInTheDocument();
 
     // Picked race: title links to the race, pick renders beside it.
     expect(screen.getByRole("link", { name: "Governor" })).toHaveAttribute("href", "/elections/e-1");
@@ -442,16 +442,16 @@ describe("PicksPage", () => {
     // undecided when the truth is unknown.
     expect(await screen.findByText(/Could not load your picks/)).toBeInTheDocument();
     expect(screen.queryByText(/no pick yet/)).not.toBeInTheDocument();
-    expect(screen.queryByText(/races decided/)).not.toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: /My November 3, 2026 Election Draft/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "November 3, 2026" })).not.toBeInTheDocument();
   });
 
   it("hides the share control on a card with zero picks", async () => {
     stubApiRoutes(verifiedRoutes({ "/api/me/election-choices": { body: { choices: [] } } }));
     renderPicks();
 
-    expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Draft" })).toBeInTheDocument();
-    expect(screen.getByText("0 of 2 races decided")).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "November 3, 2026" })).toBeInTheDocument();
+    expect(screen.getByRole("progressbar", { name: "0 of 2 races decided" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /^Share/ })).not.toBeInTheDocument();
   });
 
@@ -482,13 +482,14 @@ describe("PicksPage", () => {
     );
     renderPicks();
 
-    expect(await screen.findByText("My July 28, 2026 Election Draft")).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "July 28, 2026" })).toBeInTheDocument();
     // The pick's own line carries the call.
     expect(screen.getByText("Advanced")).toBeInTheDocument();
     // Still carded → not double-listed under Past elections.
     expect(screen.queryByText(/Past elections/)).not.toBeInTheDocument();
-    // A race that can no longer be decided drops the "yet".
-    expect(screen.getByText("Mayor — no pick")).toBeInTheDocument();
+    // A race that can no longer be decided drops the "yet" (accessible name
+    // only — sighted users read the empty pick column).
+    expect(screen.getByRole("link", { name: "Mayor — no pick" })).toBeInTheDocument();
     expect(screen.queryByText(/no pick yet/)).not.toBeInTheDocument();
   });
 
@@ -665,7 +666,7 @@ describe("PicksPage", () => {
 
     // Toggling back restores the list cards.
     await user.click(screen.getByRole("button", { name: "List view" }));
-    expect(await screen.findByText(/races decided/)).toBeInTheDocument();
+    expect(await screen.findByRole("progressbar", { name: /races decided/ })).toBeInTheDocument();
   });
 
   it("lists past picks in a collapsible section with won/lost flags", async () => {
@@ -812,9 +813,11 @@ describe("PicksPage", () => {
     await waitFor(() => expect(button).toBeEnabled());
     await user.click(button);
 
+    // One summary line for the run, not a note on every open row.
     expect(
-      await screen.findByRole("link", { name: /Mayor — no pick yet · auto pick: not enough evidence/ })
+      await screen.findByText("Auto-fill picked 0 races · 1 left open: not enough evidence")
     ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Mayor — no pick yet" })).toBeInTheDocument();
   });
 
   it("keeps fill-run reasons across a switch to ballot view", async () => {
@@ -862,7 +865,7 @@ describe("PicksPage", () => {
     const button = await screen.findByRole("button", { name: "Auto-fill empty picks by my issues" });
     await waitFor(() => expect(button).toBeEnabled());
     await user.click(button);
-    await screen.findByRole("link", { name: /auto pick: not enough evidence/ });
+    await screen.findByText(/1 left open: not enough evidence/);
 
     await user.click(screen.getByRole("button", { name: "Ballot preview" }));
 
@@ -886,7 +889,7 @@ describe("PicksPage", () => {
 
     // The card's own count line (the finished-draft milestone above the
     // toggle repeats the count in a longer sentence).
-    await screen.findByText("2 of 2 races decided");
+    await screen.findByRole("progressbar", { name: "2 of 2 races decided" });
     expect(screen.queryByText("Auto")).toBeNull();
     expect(screen.queryByRole("button", { name: /Auto-fill empty picks/ })).toBeNull();
     expect(screen.queryByRole("button", { name: "Clear auto picks" })).toBeNull();

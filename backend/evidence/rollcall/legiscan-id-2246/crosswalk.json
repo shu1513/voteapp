@@ -1,0 +1,533 @@
+{
+  "source": "legiscan",
+  "jurisdiction": "ID",
+  "session_id": 2246,
+  "note": "people_id to VoteApp candidate id for the Idaho Legislature, LegiScan session 2246. Every person in the session file has an entry, so a null is a reviewed decision rather than a gap the resolver has yet to reach. Seats come from LegiScan's `district` field, never from `role`, which LegiScan has been seen to contradict. Idaho splits each of its 35 legislative districts into two House seats lettered A and B, so a House seat reads HD-014A rather than a plain district number and the automatic seat-agreement check cannot fire on it; every House proposal was instead checked by hand against the district number and chamber in the candidate's own candidacy string, and all but one agreed.",
+  "entries": [
+    {
+      "people_id": 8012,
+      "candidate_id": "8a972a6d-aeab-47f9-9b1b-64504788e04d",
+      "note": "Judy Boyle, HD-009B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 8019,
+      "candidate_id": "83e7e10b-ba18-40c0-b276-76cac07314c2",
+      "note": "Brent Crane, HD-013A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 8026,
+      "candidate_id": "394231f7-d2c9-49d7-9672-30bf617a38cb",
+      "note": "Phil Hart, SD-002. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 8043,
+      "candidate_id": "723ff82e-9420-4363-8b3c-170edf7d0549",
+      "note": "Mike Moyle, HD-010A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 8046,
+      "candidate_id": "c7f34d92-53e5-4aac-947a-6e178861eca3",
+      "note": "Joe Palmer, HD-020A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 8053,
+      "candidate_id": "74a7b4d1-a989-4a62-8ad1-3c208904a4fb",
+      "note": "James Ruchti, SD-029. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 12737,
+      "candidate_id": "b2c74a06-3678-4ca2-9bc4-b458c90a3669",
+      "note": "Vito Barbieri, HD-003A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 12742,
+      "candidate_id": "d2e2fa2a-46d6-4554-9154-344b2bea616a",
+      "note": "Jim Guthrie, SD-028. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 12749,
+      "candidate_id": null,
+      "note": "John Vander Woude, HD-022A. No Idaho state-legislative candidacy on or after 2026-11-01 in our roster; casts 461 votes in this session."
+    },
+    {
+      "people_id": 15431,
+      "candidate_id": "af63b048-1cde-4765-a2f0-43a8bafa9584",
+      "note": "John Gannon, HD-017A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 15796,
+      "candidate_id": "97a84653-d1c9-485e-8329-170e9da6537f",
+      "note": "James Holtzclaw, HD-020B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 15802,
+      "candidate_id": "40188e5b-148c-40ef-939e-978ed243d22e",
+      "note": "Ron Mendive, HD-005A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 15803,
+      "candidate_id": null,
+      "note": "Steve Miller, HD-024B. No Idaho state-legislative candidacy on or after 2026-11-01 in our roster; casts 461 votes in this session."
+    },
+    {
+      "people_id": 15804,
+      "candidate_id": "cd1cf841-2504-4b7b-89ef-b7db7d92a8ed",
+      "note": "Jason Monks, HD-022B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 15810,
+      "candidate_id": "ec962d94-144b-489d-9896-504fff94d79c",
+      "note": "Julie VanOrden, SD-030. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 15811,
+      "candidate_id": "d001c313-a3a6-459c-9c77-61d3cb3a86de",
+      "note": "Janie Ward-Engelking, SD-018. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 15818,
+      "candidate_id": "6d94df43-fcf5-43b7-91f3-61db3ffb128c",
+      "note": "Todd Lakey, SD-023. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 16113,
+      "candidate_id": "2b27ae3f-1ed1-4918-98e3-2bb89e884bbc",
+      "note": "Ilana Rubel, HD-018A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 17199,
+      "candidate_id": "54f634d8-a6b9-4a4d-b0c7-eb008eae85af",
+      "note": "Van Burtenshaw, SD-031. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 17209,
+      "candidate_id": "dc94cd9e-8726-4031-b595-34eabe661a23",
+      "note": "Heather Scott, HD-002A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 17211,
+      "candidate_id": "851c6458-37dc-423f-a089-76f8dfa544e4",
+      "note": "Melissa Wintrow, SD-019. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 17417,
+      "candidate_id": "510e08ac-6d58-40f7-a845-8afe6910a714",
+      "note": "Lori Den Hartog, SD-022. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 17856,
+      "candidate_id": "64ef3813-3a45-4754-9f7f-c0cb926057d2",
+      "note": "Kelly Anthon, SD-027. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 17857,
+      "candidate_id": "bc099a5c-1723-40c4-8a3a-2c9545688391",
+      "note": "Mark Harris, SD-035. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 18620,
+      "candidate_id": "5132e4ce-6dc1-4efb-9819-e2a652e1e7bd",
+      "note": "Daniel Foreman, SD-006. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row. Matched on the first name as a prefix of the roster's longer form."
+    },
+    {
+      "people_id": 19056,
+      "candidate_id": "90512f6e-7be5-4596-81a8-c88529368ef0",
+      "note": "Dustin Manwaring, HD-029A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 19060,
+      "candidate_id": "1398c8f1-0b48-4b96-9c3c-464382caae12",
+      "note": "Christy Zito, SD-008. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 19530,
+      "candidate_id": "16000b1c-8e82-4602-8113-440a6e1541bb",
+      "note": "Barbara Ehardt, HD-033A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 21003,
+      "candidate_id": "f797de58-5e01-44b2-903c-e1a6f1fea67c",
+      "note": "Steve Berch, HD-015A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 21007,
+      "candidate_id": "cdc4c8c6-6374-436a-90a2-84cce9fa8928",
+      "note": "Rod Furniss, HD-031B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 21009,
+      "candidate_id": "66f4db33-00ba-407f-967a-728241516757",
+      "note": "Brooke Green, HD-018B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 21014,
+      "candidate_id": "734a661a-6dd1-4fd7-b629-03acda3b9b00",
+      "note": "Tammy Nichols, SD-010. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 21015,
+      "candidate_id": "a991d2a2-563f-415a-8741-502a8778725c",
+      "note": "Jerald Raymond, HD-031A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 21016,
+      "candidate_id": "a70666c8-22e9-4138-89dc-3bd468c0a81d",
+      "note": "Doug Ricks, SD-034. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 21017,
+      "candidate_id": "edefea65-98f7-4f32-90ad-536869488103",
+      "note": "Tony Wisniewski, HD-005B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 21035,
+      "candidate_id": "7bc13a30-d41e-43ce-b38b-35809329bbb1",
+      "note": "Scott Grow, SD-014. Hand-added: our roster splits the name as `C.` / `Scott Grow`."
+    },
+    {
+      "people_id": 21036,
+      "candidate_id": "57a279c1-8d04-4e68-94cf-1dfe7a8eb9a6",
+      "note": "Dave Lent, SD-033. Hand-added: `dave` is not a prefix of our roster's `David`."
+    },
+    {
+      "people_id": 21038,
+      "candidate_id": null,
+      "note": "Jim Woodward, SD-001. No Idaho state-legislative candidacy on or after 2026-11-01 in our roster; casts 391 votes in this session."
+    },
+    {
+      "people_id": 21040,
+      "candidate_id": "ac57d936-c625-4e71-a152-73f79da38c3f",
+      "note": "Britt Raybould, HD-034B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 22618,
+      "candidate_id": "1355346b-95b5-4d23-b14c-e37b11b62096",
+      "note": "Ben Adams, SD-012. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 22620,
+      "candidate_id": "db78676a-f92a-4c34-bf0b-19256de9e026",
+      "note": "David Cannon, HD-030A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 22621,
+      "candidate_id": "a147184e-3f0a-43a4-b81d-042b9b4b0fef",
+      "note": "Marco Erickson, HD-033B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 22623,
+      "candidate_id": null,
+      "note": "Codi Galloway, SD-015. No Idaho state-legislative candidacy on or after 2026-11-01 in our roster; casts 391 votes in this session."
+    },
+    {
+      "people_id": 22624,
+      "candidate_id": "d7de35d0-80eb-4334-b51d-622dd73e63ea",
+      "note": "Brandon Mitchell, HD-006B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 22625,
+      "candidate_id": "80d4f568-db1c-48ac-82d2-9e6a3e18bd8a",
+      "note": "Doug Okuniewicz, SD-003. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row. Matched on the first name as a prefix of the roster's longer form."
+    },
+    {
+      "people_id": 22626,
+      "candidate_id": "5043db18-49fb-446c-a54c-315bb0fab129",
+      "note": "Bruce Skaug, HD-010B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 22627,
+      "candidate_id": "317b017e-9745-446d-a353-95bfdac9aa34",
+      "note": "Jon Weber, HD-034A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 22668,
+      "candidate_id": "a5f69cdc-281b-4a26-95f7-198cdb5a4fac",
+      "note": "Kevin Cook, SD-032. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 22669,
+      "candidate_id": null,
+      "note": "Alison Rabe, SD-016. No Idaho state-legislative candidacy on or after 2026-11-01 in our roster; casts 391 votes in this session."
+    },
+    {
+      "people_id": 22726,
+      "candidate_id": "b4c76391-2c4f-4c0e-9312-a650115aa4c7",
+      "note": "Charlie Shepherd, HD-007B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 22727,
+      "candidate_id": "73c4a065-c51f-4d15-954a-77d776cffdc6",
+      "note": "Chris Mathias, HD-019B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 22942,
+      "candidate_id": null,
+      "note": "Lori McCann, HD-006A. No Idaho state-legislative candidacy on or after 2026-11-01 in our roster; casts 461 votes in this session."
+    },
+    {
+      "people_id": 23065,
+      "candidate_id": "c6c3e143-1039-4844-87ae-6e8e39c1f616",
+      "note": "Carrie Semmelroth, SD-017. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23915,
+      "candidate_id": "4a03a1d0-b738-424b-aea9-e30cd7bfb7ca",
+      "note": "Joe Alfieri, HD-004A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23917,
+      "candidate_id": "39729ea1-e3f5-4787-9a1e-6a5f2173107a",
+      "note": "Richard Cheatum, HD-028A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23918,
+      "candidate_id": "021cfada-5cb3-4f9b-89b9-95707abe959d",
+      "note": "Jeff Cornilles, HD-012A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23919,
+      "candidate_id": "4abeeb21-e48d-4ecc-b07d-0fa11e0ca80a",
+      "note": "Jaron Crane, HD-012B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23922,
+      "candidate_id": "96d9a403-9800-4de2-b0f5-7c6d6a91c675",
+      "note": "Jeff Ehlers, HD-021B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23923,
+      "candidate_id": "40b1f9e7-9d7f-43e9-b55b-d76eb7e42f0d",
+      "note": "Sonia Galaviz. Proposed by name and reviewed by hand rather than accepted automatically, because it is the one proposal in this session whose chamber does not agree: LegiScan seats her in the House at HD-016A and our roster has her running for the Senate in District 16. The district number agrees, the party agrees, and the name is distinctive, so this reads as a sitting representative running for the Senate seat covering her district, which is a class this campaign has accepted in several states. Alison Rabe holds SD-016 through both sessions."
+    },
+    {
+      "people_id": 23925,
+      "candidate_id": "912cb1cc-2717-42a8-87b9-30b806a9a08e",
+      "note": "Dan Garner, HD-028B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23926,
+      "candidate_id": "0fb5505e-babf-48d9-b30f-eaeab379b408",
+      "note": "Clay Handy, HD-027B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23927,
+      "candidate_id": "d2acfe81-182a-49ab-82aa-296e915e3613",
+      "note": "Dale Hawkins, HD-002B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23928,
+      "candidate_id": "327d63af-8d8b-4a2a-b481-28c2c54cb64c",
+      "note": "Dori Healey, HD-015B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23929,
+      "candidate_id": "53871de1-bc66-42ff-9e1f-ae3360a34a4b",
+      "note": "Ted Hill, HD-014A. Hand-added for the same reason as in the 2025 session: LegiScan stores the legal first name Edward and keeps Ted only in `nickname`."
+    },
+    {
+      "people_id": 23932,
+      "candidate_id": "8bae21b0-47d3-4f56-9d72-10ec68721071",
+      "note": "Stephanie Mickelsen, HD-032A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23934,
+      "candidate_id": null,
+      "note": "Jack Nelsen, HD-026B. No Idaho state-legislative candidacy on or after 2026-11-01 in our roster; casts 461 votes in this session."
+    },
+    {
+      "people_id": 23935,
+      "candidate_id": "d6f120d6-e533-4cd6-927f-6f42551d2349",
+      "note": "James Petzke, HD-021A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23936,
+      "candidate_id": "56de7b5f-6576-414b-a06f-d83a8c3578b9",
+      "note": "Douglas Pickett, HD-027A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23937,
+      "candidate_id": "0ea54e4b-9cc4-406e-89eb-bbdd4e672847",
+      "note": "Elaine Price, HD-004B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23938,
+      "candidate_id": "c37866aa-81c9-4054-8cb0-6b8ad23399ea",
+      "note": "Jordan Redman, HD-003B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23940,
+      "candidate_id": null,
+      "note": "Mark Sauter, HD-001A. Deliberately NOT linked. Our roster's only House District 1 row is Jane Sauter, a different person; sharing a surname is not evidence. Mark Sauter has no candidacy in our roster on or after 2026-11-01."
+    },
+    {
+      "people_id": 23941,
+      "candidate_id": "7f36f3ac-4c06-4cd7-88a5-cabfbc8b18ab",
+      "note": "Josh Tanner, HD-014B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 23942,
+      "candidate_id": "74d72bd0-d28a-4e63-9b22-d7f7114517ce",
+      "note": "Josh Wheeler, HD-035B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row. Matched on the first name as a prefix of the roster's longer form."
+    },
+    {
+      "people_id": 24546,
+      "candidate_id": "12971d08-7c15-4a2f-9870-8d5579b6932a",
+      "note": "Cindy Carlson, SD-007. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 24634,
+      "candidate_id": "48750a3d-de14-4bb0-bd22-d14253e5ffaa",
+      "note": "Treg Bernt, SD-021. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 24635,
+      "candidate_id": "99f25b38-ce98-4c92-96e3-1b49249759ec",
+      "note": "Carl Bjerke, SD-005. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 24638,
+      "candidate_id": "049d7d50-a72c-442e-89d3-32296db7d3a4",
+      "note": "Brian Lenney, SD-013. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 24640,
+      "candidate_id": "cd05a685-26b1-402a-b8e5-cc21e096e869",
+      "note": "Ben Toews, SD-004. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 24642,
+      "candidate_id": null,
+      "note": "Glenneda Zuiderveld, SD-024. No Idaho state-legislative candidacy on or after 2026-11-01 in our roster; casts 391 votes in this session."
+    },
+    {
+      "people_id": 24816,
+      "candidate_id": "83c07554-6e80-46b1-8073-76f966299ebc",
+      "note": "Ron Taylor, SD-026. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25747,
+      "candidate_id": "9b0c8f9a-aa51-4b15-afbb-f33d3d4406ed",
+      "note": "Rob Beiswenger, HD-008A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25748,
+      "candidate_id": "3d600e5c-28b6-4bf0-ba0c-0ffa296b4731",
+      "note": "Chris Bruce, HD-023A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25749,
+      "candidate_id": null,
+      "note": "Tanya Burgoyne, HD-029B. No Idaho state-legislative candidacy on or after 2026-11-01 in our roster; casts 461 votes in this session."
+    },
+    {
+      "people_id": 25750,
+      "candidate_id": null,
+      "note": "Lucas Cayler, HD-011B. No Idaho state-legislative candidacy on or after 2026-11-01 in our roster; casts 461 votes in this session."
+    },
+    {
+      "people_id": 25751,
+      "candidate_id": "ba8f357d-f7f8-4db0-b873-bddc077b3e2a",
+      "note": "Monica Church, HD-019A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25752,
+      "candidate_id": "654238ba-a78f-4920-8c91-a78b090d7ed7",
+      "note": "Shawn Dygert, HD-023B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25753,
+      "candidate_id": "3a56cc24-7b97-4b85-a68f-9473fdd5370a",
+      "note": "Megan Egbert, HD-017B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25754,
+      "candidate_id": "f58240d6-aa69-4f3d-bf73-b054d8d71393",
+      "note": "Ben Fuhriman, HD-030B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25755,
+      "candidate_id": "04b72c49-156d-46d9-896e-ab03922653a7",
+      "note": "Kyle Harris, HD-007A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25756,
+      "candidate_id": "6f669020-daae-49e3-ae9c-277ff769db9e",
+      "note": "Clint Hostetler, HD-024A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25757,
+      "candidate_id": null,
+      "note": "David Leavitt, HD-025B. No Idaho state-legislative candidacy on or after 2026-11-01 in our roster; casts 461 votes in this session."
+    },
+    {
+      "people_id": 25758,
+      "candidate_id": "19072773-47d9-4770-9218-295aca97c50b",
+      "note": "Kent Marmon, HD-011A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25759,
+      "candidate_id": "3cb36497-dd15-4911-b0ac-14886f1831ad",
+      "note": "Mike Pohanka, HD-026A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25760,
+      "candidate_id": "1c0ce1f1-3393-4ee9-95a6-fc9cf5dcd42f",
+      "note": "Cornel Rasor, HD-001B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25761,
+      "candidate_id": "d57e8661-3021-4d2d-83dd-4f5f821639af",
+      "note": "John Shirts, HD-009A. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25762,
+      "candidate_id": "fbfac1e3-bd17-48cf-9a21-865a3b6003bd",
+      "note": "Steve Tanner, HD-013B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row. Matched on the first name as a prefix of the roster's longer form."
+    },
+    {
+      "people_id": 25763,
+      "candidate_id": null,
+      "note": "Faye Thompson, HD-008B. No Idaho state-legislative candidacy on or after 2026-11-01 in our roster; casts 461 votes in this session."
+    },
+    {
+      "people_id": 25764,
+      "candidate_id": "c42441d5-2635-4cf8-877a-bddb18e43595",
+      "note": "Camille Blaylock, SD-011. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25765,
+      "candidate_id": "8f249e45-5cb0-4cdf-8213-f96ffe130c68",
+      "note": "Josh Keyser, SD-020. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 25766,
+      "candidate_id": null,
+      "note": "Josh Kohl, SD-025. No Idaho state-legislative candidacy on or after 2026-11-01 in our roster; casts 391 votes in this session."
+    },
+    {
+      "people_id": 25767,
+      "candidate_id": "49c2ca3b-d569-4b39-96ca-d0e54fd4561d",
+      "note": "Brandon Shippy, SD-009. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 26573,
+      "candidate_id": "9177448e-ae4c-4414-8ede-b5cccfa3ab01",
+      "note": "Erin Bingham, HD-032B. Proposed by first and last name and reviewed; the district number and chamber agree with our roster row."
+    },
+    {
+      "people_id": 26574,
+      "candidate_id": null,
+      "note": "Don Hall, HD-025A. No Idaho state-legislative candidacy on or after 2026-11-01 in our roster; casts 461 votes in this session."
+    },
+    {
+      "people_id": 26575,
+      "candidate_id": "b7c2bf77-d526-4731-b267-a5c328c23b74",
+      "note": "Anne Haws, HD-016B. Hand-added: our roster has Annie, and `anne` is not a prefix of `annie`. She took this seat mid-term from Todd Achilles and appears only in the 2026 session file."
+    },
+    {
+      "people_id": 26576,
+      "candidate_id": "d0de890a-2138-46bc-a358-f7d6d36b8fbd",
+      "note": "Michael Veile, HD-035A. Hand-added: our roster has Mike. He took this seat mid-term from Kevin Andrus and appears only in the 2026 session file."
+    }
+  ]
+}

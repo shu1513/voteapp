@@ -1,0 +1,256 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1495612,
+      "measure_id": "HB 1114",
+      "vote_date": "2025-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1114, which caps what a person pays out of pocket for insulin. A health plan may not charge more than twenty-five dollars, at any one pharmacy or supplier, for a thirty-day supply of covered insulin. That cap holds no matter how much or what type the person needs, but it applies separately at each pharmacy, so filling prescriptions at two pharmacies can cost up to twenty-five dollars at each. A separate twenty-five dollar cap, also per pharmacy, applies to a thirty-day supply of covered supplies for taking insulin, such as meters, test strips and lancets. A plan may not use a deductible, a copay, or any other cost sharing to push the price above those caps. Two limits apply. On a high-deductible plan tied to a health savings account, the caps start only after the person meets the federal minimum deductible. The rule does not cover Medicare Part D drug plans. The act also makes the state employee health plan follow the same rule. The North Dakota House passed it 59-27, and it became law.",
+      "nay_description": "Voted against House Bill 1114, which caps what a person pays out of pocket for insulin. A health plan may not charge more than twenty-five dollars, at any one pharmacy or supplier, for a thirty-day supply of covered insulin. That cap holds no matter how much or what type the person needs, but it applies separately at each pharmacy, so filling prescriptions at two pharmacies can cost up to twenty-five dollars at each. A separate twenty-five dollar cap, also per pharmacy, applies to a thirty-day supply of covered supplies for taking insulin, such as meters, test strips and lancets. A plan may not use a deductible, a copay, or any other cost sharing to push the price above those caps. Two limits apply. On a high-deductible plan tied to a health savings account, the caps start only after the person meets the federal minimum deductible. The rule does not cover Medicare Part D drug plans. The act also makes the state employee health plan follow the same rule. The North Dakota House passed it 59-27, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "senate",
+      "session": "2140",
+      "roll": 1508874,
+      "measure_id": "HB 1178",
+      "vote_date": "2025-03-07",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1178, which requires every school district to adopt a policy letting a student who is old enough to vote leave campus to do so. It covers general, special and primary elections. A district may set conditions, such as how long the student may be away or a set time to go and vote. The North Dakota Senate passed it 24-23, and it became law.",
+      "nay_description": "Voted against House Bill 1178, which requires every school district to adopt a policy letting a student who is old enough to vote leave campus to do so. It covers general, special and primary elections. A district may set conditions, such as how long the student may be away or a set time to go and vote. The North Dakota Senate passed it 24-23, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1557622,
+      "measure_id": "HB 1216",
+      "vote_date": "2025-04-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1216, which changes how a health plan counts help that someone else pays toward a person's drug costs. A plan works out how much the person has paid toward a deductible, a copay, or a yearly out-of-pocket maximum. It must now count money paid for that person by anyone else, such as a drug maker's coupon. A plan may not design its benefits around whether that help exists. The rule covers a drug with no generic version. It also covers a drug that has a generic, if the person got the brand through prior authorization, a step therapy protocol, or an appeal. On a high-deductible plan tied to a health savings account, the rule starts only after the person meets the federal minimum deductible. The act also extends the rule to self-insured health plans, and it takes effect January 1, 2026. The North Dakota House passed it 56-37, and it became law.",
+      "nay_description": "Voted against House Bill 1216, which changes how a health plan counts help that someone else pays toward a person's drug costs. A plan works out how much the person has paid toward a deductible, a copay, or a yearly out-of-pocket maximum. It must now count money paid for that person by anyone else, such as a drug maker's coupon. A plan may not design its benefits around whether that help exists. The rule covers a drug with no generic version. It also covers a drug that has a generic, if the person got the brand through prior authorization, a step therapy protocol, or an appeal. On a high-deductible plan tied to a health savings account, the rule starts only after the person meets the federal minimum deductible. The act also extends the rule to self-insured health plans, and it takes effect January 1, 2026. The North Dakota House passed it 56-37, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "senate",
+      "session": "2140",
+      "roll": 1553035,
+      "measure_id": "HB 1216",
+      "vote_date": "2025-04-21",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1216, which changes how a health plan counts help that someone else pays toward a person's drug costs. A plan works out how much the person has paid toward a deductible, a copay, or a yearly out-of-pocket maximum. It must now count money paid for that person by anyone else, such as a drug maker's coupon. A plan may not design its benefits around whether that help exists. The rule covers a drug with no generic version. It also covers a drug that has a generic, if the person got the brand through prior authorization, a step therapy protocol, or an appeal. On a high-deductible plan tied to a health savings account, the rule starts only after the person meets the federal minimum deductible. The act also extends the rule to self-insured health plans, and it takes effect January 1, 2026. The North Dakota Senate passed it 29-18, and it became law.",
+      "nay_description": "Voted against House Bill 1216, which changes how a health plan counts help that someone else pays toward a person's drug costs. A plan works out how much the person has paid toward a deductible, a copay, or a yearly out-of-pocket maximum. It must now count money paid for that person by anyone else, such as a drug maker's coupon. A plan may not design its benefits around whether that help exists. The rule covers a drug with no generic version. It also covers a drug that has a generic, if the person got the brand through prior authorization, a step therapy protocol, or an appeal. On a high-deductible plan tied to a health savings account, the rule starts only after the person meets the federal minimum deductible. The act also extends the rule to self-insured health plans, and it takes effect January 1, 2026. The North Dakota Senate passed it 29-18, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1493948,
+      "measure_id": "HB 1217",
+      "vote_date": "2025-02-19",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1217, which repeals the state law that made it a crime to willfully transfer a body fluid containing HIV. That section was written around a single medical diagnosis. The act repeals it outright and puts nothing in its place. The North Dakota House passed it 50-43, and it became law.",
+      "nay_description": "Voted against House Bill 1217, which repeals the state law that made it a crime to willfully transfer a body fluid containing HIV. That section was written around a single medical diagnosis. The act repeals it outright and puts nothing in its place. The North Dakota House passed it 50-43, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "senate",
+      "session": "2140",
+      "roll": 1517749,
+      "measure_id": "HB 1217",
+      "vote_date": "2025-03-13",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1217, which repeals the state law that made it a crime to willfully transfer a body fluid containing HIV. That section was written around a single medical diagnosis. The act repeals it outright and puts nothing in its place. The North Dakota Senate passed it 34-13, and it became law.",
+      "nay_description": "Voted against House Bill 1217, which repeals the state law that made it a crime to willfully transfer a body fluid containing HIV. That section was written around a single medical diagnosis. The act repeals it outright and puts nothing in its place. The North Dakota Senate passed it 34-13, and it became law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1550256,
+      "measure_id": "HB 1318",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1318, which limits when a pesticide maker can be sued in North Dakota for failing to warn about health risks. It applies to a pesticide registered with the state agriculture commissioner or with the federal Environmental Protection Agency. For those products, a label the Environmental Protection Agency approved now counts as meeting any state duty to warn or to label about health or safety. A label that matches that federal agency's latest human health review counts the same way. So does one that matches how the federal agency classifies the product for cancer risk. The act says this holds despite any other state law. It also reaches duties to warn that come from court rulings, not only from statutes. The North Dakota House passed it 51-40, and it became law.",
+      "nay_description": "Voted against House Bill 1318, which limits when a pesticide maker can be sued in North Dakota for failing to warn about health risks. It applies to a pesticide registered with the state agriculture commissioner or with the federal Environmental Protection Agency. For those products, a label the Environmental Protection Agency approved now counts as meeting any state duty to warn or to label about health or safety. A label that matches that federal agency's latest human health review counts the same way. So does one that matches how the federal agency classifies the product for cancer risk. The act says this holds despite any other state law. It also reaches duties to warn that come from court rulings, not only from statutes. The North Dakota House passed it 51-40, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "senate",
+      "session": "2140",
+      "roll": 1547673,
+      "measure_id": "HB 1318",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1318, which limits when a pesticide maker can be sued in North Dakota for failing to warn about health risks. It applies to a pesticide registered with the state agriculture commissioner or with the federal Environmental Protection Agency. For those products, a label the Environmental Protection Agency approved now counts as meeting any state duty to warn or to label about health or safety. A label that matches that federal agency's latest human health review counts the same way. So does one that matches how the federal agency classifies the product for cancer risk. The act says this holds despite any other state law. It also reaches duties to warn that come from court rulings, not only from statutes. The North Dakota Senate passed it 29-18, and it became law.",
+      "nay_description": "Voted against House Bill 1318, which limits when a pesticide maker can be sued in North Dakota for failing to warn about health risks. It applies to a pesticide registered with the state agriculture commissioner or with the federal Environmental Protection Agency. For those products, a label the Environmental Protection Agency approved now counts as meeting any state duty to warn or to label about health or safety. A label that matches that federal agency's latest human health review counts the same way. So does one that matches how the federal agency classifies the product for cancer risk. The act says this holds despite any other state law. It also reaches duties to warn that come from court rulings, not only from statutes. The North Dakota Senate passed it 29-18, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1553037,
+      "measure_id": "HB 1600",
+      "vote_date": "2025-04-21",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1600, which sets up an immigration law clinic at the University of North Dakota school of law. The school must employ one full-time staff attorney for the clinic. That attorney may not have more than sixty matters open at any one time. Legal work may be done remotely if that suits the client, and the school may charge small fees to run the clinic. The act provides four hundred thousand dollars in one-time funding for the two years beginning July 1, 2025. It also orders a report to the next legislature on how the clinic is working. The North Dakota House passed it 64-29, and it became law.",
+      "nay_description": "Voted against House Bill 1600, which sets up an immigration law clinic at the University of North Dakota school of law. The school must employ one full-time staff attorney for the clinic. That attorney may not have more than sixty matters open at any one time. Legal work may be done remotely if that suits the client, and the school may charge small fees to run the clinic. The act provides four hundred thousand dollars in one-time funding for the two years beginning July 1, 2025. It also orders a report to the next legislature on how the clinic is working. The North Dakota House passed it 64-29, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "senate",
+      "session": "2140",
+      "roll": 1545164,
+      "measure_id": "HB 1600",
+      "vote_date": "2025-04-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1600, which sets up an immigration law clinic at the University of North Dakota school of law. The school must employ one full-time staff attorney for the clinic. That attorney may not have more than sixty matters open at any one time. Legal work may be done remotely if that suits the client, and the school may charge small fees to run the clinic. The act provides four hundred thousand dollars in one-time funding for the two years beginning July 1, 2025. It also orders a report to the next legislature on how the clinic is working. The North Dakota Senate passed it 34-13, and it became law.",
+      "nay_description": "Voted against House Bill 1600, which sets up an immigration law clinic at the University of North Dakota school of law. The school must employ one full-time staff attorney for the clinic. That attorney may not have more than sixty matters open at any one time. Legal work may be done remotely if that suits the client, and the school may charge small fees to run the clinic. The act provides four hundred thousand dollars in one-time funding for the two years beginning July 1, 2025. It also orders a report to the next legislature on how the clinic is working. The North Dakota Senate passed it 34-13, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "senate",
+      "session": "2140",
+      "roll": 1498077,
+      "measure_id": "SB 2258",
+      "vote_date": "2025-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2258, which requires a state agency enforcing one of its own rules to say what gives it the authority to do so. When the person the rule is being enforced against asks, the agency has ten days to point to the specific statute or rule its action rests on. This covers enforcement through a notice, a determination, an order or a similar action. The North Dakota Senate passed it 30-17, and it became law.",
+      "nay_description": "Voted against Senate Bill 2258, which requires a state agency enforcing one of its own rules to say what gives it the authority to do so. When the person the rule is being enforced against asks, the agency has ten days to point to the specific statute or rule its action rests on. This covers enforcement through a notice, a determination, an order or a similar action. The North Dakota Senate passed it 30-17, and it became law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1552324,
+      "measure_id": "SB 2339",
+      "vote_date": "2025-04-18",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2339, which bars a court from holding an electric utility strictly liable for wildfire damage. Strict liability means a person can win a claim without proving the utility was careless. Under this act a court may not use that standard when someone claims a utility caused a wildfire. It covers public utilities, rural electric cooperatives, city-owned utilities and transmission providers. The act also lists what a wildfire prevention plan should contain, such as clearing dry or dead plants near power lines and upgrading equipment. Making and filing such a plan is voluntary. The North Dakota House passed it 62-28, and it became law.",
+      "nay_description": "Voted against Senate Bill 2339, which bars a court from holding an electric utility strictly liable for wildfire damage. Strict liability means a person can win a claim without proving the utility was careless. Under this act a court may not use that standard when someone claims a utility caused a wildfire. It covers public utilities, rural electric cooperatives, city-owned utilities and transmission providers. The act also lists what a wildfire prevention plan should contain, such as clearing dry or dead plants near power lines and upgrading equipment. Making and filing such a plan is voluntary. The North Dakota House passed it 62-28, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": "for"
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1528344,
+      "measure_id": "SB 2352",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2352, which lets the child of a woman in prison live with her at the Heart River correctional center. It applies to a child aged eighteen months or younger, who stays under the mother's care and general control. The state must hire staff and write policies to run it. Those policies have to weigh the child's safety, how long the child may stay, and treatment and other prison needs. The North Dakota House passed it 48-42, and it became law.",
+      "nay_description": "Voted against Senate Bill 2352, which lets the child of a woman in prison live with her at the Heart River correctional center. It applies to a child aged eighteen months or younger, who stays under the mother's care and general control. The state must hire staff and write policies to run it. Those policies have to weigh the child's safety, how long the child may stay, and treatment and other prison needs. The North Dakota House passed it 48-42, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "senate",
+      "session": "2140",
+      "roll": 1496125,
+      "measure_id": "SB 2352",
+      "vote_date": "2025-02-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2352, which lets the child of a woman in prison live with her at the Heart River correctional center. It applies to a child aged eighteen months or younger, who stays under the mother's care and general control. The state must hire staff and write policies to run it. Those policies have to weigh the child's safety, how long the child may stay, and treatment and other prison needs. The North Dakota Senate passed it 28-18, and it became law.",
+      "nay_description": "Voted against Senate Bill 2352, which lets the child of a woman in prison live with her at the Heart River correctional center. It applies to a child aged eighteen months or younger, who stays under the mother's care and general control. The state must hire staff and write policies to run it. Those policies have to weigh the child's safety, how long the child may stay, and treatment and other prison needs. The North Dakota Senate passed it 28-18, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
