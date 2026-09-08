@@ -1,0 +1,223 @@
+{
+  "importerVersion": "rollcall-legiscan-import-v1",
+  "dryRun": false,
+  "skipExisting": false,
+  "startedAt": "2026-09-08T04:57:04.225Z",
+  "finishedAt": "2026-09-08T04:57:04.540Z",
+  "jurisdiction": "WV",
+  "sessionId": 2196,
+  "evidenceDir": "evidence/rollcall/legiscan-wv-2196/batch-03",
+  "scopeFrom": "2026-11-01",
+  "crosswalkFile": "evidence/rollcall/legiscan-wv-2196/crosswalk.json",
+  "crosswalkEntries": 140,
+  "peopleFile": "evidence/rollcall/legiscan-wv-2196/legiscan-people-wv-2196.json",
+  "peopleMembers": 134,
+  "files": 1,
+  "outcomes": {
+    "imported": 1
+  },
+  "actions": {
+    "insert": 14
+  },
+  "notified": 0,
+  "rolls": [
+    {
+      "file": "ls-wv-senate-2196-roll1546665.json",
+      "state": "WV",
+      "chamber": "senate",
+      "sessionId": 2196,
+      "roll": 1546665,
+      "outcome": "imported",
+      "legislativeVoteId": "fba95b7f-6784-4911-a958-45ded0313201",
+      "reviewStatus": "approved",
+      "bill": "SB587",
+      "voteDate": "2025-04-12",
+      "officialVoteDate": null,
+      "measureId": "SB 587",
+      "question": "Senate concurred in House amendments and passed bill (Roll No. 553)",
+      "originRunId": "rollcall:WV:senate:2196:1546665:2026-09-08T04:57:04.225Z",
+      "members": 34,
+      "notVoting": 0,
+      "absent": 0,
+      "resolution": {
+        "matched": 14,
+        "unmatched_reviewed": 20
+      },
+      "actions": {
+        "insert": 14
+      },
+      "notified": 0,
+      "candidates": [
+        {
+          "candidateId": "7c87e03b-2717-452f-84bc-0493f9602332",
+          "candidateName": "Bill Hamilton",
+          "peopleId": 37,
+          "memberName": "Bill Hamilton",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "4922256d-9e04-424b-9e39-5717c7f4c5f9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "97cc7389-cfef-4249-aa15-c9131397dd50",
+          "candidateName": "Jason Barrett",
+          "peopleId": 15831,
+          "memberName": "Jason Barrett",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "0b12935e-fd8d-4311-b773-1f98db41dfe8",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "54759090-5b44-4f51-876f-3a0899738b75",
+          "candidateName": "Tom Takubo",
+          "peopleId": 16951,
+          "memberName": "Tom Takubo",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "bbd12be2-7360-46a6-8550-35f62390089a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "a7f0b17d-6c59-496d-8d24-5f35814a31d1",
+          "candidateName": "Ben Queen",
+          "peopleId": 19292,
+          "memberName": "Bennett Queen",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "4f4c66fe-4d82-4723-9e05-7fee13d338a6",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "47198830-d7cd-4d3a-ad6c-d912f4fababa",
+          "candidateName": "Eric J. Tarr",
+          "peopleId": 20553,
+          "memberName": "Eric Tarr",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "f74ed1e5-c5a5-4893-ad58-f1d7c313c199",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "20184c1d-2711-4efa-b25b-b41f471a342e",
+          "candidateName": "Rollan Roberts",
+          "peopleId": 20611,
+          "memberName": "Rollan Roberts",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "d68d3156-18eb-4579-830e-cc08eb85aaf9",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "5f3438c5-c637-4947-b7ae-0c23e7b3fbcd",
+          "candidateName": "Laura Wakim Chapman",
+          "peopleId": 24150,
+          "memberName": "Laura Wakim Chapman",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "1bfd5976-9b2d-42da-8327-0ffd3838f81a",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "54323dae-7307-4e22-a70f-b409ca390776",
+          "candidateName": "Vince Deeds",
+          "peopleId": 24151,
+          "memberName": "Vince Deeds",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "9da75d57-256c-484b-909e-d85922ccfd1d",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "adc5e51a-8050-4d14-a628-267ada746159",
+          "candidateName": "Mike Oliverio",
+          "peopleId": 24152,
+          "memberName": "Mike Oliverio",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "58a3f181-a501-44f3-b143-9b48e26e4bd2",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "4879b9aa-9f6e-40d1-83ea-062ff06826ae",
+          "candidateName": "Anne B. Charnock",
+          "peopleId": 26410,
+          "memberName": "Anne Charnock",
+          "side": "yea",
+          "action": "insert",
+          "recordId": "6b44456e-93a4-4a7a-986c-e8fe021ea769",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "cb05137b-4db2-4c76-979d-8b516ee757f0",
+          "candidateName": "Mark R Maynard",
+          "peopleId": 16948,
+          "memberName": "Mark Maynard",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "23f5857e-28bd-454d-bab5-a7d899d6bef5",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "d203627c-30db-4813-8624-05200cb889ab",
+          "candidateName": "Mike Azinger",
+          "peopleId": 17581,
+          "memberName": "Mike Azinger",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "e04c917c-cbf4-4bd5-8780-f90f431ba7c4",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "f6686e08-5698-49ab-bd66-62f0f1e85665",
+          "candidateName": "Jay Taylor",
+          "peopleId": 24154,
+          "memberName": "Jay Taylor",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "68f7f74e-1ef1-4a3e-ba60-8a2fc65c131f",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        },
+        {
+          "candidateId": "949f9045-d877-4761-818c-7cdbdfe452f9",
+          "candidateName": "Darren J Thorne",
+          "peopleId": 24292,
+          "memberName": "Darren Thorne",
+          "side": "nay",
+          "action": "insert",
+          "recordId": "af57cf9f-2d0d-4f9c-9875-bb6529bc4489",
+          "ambiguousRecordIds": [],
+          "notified": false,
+          "relatedRecordIds": []
+        }
+      ],
+      "error": null
+    }
+  ]
+}

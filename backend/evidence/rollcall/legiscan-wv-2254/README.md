@@ -80,3 +80,15 @@ Four Senate sheets print no question line at all (their rolls are unanimous or
 nearly so), and nine Senate rolls captioned "Passed Senate" carry the question
 "Concur and Pass" on the sheet. Those nine are still votes on the measure, so
 they stay kept; the caption only misnames which stage.
+
+## Batches
+
+**Batch 01** covered measures that became law. That pool is used up: every
+measure-chamber slot in it carries a written disposition in
+`survey/dispositions.tsv`.
+
+**Batch 02** covers measures one chamber voted on that did not become law. This
+is the one sanctioned exception to the "became law" filter, and it is used only
+because the enacted pool is exhausted. Every description in it is written in the
+conditional and says what stage the measure reached. See `batch-02/PLAN.md` for
+the method and `batch-02/dispositions.tsv` for all 22 slots in this session.

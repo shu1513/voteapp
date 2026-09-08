@@ -1,0 +1,256 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "WV",
+   "chamber": "house",
+   "session": "2196",
+   "roll": 1509162,
+   "measure_id": "HB 2710",
+   "vote_date": "2025-03-10",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 2710, the Truth in Giving Act, which would have required stores that resell donated clothing and household goods to post who benefits. A charity would have posted its name, address and phone number. A for-profit store would have posted a sign saying it is not a charity and that donations support a for-profit business. The House passed it 70-27, but the Senate never voted on it, so it did not become law.",
+   "nay_description": "Voted against House Bill 2710, the Truth in Giving Act, which would have required stores that resell donated clothing and household goods to post who benefits. A charity would have posted its name, address and phone number. A for-profit store would have posted a sign saying it is not a charity and that donations support a for-profit business. The House passed it 70-27, but the Senate never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "house",
+   "session": "2196",
+   "roll": 1517068,
+   "measure_id": "HB 2719",
+   "vote_date": "2025-03-13",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 2719, which would have ended West Virginia's ban on companies giving money directly to candidates. Corporations and membership organizations could have given up to $2,800 for a nomination and $2,800 for a general election, the same cap individuals face. Donors above $250 would have had to report their business address and line of business. The House rejected it 41-54, so it did not become law.",
+   "nay_description": "Voted against House Bill 2719, which would have ended West Virginia's ban on companies giving money directly to candidates. Corporations and membership organizations could have given up to $2,800 for a nomination and $2,800 for a general election, the same cap individuals face. Donors above $250 would have had to report their business address and line of business. The House rejected it 41-54, so it did not become law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2196",
+   "roll": 1541880,
+   "measure_id": "HB 3017",
+   "vote_date": "2025-04-09",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 3017, which would have required county commissions to inspect every ballot-counting machine before early voting and certify in a public report that no machine holds a modem or SIM card. The Secretary of State would have audited a random sample of counties. The Senate added a new complaint and investigation procedure for election law violations, then rejected the whole bill 16-18, so it did not become law.",
+   "nay_description": "Voted against House Bill 3017, which would have required county commissions to inspect every ballot-counting machine before early voting and certify in a public report that no machine holds a modem or SIM card. The Secretary of State would have audited a random sample of counties. The Senate added a new complaint and investigation procedure for election law violations, then rejected the whole bill 16-18, so it did not become law.",
+   "labels": [
+    {
+     "slug": "election_integrity",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "house",
+   "session": "2196",
+   "roll": 1530804,
+   "measure_id": "HB 3276",
+   "vote_date": "2025-03-31",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 3276, which would have let publicly owned water and sewer utilities raise customer rates once a year without a hearing or a vote by any elected body. The increase could match a federal inflation measure for water and sewer bills. A utility could take four such increases in a row. The House passed it 70-28, but the Senate never voted on it, so it did not become law.",
+   "nay_description": "Voted against House Bill 3276, which would have let publicly owned water and sewer utilities raise customer rates once a year without a hearing or a vote by any elected body. The increase could match a federal inflation measure for water and sewer bills. A utility could take four such increases in a row. The House passed it 70-28, but the Senate never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "cost_of_living_reduction",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "house",
+   "session": "2196",
+   "roll": 1534352,
+   "measure_id": "HB 3412",
+   "vote_date": "2025-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 3412, which would have removed the West Virginia Legislature from the state's Freedom of Information Act. The Legislature would instead have written its own rules on which of its records the public may see. Every other public body, including state agencies, counties, cities and school boards, would have stayed under the open records law. The House passed it 58-42, but the two chambers never agreed on a final version, so it did not become law.",
+   "nay_description": "Voted against House Bill 3412, which would have removed the West Virginia Legislature from the state's Freedom of Information Act. The Legislature would instead have written its own rules on which of its records the public may see. Every other public body, including state agencies, counties, cities and school boards, would have stayed under the open records law. The House passed it 58-42, but the two chambers never agreed on a final version, so it did not become law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2196",
+   "roll": 1545631,
+   "measure_id": "HB 3412",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 3412 as rewritten by the Senate. The Senate struck the House text and instead narrowed the state's Freedom of Information Act for every public body. By the Senate's own summary the rewrite widened what records are exempt, removed the presumption that records are public, extended the response deadline from five business days to 14, and allowed search and retrieval fees. The Senate passed it 25-9, but the House never agreed to the rewrite, so it did not become law.",
+   "nay_description": "Voted against House Bill 3412 as rewritten by the Senate. The Senate struck the House text and instead narrowed the state's Freedom of Information Act for every public body. By the Senate's own summary the rewrite widened what records are exempt, removed the presumption that records are public, extended the response deadline from five business days to 14, and allowed search and retrieval fees. The Senate passed it 25-9, but the House never agreed to the rewrite, so it did not become law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "house",
+   "session": "2196",
+   "roll": 1534391,
+   "measure_id": "HB 3446",
+   "vote_date": "2025-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 3446, which would have required every West Virginia public high school to help each student file the federal student aid application known as the FAFSA. A family that did not want to file could instead tell the state Department of Education that they understood the form and chose not to. An earlier version would have made filing a condition of getting a diploma, but the House removed that before voting. The House passed it 75-24, but the Senate never voted on it, so it did not become law.",
+   "nay_description": "Voted against House Bill 3446, which would have required every West Virginia public high school to help each student file the federal student aid application known as the FAFSA. A family that did not want to file could instead tell the state Department of Education that they understood the form and chose not to. An earlier version would have made filing a condition of getting a diploma, but the House removed that before voting. The House passed it 75-24, but the Senate never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2196",
+   "roll": 1496143,
+   "measure_id": "SB 460",
+   "vote_date": "2025-02-21",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 460, which would have let a parent opt a child out of West Virginia's school vaccine requirements by handing the school a written statement of a religious or philosophical objection. No approval would have been needed. A doctor, physician assistant or nurse practitioner could also have written a medical exemption directly to the school, replacing state review. The Senate passed it 20-12, but the House rejected its own amended version, so it did not become law.",
+   "nay_description": "Voted against Senate Bill 460, which would have let a parent opt a child out of West Virginia's school vaccine requirements by handing the school a written statement of a religious or philosophical objection. No approval would have been needed. A doctor, physician assistant or nurse practitioner could also have written a medical exemption directly to the school, replacing state review. The Senate passed it 20-12, but the House rejected its own amended version, so it did not become law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "house",
+   "session": "2196",
+   "roll": 1524865,
+   "measure_id": "SB 460",
+   "vote_date": "2025-03-24",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 460 as amended by the House, which would have let a parent opt a child out of West Virginia's school vaccine requirements with a written statement of a religious objection. The House version dropped the philosophical objection the Senate had allowed. It also let a doctor, physician assistant or nurse practitioner write a medical exemption straight to the school. The House rejected it 42-56, so it did not become law.",
+   "nay_description": "Voted against Senate Bill 460 as amended by the House, which would have let a parent opt a child out of West Virginia's school vaccine requirements with a written statement of a religious objection. The House version dropped the philosophical objection the Senate had allowed. It also let a doctor, physician assistant or nurse practitioner write a medical exemption straight to the school. The House rejected it 42-56, so it did not become law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2196",
+   "roll": 1519785,
+   "measure_id": "SB 548",
+   "vote_date": "2025-03-18",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 548, which would have required West Virginia's county public schools serving grades six through 12 to give students at least one hour, or one class period, of youth violence prevention training each year. Schools serving any grade from kindergarten through 12 would have given a further hour or class period on combating social isolation, using programs the state Department of Education approved. Charter schools and private schools could have taken part or not, as they chose. The Senate passed it 26-8, but the House never voted on it, so it did not become law.",
+   "nay_description": "Voted against Senate Bill 548, which would have required West Virginia's county public schools serving grades six through 12 to give students at least one hour, or one class period, of youth violence prevention training each year. Schools serving any grade from kindergarten through 12 would have given a further hour or class period on combating social isolation, using programs the state Department of Education approved. Charter schools and private schools could have taken part or not, as they chose. The Senate passed it 26-8, but the House never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2196",
+   "roll": 1524953,
+   "measure_id": "SB 579",
+   "vote_date": "2025-03-24",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 579, which would have barred West Virginia cities in the state's Home Rule program from protecting any group that state law does not already protect. It would also have voided the local anti-discrimination ordinances those cities had already passed. In practice that reaches city protections for sexual orientation and gender identity, which state law does not cover. The Senate passed it 25-8, but the House never voted on it, so it did not become law.",
+   "nay_description": "Voted against Senate Bill 579, which would have barred West Virginia cities in the state's Home Rule program from protecting any group that state law does not already protect. It would also have voided the local anti-discrimination ordinances those cities had already passed. In practice that reaches city protections for sexual orientation and gender identity, which state law does not cover. The Senate passed it 25-8, but the House never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2196",
+   "roll": 1518120,
+   "measure_id": "SB 592",
+   "vote_date": "2025-03-14",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 592, which would have removed several kinds of storage tanks from the safety law West Virginia passed after the 2014 Elk River chemical spill. Small tanks on coal mining permit sites and more oil and gas tanks would have left the program if they sat outside the protection zones around drinking water intakes. Those same kinds of tanks inside the zones would have stayed regulated, but the owner rather than an outside engineer would have inspected and certified them. The Senate passed it 25-7, but the House never voted on it, so it did not become law.",
+   "nay_description": "Voted against Senate Bill 592, which would have removed several kinds of storage tanks from the safety law West Virginia passed after the 2014 Elk River chemical spill. Small tanks on coal mining permit sites and more oil and gas tanks would have left the program if they sat outside the protection zones around drinking water intakes. Those same kinds of tanks inside the zones would have stayed regulated, but the owner rather than an outside engineer would have inspected and certified them. The Senate passed it 25-7, but the House never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2196",
+   "roll": 1530842,
+   "measure_id": "SB 718",
+   "vote_date": "2025-03-31",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 718, which would have required West Virginia hospitals to publish their prices service by service, their facility fees, and their discount contracts with insurers. Hospitals would also have reported large payments and who owns more than five percent of the hospital. A hospital still out of compliance 10 days after being notified would have owed $1,000 a day. The Senate passed it 22-12, but the House never voted on it, so it did not become law.",
+   "nay_description": "Voted against Senate Bill 718, which would have required West Virginia hospitals to publish their prices service by service, their facility fees, and their discount contracts with insurers. Hospitals would also have reported large payments and who owns more than five percent of the hospital. A hospital still out of compliance 10 days after being notified would have owed $1,000 a day. The Senate passed it 22-12, but the House never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2196",
+   "roll": 1534410,
+   "measure_id": "SB 730",
+   "vote_date": "2025-04-02",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 730, which would have required companies that arrange forest carbon offset deals to register each deal with the state Division of Forestry and record it at the county courthouse within 60 days. A carbon offset deal pays a landowner to keep carbon stored in the forest. Recording it would make the deal show up in a title search. The Senate rejected it 16-18, so it did not become law.",
+   "nay_description": "Voted against Senate Bill 730, which would have required companies that arrange forest carbon offset deals to register each deal with the state Division of Forestry and record it at the county courthouse within 60 days. A carbon offset deal pays a landowner to keep carbon stored in the forest. Recording it would make the deal show up in a title search. The Senate rejected it 16-18, so it did not become law.",
+   "labels": [
+    {
+     "slug": "corporate_accountability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,94 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "WV",
+   "chamber": "house",
+   "session": "2254",
+   "roll": 1616514,
+   "measure_id": "HB 4081",
+   "vote_date": "2026-01-23",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4081, which would have created a state grant program to open and stock food and hygiene pantries at West Virginia public colleges. The money could pay for the pantry space, food, and items such as soap, toothpaste, bandages and feminine hygiene products. Colleges would have had to send the state monthly inventories and receipts. The House passed it 71-22, but the Senate never voted on it, so it did not become law.",
+   "nay_description": "Voted against House Bill 4081, which would have created a state grant program to open and stock food and hygiene pantries at West Virginia public colleges. The money could pay for the pantry space, food, and items such as soap, toothpaste, bandages and feminine hygiene products. Colleges would have had to send the state monthly inventories and receipts. The House passed it 71-22, but the Senate never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "house",
+   "session": "2254",
+   "roll": 1628052,
+   "measure_id": "HB 4198",
+   "vote_date": "2026-02-10",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4198, which would have required every West Virginia employer to check each new hire through E-Verify, the federal online system that confirms a worker may legally work in the United States. An employer would have had to fire a worker whose check did not clear within 20 days. Repeat violations could cost an employer state contracts and, on a third offense, its business license. The House passed it 69-24 and the Senate passed a changed version, but the House never agreed to those changes, so it did not become law.",
+   "nay_description": "Voted against House Bill 4198, which would have required every West Virginia employer to check each new hire through E-Verify, the federal online system that confirms a worker may legally work in the United States. An employer would have had to fire a worker whose check did not clear within 20 days. Repeat violations could cost an employer state contracts and, on a third offense, its business license. The House passed it 69-24 and the Senate passed a changed version, but the House never agreed to those changes, so it did not become law.",
+   "labels": [
+    {
+     "slug": "immigration",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "house",
+   "session": "2254",
+   "roll": 1650500,
+   "measure_id": "HB 5319",
+   "vote_date": "2026-03-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 5319, which would have made it a crime to camp without permission on public property in West Virginia, including streets, parks and trails, or to store belongings there. Approved campgrounds, lawful camping under state park rules, and sleeping overnight in a legally parked, registered and insured vehicle would have stayed allowed. Penalties rose from a written warning to a $200 fine and then up to 30 days in jail, and having no shelter available was not a defense. The House passed it 62-32, but the Senate never voted on it, so it did not become law.",
+   "nay_description": "Voted against House Bill 5319, which would have made it a crime to camp without permission on public property in West Virginia, including streets, parks and trails, or to store belongings there. Approved campgrounds, lawful camping under state park rules, and sleeping overnight in a legally parked, registered and insured vehicle would have stayed allowed. Penalties rose from a written warning to a $200 fine and then up to 30 days in jail, and having no shelter available was not a defense. The House passed it 62-32, but the Senate never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2254",
+   "roll": 1652674,
+   "measure_id": "SB 420",
+   "vote_date": "2026-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 420, which would have pushed West Virginia's regulated electric utilities to run their coal-fired plants at about two thirds of full output year round, with rate treatment tied to how well they met that mark. A utility could not have retired or shrunk a coal or gas plant without approval from two state agencies. Utilities also could not have charged customers for new wind or solar investment. The Senate passed it 22-11, but the House never voted on it, so it did not become law.",
+   "nay_description": "Voted against Senate Bill 420, which would have pushed West Virginia's regulated electric utilities to run their coal-fired plants at about two thirds of full output year round, with rate treatment tied to how well they met that mark. A utility could not have retired or shrunk a coal or gas plant without approval from two state agencies. Utilities also could not have charged customers for new wind or solar investment. The Senate passed it 22-11, but the House never voted on it, so it did not become law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2254",
+   "roll": 1652310,
+   "measure_id": "SB 963",
+   "vote_date": "2026-03-04",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 963, which would have limited when a domestic violence protective order can take away a person's guns. Today that firearm ban is automatic in every protective order. The bill would have required notice, and then either that the person failed to appear, agreed to give up the guns, or lost at a hearing where a judge found abuse. The Senate passed it 22-11, but the House never voted on passage, so it did not become law.",
+   "nay_description": "Voted against Senate Bill 963, which would have limited when a domestic violence protective order can take away a person's guns. Today that firearm ban is automatic in every protective order. The bill would have required notice, and then either that the person failed to appear, agreed to give up the guns, or lost at a hearing where a judge found abuse. The Senate passed it 22-11, but the House never voted on passage, so it did not become law.",
+   "labels": [
+    {
+     "slug": "gun_control",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
