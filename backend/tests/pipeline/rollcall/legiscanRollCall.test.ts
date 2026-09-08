@@ -216,6 +216,34 @@ describe("classifyLegiscanRollCall", () => {
     });
   });
 
+  it("holds a roll the state's own record contradicts, by id, ahead of every pattern", () => {
+    // Idaho HJR004's House roll: LegiScan's `passed` flag reads 0 on an
+    // ADOPTED joint resolution, so the stored result would say Failed. The
+    // hold keeps it stored and surfaced but never queueable, whatever its
+    // desc and tally say.
+    const config = { ...CONFIG, heldRollCallIds: { 1506354: "HJR004 House: adopted, flag says failed" } };
+    expect(classifyLegiscanRollCall({ ...base, config, desc: "Third Reading", total: 100, rollCallId: 1506354 })).toEqual({
+      isFloorVote: null,
+      questionClass: null,
+      reason: "held:HJR004 House: adopted, flag says failed",
+    });
+    // The same desc and tally on a roll that is not held is an ordinary kept floor vote.
+    expect(
+      classifyLegiscanRollCall({ ...base, config, desc: "Third Reading", total: 100, rollCallId: 1515096 }).isFloorVote
+    ).toBe(true);
+    // A held roll that also matches an exclusion still reads as held: the hold
+    // is the stronger claim and must not be masked by a pattern.
+    expect(
+      classifyLegiscanRollCall({ ...base, config, desc: "Refused to concur", total: 95, rollCallId: 1506354 }).reason
+    ).toMatch(/^held:/);
+    // Idaho's real entry holds exactly the one roll the survey proved wrong
+    // (a member on the wrong side). The four adopted joint resolutions whose
+    // `passed` flag reads 0 are recorded in the config, not held, following
+    // North Dakota: the hold list is for tallies and member lists the state
+    // contradicts, and `result` is metadata nothing downstream reads.
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS.ID.heldRollCallIds ?? {})).toEqual(["1498007"]);
+  });
+
   it("rejects an unknown desc with a committee-sized tally, surfaces the rest", () => {
     expect(classifyLegiscanRollCall({ ...base, desc: "DO PASS", total: 12 })).toEqual({
       isFloorVote: false,
@@ -1405,6 +1433,8 @@ describe("getLegiscanStateConfig", () => {
       "OR",
       "OR-2252",
       "ND",
+      "ID",
+      "ID-2246",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -1439,6 +1469,7 @@ describe("getLegiscanStateConfig", () => {
       "MN",
       "OR",
       "ND",
+      "ID",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
