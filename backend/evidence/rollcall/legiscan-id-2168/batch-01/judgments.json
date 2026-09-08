@@ -1,0 +1,374 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1472604,
+      "measure_id": "H 7",
+      "vote_date": "2025-01-21",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 7, which sets a minimum fine for possessing a small amount of marijuana. Idaho law already treats possession of three ounces or less as a misdemeanor. The act adds that a person eighteen or older convicted of that offense must be fined at least three hundred dollars. That fine comes on top of the jail time and other penalties the law already allows. Possession of more than three ounces stays a felony. The Idaho House passed it 54-14, and it became law.",
+      "nay_description": "Voted against House Bill 7, which sets a minimum fine for possessing a small amount of marijuana. Idaho law already treats possession of three ounces or less as a misdemeanor. The act adds that a person eighteen or older convicted of that offense must be fined at least three hundred dollars. That fine comes on top of the jail time and other penalties the law already allows. Possession of more than three ounces stays a felony. The Idaho House passed it 54-14, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1492015,
+      "measure_id": "H 7",
+      "vote_date": "2025-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 7, which sets a minimum fine for possessing a small amount of marijuana. Idaho law already treats possession of three ounces or less as a misdemeanor. The act adds that a person eighteen or older convicted of that offense must be fined at least three hundred dollars. That fine comes on top of the jail time and other penalties the law already allows. Possession of more than three ounces stays a felony. The Idaho Senate passed it 27-8, and it became law.",
+      "nay_description": "Voted against House Bill 7, which sets a minimum fine for possessing a small amount of marijuana. Idaho law already treats possession of three ounces or less as a misdemeanor. The act adds that a person eighteen or older convicted of that offense must be fined at least three hundred dollars. That fine comes on top of the jail time and other penalties the law already allows. Possession of more than three ounces stays a felony. The Idaho Senate passed it 27-8, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1519169,
+      "measure_id": "H 135",
+      "vote_date": "2025-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 135, which narrows who can receive public benefits in Idaho without proof of lawful presence. State and local agencies must already check that an applicant aged eighteen or older is lawfully present in the United States. The act removes several exemptions from that check. Immunizations and the testing and treatment of communicable diseases are no longer exempt. Neither is prenatal care, postnatal care in the first year after birth, or food assistance for a child under eighteen. The act narrows the exemption for community services such as soup kitchens and crisis counseling so that it covers short-term shelters. It keeps the exemption for emergency medical treatment and adds a general exemption where federal law requires one. The Idaho House passed it 46-22, and it became law.",
+      "nay_description": "Voted against House Bill 135, which narrows who can receive public benefits in Idaho without proof of lawful presence. State and local agencies must already check that an applicant aged eighteen or older is lawfully present in the United States. The act removes several exemptions from that check. Immunizations and the testing and treatment of communicable diseases are no longer exempt. Neither is prenatal care, postnatal care in the first year after birth, or food assistance for a child under eighteen. The act narrows the exemption for community services such as soup kitchens and crisis counseling so that it covers short-term shelters. It keeps the exemption for emergency medical treatment and adds a general exemption where federal law requires one. The Idaho House passed it 46-22, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1532746,
+      "measure_id": "H 135",
+      "vote_date": "2025-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 135, which narrows who can receive public benefits in Idaho without proof of lawful presence. State and local agencies must already check that an applicant aged eighteen or older is lawfully present in the United States. The act removes several exemptions from that check. Immunizations and the testing and treatment of communicable diseases are no longer exempt. Neither is prenatal care, postnatal care in the first year after birth, or food assistance for a child under eighteen. The act narrows the exemption for community services such as soup kitchens and crisis counseling so that it covers short-term shelters. It keeps the exemption for emergency medical treatment and adds a general exemption where federal law requires one. The Idaho Senate passed it 26-9, and it became law.",
+      "nay_description": "Voted against House Bill 135, which narrows who can receive public benefits in Idaho without proof of lawful presence. State and local agencies must already check that an applicant aged eighteen or older is lawfully present in the United States. The act removes several exemptions from that check. Immunizations and the testing and treatment of communicable diseases are no longer exempt. Neither is prenatal care, postnatal care in the first year after birth, or food assistance for a child under eighteen. The act narrows the exemption for community services such as soup kitchens and crisis counseling so that it covers short-term shelters. It keeps the exemption for emergency medical treatment and adds a general exemption where federal law requires one. The Idaho Senate passed it 26-9, and it became law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "for",
+          "nay": null
+        },
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1499312,
+      "measure_id": "H 245",
+      "vote_date": "2025-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 245, which raises the age limit for extended foster care in Idaho. A court could order extended foster care for a young adult up to age twenty-one. The act raises that limit to twenty-three, and makes the same change to continued care and to transitional living. It also lets the Department of Health and Welfare set separate licensing standards for relatives who take in a child. That sits alongside the department's existing power to speed up a relative placement or waive a licensing standard. The act ends the health board's duty to write rules for relative foster care and voids the department's current foster care licensing rules. The Idaho House passed it 53-17, and it became law.",
+      "nay_description": "Voted against House Bill 245, which raises the age limit for extended foster care in Idaho. A court could order extended foster care for a young adult up to age twenty-one. The act raises that limit to twenty-three, and makes the same change to continued care and to transitional living. It also lets the Department of Health and Welfare set separate licensing standards for relatives who take in a child. That sits alongside the department's existing power to speed up a relative placement or waive a licensing standard. The act ends the health board's duty to write rules for relative foster care and voids the department's current foster care licensing rules. The Idaho House passed it 53-17, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1517421,
+      "measure_id": "H 245",
+      "vote_date": "2025-03-13",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 245, which raises the age limit for extended foster care in Idaho. A court could order extended foster care for a young adult up to age twenty-one. The act raises that limit to twenty-three, and makes the same change to continued care and to transitional living. It also lets the Department of Health and Welfare set separate licensing standards for relatives who take in a child. That sits alongside the department's existing power to speed up a relative placement or waive a licensing standard. The act ends the health board's duty to write rules for relative foster care and voids the department's current foster care licensing rules. The Idaho Senate passed it 21-14, and it became law.",
+      "nay_description": "Voted against House Bill 245, which raises the age limit for extended foster care in Idaho. A court could order extended foster care for a young adult up to age twenty-one. The act raises that limit to twenty-three, and makes the same change to continued care and to transitional living. It also lets the Department of Health and Welfare set separate licensing standards for relatives who take in a child. That sits alongside the department's existing power to speed up a relative placement or waive a licensing standard. The act ends the health board's duty to write rules for relative foster care and voids the department's current foster care licensing rules. The Idaho Senate passed it 21-14, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1536751,
+      "measure_id": "H 253",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 253, which treats public records requests from people outside Idaho differently from requests by residents. The act defines a resident as a person living in Idaho for at least thirty continuous days, and makes every requester declare under oath whether they are one. An agency must answer a resident within three working days, but has thirty days to answer someone who is not a resident. The free first two hours of staff time and first one hundred pages now apply only to residents. So does the fee waiver for a request that would significantly help the public understand government. An agency may set a separate fee schedule for people who are not residents, limited only by its actual cost. The Idaho House passed it 45-24, and it became law.",
+      "nay_description": "Voted against House Bill 253, which treats public records requests from people outside Idaho differently from requests by residents. The act defines a resident as a person living in Idaho for at least thirty continuous days, and makes every requester declare under oath whether they are one. An agency must answer a resident within three working days, but has thirty days to answer someone who is not a resident. The free first two hours of staff time and first one hundred pages now apply only to residents. So does the fee waiver for a request that would significantly help the public understand government. An agency may set a separate fee schedule for people who are not residents, limited only by its actual cost. The Idaho House passed it 45-24, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1532841,
+      "measure_id": "H 253",
+      "vote_date": "2025-04-01",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 253, which treats public records requests from people outside Idaho differently from requests by residents. The act defines a resident as a person living in Idaho for at least thirty continuous days, and makes every requester declare under oath whether they are one. An agency must answer a resident within three working days, but has thirty days to answer someone who is not a resident. The free first two hours of staff time and first one hundred pages now apply only to residents. So does the fee waiver for a request that would significantly help the public understand government. An agency may set a separate fee schedule for people who are not residents, limited only by its actual cost. The Idaho Senate passed it 25-9, and it became law.",
+      "nay_description": "Voted against House Bill 253, which treats public records requests from people outside Idaho differently from requests by residents. The act defines a resident as a person living in Idaho for at least thirty continuous days, and makes every requester declare under oath whether they are one. An agency must answer a resident within three working days, but has thirty days to answer someone who is not a resident. The free first two hours of staff time and first one hundred pages now apply only to residents. So does the fee waiver for a request that would significantly help the public understand government. An agency may set a separate fee schedule for people who are not residents, limited only by its actual cost. The Idaho Senate passed it 25-9, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1531058,
+      "measure_id": "H 271",
+      "vote_date": "2025-03-31",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 271, which makes it a crime to advertise a product or service that is illegal where it is offered. A person who willfully publishes a commercial advertisement in any medium in Idaho for such a product or service is guilty of a misdemeanor. The fine is five hundred dollars for each violation, and each day the advertisement stays up counts as a separate offense. A commercial advertisement is one that encourages consumers to engage with a product or service to benefit a business. Fines go ninety percent to the sheriff's office in the county where the violation happened and ten percent to that county's district court fund. The Idaho House passed it 50-20, and it became law.",
+      "nay_description": "Voted against House Bill 271, which makes it a crime to advertise a product or service that is illegal where it is offered. A person who willfully publishes a commercial advertisement in any medium in Idaho for such a product or service is guilty of a misdemeanor. The fine is five hundred dollars for each violation, and each day the advertisement stays up counts as a separate offense. A commercial advertisement is one that encourages consumers to engage with a product or service to benefit a business. Fines go ninety percent to the sheriff's office in the county where the violation happened and ten percent to that county's district court fund. The Idaho House passed it 50-20, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1528070,
+      "measure_id": "H 271",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 271, which makes it a crime to advertise a product or service that is illegal where it is offered. A person who willfully publishes a commercial advertisement in any medium in Idaho for such a product or service is guilty of a misdemeanor. The fine is five hundred dollars for each violation, and each day the advertisement stays up counts as a separate offense. A commercial advertisement is one that encourages consumers to engage with a product or service to benefit a business. Fines go ninety percent to the sheriff's office in the county where the violation happened and ten percent to that county's district court fund. The Idaho Senate passed it 24-10, and it became law.",
+      "nay_description": "Voted against House Bill 271, which makes it a crime to advertise a product or service that is illegal where it is offered. A person who willfully publishes a commercial advertisement in any medium in Idaho for such a product or service is guilty of a misdemeanor. The fine is five hundred dollars for each violation, and each day the advertisement stays up counts as a separate offense. A commercial advertisement is one that encourages consumers to engage with a product or service to benefit a business. Fines go ninety percent to the sheriff's office in the county where the violation happened and ten percent to that county's district court fund. The Idaho Senate passed it 24-10, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1506825,
+      "measure_id": "H 290",
+      "vote_date": "2025-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 290, which moves Idaho's school and daycare immunization requirements out of health board rules and into state law. The act lists the required vaccines in the statute itself, so the Board of Health and Welfare can no longer set or change that list by rule. It voids the department's current immunization rules and ends the Idaho Childhood Immunization Policy Commission. Parents keep the existing right to exempt a child on medical, religious, or other grounds by signed statement. The act adds a right for a student who has reached adulthood to exempt themselves at any school, including a college or university. It also makes daycare facilities exclude a child who is not in compliance, lets the department inspect them, and makes schools report immunization figures by grade each year. The Idaho House passed it 49-21, and it became law.",
+      "nay_description": "Voted against House Bill 290, which moves Idaho's school and daycare immunization requirements out of health board rules and into state law. The act lists the required vaccines in the statute itself, so the Board of Health and Welfare can no longer set or change that list by rule. It voids the department's current immunization rules and ends the Idaho Childhood Immunization Policy Commission. Parents keep the existing right to exempt a child on medical, religious, or other grounds by signed statement. The act adds a right for a student who has reached adulthood to exempt themselves at any school, including a college or university. It also makes daycare facilities exclude a child who is not in compliance, lets the department inspect them, and makes schools report immunization figures by grade each year. The Idaho House passed it 49-21, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1520194,
+      "measure_id": "H 290",
+      "vote_date": "2025-03-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 290, which moves Idaho's school and daycare immunization requirements out of health board rules and into state law. The act lists the required vaccines in the statute itself, so the Board of Health and Welfare can no longer set or change that list by rule. It voids the department's current immunization rules and ends the Idaho Childhood Immunization Policy Commission. Parents keep the existing right to exempt a child on medical, religious, or other grounds by signed statement. The act adds a right for a student who has reached adulthood to exempt themselves at any school, including a college or university. It also makes daycare facilities exclude a child who is not in compliance, lets the department inspect them, and makes schools report immunization figures by grade each year. The Idaho Senate passed it 23-11, and it became law.",
+      "nay_description": "Voted against House Bill 290, which moves Idaho's school and daycare immunization requirements out of health board rules and into state law. The act lists the required vaccines in the statute itself, so the Board of Health and Welfare can no longer set or change that list by rule. It voids the department's current immunization rules and ends the Idaho Childhood Immunization Policy Commission. Parents keep the existing right to exempt a child on medical, religious, or other grounds by signed statement. The act adds a right for a student who has reached adulthood to exempt themselves at any school, including a college or university. It also makes daycare facilities exclude a child who is not in compliance, lets the department inspect them, and makes schools report immunization figures by grade each year. The Idaho Senate passed it 23-11, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1503952,
+      "measure_id": "H 294",
+      "vote_date": "2025-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 294, which raises the civil penalties Idaho can impose for breaking its pipeline safety laws. The old law capped the penalty at two thousand dollars a day for each violation, with a limit of two hundred thousand dollars for a related series of violations. The act deletes both caps. In their place it sets the penalty at the federal maximum under 49 CFR 190.223 at the time of the violation, which is far higher. The penalty reaches anyone who breaks, or helps someone break, Idaho's pipeline safety and gas transportation laws or a Public Utilities Commission order or rule under them. The Idaho House passed it 44-26, and it became law.",
+      "nay_description": "Voted against House Bill 294, which raises the civil penalties Idaho can impose for breaking its pipeline safety laws. The old law capped the penalty at two thousand dollars a day for each violation, with a limit of two hundred thousand dollars for a related series of violations. The act deletes both caps. In their place it sets the penalty at the federal maximum under 49 CFR 190.223 at the time of the violation, which is far higher. The penalty reaches anyone who breaks, or helps someone break, Idaho's pipeline safety and gas transportation laws or a Public Utilities Commission order or rule under them. The Idaho House passed it 44-26, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1519287,
+      "measure_id": "H 294",
+      "vote_date": "2025-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 294, which raises the civil penalties Idaho can impose for breaking its pipeline safety laws. The old law capped the penalty at two thousand dollars a day for each violation, with a limit of two hundred thousand dollars for a related series of violations. The act deletes both caps. In their place it sets the penalty at the federal maximum under 49 CFR 190.223 at the time of the violation, which is far higher. The penalty reaches anyone who breaks, or helps someone break, Idaho's pipeline safety and gas transportation laws or a Public Utilities Commission order or rule under them. The Idaho Senate passed it 27-8, and it became law.",
+      "nay_description": "Voted against House Bill 294, which raises the civil penalties Idaho can impose for breaking its pipeline safety laws. The old law capped the penalty at two thousand dollars a day for each violation, with a limit of two hundred thousand dollars for a related series of violations. The act deletes both caps. In their place it sets the penalty at the federal maximum under 49 CFR 190.223 at the time of the violation, which is far higher. The penalty reaches anyone who breaks, or helps someone break, Idaho's pipeline safety and gas transportation laws or a Public Utilities Commission order or rule under them. The Idaho Senate passed it 27-8, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1525975,
+      "measure_id": "H 398",
+      "vote_date": "2025-03-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 398, which rewrites Idaho's lobbying rules and moves them into the state's open government chapter. The act repeals the lobbying sections of the campaign finance law and creates a lobbying disclosure chapter whose stated purpose is transparency. It widens what counts as lobbying. The definition now covers indirect lobbying, meaning paid efforts to get the public to contact lawmakers through email, texting, social media, billboards, or door-to-door work. It also covers contacts with executive branch officials about rulemaking, rate setting, buying, contracts, bids, and bond issues, not only about legislation. A group talking with its own members is not lobbying. The Idaho House passed it 54-14, and it became law.",
+      "nay_description": "Voted against House Bill 398, which rewrites Idaho's lobbying rules and moves them into the state's open government chapter. The act repeals the lobbying sections of the campaign finance law and creates a lobbying disclosure chapter whose stated purpose is transparency. It widens what counts as lobbying. The definition now covers indirect lobbying, meaning paid efforts to get the public to contact lawmakers through email, texting, social media, billboards, or door-to-door work. It also covers contacts with executive branch officials about rulemaking, rate setting, buying, contracts, bids, and bond issues, not only about legislation. A group talking with its own members is not lobbying. The Idaho House passed it 54-14, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1536122,
+      "measure_id": "H 398",
+      "vote_date": "2025-04-02",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 398, which rewrites Idaho's lobbying rules and moves them into the state's open government chapter. The act repeals the lobbying sections of the campaign finance law and creates a lobbying disclosure chapter whose stated purpose is transparency. It widens what counts as lobbying. The definition now covers indirect lobbying, meaning paid efforts to get the public to contact lawmakers through email, texting, social media, billboards, or door-to-door work. It also covers contacts with executive branch officials about rulemaking, rate setting, buying, contracts, bids, and bond issues, not only about legislation. A group talking with its own members is not lobbying. The Idaho Senate passed it 27-8, and it became law.",
+      "nay_description": "Voted against House Bill 398, which rewrites Idaho's lobbying rules and moves them into the state's open government chapter. The act repeals the lobbying sections of the campaign finance law and creates a lobbying disclosure chapter whose stated purpose is transparency. It widens what counts as lobbying. The definition now covers indirect lobbying, meaning paid efforts to get the public to contact lawmakers through email, texting, social media, billboards, or door-to-door work. It also covers contacts with executive branch officials about rulemaking, rate setting, buying, contracts, bids, and bond issues, not only about legislation. A group talking with its own members is not lobbying. The Idaho Senate passed it 27-8, and it became law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1536768,
+      "measure_id": "S 1180",
+      "vote_date": "2025-04-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1180, which sets rules for how Idaho agencies may use automated license plate readers. These devices photograph the plates of passing vehicles without the driver doing anything. An agency may use them for law enforcement, to study traffic flow, or both. For law enforcement the data may be used only to investigate a felony, a misdemeanor, or a traffic accident, or to look for a missing or endangered person. It may not be used to enforce ordinary traffic tickets. Only cleared staff may reach the data, every search must be logged, and each agency must audit those logs twice a year and train its users. Misuse can bring discipline, penalties, or prosecution. The act also requires a front license plate only on a vehicle that has a bracket for one. The Idaho House passed it 45-24, and it became law.",
+      "nay_description": "Voted against Senate Bill 1180, which sets rules for how Idaho agencies may use automated license plate readers. These devices photograph the plates of passing vehicles without the driver doing anything. An agency may use them for law enforcement, to study traffic flow, or both. For law enforcement the data may be used only to investigate a felony, a misdemeanor, or a traffic accident, or to look for a missing or endangered person. It may not be used to enforce ordinary traffic tickets. Only cleared staff may reach the data, every search must be logged, and each agency must audit those logs twice a year and train its users. Misuse can bring discipline, penalties, or prosecution. The act also requires a front license plate only on a vehicle that has a bracket for one. The Idaho House passed it 45-24, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1529328,
+      "measure_id": "S 1180",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1180, which sets rules for how Idaho agencies may use automated license plate readers. These devices photograph the plates of passing vehicles without the driver doing anything. An agency may use them for law enforcement, to study traffic flow, or both. For law enforcement the data may be used only to investigate a felony, a misdemeanor, or a traffic accident, or to look for a missing or endangered person. It may not be used to enforce ordinary traffic tickets. Only cleared staff may reach the data, every search must be logged, and each agency must audit those logs twice a year and train its users. Misuse can bring discipline, penalties, or prosecution. The act also requires a front license plate only on a vehicle that has a bracket for one. The Idaho Senate passed it 25-10, and it became law.",
+      "nay_description": "Voted against Senate Bill 1180, which sets rules for how Idaho agencies may use automated license plate readers. These devices photograph the plates of passing vehicles without the driver doing anything. An agency may use them for law enforcement, to study traffic flow, or both. For law enforcement the data may be used only to investigate a felony, a misdemeanor, or a traffic accident, or to look for a missing or endangered person. It may not be used to enforce ordinary traffic tickets. Only cleared staff may reach the data, every search must be logged, and each agency must audit those logs twice a year and train its users. Misuse can bring discipline, penalties, or prosecution. The act also requires a front license plate only on a vehicle that has a bracket for one. The Idaho Senate passed it 25-10, and it became law.",
+      "labels": [
+        {
+          "slug": "data_privacy",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2168",
+      "roll": 1529738,
+      "measure_id": "S 1183",
+      "vote_date": "2025-03-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1183, which limits when an electric utility can be held responsible for a wildfire. A utility regulated by the state must file a wildfire mitigation plan with the Public Utilities Commission for approval. If the utility reasonably followed an approved plan, a court must presume it was not negligent, and the person suing has to overcome that presumption. Those lawsuits become the only civil remedy against the utility for anything tied to an approved plan. The act also lets a utility enter private land or a right of way to clear plants or do fire work when the owner refuses access or does not answer within thirty days. The utility cannot be sued over that entry unless it acted willfully or recklessly and caused substantial damage. The Idaho House passed it 46-23, and it became law.",
+      "nay_description": "Voted against Senate Bill 1183, which limits when an electric utility can be held responsible for a wildfire. A utility regulated by the state must file a wildfire mitigation plan with the Public Utilities Commission for approval. If the utility reasonably followed an approved plan, a court must presume it was not negligent, and the person suing has to overcome that presumption. Those lawsuits become the only civil remedy against the utility for anything tied to an approved plan. The act also lets a utility enter private land or a right of way to clear plants or do fire work when the owner refuses access or does not answer within thirty days. The utility cannot be sued over that entry unless it acted willfully or recklessly and caused substantial damage. The Idaho House passed it 46-23, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2168",
+      "roll": 1525625,
+      "measure_id": "S 1183",
+      "vote_date": "2025-03-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1183, which limits when an electric utility can be held responsible for a wildfire. A utility regulated by the state must file a wildfire mitigation plan with the Public Utilities Commission for approval. If the utility reasonably followed an approved plan, a court must presume it was not negligent, and the person suing has to overcome that presumption. Those lawsuits become the only civil remedy against the utility for anything tied to an approved plan. The act also lets a utility enter private land or a right of way to clear plants or do fire work when the owner refuses access or does not answer within thirty days. The utility cannot be sued over that entry unless it acted willfully or recklessly and caused substantial damage. The Idaho Senate passed it 24-11, and it became law.",
+      "nay_description": "Voted against Senate Bill 1183, which limits when an electric utility can be held responsible for a wildfire. A utility regulated by the state must file a wildfire mitigation plan with the Public Utilities Commission for approval. If the utility reasonably followed an approved plan, a court must presume it was not negligent, and the person suing has to overcome that presumption. Those lawsuits become the only civil remedy against the utility for anything tied to an approved plan. The act also lets a utility enter private land or a right of way to clear plants or do fire work when the owner refuses access or does not answer within thirty days. The utility cannot be sued over that entry unless it acted willfully or recklessly and caused substantial damage. The Idaho Senate passed it 24-11, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
