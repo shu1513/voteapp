@@ -75,12 +75,21 @@ rolls in 2025 — HJR004 House 1506354 and Senate 1515095, HJR006 House 1517486
 and Senate 1526800 — are stored as "Failed". Both resolutions go to Idaho
 voters in November 2026.
 
-Handled by holding the four in `heldRollCallIds`, which is the documented
-mechanism for a roll the state's own record contradicts. Not fixed in code:
-`result` is only read by the store's change detection, never by the judge or
-the importer, so the defect changes no decision today, and the honest code fix
-(taking `result` from the bill history when the state prints it) touches every
-LegiScan state and is out of scope for a config pull request.
+Recorded in the config and deliberately **not** held, following the rule North
+Dakota's config review settled for the same defect (#1236, 23 rolls there).
+`heldRollCallIds` is for rolls whose tally or member list the state
+contradicts; these four have correct tallies and correct member lists. `result`
+is only read by the store's change detection, never by the judge or the
+importer, so the defect changes no decision today, and none of the four is
+closely divided, so none can enter a batch. Holding real passing votes to
+correct a string nothing consumes would be the wrong fix. A first draft of the
+config did hold them; it was reversed in the merge with main so that two states
+do not treat one defect class two ways.
+
+Not fixed in code either: the honest fix (taking `result` from the bill history
+when the state prints it) touches every LegiScan state and is out of scope for
+a config pull request. The rule for a batch is on selection: read a joint
+resolution's outcome from Idaho's bill page, never from `passed`.
 
 The flag is **right** on the three failed joint resolutions (HJR001 in 2025,
 HJR007 and HJR009 in 2026), but only because their lines say FAILED. Idaho's

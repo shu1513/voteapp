@@ -68,11 +68,18 @@ Four stored rolls are affected: **HJR004** (House 58-10, Senate 29-6) and
 **HJR006** (House 59-8, Senate 30-5). Idaho's own pages say ADOPTED for all
 four and both resolutions were delivered to the Secretary of State, so both go
 to Idaho voters in November 2026. The fetcher writes `result` straight from
-the flag, so all four were stored as "Failed". **They are held in the config**
-(`heldRollCallIds`) so they cannot be queued until the stored result is
-corrected. None of the four is divided, so the current pool never reaches
-them, but a ballot-measure scope would, and a stored "Failed" on a measure
-that voters are about to decide is the worst possible data to leave in place.
+the flag, so all four were stored as "Failed".
+
+**They are recorded in the config and deliberately not held**, following the
+rule North Dakota's config review settled for the same defect (#1236):
+`heldRollCallIds` is for rolls whose tally or member list the state
+contradicts, and these four have correct tallies and correct member lists;
+`result` is metadata no fan-out, judge or import path reads; and none of the
+four is closely divided, so none can enter a batch through the gate. The rule
+sits on selection instead: **read a joint resolution's outcome from Idaho's
+bill page, never from `passed`.** A first draft of the config did hold them
+and was reversed in the merge with main, so that two states do not treat one
+defect class two ways.
 
 The other three stored joint-resolution rolls — HJR001 here, HJR007 and HJR009
 in 2026 — also carry `passed: 0`, and there the flag is **right**: a
