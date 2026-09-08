@@ -83,8 +83,8 @@ candidates for a later batch.
 ## Roster coverage is structural, not a gap
 
 North Dakota serves four-year staggered terms and elects its **odd-numbered** districts
-in 2026: all 25 odd Senate districts, and 27 House districts (the odd ones plus 10, 20,
-26 and 42). The crosswalk maps 48 of 142 serving members and leaves 94 null. **62 of
+in 2026: 25 Senate districts (the 24 odd-numbered ones plus district 10) and 27 House
+districts (the 24 odd-numbered ones plus 20, 26 and 42). The crosswalk maps 48 of 142 serving members and leaves 94 null. **62 of
 those nulls sit in a district that is not on the ballot at all.** That is expected. The
 other 32 hold a seat that is up but are not seeking it.
 

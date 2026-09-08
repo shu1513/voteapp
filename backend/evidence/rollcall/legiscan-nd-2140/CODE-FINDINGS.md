@@ -67,13 +67,32 @@ list and looking for a group spanning more than one bill.
 All eleven rolls from findings 2 and 3 are listed in the config's `heldRollCallIds`, so
 they are stored and surfaced but can never be approved.
 
-## 4. The enrolled act is the cleanest judging source in the campaign, and it carries its own tally
+## 4. The enrolled act carries change markup that `pdftotext` discards, and it prints its own tally
 
-North Dakota's enrolled act is plain text with **no strikethrough and no underline** — the
-struck-text hazard that GA, ME, MT, KY, AR, CO, AK, OR and MO all have simply does not
-arise on the enrolled print.
+**Correction, 2026-09-08.** The first version of this finding said the enrolled act was plain
+text with no strikethrough and no underline. That was wrong, and the review of #1241 caught
+it. It came from checking HB 1318, a two-page act that creates one new section, and
+generalizing. Rendering HB 1114's enrolled print shows the truth: every line of a section the
+act **creates** is underlined, and in a section the act **amends and reenacts** the deleted
+text is struck through and the replacement is underlined — the same markup as the introduced
+print. `pdftotext` throws both away, so a plain extract of an amended section shows repealed
+law as if it were live. Same family as the Georgia, Maine, Montana, Kentucky, Arkansas,
+Colorado, Alaska, Oregon and Missouri hazards.
 
-It also prints its own vote counts on the signature page:
+Exposure in batch-01 was checked measure by measure. Seven of the nine acts only create new
+sections or repeal one, so there is no struck text in them. HB 1114's description was written
+from its new section 1 and did not depend on the amended section 2. HB 1216's amended section
+2 changes one thing, an underlined cross-reference that extends the new rule to self-insured
+plans — the description had **omitted** that reach and was corrected in the review round. No
+description had treated deleted text as live.
+
+**Rule:** render the page for every amend-and-reenact section before writing anything about
+what the act changed. `/Users/shu/legiscan-data/nd_text.py` marks deletions `[[...]]` and
+additions `<<...>>` by where each drawn rule sits relative to the baseline; treat it as a
+first pass, because on the enrolled print it mislabels some headings, and confirm against the
+rendered page.
+
+The act also prints its own vote counts on the signature page:
 
 ```
 House Vote:   Yeas 51   Nays 40   Absent 3
@@ -83,11 +102,30 @@ Senate Vote:  Yeas 29   Nays 18   Absent 0
 That is a third independent tally source, on the enacted document itself, better than a
 history line. All 14 batch-01 rolls were checked against it and all 14 match.
 
-The trade-off is that an `amend and reenact` section reprints the **whole** section,
-including law it does not change, so the enrolled act over-reports change. To see what
-actually changed, read the introduced print, which does carry the markup: North Dakota
-draws deletions as a strikethrough through the glyphs and additions as an underline below
-the baseline, and `pdftotext` throws both away. `/Users/shu/legiscan-data/nd_text.py`
-classifies each drawn rule by where it sits relative to the baseline and prints deletions
-as `[[...]]` and additions as `<<...>>`. It was verified against a known-bad input before
-being relied on.
+An `amend and reenact` section still reprints the **whole** section, so even with the
+markup read correctly the act over-reports change: unmarked text is existing law being
+carried along, not something the act does.
+
+## 5. LegiScan's `passed` flag is wrong on 23 rolls, and it is not held
+
+Auditing every stored floor roll against the outcome North Dakota's own history line
+records found **23 rolls with `passed: 0` where the state says the reading passed**:
+thirteen at 91-1 on 2025-03-10, nine at 75-9 on 2025-03-21, SB 2003's 42-2 Senate vote, and
+SB 2261's 45-2 Senate veto override (the House then sustained the veto, which does not change
+what the Senate did). Every one of the 2,053 other rolls agrees with the history.
+
+The fetcher copies the flag into `legislative_votes.result` as `"Failed"`. No fan-out, judge
+or import path reads that column, and the description a voter sees is written from the
+act, so the stored string is inert metadata.
+
+The rolls are deliberately **not** held. Their tallies and member lists match the state's
+record, `heldRollCallIds` exists for rolls the survey proved wrong, and none of the 23 is
+closely divided, so none can enter a batch. Holding twenty-three real passing votes to correct
+a string nothing consumes would be the wrong fix, and there is no override column to correct
+it with.
+
+What the finding does change is the **selection rule**: read a roll's outcome from the bill
+history's own action line (`Second reading, passed` or `failed to pass`), never from the
+caption and never from `passed` alone. The nine closely divided rolls on enacted bills that
+carry `passed: 0` were re-checked under that rule and every one is a genuine failure that the
+chamber reconsidered and re-voted, so batch-01's pool was not affected.

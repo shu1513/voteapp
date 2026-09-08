@@ -9,13 +9,14 @@ means the hazard those states carry, of an official summary that contradicts the
 not arise, and neither does the Texas sponsor-statement hazard: the enrolled act carries no
 advocacy of any kind.
 
-North Dakota's enrolled act is plain text with no strikethrough and no underline, so the
-struck-text problem does not arise on the enrolled print. Where a description needed to say
-what an act **changed**, the introduced print was read with
-`/Users/shu/legiscan-data/nd_text.py`, which classifies each drawn rule by where it sits
-relative to the baseline and prints deletions as `[[...]]` and additions as `<<...>>`. The
-tool was verified against a known-bad input first, so a checker that never fires could not
-be mistaken for one that passes.
+**Corrected 2026-09-08.** The first version of these notes said the enrolled act carries no
+change markup. It does: a section the act creates is underlined throughout, and in a section
+it amends and reenacts the deleted text is struck through, with the replacement underlined.
+`pdftotext` discards both, so a plain extract of an amended section shows repealed law as if
+it were live. The error came from checking HB 1318, a two-page act that only creates a new
+section. Each of the nine acts was then re-checked: seven only create or repeal, HB 1114's
+description rests on its new section 1, and HB 1216's amended section 2 changes one underlined
+cross-reference, which the description had omitted and now carries. See CODE-FINDINGS.md §4.
 
 ## Version check
 
@@ -85,8 +86,8 @@ input first to prove the checks fire.
 Measured before importing, never eyeballed:
 
 - repository plain-language lint: **28 descriptions, 0 warnings**
-- Flesch-Kincaid grade: **median 8.1, worst 10.1**
-- longest sentence: **28 words**
+- Flesch-Kincaid grade: **median 8.2, worst 10.1** (8.1 before the review fixes below)
+- longest sentence: **34 words** (28 before the review fixes)
 
 A first draft measured median 9.8 and worst 12.9 and was rewritten before anything was
 judged. Grade 9 or so remains the honest floor for statutory text: getting SB 2339 below it
@@ -128,3 +129,40 @@ convergence run wrote `import-dry-run-rerun-report.json`; neither was renamed by
 three committed ledgers are filtered to this batch's 14 rolls, because the importer scans
 every stored evidence file and the unfiltered report carries a row for all 2,131 North
 Dakota rolls.
+
+## Review fixes, 2026-09-08
+
+The review of #1241 raised three findings. All three were checked against the enrolled acts
+and all three were real.
+
+**HB 1114 dropped a qualifier.** Section 1(3) caps insulin at twenty-five dollars "per
+pharmacy or distributor", and the supplies cap is worded the same way. The description had
+promised a flat twenty-five dollar cap, which overstates it: a person filling prescriptions
+at two pharmacies can pay up to twenty-five dollars at each. Both descriptions now say so.
+The same re-read added that section 2 makes the state employee plan follow the rule. 28
+records rewritten.
+
+**HB 1318 pointed the wrong way with "that agency".** The description named the state
+agriculture commissioner and the federal Environmental Protection Agency, then said a label
+"that agency" approved satisfies the duty to warn. The act ties every qualifying label to
+the EPA — its registration approval, its human health assessment, its cancer classification
+— whichever agency registered the product. Both chambers' descriptions now name the EPA
+each time. 47 records rewritten.
+
+**The guidance on enrolled markup was false**, as set out above. Fixing the guidance forced
+a re-read of HB 1216's amended section 2, whose one change extends the new rule to
+self-insured health plans; the act also takes effect January 1, 2026 under sections 3 and 4.
+Neither fact was in the description. 48 records rewritten.
+
+The repair went through the importer, not through hand edits: measures file → builder →
+lint (0 warnings) → `rollcall:judge` (5 rolls updated, the rest unchanged) →
+`rollcall:legiscan:import` (**123 rewrite, 211 unchanged**, same row ids, stamp
+`2026-09-08T03:38:29.726Z`) → convergence dry run (all 334 unchanged). Every live row was
+then compared with the committed judgments directly: 334 checked, 0 disagree. Records stay
+334, candidates 48, tags 235. Ledger: `import-review-fixes-report.json`, verified by its own
+`startedAt` before it was copied; `import-report.json` is the original insert run, untouched.
+
+A CodeRabbit comment also caught a wrong district list in the README: the 27 House
+districts on the 2026 ballot are the 24 odd-numbered ones plus 20, 26 and 42, and the 25
+Senate districts are the 24 odd-numbered ones plus 10. The crosswalk itself used the right
+sets; only the prose was wrong.
