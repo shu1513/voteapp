@@ -758,6 +758,14 @@ const GEORGIA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
 // fewer than half the seats voting yea, and all eight are genuine passages:
 // Idaho's constitution requires a majority of the members PRESENT, not of the
 // members elected, and Idaho's own history calls every one of them PASSED.
+//
+// The flag IS wrong in Idaho in a different way: it reads 0 on every
+// resolution ADOPTION, because it is taken from the word PASSED or FAILED in
+// the action line and Idaho's line says ADOPTED. Only joint resolutions, the
+// kept type that carries a constitutional amendment, ever reach storage with
+// that defect; the ID entry holds the four adopted ones. A joint resolution
+// also needs two-thirds of ALL members (47 of 70, 24 of 35), which nothing in
+// LegiScan knows, so never infer its outcome from the tally either.
 const IDAHO_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
   { pattern: /^house third reading$/, questionClass: "passage" },
   { pattern: /^senate third reading$/, questionClass: "passage" },
@@ -3706,9 +3714,31 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     // 5 absent, Idaho 35-30-4) and H0098 roll 1487890 (feed 40-29 with 1
     // absent, Idaho 40-29-0). No divided-and-enacted roll in either session
     // has a member on the wrong side.
+    //
+    // ⚠ LegiScan's `passed` flag reads 0 on every Idaho resolution ADOPTION.
+    // The flag comes from the word PASSED or FAILED in the action line, and
+    // Idaho adopts resolutions, so an ADOPTED line maps to 0. That mislabels
+    // 20 rolls in this session; almost all are CR, JM and R measures rejected
+    // before the queue, but joint resolutions are a kept type, and the fetcher
+    // writes `result` straight from the flag. The four adopted joint-resolution
+    // rolls below were therefore stored as "Failed" although Idaho's own pages
+    // say ADOPTED and both resolutions were delivered to the Secretary of
+    // State for the November 2026 ballot. Held until the stored result is
+    // corrected. The three other stored joint-resolution rolls (HJR001 here,
+    // HJR007 and HJR009 in 2026) also carry 0 and are genuinely FAILED — a
+    // constitutional amendment needs 47 of 70 and 24 of 35 — so they are not
+    // held. Found by the review of this pull request.
     heldRollCallIds: {
       1498007:
         "H0230 House 2025-02-27: LegiScan reports 55-10 where Idaho's own history reports 54-11, so one member is recorded on the wrong side. The roll is outside the current pool (the bill did not become law, and neither tally clears the divided gate), and it is held so that it cannot be queued if the not-enacted scope is opened later",
+      1506354:
+        "HJR004 House 2025-03-05: LegiScan reports passed 0 where Idaho's own page reads 'ADOPTED - 58-10-2', so the stored result says Failed on a constitutional amendment the House adopted and that goes to voters in November 2026. Held until the stored result is corrected",
+      1515095:
+        "HJR004 Senate 2025-03-11: LegiScan reports passed 0 where Idaho's own history reads 'ADOPTED 29-6-0'. Same defect and same reason as the House roll",
+      1517486:
+        "HJR006 House 2025-03-13: LegiScan reports passed 0 where Idaho's own page reads 'ADOPTED - 59-8-3', so the stored result says Failed on a constitutional amendment the House adopted and that goes to voters in November 2026. Held until the stored result is corrected",
+      1526800:
+        "HJR006 Senate 2025-03-25: LegiScan reports passed 0 where Idaho's own history reads 'ADOPTED 30-5-0'. Same defect and same reason as the House roll",
     },
   },
   // Idaho Legislature, 2026 Regular Session (dataset cut 2026-06-28, after

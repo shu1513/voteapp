@@ -216,6 +216,36 @@ describe("classifyLegiscanRollCall", () => {
     });
   });
 
+  it("holds a roll the state's own record contradicts, by id, ahead of every pattern", () => {
+    // Idaho HJR004's House roll: LegiScan's `passed` flag reads 0 on an
+    // ADOPTED joint resolution, so the stored result would say Failed. The
+    // hold keeps it stored and surfaced but never queueable, whatever its
+    // desc and tally say.
+    const config = { ...CONFIG, heldRollCallIds: { 1506354: "HJR004 House: adopted, flag says failed" } };
+    expect(classifyLegiscanRollCall({ ...base, config, desc: "Third Reading", total: 100, rollCallId: 1506354 })).toEqual({
+      isFloorVote: null,
+      questionClass: null,
+      reason: "held:HJR004 House: adopted, flag says failed",
+    });
+    // The same desc and tally on a roll that is not held is an ordinary kept floor vote.
+    expect(
+      classifyLegiscanRollCall({ ...base, config, desc: "Third Reading", total: 100, rollCallId: 1515096 }).isFloorVote
+    ).toBe(true);
+    // A held roll that also matches an exclusion still reads as held: the hold
+    // is the stronger claim and must not be masked by a pattern.
+    expect(
+      classifyLegiscanRollCall({ ...base, config, desc: "Refused to concur", total: 95, rollCallId: 1506354 }).reason
+    ).toMatch(/^held:/);
+    // Idaho's real entry pins the five rolls the survey and its review proved wrong.
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS.ID.heldRollCallIds ?? {})).toEqual([
+      "1498007",
+      "1506354",
+      "1515095",
+      "1517486",
+      "1526800",
+    ]);
+  });
+
   it("rejects an unknown desc with a committee-sized tally, surfaces the rest", () => {
     expect(classifyLegiscanRollCall({ ...base, desc: "DO PASS", total: 12 })).toEqual({
       isFloorVote: false,
