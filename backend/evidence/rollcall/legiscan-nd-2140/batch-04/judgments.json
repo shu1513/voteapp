@@ -1,0 +1,166 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1488302,
+      "measure_id": "HB 1145",
+      "vote_date": "2025-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1145, which would have required the Ten Commandments to be displayed in public schools and colleges. Every school district would have had to put up a display in a prominent spot in each school's cafeteria, and the state board of higher education would have done the same on each campus. The bill set the size, said the text had to be the main thing on the poster, and set out the wording to use. It also would have let a college teacher put the Ten Commandments up in their own classroom without asking anyone's permission. The North Dakota House rejected it 38-53, so it did not become law.",
+      "nay_description": "Voted against House Bill 1145, which would have required the Ten Commandments to be displayed in public schools and colleges. Every school district would have had to put up a display in a prominent spot in each school's cafeteria, and the state board of higher education would have done the same on each campus. The bill set the size, said the text had to be the main thing on the poster, and set out the wording to use. It also would have let a college teacher put the Ten Commandments up in their own classroom without asking anyone's permission. The North Dakota House rejected it 38-53, so it did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1499664,
+      "measure_id": "HB 1411",
+      "vote_date": "2025-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1411, which would have banned extreme risk protection orders across North Dakota. Those are often called red flag orders. They let a court keep guns away from someone found to be a serious danger to themselves or others. The bill would have barred any rule, law, local ordinance, executive order or court order that does this, whether by stopping the person owning or buying a gun or by taking guns they already hold. It carried a penalty for breaking that ban. The North Dakota House rejected it 39-53, so it did not become law.",
+      "nay_description": "Voted against House Bill 1411, which would have banned extreme risk protection orders across North Dakota. Those are often called red flag orders. They let a court keep guns away from someone found to be a serious danger to themselves or others. The bill would have barred any rule, law, local ordinance, executive order or court order that does this, whether by stopping the person owning or buying a gun or by taking guns they already hold. It carried a penalty for breaking that ban. The North Dakota House rejected it 39-53, so it did not become law.",
+      "labels": [
+        {
+          "slug": "gun_control",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1490653,
+      "measure_id": "HB 1456",
+      "vote_date": "2025-02-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1456, which would have let public schools bring in chaplains. A school district could have hired a chaplain or taken one as a volunteer to support students, staff or parents. A chaplain would have counted if a national or state chaplaincy body certified them, or a religious body endorsed them. They would not have needed a teaching license from the state board. The district would have had to run a criminal background check first. The North Dakota House rejected it 35-46, so it did not become law.",
+      "nay_description": "Voted against House Bill 1456, which would have let public schools bring in chaplains. A school district could have hired a chaplain or taken one as a volunteer to support students, staff or parents. A chaplain would have counted if a national or state chaplaincy body certified them, or a religious body endorsed them. They would not have needed a teaching license from the state board. The district would have had to run a criminal background check first. The North Dakota House rejected it 35-46, so it did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1498084,
+      "measure_id": "HB 1475",
+      "vote_date": "2025-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1475, which would have made school breakfast and lunch free for every student. The state schools chief would have paid back school districts, private schools and tribal schools that served meals to students in kindergarten through grade twelve at no charge. The payment would have matched the federal free meal rate for each meal served, minus any other federal or state money the school already got for that meal. A school would have had to apply to take part. The North Dakota House rejected it 39-54, so it did not become law.",
+      "nay_description": "Voted against House Bill 1475, which would have made school breakfast and lunch free for every student. The state schools chief would have paid back school districts, private schools and tribal schools that served meals to students in kindergarten through grade twelve at no charge. The payment would have matched the federal free meal rate for each meal served, minus any other federal or state money the school already got for that meal. A school would have had to apply to take part. The North Dakota House rejected it 39-54, so it did not become law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1488037,
+      "measure_id": "HB 1477",
+      "vote_date": "2025-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1477, which would have written a right to fertility treatment into state law. It covered treatment, testing, medicine and monitoring, including genetic testing. It also covered ways of causing pregnancy other than sex. Those included in vitro fertilization, insemination, and donated eggs or embryos. The bill carried a penalty. The North Dakota House rejected it 34-59, so it did not become law.",
+      "nay_description": "Voted against House Bill 1477, which would have written a right to fertility treatment into state law. It covered treatment, testing, medicine and monitoring, including genetic testing. It also covered ways of causing pregnancy other than sex. Those included in vitro fertilization, insemination, and donated eggs or embryos. The bill carried a penalty. The North Dakota House rejected it 34-59, so it did not become law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1488325,
+      "measure_id": "HB 1478",
+      "vote_date": "2025-02-12",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1478, which would have written a right to birth control into state law. It covered a wide range of methods. Those included the pill, the implant and the coil, emergency contraception, condoms, injections, patches and spermicides. The bill also reached the same drugs when used for other health reasons. It named treating endometriosis, ovarian cysts, heavy periods, migraines and acne, and guarding against cancer of the womb and ovaries. The bill carried a penalty. The North Dakota House rejected it 27-66, so it did not become law.",
+      "nay_description": "Voted against House Bill 1478, which would have written a right to birth control into state law. It covered a wide range of methods. Those included the pill, the implant and the coil, emergency contraception, condoms, injections, patches and spermicides. The bill also reached the same drugs when used for other health reasons. It named treating endometriosis, ovarian cysts, heavy periods, migraines and acne, and guarding against cancer of the womb and ovaries. The bill carried a penalty. The North Dakota House rejected it 27-66, so it did not become law.",
+      "labels": [
+        {
+          "slug": "womens_reproductive_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1484084,
+      "measure_id": "HB 1585",
+      "vote_date": "2025-02-07",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1585, which would have made police report people they believed were in the country illegally. An officer with probable cause to believe that would have had to report the person to federal immigration officers as soon as practical. The report could have gone to immigration and customs enforcement or to customs and border protection, through a tip line or an online form. An officer who did not report would have committed an infraction. The North Dakota House rejected it 41-50, so it did not become law.",
+      "nay_description": "Voted against House Bill 1585, which would have made police report people they believed were in the country illegally. An officer with probable cause to believe that would have had to report the person to federal immigration officers as soon as practical. The report could have gone to immigration and customs enforcement or to customs and border protection, through a tip line or an online form. An officer who did not report would have committed an infraction. The North Dakota House rejected it 41-50, so it did not become law.",
+      "labels": [
+        {
+          "slug": "immigration",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "senate",
+      "session": "2140",
+      "roll": 1498474,
+      "measure_id": "SB 2350",
+      "vote_date": "2025-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2350, which would have closed public employee discipline records to the public. Open records law already keeps a public worker's medical records private. It also shields some personal details held in a staff file. The bill would have added records of how a worker performs, and any discipline against them, to what the public may not see. The North Dakota Senate rejected it 22-25, so it did not become law.",
+      "nay_description": "Voted against Senate Bill 2350, which would have closed public employee discipline records to the public. Open records law already keeps a public worker's medical records private. It also shields some personal details held in a staff file. The bill would have added records of how a worker performs, and any discipline against them, to what the public may not see. The North Dakota Senate rejected it 22-25, so it did not become law.",
+      "labels": [
+        {
+          "slug": "anti_corruption",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "senate",
+      "session": "2140",
+      "roll": 1498482,
+      "measure_id": "SB 2355",
+      "vote_date": "2025-02-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2355, which would have put intelligent design into the state's science standards. The state schools chief would have had to add it to the science content standards for elementary, middle and high school by August 1, 2027. The chief would also have had to give teachers materials presenting intelligent design as a workable scientific theory for how all life was created, and training on teaching it. The North Dakota Senate rejected it 22-25, so it did not become law.",
+      "nay_description": "Voted against Senate Bill 2355, which would have put intelligent design into the state's science standards. The state schools chief would have had to add it to the science content standards for elementary, middle and high school by August 1, 2027. The chief would also have had to give teachers materials presenting intelligent design as a workable scientific theory for how all life was created, and training on teaching it. The North Dakota Senate rejected it 22-25, so it did not become law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

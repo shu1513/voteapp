@@ -1469,6 +1469,62 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("OR").sessionId).toBe(2191);
     expect(getLegiscanStateConfig("OR-2252")).toMatchObject({ jurisdiction: "OR", sessionId: 2252 });
     expect(getLegiscanStateConfig("ND").sessionId).toBe(2140);
+  });
+
+  it("opts North Dakota's concurrent resolutions in only when the bill amends the state constitution", () => {
+    const config = getLegiscanStateConfig("ND");
+    const classify = (billType: string, billDescription: string) =>
+      classifyLegiscanRollCall({
+        desc: "House Second reading",
+        total: 94,
+        chamber: "house",
+        billType,
+        billDescription,
+        config,
+      });
+
+    // A constitutional amendment rides a CR in North Dakota, so it must be
+    // reachable. All three shapes the session uses are covered.
+    const amend =
+      "A concurrent resolution to amend and reenact section 9 of article III of the Constitution of North Dakota, relating to the threshold for approving a constitutional amendment.";
+    const repeal =
+      "A concurrent resolution to repeal section 10 of article X of the Constitution of North Dakota, relating to the statewide property tax levy.";
+    const create =
+      "A concurrent resolution to create and enact a new article to the Constitution of North Dakota, relating to term limits.";
+    for (const description of [amend, repeal, create]) {
+      expect(classify("CR", description)).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    }
+
+    // The same type carries commendations, study directives and messages to
+    // Congress. Those must stay out — the roll desc cannot tell them apart
+    // from an amendment, which is why the gate reads the bill description.
+    const commendation =
+      "A concurrent resolution recognizing the benefits of enhanced oil recovery and encouraging favorable policies.";
+    const study =
+      "A concurrent resolution directing the Legislative Management to consider studying the use of dedicated funds.";
+    const urging =
+      "A concurrent resolution urging the United States Supreme Court to restore the definition of marriage.";
+    for (const description of [commendation, study, urging]) {
+      expect(classify("CR", description)).toMatchObject({
+        isFloorVote: false,
+        reason: "excluded_measure:CR:description",
+      });
+    }
+
+    // A type nobody opted in is still refused before the description is read.
+    expect(classify("R", amend)).toMatchObject({ isFloorVote: false, reason: "excluded_measure:R" });
+
+    // The opt-in is per state: a state without the rule keeps refusing CR.
+    expect(
+      classifyLegiscanRollCall({
+        desc: "House Second reading",
+        total: 94,
+        chamber: "house",
+        billType: "CR",
+        billDescription: amend,
+        config: getLegiscanStateConfig("MT"),
+      })
+    ).toMatchObject({ isFloorVote: false, reason: "excluded_measure:CR" });
     expect(getLegiscanStateConfig("AL-2014")).toMatchObject({ jurisdiction: "AL", sessionId: 2014 });
     expect(getLegiscanStateConfig("AL-2060")).toMatchObject({ jurisdiction: "AL", sessionId: 2060 });
     expect(getLegiscanStateConfig("AL-2103")).toMatchObject({ jurisdiction: "AL", sessionId: 2103 });

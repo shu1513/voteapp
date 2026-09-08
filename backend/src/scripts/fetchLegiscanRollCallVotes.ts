@@ -453,6 +453,7 @@ async function main(): Promise<void> {
           total: rollCall.total,
           chamber: rollCall.chamber,
           billType: bill.billType,
+          billDescription: bill.description,
           config,
           rollCallId: rollCall.rollCallId,
         });

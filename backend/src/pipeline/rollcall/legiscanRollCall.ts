@@ -107,6 +107,13 @@ export type LegiscanBillSummary = {
   sessionId: number;
   state: string;
   title: string;
+  // The bill's own one-line description. Carried because a bill TYPE is
+  // sometimes too coarse to decide whether a measure is in scope: North
+  // Dakota rides its constitutional amendments on concurrent resolutions, a
+  // type that also carries commendations and study resolutions, and the roll
+  // desc cannot tell them apart (every one reads `Second reading, adopted`).
+  // See `additionalBillTypes` in legiscanStateConfigs.ts.
+  description: string;
   // Official state bill page (bill_url when present) and the LegiScan bill
   // page (the fallback).
   stateLink: string | null;
@@ -174,6 +181,9 @@ export function parseLegiscanBill(raw: Record<string, unknown>): LegiscanBillSum
     sessionId: readPositiveInt(raw.session, "session_id", `${where} session`),
     state: readString(raw, "state", where).toUpperCase(),
     title: readString(raw, "title", where),
+    // Some feeds ship an empty description; it is only used by an opt-in
+    // config rule, so treat a missing one as empty rather than failing the file.
+    description: typeof raw.description === "string" ? raw.description.trim() : "",
     stateLink: readOptionalUrl(raw, "state_link"),
     legiscanUrl: readOptionalUrl(raw, "url"),
     voteUrlsByRollCallId,
@@ -383,12 +393,31 @@ export function classifyLegiscanRollCall(input: {
   chamber: LegislativeVoteChamber;
   billType: string;
   config: LegiscanStateConfig;
+  // The bill's own description, needed only when the state opts a further
+  // bill type in through `additionalBillTypes`. Omitted by callers that
+  // classify a bare desc (tests).
+  billDescription?: string;
   // Omitted only by callers that classify a bare desc (tests); the fetcher
   // always passes it so a held roll cannot slip through.
   rollCallId?: number;
 }): LegiscanRollCallClassification {
   if (!LEGISCAN_KEPT_BILL_TYPES.includes(input.billType)) {
-    return { isFloorVote: false, questionClass: null, reason: `excluded_measure:${input.billType}` };
+    // A state may opt one more type in, but only for the measures whose own
+    // description proves they belong. The type alone is not enough: North
+    // Dakota's CR carries constitutional amendments AND commendations.
+    const optIn = input.config.additionalBillTypes?.find((entry) => entry.billType === input.billType);
+    if (optIn === undefined) {
+      return { isFloorVote: false, questionClass: null, reason: `excluded_measure:${input.billType}` };
+    }
+    // Lowercased before matching, the same contract the desc patterns
+    // follow, so every pattern in the registry can be written lowercase.
+    if (!optIn.descriptionPattern.test((input.billDescription ?? "").toLowerCase())) {
+      return {
+        isFloorVote: false,
+        questionClass: null,
+        reason: `excluded_measure:${input.billType}:description`,
+      };
+    }
   }
   // A roll the survey proved wrong (a member on the wrong side, a tally the
   // state's own record contradicts) is stored and surfaced but never

@@ -46,6 +46,25 @@ export type LegiscanStateConfig = {
   // approved by mistake. Remove an entry only after the roll has been
   // re-verified against the state's record.
   heldRollCallIds?: Readonly<Record<number, string>>;
+  // Bill types this state keeps BEYOND `LEGISCAN_KEPT_BILL_TYPES`, each one
+  // gated on a pattern the bill's own `description` must match.
+  //
+  // The gate is the point. A bill type alone is too coarse where a state
+  // rides substantive measures on a type it also uses for housekeeping:
+  // North Dakota proposes every constitutional amendment as a CONCURRENT
+  // RESOLUTION (type `CR`), and the same type carries commendations, study
+  // directives and messages urging Congress to do something. The roll
+  // description cannot separate them — an amendment referral and a
+  // commendation both read `Second reading, adopted` — but the bill's own
+  // description can, because an amendment always names the state
+  // constitution and nothing else does.
+  //
+  // `descriptionPattern` is tested against the LOWERCASED description, the
+  // same contract the desc patterns above follow, so write it lowercase.
+  //
+  // Keep this narrow. It exists to reach measures the campaign would
+  // otherwise never see, not to widen a state's pool.
+  additionalBillTypes?: readonly { billType: string; descriptionPattern: RegExp }[];
 };
 
 // Registered per surveyed session. A state's first configured session keeps
@@ -3652,6 +3671,17 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       //    Arkansas, which votes it separately and excludes it. So these 120
       //    rolls are passage votes and are kept.
       { pattern: /^(house|senate) second reading$/, questionClass: "passage" },
+      // A concurrent resolution is ADOPTED, not passed, and North Dakota
+      // spells that out only when the motion CARRIES: `Second reading,
+      // adopted yeas 65 nays 28`, or `adopted as amended` where the second
+      // chamber changed it. A resolution that FAILS wears the same bare
+      // `Second reading` caption as a bill, so it is already covered above.
+      // The tally is printed inside the desc, which is why this pattern
+      // tolerates it rather than anchoring on the end.
+      {
+        pattern: /^(house|senate) second reading, adopted( as amended)? yeas \d+ nays \d+$/,
+        questionClass: "passage",
+      },
       // The veto family, five rolls in the session: `Senate Passed over
       // veto` (1) and `Veto sustained` (2 House, 2 Senate). The sustained
       // ones are failed overrides, kept for the same reason Montana keeps
@@ -3676,6 +3706,26 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       // batch, but they must be dispositioned deliberately rather than left
       // to a threshold that cannot see them.
       /^(house|senate) reported back, do (pass, place|not pass, placed) on calendar \d+ \d+ \d+$/,
+    ],
+    // North Dakota proposes every constitutional amendment as a CONCURRENT
+    // RESOLUTION, so without this the state's amendments could never be
+    // queued — the Georgia resolution gap. The type is not enough on its
+    // own: 66 concurrent resolutions in this session, and most are
+    // commendations, study directives, or messages urging Congress to act.
+    // The roll desc cannot separate them (an amendment referral and a
+    // commendation both read `Second reading, adopted`), but the bill's own
+    // description can: an amendment always names the state constitution,
+    // whether it amends, repeals or adds an article, and nothing else does.
+    // Measured over all 66: the pattern matches exactly the 9 amendments and
+    // no commendation, study or urging resolution.
+    //
+    // ⚠ These are NOT law. A concurrent resolution never reaches the
+    // governor — an adopted one goes to the voters at the next general
+    // election. A description must never say it became law, and because it
+    // is a claim about a future ballot it must be revisited after that
+    // election (the Missouri HJR 3 rule).
+    additionalBillTypes: [
+      { billType: "CR", descriptionPattern: /constitution of north dakota/ },
     ],
     // ⚠⚠ TWO DEFECT CLASSES, BOTH FOUND BY AUDITING ALL 2,087 SECOND-READING
     // ROLLS ON KEPT BILL TYPES AGAINST NORTH DAKOTA'S OWN HISTORY TALLIES
