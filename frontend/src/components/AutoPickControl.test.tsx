@@ -183,13 +183,10 @@ describe("AutoPickControl", () => {
     await clickPickForMe();
     const panel = await screen.findByRole("region", { name: "Why this pick" });
     expect(panel).toHaveTextContent("Picked Alice Alvarez — the best match for your issues.");
-    // Summary first; the per-issue names sit behind a toggle, in the user's
-    // priority order. Issues with no records on this candidate are not
-    // listed — the "N of M" count already says how many were compared.
-    expect(panel).toHaveTextContent("Alice Alvarez — aligned on 1 of your 3 issues");
-    expect(panel).not.toHaveTextContent("Aligned: Housing");
-    await userEvent.click(within(panel).getByRole("button", { name: "aligned on 1 of your 3 issues" }));
-    expect(panel).toHaveTextContent("Aligned: Housing");
+    // Up to three aligned issues are named in the headline itself — no
+    // count, no toggle (conflicts/mixed are always named below anyway).
+    expect(panel).toHaveTextContent("Alice Alvarez — aligned on Housing");
+    expect(within(panel).queryByRole("button", { expanded: false })).toBeNull();
     expect(panel).not.toHaveTextContent("Taxes");
     expect(panel).toHaveTextContent("Bob Boone (not researched yet)");
     const call = fetchMock.mock.calls.find(([input]) => String(input).includes("auto-picks"));
@@ -345,6 +342,92 @@ describe("AutoPickControl", () => {
     expect(panel).toHaveTextContent("Voted to repeal the emissions standard");
   });
 
+  it("counts four or more aligned issues and lists the names behind a toggle, in rank order", async () => {
+    const AREA_SCHOOLS = "aaaaaaaa-0000-4000-8000-000000000004";
+    stubApiRoutes({
+      "/api/me": { body: { user: SIGNED_IN } },
+      "/api/me/research-area-preferences": {
+        body: { preferences: [...THREE_PREFERENCES.preferences, preference(AREA_SCHOOLS, "Schools", 4)] },
+      },
+      "/api/me/election-choices": { body: { choices: [] } },
+      "/api/me/auto-picks": {
+        body: {
+          results: [
+            pickedResult({
+              candidates: [
+                {
+                  candidate_id: CAND_A,
+                  display_name: "Alice Alvarez",
+                  score: 1,
+                  has_evidence: true,
+                  vetoed_by: [],
+                  // Deliberately out of rank order: the panel must sort.
+                  per_issue: [
+                    { research_area_id: AREA_SCHOOLS, net: 1, for_count: 1, against_count: 0 },
+                    { research_area_id: AREA_TAXES, net: 1, for_count: 1, against_count: 0 },
+                    { research_area_id: AREA_CLIMATE, net: 1, for_count: 1, against_count: 0 },
+                    { research_area_id: AREA_HOUSING, net: 1, for_count: 1, against_count: 0 },
+                  ],
+                },
+              ],
+              unresearched: [],
+            }),
+          ],
+        },
+      },
+    });
+    renderControl();
+    await clickPickForMe();
+    const panel = await screen.findByRole("region", { name: "Why this pick" });
+    expect(panel).toHaveTextContent("Alice Alvarez — aligned on all 4 of your issues");
+    expect(panel).not.toHaveTextContent("Aligned:");
+    await userEvent.click(within(panel).getByRole("button", { name: "aligned on all 4 of your issues" }));
+    expect(panel).toHaveTextContent("Aligned: Housing, Climate, Taxes, Schools");
+  });
+
+  it("counts four or more conflicts the same way, names behind the toggle", async () => {
+    const AREA_SCHOOLS = "aaaaaaaa-0000-4000-8000-000000000004";
+    stubApiRoutes({
+      "/api/me": { body: { user: SIGNED_IN } },
+      "/api/me/research-area-preferences": {
+        body: { preferences: [...THREE_PREFERENCES.preferences, preference(AREA_SCHOOLS, "Schools", 4)] },
+      },
+      "/api/me/election-choices": { body: { choices: [] } },
+      "/api/me/auto-picks": {
+        body: {
+          results: [
+            pickedResult({
+              candidates: [
+                {
+                  candidate_id: CAND_A,
+                  display_name: "Alice Alvarez",
+                  score: 1,
+                  has_evidence: true,
+                  vetoed_by: [],
+                  per_issue: [AREA_HOUSING, AREA_CLIMATE, AREA_TAXES, AREA_SCHOOLS].map((id) => ({
+                    research_area_id: id,
+                    net: -1,
+                    for_count: 0,
+                    against_count: 1,
+                  })),
+                },
+              ],
+              unresearched: [],
+            }),
+          ],
+        },
+      },
+    });
+    renderControl();
+    await clickPickForMe();
+    const panel = await screen.findByRole("region", { name: "Why this pick" });
+    expect(panel).toHaveTextContent("aligned on 0 of your 4 issues");
+    expect(panel).toHaveTextContent("Conflicts on 4 issues");
+    expect(panel).not.toHaveTextContent("Conflicts: Housing");
+    await userEvent.click(within(panel).getByRole("button", { name: "aligned on 0 of your 4 issues" }));
+    expect(panel).toHaveTextContent("Conflicts: Housing, Climate, Taxes, Schools");
+  });
+
   it("answers a measure with the veto explanation", async () => {
     stubApiRoutes({
       "/api/me": { body: { user: SIGNED_IN } },
@@ -433,7 +516,7 @@ describe("AutoPickControl", () => {
     expect(panel).toHaveTextContent(
       "No answer — this measure helps some of your issues and hurts others about equally, so it's your call."
     );
-    expect(panel).toHaveTextContent("aligned on 1 of your 3 issues");
+    expect(panel).toHaveTextContent("aligned on Housing");
     expect(panel).toHaveTextContent("Conflicts: Climate");
   });
 

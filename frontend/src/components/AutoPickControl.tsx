@@ -221,6 +221,9 @@ type WhyThisPickPanelProps = {
   onDismiss: () => void;
 };
 
+/** Up to this many aligned issues are named in the headline itself. */
+const INLINE_ISSUE_LIMIT = 3;
+
 // Per-issue alignment, summarized: "aligned on 13 of your 16 issues", the
 // exceptions (conflicts / mixed) named right away because that is what a
 // voter needs to check, and the full grouped list behind a toggle. The old
@@ -245,52 +248,60 @@ function IssueAlignment({
   const conflicts = names(perIssue.filter((issue) => issue.net < 0));
   const mixed = names(perIssue.filter((issue) => issue.net === 0));
   const total = issueOrder.length;
-  const headline =
-    total === 0
+  // Few aligned issues (1–3): name them in the headline — shorter than a
+  // count, and nothing is left to expand since conflicts/mixed are always
+  // named below. More: the count, with the names behind the chevron.
+  const nameInline = aligned.length > 0 && aligned.length <= INLINE_ISSUE_LIMIT;
+  const headline = nameInline
+    ? `aligned on ${joinNames(aligned)}`
+    : total === 0
       ? `aligned on ${aligned.length} issue${aligned.length === 1 ? "" : "s"}`
       : aligned.length === total
         ? `aligned on all ${total} of your issues`
         : `aligned on ${aligned.length} of your ${total} issues`;
+  // Same rule for the exceptions: a short list is named, a long one is
+  // counted with the names behind the chevron.
+  const inline = (label: string, names: string[]) =>
+    names.length <= INLINE_ISSUE_LIMIT ? `${label}: ${joinNames(names)}` : `${label} on ${names.length} issues`;
+  const expandable = [aligned, conflicts, mixed].some((names) => names.length > INLINE_ISSUE_LIMIT);
   return (
     <>
       {/* The headline is the toggle: click it (or the chevron) to see the
           issue names. One target, no orphan "Show issues" link line. */}
-      <button
-        type="button"
-        aria-expanded={open}
-        onClick={() => setOpen((previous) => !previous)}
-        className="inline-flex items-center gap-1 font-semibold text-green-900 hover:underline decoration-dotted underline-offset-2"
-      >
-        {headline}
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 20 20"
-          className={`h-4 w-4 shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+      {expandable ? (
+        <button
+          type="button"
+          aria-expanded={open}
+          onClick={() => setOpen((previous) => !previous)}
+          className="inline-flex items-center gap-1 font-semibold text-green-900 hover:underline decoration-dotted underline-offset-2"
         >
-          <path d="M5 8l5 5 5-5" />
-        </svg>
-      </button>
+          {headline}
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 20 20"
+            className={`h-4 w-4 shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M5 8l5 5 5-5" />
+          </svg>
+        </button>
+      ) : (
+        <span className="font-semibold text-green-900">{headline}</span>
+      )}
       {conflicts.length > 0 || mixed.length > 0 ? (
         <span className="mt-1 block">
           {conflicts.length > 0 ? (
-            <>
-              <span className="font-medium text-red-900">Conflicts:</span> {joinNames(conflicts)}
-            </>
+            <span className="font-medium text-red-900">{inline("Conflicts", conflicts)}</span>
           ) : null}
           {conflicts.length > 0 && mixed.length > 0 ? <span className="text-ink-soft"> · </span> : null}
-          {mixed.length > 0 ? (
-            <>
-              <span className="font-medium text-amber-900">Mixed:</span> {joinNames(mixed)}
-            </>
-          ) : null}
+          {mixed.length > 0 ? <span className="font-medium text-amber-900">{inline("Mixed", mixed)}</span> : null}
         </span>
       ) : null}
-      {open ? (
+      {expandable && open ? (
         // Each group in its own color, same tier as the headline — the names
         // are the payload here, not a footnote.
         <span className="mt-1 block text-sm font-medium leading-relaxed">
