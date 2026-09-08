@@ -1,0 +1,32 @@
+{
+ "note": "Reconstructed from the database, not from an importer report. The batch-03 run wrote its ledger to import-rerun-report.json, which the later batch-04 run overwrote before it was copied. Every row here is counted by this run stamp in candidate_records.origin_run_id, which is the documented fallback when a ledger is lost.",
+ "runStamp": "2026-09-08T04:24:22.385Z",
+ "dryRun": false,
+ "rolls": [
+  {
+   "roll": 1487194,
+   "inserted": 26
+  },
+  {
+   "roll": 1492873,
+   "inserted": 28
+  },
+  {
+   "roll": 1492881,
+   "inserted": 28
+  },
+  {
+   "roll": 1498485,
+   "inserted": 28
+  },
+  {
+   "roll": 1499669,
+   "inserted": 27
+  },
+  {
+   "roll": 1547459,
+   "inserted": 28
+  }
+ ],
+ "totalInserted": 165
+}

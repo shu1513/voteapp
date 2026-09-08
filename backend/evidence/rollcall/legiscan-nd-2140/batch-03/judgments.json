@@ -1,0 +1,94 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1499669,
+      "measure_id": "HB 1283",
+      "vote_date": "2025-02-25",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1283, which would have stopped the state employee health plan charging for follow-up breast scans. It applied to the public employees' group insurance program, not to private plans. One kind of scan takes a closer look at something a mammogram has already found. The other screens for cancer in women at higher risk. Both include scans such as breast ultrasound and breast magnetic resonance imaging. For either one, the plan could not have charged a deductible, a copay, or any other share of the cost. On a high-deductible plan tied to a health savings account, that would have applied only after the federal minimum deductible was met. The bill was written as a trial for that plan, with a report back to the legislature and an end date. The North Dakota House passed it 66-26, but the Senate rejected it 22-24 and it did not become law.",
+      "nay_description": "Voted against House Bill 1283, which would have stopped the state employee health plan charging for follow-up breast scans. It applied to the public employees' group insurance program, not to private plans. One kind of scan takes a closer look at something a mammogram has already found. The other screens for cancer in women at higher risk. Both include scans such as breast ultrasound and breast magnetic resonance imaging. For either one, the plan could not have charged a deductible, a copay, or any other share of the cost. On a high-deductible plan tied to a health savings account, that would have applied only after the federal minimum deductible was met. The bill was written as a trial for that plan, with a report back to the legislature and an end date. The North Dakota House passed it 66-26, but the Senate rejected it 22-24 and it did not become law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1492881,
+      "measure_id": "HB 1455",
+      "vote_date": "2025-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1455, which would have made the state consult tribes about bills that affect them. Each session, the head of the Indian affairs commission would have read every bill introduced. The director would have marked the ones that touch tribal matters. For each of those, the director would have had to talk with the chair of every tribe before the committee hearing. The bill said consulting means working with tribal governments directly, and going to them for their views rather than waiting. The North Dakota House passed it 63-28, but the Senate rejected it 7-40 and it did not become law.",
+      "nay_description": "Voted against House Bill 1455, which would have made the state consult tribes about bills that affect them. Each session, the head of the Indian affairs commission would have read every bill introduced. The director would have marked the ones that touch tribal matters. For each of those, the director would have had to talk with the chair of every tribe before the committee hearing. The bill said consulting means working with tribal governments directly, and going to them for their views rather than waiting. The North Dakota House passed it 63-28, but the Senate rejected it 7-40 and it did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1487194,
+      "measure_id": "HB 1496",
+      "vote_date": "2025-02-11",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1496, which would have set how warm a landlord must keep a rented home. State law already tells a landlord to keep a home fit to live in and supply running water and reasonable heat. It never said what reasonable heat means. The bill would have set it at sixty-eight degrees Fahrenheit or more from October first through April thirtieth. For the rest of the year it would have been a temperature that suits the season. The North Dakota House passed it 70-19, but the Senate rejected it 11-35 and it did not become law.",
+      "nay_description": "Voted against House Bill 1496, which would have set how warm a landlord must keep a rented home. State law already tells a landlord to keep a home fit to live in and supply running water and reasonable heat. It never said what reasonable heat means. The bill would have set it at sixty-eight degrees Fahrenheit or more from October first through April thirtieth. For the rest of the year it would have been a temperature that suits the season. The North Dakota House passed it 70-19, but the Senate rejected it 11-35 and it did not become law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1492873,
+      "measure_id": "HB 1583",
+      "vote_date": "2025-02-18",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1583, which would have widened the crime of running a false political ad. It is already a crime to knowingly publish an untrue or misleading claim about a candidate or a ballot measure. The bill would have covered a publisher who ran the claim with reckless disregard for whether it was true. That means not checking would no longer be a defense. The bill also would have named websites, social media and other electronic means among the ways of publishing the law reaches. The North Dakota House passed it 55-34, but the Senate rejected it 11-36 and it did not become law.",
+      "nay_description": "Voted against House Bill 1583, which would have widened the crime of running a false political ad. It is already a crime to knowingly publish an untrue or misleading claim about a candidate or a ballot measure. The bill would have covered a publisher who ran the claim with reckless disregard for whether it was true. That means not checking would no longer be a defense. The bill also would have named websites, social media and other electronic means among the ways of publishing the law reaches. The North Dakota House passed it 55-34, but the Senate rejected it 11-36 and it did not become law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1547459,
+      "measure_id": "SB 2307",
+      "vote_date": "2025-04-14",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2307, which would have made libraries and schools keep sexual material away from minors. It would have set out what counts as a public library. Libraries and schools would have needed written safety rules and filtering software. The local prosecutor could have reviewed libraries, school districts and state agencies to check they complied, and the bill carried a penalty. It also reworked how the state defines obscene material. That test asks whether an ordinary person in North Dakota would find the material is mainly about sex and has no real literary, artistic, political or scientific worth. The North Dakota House passed it 49-45, but the Governor vetoed it, and the Senate's attempt to override the veto failed 25-20, so it did not become law.",
+      "nay_description": "Voted against Senate Bill 2307, which would have made libraries and schools keep sexual material away from minors. It would have set out what counts as a public library. Libraries and schools would have needed written safety rules and filtering software. The local prosecutor could have reviewed libraries, school districts and state agencies to check they complied, and the bill carried a penalty. It also reworked how the state defines obscene material. That test asks whether an ordinary person in North Dakota would find the material is mainly about sex and has no real literary, artistic, political or scientific worth. The North Dakota House passed it 49-45, but the Governor vetoed it, and the Senate's attempt to override the veto failed 25-20, so it did not become law.",
+      "labels": [
+        {
+          "slug": "civil_rights",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}

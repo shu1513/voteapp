@@ -1,0 +1,166 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1538745,
+      "measure_id": "HB 1058",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1058, which sets the state's first rules for aboveground fuel tanks. It covers tanks that hold refined petroleum, and puts them under the state environment department. Some tanks are left out. A farm or home tank for fuel that is not sold is out, and so is a tank of heating oil used on the same property. Septic tanks are out, and so are pipelines that federal law already covers. The act also lets the department pick the yearly registration deadline. A late payment still costs twenty-five dollars per tank each month. The North Dakota House passed it 66-24, and it became law.",
+      "nay_description": "Voted against House Bill 1058, which sets the state's first rules for aboveground fuel tanks. It covers tanks that hold refined petroleum, and puts them under the state environment department. Some tanks are left out. A farm or home tank for fuel that is not sold is out, and so is a tank of heating oil used on the same property. Septic tanks are out, and so are pipelines that federal law already covers. The act also lets the department pick the yearly registration deadline. A late payment still costs twenty-five dollars per tank each month. The North Dakota House passed it 66-24, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1553173,
+      "measure_id": "HB 1225",
+      "vote_date": "2025-04-21",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1225, which adds a new felony level for reckless endangerment with a firearm. Recklessly creating a substantial risk of serious injury or death was a class A misdemeanor. It rose to a class C felony only where the circumstances showed extreme indifference to human life. Under the act it is a class B felony if the person uses a firearm. The class C felony for extreme indifference stays, and so does the misdemeanor for other cases. The act also widens the habitual offender rule. A past felony used to count toward a longer sentence only if it was a class C felony or worse, or carried a maximum of five years or more. The act drops those limits, so more past convictions can count. The North Dakota House passed it 72-21, and it became law.",
+      "nay_description": "Voted against House Bill 1225, which adds a new felony level for reckless endangerment with a firearm. Recklessly creating a substantial risk of serious injury or death was a class A misdemeanor. It rose to a class C felony only where the circumstances showed extreme indifference to human life. Under the act it is a class B felony if the person uses a firearm. The class C felony for extreme indifference stays, and so does the misdemeanor for other cases. The act also widens the habitual offender rule. A past felony used to count toward a longer sentence only if it was a class C felony or worse, or carried a maximum of five years or more. The act drops those limits, so more past convictions can count. The North Dakota House passed it 72-21, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "senate",
+      "session": "2140",
+      "roll": 1543018,
+      "measure_id": "HB 1225",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1225, which adds a new felony level for reckless endangerment with a firearm. Recklessly creating a substantial risk of serious injury or death was a class A misdemeanor. It rose to a class C felony only where the circumstances showed extreme indifference to human life. Under the act it is a class B felony if the person uses a firearm. The class C felony for extreme indifference stays, and so does the misdemeanor for other cases. The act also widens the habitual offender rule. A past felony used to count toward a longer sentence only if it was a class C felony or worse, or carried a maximum of five years or more. The act drops those limits, so more past convictions can count. The North Dakota Senate passed it 26-20, and it became law.",
+      "nay_description": "Voted against House Bill 1225, which adds a new felony level for reckless endangerment with a firearm. Recklessly creating a substantial risk of serious injury or death was a class A misdemeanor. It rose to a class C felony only where the circumstances showed extreme indifference to human life. Under the act it is a class B felony if the person uses a firearm. The class C felony for extreme indifference stays, and so does the misdemeanor for other cases. The act also widens the habitual offender rule. A past felony used to count toward a longer sentence only if it was a class C felony or worse, or carried a maximum of five years or more. The act drops those limits, so more past convictions can count. The North Dakota Senate passed it 26-20, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1538432,
+      "measure_id": "HB 1341",
+      "vote_date": "2025-04-07",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1341, which makes assaulting a hospital worker a felony. Simple assault is normally a class B misdemeanor, but it is a class C felony when the victim is one of a listed group doing their job, such as a police officer, a firefighter or emergency medical staff. The act adds hospital workers who are giving essential patient care to that list. The North Dakota House passed it 68-21, and it became law.",
+      "nay_description": "Voted against House Bill 1341, which makes assaulting a hospital worker a felony. Simple assault is normally a class B misdemeanor, but it is a class C felony when the victim is one of a listed group doing their job, such as a police officer, a firefighter or emergency medical staff. The act adds hospital workers who are giving essential patient care to that list. The North Dakota House passed it 68-21, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "senate",
+      "session": "2140",
+      "roll": 1518078,
+      "measure_id": "HB 1497",
+      "vote_date": "2025-03-14",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1497, which lets some younger children start an approved four-year-old program. A child normally has to be four before August first of the year they enroll. Under the act a school district may also take a child who turns four before December first, if the district decides the child is ready. That decision has to weigh things like development milestones and school readiness, and it follows a request. The act also lets a teacher in the program be either licensed or approved in early childhood education by the state's teaching standards board. The North Dakota Senate passed it 28-19, and it became law.",
+      "nay_description": "Voted against House Bill 1497, which lets some younger children start an approved four-year-old program. A child normally has to be four before August first of the year they enroll. Under the act a school district may also take a child who turns four before December first, if the district decides the child is ready. That decision has to weigh things like development milestones and school readiness, and it follows a request. The act also lets a teacher in the program be either licensed or approved in early childhood education by the state's teaching standards board. The North Dakota Senate passed it 28-19, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "senate",
+      "session": "2140",
+      "roll": 1528220,
+      "measure_id": "HB 1500",
+      "vote_date": "2025-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 1500, which protects the right to rebuild a home that no longer fits current zoning. Counties, cities and townships must let such a home be repaired or rebuilt even when it is damaged beyond half its value. The owner has to apply for a permit within six months and start within a year, and the lot must touch a public road. The rebuilt home may not take up new ground, be bigger, be taller, or cut off-street parking. It may not break building, fire, sanitary or health rules, create a safety risk, or push onto a road or a neighbor's land. Making the building larger still has to meet zoning. Floodplain rules still apply, so the area keeps its national flood insurance. The North Dakota Senate passed it 31-16, and it became law.",
+      "nay_description": "Voted against House Bill 1500, which protects the right to rebuild a home that no longer fits current zoning. Counties, cities and townships must let such a home be repaired or rebuilt even when it is damaged beyond half its value. The owner has to apply for a permit within six months and start within a year, and the lot must touch a public road. The rebuilt home may not take up new ground, be bigger, be taller, or cut off-street parking. It may not break building, fire, sanitary or health rules, create a safety risk, or push onto a road or a neighbor's land. Making the building larger still has to meet zoning. Floodplain rules still apply, so the area keeps its national flood insurance. The North Dakota Senate passed it 31-16, and it became law.",
+      "labels": [
+        {
+          "slug": "housing_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "senate",
+      "session": "2140",
+      "roll": 1550374,
+      "measure_id": "SB 2069",
+      "vote_date": "2025-04-16",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2069, which makes an online notice count when a newspaper does not print one. When the law calls for a notice in a newspaper, the paper must also post it on the statewide legal notices website at no extra charge. The act lets a state agency ask for that posting right away. The newspaper association must then give a sworn statement that it went up. If the paper never prints the notice, the online posting counts instead. The North Dakota Senate passed it 32-15, and it became law.",
+      "nay_description": "Voted against Senate Bill 2069, which makes an online notice count when a newspaper does not print one. When the law calls for a notice in a newspaper, the paper must also post it on the statewide legal notices website at no extra charge. The act lets a state agency ask for that posting right away. The newspaper association must then give a sworn statement that it went up. If the paper never prints the notice, the online posting counts instead. The North Dakota Senate passed it 32-15, and it became law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1543022,
+      "measure_id": "SB 2159",
+      "vote_date": "2025-04-09",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2159, which lifts a ban on nuclear waste research at the state energy research center. The center was barred outright from work leading to the search for, storage, treatment or disposal of high-level radioactive waste in North Dakota. Under the act it may now do that work. It needs approval from the industrial commission, and must consult the state's advisory council on high-level radioactive waste. The work is limited to waste kept above ground. The North Dakota House passed it 57-32, and it became law.",
+      "nay_description": "Voted against Senate Bill 2159, which lifts a ban on nuclear waste research at the state energy research center. The center was barred outright from work leading to the search for, storage, treatment or disposal of high-level radioactive waste in North Dakota. Under the act it may now do that work. It needs approval from the industrial commission, and must consult the state's advisory council on high-level radioactive waste. The work is limited to waste kept above ground. The North Dakota House passed it 57-32, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "against",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ND",
+      "chamber": "house",
+      "session": "2140",
+      "roll": 1557560,
+      "measure_id": "SB 2213",
+      "vote_date": "2025-04-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 2213, which sets math teaching standards for new teachers. The state teaching board must make sure someone seeking a license to teach secondary math shows competence in direct and explicit math instruction. The act extends that duty to elementary teachers as well. A candidate meets it either by training from an approved program or by showing mastery of the topics the act lists. The board may give a provisional license for up to two years to a candidate who does not yet meet the standard. The act also covers math curriculum, teacher training, and screening and help for students who are behind. The North Dakota House passed it 63-30, and it became law.",
+      "nay_description": "Voted against Senate Bill 2213, which sets math teaching standards for new teachers. The state teaching board must make sure someone seeking a license to teach secondary math shows competence in direct and explicit math instruction. The act extends that duty to elementary teachers as well. A candidate meets it either by training from an approved program or by showing mastery of the topics the act lists. The board may give a provisional license for up to two years to a candidate who does not yet meet the standard. The act also covers math curriculum, teacher training, and screening and help for students who are behind. The North Dakota House passed it 63-30, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
