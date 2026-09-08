@@ -49,13 +49,44 @@ rolls carrying a tallied history line match Idaho exactly.
 
 No roll in the divided-and-enacted pool has a member on the wrong side.
 
-## A hazard tested and refuted
+## The `passed` flag: one hazard refuted, a different one found
 
 Five rolls pass with fewer than 36 yeas in a 70-seat House, which looks like the
 flag defect found in Montana, Arizona and Colorado. It is not. Idaho's
 constitution requires a majority of the members **present**, not of the members
 elected, and Idaho's own history calls all five passages. Do not carry that
 hazard into Idaho on a vote count alone.
+
+**LegiScan's `passed` flag is wrong in Idaho in a different way.** It is
+derived from the word PASSED or FAILED in Idaho's action line, and Idaho's
+resolution adoptions say ADOPTED, which the flag reads as 0. That mislabels 20
+rolls in this session and 23 in 2026. Almost all are CR, JM and R types the
+fetcher rejects before storing anything. The exception is joint resolutions,
+the type that carries a constitutional amendment, which is a kept type.
+
+Four stored rolls are affected: **HJR004** (House 58-10, Senate 29-6) and
+**HJR006** (House 59-8, Senate 30-5). Idaho's own pages say ADOPTED for all
+four and both resolutions were delivered to the Secretary of State, so both go
+to Idaho voters in November 2026. The fetcher writes `result` straight from
+the flag, so all four were stored as "Failed". **They are held in the config**
+(`heldRollCallIds`) so they cannot be queued until the stored result is
+corrected. None of the four is divided, so the current pool never reaches
+them, but a ballot-measure scope would, and a stored "Failed" on a measure
+that voters are about to decide is the worst possible data to leave in place.
+
+The other three stored joint-resolution rolls — HJR001 here, HJR007 and HJR009
+in 2026 — also carry `passed: 0`, and there the flag is **right**: a
+constitutional amendment needs two-thirds of all members (47 of 70), and 46-23
+falls one short. Idaho's history calls all three FAILED. Found by the review of
+the config pull request and confirmed against the dataset and Idaho's pages.
+
+**A related feed gap:** on a day the House suspends the rules, Idaho's action
+line reads `Rules Suspended: Ayes 65 Nays 0 Abs/Excd 5, read in full as
+required – ADOPTED - 58-10-2`, and LegiScan's copy of that line stops at
+`Rules Suspended:`. The House tally is lost from the feed on those days, which
+is why HJR004's and HJR006's House rolls have no tallied history line in the
+dataset and why the tally audit above could only place 707 of 854 rolls. When
+the history line is missing, the tally has to come from the bill page.
 
 ## Pool
 

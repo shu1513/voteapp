@@ -60,3 +60,42 @@ The match runs at selection time and a roll it cannot place is left unselected.
 
 This is the same limitation Delaware carries, and it is recorded the same way:
 as a step the batch recipe owes, not as something a pattern can fix.
+
+## 3. LegiScan's `passed` flag reads 0 on every Idaho resolution adoption
+
+The flag is derived from the word PASSED or FAILED in the state's action line.
+Idaho adopts resolutions, and an ADOPTED line maps to `passed: 0`. Measured:
+20 rolls in 2025 and 23 in 2026 carry a 0 where Idaho's own page says ADOPTED.
+
+Most are CR, JM and R measures that `LEGISCAN_KEPT_BILL_TYPES` rejects before
+the queue, so nothing is stored for them. Joint resolutions are a kept type,
+and `fetchLegiscanRollCallVotes.ts` writes `result` straight from the flag
+(`rollCall.passed ? "Passed" : "Failed"`), so the four adopted joint-resolution
+rolls in 2025 — HJR004 House 1506354 and Senate 1515095, HJR006 House 1517486
+and Senate 1526800 — are stored as "Failed". Both resolutions go to Idaho
+voters in November 2026.
+
+Handled by holding the four in `heldRollCallIds`, which is the documented
+mechanism for a roll the state's own record contradicts. Not fixed in code:
+`result` is only read by the store's change detection, never by the judge or
+the importer, so the defect changes no decision today, and the honest code fix
+(taking `result` from the bill history when the state prints it) touches every
+LegiScan state and is out of scope for a config pull request.
+
+The flag is **right** on the three failed joint resolutions (HJR001 in 2025,
+HJR007 and HJR009 in 2026), but only because their lines say FAILED. Idaho's
+constitution requires two-thirds of all members for a constitutional amendment
+(47 of 70, 24 of 35), so 46-23 is a defeat. Nothing in LegiScan knows that
+threshold; do not infer a joint resolution's outcome from the tally.
+
+## 4. LegiScan truncates Idaho's `Rules Suspended:` action at the colon
+
+On a day the House suspends the rules to read a bill in full, Idaho's action
+line carries the whole event: `Rules Suspended: Ayes 65 Nays 0 Abs/Excd 5, read
+in full as required – ADOPTED - 58-10-2`. LegiScan's copy stops at
+`Rules Suspended:`, so the vote's tally never reaches the feed. That is why the
+tally audit could place only 707 of 854 rolls in 2025 and 643 of 852 in 2026,
+and why the House rolls on HJR004 and HJR006 had to be confirmed against the
+bill page rather than the dataset. The rule for a batch: when a roll has no
+tallied history line on its date, fetch the bill page and read the tally there
+before the roll is selected; never treat a missing line as a missing vote.
