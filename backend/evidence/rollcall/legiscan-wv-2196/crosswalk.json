@@ -1,0 +1,1000 @@
+{
+ "source": "legiscan",
+ "jurisdiction": "WV",
+ "session_id": 2196,
+ "note": "people_id to VoteApp candidate id for West Virginia. One file covers BOTH sessions in scope, the 2025 Regular Session (LegiScan 2196) and the 2026 Regular Session (2254), because LegiScan people_ids are stable across sessions: 128 of the 134 members appear in both files with the same name, seat and role, and the two resolve runs proposed the same candidate for every person they both matched, with no conflict. The union is 140 people. Six members left after 2025 and six arrived for 2026, and Trenton Barnhart moved from HD-009 to SD-003 between the two sessions, which is why his seat agrees in 2254 but not in 2196. Fifteen entries were added by hand: West Virginia's roster records legal names while the ballot uses nicknames, so the proposer, which matches on the legal first name, could not reach them. Every hand-added entry is corroborated by the district AND by the dataset's own first_name and nickname fields. Entries with a null candidate_id are deliberate: that member is not on the November 2026 ballot, because the seat is not up, or the member is not seeking re-election, or the member lost the May 2026 primary.",
+ "entries": [
+  {
+   "people_id": 2,
+   "legiscan_name": "William Anderson",
+   "district": "HD-010",
+   "candidate_id": null,
+   "note": "William Anderson, HD-010; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 18,
+   "legiscan_name": "Denny Canterbury",
+   "district": "HD-047",
+   "candidate_id": "bbd2ebde-e6d8-43ab-9fe9-5aeec7ac545e",
+   "note": "Denny Canterbury, HD-047; matched by hand: legal name Denny Ray Canterbury Jr., nickname Ray; HD-047 matches Delegate District 47"
+  },
+  {
+   "people_id": 27,
+   "legiscan_name": "Jeff Eldridge",
+   "district": "HD-030",
+   "candidate_id": "8f3d6130-5631-4558-bc44-d529cde808b0",
+   "note": "Jeff Eldridge, HD-030; proposed by name match (first_and_last) and accepted, on the ballot as Jeff Eldridge"
+  },
+  {
+   "people_id": 37,
+   "legiscan_name": "Bill Hamilton",
+   "district": "SD-011",
+   "candidate_id": "7c87e03b-2717-452f-84bc-0493f9602332",
+   "note": "Bill Hamilton, SD-011; proposed by name match (first_and_last) and accepted, on the ballot as Bill Hamilton"
+  },
+  {
+   "people_id": 104,
+   "legiscan_name": "Donna Boley",
+   "district": "SD-003",
+   "candidate_id": null,
+   "note": "Donna Boley, SD-003; no Nov-2026 state-legislative candidacy",
+   "sessions": "2196"
+  },
+  {
+   "people_id": 826,
+   "legiscan_name": "Pat McGeehan",
+   "district": "HD-001",
+   "candidate_id": "fc4867e6-0705-4e61-b689-2f36101ff8c1",
+   "note": "Pat McGeehan, HD-001; proposed by name match (first_and_last) and accepted, on the ballot as Pat McGeehan"
+  },
+  {
+   "people_id": 11206,
+   "legiscan_name": "Gary Howell",
+   "district": "HD-087",
+   "candidate_id": "751d6c00-7598-406d-bbd3-01af5da21181",
+   "note": "Gary Howell, HD-087; proposed by name match (first_and_last) and accepted, on the ballot as Gary G. Howell"
+  },
+  {
+   "people_id": 11207,
+   "legiscan_name": "Larry Kump",
+   "district": "HD-094",
+   "candidate_id": null,
+   "note": "Larry Kump, HD-094; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 11306,
+   "legiscan_name": "Rupert Phillips",
+   "district": "SD-007",
+   "candidate_id": null,
+   "note": "Rupert Phillips, SD-007; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 11592,
+   "legiscan_name": "Marty Gearheart",
+   "district": "HD-037",
+   "candidate_id": "245f80bd-e8eb-494f-b0d1-048799d58ce2",
+   "note": "Marty Gearheart, HD-037; matched by hand: legal name Gary Martin Gearheart, nickname Marty; HD-037 matches Delegate District 37"
+  },
+  {
+   "people_id": 11796,
+   "legiscan_name": "Joe Ellington",
+   "district": "HD-038",
+   "candidate_id": "7983e038-7fff-42b7-834f-1a096e5c34f5",
+   "note": "Joe Ellington, HD-038; proposed by name match (first_and_last) and accepted, on the ballot as Joe C. Ellington Jr"
+  },
+  {
+   "people_id": 15831,
+   "legiscan_name": "Jason Barrett",
+   "district": "SD-016",
+   "candidate_id": "97cc7389-cfef-4249-aa15-c9131397dd50",
+   "note": "Jason Barrett, SD-016; proposed by name match (first_and_last) and accepted, on the ballot as Jason Barrett"
+  },
+  {
+   "people_id": 15837,
+   "legiscan_name": "Randy Smith",
+   "district": "SD-014",
+   "candidate_id": null,
+   "note": "Randy Smith, SD-014; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 15860,
+   "legiscan_name": "Jim Butler",
+   "district": "HD-018",
+   "candidate_id": "10d69f44-83af-4b4c-8e80-f1e68563635b",
+   "note": "Jim Butler, HD-018; proposed by name match (first_and_last) and accepted, on the ballot as Jim Butler"
+  },
+  {
+   "people_id": 15908,
+   "legiscan_name": "Roy Cooper",
+   "district": "HD-040",
+   "candidate_id": "4a395c45-b2dd-49a4-bc38-478947c11d99",
+   "note": "Roy Cooper, HD-040; proposed by name match (first_and_last) and accepted, on the ballot as Roy G. Cooper"
+  },
+  {
+   "people_id": 16931,
+   "legiscan_name": "Joseph Statler",
+   "district": "HD-077",
+   "candidate_id": "9ec5ff25-c41b-4d85-9cdd-be28062ad799",
+   "note": "Joseph Statler, HD-077; matched by hand: legal first name Joseph, nickname Joe; HD-077 matches Delegate District 77"
+  },
+  {
+   "people_id": 16933,
+   "legiscan_name": "Mark Zatezalo",
+   "district": "HD-002",
+   "candidate_id": null,
+   "note": "Mark Zatezalo, HD-002; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 16935,
+   "legiscan_name": "Roger Hanshaw",
+   "district": "HD-062",
+   "candidate_id": "6de351b5-7bea-4544-ac5d-bfce58d444b7",
+   "note": "Roger Hanshaw, HD-062; proposed by name match (first_and_last) and accepted, on the ballot as Roger Hanshaw"
+  },
+  {
+   "people_id": 16940,
+   "legiscan_name": "Matthew Rohrbach",
+   "district": "HD-026",
+   "candidate_id": "8267d739-bf2f-4228-aa86-064230a27b11",
+   "note": "Matthew Rohrbach, HD-026; proposed by name match (first_and_last) and accepted, on the ballot as Matthew Rohrbach"
+  },
+  {
+   "people_id": 16944,
+   "legiscan_name": "Ryan Weld",
+   "district": "SD-001",
+   "candidate_id": null,
+   "note": "Ryan Weld, SD-001; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 16948,
+   "legiscan_name": "Mark Maynard",
+   "district": "SD-006",
+   "candidate_id": "cb05137b-4db2-4c76-979d-8b516ee757f0",
+   "note": "Mark Maynard, SD-006; proposed by name match (first_and_last) and accepted, on the ballot as Mark R Maynard"
+  },
+  {
+   "people_id": 16951,
+   "legiscan_name": "Tom Takubo",
+   "district": "SD-017",
+   "candidate_id": "54759090-5b44-4f51-876f-3a0899738b75",
+   "note": "Tom Takubo, SD-017; matched by hand: legal name Tamejiro Takubo Jr., nickname Tom; SD-017 matches State Senate District 17"
+  },
+  {
+   "people_id": 16998,
+   "legiscan_name": "Mike Pushkin",
+   "district": "HD-054",
+   "candidate_id": "28672f2d-b9e5-4066-bc1c-1aabc683d576",
+   "note": "Mike Pushkin, HD-054; proposed by name match (first_and_last) and accepted, on the ballot as Mike Pushkin"
+  },
+  {
+   "people_id": 17000,
+   "legiscan_name": "Sean Hornbuckle",
+   "district": "HD-025",
+   "candidate_id": "fa1928d5-5db4-4178-94f8-9f633d44a8da",
+   "note": "Sean Hornbuckle, HD-025; proposed by name match (first_and_last) and accepted, on the ballot as Sean Hornbuckle"
+  },
+  {
+   "people_id": 17196,
+   "legiscan_name": "Mike Woelfel",
+   "district": "SD-005",
+   "candidate_id": null,
+   "note": "Mike Woelfel, SD-005; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 17197,
+   "legiscan_name": "Shawn Fluharty",
+   "district": "HD-005",
+   "candidate_id": "5f49dc6f-ca90-4d60-b241-f48459f6ed90",
+   "note": "Shawn Fluharty, HD-005; proposed by name match (first_and_last) and accepted, on the ballot as Shawn Fluharty; SEAT DISAGREES because this sitting delegate is running for the Senate, confirmed against that district's Nov-2026 roster"
+  },
+  {
+   "people_id": 17581,
+   "legiscan_name": "Mike Azinger",
+   "district": "SD-003",
+   "candidate_id": "d203627c-30db-4813-8624-05200cb889ab",
+   "note": "Mike Azinger, SD-003; proposed by name match (first_and_last) and accepted, on the ballot as Mike Azinger"
+  },
+  {
+   "people_id": 17838,
+   "legiscan_name": "Bill Flanigan",
+   "district": "HD-004",
+   "candidate_id": null,
+   "note": "Bill Flanigan, HD-004; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 19245,
+   "legiscan_name": "Glenn Jeffries",
+   "district": "SD-008",
+   "candidate_id": null,
+   "note": "Glenn Jeffries, SD-008; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 19247,
+   "legiscan_name": "Patricia Rucker",
+   "district": "SD-016",
+   "candidate_id": null,
+   "note": "Patricia Rucker, SD-016; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 19253,
+   "legiscan_name": "Vernon Criss",
+   "district": "HD-012",
+   "candidate_id": "0fad2447-8fe3-4620-8eed-e69fab5c5ffe",
+   "note": "Vernon Criss, HD-012; matched by hand: legal name Adrian Vernon Criss III, nickname Vernon; HD-012 matches Delegate District 12"
+  },
+  {
+   "people_id": 19254,
+   "legiscan_name": "Guy Ward",
+   "district": "HD-074",
+   "candidate_id": "29ef98b5-e1ad-457b-8797-752e66294353",
+   "note": "Guy Ward, HD-074; proposed by name match (first_and_last) and accepted, on the ballot as Guy Ward",
+   "sessions": "2254"
+  },
+  {
+   "people_id": 19258,
+   "legiscan_name": "Charles Clements",
+   "district": "SD-002",
+   "candidate_id": null,
+   "note": "Charles Clements, SD-002; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 19266,
+   "legiscan_name": "Zachery Maynard",
+   "district": "SD-007",
+   "candidate_id": "639ded37-7b61-43fa-a161-2723782fe30c",
+   "note": "Zachery Maynard, SD-007; matched by hand: legal first name Zachery, on the ballot as Zack; SD-007 matches State Senate District 7",
+   "sessions": "2254"
+  },
+  {
+   "people_id": 19272,
+   "legiscan_name": "Mark Dean",
+   "district": "HD-034",
+   "candidate_id": null,
+   "note": "Mark Dean, HD-034; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 19292,
+   "legiscan_name": "Bennett Queen",
+   "district": "SD-012",
+   "candidate_id": "a7f0b17d-6c59-496d-8d24-5f35814a31d1",
+   "note": "Bennett Queen, SD-012; proposed by name match (first_prefix) and accepted, on the ballot as Ben Queen"
+  },
+  {
+   "people_id": 19382,
+   "legiscan_name": "Patrick Martin",
+   "district": "SD-012",
+   "candidate_id": null,
+   "note": "Patrick Martin, SD-012; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 19383,
+   "legiscan_name": "John Williams",
+   "district": "HD-080",
+   "candidate_id": "128911aa-af78-4786-ae92-ac926a5ecfb8",
+   "note": "John Williams, HD-080; proposed by name match (first_and_last) and accepted, on the ballot as John Williams; SEAT DISAGREES because this sitting delegate is running for the Senate, confirmed against that district's Nov-2026 roster"
+  },
+  {
+   "people_id": 19425,
+   "legiscan_name": "Roland Jennings",
+   "district": "HD-084",
+   "candidate_id": "6fbf3856-0c4c-43a4-9c51-885f3d02d1b3",
+   "note": "Roland Jennings, HD-084; matched by hand: legal name Dorris Roland Jennings, nickname Buck, so the ballot initials D.R. are Dorris Roland; HD-084 matches Delegate District 84"
+  },
+  {
+   "people_id": 19575,
+   "legiscan_name": "Jeff Campbell",
+   "district": "HD-046",
+   "candidate_id": "590b2bbe-6175-46e0-ab30-6ebed9826240",
+   "note": "Jeff Campbell, HD-046; proposed by name match (first_and_last) and accepted, on the ballot as Jeff Campbell"
+  },
+  {
+   "people_id": 19670,
+   "legiscan_name": "Daniel Linville",
+   "district": "HD-022",
+   "candidate_id": null,
+   "note": "Daniel Linville, HD-022; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 20544,
+   "legiscan_name": "John Paul Hott",
+   "district": "HD-085",
+   "candidate_id": null,
+   "note": "John Paul Hott, HD-085; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 20545,
+   "legiscan_name": "Dean Jeffries",
+   "district": "HD-061",
+   "candidate_id": "13db579f-7478-4938-84d6-07de53af0b0c",
+   "note": "Dean Jeffries, HD-061; matched by hand: legal name Warren Dean Jeffries, nickname Dean; HD-061 matches Delegate District 61"
+  },
+  {
+   "people_id": 20547,
+   "legiscan_name": "Carl Martin",
+   "district": "HD-065",
+   "candidate_id": "ed385e26-f464-4efe-89a5-00f333463d92",
+   "note": "Carl Martin, HD-065; proposed by name match (first_and_last) and accepted, on the ballot as Carl \"Robbie\" Martin"
+  },
+  {
+   "people_id": 20548,
+   "legiscan_name": "Brandon Steele",
+   "district": "HD-042",
+   "candidate_id": null,
+   "note": "Brandon Steele, HD-042; no Nov-2026 state-legislative candidacy",
+   "sessions": "2196"
+  },
+  {
+   "people_id": 20550,
+   "legiscan_name": "Christopher Toney",
+   "district": "HD-043",
+   "candidate_id": "43a32231-d99e-4a9f-a7aa-61581460c83d",
+   "note": "Christopher Toney, HD-043; proposed by name match (first_and_last) and accepted, on the ballot as Christopher W Toney"
+  },
+  {
+   "people_id": 20552,
+   "legiscan_name": "Evan Worrell",
+   "district": "HD-023",
+   "candidate_id": "a52b7bf9-fb0d-458e-8700-06c6d7a7231a",
+   "note": "Evan Worrell, HD-023; proposed by name match (first_and_last) and accepted, on the ballot as Evan Worrell"
+  },
+  {
+   "people_id": 20553,
+   "legiscan_name": "Eric Tarr",
+   "district": "SD-004",
+   "candidate_id": "47198830-d7cd-4d3a-ad6c-d912f4fababa",
+   "note": "Eric Tarr, SD-004; proposed by name match (first_and_last) and accepted, on the ballot as Eric J. Tarr"
+  },
+  {
+   "people_id": 20606,
+   "legiscan_name": "Evan Hansen",
+   "district": "HD-079",
+   "candidate_id": "5d1e9587-e29e-49c4-b50d-fb5f5d56f3f7",
+   "note": "Evan Hansen, HD-079; proposed by name match (first_and_last) and accepted, on the ballot as Evan Hansen"
+  },
+  {
+   "people_id": 20608,
+   "legiscan_name": "David Kelly",
+   "district": "HD-008",
+   "candidate_id": null,
+   "note": "David Kelly, HD-008; no Nov-2026 state-legislative candidacy",
+   "sessions": "2196"
+  },
+  {
+   "people_id": 20611,
+   "legiscan_name": "Rollan Roberts",
+   "district": "SD-009",
+   "candidate_id": "20184c1d-2711-4efa-b25b-b41f471a342e",
+   "note": "Rollan Roberts, SD-009; proposed by name match (first_and_last) and accepted, on the ballot as Rollan Roberts"
+  },
+  {
+   "people_id": 21121,
+   "legiscan_name": "Chris Phillips",
+   "district": "HD-068",
+   "candidate_id": "2dc96aa3-49b1-443a-b894-c3339db3eec3",
+   "note": "Chris Phillips, HD-068; proposed by name match (first_and_last) and accepted, on the ballot as Chris Phillips"
+  },
+  {
+   "people_id": 21395,
+   "legiscan_name": "Trenton Barnhart",
+   "district": "SD-003",
+   "candidate_id": "351330d4-cc43-44e5-b8ae-c3d5fce26494",
+   "note": "Trenton Barnhart, SD-003; proposed by name match (first_and_last) and accepted, on the ballot as Trenton Carl Barnhart; SEAT DISAGREES because this sitting delegate is running for the Senate, confirmed against that district's Nov-2026 roster"
+  },
+  {
+   "people_id": 22806,
+   "legiscan_name": "Dana Ferrell",
+   "district": "HD-060",
+   "candidate_id": "12766f88-192a-4b0e-8fa6-b055d0ed18c9",
+   "note": "Dana Ferrell, HD-060; proposed by name match (first_and_last) and accepted, on the ballot as Dana J. Ferrell"
+  },
+  {
+   "people_id": 22807,
+   "legiscan_name": "Josh Holstein",
+   "district": "HD-032",
+   "candidate_id": "7a948570-da65-4911-9ce7-40a47bbbf2db",
+   "note": "Josh Holstein, HD-032; proposed by name match (first_prefix) and accepted, on the ballot as Josh Holstein"
+  },
+  {
+   "people_id": 22811,
+   "legiscan_name": "Clay Riley",
+   "district": "HD-072",
+   "candidate_id": "4aa70f2d-6111-45f2-973a-bbff31cc030f",
+   "note": "Clay Riley, HD-072; proposed by name match (first_and_last) and accepted, on the ballot as Clay Riley"
+  },
+  {
+   "people_id": 22812,
+   "legiscan_name": "Bryan Ward",
+   "district": "HD-086",
+   "candidate_id": null,
+   "note": "Bryan Ward, HD-086; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 22813,
+   "legiscan_name": "Jordan Bridges",
+   "district": "HD-033",
+   "candidate_id": null,
+   "note": "Jordan Bridges, HD-033; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 22814,
+   "legiscan_name": "Adam Burkhammer",
+   "district": "HD-064",
+   "candidate_id": "83ffabd9-1c45-4967-ac2b-d932552f5536",
+   "note": "Adam Burkhammer, HD-064; proposed by name match (first_and_last) and accepted, on the ballot as Adam Burkhammer"
+  },
+  {
+   "people_id": 22815,
+   "legiscan_name": "Wayne Clark",
+   "district": "HD-099",
+   "candidate_id": "8eee6d63-9b54-42e5-baa9-bdb96aa68476",
+   "note": "Wayne Clark, HD-099; proposed by name match (first_and_last) and accepted, on the ballot as Wayne M. Clark"
+  },
+  {
+   "people_id": 22818,
+   "legiscan_name": "Chuck Horst",
+   "district": "HD-095",
+   "candidate_id": "9af270e2-f18e-447a-ad8d-68ec348db2e2",
+   "note": "Chuck Horst, HD-095; proposed by name match (first_and_last) and accepted, on the ballot as Charles \"Chuck\" Horst"
+  },
+  {
+   "people_id": 22820,
+   "legiscan_name": "Laura Kimble",
+   "district": "HD-071",
+   "candidate_id": null,
+   "note": "Laura Kimble, HD-071; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 22822,
+   "legiscan_name": "Margitta Mazzocchi",
+   "district": "HD-031",
+   "candidate_id": "e97236f6-ec37-478c-9534-ba6a19fe566d",
+   "note": "Margitta Mazzocchi, HD-031; matched by hand: LegiScan last name Schaaf-Mazzocchi; HD-031 matches Delegate District 31"
+  },
+  {
+   "people_id": 22823,
+   "legiscan_name": "Jonathan Pinson",
+   "district": "HD-017",
+   "candidate_id": "aef5cebb-6b3b-422c-8771-ed8ee2c004a3",
+   "note": "Jonathan Pinson, HD-017; proposed by name match (first_and_last) and accepted, on the ballot as Jonathan Adam Pinson"
+  },
+  {
+   "people_id": 22834,
+   "legiscan_name": "Phil Mallow",
+   "district": "HD-075",
+   "candidate_id": "f428f185-e1c8-47a4-a292-97495923cf7f",
+   "note": "Phil Mallow, HD-075; proposed by name match (first_and_last) and accepted, on the ballot as Phil Mallow"
+  },
+  {
+   "people_id": 22836,
+   "legiscan_name": "Amy Nichole Grady",
+   "district": "SD-004",
+   "candidate_id": null,
+   "note": "Amy Nichole Grady, SD-004; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 22845,
+   "legiscan_name": "Jack Woodrum",
+   "district": "SD-010",
+   "candidate_id": null,
+   "note": "Jack Woodrum, SD-010; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 22846,
+   "legiscan_name": "Kayla Young",
+   "district": "HD-056",
+   "candidate_id": "de67aa36-d231-4ebc-acae-80392ef9281e",
+   "note": "Kayla Young, HD-056; proposed by name match (first_and_last) and accepted, on the ballot as Kayla Young"
+  },
+  {
+   "people_id": 22849,
+   "legiscan_name": "Joey Garcia",
+   "district": "SD-013",
+   "candidate_id": null,
+   "note": "Joey Garcia, SD-013; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 22869,
+   "legiscan_name": "George Miller",
+   "district": "HD-090",
+   "candidate_id": "aa2e69c1-80ce-461f-a03d-6595c4ae079a",
+   "note": "George Miller, HD-090; proposed by name match (first_and_last) and accepted, on the ballot as George Miller"
+  },
+  {
+   "people_id": 22870,
+   "legiscan_name": "Doug Smith",
+   "district": "HD-039",
+   "candidate_id": null,
+   "note": "Doug Smith, HD-039; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 22954,
+   "legiscan_name": "Jordan Maynor",
+   "district": "HD-041",
+   "candidate_id": "6b43791c-3a10-4e34-8b74-161dafcc26df",
+   "note": "Jordan Maynor, HD-041; proposed by name match (first_and_last) and accepted, on the ballot as Jordan Allen Maynor"
+  },
+  {
+   "people_id": 23025,
+   "legiscan_name": "Kathie Crouse",
+   "district": "HD-019",
+   "candidate_id": "fb16f313-eb02-448f-870f-7241ff409dcc",
+   "note": "Kathie Crouse, HD-019; proposed by name match (first_and_last) and accepted, on the ballot as Kathie Hess Crouse"
+  },
+  {
+   "people_id": 23157,
+   "legiscan_name": "Jarred Cannon",
+   "district": "HD-021",
+   "candidate_id": null,
+   "note": "Jarred Cannon, HD-021; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 24073,
+   "legiscan_name": "Michael Hite",
+   "district": "HD-092",
+   "candidate_id": "cbb47a53-72aa-42e4-8d9b-d54ecd73bb75",
+   "note": "Michael Hite, HD-092; proposed by name match (first_and_last) and accepted, on the ballot as Michael Hite"
+  },
+  {
+   "people_id": 24074,
+   "legiscan_name": "Jimmy Willis",
+   "district": "HD-003",
+   "candidate_id": "0f948927-82a1-4d28-92d2-299a08fff740",
+   "note": "Jimmy Willis, HD-003; proposed by name match (first_and_last) and accepted, on the ballot as Jimmy Willis"
+  },
+  {
+   "people_id": 24150,
+   "legiscan_name": "Laura Wakim Chapman",
+   "district": "SD-001",
+   "candidate_id": "5f3438c5-c637-4947-b7ae-0c23e7b3fbcd",
+   "note": "Laura Wakim Chapman, SD-001; proposed by name match (first_and_last) and accepted, on the ballot as Laura Wakim Chapman"
+  },
+  {
+   "people_id": 24151,
+   "legiscan_name": "Vince Deeds",
+   "district": "SD-010",
+   "candidate_id": "54323dae-7307-4e22-a70f-b409ca390776",
+   "note": "Vince Deeds, SD-010; proposed by name match (first_and_last) and accepted, on the ballot as Vince Deeds"
+  },
+  {
+   "people_id": 24152,
+   "legiscan_name": "Mike Oliverio",
+   "district": "SD-013",
+   "candidate_id": "adc5e51a-8050-4d14-a628-267ada746159",
+   "note": "Mike Oliverio, SD-013; proposed by name match (first_and_last) and accepted, on the ballot as Mike Oliverio"
+  },
+  {
+   "people_id": 24153,
+   "legiscan_name": "Mike Stuart",
+   "district": "SD-007",
+   "candidate_id": null,
+   "note": "Mike Stuart, SD-007; no Nov-2026 state-legislative candidacy",
+   "sessions": "2196"
+  },
+  {
+   "people_id": 24154,
+   "legiscan_name": "Jay Taylor",
+   "district": "SD-014",
+   "candidate_id": "f6686e08-5698-49ab-bd66-62f0f1e85665",
+   "note": "Jay Taylor, SD-014; matched by hand: legal name John Taylor Jr., nickname Jay; SD-014 matches State Senate District 14"
+  },
+  {
+   "people_id": 24271,
+   "legiscan_name": "Walter Hall",
+   "district": "HD-058",
+   "candidate_id": "e64e2ced-deb6-4ef8-9b01-f14022fcc54c",
+   "note": "Walter Hall, HD-058; proposed by name match (first_and_last) and accepted, on the ballot as Walter Hall"
+  },
+  {
+   "people_id": 24272,
+   "legiscan_name": "Scot Heckert",
+   "district": "HD-013",
+   "candidate_id": null,
+   "note": "Scot Heckert, HD-013; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 24273,
+   "legiscan_name": "Charles Sheedy",
+   "district": "HD-007",
+   "candidate_id": "705efb20-bc23-4d75-972f-94cf689e352e",
+   "note": "Charles Sheedy, HD-007; proposed by name match (first_and_last) and accepted, on the ballot as Charles R. Sheedy Sr"
+  },
+  {
+   "people_id": 24276,
+   "legiscan_name": "Eric Brooks",
+   "district": "HD-045",
+   "candidate_id": "adda7b55-53c2-4884-b9ae-8845df6bb40b",
+   "note": "Eric Brooks, HD-045; proposed by name match (first_and_last) and accepted, on the ballot as Eric Brooks"
+  },
+  {
+   "people_id": 24277,
+   "legiscan_name": "Geno Chiarelli",
+   "district": "HD-078",
+   "candidate_id": "48987517-0a97-43ea-a08f-af2b0e9f3bf5",
+   "note": "Geno Chiarelli, HD-078; matched by hand: legal first name Eugene, nickname Geno; HD-078 matches Delegate District 78"
+  },
+  {
+   "people_id": 24278,
+   "legiscan_name": "Elias Coop-Gonzalez",
+   "district": "HD-067",
+   "candidate_id": null,
+   "note": "Elias Coop-Gonzalez, HD-067; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 24279,
+   "legiscan_name": "Mike DeVault",
+   "district": "HD-074",
+   "candidate_id": null,
+   "note": "Mike DeVault, HD-074; no Nov-2026 state-legislative candidacy",
+   "sessions": "2196"
+  },
+  {
+   "people_id": 24280,
+   "legiscan_name": "Henry Dillon",
+   "district": "HD-029",
+   "candidate_id": "d2ee8130-e30a-4f74-aad2-0808b2e81200",
+   "note": "Henry Dillon, HD-029; proposed by name match (first_and_last) and accepted, on the ballot as Henry Corby Dillon"
+  },
+  {
+   "people_id": 24281,
+   "legiscan_name": "Lori Dittman",
+   "district": "HD-063",
+   "candidate_id": "d2e071aa-6b80-4228-86d1-5cbeda547646",
+   "note": "Lori Dittman, HD-063; proposed by name match (first_and_last) and accepted, on the ballot as Lori Cowger Dittman"
+  },
+  {
+   "people_id": 24282,
+   "legiscan_name": "Bob Fehrenbacher",
+   "district": "HD-011",
+   "candidate_id": null,
+   "note": "Bob Fehrenbacher, HD-011; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 24284,
+   "legiscan_name": "Rick Hillenbrand",
+   "district": "HD-088",
+   "candidate_id": "770a1332-b79a-45b8-a1f7-205c3d668e9e",
+   "note": "Rick Hillenbrand, HD-088; proposed by name match (first_and_last) and accepted, on the ballot as Rick Hillenbrand"
+  },
+  {
+   "people_id": 24285,
+   "legiscan_name": "Michael Hornby",
+   "district": "HD-093",
+   "candidate_id": "25f66e44-7c5b-4db9-a836-8ebc196a96ff",
+   "note": "Michael Hornby, HD-093; matched by hand: legal first name Michael, on the ballot as Mike; HD-093 matches Delegate District 93"
+  },
+  {
+   "people_id": 24286,
+   "legiscan_name": "Patrick Lucas",
+   "district": "HD-024",
+   "candidate_id": "269c946f-1e32-4554-b439-e379a4f06ebe",
+   "note": "Patrick Lucas, HD-024; proposed by name match (first_and_last) and accepted, on the ballot as Patrick Lucas"
+  },
+  {
+   "people_id": 24287,
+   "legiscan_name": "Keith Marple",
+   "district": "HD-069",
+   "candidate_id": null,
+   "note": "Keith Marple, HD-069; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 24288,
+   "legiscan_name": "Mickey Petitto",
+   "district": "HD-070",
+   "candidate_id": null,
+   "note": "Mickey Petitto, HD-070; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 24289,
+   "legiscan_name": "Bill Ridenour",
+   "district": "HD-100",
+   "candidate_id": "1ea97437-f05f-4916-8c34-5b3ca7643092",
+   "note": "Bill Ridenour, HD-100; proposed by name match (first_and_last) and accepted, on the ballot as William Ridenour"
+  },
+  {
+   "people_id": 24291,
+   "legiscan_name": "George Street",
+   "district": "HD-083",
+   "candidate_id": "13717986-1efd-480e-855c-4b2006fa80e5",
+   "note": "George Street, HD-083; proposed by name match (first_and_last) and accepted, on the ballot as George Street"
+  },
+  {
+   "people_id": 24292,
+   "legiscan_name": "Darren Thorne",
+   "district": "SD-015",
+   "candidate_id": "949f9045-d877-4761-818c-7cdbdfe452f9",
+   "note": "Darren Thorne, SD-015; proposed by name match (first_and_last) and accepted, on the ballot as Darren J Thorne"
+  },
+  {
+   "people_id": 24293,
+   "legiscan_name": "Adam Vance",
+   "district": "HD-035",
+   "candidate_id": null,
+   "note": "Adam Vance, HD-035; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 24295,
+   "legiscan_name": "Dave Foggin",
+   "district": "HD-014",
+   "candidate_id": "2340f03a-c8b1-4be2-95a9-91978685abbb",
+   "note": "Dave Foggin, HD-014; proposed by name match (first_and_last) and accepted, on the ballot as Dave Foggin"
+  },
+  {
+   "people_id": 24397,
+   "legiscan_name": "Andy Shamblin",
+   "district": "HD-059",
+   "candidate_id": "96a3f29c-6547-484b-8c31-d0f68110ae30",
+   "note": "Andy Shamblin, HD-059; proposed by name match (first_and_last) and accepted, on the ballot as Andy Shamblin"
+  },
+  {
+   "people_id": 24482,
+   "legiscan_name": "Elliott Pritt",
+   "district": "HD-050",
+   "candidate_id": null,
+   "note": "Elliott Pritt, HD-050; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 24951,
+   "legiscan_name": "Anitra Hamilton",
+   "district": "HD-081",
+   "candidate_id": "0c3313f7-4772-4892-bb12-f0622c333460",
+   "note": "Anitra Hamilton, HD-081; proposed by name match (first_and_last) and accepted, on the ballot as Anitra Hamilton"
+  },
+  {
+   "people_id": 25033,
+   "legiscan_name": "James Akers",
+   "district": "HD-055",
+   "candidate_id": "5d64d651-fa96-42b8-9acf-4b67ce1b44ac",
+   "note": "James Akers, HD-055; matched by hand: legal name James Robert Akers II, nickname JB; HD-055 matches Delegate District 55"
+  },
+  {
+   "people_id": 25034,
+   "legiscan_name": "Hollis Lewis",
+   "district": "HD-057",
+   "candidate_id": "1cbfcc60-8732-46fe-a10e-53d40ec74234",
+   "note": "Hollis Lewis, HD-057; proposed by name match (first_and_last) and accepted, on the ballot as Hollis T. Lewis"
+  },
+  {
+   "people_id": 25035,
+   "legiscan_name": "Erica Moore",
+   "district": "HD-015",
+   "candidate_id": "f7c2a63c-8606-489b-abb8-1c1bcf0c1afd",
+   "note": "Erica Moore, HD-015; proposed by name match (first_and_last) and accepted, on the ballot as Erica J. Moore"
+  },
+  {
+   "people_id": 25036,
+   "legiscan_name": "Jeffrey Stephens",
+   "district": "HD-006",
+   "candidate_id": null,
+   "note": "Jeffrey Stephens, HD-006; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 25066,
+   "legiscan_name": "Thomas Clark",
+   "district": "HD-048",
+   "candidate_id": null,
+   "note": "Thomas Clark, HD-048; no Nov-2026 state-legislative candidacy",
+   "sessions": "2196"
+  },
+  {
+   "people_id": 25124,
+   "legiscan_name": "David Green",
+   "district": "HD-036",
+   "candidate_id": "560762af-8ca0-4663-b64d-cb194321e66c",
+   "note": "David Green, HD-036; proposed by name match (first_and_last) and accepted, on the ballot as David Green"
+  },
+  {
+   "people_id": 25217,
+   "legiscan_name": "Ryan Browning",
+   "district": "HD-028",
+   "candidate_id": "dbef7064-4c32-4d99-b89d-79bb224e6962",
+   "note": "Ryan Browning, HD-028; proposed by name match (first_and_last) and accepted, on the ballot as Ryan Browning"
+  },
+  {
+   "people_id": 25218,
+   "legiscan_name": "Carl Roop",
+   "district": "HD-044",
+   "candidate_id": "6d434181-339b-46d6-9733-ba25ac00eccb",
+   "note": "Carl Roop, HD-044; proposed by name match (first_and_last) and accepted, on the ballot as Carl Bill Roop"
+  },
+  {
+   "people_id": 25665,
+   "legiscan_name": "Joe Funkhouser",
+   "district": "HD-098",
+   "candidate_id": "4c7e0b67-b13d-41f1-9398-91188b260e52",
+   "note": "Joe Funkhouser, HD-098; matched by hand: legal first name Raymond, nickname Joe; HD-098 matches Delegate District 98"
+  },
+  {
+   "people_id": 26203,
+   "legiscan_name": "Stanley Adkins",
+   "district": "HD-049",
+   "candidate_id": null,
+   "note": "Stanley Adkins, HD-049; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 26204,
+   "legiscan_name": "Michael Amos",
+   "district": "HD-027",
+   "candidate_id": null,
+   "note": "Michael Amos, HD-027; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 26205,
+   "legiscan_name": "Chris Anders",
+   "district": "HD-097",
+   "candidate_id": "b01defe8-bd4b-4b15-835d-360df2476168",
+   "note": "Chris Anders, HD-097; matched by hand: on the ballot as S. Chris Anders, so the first token is an initial; HD-097 matches Delegate District 97"
+  },
+  {
+   "people_id": 26206,
+   "legiscan_name": "Marshall Clay",
+   "district": "HD-051",
+   "candidate_id": null,
+   "note": "Marshall Clay, HD-051; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 26207,
+   "legiscan_name": "Sarah Drennan",
+   "district": "HD-020",
+   "candidate_id": "51987a72-1caf-4d5c-8c62-f6a63f3cf97a",
+   "note": "Sarah Drennan, HD-020; proposed by name match (first_and_last) and accepted, on the ballot as Sarah Drennan"
+  },
+  {
+   "people_id": 26208,
+   "legiscan_name": "Rick Garcia",
+   "district": "HD-076",
+   "candidate_id": "839c0ddb-a4d1-4717-9e5d-3e925d99a338",
+   "note": "Rick Garcia, HD-076; proposed by name match (first_and_last) and accepted, on the ballot as Rick Garcia"
+  },
+  {
+   "people_id": 26209,
+   "legiscan_name": "Tresa Howell",
+   "district": "HD-052",
+   "candidate_id": "af0a1e36-857f-4503-ad35-3e0819581ab6",
+   "note": "Tresa Howell, HD-052; proposed by name match (first_and_last) and accepted, on the ballot as Tresa Howell"
+  },
+  {
+   "people_id": 26210,
+   "legiscan_name": "Jonathan Kyle",
+   "district": "HD-066",
+   "candidate_id": "2ba590e5-ede8-4912-b543-c71ea8ae9ad6",
+   "note": "Jonathan Kyle, HD-066; proposed by name match (first_and_last) and accepted, on the ballot as Jonathan B. Kyle"
+  },
+  {
+   "people_id": 26211,
+   "legiscan_name": "Tristan Leavitt",
+   "district": "HD-053",
+   "candidate_id": "442dac5d-36e3-4b95-8a68-547619ca64b2",
+   "note": "Tristan Leavitt, HD-053; proposed by name match (first_and_last) and accepted, on the ballot as Tristan Leavitt"
+  },
+  {
+   "people_id": 26212,
+   "legiscan_name": "David McCormick",
+   "district": "HD-082",
+   "candidate_id": "41f2bfad-44f8-46aa-880c-24e3b3fe10fc",
+   "note": "David McCormick, HD-082; proposed by name match (first_and_last) and accepted, on the ballot as David McCormick"
+  },
+  {
+   "people_id": 26213,
+   "legiscan_name": "Joe Parsons",
+   "district": "HD-016",
+   "candidate_id": "ba96dd9d-a856-46a3-8526-010516d5021c",
+   "note": "Joe Parsons, HD-016; proposed by name match (first_and_last) and accepted, on the ballot as Frederick Happy Joe Parsons"
+  },
+  {
+   "people_id": 26214,
+   "legiscan_name": "Bryan Smith",
+   "district": "HD-073",
+   "candidate_id": null,
+   "note": "Bryan Smith, HD-073; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 26215,
+   "legiscan_name": "Lisa White",
+   "district": "HD-096",
+   "candidate_id": null,
+   "note": "Lisa White, HD-096; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 26216,
+   "legiscan_name": "Scott Fuller",
+   "district": "SD-005",
+   "candidate_id": null,
+   "note": "Scott Fuller, SD-005; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 26217,
+   "legiscan_name": "Craig Hart",
+   "district": "SD-006",
+   "candidate_id": null,
+   "note": "Craig Hart, SD-006; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 26218,
+   "legiscan_name": "Brian Helton",
+   "district": "SD-009",
+   "candidate_id": null,
+   "note": "Brian Helton, SD-009; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 26219,
+   "legiscan_name": "Robbie Morris",
+   "district": "SD-011",
+   "candidate_id": null,
+   "note": "Robbie Morris, SD-011; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 26220,
+   "legiscan_name": "Chris Rose",
+   "district": "SD-002",
+   "candidate_id": null,
+   "note": "Chris Rose, SD-002; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 26221,
+   "legiscan_name": "Tom Willis",
+   "district": "SD-015",
+   "candidate_id": null,
+   "note": "Tom Willis, SD-015; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 26395,
+   "legiscan_name": "Ian Masters",
+   "district": "HD-091",
+   "candidate_id": null,
+   "note": "Ian Masters, HD-091; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 26410,
+   "legiscan_name": "Anne Charnock",
+   "district": "SD-017",
+   "candidate_id": "4879b9aa-9f6e-40d1-83ea-062ff06826ae",
+   "note": "Anne Charnock, SD-017; proposed by name match (first_and_last) and accepted, on the ballot as Anne B. Charnock"
+  },
+  {
+   "people_id": 26411,
+   "legiscan_name": "Kevan Bartlett",
+   "district": "SD-008",
+   "candidate_id": null,
+   "note": "Kevan Bartlett, SD-008; no Nov-2026 state-legislative candidacy"
+  },
+  {
+   "people_id": 26412,
+   "legiscan_name": "David Cannon",
+   "district": "HD-089",
+   "candidate_id": "7e75b1ff-27ab-4dfa-b678-8090cbc254e3",
+   "note": "David Cannon, HD-089; proposed by name match (first_and_last) and accepted, on the ballot as David Cannon"
+  },
+  {
+   "people_id": 26594,
+   "legiscan_name": "Bill Bell",
+   "district": "HD-008",
+   "candidate_id": null,
+   "note": "Bill Bell, HD-008; no Nov-2026 state-legislative candidacy",
+   "sessions": "2254"
+  },
+  {
+   "people_id": 26595,
+   "legiscan_name": "John Jordan",
+   "district": "HD-042",
+   "candidate_id": "d8674e44-47c7-4bbd-b511-4f7a45e92587",
+   "note": "John Jordan, HD-042; proposed by name match (first_and_last) and accepted, on the ballot as John K Jordan",
+   "sessions": "2254"
+  },
+  {
+   "people_id": 26596,
+   "legiscan_name": "Gregory Watt",
+   "district": "HD-048",
+   "candidate_id": null,
+   "note": "Gregory Watt, HD-048; no Nov-2026 state-legislative candidacy",
+   "sessions": "2254"
+  },
+  {
+   "people_id": 26649,
+   "legiscan_name": "Betsy Kelly",
+   "district": "HD-009",
+   "candidate_id": null,
+   "note": "Betsy Kelly, HD-009; no Nov-2026 state-legislative candidacy",
+   "sessions": "2254"
+  }
+ ]
+}

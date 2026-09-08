@@ -1,0 +1,1678 @@
+{
+  "importerVersion": "rollcall-legiscan-resolve-v1",
+  "startedAt": "2026-09-07T18:41:30.956Z",
+  "finishedAt": "2026-09-07T18:41:31.298Z",
+  "jurisdiction": "ID",
+  "sessionId": 2168,
+  "evidenceDir": "~/legiscan-data/id-2168-resolve",
+  "scopeFrom": "2026-11-01",
+  "peopleSource": "~/legiscan-data/id-2168/ID/2025-2025_Regular_Session",
+  "peopleMembers": 105,
+  "candidatePool": 202,
+  "crosswalkFile": null,
+  "crosswalkEntries": null,
+  "crosswalkPeopleNotInSnapshot": [],
+  "proposals": [
+    {
+      "peopleId": 8012,
+      "rosterName": "Judy Boyle",
+      "rosterSeat": "house HD-009B",
+      "candidateId": "8a972a6d-aeab-47f9-9b1b-64504788e04d",
+      "candidateName": "Judy Boyle",
+      "candidacy": "state_lower: State House District 9 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 8019,
+      "rosterName": "Brent Crane",
+      "rosterSeat": "house HD-013A",
+      "candidateId": "83e7e10b-ba18-40c0-b276-76cac07314c2",
+      "candidateName": "Brent J Crane",
+      "candidacy": "state_lower: State House District 13 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 8026,
+      "rosterName": "Phil Hart",
+      "rosterSeat": "senate SD-002",
+      "candidateId": "394231f7-d2c9-49d7-9672-30bf617a38cb",
+      "candidateName": "Phil Hart",
+      "candidacy": "state_upper: State Senate District 2 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 8043,
+      "rosterName": "Mike Moyle",
+      "rosterSeat": "house HD-010A",
+      "candidateId": "723ff82e-9420-4363-8b3c-170edf7d0549",
+      "candidateName": "Mike Moyle",
+      "candidacy": "state_lower: State House District 10 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 8046,
+      "rosterName": "Joe Palmer",
+      "rosterSeat": "house HD-020A",
+      "candidateId": "c7f34d92-53e5-4aac-947a-6e178861eca3",
+      "candidateName": "Joe A Palmer",
+      "candidacy": "state_lower: State House District 20 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 8053,
+      "rosterName": "James Ruchti",
+      "rosterSeat": "senate SD-029",
+      "candidateId": "74a7b4d1-a989-4a62-8ad1-3c208904a4fb",
+      "candidateName": "James Ruchti",
+      "candidacy": "state_upper: State Senate District 29 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 12737,
+      "rosterName": "Vito Barbieri",
+      "rosterSeat": "house HD-003A",
+      "candidateId": "b2c74a06-3678-4ca2-9bc4-b458c90a3669",
+      "candidateName": "Vito Barbieri",
+      "candidacy": "state_lower: State House District 3 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 12742,
+      "rosterName": "Jim Guthrie",
+      "rosterSeat": "senate SD-028",
+      "candidateId": "d2e2fa2a-46d6-4554-9154-344b2bea616a",
+      "candidateName": "Jim Guthrie",
+      "candidacy": "state_upper: State Senate District 28 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15431,
+      "rosterName": "John Gannon",
+      "rosterSeat": "house HD-017A",
+      "candidateId": "af63b048-1cde-4765-a2f0-43a8bafa9584",
+      "candidateName": "John Gannon",
+      "candidacy": "state_lower: State House District 17 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 15796,
+      "rosterName": "James Holtzclaw",
+      "rosterSeat": "house HD-020B",
+      "candidateId": "97a84653-d1c9-485e-8329-170e9da6537f",
+      "candidateName": "James D. Holtzclaw",
+      "candidacy": "state_lower: State House District 20 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 15802,
+      "rosterName": "Ron Mendive",
+      "rosterSeat": "house HD-005A",
+      "candidateId": "40188e5b-148c-40ef-939e-978ed243d22e",
+      "candidateName": "Ron Mendive",
+      "candidacy": "state_lower: State House District 5 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 15804,
+      "rosterName": "Jason Monks",
+      "rosterSeat": "house HD-022B",
+      "candidateId": "cd1cf841-2504-4b7b-89ef-b7db7d92a8ed",
+      "candidateName": "Jason A. Monks",
+      "candidacy": "state_lower: State House District 22 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 15810,
+      "rosterName": "Julie VanOrden",
+      "rosterSeat": "senate SD-030",
+      "candidateId": "ec962d94-144b-489d-9896-504fff94d79c",
+      "candidateName": "Julie VanOrden",
+      "candidacy": "state_upper: State Senate District 30 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15811,
+      "rosterName": "Janie Ward-Engelking",
+      "rosterSeat": "senate SD-018",
+      "candidateId": "d001c313-a3a6-459c-9c77-61d3cb3a86de",
+      "candidateName": "Janie Ward-Engelking",
+      "candidacy": "state_upper: State Senate District 18 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 15818,
+      "rosterName": "Todd Lakey",
+      "rosterSeat": "senate SD-023",
+      "candidateId": "6d94df43-fcf5-43b7-91f3-61db3ffb128c",
+      "candidateName": "Todd Lakey",
+      "candidacy": "state_upper: State Senate District 23 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 16113,
+      "rosterName": "Ilana Rubel",
+      "rosterSeat": "house HD-018A",
+      "candidateId": "2b27ae3f-1ed1-4918-98e3-2bb89e884bbc",
+      "candidateName": "Ilana Rubel",
+      "candidacy": "state_lower: State House District 18 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 17199,
+      "rosterName": "Van Burtenshaw",
+      "rosterSeat": "senate SD-031",
+      "candidateId": "54f634d8-a6b9-4a4d-b0c7-eb008eae85af",
+      "candidateName": "Van Burtenshaw",
+      "candidacy": "state_upper: State Senate District 31 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17209,
+      "rosterName": "Heather Scott",
+      "rosterSeat": "house HD-002A",
+      "candidateId": "dc94cd9e-8726-4031-b595-34eabe661a23",
+      "candidateName": "Heather Scott",
+      "candidacy": "state_lower: State House District 2 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 17211,
+      "rosterName": "Melissa Wintrow",
+      "rosterSeat": "senate SD-019",
+      "candidateId": "851c6458-37dc-423f-a089-76f8dfa544e4",
+      "candidateName": "Melissa Wintrow",
+      "candidacy": "state_upper: State Senate District 19 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17417,
+      "rosterName": "Lori Den Hartog",
+      "rosterSeat": "senate SD-022",
+      "candidateId": "510e08ac-6d58-40f7-a845-8afe6910a714",
+      "candidateName": "Lori Den Hartog",
+      "candidacy": "state_upper: State Senate District 22 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17856,
+      "rosterName": "Kelly Anthon",
+      "rosterSeat": "senate SD-027",
+      "candidateId": "64ef3813-3a45-4754-9f7f-c0cb926057d2",
+      "candidateName": "Kelly Anthon",
+      "candidacy": "state_upper: State Senate District 27 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 17857,
+      "rosterName": "Mark Harris",
+      "rosterSeat": "senate SD-035",
+      "candidateId": "bc099a5c-1723-40c4-8a3a-2c9545688391",
+      "candidateName": "Mark Harris",
+      "candidacy": "state_upper: State Senate District 35 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 18620,
+      "rosterName": "Daniel Foreman",
+      "rosterSeat": "senate SD-006",
+      "candidateId": "5132e4ce-6dc1-4efb-9819-e2a652e1e7bd",
+      "candidateName": "Dan Foreman",
+      "candidacy": "state_upper: State Senate District 6 (2024); Idaho",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19056,
+      "rosterName": "Dustin Manwaring",
+      "rosterSeat": "house HD-029A",
+      "candidateId": "90512f6e-7be5-4596-81a8-c88529368ef0",
+      "candidateName": "Dustin W. Manwaring",
+      "candidacy": "state_lower: State House District 29 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 19060,
+      "rosterName": "Christy Zito",
+      "rosterSeat": "senate SD-008",
+      "candidateId": "1398c8f1-0b48-4b96-9c3c-464382caae12",
+      "candidateName": "Christy Zito",
+      "candidacy": "state_upper: State Senate District 8 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 19530,
+      "rosterName": "Barbara Ehardt",
+      "rosterSeat": "house HD-033A",
+      "candidateId": "16000b1c-8e82-4602-8113-440a6e1541bb",
+      "candidateName": "Barbara Ehardt",
+      "candidacy": "state_lower: State House District 33 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 21003,
+      "rosterName": "Steve Berch",
+      "rosterSeat": "house HD-015A",
+      "candidateId": "f797de58-5e01-44b2-903c-e1a6f1fea67c",
+      "candidateName": "Steve Berch",
+      "candidacy": "state_lower: State House District 15 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 21007,
+      "rosterName": "Rod Furniss",
+      "rosterSeat": "house HD-031B",
+      "candidateId": "cdc4c8c6-6374-436a-90a2-84cce9fa8928",
+      "candidateName": "Rod Furniss",
+      "candidacy": "state_lower: State House District 31 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 21009,
+      "rosterName": "Brooke Green",
+      "rosterSeat": "house HD-018B",
+      "candidateId": "66f4db33-00ba-407f-967a-728241516757",
+      "candidateName": "Brooke Green",
+      "candidacy": "state_lower: State House District 18 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 21014,
+      "rosterName": "Tammy Nichols",
+      "rosterSeat": "senate SD-010",
+      "candidateId": "734a661a-6dd1-4fd7-b629-03acda3b9b00",
+      "candidateName": "Tammy Nichols",
+      "candidacy": "state_upper: State Senate District 10 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21015,
+      "rosterName": "Jerald Raymond",
+      "rosterSeat": "house HD-031A",
+      "candidateId": "a991d2a2-563f-415a-8741-502a8778725c",
+      "candidateName": "Jerald Dallas Raymond",
+      "candidacy": "state_lower: State House District 31 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 21016,
+      "rosterName": "Doug Ricks",
+      "rosterSeat": "senate SD-034",
+      "candidateId": "a70666c8-22e9-4138-89dc-3bd468c0a81d",
+      "candidateName": "Doug Ricks",
+      "candidacy": "state_upper: State Senate District 34 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 21017,
+      "rosterName": "Tony Wisniewski",
+      "rosterSeat": "house HD-005B",
+      "candidateId": "edefea65-98f7-4f32-90ad-536869488103",
+      "candidateName": "Tony Wisniewski",
+      "candidacy": "state_lower: State House District 5 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 21040,
+      "rosterName": "Britt Raybould",
+      "rosterSeat": "house HD-034B",
+      "candidateId": "ac57d936-c625-4e71-a152-73f79da38c3f",
+      "candidateName": "Britt Raybould",
+      "candidacy": "state_lower: State House District 34 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22618,
+      "rosterName": "Ben Adams",
+      "rosterSeat": "senate SD-012",
+      "candidateId": "1355346b-95b5-4d23-b14c-e37b11b62096",
+      "candidateName": "Ben Adams",
+      "candidacy": "state_upper: State Senate District 12 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22620,
+      "rosterName": "David Cannon",
+      "rosterSeat": "house HD-030A",
+      "candidateId": "db78676a-f92a-4c34-bf0b-19256de9e026",
+      "candidateName": "David Cannon",
+      "candidacy": "state_lower: State House District 30 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22621,
+      "rosterName": "Marco Erickson",
+      "rosterSeat": "house HD-033B",
+      "candidateId": "a147184e-3f0a-43a4-b81d-042b9b4b0fef",
+      "candidateName": "Marco Erickson",
+      "candidacy": "state_lower: State House District 33 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22624,
+      "rosterName": "Brandon Mitchell",
+      "rosterSeat": "house HD-006B",
+      "candidateId": "d7de35d0-80eb-4334-b51d-622dd73e63ea",
+      "candidateName": "Brandon Mitchell",
+      "candidacy": "state_lower: State House District 6 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22625,
+      "rosterName": "Doug Okuniewicz",
+      "rosterSeat": "senate SD-003",
+      "candidateId": "80d4f568-db1c-48ac-82d2-9e6a3e18bd8a",
+      "candidateName": "Doug Okuniewicz",
+      "candidacy": "state_upper: State Senate District 3 (2024); Idaho",
+      "confidence": "first_prefix",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22626,
+      "rosterName": "Bruce Skaug",
+      "rosterSeat": "house HD-010B",
+      "candidateId": "5043db18-49fb-446c-a54c-315bb0fab129",
+      "candidateName": "Bruce D. Skaug",
+      "candidacy": "state_lower: State House District 10 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22627,
+      "rosterName": "Jon Weber",
+      "rosterSeat": "house HD-034A",
+      "candidateId": "317b017e-9745-446d-a353-95bfdac9aa34",
+      "candidateName": "Jon O Weber",
+      "candidacy": "state_lower: State House District 34 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22668,
+      "rosterName": "Kevin Cook",
+      "rosterSeat": "senate SD-032",
+      "candidateId": "a5f69cdc-281b-4a26-95f7-198cdb5a4fac",
+      "candidateName": "Kevin Cook",
+      "candidacy": "state_upper: State Senate District 32 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 22726,
+      "rosterName": "Charlie Shepherd",
+      "rosterSeat": "house HD-007B",
+      "candidateId": "b4c76391-2c4f-4c0e-9312-a650115aa4c7",
+      "candidateName": "Charlie Shepherd",
+      "candidacy": "state_lower: State House District 7 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 22727,
+      "rosterName": "Chris Mathias",
+      "rosterSeat": "house HD-019B",
+      "candidateId": "73c4a065-c51f-4d15-954a-77d776cffdc6",
+      "candidateName": "Chris Mathias",
+      "candidacy": "state_lower: State House District 19 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23065,
+      "rosterName": "Carrie Semmelroth",
+      "rosterSeat": "senate SD-017",
+      "candidateId": "c6c3e143-1039-4844-87ae-6e8e39c1f616",
+      "candidateName": "Carrie Semmelroth",
+      "candidacy": "state_upper: State Senate District 17 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 23915,
+      "rosterName": "Joe Alfieri",
+      "rosterSeat": "house HD-004A",
+      "candidateId": "4a03a1d0-b738-424b-aea9-e30cd7bfb7ca",
+      "candidateName": "Joe Alfieri",
+      "candidacy": "state_lower: State House District 4 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23917,
+      "rosterName": "Richard Cheatum",
+      "rosterSeat": "house HD-028A",
+      "candidateId": "39729ea1-e3f5-4787-9a1e-6a5f2173107a",
+      "candidateName": "Richard (Rick) Cheatum",
+      "candidacy": "state_lower: State House District 28 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23918,
+      "rosterName": "Jeff Cornilles",
+      "rosterSeat": "house HD-012A",
+      "candidateId": "021cfada-5cb3-4f9b-89b9-95707abe959d",
+      "candidateName": "Jeff Cornilles",
+      "candidacy": "state_lower: State House District 12 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23919,
+      "rosterName": "Jaron Crane",
+      "rosterSeat": "house HD-012B",
+      "candidateId": "4abeeb21-e48d-4ecc-b07d-0fa11e0ca80a",
+      "candidateName": "Jaron Crane",
+      "candidacy": "state_lower: State House District 12 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23922,
+      "rosterName": "Jeff Ehlers",
+      "rosterSeat": "house HD-021B",
+      "candidateId": "96d9a403-9800-4de2-b0f5-7c6d6a91c675",
+      "candidateName": "Jeff Ehlers",
+      "candidacy": "state_lower: State House District 21 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23923,
+      "rosterName": "Sonia Galaviz",
+      "rosterSeat": "house HD-016A",
+      "candidateId": "40b1f9e7-9d7f-43e9-b55b-d76eb7e42f0d",
+      "candidateName": "Soñia Galaviz",
+      "candidacy": "state_upper: State Senate District 16 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23925,
+      "rosterName": "Dan Garner",
+      "rosterSeat": "house HD-028B",
+      "candidateId": "912cb1cc-2717-42a8-87b9-30b806a9a08e",
+      "candidateName": "Dan Garner",
+      "candidacy": "state_lower: State House District 28 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23926,
+      "rosterName": "Clay Handy",
+      "rosterSeat": "house HD-027B",
+      "candidateId": "0fb5505e-babf-48d9-b30f-eaeab379b408",
+      "candidateName": "Clay Handy",
+      "candidacy": "state_lower: State House District 27 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23927,
+      "rosterName": "Dale Hawkins",
+      "rosterSeat": "house HD-002B",
+      "candidateId": "d2acfe81-182a-49ab-82aa-296e915e3613",
+      "candidateName": "Dale Hawkins",
+      "candidacy": "state_lower: State House District 2 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23928,
+      "rosterName": "Dori Healey",
+      "rosterSeat": "house HD-015B",
+      "candidateId": "327d63af-8d8b-4a2a-b481-28c2c54cb64c",
+      "candidateName": "Dori Healey",
+      "candidacy": "state_lower: State House District 15 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23932,
+      "rosterName": "Stephanie Mickelsen",
+      "rosterSeat": "house HD-032A",
+      "candidateId": "8bae21b0-47d3-4f56-9d72-10ec68721071",
+      "candidateName": "Stephanie Mickelsen",
+      "candidacy": "state_lower: State House District 32 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23935,
+      "rosterName": "James Petzke",
+      "rosterSeat": "house HD-021A",
+      "candidateId": "d6f120d6-e533-4cd6-927f-6f42551d2349",
+      "candidateName": "James Petzke",
+      "candidacy": "state_lower: State House District 21 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23936,
+      "rosterName": "Douglas Pickett",
+      "rosterSeat": "house HD-027A",
+      "candidateId": "56de7b5f-6576-414b-a06f-d83a8c3578b9",
+      "candidateName": "Douglas T Pickett",
+      "candidacy": "state_lower: State House District 27 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23937,
+      "rosterName": "Elaine Price",
+      "rosterSeat": "house HD-004B",
+      "candidateId": "0ea54e4b-9cc4-406e-89eb-bbdd4e672847",
+      "candidateName": "Elaine Price",
+      "candidacy": "state_lower: State House District 4 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23938,
+      "rosterName": "Jordan Redman",
+      "rosterSeat": "house HD-003B",
+      "candidateId": "c37866aa-81c9-4054-8cb0-6b8ad23399ea",
+      "candidateName": "Jordan Redman",
+      "candidacy": "state_lower: State House District 3 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23941,
+      "rosterName": "Josh Tanner",
+      "rosterSeat": "house HD-014B",
+      "candidateId": "7f36f3ac-4c06-4cd7-88a5-cabfbc8b18ab",
+      "candidateName": "Josh Tanner",
+      "candidacy": "state_lower: State House District 14 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 23942,
+      "rosterName": "Josh Wheeler",
+      "rosterSeat": "house HD-035B",
+      "candidateId": "74d72bd0-d28a-4e63-9b22-d7f7114517ce",
+      "candidateName": "Joshua D. Wheeler",
+      "candidacy": "state_lower: State House District 35 (2024); Idaho",
+      "confidence": "first_prefix",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 24546,
+      "rosterName": "Cindy Carlson",
+      "rosterSeat": "senate SD-007",
+      "candidateId": "12971d08-7c15-4a2f-9870-8d5579b6932a",
+      "candidateName": "Cindy Carlson",
+      "candidacy": "state_upper: State Senate District 7 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24634,
+      "rosterName": "Treg Bernt",
+      "rosterSeat": "senate SD-021",
+      "candidateId": "48750a3d-de14-4bb0-bd22-d14253e5ffaa",
+      "candidateName": "Treg Bernt",
+      "candidacy": "state_upper: State Senate District 21 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24635,
+      "rosterName": "Carl Bjerke",
+      "rosterSeat": "senate SD-005",
+      "candidateId": "99f25b38-ce98-4c92-96e3-1b49249759ec",
+      "candidateName": "Carl Bjerke",
+      "candidacy": "state_upper: State Senate District 5 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24638,
+      "rosterName": "Brian Lenney",
+      "rosterSeat": "senate SD-013",
+      "candidateId": "049d7d50-a72c-442e-89d3-32296db7d3a4",
+      "candidateName": "Brian Lenney",
+      "candidacy": "state_upper: State Senate District 13 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24640,
+      "rosterName": "Ben Toews",
+      "rosterSeat": "senate SD-004",
+      "candidateId": "cd05a685-26b1-402a-b8e5-cc21e096e869",
+      "candidateName": "Ben Toews",
+      "candidacy": "state_upper: State Senate District 4 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 24816,
+      "rosterName": "Ron Taylor",
+      "rosterSeat": "senate SD-026",
+      "candidateId": "83c07554-6e80-46b1-8073-76f966299ebc",
+      "candidateName": "Ron Taylor",
+      "candidacy": "state_upper: State Senate District 26 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25747,
+      "rosterName": "Rob Beiswenger",
+      "rosterSeat": "house HD-008A",
+      "candidateId": "9b0c8f9a-aa51-4b15-afbb-f33d3d4406ed",
+      "candidateName": "Rob Beiswenger",
+      "candidacy": "state_lower: State House District 8 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25748,
+      "rosterName": "Chris Bruce",
+      "rosterSeat": "house HD-023A",
+      "candidateId": "3d600e5c-28b6-4bf0-ba0c-0ffa296b4731",
+      "candidateName": "Chris Bruce",
+      "candidacy": "state_lower: State House District 23 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25751,
+      "rosterName": "Monica Church",
+      "rosterSeat": "house HD-019A",
+      "candidateId": "ba8f357d-f7f8-4db0-b873-bddc077b3e2a",
+      "candidateName": "Monica C. Church",
+      "candidacy": "state_lower: State House District 19 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25752,
+      "rosterName": "Shawn Dygert",
+      "rosterSeat": "house HD-023B",
+      "candidateId": "654238ba-a78f-4920-8c91-a78b090d7ed7",
+      "candidateName": "Shawn R Dygert",
+      "candidacy": "state_lower: State House District 23 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25753,
+      "rosterName": "Megan Egbert",
+      "rosterSeat": "house HD-017B",
+      "candidateId": "3a56cc24-7b97-4b85-a68f-9473fdd5370a",
+      "candidateName": "Megan Egbert",
+      "candidacy": "state_lower: State House District 17 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25754,
+      "rosterName": "Ben Fuhriman",
+      "rosterSeat": "house HD-030B",
+      "candidateId": "f58240d6-aa69-4f3d-bf73-b054d8d71393",
+      "candidateName": "Ben G. Fuhriman",
+      "candidacy": "state_lower: State House District 30 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25755,
+      "rosterName": "Kyle Harris",
+      "rosterSeat": "house HD-007A",
+      "candidateId": "04b72c49-156d-46d9-896e-ab03922653a7",
+      "candidateName": "Kyle Harris",
+      "candidacy": "state_lower: State House District 7 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25756,
+      "rosterName": "Clint Hostetler",
+      "rosterSeat": "house HD-024A",
+      "candidateId": "6f669020-daae-49e3-ae9c-277ff769db9e",
+      "candidateName": "Clint Hostetler",
+      "candidacy": "state_lower: State House District 24 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25758,
+      "rosterName": "Kent Marmon",
+      "rosterSeat": "house HD-011A",
+      "candidateId": "19072773-47d9-4770-9218-295aca97c50b",
+      "candidateName": "Kent A. Marmon",
+      "candidacy": "state_lower: State House District 11 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25759,
+      "rosterName": "Mike Pohanka",
+      "rosterSeat": "house HD-026A",
+      "candidateId": "3cb36497-dd15-4911-b0ac-14886f1831ad",
+      "candidateName": "Mike Pohanka",
+      "candidacy": "state_lower: State House District 26 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25760,
+      "rosterName": "Cornel Rasor",
+      "rosterSeat": "house HD-001B",
+      "candidateId": "1c0ce1f1-3393-4ee9-95a6-fc9cf5dcd42f",
+      "candidateName": "Cornel Rasor",
+      "candidacy": "state_lower: State House District 1 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25761,
+      "rosterName": "John Shirts",
+      "rosterSeat": "house HD-009A",
+      "candidateId": "d57e8661-3021-4d2d-83dd-4f5f821639af",
+      "candidateName": "John C. Shirts",
+      "candidacy": "state_lower: State House District 9 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25762,
+      "rosterName": "Steve Tanner",
+      "rosterSeat": "house HD-013B",
+      "candidateId": "fbfac1e3-bd17-48cf-9a21-865a3b6003bd",
+      "candidateName": "Steven Tanner",
+      "candidacy": "state_lower: State House District 13 (2024); Idaho",
+      "confidence": "first_prefix",
+      "seatAgrees": null
+    },
+    {
+      "peopleId": 25764,
+      "rosterName": "Camille Blaylock",
+      "rosterSeat": "senate SD-011",
+      "candidateId": "c42441d5-2635-4cf8-877a-bddb18e43595",
+      "candidateName": "Camille Blaylock",
+      "candidacy": "state_upper: State Senate District 11 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25765,
+      "rosterName": "Josh Keyser",
+      "rosterSeat": "senate SD-020",
+      "candidateId": "8f249e45-5cb0-4cdf-8213-f96ffe130c68",
+      "candidateName": "Josh Keyser",
+      "candidacy": "state_upper: State Senate District 20 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    },
+    {
+      "peopleId": 25767,
+      "rosterName": "Brandon Shippy",
+      "rosterSeat": "senate SD-009",
+      "candidateId": "49c2ca3b-d569-4b39-96ca-d0e54fd4561d",
+      "candidateName": "Brandon Shippy",
+      "candidacy": "state_upper: State Senate District 9 (2024); Idaho",
+      "confidence": "first_and_last",
+      "seatAgrees": true
+    }
+  ],
+  "unmatchedPeople": [
+    {
+      "peopleId": 12749,
+      "name": "John Vander Woude",
+      "seat": "house HD-022A"
+    },
+    {
+      "peopleId": 15789,
+      "name": "Lance Clow",
+      "seat": "house HD-025A"
+    },
+    {
+      "peopleId": 15797,
+      "name": "Wendy Horman",
+      "seat": "house HD-032B"
+    },
+    {
+      "peopleId": 15803,
+      "name": "Steve Miller",
+      "seat": "house HD-024B"
+    },
+    {
+      "peopleId": 21002,
+      "name": "Kevin Andrus",
+      "seat": "house HD-035A"
+    },
+    {
+      "peopleId": 21035,
+      "name": "Scott Grow",
+      "seat": "senate SD-014"
+    },
+    {
+      "peopleId": 21036,
+      "name": "Dave Lent",
+      "seat": "senate SD-033"
+    },
+    {
+      "peopleId": 21038,
+      "name": "Jim Woodward",
+      "seat": "senate SD-001"
+    },
+    {
+      "peopleId": 22623,
+      "name": "Codi Galloway",
+      "seat": "senate SD-015"
+    },
+    {
+      "peopleId": 22669,
+      "name": "Alison Rabe",
+      "seat": "senate SD-016"
+    },
+    {
+      "peopleId": 22942,
+      "name": "Lori McCann",
+      "seat": "house HD-006A"
+    },
+    {
+      "peopleId": 23929,
+      "name": "Ted Hill",
+      "seat": "house HD-014A"
+    },
+    {
+      "peopleId": 23934,
+      "name": "Jack Nelsen",
+      "seat": "house HD-026B"
+    },
+    {
+      "peopleId": 23940,
+      "name": "Mark Sauter",
+      "seat": "house HD-001A"
+    },
+    {
+      "peopleId": 24642,
+      "name": "Glenneda Zuiderveld",
+      "seat": "senate SD-024"
+    },
+    {
+      "peopleId": 25167,
+      "name": "Todd Achilles",
+      "seat": "house HD-016B"
+    },
+    {
+      "peopleId": 25749,
+      "name": "Tanya Burgoyne",
+      "seat": "house HD-029B"
+    },
+    {
+      "peopleId": 25750,
+      "name": "Lucas Cayler",
+      "seat": "house HD-011B"
+    },
+    {
+      "peopleId": 25757,
+      "name": "David Leavitt",
+      "seat": "house HD-025B"
+    },
+    {
+      "peopleId": 25763,
+      "name": "Faye Thompson",
+      "seat": "house HD-008B"
+    },
+    {
+      "peopleId": 25766,
+      "name": "Josh Kohl",
+      "seat": "senate SD-025"
+    }
+  ],
+  "unmatchedCandidates": [
+    {
+      "candidateId": "093cbfd0-dc5c-41d4-bc3f-848124c936af",
+      "name": "Aaron Hayes",
+      "scope": "state_lower",
+      "districtName": "State House District 4 (2024); Idaho"
+    },
+    {
+      "candidateId": "9e09c9b0-7134-4b8d-8335-1d6336ead8cc",
+      "name": "Adam Chapman",
+      "scope": "state_upper",
+      "districtName": "State Senate District 5 (2024); Idaho"
+    },
+    {
+      "candidateId": "29133565-db27-47ec-97d2-86c09baeb0f7",
+      "name": "Amanda Easley",
+      "scope": "state_lower",
+      "districtName": "State House District 22 (2024); Idaho"
+    },
+    {
+      "candidateId": "a625c093-576d-40c0-817b-430f927dc28d",
+      "name": "Anita Janis",
+      "scope": "state_lower",
+      "districtName": "State House District 26 (2024); Idaho"
+    },
+    {
+      "candidateId": "87867dbb-79e5-43d6-87aa-1bdd9cfe51ef",
+      "name": "Anna Germana Scholes",
+      "scope": "state_upper",
+      "districtName": "State Senate District 24 (2024); Idaho"
+    },
+    {
+      "candidateId": "b7c2bf77-d526-4731-b267-a5c328c23b74",
+      "name": "Annie Haws",
+      "scope": "state_lower",
+      "districtName": "State House District 16 (2024); Idaho"
+    },
+    {
+      "candidateId": "92df6140-7b5d-4e90-ba1e-ad0a89bcf843",
+      "name": "Bella Schiffler",
+      "scope": "state_lower",
+      "districtName": "State House District 26 (2024); Idaho"
+    },
+    {
+      "candidateId": "f9e84436-7a3a-421e-81b3-76af5304958c",
+      "name": "Benjamin Chafetz",
+      "scope": "state_upper",
+      "districtName": "State Senate District 17 (2024); Idaho"
+    },
+    {
+      "candidateId": "4979576a-57e3-4266-aeec-69d9d77fb46e",
+      "name": "Beth Ann McFalls",
+      "scope": "state_lower",
+      "districtName": "State House District 10 (2024); Idaho"
+    },
+    {
+      "candidateId": "7404372b-a2dd-4b72-a625-6bb7707a94c1",
+      "name": "Birgid Niedenzu",
+      "scope": "state_lower",
+      "districtName": "State House District 2 (2024); Idaho"
+    },
+    {
+      "candidateId": "a90bf9a4-e735-40f5-ad59-0476a5dde45e",
+      "name": "Bree Buckingham",
+      "scope": "state_lower",
+      "districtName": "State House District 30 (2024); Idaho"
+    },
+    {
+      "candidateId": "98126ff1-244f-4f52-87c4-6663234268d5",
+      "name": "Brenda Quick",
+      "scope": "state_upper",
+      "districtName": "State Senate District 21 (2024); Idaho"
+    },
+    {
+      "candidateId": "ac04c913-cb51-43b5-afaa-3fd698be9e72",
+      "name": "Brent Reinke",
+      "scope": "state_upper",
+      "districtName": "State Senate District 24 (2024); Idaho"
+    },
+    {
+      "candidateId": "d0d52cd3-d449-40bf-92fa-51c08d66e2f0",
+      "name": "Brian Beckley",
+      "scope": "state_lower",
+      "districtName": "State House District 8 (2024); Idaho"
+    },
+    {
+      "candidateId": "9413a903-449c-4e49-a9e8-b1d7dcc8d1ca",
+      "name": "Brian Seguin",
+      "scope": "state_upper",
+      "districtName": "State Senate District 3 (2024); Idaho"
+    },
+    {
+      "candidateId": "9e2cd066-f88f-419b-a26f-2bbeacbfd758",
+      "name": "Bryan Hopkins",
+      "scope": "state_lower",
+      "districtName": "State House District 19 (2024); Idaho"
+    },
+    {
+      "candidateId": "db3b28c3-e349-4e12-8e82-b1d0a184511a",
+      "name": "Bryan Hyde",
+      "scope": "state_upper",
+      "districtName": "State Senate District 26 (2024); Idaho"
+    },
+    {
+      "candidateId": "7bc13a30-d41e-43ce-b38b-35809329bbb1",
+      "name": "C. Scott Grow",
+      "scope": "state_upper",
+      "districtName": "State Senate District 14 (2024); Idaho"
+    },
+    {
+      "candidateId": "191d16e9-d638-4bcc-ae33-fa915cb6c9c1",
+      "name": "Camille Allan",
+      "scope": "state_lower",
+      "districtName": "State House District 21 (2024); Idaho"
+    },
+    {
+      "candidateId": "f8b16872-2ded-49a8-9a45-305e99713775",
+      "name": "Carissa Brewer",
+      "scope": "state_upper",
+      "districtName": "State Senate District 4 (2024); Idaho"
+    },
+    {
+      "candidateId": "eb2d32a8-e8c2-4d75-825e-fea548896568",
+      "name": "Casey Hess",
+      "scope": "state_lower",
+      "districtName": "State House District 21 (2024); Idaho"
+    },
+    {
+      "candidateId": "9caf5065-eae1-496e-af47-0d98693984e3",
+      "name": "Casey Swensen",
+      "scope": "state_upper",
+      "districtName": "State Senate District 25 (2024); Idaho"
+    },
+    {
+      "candidateId": "d70be959-c5c9-4113-bdd7-64b5d0887b1a",
+      "name": "Chance Marshall",
+      "scope": "state_lower",
+      "districtName": "State House District 33 (2024); Idaho"
+    },
+    {
+      "candidateId": "cb7c0e9e-06ac-440a-900d-105a61e55fc3",
+      "name": "Chance Requa",
+      "scope": "state_lower",
+      "districtName": "State House District 24 (2024); Idaho"
+    },
+    {
+      "candidateId": "86fe6e06-a2dd-4156-a299-60f635f4fed6",
+      "name": "Chandler Stewart Hadraba",
+      "scope": "state_lower",
+      "districtName": "State House District 16 (2024); Idaho"
+    },
+    {
+      "candidateId": "b018791b-e00f-45d2-824f-b6144d56137f",
+      "name": "Cherie Vollmer",
+      "scope": "state_lower",
+      "districtName": "State House District 25 (2024); Idaho"
+    },
+    {
+      "candidateId": "c649dda0-ce30-40d1-9911-4528ecd16d16",
+      "name": "Cliff Hohman",
+      "scope": "state_lower",
+      "districtName": "State House District 13 (2024); Idaho"
+    },
+    {
+      "candidateId": "59f195a1-3b7c-4a62-8b0a-d4a4cd6ce5bb",
+      "name": "Cody Gorman",
+      "scope": "state_lower",
+      "districtName": "State House District 13 (2024); Idaho"
+    },
+    {
+      "candidateId": "196df505-8b68-410a-bd9a-b2b05e46e01b",
+      "name": "Colton Bennett",
+      "scope": "state_lower",
+      "districtName": "State House District 6 (2024); Idaho"
+    },
+    {
+      "candidateId": "b0f698ff-cd61-4825-9a3a-d4c259cdebfd",
+      "name": "Curtis James",
+      "scope": "state_lower",
+      "districtName": "State House District 12 (2024); Idaho"
+    },
+    {
+      "candidateId": "57a279c1-8d04-4e68-94cf-1dfe7a8eb9a6",
+      "name": "David Lent",
+      "scope": "state_upper",
+      "districtName": "State Senate District 33 (2024); Idaho"
+    },
+    {
+      "candidateId": "b429bf4e-46d5-4384-ad18-3983f08d8049",
+      "name": "Debbie Geyer",
+      "scope": "state_lower",
+      "districtName": "State House District 11 (2024); Idaho"
+    },
+    {
+      "candidateId": "b747a8f9-4196-4587-8cbe-483c790dabd5",
+      "name": "Desi Burbank",
+      "scope": "state_upper",
+      "districtName": "State Senate District 15 (2024); Idaho"
+    },
+    {
+      "candidateId": "9177448e-ae4c-4414-8ede-b5cccfa3ab01",
+      "name": "Erin Bingham",
+      "scope": "state_lower",
+      "districtName": "State House District 32 (2024); Idaho"
+    },
+    {
+      "candidateId": "0dd0a9e3-1b44-4126-a2b6-82d5077f0388",
+      "name": "Esther Ma",
+      "scope": "state_upper",
+      "districtName": "State Senate District 11 (2024); Idaho"
+    },
+    {
+      "candidateId": "319513ca-a2a9-4c59-94a9-6a0fe3cbaafc",
+      "name": "Ethan Sanford",
+      "scope": "state_upper",
+      "districtName": "State Senate District 34 (2024); Idaho"
+    },
+    {
+      "candidateId": "71bf3911-3c54-4392-a0fb-1c8de76a2379",
+      "name": "Geoffrey Surbeck",
+      "scope": "state_upper",
+      "districtName": "State Senate District 16 (2024); Idaho"
+    },
+    {
+      "candidateId": "70deb34a-170c-40a3-b882-a8abb6f4a914",
+      "name": "Grayson Stone",
+      "scope": "state_lower",
+      "districtName": "State House District 25 (2024); Idaho"
+    },
+    {
+      "candidateId": "2f27b4d0-bd87-4ca2-b7af-78dc26eb880f",
+      "name": "Heather S. Lewis",
+      "scope": "state_lower",
+      "districtName": "State House District 8 (2024); Idaho"
+    },
+    {
+      "candidateId": "39033479-aaf2-410f-8683-e6fa8474085d",
+      "name": "Jackie Davidson",
+      "scope": "state_lower",
+      "districtName": "State House District 16 (2024); Idaho"
+    },
+    {
+      "candidateId": "d1b2bf8d-761f-4913-ae39-e91e13593172",
+      "name": "Jae Etchart",
+      "scope": "state_lower",
+      "districtName": "State House District 15 (2024); Idaho"
+    },
+    {
+      "candidateId": "8533044c-cf1f-4b3c-9a70-790cfc57c452",
+      "name": "James R Nechwedowich",
+      "scope": "state_lower",
+      "districtName": "State House District 17 (2024); Idaho"
+    },
+    {
+      "candidateId": "5cc2d428-4f5e-4358-8ed6-cbdeca566205",
+      "name": "Jan Brown",
+      "scope": "state_upper",
+      "districtName": "State Senate District 33 (2024); Idaho"
+    },
+    {
+      "candidateId": "204e78c6-07ef-48f7-8652-022ce03f7c79",
+      "name": "Jane Sauter",
+      "scope": "state_lower",
+      "districtName": "State House District 1 (2024); Idaho"
+    },
+    {
+      "candidateId": "1ff97ebc-00a2-4dd6-b507-5f3b2c593d40",
+      "name": "Janice Martell",
+      "scope": "state_upper",
+      "districtName": "State Senate District 9 (2024); Idaho"
+    },
+    {
+      "candidateId": "2d235bcd-d0cb-4e7d-8b92-8087c857e966",
+      "name": "Jared Dawson",
+      "scope": "state_lower",
+      "districtName": "State House District 8 (2024); Idaho"
+    },
+    {
+      "candidateId": "cb52748a-10ee-4a7a-afd6-8b5a91376cee",
+      "name": "Jayson Meline",
+      "scope": "state_lower",
+      "districtName": "State House District 28 (2024); Idaho"
+    },
+    {
+      "candidateId": "3e1b075c-01e5-4a8f-a99f-c5457de03435",
+      "name": "Jennifer Miles",
+      "scope": "state_lower",
+      "districtName": "State House District 29 (2024); Idaho"
+    },
+    {
+      "candidateId": "ba4e4473-0e2f-416c-b289-e23b9c76d344",
+      "name": "Jennifer Stephens",
+      "scope": "state_lower",
+      "districtName": "State House District 20 (2024); Idaho"
+    },
+    {
+      "candidateId": "fd973fb6-4fe3-4f4b-9a5b-5147d24b344a",
+      "name": "Jo Daly",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); Idaho"
+    },
+    {
+      "candidateId": "e4f8dd5d-4d8e-4d4c-bbff-718b83da1185",
+      "name": "Joe Fuller",
+      "scope": "state_lower",
+      "districtName": "State House District 23 (2024); Idaho"
+    },
+    {
+      "candidateId": "8e04bfdd-589d-41df-95ee-a7a1d7b4629c",
+      "name": "John Crowder",
+      "scope": "state_upper",
+      "districtName": "State Senate District 29 (2024); Idaho"
+    },
+    {
+      "candidateId": "cfed073d-e388-461a-a339-740472ed0e51",
+      "name": "John Garrett",
+      "scope": "state_upper",
+      "districtName": "State Senate District 8 (2024); Idaho"
+    },
+    {
+      "candidateId": "83de0818-a852-48dd-ac66-87dccc44c757",
+      "name": "Joni Sorensen",
+      "scope": "state_upper",
+      "districtName": "State Senate District 30 (2024); Idaho"
+    },
+    {
+      "candidateId": "0085f825-e482-4a69-8618-9bd50a8694d6",
+      "name": "Joseph Bishop",
+      "scope": "state_lower",
+      "districtName": "State House District 18 (2024); Idaho"
+    },
+    {
+      "candidateId": "d9677629-9cf1-4290-ba71-d5e7d2ddd7de",
+      "name": "Joshua Preminger",
+      "scope": "state_lower",
+      "districtName": "State House District 11 (2024); Idaho"
+    },
+    {
+      "candidateId": "7628cd68-9c22-458d-b3bb-5387308842f5",
+      "name": "Justin Alexander Peter Hughes",
+      "scope": "state_lower",
+      "districtName": "State House District 17 (2024); Idaho"
+    },
+    {
+      "candidateId": "230b7052-6bd6-45f2-8375-7c6fa1535c30",
+      "name": "Kamber  Weninger",
+      "scope": "state_lower",
+      "districtName": "State House District 32 (2024); Idaho"
+    },
+    {
+      "candidateId": "a61b1814-f6e4-4ccc-835a-9864b7d1417a",
+      "name": "Karen Matthee",
+      "scope": "state_lower",
+      "districtName": "State House District 1 (2024); Idaho"
+    },
+    {
+      "candidateId": "7691a435-728a-4dcf-b5db-0517135a7028",
+      "name": "Karlie Easley",
+      "scope": "state_upper",
+      "districtName": "State Senate District 22 (2024); Idaho"
+    },
+    {
+      "candidateId": "ca4b3a34-d350-4646-bab6-01ef126f172a",
+      "name": "Kathryn Larson",
+      "scope": "state_lower",
+      "districtName": "State House District 1 (2024); Idaho"
+    },
+    {
+      "candidateId": "a27e3e8e-4a1b-4e83-8fe4-996e3bf36c66",
+      "name": "Kathy Dawes",
+      "scope": "state_lower",
+      "districtName": "State House District 6 (2024); Idaho"
+    },
+    {
+      "candidateId": "ba14d870-1366-4c96-afa2-e3dd5d6c01b9",
+      "name": "Kelly Walton",
+      "scope": "state_lower",
+      "districtName": "State House District 22 (2024); Idaho"
+    },
+    {
+      "candidateId": "dac0e075-a73b-4a88-9a66-a73ae0e4289d",
+      "name": "Kevin Gerrard",
+      "scope": "state_upper",
+      "districtName": "State Senate District 31 (2024); Idaho"
+    },
+    {
+      "candidateId": "93874e9c-c728-4d7e-92d3-3efbf46c380d",
+      "name": "Kevin Marsh",
+      "scope": "state_lower",
+      "districtName": "State House District 26 (2024); Idaho"
+    },
+    {
+      "candidateId": "b568d732-3733-4840-bc03-1ab0f7469982",
+      "name": "Kevin Moxley",
+      "scope": "state_lower",
+      "districtName": "State House District 24 (2024); Idaho"
+    },
+    {
+      "candidateId": "149eae79-83ed-47cb-bf69-17bd38531787",
+      "name": "Kim Jackman",
+      "scope": "state_lower",
+      "districtName": "State House District 28 (2024); Idaho"
+    },
+    {
+      "candidateId": "8699f1e2-decb-464c-b1ea-b9bdd77f1118",
+      "name": "Kindsey Smith",
+      "scope": "state_lower",
+      "districtName": "State House District 31 (2024); Idaho"
+    },
+    {
+      "candidateId": "3c155f91-586a-4f01-8e9b-a639d7598aa5",
+      "name": "Kirsten Faith Richardson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 14 (2024); Idaho"
+    },
+    {
+      "candidateId": "817a8a9a-a6f8-4eff-b0c7-66be355e232d",
+      "name": "Konnor Whitfield",
+      "scope": "state_upper",
+      "districtName": "State Senate District 32 (2024); Idaho"
+    },
+    {
+      "candidateId": "09e5901d-8413-4ef1-a706-8d22716384f7",
+      "name": "Krystal Flippence",
+      "scope": "state_upper",
+      "districtName": "State Senate District 12 (2024); Idaho"
+    },
+    {
+      "candidateId": "6882e60b-6bf1-4ee4-89a9-bf18a813d87c",
+      "name": "Larry Nostrant",
+      "scope": "state_lower",
+      "districtName": "State House District 7 (2024); Idaho"
+    },
+    {
+      "candidateId": "8b869115-81f8-4154-a97f-8a073d4061ab",
+      "name": "Lee Wallace",
+      "scope": "state_lower",
+      "districtName": "State House District 5 (2024); Idaho"
+    },
+    {
+      "candidateId": "a3a0b669-82ff-43f8-b5ea-0b7c050a323a",
+      "name": "Letishia Silva",
+      "scope": "state_upper",
+      "districtName": "State Senate District 13 (2024); Idaho"
+    },
+    {
+      "candidateId": "06b768a9-5d93-45f3-93e6-fb004f986085",
+      "name": "Liyah Babayan",
+      "scope": "state_lower",
+      "districtName": "State House District 25 (2024); Idaho"
+    },
+    {
+      "candidateId": "f06aa137-41a6-40b3-a1db-06dd167969f3",
+      "name": "Loren Petty",
+      "scope": "state_lower",
+      "districtName": "State House District 22 (2024); Idaho"
+    },
+    {
+      "candidateId": "c4519c97-7b38-44f5-a85e-773b34f95059",
+      "name": "Lupita Connor",
+      "scope": "state_lower",
+      "districtName": "State House District 9 (2024); Idaho"
+    },
+    {
+      "candidateId": "82dadcb7-8f41-4bf9-bdbc-1c4591c4a190",
+      "name": "Lyle Johnstone",
+      "scope": "state_lower",
+      "districtName": "State House District 26 (2024); Idaho"
+    },
+    {
+      "candidateId": "3c1c516c-910f-4d13-9ff0-1a85035478ea",
+      "name": "Mandy Peace",
+      "scope": "state_upper",
+      "districtName": "State Senate District 28 (2024); Idaho"
+    },
+    {
+      "candidateId": "5973515d-4a14-4385-a12b-b7156762a7e9",
+      "name": "Margo Saunders",
+      "scope": "state_upper",
+      "districtName": "State Senate District 27 (2024); Idaho"
+    },
+    {
+      "candidateId": "53ef9f92-2066-49d8-8d31-2dab12fcc043",
+      "name": "Marla Palmer",
+      "scope": "state_lower",
+      "districtName": "State House District 25 (2024); Idaho"
+    },
+    {
+      "candidateId": "bb5dcfec-fb9a-435b-b22d-07772e43db7c",
+      "name": "Marty Kilhefner",
+      "scope": "state_upper",
+      "districtName": "State Senate District 35 (2024); Idaho"
+    },
+    {
+      "candidateId": "00487c82-0992-4b6b-92db-28114ca6891f",
+      "name": "Mary A Mosley",
+      "scope": "state_lower",
+      "districtName": "State House District 20 (2024); Idaho"
+    },
+    {
+      "candidateId": "7455f4ed-0e9a-4521-b83d-12f8b524756a",
+      "name": "Mary Jo Durfee",
+      "scope": "state_upper",
+      "districtName": "State Senate District 24 (2024); Idaho"
+    },
+    {
+      "candidateId": "7da95064-8357-4651-bb1b-1e898a82228d",
+      "name": "Mary Kaufman",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); Idaho"
+    },
+    {
+      "candidateId": "298abfbb-cacf-4bc5-b09d-bcd792a60d90",
+      "name": "Mary Shea",
+      "scope": "state_lower",
+      "districtName": "State House District 29 (2024); Idaho"
+    },
+    {
+      "candidateId": "5d961dfa-9d8e-46d3-98f7-a261136aacf1",
+      "name": "Maxwell McSwain",
+      "scope": "state_lower",
+      "districtName": "State House District 4 (2024); Idaho"
+    },
+    {
+      "candidateId": "b520f91b-8ccd-4635-9419-788276400071",
+      "name": "Megan Woller",
+      "scope": "state_lower",
+      "districtName": "State House District 16 (2024); Idaho"
+    },
+    {
+      "candidateId": "2b437f58-7249-49fb-bda1-636d633c03f2",
+      "name": "Melissa Christian",
+      "scope": "state_upper",
+      "districtName": "State Senate District 19 (2024); Idaho"
+    },
+    {
+      "candidateId": "99d7add1-75d7-4b76-9fdc-4947f9bad20c",
+      "name": "Melissa Mateer",
+      "scope": "state_lower",
+      "districtName": "State House District 3 (2024); Idaho"
+    },
+    {
+      "candidateId": "a7a15cb8-e4f4-4002-9069-d57d356211cd",
+      "name": "Michael Hofferber",
+      "scope": "state_lower",
+      "districtName": "State House District 10 (2024); Idaho"
+    },
+    {
+      "candidateId": "d0de890a-2138-46bc-a358-f7d6d36b8fbd",
+      "name": "Mike Veile",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); Idaho"
+    },
+    {
+      "candidateId": "f3526483-65ab-43ea-8684-7786ff7c9517",
+      "name": "Mirna Pleines",
+      "scope": "state_lower",
+      "districtName": "State House District 5 (2024); Idaho"
+    },
+    {
+      "candidateId": "c98ab86e-ca76-4941-ae61-2fecda2c633c",
+      "name": "Nancy Gregory",
+      "scope": "state_upper",
+      "districtName": "State Senate District 15 (2024); Idaho"
+    },
+    {
+      "candidateId": "10608f38-bcbd-4c49-bfda-46df44fc76aa",
+      "name": "Nancy Parker",
+      "scope": "state_upper",
+      "districtName": "State Senate District 10 (2024); Idaho"
+    },
+    {
+      "candidateId": "b2cd2b8c-d832-4bd4-b822-1a6f596885d4",
+      "name": "Nate Roberts",
+      "scope": "state_lower",
+      "districtName": "State House District 29 (2024); Idaho"
+    },
+    {
+      "candidateId": "405e16f9-a641-470c-a5a3-00e165bc8cbc",
+      "name": "Pamela Wilson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 20 (2024); Idaho"
+    },
+    {
+      "candidateId": "c7d47961-18c3-4204-aec8-9ce02775e8eb",
+      "name": "Patrice Yeatter",
+      "scope": "state_upper",
+      "districtName": "State Senate District 7 (2024); Idaho"
+    },
+    {
+      "candidateId": "709a463c-8ad8-4160-8e91-70d6add3353c",
+      "name": "Paul M Smith",
+      "scope": "state_lower",
+      "districtName": "State House District 23 (2024); Idaho"
+    },
+    {
+      "candidateId": "466a5037-3050-4f8f-8e07-022802c5e9bc",
+      "name": "Paul Morgan",
+      "scope": "state_upper",
+      "districtName": "State Senate District 23 (2024); Idaho"
+    },
+    {
+      "candidateId": "d5db116a-ce60-4a24-a2e2-926232046f0a",
+      "name": "Pete Gertonson",
+      "scope": "state_lower",
+      "districtName": "State House District 7 (2024); Idaho"
+    },
+    {
+      "candidateId": "2e6528a3-c4a7-4ba8-a82f-11bd1f5d335e",
+      "name": "Robin Weldy",
+      "scope": "state_upper",
+      "districtName": "State Senate District 6 (2024); Idaho"
+    },
+    {
+      "candidateId": "8d99379c-436f-495b-a8ac-d9c94f002589",
+      "name": "Sabine Krier",
+      "scope": "state_lower",
+      "districtName": "State House District 2 (2024); Idaho"
+    },
+    {
+      "candidateId": "80300854-28a4-4a84-8984-b005f92f0895",
+      "name": "Scott Herndon",
+      "scope": "state_upper",
+      "districtName": "State Senate District 1 (2024); Idaho"
+    },
+    {
+      "candidateId": "4026aab3-dd8b-484a-a5b3-4b4f3d730aab",
+      "name": "Shaila Tate",
+      "scope": "state_upper",
+      "districtName": "State Senate District 26 (2024); Idaho"
+    },
+    {
+      "candidateId": "d1b60d7e-69d5-4c9a-ad32-35592ecbc089",
+      "name": "Stanley Roach",
+      "scope": "state_lower",
+      "districtName": "State House District 19 (2024); Idaho"
+    },
+    {
+      "candidateId": "3e5a5e09-4f90-47b5-9ba1-8e56c114c440",
+      "name": "Sterling Barnett",
+      "scope": "state_lower",
+      "districtName": "State House District 12 (2024); Idaho"
+    },
+    {
+      "candidateId": "7296d97f-6fbb-4126-be32-6d91d575df90",
+      "name": "Steve Johnson",
+      "scope": "state_upper",
+      "districtName": "State Senate District 1 (2024); Idaho"
+    },
+    {
+      "candidateId": "ac42b696-52e2-49eb-9bde-cbfbb626ece6",
+      "name": "Steve Keyser",
+      "scope": "state_lower",
+      "districtName": "State House District 15 (2024); Idaho"
+    },
+    {
+      "candidateId": "7f5a7d20-d048-4539-91ae-29c6fe2bd96f",
+      "name": "Susan Counsil",
+      "scope": "state_upper",
+      "districtName": "State Senate District 11 (2024); Idaho"
+    },
+    {
+      "candidateId": "53871de1-bc66-42ff-9e1f-ae3360a34a4b",
+      "name": "Ted Hill",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); Idaho"
+    },
+    {
+      "candidateId": "83344e94-cdf6-40b9-84ee-4efb265dbe7c",
+      "name": "Todd DeVries",
+      "scope": "state_lower",
+      "districtName": "State House District 33 (2024); Idaho"
+    },
+    {
+      "candidateId": "d9592fd4-51ae-44f4-a739-1cd1bdd0bd08",
+      "name": "Trish Carter-Goodheart",
+      "scope": "state_lower",
+      "districtName": "State House District 6 (2024); Idaho"
+    },
+    {
+      "candidateId": "ca816bdf-4f1f-4d3f-a830-b4acd8b27761",
+      "name": "Valerie Ruxton",
+      "scope": "state_lower",
+      "districtName": "State House District 14 (2024); Idaho"
+    },
+    {
+      "candidateId": "35905fb1-bfbb-4b1c-aecc-b8811b3ee30f",
+      "name": "Valerie Wade",
+      "scope": "state_upper",
+      "districtName": "State Senate District 2 (2024); Idaho"
+    },
+    {
+      "candidateId": "d5d1ee8b-5010-4c42-824a-7d121035b4ee",
+      "name": "W. Lane Startin",
+      "scope": "state_upper",
+      "districtName": "State Senate District 25 (2024); Idaho"
+    },
+    {
+      "candidateId": "e5820b4e-e0fe-458f-9099-69f29c016f5d",
+      "name": "Walter Boyd",
+      "scope": "state_lower",
+      "districtName": "State House District 35 (2024); Idaho"
+    },
+    {
+      "candidateId": "3e26e858-87d5-471d-b3b4-76c5ec2e7589",
+      "name": "Wendy Norman",
+      "scope": "state_lower",
+      "districtName": "State House District 31 (2024); Idaho"
+    }
+  ],
+  "files": 0,
+  "fileErrors": 0,
+  "counts": {},
+  "rolls": []
+}

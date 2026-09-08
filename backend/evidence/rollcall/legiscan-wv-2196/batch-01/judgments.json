@@ -1,0 +1,58 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2196",
+   "roll": 1535821,
+   "measure_id": "HB 2513",
+   "vote_date": "2025-04-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 2513, which raises the yearly training required of West Virginia county school board members from seven hours to twelve and adds fiscal management to the required topics. A member who misses the first orientation must complete a make-up session within 30 days, and failing to finish required training without good cause counts as neglect of duty. The act also sets board member pay at $260 for each meeting attended unless the board votes for less, and lets members claim mileage without producing receipts. The Senate passed it 27-7 and it became law.",
+   "nay_description": "Voted against House Bill 2513, which raises the yearly training required of West Virginia county school board members from seven hours to twelve and adds fiscal management to the required topics. A member who misses the first orientation must complete a make-up session within 30 days, and failing to finish required training without good cause counts as neglect of duty. The act also sets board member pay at $260 for each meeting attended unless the board votes for less, and lets members claim mileage without producing receipts. The Senate passed it 27-7 and it became law.",
+   "labels": [
+    {
+     "slug": "public_education_quality",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "senate",
+   "session": "2196",
+   "roll": 1543284,
+   "measure_id": "HB 3444",
+   "vote_date": "2025-04-10",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 3444, which repeals West Virginia's laws on inflammation of the eyes of newborns. Those sections required that a newborn be given a preventive eye medication, required anyone assisting at a birth to report cases, gave duties to local health officers and the state board of health, and set penalties. The repeal removes those legal duties, and does not by itself change what doctors and hospitals choose to do. The Senate passed it 18-15 and it became law without the Governor's signature.",
+   "nay_description": "Voted against House Bill 3444, which repeals West Virginia's laws on inflammation of the eyes of newborns. Those sections required that a newborn be given a preventive eye medication, required anyone assisting at a birth to report cases, gave duties to local health officers and the state board of health, and set penalties. The repeal removes those legal duties, and does not by itself change what doctors and hospitals choose to do. The Senate passed it 18-15 and it became law without the Governor's signature.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "WV",
+   "chamber": "house",
+   "session": "2196",
+   "roll": 1545492,
+   "measure_id": "SB 526",
+   "vote_date": "2025-04-11",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 526, which lets a West Virginia pharmacist prescribe drugs other than controlled substances, in line with the product's federal labeling. It reaches only three conditions confirmed by a simple waived test, which are influenza, COVID-19 and RSV, and the refill of an expired prescription for an epinephrine injector. The pharmacist must tell the patient's primary care doctor the test result and the drug within 72 hours, and a prescription is capped at a 30-day supply within six months. The House passed it 72-25 and it became law.",
+   "nay_description": "Voted against Senate Bill 526, which lets a West Virginia pharmacist prescribe drugs other than controlled substances, in line with the product's federal labeling. It reaches only three conditions confirmed by a simple waived test, which are influenza, COVID-19 and RSV, and the refill of an expired prescription for an epinephrine injector. The pharmacist must tell the patient's primary care doctor the test result and the drug within 72 hours, and a prescription is capped at a 30-day supply within six months. The House passed it 72-25 and it became law.",
+   "labels": [
+    {
+     "slug": "healthcare_affordability",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}

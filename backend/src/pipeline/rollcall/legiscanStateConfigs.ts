@@ -728,6 +728,180 @@ const GEORGIA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
     /^h[bjr]s? \d/,
 ];
 
+// Idaho's floor-question vocabulary, shared by the 2025 and 2026 Regular
+// Sessions below. Both sessions were surveyed separately (2026-09-07) and
+// print exactly the SAME two strings and nothing else, so they share one
+// definition rather than two copies that could drift apart.
+//
+// Idaho prints the smallest vocabulary measured in this campaign: 854 roll
+// calls in 2025 and 852 in 2026 carry two descriptions between them, and
+// neither names the question.
+//
+//   2025 (session 2168): House Third Reading 455, Senate Third Reading 399
+//   2026 (session 2246): House Third Reading 461, Senate Third Reading 391
+//
+// That is the Delaware shape, and it means the same words cover a passage
+// vote, a vote on an amended bill, and a resolution adoption. What Idaho's
+// own bill history calls `Read Third Time in Full -- PASSED 36-34-0` and
+// `Read third time in full as amended -- PASSED 35-33-2` reach this feed
+// spelled identically. So `questionClass: "passage"` on an Idaho row is
+// LegiScan's claim, not Idaho's.
+//
+// Ground truth is the bill history line, which prints the question AND the
+// tally on the same line. Matching a roll to that line on (date, chamber)
+// resolves the question for 707 of 854 rolls in 2025 and 643 of 852 in 2026;
+// the remainder are resolution adoptions worded `ADOPTED` plus rolls whose
+// same-day history line is procedural. That match is a selection-time step in
+// the batch recipe, not something a description pattern can do, and a roll it
+// cannot place is left unselected rather than guessed.
+//
+// Nothing is excluded here because nothing exists to exclude: a config
+// exclusion can only read the description, and the description is identical
+// on every question. Excluding either spelling would throw away every real
+// passage vote in that chamber.
+//
+// There are no committee votes in either dataset. Every roll's `total` is
+// exactly the chamber size (70 House, 35 Senate), so the tally-based
+// floor-versus-committee cut has nothing to decide and nothing surfaces.
+//
+// ⚠ Idaho takes NO recorded vote on concurrence. `House Concurred in Senate
+// Amendments` appears 30 times in 2025 and 18 in 2026 with no tally anywhere,
+// so a chamber's only recorded vote can sit on text the other chamber later
+// amended (the Nevada shape). Every selected measure needs a per-roll version
+// check against the enrolled act; the feed cannot help, because all 3,562 of
+// Idaho's bill texts are dated `0000-00-00` and the version stack cannot be
+// ordered by date. Use the action history, which is correctly dated.
+//
+// ⚠ Do NOT carry the Montana/Arizona/Colorado `passed`-flag hazard here on
+// the strength of a vote count. Eight rolls across the two sessions pass with
+// fewer than half the seats voting yea, and all eight are genuine passages:
+// Idaho's constitution requires a majority of the members PRESENT, not of the
+// members elected, and Idaho's own history calls every one of them PASSED.
+//
+// The flag IS wrong in Idaho in a different way: it reads 0 on every
+// resolution ADOPTION, because it is taken from the word PASSED or FAILED in
+// the action line and Idaho's line says ADOPTED. Only joint resolutions, the
+// kept type that carries a constitutional amendment, ever reach storage with
+// that defect; the ID entry records the four adopted ones and, following
+// North Dakota, does not hold them, because the rule belongs on selection
+// rather than in the hold list. A joint resolution
+// also needs two-thirds of ALL members (47 of 70, 24 of 35), which nothing in
+// LegiScan knows, so never infer its outcome from the tally either.
+const IDAHO_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  { pattern: /^house third reading$/, questionClass: "passage" },
+  { pattern: /^senate third reading$/, questionClass: "passage" },
+];
+
+// West Virginia's floor-question vocabulary, measured from the survey
+// histograms of BOTH sessions in scope (2025 Regular = LegiScan 2196,
+// 2026 Regular = 2254) and shared by their two entries, which print the same
+// families. The two surveys are committed under
+// evidence/rollcall/legiscan-wv-2196/survey and .../legiscan-wv-2254/survey.
+//
+// Two facts about West Virginia shape everything here.
+//
+// First, WEST VIRGINIA PUBLISHES NO COMMITTEE VOTES AT ALL. Both surveys
+// report committeeChamberVotes = 0, and every roll's `total` equals the full
+// chamber (100 House / 34 Senate, and 99 / 33 in 2026 where a seat was
+// vacant). The floor-versus-committee tally inference therefore has nothing
+// to separate here, and the chamberSizes serve only as that check's
+// denominator.
+//
+// Second, WEST VIRGINIA VOTES A BILL'S EFFECTIVE DATE SEPARATELY FROM THE
+// BILL. `Effective from passage` alone is 378 of the 2,629 roll calls on
+// kept-type bills across the two sessions, with dated variants beside it.
+// Those votes need a two-thirds majority, so the minority can and does defeat
+// them, which makes them frequently divided: 14 are both divided and on a
+// bill that became law. They are NOT votes on the bill's substance and are
+// excluded. Anything selecting on the divided gate alone would pull them in.
+const WEST_VIRGINIA_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Ordinary passage in either chamber, including the Senate's
+  // `Passed Senate with amended title`. Also matches the few rolls whose
+  // printed roll number carries a stray trailing space
+  // (`Passed House (Roll No. 234 )`), because the pattern never reaches the
+  // parenthesis.
+  { pattern: /\bpassed (?:house|senate)\b/, questionClass: "passage" },
+  // Failed passage. Kept rather than dropped so a rejection is dispositioned
+  // in the worklist instead of disappearing: the Illinois precedent is that a
+  // failed motion's tally reads exactly like a passing one, so it must be
+  // recorded and screened, never dropped silently. `passed` is 0 on these
+  // rolls and the enacted filter removes them from any batch.
+  { pattern: /^(?:house rejected|rejected by senate)\b/, questionClass: "passage" },
+  // Joint resolutions, which West Virginia adopts rather than passes. These
+  // are its proposed constitutional amendments, which go to the voters rather
+  // than to the Governor, so none can reach status 4 and none is in the
+  // divided-and-enacted pool today. Anchored at the start so that
+  // `Amendment adopted` and `Floor amendment adopted` never match.
+  { pattern: /^adopted by (?:house|senate)\b/, questionClass: "passage" },
+  // The one veto override in either session (2025 SB 369).
+  { pattern: /\brepassed bill as result of governor's veto\b/, questionClass: "veto_override" },
+  { pattern: /\badopted conference report and passed bill\b/, questionClass: "conference_report" },
+  // Concurrence. West Virginia spells this at least fourteen ways across the
+  // two sessions, including ones the clerk mistyped
+  // (`...and and title amendmentpassed bill`), so the pattern keys on the
+  // stem `concur in` / `concurred in` / `concurs in` rather than on any full
+  // caption. `refused to concur` is excluded below and reaches this list only
+  // because the exclusions are checked first.
+  { pattern: /\bconcur(?:red|s)?[ -]in\b/, questionClass: "concurrence" },
+  // The Senate's wording when it amends the House's amendment and passes the
+  // bill in one motion, which never contains the word `concur`.
+  { pattern: /\b(?:amended|amends) house amendment and passed bill\b/, questionClass: "concurrence" },
+  // A chamber receding from its own amendment and passing the other chamber's
+  // text. `House receded` on its own, with no `and passed`, is deliberately
+  // NOT matched: it appears twice in 2025 and the caption does not say what
+  // was passed, so it is surfaced as an unknown question rather than guessed.
+  { pattern: /\breceded and passed\b/, questionClass: "concurrence" },
+  // Reconsideration that ends in passage. Only the `passed bill` spelling is
+  // kept. `House reconsidered effective date and passage` LOOKS like a vote on
+  // both, and a first draft kept it, but West Virginia's own vote sheets for
+  // both such rolls (HB 3356 roll 616 and HB 3357 roll 617, 2025) print the
+  // question as EFFECT FROM PASSAGE. It is an effective-date vote and the
+  // exclusion below catches it.
+  { pattern: /\breconsidered\b.*\bpassed bill\b/, questionClass: "passage" },
+];
+
+// Checked BEFORE the kept list. Twelve rules, verified to classify all 2,629
+// roll calls on kept-type bills identically to a longer seventeen-rule draft,
+// so none of these is redundant.
+const WEST_VIRGINIA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // The separate effective-date vote, in every spelling the two sessions
+  // print: `Effective from passage`, `Effective July 1, 2026`,
+  // `Effective 6/30/2025`, the mistyped `Effective July, 1, 2026`,
+  // `Effective date rejected` and `Effective July 1, 2027 Rejected`.
+  /^effective\b/,
+  // Effective-date votes the caption does not open with: the House concurring
+  // in the Senate's effective date only, and the House reconsidering an
+  // effective date. Neither is a vote on the bill. No kept caption in either
+  // session contains the words `effective date`.
+  /\beffective date\b/,
+  // Procedural motions: previous question, discharge, refer, table, limit
+  // debate, lay over, reject the bill. The lookahead protects
+  // `Motion to concur in House amendments adopted`, which is a real
+  // concurrence and the only motion in either session that is one.
+  /^motion (?!to concur\b)/,
+  // Amendment votes, including the sponsor-named ones West Virginia prints
+  // with no fixed prefix (`Takubo #2 floor amendments adopted`,
+  // `Garcia amends to com. amendment rejected`,
+  // `Tarr amend. to House amends rejected`). The leading lookahead is
+  // load-bearing: without it this rule also swallowed
+  // `Motion to concur in House amendments adopted` and
+  // `House concur in Senate amendment and title amendment rejected`, both of
+  // which are concurrence votes on the measure.
+  /^(?!.*\b(?:concur|passed|repassed|receded)\b).*\bamend(?:s|\.|ed|ment|ments)? (?:adopted|rejected)\b/,
+  /\bamended on 3rd reading\b/,
+  // Suspending or dispensing with the constitutional rule that a bill be read
+  // on three separate days, and the related second-reference motions.
+  /\b(?:constitutional )?rules? suspen/,
+  /\bdispensed with\b/,
+  /\breference dispensed\b/,
+  /\bruling of chair\b/,
+  /\bsuspend rules\b/,
+  /\bpostpone\b/,
+  // A chamber refusing to concur. It contains the word `concur` and must not
+  // reach the concurrence pattern.
+  /\brefused to concur\b/,
+];
+
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
   // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
   // die 2026-04-03). Vocabulary measured from the full dataset survey
@@ -3777,6 +3951,185 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
         "SB 2018 House 2025-04-24: the feed stores 51-41; the history records three divisions passing and the second reading passing as amended 61-31. The bill then went to a conference committee",
       1558336:
         "HB 1168 Senate 2025-04-25: the feed stores 41-4; the history records the second reading passing as amended 45-0 with the emergency clause carried",
+    },
+  },
+  // Idaho Legislature, 2025 Regular Session (68th Legislature, first regular
+  // session; dataset cut 2025-12-07). Surveyed 2026-09-07: 790 bills, 854
+  // roll calls, 129 people for 70 House and 35 Senate seats. Vocabulary,
+  // question-class caveat, concurrence gap and the `passed`-flag note are all
+  // documented on IDAHO_KEPT_QUESTIONS above.
+  //
+  // Feed health is the cleanest tier in both sessions: 0 repeated
+  // roll_call_ids, 0 identity duplicates, 0 rolls without a member list, 0
+  // disagreements between the stored tally and the stored member list, and 0
+  // vote parse errors. The Texas duplicate-id fix is a verified no-op here.
+  //
+  // Pool measured before any selection: 297 divided rolls, 286 of them on
+  // kept bill types, and 212 divided AND enacted across 128 measures (103
+  // House, 109 Senate), 79 of which are divided in both chambers. Every one
+  // is bill type B. The minority-to-majority ratio runs 0.25 to 0.94 with a
+  // median near 0.42, so these are real splits. A Republican supermajority
+  // does not produce a thin pool in Idaho, because the divisions run inside
+  // the majority caucus rather than between the parties.
+  //
+  // Constitutional amendments ride JOINT RESOLUTIONS, which is a kept bill
+  // type, so the Georgia resolution gap does not recur.
+  ID: {
+    jurisdiction: "ID",
+    sessionId: 2168,
+    chamberSizes: { house: 70, senate: 35 },
+    keptQuestions: IDAHO_KEPT_QUESTIONS,
+    excludedQuestions: [],
+    // The tally audit was run over EVERY roll in the session, not only the
+    // ones the feed reports as divided, because a tally error can itself
+    // decide whether a roll passes the divided gate (the Oregon SB 1565
+    // lesson). 703 of 707 rolls carrying a tallied history line match Idaho
+    // exactly.
+    //
+    // Three of the four exceptions differ ONLY in the not-voting count and
+    // are left queueable, because the yea and nay sides are identical and
+    // those are the only sides the fan-out writes: H0056 roll 1478778 (feed
+    // 68-0 with 2 absent, Idaho 68-0-0), S1148 roll 1525657 (feed 35-30 with
+    // 5 absent, Idaho 35-30-4) and H0098 roll 1487890 (feed 40-29 with 1
+    // absent, Idaho 40-29-0). No divided-and-enacted roll in either session
+    // has a member on the wrong side.
+    //
+    // ⚠ LegiScan's `passed` flag reads 0 on every Idaho resolution ADOPTION.
+    // The flag comes from the word PASSED or FAILED in the action line, and
+    // Idaho adopts resolutions, so an ADOPTED line maps to 0. That mislabels
+    // 20 rolls in this session; almost all are CR, JM and R measures rejected
+    // before the queue, but joint resolutions are a kept type, and the fetcher
+    // copies the flag into `result`. So the four adopted joint-resolution
+    // rolls — HJR004 House 1506354 and Senate 1515095, HJR006 House 1517486
+    // and Senate 1526800 — are stored as "Failed" although Idaho's own pages
+    // say ADOPTED and both resolutions go to voters in November 2026. Found by
+    // the review of this pull request.
+    //
+    // They are deliberately NOT held, following the North Dakota rule (#1236
+    // review): their tallies and member lists match Idaho's record,
+    // `heldRollCallIds` is for rolls the survey proved wrong, `result` is
+    // metadata no fan-out, judge or import path reads, and none of the four
+    // is closely divided, so none can enter a batch. The rule is on
+    // selection: read a joint resolution's outcome from Idaho's bill page,
+    // never from `passed` and never from the tally — a constitutional
+    // amendment needs two-thirds of ALL members (47 of 70, 24 of 35), which
+    // nothing in LegiScan knows, and that threshold is why HJR001 here and
+    // HJR007 / HJR009 in 2026 are genuine defeats at 46-23, 41-28 and 44-25.
+    heldRollCallIds: {
+      1498007:
+        "H0230 House 2025-02-27: LegiScan reports 55-10 where Idaho's own history reports 54-11, so one member is recorded on the wrong side. The roll is outside the current pool (the bill did not become law, and neither tally clears the divided gate), and it is held so that it cannot be queued if the not-enacted scope is opened later",
+    },
+  },
+  // Idaho Legislature, 2026 Regular Session (dataset cut 2026-06-28, after
+  // the session adjourned). Surveyed 2026-09-07: 817 bills, 852 roll calls,
+  // 129 people. A second session for one state needs its own registry entry,
+  // because the entry above pins sessionId 2168 and flipping it would strand
+  // the 2025 batches.
+  //
+  // The 2026 vocabulary is IDENTICAL to 2025 — the same two strings, nothing
+  // unmatched — so both entries share IDAHO_KEPT_QUESTIONS rather than
+  // holding two copies that could drift apart.
+  //
+  // Pool: 273 divided rolls, 264 on kept bill types, and 196 divided AND
+  // enacted across 115 measures (99 House, 97 Senate), 77 divided in both
+  // chambers. The tally audit found ZERO disagreements with Idaho's own
+  // history in this session, so no roll is held.
+  "ID-2246": {
+    jurisdiction: "ID",
+    sessionId: 2246,
+    chamberSizes: { house: 70, senate: 35 },
+    keptQuestions: IDAHO_KEPT_QUESTIONS,
+    excludedQuestions: [],
+  },
+  // West Virginia, both sessions in scope. The 2025 Regular Session (2196) and
+  // the 2026 Regular Session (2254) are separate LegiScan datasets and get
+  // separate entries, sharing one measured vocabulary.
+  //
+  // Pool as measured across the two sessions: 46 measures and 79 floor rolls
+  // are both divided and enacted, over 61 measure-chamber slots. That is a
+  // small pool for the size of the legislature, and the supermajority is the
+  // reason: only 10.2 percent of 2025 floor rolls and 4.6 percent of 2026
+  // floor rolls are divided at all, against 33 percent in Texas and 14
+  // percent in Ohio. A party-line bill here passes far outside the gate.
+  //
+  // Roster reach: all 100 House of Delegates seats are on the Nov-2026
+  // ballot, and 17 of the 34 Senate seats. The default --scope-from of
+  // 2026-11-01 is correct for West Virginia, because every office election in
+  // scope is dated 2026-11-03 and the May 2026 primary is already past.
+  //
+  // TALLY AUDIT, run over EVERY floor roll on an enacted bill in BOTH sessions
+  // and not only the ones the divided gate selects: 1,412 of 1,423 match West
+  // Virginia's own vote record exactly. The audit is deliberately not bounded
+  // by the divided gate, because a tally error can itself decide whether a
+  // roll passes that gate.
+  //
+  // The ground truth is West Virginia's own per-roll vote sheet, which the
+  // dataset links from each vote's `state_link`. It prints the bill number,
+  // the question, the tally and both member lists, so it settles which bill a
+  // roll belongs to.
+  //
+  // The audit compares the bill number, the tally and the QUESTION the sheet
+  // prints. Fourteen rolls fail, in three kinds.
+  //
+  // EIGHT are filed under the WRONG BILL. West Virginia numbers its roll calls
+  // per chamber per session, and LegiScan attaches some of those numbers to a
+  // second, unrelated bill as well. In every one of the eight the same vote is
+  // ALSO filed correctly under its real bill, with its own roll_call_id, so
+  // holding the wrong copy loses nothing.
+  //
+  // THREE have a tally short by one member against the official sheet. None of
+  // the three changes the divided gate.
+  //
+  // THREE carry a CAPTION that names a different question from the one the
+  // sheet prints: two captioned as concurrence-and-passage that were votes on
+  // the effective date, and one captioned as a rejected concurrence that was a
+  // vote on a title amendment. A caption error cannot be fixed by a pattern,
+  // because the same caption is correct on hundreds of other rolls, so these
+  // are held by id. All three are lopsided and none could have reached a batch.
+  "WV": {
+    jurisdiction: "WV",
+    sessionId: 2196,
+    chamberSizes: { house: 100, senate: 34 },
+    keptQuestions: WEST_VIRGINIA_KEPT_QUESTIONS,
+    excludedQuestions: WEST_VIRGINIA_EXCLUDED_QUESTIONS,
+    heldRollCallIds: {
+      1546755:
+        "SB 474 Senate 2025-04-12: filed as Senate roll 605, but West Virginia's own vote sheet for Senate roll 605 is HB 2451. That vote is filed correctly under HB 2451 as roll_call_id 1547653",
+      1537425:
+        "SB 828 House 2025-04-04: filed as House roll 394, but West Virginia's own vote sheet for House roll 394 is HB 3519. The same 90-7 vote is filed correctly under HB 3519 as roll_call_id 1537188",
+      1546593:
+        "SB 712 Senate 2025-04-12: filed as Senate roll 555, but West Virginia's own vote sheet for Senate roll 555 is SB 837. The same 28-6 vote is filed correctly under SB 837 as roll_call_id 1546766",
+      1546776:
+        "HB 2054 House 2025-04-12: filed as House roll 634, but West Virginia's own vote sheet for House roll 634 is HB 3513. The same 71-27 vote is filed correctly under HB 3513 as roll_call_id 1546749",
+      1546783:
+        "HB 2451 House 2025-04-12: filed as House roll 631, but West Virginia's own vote sheet for House roll 631 is HB 3125. That vote is filed correctly under HB 3125 as roll_call_id 1546759, where it is 97-0",
+      1541383:
+        "SB 650 House roll 428, 2025-04-09, 98-0: captioned 'House concurred in Senate amendment and passed bill', but West Virginia's own vote sheet prints the question as EFFECT FROM PASSAGE. It is the effective-date vote, and the dataset carries no House concurrence roll for this bill at all",
+      1546639:
+        "HB 3209 House roll 608, 2025-04-12, 96-0: captioned 'House concurred in Senate amendment and passed bill', but West Virginia's own vote sheet prints the question as EFFECT Jul 01, 2025. It is the effective-date vote, and the dataset carries no House concurrence roll for this bill at all",
+      1546708:
+        "HB 2451 House roll 591, 2025-04-12, 37-58: captioned 'House Concur in Senate Amendment and Title Amendment rejected', but West Virginia's own vote sheet prints the question as TITLE AMENDMENT. It is a vote on an amendment, not on the measure",
+    },
+  },
+  "WV-2254": {
+    jurisdiction: "WV",
+    sessionId: 2254,
+    chamberSizes: { house: 100, senate: 34 },
+    keptQuestions: WEST_VIRGINIA_KEPT_QUESTIONS,
+    excludedQuestions: WEST_VIRGINIA_EXCLUDED_QUESTIONS,
+    heldRollCallIds: {
+      1662567:
+        "SJR 9 House 2026-03-13: filed as House roll 510, but West Virginia's own vote sheet for House roll 510 is SB 29. The same 92-2 vote is filed correctly under SB 29 as roll_call_id 1662284",
+      1663276:
+        "HB 4755 House 2026-03-14: filed as House roll 688, but West Virginia's own vote sheet for House roll 688 is HB 4106. The same 85-8 vote is filed correctly under HB 4106 as roll_call_id 1663098",
+      1661856:
+        "SB 581 House 2026-03-12: filed as House roll 427, but West Virginia's own vote sheet for House roll 427 is SB 574. The same 93-0 vote is filed correctly under SB 574 as roll_call_id 1661868",
+      1652612:
+        "HB 5323 House roll 304, 2026-03-04: LegiScan reports 61-31; West Virginia's own vote sheet reports 61-32, so one no vote is missing. This does not change the divided gate, which 61-31 and 61-32 both pass, but it would put a wrong tally in a candidate's record",
+      1650379:
+        "HB 5458 House roll 268, 2026-03-03: LegiScan reports 92-0; West Virginia's own vote sheet reports 93-0, so one yes vote is missing. Not divided either way",
+      1660050:
+        "HB 5692 House roll 405, 2026-03-11: LegiScan reports 91-2; West Virginia's own vote sheet reports 92-2, so one yes vote is missing. Not divided either way",
     },
   },
 };

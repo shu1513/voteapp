@@ -216,6 +216,34 @@ describe("classifyLegiscanRollCall", () => {
     });
   });
 
+  it("holds a roll the state's own record contradicts, by id, ahead of every pattern", () => {
+    // Idaho HJR004's House roll: LegiScan's `passed` flag reads 0 on an
+    // ADOPTED joint resolution, so the stored result would say Failed. The
+    // hold keeps it stored and surfaced but never queueable, whatever its
+    // desc and tally say.
+    const config = { ...CONFIG, heldRollCallIds: { 1506354: "HJR004 House: adopted, flag says failed" } };
+    expect(classifyLegiscanRollCall({ ...base, config, desc: "Third Reading", total: 100, rollCallId: 1506354 })).toEqual({
+      isFloorVote: null,
+      questionClass: null,
+      reason: "held:HJR004 House: adopted, flag says failed",
+    });
+    // The same desc and tally on a roll that is not held is an ordinary kept floor vote.
+    expect(
+      classifyLegiscanRollCall({ ...base, config, desc: "Third Reading", total: 100, rollCallId: 1515096 }).isFloorVote
+    ).toBe(true);
+    // A held roll that also matches an exclusion still reads as held: the hold
+    // is the stronger claim and must not be masked by a pattern.
+    expect(
+      classifyLegiscanRollCall({ ...base, config, desc: "Refused to concur", total: 95, rollCallId: 1506354 }).reason
+    ).toMatch(/^held:/);
+    // Idaho's real entry holds exactly the one roll the survey proved wrong
+    // (a member on the wrong side). The four adopted joint resolutions whose
+    // `passed` flag reads 0 are recorded in the config, not held, following
+    // North Dakota: the hold list is for tallies and member lists the state
+    // contradicts, and `result` is metadata nothing downstream reads.
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS.ID.heldRollCallIds ?? {})).toEqual(["1498007"]);
+  });
+
   it("rejects an unknown desc with a committee-sized tally, surfaces the rest", () => {
     expect(classifyLegiscanRollCall({ ...base, desc: "DO PASS", total: 12 })).toEqual({
       isFloorVote: false,
@@ -936,6 +964,75 @@ describe("South Carolina's measured desc vocabulary", () => {
   });
 });
 
+describe("West Virginia's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.WV!;
+  const wv = (desc: string, chamber: "house" | "senate" = "house", rollCallId?: number) =>
+    classifyLegiscanRollCall({ desc, total: chamber === "house" ? 100 : 34, chamber, billType: "B", config, rollCallId });
+
+  it("keeps passage, concurrence in every spelling, and reconsideration that ends in passage", () => {
+    expect(wv("Passed House (Roll No. 183)")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(wv("Passed Senate with amended title (Roll No. 12)", "senate")).toMatchObject({ questionClass: "passage" });
+    expect(wv("House concurred in Senate amendment and passed bill (Roll No. 634)")).toMatchObject({
+      questionClass: "concurrence",
+    });
+    // The clerk's typo, kept because the pattern keys on the stem `concurred in`.
+    expect(wv("House concurred in Senate amendment and and title amendmentpassed bill (Roll No. 5)")).toMatchObject({
+      questionClass: "concurrence",
+    });
+    // The one motion in either session that is a real concurrence, and the
+    // caption that contains "amendments adopted" but is a vote on the measure.
+    expect(wv("Motion to concur in House amendments adopted(Roll No. 474)", "senate")).toMatchObject({
+      questionClass: "concurrence",
+    });
+    expect(wv("Senate reconsidered action and passed bill (Roll No. 668)", "senate")).toMatchObject({
+      questionClass: "passage",
+    });
+  });
+
+  it("excludes the separate effective-date vote in every caption shape", () => {
+    // West Virginia votes a bill's effective date apart from the bill, and the
+    // vote needs two thirds, so it is often divided. None of these is a vote on
+    // the measure. The reconsideration caption looks like a passage vote but
+    // the state's own sheets for both such rolls print EFFECT FROM PASSAGE.
+    for (const desc of [
+      "Effective from passage (Roll No. 386)",
+      "Effective July, 1, 2026 (Roll No. 9)",
+      "Effective date rejected (Roll No. 2)",
+      "House concurred in Senate effective date (Roll No. 7)",
+      "House reconsidered effective date and passage (Roll No. 616)",
+    ]) {
+      expect(wv(desc)).toMatchObject({ isFloorVote: false, reason: "excluded_question" });
+    }
+  });
+
+  it("excludes amendments and procedure without swallowing captions that mention concurrence", () => {
+    for (const desc of [
+      "Amendment rejected (Roll No. 25)",
+      "Takubo #2 floor amendments adopted (Roll No. 40)",
+      "Tarr amend. to House amends rejected (Roll No. 3)",
+      "Motion for previous question adopted (Roll No. 1)",
+      "Constitutional Rule Suspended (Roll No. 1)",
+      "House refused to concur and requested Senate to recede (Roll No. 562)",
+    ]) {
+      expect(wv(desc)).toMatchObject({ isFloorVote: false });
+    }
+    // `House receded` alone does not say what was passed: surfaced, never guessed.
+    expect(wv("House receded (Roll No. 602)")).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
+  });
+
+  it("holds a roll whose caption names a different question from the state's sheet", () => {
+    // Captioned as concurrence-and-passage; the sheet says EFFECT FROM PASSAGE.
+    expect(wv("House concurred in Senate amendment and passed bill (Roll No. 428)", "house", 1541383)).toMatchObject({
+      isFloorVote: null,
+    });
+    // The same caption on any other roll is a real concurrence.
+    expect(wv("House concurred in Senate amendment and passed bill (Roll No. 428)", "house", 1)).toMatchObject({
+      isFloorVote: true,
+      questionClass: "concurrence",
+    });
+  });
+});
+
 describe("Alabama's 2023 desc vocabulary", () => {
   const config = LEGISCAN_STATE_CONFIGS["AL-2014"]!;
   const al23 = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
@@ -1405,6 +1502,10 @@ describe("getLegiscanStateConfig", () => {
       "OR",
       "OR-2252",
       "ND",
+      "ID",
+      "ID-2246",
+      "WV",
+      "WV-2254",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -1439,6 +1540,8 @@ describe("getLegiscanStateConfig", () => {
       "MN",
       "OR",
       "ND",
+      "ID",
+      "WV",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
@@ -1469,7 +1572,44 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("OR").sessionId).toBe(2191);
     expect(getLegiscanStateConfig("OR-2252")).toMatchObject({ jurisdiction: "OR", sessionId: 2252 });
     expect(getLegiscanStateConfig("ND").sessionId).toBe(2140);
+
+    expect(getLegiscanStateConfig("WV")).toMatchObject({ jurisdiction: "WV", sessionId: 2196 });
+    expect(getLegiscanStateConfig("WV-2254")).toMatchObject({ jurisdiction: "WV", sessionId: 2254 });
+    expect(getLegiscanStateConfig("AL-2014")).toMatchObject({ jurisdiction: "AL", sessionId: 2014 });
+    expect(getLegiscanStateConfig("AL-2060")).toMatchObject({ jurisdiction: "AL", sessionId: 2060 });
+    expect(getLegiscanStateConfig("AL-2103")).toMatchObject({ jurisdiction: "AL", sessionId: 2103 });
+    expect(getLegiscanStateConfig("AL-1621")).toMatchObject({ jurisdiction: "AL", sessionId: 1621 });
+    expect(getLegiscanStateConfig("AL-1706")).toMatchObject({ jurisdiction: "AL", sessionId: 1706 });
+    expect(getLegiscanStateConfig("AL-1756")).toMatchObject({ jurisdiction: "AL", sessionId: 1756 });
+    expect(getLegiscanStateConfig("AL-1854")).toMatchObject({ jurisdiction: "AL", sessionId: 1854 });
+    expect(getLegiscanStateConfig("AL-1857")).toMatchObject({ jurisdiction: "AL", sessionId: 1857 });
+    expect(getLegiscanStateConfig("AL-1836")).toMatchObject({ jurisdiction: "AL", sessionId: 1836 });
+    expect(getLegiscanStateConfig("NY").sessionId).toBe(2188);
+    expect(getLegiscanStateConfig("NM").sessionId).toBe(2187);
+    expect(getLegiscanStateConfig("NM-2251")).toMatchObject({ jurisdiction: "NM", sessionId: 2251 });
+    expect(getLegiscanStateConfig("NM-2227")).toMatchObject({ jurisdiction: "NM", sessionId: 2227 });
+    expect(getLegiscanStateConfig("NM-2126")).toMatchObject({ jurisdiction: "NM", sessionId: 2126 });
+    expect(getLegiscanStateConfig("NM-2030")).toMatchObject({ jurisdiction: "NM", sessionId: 2030 });
+    expect(getLegiscanStateConfig("NM-1961")).toMatchObject({ jurisdiction: "NM", sessionId: 1961 });
+    expect(getLegiscanStateConfig("NM-1977")).toMatchObject({ jurisdiction: "NM", sessionId: 1977 });
+    expect(getLegiscanStateConfig("NM-1812")).toMatchObject({ jurisdiction: "NM", sessionId: 1812 });
+    expect(getLegiscanStateConfig("NM-1830")).toMatchObject({ jurisdiction: "NM", sessionId: 1830 });
+    expect(getLegiscanStateConfig("NM-1967")).toMatchObject({ jurisdiction: "NM", sessionId: 1967 });
+    expect(getLegiscanStateConfig("NM-1750")).toMatchObject({ jurisdiction: "NM", sessionId: 1750 });
+    expect(getLegiscanStateConfig("NM-1731")).toMatchObject({ jurisdiction: "NM", sessionId: 1731 });
+    expect(getLegiscanStateConfig("KS").sessionId).toBe(2178);
+    expect(getLegiscanStateConfig("DE").sessionId).toBe(2163);
+    expect(getLegiscanStateConfig("AR").sessionId).toBe(2162);
+    expect(getLegiscanStateConfig("AZ").sessionId).toBe(2155);
+    expect(getLegiscanStateConfig("CO").sessionId).toBe(2173);
+    expect(getLegiscanStateConfig("CO-2224")).toMatchObject({ jurisdiction: "CO", sessionId: 2224 });
+    expect(getLegiscanStateConfig("CO-2243")).toMatchObject({ jurisdiction: "CO", sessionId: 2243 });
+    expect(getLegiscanStateConfig("MN").sessionId).toBe(2151);
+    expect(getLegiscanStateConfig("MN-2217")).toMatchObject({ jurisdiction: "MN", sessionId: 2217 });
+    expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
+    expect(() => getLegiscanStateConfig("WY")).toThrow("no LegiScan state config for WY");
   });
+
 
   it("opts North Dakota's concurrent resolutions in only when the bill amends the state constitution", () => {
     const config = getLegiscanStateConfig("ND");
@@ -1525,39 +1665,6 @@ describe("getLegiscanStateConfig", () => {
         config: getLegiscanStateConfig("MT"),
       })
     ).toMatchObject({ isFloorVote: false, reason: "excluded_measure:CR" });
-    expect(getLegiscanStateConfig("AL-2014")).toMatchObject({ jurisdiction: "AL", sessionId: 2014 });
-    expect(getLegiscanStateConfig("AL-2060")).toMatchObject({ jurisdiction: "AL", sessionId: 2060 });
-    expect(getLegiscanStateConfig("AL-2103")).toMatchObject({ jurisdiction: "AL", sessionId: 2103 });
-    expect(getLegiscanStateConfig("AL-1621")).toMatchObject({ jurisdiction: "AL", sessionId: 1621 });
-    expect(getLegiscanStateConfig("AL-1706")).toMatchObject({ jurisdiction: "AL", sessionId: 1706 });
-    expect(getLegiscanStateConfig("AL-1756")).toMatchObject({ jurisdiction: "AL", sessionId: 1756 });
-    expect(getLegiscanStateConfig("AL-1854")).toMatchObject({ jurisdiction: "AL", sessionId: 1854 });
-    expect(getLegiscanStateConfig("AL-1857")).toMatchObject({ jurisdiction: "AL", sessionId: 1857 });
-    expect(getLegiscanStateConfig("AL-1836")).toMatchObject({ jurisdiction: "AL", sessionId: 1836 });
-    expect(getLegiscanStateConfig("NY").sessionId).toBe(2188);
-    expect(getLegiscanStateConfig("NM").sessionId).toBe(2187);
-    expect(getLegiscanStateConfig("NM-2251")).toMatchObject({ jurisdiction: "NM", sessionId: 2251 });
-    expect(getLegiscanStateConfig("NM-2227")).toMatchObject({ jurisdiction: "NM", sessionId: 2227 });
-    expect(getLegiscanStateConfig("NM-2126")).toMatchObject({ jurisdiction: "NM", sessionId: 2126 });
-    expect(getLegiscanStateConfig("NM-2030")).toMatchObject({ jurisdiction: "NM", sessionId: 2030 });
-    expect(getLegiscanStateConfig("NM-1961")).toMatchObject({ jurisdiction: "NM", sessionId: 1961 });
-    expect(getLegiscanStateConfig("NM-1977")).toMatchObject({ jurisdiction: "NM", sessionId: 1977 });
-    expect(getLegiscanStateConfig("NM-1812")).toMatchObject({ jurisdiction: "NM", sessionId: 1812 });
-    expect(getLegiscanStateConfig("NM-1830")).toMatchObject({ jurisdiction: "NM", sessionId: 1830 });
-    expect(getLegiscanStateConfig("NM-1967")).toMatchObject({ jurisdiction: "NM", sessionId: 1967 });
-    expect(getLegiscanStateConfig("NM-1750")).toMatchObject({ jurisdiction: "NM", sessionId: 1750 });
-    expect(getLegiscanStateConfig("NM-1731")).toMatchObject({ jurisdiction: "NM", sessionId: 1731 });
-    expect(getLegiscanStateConfig("KS").sessionId).toBe(2178);
-    expect(getLegiscanStateConfig("DE").sessionId).toBe(2163);
-    expect(getLegiscanStateConfig("AR").sessionId).toBe(2162);
-    expect(getLegiscanStateConfig("AZ").sessionId).toBe(2155);
-    expect(getLegiscanStateConfig("CO").sessionId).toBe(2173);
-    expect(getLegiscanStateConfig("CO-2224")).toMatchObject({ jurisdiction: "CO", sessionId: 2224 });
-    expect(getLegiscanStateConfig("CO-2243")).toMatchObject({ jurisdiction: "CO", sessionId: 2243 });
-    expect(getLegiscanStateConfig("MN").sessionId).toBe(2151);
-    expect(getLegiscanStateConfig("MN-2217")).toMatchObject({ jurisdiction: "MN", sessionId: 2217 });
-    expect(getLegiscanStateConfig(" tx ").jurisdiction).toBe("TX");
-    expect(() => getLegiscanStateConfig("WY")).toThrow("no LegiScan state config for WY");
   });
 
   it("classifies New York's real desc vocabulary as surveyed", () => {
