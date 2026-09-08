@@ -27,12 +27,15 @@ import { countBucket, currentAttribution, errorCategoryOf, track } from "../lib/
 // → fill again, which also recomputes the earlier auto picks after the user
 // re-ranks issues. The mutations, chunking, and reason copy live in
 // @voteapp/api-client (shared with the mobile port). No result list here:
-// the caller gets the per-election results via onResults and annotates its
-// own race rows ("auto pick: not enough evidence"); per-race "why" details
-// live on each election page's panel.
+// the caller gets the per-election results via onResults and renders its
+// own one-line run summary; per-race "why" details live on each election
+// page's panel.
 
 // Kept for the existing import sites (PicksPage, BallotPreview).
 export { reasonLabel };
+
+const FILL_DESCRIPTION =
+  "Picks the best match for your ranked issues in each race you haven't decided. Your own picks are never changed.";
 
 export function AutoPickFillControl({
   date,
@@ -102,10 +105,15 @@ export function AutoPickFillControl({
     <div className="mt-2 print:hidden">
       <div className="flex flex-wrap items-center gap-2">
         {fillable ? (
+          // The one-line explanation rides as a hover tooltip and a
+          // screen-reader description, not visible copy: the label already
+          // says what the button does, and the card stays uncluttered.
           <button
             type="button"
             disabled={saving || preferencesLoading}
             onClick={onFill}
+            title={FILL_DESCRIPTION}
+            aria-describedby={`autopick-fill-help-${date}`}
             className="rounded-full border border-autopick-border bg-autopick px-3 py-1.5 text-sm font-semibold text-autopick-ink transition hover:bg-autopick-dark disabled:opacity-50"
           >
             {fill.isPending ? "Picking…" : "Auto-fill empty picks by my issues"}
@@ -123,11 +131,10 @@ export function AutoPickFillControl({
         ) : null}
       </div>
       {fillable ? (
-        // Describes the fill button, so it leaves with it; the Auto chips on
-        // the rows say what Clear removes.
-        <p className="mt-1 text-xs text-ink-soft">
-          Picks the best match for your ranked issues in each race you haven't decided. Your own
-          picks are never changed.
+        // Describes the fill button (aria-describedby above), so it leaves
+        // with it; the Auto chips on the rows say what Clear removes.
+        <p id={`autopick-fill-help-${date}`} className="sr-only">
+          {FILL_DESCRIPTION}
         </p>
       ) : null}
       {prompt ? (

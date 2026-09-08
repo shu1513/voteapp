@@ -236,14 +236,12 @@ describe("classifyLegiscanRollCall", () => {
     expect(
       classifyLegiscanRollCall({ ...base, config, desc: "Refused to concur", total: 95, rollCallId: 1506354 }).reason
     ).toMatch(/^held:/);
-    // Idaho's real entry pins the five rolls the survey and its review proved wrong.
-    expect(Object.keys(LEGISCAN_STATE_CONFIGS.ID.heldRollCallIds ?? {})).toEqual([
-      "1498007",
-      "1506354",
-      "1515095",
-      "1517486",
-      "1526800",
-    ]);
+    // Idaho's real entry holds exactly the one roll the survey proved wrong
+    // (a member on the wrong side). The four adopted joint resolutions whose
+    // `passed` flag reads 0 are recorded in the config, not held, following
+    // North Dakota: the hold list is for tallies and member lists the state
+    // contradicts, and `result` is metadata nothing downstream reads.
+    expect(Object.keys(LEGISCAN_STATE_CONFIGS.ID.heldRollCallIds ?? {})).toEqual(["1498007"]);
   });
 
   it("rejects an unknown desc with a committee-sized tally, surfaces the rest", () => {
@@ -1434,6 +1432,7 @@ describe("getLegiscanStateConfig", () => {
       "MN-2217",
       "OR",
       "OR-2252",
+      "ND",
       "ID",
       "ID-2246",
     ]);
@@ -1469,6 +1468,7 @@ describe("getLegiscanStateConfig", () => {
       "CO",
       "MN",
       "OR",
+      "ND",
       "ID",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
@@ -1499,6 +1499,7 @@ describe("getLegiscanStateConfig", () => {
     expect(getLegiscanStateConfig("NV").sessionId).toBe(2144);
     expect(getLegiscanStateConfig("OR").sessionId).toBe(2191);
     expect(getLegiscanStateConfig("OR-2252")).toMatchObject({ jurisdiction: "OR", sessionId: 2252 });
+    expect(getLegiscanStateConfig("ND").sessionId).toBe(2140);
     expect(getLegiscanStateConfig("AL-2014")).toMatchObject({ jurisdiction: "AL", sessionId: 2014 });
     expect(getLegiscanStateConfig("AL-2060")).toMatchObject({ jurisdiction: "AL", sessionId: 2060 });
     expect(getLegiscanStateConfig("AL-2103")).toMatchObject({ jurisdiction: "AL", sessionId: 2103 });

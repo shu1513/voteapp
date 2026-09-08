@@ -763,7 +763,9 @@ const GEORGIA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
 // resolution ADOPTION, because it is taken from the word PASSED or FAILED in
 // the action line and Idaho's line says ADOPTED. Only joint resolutions, the
 // kept type that carries a constitutional amendment, ever reach storage with
-// that defect; the ID entry holds the four adopted ones. A joint resolution
+// that defect; the ID entry records the four adopted ones and, following
+// North Dakota, does not hold them, because the rule belongs on selection
+// rather than in the hold list. A joint resolution
 // also needs two-thirds of ALL members (47 of 70, 24 of 35), which nothing in
 // LegiScan knows, so never infer its outcome from the tally either.
 const IDAHO_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
@@ -3674,6 +3676,123 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
         "SB 1571 House 2026-03-02: LegiScan reports 37-7; Oregon's journal reports 36-8 and names Lewis among the nays, whom LegiScan records as a yea",
     },
   },
+  ND: {
+    jurisdiction: "ND",
+    sessionId: 2140,
+    chamberSizes: { house: 94, senate: 47 },
+    keptQuestions: [
+      // North Dakota takes its recorded vote on passage at the SECOND
+      // reading. There is no third reading. Confirmed from the state's own
+      // record rather than assumed: North Dakota prints the tally in its
+      // bill-history action lines, so every roll in the dataset was matched
+      // to a history line on the same date with the same yea-nay. The
+      // matches are `Second reading, passed` (1,217), `Second reading,
+      // failed to pass` (395), `Second reading, passed as amended` (348) and
+      // `Second reading, passed ... Emergency clause carried` (120).
+      //
+      // All four wear the SAME description, the bare `House Second reading`
+      // / `Senate Second reading` — the desc names the reading, never the
+      // outcome and never the question. Two consequences:
+      //
+      // 1. A failed vote is spelled exactly like a passing one. 395 of these
+      //    rolls are defeats. Nothing in the desc separates them, and the
+      //    `passed` flag is NOT a safe substitute: on 23 rolls LegiScan sets
+      //    passed=0 where North Dakota's own history line says the reading
+      //    passed (13 rolls at 91-1 on 2025-03-10, 9 at 75-9 on 2025-03-21,
+      //    SB 2003 42-2, and SB 2261's 45-2 Senate veto override). The
+      //    fetcher copies that flag into `result`, which no fan-out, judge
+      //    or import path reads, so the stored "Failed" is inert metadata.
+      //    They are deliberately NOT held: their tallies and member lists
+      //    match the state's record, `heldRollCallIds` is for rolls the
+      //    survey proved wrong, and none of the 23 is closely divided. The
+      //    rule is on selection: read the outcome from the bill history's
+      //    own action line (`Second reading, passed` / `failed to pass`),
+      //    never from the caption and never from `passed` alone (the Alaska
+      //    HB 110 and Arizona failed-reading shape). The full list is in
+      //    evidence/rollcall/legiscan-nd-2140/CODE-FINDINGS.md.
+      // 2. The emergency clause is NOT a separate question here. North
+      //    Dakota carries it on the passage vote itself (`Second reading,
+      //    passed, yeas 63 nays 30, Emergency clause carried`), unlike
+      //    Arkansas, which votes it separately and excludes it. So these 120
+      //    rolls are passage votes and are kept.
+      { pattern: /^(house|senate) second reading$/, questionClass: "passage" },
+      // The veto family, five rolls in the session: `Senate Passed over
+      // veto` (1) and `Veto sustained` (2 House, 2 Senate). The sustained
+      // ones are failed overrides, kept for the same reason Montana keeps
+      // its failed third readings — so a chamber's whole record on the
+      // question is visible to the audit trail and the superseded-stage
+      // gate. These descriptions DO carry the tally inline, so the pattern
+      // tolerates it.
+      {
+        pattern: /^(house|senate) (passed over veto|veto sustained), yeas \d+ nays \d+$/,
+        questionClass: "veto_override",
+      },
+    ],
+    excludedQuestions: [
+      // ⚠ The committee cut by TALLY does not work in North Dakota, so this
+      // exclusion is load-bearing rather than cosmetic. These 44 rolls carry
+      // a FULL-CHAMBER member list and a full-chamber tally (for example
+      // 91-0 of 94) while the description quotes the committee's own vote in
+      // the trailing three numbers (`... place on calendar 14 0 0`). The
+      // shared floor-vs-committee check reads `total`, so it would classify
+      // every one of them as a floor vote. They must be excluded on the
+      // literal phrase instead. None is divided, so none could reach a
+      // batch, but they must be dispositioned deliberately rather than left
+      // to a threshold that cannot see them.
+      /^(house|senate) reported back, do (pass, place|not pass, placed) on calendar \d+ \d+ \d+$/,
+    ],
+    // ⚠⚠ TWO DEFECT CLASSES, BOTH FOUND BY AUDITING ALL 2,087 SECOND-READING
+    // ROLLS ON KEPT BILL TYPES AGAINST NORTH DAKOTA'S OWN HISTORY TALLIES
+    // (2,076 exact, 11 wrong). The audit was NOT bounded by the divided gate,
+    // per the Oregon SB 1565 lesson that a tally error can itself decide
+    // whether a roll is in the pool.
+    //
+    // Class 1 — A DIVISION OR AMENDMENT VOTE STORED AS THE SECOND READING.
+    // North Dakota can divide a bill and vote the divisions separately, and
+    // it takes recorded votes on floor amendments. LegiScan sometimes files
+    // one of those under the plain second-reading caption. On SB 2018 the
+    // history reads `Division D passed / Division E passed / Division F
+    // passed / Second reading, passed as amended, yeas 61 nays 31` and the
+    // feed stores 51-41; on SB 2158 the feed stores the 12-35 FAILED floor
+    // amendment where the reading passed 38-9. These are not wrong tallies —
+    // they are the wrong question.
+    //
+    // Class 2 — ONE ROLL'S MEMBER LIST COPIED ONTO OTHER BILLS. Four bills
+    // record a byte-identical 86-7 member list on 2025-03-18. Only SB 2157
+    // (roll 1520590) actually voted 86-7; its history says so. The other
+    // three contradict their own histories (HB 1080 93-0, HB 1551 89-4,
+    // SB 2290 88-5) and are copies. Same class as the Kansas SB 63 and North
+    // Carolina H244 findings, but propagated across bills rather than within
+    // one.
+    //
+    // Only one of the eleven (SB 2274) sits inside the usable pool; the rest
+    // are already out on other filters. All eleven are held anyway, because a
+    // later batch or a widened scope would otherwise reach them.
+    heldRollCallIds: {
+      1474097:
+        "SB 2158 Senate 2025-01-23: the feed stores 12-35, which is the floor amendment North Dakota's history records as failed that day; the second reading passed 38-9 with the emergency clause carried",
+      1479374:
+        "SB 2251 Senate 2025-02-03: the feed stores a tied 23-23 with passed=0, which is one of the divisions North Dakota voted that day (`Division A lost`); the second reading passed 42-4",
+      1490641:
+        "HB 1038 Senate 2025-02-14: the feed stores 15-29, which is the lost `Division A`; the second reading passed as amended 40-4",
+      1490668:
+        "SB 2274 Senate 2025-02-14: the feed stores 13-31; North Dakota's history records the second reading passing 42-2 and no vote at 13-31. This is the only held roll that would otherwise sit inside the usable pool",
+      1494017:
+        "SB 2380 Senate 2025-02-19: the feed stores 46-1; the history records the second reading passing 47-0 after the amendment was adopted",
+      1520236:
+        "SB 2290 House 2025-03-18: the feed stores 86-7 with a member list byte-identical to SB 2157 roll 1520590; North Dakota's history records this reading passing 88-5",
+      1520370:
+        "HB 1551 House 2025-03-18: the feed stores the same copied 86-7 member list; North Dakota's history records this reading passing 89-4",
+      1520595:
+        "HB 1080 House 2025-03-18: the feed stores the same copied 86-7 member list; North Dakota's history records this reading passing 93-0, a unanimous vote the copy turns into a divided one",
+      1544632:
+        "SB 2243 House 2025-04-10: the feed stores 72-20; the history records `Division A passed / Division B passed` and the second reading passing as amended 66-26",
+      1557863:
+        "SB 2018 House 2025-04-24: the feed stores 51-41; the history records three divisions passing and the second reading passing as amended 61-31. The bill then went to a conference committee",
+      1558336:
+        "HB 1168 Senate 2025-04-25: the feed stores 41-4; the history records the second reading passing as amended 45-0 with the emergency clause carried",
+    },
+  },
   // Idaho Legislature, 2025 Regular Session (68th Legislature, first regular
   // session; dataset cut 2025-12-07). Surveyed 2026-09-07: 790 bills, 854
   // roll calls, 129 people for 70 House and 35 Senate seats. Vocabulary,
@@ -3720,25 +3839,25 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     // Idaho adopts resolutions, so an ADOPTED line maps to 0. That mislabels
     // 20 rolls in this session; almost all are CR, JM and R measures rejected
     // before the queue, but joint resolutions are a kept type, and the fetcher
-    // writes `result` straight from the flag. The four adopted joint-resolution
-    // rolls below were therefore stored as "Failed" although Idaho's own pages
-    // say ADOPTED and both resolutions were delivered to the Secretary of
-    // State for the November 2026 ballot. Held until the stored result is
-    // corrected. The three other stored joint-resolution rolls (HJR001 here,
-    // HJR007 and HJR009 in 2026) also carry 0 and are genuinely FAILED — a
-    // constitutional amendment needs 47 of 70 and 24 of 35 — so they are not
-    // held. Found by the review of this pull request.
+    // copies the flag into `result`. So the four adopted joint-resolution
+    // rolls — HJR004 House 1506354 and Senate 1515095, HJR006 House 1517486
+    // and Senate 1526800 — are stored as "Failed" although Idaho's own pages
+    // say ADOPTED and both resolutions go to voters in November 2026. Found by
+    // the review of this pull request.
+    //
+    // They are deliberately NOT held, following the North Dakota rule (#1236
+    // review): their tallies and member lists match Idaho's record,
+    // `heldRollCallIds` is for rolls the survey proved wrong, `result` is
+    // metadata no fan-out, judge or import path reads, and none of the four
+    // is closely divided, so none can enter a batch. The rule is on
+    // selection: read a joint resolution's outcome from Idaho's bill page,
+    // never from `passed` and never from the tally — a constitutional
+    // amendment needs two-thirds of ALL members (47 of 70, 24 of 35), which
+    // nothing in LegiScan knows, and that threshold is why HJR001 here and
+    // HJR007 / HJR009 in 2026 are genuine defeats at 46-23, 41-28 and 44-25.
     heldRollCallIds: {
       1498007:
         "H0230 House 2025-02-27: LegiScan reports 55-10 where Idaho's own history reports 54-11, so one member is recorded on the wrong side. The roll is outside the current pool (the bill did not become law, and neither tally clears the divided gate), and it is held so that it cannot be queued if the not-enacted scope is opened later",
-      1506354:
-        "HJR004 House 2025-03-05: LegiScan reports passed 0 where Idaho's own page reads 'ADOPTED - 58-10-2', so the stored result says Failed on a constitutional amendment the House adopted and that goes to voters in November 2026. Held until the stored result is corrected",
-      1515095:
-        "HJR004 Senate 2025-03-11: LegiScan reports passed 0 where Idaho's own history reads 'ADOPTED 29-6-0'. Same defect and same reason as the House roll",
-      1517486:
-        "HJR006 House 2025-03-13: LegiScan reports passed 0 where Idaho's own page reads 'ADOPTED - 59-8-3', so the stored result says Failed on a constitutional amendment the House adopted and that goes to voters in November 2026. Held until the stored result is corrected",
-      1526800:
-        "HJR006 Senate 2025-03-25: LegiScan reports passed 0 where Idaho's own history reads 'ADOPTED 30-5-0'. Same defect and same reason as the House roll",
     },
   },
   // Idaho Legislature, 2026 Regular Session (dataset cut 2026-06-28, after
