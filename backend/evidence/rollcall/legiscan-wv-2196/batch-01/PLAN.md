@@ -42,9 +42,9 @@ The full ledger is `survey/dispositions.tsv`. The groups:
 - **Local bills.** HB 2695 and HB 3492 each authorize one county or city to levy
   an excise tax. HB 2960 is a snow removal pilot confined to two counties.
 - **Gambling and racing economics.** HB 2444, HB 2491, HB 2511, SB 576 and
-  SB 75. No research area describes a wagering authorisation or an industry
+  SB 75. No research area describes a wagering authorization or an industry
   revenue formula.
-- **Administrative machinery and trivia.** HB 2267 is an omnibus authorisation of
+- **Administrative machinery and trivia.** HB 2267 is an omnibus authorization of
   unrelated agency rules. SB 738 repeals a dormant board. SB 677 changes
   securities filing fees. HB 2054 changes a farmers market vendor requirement.
 - **The labor gap.** HB 2013 strips civil service protection and the state
