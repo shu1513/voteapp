@@ -1,0 +1,292 @@
+{
+  "judgments": [
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1655502,
+      "measure_id": "H 562",
+      "vote_date": "2026-03-05",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 562, which gives Idaho policyholders more warning before insurance ends. An insurer cancelling a property or casualty policy for most reasons had to give thirty days' notice. The act raises that to sixty days. An insurer that will not renew a policy had to give forty-five days' notice before the expiry date. That also becomes sixty days. If the nonrenewal notice goes out late, cover now continues for sixty days after it is sent rather than forty-five, with the extra premium charged pro rata. The change takes effect at the start of 2027. The Idaho House passed it 51-17, and it became law.",
+      "nay_description": "Voted against House Bill 562, which gives Idaho policyholders more warning before insurance ends. An insurer cancelling a property or casualty policy for most reasons had to give thirty days' notice. The act raises that to sixty days. An insurer that will not renew a policy had to give forty-five days' notice before the expiry date. That also becomes sixty days. If the nonrenewal notice goes out late, cover now continues for sixty days after it is sent rather than forty-five, with the extra premium charged pro rata. The change takes effect at the start of 2027. The Idaho House passed it 51-17, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1669024,
+      "measure_id": "H 562",
+      "vote_date": "2026-03-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 562, which gives Idaho policyholders more warning before insurance ends. An insurer cancelling a property or casualty policy for most reasons had to give thirty days' notice. The act raises that to sixty days. An insurer that will not renew a policy had to give forty-five days' notice before the expiry date. That also becomes sixty days. If the nonrenewal notice goes out late, cover now continues for sixty days after it is sent rather than forty-five, with the extra premium charged pro rata. The change takes effect at the start of 2027. The Idaho Senate passed it 20-13, and it became law.",
+      "nay_description": "Voted against House Bill 562, which gives Idaho policyholders more warning before insurance ends. An insurer cancelling a property or casualty policy for most reasons had to give thirty days' notice. The act raises that to sixty days. An insurer that will not renew a policy had to give forty-five days' notice before the expiry date. That also becomes sixty days. If the nonrenewal notice goes out late, cover now continues for sixty days after it is sent rather than forty-five, with the extra premium charged pro rata. The change takes effect at the start of 2027. The Idaho Senate passed it 20-13, and it became law.",
+      "labels": [
+        {
+          "slug": "corporate_accountability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1673160,
+      "measure_id": "H 810",
+      "vote_date": "2026-03-30",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 810, which adds a residency test for Idaho legislators. A candidate for the House or Senate already had to be twenty-one, a United States citizen, and a registered voter in the district for the year before the general election. The act adds that the candidate must also have kept a fixed home inside the district boundaries for that same year. Registering to vote at an address in the district is no longer enough on its own. The requirement takes effect at the start of 2027, so it applies to the 2028 election cycle. The Idaho House passed it 38-28, and it became law.",
+      "nay_description": "Voted against House Bill 810, which adds a residency test for Idaho legislators. A candidate for the House or Senate already had to be twenty-one, a United States citizen, and a registered voter in the district for the year before the general election. The act adds that the candidate must also have kept a fixed home inside the district boundaries for that same year. Registering to vote at an address in the district is no longer enough on its own. The requirement takes effect at the start of 2027, so it applies to the 2028 election cycle. The Idaho House passed it 38-28, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1671596,
+      "measure_id": "H 810",
+      "vote_date": "2026-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 810, which adds a residency test for Idaho legislators. A candidate for the House or Senate already had to be twenty-one, a United States citizen, and a registered voter in the district for the year before the general election. The act adds that the candidate must also have kept a fixed home inside the district boundaries for that same year. Registering to vote at an address in the district is no longer enough on its own. The requirement takes effect at the start of 2027, so it applies to the 2028 election cycle. The Idaho Senate passed it 20-14, and it became law.",
+      "nay_description": "Voted against House Bill 810, which adds a residency test for Idaho legislators. A candidate for the House or Senate already had to be twenty-one, a United States citizen, and a registered voter in the district for the year before the general election. The act adds that the candidate must also have kept a fixed home inside the district boundaries for that same year. Registering to vote at an address in the district is no longer enough on its own. The requirement takes effect at the start of 2027, so it applies to the 2028 election cycle. The Idaho Senate passed it 20-14, and it became law.",
+      "labels": [
+        {
+          "slug": "election_integrity",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1659089,
+      "measure_id": "H 849",
+      "vote_date": "2026-03-10",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 849, which raises pay for career technical education teachers in Idaho. Teacher pay runs on a career ladder, and a teacher normally starts at the bottom and moves a cell a year. The act credits industry experience for a teacher holding an occupational specialist certificate. Two or three years in a related industry starts them where a teacher with one year of service sits, and eight or more years starts them at the four-year point. Career technical teachers already on the lowest rung must have their placement updated if the new rule puts them higher. The act also sets out how those teachers move up once they reach the professional rung. The same credit applies to a teacher returning to an Idaho public school, not only to a new one. The Idaho House passed it 43-25, and it became law.",
+      "nay_description": "Voted against House Bill 849, which raises pay for career technical education teachers in Idaho. Teacher pay runs on a career ladder, and a teacher normally starts at the bottom and moves a cell a year. The act credits industry experience for a teacher holding an occupational specialist certificate. Two or three years in a related industry starts them where a teacher with one year of service sits, and eight or more years starts them at the four-year point. Career technical teachers already on the lowest rung must have their placement updated if the new rule puts them higher. The act also sets out how those teachers move up once they reach the professional rung. The same credit applies to a teacher returning to an Idaho public school, not only to a new one. The Idaho House passed it 43-25, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1668922,
+      "measure_id": "H 849",
+      "vote_date": "2026-03-24",
+      "review_status": "approved",
+      "yea_description": "Voted for House Bill 849, which raises pay for career technical education teachers in Idaho. Teacher pay runs on a career ladder, and a teacher normally starts at the bottom and moves a cell a year. The act credits industry experience for a teacher holding an occupational specialist certificate. Two or three years in a related industry starts them where a teacher with one year of service sits, and eight or more years starts them at the four-year point. Career technical teachers already on the lowest rung must have their placement updated if the new rule puts them higher. The act also sets out how those teachers move up once they reach the professional rung. The same credit applies to a teacher returning to an Idaho public school, not only to a new one. The Idaho Senate passed it 18-14, and it became law.",
+      "nay_description": "Voted against House Bill 849, which raises pay for career technical education teachers in Idaho. Teacher pay runs on a career ladder, and a teacher normally starts at the bottom and moves a cell a year. The act credits industry experience for a teacher holding an occupational specialist certificate. Two or three years in a related industry starts them where a teacher with one year of service sits, and eight or more years starts them at the four-year point. Career technical teachers already on the lowest rung must have their placement updated if the new rule puts them higher. The act also sets out how those teachers move up once they reach the professional rung. The same credit applies to a teacher returning to an Idaho public school, not only to a new one. The Idaho Senate passed it 18-14, and it became law.",
+      "labels": [
+        {
+          "slug": "public_education_quality",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1664666,
+      "measure_id": "S 1257",
+      "vote_date": "2026-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1257, which limits face-to-face visits where a child protection case involves abuse. The act defines visitation for the first time as contact between a child and a parent, guardian, custodian, or sibling, and says it covers video calls, phone calls, and letters as well as meeting in person. Where the department has a substantiated claim of sexual or physical abuse against the parent, guardian, or custodian, in-person visits are not allowed unless a court finds them to be in the child's best interest. A court allowing them must write down conditions that keep the visit safe. The act also revises the grounds on which a court may end parental rights. The Idaho House passed it 44-24, and it became law.",
+      "nay_description": "Voted against Senate Bill 1257, which limits face-to-face visits where a child protection case involves abuse. The act defines visitation for the first time as contact between a child and a parent, guardian, custodian, or sibling, and says it covers video calls, phone calls, and letters as well as meeting in person. Where the department has a substantiated claim of sexual or physical abuse against the parent, guardian, or custodian, in-person visits are not allowed unless a court finds them to be in the child's best interest. A court allowing them must write down conditions that keep the visit safe. The act also revises the grounds on which a court may end parental rights. The Idaho House passed it 44-24, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1647991,
+      "measure_id": "S 1257",
+      "vote_date": "2026-02-27",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1257, which limits face-to-face visits where a child protection case involves abuse. The act defines visitation for the first time as contact between a child and a parent, guardian, custodian, or sibling, and says it covers video calls, phone calls, and letters as well as meeting in person. Where the department has a substantiated claim of sexual or physical abuse against the parent, guardian, or custodian, in-person visits are not allowed unless a court finds them to be in the child's best interest. A court allowing them must write down conditions that keep the visit safe. The act also revises the grounds on which a court may end parental rights. The Idaho Senate passed it 24-6, and it became law.",
+      "nay_description": "Voted against Senate Bill 1257, which limits face-to-face visits where a child protection case involves abuse. The act defines visitation for the first time as contact between a child and a parent, guardian, custodian, or sibling, and says it covers video calls, phone calls, and letters as well as meeting in person. Where the department has a substantiated claim of sexual or physical abuse against the parent, guardian, or custodian, in-person visits are not allowed unless a court finds them to be in the child's best interest. A court allowing them must write down conditions that keep the visit safe. The act also revises the grounds on which a court may end parental rights. The Idaho Senate passed it 24-6, and it became law.",
+      "labels": [
+        {
+          "slug": "social_programs_and_welfare",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1664909,
+      "measure_id": "S 1269",
+      "vote_date": "2026-03-17",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1269, which sets up a state cloud seeding program. Cloud seeding spreads particles into clouds to try to increase snow and rain. The act writes findings that it helps with drought and protects water rights, and it creates authorization and yearly reporting duties for projects. State money may be spent only in river basins where the water board finds existing supplies fall short of water rights, water quality, recreation, or fish and wildlife needs. Seeding done under a state-funded or board-approved project needs no state or local permit. It also cannot be the basis of a trespass or nuisance claim unless the operator was grossly negligent or acted willfully. The Idaho House passed it 40-28, and it became law.",
+      "nay_description": "Voted against Senate Bill 1269, which sets up a state cloud seeding program. Cloud seeding spreads particles into clouds to try to increase snow and rain. The act writes findings that it helps with drought and protects water rights, and it creates authorization and yearly reporting duties for projects. State money may be spent only in river basins where the water board finds existing supplies fall short of water rights, water quality, recreation, or fish and wildlife needs. Seeding done under a state-funded or board-approved project needs no state or local permit. It also cannot be the basis of a trespass or nuisance claim unless the operator was grossly negligent or acted willfully. The Idaho House passed it 40-28, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1652106,
+      "measure_id": "S 1269",
+      "vote_date": "2026-03-03",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1269, which sets up a state cloud seeding program. Cloud seeding spreads particles into clouds to try to increase snow and rain. The act writes findings that it helps with drought and protects water rights, and it creates authorization and yearly reporting duties for projects. State money may be spent only in river basins where the water board finds existing supplies fall short of water rights, water quality, recreation, or fish and wildlife needs. Seeding done under a state-funded or board-approved project needs no state or local permit. It also cannot be the basis of a trespass or nuisance claim unless the operator was grossly negligent or acted willfully. The Idaho Senate passed it 25-9, and it became law.",
+      "nay_description": "Voted against Senate Bill 1269, which sets up a state cloud seeding program. Cloud seeding spreads particles into clouds to try to increase snow and rain. The act writes findings that it helps with drought and protects water rights, and it creates authorization and yearly reporting duties for projects. State money may be spent only in river basins where the water board finds existing supplies fall short of water rights, water quality, recreation, or fish and wildlife needs. Seeding done under a state-funded or board-approved project needs no state or local permit. It also cannot be the basis of a trespass or nuisance claim unless the operator was grossly negligent or acted willfully. The Idaho Senate passed it 25-9, and it became law.",
+      "labels": [
+        {
+          "slug": "environment_and_public_health",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1671296,
+      "measure_id": "S 1294",
+      "vote_date": "2026-03-26",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1294, which requires every Idaho newborn to be screened for hearing loss. A baby born in a hospital or birthing facility must be screened before going home. A baby born elsewhere must be screened, or referred for screening, within twenty-one days of birth. The screening must use a physiologic method approved by Idaho Educational Services for the Deaf and the Blind, such as otoacoustic emissions or automated auditory brainstem response. A failed screening must be reported to that agency within seven days so follow-up can begin, and other results monthly. The requirement lasts only while federal funding for it continues. The Idaho House passed it 37-32, and it became law.",
+      "nay_description": "Voted against Senate Bill 1294, which requires every Idaho newborn to be screened for hearing loss. A baby born in a hospital or birthing facility must be screened before going home. A baby born elsewhere must be screened, or referred for screening, within twenty-one days of birth. The screening must use a physiologic method approved by Idaho Educational Services for the Deaf and the Blind, such as otoacoustic emissions or automated auditory brainstem response. A failed screening must be reported to that agency within seven days so follow-up can begin, and other results monthly. The requirement lasts only while federal funding for it continues. The Idaho House passed it 37-32, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1667232,
+      "measure_id": "S 1294",
+      "vote_date": "2026-03-20",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1294, which requires every Idaho newborn to be screened for hearing loss. A baby born in a hospital or birthing facility must be screened before going home. A baby born elsewhere must be screened, or referred for screening, within twenty-one days of birth. The screening must use a physiologic method approved by Idaho Educational Services for the Deaf and the Blind, such as otoacoustic emissions or automated auditory brainstem response. A failed screening must be reported to that agency within seven days so follow-up can begin, and other results monthly. The requirement lasts only while federal funding for it continues. The Idaho Senate passed it 22-13, and it became law.",
+      "nay_description": "Voted against Senate Bill 1294, which requires every Idaho newborn to be screened for hearing loss. A baby born in a hospital or birthing facility must be screened before going home. A baby born elsewhere must be screened, or referred for screening, within twenty-one days of birth. The screening must use a physiologic method approved by Idaho Educational Services for the Deaf and the Blind, such as otoacoustic emissions or automated auditory brainstem response. A failed screening must be reported to that agency within seven days so follow-up can begin, and other results monthly. The requirement lasts only while federal funding for it continues. The Idaho Senate passed it 22-13, and it became law.",
+      "labels": [
+        {
+          "slug": "healthcare_affordability",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1669006,
+      "measure_id": "S 1300",
+      "vote_date": "2026-03-24",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1300, which moves three agency director jobs under the governor. The Fish and Game Commission chose the director of the Department of Fish and Game, and boards chose the directors of the Transportation Department and of Parks and Recreation. Under the act the governor appoints all three, and each serves at the governor's pleasure. The three posts are added to the list of offices the governor fills under the state vacancy statute. The commissions and boards keep their other duties, but no longer pick or hold the director. The Idaho House passed it 41-29, and it became law.",
+      "nay_description": "Voted against Senate Bill 1300, which moves three agency director jobs under the governor. The Fish and Game Commission chose the director of the Department of Fish and Game, and boards chose the directors of the Transportation Department and of Parks and Recreation. Under the act the governor appoints all three, and each serves at the governor's pleasure. The three posts are added to the list of offices the governor fills under the state vacancy statute. The commissions and boards keep their other duties, but no longer pick or hold the director. The Idaho House passed it 41-29, and it became law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1649553,
+      "measure_id": "S 1300",
+      "vote_date": "2026-03-02",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1300, which moves three agency director jobs under the governor. The Fish and Game Commission chose the director of the Department of Fish and Game, and boards chose the directors of the Transportation Department and of Parks and Recreation. Under the act the governor appoints all three, and each serves at the governor's pleasure. The three posts are added to the list of offices the governor fills under the state vacancy statute. The commissions and boards keep their other duties, but no longer pick or hold the director. The Idaho Senate passed it 21-14, and it became law.",
+      "nay_description": "Voted against Senate Bill 1300, which moves three agency director jobs under the governor. The Fish and Game Commission chose the director of the Department of Fish and Game, and boards chose the directors of the Transportation Department and of Parks and Recreation. Under the act the governor appoints all three, and each serves at the governor's pleasure. The three posts are added to the list of offices the governor fills under the state vacancy statute. The commissions and boards keep their other duties, but no longer pick or hold the director. The Idaho Senate passed it 21-14, and it became law.",
+      "labels": [
+        {
+          "slug": "government_efficiency",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "house",
+      "session": "2246",
+      "roll": 1667976,
+      "measure_id": "S 1311",
+      "vote_date": "2026-03-23",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1311, which tightens Idaho's ignition interlock rules. An interlock is a breath tester wired to a car's ignition, ordered for some drunk driving offenders, that blocks a start above a set alcohol level. The act requires the company that supplies the device to tell the prosecuting authority every time a driver is blocked from starting the car. It also requires the company to give the Transportation Department proof that the device was installed. The act writes into the definition that the device includes a camera. The blocking level stays at .025. The Idaho House passed it 40-28, and it became law.",
+      "nay_description": "Voted against Senate Bill 1311, which tightens Idaho's ignition interlock rules. An interlock is a breath tester wired to a car's ignition, ordered for some drunk driving offenders, that blocks a start above a set alcohol level. The act requires the company that supplies the device to tell the prosecuting authority every time a driver is blocked from starting the car. It also requires the company to give the Transportation Department proof that the device was installed. The act writes into the definition that the device includes a camera. The blocking level stays at .025. The Idaho House passed it 40-28, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    },
+    {
+      "jurisdiction": "ID",
+      "chamber": "senate",
+      "session": "2246",
+      "roll": 1649959,
+      "measure_id": "S 1311",
+      "vote_date": "2026-03-02",
+      "review_status": "approved",
+      "yea_description": "Voted for Senate Bill 1311, which tightens Idaho's ignition interlock rules. An interlock is a breath tester wired to a car's ignition, ordered for some drunk driving offenders, that blocks a start above a set alcohol level. The act requires the company that supplies the device to tell the prosecuting authority every time a driver is blocked from starting the car. It also requires the company to give the Transportation Department proof that the device was installed. The act writes into the definition that the device includes a camera. The blocking level stays at .025. The Idaho Senate passed it 21-14, and it became law.",
+      "nay_description": "Voted against Senate Bill 1311, which tightens Idaho's ignition interlock rules. An interlock is a breath tester wired to a car's ignition, ordered for some drunk driving offenders, that blocks a start above a set alcohol level. The act requires the company that supplies the device to tell the prosecuting authority every time a driver is blocked from starting the car. It also requires the company to give the Transportation Department proof that the device was installed. The act writes into the definition that the device includes a camera. The blocking level stays at .025. The Idaho Senate passed it 21-14, and it became law.",
+      "labels": [
+        {
+          "slug": "public_safety_and_crime_control",
+          "yea": "for",
+          "nay": null
+        }
+      ]
+    }
+  ]
+}
