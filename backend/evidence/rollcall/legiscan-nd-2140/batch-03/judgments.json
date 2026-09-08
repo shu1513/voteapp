@@ -8,29 +8,11 @@
       "measure_id": "HB 1283",
       "vote_date": "2025-02-25",
       "review_status": "approved",
-      "yea_description": "Voted for House Bill 1283, which would have stopped health plans charging for follow-up breast scans. One kind of scan takes a closer look at something a mammogram has already found. The other screens for cancer in women at higher risk. Both include scans such as breast ultrasound and breast magnetic resonance imaging. For either one, the bill would have barred a plan from charging a deductible, a copay, or any other share of the cost. The North Dakota House passed it 66-26, but the Senate rejected it 22-24 and it did not become law.",
-      "nay_description": "Voted against House Bill 1283, which would have stopped health plans charging for follow-up breast scans. One kind of scan takes a closer look at something a mammogram has already found. The other screens for cancer in women at higher risk. Both include scans such as breast ultrasound and breast magnetic resonance imaging. For either one, the bill would have barred a plan from charging a deductible, a copay, or any other share of the cost. The North Dakota House passed it 66-26, but the Senate rejected it 22-24 and it did not become law.",
+      "yea_description": "Voted for House Bill 1283, which would have stopped the state employee health plan charging for follow-up breast scans. It applied to the public employees' group insurance program, not to private plans. One kind of scan takes a closer look at something a mammogram has already found. The other screens for cancer in women at higher risk. Both include scans such as breast ultrasound and breast magnetic resonance imaging. For either one, the plan could not have charged a deductible, a copay, or any other share of the cost. On a high-deductible plan tied to a health savings account, that would have applied only after the federal minimum deductible was met. The bill was written as a trial for that plan, with a report back to the legislature and an end date. The North Dakota House passed it 66-26, but the Senate rejected it 22-24 and it did not become law.",
+      "nay_description": "Voted against House Bill 1283, which would have stopped the state employee health plan charging for follow-up breast scans. It applied to the public employees' group insurance program, not to private plans. One kind of scan takes a closer look at something a mammogram has already found. The other screens for cancer in women at higher risk. Both include scans such as breast ultrasound and breast magnetic resonance imaging. For either one, the plan could not have charged a deductible, a copay, or any other share of the cost. On a high-deductible plan tied to a health savings account, that would have applied only after the federal minimum deductible was met. The bill was written as a trial for that plan, with a report back to the legislature and an end date. The North Dakota House passed it 66-26, but the Senate rejected it 22-24 and it did not become law.",
       "labels": [
         {
           "slug": "healthcare_affordability",
-          "yea": "for",
-          "nay": null
-        }
-      ]
-    },
-    {
-      "jurisdiction": "ND",
-      "chamber": "house",
-      "session": "2140",
-      "roll": 1498485,
-      "measure_id": "HB 1391",
-      "vote_date": "2025-02-24",
-      "review_status": "approved",
-      "yea_description": "Voted for House Bill 1391, which would have added health status to the state's anti-discrimination law. That law already bars discrimination for reasons such as race, color, religion, sex, age, or disability. It covers jobs, housing, credit, government services and public places. The bill would have added a person's health status to that list. It also would have set out where health care facilities are exempt. The North Dakota House passed it 67-26, but the Senate rejected it 17-29 and it did not become law.",
-      "nay_description": "Voted against House Bill 1391, which would have added health status to the state's anti-discrimination law. That law already bars discrimination for reasons such as race, color, religion, sex, age, or disability. It covers jobs, housing, credit, government services and public places. The bill would have added a person's health status to that list. It also would have set out where health care facilities are exempt. The North Dakota House passed it 67-26, but the Senate rejected it 17-29 and it did not become law.",
-      "labels": [
-        {
-          "slug": "civil_rights",
           "yea": "for",
           "nay": null
         }

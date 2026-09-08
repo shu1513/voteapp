@@ -1,6 +1,6 @@
 # North Dakota batch-03 — plan
 
-6 measures, 6 roll calls, 165 records. **The not-enacted scope**: measures a chamber
+5 measures, 5 roll calls, 137 records. **The not-enacted scope**: measures a chamber
 passed that never became law.
 
 ## Why this scope matters in North Dakota
@@ -28,7 +28,6 @@ the bill's text stack, not from a later print or from an enrolled act that never
 | measure | roll | area | direction | how it ended |
 |---|---|---|---|---|
 | HB 1283 breast screening cost sharing | House 66-26 | healthcare_affordability | for | Senate rejected 22-24 |
-| HB 1391 health status in anti-discrimination law | House 67-26 | civil_rights | for | Senate rejected 17-29 |
 | HB 1455 tribal consultation on bills | House 63-28 | civil_rights | for | Senate rejected 7-40 |
 | HB 1496 minimum heat in rented homes | House 70-19 | corporate_accountability | for | Senate rejected 11-35 |
 | HB 1583 false political advertisements | House 55-34 | election_integrity | for | Senate rejected 11-36 |
@@ -37,6 +36,15 @@ the bill's text stack, not from a later print or from an enrolled act that never
 SB 2307 is the session's closest House vote in this batch and the only measure here that
 passed both chambers. The Governor vetoed it and the Senate's override attempt fell short
 of the two-thirds needed, which the tail states.
+
+**HB 1391 was imported in this batch and retracted after the #1244 review.** Its title says
+anti-discrimination and its first section adds "health status" to the protected list, but the
+bill defines that term as a person's records or preferences about refusing a medical procedure,
+treatment, injection, device, vaccine or prophylactic. It is a vaccine-refusal measure under an
+anti-discrimination title, the class the operator decided to drop on HB 1454. Its 28 records were
+retired, the roll set back to pending, and the entry removed; see `retracted/`. The lesson: **read
+the definitions section before trusting a protected-class word**, which is the Connecticut
+who-is-bound rule from the other side.
 
 HB 1496 is `corporate_accountability` rather than `housing_affordability`: a minimum-heat
 duty binds landlords as a defined class of business, and it changes neither housing supply

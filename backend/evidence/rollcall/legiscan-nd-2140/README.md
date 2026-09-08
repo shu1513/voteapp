@@ -81,9 +81,9 @@ scopes, among them `womens_reproductive_rights`, `gun_control` and `immigration`
 
 **Constitutional amendments are now reachable.** North Dakota rides them on concurrent
 resolutions, a type the shared bill-type filter drops. The config opts that type back in,
-gated on the bill's own description naming the state constitution, which matches exactly
-the 9 amendments and no commendation or study resolution. All nine are dispositioned; none
-is imported, because under the Arkansas ballot-initiative rule a measure about who may take
+gated on the bill's own description naming the state constitution, which matches 15 measures,
+every one a constitutional amendment, and no commendation or study resolution. Nine of them
+drew a closely divided roll and all nine are dispositioned; none is imported, because under the Arkansas ballot-initiative rule a measure about who may take
 part in lawmaking, or how hard lawmaking is, carries no honest direction.
 
 ## The pool
@@ -105,11 +105,11 @@ total over 323 measures, each with a disposition and a reason:
 
 | rolls | disposition |
 |---|---|
-| 39 | imported across batches 01-04 |
-| 229 | screened on title and description, not selected |
+| 37 | imported across batches 01-04 |
+| 237 | screened on title and description, not selected |
 | 41 | not the chamber's vote on the text that became law |
-| 32 | dropped under filter 5, each read and reasoned |
-| 19 | study-only |
+| 34 | dropped under filter 5, each read and reasoned, two of them retractions |
+| 11 | study-only |
 | 14 | agency appropriation acts |
 
 The 229 screened rows say so plainly on their face. They were triaged from the bill's title
@@ -131,5 +131,5 @@ Fan-out is a median of 27 candidates per House roll and 20 per Senate roll.
 
 ## Totals
 
-**970 live records across 48 candidates and 39 approved rolls, in the local database only.
+**914 live records across 48 candidates and 37 approved rolls, in the local database only.
 Production holds no North Dakota roll-call records.**

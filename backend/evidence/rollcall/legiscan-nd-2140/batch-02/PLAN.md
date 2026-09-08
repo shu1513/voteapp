@@ -1,6 +1,9 @@
 # North Dakota batch-02 — plan
 
-9 measures, 10 roll calls, 244 records. The enacted scope, continued from batch-01.
+8 measures, 9 roll calls, 216 records. The enacted scope, continued from batch-01.
+
+**SB 2174 was imported in this batch and retracted after the #1244 review** — see the
+retraction note at the end and `retracted/`.
 
 ## Selection
 
@@ -24,8 +27,18 @@ chamber, so the superseded-stage gate never fired and no judgment needed
 | HB 1500 rebuilding a nonconforming home | Senate 31-16 | housing_affordability | for |
 | SB 2069 online legal notices | Senate 32-15 | government_efficiency | for |
 | SB 2159 nuclear waste research ban lifted | House 57-32 | environment_and_public_health | against |
-| SB 2174 county control of feedlots | House 66-25 | environment_and_public_health | against |
 | SB 2213 math teaching standards | House 63-30 | public_education_quality | for |
+
+## SB 2174, retracted
+
+The description credited the act with barring county zoning and water-quality rules on feedlots
+and with creating a petition process. The markup shows every one of those provisions was
+already law; only their numbering changed from letters to numerals. What SB 2174 actually adds
+is a two-way adjustment of setback distances through the state odor tool, and a cap on how
+strict a county may be about odor. Those pull opposite ways, so the measure is a filter-5 drop.
+Its 28 records were retired, the roll set back to pending, and the entry removed. The lesson
+is the campaign's oldest one, in a new shape: **a renumbering is not a change**, and a stance
+must rest on text the markup marks as new.
 
 ## SB 2159 is the reason this campaign renders pages
 

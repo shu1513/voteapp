@@ -88,8 +88,8 @@ lesson about re-reading any sentence that discusses spelling.
 
 | batch | judge | import | stamp |
 |---|---|---|---|
-| 02 | 10 updated | 244 inserts | `2026-09-08T04:18:56.358Z` |
-| 03 | 6 updated | 165 inserts | `2026-09-08T04:24:22.385Z` |
+| 02 | 10 updated | 244 inserts, 28 later retired | `2026-09-08T04:18:56.358Z` |
+| 03 | 6 updated | 165 inserts, 28 later retired | `2026-09-08T04:24:22.385Z` |
 | 04 | 9 updated | 227 inserts | `2026-09-08T04:27:29.293Z` |
 
 Zero errors, zero notified, zero `related` flags and zero `ambiguous` outcomes throughout.
@@ -105,5 +105,40 @@ campaign's existing one: copy a ledger out immediately after each run.
 
 ## Totals
 
-North Dakota now holds **970 live records across 48 candidates and 39 approved rolls**.
+North Dakota now holds **914 live records across 48 candidates and 37 approved rolls**.
 Production still holds none.
+
+## Review fixes, 2026-09-08 (#1244)
+
+Eight findings; all eight were checked against the text and all eight were real. Two were
+retractions, four were rewrites, two were bookkeeping.
+
+**Retracted — SB 2174 (batch-02) and HB 1391 (batch-03).** Both are written up in their batch
+plans. SB 2174's stance rested on provisions that were already law and merely renumbered;
+HB 1391 defines "health status" as the right to refuse a vaccine or treatment and belongs to the
+class the operator dropped on HB 1454. Recipe: `manual:records:retire --apply` on a manifest
+built from the run stamp (56 records), a one-entry judge file with `review_status: pending`
+for each roll, then the entry and its evidence file moved out of the batch into `retracted/`.
+
+**Rewritten — 115 records on five rolls.** HB 1225 said reckless endangerment "was a class C
+felony"; it was a class A misdemeanor, rising to class C only with extreme indifference, and the
+act adds a class B tier for firearms. HB 1497 said the cutoff was September first; it is August
+first. HB 1283 described "health plans" generally; chapter 54-52.1 is the public employees'
+group insurance program, with a health savings account exception and a trial-and-report
+structure. SB 2350 omitted that the exemption lasts three years or until the job ends, with
+exceptions for internal investigations and police hiring. Each went judge → real import
+(`rewrite` on the same row ids) → convergence (914 unchanged) → a direct comparison of every
+live row against the committed files (914 checked, 0 disagree).
+
+**Bookkeeping.** The `study-only` disposition had been applied by a regex that matched any
+title naming a study, catching eight bills that also change law (SB 2261, for one, creates a
+ten percent prison-industries tax credit and was vetoed). Those eight are now
+`screened:title-and-description`, which says what actually happened to them; eleven pure
+study bills remain. And the concurrent-resolution census was wrong: the description pattern
+matches 15 measures carrying 21 kept rolls, every one a constitutional amendment, not 9. The
+nine were the ones that drew a closely divided roll. Config comment and README corrected.
+
+**What the two retractions have in common:** in both, the description was written from the
+flattened text plus the title, and the markup or the definitions section would have shown the
+problem. That is the rule this campaign keeps re-learning, and it is now stated in the
+README's screening note as well.

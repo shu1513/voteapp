@@ -3890,8 +3890,10 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
     // commendation both read `Second reading, adopted`), but the bill's own
     // description can: an amendment always names the state constitution,
     // whether it amends, repeals or adds an article, and nothing else does.
-    // Measured over all 66: the pattern matches exactly the 9 amendments and
-    // no commendation, study or urging resolution.
+    // Measured over all 66: the pattern matches 15 measures carrying 21 kept
+    // floor rolls, every one a constitutional amendment (amend, repeal or add a
+    // section), and no commendation, study or urging resolution. Nine of the 15
+    // drew a closely divided roll; the other six failed by wide margins.
     //
     // ⚠ These are NOT law. A concurrent resolution never reaches the
     // governor — an adopted one goes to the voters at the next general
