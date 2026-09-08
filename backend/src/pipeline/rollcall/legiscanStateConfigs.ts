@@ -3631,9 +3631,21 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       // outcome and never the question. Two consequences:
       //
       // 1. A failed vote is spelled exactly like a passing one. 395 of these
-      //    rolls are defeats. Nothing in the desc separates them, so
-      //    selection must read `passed` and the bill history, never the
-      //    caption (the Alaska HB 110 and Arizona failed-reading shape).
+      //    rolls are defeats. Nothing in the desc separates them, and the
+      //    `passed` flag is NOT a safe substitute: on 23 rolls LegiScan sets
+      //    passed=0 where North Dakota's own history line says the reading
+      //    passed (13 rolls at 91-1 on 2025-03-10, 9 at 75-9 on 2025-03-21,
+      //    SB 2003 42-2, and SB 2261's 45-2 Senate veto override). The
+      //    fetcher copies that flag into `result`, which no fan-out, judge
+      //    or import path reads, so the stored "Failed" is inert metadata.
+      //    They are deliberately NOT held: their tallies and member lists
+      //    match the state's record, `heldRollCallIds` is for rolls the
+      //    survey proved wrong, and none of the 23 is closely divided. The
+      //    rule is on selection: read the outcome from the bill history's
+      //    own action line (`Second reading, passed` / `failed to pass`),
+      //    never from the caption and never from `passed` alone (the Alaska
+      //    HB 110 and Arizona failed-reading shape). The full list is in
+      //    evidence/rollcall/legiscan-nd-2140/CODE-FINDINGS.md.
       // 2. The emergency clause is NOT a separate question here. North
       //    Dakota carries it on the passage vote itself (`Second reading,
       //    passed, yeas 63 nays 30, Emergency clause carried`), unlike
