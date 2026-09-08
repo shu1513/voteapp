@@ -65,8 +65,9 @@ a large slice of the pool.
 
 ## Scopes worked
 
-All three scopes this dataset offers are now worked, and every divided roll carries a
-disposition in `survey/divided-worklist.tsv`.
+All three scopes this dataset offers are now worked, and every measure that drew a closely
+divided floor roll carries a disposition in `survey/divided-worklist.tsv`, one row per
+measure and chamber.
 
 | scope | what it is | batches |
 |---|---|---|
@@ -100,8 +101,9 @@ part in lawmaking, or how hard lawmaking is, carries no honest direction.
 
 ### Final disposition of every divided roll
 
-`survey/divided-worklist.tsv` carries one row per divided roll across all scopes, 374 in
-total over 323 measures, each with a disposition and a reason:
+`survey/divided-worklist.tsv` carries one row per measure and chamber across all scopes, 374
+rows over 323 measures, each with a disposition and a reason. The session has 448 closely
+divided floor rolls; the 74 not in the ledger are accounted for below the table.
 
 | rolls | disposition |
 |---|---|
@@ -112,7 +114,13 @@ total over 323 measures, each with a disposition and a reason:
 | 11 | study-only |
 | 14 | agency appropriation acts |
 
-The 229 screened rows say so plainly on their face. They were triaged from the bill's title
+The 74 closely divided rolls that are not ledger rows: **60** are an earlier divided roll on
+a measure and chamber that voted again later, where the ledger keeps only the last vote;
+**8** sit on concurrent resolutions that are not constitutional amendments, which the
+bill-type gate drops; and **6** are held rolls whose feed tally contradicts the state's own
+record (the other five held rolls are not closely divided). 374 + 60 + 8 + 6 = 448.
+
+The 237 screened rows say so plainly on their face. They were triaged from the bill's title
 and description and not read in full, so they are a screening decision rather than a
 judgment on the merits — the distinction the Maryland sweep drew between dispositioning a
 subject and judging it.

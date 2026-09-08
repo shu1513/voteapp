@@ -142,3 +142,24 @@ nine were the ones that drew a closely divided roll. Config comment and README c
 flattened text plus the title, and the markup or the definitions section would have shown the
 problem. That is the rule this campaign keeps re-learning, and it is now stated in the
 README's screening note as well.
+
+## Second review round, 2026-09-08 (CodeRabbit on #1244)
+
+Two comments, both real.
+
+**HB 1456 dropped a qualifier.** The print the House voted lets a district employ or accept a
+chaplain "as authorized by the board of a school district"; the description had a district
+simply bringing one in. The board's say is who decides, so it is not a detail. Both
+descriptions now carry it. 22 records rewritten in place, convergence 914 unchanged, and every
+live row again compared against the committed files with zero disagreements. One note on
+sourcing: the description was written from the committee substitute of 2025-02-12, which is
+the amendment document; the engrossed print of the same date is the bill as the House voted
+it, and the clause is identical in both.
+
+**The README's counts did not reconcile**, in two ways. The prose said 229 screened rows where
+the table said 237, a stale number from before the study-only correction. And the document
+claimed a disposition for "every divided roll" while listing 448 closely divided rolls against
+374 ledger rows. The ledger keeps one row per measure and chamber, and the 74-roll gap is now
+accounted for in the README: 60 are an earlier divided roll on a measure and chamber that
+voted again later, 8 sit on concurrent resolutions that are not constitutional amendments,
+and 6 are held rolls that happen to be closely divided. 374 + 60 + 8 + 6 = 448.
