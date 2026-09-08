@@ -35,7 +35,7 @@ Senate Bill 1354 house 47-23-0.
 
 | measure | reason |
 | --- | --- |
-| House Bill 516 | bans taxpayer funding of teachers unions; no research area covers labour or union questions, the standing gap that has cost measures in six other states |
+| House Bill 516 | bans taxpayer funding of teachers unions; no research area covers labor or union questions, the standing gap that has cost measures in six other states |
 | House Bill 528 | directed blood product transfusion; patient choice and blood supply standards pull opposite ways with no settled direction |
 | House Bill 623 | daily moment of silence in schools; reads as religious liberty to some and as compelled religious observance to others, with no settled direction |
 | House Bill 879 | hemp products for human ingestion; the act both permits their sale and brings them under state limits, so the direction is not defensible either way |

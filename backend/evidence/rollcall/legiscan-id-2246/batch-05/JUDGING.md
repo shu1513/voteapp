@@ -17,7 +17,7 @@ is against.
 
 Extends the existing ban on local prohibition to any type of short-term rental,
 and cuts the grounds for local regulation from public health, safety, general
-welfare and neighbourhood character down to public health alone. Also limits the
+welfare and neighborhood character down to public health alone. Also limits the
 tax duties that may be placed on a rental marketplace. Housing affordability, a
 yes vote is against, because it removes local tools for protecting housing stock
 in residential neighborhoods.

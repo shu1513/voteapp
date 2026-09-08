@@ -44,7 +44,7 @@ exempts approved seeding from state and local permits and from trespass and
 nuisance claims short of gross negligence or willful misconduct.
 
 The direction was argued. The immunity and permit exemption cut against the
-label, but the act's operative core is a state water augmentation programme with
+label, but the act's operative core is a state water augmentation program with
 a finding requirement and yearly reports. Environment and public health, a yes
 vote is for. The description states the immunity plainly so a reader can weigh
 it.
