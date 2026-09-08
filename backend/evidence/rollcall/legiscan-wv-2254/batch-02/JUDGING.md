@@ -81,3 +81,14 @@ None became law, and each description says so plainly.
 - **SB 888** decides whether courts must defer to a state agency reading of a
   statute. That is a rule about judicial method, not a policy a voter takes a
   side on.
+
+## Review round
+
+One description was corrected after pull request review, checked against the
+bill text first. The re-import rewrote 67 records and inserted none; the report
+is `import-review-fixes-report.json`.
+
+- **HB 5319** said camping on "any public property" became a crime. Subsection
+  (e) exempts approved campgrounds, lawful camping under state park rules, and
+  sleeping overnight in a legally parked, registered and insured vehicle. The
+  description now says "without permission" and names those exceptions.

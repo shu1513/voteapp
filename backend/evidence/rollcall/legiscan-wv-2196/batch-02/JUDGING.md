@@ -104,3 +104,22 @@ defensible direction under public education quality.
 
 **HB 3111**, a pay raise for judges, lands on the no-stance general label, the
 same call made on South Carolina S 933.
+
+## Review round
+
+Four descriptions were corrected after pull request review, each checked against
+the bill text before changing a word. The re-import rewrote 55 records and
+inserted none; the report is `import-review-fixes-report.json`.
+
+- **HB 3412 (Senate)** said the response deadline "doubled" from five days to
+  14. That is not double, and both figures exclude weekends and holidays. It now
+  says extended from five business days to 14.
+- **SB 548** said "every public school" and "one hour." The act allows one class
+  period instead, and section 6 makes it voluntary for charter and private
+  schools. Both qualifications are now in the description.
+- **SB 592** said the exempted tanks "dropped out of regulation." Every exemption
+  depends on the tank sitting outside a drinking water protection zone, and the
+  same kinds of tanks inside a zone stay regulated with owner self-certification.
+  The description now says so.
+- **SB 718** started the $1,000 daily penalty ten days after the filing deadline.
+  Section 7(b) starts it ten days after the hospital receives notice.
