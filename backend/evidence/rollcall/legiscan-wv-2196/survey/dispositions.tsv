@@ -1,0 +1,487 @@
+session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	disposition	reason	title
+2196	HB2002	H	258	1530873	2025-03-31	99	0	screened	final-roll-not-divided	Establishing One Stop Shop Permitting Process
+2196	HB2002	S	384	1541334	2025-04-09	34	0	screened	final-roll-not-divided	Establishing One Stop Shop Permitting Process
+2196	HB2003	H	482	1544027	2025-04-10	95	0	screened	final-roll-not-divided	Prohibiting Cell phones in class
+2196	HB2003	S	386	1541648	2025-04-09	33	1	screened	final-roll-not-divided	Prohibiting Cell phones in class
+2196	HB2008	H	447	1543298	2025-04-10	65	34	not-selected	filter 5: Labor GAP, executive branch reorganisation	Executive Branch Reorganization
+2196	HB2008	S	523	1546113	2025-04-11	24	8	not-selected	filter 5: Labor GAP, executive branch reorganisation	Executive Branch Reorganization
+2196	HB2009	H	449	1543300	2025-04-10	71	28	not-selected	filter 5: Labor GAP, executive branch reorganisation	Relating to the merging and reorganizing of the executive branch
+2196	HB2009	S	525	1546144	2025-04-11	24	8	not-selected	filter 5: Labor GAP, executive branch reorganisation	Relating to the merging and reorganizing of the executive branch
+2196	HB2011	H	444	1543244	2025-04-10	99	0	screened	final-roll-not-divided	To supplement, amend, and increase an existing item of appropriation in the aforesaid accounts for the designated spendi
+2196	HB2011	S	527	1546296	2025-04-11	32	0	screened	final-roll-not-divided	To supplement, amend, and increase an existing item of appropriation in the aforesaid accounts for the designated spendi
+2196	HB2013	H	423	1541471	2025-04-09	70	27	not-selected	filter 5: Labor GAP. Strips civil service and grievance rights from state employees, and there is no labor research area; the corporate_accountability workaround does not reach a public employer	Transfer of employees to classified exempt service
+2196	HB2013	S	358	1539358	2025-04-08	24	10	not-selected	filter 5: Labor GAP. Strips civil service and grievance rights from state employees, and there is no labor research area; the corporate_accountability workaround does not reach a public employer	Transfer of employees to classified exempt service
+2196	HB2014	H	575	1546596	2025-04-12	82	16	screened	final-roll-not-divided	Certified Microgrid Program
+2196	HB2014	S	591	1546732	2025-04-12	32	1	screened	final-roll-not-divided	Certified Microgrid Program
+2196	HB2024	H	3	1488643	2025-02-13	96	1	screened	final-roll-not-divided	Updating the meaning certain terms used in West Virginia Personal Income Tax Act
+2196	HB2024	S	2	1491584	2025-02-17	32	0	screened	final-roll-not-divided	Updating the meaning certain terms used in West Virginia Personal Income Tax Act
+2196	HB2025	H	6	1488646	2025-02-13	95	2	screened	final-roll-not-divided	Updating terms in the Corporation Net Income Tax Act
+2196	HB2025	S	5	1491587	2025-02-17	32	0	screened	final-roll-not-divided	Updating terms in the Corporation Net Income Tax Act
+2196	HB2026	H	495	1544825	2025-04-10	78	18	screened	final-roll-not-divided	Budget Bill
+2196	HB2026	S	517	1546015	2025-04-11	31	1	screened	final-roll-not-divided	Budget Bill
+2196	HB2042	H	367	1535607	2025-04-03	98	0	screened	final-roll-not-divided	Relating to allowing a guardian ad litem to request the appointment of a court appointed special advocate
+2196	HB2042	S	325	1538141	2025-04-07	34	0	screened	final-roll-not-divided	Relating to allowing a guardian ad litem to request the appointment of a court appointed special advocate
+2196	HB2043	H	181	1525954	2025-03-25	88	10	screened	final-roll-not-divided	Relating to use of dog and/or drones for tracking or locating mortally wounded deer, elk, turkey, wild boar or bear
+2196	HB2043	S	274	1532486	2025-04-01	33	1	screened	final-roll-not-divided	Relating to use of dog and/or drones for tracking or locating mortally wounded deer, elk, turkey, wild boar or bear
+2196	HB2053	H	8	1498769	2025-02-24	97	1	screened	final-roll-not-divided	Relating to including the United States Space Force in the definition armed forces
+2196	HB2053	S	107	1517173	2025-03-13	33	1	screened	final-roll-not-divided	Relating to including the United States Space Force in the definition armed forces
+2196	HB2054	H	634	1546776	2025-04-12	71	27	screened	printed-roll-number-shared;held-by-tally-audit	Relating to liability of vendors in private farmers markets
+2196	HB2054	S	466	1546259	2025-04-11	22	12	not-selected	filter 5: a farmers market vendor requirement, too small	Relating to liability of vendors in private farmers markets
+2196	HB2066	H	572	1546528	2025-04-12	97	0	screened	final-roll-not-divided	Creating a crime for the destruction of first responder equipment.
+2196	HB2066	S	467	1545345	2025-04-11	33	1	screened	final-roll-not-divided	Creating a crime for the destruction of first responder equipment.
+2196	HB2067	H	425	1542621	2025-04-09	88	9	screened	final-roll-not-divided	West Virginia Firearms Liability Clarification Act
+2196	HB2067	S	360	1540846	2025-04-08	34	0	screened	final-roll-not-divided	West Virginia Firearms Liability Clarification Act
+2196	HB2121	H	571	1546572	2025-04-12	97	0	screened	final-roll-not-divided	Deceased Disabled Veteran Real Property Exemption for Widowed Spouses
+2196	HB2121	S	468	1546277	2025-04-11	34	0	screened	final-roll-not-divided	Deceased Disabled Veteran Real Property Exemption for Widowed Spouses
+2196	HB2123	H	426	1541704	2025-04-09	97	0	screened	final-roll-not-divided	Modifying the criminal penalties imposed on a parent, guardian or custodian for child abuse
+2196	HB2123	S	454	1545189	2025-04-10	33	0	screened	final-roll-not-divided	Modifying the criminal penalties imposed on a parent, guardian or custodian for child abuse
+2196	HB2129	H	368	1535637	2025-04-03	89	9	screened	final-roll-not-divided	Creating the Parents Bill of Rights.
+2196	HB2129	S	163	1524587	2025-03-24	32	1	screened	final-roll-not-divided	Creating the Parents Bill of Rights.
+2196	HB2152	H	309	1531991	2025-04-01	97	0	screened	final-roll-not-divided	Prompt Payment Act of 2025
+2196	HB2152	S	391	1541674	2025-04-09	34	0	screened	final-roll-not-divided	Prompt Payment Act of 2025
+2196	HB2157	H	396	1538583	2025-04-07	95	0	screened	final-roll-not-divided	Provide one trip temporary vehicle permits to be purchased and printed online
+2196	HB2157	S	308	1537291	2025-04-04	33	0	screened	final-roll-not-divided	Provide one trip temporary vehicle permits to be purchased and printed online
+2196	HB2164	H	563	1546542	2025-04-12	96	0	screened	final-roll-not-divided	To allow for public and private schools in West Virginia to employ security personnel.
+2196	HB2164	S	585	1546676	2025-04-12	33	0	screened	final-roll-not-divided	To allow for public and private schools in West Virginia to employ security personnel.
+2196	HB2165	H	484	1545277	2025-04-10	92	0	screened	final-roll-not-divided	Allowing disabled purple heart recipients park free at municipal metered parking spaces
+2196	HB2165	S	392	1542017	2025-04-09	34	0	screened	final-roll-not-divided	Allowing disabled purple heart recipients park free at municipal metered parking spaces
+2196	HB2167	H	553	1546232	2025-04-11	91	7	screened	final-roll-not-divided	Relating to public charter schools code provisions
+2196	HB2167	S	427	1543435	2025-04-10	32	2	screened	final-roll-not-divided	Relating to public charter schools code provisions
+2196	HB2172	H	96	1518331	2025-03-17	93	1	screened	final-roll-not-divided	Relating to adding an athletic trainer to the Board of Physical Therapy
+2196	HB2172	S	309	1537067	2025-04-04	29	4	screened	final-roll-not-divided	Relating to adding an athletic trainer to the Board of Physical Therapy
+2196	HB2217	H	409	1540383	2025-04-09	96	3	screened	final-roll-not-divided	Relating to penalties for conspiracy to commit murder
+2196	HB2217	S	329	1538527	2025-04-07	34	0	screened	final-roll-not-divided	Relating to penalties for conspiracy to commit murder
+2196	HB2222	H	20	1503085	2025-03-03	96	0	screened	final-roll-not-divided	Relating to authorizing certain agencies of the Department of Administration to promulgate legislative rules.
+2196	HB2222	S	126	1519626	2025-03-18	34	0	screened	final-roll-not-divided	Relating to authorizing certain agencies of the Department of Administration to promulgate legislative rules.
+2196	HB2233	H	62	1515788	2025-03-12	82	14	screened	final-roll-not-divided	Authorizing the Department of Environmental Protection to promulgate legislative rules
+2196	HB2233	S	310	1537061	2025-04-04	31	2	screened	final-roll-not-divided	Authorizing the Department of Environmental Protection to promulgate legislative rules
+2196	HB2267	H	625	1546781	2025-04-12	73	25	not-selected	filter 5: an omnibus authorisation of many unrelated legislative rules	Authorizing Department of Revenue to Promulgate Legislative Rules
+2196	HB2267	S	600	1546779	2025-04-12	25	8	not-selected	filter 5: an omnibus authorisation of many unrelated legislative rules	Authorizing Department of Revenue to Promulgate Legislative Rules
+2196	HB2331	H	369	1536081	2025-04-03	98	0	screened	final-roll-not-divided	Relating to authorizing certain agencies of the Department of Commerce to promulgate legislative rules
+2196	HB2331	S	326	1538123	2025-04-07	34	0	screened	final-roll-not-divided	Relating to authorizing certain agencies of the Department of Commerce to promulgate legislative rules
+2196	HB2344	H	586	1546666	2025-04-12	74	18	screened	final-roll-not-divided	Relating generally to traffic safety
+2196	HB2344	S	471	1545361	2025-04-11	34	0	screened	final-roll-not-divided	Relating generally to traffic safety
+2196	HB2347	H	628	1546709	2025-04-12	97	0	screened	final-roll-not-divided	The Joel Archer Substance Abuse Intervention Act.
+2196	HB2347	S	545	1546580	2025-04-12	34	0	screened	final-roll-not-divided	The Joel Archer Substance Abuse Intervention Act.
+2196	HB2354	H	74	1517117	2025-03-13	79	17	screened	final-roll-not-divided	Banning certain products from food in West Virginia
+2196	HB2354	S	111	1518084	2025-03-14	26	4	screened	final-roll-not-divided	Banning certain products from food in West Virginia
+2196	HB2358	H	576	1546620	2025-04-12	98	0	screened	final-roll-not-divided	Relating to postmortem examinations
+2196	HB2358	S	474	1545925	2025-04-11	34	0	screened	final-roll-not-divided	Relating to postmortem examinations
+2196	HB2360	H	410	1539700	2025-04-08	99	0	screened	final-roll-not-divided	Clarifying the victims of crimes against law-enforcement officers.
+2196	HB2360	S	330	1538153	2025-04-07	34	0	screened	final-roll-not-divided	Clarifying the victims of crimes against law-enforcement officers.
+2196	HB2387	H	84	1517051	2025-03-13	93	0	screened	final-roll-not-divided	To repeal the class A1 Pistol stamp for hunting
+2196	HB2387	S	255	1530943	2025-03-31	34	0	screened	final-roll-not-divided	To repeal the class A1 Pistol stamp for hunting
+2196	HB2397	H	397	1538159	2025-04-07	98	0	screened	final-roll-not-divided	Prevent immediate family members from acting in a fiduciary capacity for the same governmental authority
+2196	HB2397	S	422	1542615	2025-04-09	31	0	screened	final-roll-not-divided	Prevent immediate family members from acting in a fiduciary capacity for the same governmental authority
+2196	HB2399	H	210	1528964	2025-03-27	91	4	screened	final-roll-not-divided	Relating to the taxation of managed timber
+2196	HB2399	S	331	1538083	2025-04-07	34	0	screened	final-roll-not-divided	Relating to the taxation of managed timber
+2196	HB2402	H	589	1546544	2025-04-12	83	9	screened	final-roll-not-divided	Relating to providing access to medical records; providing access to a minor’s medical record
+2196	HB2402	S	428	1543294	2025-04-10	32	2	screened	final-roll-not-divided	Relating to providing access to medical records; providing access to a minor’s medical record
+2196	HB2411	H	554	1545997	2025-04-11	97	1	screened	final-roll-not-divided	To provide and change graduation requirements and change duties relating to academic content standards
+2196	HB2411	S	453	1543797	2025-04-10	31	2	screened	final-roll-not-divided	To provide and change graduation requirements and change duties relating to academic content standards
+2196	HB2434	H	485	1544736	2025-04-10	95	0	screened	final-roll-not-divided	Relating to establishing the Stop Squatters Act
+2196	HB2434	S	529	1546378	2025-04-11	32	0	screened	final-roll-not-divided	Relating to establishing the Stop Squatters Act
+2196	HB2441	H	372	1535628	2025-04-03	98	0	screened	final-roll-not-divided	To make those who fail drug test ineligible for unemployment
+2196	HB2441	S	155	1524001	2025-03-21	34	0	screened	final-roll-not-divided	To make those who fail drug test ineligible for unemployment
+2196	HB2444	H	34	1507458	2025-03-06	80	20	not-selected	filter 5: narrowing the Lottery Commission's records inspection reads both ways	Relating to limiting financial records of limited video lottery permittees that are subject to examination by Lottery Co
+2196	HB2444	S	393	1542021	2025-04-09	24	10	not-selected	filter 5: narrowing the Lottery Commission's records inspection reads both ways	Relating to limiting financial records of limited video lottery permittees that are subject to examination by Lottery Co
+2196	HB2451	H	637	1556131	2025-04-12	82	12	screened	final-roll-not-divided	To facilitate the creation of home-based businesses
+2196	HB2451	S	605	1547653	2025-04-12	31	2	screened	final-roll-not-divided;printed-roll-number-shared	To facilitate the creation of home-based businesses
+2196	HB2479	H	592	1546573	2025-04-12	95	0	screened	final-roll-not-divided	Relating to Management and control of county authority vested in board
+2196	HB2479	S	429	1543704	2025-04-10	34	0	screened	final-roll-not-divided	Relating to Management and control of county authority vested in board
+2196	HB2484	H	212	1528812	2025-03-27	96	0	screened	final-roll-not-divided	Clarifying the probationary period for paid municipal firefighters.
+2196	HB2484	S	394	1541380	2025-04-09	34	0	screened	final-roll-not-divided	Clarifying the probationary period for paid municipal firefighters.
+2196	HB2491	H	311	1532239	2025-04-01	93	7	screened	final-roll-not-divided	Relating to conditions on holding online raffles
+2196	HB2491	S	430	1543434	2025-04-10	21	13	not-selected	filter 5: online raffle rules, no research area fits	Relating to conditions on holding online raffles
+2196	HB2499	H	486	1544260	2025-04-10	95	0	screened	final-roll-not-divided	Training course for principals in public schools; informing teachers of their rights and protections; IEP format
+2196	HB2499	S	362	1540592	2025-04-08	33	0	screened	final-roll-not-divided	Training course for principals in public schools; informing teachers of their rights and protections; IEP format
+2196	HB2511	H	603	1546641	2025-04-12	67	30	not-selected	filter 5: alcohol at charitable bingo, no research area fits	Relating to charitable bingo and alcohol sales and consumption while such bingo is taking places
+2196	HB2511	S	475	1546244	2025-04-11	23	11	not-selected	filter 5: alcohol at charitable bingo, no research area fits	Relating to charitable bingo and alcohol sales and consumption while such bingo is taking places
+2196	HB2513	H	380	1537066	2025-04-04	93	0	screened	final-roll-not-divided	Enhancing training requirements for county boards of education members
+2196	HB2513	S	303	1535821	2025-04-03	27	7	batch-01	imported	Enhancing training requirements for county boards of education members
+2196	HB2516	H	89	1518108	2025-03-14	92	0	screened	final-roll-not-divided	To repeal antiquated and inoperative portions of code.
+2196	HB2516	S	256	1530875	2025-03-31	34	0	screened	final-roll-not-divided	To repeal antiquated and inoperative portions of code.
+2196	HB2528	H	555	1545988	2025-04-11	96	1	screened	final-roll-not-divided	To permit students in Christian schools at the elementary and middle school level to participate in county level sport t
+2196	HB2528	S	431	1543814	2025-04-10	34	0	screened	final-roll-not-divided	To permit students in Christian schools at the elementary and middle school level to participate in county level sport t
+2196	HB2548	H	122	1522354	2025-03-20	96	0	screened	final-roll-not-divided	Clarifying duties of state superintendent regarding rule implementation
+2196	HB2548	S	299	1533997	2025-04-02	31	3	screened	final-roll-not-divided	Clarifying duties of state superintendent regarding rule implementation
+2196	HB2575	H	577	1546587	2025-04-12	97	0	screened	final-roll-not-divided	Relating to the establishment of a full-time Dementia Services Director position.
+2196	HB2575	S	477	1545901	2025-04-11	34	0	screened	final-roll-not-divided	Relating to the establishment of a full-time Dementia Services Director position.
+2196	HB2576	H	312	1532970	2025-04-01	96	4	screened	final-roll-not-divided	NIL Protection Act
+2196	HB2576	S	462	1544636	2025-04-10	31	1	screened	final-roll-not-divided	NIL Protection Act
+2196	HB2595	H	314	1532110	2025-04-01	97	3	screened	final-roll-not-divided	Non Profit Athletics Act
+2196	HB2595	S	464	1544727	2025-04-10	32	0	screened	final-roll-not-divided	Non Profit Athletics Act
+2196	HB2678	H	633	1546730	2025-04-12	97	0	screened	final-roll-not-divided;printed-roll-number-shared	Relating to school zones of public or private schools
+2196	HB2678	S	313	1537235	2025-04-04	33	0	screened	final-roll-not-divided	Relating to school zones of public or private schools
+2196	HB2695	H	573	1546633	2025-04-12	87	8	screened	final-roll-not-divided	Raleigh and Mason Counties Economic Opportunity Development Districts
+2196	HB2695	S	599	1546775	2025-04-12	21	12	not-selected	filter 3: a single-county excise tax district (Raleigh and Mason)	Raleigh and Mason Counties Economic Opportunity Development Districts
+2196	HB2709	H	398	1538250	2025-04-07	97	1	screened	final-roll-not-divided	Permitting a voter with a change of address to vote in his or her new precinct without having to cast a provisional ball
+2196	HB2709	S	314	1537255	2025-04-04	33	0	screened	final-roll-not-divided	Permitting a voter with a change of address to vote in his or her new precinct without having to cast a provisional ball
+2196	HB2711	H	68	1515800	2025-03-12	86	0	screened	final-roll-not-divided	Relating to the repeal of the common law rule against perpetuities by extending it to 1,000 years for all trusts
+2196	HB2711	S	364	1541195	2025-04-08	33	0	screened	final-roll-not-divided	Relating to the repeal of the common law rule against perpetuities by extending it to 1,000 years for all trusts
+2196	HB2718	H	578	1546589	2025-04-12	94	2	screened	final-roll-not-divided	Relating to creating a State Advisory Council on Establishing a Military College
+2196	HB2718	S	479	1545574	2025-04-11	34	0	screened	final-roll-not-divided	Relating to creating a State Advisory Council on Establishing a Military College
+2196	HB2742	H	91	1518066	2025-03-14	92	0	screened	final-roll-not-divided	Relating to creating limited waiver from certificate of public convenience and necessity requirement for certain water o
+2196	HB2742	S	432	1543452	2025-04-10	32	2	screened	final-roll-not-divided	Relating to creating limited waiver from certificate of public convenience and necessity requirement for certain water o
+2196	HB2752	H	451	1543334	2025-04-10	88	11	screened	final-roll-not-divided	Relating to motorcycle safety
+2196	HB2752	S	365	1541204	2025-04-08	27	6	screened	final-roll-not-divided	Relating to motorcycle safety
+2196	HB2755	H	580	1546546	2025-04-12	66	32	not-selected	filter 5: pulls both ways. Subjecting Board of Education rules to legislative approval is accountability to one reader and a loss of independence to another	To provide that the West Virginia Board of Education may promulgate rules or policies to be submitted to the Legislature
+2196	HB2755	S	434	1543871	2025-04-10	19	15	not-selected	filter 5: pulls both ways. Subjecting Board of Education rules to legislative approval is accountability to one reader and a loss of independence to another	To provide that the West Virginia Board of Education may promulgate rules or policies to be submitted to the Legislature
+2196	HB2761	H	69	1516612	2025-03-12	79	8	screened	final-roll-not-divided	Relating generally to magistrate courts
+2196	HB2761	S	366	1541147	2025-04-08	32	1	screened	final-roll-not-divided	Relating generally to magistrate courts
+2196	HB2773	H	124	1522325	2025-03-20	95	0	screened	final-roll-not-divided	Higher Ed Rules
+2196	HB2773	S	367	1540692	2025-04-08	33	0	screened	final-roll-not-divided	Higher Ed Rules
+2196	HB2797	H	557	1546540	2025-04-12	98	1	screened	final-roll-not-divided	Relating to who may diagnose post-traumatic stress disorder as a compensable injury or disease under workers compensatio
+2196	HB2797	S	581	1546768	2025-04-12	33	0	screened	final-roll-not-divided	Relating to who may diagnose post-traumatic stress disorder as a compensable injury or disease under workers compensatio
+2196	HB2802	H	107	1519441	2025-03-18	98	0	screened	final-roll-not-divided	Relating to in-service training credits for law-enforcement officers
+2196	HB2802	S	480	1546221	2025-04-11	34	0	screened	final-roll-not-divided	Relating to in-service training credits for law-enforcement officers
+2196	HB2836	H	236	1530069	2025-03-28	89	3	screened	final-roll-not-divided	Relating to wild animal rehabilitation permits
+2196	HB2836	S	481	1545569	2025-04-11	31	3	screened	final-roll-not-divided	Relating to wild animal rehabilitation permits
+2196	HB2866	H	488	1544047	2025-04-10	86	10	screened	final-roll-not-divided	Relating to fees and charges for municipality provided fire services
+2196	HB2866	S	396	1541636	2025-04-09	34	0	screened	final-roll-not-divided	Relating to fees and charges for municipality provided fire services
+2196	HB2867	H	453	1543302	2025-04-10	97	2	screened	final-roll-not-divided	Relating to Small Estates
+2196	HB2867	S	369	1541200	2025-04-08	33	0	screened	final-roll-not-divided	Relating to Small Estates
+2196	HB2871	H	454	1543648	2025-04-10	99	0	screened	final-roll-not-divided	Relating to the crime of negligent homicide
+2196	HB2871	S	530	1546437	2025-04-11	32	0	screened	final-roll-not-divided	Relating to the crime of negligent homicide
+2196	HB2880	H	624	1546720	2025-04-12	98	0	screened	final-roll-not-divided	Relating to parent resource navigators
+2196	HB2880	S	602	1546719	2025-04-12	32	1	screened	final-roll-not-divided	Relating to parent resource navigators
+2196	HB2889	H	455	1544408	2025-04-10	95	2	screened	final-roll-not-divided	To permit a fairness hearing exemption to the registration requirements of the Uniform Securities Act.
+2196	HB2889	S	397	1541356	2025-04-09	33	1	screened	final-roll-not-divided	To permit a fairness hearing exemption to the registration requirements of the Uniform Securities Act.
+2196	HB2897	H	273	1530882	2025-03-31	95	0	screened	final-roll-not-divided	Permitting the Legislative Auditor to conduct periodic performance and financial audits of the West Virginia Department 
+2196	HB2897	S	371	1540900	2025-04-08	33	0	screened	final-roll-not-divided	Permitting the Legislative Auditor to conduct periodic performance and financial audits of the West Virginia Department 
+2196	HB2942	H	604	1546643	2025-04-12	93	4	screened	final-roll-not-divided	Administration of the West Virginia Department of Environmental Protection Design-Build Pilot Program
+2196	HB2942	S	436	1544149	2025-04-10	34	0	screened	final-roll-not-divided	Administration of the West Virginia Department of Environmental Protection Design-Build Pilot Program
+2196	HB2943	H	43	1508615	2025-03-07	95	1	screened	final-roll-not-divided	Administration of the West Virginia Hazardous Waste Management Act
+2196	HB2943	S	399	1541458	2025-04-09	33	0	screened	final-roll-not-divided	Administration of the West Virginia Hazardous Waste Management Act
+2196	HB2960	H	489	1544268	2025-04-10	68	28	not-selected	filter 3: a snow removal pilot confined to Monongalia and Preston counties	Allowing the Division of Highways to contract out snow removal to private companies on secondary roads in Monongalia and
+2196	HB2960	S	531	1546097	2025-04-11	32	0	screened	final-roll-not-divided	Allowing the Division of Highways to contract out snow removal to private companies on secondary roads in Monongalia and
+2196	HB2961	H	605	1546651	2025-04-12	96	0	screened	final-roll-not-divided	To amend the law concerning ownership and possession of real property
+2196	HB2961	S	482	1545858	2025-04-11	34	0	screened	final-roll-not-divided	To amend the law concerning ownership and possession of real property
+2196	HB2963	H	215	1529138	2025-03-27	82	12	screened	final-roll-not-divided	To ensure that the survivor of a merger, reorganization, purchase, or assumption of liabilities of a bank chartered by W
+2196	HB2963	S	483	1545677	2025-04-11	34	0	screened	final-roll-not-divided	To ensure that the survivor of a merger, reorganization, purchase, or assumption of liabilities of a bank chartered by W
+2196	HB2964	H	237	1529877	2025-03-28	91	0	screened	final-roll-not-divided	Amending residency requirements for regional airport boards
+2196	HB2964	S	401	1541904	2025-04-09	34	0	screened	final-roll-not-divided	Amending residency requirements for regional airport boards
+2196	HB3000	H	606	1546734	2025-04-12	92	4	screened	final-roll-not-divided	Relating to agency changes and updates to the West Virginia Commercial Feed Law.
+2196	HB3000	S	437	1543351	2025-04-10	33	0	screened	final-roll-not-divided	Relating to agency changes and updates to the West Virginia Commercial Feed Law.
+2196	HB3012	H	217	1529081	2025-03-27	86	6	screened	final-roll-not-divided	Relating to Lottery Money Distribution
+2196	HB3012	S	402	1541651	2025-04-09	34	0	screened	final-roll-not-divided	Relating to Lottery Money Distribution
+2196	HB3014	H	352	1534945	2025-04-02	94	6	screened	final-roll-not-divided	Relating generally to liability of hospital police
+2196	HB3014	S	484	1546299	2025-04-11	34	0	screened	final-roll-not-divided	Relating generally to liability of hospital police
+2196	HB3016	H	594	1546632	2025-04-12	88	10	screened	final-roll-not-divided	Photo voter ID.
+2196	HB3016	S	485	1545864	2025-04-11	32	2	screened	final-roll-not-divided	Photo voter ID.
+2196	HB3024	H	490	1544267	2025-04-10	96	0	screened	final-roll-not-divided	Guaranteed course transfer bill
+2196	HB3024	S	372	1540647	2025-04-08	33	0	screened	final-roll-not-divided	Guaranteed course transfer bill
+2196	HB3030	H	411	1539553	2025-04-08	84	14	screened	final-roll-not-divided	Administration of the West Virginia Water Pollution Control Act
+2196	HB3030	S	332	1538240	2025-04-07	28	6	screened	final-roll-not-divided	Administration of the West Virginia Water Pollution Control Act
+2196	HB3080	H	491	1544668	2025-04-10	96	0	screened	final-roll-not-divided	Military Spouse hiring preference
+2196	HB3080	S	373	1541047	2025-04-08	33	0	screened	final-roll-not-divided	Military Spouse hiring preference
+2196	HB3089	H	126	1522518	2025-03-20	95	0	screened	final-roll-not-divided	Mandate the use of WV DMV electronic lien and title system for certain entities and persons
+2196	HB3089	S	333	1538171	2025-04-07	33	1	screened	final-roll-not-divided	Mandate the use of WV DMV electronic lien and title system for certain entities and persons
+2196	HB3125	H	631	1546759	2025-04-12	97	0	screened	final-roll-not-divided;printed-roll-number-shared	To remove restrictions from teachers receiving permanent teaching licenses
+2196	HB3125	S	589	1546704	2025-04-12	31	0	screened	final-roll-not-divided	To remove restrictions from teachers receiving permanent teaching licenses
+2196	HB3133	H	277	1530854	2025-03-31	94	1	screened	final-roll-not-divided	Permitting counties and municipalities to enter into memoranda of understanding for demolition of dilapidated structures
+2196	HB3133	S	438	1543335	2025-04-10	34	0	screened	final-roll-not-divided	Permitting counties and municipalities to enter into memoranda of understanding for demolition of dilapidated structures
+2196	HB3144	H	186	1526054	2025-03-25	96	1	screened	final-roll-not-divided	Wireless Infrastructure and Facilities Siting and Co-location
+2196	HB3144	S	440	1543377	2025-04-10	34	0	screened	final-roll-not-divided	Wireless Infrastructure and Facilities Siting and Co-location
+2196	HB3152	H	595	1546764	2025-04-12	91	4	screened	final-roll-not-divided	Claims Bill
+2196	HB3152	S	404	1541867	2025-04-09	34	0	screened	final-roll-not-divided	Claims Bill
+2196	HB3156	H	492	1544350	2025-04-10	96	0	screened	final-roll-not-divided	Create exemption for Legislature for reporting requirements in Shared Services Section
+2196	HB3156	S	374	1541245	2025-04-08	33	0	screened	final-roll-not-divided	Create exemption for Legislature for reporting requirements in Shared Services Section
+2196	HB3157	H	246	1530176	2025-03-28	88	0	screened	final-roll-not-divided	Relating to shortened procedure for road condition claims
+2196	HB3157	S	375	1541171	2025-04-08	33	0	screened	final-roll-not-divided	Relating to shortened procedure for road condition claims
+2196	HB3162	H	642	1546762	2025-04-12	98	0	screened	final-roll-not-divided	Providing that causes of action under Chapter 46A of the Code of West Virginia survive the death of the party
+2196	HB3162	S	488	1545426	2025-04-11	34	0	screened	final-roll-not-divided	Providing that causes of action under Chapter 46A of the Code of West Virginia survive the death of the party
+2196	HB3164	H	247	1530059	2025-03-28	88	2	screened	final-roll-not-divided	Requiring registered sex offenders pay annual fee
+2196	HB3164	S	603	1546718	2025-04-12	33	0	screened	final-roll-not-divided	Requiring registered sex offenders pay annual fee
+2196	HB3166	H	607	1546658	2025-04-12	94	2	screened	final-roll-not-divided	Requirements for School Safety Mapping Data
+2196	HB3166	S	406	1541417	2025-04-09	34	0	screened	final-roll-not-divided	Requirements for School Safety Mapping Data
+2196	HB3179	H	282	1530798	2025-03-31	97	0	screened	final-roll-not-divided	Funding for failing public utilities
+2196	HB3179	S	441	1543314	2025-04-10	34	0	screened	final-roll-not-divided	Funding for failing public utilities
+2196	HB3181	H	283	1530841	2025-03-31	97	0	screened	final-roll-not-divided	Allow all law enforcement officers to purchase gun upon retirement
+2196	HB3181	S	592	1546763	2025-04-12	33	0	screened	final-roll-not-divided	Allow all law enforcement officers to purchase gun upon retirement
+2196	HB3187	H	145	1523990	2025-03-21	97	0	screened	final-roll-not-divided	Relating to the West Virginia Task Force on Artificial Intelligence
+2196	HB3187	S	442	1543313	2025-04-10	34	0	screened	final-roll-not-divided	Relating to the West Virginia Task Force on Artificial Intelligence
+2196	HB3192	H	128	1522363	2025-03-20	95	0	screened	final-roll-not-divided	To repeal obsolete, conflicting or inoperative provisions of code that pertain to higher education
+2196	HB3192	S	257	1531461	2025-03-31	34	0	screened	final-roll-not-divided	To repeal obsolete, conflicting or inoperative provisions of code that pertain to higher education
+2196	HB3209	H	608	1546639	2025-04-12	96	0	screened	final-roll-not-divided	To provide at least one counselor for every 250 students in public schools and public charter schools in this state.
+2196	HB3209	S	491	1545852	2025-04-11	34	0	screened	final-roll-not-divided	To provide at least one counselor for every 250 students in public schools and public charter schools in this state.
+2196	HB3263	H	609	1546628	2025-04-12	97	0	screened	final-roll-not-divided	Relating to providing notification of utility service disruption to its' customers
+2196	HB3263	S	493	1545817	2025-04-11	34	0	screened	final-roll-not-divided	Relating to providing notification of utility service disruption to its' customers
+2196	HB3272	H	596	1546771	2025-04-12	87	8	screened	final-roll-not-divided	Relating to eviction proceedings
+2196	HB3272	S	443	1543563	2025-04-10	34	0	screened	final-roll-not-divided	Relating to eviction proceedings
+2196	HB3274	H	171	1524600	2025-03-24	92	1	screened	final-roll-not-divided	Relating to reports of circuit court proceedings
+2196	HB3274	S	444	1543878	2025-04-10	33	1	screened	final-roll-not-divided	Relating to reports of circuit court proceedings
+2196	HB3275	H	172	1524656	2025-03-24	90	4	screened	final-roll-not-divided	Update timing for appeals
+2196	HB3275	S	445	1544735	2025-04-10	33	1	screened	final-roll-not-divided	Update timing for appeals
+2196	HB3277	H	610	1546772	2025-04-12	97	0	screened	final-roll-not-divided	Relating to defining terms for the West Virginia Hospital Finance Authority Act
+2196	HB3277	S	376	1541166	2025-04-08	33	0	screened	final-roll-not-divided	Relating to defining terms for the West Virginia Hospital Finance Authority Act
+2196	HB3279	H	287	1531041	2025-03-31	62	35	not-selected	filter 5: university board governance. Making faculty, student and staff members nonvoting fits no research area	Relating to requirements for WVU and WVSU Board of Governors
+2196	HB3279	S	407	1541526	2025-04-09	19	15	not-selected	filter 5: university board governance. Making faculty, student and staff members nonvoting fits no research area	Relating to requirements for WVU and WVSU Board of Governors
+2196	HB3297	H	564	1546515	2025-04-12	87	7	screened	final-roll-not-divided	Establishing the Washington Center for Civics, Culture, and Statesmanship at West Virginia University.
+2196	HB3297	S	586	1546715	2025-04-12	27	6	screened	final-roll-not-divided	Establishing the Washington Center for Civics, Culture, and Statesmanship at West Virginia University.
+2196	HB3313	H	399	1538139	2025-04-07	97	0	screened	final-roll-not-divided	Providing more opportunities for high school students in community colleges
+2196	HB3313	S	315	1537193	2025-04-04	31	2	screened	final-roll-not-divided	Providing more opportunities for high school students in community colleges
+2196	HB3336	H	175	1524887	2025-03-24	94	1	screened	final-roll-not-divided	Well Plugging methods
+2196	HB3336	S	496	1545870	2025-04-11	33	0	screened	final-roll-not-divided	Well Plugging methods
+2196	HB3338	H	176	1524621	2025-03-24	96	0	screened	final-roll-not-divided	Allow child witness testify remotely in situations deemed traumatic by judge
+2196	HB3338	S	497	1545467	2025-04-11	34	0	screened	final-roll-not-divided	Allow child witness testify remotely in situations deemed traumatic by judge
+2196	HB3342	H	251	1530148	2025-03-28	81	10	screened	final-roll-not-divided	Firearms Industry Nondiscrimination Act
+2196	HB3342	S	409	1541675	2025-04-09	34	0	screened	final-roll-not-divided	Firearms Industry Nondiscrimination Act
+2196	HB3347	H	288	1530806	2025-03-31	87	4	screened	final-roll-not-divided	Supplemental Appropriation Administration Diamond Bldg.
+2196	HB3347	S	316	1537443	2025-04-04	33	0	screened	final-roll-not-divided	Supplemental Appropriation Administration Diamond Bldg.
+2196	HB3349	H	538	1546108	2025-04-11	96	0	screened	final-roll-not-divided	Supplemental Appropriation - Medicaid
+2196	HB3349	S	533	1546673	2025-04-12	34	0	screened	final-roll-not-divided	Supplemental Appropriation - Medicaid
+2196	HB3350	H	355	1534807	2025-04-02	99	0	screened	final-roll-not-divided	Supplemental Appropriation - DCR - Corrections - 0608
+2196	HB3350	S	410	1541997	2025-04-09	34	0	screened	final-roll-not-divided	Supplemental Appropriation - DCR - Corrections - 0608
+2196	HB3352	H	540	1546267	2025-04-11	99	0	screened	final-roll-not-divided	Supplemental Appropriation - Human Services - Medicaid
+2196	HB3352	S	536	1546712	2025-04-12	34	0	screened	final-roll-not-divided	Supplemental Appropriation - Human Services - Medicaid
+2196	HB3356	H	616	1546702	2025-04-12	80	14	screened	final-roll-not-divided	Supplemental Appropriation - Education - Hope Scholarship
+2196	HB3356	S	564	1546570	2025-04-12	32	2	screened	final-roll-not-divided	Supplemental Appropriation - Education - Hope Scholarship
+2196	HB3357	H	617	1546648	2025-04-12	78	17	screened	final-roll-not-divided	Supplemental Appropriation - Lottery Surplus - Hope Scholarship
+2196	HB3357	S	567	1546646	2025-04-12	32	2	screened	final-roll-not-divided	Supplemental Appropriation - Lottery Surplus - Hope Scholarship
+2196	HB3358	H	322	1533614	2025-04-01	96	1	screened	final-roll-not-divided	Supplemental Appropriation FBGR DHHR
+2196	HB3358	S	335	1538132	2025-04-07	34	0	screened	final-roll-not-divided	Supplemental Appropriation FBGR DHHR
+2196	HB3359	H	542	1545950	2025-04-11	99	0	screened	final-roll-not-divided	Supplemental Appropriation - EDA and Medicaid Net Zero
+2196	HB3359	S	539	1546624	2025-04-12	34	0	screened	final-roll-not-divided	Supplemental Appropriation - EDA and Medicaid Net Zero
+2196	HB3360	H	478	1544299	2025-04-10	97	0	screened	final-roll-not-divided	Supplemental Appropriation - EDA Bridge Loan Fund
+2196	HB3360	S	570	1546660	2025-04-12	34	0	screened	final-roll-not-divided	Supplemental Appropriation - EDA Bridge Loan Fund
+2196	HB3361	H	357	1534789	2025-04-02	100	0	screened	final-roll-not-divided	Supplemental Appropriation - Health, Birth to Three
+2196	HB3361	S	412	1541899	2025-04-09	34	0	screened	final-roll-not-divided	Supplemental Appropriation - Health, Birth to Three
+2196	HB3363	H	290	1530795	2025-03-31	92	0	screened	final-roll-not-divided	Supplemental Appropriation Public Defender
+2196	HB3363	S	318	1537127	2025-04-04	33	0	screened	final-roll-not-divided	Supplemental Appropriation Public Defender
+2196	HB3365	H	324	1533632	2025-04-01	98	0	screened	final-roll-not-divided	Supplemental Appropriation HLTH Birth to Three
+2196	HB3365	S	337	1538765	2025-04-07	34	0	screened	final-roll-not-divided	Supplemental Appropriation HLTH Birth to Three
+2196	HB3366	H	326	1533602	2025-04-01	97	1	screened	final-roll-not-divided	Supplemental Appropriation FEDA HLTH OIG
+2196	HB3366	S	339	1538090	2025-04-07	34	0	screened	final-roll-not-divided	Supplemental Appropriation FEDA HLTH OIG
+2196	HB3367	H	328	1533607	2025-04-01	97	1	screened	final-roll-not-divided	Supplemental Appropriation SAPR DNR
+2196	HB3367	S	341	1538406	2025-04-07	34	0	screened	final-roll-not-divided	Supplemental Appropriation SAPR DNR
+2196	HB3368	H	292	1530884	2025-03-31	95	0	screened	final-roll-not-divided	Supplemental Appropriation Administration Lease Rental Payment
+2196	HB3368	S	320	1537125	2025-04-04	33	0	screened	final-roll-not-divided	Supplemental Appropriation Administration Lease Rental Payment
+2196	HB3369	H	480	1543306	2025-04-10	98	0	screened	final-roll-not-divided	Supplemental Appropriation - Education - Enrollment
+2196	HB3369	S	573	1546575	2025-04-12	34	0	screened	final-roll-not-divided	Supplemental Appropriation - Education - Enrollment
+2196	HB3370	H	330	1533625	2025-04-01	98	0	screened	final-roll-not-divided	Supplemental Appropriation FEDA HMSV Summer EBT
+2196	HB3370	S	343	1538182	2025-04-07	34	0	screened	final-roll-not-divided	Supplemental Appropriation FEDA HMSV Summer EBT
+2196	HB3371	H	544	1546147	2025-04-11	99	0	screened	final-roll-not-divided	Supplemental Appropriation - - HLFC to OIG Net Zero
+2196	HB3371	S	542	1546678	2025-04-12	34	0	screened	final-roll-not-divided	Supplemental Appropriation - - HLFC to OIG Net Zero
+2196	HB3372	H	332	1533612	2025-04-01	97	0	screened	final-roll-not-divided	Supplemental Appropriation FEDA Veterans
+2196	HB3372	S	345	1538544	2025-04-07	34	0	screened	final-roll-not-divided	Supplemental Appropriation FEDA Veterans
+2196	HB3373	H	558	1545968	2025-04-11	89	9	screened	final-roll-not-divided	To extend and revise the sunset provision in the Tourism Development Act to December 31, 2030
+2196	HB3373	S	446	1544065	2025-04-10	33	1	screened	final-roll-not-divided	To extend and revise the sunset provision in the Tourism Development Act to December 31, 2030
+2196	HB3389	H	493	1544512	2025-04-10	96	0	screened	final-roll-not-divided	Exclude the Department of Tourism as a Governmental agency
+2196	HB3389	S	377	1540988	2025-04-08	33	0	screened	final-roll-not-divided	Exclude the Department of Tourism as a Governmental agency
+2196	HB3411	H	611	1546611	2025-04-12	93	5	screened	final-roll-not-divided	Relating to commissions; removing the legislative members; and eliminating expired commissions
+2196	HB3411	S	501	1545909	2025-04-11	34	0	screened	final-roll-not-divided	Relating to commissions; removing the legislative members; and eliminating expired commissions
+2196	HB3424	H	296	1530893	2025-03-31	95	0	screened	final-roll-not-divided	Removing language regarding short term loans being provided to released inmates for costs related to reentry into the co
+2196	HB3424	S	504	1545823	2025-04-11	34	0	screened	final-roll-not-divided	Removing language regarding short term loans being provided to released inmates for costs related to reentry into the co
+2196	HB3429	H	601	1546586	2025-04-12	95	1	screened	final-roll-not-divided	Prequalifying consultants for WVDEP- Abandon Mine Lands
+2196	HB3429	S	414	1541727	2025-04-09	34	0	screened	final-roll-not-divided	Prequalifying consultants for WVDEP- Abandon Mine Lands
+2196	HB3434	H	222	1529147	2025-03-27	89	3	screened	final-roll-not-divided	Relating to the controlled substance schedules and to clean-up errors identified in the code sections
+2196	HB3434	S	505	1546388	2025-04-11	34	0	screened	final-roll-not-divided	Relating to the controlled substance schedules and to clean-up errors identified in the code sections
+2196	HB3440	H	252	1530013	2025-03-28	91	0	screened	final-roll-not-divided	Relating generally to removing and repealing obsolete provisions under the purview of the State Treasurer’s Office
+2196	HB3440	S	506	1545960	2025-04-11	34	0	screened	final-roll-not-divided	Relating generally to removing and repealing obsolete provisions under the purview of the State Treasurer’s Office
+2196	HB3444	H	337	1533451	2025-04-01	96	1	screened	final-roll-not-divided	Relating to inflammation of the eyes of newborns.
+2196	HB3444	S	447	1543284	2025-04-10	18	15	batch-01	imported	Relating to inflammation of the eyes of newborns.
+2196	HB3456	H	223	1529085	2025-03-27	92	0	screened	final-roll-not-divided	Relating to the powers and duties of the Commissioner of the Division of Corrections and Rehabilitation regarding Steven
+2196	HB3456	S	415	1541831	2025-04-09	34	0	screened	final-roll-not-divided	Relating to the powers and duties of the Commissioner of the Division of Corrections and Rehabilitation regarding Steven
+2196	HB3492	H	581	1546767	2025-04-12	86	12	screened	final-roll-not-divided	Relating to municipal economic opportunity development districts.
+2196	HB3492	S	507	1545974	2025-04-11	22	12	not-selected	filter 3: a single-city excise tax district (Huntington)	Relating to municipal economic opportunity development districts.
+2196	HB3503	H	582	1546654	2025-04-12	84	13	screened	final-roll-not-divided	Relating to regulation by counties, municipalities, and political subdivisions of commercial horticulture under the Wate
+2196	HB3503	S	509	1545887	2025-04-11	31	3	screened	final-roll-not-divided	Relating to regulation by counties, municipalities, and political subdivisions of commercial horticulture under the Wate
+2196	HB3504	H	189	1526276	2025-03-25	90	8	screened	final-roll-not-divided	Relating to protecting critical infrastructure; and defining terms
+2196	HB3504	S	510	1545883	2025-04-11	34	0	screened	final-roll-not-divided	Relating to protecting critical infrastructure; and defining terms
+2196	HB3513	H	634	1546749	2025-04-12	71	27	screened	printed-roll-number-shared	Relating to standards of liability and insurance requirements in certain civil actions
+2196	HB3513	S	511	1545860	2025-04-11	32	2	screened	final-roll-not-divided	Relating to standards of liability and insurance requirements in certain civil actions
+2196	HB3515	H	364	1534045	2025-04-02	97	0	screened	final-roll-not-divided	Relating to appointment of officers of the West Virginia State Police
+2196	HB3515	S	448	1543328	2025-04-10	34	0	screened	final-roll-not-divided	Relating to appointment of officers of the West Virginia State Police
+2196	HB3517	H	613	1546699	2025-04-12	94	1	screened	final-roll-not-divided	Relating generally to fiscal emergencies of local governments
+2196	HB3517	S	593	1546700	2025-04-12	33	0	screened	final-roll-not-divided	Relating generally to fiscal emergencies of local governments
+2196	HB3522	H	442	1544356	2025-04-10	98	0	screened	final-roll-not-divided	Supplemental Appropriation to Arts, Culture and History.
+2196	HB3522	S	424	1544359	2025-04-10	34	0	screened	final-roll-not-divided	Supplemental Appropriation to Arts, Culture and History.
+2196	SB1	H	413	1539415	2025-04-08	99	0	screened	final-roll-not-divided	Requiring utility work and road paving coordination
+2196	SB1	S	519	1546070	2025-04-11	32	0	screened	final-roll-not-divided	Requiring utility work and road paving coordination
+2196	SB10	H	387	1537026	2025-04-04	97	0	screened	final-roll-not-divided	Exempting certain meat processes from consumers sales and service tax
+2196	SB10	S	175	1527639	2025-03-26	33	1	screened	final-roll-not-divided	Exempting certain meat processes from consumers sales and service tax
+2196	SB102	H	500	1545337	2025-04-11	96	0	screened	final-roll-not-divided	Modifying form of certain deeds
+2196	SB102	S	595	1546717	2025-04-12	33	0	screened	final-roll-not-divided	Modifying form of certain deeds
+2196	SB128	H	565	1546510	2025-04-12	92	0	screened	final-roll-not-divided	Preventing courts from ordering services at higher rate than Medicaid
+2196	SB128	S	168	1525968	2025-03-25	34	0	screened	final-roll-not-divided	Preventing courts from ordering services at higher rate than Medicaid
+2196	SB138	H	50	1513615	2025-03-11	97	0	screened	final-roll-not-divided	Enhancing penalties for fleeing officer
+2196	SB138	S	108	1518125	2025-03-14	31	0	screened	final-roll-not-divided	Enhancing penalties for fleeing officer
+2196	SB154	H	551	1546066	2025-04-11	82	17	screened	final-roll-not-divided	Prohibiting sexual orientation instruction in public schools
+2196	SB154	S	598	1546685	2025-04-12	32	1	screened	final-roll-not-divided	Prohibiting sexual orientation instruction in public schools
+2196	SB196	H	502	1545527	2025-04-11	98	1	screened	final-roll-not-divided	Lauren's Law
+2196	SB196	S	549	1546563	2025-04-12	34	0	screened	final-roll-not-divided	Lauren's Law
+2196	SB198	H	414	1539282	2025-04-08	99	0	screened	final-roll-not-divided	Prohibiting creation, production, distribution, or possession of artificially generated child pornography
+2196	SB198	S	449	1543686	2025-04-10	33	0	screened	final-roll-not-divided	Prohibiting creation, production, distribution, or possession of artificially generated child pornography
+2196	SB199	H	373	1535640	2025-04-03	94	3	screened	final-roll-not-divided	Relating to elementary behavior intervention and safety
+2196	SB199	S	173	1527233	2025-03-26	34	0	screened	final-roll-not-divided	Relating to elementary behavior intervention and safety
+2196	SB22	H	375	1535741	2025-04-03	98	0	screened	final-roll-not-divided	Applying penalties for nonpayment of royalties under terms of oil and natural gas leases
+2196	SB22	S	322	1537994	2025-04-07	34	0	screened	final-roll-not-divided	Applying penalties for nonpayment of royalties under terms of oil and natural gas leases
+2196	SB225	H	615	1546637	2025-04-12	93	2	screened	final-roll-not-divided	Expanding powers of National Park Service law-enforcement officers
+2196	SB225	S	499	1546000	2025-04-11	33	0	screened	final-roll-not-divided	Expanding powers of National Park Service law-enforcement officers
+2196	SB240	H	44	1509025	2025-03-10	97	0	screened	final-roll-not-divided	Updating crime of sexual extortion
+2196	SB240	S	109	1518094	2025-03-14	31	0	screened	final-roll-not-divided	Updating crime of sexual extortion
+2196	SB257	H	415	1539286	2025-04-08	99	0	screened	final-roll-not-divided	Providing protection for property owner when someone visiting private cemetery causes damage to property
+2196	SB257	S	417	1542670	2025-04-09	30	0	screened	final-roll-not-divided	Providing protection for property owner when someone visiting private cemetery causes damage to property
+2196	SB267	H	388	1537042	2025-04-04	97	0	screened	final-roll-not-divided	Extending time for renewal and restoration of commercial driver's licenses
+2196	SB267	S	73	1508715	2025-03-07	34	0	screened	final-roll-not-divided	Extending time for renewal and restoration of commercial driver's licenses
+2196	SB270	H	416	1539368	2025-04-08	98	1	screened	final-roll-not-divided	Declaring sale and manufacture of firearms essential business during declared emergency
+2196	SB270	S	418	1542449	2025-04-09	31	0	screened	final-roll-not-divided	Declaring sale and manufacture of firearms essential business during declared emergency
+2196	SB275	H	302	1532195	2025-04-01	96	3	screened	final-roll-not-divided	Removing requirement school cooks or custodians have high school diploma or equivalent
+2196	SB275	S	22	1497334	2025-02-24	32	0	screened	final-roll-not-divided	Removing requirement school cooks or custodians have high school diploma or equivalent
+2196	SB280	H	503	1545471	2025-04-11	97	2	screened	final-roll-not-divided	Displaying official US motto in public schools
+2196	SB280	S	550	1546556	2025-04-12	33	1	screened	final-roll-not-divided	Displaying official US motto in public schools
+2196	SB282	H	304	1532621	2025-04-01	99	0	screened	final-roll-not-divided	Modifying provisions for employment of retired teachers as substitutes in areas of critical need and shortage
+2196	SB282	S	305	1537028	2025-04-04	34	0	screened	final-roll-not-divided	Modifying provisions for employment of retired teachers as substitutes in areas of critical need and shortage
+2196	SB283	H	180	1525895	2025-03-25	97	0	screened	final-roll-not-divided	Expanding grade levels of personal finance course requirements needed for graduation
+2196	SB283	S	174	1527461	2025-03-26	34	0	screened	final-roll-not-divided	Expanding grade levels of personal finance course requirements needed for graduation
+2196	SB291	H	76	1516914	2025-03-13	96	0	screened	final-roll-not-divided	Extending time frame for pharmacies to register from annually to biennially
+2196	SB291	S	110	1518007	2025-03-14	31	0	screened	final-roll-not-divided	Extending time frame for pharmacies to register from annually to biennially
+2196	SB299	H	570	1546554	2025-04-12	86	12	screened	final-roll-not-divided	Modifying WV regulations on pubertal modulation, hormonal therapy, and gender reassignment
+2196	SB299	S	67	1507037	2025-03-06	32	2	screened	final-roll-not-divided	Modifying WV regulations on pubertal modulation, hormonal therapy, and gender reassignment
+2196	SB325	H	560	1545912	2025-04-11	99	0	screened	final-roll-not-divided	Authorizing Department of Health to promulgate legislative rules
+2196	SB325	S	450	1543673	2025-04-10	33	0	screened	final-roll-not-divided	Authorizing Department of Health to promulgate legislative rules
+2196	SB336	H	116	1522404	2025-03-20	94	0	screened	final-roll-not-divided	Authorizing Department of Homeland Security to promulgate legislative rules
+2196	SB336	S	29	1498756	2025-02-25	33	0	screened	final-roll-not-divided	Authorizing Department of Homeland Security to promulgate legislative rules
+2196	SB35	H	627	1546745	2025-04-12	94	1	screened	final-roll-not-divided	Permitting campus police officers to participate in Deputy Sheriffs Retirement System
+2196	SB35	S	604	1546746	2025-04-12	33	0	screened	final-roll-not-divided	Permitting campus police officers to participate in Deputy Sheriffs Retirement System
+2196	SB358	H	60	1515683	2025-03-12	97	0	screened	final-roll-not-divided	Authorizing Department of Transportation to promulgate legislative rules
+2196	SB358	S	35	1500153	2025-02-26	33	0	screened	final-roll-not-divided	Authorizing Department of Transportation to promulgate legislative rules
+2196	SB369	H	381	1537194	2025-04-04	93	0	screened	final-roll-not-divided	Authorizing miscellaneous boards and agencies to promulgate legislative rules
+2196	SB369	S	301	1535612	2025-04-03	34	0	screened	final-roll-not-divided	Authorizing miscellaneous boards and agencies to promulgate legislative rules
+2196	SB427	H	504	1545342	2025-04-11	91	9	screened	final-roll-not-divided	Permitting certain teenagers to work without obtaining work permit
+2196	SB427	S	575	1546638	2025-04-12	32	0	screened	final-roll-not-divided	Permitting certain teenagers to work without obtaining work permit
+2196	SB443	H	77	1516915	2025-03-13	95	1	screened	final-roll-not-divided	Authorizing Speech-Language Pathology and Audiology Board of Examiners to conduct criminal background checks for licensi
+2196	SB443	S	37	1499757	2025-02-26	33	0	screened	final-roll-not-divided	Authorizing Speech-Language Pathology and Audiology Board of Examiners to conduct criminal background checks for licensi
+2196	SB449	H	559	1545949	2025-04-11	99	0	screened	final-roll-not-divided	Permitting compressed air and rimfire shooting teams in public schools
+2196	SB449	S	498	1545948	2025-04-11	34	0	screened	final-roll-not-divided	Permitting compressed air and rimfire shooting teams in public schools
+2196	SB456	H	49	1512520	2025-03-11	90	8	screened	final-roll-not-divided	"Defining ""men"" and ""women"""
+2196	SB456	S	89	1512519	2025-03-11	32	1	screened	final-roll-not-divided	"Defining ""men"" and ""women"""
+2196	SB458	H	256	1530860	2025-03-31	97	0	screened	final-roll-not-divided	Universal Professional and Occupational Licensing Act of 2025
+2196	SB458	S	275	1533979	2025-04-02	34	0	screened	final-roll-not-divided	Universal Professional and Occupational Licensing Act of 2025
+2196	SB459	H	376	1536612	2025-04-03	88	1	screened	final-roll-not-divided	Requiring county planning commission members be state residents
+2196	SB459	S	323	1538754	2025-04-07	34	0	screened	final-roll-not-divided	Requiring county planning commission members be state residents
+2196	SB462	H	79	1516897	2025-03-13	95	1	screened	final-roll-not-divided	Permitting Board of Occupational Therapy to require criminal history record checks
+2196	SB462	S	39	1499837	2025-02-26	33	0	screened	final-roll-not-divided	Permitting Board of Occupational Therapy to require criminal history record checks
+2196	SB464	H	417	1539517	2025-04-08	99	0	screened	final-roll-not-divided	Creating license plate for recipients of Medal of Valor
+2196	SB464	S	419	1543103	2025-04-09	31	0	screened	final-roll-not-divided	Creating license plate for recipients of Medal of Valor
+2196	SB474	H	623	1546754	2025-04-12	87	12	screened	final-roll-not-divided	Ending diversity, equity, and inclusion programs
+2196	SB474	S	610	1547346	2025-04-12	31	2	screened	final-roll-not-divided	Ending diversity, equity, and inclusion programs
+2196	SB485	H	430	1542637	2025-04-09	77	18	screened	final-roll-not-divided	Exempting West Virginia Secretary of State from competitive bidding process
+2196	SB485	S	457	1544644	2025-04-10	31	0	screened	final-roll-not-divided	Exempting West Virginia Secretary of State from competitive bidding process
+2196	SB486	H	106	1519639	2025-03-18	98	0	screened	final-roll-not-divided	Clarifying eligibility requirements to vote in WV elections
+2196	SB486	S	129	1520887	2025-03-19	33	0	screened	final-roll-not-divided	Clarifying eligibility requirements to vote in WV elections
+2196	SB487	H	94	1518425	2025-03-17	84	9	screened	final-roll-not-divided	Removing ineligible voters from active voter rolls
+2196	SB487	S	62	1505725	2025-03-05	33	1	screened	final-roll-not-divided	Removing ineligible voters from active voter rolls
+2196	SB490	H	38	1508591	2025-03-07	87	9	screened	final-roll-not-divided	Prohibiting ranked-choice voting in elections in West Virginia
+2196	SB490	S	59	1504258	2025-03-04	31	2	screened	final-roll-not-divided	Prohibiting ranked-choice voting in elections in West Virginia
+2196	SB492	H	163	1525032	2025-03-24	90	0	screened	final-roll-not-divided	Removing outdated provisions governing political committees
+2196	SB492	S	85	1509070	2025-03-10	33	0	screened	final-roll-not-divided	Removing outdated provisions governing political committees
+2196	SB496	H	431	1542610	2025-04-09	92	0	screened	final-roll-not-divided	"Removing reflexology and other energy-based work from definition of ""massage therapy"""
+2196	SB496	S	458	1545304	2025-04-10	32	0	screened	final-roll-not-divided	"Removing reflexology and other energy-based work from definition of ""massage therapy"""
+2196	SB50	H	614	1546680	2025-04-12	93	2	screened	final-roll-not-divided	Requiring municipal elections to be held on same day as statewide elections
+2196	SB50	S	49	1503552	2025-03-03	33	0	screened	final-roll-not-divided	Requiring municipal elections to be held on same day as statewide elections
+2196	SB500	H	401	1538456	2025-04-07	98	0	screened	final-roll-not-divided	Transferring audits of volunteer fire departments to Legislative Auditor
+2196	SB500	S	97	1515810	2025-03-12	34	0	screened	final-roll-not-divided	Transferring audits of volunteer fire departments to Legislative Auditor
+2196	SB522	H	377	1536175	2025-04-03	93	0	screened	final-roll-not-divided	Clarifying procedure for administrative dissolution of limited liability companies by Secretary of State
+2196	SB522	S	92	1515133	2025-03-11	33	0	screened	final-roll-not-divided	Clarifying procedure for administrative dissolution of limited liability companies by Secretary of State
+2196	SB525	H	378	1536172	2025-04-03	95	0	screened	final-roll-not-divided	Clarifying procedure for administrative dissolution of nonprofit corporations by Secretary of State
+2196	SB525	S	93	1512671	2025-03-11	33	0	screened	final-roll-not-divided	Clarifying procedure for administrative dissolution of nonprofit corporations by Secretary of State
+2196	SB526	H	507	1545492	2025-04-11	72	25	batch-01	imported	Creating Pharmacist Prescribing Authority Act
+2196	SB526	S	551	1546568	2025-04-12	34	0	screened	final-roll-not-divided	Creating Pharmacist Prescribing Authority Act
+2196	SB537	H	418	1539278	2025-04-08	99	0	screened	final-roll-not-divided	Establishing WV Mothers and Babies Pregnancy Support Program
+2196	SB537	S	420	1542200	2025-04-09	31	0	screened	final-roll-not-divided	Establishing WV Mothers and Babies Pregnancy Support Program
+2196	SB538	H	379	1535809	2025-04-03	88	10	screened	final-roll-not-divided	Allowing certain entities to purchase qualifying tax-delinquent properties before they are offered at public auction
+2196	SB538	S	133	1520875	2025-03-19	31	2	screened	final-roll-not-divided	Allowing certain entities to purchase qualifying tax-delinquent properties before they are offered at public auction
+2196	SB561	H	509	1545833	2025-04-11	99	0	screened	final-roll-not-divided	Relating to Uniform Special Deposits Act
+2196	SB561	S	94	1513085	2025-03-11	33	0	screened	final-roll-not-divided	Relating to Uniform Special Deposits Act
+2196	SB565	H	432	1541738	2025-04-09	93	4	screened	final-roll-not-divided	Relating generally to practice of optometry
+2196	SB565	S	459	1545124	2025-04-10	24	8	not-selected	see PLAN.md	Relating generally to practice of optometry
+2196	SB573	H	391	1537058	2025-04-04	88	9	screened	final-roll-not-divided	Relating to restrictions on use or sale of motor vehicles based on power source
+2196	SB573	S	75	1508638	2025-03-07	34	0	screened	final-roll-not-divided	Relating to restrictions on use or sale of motor vehicles based on power source
+2196	SB576	H	510	1545840	2025-04-11	55	43	not-selected	filter 5: authorizing fixed odds racing, no research area fits	Authorizing fixed odds racing in horse and dog racing
+2196	SB576	S	552	1546635	2025-04-12	23	11	not-selected	filter 5: authorizing fixed odds racing, no research area fits	Authorizing fixed odds racing in horse and dog racing
+2196	SB581	H	636	1546744	2025-04-12	99	0	screened	final-roll-not-divided	Relating to school attendance and student participation in 4-H activities
+2196	SB581	S	576	1546617	2025-04-12	33	0	screened	final-roll-not-divided	Relating to school attendance and student participation in 4-H activities
+2196	SB586	H	629	1546737	2025-04-12	96	0	screened	final-roll-not-divided	Relating to requirements for filling vacancies in certain elected federal, state, and county offices
+2196	SB586	S	611	1546739	2025-04-12	33	0	screened	final-roll-not-divided	Relating to requirements for filling vacancies in certain elected federal, state, and county offices
+2196	SB587	H	513	1545929	2025-04-11	92	1	screened	final-roll-not-divided	Relating generally to government contracting
+2196	SB587	S	553	1546665	2025-04-12	27	7	not-selected	deferred: a 40,000 character rewrite of the competitive bidding statute. Stating one honest direction would need a section by section read, so it is left for a later batch rather than guessed at	Relating generally to government contracting
+2196	SB615	H	402	1538145	2025-04-07	98	0	screened	final-roll-not-divided	Eliminating accelerated tax payment requirements
+2196	SB615	S	148	1524051	2025-03-21	34	0	screened	final-roll-not-divided	Eliminating accelerated tax payment requirements
+2196	SB617	H	433	1541382	2025-04-09	88	9	screened	final-roll-not-divided	Discouraging gang activity
+2196	SB617	S	452	1544442	2025-04-10	33	0	screened	final-roll-not-divided	Discouraging gang activity
+2196	SB621	H	164	1524659	2025-03-24	90	0	screened	final-roll-not-divided	Authorizing digital court records
+2196	SB621	S	136	1520923	2025-03-19	33	0	screened	final-roll-not-divided	Authorizing digital court records
+2196	SB627	H	392	1537052	2025-04-04	73	24	not-selected	filter 5: pulls both ways. It opens state park pore space to leasing, which removes a park protection, but the leasing is for carbon sequestration, which is climate mitigation. Neither direction is honest on its own	Removing prohibition against leasing state-owned pore spaces underlying lands designated as state parks
+2196	SB627	S	421	1542655	2025-04-09	26	5	screened	final-roll-not-divided	Removing prohibition against leasing state-owned pore spaces underlying lands designated as state parks
+2196	SB650	H	428	1541383	2025-04-09	98	0	screened	final-roll-not-divided	Relating to full-time interventionists
+2196	SB650	S	347	1539973	2025-04-08	34	0	screened	final-roll-not-divided	Relating to full-time interventionists
+2196	SB652	H	514	1546013	2025-04-11	94	0	screened	final-roll-not-divided	Expanding cardiac arrest provisions to be applicable to elementary schools
+2196	SB652	S	187	1527303	2025-03-26	34	0	screened	final-roll-not-divided	Expanding cardiac arrest provisions to be applicable to elementary schools
+2196	SB677	H	515	1545843	2025-04-11	51	45	not-selected	filter 5: securities filing fees, no research area fits	Increasing fees charged by Commissioner of Securities for each offering
+2196	SB677	S	263	1531987	2025-04-01	27	6	screened	final-roll-not-divided	Increasing fees charged by Commissioner of Securities for each offering
+2196	SB710	H	516	1546171	2025-04-11	93	2	screened	final-roll-not-divided	Relating to the practice of teledentistry
+2196	SB710	S	577	1546722	2025-04-12	33	0	screened	final-roll-not-divided	Relating to the practice of teledentistry
+2196	SB712	H	404	1538258	2025-04-07	98	0	screened	final-roll-not-divided	Relating to retirement provisions of systems managed by CPRB
+2196	SB712	S	555	1546593	2025-04-12	28	6	screened	final-roll-not-divided;roll-number-not-in-own-history;printed-roll-number-shared;held-by-tally-audit	Relating to retirement provisions of systems managed by CPRB
+2196	SB715	H	405	1538192	2025-04-07	98	0	screened	final-roll-not-divided	Relating to personally identifiable information of member, retirant, beneficiary, or alternate payee of retirement syste
+2196	SB715	S	115	1518117	2025-03-14	32	0	screened	final-roll-not-divided	Relating to personally identifiable information of member, retirant, beneficiary, or alternate payee of retirement syste
+2196	SB716	H	407	1538399	2025-04-07	98	0	screened	final-roll-not-divided	Relating to failure to pay required contributions and interest payments for certain retirees who transfer between retire
+2196	SB716	S	116	1518072	2025-03-14	31	0	screened	final-roll-not-divided	Relating to failure to pay required contributions and interest payments for certain retirees who transfer between retire
+2196	SB734	H	464	1544732	2025-04-10	93	4	screened	final-roll-not-divided	Repealing section creating A. James Manchin Rehabilitation Environmental Action Plan
+2196	SB734	S	142	1522461	2025-03-20	29	5	screened	final-roll-not-divided	Repealing section creating A. James Manchin Rehabilitation Environmental Action Plan
+2196	SB736	H	434	1542169	2025-04-09	96	0	screened	final-roll-not-divided	Relating to publication of registered lobbyist information
+2196	SB736	S	460	1544411	2025-04-10	28	4	screened	final-roll-not-divided	Relating to publication of registered lobbyist information
+2196	SB738	H	465	1544765	2025-04-10	96	1	screened	final-roll-not-divided	Terminating Employee Suggestion Award Board
+2196	SB738	S	144	1522601	2025-03-20	25	9	not-selected	filter 5: repeal of a dormant board, too small to be worth a voter's time	Terminating Employee Suggestion Award Board
+2196	SB746	H	466	1543592	2025-04-10	97	0	screened	final-roll-not-divided	Allowing State Board of Education to delegate its Medicaid provider status to public charter schools
+2196	SB746	S	154	1523979	2025-03-21	34	0	screened	final-roll-not-divided	Allowing State Board of Education to delegate its Medicaid provider status to public charter schools
+2196	SB747	H	517	1546317	2025-04-11	93	3	screened	final-roll-not-divided	Relating to Real Estate License Act
+2196	SB747	S	162	1524641	2025-03-24	33	0	screened	final-roll-not-divided	Relating to Real Estate License Act
+2196	SB75	H	499	1545443	2025-04-11	69	28	not-selected	filter 5: racetrack revenue distribution, no research area fits	Changing distribution of income from excess lottery fund
+2196	SB75	S	145	1523981	2025-03-21	25	9	not-selected	filter 5: racetrack revenue distribution, no research area fits	Changing distribution of income from excess lottery fund
+2196	SB765	H	435	1541946	2025-04-09	93	0	screened	final-roll-not-divided	Establishing Troops-to-Teachers Program
+2196	SB765	S	232	1530718	2025-03-29	33	0	screened	final-roll-not-divided	Establishing Troops-to-Teachers Program
+2196	SB794	H	518	1546092	2025-04-11	83	13	screened	final-roll-not-divided	Authorizing DOH to erect warning signs
+2196	SB794	S	286	1534413	2025-04-02	34	0	screened	final-roll-not-divided	Authorizing DOH to erect warning signs
+2196	SB8	H	93	1518546	2025-03-17	92	0	screened	final-roll-not-divided	Providing additional sites and devices for newborn safe surrender
+2196	SB8	S	128	1520759	2025-03-19	33	0	screened	final-roll-not-divided	Providing additional sites and devices for newborn safe surrender
+2196	SB800	H	519	1545955	2025-04-11	96	0	screened	final-roll-not-divided	Relating to insurance holding company systems
+2196	SB800	S	171	1526099	2025-03-25	34	0	screened	final-roll-not-divided	Relating to insurance holding company systems
+2196	SB810	H	419	1539366	2025-04-08	80	19	screened	final-roll-not-divided	Clarifying requirements for administration of anesthesia and chronic pain practice by certain licensed nurses
+2196	SB810	S	234	1530635	2025-03-29	33	0	screened	final-roll-not-divided	Clarifying requirements for administration of anesthesia and chronic pain practice by certain licensed nurses
+2196	SB823	H	257	1530952	2025-03-31	99	0	screened	final-roll-not-divided	Clarifying and separating duties between Division of Emergency Management and DEP
+2196	SB823	S	197	1528582	2025-03-27	33	0	screened	final-roll-not-divided	Clarifying and separating duties between Division of Emergency Management and DEP
+2196	SB825	H	521	1545918	2025-04-11	88	10	screened	final-roll-not-divided	Permitting higher education institutions enter agreements with non-profit organizations for economic development and job
+2196	SB825	S	578	1546615	2025-04-12	31	2	screened	final-roll-not-divided	Permitting higher education institutions enter agreements with non-profit organizations for economic development and job
+2196	SB828	H	394	1537425	2025-04-04	90	7	screened	final-roll-not-divided;printed-roll-number-shared;held-by-tally-audit	Clarifying requirements for persons employed by Division of Corrections and Rehabilitation include contracted vendor sta
+2196	SB828	S	267	1531996	2025-04-01	33	0	screened	final-roll-not-divided	Clarifying requirements for persons employed by Division of Corrections and Rehabilitation include contracted vendor sta
+2196	SB833	H	523	1546103	2025-04-11	98	0	screened	final-roll-not-divided	Excluding pharmaceutical medication from prior authorization gold card process
+2196	SB833	S	235	1530734	2025-03-29	33	0	screened	final-roll-not-divided	Excluding pharmaceutical medication from prior authorization gold card process
+2196	SB837	H	524	1546390	2025-04-11	90	9	screened	final-roll-not-divided	Eliminating WV Office of Equal Opportunity
+2196	SB837	S	555	1546766	2025-04-12	28	6	screened	final-roll-not-divided;printed-roll-number-shared	Eliminating WV Office of Equal Opportunity
+2196	SB844	H	467	1543311	2025-04-10	86	11	screened	final-roll-not-divided	Exempting non-native quail and partridge from game farm requirement if owned for agricultural purposes
+2196	SB844	S	213	1529851	2025-03-28	32	0	screened	final-roll-not-divided	Exempting non-native quail and partridge from game farm requirement if owned for agricultural purposes
+2196	SB856	H	566	1546689	2025-04-12	91	0	screened	final-roll-not-divided	Removing certain reporting requirements to Joint Committee on Government and Finance
+2196	SB856	S	201	1529092	2025-03-27	32	0	screened	final-roll-not-divided	Removing certain reporting requirements to Joint Committee on Government and Finance
+2196	SB861	H	436	1542349	2025-04-09	96	0	screened	final-roll-not-divided	Updating references to reflect consolidation of Information Services and Communications Division into Office of Technolo
+2196	SB861	S	202	1528854	2025-03-27	33	0	screened	final-roll-not-divided	Updating references to reflect consolidation of Information Services and Communications Division into Office of Technolo
+2196	SB862	H	437	1542180	2025-04-09	96	0	screened	final-roll-not-divided	Repealing antiquated language related to Voluntary Gilding Dome Check-Off Program
+2196	SB862	S	203	1529105	2025-03-27	33	0	screened	final-roll-not-divided	Repealing antiquated language related to Voluntary Gilding Dome Check-Off Program
+2196	SB863	H	438	1542093	2025-04-09	97	0	screened	final-roll-not-divided	Removing reference to Information Services and Communications Division
+2196	SB863	S	204	1529206	2025-03-27	33	0	screened	final-roll-not-divided	Removing reference to Information Services and Communications Division
+2196	SB876	H	468	1544529	2025-04-10	97	0	screened	final-roll-not-divided	Terminating certain requirements for Tax Commissioner to submit reports, publish information, and provide notice
+2196	SB876	S	207	1529197	2025-03-27	33	0	screened	final-roll-not-divided	Terminating certain requirements for Tax Commissioner to submit reports, publish information, and provide notice
+2196	SB883	H	527	1546004	2025-04-11	99	0	screened	final-roll-not-divided	Providing director of WV Office of Miners’ Health, Safety and Training discretion and authority in certain appointments
+2196	SB883	S	288	1534365	2025-04-02	34	0	screened	final-roll-not-divided	Providing director of WV Office of Miners’ Health, Safety and Training discretion and authority in certain appointments
+2196	SB907	H	469	1544607	2025-04-10	85	10	screened	final-roll-not-divided	Relating to high impact development projects
+2196	SB907	S	580	1546701	2025-04-12	31	2	screened	final-roll-not-divided	Relating to high impact development projects
+2196	SB912	H	530	1546186	2025-04-11	92	7	screened	final-roll-not-divided	Relating to student growth assessment program
+2196	SB912	S	556	1546601	2025-04-12	34	0	screened	final-roll-not-divided	Relating to student growth assessment program
+2196	SB914	H	531	1545806	2025-04-11	84	15	screened	final-roll-not-divided	Relating to testing and attendance requirements for private, parochial, and church schools
+2196	SB914	S	557	1546621	2025-04-12	33	1	screened	final-roll-not-divided	Relating to testing and attendance requirements for private, parochial, and church schools
+2196	SB941	H	534	1546084	2025-04-11	97	0	screened	final-roll-not-divided	Clarifying authority regarding dams designed by US Conservation Service
+2196	SB941	S	559	1546565	2025-04-12	33	1	screened	final-roll-not-divided	Clarifying authority regarding dams designed by US Conservation Service
+2196	SB942	H	536	1545963	2025-04-11	97	0	screened	final-roll-not-divided	Modifying requirements for diesel-powered equipment in mines
+2196	SB942	S	561	1546656	2025-04-12	34	0	screened	final-roll-not-divided	Modifying requirements for diesel-powered equipment in mines

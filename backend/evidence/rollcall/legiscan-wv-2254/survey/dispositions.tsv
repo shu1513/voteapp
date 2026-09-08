@@ -1,0 +1,593 @@
+session	bill	chamber	printed_roll	roll_call_id	date	yea	nay	disposition	reason	title
+2254	HB4004	H	706	1663193	2026-03-14	89	6	screened	final-roll-not-divided	Creating the Recharge West Virginia Program
+2254	HB4004	S	704	1663190	2026-03-14	33	1	screened	final-roll-not-divided	Creating the Recharge West Virginia Program
+2254	HB4005	H	373	1658363	2026-03-10	92	1	screened	final-roll-not-divided	Skills to work
+2254	HB4005	S	368	1656964	2026-03-09	27	7	batch-01	imported	Skills to work
+2254	HB4007	H	668	1663197	2026-03-14	92	3	screened	final-roll-not-divided	Relating to industrial access roads
+2254	HB4007	S	522	1662341	2026-03-13	33	0	screened	final-roll-not-divided	Relating to industrial access roads
+2254	HB4008	H	11	1616532	2026-01-23	84	9	screened	final-roll-not-divided	Relating to Business Ready Sites Program
+2254	HB4008	S	477	1661422	2026-03-12	33	1	screened	final-roll-not-divided	Relating to Business Ready Sites Program
+2254	HB4009	H	701	1663200	2026-03-14	95	2	screened	final-roll-not-divided	Relating to the creation of the Portable Benefit Account Act
+2254	HB4009	S	708	1663201	2026-03-14	34	0	screened	final-roll-not-divided	Relating to the creation of the Portable Benefit Account Act
+2254	HB4022	H	349	1654945	2026-03-05	92	0	screened	final-roll-not-divided	CPS Allocation
+2254	HB4022	S	362	1656143	2026-03-06	34	0	screened	final-roll-not-divided	CPS Allocation
+2254	HB4025	H	670	1663279	2026-03-14	62	34	not-selected	filter 5: Labor GAP, same as HB 2013	Exempting certain employees from the classified civil service system
+2254	HB4025	S	527	1662321	2026-03-13	24	9	not-selected	filter 5: Labor GAP, same as HB 2013	Exempting certain employees from the classified civil service system
+2254	HB4028	H	374	1658560	2026-03-10	93	0	screened	final-roll-not-divided	Relating to sales tax on construction materials
+2254	HB4028	S	369	1657126	2026-03-09	34	0	screened	final-roll-not-divided	Relating to sales tax on construction materials
+2254	HB4053	H	496	1662312	2026-03-13	96	0	screened	final-roll-not-divided	To establish the blue envelope program.
+2254	HB4053	S	392	1658071	2026-03-10	34	0	screened	final-roll-not-divided	To establish the blue envelope program.
+2254	HB4087	H	158	1640893	2026-02-23	86	8	screened	final-roll-not-divided	To create a West Virginia-Ireland Education Alliance.
+2254	HB4087	S	528	1662617	2026-03-13	33	1	screened	final-roll-not-divided	To create a West Virginia-Ireland Education Alliance.
+2254	HB4088	H	119	1636540	2026-02-18	92	0	screened	final-roll-not-divided	Relating to certified public accountants
+2254	HB4088	S	202	1640881	2026-02-23	33	0	screened	final-roll-not-divided	Relating to certified public accountants
+2254	HB4089	H	73	1629686	2026-02-11	97	0	screened	final-roll-not-divided	Preservation of hair during chemotherapy. Also known as the “Jessica Huffman Bill”
+2254	HB4089	S	393	1658171	2026-03-10	33	1	screened	final-roll-not-divided	Preservation of hair during chemotherapy. Also known as the “Jessica Huffman Bill”
+2254	HB4106	H	688	1663098	2026-03-14	85	8	screened	final-roll-not-divided;printed-roll-number-shared	Allowing constitutional carry for 18- to 20-year-olds
+2254	HB4106	S	701	1663099	2026-03-14	31	3	screened	final-roll-not-divided	Allowing constitutional carry for 18- to 20-year-olds
+2254	HB4126	H	376	1658497	2026-03-10	93	0	screened	final-roll-not-divided	To modify the funding distribution to the state park endowment fund and the State Parks Operational Fund
+2254	HB4126	S	371	1657113	2026-03-09	34	0	screened	final-roll-not-divided	To modify the funding distribution to the state park endowment fund and the State Parks Operational Fund
+2254	HB4138	H	597	1662839	2026-03-14	96	0	screened	final-roll-not-divided	Relating to persons convicted of a crime
+2254	HB4138	S	687	1663241	2026-03-14	33	0	screened	final-roll-not-divided	Relating to persons convicted of a crime
+2254	HB4169	H	23	1618186	2026-01-28	95	0	screened	final-roll-not-divided	Relating to mental health examination requirements.
+2254	HB4169	S	455	1660040	2026-03-11	34	0	screened	final-roll-not-divided	Relating to mental health examination requirements.
+2254	HB4176	H	283	1652274	2026-03-04	91	0	screened	final-roll-not-divided	To allow youth and handicapped hunters to harvest a buck deer or doe during youth/handicapped special hunts
+2254	HB4176	S	531	1662310	2026-03-13	34	0	screened	final-roll-not-divided	To allow youth and handicapped hunters to harvest a buck deer or doe during youth/handicapped special hunts
+2254	HB4191	H	284	1652652	2026-03-04	89	4	screened	final-roll-not-divided	Relating to providing child care generally
+2254	HB4191	S	532	1662434	2026-03-13	31	3	screened	final-roll-not-divided	Relating to providing child care generally
+2254	HB4196	H	132	1640048	2026-02-20	92	4	screened	final-roll-not-divided	To offer long-acting reversible contraception to patients receiving methadone and suboxone at the treatment facility for
+2254	HB4196	S	152	1638110	2026-02-19	32	1	screened	final-roll-not-divided	To offer long-acting reversible contraception to patients receiving methadone and suboxone at the treatment facility for
+2254	HB4215	H	211	1647696	2026-02-27	93	3	screened	final-roll-not-divided	Department of Health Rules Bundle
+2254	HB4215	S	233	1644294	2026-02-25	34	0	screened	final-roll-not-divided	Department of Health Rules Bundle
+2254	HB4245	H	234	1649132	2026-03-02	94	1	screened	final-roll-not-divided	Authorizing Certain Agencies of the Department of Revenue to Promulgate Legislative Rules
+2254	HB4245	S	706	1663303	2026-03-14	33	1	screened	final-roll-not-divided	Authorizing Certain Agencies of the Department of Revenue to Promulgate Legislative Rules
+2254	HB4265	H	689	1663257	2026-03-14	94	2	screened	final-roll-not-divided	Relating to authorizing the Department of Agriculture to promulgate a legislative rule relating to registration forms an
+2254	HB4265	S	456	1660229	2026-03-11	34	0	screened	final-roll-not-divided	Relating to authorizing the Department of Agriculture to promulgate a legislative rule relating to registration forms an
+2254	HB4335	H	133	1640007	2026-02-20	96	0	screened	final-roll-not-divided	Relating to Medicaid providers
+2254	HB4335	S	153	1638262	2026-02-19	33	0	screened	final-roll-not-divided	Relating to Medicaid providers
+2254	HB4345	H	677	1662950	2026-03-14	97	0	screened	final-roll-not-divided	Relating to the preservation of missing persons records and evidence
+2254	HB4345	S	534	1662392	2026-03-13	34	0	screened	final-roll-not-divided	Relating to the preservation of missing persons records and evidence
+2254	HB4354	H	497	1662508	2026-03-13	97	0	screened	final-roll-not-divided	Relating to necessity allowance
+2254	HB4354	S	395	1658337	2026-03-10	34	0	screened	final-roll-not-divided	Relating to necessity allowance
+2254	HB4364	H	593	1662870	2026-03-14	97	0	screened	final-roll-not-divided	Relating to concurrent juvenile jurisdiction on military installations
+2254	HB4364	S	684	1663114	2026-03-14	33	0	screened	final-roll-not-divided	Relating to concurrent juvenile jurisdiction on military installations
+2254	HB4366	H	630	1662969	2026-03-14	97	0	screened	final-roll-not-divided	Relating to military interpersonal violence
+2254	HB4366	S	459	1659886	2026-03-11	34	0	screened	final-roll-not-divided	Relating to military interpersonal violence
+2254	HB4390	H	201	1646127	2026-02-26	93	0	screened	final-roll-not-divided	Relating to the temporary payment to a kinship parent of a subsidy equal to that of a foster parent
+2254	HB4390	S	460	1659754	2026-03-11	34	0	screened	final-roll-not-divided	Relating to the temporary payment to a kinship parent of a subsidy equal to that of a foster parent
+2254	HB4395	H	498	1662244	2026-03-13	96	0	screened	final-roll-not-divided	Relating to investigations of allegations of child safety violations for school personnel.
+2254	HB4395	S	396	1658085	2026-03-10	34	0	screened	final-roll-not-divided	Relating to investigations of allegations of child safety violations for school personnel.
+2254	HB4404	H	160	1640929	2026-02-23	94	0	screened	final-roll-not-divided	Increase the allowance for volunteer and part-volunteer fire companies and allowing fire departments to make an expendit
+2254	HB4404	S	478	1661537	2026-03-12	34	0	screened	final-roll-not-divided	Increase the allowance for volunteer and part-volunteer fire companies and allowing fire departments to make an expendit
+2254	HB4412	H	599	1662890	2026-03-14	96	0	screened	final-roll-not-divided	Require certain websites to utilize age verification methods to prevent minors from accessing content
+2254	HB4412	S	685	1663174	2026-03-14	33	0	screened	final-roll-not-divided	Require certain websites to utilize age verification methods to prevent minors from accessing content
+2254	HB4415	H	631	1662897	2026-03-14	97	0	screened	final-roll-not-divided	Creating crime of attempting to smuggle contraband into federal correctional institutions within the state
+2254	HB4415	S	462	1660379	2026-03-11	34	0	screened	final-roll-not-divided	Creating crime of attempting to smuggle contraband into federal correctional institutions within the state
+2254	HB4416	H	236	1648586	2026-03-02	92	3	screened	final-roll-not-divided	Classifying forestry equipment for levy purposes
+2254	HB4416	S	463	1660205	2026-03-11	34	0	screened	final-roll-not-divided	Classifying forestry equipment for levy purposes
+2254	HB4418	H	286	1652324	2026-03-04	93	1	screened	final-roll-not-divided	Creating “The Tax Efficiency Act of 2026”
+2254	HB4418	S	535	1662553	2026-03-13	34	0	screened	final-roll-not-divided	Creating “The Tax Efficiency Act of 2026”
+2254	HB4425	H	257	1650319	2026-03-03	78	19	screened	final-roll-not-divided	To repeal the provision allowing for students to transfer from one school to another without losing eligibility.
+2254	HB4425	S	536	1662296	2026-03-13	20	14	not-selected	filter 5: repeal of an athletic transfer eligibility section, about school sports rather than education quality	To repeal the provision allowing for students to transfer from one school to another without losing eligibility.
+2254	HB4433	H	215	1647983	2026-02-27	87	8	screened	final-roll-not-divided	Prohibiting Human Smuggling and Trafficking
+2254	HB4433	S	364	1656293	2026-03-06	32	2	screened	final-roll-not-divided	Prohibiting Human Smuggling and Trafficking
+2254	HB4437	H	632	1663066	2026-03-14	97	0	screened	final-roll-not-divided	To allow Gold Star parents to receive one free Gold Star vehicle registration for personal use.
+2254	HB4437	S	398	1658230	2026-03-10	34	0	screened	final-roll-not-divided	To allow Gold Star parents to receive one free Gold Star vehicle registration for personal use.
+2254	HB4452	H	237	1649004	2026-03-02	93	2	screened	final-roll-not-divided	To remove Mortmain restrictions on religious organizations
+2254	HB4452	S	537	1662374	2026-03-13	33	0	screened	final-roll-not-divided	To remove Mortmain restrictions on religious organizations
+2254	HB4463	H	633	1662900	2026-03-14	97	0	screened	final-roll-not-divided	Relating to the Board of Sanitarians
+2254	HB4463	S	399	1658103	2026-03-10	34	0	screened	final-roll-not-divided	Relating to the Board of Sanitarians
+2254	HB4464	H	103	1634969	2026-02-17	51	43	not-selected	filter 5: underground utility damage-prevention mechanics, no research area fits	Relating generally to Underground Facilities Damage prevention
+2254	HB4464	S	373	1656957	2026-03-09	26	8	not-selected	filter 5: underground utility damage-prevention mechanics, no research area fits	Relating generally to Underground Facilities Damage prevention
+2254	HB4474	H	75	1630074	2026-02-11	97	0	screened	final-roll-not-divided	Extending the Alzheimer’s Disease and Other Dementia Advisory Council sunset date.
+2254	HB4474	S	110	1635478	2026-02-17	32	0	screened	final-roll-not-divided	Extending the Alzheimer’s Disease and Other Dementia Advisory Council sunset date.
+2254	HB4483	H	635	1662933	2026-03-14	97	0	screened	final-roll-not-divided	Relating to funeral service licensure and administration
+2254	HB4483	S	481	1661378	2026-03-12	34	0	screened	final-roll-not-divided	Relating to funeral service licensure and administration
+2254	HB4484	H	378	1658286	2026-03-10	93	0	screened	final-roll-not-divided	To expand each county commission’s ability to sell or lease property.
+2254	HB4484	S	374	1656933	2026-03-09	34	0	screened	final-roll-not-divided	To expand each county commission’s ability to sell or lease property.
+2254	HB4538	H	637	1662974	2026-03-14	97	0	screened	final-roll-not-divided	Regarding fines in DOH work zones
+2254	HB4538	S	519	1661539	2026-03-12	34	0	screened	final-roll-not-divided	Regarding fines in DOH work zones
+2254	HB4546	H	638	1662944	2026-03-14	97	0	screened	final-roll-not-divided	Providing for biennial reporting instead of annual reporting for business organizations.
+2254	HB4546	S	483	1661412	2026-03-12	34	0	screened	final-roll-not-divided	Providing for biennial reporting instead of annual reporting for business organizations.
+2254	HB4552	H	691	1663240	2026-03-14	96	0	screened	final-roll-not-divided	Relating to the law-enforcement powers of correctional officers
+2254	HB4552	S	484	1661530	2026-03-12	34	0	screened	final-roll-not-divided	Relating to the law-enforcement powers of correctional officers
+2254	HB4561	H	87	1633226	2026-02-13	88	0	screened	final-roll-not-divided	Clarifying the sheriff’s authority to hire within their office.
+2254	HB4561	S	401	1658713	2026-03-10	34	0	screened	final-roll-not-divided	Clarifying the sheriff’s authority to hire within their office.
+2254	HB4575	H	212	1647589	2026-02-27	96	0	screened	final-roll-not-divided	Making Supplemental Appropriation to State Board of Education
+2254	HB4575	S	193	1640371	2026-02-21	27	1	screened	final-roll-not-divided	Making Supplemental Appropriation to State Board of Education
+2254	HB4577	H	675	1662947	2026-03-14	92	4	screened	final-roll-not-divided	Relating to driver’s licenses
+2254	HB4577	S	538	1662422	2026-03-13	33	0	screened	final-roll-not-divided	Relating to driver’s licenses
+2254	HB4592	H	676	1663189	2026-03-14	97	0	screened	final-roll-not-divided	Relating to college campus safety
+2254	HB4592	S	540	1662317	2026-03-13	33	0	screened	final-roll-not-divided	Relating to college campus safety
+2254	HB4599	H	127	1638126	2026-02-19	94	0	screened	final-roll-not-divided	Relating to the WV Cares background check variance process
+2254	HB4599	S	376	1656990	2026-03-09	34	0	screened	final-roll-not-divided	Relating to the WV Cares background check variance process
+2254	HB4606	H	696	1668719	2026-03-14	84	9	screened	final-roll-not-divided	Relating to the meaning of residence for the purpose of bail
+2254	HB4606	S	712	1663222	2026-03-14	34	0	screened	final-roll-not-divided	Relating to the meaning of residence for the purpose of bail
+2254	HB4610	H	639	1662902	2026-03-14	97	0	screened	final-roll-not-divided	Safeguard the Right-To-Try Cutting-Edge Medicine Act
+2254	HB4610	S	485	1661256	2026-03-12	34	0	screened	final-roll-not-divided	Safeguard the Right-To-Try Cutting-Edge Medicine Act
+2254	HB4625	H	640	1663062	2026-03-14	97	0	screened	final-roll-not-divided	Relating to quit claim deeds
+2254	HB4625	S	486	1661700	2026-03-12	34	0	screened	final-roll-not-divided	Relating to quit claim deeds
+2254	HB4638	H	128	1638359	2026-02-19	88	5	screened	final-roll-not-divided	Relating to registration of voters and voluntary registration of organ donors
+2254	HB4638	S	402	1658633	2026-03-10	30	4	screened	final-roll-not-divided	Relating to registration of voters and voluntary registration of organ donors
+2254	HB4696	H	51	1624488	2026-02-05	94	0	screened	final-roll-not-divided	Authorize the Department of Environmental Protection to deposit funds granted pursuant to federal programs
+2254	HB4696	S	155	1638780	2026-02-19	33	0	screened	final-roll-not-divided	Authorize the Department of Environmental Protection to deposit funds granted pursuant to federal programs
+2254	HB4712	H	678	1663049	2026-03-14	92	0	screened	final-roll-not-divided	Increasing the criminal penalties for DUI causing death to be known as “Baylea’s Law.”
+2254	HB4712	S	547	1662700	2026-03-13	34	0	screened	final-roll-not-divided	Increasing the criminal penalties for DUI causing death to be known as “Baylea’s Law.”
+2254	HB4740	H	40	1621485	2026-02-03	92	1	screened	final-roll-not-divided	Statutory Commitments in Rural Health Transformation Program
+2254	HB4740	S	157	1638140	2026-02-19	33	0	screened	final-roll-not-divided	Statutory Commitments in Rural Health Transformation Program
+2254	HB4749	H	351	1654797	2026-03-05	92	0	screened	final-roll-not-divided	Relating to adding requirements to the foster child bill of rights
+2254	HB4749	S	314	1650430	2026-03-03	33	0	screened	final-roll-not-divided	Relating to adding requirements to the foster child bill of rights
+2254	HB4755	H	688	1663276	2026-03-14	85	8	screened	final-roll-not-divided;printed-roll-number-shared;held-by-tally-audit	Adding Aggravated Vehicular Homicide to the list of qualifying offenses
+2254	HB4755	S	488	1661240	2026-03-12	34	0	screened	final-roll-not-divided	Adding Aggravated Vehicular Homicide to the list of qualifying offenses
+2254	HB4765	H	130	1638116	2026-02-19	95	0	screened	final-roll-not-divided	Teacher, School Personnel, and State Police Pay Raise
+2254	HB4765	S	715	1663239	2026-03-14	33	1	screened	final-roll-not-divided	Teacher, School Personnel, and State Police Pay Raise
+2254	HB4768	H	238	1648764	2026-03-02	96	0	screened	final-roll-not-divided	Relating to updating definitions to incorporate federal law changes to qualified higher education expenses for purposes 
+2254	HB4768	S	489	1661310	2026-03-12	34	0	screened	final-roll-not-divided	Relating to updating definitions to incorporate federal law changes to qualified higher education expenses for purposes 
+2254	HB4784	H	259	1650419	2026-03-03	90	2	screened	final-roll-not-divided	Extending the Qualified Opportunity Zones until July 1, 2032.
+2254	HB4784	S	490	1661236	2026-03-12	33	1	screened	final-roll-not-divided	Extending the Qualified Opportunity Zones until July 1, 2032.
+2254	HB4798	H	380	1658116	2026-03-10	93	0	screened	final-roll-not-divided	Permitting teachers to wear a “mobile alert button” for emergency situations, to be known as “Alyssa’s Law.”
+2254	HB4798	S	378	1656894	2026-03-09	34	0	screened	final-roll-not-divided	Permitting teachers to wear a “mobile alert button” for emergency situations, to be known as “Alyssa’s Law.”
+2254	HB4799	H	499	1662365	2026-03-13	97	0	screened	final-roll-not-divided	To establish the cold case task force for the State of West Virginia
+2254	HB4799	S	403	1658151	2026-03-10	34	0	screened	final-roll-not-divided	To establish the cold case task force for the State of West Virginia
+2254	HB4801	H	90	1633309	2026-02-13	89	1	screened	final-roll-not-divided	Defining Permissible expenditures for municipalities and counties
+2254	HB4801	S	492	1661269	2026-03-12	34	0	screened	final-roll-not-divided	Defining Permissible expenditures for municipalities and counties
+2254	HB4819	H	146	1640004	2026-02-20	96	0	screened	final-roll-not-divided	Relating to use of criminal records as disqualification from authorization to practice a particular profession
+2254	HB4819	S	493	1661222	2026-03-12	34	0	screened	final-roll-not-divided	Relating to use of criminal records as disqualification from authorization to practice a particular profession
+2254	HB4842	H	674	1663105	2026-03-14	96	0	screened	final-roll-not-divided	Relating to civil remedies for the unauthorized disclosure of intimate images.
+2254	HB4842	S	494	1661227	2026-03-12	34	0	screened	final-roll-not-divided	Relating to civil remedies for the unauthorized disclosure of intimate images.
+2254	HB4850	H	654	1663054	2026-03-14	97	0	screened	final-roll-not-divided	Providing online training for Executors/Executrix of an Estate
+2254	HB4850	S	495	1661814	2026-03-12	34	0	screened	final-roll-not-divided	Providing online training for Executors/Executrix of an Estate
+2254	HB4865	H	672	1663140	2026-03-14	82	14	screened	final-roll-not-divided	Providing for a program allowing election official trainees to be appointed as election officials
+2254	HB4865	S	549	1662677	2026-03-13	34	0	screened	final-roll-not-divided	Providing for a program allowing election official trainees to be appointed as election officials
+2254	HB4869	H	261	1650462	2026-03-03	90	1	screened	final-roll-not-divided	Establish narrow, clearly bounded guaranteed-issue rights for Medicare Supplement policies in West Virginia.
+2254	HB4869	S	550	1662740	2026-03-13	34	0	screened	final-roll-not-divided	Establish narrow, clearly bounded guaranteed-issue rights for Medicare Supplement policies in West Virginia.
+2254	HB4881	H	94	1634134	2026-02-16	94	0	screened	final-roll-not-divided	Relating to obtaining title to abandoned or junked motor vehicles abandoned on the property or place of business of an a
+2254	HB4881	S	404	1658108	2026-03-10	34	0	screened	final-roll-not-divided	Relating to obtaining title to abandoned or junked motor vehicles abandoned on the property or place of business of an a
+2254	HB4951	H	42	1621864	2026-02-03	58	35	not-selected	filter 5: a nutrition continuing-education requirement, too small	Requiring MDs and DOs to complete continuing education
+2254	HB4951	S	688	1663277	2026-03-14	27	6	screened	final-roll-not-divided	Requiring MDs and DOs to complete continuing education
+2254	HB4965	H	290	1652464	2026-03-04	93	0	screened	final-roll-not-divided	Relating to patient-centered treatment flexibility within the Public Employees Insurance Agency
+2254	HB4965	S	497	1661564	2026-03-12	33	0	screened	final-roll-not-divided	Relating to patient-centered treatment flexibility within the Public Employees Insurance Agency
+2254	HB4976	H	107	1635495	2026-02-17	94	1	screened	final-roll-not-divided	To add definitions for special plates of Class G Vehicles
+2254	HB4976	S	407	1658453	2026-03-10	34	0	screened	final-roll-not-divided	To add definitions for special plates of Class G Vehicles
+2254	HB4982	H	135	1640121	2026-02-20	90	6	screened	final-roll-not-divided	Make West Virginia Healthy Act of 2026
+2254	HB4982	S	159	1638975	2026-02-19	32	1	screened	final-roll-not-divided	Make West Virginia Healthy Act of 2026
+2254	HB4983	H	500	1662410	2026-03-13	82	15	screened	final-roll-not-divided	Authorizing the Department of Commerce to promulgate a legislative rule relating to certification of a microgrid distric
+2254	HB4983	S	464	1660015	2026-03-11	28	6	screened	final-roll-not-divided	Authorizing the Department of Commerce to promulgate a legislative rule relating to certification of a microgrid distric
+2254	HB4990	H	680	1663113	2026-03-14	96	0	screened	final-roll-not-divided	Relating to crimes using gift cards
+2254	HB4990	S	408	1658176	2026-03-10	34	0	screened	final-roll-not-divided	Relating to crimes using gift cards
+2254	HB4995	H	293	1652801	2026-03-04	93	0	screened	final-roll-not-divided	Require the use of video cameras in certain special education classrooms
+2254	HB4995	S	552	1662671	2026-03-13	34	0	screened	final-roll-not-divided	Require the use of video cameras in certain special education classrooms
+2254	HB4996	H	681	1663180	2026-03-14	97	0	screened	final-roll-not-divided	Relating to bail in cases involving terroristic threats to schools or children
+2254	HB4996	S	553	1662702	2026-03-13	34	0	screened	final-roll-not-divided	Relating to bail in cases involving terroristic threats to schools or children
+2254	HB4999	H	642	1662910	2026-03-14	96	0	screened	final-roll-not-divided	Relating to crimes against athletic officials
+2254	HB4999	S	409	1658165	2026-03-10	34	0	screened	final-roll-not-divided	Relating to crimes against athletic officials
+2254	HB5004	H	294	1652970	2026-03-04	92	0	screened	final-roll-not-divided	Relating generally to PANS and PANDAS.
+2254	HB5004	S	498	1661649	2026-03-12	34	0	screened	final-roll-not-divided	Relating generally to PANS and PANDAS.
+2254	HB5012	H	502	1662240	2026-03-13	88	8	screened	final-roll-not-divided	Providing for in-year school personnel movement to meet school needs.
+2254	HB5012	S	410	1658852	2026-03-10	33	1	screened	final-roll-not-divided	Providing for in-year school personnel movement to meet school needs.
+2254	HB5015	H	643	1663106	2026-03-14	96	0	screened	final-roll-not-divided	Relating to the Respiratory Care Interstate Compact
+2254	HB5015	S	499	1661721	2026-03-12	34	0	screened	final-roll-not-divided	Relating to the Respiratory Care Interstate Compact
+2254	HB5022	H	80	1630004	2026-02-11	97	0	screened	final-roll-not-divided	Relating to expanding the programs to be included in the annual capitation rate review.
+2254	HB5022	S	500	1661267	2026-03-12	34	0	screened	final-roll-not-divided	Relating to expanding the programs to be included in the annual capitation rate review.
+2254	HB5048	H	673	1663030	2026-03-14	96	0	screened	final-roll-not-divided	To ensure virtual instruction for foster students while in temporary placement facilities.
+2254	HB5048	S	554	1662520	2026-03-13	34	0	screened	final-roll-not-divided	To ensure virtual instruction for foster students while in temporary placement facilities.
+2254	HB5063	H	262	1650468	2026-03-03	84	8	screened	final-roll-not-divided	To permit the county commission to appoint a county commissioner to a convention and visitor’s bureau as a voting member
+2254	HB5063	S	501	1661783	2026-03-12	34	0	screened	final-roll-not-divided	To permit the county commission to appoint a county commissioner to a convention and visitor’s bureau as a voting member
+2254	HB5065	H	682	1663137	2026-03-14	93	4	screened	final-roll-not-divided	Relating to hotel occupancy tax.
+2254	HB5065	S	555	1662718	2026-03-13	34	0	screened	final-roll-not-divided	Relating to hotel occupancy tax.
+2254	HB5067	H	206	1646882	2026-02-26	92	0	screened	final-roll-not-divided	Relating to the powers and duties of the director of the Division of Administrative Services
+2254	HB5067	S	411	1658306	2026-03-10	34	0	screened	final-roll-not-divided	Relating to the powers and duties of the director of the Division of Administrative Services
+2254	HB5086	H	653	1662943	2026-03-14	97	0	screened	final-roll-not-divided	Relating to peer support services
+2254	HB5086	S	502	1661407	2026-03-12	34	0	screened	final-roll-not-divided	Relating to peer support services
+2254	HB5087	H	300	1652541	2026-03-04	88	0	screened	final-roll-not-divided	Relating to Interstate Cosmetology Licensure Compact.
+2254	HB5087	S	503	1661278	2026-03-12	34	0	screened	final-roll-not-divided	Relating to Interstate Cosmetology Licensure Compact.
+2254	HB5088	H	301	1652772	2026-03-04	89	1	screened	final-roll-not-divided	Relating to Natural Resource Police Officer Retirement
+2254	HB5088	S	504	1661462	2026-03-12	34	0	screened	final-roll-not-divided	Relating to Natural Resource Police Officer Retirement
+2254	HB5089	H	263	1651159	2026-03-03	87	4	screened	final-roll-not-divided	Relating to public school acceptance of student transcripts or other credentials
+2254	HB5089	S	466	1659757	2026-03-11	32	2	screened	final-roll-not-divided	Relating to public school acceptance of student transcripts or other credentials
+2254	HB5101	H	645	1663089	2026-03-14	97	0	screened	final-roll-not-divided	The Joanna Phillips Domestic Violence Prevention Act
+2254	HB5101	S	683	1663090	2026-03-14	33	0	screened	final-roll-not-divided	The Joanna Phillips Domestic Violence Prevention Act
+2254	HB5110	H	381	1658414	2026-03-10	93	0	screened	final-roll-not-divided	Amend section providing for waiver of tuition and fees for senior citizens auditing certain college classes
+2254	HB5110	S	379	1657020	2026-03-09	34	0	screened	final-roll-not-divided	Amend section providing for waiver of tuition and fees for senior citizens auditing certain college classes
+2254	HB5168	H	693	1663261	2026-03-14	96	1	screened	final-roll-not-divided	To increase funding for EMS first responders.
+2254	HB5168	S	559	1662515	2026-03-13	34	0	screened	final-roll-not-divided	To increase funding for EMS first responders.
+2254	HB5182	H	125	1636545	2026-02-18	91	0	screened	final-roll-not-divided	Relating generally to authorizing security personnel employed by the State Treasurer to carry concealed weapons while pe
+2254	HB5182	S	560	1662386	2026-03-13	34	0	screened	final-roll-not-divided	Relating generally to authorizing security personnel employed by the State Treasurer to carry concealed weapons while pe
+2254	HB5212	H	671	1663084	2026-03-15	96	0	screened	final-roll-not-divided	Relating to financial aid for post-secondary education.
+2254	HB5212	S	561	1662644	2026-03-13	33	0	screened	final-roll-not-divided	Relating to financial aid for post-secondary education.
+2254	HB5214	H	646	1662916	2026-03-14	97	0	screened	final-roll-not-divided	Relating to drug testing of parents who have had abuse and/or neglect claims substantiated against them prior to reunifi
+2254	HB5214	S	693	1663196	2026-03-14	33	0	screened	final-roll-not-divided	Relating to drug testing of parents who have had abuse and/or neglect claims substantiated against them prior to reunifi
+2254	HB5227	H	382	1658607	2026-03-10	93	0	screened	final-roll-not-divided	Relating to Secretary of State annual reports, fees, and veteran-owned business logotypes
+2254	HB5227	S	380	1657116	2026-03-09	34	0	screened	final-roll-not-divided	Relating to Secretary of State annual reports, fees, and veteran-owned business logotypes
+2254	HB5277	H	483	1661811	2026-03-12	93	0	screened	final-roll-not-divided	Supplemental Appropriation to the Department of Health Facilities-Welch Community Hospital, William R. Sharpe Jr. Hospit
+2254	HB5277	S	608	1662887	2026-03-14	34	0	screened	final-roll-not-divided	Supplemental Appropriation to the Department of Health Facilities-Welch Community Hospital, William R. Sharpe Jr. Hospit
+2254	HB5288	H	487	1661324	2026-03-12	91	2	screened	final-roll-not-divided	Supplemental Appropriation to the Department of Agriculture-West Virginia Spay Neuter Assistance Fund from Special Reven
+2254	HB5288	S	611	1662924	2026-03-14	34	0	screened	final-roll-not-divided	Supplemental Appropriation to the Department of Agriculture-West Virginia Spay Neuter Assistance Fund from Special Reven
+2254	HB5307	H	489	1661294	2026-03-12	90	3	screened	final-roll-not-divided	Supplemental Appropriation to the Department of Tourism- Division of Culture and History from the Unappropriated Surplus
+2254	HB5307	S	614	1662908	2026-03-14	34	0	screened	final-roll-not-divided	Supplemental Appropriation to the Department of Tourism- Division of Culture and History from the Unappropriated Surplus
+2254	HB5317	H	491	1661769	2026-03-12	92	1	screened	final-roll-not-divided	Supplemental Appropriation to the Department of Commerce - Division of Natural Resources from the Unappropriated Surplus
+2254	HB5317	S	617	1662875	2026-03-14	34	0	screened	final-roll-not-divided	Supplemental Appropriation to the Department of Commerce - Division of Natural Resources from the Unappropriated Surplus
+2254	HB5323	H	304	1652612	2026-03-04	61	31	screened	held-by-tally-audit	Relating to indexing of license and stamp fees
+2254	HB5323	S	505	1661606	2026-03-12	29	5	screened	final-roll-not-divided	Relating to indexing of license and stamp fees
+2254	HB5325	H	305	1652516	2026-03-04	91	0	screened	final-roll-not-divided	Creating an emeritus license status for retired physicians, podiatric physicians and physician assistants who meet eligi
+2254	HB5325	S	467	1660307	2026-03-11	34	0	screened	final-roll-not-divided	Creating an emeritus license status for retired physicians, podiatric physicians and physician assistants who meet eligi
+2254	HB5327	H	306	1652546	2026-03-04	93	0	screened	final-roll-not-divided	West Virginia ALS Care Services Act
+2254	HB5327	S	506	1661234	2026-03-12	34	0	screened	final-roll-not-divided	West Virginia ALS Care Services Act
+2254	HB5353	H	655	1663207	2026-03-14	93	4	screened	final-roll-not-divided	To bring virtual currency kiosks within the purview of money transmission licensure and create disclosure requirements a
+2254	HB5353	S	563	1662383	2026-03-13	33	1	screened	final-roll-not-divided	To bring virtual currency kiosks within the purview of money transmission licensure and create disclosure requirements a
+2254	HB5354	H	243	1648591	2026-03-02	94	2	screened	final-roll-not-divided	Relating to authorizing legislative rules regarding higher education
+2254	HB5354	S	468	1659936	2026-03-11	34	0	screened	final-roll-not-divided	Relating to authorizing legislative rules regarding higher education
+2254	HB5364	H	683	1663297	2026-03-14	90	7	screened	final-roll-not-divided	Reforming Boards and Commissions
+2254	HB5364	S	470	1660393	2026-03-11	33	1	screened	final-roll-not-divided	Reforming Boards and Commissions
+2254	HB5366	H	684	1663067	2026-03-14	97	0	screened	final-roll-not-divided	Relating to rules governing the practice of law
+2254	HB5366	S	565	1662504	2026-03-13	34	0	screened	final-roll-not-divided	Relating to rules governing the practice of law
+2254	HB5381	H	704	1663233	2026-03-14	91	5	screened	final-roll-not-divided	Relating to developing a comprehensive energy development policy and plan for the Office of Energy
+2254	HB5381	S	697	1663230	2026-03-14	33	0	screened	final-roll-not-divided	Relating to developing a comprehensive energy development policy and plan for the Office of Energy
+2254	HB5382	H	246	1648943	2026-03-02	84	3	screened	final-roll-not-divided	Relating to the Neighborhood Investment Program.
+2254	HB5382	S	507	1661582	2026-03-12	33	1	screened	final-roll-not-divided	Relating to the Neighborhood Investment Program.
+2254	HB5401	H	651	1662961	2026-03-14	97	0	screened	final-roll-not-divided	Relating to voting in West Virginia elections while residing overseas
+2254	HB5401	S	566	1662478	2026-03-13	34	0	screened	final-roll-not-divided	Relating to voting in West Virginia elections while residing overseas
+2254	HB5406	H	187	1644121	2026-02-25	96	0	screened	final-roll-not-divided	Relating to driving under the influence
+2254	HB5406	S	509	1661562	2026-03-12	34	0	screened	final-roll-not-divided	Relating to driving under the influence
+2254	HB5430	H	504	1662416	2026-03-13	97	0	screened	final-roll-not-divided	Relating to pharmaceutical benefits
+2254	HB5430	S	412	1658236	2026-03-10	34	0	screened	final-roll-not-divided	Relating to pharmaceutical benefits
+2254	HB5437	H	506	1662243	2026-03-13	92	5	screened	final-roll-not-divided	Creating the Vape Safety Act
+2254	HB5437	S	414	1658316	2026-03-10	34	0	screened	final-roll-not-divided	Creating the Vape Safety Act
+2254	HB5438	H	685	1663028	2026-03-14	97	0	screened	final-roll-not-divided	To modify the foundation allowance to improve instructional programs.
+2254	HB5438	S	713	1663259	2026-03-14	34	0	screened	final-roll-not-divided	To modify the foundation allowance to improve instructional programs.
+2254	HB5441	H	649	1662976	2026-03-14	71	26	not-selected	filter 5: Labor GAP, a rewrite of the state personnel system	Reforming State Personnel System
+2254	HB5441	S	567	1662498	2026-03-13	28	6	screened	final-roll-not-divided	Reforming State Personnel System
+2254	HB5444	H	189	1644717	2026-02-25	94	2	screened	final-roll-not-divided	Relating to increasing the amount of fees to be paid by parolees for supervision.
+2254	HB5444	S	415	1658368	2026-03-10	34	0	screened	final-roll-not-divided	Relating to increasing the amount of fees to be paid by parolees for supervision.
+2254	HB5457	H	318	1652575	2026-03-04	91	0	screened	final-roll-not-divided	To allow partial credits for times of disability service in the CPRB for Troopers.
+2254	HB5457	S	416	1658684	2026-03-10	34	0	screened	final-roll-not-divided	To allow partial credits for times of disability service in the CPRB for Troopers.
+2254	HB5458	H	268	1650379	2026-03-03	92	0	screened	final-roll-not-divided;held-by-tally-audit	Relating to professionals to be licensed by the West Virginia Board of Medicine
+2254	HB5458	S	382	1657083	2026-03-09	34	0	screened	final-roll-not-divided	Relating to professionals to be licensed by the West Virginia Board of Medicine
+2254	HB5459	H	249	1648584	2026-03-02	90	3	screened	final-roll-not-divided	Relating to a tax on managed care organizations
+2254	HB5459	S	471	1660361	2026-03-11	34	0	screened	final-roll-not-divided	Relating to a tax on managed care organizations
+2254	HB5462	H	658	1662952	2026-03-14	86	11	screened	final-roll-not-divided	Relating to Mine Subsidence
+2254	HB5462	S	569	1662428	2026-03-13	34	0	screened	final-roll-not-divided	Relating to Mine Subsidence
+2254	HB5466	H	321	1652770	2026-03-04	89	0	screened	final-roll-not-divided;roll-number-not-in-own-history	Relating to Abuse Prevention Program
+2254	HB5466	S	510	1661331	2026-03-12	34	0	screened	final-roll-not-divided	Relating to Abuse Prevention Program
+2254	HB5480	H	661	1662949	2026-03-14	97	0	screened	final-roll-not-divided	Relating to establishing the West Virginia Youth Summer Employment and Career Readiness Program.
+2254	HB5480	S	511	1661536	2026-03-12	34	0	screened	final-roll-not-divided	Relating to establishing the West Virginia Youth Summer Employment and Career Readiness Program.
+2254	HB5484	H	648	1663145	2026-03-14	97	0	screened	final-roll-not-divided	Creating the crime of conspiracy to deny medical treatment to victim of sexual offense
+2254	HB5484	S	570	1662723	2026-03-13	34	0	screened	final-roll-not-divided	Creating the crime of conspiracy to deny medical treatment to victim of sexual offense
+2254	HB5515	H	647	1663280	2026-03-14	94	1	screened	final-roll-not-divided	Relating to modernizing and updating workers’ compensation statutes.
+2254	HB5515	S	571	1662777	2026-03-13	34	0	screened	final-roll-not-divided	Relating to modernizing and updating workers’ compensation statutes.
+2254	HB5527	H	662	1663007	2026-03-14	95	0	screened	final-roll-not-divided	Relating to Wellness Reimbursement Programs
+2254	HB5527	S	572	1662522	2026-03-13	34	0	screened	final-roll-not-divided	Relating to Wellness Reimbursement Programs
+2254	HB5528	H	667	1663184	2026-03-14	93	2	screened	final-roll-not-divided	Relating to protection of personal residential information of certain public officials.
+2254	HB5528	S	573	1662751	2026-03-13	34	0	screened	final-roll-not-divided	Relating to protection of personal residential information of certain public officials.
+2254	HB5564	H	594	1662936	2026-03-14	97	0	screened	final-roll-not-divided	Relating to deputy sheriffs’ vacation time
+2254	HB5564	S	686	1663289	2026-03-14	33	0	screened	final-roll-not-divided	Relating to deputy sheriffs’ vacation time
+2254	HB5582	H	666	1663281	2026-03-14	86	9	screened	final-roll-not-divided	Extending program for drug screening of applicants for TANF
+2254	HB5582	S	577	1662749	2026-03-13	28	2	screened	final-roll-not-divided	Extending program for drug screening of applicants for TANF
+2254	HB5612	H	209	1645935	2026-02-26	90	1	screened	final-roll-not-divided	Relating to property valuations of properties located on the State Capitol Complex
+2254	HB5612	S	417	1658184	2026-03-10	34	0	screened	final-roll-not-divided	Relating to property valuations of properties located on the State Capitol Complex
+2254	HB5613	H	228	1647706	2026-02-27	92	0	screened	final-roll-not-divided	Relating to authorizing the Fleet Management Division to use telematics
+2254	HB5613	S	512	1661588	2026-03-12	34	0	screened	final-roll-not-divided	Relating to authorizing the Fleet Management Division to use telematics
+2254	HB5622	H	334	1652777	2026-03-04	91	0	screened	final-roll-not-divided	Amendments to city charters.
+2254	HB5622	S	513	1661505	2026-03-12	34	0	screened	final-roll-not-divided	Amendments to city charters.
+2254	HB5638	H	644	1662898	2026-03-14	96	1	screened	final-roll-not-divided	Relating to the requirements of the state’s cyber security program and responsibilities and authority of the state chief
+2254	HB5638	S	514	1661258	2026-03-12	34	0	screened	final-roll-not-divided	Relating to the requirements of the state’s cyber security program and responsibilities and authority of the state chief
+2254	HB5653	H	252	1649057	2026-03-02	94	0	screened	final-roll-not-divided	To confirm the confidentiality of internal audit and other manuals, training materials, guidelines, thresholds, and proc
+2254	HB5653	S	515	1661371	2026-03-12	34	0	screened	final-roll-not-divided	To confirm the confidentiality of internal audit and other manuals, training materials, guidelines, thresholds, and proc
+2254	HB5682	H	352	1655569	2026-03-05	77	5	screened	final-roll-not-divided	Supplemental Appropriation to expire funds to surplus balance of General Revenue
+2254	HB5682	S	365	1655977	2026-03-06	34	0	screened	final-roll-not-divided	Supplemental Appropriation to expire funds to surplus balance of General Revenue
+2254	HB5684	H	665	1663107	2026-03-14	95	0	screened	final-roll-not-divided	Relating to authorizing the Supreme Court of Appeals to create child protection commissioners
+2254	HB5684	S	517	1661254	2026-03-12	34	0	screened	final-roll-not-divided	Relating to authorizing the Supreme Court of Appeals to create child protection commissioners
+2254	HB5685	H	339	1652747	2026-03-04	88	5	screened	final-roll-not-divided	Relating to authorizing bonds for improvements to the West Virginia Science and Culture Center
+2254	HB5685	S	518	1661448	2026-03-12	33	1	screened	final-roll-not-divided	Relating to authorizing bonds for improvements to the West Virginia Science and Culture Center
+2254	HB5686	H	700	1663262	2026-03-14	96	1	screened	final-roll-not-divided	Relating to the timing of payments of annually required deposit into an eligible recipient’s Hope Scholarship account
+2254	HB5686	S	418	1658188	2026-03-10	34	0	screened	final-roll-not-divided	Relating to the timing of payments of annually required deposit into an eligible recipient’s Hope Scholarship account
+2254	HB5689	H	399	1659847	2026-03-11	91	3	screened	final-roll-not-divided	Supplemental appropriation, Department of Homeland Security
+2254	HB5689	S	579	1662426	2026-03-13	31	0	screened	final-roll-not-divided	Supplemental appropriation, Department of Homeland Security
+2254	HB5690	H	401	1660009	2026-03-11	92	2	screened	final-roll-not-divided	Supplemental appropriation, Adjutant General
+2254	HB5690	S	581	1662507	2026-03-13	30	0	screened	final-roll-not-divided	Supplemental appropriation, Adjutant General
+2254	HB5691	H	403	1660620	2026-03-11	88	5	screened	final-roll-not-divided	Supplemental appropriation, Department of Health
+2254	HB5691	S	583	1662638	2026-03-13	30	0	screened	final-roll-not-divided	Supplemental appropriation, Department of Health
+2254	HB5692	H	405	1660050	2026-03-11	91	2	screened	final-roll-not-divided;held-by-tally-audit	Supplemental appropriation, State Road Fund
+2254	HB5692	S	585	1662460	2026-03-13	30	0	screened	final-roll-not-divided	Supplemental appropriation, State Road Fund
+2254	HB5693	H	663	1663043	2026-03-14	92	3	screened	final-roll-not-divided	Supplemental appropriation, Department of Tourism Revenue
+2254	HB5693	S	587	1662518	2026-03-13	31	0	screened	final-roll-not-divided	Supplemental appropriation, Department of Tourism Revenue
+2254	HB5694	H	591	1662927	2026-03-14	97	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Education, fund 0313.
+2254	HB5694	S	620	1662930	2026-03-14	34	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Education, fund 0313.
+2254	HJR42	H	278	1652406	2026-03-04	95	0	screened	final-roll-not-divided	Homestead exemption
+2254	HJR42	S	589	1662748	2026-03-13	31	0	screened	final-roll-not-divided	Homestead exemption
+2254	SB1	H	83	1633107	2026-02-16	87	3	screened	final-roll-not-divided	Small Business Growth Act
+2254	SB1	S	87	1633991	2026-02-16	29	2	screened	final-roll-not-divided	Small Business Growth Act
+2254	SB1008	H	618	1662957	2026-03-14	84	11	screened	final-roll-not-divided	Relating to statute of limitations for asbestos and silica litigation
+2254	SB1008	S	645	1662959	2026-03-14	34	0	screened	final-roll-not-divided	Relating to statute of limitations for asbestos and silica litigation
+2254	SB1011	H	482	1661450	2026-03-12	92	0	screened	final-roll-not-divided	Allowing volunteer fire departments to submit audit paperwork electronically
+2254	SB1011	S	282	1648891	2026-03-02	28	0	screened	final-roll-not-divided	Allowing volunteer fire departments to submit audit paperwork electronically
+2254	SB1026	H	620	1662882	2026-03-14	97	0	screened	final-roll-not-divided	Increasing criminal penalties and fines for disturbing religious worship
+2254	SB1026	S	661	1663076	2026-03-14	34	0	screened	final-roll-not-divided	Increasing criminal penalties and fines for disturbing religious worship
+2254	SB1033	H	687	1663294	2026-03-14	73	22	not-selected	filter 5: agriculture department land powers, no research area fits	Clarifying powers and duties of Commissioner of Agriculture over state-owned land
+2254	SB1033	S	304	1650803	2026-03-03	34	0	screened	final-roll-not-divided	Clarifying powers and duties of Commissioner of Agriculture over state-owned land
+2254	SB1038	H	622	1662848	2026-03-14	94	3	screened	final-roll-not-divided	Adjusting salaries for certain administrative law judges
+2254	SB1038	S	351	1652634	2026-03-04	33	0	screened	final-roll-not-divided	Adjusting salaries for certain administrative law judges
+2254	SB104	H	415	1661502	2026-03-12	96	0	screened	final-roll-not-divided	Providing certain state mine inspectors with raise
+2254	SB104	S	89	1634184	2026-02-16	33	0	screened	final-roll-not-divided	Providing certain state mine inspectors with raise
+2254	SB1042	H	397	1659980	2026-03-11	93	2	screened	final-roll-not-divided	Relating to ventilation of underground mines
+2254	SB1042	S	474	1661029	2026-03-11	32	0	screened	final-roll-not-divided	Relating to ventilation of underground mines
+2254	SB1043	H	624	1662945	2026-03-14	97	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Agriculture, fund 1401
+2254	SB1043	S	453	1659861	2026-03-11	34	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Agriculture, fund 1401
+2254	SB1053	H	626	1662851	2026-03-14	92	3	screened	final-roll-not-divided	Authorizing Unemployment Automation and Administration Fund to modernize and enhance WorkForce West Virginia
+2254	SB1053	S	666	1663037	2026-03-14	34	0	screened	final-roll-not-divided	Authorizing Unemployment Automation and Administration Fund to modernize and enhance WorkForce West Virginia
+2254	SB1059	H	628	1662905	2026-03-14	95	0	screened	final-roll-not-divided	Relating to agreements between solid waste motor carriers and commercial customers
+2254	SB1059	S	248	1646935	2026-02-26	34	0	screened	final-roll-not-divided	Relating to agreements between solid waste motor carriers and commercial customers
+2254	SB1060	H	371	1657042	2026-03-09	75	21	not-selected	filter 5: thoroughbred race eligibility and caps, no research area fits	Providing WV certified thoroughbred eligibility and increase restricted race caps
+2254	SB1060	S	353	1652779	2026-03-04	24	9	not-selected	filter 5: thoroughbred race eligibility and caps, no research area fits	Providing WV certified thoroughbred eligibility and increase restricted race caps
+2254	SB1064	H	629	1662894	2026-03-14	95	1	screened	final-roll-not-divided	"Redefining ""long-term substitute"" as it relates to public school personnel"
+2254	SB1064	S	711	1663120	2026-03-14	34	0	screened	final-roll-not-divided	"Redefining ""long-term substitute"" as it relates to public school personnel"
+2254	SB137	H	361	1656921	2026-03-09	95	0	screened	final-roll-not-divided	Modifying parole eligibility for crime of second degree murder and voluntary manslaughter
+2254	SB137	S	420	1659797	2026-03-11	33	1	screened	final-roll-not-divided	Modifying parole eligibility for crime of second degree murder and voluntary manslaughter
+2254	SB155	H	660	1663110	2026-03-14	92	5	screened	final-roll-not-divided	Relating to adjunct teaching permits
+2254	SB155	S	419	1659177	2026-03-10	33	0	screened	final-roll-not-divided	Relating to adjunct teaching permits
+2254	SB167	H	387	1660668	2026-03-11	92	2	screened	final-roll-not-divided	Relating to meetings for local levying bodies
+2254	SB167	S	28	1620895	2026-02-02	34	0	screened	final-roll-not-divided	Relating to meetings for local levying bodies
+2254	SB194	H	517	1662394	2026-03-13	96	0	screened	final-roll-not-divided	"Updating definition of ""disabled veteran taxpayer"""
+2254	SB194	S	669	1662971	2026-03-14	34	0	screened	final-roll-not-divided	"Updating definition of ""disabled veteran taxpayer"""
+2254	SB197	H	518	1662539	2026-03-13	97	0	screened	final-roll-not-divided	Relating to crime of sexual abuse by parent, guardian, custodian, or person in position of trust to child
+2254	SB197	S	679	1663040	2026-03-14	30	0	screened	final-roll-not-divided	Relating to crime of sexual abuse by parent, guardian, custodian, or person in position of trust to child
+2254	SB200	H	417	1661493	2026-03-12	96	0	screened	final-roll-not-divided	Increasing criminal penalties and fines for assault on certain public service workers, law-enforcement officers, and pol
+2254	SB200	S	596	1662528	2026-03-13	33	0	screened	final-roll-not-divided	Increasing criminal penalties and fines for assault on certain public service workers, law-enforcement officers, and pol
+2254	SB207	H	126	1638122	2026-02-19	94	0	screened	final-roll-not-divided	Clarifying sheriff's compensation for collection of taxes
+2254	SB207	S	8	1616518	2026-01-23	32	0	screened	final-roll-not-divided	Clarifying sheriff's compensation for collection of taxes
+2254	SB208	H	116	1636760	2026-02-18	92	0	screened	final-roll-not-divided	Exempting certain military records from public release
+2254	SB208	S	26	1619994	2026-01-30	34	0	screened	final-roll-not-divided	Exempting certain military records from public release
+2254	SB210	H	231	1648806	2026-03-02	95	0	screened	final-roll-not-divided	Modifying oversight provisions for Legislative Oversight Commission on Health and Human Resources Accountability
+2254	SB210	S	43	1622895	2026-02-04	34	0	screened	final-roll-not-divided	Modifying oversight provisions for Legislative Oversight Commission on Health and Human Resources Accountability
+2254	SB228	H	519	1662357	2026-03-13	96	0	screened	final-roll-not-divided	Relating to use of technology in child abuse and neglect investigations
+2254	SB228	S	654	1663202	2026-03-14	34	0	screened	final-roll-not-divided	Relating to use of technology in child abuse and neglect investigations
+2254	SB231	H	520	1662608	2026-03-13	86	7	screened	final-roll-not-divided	Relating to value-based payment requirements
+2254	SB231	S	655	1662966	2026-03-14	34	0	screened	final-roll-not-divided	Relating to value-based payment requirements
+2254	SB233	H	388	1659839	2026-03-11	90	5	screened	final-roll-not-divided	Clarifying qualifications to be licensed to administer polygraphs
+2254	SB233	S	29	1620878	2026-02-02	34	0	screened	final-roll-not-divided	Clarifying qualifications to be licensed to administer polygraphs
+2254	SB243	H	522	1662287	2026-03-13	89	2	screened	final-roll-not-divided	Establishing disaster repair and recovery effort tax credit for taxpayers subject to severance and business privilege ta
+2254	SB243	S	622	1662903	2026-03-14	34	0	screened	final-roll-not-divided	Establishing disaster repair and recovery effort tax credit for taxpayers subject to severance and business privilege ta
+2254	SB250	H	354	1655618	2026-03-05	68	15	screened	final-roll-not-divided	Budget Bill
+2254	SB250	S	358	1654604	2026-03-05	30	3	screened	final-roll-not-divided	Budget Bill
+2254	SB251	H	180	1644114	2026-02-25	93	0	screened	final-roll-not-divided	Authorizing Department of Administration to promulgate legislative rules
+2254	SB251	S	93	1634466	2026-02-16	33	0	screened	final-roll-not-divided	Authorizing Department of Administration to promulgate legislative rules
+2254	SB256	H	137	1640002	2026-02-20	84	12	screened	final-roll-not-divided	Authorizing DEP to promulgate legislative rules
+2254	SB256	S	204	1641129	2026-02-23	33	0	screened	final-roll-not-divided	Authorizing DEP to promulgate legislative rules
+2254	SB28	H	412	1661204	2026-03-12	95	0	screened	final-roll-not-divided	Allowing members of State Police retirement system to use accrued leave as credit toward retirement
+2254	SB28	S	143	1638124	2026-02-19	33	0	screened	final-roll-not-divided	Allowing members of State Police retirement system to use accrued leave as credit toward retirement
+2254	SB281	H	418	1661438	2026-03-12	95	1	screened	final-roll-not-divided	Authorizing Department of Homeland Security to promulgate legislative rules
+2254	SB281	S	11	1618226	2026-01-28	33	0	screened	final-roll-not-divided	Authorizing Department of Homeland Security to promulgate legislative rules
+2254	SB29	H	510	1662284	2026-03-13	92	2	screened	final-roll-not-divided;printed-roll-number-shared	Providing pay increases to members of judiciary
+2254	SB29	S	639	1663041	2026-03-14	33	0	screened	final-roll-not-divided	Providing pay increases to members of judiciary
+2254	SB309	H	139	1639676	2026-02-20	94	2	screened	final-roll-not-divided	Authorizing DOT to promulgate legislative rules
+2254	SB309	S	13	1618223	2026-01-28	33	0	screened	final-roll-not-divided	Authorizing DOT to promulgate legislative rules
+2254	SB374	H	232	1648838	2026-03-02	93	2	screened	final-roll-not-divided	Authorizing Department of Commerce to promulgate legislative rules
+2254	SB374	S	30	1620886	2026-02-02	34	0	screened	final-roll-not-divided	Authorizing Department of Commerce to promulgate legislative rules
+2254	SB392	H	526	1662388	2026-03-13	88	8	screened	final-roll-not-divided	Relating to personal income tax reduction
+2254	SB392	S	668	1662942	2026-03-14	32	2	screened	final-roll-not-divided	Relating to personal income tax reduction
+2254	SB393	H	154	1640878	2026-02-23	94	0	screened	final-roll-not-divided	Updating corporate net income tax definitions
+2254	SB393	S	74	1633206	2026-02-13	32	0	screened	final-roll-not-divided	Updating corporate net income tax definitions
+2254	SB4	H	411	1661179	2026-03-12	83	12	screened	final-roll-not-divided	Relating to crimes against public justice
+2254	SB4	S	691	1663026	2026-03-14	32	2	screened	final-roll-not-divided	Relating to crimes against public justice
+2254	SB400	H	156	1640891	2026-02-23	93	1	screened	final-roll-not-divided	Updating personal income tax definitions and provision of law relating to gaming and gambling losses
+2254	SB400	S	21	1619482	2026-01-29	33	1	screened	final-roll-not-divided	Updating personal income tax definitions and provision of law relating to gaming and gambling losses
+2254	SB402	H	389	1660155	2026-03-11	95	0	screened	final-roll-not-divided	Workforce Readiness and Opportunity Act
+2254	SB402	S	656	1663075	2026-03-14	34	0	screened	final-roll-not-divided	Workforce Readiness and Opportunity Act
+2254	SB427	H	527	1662501	2026-03-13	77	0	screened	final-roll-not-divided	Relating to loan form
+2254	SB427	S	623	1663083	2026-03-14	34	0	screened	final-roll-not-divided	Relating to loan form
+2254	SB44	H	512	1662254	2026-03-13	96	0	screened	final-roll-not-divided	Relating to sale of homemade food items
+2254	SB44	S	641	1663104	2026-03-14	34	0	screened	final-roll-not-divided	Relating to sale of homemade food items
+2254	SB459	H	528	1662367	2026-03-13	85	0	screened	final-roll-not-divided	Ensuring meaningful contact between child and step-siblings
+2254	SB459	S	271	1649078	2026-03-02	31	0	screened	final-roll-not-divided	Ensuring meaningful contact between child and step-siblings
+2254	SB467	H	363	1657086	2026-03-09	96	0	screened	final-roll-not-divided	Allowing enforcement of Purple Heart parking spaces taken by non-Purple Heart recipients
+2254	SB467	S	384	1658715	2026-03-10	34	0	screened	final-roll-not-divided	Allowing enforcement of Purple Heart parking spaces taken by non-Purple Heart recipients
+2254	SB481	H	420	1661531	2026-03-12	96	0	screened	final-roll-not-divided	Relating to elections
+2254	SB481	S	325	1652465	2026-03-04	33	0	screened	final-roll-not-divided	Relating to elections
+2254	SB490	H	422	1661475	2026-03-12	96	0	screened	final-roll-not-divided	Approving short-term training programs for eligibility for federal Workforce Pell Grants
+2254	SB490	S	49	1625846	2026-02-06	33	0	screened	final-roll-not-divided	Approving short-term training programs for eligibility for federal Workforce Pell Grants
+2254	SB499	H	531	1662737	2026-03-13	96	0	screened	final-roll-not-divided	Requiring auto accident toxicology test be performed
+2254	SB499	S	670	1663112	2026-03-14	34	0	screened	final-roll-not-divided	Requiring auto accident toxicology test be performed
+2254	SB502	H	532	1662689	2026-03-13	96	0	screened	final-roll-not-divided	Women’s Collegiate Sports Protection Act
+2254	SB502	S	664	1663077	2026-03-14	34	0	screened	final-roll-not-divided	Women’s Collegiate Sports Protection Act
+2254	SB506	H	534	1662480	2026-03-13	96	0	screened	final-roll-not-divided	Permitting certain use of county-owned wireless tower
+2254	SB506	S	624	1663003	2026-03-14	34	0	screened	final-roll-not-divided	Permitting certain use of county-owned wireless tower
+2254	SB531	H	424	1661171	2026-03-12	82	12	screened	final-roll-not-divided	Establishing First Amendment Preservation Act
+2254	SB531	S	598	1662533	2026-03-13	31	2	screened	final-roll-not-divided	Establishing First Amendment Preservation Act
+2254	SB54	H	513	1662484	2026-03-13	96	0	screened	final-roll-not-divided	Establishing criminal penalties for abuse or neglect of incapacitated adults
+2254	SB54	S	653	1662967	2026-03-14	34	0	screened	final-roll-not-divided	Establishing criminal penalties for abuse or neglect of incapacitated adults
+2254	SB553	H	535	1662526	2026-03-13	91	5	screened	final-roll-not-divided	Providing for transfer of license to contractor’s qualifying immediate family member
+2254	SB553	S	657	1662983	2026-03-14	34	0	screened	final-roll-not-divided	Providing for transfer of license to contractor’s qualifying immediate family member
+2254	SB556	H	390	1660646	2026-03-11	77	16	screened	final-roll-not-divided	Modifying priority of insurance coverage for drivers of certain vehicles provided by entities
+2254	SB556	S	37	1621815	2026-02-03	34	0	screened	final-roll-not-divided	Modifying priority of insurance coverage for drivers of certain vehicles provided by entities
+2254	SB570	H	537	1662524	2026-03-13	96	0	screened	final-roll-not-divided	Supplemental Appropriation to Department of Health, fund 8802
+2254	SB570	S	78	1633186	2026-02-13	32	0	screened	final-roll-not-divided	Supplemental Appropriation to Department of Health, fund 8802
+2254	SB573	H	426	1661441	2026-03-12	94	0	screened	final-roll-not-divided	Relating to requirements for disclosures and recordkeeping by persons making mortgage loans
+2254	SB573	S	38	1621715	2026-02-03	34	0	screened	final-roll-not-divided	Relating to requirements for disclosures and recordkeeping by persons making mortgage loans
+2254	SB574	H	427	1661868	2026-03-12	93	0	screened	final-roll-not-divided;printed-roll-number-shared	Relating to bank merger by interstate branching
+2254	SB574	S	39	1621883	2026-02-03	34	0	screened	final-roll-not-divided	Relating to bank merger by interstate branching
+2254	SB575	H	539	1662650	2026-03-13	96	0	screened	final-roll-not-divided	Relating to refusal review hearings
+2254	SB575	S	658	1663080	2026-03-14	34	0	screened	final-roll-not-divided	Relating to refusal review hearings
+2254	SB581	H	428	1662283	2026-03-12	95	0	screened	final-roll-not-divided	Eliminating requirement that commissioner approve joint account forms used by banking institutions
+2254	SB581	S	40	1621829	2026-02-03	34	0	screened	final-roll-not-divided	Eliminating requirement that commissioner approve joint account forms used by banking institutions
+2254	SB582	H	429	1661519	2026-03-12	95	0	screened	final-roll-not-divided	Relating to requirements for licensure as mortgage lender or broker
+2254	SB582	S	41	1621844	2026-02-03	34	0	screened	final-roll-not-divided	Relating to requirements for licensure as mortgage lender or broker
+2254	SB586	H	430	1661410	2026-03-12	68	27	batch-01	imported	Modifying requirements for public water systems
+2254	SB586	S	51	1625498	2026-02-06	33	0	screened	final-roll-not-divided	Modifying requirements for public water systems
+2254	SB587	H	540	1662615	2026-03-13	94	2	screened	final-roll-not-divided	Adjusting salary schedule for elected county officials
+2254	SB587	S	709	1663250	2026-03-14	34	0	screened	final-roll-not-divided	Adjusting salary schedule for elected county officials
+2254	SB59	H	413	1661168	2026-03-12	92	4	screened	final-roll-not-divided	Relating to voter eligibility and residency requirements
+2254	SB59	S	593	1662546	2026-03-13	33	0	screened	final-roll-not-divided	Relating to voter eligibility and residency requirements
+2254	SB592	H	364	1656937	2026-03-09	89	7	screened	final-roll-not-divided	WV Short Line Railroad Modernization Act
+2254	SB592	S	54	1626194	2026-02-09	33	1	screened	final-roll-not-divided	WV Short Line Railroad Modernization Act
+2254	SB603	H	391	1659949	2026-03-11	95	0	screened	final-roll-not-divided	Relating to Property Valuation Training and Procedures Commission
+2254	SB603	S	115	1636618	2026-02-18	31	0	screened	final-roll-not-divided	Relating to Property Valuation Training and Procedures Commission
+2254	SB607	H	357	1656154	2026-03-06	90	1	screened	final-roll-not-divided	Relating to federally approved project delivery methods for airport capital improvement projects
+2254	SB607	S	55	1626188	2026-02-09	34	0	screened	final-roll-not-divided	Relating to federally approved project delivery methods for airport capital improvement projects
+2254	SB617	H	542	1662459	2026-03-13	95	0	screened	final-roll-not-divided	Banking and Financial Services Provider Protections for Eligible Adults from Financial Exploitation
+2254	SB617	S	642	1662955	2026-03-14	34	0	screened	final-roll-not-divided	Banking and Financial Services Provider Protections for Eligible Adults from Financial Exploitation
+2254	SB622	H	543	1662685	2026-03-13	95	0	screened	final-roll-not-divided	Extending mine safety technology tax credit
+2254	SB622	S	626	1662899	2026-03-14	34	0	screened	final-roll-not-divided	Extending mine safety technology tax credit
+2254	SB63	H	514	1662380	2026-03-13	70	21	not-selected	filter 5: charter school expansion. Standing precedent is that school choice financing has no defensible direction under public_education_quality	Creating Sustaining Opportunities for Academics in Rural Schools Act
+2254	SB63	S	662	1662937	2026-03-14	32	2	screened	final-roll-not-divided	Creating Sustaining Opportunities for Academics in Rural Schools Act
+2254	SB640	H	141	1639896	2026-02-20	78	17	screened	final-roll-not-divided	Prohibiting release of certain personal information of contributors to political elections
+2254	SB640	S	206	1641650	2026-02-23	31	2	screened	final-roll-not-divided	Prohibiting release of certain personal information of contributors to political elections
+2254	SB641	H	431	1661373	2026-03-12	58	34	batch-01	imported	Relating generally to aboveground storage tanks
+2254	SB641	S	600	1662807	2026-03-13	25	8	batch-01	imported	Relating generally to aboveground storage tanks
+2254	SB643	H	544	1662669	2026-03-13	85	9	screened	final-roll-not-divided	Discontinuing WV Supreme Court of Appeals Public Campaign Financing Program
+2254	SB643	S	103	1635081	2026-02-17	32	1	screened	final-roll-not-divided	Discontinuing WV Supreme Court of Appeals Public Campaign Financing Program
+2254	SB645	H	435	1661731	2026-03-12	94	1	screened	final-roll-not-divided	Prohibiting surprise billing of ground emergency medical services by nonparticipating providers
+2254	SB645	S	601	1662554	2026-03-13	29	4	screened	final-roll-not-divided	Prohibiting surprise billing of ground emergency medical services by nonparticipating providers
+2254	SB648	H	545	1662785	2026-03-13	88	7	screened	final-roll-not-divided	Strategic and Critical Resources Act
+2254	SB648	S	680	1663205	2026-03-14	30	0	screened	final-roll-not-divided	Strategic and Critical Resources Act
+2254	SB650	H	365	1656908	2026-03-09	96	0	screened	final-roll-not-divided	Designating psychiatric hospital that treats exclusively civil and forensic patients
+2254	SB650	S	336	1652764	2026-03-04	33	0	screened	final-roll-not-divided	Designating psychiatric hospital that treats exclusively civil and forensic patients
+2254	SB659	H	254	1650785	2026-03-03	85	10	screened	final-roll-not-divided	Prohibiting certain restrictions on regulation of accessory dwelling units
+2254	SB659	S	361	1655975	2026-03-06	34	0	screened	final-roll-not-divided	Prohibiting certain restrictions on regulation of accessory dwelling units
+2254	SB670	H	547	1662775	2026-03-13	94	0	screened	final-roll-not-divided	Adopting Uniform Protected Series Act
+2254	SB670	S	694	1663282	2026-03-14	34	0	screened	final-roll-not-divided	Adopting Uniform Protected Series Act
+2254	SB686	H	549	1662619	2026-03-13	85	8	screened	final-roll-not-divided	Coal Co-tenancy Modernization and Miners Protection Act
+2254	SB686	S	659	1663053	2026-03-14	34	0	screened	final-roll-not-divided	Coal Co-tenancy Modernization and Miners Protection Act
+2254	SB690	H	359	1656160	2026-03-06	92	0	screened	final-roll-not-divided	Creating alternative DOH procurement procedure
+2254	SB690	S	165	1640012	2026-02-20	31	1	screened	final-roll-not-divided	Creating alternative DOH procurement procedure
+2254	SB692	H	118	1637168	2026-02-18	92	0	screened	final-roll-not-divided	Authorizing green flashing warning lights on DOH vehicles
+2254	SB692	S	80	1633526	2026-02-13	32	0	screened	final-roll-not-divided	Authorizing green flashing warning lights on DOH vehicles
+2254	SB694	H	367	1656917	2026-03-09	72	24	not-selected	filter 5: county superintendent residency, too small and administrative	Removing county residency requirement for county superintendent of schools
+2254	SB694	S	61	1627899	2026-02-10	28	6	screened	final-roll-not-divided	Removing county residency requirement for county superintendent of schools
+2254	SB701	H	601	1662841	2026-03-14	96	0	screened	final-roll-not-divided	Relating to authority of sheriff's commission for collection of taxes
+2254	SB701	S	340	1652319	2026-03-04	33	0	screened	final-roll-not-divided	Relating to authority of sheriff's commission for collection of taxes
+2254	SB703	H	392	1659987	2026-03-11	95	0	screened	final-roll-not-divided	Adopting Social Work Licensure Compact
+2254	SB703	S	118	1636583	2026-02-18	31	0	screened	final-roll-not-divided	Adopting Social Work Licensure Compact
+2254	SB712	H	368	1657034	2026-03-09	96	0	screened	final-roll-not-divided	Allowing installation of cattle guards on certain public roads
+2254	SB712	S	385	1658417	2026-03-10	34	0	screened	final-roll-not-divided	Allowing installation of cattle guards on certain public roads
+2254	SB717	H	437	1661745	2026-03-12	95	0	screened	final-roll-not-divided	Modifying disability and retirement benefits and procedures for municipal police and firefighters
+2254	SB717	S	148	1638114	2026-02-19	33	0	screened	final-roll-not-divided	Modifying disability and retirement benefits and procedures for municipal police and firefighters
+2254	SB719	H	439	1661423	2026-03-12	95	0	screened	final-roll-not-divided	Relating to Municipal Police Officers and Firefighters Retirement System
+2254	SB719	S	166	1639748	2026-02-20	32	0	screened	final-roll-not-divided	Relating to Municipal Police Officers and Firefighters Retirement System
+2254	SB723	H	441	1661841	2026-03-12	95	0	screened	final-roll-not-divided	Clarifying law-enforcement cooperation with bordering states
+2254	SB723	S	649	1663125	2026-03-14	33	0	screened	final-roll-not-divided	Clarifying law-enforcement cooperation with bordering states
+2254	SB724	H	553	1662719	2026-03-13	90	0	screened	final-roll-not-divided	Relating to home confinement officers’ participation in EMS retirement system
+2254	SB724	S	672	1663138	2026-03-14	34	0	screened	final-roll-not-divided	Relating to home confinement officers’ participation in EMS retirement system
+2254	SB726	H	442	1661788	2026-03-12	95	0	screened	final-roll-not-divided	Removing cap for municipalities on their stabilization fund
+2254	SB726	S	97	1634162	2026-02-16	32	0	screened	final-roll-not-divided	Removing cap for municipalities on their stabilization fund
+2254	SB741	H	443	1661458	2026-03-12	92	3	screened	final-roll-not-divided	Expanding pilot program to implement involuntary commitment process
+2254	SB741	S	276	1649407	2026-03-02	32	0	screened	final-roll-not-divided	Expanding pilot program to implement involuntary commitment process
+2254	SB742	H	555	1662575	2026-03-13	81	8	screened	final-roll-not-divided	Modifying requirements for involuntary hospitalization
+2254	SB742	S	643	1663070	2026-03-14	34	0	screened	final-roll-not-divided	Modifying requirements for involuntary hospitalization
+2254	SB749	H	216	1647762	2026-02-27	88	6	screened	final-roll-not-divided	Relating to county economic opportunity development districts
+2254	SB749	S	212	1642310	2026-02-24	27	7	not-selected	filter 3: a single-county excise tax district (Berkeley)	Relating to county economic opportunity development districts
+2254	SB755	H	394	1660534	2026-03-11	92	3	screened	final-roll-not-divided	Removing state agencies' requirement to submit annual reports for certain businesses
+2254	SB755	S	225	1644222	2026-02-25	34	0	screened	final-roll-not-divided	Removing state agencies' requirement to submit annual reports for certain businesses
+2254	SB772	H	556	1662704	2026-03-13	88	3	screened	final-roll-not-divided	Declaring certain claims against WV to be moral obligations
+2254	SB772	S	628	1662895	2026-03-14	34	0	screened	final-roll-not-divided	Declaring certain claims against WV to be moral obligations
+2254	SB781	H	369	1656912	2026-03-09	82	14	screened	final-roll-not-divided	Supplemental appropriation for Civil Contingent Fund, fund 0105
+2254	SB781	S	386	1658204	2026-03-10	34	0	screened	final-roll-not-divided	Supplemental appropriation for Civil Contingent Fund, fund 0105
+2254	SB784	H	444	1661613	2026-03-12	93	2	screened	final-roll-not-divided	Supplemental appropriation to Department of Human Services, fund 8793
+2254	SB784	S	121	1636626	2026-02-18	31	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Human Services, fund 8793
+2254	SB785	H	446	1661420	2026-03-12	91	3	screened	final-roll-not-divided	Supplemental appropriation to Department of Health, fund 5163
+2254	SB785	S	123	1636620	2026-02-18	31	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Health, fund 5163
+2254	SB786	H	448	1661443	2026-03-12	91	3	screened	final-roll-not-divided	Supplemental appropriation to Department of Human Services, fund 5094
+2254	SB786	S	125	1636598	2026-02-18	31	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Human Services, fund 5094
+2254	SB787	H	558	1662647	2026-03-13	87	3	screened	final-roll-not-divided	Supplemental appropriation to Department of Commerce, fund 0250
+2254	SB787	S	421	1660356	2026-03-11	32	1	screened	final-roll-not-divided	Supplemental appropriation to Department of Commerce, fund 0250
+2254	SB788	H	560	1662462	2026-03-13	88	3	screened	final-roll-not-divided	Supplemental appropriation to Department of Commerce, fund 0572
+2254	SB788	S	423	1659865	2026-03-11	32	1	screened	final-roll-not-divided	Supplemental appropriation to Department of Commerce, fund 0572
+2254	SB791	H	562	1662561	2026-03-13	89	2	screened	final-roll-not-divided	Supplemental appropriation to Department of Homeland Security, fund 0443
+2254	SB791	S	425	1660075	2026-03-11	34	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Homeland Security, fund 0443
+2254	SB793	H	564	1662679	2026-03-13	92	0	screened	final-roll-not-divided	Relating to courthouse closures on certain days
+2254	SB793	S	105	1634917	2026-02-17	33	0	screened	final-roll-not-divided	Relating to courthouse closures on certain days
+2254	SB794	H	565	1662745	2026-03-13	93	0	screened	final-roll-not-divided	Relating to appeals of orders or decrees of adoption
+2254	SB794	S	227	1644085	2026-02-25	34	0	screened	final-roll-not-divided	Relating to appeals of orders or decrees of adoption
+2254	SB796	H	395	1660744	2026-03-11	93	2	screened	final-roll-not-divided	Relating to distribution of West Virginia reports
+2254	SB796	S	106	1635020	2026-02-17	33	0	screened	final-roll-not-divided	Relating to distribution of West Virginia reports
+2254	SB800	H	450	1661830	2026-03-12	84	9	screened	final-roll-not-divided	Clarifying policy of state regarding jury service
+2254	SB800	S	602	1662697	2026-03-13	31	2	screened	final-roll-not-divided	Clarifying policy of state regarding jury service
+2254	SB814	H	451	1661459	2026-03-12	78	15	screened	final-roll-not-divided	Supplemental appropriation to State Board of Education, fund 0313
+2254	SB814	S	170	1640030	2026-02-20	31	1	screened	final-roll-not-divided	Supplemental appropriation to State Board of Education, fund 0313
+2254	SB816	H	566	1662768	2026-03-13	87	3	screened	final-roll-not-divided	Supplemental appropriation to Department of Homeland Security, fund 0430
+2254	SB816	S	427	1659794	2026-03-11	34	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Homeland Security, fund 0430
+2254	SB817	H	568	1662482	2026-03-13	90	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Homeland Security, fund 0570
+2254	SB817	S	429	1660024	2026-03-11	34	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Homeland Security, fund 0570
+2254	SB819	H	570	1662472	2026-03-13	91	0	screened	final-roll-not-divided	Supplemental appropriation to Department Health Facilities, fund 0413
+2254	SB819	S	431	1659920	2026-03-11	34	0	screened	final-roll-not-divided	Supplemental appropriation to Department Health Facilities, fund 0413
+2254	SB820	H	572	1662476	2026-03-13	91	1	screened	final-roll-not-divided	Supplemental appropriation to Department of Administration, fund 0186
+2254	SB820	S	433	1659939	2026-03-11	33	1	screened	final-roll-not-divided	Supplemental appropriation to Department of Administration, fund 0186
+2254	SB821	H	453	1661803	2026-03-12	90	3	screened	final-roll-not-divided	Supplemental appropriation to Department of Administration, fund 2367
+2254	SB821	S	129	1637152	2026-02-18	31	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Administration, fund 2367
+2254	SB823	H	455	1661816	2026-03-12	89	3	screened	final-roll-not-divided	Supplementary appropriation to Department of Revenue, fund 7352
+2254	SB823	S	131	1636680	2026-02-18	25	6	screened	final-roll-not-divided	Supplementary appropriation to Department of Revenue, fund 7352
+2254	SB825	H	457	1661861	2026-03-12	90	3	screened	final-roll-not-divided	Supplementary appropriation to Department of Administration, fund 0226
+2254	SB825	S	99	1634045	2026-02-16	33	0	screened	final-roll-not-divided	Supplementary appropriation to Department of Administration, fund 0226
+2254	SB826	H	459	1661259	2026-03-12	90	3	screened	final-roll-not-divided	Supplementary appropriation to Division of Natural Resources, fund 3211
+2254	SB826	S	630	1663071	2026-03-14	34	0	screened	final-roll-not-divided	Supplementary appropriation to Division of Natural Resources, fund 3211
+2254	SB827	H	574	1662633	2026-03-13	86	2	screened	final-roll-not-divided	Supplemental appropriation to Department of Human Services, fund 0486
+2254	SB827	S	435	1659727	2026-03-11	34	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Human Services, fund 0486
+2254	SB828	H	461	1661319	2026-03-12	90	3	screened	final-roll-not-divided	Supplemental Appropriation to Department of Human Services, fund 5090
+2254	SB828	S	632	1662921	2026-03-14	34	0	screened	final-roll-not-divided	Supplemental Appropriation to Department of Human Services, fund 5090
+2254	SB830	H	576	1662764	2026-03-13	86	0	screened	final-roll-not-divided	Supplemental Appropriation to Department of Human Services, fund 0488
+2254	SB830	S	439	1659755	2026-03-11	34	0	screened	final-roll-not-divided	Supplemental Appropriation to Department of Human Services, fund 0488
+2254	SB831	H	463	1661456	2026-03-12	91	3	screened	final-roll-not-divided	Supplemental Appropriation to Department of Human Services, fund 8794
+2254	SB831	S	137	1636623	2026-02-18	31	0	screened	final-roll-not-divided	Supplemental Appropriation to Department of Human Services, fund 8794
+2254	SB84	H	196	1646079	2026-02-26	93	0	screened	final-roll-not-divided	Prohibiting law enforcement from placing surveillance cameras on private property
+2254	SB84	S	360	1655962	2026-03-06	34	0	screened	final-roll-not-divided	Prohibiting law enforcement from placing surveillance cameras on private property
+2254	SB840	H	578	1662662	2026-03-13	90	0	screened	final-roll-not-divided	Supplemental Appropriation to Department of Human Services, fund 0403
+2254	SB840	S	443	1660406	2026-03-11	34	0	screened	final-roll-not-divided	Supplemental Appropriation to Department of Human Services, fund 0403
+2254	SB841	H	465	1661553	2026-03-12	74	19	not-selected	filter 5: a supplemental appropriation, which carries no honest direction	Supplemental Appropriation to State Board of Education, fund 3951
+2254	SB841	S	174	1640016	2026-02-20	31	1	screened	final-roll-not-divided	Supplemental Appropriation to State Board of Education, fund 3951
+2254	SB843	H	467	1661798	2026-03-12	89	3	screened	final-roll-not-divided	Supplemental Appropriation to Department of Health, fund 5144
+2254	SB843	S	139	1636648	2026-02-18	31	0	screened	final-roll-not-divided	Supplemental Appropriation to Department of Health, fund 5144
+2254	SB844	H	580	1662429	2026-03-13	91	0	screened	final-roll-not-divided	Supplemental Appropriation to Department of Human Services, fund 8722
+2254	SB844	S	388	1658307	2026-03-10	34	0	screened	final-roll-not-divided	Supplemental Appropriation to Department of Human Services, fund 8722
+2254	SB845	H	582	1662493	2026-03-13	90	3	screened	final-roll-not-divided	Supplemental Appropriation to Governor's Office Civil Contingent Fund, fund 0105
+2254	SB845	S	699	1663305	2026-03-14	34	0	screened	final-roll-not-divided	Supplemental Appropriation to Governor's Office Civil Contingent Fund, fund 0105
+2254	SB848	H	584	1662779	2026-03-13	89	2	screened	final-roll-not-divided	Supplemental Appropriation to Department of Homeland Security, fund 0450
+2254	SB848	S	447	1659799	2026-03-11	34	0	screened	final-roll-not-divided	Supplemental Appropriation to Department of Homeland Security, fund 0450
+2254	SB852	H	469	1661758	2026-03-12	90	4	screened	final-roll-not-divided	Increasing fees for execution of service of process by certified mail
+2254	SB852	S	277	1648945	2026-03-02	26	5	screened	final-roll-not-divided	Increasing fees for execution of service of process by certified mail
+2254	SB862	H	217	1648090	2026-02-27	95	0	screened	final-roll-not-divided	Repealing Addiction Treatment Pilot Program
+2254	SB862	S	215	1643078	2026-02-24	34	0	screened	final-roll-not-divided	Repealing Addiction Treatment Pilot Program
+2254	SB868	H	470	1661854	2026-03-12	91	2	screened	final-roll-not-divided	Supplemental Appropriation for fiscal year ending June 30, 2026
+2254	SB868	S	101	1634461	2026-02-16	33	0	screened	final-roll-not-divided	Supplemental Appropriation for fiscal year ending June 30, 2026
+2254	SB871	H	472	1661527	2026-03-12	68	25	not-selected	filter 5: a supplemental appropriation, which carries no honest direction	Supplemental appropriation to State Board of Education, fund 3517
+2254	SB871	S	176	1640082	2026-02-20	31	1	screened	final-roll-not-divided	Supplemental appropriation to State Board of Education, fund 3517
+2254	SB874	H	586	1662653	2026-03-13	91	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Human Services, fund 0403
+2254	SB874	S	451	1660421	2026-03-11	34	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Human Services, fund 0403
+2254	SB875	H	474	1661779	2026-03-12	90	3	screened	final-roll-not-divided	Supplemental appropriation to Department of Commerce, fund 8703
+2254	SB875	S	141	1636529	2026-02-18	31	0	screened	final-roll-not-divided	Supplemental appropriation to Department of Commerce, fund 8703
+2254	SB878	H	476	1661353	2026-03-12	83	9	screened	final-roll-not-divided	Creating Office of Entrepreneurship within Office of Secretary of State
+2254	SB878	S	603	1662715	2026-03-13	30	4	screened	final-roll-not-divided	Creating Office of Entrepreneurship within Office of Secretary of State
+2254	SB886	H	588	1662565	2026-03-13	93	0	screened	final-roll-not-divided	Permitting prescribed fire control on private property without burning permit
+2254	SB886	S	634	1663091	2026-03-14	34	0	screened	final-roll-not-divided	Permitting prescribed fire control on private property without burning permit
+2254	SB890	H	698	1663235	2026-03-14	93	3	screened	final-roll-not-divided	Changing certain school calendar requirements from days or months to hours
+2254	SB890	S	635	1662964	2026-03-14	26	8	not-selected	filter 5: pulls both ways. It replaces the 180-day floor with a 900-hour floor, which allows less instruction, but it also protects teacher preparation days and creates three Educator Focus Days that classroom teachers control	Changing certain school calendar requirements from days or months to hours
+2254	SB897	H	589	1662803	2026-03-13	95	0	screened	final-roll-not-divided	Relating to licensure and certification of alcohol and drug counselors
+2254	SB897	S	674	1662948	2026-03-14	34	0	screened	final-roll-not-divided	Relating to licensure and certification of alcohol and drug counselors
+2254	SB899	H	602	1662932	2026-03-14	88	5	screened	final-roll-not-divided	Permitting certain teachers to be certified to work as school principals
+2254	SB899	S	189	1640383	2026-02-21	28	0	screened	final-roll-not-divided	Permitting certain teachers to be certified to work as school principals
+2254	SB906	H	604	1662880	2026-03-14	90	4	screened	final-roll-not-divided	Permitting lawful prescription of crystalline polymorph psilocybin under FDA recommendations
+2254	SB906	S	660	1663061	2026-03-14	34	0	screened	final-roll-not-divided	Permitting lawful prescription of crystalline polymorph psilocybin under FDA recommendations
+2254	SB913	H	605	1662884	2026-03-14	93	2	screened	final-roll-not-divided	Removing annual report requirement for WV Research Trust Fund
+2254	SB913	S	200	1640889	2026-02-23	33	0	screened	final-roll-not-divided	Removing annual report requirement for WV Research Trust Fund
+2254	SB916	H	606	1662914	2026-03-14	96	0	screened	final-roll-not-divided	Using “A.C.” as name ending for accounting corporation
+2254	SB916	S	190	1640373	2026-02-21	28	0	screened	final-roll-not-divided	Using “A.C.” as name ending for accounting corporation
+2254	SB944	H	609	1662845	2026-03-14	87	4	screened	final-roll-not-divided	Expanding categories of eligible federal law-enforcement officers authorized to enforce state laws
+2254	SB944	S	218	1642644	2026-02-24	34	0	screened	final-roll-not-divided	Expanding categories of eligible federal law-enforcement officers authorized to enforce state laws
+2254	SB945	H	396	1660055	2026-03-11	95	0	screened	final-roll-not-divided	Permitting Adjutant General to pay employees during federal government shutdown or furlough
+2254	SB945	S	473	1661039	2026-03-11	32	0	screened	final-roll-not-divided	Permitting Adjutant General to pay employees during federal government shutdown or furlough
+2254	SB947	H	610	1662911	2026-03-14	92	0	screened	final-roll-not-divided	Providing birth certificate copies to homeless individuals under 18
+2254	SB947	S	651	1663214	2026-03-14	33	0	screened	final-roll-not-divided	Providing birth certificate copies to homeless individuals under 18
+2254	SB950	H	611	1662939	2026-03-14	95	0	screened	final-roll-not-divided	Relating to mileage and expenses of judges
+2254	SB950	S	242	1646218	2026-02-26	34	0	screened	final-roll-not-divided	Relating to mileage and expenses of judges
+2254	SB952	H	612	1662912	2026-03-14	94	0	screened	final-roll-not-divided	Transferring Court Security Fund
+2254	SB952	S	644	1662913	2026-03-14	34	0	screened	final-roll-not-divided	Transferring Court Security Fund
+2254	SB970	H	480	1661276	2026-03-12	92	0	screened	final-roll-not-divided	Exempting volunteer fire departments from raffle regulations
+2254	SB970	S	280	1648958	2026-03-02	32	0	screened	final-roll-not-divided	Exempting volunteer fire departments from raffle regulations
+2254	SB977	H	613	1662917	2026-03-14	91	0	screened	final-roll-not-divided	Creating benefit for duty-related partial disability
+2254	SB977	S	637	1662918	2026-03-14	34	0	screened	final-roll-not-divided	Creating benefit for duty-related partial disability
+2254	SB982	H	614	1662855	2026-03-14	91	0	screened	final-roll-not-divided	Creating Neighborhood Access Road Program
+2254	SB982	S	675	1663014	2026-03-14	34	0	screened	final-roll-not-divided	Creating Neighborhood Access Road Program
+2254	SB985	H	615	1662919	2026-03-14	95	0	screened	final-roll-not-divided	Relating to registration and enforcement of kratom products
+2254	SB985	S	348	1652285	2026-03-04	33	0	screened	final-roll-not-divided	Relating to registration and enforcement of kratom products
+2254	SB997	H	616	1662842	2026-03-14	95	0	screened	final-roll-not-divided	Allowing certain hospital staff members to begin withdrawing from retirement benefits in certain circumstances
+2254	SB997	S	245	1646195	2026-02-26	34	0	screened	final-roll-not-divided	Allowing certain hospital staff members to begin withdrawing from retirement benefits in certain circumstances
+2254	SJR9	H	510	1662567	2026-03-13	92	2	screened	final-roll-not-divided;roll-number-not-in-own-history;printed-roll-number-shared;held-by-tally-audit	Citizenship Requirement to Vote in West Virginia Elections Amendment
+2254	SJR9	S	638	1663065	2026-03-14	34	0	screened	final-roll-not-divided	Citizenship Requirement to Vote in West Virginia Elections Amendment
