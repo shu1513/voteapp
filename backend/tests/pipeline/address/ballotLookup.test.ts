@@ -1689,7 +1689,7 @@ describe("lookupElectionDetailById", () => {
         decisiveness_level: "none",
         factors: ["medium_representation", "uncontested_race"],
         explanation: {
-          how: expect.stringContaining("Here's what goes into the rating."),
+          how: expect.stringContaining("What goes into the rating:"),
           parts: [
             {
               title: "Representation",
@@ -10160,7 +10160,9 @@ describe("current race rating read path", () => {
     // Historic margin numbers must not caption a rating-sourced grade.
     expect(decisiveness?.stat).not.toContain("margin");
     expect(decisiveness?.formula).toContain('IE "Toss-up" (d=0) + Sabato "Toss-up" (d=0) → mean 0 → "toss-up"');
-    expect(detail?.vote_power.explanation.how).toContain("current race ratings from election analysts");
+    // The "how" copy is static now (names both sources); the part row carries
+    // which one drove this rating.
+    expect(detail?.vote_power.explanation.how).toContain("past results or current analyst ratings");
     // Both payload objects ride along, mirroring the summary list.
     expect(detail?.historical_competitiveness?.competitiveness_label).toBe("competitive");
   });

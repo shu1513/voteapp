@@ -360,7 +360,7 @@ describe("explainVotePower", () => {
     // The how copy explains the displayed label (grade combination), never
     // the internal 45/55 sorting-score formula.
     expect(explanation.how).toBe(
-      "Here's what goes into the rating.\n\nRepresentation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts.\n\nDecisiveness: how likely this race is to be close, based on past results and the number of candidates."
+      "What goes into the rating:\n\nRepresentation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts.\n\nDecisiveness: how likely this race is to be close, based on past results or current analyst ratings, plus the number of candidates."
     );
     expect(explanation.parts).toEqual([
       {
@@ -565,7 +565,9 @@ describe("explainVotePower", () => {
       formula: null,
     });
     expect(explanation.result).toBe("High representation → My vote power: High.");
-    expect(explanation.caveat).toContain("partial information");
+    expect(explanation.caveat).toBe(
+      'Some data is missing, so this rating is based on partial information and capped at "High".'
+    );
   });
 
   it("reports no rating when both core axes are missing", () => {
@@ -688,7 +690,7 @@ describe("explainVotePower with a current race rating", () => {
     });
 
     expect(explanation.how).toBe(
-      "Here's what goes into the rating.\n\nRepresentation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts.\n\nDecisiveness: how likely this race is to be close, based on current race ratings from election analysts and the number of candidates."
+      "What goes into the rating:\n\nRepresentation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts.\n\nDecisiveness: how likely this race is to be close, based on past results or current analyst ratings, plus the number of candidates."
     );
     expect(explanation.parts[1]).toEqual({
       title: "Decisiveness",
