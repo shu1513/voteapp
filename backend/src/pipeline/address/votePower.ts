@@ -350,16 +350,14 @@ function factorsFor(input: {
 // detail page, so surfacing its formula here would misattribute the rating.
 // The lead deliberately doesn't count the parts: measures without history
 // skip the decisiveness row, so any "two things" claim would contradict
-// some panels. Source-dependent tail: decisiveness rests on current analyst
-// ratings when one drove the label, on past results otherwise.
-function howCalculated(currentRatingUsed: boolean): string {
-  const decisivenessBasis = currentRatingUsed
-    ? "current race ratings from election analysts"
-    : "past results";
+// some panels. The decisiveness tail names both sources it can rest on
+// (analyst ratings when one exists, past results otherwise); the part row
+// says which one applied here.
+function howCalculated(): string {
   // Blank lines between the lead and the two axes: clients render this with
   // newlines preserved (whitespace-pre-line on web), so each point reads as
   // its own short paragraph instead of one dense block.
-  return `Here's what goes into the rating.\n\nRepresentation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts.\n\nDecisiveness: how likely this race is to be close, based on ${decisivenessBasis} and the number of candidates.`;
+  return "What goes into the rating:\n\nRepresentation: how much weight one vote carries here compared with a statewide vote — the smaller the district, the more each vote counts.\n\nDecisiveness: how likely this race is to be close, based on past results or current analyst ratings, plus the number of candidates.";
 }
 
 function capitalize(text: string): string {
@@ -730,12 +728,17 @@ const RESULT_LABEL_TEXT: Record<Exclude<VotePowerLabel, "unknown">, string> = {
   very_high: "very high",
 };
 
-function explanationCaveatFor(confidence: VotePowerConfidence): string | null {
-  switch (confidence) {
+// The cap clause only matters when the cap could have bitten: a partial
+// rating already below "High" was never held down by it, so naming the
+// ceiling there just raises a question the rating never asked.
+function explanationCaveatFor(result: VotePowerResult): string | null {
+  switch (result.confidence) {
     case "high":
       return null;
     case "medium":
-      return 'Some data is missing, so this rating is based on partial information and capped at "High".';
+      return result.label === "high"
+        ? 'Some data is missing, so this rating is based on partial information and capped at "High".'
+        : "Some data is missing, so this rating is based on partial information.";
     case "low":
       return "Not enough data to rate this election yet.";
   }
@@ -796,12 +799,12 @@ export function explainVotePower(input: VotePowerExplanationContext, result: Vot
       result.decisiveness_level === "medium" ||
       result.decisiveness_level === "high");
   const caveats = [
-    explanationCaveatFor(result.confidence),
+    explanationCaveatFor(result),
     currentRatingUsed ? currentRatingCaveat(input.currentRating ?? null) : null,
   ].filter((caveat): caveat is string => caveat !== null);
 
   return {
-    how: howCalculated(currentRatingUsed),
+    how: howCalculated(),
     parts,
     result: explanationResultFor(result, skipDecisiveness),
     caveat: caveats.length > 0 ? caveats.join(" ") : null,
