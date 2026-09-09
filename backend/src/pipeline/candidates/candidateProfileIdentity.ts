@@ -345,6 +345,42 @@ export function resolveStoredCandidateParty(input: {
   );
 }
 
+function matchesLinkedInUrl(profile: CandidateProfilePayload, row: ExistingCandidateRow): boolean {
+  return Boolean(
+    profile.linkedin_url &&
+      row.linkedin_url &&
+      normalizeOptionalUrl(profile.linkedin_url) === normalizeOptionalUrl(row.linkedin_url)
+  );
+}
+
+// The contract only checks that linkedin_url is an http(s) URL, so a company
+// or school page can sit in the column. Only a personal profile (/in/<slug>)
+// identifies one human; two colleagues sharing an employer page must not.
+export function isPersonalLinkedInProfileUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return /(^|\.)linkedin\.com$/i.test(parsed.hostname) && /^\/in\/[^/]+/.test(parsed.pathname);
+  } catch {
+    return false;
+  }
+}
+
+function matchesFecId(profile: CandidateProfilePayload, row: ExistingCandidateRow): boolean {
+  const profileFecIds = normalizeIdList(profile.fec_ids);
+  const rowFecIds = normalizeIdList(parseOptionalStringArray(row.fec_ids));
+  return profileFecIds.length > 0 && rowFecIds.length > 0 && hasNormalizedIntersection(profileFecIds, rowFecIds);
+}
+
+function matchesStateFilingId(profile: CandidateProfilePayload, row: ExistingCandidateRow): boolean {
+  const profileStateFilingIds = normalizeIdList(profile.state_filing_ids);
+  const rowStateFilingIds = normalizeIdList(parseOptionalStringArray(row.state_filing_ids));
+  return (
+    profileStateFilingIds.length > 0 &&
+    rowStateFilingIds.length > 0 &&
+    hasNormalizedIntersection(profileStateFilingIds, rowStateFilingIds)
+  );
+}
+
 /**
  * Identifiers a registry (FEC, a state filing system) or the person's own
  * professional profile assigns to exactly one human. These are trusted to
@@ -355,38 +391,30 @@ export function resolveStoredCandidateParty(input: {
  * Texas county site listed five unrelated candidates; family pairs like
  * "Bob White" / "Cathy White"), while every pair sharing a filing or FEC
  * id across name variants was the same person.
+ *
+ * A state filing id is only unique within the state that issued it, so it
+ * counts only for a row in the payload's state — the cross-state
+ * presidential pool can hold another state's row with the same digits.
+ * FEC ids and personal LinkedIn profiles are global.
  */
 export function matchesByRegistryIdentifier(
   profile: CandidateProfilePayload,
-  row: ExistingCandidateRow
+  row: ExistingCandidateRow,
+  scope: { state: string }
 ): boolean {
-  if (profile.linkedin_url && row.linkedin_url) {
-    if (normalizeOptionalUrl(profile.linkedin_url) === normalizeOptionalUrl(row.linkedin_url)) {
-      return true;
-    }
-  }
-
-  const profileFecIds = normalizeIdList(profile.fec_ids);
-  const rowFecIds = normalizeIdList(parseOptionalStringArray(row.fec_ids));
-  if (profileFecIds.length > 0 && rowFecIds.length > 0 && hasNormalizedIntersection(profileFecIds, rowFecIds)) {
+  if (matchesLinkedInUrl(profile, row) && isPersonalLinkedInProfileUrl(profile.linkedin_url!)) {
     return true;
   }
-
-  const profileStateFilingIds = normalizeIdList(profile.state_filing_ids);
-  const rowStateFilingIds = normalizeIdList(parseOptionalStringArray(row.state_filing_ids));
-  if (
-    profileStateFilingIds.length > 0 &&
-    rowStateFilingIds.length > 0 &&
-    hasNormalizedIntersection(profileStateFilingIds, rowStateFilingIds)
-  ) {
+  if (matchesFecId(profile, row)) {
     return true;
   }
-
-  return false;
+  return row.state === scope.state && matchesStateFilingId(profile, row);
 }
 
 export function matchesByHardIdentifier(profile: CandidateProfilePayload, row: ExistingCandidateRow): boolean {
-  if (matchesByRegistryIdentifier(profile, row)) {
+  // Exact-name rows keep the historical rule: any hard identifier, with no
+  // state scoping on filing ids and no personal-profile check on LinkedIn.
+  if (matchesLinkedInUrl(profile, row) || matchesFecId(profile, row) || matchesStateFilingId(profile, row)) {
     return true;
   }
 
@@ -883,7 +911,7 @@ export async function findOrCreateCandidateFromProfile(
     const matched = existingCandidates.filter((row) =>
       isExactNameMatch(input.profile, row)
         ? matchesByHardIdentifier(input.profile, row)
-        : matchesByRegistryIdentifier(input.profile, row)
+        : matchesByRegistryIdentifier(input.profile, row, { state: input.state })
     );
     if (matched.length === 1) {
       const matchedCandidate = matched[0]!;

@@ -5,6 +5,7 @@ import {
   assertMergedOfficeRoutingConsistent,
   findOrCreateCandidateFromProfile,
   isExactNameMatch,
+  isPersonalLinkedInProfileUrl,
   matchesByHardIdentifier,
   matchesByRegistryIdentifier,
   mergeIdentifierLists,
@@ -1314,13 +1315,57 @@ describe("name-variant identity (stored name parts differ from the payload's)", 
       twitter_handle: "@venable",
       date_of_birth: "1980-01-01",
     });
-    expect(matchesByRegistryIdentifier(p, { ...baseRow, linkedin_url: "https://www.linkedin.com/in/chris-venable" })).toBe(true);
-    expect(matchesByRegistryIdentifier(p, { ...baseRow, fec_ids: ["h6mi13001"] })).toBe(true);
-    expect(matchesByRegistryIdentifier(p, { ...baseRow, state_filing_ids: [" 0613800 "] })).toBe(true);
-    expect(matchesByRegistryIdentifier(p, { ...baseRow, official_website_url: "https://venable.example" })).toBe(false);
-    expect(matchesByRegistryIdentifier(p, { ...baseRow, twitter_handle: "venable" })).toBe(false);
-    expect(matchesByRegistryIdentifier(p, { ...baseRow, date_of_birth: "1980-01-01" })).toBe(false);
+    const mi = { state: "MI" };
+    expect(matchesByRegistryIdentifier(p, { ...baseRow, linkedin_url: "https://www.linkedin.com/in/chris-venable" }, mi)).toBe(true);
+    expect(matchesByRegistryIdentifier(p, { ...baseRow, fec_ids: ["h6mi13001"] }, mi)).toBe(true);
+    expect(matchesByRegistryIdentifier(p, { ...baseRow, state_filing_ids: [" 0613800 "] }, mi)).toBe(true);
+    expect(matchesByRegistryIdentifier(p, { ...baseRow, official_website_url: "https://venable.example" }, mi)).toBe(false);
+    expect(matchesByRegistryIdentifier(p, { ...baseRow, twitter_handle: "venable" }, mi)).toBe(false);
+    expect(matchesByRegistryIdentifier(p, { ...baseRow, date_of_birth: "1980-01-01" }, mi)).toBe(false);
     // The full hard-identifier check still accepts the weak ones.
     expect(matchesByHardIdentifier(p, { ...baseRow, official_website_url: "https://venable.example" })).toBe(true);
+  });
+
+  it("a state filing id only counts for a row in the payload's state", () => {
+    const p = profile({ state_filing_ids: ["0613800"] });
+    const wiRow = { ...baseRow, state: "WI", state_filing_ids: ["0613800"] };
+    expect(matchesByRegistryIdentifier(p, wiRow, { state: "MI" })).toBe(false);
+    expect(matchesByRegistryIdentifier(p, wiRow, { state: "WI" })).toBe(true);
+    // Exact-name matching is unchanged: no state scoping there.
+    expect(matchesByHardIdentifier(p, wiRow)).toBe(true);
+  });
+
+  it("a company or school LinkedIn page is not a registry identifier", () => {
+    const company = "https://www.linkedin.com/company/acme-corp";
+    const p = profile({ linkedin_url: company });
+    expect(matchesByRegistryIdentifier(p, { ...baseRow, linkedin_url: company }, { state: "MI" })).toBe(false);
+    // Exact-name matching still accepts it, as before.
+    expect(matchesByHardIdentifier(p, { ...baseRow, linkedin_url: company })).toBe(true);
+    expect(isPersonalLinkedInProfileUrl("https://www.linkedin.com/in/jane-doe/")).toBe(true);
+    expect(isPersonalLinkedInProfileUrl("https://linkedin.com/in/jane-doe")).toBe(true);
+    expect(isPersonalLinkedInProfileUrl("https://www.linkedin.com/company/acme")).toBe(false);
+    expect(isPersonalLinkedInProfileUrl("https://www.linkedin.com/school/mit")).toBe(false);
+    expect(isPersonalLinkedInProfileUrl("https://www.linkedin.com/in/")).toBe(false);
+    expect(isPersonalLinkedInProfileUrl("https://evil.example/in/jane")).toBe(false);
+    expect(isPersonalLinkedInProfileUrl("not a url")).toBe(false);
+  });
+
+  it("cross-state pool: a name-variant row from another state does not match on a state filing id", async () => {
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({
+        rows: [{ ...baseRow, first_name: "Jane", last_name: "Other", state: "WI", state_filing_ids: ["0613800"] }],
+      })
+      .mockResolvedValueOnce({ rows: [{ id: "candidate-new" }], rowCount: 1 });
+
+    const result = await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({ state_filing_ids: ["0613800"] }),
+      state: "US",
+      rosterParty: "Democratic",
+      includeParty: true,
+      allowCrossStateHardIdentifierMatch: true,
+    });
+
+    expect(result).toEqual({ candidateId: "candidate-new", matchedExisting: false });
   });
 });
