@@ -99,6 +99,10 @@ describe("runMoveCandidateFinanceLinks", () => {
     const update = calls.find((call) => call.text.includes("UPDATE public.fl_candidate_finance_links"));
     expect(update?.text).toContain("SET election_id = $3::uuid");
     expect(update?.values).toEqual([CANDIDATE_ID, FROM_ELECTION, TO_ELECTION]);
+    // The target roster link is held for the transaction so a concurrent
+    // unlink cannot strand the repointed rows.
+    const targetLink = calls.find((call) => call.text.includes("FROM public.candidate_elections"));
+    expect(targetLink?.text).toContain("FOR KEY SHARE");
     // User tables are never touched, even when the catalog scan lists them.
     expect(calls.some((call) => call.text.includes("user_election_choices"))).toBe(false);
     expect(calls.at(-1)?.text).toBe("COMMIT");

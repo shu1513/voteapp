@@ -259,8 +259,18 @@ export async function runMoveCandidateFinanceLinks(
       );
     }
 
+    // FOR KEY SHARE: the finance tables reference elections, not this link,
+    // so nothing else stops a concurrent unlink/move from deleting or
+    // re-keying the target link between this read and the commit — which
+    // would leave the repointed rows without roster membership. The lock
+    // makes that unlink wait, and its own finance scan then sees the moved
+    // rows and refuses.
     const targetLink = await client.query<{ id: string }>(
-      `SELECT id FROM public.candidate_elections WHERE candidate_id = $1::uuid AND election_id = $2::uuid`,
+      `
+        SELECT id FROM public.candidate_elections
+        WHERE candidate_id = $1::uuid AND election_id = $2::uuid
+        FOR KEY SHARE
+      `,
       [candidateId, toElectionId]
     );
     if (!targetLink.rows[0]) {
