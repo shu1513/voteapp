@@ -212,7 +212,7 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
           // What the money funds (things the site does today) — never member
           // perks, which the Terms limit to the newsletter.
           <>
-            <p className="text-sm text-ink">Thank you. Your membership funds:</p>
+            <p className="text-sm text-ink">Thank you. Your membership creates:</p>
             <ul className="mt-1 list-disc pl-5 text-sm text-ink">
               <li>Deeper investigation of candidates&apos; actions</li>
               <li>Closer analysis of what ballot measures would do</li>
