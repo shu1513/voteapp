@@ -216,7 +216,7 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
             <ul className="mt-1 list-disc pl-5 text-sm text-ink">
               <li>Deeper investigation of candidates&apos; actions</li>
               <li>In-depth analysis of the effects of ballot measures</li>
-              <li>Ongoing research on the issues that affect you</li>
+              <li>Ongoing research on the issues that could affect you</li>
             </ul>
           </>
         ) : null}
