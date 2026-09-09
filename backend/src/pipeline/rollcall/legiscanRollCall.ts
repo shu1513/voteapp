@@ -82,11 +82,26 @@ export function classifyLegiscanDatasetFile(raw: unknown): LegiscanDatasetPayloa
  */
 export function formatLegiscanMeasureId(billNumber: string): string {
   const compact = billNumber.replace(/\s+/g, "");
-  const match = /^([A-Za-z]+)0*(\d+)$/.exec(compact);
-  if (!match) {
-    throw new Error(`LegiScan bill_number is not <letters><digits>: ${billNumber}`);
+  const numbered = /^([A-Za-z]+)0*(\d+)$/.exec(compact);
+  if (numbered) {
+    return `${numbered[1]!.toUpperCase()} ${numbered[2]}`;
   }
-  return `${match[1]!.toUpperCase()} ${match[2]}`;
+  // Michigan LETTERS its joint resolutions instead of numbering them, and its
+  // joint resolutions are its proposed constitutional amendments. The 2025-2026
+  // session runs `HJRA` through `HJRAA` and `SJRA` through `SJRN`, which
+  // Michigan itself cites as `HJR A` and `SJR N`. Without this the whole bill
+  // file fails to parse, the fetch reports a file error and exits, and 40
+  // measures are unreachable.
+  //
+  // The rule is deliberately narrow: an instrument prefix ending in `JR`,
+  // followed by a one or two letter designator. It cannot swallow a numbered
+  // measure, because the numbered form is matched first and this form has no
+  // digits at all.
+  const lettered = /^([A-Za-z]*JR)([A-Za-z]{1,2})$/i.exec(compact);
+  if (lettered) {
+    return `${lettered[1]!.toUpperCase()} ${lettered[2]!.toUpperCase()}`;
+  }
+  throw new Error(`LegiScan bill_number is neither <letters><digits> nor a lettered joint resolution: ${billNumber}`);
 }
 
 /** The public per-roll page; the fallback when the bill feed carries no vote url. */
