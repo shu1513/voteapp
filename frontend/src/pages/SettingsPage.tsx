@@ -7,6 +7,7 @@ import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { EmailPreferenceToggles } from "../components/EmailPreferenceToggles";
 import { ResearchAreasSection } from "../components/ResearchAreasSection";
 import { SavedAddressForm } from "../components/SavedAddressForm";
+import { SupportHistory } from "../components/SupportCheckout";
 import { purgeAccountScopedQueries, useMe, type Me } from "@voteapp/api-client";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
@@ -68,19 +69,21 @@ function MembershipProfileLine({ me }: { me: Me }) {
     );
   }
   return (
-    <p className="mt-2 flex flex-wrap items-center gap-3 text-sm">
-      <Link
-        to="/support/member"
-        className="inline-block rounded-lg bg-green-700 px-4 py-2 font-semibold text-white transition hover:bg-green-800"
-      >
-        Become an honorary member
-      </Link>
-      {payments.length > 0 ? (
-        <Link to="/me/membership" className={membershipLinkClass}>
-          Support history
+    <>
+      <p className="mt-2 flex flex-wrap items-center gap-3 text-sm">
+        <Link
+          to="/support/member"
+          className="inline-block rounded-lg bg-green-700 px-4 py-2 font-semibold text-white transition hover:bg-green-800"
+        >
+          Become an honorary member
         </Link>
+      </p>
+      {payments.length > 0 ? (
+        <div className="mt-3">
+          <SupportHistory payments={payments} />
+        </div>
       ) : null}
-    </p>
+    </>
   );
 }
 

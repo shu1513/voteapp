@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest, APP_NAME, useMe } from "@voteapp/api-client";
-import type { MembershipMembership, MembershipPayment, MembershipStatus } from "@voteapp/api-client";
+import type { MembershipMembership, MembershipStatus } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
-import { AmountForm, Disclaimer, formatCents, formatDate, secondaryButtonClass } from "../components/SupportCheckout";
+import { AmountForm, Disclaimer, formatCents, formatDate, secondaryButtonClass, SupportHistory } from "../components/SupportCheckout";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { navigateExternal } from "../lib/externalNavigation";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
@@ -145,36 +145,6 @@ function CancelControls({ membership, disabled, onCancel }: { membership: Member
         </button>
       </div>
     </div>
-  );
-}
-
-function PaymentHistory({ payments, totalNetCents }: { payments: MembershipPayment[]; totalNetCents: number }) {
-  if (payments.length === 0) {
-    return null;
-  }
-  return (
-    // Closed by default (user decision): the list is context, not the task.
-    <details className="rounded-xl border border-line bg-white p-4">
-      <summary className="cursor-pointer text-heading font-semibold">Support history</summary>
-      <p className="mt-2 text-sm text-ink">
-        Total support to date: <strong>{formatCents(totalNetCents)}</strong>
-      </p>
-      <ul className="mt-2 divide-y divide-line text-sm">
-        {payments.map((payment, index) => (
-          <li key={`${payment.paid_at}-${index}`} className="flex flex-wrap justify-between gap-x-3 py-1.5">
-            <span className="text-ink-soft">
-              {formatDate(payment.paid_at)} · {payment.kind === "monthly" ? "Monthly" : "One-time"}
-            </span>
-            <span>
-              {formatCents(payment.amount_cents)}
-              {payment.refunded_amount_cents > 0 ? (
-                <span className="text-ink-soft"> ({formatCents(payment.refunded_amount_cents)} refunded)</span>
-              ) : null}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </details>
   );
 }
 
@@ -354,7 +324,7 @@ function MembershipManager() {
       </p>
     );
   }
-  const { membership, payments, total_net_cents } = status.data;
+  const { membership, payments } = status.data;
 
   return (
     <>
@@ -368,7 +338,7 @@ function MembershipManager() {
           </div>
         </section>
       )}
-      <PaymentHistory payments={payments} totalNetCents={total_net_cents} />
+      <SupportHistory payments={payments} />
       <Disclaimer />
     </>
   );

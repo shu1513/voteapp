@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest, APP_NAME } from "@voteapp/api-client";
-import type { MembershipKind, MembershipMembership } from "@voteapp/api-client";
+import type { MembershipKind, MembershipMembership, MembershipPayment } from "@voteapp/api-client";
 import { ErrorNotice } from "./Status";
 import { navigateExternal } from "../lib/externalNavigation";
 import { trackSettled } from "../lib/usage";
@@ -263,6 +263,35 @@ export function Disclaimer() {
       candidate, campaign, committee, party, or charity. Payments provide no influence over our
       content and are not eligible for a charitable-contribution receipt.
     </p>
+  );
+}
+
+/** Past support, folded away by default: clicking the heading opens and
+ * closes it. Date and amount per line, no running total (user decision — a
+ * total reads as a bill). Settings and the membership page both use it. */
+export function SupportHistory({ payments }: { payments: MembershipPayment[] }) {
+  if (payments.length === 0) {
+    return null;
+  }
+  return (
+    <details className="rounded-xl border border-line bg-white p-4">
+      <summary className="cursor-pointer text-heading font-semibold">Support history</summary>
+      <ul className="mt-2 divide-y divide-line text-sm">
+        {payments.map((payment, index) => (
+          <li key={`${payment.paid_at}-${index}`} className="flex flex-wrap justify-between gap-x-3 py-1.5">
+            <span className="text-ink-soft">
+              {formatDate(payment.paid_at)} · {payment.kind === "monthly" ? "Monthly" : "One-time"}
+            </span>
+            <span>
+              {formatCents(payment.amount_cents)}
+              {payment.refunded_amount_cents > 0 ? (
+                <span className="text-ink-soft"> ({formatCents(payment.refunded_amount_cents)} refunded)</span>
+              ) : null}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </details>
   );
 }
 

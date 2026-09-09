@@ -113,10 +113,10 @@ describe("MembershipPage", () => {
     expect(screen.getByRole("button", { name: "Update payment method" })).toBeEnabled();
     expect(screen.queryByRole("button", { name: "Keep membership" })).not.toBeInTheDocument();
 
-    // History is there but folded away; the total lives inside it.
+    // History is there but folded away, and carries no running total.
     const details = screen.getByText("Support history").closest("details");
     expect(details).not.toHaveAttribute("open");
-    expect(within(details as HTMLElement).getByText(/Total support to date/)).toHaveTextContent("$25.00");
+    expect(within(details as HTMLElement).queryByText(/Total support to date/)).not.toBeInTheDocument();
     expect(within(details as HTMLElement).getByText(/\$5\.00 refunded/)).toBeInTheDocument();
     expect(screen.getByText(/not any candidate, campaign, committee, party, or charity/)).toBeInTheDocument();
   });
@@ -301,7 +301,9 @@ describe("MembershipPage", () => {
     expect(screen.getByRole("link", { name: "Become an honorary member" })).toHaveAttribute("href", "/support/member");
     expect(screen.getByRole("link", { name: "Support once" })).toHaveAttribute("href", "/support/once");
     expect(screen.getByText("Support history")).toBeInTheDocument();
-    expect(screen.getByText(/Total support to date/)).toHaveTextContent("$15.00");
+    expect(screen.getByText("$20.00")).toBeInTheDocument();
+    expect(screen.getByText(/\$5\.00 refunded/)).toBeInTheDocument();
+    expect(screen.queryByText(/Total support to date/)).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Update payment method" })).not.toBeInTheDocument();
   });
 
