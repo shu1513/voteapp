@@ -1,0 +1,18 @@
+[
+ {
+  "recordId": "3a3667e9-54df-4c2b-ab6d-1069aefe55de",
+  "reason": "Duplicate of the roll-call record for HB 4951, the House vote of 2025-09-25. This hand-written record describes the same vote by Jamie Thompson on the same measure on the same day. Replaced by candidate_records id 8cddf3e4-baf7-4320-8ac8-207404f54d39, imported from LegiScan roll 1603559 in Michigan batch-01."
+ },
+ {
+  "recordId": "d9dbd19a-d5da-4892-afe7-46c2d8768da9",
+  "reason": "Duplicate of the roll-call record for SB 294, the House vote of 2026-07-03. This hand-written record describes the same vote by Matthew Bierlein on the same measure on the same day. Replaced by candidate_records id 99155bbf-d75e-4e9c-bf7f-fcdd5e1fc571, imported from LegiScan roll 1715716 in Michigan batch-01."
+ },
+ {
+  "recordId": "1673a6df-1618-4fc9-a82d-0caef4fd5bfa",
+  "reason": "Duplicate of the roll-call record for SB 293, the House vote of 2026-07-03. This hand-written record describes the same vote by Parker Fairbairn on the same measure on the same day. Replaced by candidate_records id 846087b9-8cc4-4860-943c-1b33f98df03d, imported from LegiScan roll 1715729 in Michigan batch-01."
+ },
+ {
+  "recordId": "de7c9e92-aee9-46dc-871c-78cbe7702076",
+  "reason": "Duplicate of the roll-call record for SB 294, the House vote of 2026-07-03. This hand-written record describes the same vote by Parker Fairbairn on the same measure on the same day; its own text names Senate Bill 294. Replaced by candidate_records id 04636b89-2345-4294-87ad-a31757ac8fbf, imported from LegiScan roll 1715716 in Michigan batch-01."
+ }
+]

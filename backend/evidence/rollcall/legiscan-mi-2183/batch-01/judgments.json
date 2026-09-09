@@ -1,0 +1,148 @@
+{
+ "judgments": [
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1713924,
+   "measure_id": "HB 4064",
+   "vote_date": "2026-07-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4064. It bars a sitting Michigan state lawmaker from taking pay to lobby government officials, in Michigan or in any other state. State law already limited lobbying by some former lawmakers. This act reaches lawmakers who are still in office. The Senate passed it 28-8 and it became law.",
+   "nay_description": "Voted against House Bill 4064. It bars a sitting Michigan state lawmaker from taking pay to lobby government officials, in Michigan or in any other state. State law already limited lobbying by some former lawmakers. This act reaches lawmakers who are still in office. The Senate passed it 28-8 and it became law.",
+   "labels": [
+    {
+     "slug": "anti_corruption",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1715727,
+   "measure_id": "HB 4350",
+   "vote_date": "2026-07-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4350. It lets a person put out feed for wild birds and other wildlife even where the Natural Resources Commission has ordered a stop to deer and elk feeding. The feed must be within 300 feet of a home, and there must be less than two gallons of it. Any feeding order must still follow federal rules on stopping the spread of disease. The House agreed to the Senate version 76-32 and it became law.",
+   "nay_description": "Voted against House Bill 4350. It lets a person put out feed for wild birds and other wildlife even where the Natural Resources Commission has ordered a stop to deer and elk feeding. The feed must be within 300 feet of a home, and there must be less than two gallons of it. Any feeding order must still follow federal rules on stopping the spread of disease. The House agreed to the Senate version 76-32 and it became law.",
+   "labels": [
+    {
+     "slug": "environment_and_public_health",
+     "yea": "against",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1603004,
+   "measure_id": "HB 4746",
+   "vote_date": "2025-09-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4746. It tells the state health department to give a chip-enabled Michigan Bridge Card to every person who gets food help or cash help, within one year. The card must meet published industry safety standards. The department must keep adding new safety features as they come out. The House passed it 77-28 and it became law.",
+   "nay_description": "Voted against House Bill 4746. It tells the state health department to give a chip-enabled Michigan Bridge Card to every person who gets food help or cash help, within one year. The card must meet published industry safety standards. The department must keep adding new safety features as they come out. The House passed it 77-28 and it became law.",
+   "labels": [
+    {
+     "slug": "social_programs_and_welfare",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1603559,
+   "measure_id": "HB 4951",
+   "vote_date": "2025-09-25",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4951. It sets a new tax of 24 cents on the dollar on marijuana sold or moved wholesale. Almost all of the money goes to a new Neighborhood Roads Fund and pays for road work. The House Fiscal Agency put the yearly take at about 420 million dollars. The House passed it 78-21 and it became law.",
+   "nay_description": "Voted against House Bill 4951. It sets a new tax of 24 cents on the dollar on marijuana sold or moved wholesale. Almost all of the money goes to a new Neighborhood Roads Fund and pays for road work. The House Fiscal Agency put the yearly take at about 420 million dollars. The House passed it 78-21 and it became law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1603651,
+   "measure_id": "HB 4951",
+   "vote_date": "2025-10-03",
+   "review_status": "approved",
+   "yea_description": "Voted for House Bill 4951. It sets a new tax of 24 cents on the dollar on marijuana sold or moved wholesale. Almost all of the money goes to a new Neighborhood Roads Fund and pays for road work. The House Fiscal Agency put the yearly take at about 420 million dollars. The Senate passed it 19-17 and it became law.",
+   "nay_description": "Voted against House Bill 4951. It sets a new tax of 24 cents on the dollar on marijuana sold or moved wholesale. Almost all of the money goes to a new Neighborhood Roads Fund and pays for road work. The House Fiscal Agency put the yearly take at about 420 million dollars. The Senate passed it 19-17 and it became law.",
+   "labels": [
+    {
+     "slug": "public_infrastructure",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "senate",
+   "session": "2183",
+   "roll": 1713938,
+   "measure_id": "SB 81",
+   "vote_date": "2026-07-03",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 81. It extends the work of the Michigan Indigent Defense Commission to young people in the juvenile courts who cannot pay for a lawyer. The Commission must set the least a local government has to do to give them a defense. The act also changes who sits on the Commission. The Senate agreed to the House version 23-13 and it became law.",
+   "nay_description": "Voted against Senate Bill 81. It extends the work of the Michigan Indigent Defense Commission to young people in the juvenile courts who cannot pay for a lawyer. The Commission must set the least a local government has to do to give them a defense. The act also changes who sits on the Commission. The Senate agreed to the House version 23-13 and it became law.",
+   "labels": [
+    {
+     "slug": "civil_rights",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1715729,
+   "measure_id": "SB 293",
+   "vote_date": "2026-07-03",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 293. It changes what happens to an animal taken away in a case of animal neglect or cruelty. A prosecutor no longer has to bring a separate civil case to take the animal for good, and that question is now settled in the criminal case. A person found guilty can be told to pay the cost of the case and of the animal's care, housing and vet bills. The House passed it 84-24 and it became law.",
+   "nay_description": "Voted against Senate Bill 293. It changes what happens to an animal taken away in a case of animal neglect or cruelty. A prosecutor no longer has to bring a separate civil case to take the animal for good, and that question is now settled in the criminal case. A person found guilty can be told to pay the cost of the case and of the animal's care, housing and vet bills. The House passed it 84-24 and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  },
+  {
+   "jurisdiction": "MI",
+   "chamber": "house",
+   "session": "2183",
+   "roll": 1715716,
+   "measure_id": "SB 294",
+   "vote_date": "2026-07-03",
+   "review_status": "approved",
+   "yea_description": "Voted for Senate Bill 294. It changes what happens to an animal taken away in a case of torturing or killing an animal. A prosecutor no longer has to bring a separate civil case to take the animal for good, and that question is now settled in the criminal case. A person found guilty can be told to pay the cost of the case and of the animal's care, housing and vet bills. The House passed it 84-24 and it became law.",
+   "nay_description": "Voted against Senate Bill 294. It changes what happens to an animal taken away in a case of torturing or killing an animal. A prosecutor no longer has to bring a separate civil case to take the animal for good, and that question is now settled in the criminal case. A person found guilty can be told to pay the cost of the case and of the animal's care, housing and vet bills. The House passed it 84-24 and it became law.",
+   "labels": [
+    {
+     "slug": "public_safety_and_crime_control",
+     "yea": "for",
+     "nay": null
+    }
+   ]
+  }
+ ]
+}
