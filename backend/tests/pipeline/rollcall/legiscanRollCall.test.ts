@@ -1033,6 +1033,77 @@ describe("West Virginia's measured desc vocabulary", () => {
   });
 });
 
+describe("Utah's measured desc vocabulary", () => {
+  const config = LEGISCAN_STATE_CONFIGS.UT!;
+  const ut = (desc: string, chamber: "house" | "senate" = "house", total?: number) =>
+    classifyLegiscanRollCall({ desc, total: total ?? (chamber === "house" ? 75 : 29), chamber, billType: "B", config });
+
+  it("keeps third reading as passage in both chambers, plus concurrence and conference final passage", () => {
+    expect(ut("House/ passed 3rd reading")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(ut("Senate/ passed 3rd reading", "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(ut("House/ concurs with Senate amendment")).toMatchObject({ isFloorVote: true, questionClass: "concurrence" });
+    expect(ut("Senate/ concurs with House amendment", "senate")).toMatchObject({ questionClass: "concurrence" });
+    // A floor caption containing the word "Committee" must not be mistaken
+    // for a committee vote: the total is the full chamber.
+    expect(ut("House Conference Committee - Final Passage")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "conference_report",
+    });
+    expect(ut("Senate Conference Committee - Final Passage", "senate")).toMatchObject({
+      questionClass: "conference_report",
+    });
+  });
+
+  it("keeps the Senate's suspension passage in both spellings, because the caption does not carry the outcome", () => {
+    expect(ut("Senate/ passed 2nd & 3rd readings/ suspension", "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+    // HB 388 (2025) failed 10-17 under this caption with no `passed` in it.
+    expect(ut("Senate/ 2nd & 3rd readings/ suspension", "senate")).toMatchObject({
+      isFloorVote: true,
+      questionClass: "passage",
+    });
+  });
+
+  it("keeps a failed floor vote so it is dispositioned rather than dropped", () => {
+    expect(ut("House/ failed")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+    expect(ut("Senate/ failed", "senate")).toMatchObject({ isFloorVote: true, questionClass: "passage" });
+  });
+
+  it("excludes the Senate's second reading and every floor motion that is not a vote on the measure", () => {
+    expect(ut("Senate/ passed 2nd reading", "senate")).toMatchObject({ isFloorVote: false, reason: "excluded_question" });
+    for (const desc of [
+      "House/ circled",
+      "House/ motion to reconsider",
+      "House/ substituted",
+      "House/ substitute adoption failed",
+      "House/ floor amendment",
+      "Senate/ floor amendment failed",
+    ]) {
+      expect(ut(desc)).toMatchObject({ isFloorVote: false, reason: "excluded_question" });
+    }
+  });
+
+  it("rejects committee recommendations by tally, without any pattern naming them", () => {
+    // Utah committee rolls never exceed 16 of 75 or 9 of 29, under the 50
+    // percent committee cut, so an unmatched committee caption is rejected
+    // before the queue and never stored.
+    expect(ut("House Comm - Favorable Recommendation", "house", 12)).toMatchObject({
+      isFloorVote: false,
+      reason: "committee_tally:12/75",
+    });
+    expect(ut("Senate Comm - Substitute Recommendation", "senate", 8)).toMatchObject({
+      isFloorVote: false,
+      reason: "committee_tally:8/29",
+    });
+  });
+
+  it("surfaces a caption Utah has not printed before instead of guessing", () => {
+    expect(ut("House/ passed 3rd reading as amended")).toMatchObject({ isFloorVote: null, reason: "unknown_question" });
+  });
+});
+
 describe("Alabama's 2023 desc vocabulary", () => {
   const config = LEGISCAN_STATE_CONFIGS["AL-2014"]!;
   const al23 = (desc: string, total: number, chamber: "house" | "senate" = "house", billType = "B") =>
@@ -1506,6 +1577,8 @@ describe("getLegiscanStateConfig", () => {
       "ID-2246",
       "WV",
       "WV-2254",
+      "UT",
+      "UT-2214",
     ]);
     // A key is not a jurisdiction: Missouri and Maryland each have two
     // sessions in scope and write both under their postal jurisdiction, so a
@@ -1542,6 +1615,7 @@ describe("getLegiscanStateConfig", () => {
       "ND",
       "ID",
       "WV",
+      "UT",
     ]);
     expect(getLegiscanStateConfig("TX").sessionId).toBe(2160);
     expect(getLegiscanStateConfig("TN").sessionId).toBe(2161);
@@ -1575,6 +1649,8 @@ describe("getLegiscanStateConfig", () => {
 
     expect(getLegiscanStateConfig("WV")).toMatchObject({ jurisdiction: "WV", sessionId: 2196 });
     expect(getLegiscanStateConfig("WV-2254")).toMatchObject({ jurisdiction: "WV", sessionId: 2254 });
+    expect(getLegiscanStateConfig("UT")).toMatchObject({ jurisdiction: "UT", sessionId: 2137 });
+    expect(getLegiscanStateConfig("UT-2214")).toMatchObject({ jurisdiction: "UT", sessionId: 2214 });
     expect(getLegiscanStateConfig("AL-2014")).toMatchObject({ jurisdiction: "AL", sessionId: 2014 });
     expect(getLegiscanStateConfig("AL-2060")).toMatchObject({ jurisdiction: "AL", sessionId: 2060 });
     expect(getLegiscanStateConfig("AL-2103")).toMatchObject({ jurisdiction: "AL", sessionId: 2103 });
