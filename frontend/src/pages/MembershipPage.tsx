@@ -215,8 +215,8 @@ function MemberPanel({ membership }: { membership: MembershipMembership }) {
             <p className="text-sm text-ink">Thank you. Your membership creates:</p>
             <ul className="mt-1 list-disc pl-5 text-sm text-ink">
               <li>Deeper investigation of candidates&apos; actions</li>
-              <li>Closer analysis of what ballot measures would do</li>
-              <li>Ongoing research on the issues that matter most to you</li>
+              <li>Closer analysis of the effects of ballot measures</li>
+              <li>Ongoing research on the issues that affect you most</li>
             </ul>
           </>
         ) : null}
