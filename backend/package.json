@@ -90,6 +90,7 @@
     "manual:election-date:correct": "tsx src/scripts/correctManualElectionDate.ts",
     "manual:election-contest-family:correct": "tsx src/scripts/correctManualElectionContestFamily.ts",
     "manual:candidate-elections:move": "tsx src/scripts/moveManualCandidateElectionLink.ts",
+    "manual:candidate-finance-links:move": "tsx src/scripts/moveManualCandidateFinanceLinks.ts",
     "manual:candidate-elections:withdraw": "tsx src/scripts/withdrawManualCandidateElection.ts",
     "manual:candidate-elections:unlink": "tsx src/scripts/unlinkManualCandidateElection.ts",
     "manual:elections:supersede": "tsx src/scripts/supersedeManualElection.ts",

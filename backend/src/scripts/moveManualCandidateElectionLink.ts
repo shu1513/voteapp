@@ -17,8 +17,9 @@
 //   election_date (crossing either means this is not a duplicate-shell
 //   repair — wrong tool). --allow-cross-district relaxes ONLY the district
 //   equality, and only for verified SIBLING districts (same state, related
-//   body names, compatible types — assertSiblingDistricts); race_type and
-//   election_stage must always match;
+//   body names, compatible types — assertSiblingDistricts); race_type must
+//   always match, and so must election_stage when both rows state one (a
+//   NULL stage is "not stated", not a different contest);
 // - the target roster must not already list a different candidate id with
 //   the same first and last name (a presumed duplicate PERSON — merge the
 //   candidate rows first, or assert two distinct people with
@@ -31,7 +32,8 @@
 //   finance tables denormalize election_id + election_year and their
 //   summaries join on the election, so a bare link move would strand them
 //   (checked dynamically against every FK table so new finance states are
-//   covered automatically);
+//   covered automatically) — repoint them first with
+//   manual:candidate-finance-links:move;
 // - if the candidate is already linked to the target shell, the move
 //   converges only when both rows agree on status/is_incumbent/running mate
 //   (the from-link is then deleted as a duplicate); disagreeing rows are a
@@ -226,6 +228,17 @@ export async function assertSiblingDistricts(
     );
   }
   return { fromDistrict, toDistrict };
+}
+
+/**
+ * Two shells describe a different KIND of contest only when both STATE a
+ * stage and the stages differ. The elections writer stores NULL when a
+ * payload omits election_stage (and keeps the stored value on re-upsert),
+ * so NULL means "not stated", not a different contest; a mistyped UUID is
+ * still caught by the district, date and race_type guards.
+ */
+export function electionStagesConflict(a: string | null, b: string | null): boolean {
+  return a !== null && b !== null && a !== b;
 }
 
 /**
@@ -449,7 +462,7 @@ export async function runMoveCandidateElectionLink(
           `${toElection.race_type ?? "unknown"}); not the same contest`
       );
     }
-    if (fromElection.election_stage !== toElection.election_stage) {
+    if (electionStagesConflict(fromElection.election_stage, toElection.election_stage)) {
       throw new Error(
         `Elections are at different stages (${fromElection.election_stage ?? "unknown"} vs ` +
           `${toElection.election_stage ?? "unknown"}); not the same contest`

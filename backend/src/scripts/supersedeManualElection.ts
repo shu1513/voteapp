@@ -18,13 +18,18 @@
 //   supersession). --allow-cross-district relaxes ONLY the district
 //   equality, and only for verified SIBLING districts (same state, related
 //   body names, compatible types — assertSiblingDistricts, shared with the
-//   move wrapper); race_type and election_stage must always match;
+//   move wrapper); race_type must always match, and so must election_stage
+//   when both rows state one (a NULL stage is "not stated");
 // - ZERO rows in ANY table reference the shell (checked dynamically
 //   against every foreign key on public.elections, so candidate links,
 //   follows, results, ballot measures, notification events, and every
 //   present or future state finance table all block). Links are moved
 //   first with manual:candidate-elections:move; anything else (a follow,
-//   a result row) is a user decision, not a side effect;
+//   a result row) is a user decision, not a side effect. The one
+//   exception is manual_research_deferrals: a shell accumulates its own
+//   research bookkeeping ("roster deferred until this shell is
+//   superseded"), which the FK cascades away with the row and the result
+//   reports — the same allowance manual:elections:retire-spurious makes;
 // - local-database guard, row lock, single transaction, --dry-run.
 //
 // Redis-side state needs no handling here: the results scheduler and
@@ -38,7 +43,7 @@ import { Pool } from "pg";
 import { loadProjectEnv } from "../config/env.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
-import { assertSiblingDistricts } from "./moveManualCandidateElectionLink.js";
+import { assertSiblingDistricts, electionStagesConflict } from "./moveManualCandidateElectionLink.js";
 
 type QueryResultLike<T> = { rows: T[] };
 
@@ -67,6 +72,8 @@ export type SupersedeElectionResult = {
   deletedElectionId: string;
   deletedElectionTitle: string;
   supersededBy: { electionId: string; title: string; sourcesAppended: number }[];
+  /** Research bookkeeping rows that go with the shell via cascade. */
+  cascadeDeletes: { table: string; rows: number }[];
   referencingTablesChecked: number;
   /** Present only when --allow-cross-district actually crossed districts. */
   crossDistrict?: { electionId: string; fromDistrict: string; toDistrict: string }[];
@@ -236,7 +243,7 @@ export async function runSupersedeElection(
             `(${survivor.race_type ?? "unknown"} vs ${retired.race_type ?? "unknown"}); not a supersession`
         );
       }
-      if (survivor.election_stage !== retired.election_stage) {
+      if (electionStagesConflict(survivor.election_stage, retired.election_stage)) {
         throw new Error(
           `Superseding election ${id} is at a different stage ` +
             `(${survivor.election_stage ?? "unknown"} vs ${retired.election_stage ?? "unknown"}); not a supersession`
@@ -248,13 +255,19 @@ export async function runSupersedeElection(
     // pg_attribute), not from user input.
     const references = await listElectionFkReferences(client);
     const blocking: string[] = [];
+    const cascadeDeletes: SupersedeElectionResult["cascadeDeletes"] = [];
     for (const { table, column } of references) {
       const countResult = await client.query<{ n: string }>(
         `SELECT count(*)::text AS n FROM ${table} WHERE ${column} = $1::uuid`,
         [electionId]
       );
       const n = Number(countResult.rows[0]?.n ?? "0");
-      if (n > 0) blocking.push(`${table}.${column} (${n})`);
+      if (n === 0) continue;
+      if (table.replace(/^public\./, "") === "manual_research_deferrals") {
+        cascadeDeletes.push({ table: "manual_research_deferrals", rows: n });
+        continue;
+      }
+      blocking.push(`${table}.${column} (${n})`);
     }
     if (blocking.length > 0) {
       throw new Error(
@@ -301,6 +314,7 @@ export async function runSupersedeElection(
       deletedElectionId: electionId,
       deletedElectionTitle: retired.official_ballot_title,
       supersededBy,
+      cascadeDeletes,
       referencingTablesChecked: references.length,
       ...(crossDistrictSurvivors.length > 0 ? { crossDistrict: crossDistrictSurvivors } : {}),
     };
