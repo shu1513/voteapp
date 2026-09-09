@@ -1,0 +1,3670 @@
+{
+  "jurisdiction": "NE",
+  "sessionId": 2185,
+  "people": [
+    {
+      "people_id": 10907,
+      "person_hash": "mz6wsec2",
+      "party_id": "0",
+      "state_id": 27,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Executive Board",
+      "first_name": "Executive",
+      "middle_name": "",
+      "last_name": "Board",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 2196,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 10908,
+      "person_hash": "jtlm5gln",
+      "party_id": "0",
+      "state_id": 27,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Education Committee",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1440,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 10980,
+      "person_hash": "7v5o2tei",
+      "party_id": "0",
+      "state_id": 27,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Health and Human Services Committee",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1443,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 16896,
+      "person_hash": "aj23kwm0",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Merv Riepe",
+      "first_name": "Merv",
+      "middle_name": "",
+      "last_name": "Riepe",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-012",
+      "ftm_eid": 23353757,
+      "votesmart_id": 148457,
+      "opensecrets_id": "",
+      "knowwho_pid": 478190,
+      "ballotpedia": "Merv_Riepe",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2623",
+          "district_phone": "",
+          "email": "mriepe@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=12",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist12/highres/dist12.jpg",
+          "ballotpedia": "https://ballotpedia.org/Merv_Riepe",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/148457"
+        },
+        "capitol_address": {
+          "address1": "Room 1015",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=12",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/mervin-riepe-ba052311/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 18557,
+      "person_hash": "6hx8ofcf",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Dan Quick",
+      "first_name": "Dan",
+      "middle_name": "",
+      "last_name": "Quick",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-035",
+      "ftm_eid": 33031722,
+      "votesmart_id": 167692,
+      "opensecrets_id": "",
+      "knowwho_pid": 565340,
+      "ballotpedia": "Dan_Quick",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2617",
+          "district_phone": "",
+          "email": "dquick@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=35",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist35/highres/dist35.jpg",
+          "ballotpedia": "https://ballotpedia.org/Dan_Quick",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/167692"
+        },
+        "capitol_address": {
+          "address1": "Room 2004",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=35",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/dan.quick.545",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/dan-quick-b19480b8/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19004,
+      "person_hash": "uwpdj5gi",
+      "party_id": "0",
+      "state_id": 27,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Government, Military and Veterans Affairs",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1442,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 19282,
+      "person_hash": "sublfnmu",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Robert Clements",
+      "first_name": "Robert",
+      "middle_name": "",
+      "last_name": "Clements",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-002",
+      "ftm_eid": 6757500,
+      "votesmart_id": 176142,
+      "opensecrets_id": "",
+      "knowwho_pid": 615180,
+      "ballotpedia": "Robert_Clements",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2613",
+          "district_phone": "",
+          "email": "rclements@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=2",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist02/highres/dist02.jpg",
+          "ballotpedia": "https://ballotpedia.org/Robert_Clements",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/176142"
+        },
+        "capitol_address": {
+          "address1": "Room 1004",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/Senator.Clements",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=2",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/robclem7",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/robert-clements-6181b325/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 19477,
+      "person_hash": "tyo01zb2",
+      "party_id": "0",
+      "state_id": 27,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Executive Board Committee",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 2196,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 20431,
+      "person_hash": "1jjhjbf1",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "John Arch",
+      "first_name": "John",
+      "middle_name": "",
+      "last_name": "Arch",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-014",
+      "ftm_eid": 44178150,
+      "votesmart_id": 179840,
+      "opensecrets_id": "",
+      "knowwho_pid": 654589,
+      "ballotpedia": "John_Arch",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2730",
+          "district_phone": "",
+          "email": "jarch@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=14",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist14/highres/dist14.jpg",
+          "ballotpedia": "https://ballotpedia.org/John_Arch",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/179840"
+        },
+        "capitol_address": {
+          "address1": "Room 2103",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=14",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20432,
+      "person_hash": "bmgvtmyw",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Machaela Cavanaugh",
+      "first_name": "Machaela",
+      "middle_name": "",
+      "last_name": "Cavanaugh",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-006",
+      "ftm_eid": 44893463,
+      "votesmart_id": 179833,
+      "opensecrets_id": "",
+      "knowwho_pid": 654582,
+      "ballotpedia": "Machaela_Cavanaugh",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2714",
+          "district_phone": "",
+          "email": "mcavanaugh@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=6",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist06/highres/dist06.jpg",
+          "ballotpedia": "https://ballotpedia.org/Machaela_Cavanaugh",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/179833"
+        },
+        "capitol_address": {
+          "address1": "Room 1115",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/senatormachaela/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/senatormachaela",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=6",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/machaela.cavanaugh",
+            "instagram": "https://www.instagram.com/machcav/",
+            "linkedin": "https://www.linkedin.com/in/machaela-cavanaugh-a1b5471b/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20433,
+      "person_hash": "xcloagq1",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Wendy DeBoer",
+      "first_name": "Wendy",
+      "middle_name": "",
+      "last_name": "DeBoer",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-010",
+      "ftm_eid": 44893471,
+      "votesmart_id": 179837,
+      "opensecrets_id": "",
+      "knowwho_pid": 654585,
+      "ballotpedia": "Wendy_DeBoer",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2718",
+          "district_phone": "",
+          "email": "wdeboer@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=10",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist10/highres/dist10.jpg",
+          "ballotpedia": "https://ballotpedia.org/Wendy_DeBoer",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/179837"
+        },
+        "capitol_address": {
+          "address1": "Room 1114",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/WendyDeBoerNE/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=10",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/wendy.deboer.18",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20434,
+      "person_hash": "8kz5gcpw",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Myron Dorn",
+      "first_name": "Myron",
+      "middle_name": "",
+      "last_name": "Dorn",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-030",
+      "ftm_eid": 29205887,
+      "votesmart_id": 133023,
+      "opensecrets_id": "",
+      "knowwho_pid": 651073,
+      "ballotpedia": "Myron_Dorn",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2620",
+          "district_phone": "",
+          "email": "mdorn@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=30",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist30/highres/dist30.jpg",
+          "ballotpedia": "https://ballotpedia.org/Myron_Dorn",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/133023"
+        },
+        "capitol_address": {
+          "address1": "Room 1208",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100068941968451",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=30",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/myron.dorn.9",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20435,
+      "person_hash": "gbl4oi23",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Ben Hansen",
+      "first_name": "Ben",
+      "middle_name": "",
+      "last_name": "Hansen",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-016",
+      "ftm_eid": 44893474,
+      "votesmart_id": 179841,
+      "opensecrets_id": "",
+      "knowwho_pid": 656526,
+      "ballotpedia": "Ben_Hansen",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2728",
+          "district_phone": "",
+          "email": "bhansen@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=16",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist16/highres/dist16.jpg",
+          "ballotpedia": "https://ballotpedia.org/Ben_Hansen",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/179841"
+        },
+        "capitol_address": {
+          "address1": "Room 2108",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=16",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/benjamin.hansen.94695",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/ben-hansen-161b7677/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20537,
+      "person_hash": "ul57lvdh",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Megan Hunt",
+      "first_name": "Megan",
+      "middle_name": "",
+      "last_name": "Hunt",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-008",
+      "ftm_eid": 44893467,
+      "votesmart_id": 179835,
+      "opensecrets_id": "",
+      "knowwho_pid": 647310,
+      "ballotpedia": "Megan_Hunt",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2722",
+          "district_phone": "",
+          "email": "mhunt@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=8",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist08/highres/dist08.jpg",
+          "ballotpedia": "https://ballotpedia.org/Megan_Hunt",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/179835"
+        },
+        "capitol_address": {
+          "address1": "Room 2107",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/Nebraskamegan",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=8",
+            "youtube": "https://www.youtube.com/senatormeganhunt"
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/megancatherinehunt",
+            "instagram": "https://www.instagram.com/402meg/",
+            "linkedin": "https://www.linkedin.com/in/mehunt/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/402meg",
+            "website": "https://www.meganhunt.net",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20799,
+      "person_hash": "izsvsj45",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Mike Moser",
+      "first_name": "Mike",
+      "middle_name": "",
+      "last_name": "Moser",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-022",
+      "ftm_eid": 6566835,
+      "votesmart_id": 119308,
+      "opensecrets_id": "",
+      "knowwho_pid": 292336,
+      "ballotpedia": "Mike_Moser",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2715",
+          "district_phone": "",
+          "email": "mmoser@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=22",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist22/highres/dist22.jpg",
+          "ballotpedia": "https://ballotpedia.org/Mike_Moser",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/119308"
+        },
+        "capitol_address": {
+          "address1": "Room 1317",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/senatormoser",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=22",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/mike.moser.3979",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20820,
+      "person_hash": "awoblee8",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Dave Murman",
+      "first_name": "Dave",
+      "middle_name": "",
+      "last_name": "Murman",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-038",
+      "ftm_eid": 44893488,
+      "votesmart_id": 179857,
+      "opensecrets_id": "",
+      "knowwho_pid": 658053,
+      "ballotpedia": "Dave_Murman",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2732",
+          "district_phone": "",
+          "email": "dmurman@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=38",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist38/highres/dist38.jpg",
+          "ballotpedia": "https://ballotpedia.org/Dave_Murman",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/179857"
+        },
+        "capitol_address": {
+          "address1": "Room 1107",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/senatormurman/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=38",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/dave.murman.5",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 20936,
+      "person_hash": "mm78kiv9",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Tom Brandt",
+      "first_name": "Tom",
+      "middle_name": "",
+      "last_name": "Brandt",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-032",
+      "ftm_eid": 44893483,
+      "votesmart_id": 179853,
+      "opensecrets_id": "",
+      "knowwho_pid": 658050,
+      "ballotpedia": "Tom_Brandt",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2711",
+          "district_phone": "",
+          "email": "tbrandt@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=32",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist32/highres/dist32.jpg",
+          "ballotpedia": "https://ballotpedia.org/Tom_Brandt",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/179853"
+        },
+        "capitol_address": {
+          "address1": "Room 1210",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/tombrandt32/",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=32",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22137,
+      "person_hash": "lnw9hum3",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "John Cavanaugh",
+      "first_name": "John",
+      "middle_name": "",
+      "last_name": "Cavanaugh",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-009",
+      "ftm_eid": 49286751,
+      "votesmart_id": 190087,
+      "opensecrets_id": "",
+      "knowwho_pid": 422119,
+      "ballotpedia": "John_Cavanaugh",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2723",
+          "district_phone": "",
+          "email": "jcavanaugh@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=9",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist09/highres/dist09.jpg",
+          "ballotpedia": "https://ballotpedia.org/John_Cavanaugh",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/190087"
+        },
+        "capitol_address": {
+          "address1": "Room 1008",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/JohnCavanaughNE",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/JohnCavanaughNE",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=9",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/john.cavanaugh.7564129",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/john-cavanaugh-jr-a989667/",
+            "tiktok": "https://www.tiktok.com/@johncavanaughne",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22138,
+      "person_hash": "8ip5cft6",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Terrell McKinney",
+      "first_name": "Terrell",
+      "middle_name": "",
+      "last_name": "McKinney",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-011",
+      "ftm_eid": 49286753,
+      "votesmart_id": 190089,
+      "opensecrets_id": "",
+      "knowwho_pid": 731957,
+      "ballotpedia": "Terrell_McKinney",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2612",
+          "district_phone": "",
+          "email": "tmckinney@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=11",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist11/highres/dist11.jpg",
+          "ballotpedia": "https://ballotpedia.org/Terrell_McKinney",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/190089"
+        },
+        "capitol_address": {
+          "address1": "Room 1319",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenMcKinneyLD11",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=11",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/rellthebeast",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/terrell-mckinney-106b4b7a/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22282,
+      "person_hash": "igiri6r2",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Eliot Bostar",
+      "first_name": "Eliot",
+      "middle_name": "",
+      "last_name": "Bostar",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-029",
+      "ftm_eid": 49286773,
+      "votesmart_id": 190110,
+      "opensecrets_id": "",
+      "knowwho_pid": 731962,
+      "ballotpedia": "Eliot_Bostar",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2734",
+          "district_phone": "",
+          "email": "ebostar@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=29",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist29/highres/dist29.jpg",
+          "ballotpedia": "https://ballotpedia.org/Eliot_Bostar",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/190110"
+        },
+        "capitol_address": {
+          "address1": "Room 1012",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=29",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/eliotbostar/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/EliotBostar",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 22355,
+      "person_hash": "n5jpf1sn",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Rita Sanders",
+      "first_name": "Rita",
+      "middle_name": "",
+      "last_name": "Sanders",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-045",
+      "ftm_eid": 49286790,
+      "votesmart_id": 132954,
+      "opensecrets_id": "",
+      "knowwho_pid": 734194,
+      "ballotpedia": "Rita_Sanders",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2615",
+          "district_phone": "",
+          "email": "rsanders@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=45",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist45/highres/dist45.jpg",
+          "ballotpedia": "https://ballotpedia.org/Rita_Sanders",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/132954"
+        },
+        "capitol_address": {
+          "address1": "Room 1315",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenatorRitaSanders",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=45",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/rita.sanders.56",
+            "instagram": "https://www.instagram.com/rita.sanders.56/",
+            "linkedin": "https://www.linkedin.com/in/rita-sanders-a584421/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/bellevuemayor",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23101,
+      "person_hash": "dfsn6mzl",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Michael Jacobson",
+      "first_name": "Michael",
+      "middle_name": "",
+      "last_name": "Jacobson",
+      "suffix": "",
+      "nickname": "Mike",
+      "district": "SD-042",
+      "ftm_eid": 55126057,
+      "votesmart_id": 103150,
+      "opensecrets_id": "",
+      "knowwho_pid": 412264,
+      "ballotpedia": "Michael_Jacobson",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2729",
+          "district_phone": "",
+          "email": "mjacobson@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=42",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist42/highres/dist42.jpg",
+          "ballotpedia": "https://ballotpedia.org/Michael_Jacobson",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/103150"
+        },
+        "capitol_address": {
+          "address1": "Room 1117",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=42",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/mike.jacobson.1023",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/mike-jacobson-b6636751/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/mjacobson1",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23160,
+      "person_hash": "pov08ebl",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Kathleen Kauth",
+      "first_name": "Kathleen",
+      "middle_name": "",
+      "last_name": "Kauth",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-031",
+      "ftm_eid": 55765575,
+      "votesmart_id": 208260,
+      "opensecrets_id": "",
+      "knowwho_pid": 811251,
+      "ballotpedia": "Kathleen_Kauth",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2327",
+          "district_phone": "",
+          "email": "kkauth@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=31",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist31/highres/dist31.jpg",
+          "ballotpedia": "https://ballotpedia.org/Kathleen_Kauth",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/208260"
+        },
+        "capitol_address": {
+          "address1": "Room 2010",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100088031203515",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=31",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/kathleenkauth",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://ktbeckenterprisesllc.com/",
+            "youtube": "https://www.youtube.com/@kathleenkauth7583"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23167,
+      "person_hash": "r0oqapzj",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Robert Dover",
+      "first_name": "Robert",
+      "middle_name": "",
+      "last_name": "Dover",
+      "suffix": "",
+      "nickname": "Rob",
+      "district": "SD-019",
+      "ftm_eid": 58374505,
+      "votesmart_id": 210288,
+      "opensecrets_id": "",
+      "knowwho_pid": 816063,
+      "ballotpedia": "Rob_Dover",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2929",
+          "district_phone": "",
+          "email": "rdover@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=19",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist19/highres/dist19.jpg",
+          "ballotpedia": "https://ballotpedia.org/Rob_Dover",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/210288"
+        },
+        "capitol_address": {
+          "address1": "Room 2011",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100086123491140",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=19",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/robert.dover2",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/robertdover/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/@robertedover"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23684,
+      "person_hash": "hx3x79zt",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "George Dungan",
+      "first_name": "George",
+      "middle_name": "C.",
+      "last_name": "Dungan",
+      "suffix": "III",
+      "nickname": "",
+      "district": "SD-026",
+      "ftm_eid": 55408521,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "George_Dungan_III",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2610",
+          "district_phone": "",
+          "email": "gdungan@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=26",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist26/highres/dist26.jpg",
+          "ballotpedia": "https://ballotpedia.org/George_Dungan_III",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "Room 1016",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=26",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=16830511",
+            "instagram": "https://www.instagram.com/george_dungan/",
+            "linkedin": "https://www.linkedin.com/in/george-dungan-2649025/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23685,
+      "person_hash": "aqu37dby",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Loren Lippincott",
+      "first_name": "Loren",
+      "middle_name": "",
+      "last_name": "Lippincott",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-034",
+      "ftm_eid": 55408498,
+      "votesmart_id": 202075,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Loren_Lippincott",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2630",
+          "district_phone": "",
+          "email": "llippincott@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=34",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist34/highres/dist34.jpg",
+          "ballotpedia": "https://ballotpedia.org/Loren_Lippincott",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/202075"
+        },
+        "capitol_address": {
+          "address1": "Room 1018",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=34",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/loren.lippincott.1",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23763,
+      "person_hash": "thwlbdzw",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Barry DeKay",
+      "first_name": "Barry",
+      "middle_name": "",
+      "last_name": "DeKay",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-040",
+      "ftm_eid": 55408501,
+      "votesmart_id": 202079,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Barry_DeKay",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2801",
+          "district_phone": "",
+          "email": "bdekay@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=40",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist40/highres/dist40.jpg",
+          "ballotpedia": "https://ballotpedia.org/Barry_DeKay",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/202079"
+        },
+        "capitol_address": {
+          "address1": "Room 1022",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=40",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/barry.dekay",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23764,
+      "person_hash": "61v94zkx",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "John Fredrickson",
+      "first_name": "John",
+      "middle_name": "A.",
+      "last_name": "Fredrickson",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-020",
+      "ftm_eid": 55408523,
+      "votesmart_id": 196315,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "John_Fredrickson",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2622",
+          "district_phone": "",
+          "email": "jfredrickson@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=20",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist20/highres/dist20.jpg",
+          "ballotpedia": "https://ballotpedia.org/John_Fredrickson",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/196315"
+        },
+        "capitol_address": {
+          "address1": "Room 2015",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=20",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "https://www.instagram.com/johnnyfredd/",
+            "linkedin": "https://www.linkedin.com/in/john-fredrickson-a4148537/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23765,
+      "person_hash": "mrrfc2dv",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Jane Raybould",
+      "first_name": "Jane",
+      "middle_name": "Michele",
+      "last_name": "Raybould",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-028",
+      "ftm_eid": 9905882,
+      "votesmart_id": 143871,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Jane_Raybould",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2633",
+          "district_phone": "",
+          "email": "jraybould@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=28",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist28/highres/dist28.jpg",
+          "ballotpedia": "https://ballotpedia.org/Jane_Raybould",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/143871"
+        },
+        "capitol_address": {
+          "address1": "Room 1406",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=28",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/jane-raybould-88959520/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23876,
+      "person_hash": "5i9iuq9i",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Rick Holdcroft",
+      "first_name": "Rick",
+      "middle_name": "",
+      "last_name": "Holdcroft",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-036",
+      "ftm_eid": 55408500,
+      "votesmart_id": 190079,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Rick_Holdcroft",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2642",
+          "district_phone": "",
+          "email": "rholdcroft@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=36",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist36/highres/dist36.jpg",
+          "ballotpedia": "https://ballotpedia.org/Rick_Holdcroft",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/190079"
+        },
+        "capitol_address": {
+          "address1": "Room 1019",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100089805789250",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=36",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/richard.holdcroft.7",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/richard-holdcroft-30284825/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23877,
+      "person_hash": "tixuftbb",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Brad Von Gillern",
+      "first_name": "R. Brad",
+      "middle_name": "",
+      "last_name": "Von Gillern",
+      "suffix": "",
+      "nickname": "Brad",
+      "district": "SD-004",
+      "ftm_eid": 55408532,
+      "votesmart_id": 202052,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "R._Brad_von_Gillern",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2621",
+          "district_phone": "",
+          "email": "bvongillern@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=4",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist04/highres/dist04.jpg",
+          "ballotpedia": "https://ballotpedia.org/R._Brad_von_Gillern",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/202052"
+        },
+        "capitol_address": {
+          "address1": "Room 1116",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=4",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/brad.vongillern",
+            "instagram": "https://www.instagram.com/bradvongillern/",
+            "linkedin": "https://www.linkedin.com/in/bradvongillern/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/bradvongillern",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 23980,
+      "person_hash": "38vyq35t",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Teresa Ibach",
+      "first_name": "Teresa",
+      "middle_name": "J.",
+      "last_name": "Ibach",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-044",
+      "ftm_eid": 18347651,
+      "votesmart_id": 202541,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Teresa_Ibach",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2805",
+          "district_phone": "",
+          "email": "tibach@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=44",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist44/highres/dist44.jpg",
+          "ballotpedia": "https://ballotpedia.org/Teresa_Ibach",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/202541"
+        },
+        "capitol_address": {
+          "address1": "Room 2000",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=44",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/teresa.ibach",
+            "instagram": "https://www.instagram.com/teresaibach/",
+            "linkedin": "https://www.linkedin.com/in/teresa-ibach-383803b0/",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/teresaibach",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24114,
+      "person_hash": "tmi5gye2",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Beau Ballard",
+      "first_name": "Beau",
+      "middle_name": "",
+      "last_name": "Ballard",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-021",
+      "ftm_eid": 0,
+      "votesmart_id": 211272,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Beau_Ballard",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2673",
+          "district_phone": "",
+          "email": "bballard@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=21",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist21/highres/dist21.jpg",
+          "ballotpedia": "https://ballotpedia.org/Beau_Ballard",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/211272"
+        },
+        "capitol_address": {
+          "address1": "Room 1101",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100088983310233",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=21",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/beau.ballard.37",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/beau-ballard-47612087/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24300,
+      "person_hash": "8c2uf1qq",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Christy Armendariz",
+      "first_name": "Christy",
+      "middle_name": "",
+      "last_name": "Armendariz",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-018",
+      "ftm_eid": 55408494,
+      "votesmart_id": 202060,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Christy_Armendariz",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2618",
+          "district_phone": "",
+          "email": "carmendariz@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=18",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist18/highres/dist18.jpg",
+          "ballotpedia": "https://ballotpedia.org/Christy_Armendariz",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/202060"
+        },
+        "capitol_address": {
+          "address1": "Room 1423",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=18",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100076612414998",
+            "instagram": "https://www.instagram.com/christy.armendariz/",
+            "linkedin": "https://www.linkedin.com/in/christy-armendariz-mba-97577914/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24301,
+      "person_hash": "cyaikm2q",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Brian Hardin",
+      "first_name": "Brian",
+      "middle_name": "",
+      "last_name": "Hardin",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-048",
+      "ftm_eid": 55408506,
+      "votesmart_id": 202085,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Brian_Hardin",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2802",
+          "district_phone": "",
+          "email": "bhardin@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=48",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist48/highres/dist48.jpg",
+          "ballotpedia": "https://ballotpedia.org/Brian_Hardin",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/202085"
+        },
+        "capitol_address": {
+          "address1": "Room 1402",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=48",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/brian-hardin-b1145368/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24682,
+      "person_hash": "tqzztfla",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Jana Hughes",
+      "first_name": "Jana",
+      "middle_name": "",
+      "last_name": "Hughes",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-024",
+      "ftm_eid": 55408495,
+      "votesmart_id": 202072,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Jana_Hughes",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2756",
+          "district_phone": "",
+          "email": "jhughes@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=24",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist24/highres/dist24.jpg",
+          "ballotpedia": "https://ballotpedia.org/Jana_Hughes",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/202072"
+        },
+        "capitol_address": {
+          "address1": "Room 1212",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=100089096333521",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=24",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jana.hughes8",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24932,
+      "person_hash": "fvmg5q2e",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Carolyn Bosn",
+      "first_name": "Carolyn",
+      "middle_name": "",
+      "last_name": "Bosn",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-025",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Carolyn_Bosn",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2731",
+          "district_phone": "",
+          "email": "cbosn@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=25",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist25/highres/dist25.jpg",
+          "ballotpedia": "https://ballotpedia.org/Carolyn_Bosn",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/0"
+        },
+        "capitol_address": {
+          "address1": "Room 1103",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/SenatorBosn",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "https://www.twitter.com/SenCarolynBosn",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=25",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/profile.php?id=9221046",
+            "instagram": "https://www.instagram.com/carolyncurrybosn/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": "https://www.youtube.com/@carolynbosn"
+          }
+        }
+      }
+    },
+    {
+      "people_id": 24938,
+      "person_hash": "0475h4d2",
+      "party_id": "0",
+      "state_id": 27,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Banking, Commerce and Insurance Committee",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1438,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 25028,
+      "person_hash": "55ex2bql",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Fred Meyer",
+      "first_name": "Fred",
+      "middle_name": "",
+      "last_name": "Meyer",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-041",
+      "ftm_eid": 6558187,
+      "votesmart_id": 212987,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Fred_Meyer",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2631",
+          "district_phone": "",
+          "email": "fmeyer@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=41",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist41/highres/dist41.jpg",
+          "ballotpedia": "https://ballotpedia.org/Fred_Meyer",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/212987"
+        },
+        "capitol_address": {
+          "address1": "Room 1529",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26035,
+      "person_hash": "7yzjl9v5",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Bob Andersen",
+      "first_name": "Bob",
+      "middle_name": "",
+      "last_name": "Andersen",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-049",
+      "ftm_eid": 59781829,
+      "votesmart_id": 215059,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Bob_Andersen_(Nebraska_state_senator)",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2725",
+          "district_phone": "",
+          "email": "bandersen@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=49",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist49/highres/dist49.jpg",
+          "ballotpedia": "https://ballotpedia.org/Bob_Andersen_%28Nebraska_state_senator%29",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215059"
+        },
+        "capitol_address": {
+          "address1": "Room 1021",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26036,
+      "person_hash": "zid33t85",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Stanley Clouse",
+      "first_name": "Stanley",
+      "middle_name": "",
+      "last_name": "Clouse",
+      "suffix": "",
+      "nickname": "Stan",
+      "district": "SD-037",
+      "ftm_eid": 59781888,
+      "votesmart_id": 111886,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Stanley_Clouse",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2726",
+          "district_phone": "",
+          "email": "sclouse@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=37",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist37/highres/dist37.jpg",
+          "ballotpedia": "https://ballotpedia.org/Stanley_Clouse",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/111886"
+        },
+        "capitol_address": {
+          "address1": "Room 1206",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/stan.clouse",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26037,
+      "person_hash": "7dmqrnsi",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Dunixi Guereca",
+      "first_name": "Dunixi",
+      "middle_name": "",
+      "last_name": "Guereca",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-007",
+      "ftm_eid": 59781880,
+      "votesmart_id": 215017,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Dunixi_Guereca",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2721",
+          "district_phone": "",
+          "email": "dguereca@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=7",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist07/highres/dist07.jpg",
+          "ballotpedia": "https://ballotpedia.org/Dunixi_Guereca",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215017"
+        },
+        "capitol_address": {
+          "address1": "Room 1523",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/dunixi.guereca",
+            "instagram": "https://www.instagram.com/d.gereka/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26038,
+      "person_hash": "n05az4wh",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Robert Hallstrom",
+      "first_name": "Robert",
+      "middle_name": "",
+      "last_name": "Hallstrom",
+      "suffix": "",
+      "nickname": "Bob",
+      "district": "SD-001",
+      "ftm_eid": 59781893,
+      "votesmart_id": 215012,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Robert_Hallstrom",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2733",
+          "district_phone": "",
+          "email": "bhallstrom@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=1",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist01/highres/dist01.jpg",
+          "ballotpedia": "https://ballotpedia.org/Robert_Hallstrom",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215012"
+        },
+        "capitol_address": {
+          "address1": "Room 1404",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26039,
+      "person_hash": "10g4g0oz",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Margo Juarez",
+      "first_name": "Margo",
+      "middle_name": "",
+      "last_name": "Juarez",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-005",
+      "ftm_eid": 59781848,
+      "votesmart_id": 215016,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Margo_Juarez",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2710",
+          "district_phone": "",
+          "email": "mjuarez@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=5",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist05/highres/dist05.jpg",
+          "ballotpedia": "https://ballotpedia.org/Margo_Juarez",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215016"
+        },
+        "capitol_address": {
+          "address1": "Room 1528",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/huskermargo",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26040,
+      "person_hash": "inkif4rl",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Dan Lonowski",
+      "first_name": "Dan",
+      "middle_name": "",
+      "last_name": "Lonowski",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-033",
+      "ftm_eid": 59781871,
+      "votesmart_id": 215048,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Dan_Lonowski",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2712",
+          "district_phone": "",
+          "email": "dlonowski@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=33",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist33/highres/dist33.jpg",
+          "ballotpedia": "https://ballotpedia.org/Dan_Lonowski",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215048"
+        },
+        "capitol_address": {
+          "address1": "Room 1017",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/dan.lonowski",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26041,
+      "person_hash": "ul78ikv5",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Daniel McKeon",
+      "first_name": "Daniel",
+      "middle_name": "",
+      "last_name": "McKeon",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-041",
+      "ftm_eid": 59781820,
+      "votesmart_id": 215053,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Daniel_McKeon",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2631",
+          "district_phone": "",
+          "email": "dmckeon@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=41",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist41/highres/dist41.jpg",
+          "ballotpedia": "https://ballotpedia.org/Daniel_McKeon",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215053"
+        },
+        "capitol_address": {
+          "address1": "Room 1529",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26042,
+      "person_hash": "r0q2h0ay",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Glen Meyer",
+      "first_name": "Glen",
+      "middle_name": "",
+      "last_name": "Meyer",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-017",
+      "ftm_eid": 59781849,
+      "votesmart_id": 215029,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Glen_Meyer",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2716",
+          "district_phone": "",
+          "email": "gmeyer@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=17",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist17/highres/dist17.jpg",
+          "ballotpedia": "https://ballotpedia.org/Glen_Meyer",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215029"
+        },
+        "capitol_address": {
+          "address1": "Room 1202",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26043,
+      "person_hash": "6o8ie2up",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Jason Prokop",
+      "first_name": "Jason",
+      "middle_name": "",
+      "last_name": "Prokop",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-027",
+      "ftm_eid": 59781832,
+      "votesmart_id": 215044,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Jason_Prokop",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2632",
+          "district_phone": "",
+          "email": "jprokop@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=27",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist27/highres/dist27.jpg",
+          "ballotpedia": "https://ballotpedia.org/Jason_Prokop",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215044"
+        },
+        "capitol_address": {
+          "address1": "Room 1118",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26044,
+      "person_hash": "4do09l22",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Victor Rountree",
+      "first_name": "Victor",
+      "middle_name": "",
+      "last_name": "Rountree",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-003",
+      "ftm_eid": 59781862,
+      "votesmart_id": 215014,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Victor_Rountree",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2627",
+          "district_phone": "",
+          "email": "vrountree@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=3",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist03/highres/dist03.jpg",
+          "ballotpedia": "https://ballotpedia.org/Victor_Rountree",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215014"
+        },
+        "capitol_address": {
+          "address1": "Room 1000",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/victor.rountree",
+            "instagram": "https://www.instagram.com/treehouse1211/",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26045,
+      "person_hash": "5z8ahqiy",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Tony Sorrentino",
+      "first_name": "Tony",
+      "middle_name": "",
+      "last_name": "Sorrentino",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-039",
+      "ftm_eid": 59781819,
+      "votesmart_id": 57687,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Tony_Sorrentino",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2885",
+          "district_phone": "",
+          "email": "tsorrentino@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=39",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist39/highres/dist39.jpg",
+          "ballotpedia": "https://ballotpedia.org/Tony_Sorrentino",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/57687"
+        },
+        "capitol_address": {
+          "address1": "Room 1522",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26046,
+      "person_hash": "lq6i6io1",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Ashlei Spivey",
+      "first_name": "Ashlei",
+      "middle_name": "",
+      "last_name": "Spivey",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-013",
+      "ftm_eid": 59781857,
+      "votesmart_id": 215023,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Ashlei_Spivey",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2727",
+          "district_phone": "",
+          "email": "aspivey@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=13",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist13/highres/dist13.jpg",
+          "ballotpedia": "https://ballotpedia.org/Ashlei_Spivey",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215023"
+        },
+        "capitol_address": {
+          "address1": "Room 1120",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26047,
+      "person_hash": "ud5h21nz",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Tanya Storer",
+      "first_name": "Tanya",
+      "middle_name": "",
+      "last_name": "Storer",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-043",
+      "ftm_eid": 49286788,
+      "votesmart_id": 164067,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Tanya_Storer",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2628",
+          "district_phone": "",
+          "email": "tstorer@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=43",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist43/highres/dist43.jpg",
+          "ballotpedia": "https://ballotpedia.org/Tanya_Storer",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/164067"
+        },
+        "capitol_address": {
+          "address1": "Room 1401",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/tanya.storer.1",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/tanya-storer-8b57ab299/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26048,
+      "person_hash": "sqe4gdkf",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Jared Storm",
+      "first_name": "Jared",
+      "middle_name": "",
+      "last_name": "Storm",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-023",
+      "ftm_eid": 55761821,
+      "votesmart_id": 215039,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Jared_Storm",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2719",
+          "district_phone": "",
+          "email": "jstorm@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=23",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist23/highres/dist23.jpg",
+          "ballotpedia": "https://ballotpedia.org/Jared_Storm",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215039"
+        },
+        "capitol_address": {
+          "address1": "Room 1124",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/jared.storm.73",
+            "instagram": "",
+            "linkedin": "https://www.linkedin.com/in/jared-storm-8584a662/",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26049,
+      "person_hash": "1cw0zwim",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Paul Strommen",
+      "first_name": "Paul",
+      "middle_name": "",
+      "last_name": "Strommen",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-047",
+      "ftm_eid": 59781831,
+      "votesmart_id": 215058,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Paul_Strommen",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2616",
+          "district_phone": "",
+          "email": "pstrommen@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=47",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist47/highres/dist47.jpg",
+          "ballotpedia": "https://ballotpedia.org/Paul_Strommen",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215058"
+        },
+        "capitol_address": {
+          "address1": "Room 1321",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 26050,
+      "person_hash": "fm1dyliq",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Dave Wordekemper",
+      "first_name": "Dave",
+      "middle_name": "",
+      "last_name": "Wordekemper",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-015",
+      "ftm_eid": 59781879,
+      "votesmart_id": 215025,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "Dave_Wordekemper",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2625",
+          "district_phone": "",
+          "email": "dwordekemper@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=15",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist15/highres/dist15.jpg",
+          "ballotpedia": "https://ballotpedia.org/Dave_Wordekemper",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/215025"
+        },
+        "capitol_address": {
+          "address1": "Room 1110",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/dave.wordekemper.7",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 6947,
+      "person_hash": "z201tkl5",
+      "party_id": "0",
+      "state_id": 27,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Nebraska Retirement Systems Committee",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1446,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 6952,
+      "person_hash": "722fmdo6",
+      "party_id": "6",
+      "state_id": 27,
+      "party": "N",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Danielle Conrad",
+      "first_name": "Danielle",
+      "middle_name": "",
+      "last_name": "Conrad",
+      "suffix": "",
+      "nickname": "",
+      "district": "SD-046",
+      "ftm_eid": 6561877,
+      "votesmart_id": 56695,
+      "opensecrets_id": "",
+      "knowwho_pid": 248942,
+      "ballotpedia": "Danielle_Conrad",
+      "bioguide_id": "",
+      "committee_sponsor": 0,
+      "committee_id": 0,
+      "state_federal": 0,
+      "bio": {
+        "social": {
+          "capitol_phone": "402-471-2720",
+          "district_phone": "",
+          "email": "dconrad@leg.ne.gov",
+          "webmail": "",
+          "biography": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=46",
+          "image": "https://www.nebraskalegislature.gov/media/images/senators/dist46/highres/dist46.jpg",
+          "ballotpedia": "https://ballotpedia.org/Danielle_Conrad",
+          "votesmart": "https://justfacts.votesmart.org/candidate/biography/56695"
+        },
+        "capitol_address": {
+          "address1": "Room 2028",
+          "address2": "P.O. Box 94604",
+          "city": "Lincoln",
+          "state": "NE",
+          "zip": "68509"
+        },
+        "links": {
+          "official": {
+            "bluesky": "",
+            "facebook": "",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "https://nebraskalegislature.gov/senators/landing-pages/index.php?District=46",
+            "youtube": ""
+          },
+          "personal": {
+            "bluesky": "",
+            "facebook": "https://www.facebook.com/danielle.conrad.18",
+            "instagram": "",
+            "linkedin": "",
+            "tiktok": "",
+            "twitter": "",
+            "website": "",
+            "youtube": ""
+          }
+        }
+      }
+    },
+    {
+      "people_id": 6954,
+      "person_hash": "0hg1dead",
+      "party_id": "0",
+      "state_id": 27,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Urban Affairs Committee",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1449,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 6956,
+      "person_hash": "xvs7n4x3",
+      "party_id": "0",
+      "state_id": 27,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Revenue Committee",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1447,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 6957,
+      "person_hash": "xekn8d7a",
+      "party_id": "0",
+      "state_id": 27,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Judiciary Committee",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1444,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 6959,
+      "person_hash": "scnp8vac",
+      "party_id": "0",
+      "state_id": 27,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Agriculture Committee",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1436,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 6963,
+      "person_hash": "dsyieto7",
+      "party_id": "0",
+      "state_id": 27,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "General Affairs Committee",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1441,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 6964,
+      "person_hash": "8twybi9y",
+      "party_id": "0",
+      "state_id": 27,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Natural Resources Committee",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1445,
+      "state_federal": 0,
+      "bio": []
+    },
+    {
+      "people_id": 6965,
+      "person_hash": "zncnqmb8",
+      "party_id": "0",
+      "state_id": 27,
+      "party": "",
+      "role_id": 2,
+      "role": "Sen",
+      "name": "Business and Labor Committee",
+      "first_name": "",
+      "middle_name": "",
+      "last_name": "",
+      "suffix": "",
+      "nickname": "",
+      "district": "",
+      "ftm_eid": 0,
+      "votesmart_id": 0,
+      "opensecrets_id": "",
+      "knowwho_pid": 0,
+      "ballotpedia": "",
+      "bioguide_id": "",
+      "committee_sponsor": 1,
+      "committee_id": 1439,
+      "state_federal": 0,
+      "bio": []
+    }
+  ]
+}
