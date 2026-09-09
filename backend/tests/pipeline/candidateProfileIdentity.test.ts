@@ -4,7 +4,10 @@ import {
   AmbiguousCandidateIdentityError,
   assertMergedOfficeRoutingConsistent,
   findOrCreateCandidateFromProfile,
+  isExactNameMatch,
+  isPersonalLinkedInProfileUrl,
   matchesByHardIdentifier,
+  matchesByRegistryIdentifier,
   mergeIdentifierLists,
   mergeProfileSourceLists,
   resolveStoredCandidateParty,
@@ -403,7 +406,7 @@ describe("findOrCreateCandidateFromProfile", () => {
 
     expect(result).toEqual({ candidateId: "candidate-home-state", matchedExisting: true });
     expect(String(query.mock.calls[1]?.[0])).not.toContain("AND state = $3");
-    expect(query.mock.calls[1]?.[1]).toEqual(["Jane", "Candidate"]);
+    expect(query.mock.calls[1]?.[1]).toEqual(["Jane", "Candidate", "Jane Candidate"]);
     expect(query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.candidates"))).toBe(false);
   });
 
@@ -422,7 +425,7 @@ describe("findOrCreateCandidateFromProfile", () => {
 
     expect(result).toEqual({ candidateId: "candidate-new-us", matchedExisting: false });
     expect(String(query.mock.calls[1]?.[0])).toContain("AND state = $3");
-    expect(query.mock.calls[1]?.[1]).toEqual(["Jane", "Candidate", "US"]);
+    expect(query.mock.calls[1]?.[1]).toEqual(["Jane", "Candidate", "US", "Jane Candidate"]);
     expect(query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.candidates"))).toBe(true);
   });
 });
@@ -924,6 +927,14 @@ describe("website rotation (campaign sites change between races)", () => {
     expect(matched).toBe(true);
   });
 
+  it("does not match two junk (non-URL) LinkedIn values", () => {
+    const matched = matchesByHardIdentifier(
+      profile({ linkedin_url: "not a url" }),
+      { ...row, official_website_url: null, linkedin_url: "also not a url" }
+    );
+    expect(matched).toBe(false);
+  });
+
   it("does not match two junk (non-URL) website values", () => {
     const matched = matchesByHardIdentifier(
       profile({ official_website_url: "not a url" }),
@@ -1113,5 +1124,256 @@ describe("website rotation (campaign sites change between races)", () => {
         })
       ).toEqual([]);
     });
+  });
+});
+
+describe("name-variant identity (stored name parts differ from the payload's)", () => {
+  // Primary-stage row split by a roster: "Jimmie Wilson Jr." stored as
+  // first_name "Jimmie" / last_name "Jr." — the live shape that minted a
+  // duplicate in the November 2026 legislative run.
+  const baseRow = {
+    id: "candidate-existing",
+    first_name: "Chris",
+    last_name: "Venable",
+    date_of_birth: null,
+    twitter_handle: null,
+    linkedin_url: null,
+    official_website_url: null,
+    former_website_urls: null as unknown,
+    fec_ids: null,
+    state_filing_ids: null,
+    current_office: null,
+    state: "MI",
+  };
+  const variantProfile = () =>
+    profile({ display_name: "Chris Venable", first_name: "Christopher", last_name: "Venable" });
+
+  it("loads rows sharing either name part or the display name, scoped to the state", async () => {
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [{ id: "candidate-new" }], rowCount: 1 });
+
+    await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: variantProfile(),
+      state: "MI",
+      rosterParty: "Democratic",
+      includeParty: true,
+    });
+
+    const poolSql = String(query.mock.calls[1]?.[0]);
+    expect(poolSql).toContain("lower(first_name) = lower($1)");
+    expect(poolSql).toContain("OR lower(last_name) = lower($2)");
+    expect(poolSql).toContain("OR lower(trim(display_name)) = lower(trim($4))");
+    expect(poolSql).toContain("AND state = $3");
+    expect(query.mock.calls[1]?.[1]).toEqual(["Christopher", "Venable", "MI", "Chris Venable"]);
+  });
+
+  it("matches a same-last-name row on a shared state filing id and does not insert", async () => {
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({ rows: [{ ...baseRow, state_filing_ids: ["0613800"] }] })
+      .mockResolvedValueOnce({ rows: [{ fec_ids: null, state_filing_ids: ["0613800"], current_office: null }] })
+      .mockResolvedValueOnce({ rowCount: 1 });
+
+    const result = await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: { ...variantProfile(), state_filing_ids: ["0613800"] },
+      state: "MI",
+      rosterParty: "Democratic",
+      includeParty: true,
+    });
+
+    expect(result).toEqual({ candidateId: "candidate-existing", matchedExisting: true });
+    expect(query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.candidates"))).toBe(false);
+  });
+
+  it("matches a same-first-name row (suffix stored as last_name) on a shared FEC id", async () => {
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({
+        rows: [{ ...baseRow, first_name: "Jimmie", last_name: "Jr.", fec_ids: ["H6MI13001"] }],
+      })
+      .mockResolvedValueOnce({ rows: [{ fec_ids: ["H6MI13001"], state_filing_ids: null, current_office: null }] })
+      .mockResolvedValueOnce({ rowCount: 1 });
+
+    const result = await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({
+        display_name: "Jimmie Wilson Jr.",
+        first_name: "Jimmie",
+        last_name: "Wilson",
+        fec_ids: ["H6MI13001"],
+      }),
+      state: "MI",
+      rosterParty: "Democratic",
+      includeParty: true,
+    });
+
+    expect(result).toEqual({ candidateId: "candidate-existing", matchedExisting: true });
+  });
+
+  it("does NOT match a name-variant row on a shared website alone (slate and family sites)", async () => {
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({
+        rows: [{ ...baseRow, first_name: "Bob", last_name: "White", official_website_url: "https://whites.example" }],
+      })
+      .mockResolvedValueOnce({ rows: [{ id: "candidate-new" }], rowCount: 1 });
+
+    const result = await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({
+        display_name: "Cathy White",
+        first_name: "Cathy",
+        last_name: "White",
+        official_website_url: "https://whites.example",
+      }),
+      state: "MD",
+      rosterParty: "Democratic",
+      includeParty: true,
+    });
+
+    expect(result).toEqual({ candidateId: "candidate-new", matchedExisting: false });
+  });
+
+  it("does NOT match a name-variant row on a shared birth date alone", async () => {
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({
+        rows: [{ ...baseRow, first_name: "Ann", last_name: "Twin", date_of_birth: "1980-01-01" }],
+      })
+      .mockResolvedValueOnce({ rows: [{ id: "candidate-new" }], rowCount: 1 });
+
+    const result = await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({
+        display_name: "Beth Twin",
+        first_name: "Beth",
+        last_name: "Twin",
+        date_of_birth: "1980-01-01",
+      }),
+      state: "OH",
+      rosterParty: "Democratic",
+      includeParty: true,
+    });
+
+    expect(result).toEqual({ candidateId: "candidate-new", matchedExisting: false });
+  });
+
+  it("still matches an exact-name row on a shared website (weak identifiers keep the exact-name rule)", async () => {
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({
+        rows: [{ ...baseRow, first_name: "Cathy", last_name: "White", official_website_url: "https://whites.example" }],
+      })
+      .mockResolvedValueOnce({ rows: [{ fec_ids: null, state_filing_ids: null, current_office: null }] })
+      .mockResolvedValueOnce({ rowCount: 1 });
+
+    const result = await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({
+        display_name: "Cathy White",
+        first_name: "Cathy",
+        last_name: "White",
+        official_website_url: "https://whites.example",
+      }),
+      state: "MD",
+      rosterParty: "Democratic",
+      includeParty: true,
+    });
+
+    expect(result).toEqual({ candidateId: "candidate-existing", matchedExisting: true });
+  });
+
+  it("surfaces existing duplicates: an exact-name website match plus a variant filing-id match is ambiguous", async () => {
+    const query = identityQueryMock().mockResolvedValueOnce({
+      rows: [
+        { ...baseRow, id: "candidate-a", first_name: "Christopher", official_website_url: "https://venable.example" },
+        { ...baseRow, id: "candidate-b", first_name: "Chris", state_filing_ids: ["0613800"] },
+      ],
+    });
+
+    await expect(
+      findOrCreateCandidateFromProfile({
+        client: { query } as never,
+        profile: profile({
+          display_name: "Chris Venable",
+          first_name: "Christopher",
+          last_name: "Venable",
+          official_website_url: "https://venable.example",
+          state_filing_ids: ["0613800"],
+        }),
+        state: "MI",
+        rosterParty: "Democratic",
+        includeParty: true,
+      })
+    ).rejects.toBeInstanceOf(AmbiguousCandidateIdentityError);
+    expect(query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.candidates"))).toBe(false);
+  });
+
+  it("isExactNameMatch compares both parts case-insensitively", () => {
+    const p = profile({ first_name: "Chris", last_name: "Venable" });
+    expect(isExactNameMatch(p, { ...baseRow, first_name: "CHRIS", last_name: "venable" })).toBe(true);
+    expect(isExactNameMatch(p, { ...baseRow, first_name: "Christopher" })).toBe(false);
+    expect(isExactNameMatch(p, { ...baseRow, last_name: "Jr." })).toBe(false);
+  });
+
+  it("matchesByRegistryIdentifier trusts linkedin, FEC and state filing ids only", () => {
+    const p = profile({
+      linkedin_url: "https://www.linkedin.com/in/chris-venable/",
+      fec_ids: ["H6MI13001"],
+      state_filing_ids: ["0613800"],
+      official_website_url: "https://venable.example",
+      twitter_handle: "@venable",
+      date_of_birth: "1980-01-01",
+    });
+    const mi = { state: "MI" };
+    expect(matchesByRegistryIdentifier(p, { ...baseRow, linkedin_url: "https://www.linkedin.com/in/chris-venable" }, mi)).toBe(true);
+    expect(matchesByRegistryIdentifier(p, { ...baseRow, fec_ids: ["h6mi13001"] }, mi)).toBe(true);
+    expect(matchesByRegistryIdentifier(p, { ...baseRow, state_filing_ids: [" 0613800 "] }, mi)).toBe(true);
+    expect(matchesByRegistryIdentifier(p, { ...baseRow, official_website_url: "https://venable.example" }, mi)).toBe(false);
+    expect(matchesByRegistryIdentifier(p, { ...baseRow, twitter_handle: "venable" }, mi)).toBe(false);
+    expect(matchesByRegistryIdentifier(p, { ...baseRow, date_of_birth: "1980-01-01" }, mi)).toBe(false);
+    // The full hard-identifier check still accepts the weak ones.
+    expect(matchesByHardIdentifier(p, { ...baseRow, official_website_url: "https://venable.example" })).toBe(true);
+  });
+
+  it("a state filing id only counts for a row in the payload's state", () => {
+    const p = profile({ state_filing_ids: ["0613800"] });
+    const wiRow = { ...baseRow, state: "WI", state_filing_ids: ["0613800"] };
+    expect(matchesByRegistryIdentifier(p, wiRow, { state: "MI" })).toBe(false);
+    expect(matchesByRegistryIdentifier(p, wiRow, { state: "WI" })).toBe(true);
+    // Exact-name matching is unchanged: no state scoping there.
+    expect(matchesByHardIdentifier(p, wiRow)).toBe(true);
+  });
+
+  it("a company or school LinkedIn page is not a registry identifier", () => {
+    const company = "https://www.linkedin.com/company/acme-corp";
+    const p = profile({ linkedin_url: company });
+    expect(matchesByRegistryIdentifier(p, { ...baseRow, linkedin_url: company }, { state: "MI" })).toBe(false);
+    // Exact-name matching still accepts it, as before.
+    expect(matchesByHardIdentifier(p, { ...baseRow, linkedin_url: company })).toBe(true);
+    expect(isPersonalLinkedInProfileUrl("https://www.linkedin.com/in/jane-doe/")).toBe(true);
+    expect(isPersonalLinkedInProfileUrl("https://linkedin.com/in/jane-doe")).toBe(true);
+    expect(isPersonalLinkedInProfileUrl("https://www.linkedin.com/company/acme")).toBe(false);
+    expect(isPersonalLinkedInProfileUrl("https://www.linkedin.com/school/mit")).toBe(false);
+    expect(isPersonalLinkedInProfileUrl("https://www.linkedin.com/in/")).toBe(false);
+    expect(isPersonalLinkedInProfileUrl("https://evil.example/in/jane")).toBe(false);
+    expect(isPersonalLinkedInProfileUrl("not a url")).toBe(false);
+  });
+
+  it("cross-state pool: a name-variant row from another state does not match on a state filing id", async () => {
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({
+        rows: [{ ...baseRow, first_name: "Jane", last_name: "Other", state: "WI", state_filing_ids: ["0613800"] }],
+      })
+      .mockResolvedValueOnce({ rows: [{ id: "candidate-new" }], rowCount: 1 });
+
+    const result = await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({ state_filing_ids: ["0613800"] }),
+      state: "US",
+      rosterParty: "Democratic",
+      includeParty: true,
+      allowCrossStateHardIdentifierMatch: true,
+    });
+
+    expect(result).toEqual({ candidateId: "candidate-new", matchedExisting: false });
   });
 });

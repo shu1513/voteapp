@@ -12,7 +12,7 @@ import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 import { canonicalizeParty } from "./candidatePartyCanonicalization.js";
 
 /**
- * Two or more same-name candidates match the incoming profile's hard
+ * Two or more name-related candidates match the incoming profile's hard
  * identifiers: the data already holds duplicates for this person, and
  * inserting yet another row would compound them. Callers park or surface
  * the profile so an operator can merge the duplicate rows first.
@@ -345,7 +345,79 @@ export function resolveStoredCandidateParty(input: {
   );
 }
 
+function matchesLinkedInUrl(profile: CandidateProfilePayload, row: ExistingCandidateRow): boolean {
+  // Both sides must normalize: two junk (non-URL) values would otherwise
+  // compare null === null and match, as the website check already guards.
+  const profileUrl = normalizeOptionalUrl(profile.linkedin_url);
+  const rowUrl = normalizeOptionalUrl(row.linkedin_url);
+  return Boolean(profileUrl && rowUrl && profileUrl === rowUrl);
+}
+
+// The contract only checks that linkedin_url is an http(s) URL, so a company
+// or school page can sit in the column. Only a personal profile (/in/<slug>)
+// identifies one human; two colleagues sharing an employer page must not.
+export function isPersonalLinkedInProfileUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return /(^|\.)linkedin\.com$/i.test(parsed.hostname) && /^\/in\/[^/]+/.test(parsed.pathname);
+  } catch {
+    return false;
+  }
+}
+
+function matchesFecId(profile: CandidateProfilePayload, row: ExistingCandidateRow): boolean {
+  const profileFecIds = normalizeIdList(profile.fec_ids);
+  const rowFecIds = normalizeIdList(parseOptionalStringArray(row.fec_ids));
+  return profileFecIds.length > 0 && rowFecIds.length > 0 && hasNormalizedIntersection(profileFecIds, rowFecIds);
+}
+
+function matchesStateFilingId(profile: CandidateProfilePayload, row: ExistingCandidateRow): boolean {
+  const profileStateFilingIds = normalizeIdList(profile.state_filing_ids);
+  const rowStateFilingIds = normalizeIdList(parseOptionalStringArray(row.state_filing_ids));
+  return (
+    profileStateFilingIds.length > 0 &&
+    rowStateFilingIds.length > 0 &&
+    hasNormalizedIntersection(profileStateFilingIds, rowStateFilingIds)
+  );
+}
+
+/**
+ * Identifiers a registry (FEC, a state filing system) or the person's own
+ * professional profile assigns to exactly one human. These are trusted to
+ * match a row even when the stored name parts differ from the payload's
+ * (see loadNameRelatedCandidates). A shared website, twitter handle, or
+ * birth date is NOT: on the local data, rows sharing a website across
+ * different first names were mostly different people (slate sites — one
+ * Texas county site listed five unrelated candidates; family pairs like
+ * "Bob White" / "Cathy White"), while every pair sharing a filing or FEC
+ * id across name variants was the same person.
+ *
+ * A state filing id is only unique within the state that issued it, so it
+ * counts only for a row in the payload's state — the cross-state
+ * presidential pool can hold another state's row with the same digits.
+ * FEC ids and personal LinkedIn profiles are global.
+ */
+export function matchesByRegistryIdentifier(
+  profile: CandidateProfilePayload,
+  row: ExistingCandidateRow,
+  scope: { state: string }
+): boolean {
+  if (matchesLinkedInUrl(profile, row) && isPersonalLinkedInProfileUrl(profile.linkedin_url!)) {
+    return true;
+  }
+  if (matchesFecId(profile, row)) {
+    return true;
+  }
+  return row.state === scope.state && matchesStateFilingId(profile, row);
+}
+
 export function matchesByHardIdentifier(profile: CandidateProfilePayload, row: ExistingCandidateRow): boolean {
+  // Exact-name rows keep the historical rule: any hard identifier, with no
+  // state scoping on filing ids and no personal-profile check on LinkedIn.
+  if (matchesLinkedInUrl(profile, row) || matchesFecId(profile, row) || matchesStateFilingId(profile, row)) {
+    return true;
+  }
+
   if (profile.date_of_birth && row.date_of_birth && profile.date_of_birth === row.date_of_birth) {
     return true;
   }
@@ -358,12 +430,6 @@ export function matchesByHardIdentifier(profile: CandidateProfilePayload, row: E
       normalizedRowHandle &&
       normalizedProfileHandle === normalizedRowHandle
     ) {
-      return true;
-    }
-  }
-
-  if (profile.linkedin_url && row.linkedin_url) {
-    if (normalizeOptionalUrl(profile.linkedin_url) === normalizeOptionalUrl(row.linkedin_url)) {
       return true;
     }
   }
@@ -388,82 +454,88 @@ export function matchesByHardIdentifier(profile: CandidateProfilePayload, row: E
     }
   }
 
-  const profileFecIds = normalizeIdList(profile.fec_ids);
-  const rowFecIds = normalizeIdList(parseOptionalStringArray(row.fec_ids));
-  if (profileFecIds.length > 0 && rowFecIds.length > 0 && hasNormalizedIntersection(profileFecIds, rowFecIds)) {
-    return true;
-  }
-
-  const profileStateFilingIds = normalizeIdList(profile.state_filing_ids);
-  const rowStateFilingIds = normalizeIdList(parseOptionalStringArray(row.state_filing_ids));
-  if (
-    profileStateFilingIds.length > 0 &&
-    rowStateFilingIds.length > 0 &&
-    hasNormalizedIntersection(profileStateFilingIds, rowStateFilingIds)
-  ) {
-    return true;
-  }
-
   return false;
 }
 
-export async function loadSameNameCandidates(
+/**
+ * The stored name parts agree with the payload's exactly (case-insensitive),
+ * the historical precondition for ANY hard-identifier match. Rows in the
+ * identity pool that fail this only match on registry identifiers.
+ */
+export function isExactNameMatch(profile: CandidateProfilePayload, row: ExistingCandidateRow): boolean {
+  return (
+    row.first_name.toLowerCase() === profile.first_name.toLowerCase() &&
+    row.last_name.toLowerCase() === profile.last_name.toLowerCase()
+  );
+}
+
+const IDENTITY_POOL_COLUMNS = `
+      SELECT
+        id,
+        first_name,
+        last_name,
+        date_of_birth::text AS date_of_birth,
+        twitter_handle,
+        linkedin_url,
+        official_website_url,
+        former_website_urls,
+        fec_ids,
+        state_filing_ids,
+        current_office,
+        state
+      FROM public.candidates
+      WHERE deleted_at IS NULL`;
+
+/**
+ * Rows the identity resolver compares hard identifiers against.
+ *
+ * The pool is wider than an exact first+last match: it also holds rows that
+ * share EITHER name part or the display name. Stored name parts are not
+ * reliable — rosters split "Jimmie Wilson Jr." into last_name "Jr.", and a
+ * primary-stage row may hold "Chris" where the general-stage payload says
+ * "Christopher". With an exact-name pool those rows were never even loaded,
+ * so a shared state filing id could not be consulted and the writer minted
+ * a duplicate person (three of them in the November 2026 legislative run).
+ *
+ * Widening the pool is only safe because findOrCreateCandidateFromProfile
+ * trusts a non-exact-name row on registry identifiers alone
+ * (matchesByRegistryIdentifier); the weak identifiers keep requiring the
+ * exact name. lower() on both sides defeats the plain last_name index, as
+ * the exact-name query already did; the table is ~20k rows.
+ */
+export async function loadNameRelatedCandidates(
   client: Pick<PoolClient, "query">,
   profile: CandidateProfilePayload,
   state: string
 ): Promise<ExistingCandidateRow[]> {
   const result = await client.query<ExistingCandidateRow>(
-    `
-      SELECT
-        id,
-        first_name,
-        last_name,
-        date_of_birth::text AS date_of_birth,
-        twitter_handle,
-        linkedin_url,
-        official_website_url,
-        former_website_urls,
-        fec_ids,
-        state_filing_ids,
-        current_office,
-        state
-      FROM public.candidates
-      WHERE deleted_at IS NULL
-        AND lower(first_name) = lower($1)
-        AND lower(last_name) = lower($2)
+    `${IDENTITY_POOL_COLUMNS}
         AND state = $3
+        AND (
+          lower(first_name) = lower($1)
+          OR lower(last_name) = lower($2)
+          OR lower(trim(display_name)) = lower(trim($4))
+        )
     `,
-    [profile.first_name, profile.last_name, state]
+    [profile.first_name, profile.last_name, state, profile.display_name]
   );
 
   return result.rows;
 }
 
-export async function loadSameNameCandidatesAcrossStates(
+export async function loadNameRelatedCandidatesAcrossStates(
   client: Pick<PoolClient, "query">,
   profile: CandidateProfilePayload
 ): Promise<ExistingCandidateRow[]> {
   const result = await client.query<ExistingCandidateRow>(
-    `
-      SELECT
-        id,
-        first_name,
-        last_name,
-        date_of_birth::text AS date_of_birth,
-        twitter_handle,
-        linkedin_url,
-        official_website_url,
-        former_website_urls,
-        fec_ids,
-        state_filing_ids,
-        current_office,
-        state
-      FROM public.candidates
-      WHERE deleted_at IS NULL
-        AND lower(first_name) = lower($1)
-        AND lower(last_name) = lower($2)
+    `${IDENTITY_POOL_COLUMNS}
+        AND (
+          lower(first_name) = lower($1)
+          OR lower(last_name) = lower($2)
+          OR lower(trim(display_name)) = lower(trim($3))
+        )
     `,
-    [profile.first_name, profile.last_name]
+    [profile.first_name, profile.last_name, profile.display_name]
   );
 
   return result.rows;
@@ -828,11 +900,19 @@ export async function findOrCreateCandidateFromProfile(
   );
 
   const existingCandidates = input.allowCrossStateHardIdentifierMatch
-    ? await loadSameNameCandidatesAcrossStates(input.client, input.profile)
-    : await loadSameNameCandidates(input.client, input.profile, input.state);
+    ? await loadNameRelatedCandidatesAcrossStates(input.client, input.profile)
+    : await loadNameRelatedCandidates(input.client, input.profile, input.state);
 
   if (hasAtLeastOneHardIdentifier(input.profile)) {
-    const matched = existingCandidates.filter((row) => matchesByHardIdentifier(input.profile, row));
+    // Exact-name rows match on any hard identifier (unchanged). Rows that
+    // only share a name part or the display name must match on a registry
+    // identifier — a shared campaign site or birth date across different
+    // names is more often two people than one (see matchesByRegistryIdentifier).
+    const matched = existingCandidates.filter((row) =>
+      isExactNameMatch(input.profile, row)
+        ? matchesByHardIdentifier(input.profile, row)
+        : matchesByRegistryIdentifier(input.profile, row, { state: input.state })
+    );
     if (matched.length === 1) {
       const matchedCandidate = matched[0]!;
       await mergeCandidateIdentifiersForExistingCandidate(
