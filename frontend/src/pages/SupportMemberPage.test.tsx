@@ -78,7 +78,7 @@ describe("SupportMemberPage", () => {
     });
     renderPage();
 
-    expect(await screen.findByLabelText(/Monthly amount/)).toHaveValue(10);
+    expect(await screen.findByLabelText(/Monthly amount/)).toHaveValue("10.00");
     expect(screen.getByRole("button", { name: "Become an honorary member" })).toBeEnabled();
     // The one-time form does not compete here — the visitor already chose.
     expect(screen.queryByLabelText(/One-time support/)).not.toBeInTheDocument();

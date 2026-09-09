@@ -20,7 +20,7 @@ import { useMembershipStatus } from "../lib/useMembershipStatus";
 // Not a nonprofit: copy says the money runs the service and never implies
 // a candidate, campaign, or charity — see docs/plans/membership-contributions.md.
 
-// Whole dollars; mirrored from the backend's checkout validation
+// Mirrored from the backend's checkout validation
 // (MEMBERSHIP_CHECKOUT_MIN/MAX_AMOUNT_CENTS). The server re-checks both.
 const MIN_DOLLARS = 5;
 const MAX_DOLLARS = 1000;
@@ -35,6 +35,12 @@ export const secondaryButtonClass =
   "rounded-lg border border-line bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:border-rausch disabled:cursor-not-allowed disabled:text-ink-soft";
 const inputClass =
   "mt-1 w-full rounded-md border border-line px-3 py-2 shadow-sm focus:border-ink focus:outline-none";
+const presetClass =
+  "rounded-full border border-line bg-white px-3 py-1 text-sm font-medium text-ink transition hover:border-ink";
+const presetSelectedClass = "rounded-full border border-ink bg-ink px-3 py-1 text-sm font-medium text-white";
+// The suggested amounts on the support pages (whole dollars; the field
+// takes anything else). $10 is the prefilled default.
+const CHECKOUT_PRESETS_CENTS = [500, 1000, 2500, 5000];
 const linkClass = "font-medium underline hover:text-ink";
 
 const currency = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
@@ -48,24 +54,37 @@ export function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 }
 
-/** Validates a whole-dollar input. Returns the cents to charge, or the
- * message to show. Empty input is neither (the button just stays disabled). */
+/** What the input shows for an amount: dollars with cents, "10.00". */
+function dollarsInput(cents: number): string {
+  return (cents / 100).toFixed(2);
+}
+
+/** Validates a dollars-and-cents input. Returns the cents to charge, or the
+ * message to show. Empty input is neither (the button just stays disabled).
+ * Digits with an optional dot and up to two decimals; a comma only as a
+ * thousands separator ("$1,000.00"), never as the decimal mark — "7,50"
+ * must not read as 750. Integer math, so no float rounding. */
+const AMOUNT_PATTERN = /^\$?\s*(\d{1,3}(?:,\d{3})*|\d+)(?:\.(\d{0,2}))?$/;
+
 function parseDollars(raw: string): { cents: number } | { message: string } | null {
   const trimmed = raw.trim();
   if (!trimmed) {
     return null;
   }
-  const dollars = Number(trimmed);
-  if (!Number.isInteger(dollars)) {
-    return { message: "Enter a whole-dollar amount." };
+  const match = AMOUNT_PATTERN.exec(trimmed);
+  if (!match) {
+    return {
+      message: /\.\d{3}/.test(trimmed) ? "Use at most two decimals, like 7.50." : "Enter an amount like 7.50.",
+    };
   }
-  if (dollars < MIN_DOLLARS) {
+  const cents = Number(match[1].replace(/,/g, "")) * 100 + Number((match[2] ?? "").padEnd(2, "0"));
+  if (cents < MIN_DOLLARS * 100) {
     return { message: `The minimum is $${MIN_DOLLARS}.` };
   }
-  if (dollars > MAX_DOLLARS) {
+  if (cents > MAX_DOLLARS * 100) {
     return { message: `The maximum is $${MAX_DOLLARS.toLocaleString("en-US")} per payment.` };
   }
-  return { cents: dollars * 100 };
+  return { cents };
 }
 
 export function AmountForm({
@@ -73,7 +92,8 @@ export function AmountForm({
   label,
   buttonLabel,
   buttonClassName = buttonClass,
-  initialDollars,
+  initialCents,
+  presetsCents,
   disabled,
   unchangedCents = null,
   onSubmit,
@@ -83,7 +103,9 @@ export function AmountForm({
   label: string;
   buttonLabel: string;
   buttonClassName?: string;
-  initialDollars: string;
+  initialCents: number;
+  /** One-tap amounts shown above the field; tapping one fills the field. */
+  presetsCents?: number[];
   disabled: boolean;
   /** The amount already in force: submitting it would change nothing, so
    * the button stays disabled while the input equals it. */
@@ -93,7 +115,7 @@ export function AmountForm({
    * on" line). */
   children?: React.ReactNode;
 }) {
-  const [raw, setRaw] = useState(initialDollars);
+  const [raw, setRaw] = useState(() => dollarsInput(initialCents));
   const parsed = parseDollars(raw);
   const message = parsed && "message" in parsed ? parsed.message : null;
   const cents = parsed && "cents" in parsed ? parsed.cents : null;
@@ -113,19 +135,43 @@ export function AmountForm({
           <label htmlFor={inputId} className="block text-sm font-medium text-ink">
             {label}
           </label>
+          {presetsCents ? (
+            <div role="group" aria-label="Suggested amounts" className="mt-2 flex flex-wrap gap-2">
+              {presetsCents.map((preset) => {
+                const selected = preset === cents;
+                return (
+                  <button
+                    key={preset}
+                    type="button"
+                    aria-pressed={selected}
+                    disabled={disabled}
+                    onClick={() => setRaw(dollarsInput(preset))}
+                    className={selected ? presetSelectedClass : presetClass}
+                  >
+                    ${preset / 100}
+                  </button>
+                );
+              })}
+            </div>
+          ) : null}
           <div className="relative">
             <span className="pointer-events-none absolute inset-y-0 left-3 top-1 flex items-center text-ink-soft">
               $
             </span>
+            {/* A text input, not type="number": no scroll-wheel or arrow-key
+                surprises, no "e", and the value keeps its cents ("7.50"). */}
             <input
               id={inputId}
-              type="number"
-              inputMode="numeric"
-              min={MIN_DOLLARS}
-              max={MAX_DOLLARS}
-              step={1}
+              type="text"
+              inputMode="decimal"
+              autoComplete="off"
               value={raw}
               onChange={(event) => setRaw(event.target.value)}
+              onBlur={() => {
+                if (cents !== null) {
+                  setRaw(dollarsInput(cents));
+                }
+              }}
               aria-describedby={message ? `${inputId}-message` : undefined}
               aria-invalid={message ? true : undefined}
               className={`${inputClass} pl-7`}
@@ -288,7 +334,8 @@ export function SupportCheckout({ kind }: { kind: MembershipKind }) {
                 }
                 buttonLabel={kind === "monthly" ? "Become an honorary member" : "Support once"}
                 buttonClassName={kind === "monthly" ? memberButtonClass : undefined}
-                initialDollars="10"
+                initialCents={1000}
+                presetsCents={CHECKOUT_PRESETS_CENTS}
                 disabled={busy}
                 onSubmit={(amountCents) =>
                   // Redirect from a mutate-level callback: TanStack drops it
