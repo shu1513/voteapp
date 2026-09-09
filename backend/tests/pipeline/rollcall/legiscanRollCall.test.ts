@@ -76,7 +76,13 @@ describe("formatLegiscanMeasureId", () => {
     expect(formatLegiscanMeasureId("HB1")).toBe("HB 1");
     expect(formatLegiscanMeasureId("SB0544")).toBe("SB 544");
     expect(formatLegiscanMeasureId("sjr10")).toBe("SJR 10");
-    expect(() => formatLegiscanMeasureId("RV#105")).toThrow("not <letters><digits>");
+    // Nebraska numbers a bill's appropriation after the bill and a proposed
+    // constitutional amendment with a trailing CA. The trailing letters are
+    // part of the measure's identity and are kept.
+    expect(formatLegiscanMeasureId("LB48A")).toBe("LB 48A");
+    expect(formatLegiscanMeasureId("LR19CA")).toBe("LR 19CA");
+    expect(formatLegiscanMeasureId("lb0048a")).toBe("LB 48A");
+    expect(() => formatLegiscanMeasureId("RV#105")).toThrow("not <letters><digits><letters>");
   });
 });
 

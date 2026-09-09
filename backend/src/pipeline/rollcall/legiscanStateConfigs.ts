@@ -4185,19 +4185,22 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
   // With these rules the whole dataset classifies: 373 kept, 1,401 excluded,
   // NOTHING surfaced.
   //
-  // TWO THINGS THE PIPELINE CANNOT REACH HERE, both recorded rather than
-  // patched. (1) Nebraska proposes constitutional amendments as legislative
-  // resolutions numbered `LR###CA`, LegiScan type `R`, which
-  // LEGISCAN_KEPT_BILL_TYPES drops before this config is read — the Georgia,
-  // Kansas and North Dakota gap. LR 19CA (legislative term limits) passed
-  // 39-10 and went to the voters. (2) `formatLegiscanMeasureId` requires a
-  // bill number of letters then digits, and 104 Nebraska bills end in a
-  // letter: 74 `LB####A` appropriation companion bills and those 30
-  // `LR###CA` resolutions. They are reported as file errors and the fetch
-  // exits non-zero, which is EXPECTED for Nebraska and is a signal rather
-  // than a rollback (the Montana precedent). Neither class is in scope
-  // anyway — appropriations are excluded by standing rule and type R is
-  // dropped — so no vote in the campaign's gate is lost.
+  // ONE THING THE PIPELINE CANNOT REACH HERE, recorded rather than patched:
+  // Nebraska proposes constitutional amendments as legislative resolutions
+  // numbered `LR###CA`, LegiScan type `R`, which LEGISCAN_KEPT_BILL_TYPES
+  // drops before this config is read — the Georgia, Kansas and North Dakota
+  // gap. LR 19CA (legislative term limits) passed 39-10 and went to the
+  // voters. Nothing in the campaign's gate is lost by it: under the standing
+  // rule taken from Arkansas and North Dakota, a measure about who may take
+  // part in lawmaking carries no honest direction and would be dropped.
+  //
+  // 104 Nebraska bill numbers end in a letter — 74 `LB####A` bills, which
+  // are the appropriation that pays for the bill of the same number, and
+  // those 30 resolutions. `formatLegiscanMeasureId` reads the trailing
+  // letters as part of the measure's identity, so `LB48A` stores as
+  // `LB 48A` and is never confused with `LB 48`. The A bills are
+  // appropriations and are dropped at selection under the standing rule,
+  // with the reason written on the worklist row.
   //
   // There are no committee votes at all in the dataset (West Virginia's
   // shape): every roll's total is the full chamber, 49 or 48 where a seat

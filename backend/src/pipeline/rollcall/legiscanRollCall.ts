@@ -79,14 +79,23 @@ export function classifyLegiscanDatasetFile(raw: unknown): LegiscanDatasetPayloa
  * `HB 1` / `SB 544` — the Ohio pilot's spelling. State measures do not
  * parse as federal ones, so the judge's measure check falls back to an
  * exact string compare; both sides must use exactly this spelling.
+ *
+ * A number may end in letters as well as begin with them, and the trailing
+ * letters are part of the measure's identity, not decoration. Nebraska
+ * numbers the appropriation that pays for a bill after the bill itself
+ * (`LB48A` funds `LB48`) and numbers a proposed constitutional amendment
+ * `LR19CA`; there are 104 such bills in the 109th Legislature. Refusing
+ * them made the crosswalk step, which reads every bill file, fail outright.
+ * A number with no trailing letters is spelled exactly as before, so no
+ * measure id that already parses changes.
  */
 export function formatLegiscanMeasureId(billNumber: string): string {
   const compact = billNumber.replace(/\s+/g, "");
-  const match = /^([A-Za-z]+)0*(\d+)$/.exec(compact);
+  const match = /^([A-Za-z]+)0*(\d+)([A-Za-z]*)$/.exec(compact);
   if (!match) {
-    throw new Error(`LegiScan bill_number is not <letters><digits>: ${billNumber}`);
+    throw new Error(`LegiScan bill_number is not <letters><digits><letters>: ${billNumber}`);
   }
-  return `${match[1]!.toUpperCase()} ${match[2]}`;
+  return `${match[1]!.toUpperCase()} ${match[2]}${match[3]!.toUpperCase()}`;
 }
 
 /** The public per-roll page; the fallback when the bill feed carries no vote url. */
