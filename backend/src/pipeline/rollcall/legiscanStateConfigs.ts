@@ -902,6 +902,99 @@ const WEST_VIRGINIA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"]
   /\brefused to concur\b/,
 ];
 
+// South Dakota's floor vocabulary, measured on all three sessions in scope
+// (2170 = 2025 Regular, 2231 = 2026 Regular, 2222 = 2025 First Special) and
+// shared by all three, because the three surveys print the same families.
+//
+// South Dakota has the SMALLEST and PLAINEST caption vocabulary of the
+// campaign: 39 families in 2025, 41 in 2026, and four of them carry almost
+// every vote. It also has a property no other surveyed state has: THE SAME
+// CAPTION COVERS COMMITTEE AND FLOOR VOTES. A committee reporting a bill out
+// and the whole House passing it both print `Do Pass`, with nothing in the
+// roll call to tell them apart but the size of the tally.
+//
+// That is safe here, and measurably so. The two populations do not overlap or
+// even come close: House committee rolls seat 5 to 15 members against a
+// 70-seat chamber, House floor rolls seat 68 to 70; Senate committee rolls
+// seat 5 to 9 against a 35-seat chamber, Senate floor rolls seat 35. Not one
+// roll in either session falls in between. The floor line (60% of the
+// chamber) therefore separates them cleanly, and the committee copies land in
+// the surfaced bucket rather than being dropped — 557 rolls in 2025 and 579
+// in 2026. Surfaced rows are stored, never queued and never approved, so a
+// large surfaced count here is the expected shape of this state, not a defect
+// to chase.
+//
+// ⚠ THE STATE'S OWN HISTORY, NOT LEGISCAN'S `passed` FLAG, SAYS WHETHER A
+// VOTE CARRIED. South Dakota prints the tally AND the outcome word in its
+// bill history (`House of Representatives Do Pass Amended, Passed, YEAS 68,
+// NAYS 2.`), and the two sources disagree on 31 of the 1,255 floor rolls on
+// kept bill types. Both directions occur:
+//   - 29 rolls read `passed: 1` where the history says Failed, because the
+//     measure needed a TWO-THIRDS majority (47 of 70, 24 of 35) that a bare
+//     majority of those voting does not reach. A 46-22 House vote is a
+//     failure in South Dakota and LegiScan calls it a pass.
+//   - 2 rolls read `passed: 0` where the history says Passed, because the
+//     Senate divided 17-17 and the Lieutenant Governor broke the tie. The
+//     tie-breaking vote is not in the member list, so the feed sees a
+//     deadlock.
+// `result` is written from the flag and read by nothing in the pipeline, but
+// SELECTION must read the history's own outcome word. Same defect class as
+// Montana's two-thirds rolls and Indiana's constitutional-majority rolls.
+const SOUTH_DAKOTA_KEPT_QUESTIONS: LegiscanStateConfig["keptQuestions"] = [
+  // Ordinary passage. `Do Pass` is the vote on the bill as it stands and
+  // `Do Pass Amended` the vote on a bill amended earlier in the same sitting;
+  // together they are 1,173 of the 1,255 floor rolls on kept bill types.
+  // Anchored end to end so that `Do Not Pass as amended`, a committee
+  // recommendation, cannot match.
+  { pattern: /^do pass(?: amended)?$/, questionClass: "passage" },
+  // The first chamber accepting the second chamber's amendments. `Failed to
+  // concur, appoint Conference Committee` and `Failed to concur, no committee
+  // appointed` are excluded below and never reach this line.
+  { pattern: /^concurred in amendments$/, questionClass: "concurrence" },
+  // Adoption of a conference committee report. The rejecting spelling,
+  // `Conference Committee report not adopted, no committee appointed`, is
+  // excluded below; the anchors alone would not separate them.
+  { pattern: /^conference committee report adopted$/, questionClass: "conference_report" },
+  // The five veto overrides across the three sessions.
+  { pattern: /^veto override$/, questionClass: "veto_override" },
+];
+
+// Checked BEFORE the kept list. Thirteen rules, every one of which fires on
+// kept-type bills in these sessions; two further drafted rules for South
+// Dakota's resolution captions (`Adopt Resolution`, `Concurred in
+// Resolution`) were removed after measurement showed they never fire, because
+// those captions appear only on concurrent and simple resolutions, which the
+// shared bill-type filter drops before any question is matched.
+const SOUTH_DAKOTA_EXCLUDED_QUESTIONS: LegiscanStateConfig["excludedQuestions"] = [
+  // How South Dakota kills a bill. The regular session runs about 38 working
+  // days, so a measure deferred to the 41st legislative day is dead: the day
+  // never arrives. `Deferred to another day` is an ordinary postponement.
+  // Neither is a vote on the measure's merits.
+  /^deferred to /,
+  /^tabled$/,
+  /^removed from table$/,
+  // Referral to a committee, including referral of an amended bill.
+  /^referred (?:as amended )?to\b/,
+  // The motion to reconsider a vote already taken. The re-vote that follows a
+  // successful reconsideration is a fresh `Do Pass` roll and IS kept.
+  /^reconsidered$/,
+  /^motion to amend$/,
+  // A scheduling motion under Joint Rule 6F-6.
+  /^placed on calendar\b/,
+  // Committee recommendations that are not `Do Pass`. These carry
+  // committee-sized tallies, so the floor line would surface them anyway;
+  // excluding them by caption keeps them out of the surfaced bucket, where
+  // they would be noise a reviewer has to read past.
+  /^report out of committee without recommendation(?: as amended)?$/,
+  /^do not pass(?: as amended)?$/,
+  /^fiscal note requested$/,
+  // The rejecting spellings of the two kept end-of-bill questions.
+  /^conference committee report not adopted/,
+  /^failed to concur/,
+  // Recalling a bill from committee.
+  /^recalled$/,
+];
+
 export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig>> = {
   // Georgia General Assembly, 2025-2026 Regular Session (both years, sine
   // die 2026-04-03). Vocabulary measured from the full dataset survey
@@ -4133,6 +4226,54 @@ export const LEGISCAN_STATE_CONFIGS: Readonly<Record<string, LegiscanStateConfig
       1660050:
         "HB 5692 House roll 405, 2026-03-11: LegiScan reports 91-2; West Virginia's own vote sheet reports 92-2, so one yes vote is missing. Not divided either way",
     },
+  },
+  // South Dakota Legislature. Three sessions are in scope and all three were
+  // surveyed: the 2025 Regular Session (2170), the 2026 Regular Session
+  // (2231), and the 2025 First Special Session (2222). South Dakota meets
+  // every year for a short session — about 38 working days — so each year is
+  // its own dataset and its own entry, the Alabama and Oregon shape.
+  //
+  // The special session is registered rather than dismissed. It is tiny, two
+  // bills and four roll calls, but it is not empty: SB 2 authorized the
+  // Department of Corrections to buy land for a new prison, it became law,
+  // and both chambers divided on it (House 51-18, Senate 24-11). A session
+  // was passed over once in this campaign on the assumption that a special
+  // session yields nothing, and it cost a whole batch, so each one is
+  // measured now.
+  //
+  // Every seat in both chambers is elected every two years, so unlike North
+  // Dakota there is no structural half of the legislature that the Nov-2026
+  // crosswalk cannot reach.
+  //
+  // TALLY AUDIT, run before any import and NOT bounded by the closely divided
+  // gate: South Dakota prints the tally inside its own bill history, which
+  // gives a free second source for every roll. 1,254 of the 1,255 floor rolls
+  // on kept bill types in the two regular sessions match the history exactly.
+  // The single exception is held below.
+  "SD": {
+    jurisdiction: "SD",
+    sessionId: 2170,
+    chamberSizes: { house: 70, senate: 35 },
+    keptQuestions: SOUTH_DAKOTA_KEPT_QUESTIONS,
+    excludedQuestions: SOUTH_DAKOTA_EXCLUDED_QUESTIONS,
+    heldRollCallIds: {
+      1494248:
+        "HB 1096 House 2025-02-19, 69-1: HB 1096's own history records no vote at all on that day — the House passed it 68-0 on 2025-02-11 — and this roll's member list is byte-identical to the 69-1 votes filed the same day under HB 1099 and HB 1196, which the history does record. It is another bill's vote copied onto this one",
+    },
+  },
+  "SD-2231": {
+    jurisdiction: "SD",
+    sessionId: 2231,
+    chamberSizes: { house: 70, senate: 35 },
+    keptQuestions: SOUTH_DAKOTA_KEPT_QUESTIONS,
+    excludedQuestions: SOUTH_DAKOTA_EXCLUDED_QUESTIONS,
+  },
+  "SD-2222": {
+    jurisdiction: "SD",
+    sessionId: 2222,
+    chamberSizes: { house: 70, senate: 35 },
+    keptQuestions: SOUTH_DAKOTA_KEPT_QUESTIONS,
+    excludedQuestions: SOUTH_DAKOTA_EXCLUDED_QUESTIONS,
   },
 };
 
