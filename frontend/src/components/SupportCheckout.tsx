@@ -60,22 +60,24 @@ function dollarsInput(cents: number): string {
 }
 
 /** Validates a dollars-and-cents input. Returns the cents to charge, or the
- * message to show. Empty input is neither (the button just stays disabled). */
+ * message to show. Empty input is neither (the button just stays disabled).
+ * Digits with an optional dot and up to two decimals; a comma only as a
+ * thousands separator ("$1,000.00"), never as the decimal mark — "7,50"
+ * must not read as 750. Integer math, so no float rounding. */
+const AMOUNT_PATTERN = /^\$?\s*(\d{1,3}(?:,\d{3})*|\d+)(?:\.(\d{0,2}))?$/;
+
 function parseDollars(raw: string): { cents: number } | { message: string } | null {
-  // Tolerate what people paste from a receipt: "$1,000.00".
-  const cleaned = raw.replace(/[$,\s]/g, "");
-  if (!cleaned) {
+  const trimmed = raw.trim();
+  if (!trimmed) {
     return null;
   }
-  const dollars = Number(cleaned);
-  if (!Number.isFinite(dollars)) {
-    return { message: "Enter an amount in dollars." };
+  const match = AMOUNT_PATTERN.exec(trimmed);
+  if (!match) {
+    return {
+      message: /\.\d{3}/.test(trimmed) ? "Use at most two decimals, like 7.50." : "Enter an amount like 7.50.",
+    };
   }
-  const cents = Math.round(dollars * 100);
-  // Never round silently: a third decimal would change what gets charged.
-  if (Math.abs(dollars * 100 - cents) > 1e-6) {
-    return { message: "Use at most two decimals, like 7.50." };
-  }
+  const cents = Number(match[1].replace(/,/g, "")) * 100 + Number((match[2] ?? "").padEnd(2, "0"));
   if (cents < MIN_DOLLARS * 100) {
     return { message: `The minimum is $${MIN_DOLLARS}.` };
   }

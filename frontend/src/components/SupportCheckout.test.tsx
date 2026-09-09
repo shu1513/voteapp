@@ -138,6 +138,12 @@ describe("SupportCheckout", () => {
     await user.type(input, "$1,000.00");
     expect(screen.getByRole("button", { name: "Support once" })).toBeEnabled();
 
+    // A decimal comma is never read as a thousands separator (7,50 ≠ $750).
+    await user.clear(input);
+    await user.type(input, "7,50");
+    expect(screen.getByText("Enter an amount like 7.50.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Support once" })).toBeDisabled();
+
     await user.clear(input);
     await user.type(input, "12.50");
     await user.click(screen.getByRole("button", { name: "Support once" }));
