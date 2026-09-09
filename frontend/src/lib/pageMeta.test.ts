@@ -98,6 +98,28 @@ describe("pageMeta", () => {
     expect(byProperty(descriptors, "og:url")).toBe(`${SITE_ORIGIN}/a`);
   });
 
+  it("lets the share card say something other than the tab title", () => {
+    const descriptors = pageMeta({
+      title: "Tab title",
+      description: "Search snippet.",
+      shareTitle: "Card title",
+      shareDescription: "Card line.",
+    }) as Descriptor[];
+    expect(descriptors.find((entry) => typeof entry.title === "string")?.title).toBe("Tab title");
+    expect(byProperty(descriptors, "description")).toBe("Search snippet.");
+    expect(byProperty(descriptors, "og:title")).toBe("Card title");
+    expect(byProperty(descriptors, "twitter:title")).toBe("Card title");
+    expect(byProperty(descriptors, "og:description")).toBe("Card line.");
+    expect(byProperty(descriptors, "twitter:description")).toBe("Card line.");
+  });
+
+  it("home card asks the question the card image answers, without repeating it", () => {
+    const home = (homeMeta as unknown as () => Descriptor[])();
+    expect(byProperty(home, "og:title")).toMatch(/^What did these candidates actually do\? · /);
+    expect(byProperty(home, "og:description")).not.toBe(DEFAULT_DESCRIPTION);
+    expect(byProperty(home, "description")).toBe(DEFAULT_DESCRIPTION);
+  });
+
   it("falls back to the site description when a page gives none", () => {
     const descriptors = pageMeta({ title: "A Page" }) as Descriptor[];
     expect(byProperty(descriptors, "description")).toBe(DEFAULT_DESCRIPTION);
