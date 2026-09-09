@@ -128,16 +128,56 @@ Measures carrying at least one closely divided floor vote, by LegiScan status:
 measure-chamber slots, 76 roll calls.** By chamber, 22 House slots and 41
 Senate slots.
 
+## Crosswalk
+
+`crosswalk.json` maps LegiScan `people_id` to a VoteApp candidate id.
+`legiscan-people-mi-2183.json` is the roster as the dataset held it, kept so a
+later run can diff it.
+
+148 entries: **113 mapped, 35 explicit nulls, 0 unresolved.** By chamber, 96 of
+110 representatives and 17 of 38 senators are mapped.
+
+The resolver proposed all 113 and every one was accepted after review. 108
+matched on both names and 5 on a first-name prefix, each of those an ordinary
+short form (Curtis to Curt, Matthew to Matt) on a candidate holding the same
+district.
+
+Eleven proposals carry a seat disagreement and all eleven are real. Ten are
+sitting House members running for a Senate seat, which is ordinary here because
+all 38 Senate seats are on the 2026 ballot and House members are term-limited.
+The eleventh is Senator Dayna Polehanki, whose seat is SD-005 in the LegiScan
+roster and State Senate District 8 in our district records. Each was checked
+against the candidate's own election record.
+
+The 35 nulls are legislators with no November 2026 candidacy in the database:
+20 senators and 15 representatives. Michigan's term limits are why — a
+legislator who has served twelve years cannot run again. Each of the 35 was
+searched by surname across every Michigan November 2026 race, not only the
+legislative ones, and none matched.
+
+**One limit worth recording.** Michigan's Governor, United States Senator and
+United States Representative elections exist in the database for November 2026
+but hold no candidates at all. A legislator running for one of those offices
+cannot be reached today. Senator Mallory McMorrow, who is running for the
+United States Senate, is the notable case. Revisit the crosswalk if those
+rosters are filled.
+
+Validation over all 2,571 stored roll calls: 83,130 member matches, 22,197
+reviewed and deliberately unmatched, **0 with no crosswalk entry and 0 out of
+scope**, 0 file errors.
+
 ## Fan-out
 
-Michigan has legislative term limits, so a sitting legislator is often not on
-the next ballot. A first pass matching the 148 legislators by surname against
-the 329 Michigan legislative candidates on the November 2026 ballot leaves 36
-without a match, most of them senators who cannot run again. Each of the 36
-needs checking by hand when the crosswalk is built.
+Measured over the session's floor rolls, not estimated:
 
-Working estimate before that check: a House roll reaches about 90 candidates,
-a Senate roll about 22.
+| chamber | floor rolls | median candidates reached | range |
+| --- | --- | --- | --- |
+| House | 701 | 93 | 78 to 96 |
+| Senate | 499 | 16 | 13 to 17 |
+
+This makes the House slots far more valuable than their count suggests. The
+pool's 22 House slots reach roughly 2,000 records between them; its 41 Senate
+slots reach roughly 650.
 
 ## Held roll calls
 

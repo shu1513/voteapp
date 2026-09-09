@@ -1,0 +1,1044 @@
+{
+ "source": "legiscan",
+ "jurisdiction": "MI",
+ "session_id": 2183,
+ "note": "LegiScan people_id to VoteApp candidate id for Michigan's 103rd Legislature. The dataset holds 148 people, which is exactly the 110 House seats plus the 38 Senate seats. 113 are mapped and 35 are explicit nulls. The resolver proposed all 113 and every one was accepted after review. 108 matched on both names and 5 on a first-name prefix, all five being an ordinary short form (Curtis to Curt, Matthew to Matt) on a candidate holding the same district. 11 proposals carry a seat disagreement and all 11 are real: ten are sitting House members running for a Senate seat, which is ordinary in Michigan because all 38 Senate seats are on the 2026 ballot and House members are term-limited, and one is Senator Dayna Polehanki, whose seat is SD-005 in the LegiScan roster and State Senate District 8 in our district records. Each of the 11 was checked against the candidate's own election record. The 35 nulls are legislators with no November 2026 candidacy in the database. 20 are senators and 15 are representatives, and Michigan's term limits are why: a legislator who has served 12 years cannot run again. Each of the 35 was searched by surname across every Michigan November 2026 race, not only the legislative ones, and none matched. One limit worth recording: Michigan's Governor, United States Senator and United States Representative elections exist in the database for November 2026 but hold no candidates at all. A legislator running for one of those offices therefore cannot be reached today. Senator Mallory McMorrow, who is running for the United States Senate, is the notable case. Revisit this file if those rosters are filled.",
+ "entries": [
+  {
+   "people_id": 2854,
+   "legiscan_name": "Kevin Daley",
+   "district": "SD-026",
+   "candidate_id": null,
+   "note": "Kevin Daley, SD-026; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 10842,
+   "legiscan_name": "Jon Bumstead",
+   "district": "SD-032",
+   "candidate_id": null,
+   "note": "Jon Bumstead, SD-032; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 10852,
+   "legiscan_name": "Ricky Outman",
+   "district": "SD-033",
+   "candidate_id": null,
+   "note": "Ricky Outman, SD-033; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 11179,
+   "legiscan_name": "Jeff Irwin",
+   "district": "SD-015",
+   "candidate_id": null,
+   "note": "Jeff Irwin, SD-015; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 11180,
+   "legiscan_name": "Nancy Jenkins-Arno",
+   "district": "HD-034",
+   "candidate_id": "2b5a3f94-826c-4a44-ab33-9c398ee49f68",
+   "note": "Nancy Jenkins-Arno, HD-034; proposed by name match (first_and_last) and accepted, on the ballot as Nancy Jenkins-Arno"
+  },
+  {
+   "people_id": 11183,
+   "legiscan_name": "Ed McBroom",
+   "district": "SD-038",
+   "candidate_id": null,
+   "note": "Ed McBroom, SD-038; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 11184,
+   "legiscan_name": "Sean McCann",
+   "district": "SD-019",
+   "candidate_id": null,
+   "note": "Sean McCann, SD-019; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 11185,
+   "legiscan_name": "Aric Nesbitt",
+   "district": "SD-020",
+   "candidate_id": null,
+   "note": "Aric Nesbitt, SD-020; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 14517,
+   "legiscan_name": "Winnie Brinks",
+   "district": "SD-029",
+   "candidate_id": null,
+   "note": "Winnie Brinks, SD-029; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 14523,
+   "legiscan_name": "Tim Kelly",
+   "district": "HD-093",
+   "candidate_id": "7c46213d-e60d-4ecb-a1f3-7e24ffb187f2",
+   "note": "Tim Kelly, HD-093; proposed by name match (first_and_last) and accepted, on the ballot as Tim Kelly"
+  },
+  {
+   "people_id": 14529,
+   "legiscan_name": "Dan Lauwers",
+   "district": "SD-025",
+   "candidate_id": null,
+   "note": "Dan Lauwers, SD-025; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 14536,
+   "legiscan_name": "Samir Singh",
+   "district": "SD-028",
+   "candidate_id": null,
+   "note": "Samir Singh, SD-028; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 14538,
+   "legiscan_name": "Roger Victory",
+   "district": "SD-031",
+   "candidate_id": null,
+   "note": "Roger Victory, SD-031; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 17064,
+   "legiscan_name": "Stephanie Chang",
+   "district": "SD-003",
+   "candidate_id": null,
+   "note": "Stephanie Chang, SD-003; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 17091,
+   "legiscan_name": "James Runestad",
+   "district": "SD-023",
+   "candidate_id": null,
+   "note": "James Runestad, SD-023; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 17094,
+   "legiscan_name": "Lana Theis",
+   "district": "SD-022",
+   "candidate_id": null,
+   "note": "Lana Theis, SD-022; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 17096,
+   "legiscan_name": "Michael Webber",
+   "district": "SD-009",
+   "candidate_id": "083ad4df-5200-4366-95c4-515e16d4767e",
+   "note": "Michael Webber, SD-009; proposed by name match (first_and_last) and accepted, on the ballot as Michael Webber"
+  },
+  {
+   "people_id": 17308,
+   "legiscan_name": "Erika Geiss",
+   "district": "SD-001",
+   "candidate_id": null,
+   "note": "Erika Geiss, SD-001; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 17385,
+   "legiscan_name": "Jeremy Moss",
+   "district": "SD-007",
+   "candidate_id": null,
+   "note": "Jeremy Moss, SD-007; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 18737,
+   "legiscan_name": "Thomas Albert",
+   "district": "SD-018",
+   "candidate_id": "97e0b5cb-febd-48bf-baeb-5f78d1e916fb",
+   "note": "Thomas Albert, SD-018; proposed by name match (first_and_last) and accepted, on the ballot as Thomas A. Albert"
+  },
+  {
+   "people_id": 18740,
+   "legiscan_name": "Joseph Bellino",
+   "district": "SD-016",
+   "candidate_id": "08c3e682-c749-4ed4-9c9b-55c00689d882",
+   "note": "Joseph Bellino, SD-016; proposed by name match (first_and_last) and accepted, on the ballot as Joseph Bellino Jr."
+  },
+  {
+   "people_id": 18742,
+   "legiscan_name": "Darrin Camilleri",
+   "district": "SD-004",
+   "candidate_id": "c116f2d1-75d0-4a11-8f0d-4cdbf9c3e281",
+   "note": "Darrin Camilleri, SD-004; proposed by name match (first_and_last) and accepted, on the ballot as Darrin Camilleri"
+  },
+  {
+   "people_id": 18747,
+   "legiscan_name": "Roger Hauck",
+   "district": "SD-034",
+   "candidate_id": "a92f72df-78c8-42ed-adba-d1123e766c9c",
+   "note": "Roger Hauck, SD-034; proposed by name match (first_and_last) and accepted, on the ballot as Roger Hauck"
+  },
+  {
+   "people_id": 18749,
+   "legiscan_name": "Kevin Hertel",
+   "district": "SD-012",
+   "candidate_id": "8d163f08-0218-4dde-9765-c6829f9228f9",
+   "note": "Kevin Hertel, SD-012; proposed by name match (first_and_last) and accepted, on the ballot as Kevin Hertel"
+  },
+  {
+   "people_id": 18750,
+   "legiscan_name": "Michele Hoitenga",
+   "district": "SD-036",
+   "candidate_id": "ff61fc40-ba33-4cfa-82f5-c58a122079d9",
+   "note": "Michele Hoitenga, SD-036; proposed by name match (first_and_last) and accepted, on the ballot as Michele Hoitenga"
+  },
+  {
+   "people_id": 18767,
+   "legiscan_name": "Curtis VanderWall",
+   "district": "HD-102",
+   "candidate_id": "0f964722-6671-41ff-bef7-f38802ea4efa",
+   "note": "Curtis VanderWall, HD-102; proposed by name match (first_prefix) and accepted, on the ballot as Curt Vanderwall"
+  },
+  {
+   "people_id": 19206,
+   "legiscan_name": "Sylvia Santana",
+   "district": "SD-002",
+   "candidate_id": null,
+   "note": "Sylvia Santana, SD-002; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 19699,
+   "legiscan_name": "Sarah Anthony",
+   "district": "SD-021",
+   "candidate_id": "37950477-e661-44c5-8c75-0aab301db411",
+   "note": "Sarah Anthony, SD-021; proposed by name match (first_and_last) and accepted, on the ballot as Sarah Anthony"
+  },
+  {
+   "people_id": 20368,
+   "legiscan_name": "Kara Hope",
+   "district": "HD-074",
+   "candidate_id": null,
+   "note": "Kara Hope, HD-074; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 20419,
+   "legiscan_name": "Gregory Markkanen",
+   "district": "HD-110",
+   "candidate_id": "29577202-e88e-409c-9e8b-ca38dac34b4b",
+   "note": "Gregory Markkanen, HD-110; proposed by name match (first_and_last) and accepted, on the ballot as Gregory Markkanen"
+  },
+  {
+   "people_id": 20643,
+   "legiscan_name": "Ann Bollin",
+   "district": "HD-049",
+   "candidate_id": "a9797e03-bbee-4750-bd22-3273cfa6cc00",
+   "note": "Ann Bollin, HD-049; proposed by name match (first_and_last) and accepted, on the ballot as Ann M. Bollin"
+  },
+  {
+   "people_id": 20644,
+   "legiscan_name": "Julie Brixie",
+   "district": "HD-073",
+   "candidate_id": "8ac9f9af-cb83-415e-8d48-b527bd449e02",
+   "note": "Julie Brixie, HD-073; proposed by name match (first_and_last) and accepted, on the ballot as Julie Brixie"
+  },
+  {
+   "people_id": 20645,
+   "legiscan_name": "Brenda Carter",
+   "district": "HD-053",
+   "candidate_id": "7574e02e-6318-4f77-b2c5-15fbacea7ec5",
+   "note": "Brenda Carter, HD-053; proposed by name match (first_and_last) and accepted, on the ballot as Brenda Carter"
+  },
+  {
+   "people_id": 20646,
+   "legiscan_name": "Tyrone Carter",
+   "district": "HD-001",
+   "candidate_id": "511f4731-3ba1-41f9-9f89-077b7977175f",
+   "note": "Tyrone Carter, HD-001; proposed by name match (first_and_last) and accepted, on the ballot as Tyrone Carter"
+  },
+  {
+   "people_id": 20647,
+   "legiscan_name": "John Cherry",
+   "district": "SD-027",
+   "candidate_id": "31861860-1eac-4231-96b4-fc027bda0395",
+   "note": "John Cherry, SD-027; proposed by name match (first_and_last) and accepted, on the ballot as John D. Cherry"
+  },
+  {
+   "people_id": 20652,
+   "legiscan_name": "Matthew Hall",
+   "district": "HD-042",
+   "candidate_id": "96cf7617-e69c-4a8f-88b0-d674a097bbb1",
+   "note": "Matthew Hall, HD-042; proposed by name match (first_prefix) and accepted, on the ballot as Matt Hall"
+  },
+  {
+   "people_id": 20654,
+   "legiscan_name": "Mark Huizenga",
+   "district": "SD-030",
+   "candidate_id": "33ad80ea-7cb2-4469-921b-8e590d3ac476",
+   "note": "Mark Huizenga, SD-030; proposed by name match (first_and_last) and accepted, on the ballot as Mark E. Huizenga"
+  },
+  {
+   "people_id": 20657,
+   "legiscan_name": "Matt Koleszar",
+   "district": "HD-022",
+   "candidate_id": "1a0e30a9-1927-41fd-acc1-accd1b5e118f",
+   "note": "Matt Koleszar, HD-022; proposed by name match (first_and_last) and accepted. The seat flag disagrees because the November 2026 candidacy is state_upper: State Senate District 5 (2024), which is a different seat from the one held in this session. Checked by hand against the candidate's own election record"
+  },
+  {
+   "people_id": 20659,
+   "legiscan_name": "Sarah Lightner",
+   "district": "HD-045",
+   "candidate_id": "694ff44e-f471-4eab-baa3-1bfd6ff0ec8a",
+   "note": "Sarah Lightner, HD-045; proposed by name match (first_and_last) and accepted, on the ballot as Sarah Lightner"
+  },
+  {
+   "people_id": 20660,
+   "legiscan_name": "Matthew Maddock",
+   "district": "HD-051",
+   "candidate_id": "9d759e46-376b-470e-beb1-4fdd0c7220db",
+   "note": "Matthew Maddock, HD-051; proposed by name match (first_prefix) and accepted, on the ballot as Matt Maddock"
+  },
+  {
+   "people_id": 20662,
+   "legiscan_name": "Luke Meerman",
+   "district": "HD-089",
+   "candidate_id": null,
+   "note": "Luke Meerman, HD-089; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 20663,
+   "legiscan_name": "Mike Mueller",
+   "district": "HD-072",
+   "candidate_id": "2e5890a9-dcf5-4419-9e10-e43fb5734021",
+   "note": "Mike Mueller, HD-072; proposed by name match (first_and_last) and accepted, on the ballot as Mike Mueller"
+  },
+  {
+   "people_id": 20665,
+   "legiscan_name": "Brad Paquette",
+   "district": "HD-037",
+   "candidate_id": "943c3726-501c-4893-bb2d-7819174c772b",
+   "note": "Brad Paquette, HD-037; proposed by name match (first_and_last) and accepted, on the ballot as Brad Paquette"
+  },
+  {
+   "people_id": 20666,
+   "legiscan_name": "Laurie Pohutsky",
+   "district": "HD-017",
+   "candidate_id": "1d9b0e6d-2bc1-4384-9dd6-6c7125fd07cd",
+   "note": "Laurie Pohutsky, HD-017; proposed by name match (first_and_last) and accepted, on the ballot as Laurie Pohutsky"
+  },
+  {
+   "people_id": 20668,
+   "legiscan_name": "Bradley Slagh",
+   "district": "HD-085",
+   "candidate_id": "dcc43ef0-8a13-4337-829d-f0646e33de6b",
+   "note": "Bradley Slagh, HD-085; proposed by name match (first_and_last) and accepted, on the ballot as Bradley Slagh"
+  },
+  {
+   "people_id": 20670,
+   "legiscan_name": "Joseph Tate",
+   "district": "HD-009",
+   "candidate_id": null,
+   "note": "Joseph Tate, HD-009; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 20671,
+   "legiscan_name": "Greg VanWoerkom",
+   "district": "HD-088",
+   "candidate_id": "183244bd-db8f-4a54-a8b3-b8e82a3f10f9",
+   "note": "Greg VanWoerkom, HD-088; proposed by name match (first_and_last) and accepted, on the ballot as Greg VanWoerkom"
+  },
+  {
+   "people_id": 20673,
+   "legiscan_name": "Pauline Wendzel",
+   "district": "HD-039",
+   "candidate_id": "a206da0d-bc75-47fe-8e80-2b2fc9245bfe",
+   "note": "Pauline Wendzel, HD-039; proposed by name match (first_and_last) and accepted, on the ballot as Pauline Wendzel"
+  },
+  {
+   "people_id": 20674,
+   "legiscan_name": "Karen Whitsett",
+   "district": "HD-004",
+   "candidate_id": null,
+   "note": "Karen Whitsett, HD-004; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 20675,
+   "legiscan_name": "Angela Witwer",
+   "district": "HD-076",
+   "candidate_id": "74f07695-2f6a-41e2-86f6-29974ced9625",
+   "note": "Angela Witwer, HD-076; proposed by name match (first_and_last) and accepted, on the ballot as Angela Witwer"
+  },
+  {
+   "people_id": 20676,
+   "legiscan_name": "Douglas Wozniak",
+   "district": "HD-059",
+   "candidate_id": "2d681d7f-08a2-42c0-91a2-6e945c9ae248",
+   "note": "Douglas Wozniak, HD-059; proposed by name match (first_and_last) and accepted. The seat flag disagrees because the November 2026 candidacy is state_upper: State Senate District 24 (2024), which is a different seat from the one held in this session. Checked by hand against the candidate's own election record"
+  },
+  {
+   "people_id": 20693,
+   "legiscan_name": "Paul Wojno",
+   "district": "SD-010",
+   "candidate_id": null,
+   "note": "Paul Wojno, SD-010; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 20798,
+   "legiscan_name": "Dayna Polehanki",
+   "district": "SD-005",
+   "candidate_id": "1cd24d61-f17a-404a-9429-18619aa568a4",
+   "note": "Dayna Polehanki, SD-005; proposed by name match (first_and_last) and accepted. The seat flag disagrees because the November 2026 candidacy is state_upper: State Senate District 8 (2024), which is a different seat from the one held in this session. Checked by hand against the candidate's own election record"
+  },
+  {
+   "people_id": 21022,
+   "legiscan_name": "Mallory McMorrow",
+   "district": "SD-008",
+   "candidate_id": null,
+   "note": "Mallory McMorrow, SD-008; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 21042,
+   "legiscan_name": "Rosemary Bayer",
+   "district": "SD-013",
+   "candidate_id": null,
+   "note": "Rosemary Bayer, SD-013; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 21058,
+   "legiscan_name": "Ruth Johnson",
+   "district": "SD-024",
+   "candidate_id": null,
+   "note": "Ruth Johnson, SD-024; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 21281,
+   "legiscan_name": "Phil Green",
+   "district": "HD-067",
+   "candidate_id": "5a17a19b-bebe-4712-905f-6a3eaaf07a3d",
+   "note": "Phil Green, HD-067; proposed by name match (first_and_last) and accepted, on the ballot as Phil Green"
+  },
+  {
+   "people_id": 21624,
+   "legiscan_name": "Cynthia Neeley",
+   "district": "HD-070",
+   "candidate_id": "fc3b1091-a4c1-41fb-8911-63199ce8d9e0",
+   "note": "Cynthia Neeley, HD-070; proposed by name match (first_and_last) and accepted, on the ballot as Cynthia R. Neeley"
+  },
+  {
+   "people_id": 22414,
+   "legiscan_name": "John Damoose",
+   "district": "SD-037",
+   "candidate_id": "280d2e86-5f1a-4dd9-a9d2-d917003c5ec1",
+   "note": "John Damoose, SD-037; proposed by name match (first_and_last) and accepted, on the ballot as John Damoose"
+  },
+  {
+   "people_id": 22460,
+   "legiscan_name": "Timothy Beson",
+   "district": "HD-096",
+   "candidate_id": "b67ff6bf-a8c7-4cc8-9e50-c9e5120f966b",
+   "note": "Timothy Beson, HD-096; proposed by name match (first_and_last) and accepted, on the ballot as Timothy Beson"
+  },
+  {
+   "people_id": 22462,
+   "legiscan_name": "Ken Borton",
+   "district": "HD-105",
+   "candidate_id": "c0e4c9ac-19b0-4493-bae6-2e71b61ac0a8",
+   "note": "Ken Borton, HD-105; proposed by name match (first_and_last) and accepted, on the ballot as Ken Borton"
+  },
+  {
+   "people_id": 22464,
+   "legiscan_name": "Kelly Breen",
+   "district": "HD-021",
+   "candidate_id": "1458d910-3a74-4799-8ad8-451983983ce7",
+   "note": "Kelly Breen, HD-021; proposed by name match (first_and_last) and accepted, on the ballot as Kelly Breen"
+  },
+  {
+   "people_id": 22465,
+   "legiscan_name": "Steve Carra",
+   "district": "HD-036",
+   "candidate_id": "6a7cf85d-5bef-4764-a174-27bf4ba2f19f",
+   "note": "Steve Carra, HD-036; proposed by name match (first_and_last) and accepted, on the ballot as Steve Carra"
+  },
+  {
+   "people_id": 22466,
+   "legiscan_name": "Mary Cavanagh",
+   "district": "SD-006",
+   "candidate_id": "82738d14-9803-491b-8a56-47d0aa3b61ba",
+   "note": "Mary Cavanagh, SD-006; proposed by name match (first_and_last) and accepted, on the ballot as Mary Cavanagh"
+  },
+  {
+   "people_id": 22469,
+   "legiscan_name": "David Martin",
+   "district": "HD-068",
+   "candidate_id": "3286e9cc-875e-45a8-9542-940894b3b402",
+   "note": "David Martin, HD-068; proposed by name match (first_and_last) and accepted, on the ballot as David W. Martin"
+  },
+  {
+   "people_id": 22471,
+   "legiscan_name": "Amos O'Neal",
+   "district": "HD-094",
+   "candidate_id": "8f2fb09f-691e-459e-9bbd-5e8ed2fd2c22",
+   "note": "Amos O'Neal, HD-094; proposed by name match (first_and_last) and accepted, on the ballot as Amos O'Neal"
+  },
+  {
+   "people_id": 22472,
+   "legiscan_name": "Bryan Posthumus",
+   "district": "HD-090",
+   "candidate_id": null,
+   "note": "Bryan Posthumus, HD-090; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 22473,
+   "legiscan_name": "Ranjeev Puri",
+   "district": "HD-024",
+   "candidate_id": "42aea154-57f1-4ac4-9a81-e76ab0f9ca58",
+   "note": "Ranjeev Puri, HD-024; proposed by name match (first_and_last) and accepted, on the ballot as Ranjeev Puri"
+  },
+  {
+   "people_id": 22474,
+   "legiscan_name": "Julie Rogers",
+   "district": "HD-041",
+   "candidate_id": "4f1292cf-0333-4c9e-b5bf-fbd030262995",
+   "note": "Julie Rogers, HD-041; proposed by name match (first_and_last) and accepted. The seat flag disagrees because the November 2026 candidacy is state_upper: State Senate District 19 (2024), which is a different seat from the one held in this session. Checked by hand against the candidate's own election record"
+  },
+  {
+   "people_id": 22475,
+   "legiscan_name": "John Roth",
+   "district": "HD-104",
+   "candidate_id": "256c1526-a4ef-4eff-8e12-8897ca3b9d04",
+   "note": "John Roth, HD-104; proposed by name match (first_and_last) and accepted, on the ballot as John R. Roth"
+  },
+  {
+   "people_id": 22476,
+   "legiscan_name": "Helena Scott",
+   "district": "HD-008",
+   "candidate_id": null,
+   "note": "Helena Scott, HD-008; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 22477,
+   "legiscan_name": "Samantha Steckloff",
+   "district": "HD-019",
+   "candidate_id": "4b222401-f2c6-4d7d-97f7-12f57da45909",
+   "note": "Samantha Steckloff, HD-019; proposed by name match (first_and_last) and accepted, on the ballot as Samantha Steckloff"
+  },
+  {
+   "people_id": 22480,
+   "legiscan_name": "Mark Tisdel",
+   "district": "HD-055",
+   "candidate_id": "b1ed91b1-0aea-48b5-b051-60acfb0ec83d",
+   "note": "Mark Tisdel, HD-055; proposed by name match (first_and_last) and accepted, on the ballot as Mark Tisdel"
+  },
+  {
+   "people_id": 22481,
+   "legiscan_name": "Regina Weiss",
+   "district": "HD-005",
+   "candidate_id": null,
+   "note": "Regina Weiss, HD-005; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 22482,
+   "legiscan_name": "Stephanie Young",
+   "district": "HD-016",
+   "candidate_id": "225c2a9e-01a2-4e03-84d5-53261a033658",
+   "note": "Stephanie Young, HD-016; proposed by name match (first_and_last) and accepted, on the ballot as Stephanie A. Young"
+  },
+  {
+   "people_id": 22747,
+   "legiscan_name": "Pat Outman",
+   "district": "HD-091",
+   "candidate_id": "628b0fe2-a414-41ff-9bb5-7af6bcff80c1",
+   "note": "Pat Outman, HD-091; proposed by name match (first_prefix) and accepted, on the ballot as Pat Outman"
+  },
+  {
+   "people_id": 22748,
+   "legiscan_name": "Tullio Liberati",
+   "district": "HD-002",
+   "candidate_id": null,
+   "note": "Tullio Liberati, HD-002; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 23142,
+   "legiscan_name": "Carol Glanville",
+   "district": "HD-084",
+   "candidate_id": "30197bfe-7dfe-48cb-8d66-88e187404a09",
+   "note": "Carol Glanville, HD-084; proposed by name match (first_and_last) and accepted. The seat flag disagrees because the November 2026 candidacy is state_upper: State Senate District 30 (2024), which is a different seat from the one held in this session. Checked by hand against the candidate's own election record"
+  },
+  {
+   "people_id": 23143,
+   "legiscan_name": "Mike Harris",
+   "district": "HD-052",
+   "candidate_id": "d69202be-9704-40c8-9d2e-5f91018bc6e0",
+   "note": "Mike Harris, HD-052; proposed by name match (first_and_last) and accepted, on the ballot as Mike Harris"
+  },
+  {
+   "people_id": 24269,
+   "legiscan_name": "David Prestin",
+   "district": "HD-108",
+   "candidate_id": "88e41f0a-7847-4e1d-8ed3-1598760780b1",
+   "note": "David Prestin, HD-108; proposed by name match (first_and_last) and accepted. The seat flag disagrees because the November 2026 candidacy is state_upper: State Senate District 38 (2024), which is a different seat from the one held in this session. Checked by hand against the candidate's own election record"
+  },
+  {
+   "people_id": 24270,
+   "legiscan_name": "Donni Steele",
+   "district": "HD-054",
+   "candidate_id": "84f4436a-871c-40b2-a00f-6638b9249bb9",
+   "note": "Donni Steele, HD-054; proposed by name match (first_and_last) and accepted. The seat flag disagrees because the November 2026 candidacy is state_upper: State Senate District 23 (2024), which is a different seat from the one held in this session. Checked by hand against the candidate's own election record"
+  },
+  {
+   "people_id": 24313,
+   "legiscan_name": "Joey Andrews",
+   "district": "HD-038",
+   "candidate_id": "a5e02fb2-4284-4eb7-985e-3281f204b2b9",
+   "note": "Joey Andrews, HD-038; proposed by name match (first_and_last) and accepted, on the ballot as Joey Andrews"
+  },
+  {
+   "people_id": 24314,
+   "legiscan_name": "Noah Arbit",
+   "district": "HD-020",
+   "candidate_id": "06a87b36-b131-4050-a952-e56acdb80a5b",
+   "note": "Noah Arbit, HD-020; proposed by name match (first_and_last) and accepted, on the ballot as Noah Arbit"
+  },
+  {
+   "people_id": 24315,
+   "legiscan_name": "Erin Byrnes",
+   "district": "HD-015",
+   "candidate_id": null,
+   "note": "Erin Byrnes, HD-015; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 24317,
+   "legiscan_name": "Betsy Coffia",
+   "district": "HD-103",
+   "candidate_id": "58aa5b58-f381-4ad1-b317-c17d1206675a",
+   "note": "Betsy Coffia, HD-103; proposed by name match (first_and_last) and accepted, on the ballot as Betsy Coffia"
+  },
+  {
+   "people_id": 24318,
+   "legiscan_name": "Jennifer Conlin",
+   "district": "HD-048",
+   "candidate_id": "994029e5-6ef9-420f-b91c-691a1f60dcee",
+   "note": "Jennifer Conlin, HD-048; proposed by name match (first_and_last) and accepted, on the ballot as Jennifer A. Conlin"
+  },
+  {
+   "people_id": 24319,
+   "legiscan_name": "Emily Dievendorf",
+   "district": "HD-077",
+   "candidate_id": "9c0215a6-778c-4699-8ba2-e049879abf2d",
+   "note": "Emily Dievendorf, HD-077; proposed by name match (first_and_last) and accepted, on the ballot as Emily Dievendorf"
+  },
+  {
+   "people_id": 24320,
+   "legiscan_name": "Kimberly Edwards",
+   "district": "HD-012",
+   "candidate_id": "4311384a-9982-481f-97b6-b4507a3bd1f6",
+   "note": "Kimberly Edwards, HD-012; proposed by name match (first_and_last) and accepted, on the ballot as Kimberly L. Edwards"
+  },
+  {
+   "people_id": 24321,
+   "legiscan_name": "Alabas Farhat",
+   "district": "HD-003",
+   "candidate_id": "fe098d55-283d-42a2-aa4c-fd7e27115451",
+   "note": "Alabas Farhat, HD-003; proposed by name match (first_and_last) and accepted, on the ballot as Alabas Farhat"
+  },
+  {
+   "people_id": 24322,
+   "legiscan_name": "John Fitzgerald",
+   "district": "HD-083",
+   "candidate_id": "38afe9f9-443e-4178-bd18-f03bc03b9757",
+   "note": "John Fitzgerald, HD-083; proposed by name match (first_and_last) and accepted, on the ballot as John Fitzgerald"
+  },
+  {
+   "people_id": 24323,
+   "legiscan_name": "Kristian Grant",
+   "district": "HD-082",
+   "candidate_id": "0ed13980-7bdb-431a-9f81-24444d9736cb",
+   "note": "Kristian Grant, HD-082; proposed by name match (first_and_last) and accepted, on the ballot as Kristian C. Grant"
+  },
+  {
+   "people_id": 24325,
+   "legiscan_name": "Jason Hoskins",
+   "district": "HD-018",
+   "candidate_id": "f0b6d115-cebf-43ad-a890-266c96187bf8",
+   "note": "Jason Hoskins, HD-018; proposed by name match (first_and_last) and accepted. The seat flag disagrees because the November 2026 candidacy is state_upper: State Senate District 7 (2024), which is a different seat from the one held in this session. Checked by hand against the candidate's own election record"
+  },
+  {
+   "people_id": 24326,
+   "legiscan_name": "Sharon MacDonell",
+   "district": "HD-056",
+   "candidate_id": "9be5568d-2939-4608-91d9-3c94c74660e2",
+   "note": "Sharon MacDonell, HD-056; proposed by name match (first_and_last) and accepted, on the ballot as Sharon MacDonell"
+  },
+  {
+   "people_id": 24327,
+   "legiscan_name": "Jasper Martus",
+   "district": "HD-069",
+   "candidate_id": "1b215ebd-8dc6-4bf3-921d-53321e55390f",
+   "note": "Jasper Martus, HD-069; proposed by name match (first_and_last) and accepted, on the ballot as Jasper Ryan Martus"
+  },
+  {
+   "people_id": 24328,
+   "legiscan_name": "Mike McFall",
+   "district": "HD-014",
+   "candidate_id": "6a4fd037-78a9-4d2b-a6ea-b16563858c42",
+   "note": "Mike McFall, HD-014; proposed by name match (first_and_last) and accepted, on the ballot as Mike McFall"
+  },
+  {
+   "people_id": 24329,
+   "legiscan_name": "Donavan McKinney",
+   "district": "HD-011",
+   "candidate_id": null,
+   "note": "Donavan McKinney, HD-011; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 24330,
+   "legiscan_name": "Denise Mentzer",
+   "district": "HD-061",
+   "candidate_id": "2f05e9f8-849b-4f49-9c20-63a5aa0c80be",
+   "note": "Denise Mentzer, HD-061; proposed by name match (first_and_last) and accepted, on the ballot as Denise Mentzer"
+  },
+  {
+   "people_id": 24331,
+   "legiscan_name": "Reggie Miller",
+   "district": "HD-031",
+   "candidate_id": null,
+   "note": "Reggie Miller, HD-031; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 24332,
+   "legiscan_name": "Jason Morgan",
+   "district": "HD-023",
+   "candidate_id": "058c264d-9f09-4c1c-8955-9952c005aec7",
+   "note": "Jason Morgan, HD-023; proposed by name match (first_and_last) and accepted, on the ballot as Jason Morgan"
+  },
+  {
+   "people_id": 24333,
+   "legiscan_name": "Jerry Neyer",
+   "district": "HD-092",
+   "candidate_id": "4b71bd78-96ba-4076-81ad-ea2ba43740f6",
+   "note": "Jerry Neyer, HD-092; proposed by name match (first_and_last) and accepted, on the ballot as Jerry Neyer"
+  },
+  {
+   "people_id": 24334,
+   "legiscan_name": "Veronica Paiz",
+   "district": "HD-010",
+   "candidate_id": "7eac887a-0a69-4bb0-9009-fe21ee139725",
+   "note": "Veronica Paiz, HD-010; proposed by name match (first_and_last) and accepted, on the ballot as Veronica Paiz"
+  },
+  {
+   "people_id": 24335,
+   "legiscan_name": "Natalie Price",
+   "district": "HD-006",
+   "candidate_id": "52ebf661-e1f2-4607-a35a-cc51ce79d1c8",
+   "note": "Natalie Price, HD-006; proposed by name match (first_and_last) and accepted. The seat flag disagrees because the November 2026 candidacy is state_upper: State Senate District 10 (2024), which is a different seat from the one held in this session. Checked by hand against the candidate's own election record"
+  },
+  {
+   "people_id": 24336,
+   "legiscan_name": "Carrie Rheingans",
+   "district": "HD-047",
+   "candidate_id": "c0f8af9e-f633-4c16-be98-11f234542445",
+   "note": "Carrie Rheingans, HD-047; proposed by name match (first_and_last) and accepted, on the ballot as Carrie A. Rheingans"
+  },
+  {
+   "people_id": 24337,
+   "legiscan_name": "Bill Schuette",
+   "district": "HD-095",
+   "candidate_id": "880e6566-0e4a-4043-9fe9-4f9f7cf3adfc",
+   "note": "Bill Schuette, HD-095; proposed by name match (first_and_last) and accepted, on the ballot as Bill G. Schuette"
+  },
+  {
+   "people_id": 24338,
+   "legiscan_name": "Phil Skaggs",
+   "district": "HD-080",
+   "candidate_id": null,
+   "note": "Phil Skaggs, HD-080; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 24339,
+   "legiscan_name": "Will Snyder",
+   "district": "HD-087",
+   "candidate_id": "27eaa82c-955d-47ca-bcd2-5eb7f744d7be",
+   "note": "Will Snyder, HD-087; proposed by name match (first_and_last) and accepted, on the ballot as Will Snyder"
+  },
+  {
+   "people_id": 24340,
+   "legiscan_name": "Penelope Tsernoglou",
+   "district": "HD-075",
+   "candidate_id": "7d99f1a8-deef-481c-b276-698870442c3c",
+   "note": "Penelope Tsernoglou, HD-075; proposed by name match (first_and_last) and accepted, on the ballot as Penelope Tsernoglou"
+  },
+  {
+   "people_id": 24341,
+   "legiscan_name": "Dylan Wegela",
+   "district": "HD-026",
+   "candidate_id": "1abaae63-2ab0-45b2-b62b-bf287a18c0fa",
+   "note": "Dylan Wegela, HD-026; proposed by name match (first_and_last) and accepted, on the ballot as Dylan Wegela"
+  },
+  {
+   "people_id": 24342,
+   "legiscan_name": "Jimmie Wilson",
+   "district": "HD-032",
+   "candidate_id": "b921bcee-ecb1-41fa-908b-8a1176d7dd8a",
+   "note": "Jimmie Wilson, HD-032; proposed by name match (first_and_last) and accepted, on the ballot as Jimmie Wilson Jr."
+  },
+  {
+   "people_id": 24343,
+   "legiscan_name": "Veronica Klinefelt",
+   "district": "SD-011",
+   "candidate_id": "0a93ee87-601e-4729-b9ba-b7a833b56310",
+   "note": "Veronica Klinefelt, SD-011; proposed by name match (first_and_last) and accepted, on the ballot as Veronica Klinefelt"
+  },
+  {
+   "people_id": 24344,
+   "legiscan_name": "Jonathan Lindsey",
+   "district": "SD-017",
+   "candidate_id": "996abb9f-c04e-4a39-8d29-6f37d50f0bf3",
+   "note": "Jonathan Lindsey, SD-017; proposed by name match (first_and_last) and accepted, on the ballot as Jonathan Lindsey"
+  },
+  {
+   "people_id": 24346,
+   "legiscan_name": "Sue Shink",
+   "district": "SD-014",
+   "candidate_id": "d8e7b3cb-d4eb-43a3-9c17-72de61fec21d",
+   "note": "Sue Shink, SD-014; proposed by name match (first_and_last) and accepted, on the ballot as Sue Shink"
+  },
+  {
+   "people_id": 24347,
+   "legiscan_name": "Gregory Alexander",
+   "district": "HD-098",
+   "candidate_id": "a2b4c3e1-642b-44ae-88d8-e85aa4427073",
+   "note": "Gregory Alexander, HD-098; proposed by name match (first_and_last) and accepted, on the ballot as Gregory L. Alexander"
+  },
+  {
+   "people_id": 24348,
+   "legiscan_name": "Joseph Aragona",
+   "district": "HD-060",
+   "candidate_id": "5e8e570e-2220-4c2c-92ad-e1df6f4aadce",
+   "note": "Joseph Aragona, HD-060; proposed by name match (first_and_last) and accepted, on the ballot as Joseph Aragona"
+  },
+  {
+   "people_id": 24349,
+   "legiscan_name": "Brian BeGole",
+   "district": "HD-071",
+   "candidate_id": "338af6a5-aece-4145-b039-0ce9278572d1",
+   "note": "Brian BeGole, HD-071; proposed by name match (first_and_last) and accepted, on the ballot as Brian BeGole"
+  },
+  {
+   "people_id": 24350,
+   "legiscan_name": "Matthew Bierlein",
+   "district": "HD-097",
+   "candidate_id": "689d8982-f161-46ea-95f0-170fe277403a",
+   "note": "Matthew Bierlein, HD-097; proposed by name match (first_and_last) and accepted. The seat flag disagrees because the November 2026 candidacy is state_upper: State Senate District 26 (2024), which is a different seat from the one held in this session. Checked by hand against the candidate's own election record"
+  },
+  {
+   "people_id": 24351,
+   "legiscan_name": "Cam Cavitt",
+   "district": "HD-106",
+   "candidate_id": "8f447677-06bd-436b-b88b-9841c9f8f363",
+   "note": "Cam Cavitt, HD-106; proposed by name match (first_prefix) and accepted, on the ballot as Cam Cavitt"
+  },
+  {
+   "people_id": 24352,
+   "legiscan_name": "Nancy DeBoer",
+   "district": "HD-086",
+   "candidate_id": "cf6f5875-1d1d-4226-8e67-8e816841d990",
+   "note": "Nancy DeBoer, HD-086; proposed by name match (first_and_last) and accepted, on the ballot as Nancy DeBoer"
+  },
+  {
+   "people_id": 24353,
+   "legiscan_name": "Jay DeBoyer",
+   "district": "HD-063",
+   "candidate_id": null,
+   "note": "Jay DeBoyer, HD-063; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 24354,
+   "legiscan_name": "Joseph Fox",
+   "district": "HD-101",
+   "candidate_id": null,
+   "note": "Joseph Fox, HD-101; no November 2026 Michigan candidacy for any office in the database"
+  },
+  {
+   "people_id": 24355,
+   "legiscan_name": "Jaime Greene",
+   "district": "HD-065",
+   "candidate_id": "94744249-3f11-4d15-9a85-3929609b68c5",
+   "note": "Jaime Greene, HD-065; proposed by name match (first_and_last) and accepted, on the ballot as Jaime Greene"
+  },
+  {
+   "people_id": 24356,
+   "legiscan_name": "Mike Hoadley",
+   "district": "HD-099",
+   "candidate_id": "d1032fe4-a2f2-44f4-ba73-0714130d0a03",
+   "note": "Mike Hoadley, HD-099; proposed by name match (first_and_last) and accepted, on the ballot as Mike Hoadley"
+  },
+  {
+   "people_id": 24357,
+   "legiscan_name": "Gina Johnsen",
+   "district": "HD-078",
+   "candidate_id": "49f935ea-b104-4cda-b3de-8076cff8fb20",
+   "note": "Gina Johnsen, HD-078; proposed by name match (first_and_last) and accepted. The seat flag disagrees because the November 2026 candidacy is state_upper: State Senate District 33 (2024), which is a different seat from the one held in this session. Checked by hand against the candidate's own election record"
+  },
+  {
+   "people_id": 24358,
+   "legiscan_name": "Tom Kuhn",
+   "district": "HD-057",
+   "candidate_id": "373cbb2b-9a6b-4ab8-b725-d9a982a3f7a1",
+   "note": "Tom Kuhn, HD-057; proposed by name match (first_and_last) and accepted, on the ballot as Thomas E. Kuhn"
+  },
+  {
+   "people_id": 24359,
+   "legiscan_name": "Tom Kunse",
+   "district": "HD-100",
+   "candidate_id": "db0c70b4-5818-4815-8017-bd71e9e74e90",
+   "note": "Tom Kunse, HD-100; proposed by name match (first_and_last) and accepted, on the ballot as Tom Kunse"
+  },
+  {
+   "people_id": 24360,
+   "legiscan_name": "Kathy Schmaltz",
+   "district": "HD-046",
+   "candidate_id": "132ceea7-28ab-4873-93e8-3181c3f4eb48",
+   "note": "Kathy Schmaltz, HD-046; proposed by name match (first_and_last) and accepted, on the ballot as Kathy Schmaltz"
+  },
+  {
+   "people_id": 24361,
+   "legiscan_name": "Josh Schriver",
+   "district": "HD-066",
+   "candidate_id": "8cd8a8f2-c068-422c-983a-df23f287b77c",
+   "note": "Josh Schriver, HD-066; proposed by name match (first_and_last) and accepted, on the ballot as Josh Schriver"
+  },
+  {
+   "people_id": 24362,
+   "legiscan_name": "Rachelle Smit",
+   "district": "HD-043",
+   "candidate_id": "5969d7ed-1902-40ce-a3e9-5e5dd0f0f4da",
+   "note": "Rachelle Smit, HD-043; proposed by name match (first_and_last) and accepted, on the ballot as Rachelle Smit"
+  },
+  {
+   "people_id": 24363,
+   "legiscan_name": "Jamie Thompson",
+   "district": "HD-028",
+   "candidate_id": "22fd2407-254c-423a-b1e4-335f53a41fce",
+   "note": "Jamie Thompson, HD-028; proposed by name match (first_and_last) and accepted, on the ballot as Jamie Thompson"
+  },
+  {
+   "people_id": 24364,
+   "legiscan_name": "Angela Rigas",
+   "district": "HD-079",
+   "candidate_id": "6ad8c662-2006-405d-8862-1a45530cffa6",
+   "note": "Angela Rigas, HD-079; proposed by name match (first_and_last) and accepted, on the ballot as Angela Rigas"
+  },
+  {
+   "people_id": 24365,
+   "legiscan_name": "William Bruck",
+   "district": "HD-030",
+   "candidate_id": "2265f0a2-da7d-4854-a0f5-9d0fc5bfc449",
+   "note": "William Bruck, HD-030; proposed by name match (first_and_last) and accepted, on the ballot as William Bruck"
+  },
+  {
+   "people_id": 24366,
+   "legiscan_name": "James DeSana",
+   "district": "HD-029",
+   "candidate_id": "a45b91d2-6ebc-4647-b49c-2d032ba5b392",
+   "note": "James DeSana, HD-029; proposed by name match (first_and_last) and accepted, on the ballot as James DeSana"
+  },
+  {
+   "people_id": 24369,
+   "legiscan_name": "Alicia St. Germaine",
+   "district": "HD-062",
+   "candidate_id": "8b887cab-d6ae-42d1-9c7c-946a1e7a79fc",
+   "note": "Alicia St. Germaine, HD-062; proposed by name match (first_and_last) and accepted, on the ballot as Alicia St. Germaine"
+  },
+  {
+   "people_id": 25198,
+   "legiscan_name": "Peter Herzberg",
+   "district": "HD-025",
+   "candidate_id": "29d12570-8eca-4063-9f58-dc6756060b7f",
+   "note": "Peter Herzberg, HD-025; proposed by name match (first_and_last) and accepted, on the ballot as Peter Herzberg"
+  },
+  {
+   "people_id": 25199,
+   "legiscan_name": "Mai Xiong",
+   "district": "HD-013",
+   "candidate_id": "df43cad3-fe28-4af8-aca6-be366d552125",
+   "note": "Mai Xiong, HD-013; proposed by name match (first_and_last) and accepted, on the ballot as Mai Xiong"
+  },
+  {
+   "people_id": 25807,
+   "legiscan_name": "Karl Bohnak",
+   "district": "HD-109",
+   "candidate_id": "12d46fad-7139-45ba-99f1-0f3a298fb742",
+   "note": "Karl Bohnak, HD-109; proposed by name match (first_and_last) and accepted, on the ballot as Karl Bohnak"
+  },
+  {
+   "people_id": 25808,
+   "legiscan_name": "Parker Fairbairn",
+   "district": "HD-107",
+   "candidate_id": "046cced8-3aad-4787-9fea-a481577c9446",
+   "note": "Parker Fairbairn, HD-107; proposed by name match (first_and_last) and accepted, on the ballot as Parker Fairbairn"
+  },
+  {
+   "people_id": 25809,
+   "legiscan_name": "Morgan Foreman",
+   "district": "HD-033",
+   "candidate_id": "34c76888-3d77-49b8-9aca-9b1bf4da64dd",
+   "note": "Morgan Foreman, HD-033; proposed by name match (first_and_last) and accepted, on the ballot as Morgan Foreman"
+  },
+  {
+   "people_id": 25810,
+   "legiscan_name": "Steve Frisbie",
+   "district": "HD-044",
+   "candidate_id": "33da8b46-bd8c-41ea-a815-aecfa0cc9a0a",
+   "note": "Steve Frisbie, HD-044; proposed by name match (first_and_last) and accepted, on the ballot as Steve Frisbie"
+  },
+  {
+   "people_id": 25811,
+   "legiscan_name": "Rylee Linting",
+   "district": "HD-027",
+   "candidate_id": "2d7d059b-2e9c-4021-924a-387d3e4f1567",
+   "note": "Rylee Linting, HD-027; proposed by name match (first_and_last) and accepted, on the ballot as Rylee Linting"
+  },
+  {
+   "people_id": 25812,
+   "legiscan_name": "Matt Longjohn",
+   "district": "HD-040",
+   "candidate_id": "369a5003-16b4-495a-b3e2-77cb7962cd7d",
+   "note": "Matt Longjohn, HD-040; proposed by name match (first_and_last) and accepted, on the ballot as Matt Longjohn"
+  },
+  {
+   "people_id": 25813,
+   "legiscan_name": "Joseph Pavlov",
+   "district": "HD-064",
+   "candidate_id": "c61980a9-bbb5-4e98-8938-323dcd1d9b98",
+   "note": "Joseph Pavlov, HD-064; proposed by name match (first_and_last) and accepted, on the ballot as Joseph G. Pavlov"
+  },
+  {
+   "people_id": 25814,
+   "legiscan_name": "Tonya Myers Phillips",
+   "district": "HD-007",
+   "candidate_id": "78ab35c7-3eab-447e-9dc7-cac4044013e4",
+   "note": "Tonya Myers Phillips, HD-007; proposed by name match (first_and_last) and accepted, on the ballot as Tonya Myers Phillips"
+  },
+  {
+   "people_id": 25815,
+   "legiscan_name": "Ron Robinson",
+   "district": "HD-058",
+   "candidate_id": "92dc58d7-1137-4941-b0c6-ddf74495bc55",
+   "note": "Ron Robinson, HD-058; proposed by name match (first_and_last) and accepted, on the ballot as Ron Robinson"
+  },
+  {
+   "people_id": 25816,
+   "legiscan_name": "Stephen Wooden",
+   "district": "HD-081",
+   "candidate_id": "b7a6e3c6-14b1-460c-a28a-f8ac139c21e1",
+   "note": "Stephen Wooden, HD-081; proposed by name match (first_and_last) and accepted, on the ballot as Stephen Wooden"
+  },
+  {
+   "people_id": 25817,
+   "legiscan_name": "Jason Woolford",
+   "district": "HD-050",
+   "candidate_id": "f582e420-2c46-45c7-aee3-17830cb4ca87",
+   "note": "Jason Woolford, HD-050; proposed by name match (first_and_last) and accepted, on the ballot as Jason Woolford"
+  },
+  {
+   "people_id": 25818,
+   "legiscan_name": "Jennifer Wortz",
+   "district": "HD-035",
+   "candidate_id": "0339c5b1-7cdc-482e-b5bf-ae0d1f79ecff",
+   "note": "Jennifer Wortz, HD-035; proposed by name match (first_and_last) and accepted, on the ballot as Jennifer Wortz"
+  },
+  {
+   "people_id": 26671,
+   "legiscan_name": "Chedrick Greene",
+   "district": "SD-035",
+   "candidate_id": "90bc65da-2c43-4146-b60f-53d7343adbda",
+   "note": "Chedrick Greene, SD-035; proposed by name match (first_and_last) and accepted, on the ballot as Chedrick Greene"
+  }
+ ]
+}
